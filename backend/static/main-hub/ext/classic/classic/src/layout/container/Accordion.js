@@ -44,7 +44,7 @@ Ext.define("Ext.layout.container.Accordion", {
   targetCls: Ext.baseCSSPrefix + "accordion-layout-ct",
   itemCls: [
     Ext.baseCSSPrefix + "box-item",
-    Ext.baseCSSPrefix + "accordion-item",
+    Ext.baseCSSPrefix + "accordion-item"
   ],
 
   align: "stretch",
@@ -125,7 +125,7 @@ Ext.define("Ext.layout.container.Accordion", {
 
   defaultAnimatePolicy: {
     y: true,
-    height: true,
+    height: true
   },
 
   constructor: function () {
@@ -454,5 +454,5 @@ Ext.define("Ext.layout.container.Accordion", {
   // desired size when using an accordion.
   afterCollapse: Ext.emptyFn,
 
-  afterExpand: Ext.emptyFn,
+  afterExpand: Ext.emptyFn
 });

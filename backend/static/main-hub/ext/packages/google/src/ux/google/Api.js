@@ -11,7 +11,7 @@ Ext.define("Ext.ux.google.Api", {
       /*
        *  feeds: [ callback1, callback2, .... ]  transitions to -> feeds : true  (when complete)
        */
-    },
+    }
   },
 
   onClassExtended: function (cls, data, hooks) {
@@ -80,10 +80,10 @@ Ext.define("Ext.ux.google.Api", {
                   for (var n = module.length; n-- > 0; ) {
                     module[n](); //iterate callbacks in reverse
                   }
-                },
+                }
               },
-              api,
-            ),
+              api
+            )
           );
         } else if (module !== true) {
           module.push(callback);
@@ -94,5 +94,5 @@ Ext.define("Ext.ux.google.Api", {
         onBeforeClassCreated.call(me, cls, data, hooks);
       }
     };
-  },
+  }
 });

@@ -59,7 +59,7 @@ Ext.define("Ext.plugin.field.PlaceHolderLabel", {
      * is to be shown.
      * @accessor
      */
-    showCls: Ext.baseCSSPrefix + "show-label",
+    showCls: Ext.baseCSSPrefix + "show-label"
   },
 
   constructor: function (config) {
@@ -98,7 +98,7 @@ Ext.define("Ext.plugin.field.PlaceHolderLabel", {
     return {
       scope: this,
       keyup: this.maybeShowLabel,
-      clearicontap: this.maybeShowLabel,
+      clearicontap: this.maybeShowLabel
     };
   },
   updateField: function (newField, oldField) {
@@ -118,7 +118,7 @@ Ext.define("Ext.plugin.field.PlaceHolderLabel", {
     if (newField) {
       label = newField.getLabel();
       config = {
-        labelAlign: "top",
+        labelAlign: "top"
       };
 
       //if there is no label on the field, use the placeHolder
@@ -143,5 +143,5 @@ Ext.define("Ext.plugin.field.PlaceHolderLabel", {
     if (field) {
       field.toggleCls(this.getShowCls(), show);
     }
-  },
+  }
 });

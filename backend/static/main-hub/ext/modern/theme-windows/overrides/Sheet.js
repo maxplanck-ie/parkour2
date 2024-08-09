@@ -3,6 +3,6 @@ Ext.define("Ext.theme.windows.Sheet", {
 
   config: {
     enter: "top",
-    exit: "top",
-  },
+    exit: "top"
+  }
 });

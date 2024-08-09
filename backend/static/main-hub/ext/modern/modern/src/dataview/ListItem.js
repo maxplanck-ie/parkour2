@@ -99,21 +99,21 @@ Ext.define("Ext.dataview.ListItem", {
     dataMap: null,
 
     body: {
-      xtype: "listitembody",
+      xtype: "listitembody"
     },
 
     disclosure: {
       xtype: "listitemdisclosure",
       hidden: true,
-      docked: "right",
+      docked: "right"
     },
 
     header: {
-      xtype: "itemheader",
+      xtype: "itemheader"
     },
 
     tpl: null,
-    items: null,
+    items: null
   },
 
   classCls: Ext.baseCSSPrefix + "listitem",
@@ -210,7 +210,7 @@ Ext.define("Ext.dataview.ListItem", {
         dataview.prepareData(
           record.getData(true),
           dataview.getStore().indexOf(record),
-          record,
+          record
         ),
       dataMap = me.getDataMap(),
       body = this.getBody(),
@@ -262,6 +262,6 @@ Ext.define("Ext.dataview.ListItem", {
       if (disclosure) {
         disclosure.setUi(ui);
       }
-    },
-  },
+    }
+  }
 });

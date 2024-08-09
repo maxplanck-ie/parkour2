@@ -82,5 +82,5 @@ Ext.define("Ext.device.twitter.Abstract", {
    *
    * [Twitter API Endpoint]: https://dev.twitter.com/docs/api
    */
-  getTwitterRequest: Ext.emptyFn,
+  getTwitterRequest: Ext.emptyFn
 });

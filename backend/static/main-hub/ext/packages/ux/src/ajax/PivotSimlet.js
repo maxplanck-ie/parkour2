@@ -28,7 +28,7 @@ Ext.define("Ext.ux.ajax.PivotSimlet", {
         success: true,
         leftAxis: [],
         topAxis: [],
-        results: [],
+        results: []
       },
       leftAxis = new Ext.util.MixedCollection(),
       topAxis = new Ext.util.MixedCollection(),
@@ -84,7 +84,7 @@ Ext.define("Ext.ux.ajax.PivotSimlet", {
           item.records,
           agg.dataIndex,
           item.leftKey,
-          item.topKey,
+          item.topKey
         );
       }
       delete item.records;
@@ -128,7 +128,7 @@ Ext.define("Ext.ux.ajax.PivotSimlet", {
         item = col.add(key, {
           key: key,
           value: record[dim.dataIndex],
-          dimensionId: dim.id,
+          dimensionId: dim.id
         });
       }
       keys.push(key);
@@ -144,7 +144,7 @@ Ext.define("Ext.ux.ajax.PivotSimlet", {
       item = results.add(leftKey + "/" + topKey, {
         leftKey: leftKey,
         topKey: topKey,
-        records: [],
+        records: []
       });
     }
     item.records.push(record);
@@ -249,5 +249,5 @@ Ext.define("Ext.ux.ajax.PivotSimlet", {
       v = me.varianceP.apply(me, arguments);
 
     return v > 0 ? Math.sqrt(v) : 0;
-  },
+  }
 });

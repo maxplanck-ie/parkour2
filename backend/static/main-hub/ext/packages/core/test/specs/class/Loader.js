@@ -15,7 +15,7 @@ xdescribe("Ext.Loader", function () {
   it("should set multiple namespaces with setPath call", function () {
     Loader.setPath({
       ExtLoaderTestNamespace2: "/foo2",
-      ExtLoaderTestNamespace3: "/foo3",
+      ExtLoaderTestNamespace3: "/foo3"
     });
 
     var ns2 = app.getNamespace("ExtLoaderTestNamespace2.foo.Bar"),
@@ -29,8 +29,8 @@ xdescribe("Ext.Loader", function () {
   it("should set namespaces with setConfig object", function () {
     Loader.setConfig({
       paths: {
-        ExtLoaderTestNamespace4: "/foo4",
-      },
+        ExtLoaderTestNamespace4: "/foo4"
+      }
     });
 
     var ns = app.getNamespace("ExtLoaderTestNamespace4.foo.Bar");
@@ -40,7 +40,7 @@ xdescribe("Ext.Loader", function () {
 
   it("should set namespaces with setConfig name/value pair", function () {
     Loader.setConfig("paths", {
-      ExtLoaderTestNamespace5: "/foo5",
+      ExtLoaderTestNamespace5: "/foo5"
     });
 
     var ns = app.getNamespace("ExtLoaderTestNamespace5.foo.Bar");
@@ -50,7 +50,7 @@ xdescribe("Ext.Loader", function () {
 
   it("should allow nested namespaces 1", function () {
     Loader.setPath({
-      "ExtLoaderTestNamespace1.foo": "/foobar1",
+      "ExtLoaderTestNamespace1.foo": "/foobar1"
     });
 
     var ns = app.getNamespace("ExtLoaderTestNamespace1.foo.Bar");
@@ -60,7 +60,7 @@ xdescribe("Ext.Loader", function () {
 
   it("should allow nested namespaces 2", function () {
     Loader.setPath({
-      "ExtLoaderTestNamespace1.foo.Bar": "/foobaroo1",
+      "ExtLoaderTestNamespace1.foo.Bar": "/foobaroo1"
     });
 
     var ns = app.getNamespace("ExtLoaderTestNamespace1.foo.Bar.Baz");
@@ -157,13 +157,13 @@ xdescribe("Ext.Loader", function () {
       Ext.Loader.injectScriptElement = function (
         src,
         onScriptLoad,
-        onScriptError,
+        onScriptError
       ) {
         newSrc = src;
       };
 
       Ext.Loader.loadScript({
-        url: "script.js?key=value",
+        url: "script.js?key=value"
       });
 
       expect(newSrc.indexOf("?key=value&") > -1).toBe(true);

@@ -10,7 +10,7 @@ describe("Ext.layout.component.Component", function () {
       c = new Ext.container.Container({
         layout: {
           type: "vbox",
-          align: "stretchmax",
+          align: "stretchmax"
         },
         renderTo: Ext.getBody(),
         items: [
@@ -22,17 +22,17 @@ describe("Ext.layout.component.Component", function () {
             dockedItems: [
               {
                 dock: "bottom",
-                html: "X",
-              },
-            ],
+                html: "X"
+              }
+            ]
           },
           {
             xtype: "panel",
             border: false,
             html: '<div style="width: 150px;">asdf</div>',
-            flex: 1,
-          },
-        ],
+            flex: 1
+          }
+        ]
       });
       var child = c.items.first();
       expect(child.getWidth()).toBe(150);
@@ -47,7 +47,7 @@ describe("Ext.layout.component.Component", function () {
       c = new Ext.container.Container({
         layout: {
           type: "hbox",
-          align: "stretchmax",
+          align: "stretchmax"
         },
         renderTo: Ext.getBody(),
         items: [
@@ -59,17 +59,17 @@ describe("Ext.layout.component.Component", function () {
             dockedItems: [
               {
                 dock: "right",
-                html: "X",
-              },
-            ],
+                html: "X"
+              }
+            ]
           },
           {
             xtype: "panel",
             border: false,
             html: '<div style="height: 150px;">asdf</div>',
-            flex: 1,
-          },
-        ],
+            flex: 1
+          }
+        ]
       });
       var child = c.items.first();
       expect(child.getHeight()).toBe(150);

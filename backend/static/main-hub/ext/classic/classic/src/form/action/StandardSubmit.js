@@ -29,5 +29,5 @@ Ext.define("Ext.form.action.StandardSubmit", {
     var formInfo = this.buildForm();
     formInfo.formEl.submit();
     this.cleanup(formInfo);
-  },
+  }
 });

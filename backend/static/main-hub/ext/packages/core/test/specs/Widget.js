@@ -6,10 +6,10 @@ describe("Ext.Widget", function () {
       "spec.Widget",
       Ext.apply(
         {
-          extend: "Ext.Widget",
+          extend: "Ext.Widget"
         },
-        config,
-      ),
+        config
+      )
     );
 
     if (!first) {
@@ -46,7 +46,7 @@ describe("Ext.Widget", function () {
         // error thrown on first instance - no need to run these spec for the second instance
         it("should throw an error when no 'element' reference is defined", function () {
           defineWidget(first, {
-            element: {},
+            element: {}
           });
 
           function makeWidget() {
@@ -54,7 +54,7 @@ describe("Ext.Widget", function () {
           }
 
           expect(makeWidget).toThrow(
-            "No 'element' reference found in 'spec.Widget' template.",
+            "No 'element' reference found in 'spec.Widget' template."
           );
         });
 
@@ -64,10 +64,10 @@ describe("Ext.Widget", function () {
               reference: "element",
               children: [
                 {
-                  reference: "element",
-                },
-              ],
-            },
+                  reference: "element"
+                }
+              ]
+            }
           });
 
           function makeWidget() {
@@ -75,7 +75,7 @@ describe("Ext.Widget", function () {
           }
 
           expect(makeWidget).toThrow(
-            "Duplicate 'element' reference detected in 'spec.Widget' template.",
+            "Duplicate 'element' reference detected in 'spec.Widget' template."
           );
         });
       }
@@ -86,10 +86,10 @@ describe("Ext.Widget", function () {
             children: [
               {
                 cls: "foo",
-                reference: "element",
-              },
-            ],
-          },
+                reference: "element"
+              }
+            ]
+          }
         });
 
         widget = new spec.Widget();
@@ -108,16 +108,16 @@ describe("Ext.Widget", function () {
                 children: [
                   {
                     cls: "baz",
-                    reference: "baz",
-                  },
-                ],
+                    reference: "baz"
+                  }
+                ]
               },
               {
                 cls: "bar",
-                reference: "bar",
-              },
-            ],
-          },
+                reference: "bar"
+              }
+            ]
+          }
         });
 
         widget = new spec.Widget();
@@ -143,10 +143,10 @@ describe("Ext.Widget", function () {
             reference: "element",
             children: [
               {
-                reference: "foo",
-              },
-            ],
-          },
+                reference: "foo"
+              }
+            ]
+          }
         });
 
         widget = new spec.Widget();
@@ -168,7 +168,7 @@ describe("Ext.Widget", function () {
 
         defineWidget(first);
         widget = new spec.Widget({
-          id: id,
+          id: id
         });
 
         expect(widget.id).toBe(id);
@@ -182,10 +182,10 @@ describe("Ext.Widget", function () {
           element: {
             reference: "element",
             listeners: {
-              click: "onClick",
-            },
+              click: "onClick"
+            }
           },
-          onClick: onClick,
+          onClick: onClick
         });
 
         widget = new spec.Widget();
@@ -203,11 +203,11 @@ describe("Ext.Widget", function () {
       it("should be able to direct element listeners to controllers", function () {
         var C = Ext.define(null, {
           extend: "Ext.app.ViewController",
-          someFn: Ext.emptyFn,
+          someFn: Ext.emptyFn
         });
 
         defineWidget(first, {
-          xtype: "custom",
+          xtype: "custom"
         });
 
         var controller = new C();
@@ -219,9 +219,9 @@ describe("Ext.Widget", function () {
             xtype: "custom",
             listeners: {
               click: "someFn",
-              element: "element",
-            },
-          },
+              element: "element"
+            }
+          }
         });
         widget = ct.down("custom");
 
@@ -249,8 +249,8 @@ describe("Ext.Widget", function () {
               {
                 reference: "foo",
                 listeners: {
-                  click: "fooClick",
-                },
+                  click: "fooClick"
+                }
               },
               {
                 cls: "bar",
@@ -258,29 +258,29 @@ describe("Ext.Widget", function () {
                 listeners: {
                   // Make sure scope is set correctly for object form
                   click: {
-                    fn: "barClick",
-                  },
+                    fn: "barClick"
+                  }
                 },
                 children: [
                   {
                     reference: "baz",
                     listeners: {
-                      click: "bazClick",
+                      click: "bazClick"
                     },
-                    scope: {}, // make sure this scope is ignored
+                    scope: {} // make sure this scope is ignored
                   },
                   {
                     reference: "jazz",
                     listeners: {
                       click: {
                         fn: "jazzClick",
-                        scope: {}, // ignored - scope is always "this"
-                      },
-                    },
-                  },
-                ],
-              },
-            ],
+                        scope: {} // ignored - scope is always "this"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
           },
 
           fooClick: fooClick,
@@ -289,7 +289,7 @@ describe("Ext.Widget", function () {
 
           bazClick: bazClick,
 
-          jazzClick: jazzClick,
+          jazzClick: jazzClick
         });
 
         widget = new spec.Widget();
@@ -326,7 +326,7 @@ describe("Ext.Widget", function () {
     it("should not allow listeners declared in a subclass to pollute the superclass cache (no listeners on superclass)", function () {
       // https://sencha.jira.com/browse/EXTJS-16984
       SuperWidget = Ext.define(null, {
-        extend: Ext.Widget,
+        extend: Ext.Widget
       });
 
       SubWidget = Ext.define(null, {
@@ -334,10 +334,10 @@ describe("Ext.Widget", function () {
         element: {
           reference: "element",
           listeners: {
-            click: "onClick",
-          },
+            click: "onClick"
+          }
         },
-        onClick: Ext.emptyFn,
+        onClick: Ext.emptyFn
       });
 
       // create an instance of SuperWidget first so that its listener cache gets created
@@ -350,7 +350,7 @@ describe("Ext.Widget", function () {
       expect(SuperWidget.prototype._elementListeners).toEqual({});
       // SubWidget should have its own cache
       expect(SubWidget.prototype.hasOwnProperty("_elementListeners")).toBe(
-        true,
+        true
       );
 
       Ext.destroy(subWidget, superWidget);
@@ -363,10 +363,10 @@ describe("Ext.Widget", function () {
         element: {
           reference: "element",
           listeners: {
-            mousedown: "onMouseDown",
-          },
+            mousedown: "onMouseDown"
+          }
         },
-        onMouseDown: Ext.emptyFn,
+        onMouseDown: Ext.emptyFn
       });
 
       SubWidget = Ext.define(null, {
@@ -374,10 +374,10 @@ describe("Ext.Widget", function () {
         element: {
           reference: "element",
           listeners: {
-            click: "onClick",
-          },
+            click: "onClick"
+          }
         },
-        onClick: Ext.emptyFn,
+        onClick: Ext.emptyFn
       });
 
       // create an instance of SuperWidget first so that its listener cache gets created
@@ -389,12 +389,12 @@ describe("Ext.Widget", function () {
       // SubWidget's listeners should not invade SuperWidget's cache
       expect(SuperWidget.prototype._elementListeners).toEqual({
         element: {
-          mousedown: "onMouseDown",
-        },
+          mousedown: "onMouseDown"
+        }
       });
       // SubWidget should have its own cache
       expect(SubWidget.prototype.hasOwnProperty("_elementListeners")).toBe(
-        true,
+        true
       );
 
       Ext.destroy(subWidget, superWidget);
@@ -434,11 +434,11 @@ describe("Ext.Widget", function () {
             reference: "element",
             listeners: {
               click: "superOnClick",
-              mousedown: "superOnMouseDown",
-            },
+              mousedown: "superOnMouseDown"
+            }
           },
           superOnClick: superClickSpy,
-          superOnMouseDown: superMouseDownSpy,
+          superOnMouseDown: superMouseDownSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -448,11 +448,11 @@ describe("Ext.Widget", function () {
             listeners: {
               // inherits mousedown, overrides click, and adds mouseup
               click: "subOnClick",
-              mouseup: "subOnMouseUp",
-            },
+              mouseup: "subOnMouseUp"
+            }
           },
           subOnClick: subClickSpy,
-          subOnMouseUp: subMouseUpSpy,
+          subOnMouseUp: subMouseUpSpy
         });
 
         // create an instance of SuperWidget first so that its listener cache gets created
@@ -476,14 +476,14 @@ describe("Ext.Widget", function () {
           element: {
             reference: "element",
             listeners: {
-              click: "superOnClick",
-            },
+              click: "superOnClick"
+            }
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
-          extend: SuperWidget,
+          extend: SuperWidget
         });
 
         // create an instance of SuperWidget first so that its listener cache gets created
@@ -508,13 +508,13 @@ describe("Ext.Widget", function () {
                 reference: "foo",
                 listeners: {
                   click: "superOnClick",
-                  mousedown: "superOnMouseDown",
-                },
-              },
-            ],
+                  mousedown: "superOnMouseDown"
+                }
+              }
+            ]
           },
           superOnClick: superClickSpy,
-          superOnMouseDown: superMouseDownSpy,
+          superOnMouseDown: superMouseDownSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -527,13 +527,13 @@ describe("Ext.Widget", function () {
                 listeners: {
                   // inherits mousedown, overrides click, and adds mouseup
                   click: "subOnClick",
-                  mouseup: "subOnMouseUp",
-                },
-              },
-            ],
+                  mouseup: "subOnMouseUp"
+                }
+              }
+            ]
           },
           subOnClick: subClickSpy,
-          subOnMouseUp: subMouseUpSpy,
+          subOnMouseUp: subMouseUpSpy
         });
 
         // create an instance of SuperWidget first so that its listener cache gets created
@@ -560,16 +560,16 @@ describe("Ext.Widget", function () {
               {
                 reference: "foo",
                 listeners: {
-                  click: "superOnClick",
-                },
-              },
-            ],
+                  click: "superOnClick"
+                }
+              }
+            ]
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
-          extend: SuperWidget,
+          extend: SuperWidget
         });
 
         // create an instance of SuperWidget first so that its listener cache gets created
@@ -593,12 +593,12 @@ describe("Ext.Widget", function () {
               {
                 reference: "foo",
                 listeners: {
-                  click: "superOnClick",
-                },
-              },
-            ],
+                  click: "superOnClick"
+                }
+              }
+            ]
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -609,12 +609,12 @@ describe("Ext.Widget", function () {
               {
                 reference: "bar",
                 listeners: {
-                  click: "subOnClick",
-                },
-              },
-            ],
+                  click: "subOnClick"
+                }
+              }
+            ]
           },
-          subOnClick: subClickSpy,
+          subOnClick: subClickSpy
         });
 
         // create an instance of SuperWidget first so that its listener cache gets created
@@ -640,11 +640,11 @@ describe("Ext.Widget", function () {
             reference: "element",
             listeners: {
               click: "superOnClick",
-              mousedown: "superOnMouseDown",
-            },
+              mousedown: "superOnMouseDown"
+            }
           },
           superOnClick: superClickSpy,
-          superOnMouseDown: superMouseDownSpy,
+          superOnMouseDown: superMouseDownSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -654,11 +654,11 @@ describe("Ext.Widget", function () {
             listeners: {
               // inherits mousedown, overrides click, and adds mouseup
               click: "subOnClick",
-              mouseup: "subOnMouseUp",
-            },
+              mouseup: "subOnMouseUp"
+            }
           },
           subOnClick: subClickSpy,
-          subOnMouseUp: subMouseUpSpy,
+          subOnMouseUp: subMouseUpSpy
         });
 
         Widget = Ext.define(null, {
@@ -667,10 +667,10 @@ describe("Ext.Widget", function () {
             reference: "element",
             listeners: {
               // overrides mouseup, inherits click/mousedown
-              mouseup: "onMouseUp",
-            },
+              mouseup: "onMouseUp"
+            }
           },
-          onMouseUp: mouseUpSpy,
+          onMouseUp: mouseUpSpy
         });
 
         // create an instance of SuperWidget/SubWidget first so that their listener caches get created
@@ -700,20 +700,20 @@ describe("Ext.Widget", function () {
               {
                 reference: "foo",
                 listeners: {
-                  click: "superOnClick",
-                },
-              },
-            ],
+                  click: "superOnClick"
+                }
+              }
+            ]
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
-          extend: SuperWidget,
+          extend: SuperWidget
         });
 
         Widget = Ext.define(null, {
-          extend: SubWidget,
+          extend: SubWidget
         });
 
         // create an instance of SuperWidget/SubWidget first so that their listener caches get created
@@ -764,11 +764,11 @@ describe("Ext.Widget", function () {
             reference: "element",
             listeners: {
               click: "superOnClick",
-              mousedown: "superOnMouseDown",
-            },
+              mousedown: "superOnMouseDown"
+            }
           },
           superOnClick: superClickSpy,
-          superOnMouseDown: superMouseDownSpy,
+          superOnMouseDown: superMouseDownSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -778,11 +778,11 @@ describe("Ext.Widget", function () {
             listeners: {
               // inherits mousedown, overrides click, and adds mouseup
               click: "subOnClick",
-              mouseup: "subOnMouseUp",
-            },
+              mouseup: "subOnMouseUp"
+            }
           },
           subOnClick: subClickSpy,
-          subOnMouseUp: subMouseUpSpy,
+          subOnMouseUp: subMouseUpSpy
         });
 
         subWidget = new SubWidget();
@@ -803,14 +803,14 @@ describe("Ext.Widget", function () {
           element: {
             reference: "element",
             listeners: {
-              click: "superOnClick",
-            },
+              click: "superOnClick"
+            }
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
-          extend: SuperWidget,
+          extend: SuperWidget
         });
 
         subWidget = new SubWidget();
@@ -832,13 +832,13 @@ describe("Ext.Widget", function () {
                 reference: "foo",
                 listeners: {
                   click: "superOnClick",
-                  mousedown: "superOnMouseDown",
-                },
-              },
-            ],
+                  mousedown: "superOnMouseDown"
+                }
+              }
+            ]
           },
           superOnClick: superClickSpy,
-          superOnMouseDown: superMouseDownSpy,
+          superOnMouseDown: superMouseDownSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -851,13 +851,13 @@ describe("Ext.Widget", function () {
                 listeners: {
                   // inherits mousedown, overrides click, and adds mouseup
                   click: "subOnClick",
-                  mouseup: "subOnMouseUp",
-                },
-              },
-            ],
+                  mouseup: "subOnMouseUp"
+                }
+              }
+            ]
           },
           subOnClick: subClickSpy,
-          subOnMouseUp: subMouseUpSpy,
+          subOnMouseUp: subMouseUpSpy
         });
 
         subWidget = new SubWidget();
@@ -881,16 +881,16 @@ describe("Ext.Widget", function () {
               {
                 reference: "foo",
                 listeners: {
-                  click: "superOnClick",
-                },
-              },
-            ],
+                  click: "superOnClick"
+                }
+              }
+            ]
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
-          extend: SuperWidget,
+          extend: SuperWidget
         });
 
         subWidget = new SubWidget();
@@ -911,12 +911,12 @@ describe("Ext.Widget", function () {
               {
                 reference: "foo",
                 listeners: {
-                  click: "superOnClick",
-                },
-              },
-            ],
+                  click: "superOnClick"
+                }
+              }
+            ]
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -927,12 +927,12 @@ describe("Ext.Widget", function () {
               {
                 reference: "bar",
                 listeners: {
-                  click: "subOnClick",
-                },
-              },
-            ],
+                  click: "subOnClick"
+                }
+              }
+            ]
           },
-          subOnClick: subClickSpy,
+          subOnClick: subClickSpy
         });
 
         subWidget = new SubWidget();
@@ -955,11 +955,11 @@ describe("Ext.Widget", function () {
             reference: "element",
             listeners: {
               click: "superOnClick",
-              mousedown: "superOnMouseDown",
-            },
+              mousedown: "superOnMouseDown"
+            }
           },
           superOnClick: superClickSpy,
-          superOnMouseDown: superMouseDownSpy,
+          superOnMouseDown: superMouseDownSpy
         });
 
         SubWidget = Ext.define(null, {
@@ -969,11 +969,11 @@ describe("Ext.Widget", function () {
             listeners: {
               // inherits mousedown, overrides click, and adds mouseup
               click: "subOnClick",
-              mouseup: "subOnMouseUp",
-            },
+              mouseup: "subOnMouseUp"
+            }
           },
           subOnClick: subClickSpy,
-          subOnMouseUp: subMouseUpSpy,
+          subOnMouseUp: subMouseUpSpy
         });
 
         Widget = Ext.define(null, {
@@ -982,10 +982,10 @@ describe("Ext.Widget", function () {
             reference: "element",
             listeners: {
               // overrides mouseup, inherits click/mousedown
-              mouseup: "onMouseUp",
-            },
+              mouseup: "onMouseUp"
+            }
           },
-          onMouseUp: mouseUpSpy,
+          onMouseUp: mouseUpSpy
         });
 
         widget = new Widget();
@@ -1012,20 +1012,20 @@ describe("Ext.Widget", function () {
               {
                 reference: "foo",
                 listeners: {
-                  click: "superOnClick",
-                },
-              },
-            ],
+                  click: "superOnClick"
+                }
+              }
+            ]
           },
-          superOnClick: superClickSpy,
+          superOnClick: superClickSpy
         });
 
         SubWidget = Ext.define(null, {
-          extend: SuperWidget,
+          extend: SuperWidget
         });
 
         Widget = Ext.define(null, {
-          extend: SubWidget,
+          extend: SubWidget
         });
 
         widget = new Widget();
@@ -1058,10 +1058,10 @@ describe("Ext.Widget", function () {
         Ext.apply(
           {
             extend: "Ext.Container",
-            onFoo: spies.parent,
+            onFoo: spies.parent
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -1071,10 +1071,10 @@ describe("Ext.Widget", function () {
         Ext.apply(
           {
             extend: "Ext.Container",
-            onFoo: spies.grandparent,
+            onFoo: spies.grandparent
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -1085,7 +1085,7 @@ describe("Ext.Widget", function () {
           parent: parent,
           parentController: parent && parent.getController(),
           grandparent: grandparent,
-          grandparentController: grandparent && grandparent.getController(),
+          grandparentController: grandparent && grandparent.getController()
         },
         name,
         spy;
@@ -1109,22 +1109,22 @@ describe("Ext.Widget", function () {
         parent: jasmine.createSpy(),
         parentController: jasmine.createSpy(),
         grandparent: jasmine.createSpy(),
-        grandparentController: jasmine.createSpy(),
+        grandparentController: jasmine.createSpy()
       };
 
       Controller = Ext.define(null, {
         extend: "Ext.app.ViewController",
-        onFoo: spies.controller,
+        onFoo: spies.controller
       });
 
       ParentController = Ext.define(null, {
         extend: "Ext.app.ViewController",
-        onFoo: spies.parentController,
+        onFoo: spies.parentController
       });
 
       GrandparentController = Ext.define(null, {
         extend: "Ext.app.ViewController",
-        onFoo: spies.grandparentController,
+        onFoo: spies.grandparentController
       });
     });
 
@@ -1140,12 +1140,12 @@ describe("Ext.Widget", function () {
             {
               extend: "Ext.Widget",
               listeners: {
-                foo: "onFoo",
+                foo: "onFoo"
               },
-              onFoo: spies.widget,
+              onFoo: spies.widget
             },
-            cfg,
-          ),
+            cfg
+          )
         );
       }
 
@@ -1159,8 +1159,8 @@ describe("Ext.Widget", function () {
       it("should fail with scope:'controller'", function () {
         defineWidget({
           listeners: {
-            scope: "controller",
-          },
+            scope: "controller"
+          }
         });
         widget = new Widget();
         expect(function () {
@@ -1171,8 +1171,8 @@ describe("Ext.Widget", function () {
       it("should resolve to the widget with scope:'this'", function () {
         defineWidget({
           listeners: {
-            scope: "this",
-          },
+            scope: "this"
+          }
         });
         widget = new Widget();
         widget.fireEvent("foo");
@@ -1182,7 +1182,7 @@ describe("Ext.Widget", function () {
       describe("with view controller", function () {
         it("should resolve to the view controller with unspecified scope", function () {
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1193,8 +1193,8 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1205,8 +1205,8 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1217,7 +1217,7 @@ describe("Ext.Widget", function () {
       describe("with defaultListenerScope", function () {
         it("should resolve to the widget with unspecified scope", function () {
           defineWidget({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1228,8 +1228,8 @@ describe("Ext.Widget", function () {
           defineWidget({
             defaultListenerScope: true,
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           expect(function () {
@@ -1241,8 +1241,8 @@ describe("Ext.Widget", function () {
           defineWidget({
             defaultListenerScope: true,
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1254,7 +1254,7 @@ describe("Ext.Widget", function () {
         it("should resolve to the widget with unspecified scope", function () {
           defineWidget({
             controller: new Controller(),
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1266,8 +1266,8 @@ describe("Ext.Widget", function () {
             controller: new Controller(),
             defaultListenerScope: true,
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1279,8 +1279,8 @@ describe("Ext.Widget", function () {
             controller: new Controller(),
             defaultListenerScope: true,
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1291,7 +1291,7 @@ describe("Ext.Widget", function () {
       describe("with defaultListenerScope on parent", function () {
         beforeEach(function () {
           defineParent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
@@ -1299,7 +1299,7 @@ describe("Ext.Widget", function () {
           defineWidget();
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parent");
@@ -1308,12 +1308,12 @@ describe("Ext.Widget", function () {
         it("should fail with scope:'controller'", function () {
           defineWidget({
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -1323,12 +1323,12 @@ describe("Ext.Widget", function () {
         it("should resolve to the widget with scope:'this'", function () {
           defineWidget({
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1338,7 +1338,7 @@ describe("Ext.Widget", function () {
       describe("with view controller on parent", function () {
         beforeEach(function () {
           defineParent({
-            controller: new ParentController(),
+            controller: new ParentController()
           });
         });
 
@@ -1346,7 +1346,7 @@ describe("Ext.Widget", function () {
           defineWidget();
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -1355,12 +1355,12 @@ describe("Ext.Widget", function () {
         it("should resolve to the parent view controller with scope:'controller'", function () {
           defineWidget({
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -1369,12 +1369,12 @@ describe("Ext.Widget", function () {
         it("should resolve to the widget with scope:'this'", function () {
           defineWidget({
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1385,7 +1385,7 @@ describe("Ext.Widget", function () {
         beforeEach(function () {
           defineParent({
             controller: new ParentController(),
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
@@ -1393,7 +1393,7 @@ describe("Ext.Widget", function () {
           defineWidget();
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parent");
@@ -1402,12 +1402,12 @@ describe("Ext.Widget", function () {
         it("should resolve to the parent view controller with scope:'controller'", function () {
           defineWidget({
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -1416,12 +1416,12 @@ describe("Ext.Widget", function () {
         it("should resolve to the widget with scope:'this'", function () {
           defineWidget({
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1431,7 +1431,7 @@ describe("Ext.Widget", function () {
       describe("with defaultListenerScope on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
@@ -1440,8 +1440,8 @@ describe("Ext.Widget", function () {
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparent");
@@ -1450,14 +1450,14 @@ describe("Ext.Widget", function () {
         it("should fail with scope:'controller'", function () {
           defineWidget({
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -1467,14 +1467,14 @@ describe("Ext.Widget", function () {
         it("should resolve to the widget with scope:'this'", function () {
           defineWidget({
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1484,7 +1484,7 @@ describe("Ext.Widget", function () {
       describe("with view controller on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            controller: new GrandparentController(),
+            controller: new GrandparentController()
           });
         });
 
@@ -1493,8 +1493,8 @@ describe("Ext.Widget", function () {
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -1503,14 +1503,14 @@ describe("Ext.Widget", function () {
         it("should resolve to the grandparent view controller with scope:'controller'", function () {
           defineWidget({
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -1519,14 +1519,14 @@ describe("Ext.Widget", function () {
         it("should resolve to the widget with scope:'this'", function () {
           defineWidget({
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1537,7 +1537,7 @@ describe("Ext.Widget", function () {
         beforeEach(function () {
           defineGrandparent({
             controller: new GrandparentController(),
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
@@ -1546,8 +1546,8 @@ describe("Ext.Widget", function () {
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparent");
@@ -1556,14 +1556,14 @@ describe("Ext.Widget", function () {
         it("should resolve to the grandparent view controller with scope:'controller'", function () {
           defineWidget({
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -1572,14 +1572,14 @@ describe("Ext.Widget", function () {
         it("should resolve to the widget with scope:'this'", function () {
           defineWidget({
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1589,17 +1589,17 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and view controller on parent", function () {
         beforeEach(function () {
           defineParent({
-            controller: new ParentController(),
+            controller: new ParentController()
           });
         });
 
         it("should resolve to the child view controller with unspecified scope", function () {
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1609,12 +1609,12 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1624,12 +1624,12 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1639,19 +1639,19 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and view controller on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            controller: new GrandparentController(),
+            controller: new GrandparentController()
           });
         });
 
         it("should resolve to the child view controller with unspecified scope", function () {
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1661,14 +1661,14 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1678,14 +1678,14 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1695,17 +1695,17 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and defaultListenerScope on parent", function () {
         beforeEach(function () {
           defineParent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
         it("should resolve to the child view controller with unspecified scope", function () {
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1715,12 +1715,12 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1730,12 +1730,12 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1745,17 +1745,17 @@ describe("Ext.Widget", function () {
       describe("with view controller on parent and defaultListenerScope on child", function () {
         beforeEach(function () {
           defineParent({
-            controller: new ParentController(),
+            controller: new ParentController()
           });
         });
 
         it("should resolve to the widget with unspecified scope", function () {
           defineWidget({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1765,12 +1765,12 @@ describe("Ext.Widget", function () {
           defineWidget({
             defaultListenerScope: true,
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -1780,12 +1780,12 @@ describe("Ext.Widget", function () {
           defineWidget({
             defaultListenerScope: true,
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1795,19 +1795,19 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and defaultListenerScope on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
         it("should resolve to the child view controller with unspecified scope", function () {
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1817,14 +1817,14 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("controller");
@@ -1834,14 +1834,14 @@ describe("Ext.Widget", function () {
           defineWidget({
             controller: new Controller(),
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1851,19 +1851,19 @@ describe("Ext.Widget", function () {
       describe("with view controller on grandparent and defaultListenerScope on child", function () {
         beforeEach(function () {
           defineGrandparent({
-            controller: new GrandparentController(),
+            controller: new GrandparentController()
           });
         });
 
         it("should resolve to the widget with unspecified scope", function () {
           defineWidget({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1873,14 +1873,14 @@ describe("Ext.Widget", function () {
           defineWidget({
             defaultListenerScope: true,
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -1890,14 +1890,14 @@ describe("Ext.Widget", function () {
           defineWidget({
             defaultListenerScope: true,
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -1912,9 +1912,9 @@ describe("Ext.Widget", function () {
             listeners: {
               foo: {
                 fn: "onFoo",
-                scope: "controller",
-              },
-            },
+                scope: "controller"
+              }
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1929,9 +1929,9 @@ describe("Ext.Widget", function () {
               scope: "controller",
               foo: {
                 fn: "onFoo",
-                scope: "controller",
-              },
-            },
+                scope: "controller"
+              }
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -1947,10 +1947,10 @@ describe("Ext.Widget", function () {
             {
               extend: "Ext.Widget",
               listeners: {
-                foo: handler,
-              },
+                foo: handler
+              }
             },
-            cfg,
+            cfg
           );
           if (setScope) {
             cfg.listeners.scope = setScope;
@@ -1990,8 +1990,8 @@ describe("Ext.Widget", function () {
         it("should use the widget with scope:'this'", function () {
           defineWidget({
             listeners: {
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -2001,8 +2001,8 @@ describe("Ext.Widget", function () {
         it("should fail with scope:'controller'", function () {
           defineWidget({
             listeners: {
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           widget = new Widget();
           expect(function () {
@@ -2015,9 +2015,9 @@ describe("Ext.Widget", function () {
             listeners: {
               foo: {
                 fn: handler,
-                scope: "this",
-              },
-            },
+                scope: "this"
+              }
+            }
           });
           widget = new Widget();
           widget.fireEvent("foo");
@@ -2029,9 +2029,9 @@ describe("Ext.Widget", function () {
             listeners: {
               foo: {
                 fn: handler,
-                scope: "controller",
-              },
-            },
+                scope: "controller"
+              }
+            }
           });
           widget = new Widget();
           expect(function () {
@@ -2042,7 +2042,7 @@ describe("Ext.Widget", function () {
         describe("with view controller", function () {
           it("should resolve to the widget with unspecified scope", function () {
             defineWidget({
-              controller: new Controller(),
+              controller: new Controller()
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2053,8 +2053,8 @@ describe("Ext.Widget", function () {
             defineWidget({
               controller: new Controller(),
               listeners: {
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2065,8 +2065,8 @@ describe("Ext.Widget", function () {
             defineWidget({
               controller: new Controller(),
               listeners: {
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2077,7 +2077,7 @@ describe("Ext.Widget", function () {
         describe("with defaultListenerScope", function () {
           it("should resolve to the widget with unspecified scope", function () {
             defineWidget({
-              defaultListenerScope: true,
+              defaultListenerScope: true
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2088,8 +2088,8 @@ describe("Ext.Widget", function () {
             defineWidget({
               defaultListenerScope: true,
               listeners: {
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             widget = new Widget();
             expect(function () {
@@ -2101,8 +2101,8 @@ describe("Ext.Widget", function () {
             defineWidget({
               defaultListenerScope: true,
               listeners: {
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2114,7 +2114,7 @@ describe("Ext.Widget", function () {
           it("should resolve to the widget with unspecified scope", function () {
             defineWidget({
               controller: new Controller(),
-              defaultListenerScope: true,
+              defaultListenerScope: true
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2126,8 +2126,8 @@ describe("Ext.Widget", function () {
               controller: new Controller(),
               defaultListenerScope: true,
               listeners: {
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2139,8 +2139,8 @@ describe("Ext.Widget", function () {
               controller: new Controller(),
               defaultListenerScope: true,
               listeners: {
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             widget = new Widget();
             widget.fireEvent("foo");
@@ -2151,7 +2151,7 @@ describe("Ext.Widget", function () {
         describe("with defaultListenerScope on parent", function () {
           beforeEach(function () {
             defineParent({
-              defaultListenerScope: true,
+              defaultListenerScope: true
             });
           });
 
@@ -2159,7 +2159,7 @@ describe("Ext.Widget", function () {
             defineWidget();
             widget = new Widget();
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -2168,12 +2168,12 @@ describe("Ext.Widget", function () {
           it("should fail with scope:'controller'", function () {
             defineWidget({
               listeners: {
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             widget = new Widget();
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             expect(function () {
               widget.fireEvent("foo");
@@ -2183,12 +2183,12 @@ describe("Ext.Widget", function () {
           it("should resolve to the widget with scope:'this'", function () {
             defineWidget({
               listeners: {
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             widget = new Widget();
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -2198,7 +2198,7 @@ describe("Ext.Widget", function () {
         describe("with view controller on parent", function () {
           beforeEach(function () {
             defineParent({
-              controller: new ParentController(),
+              controller: new ParentController()
             });
           });
 
@@ -2206,7 +2206,7 @@ describe("Ext.Widget", function () {
             defineWidget();
             widget = new Widget();
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -2215,12 +2215,12 @@ describe("Ext.Widget", function () {
           it("should resolve to the parent view controller with scope:'controller'", function () {
             defineWidget({
               listeners: {
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             widget = new Widget();
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(parent.getController());
@@ -2229,12 +2229,12 @@ describe("Ext.Widget", function () {
           it("should resolve to the widget with scope:'this'", function () {
             defineWidget({
               listeners: {
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             widget = new Widget();
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -2250,10 +2250,10 @@ describe("Ext.Widget", function () {
           Ext.merge(
             {
               extend: "Ext.Widget",
-              onFoo: spies.widget,
+              onFoo: spies.widget
             },
-            cfg,
-          ),
+            cfg
+          )
         );
       }
 
@@ -2261,8 +2261,8 @@ describe("Ext.Widget", function () {
         defineWidget();
         widget = new Widget({
           listeners: {
-            foo: "onFoo",
-          },
+            foo: "onFoo"
+          }
         });
         widget.fireEvent("foo");
         expectScope("widget");
@@ -2273,8 +2273,8 @@ describe("Ext.Widget", function () {
         widget = new Widget({
           listeners: {
             foo: "onFoo",
-            scope: "controller",
-          },
+            scope: "controller"
+          }
         });
         expect(function () {
           widget.fireEvent("foo");
@@ -2286,8 +2286,8 @@ describe("Ext.Widget", function () {
         widget = new Widget({
           listeners: {
             foo: "onFoo",
-            scope: "this",
-          },
+            scope: "this"
+          }
         });
         widget.fireEvent("foo");
         expectScope("widget");
@@ -2296,15 +2296,15 @@ describe("Ext.Widget", function () {
       describe("with view controller", function () {
         beforeEach(function () {
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
         });
 
         it("should resolve to the widget with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2314,8 +2314,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -2326,8 +2326,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2337,15 +2337,15 @@ describe("Ext.Widget", function () {
       describe("with defaultListenerScope", function () {
         beforeEach(function () {
           defineWidget({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
         it("should resolve to the widget with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2355,8 +2355,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -2367,8 +2367,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2379,15 +2379,15 @@ describe("Ext.Widget", function () {
         beforeEach(function () {
           defineWidget({
             controller: new Controller(),
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
         it("should resolve to the widget with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2397,8 +2397,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -2409,8 +2409,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2420,7 +2420,7 @@ describe("Ext.Widget", function () {
       describe("with defaultListenerScope on parent", function () {
         beforeEach(function () {
           defineParent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           defineWidget();
         });
@@ -2428,11 +2428,11 @@ describe("Ext.Widget", function () {
         it("should resolve to the parent with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parent");
@@ -2442,11 +2442,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -2457,11 +2457,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2471,7 +2471,7 @@ describe("Ext.Widget", function () {
       describe("with view controller on parent", function () {
         beforeEach(function () {
           defineParent({
-            controller: new ParentController(),
+            controller: new ParentController()
           });
           defineWidget();
         });
@@ -2479,11 +2479,11 @@ describe("Ext.Widget", function () {
         it("should resolve to the parent view controller with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -2493,11 +2493,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -2507,11 +2507,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2522,7 +2522,7 @@ describe("Ext.Widget", function () {
         beforeEach(function () {
           defineParent({
             controller: new ParentController(),
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           defineWidget();
         });
@@ -2530,11 +2530,11 @@ describe("Ext.Widget", function () {
         it("should resolve to the parent with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parent");
@@ -2544,11 +2544,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -2558,11 +2558,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2572,7 +2572,7 @@ describe("Ext.Widget", function () {
       describe("with defaultListenerScope on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           defineWidget();
         });
@@ -2580,13 +2580,13 @@ describe("Ext.Widget", function () {
         it("should resolve to the grandparent with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparent");
@@ -2596,13 +2596,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -2613,13 +2613,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2629,7 +2629,7 @@ describe("Ext.Widget", function () {
       describe("with view controller on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            controller: new GrandparentController(),
+            controller: new GrandparentController()
           });
           defineWidget();
         });
@@ -2637,13 +2637,13 @@ describe("Ext.Widget", function () {
         it("should resolve to the grandparent view controller with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -2653,13 +2653,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -2669,13 +2669,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2686,7 +2686,7 @@ describe("Ext.Widget", function () {
         beforeEach(function () {
           defineGrandparent({
             controller: new GrandparentController(),
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           defineWidget();
         });
@@ -2694,13 +2694,13 @@ describe("Ext.Widget", function () {
         it("should resolve to the grandparent with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparent");
@@ -2710,13 +2710,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -2726,13 +2726,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2742,22 +2742,22 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and view controller on parent", function () {
         beforeEach(function () {
           defineParent({
-            controller: new ParentController(),
+            controller: new ParentController()
           });
 
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
         });
 
         it("should resolve to the parent view controller with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -2767,11 +2767,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -2781,11 +2781,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2795,24 +2795,24 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and view controller on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            controller: new GrandparentController(),
+            controller: new GrandparentController()
           });
 
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
         });
 
         it("should resolve to the grandparent view controller with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -2822,13 +2822,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -2838,13 +2838,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2854,22 +2854,22 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and defaultListenerScope on parent", function () {
         beforeEach(function () {
           defineParent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
 
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
         });
 
         it("should resolve to the parent with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parent");
@@ -2879,11 +2879,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -2894,11 +2894,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2908,22 +2908,22 @@ describe("Ext.Widget", function () {
       describe("with view controller on parent and defaultListenerScope on child", function () {
         beforeEach(function () {
           defineParent({
-            controller: new ParentController(),
+            controller: new ParentController()
           });
 
           defineWidget({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
         it("should resolve to the parent view controller with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -2933,11 +2933,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("parentController");
@@ -2947,11 +2947,11 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           parent = new Parent({
-            items: widget,
+            items: widget
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -2961,24 +2961,24 @@ describe("Ext.Widget", function () {
       describe("with view controller on child and defaultListenerScope on grandparent", function () {
         beforeEach(function () {
           defineGrandparent({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
 
           defineWidget({
-            controller: new Controller(),
+            controller: new Controller()
           });
         });
 
         it("should resolve to the grandparent with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparent");
@@ -2988,13 +2988,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -3005,13 +3005,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -3021,24 +3021,24 @@ describe("Ext.Widget", function () {
       describe("with view controller on grandparent and defaultListenerScope on child", function () {
         beforeEach(function () {
           defineGrandparent({
-            controller: new GrandparentController(),
+            controller: new GrandparentController()
           });
 
           defineWidget({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
         it("should resolve to the grandparent view controller with unspecified scope", function () {
           widget = new Widget({
             listeners: {
-              foo: "onFoo",
-            },
+              foo: "onFoo"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -3048,13 +3048,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("grandparentController");
@@ -3064,13 +3064,13 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: "onFoo",
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           grandparent = new Grandparent({
             items: {
-              items: widget,
-            },
+              items: widget
+            }
           });
           widget.fireEvent("foo");
           expectScope("widget");
@@ -3085,10 +3085,10 @@ describe("Ext.Widget", function () {
             null,
             Ext.merge(
               {
-                extend: "Ext.Widget",
+                extend: "Ext.Widget"
               },
-              cfg,
-            ),
+              cfg
+            )
           );
         }
 
@@ -3107,8 +3107,8 @@ describe("Ext.Widget", function () {
           defineWidget();
           widget = new Widget({
             listeners: {
-              foo: handler,
-            },
+              foo: handler
+            }
           });
           widget.fireEvent("foo");
           expect(scope).toBe(widget);
@@ -3121,8 +3121,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: handler,
-              scope: obj,
-            },
+              scope: obj
+            }
           });
           widget.fireEvent("foo");
           expect(scope).toBe(obj);
@@ -3133,8 +3133,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: handler,
-              scope: "this",
-            },
+              scope: "this"
+            }
           });
           widget.fireEvent("foo");
           expect(scope).toBe(widget);
@@ -3145,8 +3145,8 @@ describe("Ext.Widget", function () {
           widget = new Widget({
             listeners: {
               foo: handler,
-              scope: "controller",
-            },
+              scope: "controller"
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -3159,9 +3159,9 @@ describe("Ext.Widget", function () {
             listeners: {
               foo: {
                 fn: handler,
-                scope: "this",
-              },
-            },
+                scope: "this"
+              }
+            }
           });
           widget.fireEvent("foo");
           expect(scope).toBe(widget);
@@ -3173,9 +3173,9 @@ describe("Ext.Widget", function () {
             listeners: {
               foo: {
                 fn: handler,
-                scope: "controller",
-              },
-            },
+                scope: "controller"
+              }
+            }
           });
           expect(function () {
             widget.fireEvent("foo");
@@ -3185,15 +3185,15 @@ describe("Ext.Widget", function () {
         describe("with view controller", function () {
           beforeEach(function () {
             defineWidget({
-              controller: new Controller(),
+              controller: new Controller()
             });
           });
 
           it("should resolve to the widget with unspecified scope", function () {
             widget = new Widget({
               listeners: {
-                foo: handler,
-              },
+                foo: handler
+              }
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3203,8 +3203,8 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             expect(function () {
               widget.fireEvent("foo");
@@ -3215,8 +3215,8 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3226,15 +3226,15 @@ describe("Ext.Widget", function () {
         describe("with defaultListenerScope", function () {
           beforeEach(function () {
             defineWidget({
-              defaultListenerScope: true,
+              defaultListenerScope: true
             });
           });
 
           it("should resolve to the widget with unspecified scope", function () {
             widget = new Widget({
               listeners: {
-                foo: handler,
-              },
+                foo: handler
+              }
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3244,8 +3244,8 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             expect(function () {
               widget.fireEvent("foo");
@@ -3256,8 +3256,8 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3267,7 +3267,7 @@ describe("Ext.Widget", function () {
         describe("with defaultListenerScope on parent", function () {
           beforeEach(function () {
             defineParent({
-              defaultListenerScope: true,
+              defaultListenerScope: true
             });
             defineWidget();
           });
@@ -3275,11 +3275,11 @@ describe("Ext.Widget", function () {
           it("should resolve to the widget with unspecified scope", function () {
             widget = new Widget({
               listeners: {
-                foo: handler,
-              },
+                foo: handler
+              }
             });
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3289,11 +3289,11 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             expect(function () {
               widget.fireEvent("foo");
@@ -3304,11 +3304,11 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3318,7 +3318,7 @@ describe("Ext.Widget", function () {
         describe("with view controller on parent", function () {
           beforeEach(function () {
             defineParent({
-              controller: new ParentController(),
+              controller: new ParentController()
             });
             defineWidget();
           });
@@ -3326,11 +3326,11 @@ describe("Ext.Widget", function () {
           it("should resolve to the widget with unspecified scope", function () {
             widget = new Widget({
               listeners: {
-                foo: handler,
-              },
+                foo: handler
+              }
             });
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3340,11 +3340,11 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "controller",
-              },
+                scope: "controller"
+              }
             });
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(parent.getController());
@@ -3354,11 +3354,11 @@ describe("Ext.Widget", function () {
             widget = new Widget({
               listeners: {
                 foo: handler,
-                scope: "this",
-              },
+                scope: "this"
+              }
             });
             parent = new Parent({
-              items: widget,
+              items: widget
             });
             widget.fireEvent("foo");
             expect(scope).toBe(widget);
@@ -3380,13 +3380,13 @@ describe("Ext.Widget", function () {
             reference: "element",
             children: [
               {
-                reference: "child",
-              },
-            ],
-          },
+                reference: "child"
+              }
+            ]
+          }
         });
         widget = new Widget({
-          touchAction: touchAction,
+          touchAction: touchAction
         });
       }
 
@@ -3419,7 +3419,7 @@ describe("Ext.Widget", function () {
 
       it("should disable panX", function () {
         makeWidgetWithTouchAction({
-          panX: false,
+          panX: false
         });
 
         expectTouchAction(widget.element, "pan-y pinch-zoom double-tap-zoom");
@@ -3427,7 +3427,7 @@ describe("Ext.Widget", function () {
 
       it("should disable panY", function () {
         makeWidgetWithTouchAction({
-          panY: false,
+          panY: false
         });
 
         expectTouchAction(widget.element, "pan-x pinch-zoom double-tap-zoom");
@@ -3436,7 +3436,7 @@ describe("Ext.Widget", function () {
       it("should disable panX and panY", function () {
         makeWidgetWithTouchAction({
           panX: false,
-          panY: false,
+          panY: false
         });
 
         expectTouchAction(widget.element, "pinch-zoom double-tap-zoom");
@@ -3444,7 +3444,7 @@ describe("Ext.Widget", function () {
 
       it("should disable pinchZoom", function () {
         makeWidgetWithTouchAction({
-          pinchZoom: false,
+          pinchZoom: false
         });
 
         expectTouchAction(widget.element, "pan-x pan-y double-tap-zoom");
@@ -3453,7 +3453,7 @@ describe("Ext.Widget", function () {
       it("should disable panX and pinchZoom", function () {
         makeWidgetWithTouchAction({
           panX: false,
-          pinchZoom: false,
+          pinchZoom: false
         });
 
         expectTouchAction(widget.element, "pan-y double-tap-zoom");
@@ -3462,7 +3462,7 @@ describe("Ext.Widget", function () {
       it("should disable panY and pinchZoom", function () {
         makeWidgetWithTouchAction({
           panY: false,
-          pinchZoom: false,
+          pinchZoom: false
         });
 
         expectTouchAction(widget.element, "pan-x double-tap-zoom");
@@ -3472,7 +3472,7 @@ describe("Ext.Widget", function () {
         makeWidgetWithTouchAction({
           panX: false,
           panY: false,
-          pinchZoom: false,
+          pinchZoom: false
         });
 
         expectTouchAction(widget.element, "double-tap-zoom");
@@ -3480,7 +3480,7 @@ describe("Ext.Widget", function () {
 
       it("should disable doubleTapZoom", function () {
         makeWidgetWithTouchAction({
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "manipulation");
@@ -3489,7 +3489,7 @@ describe("Ext.Widget", function () {
       it("should disable panX and doubleTapZoom", function () {
         makeWidgetWithTouchAction({
           panX: false,
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "pan-y pinch-zoom");
@@ -3498,7 +3498,7 @@ describe("Ext.Widget", function () {
       it("should disable panY and doubleTapZoom", function () {
         makeWidgetWithTouchAction({
           panY: false,
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "pan-x pinch-zoom");
@@ -3508,7 +3508,7 @@ describe("Ext.Widget", function () {
         makeWidgetWithTouchAction({
           panX: false,
           panY: false,
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "pinch-zoom");
@@ -3517,7 +3517,7 @@ describe("Ext.Widget", function () {
       it("should disable pinchZoom and doubleTapZoom", function () {
         makeWidgetWithTouchAction({
           pinchZoom: false,
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "pan-x pan-y");
@@ -3527,7 +3527,7 @@ describe("Ext.Widget", function () {
         makeWidgetWithTouchAction({
           panX: false,
           pinchZoom: false,
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "pan-y");
@@ -3537,7 +3537,7 @@ describe("Ext.Widget", function () {
         makeWidgetWithTouchAction({
           panY: false,
           pinchZoom: false,
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "pan-x");
@@ -3548,7 +3548,7 @@ describe("Ext.Widget", function () {
           panX: false,
           panY: false,
           pinchZoom: false,
-          doubleTapZoom: false,
+          doubleTapZoom: false
         });
 
         expectTouchAction(widget.element, "none");
@@ -3559,21 +3559,21 @@ describe("Ext.Widget", function () {
           panX: false,
           child: {
             panY: false,
-            pinchZoom: false,
-          },
+            pinchZoom: false
+          }
         });
 
         expectTouchAction(widget.element, "pan-y pinch-zoom double-tap-zoom");
         expectTouchAction(widget.child, "pan-x double-tap-zoom");
       });
-    },
+    }
   );
 
   describe("classCls", function () {
     it("should add the classCls to the element", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       widget = new Foo();
@@ -3584,17 +3584,17 @@ describe("Ext.Widget", function () {
     it("should inherit classCls from ancestors", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       var Bar = Ext.define(null, {
         extend: Foo,
-        classCls: "bar",
+        classCls: "bar"
       });
 
       var Baz = Ext.define(null, {
         extend: Bar,
-        classCls: "baz",
+        classCls: "baz"
       });
 
       widget = new Baz();
@@ -3607,21 +3607,21 @@ describe("Ext.Widget", function () {
     it("should allow the classCls to be changed via override", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       var Bar = Ext.define(null, {
         extend: Foo,
-        classCls: "bar",
+        classCls: "bar"
       });
 
       var Baz = Ext.define(null, {
         extend: Bar,
-        classCls: "baz",
+        classCls: "baz"
       });
 
       Foo.override({
-        classCls: "far",
+        classCls: "far"
       });
 
       widget = new Baz();
@@ -3634,18 +3634,18 @@ describe("Ext.Widget", function () {
     it("should not inherit classCls if classClsRoot is true", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       var Bar = Ext.define(null, {
         extend: Foo,
         classCls: "bar",
-        classClsRoot: true,
+        classClsRoot: true
       });
 
       var Baz = Ext.define(null, {
         extend: Bar,
-        classCls: "baz",
+        classCls: "baz"
       });
 
       widget = new Baz();
@@ -3658,12 +3658,12 @@ describe("Ext.Widget", function () {
     it("should accept an array of classes", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: ["foo", "bar"],
+        classCls: ["foo", "bar"]
       });
 
       var Baz = Ext.define(null, {
         extend: Foo,
-        classCls: "baz",
+        classCls: "baz"
       });
 
       widget = new Baz();
@@ -3684,7 +3684,7 @@ describe("Ext.Widget", function () {
     it("should add the baseCls to the element", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        baseCls: "foo",
+        baseCls: "foo"
       });
 
       widget = new Foo();
@@ -3696,7 +3696,7 @@ describe("Ext.Widget", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
         baseCls: "foo",
-        ui: "bar",
+        ui: "bar"
       });
 
       widget = new Foo();
@@ -3708,7 +3708,7 @@ describe("Ext.Widget", function () {
     it("should default to classCls when baseCls is true", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
         // baseCls defaults to true on the Ext.Widget prototype
       });
 
@@ -3722,7 +3722,7 @@ describe("Ext.Widget", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
         classCls: "foo",
-        baseCls: "bar",
+        baseCls: "bar"
       });
 
       widget = new Foo();
@@ -3737,7 +3737,7 @@ describe("Ext.Widget", function () {
         extend: "Ext.Widget",
         classCls: "foo",
         xtype: "mywidget",
-        baseCls: undefined,
+        baseCls: undefined
       });
 
       widget = new Foo();
@@ -3755,7 +3755,7 @@ describe("Ext.Widget", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
         baseCls: "foo",
-        ui: "xyz",
+        ui: "xyz"
       });
 
       widget = new Foo();
@@ -3767,21 +3767,21 @@ describe("Ext.Widget", function () {
     it("should append ui suffix to classCls", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       var Bar = Ext.define(null, {
         extend: Foo,
-        classCls: "bar",
+        classCls: "bar"
       });
 
       var Baz = Ext.define(null, {
         extend: Bar,
-        classCls: "baz",
+        classCls: "baz"
       });
 
       widget = new Baz({
-        ui: "xyz",
+        ui: "xyz"
       });
 
       expect(widget.element).toHaveCls("foo");
@@ -3795,17 +3795,17 @@ describe("Ext.Widget", function () {
     it("should append ui suffix to both classCls and baseCls", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       var Bar = Ext.define(null, {
         extend: Foo,
         classCls: "bar",
-        baseCls: "baz",
+        baseCls: "baz"
       });
 
       widget = new Bar({
-        ui: "xyz",
+        ui: "xyz"
       });
 
       expect(widget.element).toHaveCls("foo");
@@ -3819,16 +3819,16 @@ describe("Ext.Widget", function () {
     it("should add multiple uis", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       var Bar = Ext.define(null, {
         extend: Foo,
-        classCls: "bar",
+        classCls: "bar"
       });
 
       widget = new Bar({
-        ui: "abc xyz",
+        ui: "abc xyz"
       });
 
       expect(widget.element).toHaveCls("foo-abc");
@@ -3840,16 +3840,16 @@ describe("Ext.Widget", function () {
     it("should remove multiple uis", function () {
       var Foo = Ext.define(null, {
         extend: "Ext.Widget",
-        classCls: "foo",
+        classCls: "foo"
       });
 
       var Bar = Ext.define(null, {
         extend: Foo,
-        classCls: "bar",
+        classCls: "bar"
       });
 
       widget = new Bar({
-        ui: "abc xyz",
+        ui: "abc xyz"
       });
 
       widget.setUi(null);

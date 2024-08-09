@@ -18,7 +18,7 @@ Ext.define("Ext.device.device.Cordova", {
     "startcallbutton",
     "endcallbutton",
     "volumeupbutton",
-    "volumedownbutton",
+    "volumedownbutton"
   ],
 
   constructor: function () {
@@ -148,8 +148,8 @@ Ext.define("Ext.device.device.Cordova", {
 
       Ext.device.Device.mixins.observable.doAddListener.apply(
         Ext.device.Device.mixins.observable,
-        arguments,
+        arguments
       );
-    },
-  },
+    }
+  }
 });

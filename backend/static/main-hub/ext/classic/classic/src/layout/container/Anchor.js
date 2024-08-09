@@ -227,7 +227,7 @@ Ext.define("Ext.layout.container.Anchor", {
             Ext.log({
               level: "warn",
               msg:
-                "Right anchor on " + comp.id + " in shrinkWrap width container",
+                "Right anchor on " + comp.id + " in shrinkWrap width container"
             });
           }
         }
@@ -239,7 +239,7 @@ Ext.define("Ext.layout.container.Anchor", {
               msg:
                 "Bottom anchor on " +
                 comp.id +
-                " in shrinkWrap height container",
+                " in shrinkWrap height container"
             });
           }
         }
@@ -266,7 +266,7 @@ Ext.define("Ext.layout.container.Anchor", {
       return function (v) {
         return v - diff;
       };
-    },
+    }
   },
 
   parseAnchor: function (a, start, cstart) {
@@ -341,13 +341,13 @@ Ext.define("Ext.layout.container.Anchor", {
         right: me.parseAnchor(
           anchorsArray[0],
           item.initialConfig.width,
-          anchorWidth,
+          anchorWidth
         ),
         bottom: me.parseAnchor(
           anchorsArray[1],
           item.initialConfig.height,
-          anchorHeight,
-        ),
+          anchorHeight
+        )
       };
     }
   },
@@ -357,28 +357,28 @@ Ext.define("Ext.layout.container.Anchor", {
       readsWidth: 1,
       readsHeight: 1,
       setsWidth: 0,
-      setsHeight: 0,
+      setsHeight: 0
     },
     b: {
       readsWidth: 1,
       readsHeight: 0,
       setsWidth: 0,
-      setsHeight: 1,
+      setsHeight: 1
     },
     r: {
       $: {
         readsWidth: 0,
         readsHeight: 1,
         setsWidth: 1,
-        setsHeight: 0,
+        setsHeight: 0
       },
       b: {
         readsWidth: 0,
         readsHeight: 0,
         setsWidth: 1,
-        setsHeight: 1,
-      },
-    },
+        setsHeight: 1
+      }
+    }
   },
 
   getItemSizePolicy: function (item) {
@@ -398,5 +398,5 @@ Ext.define("Ext.layout.container.Anchor", {
     }
 
     return policy[key];
-  },
+  }
 });

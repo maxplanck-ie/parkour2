@@ -71,5 +71,5 @@ Ext.define("Ext.grid.column.Template", {
   updater: function (cell, value) {
     Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
       Ext.grid.column.CheckColumn.prototype.defaultRenderer.call(this, value);
-  },
+  }
 });

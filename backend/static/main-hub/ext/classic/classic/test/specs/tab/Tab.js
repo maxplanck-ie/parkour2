@@ -15,7 +15,7 @@ describe("Ext.tab.Tab", function () {
   beforeEach(function () {
     card = {
       title: "Some title",
-      iconCls: "some-iconCls",
+      iconCls: "some-iconCls"
     };
   });
 
@@ -31,7 +31,7 @@ describe("Ext.tab.Tab", function () {
 
     it("should call setCard during initialization", function () {
       createTab({
-        card: card,
+        card: card
       });
 
       expect(Ext.tab.Tab.prototype.setCard).toHaveBeenCalledWith(card);
@@ -60,7 +60,7 @@ describe("Ext.tab.Tab", function () {
       describe("if the tab has a specific title", function () {
         beforeEach(function () {
           tab = createTab({
-            title: "Specific title",
+            title: "Specific title"
           });
 
           spyOn(tab, "setText").andReturn(true);
@@ -86,7 +86,7 @@ describe("Ext.tab.Tab", function () {
       describe("if the tab has a specific title", function () {
         beforeEach(function () {
           tab = createTab({
-            iconCls: "specificCls",
+            iconCls: "specificCls"
           });
 
           spyOn(tab, "setIconCls").andReturn(true);
@@ -127,7 +127,7 @@ describe("Ext.tab.Tab", function () {
         function () {
           args = arguments;
         },
-        this,
+        this
       );
 
       tab.activate();
@@ -161,7 +161,7 @@ describe("Ext.tab.Tab", function () {
         function () {
           args = arguments;
         },
-        this,
+        this
       );
 
       tab.deactivate();
@@ -217,7 +217,7 @@ describe("Ext.tab.Tab", function () {
         function () {
           called = true;
         },
-        this,
+        this
       );
 
       tab.onCloseClick();
@@ -233,7 +233,7 @@ describe("Ext.tab.Tab", function () {
         function () {
           called = true;
         },
-        this,
+        this
       );
 
       tab.onCloseClick();
@@ -248,7 +248,7 @@ describe("Ext.tab.Tab", function () {
           function () {
             return false;
           },
-          this,
+          this
         );
       });
 
@@ -260,7 +260,7 @@ describe("Ext.tab.Tab", function () {
           function () {
             called = true;
           },
-          this,
+          this
         );
 
         tab.onCloseClick();
@@ -274,11 +274,11 @@ describe("Ext.tab.Tab", function () {
 
       beforeEach(function () {
         tabBar = {
-          closeTab: jasmine.createSpy(),
+          closeTab: jasmine.createSpy()
         };
 
         tab = createTab({
-          tabBar: tabBar,
+          tabBar: tabBar
         });
       });
 
@@ -295,7 +295,7 @@ describe("Ext.tab.Tab", function () {
 
     beforeEach(function () {
       createTab({
-        renderTo: undefined,
+        renderTo: undefined
       });
 
       enterSpy = spyOn(tab, "onEnterKey").andCallThrough();
@@ -305,7 +305,7 @@ describe("Ext.tab.Tab", function () {
 
       tab.tabBar = {
         onClick: clickSpy,
-        closeTab: Ext.emptyFn,
+        closeTab: Ext.emptyFn
       };
 
       tab.render(Ext.getBody());

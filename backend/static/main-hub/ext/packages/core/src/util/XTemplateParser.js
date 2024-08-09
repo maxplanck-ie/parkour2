@@ -282,5 +282,5 @@ Ext.define("Ext.util.XTemplateParser", {
     /\s*(elif|elseif|if|for|foreach|exec|switch|case|eval|between)\s*\=\s*(?:(?:"([^"]*)")|(?:'([^']*)'))\s*/g,
   propRe: /prop=(?:(?:"([^"]*)")|(?:'([^']*)'))/,
   defaultRe: /^\s*default\s*$/,
-  elseRe: /^\s*else\s*$/,
+  elseRe: /^\s*else\s*$/
 });

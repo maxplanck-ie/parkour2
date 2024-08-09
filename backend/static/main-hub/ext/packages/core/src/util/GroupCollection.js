@@ -13,14 +13,14 @@ Ext.define("Ext.util.GroupCollection", {
     // "requires" of Ext.util.Collection (which cannot pull everything) you instead
     // do a "requires" of Ext.util.GroupCollection and it will.
     "Ext.util.SorterCollection",
-    "Ext.util.FilterCollection",
+    "Ext.util.FilterCollection"
   ],
 
   isGroupCollection: true,
 
   config: {
     grouper: null,
-    itemRoot: null,
+    itemRoot: null
   },
 
   observerPriority: -100,
@@ -61,7 +61,7 @@ Ext.define("Ext.util.GroupCollection", {
         item,
         source.getKey(item),
         details.oldKey,
-        details.oldIndex,
+        details.oldIndex
       );
     }
     this.changeDetails = null;
@@ -92,7 +92,7 @@ Ext.define("Ext.util.GroupCollection", {
       if (group) {
         entries.push({
           group: group,
-          items: [item],
+          items: [item]
         });
       }
     } else {
@@ -150,7 +150,7 @@ Ext.define("Ext.util.GroupCollection", {
         item,
         details.newKey,
         details.oldKey,
-        index,
+        index
       );
     }
   },
@@ -191,7 +191,7 @@ Ext.define("Ext.util.GroupCollection", {
       if (!(entry = byGroup[groupKey])) {
         if (!(group = me.getByKey(groupKey)) && adding) {
           (newGroups || (newGroups = [])).push(
-            (group = me.createGroup(source, groupKey)),
+            (group = me.createGroup(source, groupKey))
           );
         }
 
@@ -199,8 +199,8 @@ Ext.define("Ext.util.GroupCollection", {
           (byGroup[groupKey] = entry =
             {
               group: group,
-              items: [],
-            }),
+              items: []
+            })
         );
       }
 
@@ -296,7 +296,7 @@ Ext.define("Ext.util.GroupCollection", {
     var group = new Ext.util.Group({
       groupKey: key,
       rootProperty: this.getItemRoot(),
-      sorters: source.getSorters(),
+      sorters: source.getSorters()
     });
     return group;
   },
@@ -364,6 +364,6 @@ Ext.define("Ext.util.GroupCollection", {
 
     onGroupRemove: function (collection, info) {
       this.destroyGroups(info.items);
-    },
-  },
+    }
+  }
 });

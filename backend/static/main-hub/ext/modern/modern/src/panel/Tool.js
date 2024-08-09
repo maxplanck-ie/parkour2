@@ -57,14 +57,14 @@ Ext.define("Ext.panel.Tool", {
       click: "onClick",
       mousedown: "onMouseDown",
       mouseover: "onMouseOver",
-      mouseout: "onMouseOut",
+      mouseout: "onMouseOut"
     },
 
     children: [
       {
-        reference: "toolElement",
-      },
-    ],
+        reference: "toolElement"
+      }
+    ]
   },
 
   /**
@@ -129,7 +129,7 @@ Ext.define("Ext.panel.Tool", {
      * - <img style="vertical-align:sub;margin-right:4px;" width="16" height="16" title="" alt="" src="data:image/gif;base64,R0lGODlhEAAQAIABAGZmZv///yH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMjEgNzkuMTU1NzcyLCAyMDE0LzAxLzEzLTE5OjQ0OjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxNCAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozNTFFNEY4MDlBQTYxMUU0OEVCNUNFMTgyMDM3Mzc3MSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozNTFFNEY4MTlBQTYxMUU0OEVCNUNFMTgyMDM3Mzc3MSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjM1MUU0RjdFOUFBNjExRTQ4RUI1Q0UxODIwMzczNzcxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjM1MUU0RjdGOUFBNjExRTQ4RUI1Q0UxODIwMzczNzcxIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEAQAAAQAsAAAAABAAEAAAAh+EHakbh8wcgNHRJW/UvDcPQlNIflTGodP6SaOGwk4BADs=" /> expand
      * - <img style="vertical-align:sub;margin-right:4px;" width="16" height="14" title="" alt="" src="data:image/gif;base64,R0lGODlhEAAOAIABAGZmZv///yH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMjEgNzkuMTU1NzcyLCAyMDE0LzAxLzEzLTE5OjQ0OjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxNCAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozNTFFNEY4NDlBQTYxMUU0OEVCNUNFMTgyMDM3Mzc3MSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozNTFFNEY4NTlBQTYxMUU0OEVCNUNFMTgyMDM3Mzc3MSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjM1MUU0RjgyOUFBNjExRTQ4RUI1Q0UxODIwMzczNzcxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjM1MUU0RjgzOUFBNjExRTQ4RUI1Q0UxODIwMzczNzcxIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEAQAAAQAsAAAAABAADgAAAhyEHakbh8wcAq1SSeGSuvsPhmLkgNyHWWqKll8BADs=" /> collapse
      */
-    type: null,
+    type: null
   },
 
   /**
@@ -161,7 +161,7 @@ Ext.define("Ext.panel.Tool", {
 
     toolEl.replaceCls(
       oldType && baseCls + "-" + oldType,
-      type && baseCls + "-" + type,
+      type && baseCls + "-" + type
     );
   },
 
@@ -193,7 +193,7 @@ Ext.define("Ext.panel.Tool", {
       search: 1,
       toggle: 1,
       unpin: 1,
-      up: 1,
+      up: 1
     },
     //</debug>
 
@@ -226,7 +226,7 @@ Ext.define("Ext.panel.Tool", {
           me.scope,
           [me.toolOwner || me.parent, me, e],
           0,
-          me,
+          me
         );
       }
 
@@ -282,6 +282,6 @@ Ext.define("Ext.panel.Tool", {
      */
     onMouseOut: function () {
       this.el.removeCls(this.toolOverCls);
-    },
-  },
+    }
+  }
 });

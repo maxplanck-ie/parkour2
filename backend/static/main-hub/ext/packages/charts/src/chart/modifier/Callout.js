@@ -140,5 +140,5 @@ Ext.define("Ext.chart.modifier.Callout", {
     } else {
       return Ext.apply(attr, changes);
     }
-  },
+  }
 });

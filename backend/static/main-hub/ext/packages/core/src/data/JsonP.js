@@ -157,7 +157,7 @@ Ext.define("Ext.data.JsonP", {
       failure: options.failure,
       callback: options.callback,
       callbackKey: callbackKey,
-      callbackName: callbackName,
+      callbackName: callbackName
     };
 
     if (timeout > 0) {
@@ -269,7 +269,7 @@ Ext.define("Ext.data.JsonP", {
     Ext.callback(request.callback, request.scope, [
       success,
       result,
-      request.errorType,
+      request.errorType
     ]);
     if (globalEvents.hasListeners.idle) {
       globalEvents.fireEvent("idle");
@@ -288,7 +288,7 @@ Ext.define("Ext.data.JsonP", {
     var script = document.createElement("script");
     script.setAttribute(
       "src",
-      Ext.urlAppend(url, Ext.Object.toQueryString(params)),
+      Ext.urlAppend(url, Ext.Object.toQueryString(params))
     );
     script.setAttribute("async", true);
     script.setAttribute("type", "text/javascript");
@@ -303,5 +303,5 @@ Ext.define("Ext.data.JsonP", {
    */
   loadScript: function (request) {
     Ext.getHead().appendChild(request.script);
-  },
+  }
 });

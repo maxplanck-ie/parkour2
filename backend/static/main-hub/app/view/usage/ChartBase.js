@@ -10,7 +10,7 @@ Ext.define("MainHub.view.usage.ChartBase", {
   // headerPosition: 'bottom',
 
   defaults: {
-    width: "100%",
+    width: "100%"
   },
 
   tools: [
@@ -33,5 +33,5 @@ Ext.define("MainHub.view.usage.ChartBase", {
     //     }
     //   },
     // },
-  ],
+  ]
 });

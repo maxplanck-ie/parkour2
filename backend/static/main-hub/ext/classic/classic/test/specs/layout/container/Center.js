@@ -11,10 +11,10 @@ describe("Ext.layout.container.Center", function () {
         {
           renderTo: Ext.getBody(),
           defaultType: "component",
-          layout: "center",
+          layout: "center"
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     item = ct.items.getAt(0);
   }
@@ -53,8 +53,8 @@ describe("Ext.layout.container.Center", function () {
       items: {
         xtype: "component",
         width: "100%",
-        height: "100%",
-      },
+        height: "100%"
+      }
     });
 
     item = ct.items.getAt(0);
@@ -77,11 +77,11 @@ describe("Ext.layout.container.Center", function () {
             items: [
               {
                 xtype: "component",
-                html: makeAutoSizer(100, 30),
-              },
-            ],
-          },
-        ],
+                html: makeAutoSizer(100, 30)
+              }
+            ]
+          }
+        ]
       });
       ct = p.getDockedItems()[0];
       item = ct.items.first();
@@ -103,11 +103,11 @@ describe("Ext.layout.container.Center", function () {
             items: [
               {
                 xtype: "component",
-                html: makeAutoSizer(30, 100),
-              },
-            ],
-          },
-        ],
+                html: makeAutoSizer(30, 100)
+              }
+            ]
+          }
+        ]
       });
       ct = p.getDockedItems()[0];
       item = ct.items.first();
@@ -122,7 +122,7 @@ describe("Ext.layout.container.Center", function () {
       makeCt({
         width: 400,
         height: 400,
-        items: item,
+        items: item
       });
     }
 
@@ -136,7 +136,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 100, 100);
         });
@@ -145,7 +145,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 70, 80);
         });
@@ -155,7 +155,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 160, 100, 120);
         });
@@ -164,7 +164,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 144, 70, 128);
         });
@@ -174,7 +174,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "10%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 50);
           });
@@ -183,7 +183,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "80%",
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 100, 100, 150);
           });
@@ -194,7 +194,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            html: makeAutoSizer(null, 50),
+            html: makeAutoSizer(null, 50)
           });
           expectSuiteResult(200, 50, 100, 175);
         });
@@ -203,7 +203,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             html: makeAutoSizer(null, 50),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 50, 70, 155);
         });
@@ -213,7 +213,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 50),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 50);
           });
@@ -222,7 +222,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 300),
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 100, 100, 150);
           });
@@ -235,7 +235,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: 200,
+            height: 200
           });
           expectSuiteResult(320, 200, 40, 100);
         });
@@ -244,7 +244,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(272, 200, 64, 80);
         });
@@ -254,7 +254,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "10%",
               minWidth: 320,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(320, 200, 40, 100);
           });
@@ -263,7 +263,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               maxWidth: 100,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(100, 200, 150, 100);
           });
@@ -274,7 +274,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(320, 160, 40, 120);
         });
@@ -283,7 +283,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(272, 144, 64, 128);
         });
@@ -293,7 +293,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(320, 300, 40, 50);
           });
@@ -302,7 +302,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(320, 50, 40, 175);
           });
@@ -311,7 +311,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 160, 25, 120);
           });
@@ -320,7 +320,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 160, 150, 120);
           });
@@ -331,7 +331,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            html: makeAutoSizer(null, 100),
+            html: makeAutoSizer(null, 100)
           });
           expectSuiteResult(320, 100, 40, 150);
         });
@@ -340,7 +340,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             html: makeAutoSizer(null, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(272, 100, 64, 130);
         });
@@ -350,7 +350,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(320, 300, 40, 50);
           });
@@ -359,7 +359,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 350),
-              maxHeight: 300,
+              maxHeight: 300
             });
             expectSuiteResult(320, 300, 40, 50);
           });
@@ -368,7 +368,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 100, 25, 150);
           });
@@ -377,7 +377,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 100, 150, 150);
           });
@@ -390,7 +390,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 100, 100);
         });
@@ -399,7 +399,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 70, 80);
         });
@@ -409,7 +409,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 200, 50, 100);
           });
@@ -418,7 +418,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 200, 150, 100);
           });
@@ -429,7 +429,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 160, 100, 120);
         });
@@ -438,7 +438,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 144, 70, 128);
         });
@@ -448,7 +448,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 50);
           });
@@ -457,7 +457,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 50, 100, 175);
           });
@@ -466,7 +466,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 160, 50, 120);
           });
@@ -475,7 +475,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 160, 150, 120);
           });
@@ -485,7 +485,7 @@ describe("Ext.layout.container.Center", function () {
       describe("auto height", function () {
         it("should center the item", function () {
           makeSuiteCt({
-            html: makeAutoSizer(200, 100),
+            html: makeAutoSizer(200, 100)
           });
           expectSuiteResult(200, 100, 100, 150);
         });
@@ -493,7 +493,7 @@ describe("Ext.layout.container.Center", function () {
         it("should take margins into account", function () {
           makeSuiteCt({
             html: makeAutoSizer(200, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 100, 70, 130);
         });
@@ -502,7 +502,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 50);
           });
@@ -510,7 +510,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 50, 100, 175);
           });
@@ -518,7 +518,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 100, 50, 150);
           });
@@ -526,7 +526,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 100, 150, 150);
           });
@@ -539,7 +539,7 @@ describe("Ext.layout.container.Center", function () {
     function makeSuiteCt(item) {
       makeCt({
         width: 400,
-        items: item,
+        items: item
       });
     }
 
@@ -553,7 +553,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 100, 200);
         });
@@ -562,7 +562,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 70, 240);
         });
@@ -572,7 +572,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 0, 100, 0);
         });
@@ -581,7 +581,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 0, 70, 40);
         });
@@ -591,7 +591,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "10%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 300);
           });
@@ -600,7 +600,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "80%",
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 0, 100, 0);
           });
@@ -611,7 +611,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            html: makeAutoSizer(null, 50),
+            html: makeAutoSizer(null, 50)
           });
           expectSuiteResult(200, 50, 100, 50);
         });
@@ -620,7 +620,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             html: makeAutoSizer(null, 50),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 50, 70, 90);
         });
@@ -630,7 +630,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 50),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 300);
           });
@@ -639,7 +639,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 300),
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 100, 100, 100);
           });
@@ -652,7 +652,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: 200,
+            height: 200
           });
           expectSuiteResult(320, 200, 40, 200);
         });
@@ -661,7 +661,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(272, 200, 64, 240);
         });
@@ -671,7 +671,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "10%",
               minWidth: 320,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(320, 200, 40, 200);
           });
@@ -680,7 +680,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               maxWidth: 100,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(100, 200, 150, 200);
           });
@@ -691,7 +691,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(320, 0, 40, 0);
         });
@@ -700,7 +700,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(272, 0, 64, 40);
         });
@@ -710,7 +710,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(320, 300, 40, 300);
           });
@@ -719,7 +719,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(320, 0, 40, 0);
           });
@@ -728,7 +728,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 0, 25, 0);
           });
@@ -737,7 +737,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 0, 150, 0);
           });
@@ -748,7 +748,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            html: makeAutoSizer(null, 100),
+            html: makeAutoSizer(null, 100)
           });
           expectSuiteResult(320, 100, 40, 100);
         });
@@ -757,7 +757,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             html: makeAutoSizer(null, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(272, 100, 64, 140);
         });
@@ -767,7 +767,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(320, 300, 40, 300);
           });
@@ -776,7 +776,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 350),
-              maxHeight: 300,
+              maxHeight: 300
             });
             expectSuiteResult(320, 300, 40, 300);
           });
@@ -785,7 +785,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 100, 25, 100);
           });
@@ -794,7 +794,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 100, 150, 100);
           });
@@ -807,7 +807,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 100, 200);
         });
@@ -816,7 +816,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 70, 240);
         });
@@ -826,7 +826,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 200, 50, 200);
           });
@@ -835,7 +835,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 200, 150, 200);
           });
@@ -846,7 +846,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 0, 100, 0);
         });
@@ -855,7 +855,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 0, 70, 40);
         });
@@ -865,7 +865,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 300);
           });
@@ -874,7 +874,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 0, 100, 0);
           });
@@ -883,7 +883,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 0, 50, 0);
           });
@@ -892,7 +892,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 0, 150, 0);
           });
@@ -902,7 +902,7 @@ describe("Ext.layout.container.Center", function () {
       describe("auto height", function () {
         it("should center the item", function () {
           makeSuiteCt({
-            html: makeAutoSizer(200, 100),
+            html: makeAutoSizer(200, 100)
           });
           expectSuiteResult(200, 100, 100, 100);
         });
@@ -910,7 +910,7 @@ describe("Ext.layout.container.Center", function () {
         it("should take margins into account", function () {
           makeSuiteCt({
             html: makeAutoSizer(200, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 100, 70, 140);
         });
@@ -919,7 +919,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 100, 300);
           });
@@ -927,7 +927,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 50, 100, 50);
           });
@@ -935,7 +935,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 100, 50, 100);
           });
@@ -943,7 +943,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 100, 150, 100);
           });
@@ -957,7 +957,7 @@ describe("Ext.layout.container.Center", function () {
       makeCt({
         floating: true, // Float the ct so it shrink wraps
         height: 400,
-        items: item,
+        items: item
       });
     }
 
@@ -971,7 +971,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 100, 200);
         });
@@ -980,7 +980,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 80, 260);
         });
@@ -990,7 +990,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 160, 120, 200);
         });
@@ -999,7 +999,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 144, 128, 260);
         });
@@ -1009,7 +1009,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "10%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 50, 200);
           });
@@ -1018,7 +1018,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "80%",
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 100, 150, 200);
           });
@@ -1029,7 +1029,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            html: makeAutoSizer(null, 50),
+            html: makeAutoSizer(null, 50)
           });
           expectSuiteResult(200, 50, 175, 200);
         });
@@ -1038,7 +1038,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             html: makeAutoSizer(null, 50),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 50, 155, 260);
         });
@@ -1048,7 +1048,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 50),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 50, 200);
           });
@@ -1057,7 +1057,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 300),
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 100, 150, 200);
           });
@@ -1070,7 +1070,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: 200,
+            height: 200
           });
           expectSuiteResult(0, 200, 100, 0);
         });
@@ -1079,7 +1079,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(0, 200, 80, 60);
         });
@@ -1089,7 +1089,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "10%",
               minWidth: 320,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(320, 200, 100, 320);
           });
@@ -1098,7 +1098,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               maxWidth: 100,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(0, 200, 100, 0);
           });
@@ -1109,7 +1109,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(0, 160, 120, 0);
         });
@@ -1118,7 +1118,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(0, 144, 128, 60);
         });
@@ -1128,7 +1128,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(0, 300, 50, 0);
           });
@@ -1137,7 +1137,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(0, 50, 175, 0);
           });
@@ -1146,7 +1146,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 160, 120, 350);
           });
@@ -1155,7 +1155,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(0, 160, 120, 0);
           });
@@ -1166,7 +1166,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            html: makeAutoSizer(null, 100),
+            html: makeAutoSizer(null, 100)
           });
           expectSuiteResult(0, 100, 150, 0);
         });
@@ -1175,7 +1175,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             html: makeAutoSizer(null, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(0, 100, 130, 60);
         });
@@ -1185,7 +1185,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(0, 300, 50, 0);
           });
@@ -1194,7 +1194,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 350),
-              maxHeight: 300,
+              maxHeight: 300
             });
             expectSuiteResult(0, 300, 50, 0);
           });
@@ -1203,7 +1203,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 100, 150, 350);
           });
@@ -1212,7 +1212,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(0, 100, 150, 0);
           });
@@ -1225,7 +1225,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 100, 200);
         });
@@ -1234,7 +1234,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 80, 260);
         });
@@ -1244,7 +1244,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 200, 100, 300);
           });
@@ -1253,7 +1253,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 200, 100, 100);
           });
@@ -1264,7 +1264,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 160, 120, 200);
         });
@@ -1273,7 +1273,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 144, 128, 260);
         });
@@ -1283,7 +1283,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 50, 200);
           });
@@ -1292,7 +1292,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 50, 175, 200);
           });
@@ -1301,7 +1301,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 160, 120, 300);
           });
@@ -1310,7 +1310,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 160, 120, 100);
           });
@@ -1320,7 +1320,7 @@ describe("Ext.layout.container.Center", function () {
       describe("auto height", function () {
         it("should center the item", function () {
           makeSuiteCt({
-            html: makeAutoSizer(200, 100),
+            html: makeAutoSizer(200, 100)
           });
           expectSuiteResult(200, 100, 150, 200);
         });
@@ -1328,7 +1328,7 @@ describe("Ext.layout.container.Center", function () {
         it("should take margins into account", function () {
           makeSuiteCt({
             html: makeAutoSizer(200, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 100, 130, 260);
         });
@@ -1337,7 +1337,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 50, 200);
           });
@@ -1345,7 +1345,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 50, 175, 200);
           });
@@ -1353,7 +1353,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 100, 150, 300);
           });
@@ -1361,7 +1361,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 100, 150, 100);
           });
@@ -1374,7 +1374,7 @@ describe("Ext.layout.container.Center", function () {
     function makeSuiteCt(item) {
       makeCt({
         floating: true, // Float the ct so it shrink wraps
-        items: item,
+        items: item
       });
     }
 
@@ -1388,7 +1388,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 200, 200);
         });
@@ -1397,7 +1397,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 260, 240);
         });
@@ -1407,7 +1407,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 0, 200, 0);
         });
@@ -1416,7 +1416,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 0, 260, 40);
         });
@@ -1426,7 +1426,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "10%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 200, 300);
           });
@@ -1435,7 +1435,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               height: "80%",
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 0, 200, 0);
           });
@@ -1446,7 +1446,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: 200,
-            html: makeAutoSizer(null, 50),
+            html: makeAutoSizer(null, 50)
           });
           expectSuiteResult(200, 50, 200, 50);
         });
@@ -1455,7 +1455,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: 200,
             html: makeAutoSizer(null, 50),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 50, 260, 90);
         });
@@ -1465,7 +1465,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 50),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 200, 300);
           });
@@ -1474,7 +1474,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: 200,
               html: makeAutoSizer(null, 300),
-              maxHeight: 100,
+              maxHeight: 100
             });
             expectSuiteResult(200, 100, 200, 100);
           });
@@ -1487,7 +1487,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: 200,
+            height: 200
           });
           expectSuiteResult(0, 200, 0, 200);
         });
@@ -1496,7 +1496,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(0, 200, 60, 240);
         });
@@ -1506,7 +1506,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "10%",
               minWidth: 320,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(320, 200, 320, 200);
           });
@@ -1515,7 +1515,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               maxWidth: 100,
-              height: 200,
+              height: 200
             });
             expectSuiteResult(0, 200, 0, 200);
           });
@@ -1526,7 +1526,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(0, 0, 0, 0);
         });
@@ -1535,7 +1535,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(0, 0, 60, 40);
         });
@@ -1545,7 +1545,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(0, 300, 0, 300);
           });
@@ -1554,7 +1554,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(0, 0, 0, 0);
           });
@@ -1563,7 +1563,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 0, 350, 0);
           });
@@ -1572,7 +1572,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(0, 0, 0, 0);
           });
@@ -1583,7 +1583,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             width: "80%",
-            html: makeAutoSizer(null, 100),
+            html: makeAutoSizer(null, 100)
           });
           expectSuiteResult(0, 100, 0, 100);
         });
@@ -1592,7 +1592,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             width: "80%",
             html: makeAutoSizer(null, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(0, 100, 60, 140);
         });
@@ -1602,7 +1602,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(0, 300, 0, 300);
           });
@@ -1611,7 +1611,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 350),
-              maxHeight: 300,
+              maxHeight: 300
             });
             expectSuiteResult(0, 300, 0, 300);
           });
@@ -1620,7 +1620,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              minWidth: 350,
+              minWidth: 350
             });
             expectSuiteResult(350, 100, 350, 100);
           });
@@ -1629,7 +1629,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               width: "80%",
               html: makeAutoSizer(null, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(0, 100, 0, 100);
           });
@@ -1642,7 +1642,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: 200,
+            height: 200
           });
           expectSuiteResult(200, 200, 200, 200);
         });
@@ -1651,7 +1651,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: 200,
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 200, 260, 240);
         });
@@ -1661,7 +1661,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 200, 300, 200);
           });
@@ -1670,7 +1670,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: 200,
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 200, 100, 200);
           });
@@ -1681,7 +1681,7 @@ describe("Ext.layout.container.Center", function () {
         it("should center the item", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
-            height: "40%",
+            height: "40%"
           });
           expectSuiteResult(200, 0, 200, 0);
         });
@@ -1690,7 +1690,7 @@ describe("Ext.layout.container.Center", function () {
           makeSuiteCt({
             html: makeAutoSizer(200),
             height: "40%",
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 0, 260, 40);
         });
@@ -1700,7 +1700,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 200, 300);
           });
@@ -1709,7 +1709,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 0, 200, 0);
           });
@@ -1718,7 +1718,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 0, 300, 0);
           });
@@ -1727,7 +1727,7 @@ describe("Ext.layout.container.Center", function () {
             makeSuiteCt({
               html: makeAutoSizer(200),
               height: "40%",
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 0, 100, 0);
           });
@@ -1737,7 +1737,7 @@ describe("Ext.layout.container.Center", function () {
       describe("auto height", function () {
         it("should center the item", function () {
           makeSuiteCt({
-            html: makeAutoSizer(200, 100),
+            html: makeAutoSizer(200, 100)
           });
           expectSuiteResult(200, 100, 200, 100);
         });
@@ -1745,7 +1745,7 @@ describe("Ext.layout.container.Center", function () {
         it("should take margins into account", function () {
           makeSuiteCt({
             html: makeAutoSizer(200, 100),
-            margin: "20 30",
+            margin: "20 30"
           });
           expectSuiteResult(200, 100, 260, 140);
         });
@@ -1754,7 +1754,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minHeight: 300,
+              minHeight: 300
             });
             expectSuiteResult(200, 300, 200, 300);
           });
@@ -1762,7 +1762,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxHeight into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxHeight: 50,
+              maxHeight: 50
             });
             expectSuiteResult(200, 50, 200, 50);
           });
@@ -1770,7 +1770,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take minWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              minWidth: 300,
+              minWidth: 300
             });
             expectSuiteResult(300, 100, 300, 100);
           });
@@ -1778,7 +1778,7 @@ describe("Ext.layout.container.Center", function () {
           it("should take maxWidth into account", function () {
             makeSuiteCt({
               html: makeAutoSizer(200, 100),
-              maxWidth: 100,
+              maxWidth: 100
             });
             expectSuiteResult(100, 100, 100, 100);
           });

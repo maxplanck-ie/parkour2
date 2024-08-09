@@ -7,7 +7,7 @@ Ext.define("Ext.device.Browser", {
   requires: [
     "Ext.device.Communicator",
     "Ext.device.browser.Cordova",
-    "Ext.device.browser.Simulator",
+    "Ext.device.browser.Simulator"
   ],
 
   constructor: function () {
@@ -18,5 +18,5 @@ Ext.define("Ext.device.Browser", {
     }
 
     return Ext.create("Ext.device.browser.Simulator");
-  },
+  }
 });

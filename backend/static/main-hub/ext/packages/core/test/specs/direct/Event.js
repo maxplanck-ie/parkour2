@@ -6,8 +6,8 @@ describe("Ext.direct.Event", function () {
       event = new Ext.direct.Event({
         name: "foo",
         data: {
-          foo: "bar",
-        },
+          foo: "bar"
+        }
       });
     });
 
@@ -37,8 +37,8 @@ describe("Ext.direct.Event", function () {
       event = new Ext.direct.ExceptionEvent({
         name: "bar",
         data: {
-          bar: "baz",
-        },
+          bar: "baz"
+        }
       });
     });
 
@@ -56,7 +56,7 @@ describe("Ext.direct.Event", function () {
 
     beforeEach(function () {
       transaction = new Ext.direct.Transaction({
-        provider: {},
+        provider: {}
       });
 
       Ext.direct.Manager.addTransaction(transaction);
@@ -70,9 +70,9 @@ describe("Ext.direct.Event", function () {
       event = new Ext.direct.RemotingEvent({
         name: "baz",
         data: {
-          baz: "qux",
+          baz: "qux"
         },
-        transaction: transaction,
+        transaction: transaction
       });
 
       var tr = event.getTransaction();
@@ -84,9 +84,9 @@ describe("Ext.direct.Event", function () {
       event = new Ext.direct.RemotingEvent({
         name: "baz",
         data: {
-          baz: "qux",
+          baz: "qux"
         },
-        tid: transaction.tid,
+        tid: transaction.tid
       });
 
       var tr = event.getTransaction();

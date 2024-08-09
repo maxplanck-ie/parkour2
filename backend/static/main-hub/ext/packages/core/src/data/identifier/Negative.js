@@ -15,6 +15,6 @@ Ext.define("Ext.data.identifier.Negative", {
   config: {
     increment: -1,
 
-    seed: -1,
-  },
+    seed: -1
+  }
 });

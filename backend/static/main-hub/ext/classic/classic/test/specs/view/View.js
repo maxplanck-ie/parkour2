@@ -17,7 +17,7 @@ describe("Ext.view.View", function () {
 
   TestModel = Ext.define(null, {
     extend: "Ext.data.Model",
-    fields: ["name", "size"],
+    fields: ["name", "size"]
   });
 
   function createView(cfg, data) {
@@ -39,14 +39,14 @@ describe("Ext.view.View", function () {
     } else if (!data && data !== null) {
       data = [
         {
-          name: "Item1",
-        },
+          name: "Item1"
+        }
       ];
     }
 
     return new Ext.data.Store({
       model: TestModel,
-      data: data,
+      data: data
     });
   }
 
@@ -56,7 +56,7 @@ describe("Ext.view.View", function () {
 
     for (; i <= len; ++i) {
       nodes.push({
-        name: "Item " + i,
+        name: "Item " + i
       });
     }
 
@@ -70,7 +70,7 @@ describe("Ext.view.View", function () {
     for (; i <= len; ++i) {
       nodes.push({
         id: i,
-        name: "Item " + i,
+        name: "Item " + i
       });
     }
 
@@ -80,7 +80,7 @@ describe("Ext.view.View", function () {
   function createModel(data) {
     if (!Ext.isObject(data)) {
       data = {
-        name: data,
+        name: data
       };
     }
     return new TestModel(data);
@@ -93,7 +93,7 @@ describe("Ext.view.View", function () {
   function completeRequest(data, status) {
     Ext.Ajax.mockComplete({
       status: status || 200,
-      responseText: Ext.encode(data || []),
+      responseText: Ext.encode(data || [])
     });
   }
 
@@ -131,12 +131,12 @@ describe("Ext.view.View", function () {
         {
           renderTo: Ext.getBody(),
           selModel: {
-            enableInitialSelection: false,
+            enableInitialSelection: false
           },
           itemSelector: ".foo",
-          tpl: '<div class="header"></div><tpl for="."><div class="foo">{name}</div></tpl><div class="footer"></div>',
+          tpl: '<div class="header"></div><tpl for="."><div class="foo">{name}</div></tpl><div class="footer"></div>'
         },
-        makeData(3),
+        makeData(3)
       );
     });
 
@@ -147,7 +147,7 @@ describe("Ext.view.View", function () {
         "foo",
         "foo",
         "footer",
-        "x-tab-guard x-tab-guard-after",
+        "x-tab-guard x-tab-guard-after"
       ]);
     });
 
@@ -168,7 +168,7 @@ describe("Ext.view.View", function () {
       beforeEach(function () {
         createView({
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         });
 
         sm = view.getSelectionModel();
@@ -216,7 +216,7 @@ describe("Ext.view.View", function () {
       it("should unbind the store form the selection model", function () {
         createView({
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         });
 
         sm = view.getSelectionModel();
@@ -245,14 +245,14 @@ describe("Ext.view.View", function () {
               disableSelection: disableSelection,
               selModel: rowModel,
               itemSelector: ".foo",
-              tpl: "{name}",
+              tpl: "{name}"
             });
 
             sm = view.getSelectionModel();
             sm.select(0);
 
             expect(!!sm.getSelection().length).toBe(!disableSelection);
-          },
+          }
         );
       }
 
@@ -268,9 +268,9 @@ describe("Ext.view.View", function () {
       cfg = Ext.apply(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        cfg,
+        cfg
       );
       createView(cfg, data || makeData(5));
     }
@@ -309,7 +309,7 @@ describe("Ext.view.View", function () {
 
         it("should accept an HTMLElement that is the child of an item and return a DOM element", function () {
           createSimpleView({
-            itemTpl: '<div class="bleh">{name}</div>',
+            itemTpl: '<div class="bleh">{name}</div>'
           });
           var node = view.getNodes()[1];
           expect(view.getNode(node.firstChild)).toBe(node);
@@ -323,7 +323,7 @@ describe("Ext.view.View", function () {
 
         it("should return the correct node after an add", function () {
           store.insert(0, {
-            name: "X",
+            name: "X"
           });
           expect(view.getNode(0)).hasHTML("X");
         });
@@ -341,11 +341,11 @@ describe("Ext.view.View", function () {
         it("should return the correct node after a refresh", function () {
           store.loadData([
             {
-              name: "Foo",
+              name: "Foo"
             },
             {
-              name: "Bar",
-            },
+              name: "Bar"
+            }
           ]);
           expect(view.getNode(0)).hasHTML("Foo");
         });
@@ -359,7 +359,7 @@ describe("Ext.view.View", function () {
       describe("returning null for invalid items", function () {
         it("should return null when not rendered", function () {
           createSimpleView({
-            renderTo: null,
+            renderTo: null
           });
           expect(view.getNode(0)).toBeNull();
         });
@@ -385,7 +385,7 @@ describe("Ext.view.View", function () {
     describe("getNodes", function () {
       it("should be empty when not rendered", function () {
         createSimpleView({
-          renderTo: null,
+          renderTo: null
         });
         expect(view.getNodes()).toEqual([]);
       });
@@ -403,7 +403,7 @@ describe("Ext.view.View", function () {
 
         it("should return the correct nodes after an add", function () {
           store.insert(1, {
-            name: "Foo",
+            name: "Foo"
           });
           var nodes = view.getNodes();
           expect(nodes.length).toBe(4);
@@ -432,11 +432,11 @@ describe("Ext.view.View", function () {
         it("should return the correct node after a refresh", function () {
           store.loadData([
             {
-              name: "Foo",
+              name: "Foo"
             },
             {
-              name: "Bar",
-            },
+              name: "Bar"
+            }
           ]);
           var nodes = view.getNodes();
           expect(nodes[0]).hasHTML("Foo");
@@ -518,7 +518,7 @@ describe("Ext.view.View", function () {
 
         it("should accept an HTMLElement that is the child of an item", function () {
           createSimpleView({
-            itemTpl: '<div class="bleh">{name}</div>',
+            itemTpl: '<div class="bleh">{name}</div>'
           });
           var node = view.getNodes()[1];
           expect(view.indexOf(node.firstChild)).toBe(1);
@@ -532,7 +532,7 @@ describe("Ext.view.View", function () {
 
         it("should return the correct index after an add", function () {
           store.insert(0, {
-            name: "X",
+            name: "X"
           });
           expect(view.indexOf(view.getNodes()[0])).toBe(0);
         });
@@ -550,11 +550,11 @@ describe("Ext.view.View", function () {
         it("should return the correct node after a refresh", function () {
           store.loadData([
             {
-              name: "Foo",
+              name: "Foo"
             },
             {
-              name: "Bar",
-            },
+              name: "Bar"
+            }
           ]);
           expect(view.indexOf(store.getAt(1))).toBe(1);
         });
@@ -588,7 +588,7 @@ describe("Ext.view.View", function () {
       createView({
         renderTo: Ext.getBody(),
         itemTpl: "{name}",
-        store: store,
+        store: store
       });
       view.destroy();
       expect(getKeys()).toEqual(hasListeners);
@@ -597,7 +597,7 @@ describe("Ext.view.View", function () {
     it("should unbind from the store", function () {
       createView({
         renderTo: Ext.getBody(),
-        itemTpl: "{name}",
+        itemTpl: "{name}"
       });
       expect(view.getStore()).toBe(store);
       view.destroy();
@@ -610,7 +610,7 @@ describe("Ext.view.View", function () {
 
       createView({
         renderTo: Ext.getBody(),
-        itemTpl: "{name}",
+        itemTpl: "{name}"
       });
 
       view.destroy();
@@ -626,9 +626,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        data,
+        data
       );
     }
 
@@ -637,9 +637,9 @@ describe("Ext.view.View", function () {
         {
           renderTo: Ext.getBody(),
           itemSelector: "li",
-          tpl: ["<ul>", '<tpl for=".">', "<li>{name}</li>", "</tpl>", "</ul>"],
+          tpl: ["<ul>", '<tpl for=".">', "<li>{name}</li>", "</tpl>", "</ul>"]
         },
-        data,
+        data
       );
     }
 
@@ -681,17 +681,17 @@ describe("Ext.view.View", function () {
           it("should be able to insert a node in the middle of the view", function () {
             createSimpleView([
               {
-                name: "Item1",
+                name: "Item1"
               },
               {
-                name: "Item2",
+                name: "Item2"
               },
               {
-                name: "Item3",
+                name: "Item3"
               },
               {
-                name: "Item4",
-              },
+                name: "Item4"
+              }
             ]);
             store.insert(2, createModel("new"));
             var nodes = view.getNodes();
@@ -731,17 +731,17 @@ describe("Ext.view.View", function () {
           it("should be able to insert a node in the middle of the view", function () {
             createListView([
               {
-                name: "Item1",
+                name: "Item1"
               },
               {
-                name: "Item2",
+                name: "Item2"
               },
               {
-                name: "Item3",
+                name: "Item3"
               },
               {
-                name: "Item4",
-              },
+                name: "Item4"
+              }
             ]);
             store.insert(2, createModel("new"));
             var nodes = view.getNodes();
@@ -805,17 +805,17 @@ describe("Ext.view.View", function () {
             it("should be able to insert in the middle of the view", function () {
               createSimpleView([
                 {
-                  name: "Item1",
+                  name: "Item1"
                 },
                 {
-                  name: "Item2",
+                  name: "Item2"
                 },
                 {
-                  name: "Item3",
+                  name: "Item3"
                 },
                 {
-                  name: "Item4",
-                },
+                  name: "Item4"
+                }
               ]);
               store.insert(2, [createModel("new1"), createModel("new2")]);
               var nodes = view.getNodes();
@@ -862,17 +862,17 @@ describe("Ext.view.View", function () {
             it("should be able to insert in the middle of the view", function () {
               createListView([
                 {
-                  name: "Item1",
+                  name: "Item1"
                 },
                 {
-                  name: "Item2",
+                  name: "Item2"
                 },
                 {
-                  name: "Item3",
+                  name: "Item3"
                 },
                 {
-                  name: "Item4",
-                },
+                  name: "Item4"
+                }
               ]);
               store.insert(2, [createModel("new1"), createModel("new2")]);
               var nodes = view.getNodes();
@@ -891,14 +891,14 @@ describe("Ext.view.View", function () {
               store.add(
                 createModel("foo1"),
                 createModel("foo2"),
-                createModel("foo3"),
+                createModel("foo3")
               );
               expect(spy.callCount).toBe(1);
               args = spy.mostRecentCall.args;
               expect(args[0]).toEqual([
                 store.getAt(1),
                 store.getAt(2),
-                store.getAt(3),
+                store.getAt(3)
               ]);
               expect(args[1]).toBe(1);
               var nodes = view.getNodes();
@@ -913,7 +913,7 @@ describe("Ext.view.View", function () {
               createSimpleView([
                 createModel("e"),
                 createModel("j"),
-                createModel("o"),
+                createModel("o")
               ]);
               store.sort("name");
 
@@ -925,7 +925,7 @@ describe("Ext.view.View", function () {
                 createModel("k"),
                 createModel("l"),
                 createModel("m"),
-                createModel("p"),
+                createModel("p")
               );
               var nodes = view.getNodes();
               expect(nodes.length).toBe(11);
@@ -948,7 +948,7 @@ describe("Ext.view.View", function () {
               createListView([
                 createModel("e"),
                 createModel("j"),
-                createModel("o"),
+                createModel("o")
               ]);
               store.sort("name");
 
@@ -960,7 +960,7 @@ describe("Ext.view.View", function () {
                 createModel("k"),
                 createModel("l"),
                 createModel("m"),
-                createModel("p"),
+                createModel("p")
               );
 
               var nodes = view.getNodes(),
@@ -991,7 +991,7 @@ describe("Ext.view.View", function () {
               createSimpleView([
                 createModel("e"),
                 createModel("j"),
-                createModel("o"),
+                createModel("o")
               ]);
               store.sort("name");
 
@@ -1004,7 +1004,7 @@ describe("Ext.view.View", function () {
                 createModel("k"),
                 createModel("l"),
                 createModel("m"),
-                createModel("p"),
+                createModel("p")
               );
               var nodes = view.getNodes();
 
@@ -1022,7 +1022,7 @@ describe("Ext.view.View", function () {
               expect(args[0]).toEqual([
                 store.getAt(6),
                 store.getAt(7),
-                store.getAt(8),
+                store.getAt(8)
               ]);
               expect(args[1]).toBe(6);
               expect(args[2]).toEqual([nodes[6], nodes[7], nodes[8]]);
@@ -1077,7 +1077,7 @@ describe("Ext.view.View", function () {
             createModel("a"),
             createModel("b"),
             createModel("c"),
-            createModel("d"),
+            createModel("d")
           ]);
           store.removeAt(3);
           var nodes = view.getNodes();
@@ -1092,7 +1092,7 @@ describe("Ext.view.View", function () {
             createModel("a"),
             createModel("b"),
             createModel("c"),
-            createModel("d"),
+            createModel("d")
           ]);
           store.removeAt(0);
           var nodes = view.getNodes();
@@ -1107,7 +1107,7 @@ describe("Ext.view.View", function () {
             createModel("a"),
             createModel("b"),
             createModel("c"),
-            createModel("d"),
+            createModel("d")
           ]);
           store.removeAt(1);
           var nodes = view.getNodes();
@@ -1123,7 +1123,7 @@ describe("Ext.view.View", function () {
               createModel("a"),
               createModel("b"),
               createModel("c"),
-              createModel("d"),
+              createModel("d")
             ]);
             var node = view.getNode(1),
               rec = store.getAt(1);
@@ -1171,7 +1171,7 @@ describe("Ext.view.View", function () {
             createModel("m"),
             createModel("n"),
             createModel("o"),
-            createModel("p"),
+            createModel("p")
           ]);
         });
 
@@ -1232,7 +1232,7 @@ describe("Ext.view.View", function () {
               byName("g"),
               byName("h"),
               byName("m"),
-              byName("n"),
+              byName("n")
             ]);
             var nodes = view.getNodes();
             expect(nodes.length).toBe(9);
@@ -1260,7 +1260,7 @@ describe("Ext.view.View", function () {
                 byName("g"),
                 byName("h"),
                 byName("m"),
-                byName("n"),
+                byName("n")
               ]);
 
               args = spy.calls[0].args;
@@ -1293,10 +1293,10 @@ describe("Ext.view.View", function () {
           height: 300,
           items: createView(
             {
-              itemTpl: "{name}",
+              itemTpl: "{name}"
             },
-            5,
-          ),
+            5
+          )
         });
         ct.hide();
         view.refresh();
@@ -1309,8 +1309,8 @@ describe("Ext.view.View", function () {
       it("should update after an add", function () {
         store.add([
           {
-            name: "a",
-          },
+            name: "a"
+          }
         ]);
         ct.show();
         var nodes = view.getNodes();
@@ -1369,7 +1369,7 @@ describe("Ext.view.View", function () {
           filterFn: function (rec) {
             var n = parseInt(rec.get("name").replace("Item ", ""), 10);
             return n % 2 === 0;
-          },
+          }
         });
         ct.show();
         var nodes = view.getNodes();
@@ -1380,14 +1380,14 @@ describe("Ext.view.View", function () {
 
       it("should update to a series of actions", function () {
         var rec = store.add({
-          name: "X",
+          name: "X"
         })[0];
         rec.set("name", "Foo");
         store.removeAt(0);
         store.removeAt(1);
         store.removeAll();
         store.add({
-          name: "A",
+          name: "A"
         });
         store.add(["Z"], ["Q"]);
         store.sort("name");
@@ -1413,7 +1413,7 @@ describe("Ext.view.View", function () {
             tpl:
               tpl ||
               '<tpl for="."><div class="x-tpl-item" style="float: left; width: 10px;">{name}</div></tpl>',
-            itemSelector: ".x-tpl-item",
+            itemSelector: ".x-tpl-item"
           },
           data || [
             createModel("a"),
@@ -1425,8 +1425,8 @@ describe("Ext.view.View", function () {
             createModel("g"),
             createModel("h"),
             createModel("i"),
-            createModel("j"),
-          ],
+            createModel("j")
+          ]
         );
       }
 
@@ -1438,7 +1438,7 @@ describe("Ext.view.View", function () {
         store.removeAll();
         for (var i = 1; i <= 5; ++i) {
           store.add({
-            name: "Item " + i,
+            name: "Item " + i
           });
         }
         store.resumeEvents();
@@ -1450,7 +1450,7 @@ describe("Ext.view.View", function () {
         makeShrinkWrapView();
         expect(view.getWidth()).toBe(100);
         view.getStore().add({
-          name: "Item 2",
+          name: "Item 2"
         });
         expect(view.getWidth()).toBe(110);
       });
@@ -1467,9 +1467,9 @@ describe("Ext.view.View", function () {
           [
             createModel({
               name: "a",
-              size: 10,
-            }),
-          ],
+              size: 10
+            })
+          ]
         );
         expect(view.getWidth()).toBe(10);
         view.getStore().first().set("size", 100);
@@ -1485,7 +1485,7 @@ describe("Ext.view.View", function () {
             tpl:
               tpl ||
               '<tpl for="."><div class="x-tpl-item" style="height: 10px;">{name}</div></tpl>',
-            itemSelector: ".x-tpl-item",
+            itemSelector: ".x-tpl-item"
           },
           data || [
             createModel("a"),
@@ -1497,8 +1497,8 @@ describe("Ext.view.View", function () {
             createModel("g"),
             createModel("h"),
             createModel("i"),
-            createModel("j"),
-          ],
+            createModel("j")
+          ]
         );
       }
 
@@ -1510,7 +1510,7 @@ describe("Ext.view.View", function () {
         store.removeAll();
         for (var i = 1; i <= 5; ++i) {
           store.add({
-            name: "Item " + i,
+            name: "Item " + i
           });
         }
         store.resumeEvents();
@@ -1522,7 +1522,7 @@ describe("Ext.view.View", function () {
         makeShrinkWrapView();
         expect(view.getHeight()).toBe(100);
         view.getStore().add({
-          name: "Item 2",
+          name: "Item 2"
         });
         expect(view.getHeight()).toBe(110);
       });
@@ -1539,9 +1539,9 @@ describe("Ext.view.View", function () {
           [
             createModel({
               name: "a",
-              size: 10,
-            }),
-          ],
+              size: 10
+            })
+          ]
         );
         expect(view.getHeight()).toBe(10);
         view.getStore().first().set("size", 100);
@@ -1553,7 +1553,7 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
         [
           createModel("a"),
@@ -1562,8 +1562,8 @@ describe("Ext.view.View", function () {
           createModel("e"),
           createModel("g"),
           createModel("h"),
-          createModel("j"),
-        ],
+          createModel("j")
+        ]
       );
       view.getStore().sort("name");
 
@@ -1578,7 +1578,7 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
         [
           createModel("a"),
@@ -1590,8 +1590,8 @@ describe("Ext.view.View", function () {
           createModel("g"),
           createModel("h"),
           createModel("i"),
-          createModel("j"),
-        ],
+          createModel("j")
+        ]
       );
 
       var store = view.getStore(),
@@ -1602,7 +1602,7 @@ describe("Ext.view.View", function () {
         byName("b"),
         byName("e"),
         byName("f"),
-        byName("i"),
+        byName("i")
       ]);
       expect(view.componentLayoutCounter).toBe(counter + 1);
     });
@@ -1615,9 +1615,9 @@ describe("Ext.view.View", function () {
           renderTo: Ext.getBody(),
           deferEmptyText: deferEmptyText,
           itemTpl: "{name}",
-          emptyText: "Foo",
+          emptyText: "Foo"
         },
-        data,
+        data
       );
     }
 
@@ -1633,7 +1633,7 @@ describe("Ext.view.View", function () {
         createSimpleView(false);
         expect(view.getEl().dom.childNodes.length).toBe(store.getCount() + 1);
         expect(
-          view.getEl().dom.childNodes[store.getCount()] === view.tabGuardEl,
+          view.getEl().dom.childNodes[store.getCount()] === view.tabGuardEl
         ).toBe(true);
       });
     });
@@ -1658,7 +1658,7 @@ describe("Ext.view.View", function () {
         createSimpleView(true);
         expect(view.getEl().dom.childNodes.length).toBe(store.getCount() + 1);
         expect(
-          view.getEl().dom.childNodes[store.getCount()] === view.tabGuardEl,
+          view.getEl().dom.childNodes[store.getCount()] === view.tabGuardEl
         ).toBe(true);
       });
 
@@ -1667,15 +1667,15 @@ describe("Ext.view.View", function () {
           model: TestModel,
           proxy: {
             type: "ajax",
-            url: "foo",
-          },
+            url: "foo"
+          }
         });
 
         createView({
           deferEmptyText: true,
           itemTpl: "{name}",
           emptyText: "Foo",
-          store: store,
+          store: store
         });
         store.load();
         completeRequest([]);
@@ -1697,14 +1697,14 @@ describe("Ext.view.View", function () {
         createSimpleView(false, []);
         store.loadData([
           {
-            name: "Item1",
+            name: "Item1"
           },
           {
-            name: "Item2",
+            name: "Item2"
           },
           {
-            name: "Item3",
-          },
+            name: "Item3"
+          }
         ]);
         expect(view.getEl().dom).not.hasHTML("Foo");
       });
@@ -1732,10 +1732,10 @@ describe("Ext.view.View", function () {
           itemTpl: new Ext.XTemplate("{name:this.doRender}", {
             doRender: function (v) {
               return renderFn ? renderFn(v) : v;
-            },
-          }),
+            }
+          })
         },
-        data,
+        data
       );
     }
 
@@ -1838,7 +1838,7 @@ describe("Ext.view.View", function () {
         {
           renderTo: render ? Ext.getBody() : undefined,
           itemTpl: "{name}",
-          multiSelect: true,
+          multiSelect: true
         },
         [
           (a = createModel("a")),
@@ -1847,8 +1847,8 @@ describe("Ext.view.View", function () {
           (d = createModel("d")),
           (e = createModel("e")),
           (f = createModel("f")),
-          (g = createModel("g")),
-        ],
+          (g = createModel("g"))
+        ]
       );
       sm = view.getSelectionModel();
     }
@@ -1965,9 +1965,9 @@ describe("Ext.view.View", function () {
           itemCls: "foo",
           renderTo: Ext.getBody(),
           itemTpl: "{name}",
-          overItemCls: "over",
+          overItemCls: "over"
         },
-        makeData(10),
+        makeData(10)
       );
     });
 
@@ -2016,14 +2016,14 @@ describe("Ext.view.View", function () {
           tpl: new Ext.XTemplate(
             '<tpl for=".">',
             '<p style="margin: 0;" class="foo">{name}</p>',
-            "</tpl>",
+            "</tpl>"
           ),
           itemSelector: "p.foo",
           height: 100,
           autoScroll: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        makeData(50),
+        makeData(50)
       );
 
       node = view.getNode(49);
@@ -2043,18 +2043,18 @@ describe("Ext.view.View", function () {
           tpl: new Ext.XTemplate(
             '<tpl for=".">',
             '<p style="margin: 0;" class="foo">{name}</p>',
-            "</tpl>",
+            "</tpl>"
           ),
-          itemSelector: "p.foo",
+          itemSelector: "p.foo"
         },
-        makeData(50),
+        makeData(50)
       );
 
       container = new Ext.container.Container({
         height: 300,
         autoScroll: true,
         items: view,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       node = view.getNode(49);
@@ -2081,7 +2081,7 @@ describe("Ext.view.View", function () {
       createView({
         renderTo: Ext.getBody(),
         itemTpl: "{name}",
-        store: null,
+        store: null
       });
 
       expect(view.getNodes().length).toBe(0);
@@ -2090,9 +2090,9 @@ describe("Ext.view.View", function () {
         model: TestModel,
         data: [
           {
-            name: "NewItem",
-          },
-        ],
+            name: "NewItem"
+          }
+        ]
       });
       view.bindStore(store);
       expect(view.refreshCounter).toBe(count + 1);
@@ -2103,9 +2103,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeData(5),
+        makeData(5)
       );
 
       expect(view.getNodes().length).toBe(5);
@@ -2114,9 +2114,9 @@ describe("Ext.view.View", function () {
         model: TestModel,
         data: [
           {
-            name: "NewItem",
-          },
-        ],
+            name: "NewItem"
+          }
+        ]
       });
       view.bindStore(other);
       expect(view.refreshCounter).toBe(count + 1);
@@ -2127,9 +2127,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeData(10),
+        makeData(10)
       );
 
       expect(view.getNodes().length).toBe(10);
@@ -2138,8 +2138,8 @@ describe("Ext.view.View", function () {
         model: TestModel,
         proxy: {
           type: "ajax",
-          url: "fakeUrl",
-        },
+          url: "fakeUrl"
+        }
       });
 
       other.load();
@@ -2154,16 +2154,16 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeData(3),
+        makeData(3)
       );
 
       view.getSelectionModel().select(store.getAt(0));
 
       other = new Ext.data.Store({
         model: TestModel,
-        data: makeData(3),
+        data: makeData(3)
       });
 
       expect(function () {
@@ -2175,9 +2175,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeDataWithId(3),
+        makeDataWithId(3)
       );
 
       var selModel = view.getSelectionModel();
@@ -2186,7 +2186,7 @@ describe("Ext.view.View", function () {
 
       other = new Ext.data.Store({
         model: TestModel,
-        data: makeDataWithId(3),
+        data: makeDataWithId(3)
       });
 
       view.bindStore(other);
@@ -2207,7 +2207,7 @@ describe("Ext.view.View", function () {
       createView({
         renderTo: Ext.getBody(),
         itemTpl: "{name}",
-        store: null,
+        store: null
       });
 
       expect(view.getNodes().length).toBe(0);
@@ -2216,9 +2216,9 @@ describe("Ext.view.View", function () {
         model: TestModel,
         data: [
           {
-            name: "NewItem",
-          },
-        ],
+            name: "NewItem"
+          }
+        ]
       });
       view.setStore(store);
       expect(view.refreshCounter).toBe(count + 1);
@@ -2229,9 +2229,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeData(5),
+        makeData(5)
       );
 
       expect(view.getNodes().length).toBe(5);
@@ -2240,9 +2240,9 @@ describe("Ext.view.View", function () {
         model: TestModel,
         data: [
           {
-            name: "NewItem",
-          },
-        ],
+            name: "NewItem"
+          }
+        ]
       });
       view.setStore(other);
       expect(view.refreshCounter).toBe(count + 1);
@@ -2253,9 +2253,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeData(10),
+        makeData(10)
       );
 
       expect(view.getNodes().length).toBe(10);
@@ -2264,8 +2264,8 @@ describe("Ext.view.View", function () {
         model: TestModel,
         proxy: {
           type: "ajax",
-          url: "fakeUrl",
-        },
+          url: "fakeUrl"
+        }
       });
 
       other.load();
@@ -2280,16 +2280,16 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeData(3),
+        makeData(3)
       );
 
       view.getSelectionModel().select(store.getAt(0));
 
       other = new Ext.data.Store({
         model: TestModel,
-        data: makeData(3),
+        data: makeData(3)
       });
 
       expect(function () {
@@ -2301,9 +2301,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        makeDataWithId(3),
+        makeDataWithId(3)
       );
 
       var selModel = view.getSelectionModel();
@@ -2312,7 +2312,7 @@ describe("Ext.view.View", function () {
 
       other = new Ext.data.Store({
         model: TestModel,
-        data: makeDataWithId(3),
+        data: makeDataWithId(3)
       });
 
       view.setStore(other);
@@ -2338,8 +2338,8 @@ describe("Ext.view.View", function () {
         viewModel.setStores({
           things: {
             model: TestModel,
-            data: makeData(5),
-          },
+            data: makeData(5)
+          }
         });
 
         createView({
@@ -2347,7 +2347,7 @@ describe("Ext.view.View", function () {
           itemTpl: "{name}",
           store: null,
           bind: "{things}",
-          viewModel: viewModel,
+          viewModel: viewModel
         });
         expect(view.getNodes().length).toBe(0);
         viewModel.notify();
@@ -2369,11 +2369,11 @@ describe("Ext.view.View", function () {
             {
               renderTo: Ext.getBody(),
               itemTpl: "{name}",
-              viewModel: viewModel,
+              viewModel: viewModel
             },
-            cfg,
+            cfg
           ),
-          [a, b, c, d],
+          [a, b, c, d]
         );
         selModel = view.getSelectionModel();
       }
@@ -2394,7 +2394,7 @@ describe("Ext.view.View", function () {
       describe("reference", function () {
         beforeEach(function () {
           makeViewModelView({
-            reference: "userList",
+            reference: "userList"
           });
           viewModel.bind("{userList.selection}", spy);
           viewModel.notify();
@@ -2437,8 +2437,8 @@ describe("Ext.view.View", function () {
         beforeEach(function () {
           makeViewModelView({
             bind: {
-              selection: "{foo}",
-            },
+              selection: "{foo}"
+            }
           });
           viewModel.bind("{foo}", spy);
           viewModel.notify();
@@ -2504,7 +2504,7 @@ describe("Ext.view.View", function () {
 
             store.setProxy({
               type: "ajax",
-              url: "fake",
+              url: "fake"
             });
             store.load();
           });
@@ -2549,9 +2549,9 @@ describe("Ext.view.View", function () {
               renderTo: Ext.getBody(),
               mask: true,
               itemTpl: "{name}",
-              store: store,
+              store: store
             },
-            [],
+            []
           );
           mask = view.loadMask;
         }
@@ -2593,7 +2593,7 @@ describe("Ext.view.View", function () {
         it("should show a mask when using a chained store with a source that loads", function () {
           makeLoadView();
           var chained = new Ext.data.ChainedStore({
-            source: store,
+            source: store
           });
           view.bindStore(chained);
           store.load();
@@ -2609,7 +2609,7 @@ describe("Ext.view.View", function () {
             renderTo: Ext.getBody(),
             mask: true,
             itemTpl: "{name}",
-            store: null,
+            store: null
           });
           store = makeStore([]);
         });
@@ -2634,7 +2634,7 @@ describe("Ext.view.View", function () {
 
         it("should show a mask when a source is loading when a chained store is bound", function () {
           var chained = new Ext.data.ChainedStore({
-            source: store,
+            source: store
           });
           store.load();
           view.bindStore(chained);
@@ -2651,7 +2651,7 @@ describe("Ext.view.View", function () {
         createView({
           renderTo: Ext.getBody(),
           mask: true,
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         });
         var mask = view.getRefItems()[0];
         expect(mask instanceof Ext.LoadMask);
@@ -2660,7 +2660,7 @@ describe("Ext.view.View", function () {
       it("should not return the mask if not created", function () {
         createView({
           mask: true,
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         });
         expect(view.getRefItems().length).toBe(0);
       });
@@ -2672,9 +2672,9 @@ describe("Ext.view.View", function () {
       createView(
         {
           renderTo: Ext.getBody(),
-          itemTpl: "{name}",
+          itemTpl: "{name}"
         },
-        10,
+        10
       );
     });
 
@@ -2705,7 +2705,7 @@ describe("Ext.view.View", function () {
       var count = Ext.Component.layoutSuspendCount;
       createView({
         renderTo: Ext.getBody(),
-        itemTpl: "{name}",
+        itemTpl: "{name}"
       });
       store.beginUpdate();
       view.destroy();

@@ -12,5 +12,5 @@ Ext.define("MainHub.overrides.grid.plugin.RowEditing", {
       this.startEdit(pos.record, pos.column);
       return true;
     }
-  },
+  }
 });

@@ -262,7 +262,7 @@ Ext.define("Ext.tree.Panel", {
     "Ext.selection.TreeModel",
     "Ext.tree.Column",
     "Ext.data.TreeStore",
-    "Ext.tree.NavigationModel",
+    "Ext.tree.NavigationModel"
   ],
   viewType: "treeview",
 
@@ -294,7 +294,7 @@ Ext.define("Ext.tree.Panel", {
 
   ddConfig: {
     enableDrag: true,
-    enableDrop: true,
+    enableDrop: true
   },
 
   /**
@@ -362,7 +362,7 @@ Ext.define("Ext.tree.Panel", {
     "useArrows",
     "lines",
     "rootVisible",
-    "scroll",
+    "scroll"
   ],
   lockedCfgCopy: [
     "displayField",
@@ -370,7 +370,7 @@ Ext.define("Ext.tree.Panel", {
     "singleExpand",
     "useArrows",
     "lines",
-    "rootVisible",
+    "rootVisible"
   ],
 
   isTree: true,
@@ -444,9 +444,9 @@ Ext.define("Ext.tree.Panel", {
         singleExpand: me.singleExpand,
         node: store.getRoot(),
         navigationModel: "tree",
-        isAutoTree: autoTree,
+        isAutoTree: autoTree
       },
-      me.viewConfig,
+      me.viewConfig
     );
 
     if (autoTree) {
@@ -456,8 +456,8 @@ Ext.define("Ext.tree.Panel", {
           xtype: "treecolumn",
           text: me.hideHeaders === true ? "Name" : null,
           flex: 1,
-          dataIndex: me.displayField,
-        },
+          dataIndex: me.displayField
+        }
       ];
     }
 
@@ -498,7 +498,7 @@ Ext.define("Ext.tree.Panel", {
        * @event afteritemcollapse
        * @inheritdoc Ext.tree.View#afteritemcollapse
        */
-      "afteritemcollapse",
+      "afteritemcollapse"
     ]);
   },
 
@@ -515,9 +515,9 @@ Ext.define("Ext.tree.Panel", {
       store = Ext.apply(
         {
           type: "tree",
-          proxy: "memory",
+          proxy: "memory"
         },
-        store,
+        store
       );
       if (me.root) {
         store.root = me.root;
@@ -589,7 +589,7 @@ Ext.define("Ext.tree.Panel", {
     me.storeListeners = me.mon(store, {
       destroyable: true,
       rootchange: me.onRootChange,
-      scope: me,
+      scope: me
     });
 
     // Relay store events. relayEvents always returns a Destroyable object.
@@ -604,7 +604,7 @@ Ext.define("Ext.tree.Panel", {
        * @event load
        * @inheritdoc Ext.data.TreeStore#load
        */
-      "load",
+      "load"
     ]);
 
     // If rootVisible is false, we *might* need to expand the node.
@@ -729,7 +729,7 @@ Ext.define("Ext.tree.Panel", {
        * @inheritdoc Ext.data.TreeStore#nodebeforecollapse
        */
       beforecollapse: me.createRelayer("beforeitemcollapse", [0, 1]),
-      scope: me,
+      scope: me
     });
   },
 
@@ -947,7 +947,7 @@ Ext.define("Ext.tree.Panel", {
         return Ext.callback(callback, scope || me, [
           true,
           node,
-          view.getNode(node),
+          view.getNode(node)
         ]);
       }
 
@@ -1009,7 +1009,7 @@ Ext.define("Ext.tree.Panel", {
         success,
         lastExpanded,
         lastExpandedHtmlNode,
-        targetNode,
+        targetNode
       ) {
         if (!targetNode && success && lastExpanded) {
           targetNode = lastExpanded.findChild(field, last);
@@ -1071,7 +1071,7 @@ Ext.define("Ext.tree.Panel", {
       separator: separator,
       select: true,
       callback: callback,
-      scope: scope,
+      scope: scope
     });
-  },
+  }
 });

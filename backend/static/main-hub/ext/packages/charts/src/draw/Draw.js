@@ -240,7 +240,7 @@ Ext.define("Ext.draw.Draw", {
       x1: control1X,
       y1: control1Y,
       x2: control2X,
-      y2: control2Y,
+      y2: control2Y
     };
   },
 
@@ -295,7 +295,7 @@ Ext.define("Ext.draw.Draw", {
     }
     return {
       smoothX: smoothX,
-      smoothY: smoothY,
+      smoothY: smoothY
     };
   },
 
@@ -312,12 +312,12 @@ Ext.define("Ext.draw.Draw", {
           "data-sticky": true,
           //</debug>
           style:
-            "position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; background: rgba(0,0,0,0.001); z-index: 100000",
+            "position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; background: rgba(0,0,0,0.001); z-index: 100000"
         });
       }
     : Ext.emptyFn,
 
   endUpdateIOS: function () {
     this.iosUpdateEl = Ext.destroy(this.iosUpdateEl);
-  },
+  }
 });

@@ -3,7 +3,7 @@ describe("Ext.data.validator.Exclusion", function () {
 
   function validate(value, list) {
     v = new Ext.data.validator.Exclusion({
-      list: list,
+      list: list
     });
     return v.validate(value);
   }
@@ -38,7 +38,7 @@ describe("Ext.data.validator.Exclusion", function () {
     it("should accept a custom message", function () {
       v = new Ext.data.validator.Exclusion({
         message: "Foo",
-        list: [1],
+        list: [1]
       });
       expect(v.validate(1)).toBe("Foo");
     });
@@ -47,7 +47,7 @@ describe("Ext.data.validator.Exclusion", function () {
   describe("runtime changes", function () {
     it("should be able to have a new list applied", function () {
       v = new Ext.data.validator.Exclusion({
-        list: [1, 2, 3],
+        list: [1, 2, 3]
       });
       expect(v.validate(5)).toBe(true);
       v.setList([3, 4, 5]);

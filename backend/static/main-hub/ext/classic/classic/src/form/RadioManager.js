@@ -26,5 +26,5 @@ Ext.define("Ext.form.RadioManager", {
     return this.findBy(function (item) {
       return item.name === name && item.checked && item.getFormId() === formId;
     });
-  },
+  }
 });

@@ -20,14 +20,14 @@ describe("Ext.field.Number", function () {
   describe("configurations", function () {
     describe("minValue", function () {
       var defaultConfig = {
-        minValue: 10,
+        minValue: 10
       };
       describe("configuration", function () {
         it("should add the min attribute to the inputEl", function () {
           create(defaultConfig);
           render();
           expect(field.getComponent().inputElement.getAttribute("min")).toEqual(
-            "10",
+            "10"
           );
         });
       });
@@ -40,7 +40,7 @@ describe("Ext.field.Number", function () {
               field.setMinValue(10);
               render();
               expect(
-                field.getComponent().inputElement.getAttribute("min"),
+                field.getComponent().inputElement.getAttribute("min")
               ).toEqual("10");
             });
           });
@@ -51,7 +51,7 @@ describe("Ext.field.Number", function () {
               render();
               field.setMinValue(10);
               expect(
-                field.getComponent().inputElement.getAttribute("min"),
+                field.getComponent().inputElement.getAttribute("min")
               ).toEqual("10");
             });
           });
@@ -64,7 +64,7 @@ describe("Ext.field.Number", function () {
               field.setMinValue(null);
               render();
               expect(
-                field.getComponent().inputElement.getAttribute("min"),
+                field.getComponent().inputElement.getAttribute("min")
               ).toBeNull();
             });
           });
@@ -75,7 +75,7 @@ describe("Ext.field.Number", function () {
               render();
               field.setMinValue(null);
               expect(
-                field.getComponent().inputElement.getAttribute("min"),
+                field.getComponent().inputElement.getAttribute("min")
               ).toBeNull();
             });
           });
@@ -85,7 +85,7 @@ describe("Ext.field.Number", function () {
 
     describe("maxValue", function () {
       var defaultConfig = {
-        maxValue: 10,
+        maxValue: 10
       };
 
       describe("configuration", function () {
@@ -93,7 +93,7 @@ describe("Ext.field.Number", function () {
           create(defaultConfig);
           render();
           expect(field.getComponent().inputElement.getAttribute("max")).toEqual(
-            "10",
+            "10"
           );
         });
       });
@@ -106,7 +106,7 @@ describe("Ext.field.Number", function () {
               field.setMaxValue(10);
               render();
               expect(
-                field.getComponent().inputElement.getAttribute("max"),
+                field.getComponent().inputElement.getAttribute("max")
               ).toEqual("10");
             });
           });
@@ -117,7 +117,7 @@ describe("Ext.field.Number", function () {
               render();
               field.setMaxValue(10);
               expect(
-                field.getComponent().inputElement.getAttribute("max"),
+                field.getComponent().inputElement.getAttribute("max")
               ).toEqual("10");
             });
           });
@@ -130,7 +130,7 @@ describe("Ext.field.Number", function () {
               field.setMaxValue(null);
               render();
               expect(
-                field.getComponent().inputElement.getAttribute("max"),
+                field.getComponent().inputElement.getAttribute("max")
               ).toBeNull();
             });
           });
@@ -141,7 +141,7 @@ describe("Ext.field.Number", function () {
               render();
               field.setMaxValue(null);
               expect(
-                field.getComponent().inputElement.getAttribute("max"),
+                field.getComponent().inputElement.getAttribute("max")
               ).toBeNull();
             });
           });
@@ -151,7 +151,7 @@ describe("Ext.field.Number", function () {
 
     describe("stepValue", function () {
       var defaultConfig = {
-        stepValue: 10,
+        stepValue: 10
       };
 
       describe("configuration", function () {
@@ -159,7 +159,7 @@ describe("Ext.field.Number", function () {
           create(defaultConfig);
           render();
           expect(
-            field.getComponent().inputElement.getAttribute("step"),
+            field.getComponent().inputElement.getAttribute("step")
           ).toEqual("10");
         });
       });
@@ -172,7 +172,7 @@ describe("Ext.field.Number", function () {
               field.setStepValue(10);
               render();
               expect(
-                field.getComponent().inputElement.getAttribute("step"),
+                field.getComponent().inputElement.getAttribute("step")
               ).toEqual("10");
             });
           });
@@ -183,7 +183,7 @@ describe("Ext.field.Number", function () {
               render();
               field.setStepValue(10);
               expect(
-                field.getComponent().inputElement.getAttribute("step"),
+                field.getComponent().inputElement.getAttribute("step")
               ).toEqual("10");
             });
           });
@@ -196,7 +196,7 @@ describe("Ext.field.Number", function () {
               field.setStepValue(null);
               render();
               expect(
-                field.getComponent().inputElement.getAttribute("step"),
+                field.getComponent().inputElement.getAttribute("step")
               ).toBeNull();
             });
           });
@@ -207,7 +207,7 @@ describe("Ext.field.Number", function () {
               render();
               field.setStepValue(null);
               expect(
-                field.getComponent().inputElement.getAttribute("step"),
+                field.getComponent().inputElement.getAttribute("step")
               ).toBeNull();
             });
           });

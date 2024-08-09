@@ -47,11 +47,11 @@ Ext.define("Ext.grid.column.Number", {
     format: null,
 
     defaultEditor: {
-      xtype: "numberfield",
+      xtype: "numberfield"
     },
 
     cell: {
-      xtype: "numbercell",
-    },
-  },
+      xtype: "numbercell"
+    }
+  }
 });

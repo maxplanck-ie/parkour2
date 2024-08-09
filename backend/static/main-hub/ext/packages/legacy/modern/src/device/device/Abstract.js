@@ -100,5 +100,5 @@ Ext.define("Ext.device.device.Abstract", {
    */
   openURL: function (url) {
     window.location = url;
-  },
+  }
 });

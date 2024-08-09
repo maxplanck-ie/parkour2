@@ -72,7 +72,7 @@ Ext.define("Ext.form.Basic", {
     "Ext.form.action.StandardSubmit",
     "Ext.window.MessageBox",
     "Ext.data.ErrorCollection",
-    "Ext.util.DelayedTask",
+    "Ext.util.DelayedTask"
   ],
 
   // Not a public API config, this is useful when we're unit testing so we can
@@ -144,7 +144,7 @@ Ext.define("Ext.form.Basic", {
       disable: me.checkValidityDelay,
       dirtychange: me.checkDirtyDelay,
       errorchange: me.checkErrorDelay,
-      scope: me,
+      scope: me
     };
 
     me.checkValidityTask = new Ext.util.DelayedTask(me.checkValidity, me);
@@ -159,7 +159,7 @@ Ext.define("Ext.form.Basic", {
       scope: me,
       addHandler: me.onFieldAdd,
       removeHandler: me.onFieldRemove,
-      invalidateHandler: me.onMonitorInvalidate,
+      invalidateHandler: me.onMonitorInvalidate
     });
     me.monitor.bind(owner);
 
@@ -174,7 +174,7 @@ Ext.define("Ext.form.Basic", {
     if (reader && !reader.isReader) {
       if (typeof reader === "string") {
         reader = {
-          type: reader,
+          type: reader
         };
       }
       me.reader = Ext.createByAlias("reader." + reader.type, reader);
@@ -184,7 +184,7 @@ Ext.define("Ext.form.Basic", {
     if (reader && !reader.isReader) {
       if (typeof reader === "string") {
         reader = {
-          type: reader,
+          type: reader
         };
       }
       me.errorReader = Ext.createByAlias("reader." + reader.type, reader);
@@ -653,7 +653,7 @@ Ext.define("Ext.form.Basic", {
     if (Ext.isString(action)) {
       action = Ext.ClassManager.instantiateByAlias(
         "formaction." + action,
-        Ext.apply({}, options, { form: this }),
+        Ext.apply({}, options, { form: this })
       );
     }
     if (this.fireEvent("beforeaction", this, action) !== false) {
@@ -1079,7 +1079,7 @@ Ext.define("Ext.form.Basic", {
     dirtyOnly,
     includeEmptyText,
     useDataValues,
-    isSubmitting,
+    isSubmitting
   ) {
     var values = {},
       fields = this.getFields().items,
@@ -1097,7 +1097,7 @@ Ext.define("Ext.form.Basic", {
       if (!dirtyOnly || field.isDirty()) {
         data = field[useDataValues ? "getModelData" : "getSubmitData"](
           includeEmptyText,
-          isSubmitting,
+          isSubmitting
         );
 
         if (Ext.isObject(data)) {
@@ -1237,5 +1237,5 @@ Ext.define("Ext.form.Basic", {
     }
 
     return this;
-  },
+  }
 });

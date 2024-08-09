@@ -56,7 +56,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
 
@@ -72,10 +72,10 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           cellSelect: true,
           columnSelect: true,
           rowSelect: true,
-          checkboxSelect: false,
+          checkboxSelect: false
         },
-        selModelCfg,
-      ),
+        selModelCfg
+      )
     );
 
     var data = [],
@@ -89,7 +89,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           dataIndex: "field" + i,
 
           // First column locked if locked passed
-          locked: locked && i === 1,
+          locked: locked && i === 1
         });
       }
     }
@@ -101,7 +101,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           field2: i * 10 + 2,
           field3: i * 10 + 3,
           field4: i * 10 + 4,
-          field5: i * 10 + 5,
+          field5: i * 10 + 5
         });
       } else {
         data.push({
@@ -109,16 +109,16 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           field2: i + "." + 2,
           field3: i + "." + 3,
           field4: i + "." + 4,
-          field5: i + "." + 5,
+          field5: i + "." + 5
         });
       }
     }
 
     storeCfg = Ext.apply(
       {
-        model: spec.SpreadsheetModel,
+        model: spec.SpreadsheetModel
       },
-      storeCfg,
+      storeCfg
     );
 
     // Apply the generated data to the store, or if a memory proxy, to the proxy
@@ -142,10 +142,10 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           selModel: selModel,
           width: 600,
           height: 300,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     view = grid.getView();
     selModel = grid.getSelectionModel();
@@ -155,7 +155,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
   beforeEach(function () {
     Ext.define("spec.SpreadsheetModel", {
       extend: "Ext.data.Model",
-      fields: ["field1", "field2", "field3", "field4", "field5"],
+      fields: ["field1", "field2", "field3", "field4", "field5"]
     });
 
     // Override so that we can control asynchronous loading
@@ -220,14 +220,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           viewModel: {
             stores: {
               people: {
-                model: "spec.SpreadsheetModel",
-              },
-            },
+                model: "spec.SpreadsheetModel"
+              }
+            }
           },
           bind: {
-            store: "{people}",
+            store: "{people}"
           },
-          store: null,
+          store: null
         });
       }).not.toThrow();
     });
@@ -236,7 +236,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
   smDescribe("Non-rendered operation", function () {
     it("should allow reconfiguration before render", function () {
       makeGrid(null, {
-        renderTo: null,
+        renderTo: null
       });
 
       // These configs have to work before render
@@ -253,12 +253,12 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       var cell;
 
       makeGrid(null, {
-        renderTo: null,
+        renderTo: null
       });
 
       selModel.selectCells(
         (cell = new Ext.grid.CellContext(view).setPosition(2, 2)),
-        cell,
+        cell
       );
 
       grid.render(document.body);
@@ -266,7 +266,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
     });
     it("should allow selection of cells before render using array notation", function () {
       makeGrid(null, {
-        renderTo: null,
+        renderTo: null
       });
 
       // Maintainer: Array cell specification order is [x, y] (column, row)
@@ -279,7 +279,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
     });
     it("should allow selection of records before render", function () {
       makeGrid(null, {
-        renderTo: null,
+        renderTo: null
       });
 
       selModel.select(store.getAt(2));
@@ -292,7 +292,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
     });
     it("should allow selection of columns before render", function () {
       makeGrid(null, {
-        renderTo: null,
+        renderTo: null
       });
 
       selModel.selectColumn(colRef[2]);
@@ -301,7 +301,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 2
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[2].getCellSelector()).length,
+        view.el.query(colRef[2].getCellSelector()).length
       );
       expect(isColumnSelected(2)).toBe(true);
     });
@@ -316,7 +316,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all rows
       expect(view.el.query("." + view.selectedItemCls).length).toBe(
-        store.getCount(),
+        store.getCount()
       );
 
       jasmine.fireMouseEvent(colRef[0].el.dom, "click");
@@ -329,7 +329,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       // Should have selected all rows
       expect(selModel.getSelected().allSelected).toBe(true);
       expect(view.el.query("." + view.selectedItemCls).length).toBe(
-        store.getCount(),
+        store.getCount()
       );
 
       // Confirm that row 2 is selected, then click the rownumberer cell in row 2
@@ -339,7 +339,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       // Should have deselected row 2
       expect(selModel.getSelected().allSelected).toBe(false);
       expect(view.el.query("." + view.selectedItemCls).length).toBe(
-        store.getCount() - 1,
+        store.getCount() - 1
       );
       expect(selModel.isSelected(2)).toBe(false);
 
@@ -349,7 +349,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       // Should have selected all cells
       expect(selModel.getSelected().allSelected).toBe(true);
       expect(view.el.query("." + view.selectedItemCls).length).toBe(
-        store.getCount(),
+        store.getCount()
       );
     });
   });
@@ -363,7 +363,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 1
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[1].getCellSelector()).length,
+        view.el.query(colRef[1].getCellSelector()).length
       );
       expect(isColumnSelected(1)).toBe(true);
 
@@ -382,7 +382,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 1
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[1].getCellSelector()).length,
+        view.el.query(colRef[1].getCellSelector()).length
       );
       expect(isColumnSelected(1)).toBe(true);
 
@@ -390,7 +390,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 2
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[2].getCellSelector()).length,
+        view.el.query(colRef[2].getCellSelector()).length
       );
       expect(isColumnSelected(2)).toBe(true);
 
@@ -399,7 +399,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 3
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[3].getCellSelector()).length,
+        view.el.query(colRef[3].getCellSelector()).length
       );
       expect(isColumnSelected(3)).toBe(true);
 
@@ -413,7 +413,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 1
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[1].getCellSelector()).length,
+        view.el.query(colRef[1].getCellSelector()).length
       );
       expect(isColumnSelected(1)).toBe(true);
 
@@ -423,7 +423,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       // Should have selected all cells under column 2
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
         view.el.query(colRef[1].getCellSelector()).length +
-          view.el.query(colRef[2].getCellSelector()).length,
+          view.el.query(colRef[2].getCellSelector()).length
       );
       expect(isColumnSelected(1)).toBe(true);
       expect(isColumnSelected(2)).toBe(true);
@@ -434,14 +434,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         "keydown",
         Ext.event.Event.SPACE,
         false,
-        true,
+        true
       );
 
       // Should have selected all cells under column 3
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
         view.el.query(colRef[1].getCellSelector()).length +
           view.el.query(colRef[2].getCellSelector()).length +
-          view.el.query(colRef[3].getCellSelector()).length,
+          view.el.query(colRef[3].getCellSelector()).length
       );
       expect(isColumnSelected(1)).toBe(true);
       expect(isColumnSelected(2)).toBe(true);
@@ -454,7 +454,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       makeGrid(null, null, {
         cellSelect: false,
         rowSelect: false,
-        columnSelect: true,
+        columnSelect: true
       });
 
       var c2 = findCell(2, 2),
@@ -481,14 +481,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
         view.el.query(colRef[2].getCellSelector()).length +
           view.el.query(colRef[3].getCellSelector()).length +
-          view.el.query(colRef[4].getCellSelector()).length,
+          view.el.query(colRef[4].getCellSelector()).length
       );
     });
     it("should allow click/SHIFT click selection of columns when cell and row selection is disabled", function () {
       makeGrid(null, null, {
         cellSelect: false,
         rowSelect: false,
-        columnSelect: true,
+        columnSelect: true
       });
 
       var c2 = findCell(2, 2),
@@ -511,14 +511,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
         view.el.query(colRef[2].getCellSelector()).length +
           view.el.query(colRef[3].getCellSelector()).length +
-          view.el.query(colRef[4].getCellSelector()).length,
+          view.el.query(colRef[4].getCellSelector()).length
       );
     });
     it("should allow click/CTRL click selection of columns when cell and row selection is disabled", function () {
       makeGrid(null, null, {
         cellSelect: false,
         rowSelect: false,
-        columnSelect: true,
+        columnSelect: true
       });
 
       var c2 = findCell(2, 2),
@@ -539,7 +539,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       // Should have selected all cells under column 2, 3 and 4
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
         view.el.query(colRef[2].getCellSelector()).length +
-          view.el.query(colRef[4].getCellSelector()).length,
+          view.el.query(colRef[4].getCellSelector()).length
       );
     });
   });
@@ -590,12 +590,12 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       clickRowNumberer(8, true);
       expect(selModel.selected.allSelected).toBe(false);
       expect(spy.mostRecentCall.args[0].selModel.selected.allSelected).toBe(
-        false,
+        false
       );
       clickRowNumberer(9, true);
       expect(selModel.selected.allSelected).toBe(true);
       expect(spy.mostRecentCall.args[0].selModel.selected.allSelected).toBe(
-        true,
+        true
       );
     });
 
@@ -631,7 +631,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         "keydown",
         Ext.event.Event.DOWN,
         null,
-        true,
+        true
       );
       jasmine.fireKeyEvent(findCell(3, 0), "keydown", Ext.event.Event.SPACE);
 
@@ -661,14 +661,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         "keydown",
         Ext.event.Event.DOWN,
         null,
-        true,
+        true
       );
       jasmine.fireKeyEvent(
         findCell(3, 0),
         "keydown",
         Ext.event.Event.SPACE,
         null,
-        true,
+        true
       );
 
       // Should have selected row 3
@@ -698,7 +698,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
     });
     it("should not copy the rownumberer column", function () {
       makeGrid(null, {
-        plugins: "clipboard",
+        plugins: "clipboard"
       });
       var clipboard = grid.findPlugin("clipboard"),
         data;
@@ -710,7 +710,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       expect(isRowSelected(1)).toBe(true);
 
       data = clipboard.getData(false, {
-        text: 1,
+        text: 1
       });
 
       // Only the data should be here, NOT the row number
@@ -735,8 +735,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           selModel: {
             type: "spreadsheet",
             checkboxSelect: true,
-            checkboxColumnIndex: 1,
-          },
+            checkboxColumnIndex: 1
+          }
         });
 
         checkbox = findCell(0, 1).down(".x-grid-checkcolumn").dom;
@@ -754,15 +754,15 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
             listeners: {
               selectionchange: function (sm, records) {
                 count = records.length;
-              },
-            },
-          },
+              }
+            }
+          }
         });
 
         checkbox = colRef[1].getEl().dom;
         jasmine.fireMouseEvent(checkbox, "click");
         expect(grid.getSelectionModel().getCount()).toBe(
-          grid.getStore().getCount(),
+          grid.getStore().getCount()
         );
         expect(count).toBe(grid.getStore().getCount());
         jasmine.fireMouseEvent(checkbox, "click");
@@ -780,14 +780,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       // It should drop this selection when we call selectRows
       selModel.selectCells(
         new Ext.grid.CellContext(view).setPosition(2, 2),
-        new Ext.grid.CellContext(view).setPosition(2, 4),
+        new Ext.grid.CellContext(view).setPosition(2, 4)
       );
 
       // Should have selected the 3 cells spanned
       expect(view.el.query("." + view.selectedCellCls).length).toBe(3);
 
       expect(
-        isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4),
+        isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4)
       ).toBe(true);
 
       selModel.selectRows(store.getAt(1));
@@ -858,7 +858,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
     });
     it("should not copy the rownumberer column", function () {
       makeGrid(null, {
-        plugins: "clipboard",
+        plugins: "clipboard"
       });
       var clipboard = grid.findPlugin("clipboard"),
         data;
@@ -870,7 +870,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       expect(isRowSelected(1)).toBe(true);
 
       data = clipboard.getData(false, {
-        text: 1,
+        text: 1
       });
 
       // Only the data should be here, NOT the row number
@@ -912,7 +912,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           isCellSelected(4, 3) &&
           isCellSelected(2, 4) &&
           isCellSelected(3, 4) &&
-          isCellSelected(4, 4),
+          isCellSelected(4, 4)
       ).toBe(true);
     });
     it("should select a range in a single row on drag", function () {
@@ -929,7 +929,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       expect(view.el.query("." + view.selectedCellCls).length).toBe(3);
 
       expect(
-        isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4),
+        isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4)
       ).toBe(true);
     });
     it("should work when the mouseup is outside the grid", function () {
@@ -946,7 +946,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       expect(view.el.query("." + view.selectedCellCls).length).toBe(3);
 
       expect(
-        isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4),
+        isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4)
       ).toBe(true);
     });
     describe("Range selection using selectCells", function () {
@@ -955,14 +955,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         selModel.selectCells(
           new Ext.grid.CellContext(view).setPosition(2, 2),
-          new Ext.grid.CellContext(view).setPosition(2, 4),
+          new Ext.grid.CellContext(view).setPosition(2, 4)
         );
 
         // Should have selected the 3 cells spanned
         expect(view.el.query("." + view.selectedCellCls).length).toBe(3);
 
         expect(
-          isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4),
+          isCellSelected(2, 2) && isCellSelected(2, 3) && isCellSelected(2, 4)
         ).toBe(true);
       });
       it("should work when using [x,y] arrays to describe the range", function () {
@@ -976,7 +976,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // Maintainer: isCellSelected param order is (row, column)
         expect(
-          isCellSelected(2, 2) && isCellSelected(3, 2) && isCellSelected(4, 2),
+          isCellSelected(2, 2) && isCellSelected(3, 2) && isCellSelected(4, 2)
         ).toBe(true);
       });
     });
@@ -1031,19 +1031,19 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
             text: "Field 1",
             dataIndex: "field1",
             editor: {
-              xtype: "textfield",
-            },
+              xtype: "textfield"
+            }
           },
           {
             text: "Field 2",
-            dataIndex: "field2",
-          },
+            dataIndex: "field2"
+          }
         ],
         {
           plugins: {
-            ptype: "cellediting",
-          },
-        },
+            ptype: "cellediting"
+          }
+        }
       );
 
       c1 = findCell(0, 1);
@@ -1068,8 +1068,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           null,
           {
             bbar: {
-              xtype: "pagingtoolbar",
-            },
+              xtype: "pagingtoolbar"
+            }
           },
           null,
           {
@@ -1077,9 +1077,9 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
             pageSize: 5,
             proxy: {
               type: "memory",
-              enablePaging: true,
-            },
-          },
+              enablePaging: true
+            }
+          }
         );
         store.proxy.enablePaging = true;
 
@@ -1097,7 +1097,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // Row zero has the selected class
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          true,
+          true
         );
 
         // Load page 2
@@ -1105,7 +1105,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // First row in new page NOT selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          false,
+          false
         );
 
         // Go back to page 1
@@ -1117,7 +1117,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // Row zero must not be selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          false,
+          false
         );
       });
     });
@@ -1128,20 +1128,20 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           null,
           {
             bbar: {
-              xtype: "pagingtoolbar",
-            },
+              xtype: "pagingtoolbar"
+            }
           },
           {
-            pruneRemoved: false,
+            pruneRemoved: false
           },
           {
             autoLoad: false,
             pageSize: 5,
             proxy: {
               type: "memory",
-              enablePaging: true,
-            },
-          },
+              enablePaging: true
+            }
+          }
         );
         store.proxy.enablePaging = true;
 
@@ -1159,7 +1159,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // Row zero has the selected class
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          true,
+          true
         );
 
         // Load page 2
@@ -1167,7 +1167,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // First row in new page NOT selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          false,
+          false
         );
 
         // Go back to page 1
@@ -1180,7 +1180,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // Row zero must be selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          true,
+          true
         );
       });
     });
@@ -1207,21 +1207,21 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
                       { name: "Evan" },
                       { name: "Don" },
                       { name: "Nige" },
-                      { name: "Alex" },
-                    ],
-                  },
+                      { name: "Alex" }
+                    ]
+                  }
                 },
-                storeCfg,
-              ),
+                storeCfg
+              )
             ),
             columns: [{ text: "Name", dataIndex: "name" }],
             selModel: selModel,
             height: 200,
             width: 200,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          gridCfg,
-        ),
+          gridCfg
+        )
       );
       store = grid.getStore();
       if (!storeCfg || storeCfg.autoLoad !== false) {
@@ -1254,7 +1254,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       beforeEach(function () {
         createGrid({
           reference: "userList",
-          viewModel: viewModel,
+          viewModel: viewModel
         });
         viewModel.bind("{userList.selection}", spy);
         viewModel.notify();
@@ -1303,8 +1303,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         createGrid({
           viewModel: viewModel,
           bind: {
-            selection: "{foo}",
-          },
+            selection: "{foo}"
+          }
         });
         viewModel.bind("{foo}", spy);
         viewModel.notify();
@@ -1404,7 +1404,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
             isCellSelected(2, 3) &&
             isCellSelected(3, 1) &&
             isCellSelected(3, 2) &&
-            isCellSelected(3, 2),
+            isCellSelected(3, 2)
         ).toBe(true);
       });
     });
@@ -1470,7 +1470,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
         // Should have selected all cells under column 1
         expect(view.el.query("." + view.selectedCellCls).length).toBe(
-          view.el.query(colRef[1].getCellSelector()).length,
+          view.el.query(colRef[1].getCellSelector()).length
         );
         expect(isColumnSelected(1)).toBe(true);
       });
@@ -1497,11 +1497,11 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         makeGrid(
           null,
           {
-            plugins: "clipboard",
+            plugins: "clipboard"
           },
           null,
           null,
-          true,
+          true
         );
         var clipboard = grid.findPlugin("clipboard"),
           data;
@@ -1515,7 +1515,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         // But the clipboard should sort them into the order they are in in the outermost grid
         data = clipboard.getCellData();
         expect(data).toEqual(
-          "1.1\t1.2\n2.1\t2.2\n3.1\t3.2\n4.1\t4.2\n5.1\t5.2\n6.1\t6.2\n7.1\t7.2\n8.1\t8.2\n9.1\t9.2\n10.1\t10.2",
+          "1.1\t1.2\n2.1\t2.2\n3.1\t3.2\n4.1\t4.2\n5.1\t5.2\n6.1\t6.2\n7.1\t7.2\n8.1\t8.2\n9.1\t9.2\n10.1\t10.2"
         );
       });
     });
@@ -1531,7 +1531,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 1
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[1].getCellSelector()).length,
+        view.el.query(colRef[1].getCellSelector()).length
       );
       expect(isColumnSelected(1)).toBe(true);
 
@@ -1544,7 +1544,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       // Should have selected all cells under columns 1 and  2
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
         view.el.query(colRef[1].getCellSelector()).length +
-          view.el.query(colRef[2].getCellSelector()).length,
+          view.el.query(colRef[2].getCellSelector()).length
       );
 
       // Both columns should be selected
@@ -1561,7 +1561,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
 
       // Should have selected all cells under column 1
       expect(view.el.query("." + view.selectedCellCls).length).toBe(
-        view.el.query(colRef[1].getCellSelector()).length,
+        view.el.query(colRef[1].getCellSelector()).length
       );
       expect(isColumnSelected(1)).toBe(true);
 
@@ -1576,7 +1576,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         view.el.query(colRef[1].getCellSelector()).length +
           view.el.query(colRef[2].getCellSelector()).length +
           view.el.query(colRef[3].getCellSelector()).length +
-          view.el.query(colRef[4].getCellSelector()).length,
+          view.el.query(colRef[4].getCellSelector()).length
       );
 
       // All four columns should be selected
@@ -1596,7 +1596,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       for (i = start; i < end; ++i) {
         recs.push({
           id: i,
-          title: "Title" + i,
+          title: "Title" + i
         });
       }
       return recs;
@@ -1618,8 +1618,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           status: 200,
           responseText: Ext.encode({
             total: total || 5000,
-            data: data,
-          }),
+            data: data
+          })
         });
 
         requests = Ext.Ajax.mockGetAllRequests();
@@ -1643,10 +1643,10 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
           url: "fakeUrl",
           reader: {
             type: "json",
-            rootProperty: "data",
-          },
+            rootProperty: "data"
+          }
         },
-        data: null,
+        data: null
       });
       store.loadPage(1);
       satisfyRequests();
@@ -1657,7 +1657,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
         null,
         null,
         {
-          checkboxSelect: true,
+          checkboxSelect: true
         },
         {
           buffered: true,
@@ -1667,11 +1667,11 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
             url: "fakeUrl",
             reader: {
               type: "json",
-              rootProperty: "data",
-            },
+              rootProperty: "data"
+            }
           },
-          data: null,
-        },
+          data: null
+        }
       );
       store.loadPage(1);
       satisfyRequests();
@@ -1712,21 +1712,21 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       makeGrid(
         null,
         {
-          plugins: "selectionreplicator",
+          plugins: "selectionreplicator"
         },
         {
-          extensible: false,
+          extensible: false
         },
         {
-          numeric: true,
-        },
+          numeric: true
+        }
       );
 
       jasmine.fireMouseEvent(findCell(1, 0), "click");
 
       expect(
         Ext.DomQuery.select(Ext.baseCSSPrefix + "ssm-extender-drag-handle")
-          .length,
+          .length
       ).toBe(0);
       expect(selModel.getExtensible()).toBeUndefined();
     });
@@ -1748,14 +1748,14 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
       makeGrid(
         null,
         {
-          plugins: "selectionreplicator",
+          plugins: "selectionreplicator"
         },
         {
-          extensible: "y",
+          extensible: "y"
         },
         {
-          numeric: true,
-        },
+          numeric: true
+        }
       );
       r0Data = Ext.clone(store.getAt(0).data);
       r1Data = Ext.clone(store.getAt(1).data);
@@ -1816,8 +1816,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
               type: "rows",
               start: extStart,
               end: extEnd,
-              rows: -3,
-            },
+              rows: -3
+            }
           );
 
           // The values should be restored to being incremented by one as in the initial load
@@ -1855,8 +1855,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
               type: "rows",
               start: extStart,
               end: extEnd,
-              rows: 3,
-            },
+              rows: 3
+            }
           );
 
           // The values should be restored to being incremented by one as in the initial load
@@ -1887,8 +1887,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
               type: "rows",
               start: extStart,
               end: extEnd,
-              rows: -3,
-            },
+              rows: -3
+            }
           );
 
           // The test is going to insist that the data objects be the same.
@@ -1923,8 +1923,8 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
               type: "rows",
               start: extStart,
               end: extEnd,
-              rows: 3,
-            },
+              rows: 3
+            }
           );
 
           // The test is going to insist that the data objects be the same.
@@ -1949,7 +1949,7 @@ describe("Ext.grid.selection.SpreadsheetModel", function () {
     beforeEach(function () {
       makeGrid(null, null, {
         checkboxSelect: true,
-        checkboxColumnIndex: 1,
+        checkboxColumnIndex: 1
       });
       newColumnSet = Ext.clone(grid.initialConfig.columns);
       visibleColumns = grid.getVisibleColumnManager().getColumns();

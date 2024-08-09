@@ -26,7 +26,7 @@ Ext.define("Ext.grid.selection.Replicator", {
     this.gridListeners = grid.on({
       beforeselectionextend: this.onBeforeSelectionExtend,
       scope: this,
-      destroyable: true,
+      destroyable: true
     });
   },
 
@@ -98,12 +98,12 @@ Ext.define("Ext.grid.selection.Replicator", {
       if (extension.rows < 0) {
         lastTwoRecords = [
           store.getAt(selFirstRowIdx + 1),
-          store.getAt(selFirstRowIdx),
+          store.getAt(selFirstRowIdx)
         ];
       } else {
         lastTwoRecords = [
           store.getAt(selLastRowIdx - 1),
-          store.getAt(selLastRowIdx),
+          store.getAt(selLastRowIdx)
         ];
       }
       lastTwoRecords[0] = me.getColumnValues(lastTwoRecords[0]);
@@ -155,7 +155,7 @@ Ext.define("Ext.grid.selection.Replicator", {
             if (!isNaN(prevValue)) {
               record.set(
                 column.dataIndex,
-                Ext.coerce(Number(prevValue) + values[j], prevValue),
+                Ext.coerce(Number(prevValue) + values[j], prevValue)
               );
             }
           }
@@ -193,5 +193,5 @@ Ext.define("Ext.grid.selection.Replicator", {
   destroy: function () {
     this.gridListeners = Ext.destroy(this.gridListeners);
     this.callParent();
-  },
+  }
 });

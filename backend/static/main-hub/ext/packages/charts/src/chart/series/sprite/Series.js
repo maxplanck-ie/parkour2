@@ -7,7 +7,7 @@
 Ext.define("Ext.chart.series.sprite.Series", {
   extend: "Ext.draw.sprite.Sprite",
   mixins: {
-    markerHolder: "Ext.chart.MarkerHolder",
+    markerHolder: "Ext.chart.MarkerHolder"
   },
 
   inheritableStatics: {
@@ -50,7 +50,7 @@ Ext.define("Ext.chart.series.sprite.Series", {
         /**
          * @cfg {Object} [dataY=null] Data items on the y-axis.
          */
-        dataY: "data",
+        dataY: "data"
       },
 
       defaults: {
@@ -61,7 +61,7 @@ Ext.define("Ext.chart.series.sprite.Series", {
         rangeX: null,
         rangeY: null,
         dataX: null,
-        dataY: null,
+        dataY: null
       },
 
       triggers: {
@@ -70,9 +70,9 @@ Ext.define("Ext.chart.series.sprite.Series", {
         dataMinX: "bbox",
         dataMaxX: "bbox",
         dataMinY: "bbox",
-        dataMaxY: "bbox",
-      },
-    },
+        dataMaxY: "bbox"
+      }
+    }
   },
 
   config: {
@@ -87,6 +87,6 @@ Ext.define("Ext.chart.series.sprite.Series", {
     /**
      * @cfg {String} field The store field used by the series.
      */
-    field: null,
-  },
+    field: null
+  }
 });

@@ -25,18 +25,18 @@ Ext.define("Ext.chart.series.sprite.StackedCartesian", {
          * @private
          * @cfg {Object} [dataStartY=null] The starting point of the data used in the series.
          */
-        dataStartY: "data",
+        dataStartY: "data"
       },
       defaults: {
         selectionTolerance: 20,
         groupCount: 1,
         groupOffset: 0,
-        dataStartY: null,
+        dataStartY: null
       },
       triggers: {
-        dataStartY: "dataY,bbox",
-      },
-    },
+        dataStartY: "dataY,bbox"
+      }
+    }
   },
 
   /**
@@ -56,11 +56,11 @@ Ext.define("Ext.chart.series.sprite.StackedCartesian", {
       center = imat.transformPoint([x, y]),
       positionLB = imat.transformPoint([
         x - selectionTolerance,
-        y - selectionTolerance,
+        y - selectionTolerance
       ]),
       positionTR = imat.transformPoint([
         x + selectionTolerance,
-        y + selectionTolerance,
+        y + selectionTolerance
       ]),
       top = Math.min(positionLB[1], positionTR[1]),
       bottom = Math.max(positionLB[1], positionTR[1]),
@@ -75,7 +75,7 @@ Ext.define("Ext.chart.series.sprite.StackedCartesian", {
         dx = Math.abs(dataX[i] - center[0]);
         dy = Math.max(
           -Math.min(dataY[i] - center[1], center[1] - dataStartY[i]),
-          0,
+          0
         );
         if (dx < minX && dy <= minY) {
           minX = dx;
@@ -86,5 +86,5 @@ Ext.define("Ext.chart.series.sprite.StackedCartesian", {
     }
 
     return index;
-  },
+  }
 });

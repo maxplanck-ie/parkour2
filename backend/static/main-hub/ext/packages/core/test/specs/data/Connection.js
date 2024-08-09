@@ -30,10 +30,10 @@ describe("Ext.data.Connection", function () {
     it("should fire a beforerequest event", function () {
       makeConnection();
       var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         },
         options = {
-          url: "foo",
+          url: "foo"
         };
       spyOn(o, "fn");
       connection.on("beforerequest", o.fn);
@@ -48,7 +48,7 @@ describe("Ext.data.Connection", function () {
         return false;
       });
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
 
       expect(Ext.promise.Promise.is(request)).toBe(true);
@@ -59,7 +59,7 @@ describe("Ext.data.Connection", function () {
       var o = {
           fn: function () {
             scope = this;
-          },
+          }
         },
         options,
         scope;
@@ -67,7 +67,7 @@ describe("Ext.data.Connection", function () {
       options = {
         url: "foo",
         callback: o.fn,
-        scope: o,
+        scope: o
       };
       connection.on("beforerequest", function () {
         return false;
@@ -84,7 +84,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        method: "POST",
+        method: "POST"
       });
       expect(request.xhr.ajaxOptions.method).toEqual("POST");
     });
@@ -93,17 +93,17 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        method: "GET",
+        method: "GET"
       });
       expect(request.xhr.ajaxOptions.method).toEqual("GET");
     });
 
     it("should use the class default if specified", function () {
       makeConnection({
-        method: "POST",
+        method: "POST"
       });
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.method).toEqual("POST");
     });
@@ -112,7 +112,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        jsonData: "json",
+        jsonData: "json"
       });
 
       expect(request.xhr.ajaxOptions.method).toEqual("POST");
@@ -122,7 +122,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        xmlData: "xml",
+        xmlData: "xml"
       });
       expect(request.xhr.ajaxOptions.method).toEqual("POST");
     });
@@ -131,7 +131,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        rawData: "raw",
+        rawData: "raw"
       });
 
       expect(request.xhr.ajaxOptions.method).toEqual("POST");
@@ -142,8 +142,8 @@ describe("Ext.data.Connection", function () {
       request = connection.request({
         url: "foo",
         params: {
-          foo: "bar",
-        },
+          foo: "bar"
+        }
       });
       expect(request.xhr.ajaxOptions.method).toEqual("POST");
     });
@@ -151,11 +151,11 @@ describe("Ext.data.Connection", function () {
     it("should default to POST if we specify extraParams", function () {
       makeConnection({
         extraParams: {
-          foo: "bar",
-        },
+          foo: "bar"
+        }
       });
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.method).toEqual("POST");
     });
@@ -173,17 +173,17 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         disableCaching: false,
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo");
     });
 
     it("should default to the connection url if one isn't specified in the config", function () {
       makeConnection({
-        url: "bar",
+        url: "bar"
       });
       request = connection.request({
-        disableCaching: false,
+        disableCaching: false
       });
       expect(request.xhr.ajaxOptions.url).toEqual("bar");
     });
@@ -195,8 +195,8 @@ describe("Ext.data.Connection", function () {
         url: "foo",
         urlParams: {
           x: 1,
-          y: "a",
-        },
+          y: "a"
+        }
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo?x=1&y=a");
     });
@@ -208,9 +208,9 @@ describe("Ext.data.Connection", function () {
         url: "foo",
         params: {
           x: "a",
-          y: "b",
+          y: "b"
         },
-        method: "GET",
+        method: "GET"
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo?x=a&y=b");
     });
@@ -223,8 +223,8 @@ describe("Ext.data.Connection", function () {
         jsonData: "asdf",
         params: {
           x: "a",
-          y: "b",
-        },
+          y: "b"
+        }
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo?x=a&y=b");
     });
@@ -237,8 +237,8 @@ describe("Ext.data.Connection", function () {
         xmlData: "xml",
         params: {
           x: "a",
-          y: "b",
-        },
+          y: "b"
+        }
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo?x=a&y=b");
     });
@@ -251,8 +251,8 @@ describe("Ext.data.Connection", function () {
         rawData: "asdf",
         params: {
           x: "a",
-          y: "b",
-        },
+          y: "b"
+        }
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo?x=a&y=b");
     });
@@ -263,7 +263,7 @@ describe("Ext.data.Connection", function () {
         disableCaching: false,
         url: function () {
           return "foo";
-        },
+        }
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo");
     });
@@ -277,7 +277,7 @@ describe("Ext.data.Connection", function () {
             return "foo;";
           },
           scope: o,
-          disableCaching: false,
+          disableCaching: false
         },
         scope;
 
@@ -292,7 +292,7 @@ describe("Ext.data.Connection", function () {
     it("should disable caching by default", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.url).toMatch(/foo\?_dc=\d+/);
     });
@@ -301,7 +301,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        method: "POST",
+        method: "POST"
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo");
     });
@@ -310,17 +310,17 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        disableCaching: false,
+        disableCaching: false
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo");
     });
 
     it("should use the default caching if not specified", function () {
       makeConnection({
-        disableCaching: false,
+        disableCaching: false
       });
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.url).toEqual("foo");
     });
@@ -329,17 +329,17 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        disableCachingParam: "_bar",
+        disableCachingParam: "_bar"
       });
       expect(request.xhr.ajaxOptions.url).toMatch(/foo\?_bar=\d+/);
     });
 
     it("should use the default cache param name if not specified", function () {
       makeConnection({
-        disableCachingParam: "_bar",
+        disableCachingParam: "_bar"
       });
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.url).toMatch(/foo\?_bar=\d+/);
     });
@@ -352,7 +352,7 @@ describe("Ext.data.Connection", function () {
         request = connection.request({
           url: "foo",
           disableCaching: false,
-          urlParams: "a=b&x=y",
+          urlParams: "a=b&x=y"
         });
         expect(request.xhr.ajaxOptions.url).toEqual("foo?a=b&x=y");
       });
@@ -364,8 +364,8 @@ describe("Ext.data.Connection", function () {
           disableCaching: false,
           urlParams: {
             a: "b",
-            x: "y",
-          },
+            x: "y"
+          }
         });
         expect(request.xhr.ajaxOptions.url).toEqual("foo?a=b&x=y");
       });
@@ -376,7 +376,7 @@ describe("Ext.data.Connection", function () {
         makeConnection();
         request = connection.request({
           url: "foo",
-          params: "foo=bar",
+          params: "foo=bar"
         });
         expect(request.xhr.ajaxOptions.data).toEqual("foo=bar");
       });
@@ -387,8 +387,8 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           params: {
             a: "b",
-            x: "y",
-          },
+            x: "y"
+          }
         });
         expect(request.xhr.ajaxOptions.data).toEqual("a=b&x=y");
       });
@@ -399,7 +399,7 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           params: function () {
             return "x=y";
-          },
+          }
         });
         expect(request.xhr.ajaxOptions.data).toEqual("x=y");
       });
@@ -413,7 +413,7 @@ describe("Ext.data.Connection", function () {
               scope = this;
               return "foo;";
             },
-            scope: o,
+            scope: o
           },
           scope;
 
@@ -428,12 +428,12 @@ describe("Ext.data.Connection", function () {
       it("should get appended to the params", function () {
         makeConnection({
           extraParams: {
-            x: "y",
-          },
+            x: "y"
+          }
         });
         request = connection.request({
           url: "foo",
-          params: "a=b",
+          params: "a=b"
         });
         expect(request.xhr.ajaxOptions.data).toEqual("a=b&x=y");
       });
@@ -441,11 +441,11 @@ describe("Ext.data.Connection", function () {
       it("should get appended even if we have no params", function () {
         makeConnection({
           extraParams: {
-            x: "y",
-          },
+            x: "y"
+          }
         });
         request = connection.request({
-          url: "foo",
+          url: "foo"
         });
         expect(request.xhr.ajaxOptions.data).toEqual("x=y");
       });
@@ -457,7 +457,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        rawData: "raw",
+        rawData: "raw"
       });
       expect(request.xhr.ajaxOptions.data).toEqual("raw");
     });
@@ -467,7 +467,7 @@ describe("Ext.data.Connection", function () {
       request = connection.request({
         url: "foo",
         rawData: "raw",
-        jsonData: "json",
+        jsonData: "json"
       });
       expect(request.xhr.ajaxOptions.data).toEqual("raw");
     });
@@ -476,7 +476,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        jsonData: "json",
+        jsonData: "json"
       });
       expect(request.xhr.ajaxOptions.data).toEqual("json");
     });
@@ -486,8 +486,8 @@ describe("Ext.data.Connection", function () {
       request = connection.request({
         url: "foo",
         jsonData: {
-          x: "y",
-        },
+          x: "y"
+        }
       });
       expect(request.xhr.ajaxOptions.data).toEqual('{"x":"y"}');
     });
@@ -496,7 +496,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        xmlData: "xml",
+        xmlData: "xml"
       });
       expect(request.xhr.ajaxOptions.data).toEqual("xml");
     });
@@ -506,7 +506,7 @@ describe("Ext.data.Connection", function () {
       request = connection.request({
         url: "foo",
         rawData: "data",
-        params: "x=y",
+        params: "x=y"
       });
       expect(request.xhr.ajaxOptions.data).toEqual("data");
     });
@@ -516,7 +516,7 @@ describe("Ext.data.Connection", function () {
     it("should not send if there is no username", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.username).toBeUndefined();
       expect(request.xhr.ajaxOptions.password).toBeUndefined();
@@ -527,7 +527,7 @@ describe("Ext.data.Connection", function () {
       request = connection.request({
         url: "foo",
         username: "evan",
-        password: "javascript",
+        password: "javascript"
       });
       expect(request.xhr.ajaxOptions.username).toEqual("evan");
       expect(request.xhr.ajaxOptions.password).toEqual("javascript");
@@ -536,10 +536,10 @@ describe("Ext.data.Connection", function () {
     it("should default to username/password specified on the object", function () {
       makeConnection({
         username: "evan",
-        password: "javascript",
+        password: "javascript"
       });
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.username).toEqual("evan");
       expect(request.xhr.ajaxOptions.password).toEqual("javascript");
@@ -550,7 +550,7 @@ describe("Ext.data.Connection", function () {
     it("should default to true", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(request.xhr.ajaxOptions.async).toBeTruthy();
     });
@@ -559,28 +559,28 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       var response = connection.request({
         url: "foo",
-        async: false,
+        async: false
       });
       expect(response.request.async).toBeFalsy();
     });
 
     it("should give precedence to the value in the options", function () {
       makeConnection({
-        async: false,
+        async: false
       });
       request = connection.request({
         url: "foo",
-        async: true,
+        async: true
       });
       expect(request.xhr.ajaxOptions.async).toBeTruthy();
     });
 
     it("should fall back on the instance default", function () {
       makeConnection({
-        async: false,
+        async: false
       });
       var response = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(response.request.async).toBeFalsy();
     });
@@ -591,19 +591,19 @@ describe("Ext.data.Connection", function () {
       it("should use the defaultXhrHeader by default", function () {
         makeConnection();
         request = connection.request({
-          url: "foo",
+          url: "foo"
         });
         expect(request.xhr.headers["X-Requested-With"]).toEqual(
-          "XMLHttpRequest",
+          "XMLHttpRequest"
         );
       });
 
       it("should not attach the default header if set to false", function () {
         makeConnection({
-          useDefaultXhrHeader: false,
+          useDefaultXhrHeader: false
         });
         request = connection.request({
-          url: "foo",
+          url: "foo"
         });
         expect(request.xhr.headers["X-Requested-With"]).toBeUndefined();
       });
@@ -613,29 +613,29 @@ describe("Ext.data.Connection", function () {
         request = connection.request({
           url: "foo",
           headers: {
-            "X-Requested-With": "header",
-          },
+            "X-Requested-With": "header"
+          }
         });
         expect(request.xhr.headers["X-Requested-With"]).toEqual("header");
       });
 
       it("should use the defaultXhrHeader option", function () {
         makeConnection({
-          defaultXhrHeader: "bar",
+          defaultXhrHeader: "bar"
         });
         request = connection.request({
-          url: "foo",
+          url: "foo"
         });
         expect(request.xhr.headers["X-Requested-With"]).toEqual("bar");
       });
 
       it("should have the request option take precedence over the class option", function () {
         makeConnection({
-          useDefaultXhrHeader: true,
+          useDefaultXhrHeader: true
         });
         request = connection.request({
           url: "foo",
-          useDefaultXhrHeader: false,
+          useDefaultXhrHeader: false
         });
         expect(request.xhr.headers["X-Requested-With"]).toBeUndefined();
       });
@@ -647,8 +647,8 @@ describe("Ext.data.Connection", function () {
         request = connection.request({
           url: "foo",
           headers: {
-            "Content-Type": "type",
-          },
+            "Content-Type": "type"
+          }
         });
         expect(request.xhr.headers["Content-Type"]).toEqual("type");
       });
@@ -656,7 +656,7 @@ describe("Ext.data.Connection", function () {
       it("should not set the content type if we have no data/params", function () {
         makeConnection();
         request = connection.request({
-          url: "foo",
+          url: "foo"
         });
         expect(request.xhr.headers["Content-Type"]).toBeUndefined();
       });
@@ -667,8 +667,8 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           rawData: "raw",
           headers: {
-            "Content-Type": null,
-          },
+            "Content-Type": null
+          }
         });
         expect(request.xhr.headers["Content-Type"]).toBeUndefined();
       });
@@ -679,8 +679,8 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           rawData: "raw",
           headers: {
-            "Content-Type": undefined,
-          },
+            "Content-Type": undefined
+          }
         });
         expect(request.xhr.headers["Content-Type"]).toBeUndefined();
       });
@@ -689,7 +689,7 @@ describe("Ext.data.Connection", function () {
         makeConnection();
         request = connection.request({
           url: "foo",
-          rawData: "raw",
+          rawData: "raw"
         });
         expect(request.xhr.headers["Content-Type"]).toEqual("text/plain");
       });
@@ -698,7 +698,7 @@ describe("Ext.data.Connection", function () {
         makeConnection();
         request = connection.request({
           url: "foo",
-          xmlData: "xml",
+          xmlData: "xml"
         });
         expect(request.xhr.headers["Content-Type"]).toEqual("text/xml");
       });
@@ -707,7 +707,7 @@ describe("Ext.data.Connection", function () {
         makeConnection();
         request = connection.request({
           url: "foo",
-          jsonData: "json",
+          jsonData: "json"
         });
         expect(request.xhr.headers["Content-Type"]).toEqual("application/json");
       });
@@ -716,20 +716,20 @@ describe("Ext.data.Connection", function () {
         makeConnection();
         request = connection.request({
           url: "foo",
-          params: "x=y",
+          params: "x=y"
         });
         expect(request.xhr.headers["Content-Type"]).toEqual(
-          "application/x-www-form-urlencoded; charset=UTF-8",
+          "application/x-www-form-urlencoded; charset=UTF-8"
         );
       });
 
       it("should use the defaultPostHeader", function () {
         makeConnection({
-          defaultPostHeader: "header",
+          defaultPostHeader: "header"
         });
         request = connection.request({
           url: "foo",
-          params: "x=y",
+          params: "x=y"
         });
         expect(request.xhr.headers["Content-Type"]).toEqual("header");
       });
@@ -738,13 +738,13 @@ describe("Ext.data.Connection", function () {
     describe("normal headers", function () {
       beforeEach(function () {
         makeConnection({
-          useDefaultXhrHeader: false,
+          useDefaultXhrHeader: false
         });
       });
 
       it("should apply no headers if none are passed", function () {
         request = connection.request({
-          url: "foo",
+          url: "foo"
         });
         expect(request.xhr.headers).toEqual({});
       });
@@ -754,8 +754,8 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           headers: {
             a: "a",
-            b: "b",
-          },
+            b: "b"
+          }
         });
         expect(request.xhr.headers.a).toEqual("a");
         expect(request.xhr.headers.b).toEqual("b");
@@ -768,14 +768,14 @@ describe("Ext.data.Connection", function () {
           useDefaultXhrHeader: false,
           defaultHeaders: {
             a: "a",
-            b: "b",
-          },
+            b: "b"
+          }
         });
       });
 
       it("should apply any defaultHeaders even if no headers are passed", function () {
         request = connection.request({
-          url: "foo",
+          url: "foo"
         });
         expect(request.xhr.headers.a).toEqual("a");
         expect(request.xhr.headers.b).toEqual("b");
@@ -786,8 +786,8 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           headers: {
             a: "x",
-            b: "y",
-          },
+            b: "y"
+          }
         });
         expect(request.xhr.headers.a).toEqual("x");
         expect(request.xhr.headers.b).toEqual("y");
@@ -798,8 +798,8 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           headers: {
             x: "x",
-            y: "y",
-          },
+            y: "y"
+          }
         });
         expect(request.xhr.headers.a).toEqual("a");
         expect(request.xhr.headers.b).toEqual("b");
@@ -818,7 +818,7 @@ describe("Ext.data.Connection", function () {
     it("should use the most recent request if one is not passed", function () {
       makeConnection();
       connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(connection.isLoading()).toBe(true);
     });
@@ -826,10 +826,10 @@ describe("Ext.data.Connection", function () {
     it("should return false if the most recent request has loaded", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       connection.mockComplete({
-        status: 200,
+        status: 200
       });
       expect(connection.isLoading()).toBe(false);
     });
@@ -837,7 +837,7 @@ describe("Ext.data.Connection", function () {
     it("should return true if the request is loading", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       expect(connection.isLoading(request)).toBe(true);
     });
@@ -845,10 +845,10 @@ describe("Ext.data.Connection", function () {
     it("should return false if the request has loaded", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       connection.mockComplete({
-        status: 200,
+        status: 200
       });
       expect(connection.isLoading(request)).toBe(false);
     });
@@ -856,7 +856,7 @@ describe("Ext.data.Connection", function () {
     it("should return false if the request has been aborted", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       connection.abort(request);
       expect(connection.isLoading(request)).toBe(false);
@@ -867,7 +867,7 @@ describe("Ext.data.Connection", function () {
     it("should abort a specific request", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       connection.abort(request);
       expect(request.aborted).toBe(true);
@@ -876,10 +876,10 @@ describe("Ext.data.Connection", function () {
     it("should abort the most recent request if a specific one isn't specified", function () {
       makeConnection();
       var r1 = connection.request({
-        url: "r1",
+        url: "r1"
       });
       var r2 = connection.request({
-        url: "r2",
+        url: "r2"
       });
       connection.abort();
       expect(r1.aborted).not.toBe(true);
@@ -889,13 +889,13 @@ describe("Ext.data.Connection", function () {
     it("should fire failure/callback", function () {
       makeConnection();
       var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         },
         spy = spyOn(o, "fn");
       request = connection.request({
         url: "foo",
         failure: o.fn,
-        callback: o.fn,
+        callback: o.fn
       });
       connection.abort(request);
       expect(spy.callCount).toEqual(2);
@@ -908,12 +908,12 @@ describe("Ext.data.Connection", function () {
           fn: function (response) {
             status = response.status;
             statusText = response.statusText;
-          },
+          }
         };
       makeConnection();
       request = connection.request({
         url: "foo",
-        failure: o.fn,
+        failure: o.fn
       });
       connection.abort(request);
       expect(status).toEqual(-1);
@@ -926,7 +926,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       connection.on("requestexception", fn);
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
 
       connection.abort(request);
@@ -938,10 +938,10 @@ describe("Ext.data.Connection", function () {
     it("should do nothing if there's no active requests", function () {
       makeConnection();
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       connection.mockComplete({
-        status: 200,
+        status: 200
       });
       connection.abortAll();
       expect(request.aborted).toBeFalsy();
@@ -950,10 +950,10 @@ describe("Ext.data.Connection", function () {
     it("should abort all active requests", function () {
       makeConnection();
       var r1 = connection.request({
-        url: "r1",
+        url: "r1"
       });
       var r2 = connection.request({
-        url: "r2",
+        url: "r2"
       });
       connection.abortAll();
       expect(r1.aborted).toBe(true);
@@ -966,7 +966,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        timeout: 1,
+        timeout: 1
       });
 
       waitsFor(function () {
@@ -982,10 +982,10 @@ describe("Ext.data.Connection", function () {
         request = connection.request({
           url: "foo",
           timeout: 1,
-          failure: fn,
+          failure: fn
         });
         request.xhr.complete({
-          status: 200,
+          status: 200
         });
       });
       waits(1);
@@ -1003,7 +1003,7 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           timeout: 1,
           failure: fn,
-          callback: fn,
+          callback: fn
         });
       });
 
@@ -1027,7 +1027,7 @@ describe("Ext.data.Connection", function () {
         failure: function (response) {
           status = response.status;
           statusText = response.statusText;
-        },
+        }
       });
 
       waitsFor(function () {
@@ -1042,7 +1042,7 @@ describe("Ext.data.Connection", function () {
       connection.on("requestexception", fn);
       request = connection.request({
         url: "foo",
-        timeout: 1,
+        timeout: 1
       });
 
       waits(10);
@@ -1061,17 +1061,17 @@ describe("Ext.data.Connection", function () {
       var o = {
           fn: function () {
             scope = this;
-          },
+          }
         },
         scope;
       spyOn(o, "fn").andCallThrough();
       request = connection.request({
         url: "foo",
         success: o.fn,
-        scope: o,
+        scope: o
       });
       connection.mockComplete({
-        status: 200,
+        status: 200
       });
       expect(o.fn).toHaveBeenCalled();
       expect(scope).toEqual(o);
@@ -1081,17 +1081,17 @@ describe("Ext.data.Connection", function () {
       var o = {
           fn: function () {
             scope = this;
-          },
+          }
         },
         scope;
       spyOn(o, "fn").andCallThrough();
       request = connection.request({
         url: "foo",
         callback: o.fn,
-        scope: o,
+        scope: o
       });
       connection.mockComplete({
-        status: 200,
+        status: 200
       });
       expect(o.fn).toHaveBeenCalled();
       expect(scope).toEqual(o);
@@ -1099,7 +1099,7 @@ describe("Ext.data.Connection", function () {
 
     it("should fire the requestcomplete event", function () {
       var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         },
         scope;
       spyOn(o, "fn");
@@ -1107,10 +1107,10 @@ describe("Ext.data.Connection", function () {
       request = connection.request({
         url: "foo",
         callback: o.fn,
-        scope: o,
+        scope: o
       });
       connection.mockComplete({
-        status: 200,
+        status: 200
       });
       expect(o.fn).toHaveBeenCalled();
     });
@@ -1124,13 +1124,13 @@ describe("Ext.data.Connection", function () {
           o.status = response.status;
           o.responseText = response.responseText;
           o.responseXML = response.responseXML;
-        },
+        }
       });
       connection.mockComplete({
         status: 200,
         statusText: "statusText",
         responseText: "response",
-        responseXML: {},
+        responseXML: {}
       });
       expect(o.statusText).toEqual("statusText");
       expect(o.status).toEqual(200);
@@ -1142,10 +1142,10 @@ describe("Ext.data.Connection", function () {
       var fn = jasmine.createSpy("request successful");
       connection.on("requestexception", fn);
       request = connection.request({
-        url: "foo",
+        url: "foo"
       });
       connection.mockComplete({
-        status: 200,
+        status: 200
       });
       expect(fn).not.toHaveBeenCalled();
     });
@@ -1158,7 +1158,7 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           success: function (r) {
             response = r;
-          },
+          }
         });
 
         connection.mockComplete({
@@ -1166,7 +1166,7 @@ describe("Ext.data.Connection", function () {
           statusText: "statusText",
           responseText: "response",
           responseHeaders: { foo: "bar", baz: "qux" },
-          responseXML: {},
+          responseXML: {}
         });
       });
 
@@ -1197,17 +1197,17 @@ describe("Ext.data.Connection", function () {
       var o = {
           fn: function () {
             scope = this;
-          },
+          }
         },
         scope;
       spyOn(o, "fn").andCallThrough();
       request = connection.request({
         url: "foo",
         failure: o.fn,
-        scope: o,
+        scope: o
       });
       connection.mockComplete({
-        status: 404,
+        status: 404
       });
       expect(o.fn).toHaveBeenCalled();
       expect(scope).toEqual(o);
@@ -1217,17 +1217,17 @@ describe("Ext.data.Connection", function () {
       var o = {
           fn: function () {
             scope = this;
-          },
+          }
         },
         scope;
       spyOn(o, "fn").andCallThrough();
       request = connection.request({
         url: "foo",
         callback: o.fn,
-        scope: o,
+        scope: o
       });
       connection.mockComplete({
-        status: 404,
+        status: 404
       });
       expect(o.fn).toHaveBeenCalled();
       expect(scope).toEqual(o);
@@ -1235,7 +1235,7 @@ describe("Ext.data.Connection", function () {
 
     it("should fire the requestexception event", function () {
       var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         },
         scope;
       spyOn(o, "fn");
@@ -1243,10 +1243,10 @@ describe("Ext.data.Connection", function () {
       request = connection.request({
         url: "foo",
         callback: o.fn,
-        scope: o,
+        scope: o
       });
       connection.mockComplete({
-        status: 404,
+        status: 404
       });
       expect(o.fn).toHaveBeenCalled();
     });
@@ -1259,7 +1259,7 @@ describe("Ext.data.Connection", function () {
           url: "foo",
           failure: function (r) {
             response = r;
-          },
+          }
         });
 
         connection.mockComplete({
@@ -1267,7 +1267,7 @@ describe("Ext.data.Connection", function () {
           statusText: "statusText",
           responseText: "response",
           responseHeaders: { foo: "bar", baz: "qux" },
-          responseXML: {},
+          responseXML: {}
         });
       });
 
@@ -1307,9 +1307,9 @@ describe("Ext.data.Connection", function () {
         {
           url: "frobbe",
           form: form,
-          isUpload: true,
+          isUpload: true
         },
-        cfg,
+        cfg
       );
 
       request = connection.request(cfg);
@@ -1345,7 +1345,7 @@ describe("Ext.data.Connection", function () {
       it("should create Form request when form has multipart enoding", function () {
         makeForm({
           isUpload: false,
-          enctype: "multipart/form-data",
+          enctype: "multipart/form-data"
         });
         makeRequest();
 
@@ -1368,7 +1368,7 @@ describe("Ext.data.Connection", function () {
             for (var i = 0, len = childNodes.length; i < len; i++) {
               nodes[i] = {
                 name: childNodes[i].getAttribute("name"),
-                value: childNodes[i].getAttribute("value"),
+                value: childNodes[i].getAttribute("value")
               };
             }
           });
@@ -1381,8 +1381,8 @@ describe("Ext.data.Connection", function () {
         it("should pass params as hidden input fields", function () {
           makeRequest({
             params: {
-              foo: "bar",
-            },
+              foo: "bar"
+            }
           });
 
           expect(nodes[0].name).toBe("foo");
@@ -1392,8 +1392,8 @@ describe("Ext.data.Connection", function () {
         it("should pass array params", function () {
           makeRequest({
             params: {
-              frobbe: ["throbbe", "durgle"],
-            },
+              frobbe: ["throbbe", "durgle"]
+            }
           });
 
           expect(nodes[0].name).toBe("frobbe");
@@ -1406,8 +1406,8 @@ describe("Ext.data.Connection", function () {
         it("should clean up child nodes after submitting", function () {
           makeRequest({
             params: {
-              bonzo: "xyzzy",
-            },
+              bonzo: "xyzzy"
+            }
           });
 
           expect(nodes[0].name).toBe("bonzo");
@@ -1511,7 +1511,7 @@ describe("Ext.data.Connection", function () {
           makeRequest({
             success: successSpy,
             callback: callbackSpy,
-            scope: fakeScope,
+            scope: fakeScope
           });
 
           frame = request.frame;
@@ -1562,7 +1562,7 @@ describe("Ext.data.Connection", function () {
             form: form,
             callback: callbackSpy,
             success: successSpy,
-            scope: fakeScope,
+            scope: fakeScope
           });
         });
       });
@@ -1591,7 +1591,7 @@ describe("Ext.data.Connection", function () {
             url: "frobbe",
             callback: callbackSpy,
             success: successSpy,
-            scope: fakeScope,
+            scope: fakeScope
           });
         });
 
@@ -1613,7 +1613,7 @@ describe("Ext.data.Connection", function () {
 
           expect(response).toEqual({
             status: 200,
-            responseText: '"blergo"',
+            responseText: '"blergo"'
           });
         });
       });
@@ -1652,7 +1652,7 @@ describe("Ext.data.Connection", function () {
 
           expect(response).toEqual({
             status: 200,
-            responseText: '"foo"',
+            responseText: '"foo"'
           });
         });
 
@@ -1665,7 +1665,7 @@ describe("Ext.data.Connection", function () {
             url: "frobbe",
             callback: callbackSpy,
             success: successSpy,
-            scope: fakeScope,
+            scope: fakeScope
           });
         });
       });
@@ -1705,7 +1705,7 @@ describe("Ext.data.Connection", function () {
 
           expect(response).toEqual({
             status: 200,
-            responseText: '"frumble"',
+            responseText: '"frumble"'
           });
         });
       });
@@ -1741,9 +1741,9 @@ describe("Ext.data.Connection", function () {
               requestId: request.id,
               responseXML: null,
               getResponseHeader: request._getHeader,
-              getAllResponseHeaders: request._getHeaders,
+              getAllResponseHeaders: request._getHeaders
             },
-            relevant,
+            relevant
           );
 
           expect(response).toEqual(relevant);
@@ -1754,10 +1754,10 @@ describe("Ext.data.Connection", function () {
             {
               form: form,
               isUpload: true,
-              url: "frobbe",
+              url: "frobbe"
             },
             relevant,
-            requestOptions,
+            requestOptions
           );
 
           expect(options).toEqual(relevant);
@@ -1792,10 +1792,10 @@ describe("Ext.data.Connection", function () {
                 {
                   failure: failureSpy,
                   callback: callbackSpy,
-                  scope: fakeScope,
+                  scope: fakeScope
                 },
-                requestOptions,
-              ),
+                requestOptions
+              )
             );
 
             request.then(resolveSpy, rejectSpy);
@@ -1847,7 +1847,7 @@ describe("Ext.data.Connection", function () {
             expectOptions(options, {
               callback: callbackSpy,
               failure: failureSpy,
-              scope: fakeScope,
+              scope: fakeScope
             });
           });
         });
@@ -1875,7 +1875,7 @@ describe("Ext.data.Connection", function () {
             expectOptions(options, {
               callback: callbackSpy,
               failure: failureSpy,
-              scope: fakeScope,
+              scope: fakeScope
             });
           });
 
@@ -1923,7 +1923,7 @@ describe("Ext.data.Connection", function () {
             expectOptions(options, {
               callback: callbackSpy,
               failure: failureSpy,
-              scope: fakeScope,
+              scope: fakeScope
             });
           });
         });
@@ -1961,8 +1961,8 @@ describe("Ext.data.Connection", function () {
         statusText:
           "Could not acquire a suitable connection for the file upload service.",
         responseText:
-          '{success:false,message:"Could not acquire a suitable connection for the file upload service."}',
-      },
+          '{success:false,message:"Could not acquire a suitable connection for the file upload service."}'
+      }
     });
 
     makeFailSuite({
@@ -1971,25 +1971,25 @@ describe("Ext.data.Connection", function () {
         aborted: true,
         status: -1,
         statusText: "transaction aborted",
-        responseText: '{success:false,message:"transaction aborted"}',
+        responseText: '{success:false,message:"transaction aborted"}'
       },
       failFn: function (request) {
         request.abort();
-      },
+      }
     });
 
     makeFailSuite({
       name: "timed out requests",
       options: {
-        timeout: 1,
+        timeout: 1
       },
       want: {
         timedout: true,
         status: 0,
         statusText: "communication failure",
-        responseText: '{success:false,message:"communication failure"}',
+        responseText: '{success:false,message:"communication failure"}'
       },
-      failFn: Ext.emptyFn,
+      failFn: Ext.emptyFn
     });
   });
 
@@ -1998,7 +1998,7 @@ describe("Ext.data.Connection", function () {
 
     function mockRequest(options, complete, status) {
       options = Ext.applyIf(options || {}, {
-        url: "foo",
+        url: "foo"
       });
 
       request = connection.request(options);
@@ -2006,7 +2006,7 @@ describe("Ext.data.Connection", function () {
 
       if (complete) {
         connection.mockComplete({
-          status: status || 200,
+          status: status || 200
         });
       }
     }
@@ -2161,10 +2161,10 @@ describe("Ext.data.Connection", function () {
   describe("synchronous requests", function () {
     it("should return the response object", function () {
       makeConnection({
-        async: false,
+        async: false
       });
       var response = connection.request({
-          url: "foo",
+          url: "foo"
         }),
         defaults = MockAjax.prototype.syncDefaults;
 
@@ -2184,7 +2184,7 @@ describe("Ext.data.Connection", function () {
       makeConnection();
       request = connection.request({
         url: "foo",
-        binaryData: [0, 1, 2, 3],
+        binaryData: [0, 1, 2, 3]
       });
       if (nativeBinaryPost) {
         expect(request.xhr).not.toEqual(jasmine.any(Ext.data.flash.BinaryXhr));
@@ -2200,10 +2200,10 @@ describe("Ext.data.Connection", function () {
         makeConnection();
         request = connection.request({
           url: "foo",
-          binaryData: [0, 1, 2, 3],
+          binaryData: [0, 1, 2, 3]
         });
         expect([jasmine.any(ArrayBuffer), jasmine.any(Uint8Array)]).toContain(
-          request.xhr.ajaxOptions.data,
+          request.xhr.ajaxOptions.data
         );
       });
     }

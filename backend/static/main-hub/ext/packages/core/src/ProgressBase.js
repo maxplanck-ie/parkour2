@@ -18,7 +18,7 @@ Ext.define("Ext.ProgressBase", {
      *    `value  ' - The raw progress value between 0 and 1
      *    'percent' - The value as a percentage between 0 and 100
      */
-    textTpl: null,
+    textTpl: null
   },
 
   applyTextTpl: function (textTpl) {
@@ -30,5 +30,5 @@ Ext.define("Ext.ProgressBase", {
 
   applyValue: function (value) {
     return value || 0;
-  },
+  }
 });

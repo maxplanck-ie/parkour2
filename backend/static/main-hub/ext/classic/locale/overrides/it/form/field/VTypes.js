@@ -7,5 +7,5 @@ Ext.define("Ext.locale.it.form.field.VTypes", {
     'Il campo deve essere un indirizzo URL nel formato "http:/' +
     '/www.esempio.it"',
   alphaText: "Il campo deve contenere solo lettere e _",
-  alphanumText: "Il campo deve contenere solo lettere, numeri e _",
+  alphanumText: "Il campo deve contenere solo lettere, numeri e _"
 });

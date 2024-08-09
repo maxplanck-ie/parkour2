@@ -31,6 +31,7 @@ from docx import Document
 from docx.enum.text import WD_BREAK
 from docx.shared import Cm, Pt
 from fpdf import FPDF, HTMLMixin
+from fpdf.errors import FPDFUnicodeEncodingException
 from library_sample_shared.models import LibraryProtocol
 from library_sample_shared.serializers import LibraryProtocolSerializer
 from rest_framework import filters, status, viewsets
@@ -372,9 +373,11 @@ class RequestViewSet(viewsets.ModelViewSet):
                     "name": obj.name,
                     "barcode": obj.barcode,
                     "record_type": obj.__class__.__name__,
-                    "is_converted": True
-                    if hasattr(obj, "is_converted") and obj.is_converted
-                    else False,
+                    "is_converted": (
+                        True
+                        if hasattr(obj, "is_converted") and obj.is_converted
+                        else False
+                    ),
                 }
                 for obj in instance.records
             ]
@@ -535,7 +538,12 @@ class RequestViewSet(viewsets.ModelViewSet):
         pdf.info_row("Cost Unit", cost_unit)
         pdf.multi_info_row("Declaration", declaration_general)
         pdf.multi_checkbox_row("GMO Samples", declaration_gmo)
-        pdf.multi_info_row("Description", instance.description)
+        try:
+            pdf.multi_info_row("Description", instance.description)
+        except FPDFUnicodeEncodingException:
+            pdf.multi_info_row("Description", "ERROR: Character-set outside UTF-8.")
+        # except:
+        # pdf.multi_info_row(f"Description", "ERROR: {Exception}")
 
         y = pdf.get_y()
         pdf.line(pdf.l_margin + 1, y, pdf.w - pdf.r_margin - 1, y)
@@ -621,7 +629,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         return JsonResponse({"success": True, "name": file_name, "path": file_path})
 
     @action(methods=["post"], detail=True)
-    def solicite_approval(self, request, pk=None):  # pragma: no cover
+    def solicit_approval(self, request, pk=None):  # pragma: no cover
         """Send an email to the PI."""
         error = ""
         instance = self.get_object()
@@ -1009,13 +1017,14 @@ class RequestViewSet(viewsets.ModelViewSet):
     def put_filepaths(self, request, pk=None):
         instance = self.get_object()
         instance.filepaths = request.data
+        records = list(instance.libraries.all()) + list(instance.samples.all())
+        for r in records:
+            # 'Sequencing' -> 'Delivered'
+            if r.status == 5:
+                r.status += 1
+                r.save()
         instance.save(update_fields=["filepaths"])
         return Response({"success": True})
-
-    @action(methods=["get"], detail=True)
-    def get_metapaths(self, request, *args, **kwargs):
-        metapaths = self.get_object().metapaths
-        return JsonResponse({"success": True, "metapaths": metapaths})
 
     @action(methods=["post"], detail=True)
     def put_metapaths(self, request, pk=None):
@@ -1023,6 +1032,31 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance.metapaths = request.data
         instance.save(update_fields=["metapaths"])
         return Response({"success": True})
+
+    @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
+    def get_flowcell(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        def get_flowcell_from_record(record, instance=instance):
+            finalized = len(instance.statuses) == sum(
+                [x >= 5 or x < 0 for x in instance.statuses]
+            )
+            if not finalized:
+                value = ["Sequencing incomplete"]
+            else:
+                fcids = []
+                for pool in record.pool.all():
+                    for lane in pool.lane_set.all():
+                        for flowcell in lane.flowcell.all():
+                            fcids.append(flowcell)
+                value = [f.flowcell_id for f in fcids]
+            return json.dumps(value)
+
+        records = list(instance.libraries.all()) + list(instance.samples.all())
+        flowpaths = dict.fromkeys([r.barcode for r in records])
+        for r in records:
+            flowpaths[r.barcode] = get_flowcell_from_record(r)
+        return JsonResponse({"flowpaths": flowpaths})
 
     @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
     def get_poolpaths(self, request, *args, **kwargs):
@@ -1235,4 +1269,4 @@ class ApproveViewSet(viewsets.ModelViewSet):
             from_email=settings.SERVER_EMAIL,
             recipient_list=[instance.user.email, instance.user.pi.email],
         )
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect("/danke")

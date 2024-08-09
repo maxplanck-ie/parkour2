@@ -3,7 +3,7 @@ describe("Ext.view.NavigationModel", function () {
 
   var Model = Ext.define(null, {
     extend: "Ext.data.Model",
-    fields: ["id", "name"],
+    fields: ["id", "name"]
   });
 
   function makeData(len) {
@@ -11,7 +11,7 @@ describe("Ext.view.NavigationModel", function () {
     for (var i = 1; i <= len; ++i) {
       data.push({
         id: i,
-        name: "Item" + i,
+        name: "Item" + i
       });
     }
     return data;
@@ -28,13 +28,13 @@ describe("Ext.view.NavigationModel", function () {
 
     store = new Ext.data.Store({
       model: Model,
-      data: data,
+      data: data
     });
 
     view = new Ext.view.View({
       renderTo: Ext.getBody(),
       store: store,
-      itemTpl: "{name}",
+      itemTpl: "{name}"
     });
     navModel = view.getNavigationModel();
   }

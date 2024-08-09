@@ -50,11 +50,11 @@ Ext.define(null, {
               {
                 to: {
                   scrollTop: y,
-                  scrollLeft: x,
-                },
+                  scrollLeft: x
+                }
               },
-              animate,
-            ),
+              animate
+            )
           );
         } else {
           // When we need to assign both scrollTop and scrollLeft,
@@ -101,6 +101,6 @@ Ext.define(null, {
       }
 
       me.callParent();
-    },
-  },
+    }
+  }
 });

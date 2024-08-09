@@ -99,7 +99,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
 
     // We need a high priority to get in ahead of the outerRowTpl
     // so we can setup row data
-    priority: 20000,
+    priority: 20000
   },
 
   /**
@@ -160,17 +160,17 @@ Ext.define("Ext.grid.plugin.RowExpander", {
         rowBodyHiddenCls: me.rowBodyHiddenCls,
         rowCollapsedCls: me.rowCollapsedCls,
         setupRowData: me.getRowBodyFeatureData,
-        setup: me.setup,
+        setup: me.setup
       };
 
     features.push(
       Ext.apply(
         {
           lockableScope: "normal",
-          getRowBodyContents: me.getRowBodyContentsFn(me.rowBodyTpl),
+          getRowBodyContents: me.getRowBodyContentsFn(me.rowBodyTpl)
         },
-        featuresCfg,
-      ),
+        featuresCfg
+      )
     );
 
     // Locked side will need a copy to keep the two DOM structures symmetrical.
@@ -185,10 +185,10 @@ Ext.define("Ext.grid.plugin.RowExpander", {
               ? me.getRowBodyContentsFn(me.lockedTpl)
               : function () {
                   return "";
-                },
+                }
           },
-          featuresCfg,
-        ),
+          featuresCfg
+        )
       );
     }
 
@@ -229,7 +229,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
     // a row processor to both views.
     if (ownerLockable) {
       me.addExpander(
-        me.lockedGrid.headerCt.items.getCount() ? me.lockedGrid : me.normalGrid,
+        me.lockedGrid.headerCt.items.getCount() ? me.lockedGrid : me.normalGrid
       );
 
       // Add row processor which adds collapsed class.
@@ -245,7 +245,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
         processcolumns: me.onLockableProcessColumns,
         lockcolumn: me.onColumnLock,
         unlockcolumn: me.onColumnUnlock,
-        scope: me,
+        scope: me
       });
     }
     // Add row processor which adds collapsed class
@@ -289,7 +289,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
 
   onLockableProcessColumns: function (lockable, lockedHeaders, normalHeaders) {
     this.addExpander(
-      lockedHeaders.length ? lockable.lockedGrid : lockable.normalGrid,
+      lockedHeaders.length ? lockable.lockedGrid : lockable.normalGrid
     );
   },
 
@@ -329,7 +329,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
     var me = this,
       listeners = {
         itemkeydown: me.onKeyDown,
-        scope: me,
+        scope: me
       };
 
     if (me.expandOnDblClick) {
@@ -422,7 +422,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
       wasCollapsed ? "expandbody" : "collapsebody",
       rowNode,
       record,
-      nextBd,
+      nextBd
     );
     view.refreshSize(true);
 
@@ -480,10 +480,10 @@ Ext.define("Ext.grid.plugin.RowExpander", {
     // User has unlocked all columns and left only the expander column in the locked side.
     if (lockedColumns.length === 1) {
       lockable.normalGrid.removeCls(
-        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer",
+        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer"
       );
       lockable.lockedGrid.addCls(
-        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer",
+        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer"
       );
       if (lockedColumns[0] === me.expanderColumn) {
         lockable.unlock(me.expanderColumn);
@@ -505,10 +505,10 @@ Ext.define("Ext.grid.plugin.RowExpander", {
     if (lockedColumns.length === 1) {
       me.lockedGrid.headerCt.insert(0, me.expanderColumn);
       lockable.normalGrid.addCls(
-        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer",
+        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer"
       );
       lockable.lockedGrid.removeCls(
-        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer",
+        Ext.baseCSSPrefix + "grid-hide-row-expander-spacer"
       );
     }
   },
@@ -543,11 +543,11 @@ Ext.define("Ext.grid.plugin.RowExpander", {
         rowIndex,
         cellIndex,
         e,
-        record,
+        record
       ) {
         var isTouch = e.pointerType === "touch",
           isExpanderClick = !!e.getTarget(
-            "." + Ext.baseCSSPrefix + "grid-row-expander",
+            "." + Ext.baseCSSPrefix + "grid-row-expander"
           );
 
         if (
@@ -576,7 +576,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
       // In an editor, this shows nothing.
       editRenderer: function () {
         return "&#160;";
-      },
+      }
     };
-  },
+  }
 });

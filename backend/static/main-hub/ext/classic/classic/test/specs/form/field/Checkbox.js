@@ -5,9 +5,9 @@ describe("Ext.form.field.Checkbox", function () {
     config = Ext.apply(
       {
         name: "test",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
 
     component = new Ext.form.field.Checkbox(config);
@@ -30,7 +30,7 @@ describe("Ext.form.field.Checkbox", function () {
   describe("configuring", function () {
     it("should accept a value config", function () {
       makeComponent({
-        value: true,
+        value: true
       });
       expect(component.checked).toBe(true);
     });
@@ -80,7 +80,7 @@ describe("Ext.form.field.Checkbox", function () {
 
       it("should have type='checkbox'", function () {
         expect(component.inputEl.dom.getAttribute("type").toLowerCase()).toBe(
-          "checkbox",
+          "checkbox"
         );
       });
 
@@ -121,7 +121,7 @@ describe("Ext.form.field.Checkbox", function () {
       it("should be stored as a 'boxLabelEl' reference", function () {
         makeComponent({ boxLabel: "the box label" });
         expect(component.bodyEl.down("label").dom).toBe(
-          component.boxLabelEl.dom,
+          component.boxLabelEl.dom
         );
       });
 
@@ -133,7 +133,7 @@ describe("Ext.form.field.Checkbox", function () {
       it("should be given the configured boxLabelCls", function () {
         makeComponent({
           boxLabel: "the box label",
-          boxLabelCls: "my-custom-boxLabelCls",
+          boxLabelCls: "my-custom-boxLabelCls"
         });
         expect(component.boxLabelEl.hasCls("my-custom-boxLabelCls")).toBe(true);
       });
@@ -141,7 +141,7 @@ describe("Ext.form.field.Checkbox", function () {
       it("should have a 'for' attribute set to the inputId", function () {
         makeComponent({ boxLabel: "the box label" });
         expect(component.boxLabelEl.getAttribute("for")).toEqual(
-          component.inputId,
+          component.inputId
         );
       });
 
@@ -164,7 +164,7 @@ describe("Ext.form.field.Checkbox", function () {
         it("should give the 'after' label a class of {boxLabelCls}-after", function () {
           makeComponent({ boxLabel: "the box label", boxLabelAlign: "after" });
           expect(
-            component.boxLabelEl.hasCls(component.boxLabelCls + "-after"),
+            component.boxLabelEl.hasCls(component.boxLabelCls + "-after")
           ).toBe(true);
         });
 
@@ -176,7 +176,7 @@ describe("Ext.form.field.Checkbox", function () {
         it("should give the 'before' label a class of {boxLabelCls}-before", function () {
           makeComponent({ boxLabel: "the box label", boxLabelAlign: "before" });
           expect(
-            component.boxLabelEl.hasCls(component.boxLabelCls + "-before"),
+            component.boxLabelEl.hasCls(component.boxLabelCls + "-before")
           ).toBe(true);
         });
       });
@@ -185,16 +185,16 @@ describe("Ext.form.field.Checkbox", function () {
         it("should add the class when there is no boxLabel", function () {
           makeComponent();
           expect(
-            component.el.down("." + component.noBoxLabelCls, true),
+            component.el.down("." + component.noBoxLabelCls, true)
           ).not.toBeNull();
         });
 
         it("should not add the class when there is a boxLabel", function () {
           makeComponent({
-            boxLabel: "Foo",
+            boxLabel: "Foo"
           });
           expect(
-            component.el.down("." + component.noBoxLabelCls, true),
+            component.el.down("." + component.noBoxLabelCls, true)
           ).toBeNull();
         });
       });
@@ -261,7 +261,7 @@ describe("Ext.form.field.Checkbox", function () {
     describe("not rendered", function () {
       beforeEach(function () {
         makeComponent({
-          renderTo: null,
+          renderTo: null
         });
       });
 
@@ -410,7 +410,7 @@ describe("Ext.form.field.Checkbox", function () {
 
         makeComponent({
           handler: spy,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -447,8 +447,8 @@ describe("Ext.form.field.Checkbox", function () {
           renderTo: Ext.getBody(),
           items: {
             xtype: "checkbox",
-            handler: "someMethod",
-          },
+            handler: "someMethod"
+          }
         });
 
         ct.items.first().setValue(true);
@@ -461,7 +461,7 @@ describe("Ext.form.field.Checkbox", function () {
   describe("readOnly", function () {
     it("should set the checkbox to disabled=true", function () {
       makeComponent({
-        readOnly: true,
+        readOnly: true
       });
 
       expect(component.inputEl.dom.disabled).toBe(true);
@@ -470,7 +470,7 @@ describe("Ext.form.field.Checkbox", function () {
     describe("setReadOnly method", function () {
       it("should set disabled=true when the arg is true", function () {
         makeComponent({
-          readOnly: false,
+          readOnly: false
         });
 
         component.setReadOnly(true);
@@ -479,7 +479,7 @@ describe("Ext.form.field.Checkbox", function () {
 
       it("should set disabled=false when the arg is false", function () {
         makeComponent({
-          readOnly: true,
+          readOnly: true
         });
 
         component.setReadOnly(false);
@@ -489,7 +489,7 @@ describe("Ext.form.field.Checkbox", function () {
       it("should set disabled=true when the arg is false but the component is disabled", function () {
         makeComponent({
           readOnly: true,
-          disabled: true,
+          disabled: true
         });
 
         component.setReadOnly(false);
@@ -503,10 +503,10 @@ describe("Ext.form.field.Checkbox", function () {
       makeComponent({
         name: "cb-name",
         inputValue: "the-input-value",
-        checked: true,
+        checked: true
       });
       expect(component.getSubmitData()).toEqual({
-        "cb-name": "the-input-value",
+        "cb-name": "the-input-value"
       });
     });
 
@@ -514,7 +514,7 @@ describe("Ext.form.field.Checkbox", function () {
       makeComponent({
         name: "cb-name",
         inputValue: "the-input-value",
-        checked: false,
+        checked: false
       });
       expect(component.getSubmitData()).toBeNull();
     });
@@ -524,10 +524,10 @@ describe("Ext.form.field.Checkbox", function () {
         name: "cb-name",
         inputValue: "the-input-value",
         uncheckedValue: "the-unchecked-value",
-        checked: false,
+        checked: false
       });
       expect(component.getSubmitData()).toEqual({
-        "cb-name": "the-unchecked-value",
+        "cb-name": "the-unchecked-value"
       });
     });
   });
@@ -536,7 +536,7 @@ describe("Ext.form.field.Checkbox", function () {
     it("should return 'on' when checked and no inputValue is defined", function () {
       makeComponent({
         name: "cb-name",
-        checked: true,
+        checked: true
       });
       expect(component.getModelData()["cb-name"]).toBe("on");
     });
@@ -544,14 +544,14 @@ describe("Ext.form.field.Checkbox", function () {
       makeComponent({
         name: "cb-name",
         inputValue: "the-input-value",
-        checked: true,
+        checked: true
       });
       expect(component.getModelData()["cb-name"]).toBe("the-input-value");
     });
     it("should return null when unchecked and no uncheckedValue is defined", function () {
       makeComponent({
         name: "cb-name",
-        checked: false,
+        checked: false
       });
       expect(component.getModelData()["cb-name"]).toBeNull();
     });
@@ -560,7 +560,7 @@ describe("Ext.form.field.Checkbox", function () {
         name: "cb-name",
         inputValue: "the-input-value",
         uncheckedValue: "the-unchecked-value",
-        checked: false,
+        checked: false
       });
       expect(component.getModelData()["cb-name"]).toBe("the-unchecked-value");
     });
@@ -579,7 +579,7 @@ describe("Ext.form.field.Checkbox", function () {
         });
         jasmine.fireMouseEvent(component.inputEl.dom, "click");
         expect(val).toBe(false);
-      },
+      }
     );
 
     it("should be dirty after calling setRawValue", function () {
@@ -592,7 +592,7 @@ describe("Ext.form.field.Checkbox", function () {
       describe("with an inputValue", function () {
         beforeEach(function () {
           makeComponent({
-            inputValue: "2",
+            inputValue: "2"
           });
         });
 
@@ -710,14 +710,14 @@ describe("Ext.form.field.Checkbox", function () {
 
       if (boxOnlyWidth === 0) {
         temp = new Ext.form.field.Checkbox({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         boxOnlyWidth = temp.getWidth();
         temp.destroy();
 
         temp = new Ext.form.field.Checkbox({
           renderTo: Ext.getBody(),
-          boxLabel: label,
+          boxLabel: label
         });
         withLabelWidth = temp.getWidth();
         temp.destroy();
@@ -729,7 +729,7 @@ describe("Ext.form.field.Checkbox", function () {
         it("should clear the label when passing an empty string", function () {
           makeComponent({
             boxLabel: "Foo",
-            renderTo: null,
+            renderTo: null
           });
           component.setBoxLabel("");
           component.render(Ext.getBody());
@@ -739,7 +739,7 @@ describe("Ext.form.field.Checkbox", function () {
         it("should change the label when passing an empty string", function () {
           makeComponent({
             boxLabel: "Foo",
-            renderTo: null,
+            renderTo: null
           });
           component.setBoxLabel("");
           component.render(Ext.getBody());
@@ -750,7 +750,7 @@ describe("Ext.form.field.Checkbox", function () {
       describe("with no label configured", function () {
         it("should show the label", function () {
           makeComponent({
-            renderTo: null,
+            renderTo: null
           });
           component.setBoxLabel(label);
           component.render(Ext.getBody());
@@ -764,7 +764,7 @@ describe("Ext.form.field.Checkbox", function () {
         it("should clear the label when passing an empty string", function () {
           makeComponent({
             boxLabel: "Foo",
-            liquidLayout: false, // Use false so layouts run
+            liquidLayout: false // Use false so layouts run
           });
           var count = component.componentLayoutCounter;
           component.setBoxLabel("");
@@ -775,7 +775,7 @@ describe("Ext.form.field.Checkbox", function () {
         it("should change the label when passing an empty string", function () {
           makeComponent({
             boxLabel: "Foo",
-            liquidLayout: false, // Use false so layouts run
+            liquidLayout: false // Use false so layouts run
           });
           var count = component.componentLayoutCounter;
           component.setBoxLabel(label);
@@ -787,7 +787,7 @@ describe("Ext.form.field.Checkbox", function () {
       describe("with no label configured", function () {
         it("should show the label", function () {
           makeComponent({
-            liquidLayout: false, // Use false so layouts run
+            liquidLayout: false // Use false so layouts run
           });
           var count = component.componentLayoutCounter;
           component.setBoxLabel(label);
@@ -813,7 +813,7 @@ describe("Ext.form.field.Checkbox", function () {
 
         runs(function () {
           expect(component.displayEl.hasCls("x-form-checkbox-focus")).toBe(
-            true,
+            true
           );
         });
       });
@@ -836,7 +836,7 @@ describe("Ext.form.field.Checkbox", function () {
   describe("interaction", function () {
     beforeEach(function () {
       makeComponent({
-        boxLabel: "zingbong",
+        boxLabel: "zingbong"
       });
     });
 

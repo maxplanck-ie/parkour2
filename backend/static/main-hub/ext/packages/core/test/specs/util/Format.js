@@ -2,13 +2,13 @@ describe("Ext.util.Format", function () {
   var savedFormatLocale = {
     thousandSeparator: Ext.util.Format.thousandSeparator,
     decimalSeparator: Ext.util.Format.decimalSeparator,
-    currencySign: Ext.util.Format.currencySign,
+    currencySign: Ext.util.Format.currencySign
   };
 
   describe("undef", function () {
     it("should return the value itself if defined", function () {
       expect(Ext.util.Format.undef("this is a defined value")).toBe(
-        "this is a defined value",
+        "this is a defined value"
       );
       expect(Ext.util.Format.undef(12345)).toBe(12345);
       expect(Ext.util.Format.undef(12345.67)).toBe(12345.67);
@@ -22,17 +22,17 @@ describe("Ext.util.Format", function () {
   describe("defaultValue", function () {
     it("should return the value itself if defined", function () {
       expect(Ext.util.Format.defaultValue("value", "default value")).toBe(
-        "value",
+        "value"
       );
     });
     it("should return the default value if the value is undefined", function () {
       expect(Ext.util.Format.defaultValue(undefined, "default value")).toBe(
-        "default value",
+        "default value"
       );
     });
     it("should return the default value if the value is empty", function () {
       expect(Ext.util.Format.defaultValue("", "default value")).toBe(
-        "default value",
+        "default value"
       );
     });
   });
@@ -81,12 +81,12 @@ describe("Ext.util.Format", function () {
   describe("lowercase", function () {
     it("should preserve lowercase strings", function () {
       expect(Ext.util.Format.lowercase("lowercase string")).toBe(
-        "lowercase string",
+        "lowercase string"
       );
     });
     it("should convert uppercase strings to lowercase", function () {
       expect(Ext.util.Format.lowercase("UPPERCASE STRING")).toBe(
-        "uppercase string",
+        "uppercase string"
       );
     });
     it("should convert mixed lowercase/uppercase strings to lowercase", function () {
@@ -107,12 +107,12 @@ describe("Ext.util.Format", function () {
   describe("uppercase", function () {
     it("should preserve uppercase strings", function () {
       expect(Ext.util.Format.uppercase("UPPERCASE STRING")).toBe(
-        "UPPERCASE STRING",
+        "UPPERCASE STRING"
       );
     });
     it("should convert lowercase strings to uppercase", function () {
       expect(Ext.util.Format.uppercase("lowercase string")).toBe(
-        "LOWERCASE STRING",
+        "LOWERCASE STRING"
       );
     });
     it("should convert mixed lowercase/uppercase strings to uppercase", function () {
@@ -158,7 +158,7 @@ describe("Ext.util.Format", function () {
           thousandSeparator: ".",
           decimalSeparator: ",",
           currencySign: "\u20ac",
-          dateFormat: "d/m/Y",
+          dateFormat: "d/m/Y"
         });
       });
       afterEach(function () {
@@ -198,7 +198,7 @@ describe("Ext.util.Format", function () {
         thousandSeparator: Ext.util.Format.thousandSeparator,
         decimalSeparator: Ext.util.Format.decimalSeparator,
         currencySign: Ext.util.Format.currencySign,
-        dateFormat: Ext.util.Format.dateFormat,
+        dateFormat: Ext.util.Format.dateFormat
       };
 
       beforeEach(function () {
@@ -206,7 +206,7 @@ describe("Ext.util.Format", function () {
           thousandSeparator: ".",
           decimalSeparator: ",",
           currencySign: "\u20ac",
-          dateFormat: "d/m/Y",
+          dateFormat: "d/m/Y"
         });
       });
       afterEach(function () {
@@ -242,7 +242,7 @@ describe("Ext.util.Format", function () {
         thousandSeparator: Ext.util.Format.thousandSeparator,
         decimalSeparator: Ext.util.Format.decimalSeparator,
         currencySign: Ext.util.Format.currencySign,
-        dateFormat: Ext.util.Format.dateFormat,
+        dateFormat: Ext.util.Format.dateFormat
       };
 
       // set up the FR formatting locale
@@ -251,7 +251,7 @@ describe("Ext.util.Format", function () {
           thousandSeparator: ".",
           decimalSeparator: ",",
           currencySign: "\u20ac",
-          dateFormat: "d/m/Y",
+          dateFormat: "d/m/Y"
         });
       });
       afterEach(function () {
@@ -317,7 +317,7 @@ describe("Ext.util.Format", function () {
           thousandSeparator: Ext.util.Format.thousandSeparator,
           decimalSeparator: Ext.util.Format.decimalSeparator,
           currencySign: Ext.util.Format.currencySign,
-          dateFormat: Ext.util.Format.dateFormat,
+          dateFormat: Ext.util.Format.dateFormat
         };
 
         // set up the FR formatting locale
@@ -326,7 +326,7 @@ describe("Ext.util.Format", function () {
             thousandSeparator: ".",
             decimalSeparator: ",",
             currencySign: "\u20ac",
-            dateFormat: "d/m/Y",
+            dateFormat: "d/m/Y"
           });
         });
 
@@ -349,7 +349,7 @@ describe("Ext.util.Format", function () {
 
           it("should apply decimals when using thousand sep", function () {
             expect(Ext.util.Format.number(98765.432, "0,000.##")).toBe(
-              "98.765,43",
+              "98.765,43"
             );
           });
         });
@@ -369,7 +369,7 @@ describe("Ext.util.Format", function () {
 
           it("should apply decimals when using thousand sep", function () {
             expect(Ext.util.Format.number(98765.432, "0.000,##/i")).toBe(
-              "98.765,43",
+              "98.765,43"
             );
           });
         });
@@ -391,7 +391,7 @@ describe("Ext.util.Format", function () {
 
       it("should add decimals when using thousands", function () {
         expect(Ext.util.Format.number(11000.234, "0,000.00##")).toBe(
-          "11,000.234",
+          "11,000.234"
         );
       });
 
@@ -404,7 +404,7 @@ describe("Ext.util.Format", function () {
           thousandSeparator: Ext.util.Format.thousandSeparator,
           decimalSeparator: Ext.util.Format.decimalSeparator,
           currencySign: Ext.util.Format.currencySign,
-          dateFormat: Ext.util.Format.dateFormat,
+          dateFormat: Ext.util.Format.dateFormat
         };
 
         // set up the FR formatting locale
@@ -413,7 +413,7 @@ describe("Ext.util.Format", function () {
             thousandSeparator: ".",
             decimalSeparator: ",",
             currencySign: "\u20ac",
-            dateFormat: "d/m/Y",
+            dateFormat: "d/m/Y"
           });
         });
 
@@ -436,7 +436,7 @@ describe("Ext.util.Format", function () {
 
           it("should add decimals when using thousands", function () {
             expect(Ext.util.Format.number(11000.234, "0,000.00##")).toBe(
-              "11.000,234",
+              "11.000,234"
             );
           });
 
@@ -460,7 +460,7 @@ describe("Ext.util.Format", function () {
 
           it("should add decimals when using thousands", function () {
             expect(Ext.util.Format.number(11000.234, "0.000,00##/i")).toBe(
-              "11.000,234",
+              "11.000,234"
             );
           });
 
@@ -474,7 +474,7 @@ describe("Ext.util.Format", function () {
     describe("negative", function () {
       it("should check for a 0 value before appending negative", function () {
         expect(Ext.util.Format.number(-2.842170943040401e-14, "0,000.00")).toBe(
-          "0.00",
+          "0.00"
         );
       });
 
@@ -523,7 +523,7 @@ describe("Ext.util.Format", function () {
     it("should format according to specified format when specified", function () {
       var date = new Date(1981, 9, 15, 15, 46, 30);
       expect(Ext.util.Format.date(date, "d/m/Y H:i:s")).toBe(
-        "15/10/1981 15:46:30",
+        "15/10/1981 15:46:30"
       );
     });
   });
@@ -532,7 +532,7 @@ describe("Ext.util.Format", function () {
     it("should return a function that formats dates with the specified format", function () {
       var date = new Date(1981, 9, 15, 15, 46, 30);
       expect(Ext.util.Format.dateRenderer("d/m/Y H:i:s").call(this, date)).toBe(
-        "15/10/1981 15:46:30",
+        "15/10/1981 15:46:30"
       );
     });
   });
@@ -678,12 +678,12 @@ describe("Ext.util.Format", function () {
     });
     it("should return the exact original value if it doesn't contains any tags", function () {
       expect(Ext.util.Format.stripTags("this string contains no tags")).toBe(
-        "this string contains no tags",
+        "this string contains no tags"
       );
     });
     it("should strip tags when found", function () {
       expect(
-        Ext.util.Format.stripTags("<p>this string <b>contains</b> tags</p>"),
+        Ext.util.Format.stripTags("<p>this string <b>contains</b> tags</p>")
       ).toBe("this string contains tags");
     });
   });
@@ -697,14 +697,14 @@ describe("Ext.util.Format", function () {
     });
     it("should return the exact original value if it doesn't contains any scripts", function () {
       expect(Ext.util.Format.stripTags("this string contains no scripts")).toBe(
-        "this string contains no scripts",
+        "this string contains no scripts"
       );
     });
     it("should stript scripts when found", function () {
       expect(
         Ext.util.Format.stripScripts(
-          "<script>alert('foo');</script>this string <b>contains</b> scripts",
-        ),
+          "<script>alert('foo');</script>this string <b>contains</b> scripts"
+        )
       ).toBe("this string <b>contains</b> scripts");
     });
   });
@@ -785,7 +785,7 @@ describe("Ext.util.Format", function () {
   describe("nl2br", function () {
     it("should convert newline characters to <br/>", function () {
       expect(Ext.util.Format.nl2br("first line\nsecond line")).toBe(
-        "first line<br/>second line",
+        "first line<br/>second line"
       );
     });
     it("should be null/undefined safe", function () {
@@ -842,7 +842,7 @@ describe("Ext.util.Format", function () {
         top: 1,
         right: 2,
         bottom: 3,
-        left: 4,
+        left: 4
       });
     });
     it("should return a box when 3 margins are specified", function () {
@@ -850,7 +850,7 @@ describe("Ext.util.Format", function () {
         top: 1,
         right: 2,
         bottom: 3,
-        left: 2,
+        left: 2
       });
     });
     it("should return a box when 2 margins are specified", function () {
@@ -858,7 +858,7 @@ describe("Ext.util.Format", function () {
         top: 1,
         right: 2,
         bottom: 1,
-        left: 2,
+        left: 2
       });
     });
     it("should return a box when 1 margin is specified", function () {
@@ -866,7 +866,7 @@ describe("Ext.util.Format", function () {
         top: 1,
         right: 1,
         bottom: 1,
-        left: 1,
+        left: 1
       });
     });
     it("should return a box when 1 margin is specified as number", function () {
@@ -874,7 +874,7 @@ describe("Ext.util.Format", function () {
         top: 1,
         right: 1,
         bottom: 1,
-        left: 1,
+        left: 1
       });
     });
     it("should return a 0 margin box when no margin is specified", function () {
@@ -882,7 +882,7 @@ describe("Ext.util.Format", function () {
         top: 0,
         right: 0,
         bottom: 0,
-        left: 0,
+        left: 0
       };
       expect(Ext.util.Format.parseBox(undefined)).toEqual(zeroMarginBox);
       expect(Ext.util.Format.parseBox(null)).toEqual(zeroMarginBox);
@@ -894,7 +894,7 @@ describe("Ext.util.Format", function () {
   describe("escapeRegex", function () {
     it("should escape regular expressions", function () {
       expect(Ext.util.Format.escapeRegex("-.*+?^${}()|[]/\\abc0123")).toBe(
-        "\\-\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\abc0123",
+        "\\-\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\abc0123"
       );
     });
   });

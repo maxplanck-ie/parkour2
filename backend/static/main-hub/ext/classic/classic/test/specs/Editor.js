@@ -11,10 +11,10 @@ describe("Ext.Editor", function () {
       Ext.apply(
         {
           tag: "span",
-          html: "Sample Text",
+          html: "Sample Text"
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -44,7 +44,7 @@ describe("Ext.Editor", function () {
 
     it("should accept a string xtype", function () {
       makeEditor({
-        field: "datefield",
+        field: "datefield"
       });
       expect(field.$className).toBe("Ext.form.field.Date");
     });
@@ -52,8 +52,8 @@ describe("Ext.Editor", function () {
     it("should accept a config without xtype and default to a text field", function () {
       makeEditor({
         field: {
-          maxLength: 10,
-        },
+          maxLength: 10
+        }
       });
       expect(field.$className).toBe("Ext.form.field.Text");
       expect(field.maxLength).toBe(10);
@@ -63,8 +63,8 @@ describe("Ext.Editor", function () {
       makeEditor({
         field: {
           xtype: "numberfield",
-          maxValue: 20,
-        },
+          maxValue: 20
+        }
       });
       expect(field.$className).toBe("Ext.form.field.Number");
       expect(field.maxValue).toBe(20);
@@ -113,7 +113,7 @@ describe("Ext.Editor", function () {
 
       it("should complete an existing edit when starting", function () {
         makeEditor({
-          updateEl: true,
+          updateEl: true
         });
         startEditWithTarget();
         editor.setValue("Foo");
@@ -132,7 +132,7 @@ describe("Ext.Editor", function () {
       it("should use another alignment", function () {
         // Top left of the field aligns to the bottom right of the target
         makeEditor({
-          alignment: "tl-br",
+          alignment: "tl-br"
         });
         startEditWithTarget();
         var size = target.getSize();
@@ -142,7 +142,7 @@ describe("Ext.Editor", function () {
       it("should use offsets", function () {
         makeEditor({
           alignment: "tl-tl",
-          offsets: [20, 30],
+          offsets: [20, 30]
         });
         startEditWithTarget();
         expect(editor.getXY()).toEqual([20, 30]);
@@ -152,7 +152,7 @@ describe("Ext.Editor", function () {
         // Top left of the field aligns to the bottom right of the target
         makeEditor({
           alignment: "tl-br",
-          offsets: [20, 30],
+          offsets: [20, 30]
         });
         startEditWithTarget();
         var size = target.getSize();
@@ -199,7 +199,7 @@ describe("Ext.Editor", function () {
       it("should retain the type of the passed value", function () {
         var d = new Date();
         makeEditor({
-          field: "datefield",
+          field: "datefield"
         });
         spyOn(field, "setValue");
         startEditWithTarget(d);
@@ -226,7 +226,7 @@ describe("Ext.Editor", function () {
     describe("hideEl", function () {
       it("should hide the el with hideEl: true", function () {
         makeEditor({
-          hideEl: true,
+          hideEl: true
         });
         startEditWithTarget();
         expect(target.isVisible()).toBe(false);
@@ -234,7 +234,7 @@ describe("Ext.Editor", function () {
 
       it("should not hide the el with hideEl: false", function () {
         makeEditor({
-          hideEl: false,
+          hideEl: false
         });
         startEditWithTarget();
         expect(target.isVisible()).toBe(true);
@@ -326,8 +326,8 @@ describe("Ext.Editor", function () {
           makeEditor({
             revertInvalid: false,
             field: {
-              allowBlank: false,
-            },
+              allowBlank: false
+            }
           });
           startEditWithTarget("");
           editor.completeEdit();
@@ -342,8 +342,8 @@ describe("Ext.Editor", function () {
           makeEditor({
             revertInvalid: true,
             field: {
-              allowBlank: false,
-            },
+              allowBlank: false
+            }
           });
           startEditWithTarget();
           field.setValue("");
@@ -360,8 +360,8 @@ describe("Ext.Editor", function () {
         makeEditor({
           revertInvalid: false,
           field: {
-            allowBlank: false,
-          },
+            allowBlank: false
+          }
         });
         startEditWithTarget("");
         editor.completeEdit();
@@ -372,8 +372,8 @@ describe("Ext.Editor", function () {
         makeEditor({
           revertInvalid: true,
           field: {
-            allowBlank: false,
-          },
+            allowBlank: false
+          }
         });
         startEditWithTarget("");
         editor.completeEdit();
@@ -384,8 +384,8 @@ describe("Ext.Editor", function () {
         makeEditor({
           revertInvalid: true,
           field: {
-            allowBlank: false,
-          },
+            allowBlank: false
+          }
         });
         startEditWithTarget("Foo");
         editor.completeEdit();
@@ -406,8 +406,8 @@ describe("Ext.Editor", function () {
         makeEditor({
           revertInvalid: true,
           field: {
-            allowBlank: true,
-          },
+            allowBlank: true
+          }
         });
         startEditWithTarget("");
         editor.completeEdit(true);
@@ -419,7 +419,7 @@ describe("Ext.Editor", function () {
     describe("updateEl", function () {
       it("should set the html if the boundEl with updateEl: true", function () {
         makeEditor({
-          updateEl: true,
+          updateEl: true
         });
         startEditWithTarget("Foo");
         editor.completeEdit();
@@ -428,7 +428,7 @@ describe("Ext.Editor", function () {
 
       it("should not set the html if the boundEl with updateEl: false", function () {
         makeEditor({
-          updateEl: false,
+          updateEl: false
         });
         startEditWithTarget("Foo");
         editor.completeEdit();
@@ -440,7 +440,7 @@ describe("Ext.Editor", function () {
     (Ext.isGecko ? xdescribe : describe)("allowBlur", function () {
       it("should not complete on blur with allowBlur: false", function () {
         makeEditor({
-          allowBlur: false,
+          allowBlur: false
         });
         startEditWithTarget();
         spyOn(editor, "completeEdit").andCallThrough();
@@ -464,7 +464,7 @@ describe("Ext.Editor", function () {
 
       it("should complete on blur with allowBlur: true", function () {
         makeEditor({
-          allowBlur: true,
+          allowBlur: true
         });
         startEditWithTarget();
         spyOn(editor, "completeEdit").andCallThrough();
@@ -491,7 +491,7 @@ describe("Ext.Editor", function () {
     (Ext.isGecko ? xdescribe : describe)("completeOnEnter", function () {
       it("should not complete on enter with completeOnEnter: false", function () {
         makeEditor({
-          completeOnEnter: false,
+          completeOnEnter: false
         });
         editor.specialKeyDelay = 0;
         startEditWithTarget();
@@ -507,7 +507,7 @@ describe("Ext.Editor", function () {
 
       it("should complete on enter with completeOnEnter: true", function () {
         makeEditor({
-          completeOnEnter: true,
+          completeOnEnter: true
         });
         editor.specialKeyDelay = 0;
         startEditWithTarget();
@@ -592,8 +592,8 @@ describe("Ext.Editor", function () {
           makeEditor({
             revertInvalid: false,
             field: {
-              allowBlank: false,
-            },
+              allowBlank: false
+            }
           });
           editor.on("beforecomplete", spy);
           editor.on("complete", spy);
@@ -606,8 +606,8 @@ describe("Ext.Editor", function () {
           makeEditor({
             revertInvalid: true,
             field: {
-              allowBlank: false,
-            },
+              allowBlank: false
+            }
           });
           editor.on("beforecomplete", spy);
           editor.on("complete", spy);
@@ -620,7 +620,7 @@ describe("Ext.Editor", function () {
       describe("ignoreNoChange", function () {
         it("should not fire beforecomplete/complete if the value did not change with ignoreNoChange: true", function () {
           makeEditor({
-            ignoreNoChange: true,
+            ignoreNoChange: true
           });
           editor.on("beforecomplete", spy);
           editor.on("complete", spy);
@@ -632,7 +632,7 @@ describe("Ext.Editor", function () {
         it("should fire beforecomplete/complete if the value did not change with ignoreNoChange: true", function () {
           var completeSpy = jasmine.createSpy();
           makeEditor({
-            ignoreNoChange: false,
+            ignoreNoChange: false
           });
           editor.on("beforecomplete", spy);
           editor.on("complete", completeSpy);
@@ -686,7 +686,7 @@ describe("Ext.Editor", function () {
     (Ext.isGecko ? xdescribe : describe)("cancelOnEsc", function () {
       it("should not cancel on esc key with cancelOnEsc: false", function () {
         makeEditor({
-          cancelOnEsc: false,
+          cancelOnEsc: false
         });
         editor.specialKeyDelay = 0;
         startEditWithTarget();
@@ -702,7 +702,7 @@ describe("Ext.Editor", function () {
 
       it("should cancel on esc key with cancelOnEsc: true", function () {
         makeEditor({
-          cancelOnEsc: true,
+          cancelOnEsc: true
         });
         editor.specialKeyDelay = 0;
         startEditWithTarget();

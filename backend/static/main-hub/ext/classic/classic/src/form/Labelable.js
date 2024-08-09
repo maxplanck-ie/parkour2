@@ -32,8 +32,8 @@ Ext.define(
 
       on: {
         beforeRender: "beforeLabelRender",
-        onRender: "onLabelRender",
-      },
+        onRender: "onLabelRender"
+      }
     },
 
     config: {
@@ -62,8 +62,8 @@ Ext.define(
         "ariaErrorEl",
         "ariaStatusEl",
         "ariaHelpEl",
-        "labelTextEl",
-      ],
+        "labelTextEl"
+      ]
     },
 
     /**
@@ -137,8 +137,8 @@ Ext.define(
       "</div>",
       "</tpl>",
       {
-        disableFormats: true,
-      },
+        disableFormats: true
+      }
     ],
 
     /**
@@ -154,19 +154,19 @@ Ext.define(
       '<ul class="{listCls}">',
       '<tpl for="errors"><li>{.}</li></tpl>',
       "</ul>",
-      "</tpl>",
+      "</tpl>"
     ],
 
     plaintextActiveErrorsTpl: [
       '<tpl if="errors && errors.length">',
       '<tpl for="errors"><tpl if="xindex &gt; 1">\n</tpl>{.}</tpl>',
-      "</tpl>",
+      "</tpl>"
     ],
 
     ariaActiveErrorsTpl: [
       '<tpl if="errors && errors.length">',
       '<tpl for="errors" between=". ">{.}</tpl>',
-      "</tpl>",
+      "</tpl>"
     ],
 
     /**
@@ -353,7 +353,7 @@ Ext.define(
       title: 1,
       under: 1,
       side: 1,
-      none: 1,
+      none: 1
     },
 
     /**
@@ -457,7 +457,7 @@ Ext.define(
        * inside the label element (as attributes). If an `XTemplate` is used, the component's
        * {@link Ext.Component#renderData render data} serves as the context.
        */
-      "labelAttrTpl",
+      "labelAttrTpl"
     ],
 
     statics: {
@@ -482,7 +482,7 @@ Ext.define(
           // tell the spec runner to ignore this element when checking if the dom is clean
           sticky: true,
           //</debug>
-          ui: "form-invalid",
+          ui: "form-invalid"
         };
 
         // On Touch devices, tapping the target shows the qtip
@@ -494,7 +494,7 @@ Ext.define(
           cfg.listeners = {
             beforeshow: function () {
               this.minWidth = Ext.fly(this.activeTarget.el).getWidth();
-            },
+            }
           };
         }
         tip = this.tip = Ext.create("Ext.tip.QuickTip", cfg);
@@ -509,7 +509,7 @@ Ext.define(
        */
       destroyTip: function () {
         this.tip = Ext.destroy(this.tip);
-      },
+      }
     },
 
     /**
@@ -542,7 +542,7 @@ Ext.define(
         me.restoreDisplay = Ext.Function.createDelayed(
           me.doRestoreDisplay,
           0,
-          me,
+          me
         );
       }
 
@@ -775,7 +775,7 @@ Ext.define(
         fieldLabel: me.getFieldLabel(),
         labelSeparator: me.labelSeparator,
         renderAriaElements: !!me.renderAriaElements,
-        ariaStatus: "",
+        ariaStatus: ""
       };
 
       if (me.ariaHelp) {
@@ -815,7 +815,7 @@ Ext.define(
         errorWrapEl.setVisibilityMode(
           me.msgTarget === "side" && !me.autoFitErrors
             ? ExtElement.VISIBILITY
-            : ExtElement.DISPLAY,
+            : ExtElement.DISPLAY
         );
       }
 
@@ -931,7 +931,7 @@ Ext.define(
       activeError = me.activeError = tpl.apply({
         fieldLabel: me.fieldLabel,
         errors: errors,
-        listCls: Ext.baseCSSPrefix + "list-plain",
+        listCls: Ext.baseCSSPrefix + "list-plain"
       });
 
       me.renderActiveError();
@@ -958,7 +958,7 @@ Ext.define(
           errText = Ext.String.formatEncode(
             me.ariaErrorText,
             errStr,
-            me.fieldLabel,
+            me.fieldLabel
           );
 
           if (ariaErrorEl.dom.innerHTML !== errText) {
@@ -1108,11 +1108,11 @@ Ext.define(
           this[key] = defaults[key];
         }
       }
-    },
+    }
   },
   function () {
     if (Ext.supports.Touch) {
       this.prototype.msgTarget = "side";
     }
-  },
+  }
 );

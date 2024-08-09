@@ -50,7 +50,7 @@ Ext.define("Ext.draw.sprite.Rect", {
         /**
          * @cfg {Number} [radius=0] The radius of the rounded corners.
          */
-        radius: "number",
+        radius: "number"
       },
       aliases: {},
       triggers: {
@@ -58,16 +58,16 @@ Ext.define("Ext.draw.sprite.Rect", {
         y: "path",
         width: "path",
         height: "path",
-        radius: "path",
+        radius: "path"
       },
       defaults: {
         x: 0,
         y: 0,
         width: 8,
         height: 8,
-        radius: 0,
-      },
-    },
+        radius: 0
+      }
+    }
   },
 
   updatePlainBBox: function (plain) {
@@ -91,7 +91,7 @@ Ext.define("Ext.draw.sprite.Rect", {
       radius = Math.min(
         attr.radius,
         Math.abs(height) * 0.5,
-        Math.abs(width) * 0.5,
+        Math.abs(width) * 0.5
       );
 
     if (radius === 0) {
@@ -103,5 +103,5 @@ Ext.define("Ext.draw.sprite.Rect", {
       path.arcTo(x, y + height, x, y, radius);
       path.arcTo(x, y, x + radius, y, radius);
     }
-  },
+  }
 });

@@ -4,7 +4,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
     "MainHub.view.requests.RequestWindowController",
     "MainHub.view.libraries.LibraryWindow",
     "MainHub.view.libraries.BatchAddWindow",
-    "Ext.ux.FileGridField",
+    "Ext.ux.FileGridField"
   ],
   controller: "requests-requestwindow",
 
@@ -18,7 +18,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
       xtype: "container",
       layout: {
         type: "table",
-        columns: 2,
+        columns: 2
       },
       items: [
         {
@@ -36,7 +36,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
               defaults: {
                 submitEmptyText: false,
                 labelWidth: 80,
-                anchor: "100%",
+                anchor: "100%"
               },
               items: [
                 {
@@ -50,24 +50,24 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                   emptyText: "Cost Unit",
                   allowBlank: USER.is_staff,
                   forceSelection: true,
-                  store: "CostUnits",
+                  store: "CostUnits"
                 },
                 {
                   name: "description",
                   cls: "pl-description",
                   xtype: "textarea",
-                  fieldLabel: "Description",
+                  fieldLabel: "Description*",
                   emptyText: "Description",
                   allowBlank: false,
-                  height: 150,
+                  height: 150
                 },
                 {
                   xtype: "filegridfield",
                   fieldLabel: "Files",
                   store: "requestFilesStore",
-                  uploadFileUrl: "api/requests/upload_files/",
-                },
-              ],
+                  uploadFileUrl: "api/requests/upload_files/"
+                }
+              ]
             },
             {
               id: "uploadedDeepSeqRequest",
@@ -81,9 +81,9 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                 "4. Scan the blank and upload it back using the upload button below.<br/><br/>" +
                 "<strong>Note</strong>: if the blank is already uploaded, you cannot update it." +
                 '">[?]</span></strong></sup>: <span id="uploaded-request-file">Not uploaded</span>' +
-                '<br />GMO? Download <a href="static/docs/S1.docx">Formblatt S1</a>.',
-            },
-          ],
+                '<br />GMO? Download <a href="static/docs/S1.docx">Formblatt S1</a>.'
+            }
+          ]
         },
         {
           xtype: "grid",
@@ -95,7 +95,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
           padding: "12px 15px 15px 0",
           rowspan: 2,
           viewConfig: {
-            stripeRows: false,
+            stripeRows: false
           },
           sortableColumns: false,
           enableColumnMove: false,
@@ -108,12 +108,12 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                 itemId: "check-column",
                 dataIndex: "selected",
                 tdCls: "no-dirty",
-                width: 40,
+                width: 40
               },
               {
                 text: "Name",
                 dataIndex: "name",
-                flex: 1,
+                flex: 1
               },
               {
                 text: "",
@@ -121,7 +121,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                 width: 35,
                 renderer: function (value, meta) {
                   return meta.record.getRecordType().charAt(0);
-                },
+                }
               },
               {
                 text: "Barcode",
@@ -129,9 +129,9 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                 width: 95,
                 renderer: function (value, meta, record) {
                   return record.getBarcode();
-                },
-              },
-            ],
+                }
+              }
+            ]
           },
           store: "librariesInRequestStore",
           bbar: [
@@ -139,12 +139,12 @@ Ext.define("MainHub.view.requests.RequestWindow", {
             {
               itemId: "batch-add-button",
               cls: "pl-batch-add-button",
-              text: "Add",
-            },
-          ],
-        },
-      ],
-    },
+              text: "Add"
+            }
+          ]
+        }
+      ]
+    }
   ],
   bbar: [
     "->",
@@ -152,7 +152,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
       xtype: "button",
       itemId: "save-button",
       iconCls: "fa fa-floppy-o fa-lg",
-      text: "Save",
-    },
-  ],
+      text: "Save"
+    }
+  ]
 });

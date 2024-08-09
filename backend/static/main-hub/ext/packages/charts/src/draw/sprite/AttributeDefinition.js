@@ -8,7 +8,7 @@
 Ext.define("Ext.draw.sprite.AttributeDefinition", {
   requires: [
     "Ext.draw.sprite.AttributeParser",
-    "Ext.draw.sprite.AnimationParser",
+    "Ext.draw.sprite.AnimationParser"
   ],
 
   config: {
@@ -17,7 +17,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
      */
     defaults: {
       $value: {},
-      lazy: true,
+      lazy: true
     },
 
     /**
@@ -47,7 +47,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
       // A plus side of lazy initialization is that the 'processors' and 'defaults' will
       // only be applied for those sprite classes that are actually instantiated.
       $value: {},
-      lazy: true,
+      lazy: true
     },
 
     /**
@@ -99,7 +99,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
      *         }
      *     }
      */
-    updaters: {},
+    updaters: {}
   },
 
   inheritableStatics: {
@@ -109,7 +109,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
      * E.g.: {@link Ext.draw.sprite.AttributeParser#enums enums},
      * {@link Ext.draw.sprite.AttributeParser#limited limited}.
      */
-    processorFactoryRe: /^(\w+)\(([\w\-,]*)\)$/,
+    processorFactoryRe: /^(\w+)\(([\w\-,]*)\)$/
   },
 
   // The sprite class for which AttributeDefinition instance is created.
@@ -148,7 +148,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
           // enums(... , limited(... or something of that nature.
           fn = defaultProcessor[match[1]].apply(
             defaultProcessor,
-            match[2].split(","),
+            match[2].split(",")
           );
         } else if (defaultProcessor[fn]) {
           // Names of animation parsers match the names of attribute parsers.
@@ -163,7 +163,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
           this.spriteClass.$className +
             ": processor '" +
             name +
-            "' has not been found.",
+            "' has not been found."
         );
       }
       //</debug>
@@ -179,7 +179,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
 
   applyAnimationProcessors: function (
     animationProcessors,
-    oldAnimationProcessors,
+    oldAnimationProcessors
   ) {
     var parser = Ext.draw.sprite.AnimationParser,
       name,
@@ -290,7 +290,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
               rotation.degrees,
               function (deg) {
                 return Ext.draw.Draw.rad(deg);
-              },
+              }
             );
           } else {
             normalized.rotationRads = Ext.draw.Draw.rad(rotation.degrees);
@@ -505,5 +505,5 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
   set: function (attr, modifierStack, changes) {
     changes = this.normalize(changes);
     return this.setBypassingNormalization(attr, modifierStack, changes);
-  },
+  }
 });

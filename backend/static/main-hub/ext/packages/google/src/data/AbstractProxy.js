@@ -13,7 +13,7 @@ Ext.define("Ext.google.data.AbstractProxy", {
   reader: {
     type: "json",
     rootProperty: "items",
-    messageProperty: "error",
+    messageProperty: "error"
   },
 
   /**
@@ -77,7 +77,7 @@ Ext.define("Ext.google.data.AbstractProxy", {
             });
           });
         },
-        Ext.Deferred.resolved(),
+        Ext.Deferred.resolved()
       ).then(function () {
         return { result: results };
       });
@@ -101,7 +101,7 @@ Ext.define("Ext.google.data.AbstractProxy", {
       this.processResponse(true, operation, request, {
         results: error ? [] : results,
         success: !error,
-        error: error,
+        error: error
       });
     },
 
@@ -119,10 +119,10 @@ Ext.define("Ext.google.data.AbstractProxy", {
           }
         },
         this,
-        true,
+        true
       );
 
       return results;
-    },
-  },
+    }
+  }
 });

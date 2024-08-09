@@ -6,125 +6,125 @@ Ext.define("MainHub.model.metadataexporter.Sample", {
     {
       name: "status",
       type: "string",
-      defaultValue: "add",
+      defaultValue: "add"
     },
     {
       name: "accession",
       type: "string",
-      defaultValue: "update_by_ENA",
+      defaultValue: "update_by_ENA"
     },
     {
       name: "submission_date",
       type: "string",
-      defaultValue: "update_by_ENA",
+      defaultValue: "update_by_ENA"
     },
     {
       type: "bool",
       name: "invalid",
-      defaultValue: false,
+      defaultValue: false
     },
     {
       type: "auto",
       name: "errors",
-      defaultValue: {},
+      defaultValue: {}
     },
 
     // Experiments
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "barcode",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_strategy",
-      type: "string",
+      type: "string"
     },
     {
       name: "design_description",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_source",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_selection",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_layout",
-      type: "string",
+      type: "string"
     },
     {
       name: "insert_size",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "library_construction_protocol",
-      type: "string",
+      type: "string"
     },
     {
       name: "platform",
       type: "string",
-      defaultValue: "Illumina",
+      defaultValue: "Illumina"
     },
     {
       name: "instrument_model",
-      type: "string",
+      type: "string"
     },
 
     // Samples
     {
       name: "scientific_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "taxon_id",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "title",
-      type: "string",
+      type: "string"
     },
     {
       name: "sample_description",
-      type: "string",
+      type: "string"
     },
 
     // Runs
     {
       name: "file_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "file_format",
-      type: "string",
+      type: "string"
     },
     {
       name: "file_checksum",
       type: "string",
-      defaultValue: "update_by_ENA",
-    },
+      defaultValue: "update_by_ENA"
+    }
   ],
 
   validators: {
     library_name: [
       {
-        type: "presence",
+        type: "presence"
       },
       {
         type: "unique", // Defined in `model/libraries/BatchAdd/Common.js`
-        dataIndex: "library_name",
-      },
+        dataIndex: "library_name"
+      }
     ],
     library_strategy: "presence",
     design_description: "presence",
@@ -140,6 +140,6 @@ Ext.define("MainHub.model.metadataexporter.Sample", {
     title: "presence",
     sample_description: "presence",
     file_name: "presence",
-    file_format: "presence",
-  },
+    file_format: "presence"
+  }
 });

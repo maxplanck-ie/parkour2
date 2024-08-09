@@ -139,5 +139,5 @@ Ext.define("Ext.data.Validation", {
         me.set(values);
       }
     }
-  },
+  }
 });

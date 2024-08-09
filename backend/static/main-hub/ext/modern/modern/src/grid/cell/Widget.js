@@ -25,7 +25,7 @@ Ext.define("Ext.grid.cell.Widget", {
      *
      * @cfg {String} widget.xtype (required) The type of component or widget to create.
      */
-    widget: null,
+    widget: null
   },
 
   align: "center",
@@ -82,9 +82,9 @@ Ext.define("Ext.grid.cell.Widget", {
       if (parent && !parent.isSpecialRow) {
         widget = Ext.apply(
           {
-            parent: this,
+            parent: this
           },
-          widget,
+          widget
         );
         widget = Ext.widget(widget);
       } else {
@@ -163,6 +163,6 @@ Ext.define("Ext.grid.cell.Widget", {
         widget.setWidth(width - leftPad - rightPad);
         widget.redraw();
       }
-    },
-  },
+    }
+  }
 });

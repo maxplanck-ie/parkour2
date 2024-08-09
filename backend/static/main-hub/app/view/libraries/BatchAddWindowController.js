@@ -5,48 +5,48 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
   config: {
     control: {
       "#": {
-        boxready: "boxready",
+        boxready: "boxready"
       },
       "#library-card-button": {
-        click: "selectCard",
+        click: "selectCard"
       },
       "#sample-card-button": {
-        click: "selectCard",
+        click: "selectCard"
       },
       "#batch-add-grid": {
         itemcontextmenu: "showContextMenu",
         beforeedit: "toggleEditors",
         edit: "editRecord",
-        validate: "validateAll",
+        validate: "validateAll"
       },
       "#create-empty-records-button": {
-        click: "createEmptyRecords",
+        click: "createEmptyRecords"
       },
 
       // Libraries only
       "#indexTypeEditor": {
-        select: "selectIndexType",
+        select: "selectIndexType"
       },
       "#indexReadsEditor": {
-        select: "selectIndexReads",
+        select: "selectIndexReads"
       },
 
       // Samples only
       "#nucleicAcidTypeEditor": {
-        select: "selectNucleicAcidType",
+        select: "selectNucleicAcidType"
       },
       "#libraryProtocolEditor": {
-        select: "selectLibraryProtocol",
+        select: "selectLibraryProtocol"
       },
 
       "#save-button": {
-        click: "save",
+        click: "save"
       },
 
       "#download-sample-form": {
-        click: "downloadSampleForm",
-      },
-    },
+        click: "downloadSampleForm"
+      }
+    }
   },
 
   boxready: function (wnd) {
@@ -59,7 +59,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     }
 
     Ext.apply(Ext.tip.QuickTipManager.getQuickTip(), {
-      dismissDelay: 10000, // hide after 10 seconds
+      dismissDelay: 10000 // hide after 10 seconds
     });
   },
 
@@ -135,7 +135,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     Ext.create("Ext.menu.Menu", {
       plain: true,
       defaults: {
-        margin: 5,
+        margin: 5
       },
       items: [
         {
@@ -143,15 +143,15 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           handler: function () {
             var dataIndex = MainHub.Utilities.getDataIndex(e, gridView);
             me.applyToAll(record, dataIndex);
-          },
+          }
         },
         {
           text: "Delete",
           handler: function () {
             me.delete(record, gridView);
-          },
-        },
-      ],
+          }
+        }
+      ]
     }).showAt(e.getXY());
   },
 
@@ -161,7 +161,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     form.submit({
       url: btn.downloadUrl,
-      method: "GET",
+      method: "GET"
     });
   },
 
@@ -192,7 +192,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
               index_type: record.get("index_type"),
               // Reset Index I7 and Index I5 for all other records
               index_i7: "",
-              index_i5: "",
+              index_i5: ""
             });
           }
 
@@ -209,7 +209,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             item.set({
               index_i7: "",
               index_reads: record.get("index_reads"),
-              index_type: record.get("index_type"),
+              index_type: record.get("index_type")
             });
           }
 
@@ -219,27 +219,27 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
               index_i5: record.get("index_i5"),
               index_i7: record.get("index_i7"),
               index_reads: record.get("index_reads"),
-              index_type: record.get("index_type"),
+              index_type: record.get("index_type")
             });
           }
 
-          // Update Nucleic Acid Type
+          // Update Input Type
           else if (dataIndex === "nucleic_acid_type") {
             // Reset Library Protocol and Library Type for records
-            // with a different Nucleic Acid Type
+            // with a different Input Type
             if (
               item.get("nucleic_acid_type") !== record.get("nucleic_acid_type")
             ) {
               item.set({
                 library_protocol: null,
-                library_type: null,
+                library_type: null
               });
             }
 
             item.set("nucleic_acid_type", record.get("nucleic_acid_type"));
           }
 
-          // If Library Protocol was selected, update Nuc. Type too
+          // If Library Protocol was selected, update Input Type too
           else if (dataIndex === "library_protocol") {
             // Libraries
             if (typeof item.get("nucleic_acid_type") === "undefined") {
@@ -252,7 +252,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             }
             // Samples
             else {
-              // Reset Library Type if Nucleic Acid Types Library Protocols
+              // Reset Library Type if Input Types Library Protocols
               // are different
               if (
                 item.get("nucleic_acid_type") !==
@@ -269,20 +269,20 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             item.set("library_protocol", record.get("library_protocol"));
           }
 
-          // If Library Type was selected, update Library Protocol and Nucleic Acid Type
+          // If Library Type was selected, update Library Protocol and Input Type
           else if (dataIndex === "library_type") {
             item.set({
               library_type: record.get("library_type"),
               library_protocol: record.get("library_protocol"),
-              nucleic_acid_type: record.get("nucleic_acid_type"),
+              nucleic_acid_type: record.get("nucleic_acid_type")
             });
           }
 
-          // RNA Quality should be applied only when Nucleic Acid Type is RNA
+          // RNA Quality should be applied only when Input Type is RNA
           else if (dataIndex === "rna_quality") {
             var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
               "id",
-              item.get("nucleic_acid_type"),
+              item.get("nucleic_acid_type")
             );
 
             if (nat && nat.get("type") === "RNA") {
@@ -332,14 +332,14 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           indexTypeEditor.fireEvent(
             "select",
             indexTypeEditor,
-            indexTypeEditor.findRecordByValue(record.get("index_type")),
+            indexTypeEditor.findRecordByValue(record.get("index_type"))
           );
 
           // Toggle IndexI7 and IndexI5
           indexReadsEditor.fireEvent(
             "select",
             indexReadsEditor,
-            indexReadsEditor.findRecordByValue(record.get("index_reads")),
+            indexReadsEditor.findRecordByValue(record.get("index_reads"))
           );
         } else {
           indexI7Editor.disable();
@@ -360,7 +360,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       } else {
         libraryProtocolEditor.enable();
 
-        // Filter Library Protocols store for currently selected Nucleic Acid Type
+        // Filter Library Protocols store for currently selected Input Type
         if (record.get("library_protocol") !== 0) {
           var type = nucleicAcidTypesStore
             .findRecord("id", record.get("nucleic_acid_type"))
@@ -372,7 +372,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       // Toggle RNA Quality
       var nat = nucleicAcidTypesStore.findRecord(
         "id",
-        record.get("nucleic_acid_type"),
+        record.get("nucleic_acid_type")
       );
       if (nat && nat.get("type") === "RNA") {
         rnaQualityEditor.enable();
@@ -412,10 +412,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       record.set({ index_i7: "", index_i5: "" });
     }
 
-    // Reset RNA Quality if Nucleic Acid Type has changed
+    // Reset RNA Quality if Input Type has changed
     var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
       "id",
-      record.get("nucleic_acid_type"),
+      record.get("nucleic_acid_type")
     );
     if (
       nat !== null &&
@@ -462,10 +462,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     // Reload stores
     indexI7Store.reload({
-      params: { index_type_id: record.get("id") },
+      params: { index_type_id: record.get("id") }
     });
     indexI5Store.reload({
-      params: { index_type_id: record.get("id") },
+      params: { index_type_id: record.get("id") }
     });
   },
 
@@ -526,21 +526,20 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
   getLibraryGridConfiguration: function (mode) {
     var store = Ext.create("Ext.data.Store", {
       model: "MainHub.model.libraries.BatchAdd.Library",
-      data: [],
+      data: []
     });
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
-        text: "size (bp)",
+        text: "Size (bp)",
         dataIndex: "mean_fragment_size",
         tooltip: "Mean Fragment Size",
         width: 100,
         editor: {
           xtype: "numberfield",
-          allowDecimals: false,
-          minValue: 0,
+          minValue: 0
         },
-        renderer: this.errorRenderer,
+        renderer: this.errorRenderer
       },
       {
         text: "Index Type",
@@ -556,9 +555,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           valueField: "id",
           store: "IndexTypes",
           matchFieldWidth: false,
-          forceSelection: true,
+          forceSelection: true
         },
-        renderer: this.comboboxErrorRenderer,
+        renderer: this.comboboxErrorRenderer
       },
       {
         text: "# of Index Reads",
@@ -574,9 +573,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           valueField: "num",
           store: Ext.create("Ext.data.Store", {
             fields: [{ name: "num", type: "int" }],
-            data: [],
+            data: []
           }),
-          forceSelection: true,
+          forceSelection: true
         },
         renderer: function (value, meta, record) {
           var item = meta.column
@@ -594,7 +593,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           }
 
           return item ? item.get("num") : value;
-        },
+        }
       },
       {
         text: "Index I7",
@@ -611,16 +610,16 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             "Ext.XTemplate",
             '<tpl for=".">',
             "{index}",
-            "</tpl>",
+            "</tpl>"
           ),
           valueField: "index",
           store: "indexI7Store",
           regex: new RegExp("^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"),
           regexText:
             "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
-          matchFieldWidth: false,
+          matchFieldWidth: false
         },
-        renderer: this.errorRenderer,
+        renderer: this.errorRenderer
       },
       {
         text: "Index I5",
@@ -637,17 +636,17 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             "Ext.XTemplate",
             '<tpl for=".">',
             "{index}",
-            "</tpl>",
+            "</tpl>"
           ),
           valueField: "index",
           store: "indexI5Store",
           regex: new RegExp("^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"),
           regexText:
             "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
-          matchFieldWidth: false,
+          matchFieldWidth: false
         },
-        renderer: this.errorRenderer,
-      },
+        renderer: this.errorRenderer
+      }
       // {
       //   text: 'qPCR (nM)',
       //   dataIndex: 'qpcr_result',
@@ -680,7 +679,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "sample_volume",
       // 'concentration_method',
       "organism",
-      "comments",
+      "comments"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -690,14 +689,14 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
   getSampleGridConfiguration: function (mode) {
     var store = Ext.create("Ext.data.Store", {
       model: "MainHub.model.libraries.BatchAdd.Sample",
-      data: [],
+      data: []
     });
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
-        text: "Nuc. Type",
+        text: "Input Type",
         dataIndex: "nucleic_acid_type",
-        tooltip: "Nucleic Acid Type",
+        tooltip: "Input Type",
         width: 200,
         editor: {
           xtype: "combobox",
@@ -708,9 +707,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           valueField: "id",
           store: "nucleicAcidTypesStore",
           matchFieldWidth: false,
-          forceSelection: true,
+          forceSelection: true
         },
-        renderer: this.comboboxErrorRenderer,
+        renderer: this.comboboxErrorRenderer
       },
       {
         text: "RQN",
@@ -726,10 +725,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           displayTpl: Ext.create("Ext.XTemplate", '<tpl for=".">{value}</tpl>'),
           store: "rnaQualityStore",
           regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
-          regexText: "Only values between 1 and 10 are allowed.",
+          regexText: "Only values between 1 and 10 are allowed."
         },
-        renderer: this.errorRenderer,
-      },
+        renderer: this.errorRenderer
+      }
     ]);
 
     // Sort columns
@@ -748,7 +747,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "sample_volume",
       // 'concentration_method',
       "organism",
-      "comments",
+      "comments"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -771,7 +770,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       {
         xtype: "rownumberer",
         dataIndex: "numberer",
-        width: 40,
+        width: 40
       },
       {
         text: "Name",
@@ -782,9 +781,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         editor: {
           xtype: "textfield",
           regex: new RegExp(/^[A-Za-z0-9_-]+$/),
-          regexText: "Only A-Za-z0-9 as well as _ and - are allowed",
+          regexText: "Only A-Za-z0-9 as well as _ and - are allowed"
         },
-        renderer: this.errorRenderer,
+        renderer: this.errorRenderer
       },
       {
         text: "Protocol",
@@ -813,10 +812,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
                 "<strong>Comments</strong>: {comments}" +
                 '">{name}</span>'
               );
-            },
-          },
+            }
+          }
         },
-        renderer: this.comboboxErrorRenderer,
+        renderer: this.comboboxErrorRenderer
       },
       {
         text: "Library Type",
@@ -832,9 +831,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           valueField: "id",
           store: "libraryTypesStore",
           // matchFieldWidth: false,
-          forceSelection: true,
+          forceSelection: true
         },
-        renderer: this.comboboxErrorRenderer,
+        renderer: this.comboboxErrorRenderer
       },
       {
         text: "ng/μl",
@@ -843,9 +842,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 90,
         editor: {
           xtype: "numberfield",
-          minValue: 0,
+          minValue: 0
         },
-        renderer: this.errorRenderer,
+        renderer: this.errorRenderer
       },
       {
         text: "Length",
@@ -859,9 +858,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           displayField: "name",
           store: "readLengthsStore",
           matchFieldWidth: false,
-          forceSelection: true,
+          forceSelection: true
         },
-        renderer: this.comboboxErrorRenderer,
+        renderer: this.comboboxErrorRenderer
       },
       {
         text: "Depth (M)",
@@ -870,9 +869,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 85,
         editor: {
           xtype: "numberfield",
-          minValue: 10,
+          minValue: 0,
+          step: 10
         },
-        renderer: this.errorRenderer,
+        renderer: this.errorRenderer
       },
       // {
       //   text: 'Amplification',
@@ -926,9 +926,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           displayField: "name",
           store: "organismsStore",
           // matchFieldWidth: false,
-          forceSelection: true,
+          forceSelection: true
         },
-        renderer: this.comboboxErrorRenderer,
+        renderer: this.comboboxErrorRenderer
       },
       {
         text: "Comments",
@@ -937,16 +937,16 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 200,
         editor: {
           xtype: "textfield",
-          allowBlank: true,
-        },
-      },
+          allowBlank: true
+        }
+      }
     ];
 
     if (mode === "edit") {
       columns.push({
         text: "Barcode",
         dataIndex: "barcode",
-        width: 95,
+        width: 95
       });
     }
 
@@ -964,14 +964,14 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     } else {
       url = Ext.String.format(
         "api/requests/{0}/edit/",
-        requestWnd.record.get("pk"),
+        requestWnd.record.get("pk")
       );
     }
 
     if (store.getCount() === 0) {
       new Noty({
         text: "No libraries/samples are added to the request.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -988,10 +988,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           name: data.name,
           pi: data.pi,
           cost_unit: data.cost_unit,
-          description: data.description,
           records: Ext.Array.pluck(store.data.items, "data"),
-          files: form.down("filegridfield").getValue(),
-        }),
+          files: form.down("filegridfield").getValue()
+        })
       },
 
       success: function (response) {
@@ -1001,12 +1000,12 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           var message;
 
           if (requestWnd.mode === "add") {
-            message = "Request has been saved.";
+            message = "The request has been auto-saved.";
             requestWnd.mode = "edit";
             requestWnd.autoSaveRequestId = obj.pk;
             requestWnd.setTitle(this.requestName);
           } else {
-            message = "The changes have been saved.";
+            message = "The request has been saved successfully.";
           }
 
           new Noty({ text: message }).show();
@@ -1020,7 +1019,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       failure: function (response) {
         new Noty({ text: response.statusText, type: "error" }).show();
         console.error(response);
-      },
+      }
     });
   },
 
@@ -1044,7 +1043,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     }, 0);
 
     if (numInvalidRecords !== 0) {
-      new Noty({ text: "Check the records.", type: "warning" }).show();
+      new Noty({
+        text: "Please check the record entries.",
+        type: "warning"
+      }).show();
       return;
     }
 
@@ -1055,7 +1057,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       // timeout: 1000000,
       scope: this,
       params: {
-        data: Ext.JSON.encode(Ext.Array.pluck(store.data.items, "data")),
+        data: Ext.JSON.encode(Ext.Array.pluck(store.data.items, "data"))
       },
 
       success: function (response) {
@@ -1071,7 +1073,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
               store.remove(record);
             }
 
-            new Noty({ text: "Records have been added!" }).show();
+            new Noty({ text: "Records have been added successfully." }).show();
             // If new libraries/samples are added, try to automatically save the request,
             // otherwise, if the request is not saved, such libraries/samples
             // are 'lost', or at least they don't have a request associated to them
@@ -1080,7 +1082,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             librariesInRequestGrid
               .down("#check-column")
               .fireEvent("unselectall");
-            new Noty({ text: "The changes have been saved!" }).show();
+            new Noty({ text: "Changes have been saved successfully." }).show();
           }
           wnd.close();
         } else {
@@ -1094,7 +1096,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         wnd.setLoading(false);
         new Noty({ text: response.statusText, type: "error" }).show();
         console.error(response);
-      },
+      }
     });
   },
 
@@ -1205,5 +1207,5 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var store = record.store;
     store.remove(record);
     gridView.refresh();
-  },
+  }
 });

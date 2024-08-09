@@ -27,7 +27,7 @@ Ext.define("Ext.ux.desktop.Video", {
     '<source src="{src}" type="{type}"/>',
     "</tpl>",
     "{html}",
-    "</video>",
+    "</video>"
   ],
 
   initComponent: function () {
@@ -65,10 +65,10 @@ Ext.define("Ext.ux.desktop.Video", {
     cfg = me.data = Ext.copyTo(
       {
         tag: "video",
-        html: fallback,
+        html: fallback
       },
       me,
-      "id,poster,start,loopstart,loopend,playcount,autobuffer,loop",
+      "id,poster,start,loopstart,loopend,playcount,autobuffer,loop"
     );
 
     // just having the params exist enables them
@@ -129,5 +129,5 @@ Ext.define("Ext.ux.desktop.Video", {
     }
 
     me.callParent();
-  },
+  }
 });

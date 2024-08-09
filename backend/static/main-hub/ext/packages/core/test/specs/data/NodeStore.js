@@ -1,6 +1,6 @@
 describe("Ext.data.NodeStore", function () {
   var Model = Ext.define(null, {
-    extend: "Ext.data.TreeModel",
+    extend: "Ext.data.TreeModel"
   });
 
   var store;
@@ -8,7 +8,7 @@ describe("Ext.data.NodeStore", function () {
   function makeNode(id, leaf, children) {
     var node = new Model({
       id: id,
-      leaf: !!leaf,
+      leaf: !!leaf
     });
 
     if (children) {
@@ -29,10 +29,10 @@ describe("Ext.data.NodeStore", function () {
       Ext.apply(
         {
           model: Model,
-          node: node,
+          node: node
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -54,7 +54,7 @@ describe("Ext.data.NodeStore", function () {
         makeNode(1, true),
         makeNode(5),
         makeNode(4, true),
-        makeNode(3),
+        makeNode(3)
       ]);
     });
 
@@ -68,9 +68,9 @@ describe("Ext.data.NodeStore", function () {
           it("should sort nodes", function () {
             makeStore(
               {
-                folderSort: true,
+                folderSort: true
               },
-              node,
+              node
             );
 
             expectIds([6, 5, 3, 2, 1, 4]);
@@ -81,9 +81,9 @@ describe("Ext.data.NodeStore", function () {
           it("should leave nodes in place", function () {
             makeStore(
               {
-                folderSort: false,
+                folderSort: false
               },
-              node,
+              node
             );
 
             expectIds([2, 6, 1, 5, 4, 3]);
@@ -96,9 +96,9 @@ describe("Ext.data.NodeStore", function () {
           it("should sort nodes", function () {
             makeStore(
               {
-                folderSort: false,
+                folderSort: false
               },
-              node,
+              node
             );
             store.setFolderSort(true);
 
@@ -110,9 +110,9 @@ describe("Ext.data.NodeStore", function () {
           it("should leave nodes in place", function () {
             makeStore(
               {
-                folderSort: true,
+                folderSort: true
               },
-              node,
+              node
             );
             store.setFolderSort(false);
 
@@ -132,11 +132,11 @@ describe("Ext.data.NodeStore", function () {
                 sorters: [
                   {
                     property: "id",
-                    direction: "DESC",
-                  },
-                ],
+                    direction: "DESC"
+                  }
+                ]
               },
-              node,
+              node
             );
 
             expectIds([6, 5, 3, 4, 2, 1]);
@@ -151,11 +151,11 @@ describe("Ext.data.NodeStore", function () {
                 sorters: [
                   {
                     property: "id",
-                    direction: "DESC",
-                  },
-                ],
+                    direction: "DESC"
+                  }
+                ]
               },
-              node,
+              node
             );
 
             expectIds([6, 5, 4, 3, 2, 1]);
@@ -168,14 +168,14 @@ describe("Ext.data.NodeStore", function () {
           beforeEach(function () {
             makeStore(
               {
-                folderSort: true,
+                folderSort: true
               },
-              node,
+              node
             );
 
             store.getSorters().add({
               property: "id",
-              direction: "DESC",
+              direction: "DESC"
             });
           });
 
@@ -197,14 +197,14 @@ describe("Ext.data.NodeStore", function () {
           beforeEach(function () {
             makeStore(
               {
-                folderSort: false,
+                folderSort: false
               },
-              node,
+              node
             );
 
             store.getSorters().add({
               property: "id",
-              direction: "DESC",
+              direction: "DESC"
             });
           });
 
@@ -232,11 +232,11 @@ describe("Ext.data.NodeStore", function () {
                 sorters: [
                   {
                     property: "id",
-                    direction: "DESC",
-                  },
-                ],
+                    direction: "DESC"
+                  }
+                ]
               },
-              node,
+              node
             );
             store.setFolderSort(true);
 
@@ -252,11 +252,11 @@ describe("Ext.data.NodeStore", function () {
                 sorters: [
                   {
                     property: "id",
-                    direction: "DESC",
-                  },
-                ],
+                    direction: "DESC"
+                  }
+                ]
               },
-              node,
+              node
             );
             store.setFolderSort(false);
             expectIds([6, 5, 4, 3, 2, 1]);
@@ -271,10 +271,10 @@ describe("Ext.data.NodeStore", function () {
       makeStore(
         {
           node: {
-            id: "foo",
-          },
+            id: "foo"
+          }
         },
-        null,
+        null
       );
       var node = store.getNode();
 
@@ -285,7 +285,7 @@ describe("Ext.data.NodeStore", function () {
     it("should accept a node instance", function () {
       var node = makeNode();
       makeStore({
-        node: node,
+        node: node
       });
       expect(store.getNode()).toBe(node);
     });
@@ -297,7 +297,7 @@ describe("Ext.data.NodeStore", function () {
         var node = makeNode("root", false, [
           makeNode(1),
           makeNode(2),
-          makeNode(3),
+          makeNode(3)
         ]);
 
         makeStore(null, node);
@@ -309,7 +309,7 @@ describe("Ext.data.NodeStore", function () {
         var node = makeNode("root", false, [
           makeNode(1, false, [makeNode(2), makeNode(3)]),
           makeNode(4, false, [makeNode(5), makeNode(6)]),
-          makeNode(7, false, [makeNode(8), makeNode(9)]),
+          makeNode(7, false, [makeNode(8), makeNode(9)])
         ]);
 
         makeStore(null, node);

@@ -15,5 +15,5 @@ Ext.define("Ext.rtl.layout.container.boxOverflow.Menu", {
     } else {
       return this.getPrefixConfig(true);
     }
-  },
+  }
 });

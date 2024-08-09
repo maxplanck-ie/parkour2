@@ -230,7 +230,7 @@ Ext.define(
           Ext.isNumber(delay) ? delay : 10,
           me.focus,
           me,
-          [selectText, false, callback, scope],
+          [selectText, false, callback, scope]
         );
         return me;
       }
@@ -642,7 +642,7 @@ Ext.define(
           if (focusTargets.length) {
             focusIndex = Ext.Array.indexOf(
               focusTargets,
-              Ext.ComponentManager.getActiveComponent(),
+              Ext.ComponentManager.getActiveComponent()
             );
 
             // Return the next focusable, or the previous focusable, or the first focusable
@@ -893,8 +893,8 @@ Ext.define(
             }
           }
         }
-      },
-    },
+      }
+    }
   },
 
   function () {
@@ -903,5 +903,5 @@ Ext.define(
     if (!Ext.focusTask) {
       Ext.focusTask = new Ext.util.DelayedTask();
     }
-  },
+  }
 );

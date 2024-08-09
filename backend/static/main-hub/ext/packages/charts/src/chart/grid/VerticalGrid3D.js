@@ -11,13 +11,13 @@ Ext.define("Ext.chart.grid.VerticalGrid3D", {
   inheritableStatics: {
     def: {
       processors: {
-        depth: "number",
+        depth: "number"
       },
 
       defaults: {
-        depth: 0,
-      },
-    },
+        depth: 0
+      }
+    }
   },
 
   render: function (surface, ctx, clipRect) {
@@ -72,5 +72,5 @@ Ext.define("Ext.chart.grid.VerticalGrid3D", {
     ctx.moveTo(left, top);
     ctx.lineTo(left + depth, top - depth);
     ctx.stroke();
-  },
+  }
 });

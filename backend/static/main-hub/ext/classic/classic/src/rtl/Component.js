@@ -29,7 +29,7 @@ Ext.define(
       return Ext.util.Region.getAlignInfo(
         posSpec,
         (Ext.rootInheritedState.rtl || false) !==
-          (this.getInherited().rtl || false),
+          (this.getInherited().rtl || false)
       );
     },
 
@@ -120,7 +120,7 @@ Ext.define(
           if (offsetParent) {
             me._isOffsetParentRtl = Ext.fly(
               offsetParent,
-              "_isLocalRtl",
+              "_isLocalRtl"
             ).isStyle("direction", "rtl");
           }
         }
@@ -198,8 +198,8 @@ Ext.define(
         } else {
           return this.callParent(arguments);
         }
-      },
-    },
+      }
+    }
   },
   function () {
     Ext.onInternalReady(function () {
@@ -213,5 +213,5 @@ Ext.define(
         Ext.rootInheritedState.rtl = true;
       }
     });
-  },
+  }
 );

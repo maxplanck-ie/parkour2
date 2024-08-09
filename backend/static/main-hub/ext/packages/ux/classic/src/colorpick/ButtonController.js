@@ -10,7 +10,7 @@ Ext.define("Ext.ux.colorpick.ButtonController", {
     "Ext.window.Window",
     "Ext.layout.container.Fit",
     "Ext.ux.colorpick.Selector",
-    "Ext.ux.colorpick.ColorUtils",
+    "Ext.ux.colorpick.ColorUtils"
   ],
 
   afterRender: function (view) {
@@ -46,12 +46,12 @@ Ext.define("Ext.ux.colorpick.ButtonController", {
       selector.on({
         ok: "onColorPickerOK",
         cancel: "onColorPickerCancel",
-        scope: this,
+        scope: this
       });
 
       popup.on({
         close: "onColorPickerCancel",
-        scope: this,
+        scope: this
       });
     }
 
@@ -93,5 +93,5 @@ Ext.define("Ext.ux.colorpick.ButtonController", {
     var view = this.getView();
 
     Ext.ux.colorpick.ColorUtils.setBackground(view.filterEl, color);
-  },
+  }
 });

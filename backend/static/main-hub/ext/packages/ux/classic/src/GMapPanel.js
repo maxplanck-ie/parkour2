@@ -45,7 +45,7 @@ Ext.define("Ext.ux.GMapPanel", {
     Ext.applyIf(this, {
       plain: true,
       gmapType: "map",
-      border: false,
+      border: false
     });
 
     this.callParent();
@@ -72,14 +72,14 @@ Ext.define("Ext.ux.GMapPanel", {
     options = Ext.applyIf(options, {
       zoom: 14,
       center: center,
-      mapTypeId: google.maps.MapTypeId.HYBRID,
+      mapTypeId: google.maps.MapTypeId.HYBRID
     });
     this.gmap = new google.maps.Map(this.body.dom, options);
     if (marker) {
       this.addMarker(
         Ext.applyIf(marker, {
-          position: center,
-        }),
+          position: center
+        })
       );
     }
 
@@ -90,9 +90,9 @@ Ext.define("Ext.ux.GMapPanel", {
   addMarker: function (marker) {
     marker = Ext.apply(
       {
-        map: this.gmap,
+        map: this.gmap
       },
-      marker,
+      marker
     );
 
     if (!marker.position) {
@@ -109,9 +109,9 @@ Ext.define("Ext.ux.GMapPanel", {
     this.geocoder = new google.maps.Geocoder();
     this.geocoder.geocode(
       {
-        address: addr,
+        address: addr
       },
-      Ext.Function.bind(this.onLookupComplete, this, [marker], true),
+      Ext.Function.bind(this.onLookupComplete, this, [marker], true)
     );
   },
 
@@ -133,5 +133,5 @@ Ext.define("Ext.ux.GMapPanel", {
     if (map) {
       google.maps.event.trigger(map, "resize");
     }
-  },
+  }
 });

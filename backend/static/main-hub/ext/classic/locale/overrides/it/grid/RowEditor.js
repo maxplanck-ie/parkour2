@@ -4,5 +4,5 @@ Ext.define("Ext.locale.it.grid.RowEditor", {
   saveBtnText: "Invia",
   cancelBtnText: "Annulla",
   errorsText: "Errori",
-  dirtyText: "Confermare o annullare i cambiamenti",
+  dirtyText: "Confermare o annullare i cambiamenti"
 });

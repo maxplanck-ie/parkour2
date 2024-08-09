@@ -8,7 +8,7 @@ Ext.define("Ext.ux.BoxReorderer", {
   requires: ["Ext.dd.DD"],
 
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   /**
@@ -82,7 +82,7 @@ Ext.define("Ext.ux.BoxReorderer", {
     me.container.on({
       scope: me,
       boxready: me.onBoxReady,
-      beforedestroy: me.onContainerDestroy,
+      beforedestroy: me.onContainerDestroy
     });
   },
 
@@ -119,7 +119,7 @@ Ext.define("Ext.ux.BoxReorderer", {
         dd.clickValidator,
         me.clickValidator,
         me,
-        false,
+        false
       ),
       onMouseDown: me.onMouseDown,
       startDrag: me.startDrag,
@@ -127,7 +127,7 @@ Ext.define("Ext.ux.BoxReorderer", {
       endDrag: me.endDrag,
       getNewIndex: me.getNewIndex,
       doSwap: me.doSwap,
-      findReorderable: me.findReorderable,
+      findReorderable: me.findReorderable
     });
 
     // Decide which dimension we are measuring, and which measurement metric defines
@@ -206,7 +206,7 @@ Ext.define("Ext.ux.BoxReorderer", {
         me,
         me.container,
         dragCmp,
-        me.curIndex,
+        me.curIndex
       );
       // Suspend events, and set the disabled flag so that the mousedown and mouseup events
       // that are going to take place do not cause any other UI interaction.
@@ -278,7 +278,7 @@ Ext.define("Ext.ux.BoxReorderer", {
       container,
       me.dragCmp,
       me.startIndex,
-      newIndex,
+      newIndex
     );
     orig = items.getAt(me.curIndex);
     dest = items.getAt(newIndex);
@@ -307,7 +307,7 @@ Ext.define("Ext.ux.BoxReorderer", {
         me.container,
         me.dragCmp,
         me.startIndex,
-        me.curIndex,
+        me.curIndex
       );
       me.doSwap(newIndex);
     }
@@ -342,7 +342,7 @@ Ext.define("Ext.ux.BoxReorderer", {
       if (temp) {
         temp.on({
           afteranimate: me.reorderer.afterBoxReflow,
-          scope: me,
+          scope: me
         });
       }
       // If not animated, clean up after the mouseup has happened so that we don't click the thing being dragged
@@ -359,7 +359,7 @@ Ext.define("Ext.ux.BoxReorderer", {
         me.container,
         me.dragCmp,
         me.startIndex,
-        me.curIndex,
+        me.curIndex
       );
     }
   },
@@ -418,5 +418,5 @@ Ext.define("Ext.ux.BoxReorderer", {
         }
       }
     }
-  },
+  }
 });

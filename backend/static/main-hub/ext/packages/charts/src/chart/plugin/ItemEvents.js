@@ -72,13 +72,13 @@ Ext.define("Ext.chart.plugin.ItemEvents", {
   mouseMoveEvents: {
     mousemove: true,
     mouseover: true,
-    mouseout: true,
+    mouseout: true
   },
 
   itemMouseMoveEvents: {
     itemmousemove: true,
     itemmouseover: true,
-    itemmouseout: true,
+    itemmouseout: true
   },
 
   init: function (chart) {
@@ -96,7 +96,7 @@ Ext.define("Ext.chart.plugin.ItemEvents", {
       mouseout: handleEvent,
       // run our handlers before user code
       priority: 1001,
-      scope: this,
+      scope: this
     });
   },
 
@@ -143,5 +143,5 @@ Ext.define("Ext.chart.plugin.ItemEvents", {
     }
 
     me.lastItem = item;
-  },
+  }
 });

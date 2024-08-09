@@ -75,7 +75,7 @@ Ext.define("Ext.chart.series.Area", {
      * @inheritdoc
      * @cfg {Boolean} [splitStacks=false]
      */
-    splitStacks: false,
+    splitStacks: false
 
     /**
      * @inheritdoc
@@ -85,5 +85,5 @@ Ext.define("Ext.chart.series.Area", {
      * which makes Line series look like Area series.
      * @cfg {Function} renderer
      */
-  },
+  }
 });

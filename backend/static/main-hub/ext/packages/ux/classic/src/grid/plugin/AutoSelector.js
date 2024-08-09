@@ -9,14 +9,14 @@ Ext.define("Ext.ux.grid.plugin.AutoSelector", {
   alias: "plugin.gridautoselector",
 
   config: {
-    store: null,
+    store: null
   },
 
   init: function (grid) {
     //<debug>
     if (!grid.isXType("tablepanel")) {
       Ext.raise(
-        "The gridautoselector plugin is designed only for grids and trees",
+        "The gridautoselector plugin is designed only for grids and trees"
       );
     }
     //</debug>
@@ -29,7 +29,7 @@ Ext.define("Ext.ux.grid.plugin.AutoSelector", {
 
     grid.on({
       reconfigure: me.watchGrid,
-      scope: me,
+      scope: me
     });
   },
 
@@ -73,7 +73,7 @@ Ext.define("Ext.ux.grid.plugin.AutoSelector", {
         remove: me.ensureSelection,
 
         destroyable: true,
-        scope: me,
+        scope: me
       });
-  },
+  }
 });

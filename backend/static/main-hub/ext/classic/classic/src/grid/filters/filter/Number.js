@@ -62,17 +62,17 @@ Ext.define("Ext.grid.filters.filter.Number", {
     fields: {
       gt: {
         iconCls: Ext.baseCSSPrefix + "grid-filters-gt",
-        margin: "0 0 3px 0",
+        margin: "0 0 3px 0"
       },
       lt: {
         iconCls: Ext.baseCSSPrefix + "grid-filters-lt",
-        margin: "0 0 3px 0",
+        margin: "0 0 3px 0"
       },
       eq: {
         iconCls: Ext.baseCSSPrefix + "grid-filters-eq",
-        margin: 0,
-      },
-    },
+        margin: 0
+      }
+    }
   },
 
   //<locale>
@@ -89,14 +89,14 @@ Ext.define("Ext.grid.filters.filter.Number", {
     hideEmptyLabel: false,
     labelSeparator: "",
     labelWidth: 29,
-    selectOnFocus: false,
+    selectOnFocus: false
   },
 
   menuDefaults: {
     // A menu with only form fields needs some body padding. Normally this padding
     // is managed by the items, but we have no normal menu items.
     bodyPadding: 3,
-    showSeparator: false,
+    showSeparator: false
   },
 
   createMenu: function () {
@@ -106,11 +106,11 @@ Ext.define("Ext.grid.filters.filter.Number", {
         keyup: me.onValueChange,
         spin: {
           fn: me.onInputSpin,
-          buffer: 200,
+          buffer: 200
         },
         el: {
-          click: me.stopFn,
-        },
+          click: me.stopFn
+        }
       },
       itemDefaults = me.getItemDefaults(),
       menuItems = me.menuItems,
@@ -133,7 +133,7 @@ Ext.define("Ext.grid.filters.filter.Number", {
 
         cfg = {
           labelClsExtra:
-            Ext.baseCSSPrefix + "grid-filters-icon " + field.iconCls,
+            Ext.baseCSSPrefix + "grid-filters-icon " + field.iconCls
         };
 
         if (itemDefaults) {
@@ -176,5 +176,5 @@ Ext.define("Ext.grid.filters.filter.Number", {
 
   stopFn: function (e) {
     e.stopPropagation();
-  },
+  }
 });

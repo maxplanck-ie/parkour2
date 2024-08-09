@@ -8,7 +8,7 @@ Ext.define("Ext.draw.Path", {
   statics: {
     pathRe: /,?([achlmqrstvxz]),?/gi,
     pathRe2: /-/gi,
-    pathSplitRe: /\s|,/g,
+    pathSplitRe: /\s|,/g
   },
   svgString: "",
 
@@ -131,7 +131,7 @@ Ext.define("Ext.draw.Path", {
       (2 * cx + x) / 3,
       (2 * cy + y) / 3,
       x,
-      y,
+      y
     );
   },
 
@@ -255,7 +255,7 @@ Ext.define("Ext.draw.Path", {
       cy = sin * cy * ry + cos * cy * ry + y1;
       me.lineTo(
         cos * rx * cosStart - sin * ry * sinStart + cx,
-        sin * rx * cosStart + cos * ry * sinStart + cy,
+        sin * rx * cosStart + cos * ry * sinStart + cy
       );
       me.ellipse(cx, cy, rx, ry, rotation, startAngle, endAngle, area < 0);
     } else {
@@ -288,7 +288,7 @@ Ext.define("Ext.draw.Path", {
     rotation,
     startAngle,
     endAngle,
-    anticlockwise,
+    anticlockwise
   ) {
     var me = this,
       params = me.params,
@@ -305,7 +305,7 @@ Ext.define("Ext.draw.Path", {
         rotation,
         startAngle,
         startAngle + Math.PI,
-        anticlockwise,
+        anticlockwise
       );
       me.ellipse(
         cx,
@@ -315,7 +315,7 @@ Ext.define("Ext.draw.Path", {
         rotation,
         startAngle + Math.PI,
         endAngle,
-        anticlockwise,
+        anticlockwise
       );
       return;
     }
@@ -331,7 +331,7 @@ Ext.define("Ext.draw.Path", {
         radiusY,
         rotation,
         startAngle,
-        endAngle,
+        endAngle
       );
     } else {
       if (startAngle < endAngle) {
@@ -345,7 +345,7 @@ Ext.define("Ext.draw.Path", {
         radiusY,
         rotation,
         endAngle,
-        startAngle,
+        startAngle
       );
       for (i = start, j = params.length - 2; i < j; i += 2, j -= 2) {
         var temp = params[i];
@@ -453,7 +453,7 @@ Ext.define("Ext.draw.Path", {
         exx * rho + eyx + cx,
         exy * rho + eyy + cy,
         eyx + cx,
-        eyy + cy,
+        eyy + cy
       );
       count += 6;
       theta2 -= rightAngle;
@@ -476,7 +476,7 @@ Ext.define("Ext.draw.Path", {
         exx * x2 + eyx * y2 + cx,
         exy * x2 + eyy * y2 + cy,
         exx * x3 + eyx * y3 + cx,
-        exy * x3 + eyy * y3 + cy,
+        exy * x3 + eyy * y3 + cy
       );
       count += 6;
     }
@@ -577,7 +577,7 @@ Ext.define("Ext.draw.Path", {
         S: 4,
         T: 2,
         V: 1,
-        Z: 0,
+        Z: 0
       },
       lastCommand = "",
       lastControlX,
@@ -639,7 +639,7 @@ Ext.define("Ext.draw.Path", {
               +parts[i + 3],
               +parts[i + 4],
               (lastX = +parts[i + 5]),
-              (lastY = +parts[i + 6]),
+              (lastY = +parts[i + 6])
             );
             i += 7;
           }
@@ -652,7 +652,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = +parts[i + 2]),
               (lastControlY = +parts[i + 3]),
               (lastX = +parts[i + 4]),
-              (lastY = +parts[i + 5]),
+              (lastY = +parts[i + 5])
             );
             i += 6;
           }
@@ -685,7 +685,7 @@ Ext.define("Ext.draw.Path", {
               +parts[i + 3],
               +parts[i + 4],
               (lastX += +parts[i + 5]),
-              (lastY += +parts[i + 6]),
+              (lastY += +parts[i + 6])
             );
             i += 7;
           }
@@ -698,7 +698,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = lastX + +parts[i + 2]),
               (lastControlY = lastY + +parts[i + 3]),
               (lastX += +parts[i + 4]),
-              (lastY += +parts[i + 5]),
+              (lastY += +parts[i + 5])
             );
             i += 6;
           }
@@ -726,7 +726,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = lastX + +parts[i]),
               (lastControlY = lastY + +parts[i + 1]),
               (lastX += +parts[i + 2]),
-              (lastY += +parts[i + 3]),
+              (lastY += +parts[i + 3])
             );
             i += 4;
           }
@@ -750,7 +750,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = +parts[i]),
               (lastControlY = +parts[i + 1]),
               (lastX = +parts[i + 2]),
-              (lastY = +parts[i + 3]),
+              (lastY = +parts[i + 3])
             );
             i += 4;
           }
@@ -761,7 +761,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = lastX + +parts[i]),
               (lastControlY = lastY + +parts[i + 1]),
               (lastX += +parts[i + 2]),
-              (lastY += +parts[i + 3]),
+              (lastY += +parts[i + 3])
             );
             i += 4;
           }
@@ -772,7 +772,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = +parts[i]),
               (lastControlY = +parts[i + 1]),
               (lastX = +parts[i + 2]),
-              (lastY = +parts[i + 3]),
+              (lastY = +parts[i + 3])
             );
             i += 4;
           }
@@ -794,7 +794,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = lastX + lastX - lastControlX),
               (lastControlY = lastY + lastY - lastControlY),
               (lastX += +parts[i + 1]),
-              (lastY += +parts[i + 2]),
+              (lastY += +parts[i + 2])
             );
             i += 2;
           }
@@ -816,7 +816,7 @@ Ext.define("Ext.draw.Path", {
               (lastControlX = lastX + lastX - lastControlX),
               (lastControlY = lastY + lastY - lastControlY),
               (lastX = +parts[i + 1]),
-              (lastY = +parts[i + 2]),
+              (lastY = +parts[i + 2])
             );
             i += 2;
           }
@@ -946,7 +946,7 @@ Ext.define("Ext.draw.Path", {
             params[j + 2],
             params[j + 3],
             (x = params[j + 4]),
-            (y = params[j + 5]),
+            (y = params[j + 5])
           );
           j += 6;
           break;
@@ -1020,7 +1020,7 @@ Ext.define("Ext.draw.Path", {
             params[j + 2] * xx + params[j + 3] * yx + dx,
             params[j + 2] * xy + params[j + 3] * yy + dy,
             (x = params[j + 4] * xx + params[j + 5] * yx + dx),
-            (y = params[j + 4] * xy + params[j + 5] * yy + dy),
+            (y = params[j + 4] * xy + params[j + 5] * yy + dy)
           );
           j += 6;
           break;
@@ -1203,7 +1203,7 @@ Ext.define("Ext.draw.Path", {
         case "M":
           curr = [
             (startX = lastX = params[j++]),
-            (startY = lastY = params[j++]),
+            (startY = lastY = params[j++])
           ];
           stripes.push(curr);
           break;
@@ -1216,7 +1216,7 @@ Ext.define("Ext.draw.Path", {
             (lastX + x + x) / 3,
             (lastY + y + y) / 3,
             (lastX = x),
-            (lastY = y),
+            (lastY = y)
           );
           break;
         case "C":
@@ -1226,7 +1226,7 @@ Ext.define("Ext.draw.Path", {
             params[j++],
             params[j++],
             (lastX = params[j++]),
-            (lastY = params[j++]),
+            (lastY = params[j++])
           );
           break;
         case "Z":
@@ -1238,7 +1238,7 @@ Ext.define("Ext.draw.Path", {
             (lastX + x + x) / 3,
             (lastY + y + y) / 3,
             (lastX = x),
-            (lastY = y),
+            (lastY = y)
           );
           break;
       }
@@ -1280,7 +1280,7 @@ Ext.define("Ext.draw.Path", {
               " " +
               params[j + 4] +
               "," +
-              params[j + 5],
+              params[j + 5]
           );
           j += 6;
           break;
@@ -1301,5 +1301,5 @@ Ext.define("Ext.draw.Path", {
       this.updateSvgString();
     }
     return this.svgString;
-  },
+  }
 });

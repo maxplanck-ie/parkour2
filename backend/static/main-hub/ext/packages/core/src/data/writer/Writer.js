@@ -33,7 +33,7 @@ Ext.define("Ext.data.writer.Writer", {
 
   alias: "writer.base",
   factoryConfig: {
-    defaultType: null,
+    defaultType: null
   },
 
   alternateClassName: ["Ext.data.DataWriter", "Ext.data.Writer"],
@@ -107,7 +107,7 @@ Ext.define("Ext.data.writer.Writer", {
      * *NOTE:* The `serialize` option cannot be used here.
      */
     allDataOptions: {
-      persist: true,
+      persist: true
     },
 
     /**
@@ -120,7 +120,7 @@ Ext.define("Ext.data.writer.Writer", {
      */
     partialDataOptions: {
       changes: true,
-      critical: true,
+      critical: true
     },
 
     /**
@@ -225,7 +225,7 @@ Ext.define("Ext.data.writer.Writer", {
      *     });
      *
      */
-    transform: null,
+    transform: null
   },
 
   /**
@@ -370,5 +370,5 @@ Ext.define("Ext.data.writer.Writer", {
     }
 
     return ret;
-  },
+  }
 });

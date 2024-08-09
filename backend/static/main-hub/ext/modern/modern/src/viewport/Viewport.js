@@ -8,7 +8,7 @@ Ext.define("Ext.viewport.Viewport", {
   requires: [
     "Ext.viewport.Ios",
     "Ext.viewport.Android",
-    "Ext.viewport.WindowsPhone",
+    "Ext.viewport.WindowsPhone"
   ],
   singleton: true,
 
@@ -42,7 +42,7 @@ Ext.define("Ext.viewport.Viewport", {
 
     Ext.Viewport = viewport = Ext.create(
       "Ext.viewport." + viewportName,
-      config,
+      config
     );
 
     // If there are already floated components at the global level, ensure the global floatRoot
@@ -54,7 +54,7 @@ Ext.define("Ext.viewport.Viewport", {
     }
 
     return viewport;
-  },
+  }
 });
 
 // Docs for the singleton instance created by above factory:

@@ -10,5 +10,5 @@ Ext.define("Ext.locale.es.picker.Date", {
   monthYearText: "Seleccione un mes (Control+Up/Down para desplazar el año)",
   todayTip: "{0} (Barra espaciadora)",
   format: "d/m/Y",
-  startDay: 1,
+  startDay: 1
 });

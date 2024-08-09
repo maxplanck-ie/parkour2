@@ -21,7 +21,7 @@ Ext.define("Ext.resizer.Handle", {
     me.addCls(
       me.baseHandleCls,
       me.baseHandleCls + "-" + me.region,
-      me.handleCls,
+      me.handleCls
     );
-  },
+  }
 });

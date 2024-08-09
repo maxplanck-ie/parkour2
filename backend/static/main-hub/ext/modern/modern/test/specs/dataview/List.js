@@ -13,11 +13,11 @@ describe("Ext.dataview.List", function () {
           itemTpl: "{value}",
 
           store: new Ext.data.Store({
-            data: storeData || [{ value: "foo" }, { value: "bar" }],
-          }),
+            data: storeData || [{ value: "foo" }, { value: "bar" }]
+          })
         },
-        config,
-      ),
+        config
+      )
     );
     viewport.add(component);
   }
@@ -31,7 +31,7 @@ describe("Ext.dataview.List", function () {
   describe("infinite lists", function () {
     beforeEach(function () {
       makeComponent({
-        infinite: true,
+        infinite: true
       });
     });
 
@@ -45,12 +45,12 @@ describe("Ext.dataview.List", function () {
           itemMinimumHeight = component.getItemMap().getMinimumHeight();
 
         expect(component.visibleCount).toBe(
-          Math.ceil(bodyHeight / itemMinimumHeight),
+          Math.ceil(bodyHeight / itemMinimumHeight)
         );
 
         // The innerElement gets sized to stretch the scroll region
         expect(component.innerElement.getHeight()).toBe(
-          component.getScrollable().getSize().y,
+          component.getScrollable().getSize().y
         );
       });
     });
@@ -59,9 +59,9 @@ describe("Ext.dataview.List", function () {
       tearDown();
       makeComponent(
         {
-          infinite: true,
+          infinite: true
         },
-        [],
+        []
       );
 
       waitsFor(function () {

@@ -8,7 +8,7 @@
     define([
       "jquery",
       "datatables.net-bs4",
-      "datatables.net-buttons",
+      "datatables.net-buttons"
     ], function ($) {
       return factory($, window, document);
     });
@@ -40,10 +40,10 @@
   $.extend(true, DataTable.Buttons.defaults, {
     dom: {
       container: {
-        className: "dt-buttons btn-group",
+        className: "dt-buttons btn-group"
       },
       button: {
-        className: "btn btn-secondary",
+        className: "btn btn-secondary"
       },
       collection: {
         tag: "div",
@@ -52,10 +52,10 @@
           tag: "a",
           className: "dt-button dropdown-item",
           active: "active",
-          disabled: "disabled",
-        },
-      },
-    },
+          disabled: "disabled"
+        }
+      }
+    }
   });
 
   DataTable.ext.buttons.collection.className += " dropdown-toggle";

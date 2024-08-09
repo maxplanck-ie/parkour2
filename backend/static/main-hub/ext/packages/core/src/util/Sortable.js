@@ -30,7 +30,7 @@ Ext.define(
        *         direction: 'ASC'
        *     }]
        */
-      sorters: null,
+      sorters: null
     },
 
     /**
@@ -85,7 +85,7 @@ Ext.define(
           : function () {
               return 0;
             };
-      },
+      }
     },
 
     /**
@@ -179,7 +179,7 @@ Ext.define(
         if (!sorter) {
           sorter = {
             property: sorters,
-            direction: direction,
+            direction: direction
           };
         } else if (direction == null) {
           sorter.toggle();
@@ -222,7 +222,7 @@ Ext.define(
           default:
             //<debug>
             Ext.raise(
-              'Sorter insertion point must be "multi", "prepend", "append" or "replace"',
+              'Sorter insertion point must be "multi", "prepend", "append" or "replace"'
             );
           //</debug>
         }
@@ -299,13 +299,13 @@ Ext.define(
         if (!(config instanceof Sorter)) {
           if (Ext.isString(config)) {
             config = {
-              property: config,
+              property: config
             };
           }
 
           Ext.applyIf(config, {
             root: this.sortRoot,
-            direction: "ASC",
+            direction: "ASC"
           });
 
           //support for 3.x style sorters where a function can be defined as 'fn'
@@ -316,7 +316,7 @@ Ext.define(
           //support a function to be passed as a sorter definition
           if (typeof config == "function") {
             config = {
-              sorterFn: config,
+              sorterFn: config
             };
           }
 
@@ -354,10 +354,10 @@ Ext.define(
         }
       }
       return null;
-    },
+    }
   },
   function () {
     // Reference the static implementation in prototype
     this.prototype.createComparator = this.createComparator;
-  },
+  }
 );

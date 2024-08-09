@@ -10,7 +10,7 @@ Ext.define("Ext.device.browser.Window", {
     this._window = window.open(
       config.url,
       config.showToolbar ? "_blank" : "_self",
-      config.options || null,
+      config.options || null
     );
 
     // Add events
@@ -37,5 +37,5 @@ Ext.define("Ext.device.browser.Window", {
     }
 
     this._window.close();
-  },
+  }
 });

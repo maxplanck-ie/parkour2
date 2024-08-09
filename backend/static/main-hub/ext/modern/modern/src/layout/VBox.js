@@ -58,6 +58,6 @@ Ext.define("Ext.layout.VBox", {
   alias: "layout.vbox",
 
   config: {
-    vertical: true,
-  },
+    vertical: true
+  }
 });

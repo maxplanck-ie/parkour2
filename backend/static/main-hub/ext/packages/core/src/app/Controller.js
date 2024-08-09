@@ -158,35 +158,35 @@ Ext.define("Ext.app.Controller", {
     "Ext.ComponentManager",
     "Ext.app.domain.Component",
     "Ext.app.domain.Store",
-    "Ext.app.route.Router",
+    "Ext.app.route.Router"
   ],
 
   statics: {
     strings: {
       model: {
         getter: "getModel",
-        upper: "Model",
+        upper: "Model"
       },
 
       view: {
         getter: "getView",
-        upper: "View",
+        upper: "View"
       },
 
       controller: {
         getter: "getController",
-        upper: "Controller",
+        upper: "Controller"
       },
 
       store: {
         getter: "getStore",
-        upper: "Store",
+        upper: "Store"
       },
 
       profile: {
         getter: "getProfile",
-        upper: "Profiles",
-      },
+        upper: "Profiles"
+      }
     },
 
     controllerRegex: /^(.*)\.controller\./,
@@ -247,7 +247,7 @@ Ext.define("Ext.app.Controller", {
           "Missing namespace for " +
             className +
             ", please define it " +
-            "in namespaces property of your Application class.",
+            "in namespaces property of your Application class."
         );
       }
       //</debug>
@@ -275,7 +275,7 @@ Ext.define("Ext.app.Controller", {
       namespace,
       kind,
       names,
-      profileName,
+      profileName
     ) {
       if (!names || !names.length) {
         return;
@@ -312,7 +312,7 @@ Ext.define("Ext.app.Controller", {
         //<debug>
         else if (getterName === "getMainView") {
           Ext.log.warn(
-            "Cannot have a view named 'Main' - getter conflicts with mainView config.",
+            "Cannot have a view named 'Main' - getter conflicts with mainView config."
           );
         }
         //</debug>
@@ -371,7 +371,7 @@ Ext.define("Ext.app.Controller", {
               " " +
               name +
               ", " +
-              "assuming it is fully qualified class name",
+              "assuming it is fully qualified class name"
           );
         }
         //</debug>
@@ -391,7 +391,7 @@ Ext.define("Ext.app.Controller", {
 
       return {
         absoluteName: absoluteName,
-        shortName: shortName,
+        shortName: shortName
       };
     },
 
@@ -401,7 +401,7 @@ Ext.define("Ext.app.Controller", {
 
       // It's a class if className is not equal to any known namespace
       return prefix && prefix !== className;
-    },
+    }
   },
 
   // @cmd-auto-dependency {aliasPrefix : "model.", mvc : true, blame: "all"}
@@ -572,7 +572,7 @@ Ext.define("Ext.app.Controller", {
     /**
      * @private
      */
-    moduleClassName: null,
+    moduleClassName: null
   },
 
   onClassExtended: function (cls, data, hooks) {
@@ -597,33 +597,33 @@ Ext.define("Ext.app.Controller", {
         requires,
         namespace,
         "model",
-        data.models,
+        data.models
       );
       Controller.processDependencies(
         proto,
         requires,
         namespace,
         "view",
-        data.views,
+        data.views
       );
       Controller.processDependencies(
         proto,
         requires,
         namespace,
         "store",
-        data.stores,
+        data.stores
       );
       Controller.processDependencies(
         proto,
         requires,
         namespace,
         "controller",
-        data.controllers,
+        data.controllers
       );
 
       Ext.require(
         requires,
-        Ext.Function.pass(onBeforeClassCreated, arguments, this),
+        Ext.Function.pass(onBeforeClassCreated, arguments, this)
       );
     };
   },
@@ -672,7 +672,7 @@ Ext.define("Ext.app.Controller", {
         Ext.Object.each(refs, function (key, value) {
           if (Ext.isString(value)) {
             value = {
-              selector: value,
+              selector: value
             };
           }
 
@@ -733,7 +733,7 @@ Ext.define("Ext.app.Controller", {
       Ext.app.Controller.getFullName(
         this.$className,
         "controller",
-        this.$namespace,
+        this.$namespace
       ).shortName
     );
   },
@@ -967,7 +967,7 @@ Ext.define("Ext.app.Controller", {
         store = Ext.create(name.absoluteName, {
           // Use id here. If the store has a configured storeId,
           // that will take precedence
-          id: storeId,
+          id: storeId
         });
       }
     }
@@ -1046,5 +1046,5 @@ Ext.define("Ext.app.Controller", {
       }
     }
     me.callParent();
-  },
+  }
 });

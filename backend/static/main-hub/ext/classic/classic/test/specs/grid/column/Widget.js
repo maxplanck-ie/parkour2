@@ -14,7 +14,7 @@ describe("Ext.grid.column.Widget", function () {
 
   var Model = Ext.define(null, {
     extend: "Ext.data.Model",
-    fields: ["a", "b", "c"],
+    fields: ["a", "b", "c"]
   });
 
   var grid, view, store, colRef, navModel;
@@ -31,7 +31,7 @@ describe("Ext.grid.column.Widget", function () {
         a: i + "a",
         b: i + "b",
         c: i + "c",
-        d: i / 10,
+        d: i / 10
       });
     }
 
@@ -44,15 +44,15 @@ describe("Ext.grid.column.Widget", function () {
       xtype: "widgetcolumn",
       width: 200,
       dataIndex: "a",
-      widget: widget,
+      widget: widget
     };
   }
 
   function createGrid(columns, data, cfg) {
     columns = columns || [
       getColCfg({
-        xtype: "button",
-      }),
+        xtype: "button"
+      })
     ];
 
     data = data || generateData(4);
@@ -62,8 +62,8 @@ describe("Ext.grid.column.Widget", function () {
       data: data,
       proxy: {
         type: "memory",
-        data: data,
-      },
+        data: data
+      }
     });
 
     grid = new Ext.grid.Panel(
@@ -76,11 +76,11 @@ describe("Ext.grid.column.Widget", function () {
           border: false,
           store: store,
           viewConfig: {
-            mouseOverOutBuffer: 0,
-          },
+            mouseOverOutBuffer: 0
+          }
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     view = grid.getView();
     navModel = view.getNavigationModel();
@@ -127,9 +127,9 @@ describe("Ext.grid.column.Widget", function () {
             handler: function (button) {
               var rec = button.getWidgetRecord();
               store.remove(rec);
-            },
-          },
-        },
+            }
+          }
+        }
       ]);
 
       var widget0 = getWidget(0),
@@ -170,7 +170,7 @@ describe("Ext.grid.column.Widget", function () {
     it("should recycle widgets", function () {
       var cfg = {
         xtype: "button",
-        cls: "foo",
+        cls: "foo"
       };
 
       createGrid([getColCfg(cfg)]);
@@ -195,13 +195,13 @@ describe("Ext.grid.column.Widget", function () {
     it("should not modify the widget config", function () {
       var cfg = {
         xtype: "button",
-        cls: "foo",
+        cls: "foo"
       };
 
       createGrid([getColCfg(cfg)]);
       expect(cfg).toEqual({
         xtype: "button",
-        cls: "foo",
+        cls: "foo"
       });
     });
   });
@@ -233,10 +233,10 @@ describe("Ext.grid.column.Widget", function () {
                 handler: function (btn) {
                   var rec = btn.getWidgetRecord();
                   store.remove(rec);
-                },
-              }),
-            ],
-          },
+                }
+              })
+            ]
+          }
         ]);
         var btn = colRef[0].getWidget(store.last());
 
@@ -251,7 +251,7 @@ describe("Ext.grid.column.Widget", function () {
         // And focus should have jumped from the mousedowned button (which has gone)
         // to the button above it.
         expect(colRef[0].getWidget(store.last()).hasFocus).toBe(true);
-      },
+      }
     );
   });
 
@@ -268,7 +268,7 @@ describe("Ext.grid.column.Widget", function () {
     it("should select the row on click of the widget with stopSelection: false", function () {
       colRef[0].stopSelection = false;
       navModel.setPosition(
-        new Ext.grid.CellContext(grid.view).setPosition(0, 0),
+        new Ext.grid.CellContext(grid.view).setPosition(0, 0)
       );
 
       waitsFor(function () {
@@ -288,7 +288,7 @@ describe("Ext.grid.column.Widget", function () {
     it("should resolve to a view controller", function () {
       var Cls = Ext.define(null, {
         extend: "Ext.app.ViewController",
-        onButtonClick: function () {},
+        onButtonClick: function () {}
       });
 
       var ctrl = new Cls();
@@ -296,13 +296,13 @@ describe("Ext.grid.column.Widget", function () {
         [
           getColCfg({
             xtype: "button",
-            handler: "onButtonClick",
-          }),
+            handler: "onButtonClick"
+          })
         ],
         undefined,
         {
-          controller: ctrl,
-        },
+          controller: ctrl
+        }
       );
 
       spyOn(ctrl, "onButtonClick");
@@ -314,15 +314,15 @@ describe("Ext.grid.column.Widget", function () {
       Ext.define("spec.Button", {
         extend: "Ext.button.Button",
         alias: "widget.subbutton",
-        onButtonClick: function () {},
+        onButtonClick: function () {}
       });
 
       createGrid([
         getColCfg({
           xtype: "subbutton",
           handler: "onButtonClick",
-          scope: "this",
-        }),
+          scope: "this"
+        })
       ]);
 
       var btn = getWidget(0);
@@ -362,7 +362,7 @@ describe("Ext.grid.column.Widget", function () {
 
             for (i = start; i < len; ++i) {
               expect(getWidget(i, col).getEl().dom.parentNode).toBe(
-                cells.item(i).dom,
+                cells.item(i).dom
               );
             }
           }
@@ -381,12 +381,12 @@ describe("Ext.grid.column.Widget", function () {
           it("should not bust the row height when showing a button", function () {
             var columns = [
                 getColCfg({
-                  xtype: "button",
+                  xtype: "button"
                 }),
                 {
                   text: "Data",
-                  dataIndex: "b",
-                },
+                  dataIndex: "b"
+                }
               ],
               rowHeight;
 
@@ -418,8 +418,8 @@ describe("Ext.grid.column.Widget", function () {
               getColCfg({
                 xtype: "button",
                 enableToggle: true,
-                pressed: true,
-              }),
+                pressed: true
+              })
             ]);
 
             var widget = getWidget(0);
@@ -463,9 +463,9 @@ describe("Ext.grid.column.Widget", function () {
                 width: 200,
                 widget: {
                   xtype: "button",
-                  text: "Foo",
-                },
-              },
+                  text: "Foo"
+                }
+              }
             ]);
             expect(getWidget(0).getText()).toBe("Foo");
             expect(getWidget(1).getText()).toBe("Foo");
@@ -482,20 +482,20 @@ describe("Ext.grid.column.Widget", function () {
                 xtype: "button",
                 getTdCls: function () {
                   return "foo";
-                },
-              }),
+                }
+              })
             ]);
             expect(view.getCellByPosition({ row: 0, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
             expect(view.getCellByPosition({ row: 1, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
             expect(view.getCellByPosition({ row: 2, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
             expect(view.getCellByPosition({ row: 3, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
           });
 
@@ -504,33 +504,33 @@ describe("Ext.grid.column.Widget", function () {
               xtype: "button",
               getTdCls: function () {
                 return "foo";
-              },
+              }
             });
             cfg.tdCls = "bar";
             makeGrid([cfg]);
             expect(view.getCellByPosition({ row: 0, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
             expect(view.getCellByPosition({ row: 0, column: 0 })).toHaveCls(
-              "bar",
+              "bar"
             );
             expect(view.getCellByPosition({ row: 1, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
             expect(view.getCellByPosition({ row: 1, column: 0 })).toHaveCls(
-              "bar",
+              "bar"
             );
             expect(view.getCellByPosition({ row: 2, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
             expect(view.getCellByPosition({ row: 2, column: 0 })).toHaveCls(
-              "bar",
+              "bar"
             );
             expect(view.getCellByPosition({ row: 3, column: 0 })).toHaveCls(
-              "foo",
+              "foo"
             );
             expect(view.getCellByPosition({ row: 3, column: 0 })).toHaveCls(
-              "bar",
+              "bar"
             );
           });
         });
@@ -547,7 +547,7 @@ describe("Ext.grid.column.Widget", function () {
 
           it("should call the method during render", function () {
             var cfg = getColCfg({
-              xtype: "button",
+              xtype: "button"
             });
             cfg.onWidgetAttach = spy;
             makeGrid([cfg]);
@@ -556,7 +556,7 @@ describe("Ext.grid.column.Widget", function () {
 
           it("should pass the column, the widget instance and the record", function () {
             var cfg = getColCfg({
-              xtype: "button",
+              xtype: "button"
             });
             cfg.onWidgetAttach = spy;
             makeGrid([cfg]);
@@ -580,7 +580,7 @@ describe("Ext.grid.column.Widget", function () {
 
           it("should get called when a new record is added", function () {
             var cfg = getColCfg({
-              xtype: "button",
+              xtype: "button"
             });
             cfg.onWidgetAttach = spy;
             makeGrid([cfg]);
@@ -595,7 +595,7 @@ describe("Ext.grid.column.Widget", function () {
           it("should be called after rendering the widget", function () {
             var isAttached = false,
               cfg = getColCfg({
-                xtype: "button",
+                xtype: "button"
               });
 
             cfg.onWidgetAttach = spy;
@@ -619,7 +619,7 @@ describe("Ext.grid.column.Widget", function () {
 
               beforeEach(function () {
                 var cfg = getColCfg({
-                  xtype: "button",
+                  xtype: "button"
                 });
 
                 cfg.onWidgetAttach = spy;
@@ -628,7 +628,7 @@ describe("Ext.grid.column.Widget", function () {
 
                 for (i = 1; i <= recordSize; ++i) {
                   data.push({
-                    id: "rec" + i,
+                    id: "rec" + i
                   });
                 }
 
@@ -690,7 +690,7 @@ describe("Ext.grid.column.Widget", function () {
           describe("scope", function () {
             it("should default the scope to the column", function () {
               var cfg = getColCfg({
-                xtype: "button",
+                xtype: "button"
               });
               cfg.onWidgetAttach = spy;
               makeGrid([cfg]);
@@ -699,7 +699,7 @@ describe("Ext.grid.column.Widget", function () {
 
             it("should use a passed scope", function () {
               var cfg = getColCfg({
-                  xtype: "button",
+                  xtype: "button"
                 }),
                 o = {};
               cfg.onWidgetAttach = spy;
@@ -710,13 +710,13 @@ describe("Ext.grid.column.Widget", function () {
 
             it("should be able to resolve to a view controller method", function () {
               var cfg = getColCfg({
-                xtype: "button",
+                xtype: "button"
               });
               var ctrl = new Ext.app.ViewController();
               ctrl.doSomething = spy;
               cfg.onWidgetAttach = "doSomething";
               makeGrid([cfg], null, {
-                controller: ctrl,
+                controller: ctrl
               });
               expect(spy.callCount).toBe(4);
             });
@@ -728,8 +728,8 @@ describe("Ext.grid.column.Widget", function () {
             makeGrid([]);
             grid.headerCt.add(
               getColCfg({
-                xtype: "button",
-              }),
+                xtype: "button"
+              })
             );
             colRef = grid.getColumnManager().getColumns();
             expect(getWidget(0).getText()).toBe("1a");
@@ -761,8 +761,8 @@ describe("Ext.grid.column.Widget", function () {
             makeGrid([
               {},
               getColCfg({
-                xtype: "button",
-              }),
+                xtype: "button"
+              })
             ]);
             grid.headerCt.moveBefore(colRef[0], colRef[1]);
             checkPositions();
@@ -771,9 +771,9 @@ describe("Ext.grid.column.Widget", function () {
           it("should be able to move a column to the right", function () {
             makeGrid([
               getColCfg({
-                xtype: "button",
+                xtype: "button"
               }),
-              {},
+              {}
             ]);
             grid.headerCt.moveAfter(colRef[1], colRef[0]);
             checkPositions();
@@ -783,7 +783,7 @@ describe("Ext.grid.column.Widget", function () {
         describe("widget sizing", function () {
           it("should not cause an error if the view is not rendered", function () {
             makeGrid(undefined, undefined, {
-              renderTo: null,
+              renderTo: null
             });
             expect(function () {
               colRef[0].setWidth(400);
@@ -808,8 +808,8 @@ describe("Ext.grid.column.Widget", function () {
             makeGrid([
               getColCfg({
                 xtype: "button",
-                width: 50,
-              }),
+                width: 50
+              })
             ]);
             colRef = grid.getColumnManager().getColumns();
             expect(getWidget(0).getWidth()).toBe(50);
@@ -844,7 +844,7 @@ describe("Ext.grid.column.Widget", function () {
 
           it("should modify the size with a flexed column", function () {
             var col = getColCfg({
-              xtype: "button",
+              xtype: "button"
             });
             delete col.width;
             col.flex = 1;
@@ -872,13 +872,13 @@ describe("Ext.grid.column.Widget", function () {
                 items: [
                   {
                     flex: 1,
-                    html: "A",
+                    html: "A"
                   },
                   {
                     flex: 1,
-                    html: "B",
-                  },
-                ],
+                    html: "B"
+                  }
+                ]
               }),
               widget;
 
@@ -921,7 +921,7 @@ describe("Ext.grid.column.Widget", function () {
 
           it("should run layouts when the grid has a pending layout", function () {
             var col = getColCfg({
-                xtype: "component",
+                xtype: "component"
               }),
               widget,
               count;
@@ -942,7 +942,7 @@ describe("Ext.grid.column.Widget", function () {
           describe("before render", function () {
             beforeEach(function () {
               makeGrid(undefined, undefined, {
-                renderTo: null,
+                renderTo: null
               });
             });
 
@@ -978,7 +978,7 @@ describe("Ext.grid.column.Widget", function () {
 
             it("should add a new widget when adding a record", function () {
               store.add({
-                a: "New",
+                a: "New"
               });
               expect(getWidget(4).getText()).toBe("New");
               checkPositions();
@@ -1007,9 +1007,9 @@ describe("Ext.grid.column.Widget", function () {
                 view
                   .getCellByPosition({
                     row: 0,
-                    column: 0,
+                    column: 0
                   })
-                  .hasCls(view.dirtyCls),
+                  .hasCls(view.dirtyCls)
               ).toBe(true);
 
               store.first().set("a", oldValue);
@@ -1019,9 +1019,9 @@ describe("Ext.grid.column.Widget", function () {
                 view
                   .getCellByPosition({
                     row: 0,
-                    column: 0,
+                    column: 0
                   })
-                  .hasCls(view.dirtyCls),
+                  .hasCls(view.dirtyCls)
               ).toBe(false);
             });
 
@@ -1030,7 +1030,7 @@ describe("Ext.grid.column.Widget", function () {
               grid.destroy();
 
               makeGrid(null, null, {
-                renderTo: null,
+                renderTo: null
               });
               store.first().set("a", "NewValue");
               grid.render(document.body);
@@ -1040,9 +1040,9 @@ describe("Ext.grid.column.Widget", function () {
                 view
                   .getCellByPosition({
                     row: 0,
-                    column: 0,
+                    column: 0
                   })
-                  .hasCls(view.dirtyCls),
+                  .hasCls(view.dirtyCls)
               ).toBe(true);
             });
 
@@ -1086,27 +1086,27 @@ describe("Ext.grid.column.Widget", function () {
                   barRec = this.getWidgetRecord();
                 }
                 this.callParent(arguments);
-              },
+              }
             });
 
             makeGrid(
               [
                 getColCfg({
-                  xtype: "specbutton",
-                }),
+                  xtype: "specbutton"
+                })
               ],
-              [],
+              []
             );
 
             store.suspendEvents();
             store.add({
-              a: "foo",
+              a: "foo"
             });
             store.resumeEvents();
             grid.getView().refresh();
 
             store.add({
-              a: "bar",
+              a: "bar"
             });
 
             expect(col).toBe(colRef[0]);
@@ -1120,7 +1120,7 @@ describe("Ext.grid.column.Widget", function () {
             it("should have the correct reference when an update causes the view to change", function () {
               makeGrid();
               store.getSorters().add({
-                property: "a",
+                property: "a"
               });
               store.first().set("a", "5a");
               expect(getWidget(0).getWidgetRecord().getId()).toBe("rec2");
@@ -1153,8 +1153,8 @@ describe("Ext.grid.column.Widget", function () {
             makeGrid([]);
             grid.reconfigure(undefined, [
               getColCfg({
-                xtype: "button",
-              }),
+                xtype: "button"
+              })
             ]);
             colRef = grid.getColumnManager().getColumns();
             expect(getWidget(0).getText()).toBe("1a");
@@ -1169,8 +1169,8 @@ describe("Ext.grid.column.Widget", function () {
             expect(function () {
               grid.reconfigure(undefined, [
                 {
-                  dataIndex: "a",
-                },
+                  dataIndex: "a"
+                }
               ]);
             }).not.toThrow();
           });
@@ -1197,7 +1197,7 @@ describe("Ext.grid.column.Widget", function () {
                 childNodes;
 
               makeGrid(null, data, {
-                height: 100,
+                height: 100
               });
 
               // Pick a row that is within the buffere rendered range
@@ -1218,7 +1218,7 @@ describe("Ext.grid.column.Widget", function () {
               childNodes;
 
             makeGrid(null, data, {
-              height: 100,
+              height: 100
             });
 
             // Pick a row that is within the buffere rendered range
@@ -1243,11 +1243,11 @@ describe("Ext.grid.column.Widget", function () {
               initComponent: function () {
                 ++count;
                 this.callParent();
-              },
+              }
             });
 
             var col = getColCfg({
-              xtype: "foo",
+              xtype: "foo"
             });
             col.hidden = true;
             makeGrid([col]);
@@ -1258,7 +1258,7 @@ describe("Ext.grid.column.Widget", function () {
 
           it("should size the widgets when hidden initially and then shown", function () {
             var col = getColCfg({
-              xtype: "button",
+              xtype: "button"
             });
             col.hidden = true;
             makeGrid([col]);
@@ -1275,10 +1275,10 @@ describe("Ext.grid.column.Widget", function () {
               {
                 columns: [
                   getColCfg({
-                    xtype: "button",
-                  }),
-                ],
-              },
+                    xtype: "button"
+                  })
+                ]
+              }
             ]);
             expect(function () {
               colRef[0].hide();
@@ -1291,10 +1291,10 @@ describe("Ext.grid.column.Widget", function () {
                 itemId: "ct",
                 columns: [
                   getColCfg({
-                    xtype: "button",
-                  }),
-                ],
-              },
+                    xtype: "button"
+                  })
+                ]
+              }
             ]);
             expect(function () {
               grid.down("#ct").hide();
@@ -1315,22 +1315,22 @@ describe("Ext.grid.column.Widget", function () {
                   items: [
                     {
                       name: "value",
-                      inputValue: "1",
+                      inputValue: "1"
                     },
                     {
                       name: "value",
-                      inputValue: "2",
-                    },
-                  ],
-                }),
+                      inputValue: "2"
+                    }
+                  ]
+                })
               ],
               [
                 {
                   a: {
-                    value: "2",
-                  },
-                },
-              ],
+                    value: "2"
+                  }
+                }
+              ]
             );
 
             widget = getWidget(0);
@@ -1339,8 +1339,8 @@ describe("Ext.grid.column.Widget", function () {
                 fn: function (radioGroup, newValue) {
                   radioGroup.getWidgetRecord().set("a", newValue);
                   changed = true;
-                },
-              },
+                }
+              }
             });
 
             if (Ext.isIE9m) {
@@ -1369,39 +1369,39 @@ describe("Ext.grid.column.Widget", function () {
                   items: [
                     {
                       name: "value",
-                      inputValue: "1",
+                      inputValue: "1"
                     },
                     {
                       name: "value",
-                      inputValue: "2",
-                    },
+                      inputValue: "2"
+                    }
                   ],
                   listeners: {
                     change: function (radioGroup, newValue) {
                       radioGroup.getWidgetRecord().set("a", newValue);
-                    },
-                  },
+                    }
+                  }
                 }),
                 {
                   text: "Name",
                   dataIndex: "b",
-                  sortable: true,
-                },
+                  sortable: true
+                }
               ],
               [
                 {
                   a: {
-                    value: "2",
+                    value: "2"
                   },
-                  b: "Vince",
+                  b: "Vince"
                 },
                 {
                   a: {
-                    value: "1",
+                    value: "1"
                   },
-                  b: "John",
-                },
-              ],
+                  b: "John"
+                }
+              ]
             );
             store.sort("b", "ASC");
             expect(getWidget(0).items.first().checked).toBe(true);
@@ -1415,8 +1415,8 @@ describe("Ext.grid.column.Widget", function () {
                 xtype: "combobox",
                 queryMode: "local",
                 displayField: "a",
-                valueField: "b",
-              }),
+                valueField: "b"
+              })
             ]);
 
             getWidget(0).bindStore(store);
@@ -1434,13 +1434,13 @@ describe("Ext.grid.column.Widget", function () {
                 xtype: "button",
                 menu: [
                   {
-                    text: "Button1",
+                    text: "Button1"
                   },
                   {
-                    text: "Button2",
-                  },
-                ],
-              }),
+                    text: "Button2"
+                  }
+                ]
+              })
             ]);
 
             jasmine.fireMouseEvent(getWidget(0).focusEl, "click");
@@ -1453,9 +1453,9 @@ describe("Ext.grid.column.Widget", function () {
             jasmine.fireMouseEvent(
               view.getCellByPosition({
                 row: 0,
-                column: 0,
+                column: 0
               }),
-              "click",
+              "click"
             );
 
             // Should focus the cell and exit actionable mode.
@@ -1478,14 +1478,14 @@ describe("Ext.grid.column.Widget", function () {
                   dataIndex: "d",
                   widget: {
                     xtype: "progressbarwidget",
-                    textTpl: "{value:percent}",
-                  },
-                },
+                    textTpl: "{value:percent}"
+                  }
+                }
               ],
               null,
               {
-                renderTo: null,
-              },
+                renderTo: null
+              }
             );
 
             panel = new Ext.tab.Panel({
@@ -1496,10 +1496,10 @@ describe("Ext.grid.column.Widget", function () {
                 grid,
                 {
                   xtype: "panel",
-                  title: "TAB2",
-                },
+                  title: "TAB2"
+                }
               ],
-              renderTo: document.body,
+              renderTo: document.body
             });
           });
 
@@ -1516,7 +1516,7 @@ describe("Ext.grid.column.Widget", function () {
             expect(getWidget(4, 0).textEl.dom.innerHTML).toBe("50%");
           });
         });
-      },
+      }
     );
   }
   createBufferedSuite(false);

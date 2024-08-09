@@ -5,16 +5,16 @@ describe("Ext.scroll.Scroller", function () {
     scroller = new Ext.scroll.Scroller(
       Ext.apply(
         {
-          element: el,
+          element: el
         },
-        config,
-      ),
+        config
+      )
     );
   }
 
   beforeEach(function () {
     el = Ext.getBody().createChild({
-      style: "height:100px;width:100px;",
+      style: "height:100px;width:100px;"
     });
   });
 
@@ -43,7 +43,7 @@ describe("Ext.scroll.Scroller", function () {
       document.body.appendChild(element, true);
 
       scroller = new Ext.scroll.Scroller({
-        element: element,
+        element: element
       });
 
       expect(scroller.getElement().isElement).toBe(true);
@@ -56,7 +56,7 @@ describe("Ext.scroll.Scroller", function () {
       document.body.appendChild(element, true);
 
       scroller = new Ext.scroll.Scroller({
-        element: "theEl",
+        element: "theEl"
       });
 
       expect(scroller.getElement().isElement).toBe(true);
@@ -67,7 +67,7 @@ describe("Ext.scroll.Scroller", function () {
       element = Ext.getBody().createChild();
 
       scroller = new Ext.scroll.Scroller({
-        element: element,
+        element: element
       });
 
       expect(scroller.getElement()).toBe(element);
@@ -76,10 +76,10 @@ describe("Ext.scroll.Scroller", function () {
     it("should throw an error if element with given id not found", function () {
       expect(function () {
         scroller = new Ext.scroll.Scroller({
-          element: "foobarelement",
+          element: "foobarelement"
         });
       }).toThrow(
-        "Cannot create Ext.scroll.Scroller instance. Element with id 'foobarelement' not found.",
+        "Cannot create Ext.scroll.Scroller instance. Element with id 'foobarelement' not found."
       );
     });
   });
@@ -93,7 +93,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-x:auto on the element when x is true", function () {
       makeScroller({
-        x: true,
+        x: true
       });
 
       expect(el.dom.style.overflowX).toBe("auto");
@@ -101,7 +101,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-x:auto on the element when x is 'auto'", function () {
       makeScroller({
-        x: "auto",
+        x: "auto"
       });
 
       expect(el.dom.style.overflowX).toBe("auto");
@@ -109,7 +109,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-x:scroll on the element when x is 'scroll'", function () {
       makeScroller({
-        x: "scroll",
+        x: "scroll"
       });
 
       expect(el.dom.style.overflowX).toBe("scroll");
@@ -117,7 +117,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-x:hidden the element when x is false", function () {
       makeScroller({
-        x: false,
+        x: false
       });
 
       expect(el.dom.style.overflowX).toBe("hidden");
@@ -133,7 +133,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-y:auto on the element when y is true", function () {
       makeScroller({
-        y: true,
+        y: true
       });
 
       expect(el.dom.style.overflowY).toBe("auto");
@@ -141,7 +141,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-y:auto on the element when y is 'auto'", function () {
       makeScroller({
-        y: "auto",
+        y: "auto"
       });
 
       expect(el.dom.style.overflowY).toBe("auto");
@@ -149,7 +149,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-y:scroll on the element when y is 'scroll'", function () {
       makeScroller({
-        y: "scroll",
+        y: "scroll"
       });
 
       expect(el.dom.style.overflowY).toBe("scroll");
@@ -157,7 +157,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-y:hidden on the element when y is false", function () {
       makeScroller({
-        y: false,
+        y: false
       });
 
       expect(el.dom.style.overflowY).toBe("hidden");
@@ -167,7 +167,7 @@ describe("Ext.scroll.Scroller", function () {
   describe("direction", function () {
     it("should set overflow-x:auto and overflow-y:auto on the element when direction is 'auto'", function () {
       makeScroller({
-        direction: "auto",
+        direction: "auto"
       });
 
       expect(el.dom.style.overflowX).toBe("auto");
@@ -176,7 +176,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-x:scroll and overflow-y:scroll on the element when direction is 'both'", function () {
       makeScroller({
-        direction: "both",
+        direction: "both"
       });
 
       expect(el.dom.style.overflowX).toBe("scroll");
@@ -185,7 +185,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-y:auto on the element when direction is 'vertical'", function () {
       makeScroller({
-        direction: "vertical",
+        direction: "vertical"
       });
 
       expect(el.dom.style.overflowY).toBe("auto");
@@ -194,7 +194,7 @@ describe("Ext.scroll.Scroller", function () {
 
     it("should set overflow-x:auto on the element when direction is 'horizontal'", function () {
       makeScroller({
-        direction: "horizontal",
+        direction: "horizontal"
       });
 
       expect(el.dom.style.overflowX).toBe("auto");
@@ -206,9 +206,9 @@ describe("Ext.scroll.Scroller", function () {
     beforeEach(function () {
       el.appendChild(
         {
-          style: "height:200px;width:300px;",
+          style: "height:200px;width:300px;"
         },
-        true,
+        true
       );
     });
 
@@ -216,78 +216,78 @@ describe("Ext.scroll.Scroller", function () {
       makeScroller();
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
     it("should return the content size with x:scroll and y:scroll", function () {
       makeScroller({
         x: "scroll",
-        y: "scroll",
+        y: "scroll"
       });
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
     it("should return the content size with x:false and y:false", function () {
       makeScroller({
         x: false,
-        y: false,
+        y: false
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
     it("should return the content size with x:false and y:auto", function () {
       makeScroller({
         x: false,
-        y: true,
+        y: true
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
     it("should return the content size with x:auto and y:false", function () {
       makeScroller({
         x: true,
-        y: false,
+        y: false
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
     it("should return the content size with x:false and y:scroll", function () {
       makeScroller({
         x: false,
-        y: "scroll",
+        y: "scroll"
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
     it("should return the content size with x:scroll and y:false", function () {
       makeScroller({
         x: "scroll",
-        y: false,
+        y: false
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
   });
@@ -297,12 +297,12 @@ describe("Ext.scroll.Scroller", function () {
       makeScroller();
       scroller.setSize({
         x: 300,
-        y: 200,
+        y: 200
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
@@ -310,14 +310,14 @@ describe("Ext.scroll.Scroller", function () {
       makeScroller();
       scroller.setSize({
         x: 300,
-        y: 200,
+        y: 200
       });
 
       scroller.setSize(null);
 
       expect(scroller.getSize()).toEqual({
         x: 100,
-        y: 100,
+        y: 100
       });
     });
 
@@ -327,31 +327,31 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getSize()).toEqual({
         x: 200,
-        y: 200,
+        y: 200
       });
     });
 
     it("should set the x size", function () {
       makeScroller();
       scroller.setSize({
-        x: 200,
+        x: 200
       });
 
       expect(scroller.getSize()).toEqual({
         x: 200,
-        y: 100 - Ext.getScrollbarSize().height,
+        y: 100 - Ext.getScrollbarSize().height
       });
     });
 
     it("should set the y size", function () {
       makeScroller();
       scroller.setSize({
-        y: 200,
+        y: 200
       });
 
       expect(scroller.getSize()).toEqual({
         x: 100 - Ext.getScrollbarSize().width,
-        y: 200,
+        y: 200
       });
     });
 
@@ -359,16 +359,16 @@ describe("Ext.scroll.Scroller", function () {
       makeScroller();
 
       scroller.setSize({
-        y: 300,
+        y: 300
       });
 
       scroller.setSize({
-        x: 200,
+        x: 200
       });
 
       expect(scroller.getSize()).toEqual({
         x: 200,
-        y: 300,
+        y: 300
       });
     });
 
@@ -376,16 +376,16 @@ describe("Ext.scroll.Scroller", function () {
       makeScroller();
 
       scroller.setSize({
-        x: 300,
+        x: 300
       });
 
       scroller.setSize({
-        y: 200,
+        y: 200
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 200,
+        y: 200
       });
     });
 
@@ -395,12 +395,12 @@ describe("Ext.scroll.Scroller", function () {
       scroller.setSize(300);
 
       scroller.setSize({
-        x: 0,
+        x: 0
       });
 
       expect(scroller.getSize()).toEqual({
         x: 100 - Ext.getScrollbarSize().width,
-        y: 300,
+        y: 300
       });
     });
 
@@ -410,12 +410,12 @@ describe("Ext.scroll.Scroller", function () {
       scroller.setSize(300);
 
       scroller.setSize({
-        y: 0,
+        y: 0
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 100 - Ext.getScrollbarSize().height,
+        y: 100 - Ext.getScrollbarSize().height
       });
     });
 
@@ -425,12 +425,12 @@ describe("Ext.scroll.Scroller", function () {
       scroller.setSize(300);
 
       scroller.setSize({
-        x: null,
+        x: null
       });
 
       expect(scroller.getSize()).toEqual({
         x: 100 - Ext.getScrollbarSize().width,
-        y: 300,
+        y: 300
       });
     });
 
@@ -440,12 +440,12 @@ describe("Ext.scroll.Scroller", function () {
       scroller.setSize(300);
 
       scroller.setSize({
-        y: null,
+        y: null
       });
 
       expect(scroller.getSize()).toEqual({
         x: 300,
-        y: 100 - Ext.getScrollbarSize().height,
+        y: 100 - Ext.getScrollbarSize().height
       });
     });
   });
@@ -461,8 +461,8 @@ describe("Ext.scroll.Scroller", function () {
           borderColor: "red",
           borderStyle: "solid",
           borderWidth: "10px 20px",
-          padding: "30px 40px",
-        },
+          padding: "30px 40px"
+        }
       });
     });
 
@@ -514,9 +514,9 @@ describe("Ext.scroll.Scroller", function () {
     beforeEach(function () {
       el.appendChild(
         {
-          style: "height:200px;width:300px;",
+          style: "height:200px;width:300px;"
         },
-        true,
+        true
       );
     });
 
@@ -525,14 +525,14 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 0,
+        y: 0
       });
 
       scroller.scrollTo(20, 40);
 
       expect(scroller.getPosition()).toEqual({
         x: 20,
-        y: 40,
+        y: 40
       });
     });
   });
@@ -541,9 +541,9 @@ describe("Ext.scroll.Scroller", function () {
     function makeOverflow(cfg) {
       el.appendChild(
         {
-          style: "height:200px;width:300px;",
+          style: "height:200px;width:300px;"
         },
-        true,
+        true
       );
 
       makeScroller(cfg);
@@ -552,9 +552,9 @@ describe("Ext.scroll.Scroller", function () {
     function makeNoOverflow(cfg) {
       el.appendChild(
         {
-          style: "height:100px;width:100px;",
+          style: "height:100px;width:100px;"
         },
-        true,
+        true
       );
 
       makeScroller(cfg);
@@ -567,20 +567,20 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 50,
-        y: 0,
+        y: 0
       });
     });
 
     it("should scroll on the x axis when the x axis is disabled", function () {
       makeOverflow({
-        x: false,
+        x: false
       });
 
       scroller.scrollTo(50, 0);
 
       expect(scroller.getPosition()).toEqual({
         x: 50,
-        y: 0,
+        y: 0
       });
     });
 
@@ -591,7 +591,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 0,
+        y: 0
       });
     });
 
@@ -602,7 +602,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 200 + Ext.getScrollbarSize().width,
-        y: 0,
+        y: 0
       });
     });
 
@@ -613,20 +613,20 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 50,
+        y: 50
       });
     });
 
     it("should scroll on the y axis when the y axis is disabled", function () {
       makeOverflow({
-        y: false,
+        y: false
       });
 
       scroller.scrollTo(0, 50);
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 50,
+        y: 50
       });
     });
 
@@ -637,7 +637,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 0,
+        y: 0
       });
     });
 
@@ -648,7 +648,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 100 + Ext.getScrollbarSize().height,
+        y: 100 + Ext.getScrollbarSize().height
       });
     });
 
@@ -659,7 +659,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 50,
-        y: 60,
+        y: 60
       });
     });
 
@@ -670,7 +670,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 200 + Ext.getScrollbarSize().width,
-        y: 100 + Ext.getScrollbarSize().height,
+        y: 100 + Ext.getScrollbarSize().height
       });
     });
 
@@ -681,7 +681,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 200 + Ext.getScrollbarSize().height,
-        y: 0,
+        y: 0
       });
     });
 
@@ -692,7 +692,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 100 + Ext.getScrollbarSize().width,
+        y: 100 + Ext.getScrollbarSize().width
       });
     });
 
@@ -703,7 +703,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 200 + Ext.getScrollbarSize().height,
-        y: 100 + Ext.getScrollbarSize().width,
+        y: 100 + Ext.getScrollbarSize().width
       });
     });
 
@@ -716,7 +716,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 10,
-        y: 20,
+        y: 20
       });
     });
 
@@ -729,7 +729,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 20,
-        y: 10,
+        y: 10
       });
     });
 
@@ -742,7 +742,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 10,
-        y: 10,
+        y: 10
       });
     });
 
@@ -753,7 +753,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 180 + Ext.getScrollbarSize().height,
-        y: 0,
+        y: 0
       });
     });
 
@@ -764,7 +764,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 80 + Ext.getScrollbarSize().width,
+        y: 80 + Ext.getScrollbarSize().width
       });
     });
 
@@ -775,7 +775,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 180 + Ext.getScrollbarSize().height,
-        y: 80 + Ext.getScrollbarSize().width,
+        y: 80 + Ext.getScrollbarSize().width
       });
     });
   });
@@ -784,9 +784,9 @@ describe("Ext.scroll.Scroller", function () {
     beforeEach(function () {
       el.appendChild(
         {
-          style: "height:200px;width:300px;",
+          style: "height:200px;width:300px;"
         },
-        true,
+        true
       );
     });
 
@@ -797,14 +797,14 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 20,
-        y: 10,
+        y: 10
       });
 
       scroller.scrollBy(-10, -5);
 
       expect(scroller.getPosition()).toEqual({
         x: 10,
-        y: 5,
+        y: 5
       });
     });
 
@@ -817,7 +817,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 10,
-        y: 20,
+        y: 20
       });
     });
 
@@ -830,7 +830,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 20,
-        y: 10,
+        y: 10
       });
     });
 
@@ -843,7 +843,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 10,
-        y: 10,
+        y: 10
       });
     });
 
@@ -854,7 +854,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 200 + Ext.getScrollbarSize().height,
-        y: 0,
+        y: 0
       });
     });
 
@@ -865,7 +865,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 0,
+        y: 0
       });
     });
 
@@ -876,7 +876,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 100 + Ext.getScrollbarSize().width,
+        y: 100 + Ext.getScrollbarSize().width
       });
     });
 
@@ -887,7 +887,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 0,
+        y: 0
       });
     });
 
@@ -898,7 +898,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 200 + Ext.getScrollbarSize().height,
-        y: 100 + Ext.getScrollbarSize().width,
+        y: 100 + Ext.getScrollbarSize().width
       });
     });
 
@@ -909,7 +909,7 @@ describe("Ext.scroll.Scroller", function () {
 
       expect(scroller.getPosition()).toEqual({
         x: 0,
-        y: 0,
+        y: 0
       });
     });
   });
@@ -918,9 +918,9 @@ describe("Ext.scroll.Scroller", function () {
     beforeEach(function () {
       el.appendChild(
         {
-          style: "height:200px;width:300px;",
+          style: "height:200px;width:300px;"
         },
-        true,
+        true
       );
     });
 
@@ -932,14 +932,14 @@ describe("Ext.scroll.Scroller", function () {
       it("should return the maxPosition", function () {
         expect(scroller.getMaxPosition()).toEqual({
           x: 200 + Ext.getScrollbarSize().height,
-          y: 100 + Ext.getScrollbarSize().width,
+          y: 100 + Ext.getScrollbarSize().width
         });
       });
 
       it("should return the maxUserPosition", function () {
         expect(scroller.getMaxUserPosition()).toEqual({
           x: 200 + Ext.getScrollbarSize().height,
-          y: 100 + Ext.getScrollbarSize().width,
+          y: 100 + Ext.getScrollbarSize().width
         });
       });
     });
@@ -948,21 +948,21 @@ describe("Ext.scroll.Scroller", function () {
       beforeEach(function () {
         makeScroller({
           x: true,
-          y: false,
+          y: false
         });
       });
 
       it("should return the maxPosition", function () {
         expect(scroller.getMaxPosition()).toEqual({
           x: 200,
-          y: 100 + Ext.getScrollbarSize().width,
+          y: 100 + Ext.getScrollbarSize().width
         });
       });
 
       it("should return the maxUserPosition", function () {
         expect(scroller.getMaxUserPosition()).toEqual({
           x: 200,
-          y: 0,
+          y: 0
         });
       });
     });
@@ -971,21 +971,21 @@ describe("Ext.scroll.Scroller", function () {
       beforeEach(function () {
         makeScroller({
           x: false,
-          y: true,
+          y: true
         });
       });
 
       it("should return the maxPosition", function () {
         expect(scroller.getMaxPosition()).toEqual({
           x: 200 + Ext.getScrollbarSize().height,
-          y: 100,
+          y: 100
         });
       });
 
       it("should return the maxUserPosition", function () {
         expect(scroller.getMaxUserPosition()).toEqual({
           x: 0,
-          y: 100,
+          y: 100
         });
       });
     });
@@ -994,21 +994,21 @@ describe("Ext.scroll.Scroller", function () {
       beforeEach(function () {
         makeScroller({
           x: false,
-          y: false,
+          y: false
         });
       });
 
       it("should return the maxPosition", function () {
         expect(scroller.getMaxPosition()).toEqual({
           x: 200,
-          y: 100,
+          y: 100
         });
       });
 
       it("should return the maxUserPosition", function () {
         expect(scroller.getMaxUserPosition()).toEqual({
           x: 0,
-          y: 0,
+          y: 0
         });
       });
     });
@@ -1022,13 +1022,13 @@ describe("Ext.scroll.Scroller", function () {
         style: "height:100px;width:100px;",
         cn: [
           {
-            style: "height:200px;width:300px;",
-          },
-        ],
+            style: "height:200px;width:300px;"
+          }
+        ]
       });
 
       scroller2 = new Ext.scroll.Scroller({
-        element: el2,
+        element: el2
       });
 
       scroller2.on("scroll", scrollSpy2);
@@ -1039,13 +1039,13 @@ describe("Ext.scroll.Scroller", function () {
         style: "height:100px;width:100px;",
         cn: [
           {
-            style: "height:200px;width:300px;",
-          },
-        ],
+            style: "height:200px;width:300px;"
+          }
+        ]
       });
 
       scroller3 = new Ext.scroll.Scroller({
-        element: el3,
+        element: el3
       });
 
       scroller3.on("scroll", scrollSpy3);
@@ -1058,9 +1058,9 @@ describe("Ext.scroll.Scroller", function () {
 
       el.appendChild(
         {
-          style: "height:200px;width:300px;",
+          style: "height:200px;width:300px;"
         },
-        true,
+        true
       );
 
       makeScroller();
@@ -1116,7 +1116,7 @@ describe("Ext.scroll.Scroller", function () {
           runs(function () {
             expect(scroller2.getPosition()).toEqual({
               x: 10,
-              y: 20,
+              y: 20
             });
           });
         });
@@ -1140,7 +1140,7 @@ describe("Ext.scroll.Scroller", function () {
           runs(function () {
             expect(scroller.getPosition()).toEqual({
               x: 10,
-              y: 20,
+              y: 20
             });
           });
         });
@@ -1161,7 +1161,7 @@ describe("Ext.scroll.Scroller", function () {
           runs(function () {
             expect(scroller2.getPosition()).toEqual({
               x: 10,
-              y: 0,
+              y: 0
             });
           });
         });
@@ -1176,7 +1176,7 @@ describe("Ext.scroll.Scroller", function () {
           runs(function () {
             expect(scroller.getPosition()).toEqual({
               x: 10,
-              y: 0,
+              y: 0
             });
           });
         });
@@ -1197,7 +1197,7 @@ describe("Ext.scroll.Scroller", function () {
           runs(function () {
             expect(scroller2.getPosition()).toEqual({
               x: 0,
-              y: 20,
+              y: 20
             });
           });
         });
@@ -1212,7 +1212,7 @@ describe("Ext.scroll.Scroller", function () {
           runs(function () {
             expect(scroller.getPosition()).toEqual({
               x: 0,
-              y: 20,
+              y: 20
             });
           });
         });
@@ -1231,7 +1231,7 @@ describe("Ext.scroll.Scroller", function () {
         runs(function () {
           expect(scroller2.getPosition()).toEqual({
             x: 0,
-            y: 0,
+            y: 0
           });
           scroller2.scrollTo(40, 30);
         });
@@ -1243,7 +1243,7 @@ describe("Ext.scroll.Scroller", function () {
         runs(function () {
           expect(scroller.getPosition()).toEqual({
             x: 10,
-            y: 20,
+            y: 20
           });
         });
       });
@@ -1268,12 +1268,12 @@ describe("Ext.scroll.Scroller", function () {
         runs(function () {
           expect(scroller2.getPosition()).toEqual({
             x: 10,
-            y: 15,
+            y: 15
           });
 
           expect(scroller3.getPosition()).toEqual({
             x: 10,
-            y: 15,
+            y: 15
           });
         });
       });
@@ -1288,7 +1288,7 @@ describe("Ext.scroll.Scroller", function () {
         runs(function () {
           expect(scroller.getPosition()).toEqual({
             x: 50,
-            y: 60,
+            y: 60
           });
         });
       });
@@ -1305,7 +1305,7 @@ describe("Ext.scroll.Scroller", function () {
         runs(function () {
           expect(scroller.getPosition()).toEqual({
             x: 0,
-            y: 0,
+            y: 0
           });
 
           // scroller3 still attached
@@ -1319,7 +1319,7 @@ describe("Ext.scroll.Scroller", function () {
         runs(function () {
           expect(scroller.getPosition()).toEqual({
             x: 30,
-            y: 45,
+            y: 45
           });
         });
       });

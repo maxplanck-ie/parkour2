@@ -5,59 +5,59 @@ describe("Ext.parse.Tokenizer", function () {
       "-": {
         type: "operator",
         value: "-",
-        is: { operator: true, minus: true },
+        is: { operator: true, minus: true }
       },
       "*": {
         type: "operator",
         value: "*",
-        is: { operator: true, multiply: true },
+        is: { operator: true, multiply: true }
       },
       "/": {
         type: "operator",
         value: "/",
-        is: { operator: true, divide: true },
+        is: { operator: true, divide: true }
       },
       "!": { type: "operator", value: "!", is: { operator: true, bang: true } },
       ",": {
         type: "operator",
         value: ",",
-        is: { operator: true, comma: true },
+        is: { operator: true, comma: true }
       },
       ":": {
         type: "operator",
         value: ":",
-        is: { operator: true, colon: true },
+        is: { operator: true, colon: true }
       },
       "[": {
         type: "operator",
         value: "[",
-        is: { operator: true, arrayOpen: true },
+        is: { operator: true, arrayOpen: true }
       },
       "]": {
         type: "operator",
         value: "]",
-        is: { operator: true, arrayClose: true },
+        is: { operator: true, arrayClose: true }
       },
       "{": {
         type: "operator",
         value: "{",
-        is: { operator: true, curlyOpen: true },
+        is: { operator: true, curlyOpen: true }
       },
       "}": {
         type: "operator",
         value: "}",
-        is: { operator: true, curlyClose: true },
+        is: { operator: true, curlyClose: true }
       },
       "(": {
         type: "operator",
         value: "(",
-        is: { operator: true, parenOpen: true },
+        is: { operator: true, parenOpen: true }
       },
       ")": {
         type: "operator",
         value: ")",
-        is: { operator: true, parenClose: true },
-      },
+        is: { operator: true, parenClose: true }
+      }
     };
 
   beforeEach(function () {
@@ -124,9 +124,9 @@ describe("Ext.parse.Tokenizer", function () {
       expect(t0).toEqual({
         type: "ident",
         is: {
-          ident: true,
+          ident: true
         },
-        value: "abc",
+        value: "abc"
       });
     });
 
@@ -143,9 +143,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 123,
+        value: 123
       });
     });
 
@@ -179,18 +179,18 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          string: true,
+          string: true
         },
-        value: "String 1",
+        value: "String 1"
       });
 
       expect(t1).toEqual({
         type: "literal",
         is: {
           literal: true,
-          string: true,
+          string: true
         },
-        value: "String 2",
+        value: "String 2"
       });
 
       expect(t3).toBe(null);
@@ -208,18 +208,18 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          string: true,
+          string: true
         },
-        value: 'String 1"',
+        value: 'String 1"'
       });
 
       expect(t1).toEqual({
         type: "literal",
         is: {
           literal: true,
-          string: true,
+          string: true
         },
-        value: "'String\\\" 2'",
+        value: "'String\\\" 2'"
       });
 
       expect(t3).toBe(null);
@@ -238,9 +238,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          boolean: true,
+          boolean: true
         },
-        value: true,
+        value: true
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -259,9 +259,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          boolean: true,
+          boolean: true
         },
-        value: false,
+        value: false
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -280,18 +280,18 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          boolean: true,
+          boolean: true
         },
-        value: false,
+        value: false
       });
 
       expect(t1).toEqual({
         type: "literal",
         is: {
           literal: true,
-          boolean: true,
+          boolean: true
         },
-        value: true,
+        value: true
       });
 
       expect(t2).toBe(null);
@@ -309,17 +309,17 @@ describe("Ext.parse.Tokenizer", function () {
       expect(t0).toEqual({
         type: "ident",
         is: {
-          ident: true,
+          ident: true
         },
-        value: "foo",
+        value: "foo"
       });
 
       expect(t1).toEqual({
         type: "ident",
         is: {
-          ident: true,
+          ident: true
         },
-        value: "bar",
+        value: "bar"
       });
 
       expect(t2).toBe(null);
@@ -335,17 +335,17 @@ describe("Ext.parse.Tokenizer", function () {
       expect(t0).toEqual({
         type: "ident",
         is: {
-          ident: true,
+          ident: true
         },
-        value: "foo.bar",
+        value: "foo.bar"
       });
 
       expect(t1).toEqual({
         type: "ident",
         is: {
-          ident: true,
+          ident: true
         },
-        value: "bar.baz.zip",
+        value: "bar.baz.zip"
       });
 
       expect(t2).toBe(null);
@@ -364,9 +364,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          nil: true,
+          nil: true
         },
-        value: null,
+        value: null
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -387,18 +387,18 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 427,
+        value: 427
       });
 
       expect(t1).toEqual({
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 23,
+        value: 23
       });
 
       expect(t2).toBe(null);
@@ -419,9 +419,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 427,
+        value: 427
       });
 
       expect(t2).toEqual(OPERATORS["-"]);
@@ -429,18 +429,18 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 23,
+        value: 23
       });
 
       expect(t4).toEqual({
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 21,
+        value: 21
       });
 
       expect(t5).toBe(null);
@@ -461,9 +461,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 0.427,
+        value: 0.427
       });
 
       expect(t2).toEqual(OPERATORS["-"]);
@@ -471,18 +471,18 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 23.234,
+        value: 23.234
       });
 
       expect(t4).toEqual({
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 2.1,
+        value: 2.1
       });
 
       expect(t5).toBe(null);
@@ -503,9 +503,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 0.42e7,
+        value: 0.42e7
       });
 
       expect(t2).toEqual(OPERATORS["-"]);
@@ -513,18 +513,18 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 23.234e2,
+        value: 23.234e2
       });
 
       expect(t4).toEqual({
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 2.1e-21,
+        value: 2.1e-21
       });
 
       expect(t5).toBe(null);
@@ -544,8 +544,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "!",
         is: {
           operator: true,
-          bang: true,
-        },
+          bang: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -565,8 +565,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: ",",
         is: {
           operator: true,
-          comma: true,
-        },
+          comma: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -586,8 +586,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: ":",
         is: {
           operator: true,
-          colon: true,
-        },
+          colon: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -607,8 +607,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "[",
         is: {
           operator: true,
-          arrayOpen: true,
-        },
+          arrayOpen: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -628,8 +628,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "]",
         is: {
           operator: true,
-          arrayClose: true,
-        },
+          arrayClose: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -649,8 +649,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "{",
         is: {
           operator: true,
-          curlyOpen: true,
-        },
+          curlyOpen: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -670,8 +670,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "}",
         is: {
           operator: true,
-          curlyClose: true,
-        },
+          curlyClose: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -691,8 +691,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "(",
         is: {
           operator: true,
-          parenOpen: true,
-        },
+          parenOpen: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -712,8 +712,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: ")",
         is: {
           operator: true,
-          parenClose: true,
-        },
+          parenClose: true
+        }
       });
 
       expect(t0).toBe(t1); // should reuse the same token instance
@@ -729,8 +729,8 @@ describe("Ext.parse.Tokenizer", function () {
       customTokenizer = new Ext.parse.Tokenizer({
         operators: {
           "!": null, // disable ! operator
-          $: "dollar",
-        },
+          $: "dollar"
+        }
       });
 
       tokens = tokenize(customTokenizer, "$!");
@@ -742,8 +742,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "$",
         is: {
           operator: true,
-          dollar: true,
-        },
+          dollar: true
+        }
       });
     });
 
@@ -771,8 +771,8 @@ describe("Ext.parse.Tokenizer", function () {
           ">=": "ge",
           "=": "assign",
           "===": "seq",
-          "!==": "sne",
-        },
+          "!==": "sne"
+        }
       });
 
       tokens = tokenize(multiOpTokenizer, "< <= > >= \t=\t!= == === !==");
@@ -784,8 +784,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "<",
         is: {
           operator: true,
-          lt: true,
-        },
+          lt: true
+        }
       });
     });
 
@@ -795,8 +795,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "<=",
         is: {
           operator: true,
-          le: true,
-        },
+          le: true
+        }
       });
     });
 
@@ -806,8 +806,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: ">",
         is: {
           operator: true,
-          gt: true,
-        },
+          gt: true
+        }
       });
     });
 
@@ -817,8 +817,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: ">=",
         is: {
           operator: true,
-          ge: true,
-        },
+          ge: true
+        }
       });
     });
 
@@ -828,8 +828,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "=",
         is: {
           operator: true,
-          assign: true,
-        },
+          assign: true
+        }
       });
     });
 
@@ -839,8 +839,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "!=",
         is: {
           operator: true,
-          ne: true,
-        },
+          ne: true
+        }
       });
     });
 
@@ -850,8 +850,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "==",
         is: {
           operator: true,
-          eq: true,
-        },
+          eq: true
+        }
       });
     });
 
@@ -861,8 +861,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "===",
         is: {
           operator: true,
-          seq: true,
-        },
+          seq: true
+        }
       });
     });
 
@@ -872,8 +872,8 @@ describe("Ext.parse.Tokenizer", function () {
         value: "!==",
         is: {
           operator: true,
-          sne: true,
-        },
+          sne: true
+        }
       });
     });
   });
@@ -891,7 +891,7 @@ describe("Ext.parse.Tokenizer", function () {
           '"\\"a\\\\b\'):\\"" , ' +
           "32," +
           "! zip.fiz:woot(true,null)" +
-          "):ack('x\\'\"y', 32e-21 , -3.14e0 )",
+          "):ack('x\\'\"y', 32e-21 , -3.14e0 )"
       );
     });
 
@@ -899,7 +899,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[0]).toEqual({
         type: "ident",
         is: { ident: true },
-        value: "foo",
+        value: "foo"
       });
     });
 
@@ -911,7 +911,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[2]).toEqual({
         type: "ident",
         is: { ident: true },
-        value: "bar",
+        value: "bar"
       });
     });
 
@@ -923,7 +923,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[4]).toEqual({
         type: "literal",
         is: { literal: true, string: true },
-        value: '"a\\b\'):"',
+        value: '"a\\b\'):"'
       });
     });
 
@@ -935,7 +935,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[6]).toEqual({
         type: "literal",
         is: { literal: true, number: true },
-        value: 32,
+        value: 32
       });
     });
 
@@ -951,7 +951,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[9]).toEqual({
         type: "ident",
         is: { ident: true },
-        value: "zip.fiz",
+        value: "zip.fiz"
       });
     });
 
@@ -963,7 +963,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[11]).toEqual({
         type: "ident",
         is: { ident: true },
-        value: "woot",
+        value: "woot"
       });
     });
 
@@ -975,7 +975,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[13]).toEqual({
         type: "literal",
         is: { literal: true, boolean: true },
-        value: true,
+        value: true
       });
     });
 
@@ -987,7 +987,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[15]).toEqual({
         type: "literal",
         is: { literal: true, nil: true },
-        value: null,
+        value: null
       });
     });
 
@@ -1007,7 +1007,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[19]).toEqual({
         type: "ident",
         is: { ident: true },
-        value: "ack",
+        value: "ack"
       });
     });
 
@@ -1019,7 +1019,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[21]).toEqual({
         type: "literal",
         is: { literal: true, string: true },
-        value: "x'\"y",
+        value: "x'\"y"
       });
     });
 
@@ -1031,7 +1031,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[23]).toEqual({
         type: "literal",
         is: { literal: true, number: true },
-        value: 32e-21,
+        value: 32e-21
       });
     });
 
@@ -1047,7 +1047,7 @@ describe("Ext.parse.Tokenizer", function () {
       expect(tokens[26]).toEqual({
         type: "literal",
         is: { literal: true, number: true },
-        value: 3.14,
+        value: 3.14
       });
     });
 
@@ -1092,9 +1092,9 @@ describe("Ext.parse.Tokenizer", function () {
         type: "literal",
         is: {
           literal: true,
-          number: true,
+          number: true
         },
-        value: 123,
+        value: 123
       });
 
       expect(t1 instanceof Error).toBe(true);
@@ -1115,17 +1115,17 @@ describe("Ext.parse.Tokenizer", function () {
       expect(t0).toEqual({
         type: "ident",
         is: {
-          ident: true,
+          ident: true
         },
-        value: "foo.bar",
+        value: "foo.bar"
       });
 
       expect(t1).toEqual({
         type: "ident",
         is: {
-          ident: true,
+          ident: true
         },
-        value: "bar.baz.zip",
+        value: "bar.baz.zip"
       });
 
       expect(t2 instanceof Error).toBe(true);

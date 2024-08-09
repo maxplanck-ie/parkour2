@@ -54,10 +54,10 @@ Ext.define("Ext.ux.colorpick.Button", {
           xtype: "colorselector",
           reference: "selector",
           showPreviousColor: true,
-          showOkCancelButtons: true,
-        },
-      },
-    },
+          showOkCancelButtons: true
+        }
+      }
+    }
   },
 
   defaultBindProperty: "value",
@@ -70,7 +70,7 @@ Ext.define("Ext.ux.colorpick.Button", {
 
   listeners: {
     click: "onClick",
-    element: "btnEl",
+    element: "btnEl"
   },
 
   /**
@@ -101,5 +101,5 @@ Ext.define("Ext.ux.colorpick.Button", {
     if (cp) {
       cp.setFormat(format);
     }
-  },
+  }
 });

@@ -8,7 +8,7 @@ describe("Ext.Container", function () {
   function makeContainer(cfg) {
     if (Ext.isArray(cfg)) {
       cfg = {
-        items: cfg,
+        items: cfg
       };
     }
     ct = new Ext.container.Container(cfg);
@@ -22,7 +22,7 @@ describe("Ext.Container", function () {
 
     it("should return the item when adding single item", function () {
       var c = ct.add({
-        xtype: "component",
+        xtype: "component"
       });
 
       expect(ct.items.getAt(0)).toBe(c);
@@ -56,13 +56,13 @@ describe("Ext.Container", function () {
             // itemIds are reversed to trip the tests
             // if something goes wrong
             xtype: "component",
-            itemId: "1",
+            itemId: "1"
           },
           {
             xtype: "component",
-            itemId: "0",
-          },
-        ],
+            itemId: "0"
+          }
+        ]
       });
 
       c0 = ct.items.getAt(0);
@@ -160,12 +160,12 @@ describe("Ext.Container", function () {
       makeContainer({
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
-            xtype: "component",
-          },
-        ],
+            xtype: "component"
+          }
+        ]
       });
 
       c0 = ct.items.getAt(0);
@@ -210,12 +210,12 @@ describe("Ext.Container", function () {
       makeContainer({
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
-            xtype: "component",
-          },
-        ],
+            xtype: "component"
+          }
+        ]
       });
 
       c0 = ct.items.getAt(0);
@@ -255,8 +255,8 @@ describe("Ext.Container", function () {
         makeContainer({
           items: {
             xtype: "component",
-            reference: "a",
-          },
+            reference: "a"
+          }
         });
         expect(ct.lookupReference("foo")).toBeNull();
       });
@@ -267,8 +267,8 @@ describe("Ext.Container", function () {
           items: {
             xtype: "component",
             itemId: "compA",
-            reference: "a",
-          },
+            reference: "a"
+          }
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
       });
@@ -285,11 +285,11 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
-              },
-            },
-          },
+                  reference: "a"
+                }
+              }
+            }
+          }
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
       });
@@ -301,17 +301,17 @@ describe("Ext.Container", function () {
             {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             },
             {
               xtype: "container",
               items: {
                 xtype: "component",
                 itemId: "compB",
-                reference: "b",
-              },
-            },
-          ],
+                reference: "b"
+              }
+            }
+          ]
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         expect(ct.lookupReference("b")).toBe(ct.down("#compB"));
@@ -324,14 +324,14 @@ describe("Ext.Container", function () {
             {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             },
             {
               xtype: "component",
               itemId: "compB",
-              reference: "b",
-            },
-          ],
+              reference: "b"
+            }
+          ]
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         expect(ct.lookupReference("b")).toBe(ct.down("#compB"));
@@ -352,11 +352,11 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compC",
-                  reference: "c",
-                },
-              },
-            },
-          ],
+                  reference: "c"
+                }
+              }
+            }
+          ]
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         expect(ct.lookupReference("b")).toBe(ct.down("#compB"));
@@ -376,11 +376,11 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
-              },
-            },
-          },
+                  reference: "a"
+                }
+              }
+            }
+          }
         });
         var ref = ct.down("#ref");
         expect(ref.lookupReference("a")).toBe(ref.down("#compA"));
@@ -402,11 +402,11 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compB",
-                  reference: "b",
-                },
-              },
-            },
-          },
+                  reference: "b"
+                }
+              }
+            }
+          }
         });
         var ref = ct.down("#ref");
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
@@ -429,11 +429,11 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compB",
-                  reference: "b",
-                },
-              },
-            },
-          },
+                  reference: "b"
+                }
+              }
+            }
+          }
         });
         expect(ct.lookupReference("b")).toBeNull();
       });
@@ -449,9 +449,9 @@ describe("Ext.Container", function () {
             items: {
               xtype: "container",
               itemId: "compB",
-              reference: "b",
-            },
-          },
+              reference: "b"
+            }
+          }
         });
 
         var inner = ct.down("#compA");
@@ -468,8 +468,8 @@ describe("Ext.Container", function () {
               docked: "top",
               xtype: "component",
               itemId: "compA",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -483,9 +483,9 @@ describe("Ext.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -502,10 +502,10 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
-              },
-            ],
+                  reference: "a"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
         });
@@ -520,10 +520,10 @@ describe("Ext.Container", function () {
                 itemId: "compA",
                 items: {
                   xtype: "component",
-                  reference: "b",
-                },
-              },
-            ],
+                  reference: "b"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -535,9 +535,9 @@ describe("Ext.Container", function () {
               {
                 xtype: "container",
                 reference: "a>",
-                itemId: "compA",
-              },
-            ],
+                itemId: "compA"
+              }
+            ]
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -552,10 +552,10 @@ describe("Ext.Container", function () {
                 reference: "a>",
                 items: {
                   xtype: "component",
-                  reference: "b",
-                },
-              },
-            ],
+                  reference: "b"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("b")).toBeNull();
         });
@@ -579,13 +579,13 @@ describe("Ext.Container", function () {
                       items: {
                         xtype: "component",
                         reference: "e",
-                        itemId: "compE",
-                      },
-                    },
-                  },
-                },
-              },
-            ],
+                        itemId: "compE"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("a.b.c.d.e")).toBe(ct.down("#compE"));
         });
@@ -600,8 +600,8 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   reference: "child",
-                  itemId: "compA",
-                },
+                  itemId: "compA"
+                }
               },
               {
                 xtype: "container",
@@ -609,10 +609,10 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   reference: "child",
-                  itemId: "compB",
-                },
-              },
-            ],
+                  itemId: "compB"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("parent1.child")).toBe(ct.down("#compA"));
           expect(ct.lookupReference("parent2.child")).toBe(ct.down("#compB"));
@@ -638,13 +638,13 @@ describe("Ext.Container", function () {
                       items: {
                         xtype: "component",
                         reference: "e",
-                        itemId: "compE",
-                      },
-                    },
-                  },
-                },
-              },
-            ],
+                        itemId: "compE"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           });
           var inner = ct.down("#compC");
           expect(inner.lookupReference("d.e")).toBe(ct.down("#compE"));
@@ -674,13 +674,13 @@ describe("Ext.Container", function () {
                       items: {
                         xtype: "component",
                         reference: "e",
-                        itemId: "compE",
-                      },
-                    },
-                  },
-                },
-              },
-            ],
+                        itemId: "compE"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("a.b")).toBe(ct.down("#compB"));
           expect(ct.lookupReference("a.b.c")).toBe(ct.down("#compC"));
@@ -699,9 +699,9 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compB",
-                  reference: "b",
-                },
-              },
+                  reference: "b"
+                }
+              }
             });
             expect(ct.lookupReference("a.b")).toBe(ct.down("#compB"));
           });
@@ -713,27 +713,27 @@ describe("Ext.Container", function () {
       describe("adding", function () {
         it("should gain a reference to a direct child", function () {
           makeContainer({
-            referenceHolder: true,
+            referenceHolder: true
           });
           ct.add({
             xtype: "component",
             itemId: "compA",
-            reference: "a",
+            reference: "a"
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
 
         it("should gain a reference to an indirect child", function () {
           makeContainer({
-            referenceHolder: true,
+            referenceHolder: true
           });
           ct.add({
             xtype: "container",
             items: {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -743,13 +743,13 @@ describe("Ext.Container", function () {
             items: {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
 
           makeContainer({
             referenceHolder: true,
-            items: local,
+            items: local
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -758,13 +758,13 @@ describe("Ext.Container", function () {
           makeContainer({
             referenceHolder: true,
             items: {
-              xtype: "container",
-            },
+              xtype: "container"
+            }
           });
           ct.items.first().add({
             xtype: "component",
             itemId: "compA",
-            reference: "a",
+            reference: "a"
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -772,7 +772,7 @@ describe("Ext.Container", function () {
         describe("chained references", function () {
           it("should gain a reference to an indirect child", function () {
             makeContainer({
-              referenceHolder: true,
+              referenceHolder: true
             });
             ct.add({
               xtype: "container",
@@ -780,8 +780,8 @@ describe("Ext.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
             expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
           });
@@ -792,13 +792,13 @@ describe("Ext.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
 
             makeContainer({
               referenceHolder: true,
-              items: local,
+              items: local
             });
             expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
           });
@@ -808,13 +808,13 @@ describe("Ext.Container", function () {
               referenceHolder: true,
               items: {
                 xtype: "container",
-                reference: "parent>",
-              },
+                reference: "parent>"
+              }
             });
             ct.items.first().add({
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             });
             expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
           });
@@ -822,7 +822,7 @@ describe("Ext.Container", function () {
           describe("docking", function () {
             it("should gain a reference to an indirect child", function () {
               makeContainer({
-                referenceHolder: true,
+                referenceHolder: true
               });
               ct.add({
                 xtype: "container",
@@ -831,8 +831,8 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
+                  reference: "a"
+                }
               });
               expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
             });
@@ -844,13 +844,13 @@ describe("Ext.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
+                  reference: "a"
+                }
               });
 
               makeContainer({
                 referenceHolder: true,
-                items: local,
+                items: local
               });
               expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
             });
@@ -862,13 +862,13 @@ describe("Ext.Container", function () {
                   docked: "top",
                   xtype: "container",
                   itemId: "docked",
-                  reference: "parent>",
-                },
+                  reference: "parent>"
+                }
               });
               ct.down("#docked").add({
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
+                reference: "a"
               });
               expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
             });
@@ -878,20 +878,20 @@ describe("Ext.Container", function () {
         describe("docking", function () {
           it("should gain a reference to a direct child", function () {
             makeContainer({
-              referenceHolder: true,
+              referenceHolder: true
             });
             ct.add({
               xtype: "component",
               docked: "top",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
 
           it("should gain a reference to an indirect child", function () {
             makeContainer({
-              referenceHolder: true,
+              referenceHolder: true
             });
             ct.add({
               xtype: "container",
@@ -899,8 +899,8 @@ describe("Ext.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
@@ -911,13 +911,13 @@ describe("Ext.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
 
             makeContainer({
               referenceHolder: true,
-              items: local,
+              items: local
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
@@ -928,13 +928,13 @@ describe("Ext.Container", function () {
               items: {
                 xtype: "container",
                 docked: "top",
-                itemId: "docked",
-              },
+                itemId: "docked"
+              }
             });
             ct.down("#docked").add({
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
@@ -947,8 +947,8 @@ describe("Ext.Container", function () {
             referenceHolder: true,
             items: {
               xtype: "component",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
           var c = ct.lookupReference("a");
           c.destroy();
@@ -962,9 +962,9 @@ describe("Ext.Container", function () {
               xtype: "container",
               items: {
                 xtype: "component",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
           var c = ct.lookupReference("a");
           c.destroy();
@@ -978,9 +978,9 @@ describe("Ext.Container", function () {
               xtype: "container",
               items: {
                 xtype: "component",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
           var c = ct.lookupReference("a");
           var removed = ct.remove(0);
@@ -998,9 +998,9 @@ describe("Ext.Container", function () {
               items: {
                 id: "c",
                 xtype: "component",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
 
           var c = ct.lookupReference("a");
@@ -1018,9 +1018,9 @@ describe("Ext.Container", function () {
                 reference: "parent>",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("parent.a");
             c.destroy();
@@ -1035,9 +1035,9 @@ describe("Ext.Container", function () {
                 reference: "parent>",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("parent.a");
             var removed = ct.remove(0);
@@ -1053,9 +1053,9 @@ describe("Ext.Container", function () {
                 reference: "parent>",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("parent.a");
             var removed = ct.remove(0, false);
@@ -1073,9 +1073,9 @@ describe("Ext.Container", function () {
                   reference: "parent>",
                   items: {
                     xtype: "component",
-                    reference: "a",
-                  },
-                },
+                    reference: "a"
+                  }
+                }
               });
               var c = ct.lookupReference("parent.a");
               c.destroy();
@@ -1092,9 +1092,9 @@ describe("Ext.Container", function () {
                   reference: "parent>",
                   items: {
                     xtype: "component",
-                    reference: "a",
-                  },
-                },
+                    reference: "a"
+                  }
+                }
               });
               var dock = ct.down("#docked");
 
@@ -1112,9 +1112,9 @@ describe("Ext.Container", function () {
                   reference: "parent>",
                   items: {
                     xtype: "component",
-                    reference: "a",
-                  },
-                },
+                    reference: "a"
+                  }
+                }
               });
               var dock = ct.down("#docked");
 
@@ -1132,8 +1132,8 @@ describe("Ext.Container", function () {
               items: {
                 xtype: "component",
                 docked: "top",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
             var c = ct.lookupReference("a");
             c.destroy();
@@ -1148,9 +1148,9 @@ describe("Ext.Container", function () {
                 docked: "top",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("a");
             c.destroy();
@@ -1166,9 +1166,9 @@ describe("Ext.Container", function () {
                 itemId: "docked",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var dock = ct.down("#docked");
 
@@ -1185,9 +1185,9 @@ describe("Ext.Container", function () {
                 itemId: "docked",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
 
             var dock = ct.down("#docked");
@@ -1203,21 +1203,21 @@ describe("Ext.Container", function () {
     describe("setup", function () {
       it("should not create references on the rootInheritedState if not requested", function () {
         var vp = new Ext.viewport.Default({
-          referenceHolder: true,
+          referenceHolder: true
         });
 
         var temp = new Ext.container.Container({
           items: {
             xtype: "component",
-            reference: "a",
-          },
+            reference: "a"
+          }
         });
 
         var c = temp.items.first();
 
         ct = new Ext.container.Container({
           referenceHolder: true,
-          items: temp,
+          items: temp
         });
 
         expect(vp.lookupReference("a")).toBeNull();
@@ -1233,7 +1233,7 @@ describe("Ext.Container", function () {
     beforeEach(function () {
       Controller = Ext.define("spec.TestController", {
         extend: "Ext.app.ViewController",
-        alias: "controller.test",
+        alias: "controller.test"
       });
     });
 
@@ -1249,8 +1249,8 @@ describe("Ext.Container", function () {
         items: {
           xtype: "component",
           itemId: "compA",
-          reference: "a",
-        },
+          reference: "a"
+        }
       });
       expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
     });
@@ -1265,9 +1265,9 @@ describe("Ext.Container", function () {
             xtype: "container",
             itemId: "compA",
             listeners: {
-              custom: "callFn",
-            },
-          },
+              custom: "callFn"
+            }
+          }
         });
         ct.callFn = jasmine.createSpy();
         ct.down("#compA").fireEvent("custom");
@@ -1283,10 +1283,10 @@ describe("Ext.Container", function () {
               xtype: "container",
               itemId: "compA",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         ct.callFn = jasmine.createSpy();
         ct.down("#compA").fireEvent("custom");
@@ -1300,16 +1300,16 @@ describe("Ext.Container", function () {
             xtype: "container",
             itemId: "compA",
             listeners: {
-              custom: "callFn",
+              custom: "callFn"
             },
             items: {
               xtype: "container",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         ct.callFn = jasmine.createSpy();
         ct.down("#compA").fireEvent("custom");
@@ -1327,10 +1327,10 @@ describe("Ext.Container", function () {
               xtype: "container",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         var c = ct.down("#compA");
         c.callFn = jasmine.createSpy();
@@ -1349,10 +1349,10 @@ describe("Ext.Container", function () {
               xtype: "container",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         var c = ct.down("#compA");
         ct.callFn = jasmine.createSpy();
@@ -1367,14 +1367,14 @@ describe("Ext.Container", function () {
     describe("dynamic", function () {
       it("should fire on a direct parent", function () {
         makeContainer({
-          defaultListenerScope: true,
+          defaultListenerScope: true
         });
 
         var c = ct.add({
           xtype: "component",
           listeners: {
-            custom: "callFn",
-          },
+            custom: "callFn"
+          }
         });
 
         ct.callFn = jasmine.createSpy();
@@ -1386,15 +1386,15 @@ describe("Ext.Container", function () {
         makeContainer({
           defaultListenerScope: true,
           items: {
-            xtype: "container",
-          },
+            xtype: "container"
+          }
         });
 
         var c = ct.items.first().add({
           xtype: "component",
           listeners: {
-            custom: "callFn",
-          },
+            custom: "callFn"
+          }
         });
 
         ct.callFn = jasmine.createSpy();
@@ -1409,13 +1409,13 @@ describe("Ext.Container", function () {
             xtype: "component",
             itemId: "compA",
             listeners: {
-              custom: "callFn",
-            },
-          },
+              custom: "callFn"
+            }
+          }
         });
 
         var other = new Ext.container.Container({
-          defaultListenerScope: true,
+          defaultListenerScope: true
         });
 
         var c = ct.down("#compA");
@@ -1447,10 +1447,10 @@ describe("Ext.Container", function () {
               xtype: "component",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
 
         var inner = ct.down("#compA"),

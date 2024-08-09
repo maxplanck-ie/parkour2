@@ -56,5 +56,5 @@ Ext.define("Ext.overrides.plugin.Abstract", {
    */
   disable: function () {
     this.disabled = true;
-  },
+  }
 });

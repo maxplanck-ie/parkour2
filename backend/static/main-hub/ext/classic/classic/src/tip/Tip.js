@@ -78,9 +78,9 @@ Ext.define("Ext.tip.Tip", {
     me.floating = Ext.apply(
       {},
       {
-        shadow: me.shadow,
+        shadow: me.shadow
       },
-      me.self.prototype.floating,
+      me.self.prototype.floating
     );
     me.callParent(arguments);
 
@@ -111,8 +111,8 @@ Ext.define("Ext.tip.Tip", {
             ? Ext.getBody().getRegion().adjust(5, -5, -5, 5)
             : null,
           align: "tl-tl",
-          overlap: true,
-        }),
+          overlap: true
+        })
       );
     }
     me.calledFromShowAt = 0;
@@ -158,14 +158,14 @@ Ext.define("Ext.tip.Tip", {
         el: me.getDragEl(),
         delegate: me.header.el,
         constrain: me,
-        constrainTo: me.el.dom.parentNode,
+        constrainTo: me.el.dom.parentNode
       };
       // Important: Bypass Panel's initDraggable. Call direct to Component's implementation.
       Ext.Component.prototype.initDraggable.call(me);
-    },
+    }
   },
 
   // Tip does not ghost. Drag is "live"
   ghost: undefined,
-  unghost: undefined,
+  unghost: undefined
 });

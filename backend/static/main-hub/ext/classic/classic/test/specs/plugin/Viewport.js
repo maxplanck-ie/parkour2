@@ -7,10 +7,10 @@ describe("Ext.plugin.Viewport", function () {
       Ext.apply(
         {
           renderTo: Ext.getBody(),
-          plugins: "viewport",
+          plugins: "viewport"
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -26,8 +26,8 @@ describe("Ext.plugin.Viewport", function () {
         listeners: {
           beforerender: function (c) {
             sizeModel = c.getSizeModel();
-          },
-        },
+          }
+        }
       });
       expect(sizeModel.width.configured).toBe(true);
       expect(sizeModel.height.configured).toBe(true);
@@ -48,11 +48,11 @@ describe("Ext.plugin.Viewport", function () {
       beforeEach(function () {
         vm = new Ext.app.ViewModel({
           data: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
         makeComponent({
-          viewModel: vm,
+          viewModel: vm
         });
       });
 
@@ -67,7 +67,7 @@ describe("Ext.plugin.Viewport", function () {
       it("should allow non children of the viewport to inherit the viewmodel", function () {
         var other = new Ext.Component({
           bind: "{foo}",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(other.lookupViewModel()).toBe(vm);
         other.destroy();
@@ -80,7 +80,7 @@ describe("Ext.plugin.Viewport", function () {
       beforeEach(function () {
         session = new Ext.data.Session();
         makeComponent({
-          session: session,
+          session: session
         });
       });
 
@@ -94,7 +94,7 @@ describe("Ext.plugin.Viewport", function () {
 
       it("should allow non children of the viewport to inherit the session", function () {
         var other = new Ext.Component({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(other.lookupSession()).toBe(session);
         other.destroy();
@@ -107,7 +107,7 @@ describe("Ext.plugin.Viewport", function () {
       beforeEach(function () {
         controller = new Ext.app.ViewController();
         makeComponent({
-          controller: controller,
+          controller: controller
         });
       });
 
@@ -121,7 +121,7 @@ describe("Ext.plugin.Viewport", function () {
 
       it("should allow non children of the viewport to inherit the controller", function () {
         var other = new Ext.Component({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(other.lookupController()).toBe(controller);
         other.destroy();
@@ -134,7 +134,7 @@ describe("Ext.plugin.Viewport", function () {
       it("should not pollute the rootInheritedState with a viewmodel", function () {
         var vm = new Ext.app.ViewModel();
         makeComponent({
-          viewModel: vm,
+          viewModel: vm
         });
         c.destroy();
         expect(Ext.rootInheritedState.viewModel).toBeUndefined();
@@ -143,7 +143,7 @@ describe("Ext.plugin.Viewport", function () {
       it("should not pollute the rootInheritedState with a session", function () {
         var session = new Ext.data.Session();
         makeComponent({
-          session: session,
+          session: session
         });
         c.destroy();
         expect(Ext.rootInheritedState.session).toBeUndefined();
@@ -153,7 +153,7 @@ describe("Ext.plugin.Viewport", function () {
       it("should not pollute the rootInheritedState with a controller", function () {
         var controller = new Ext.app.ViewController();
         makeComponent({
-          controller: controller,
+          controller: controller
         });
         c.destroy();
         expect(Ext.rootInheritedState.controller).toBeUndefined();
@@ -164,9 +164,9 @@ describe("Ext.plugin.Viewport", function () {
       it("should remove the layout target class", function () {
         makeComponent(
           {
-            layout: "hbox",
+            layout: "hbox"
           },
-          Ext.container.Container,
+          Ext.container.Container
         );
         expect(Ext.getBody()).toHaveCls("x-box-layout-ct");
         c.destroy();
@@ -187,9 +187,9 @@ describe("Ext.plugin.Viewport", function () {
 
           makeComponent(
             {
-              layout: "hbox",
+              layout: "hbox"
             },
-            type,
+            type
           );
           expect(c.getTargetEl()).toHaveCls("x-box-layout-ct");
         });
@@ -221,15 +221,15 @@ describe("Ext.plugin.Viewport", function () {
               items: {
                 xtype: "component",
                 height: 5000,
-                width: 100,
-              },
+                width: 100
+              }
             },
-            cls,
+            cls
           );
           c.getScrollable().on({
             scroll: function () {
               viewportScrollCount++;
-            },
+            }
           });
         });
 
@@ -274,10 +274,10 @@ describe("Ext.plugin.Viewport", function () {
               items: {
                 xtype: "component",
                 height: 5000,
-                width: 100,
-              },
+                width: 100
+              }
             },
-            cls,
+            cls
           );
         });
 

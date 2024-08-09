@@ -99,10 +99,10 @@ Ext.define("Ext.grid.plugin.MultiSelection", {
       xtype: "selectioncolumn",
       align: "center",
       cell: {
-        xtype: "checkcell",
+        xtype: "checkcell"
       },
       ignore: true,
-      hidden: true,
+      hidden: true
     },
 
     /**
@@ -126,7 +126,7 @@ Ext.define("Ext.grid.plugin.MultiSelection", {
     /**
      * The text of the button used to delete selected rows.
      */
-    deleteText: "Delete",
+    deleteText: "Delete"
   },
 
   checkedCls: Ext.baseCSSPrefix + "checked",
@@ -142,12 +142,12 @@ Ext.define("Ext.grid.plugin.MultiSelection", {
       this.triggerButton = titleBar.add({
         align: "right",
         xtype: "button",
-        text: this.getTriggerText(),
+        text: this.getTriggerText()
       });
 
       this.triggerButton.on({
         tap: "onTriggerButtonTap",
-        scope: this,
+        scope: this
       });
     } else {
       grid.setMode("MULTI");
@@ -174,11 +174,11 @@ Ext.define("Ext.grid.plugin.MultiSelection", {
       xtype: "button",
       ui: "action",
       text: this.getCancelText(),
-      scope: this,
+      scope: this
     });
     this.cancelButton.on({
       tap: "exitSelectionMode",
-      scope: this,
+      scope: this
     });
     this.getSelectionColumn().show();
 
@@ -230,5 +230,5 @@ Ext.define("Ext.grid.plugin.MultiSelection", {
         grid.insertColumn(0, this.getSelectionColumn());
       }
     }
-  },
+  }
 });

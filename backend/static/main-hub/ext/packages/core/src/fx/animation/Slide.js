@@ -39,14 +39,14 @@ Ext.define("Ext.fx.animation.Slide", {
 
     isElementBoxFit: true,
 
-    useCssTransform: true,
+    useCssTransform: true
   },
 
   reverseDirectionMap: {
     up: "down",
     down: "up",
     left: "right",
-    right: "left",
+    right: "left"
   },
 
   applyEasing: function (easing) {
@@ -147,7 +147,7 @@ Ext.define("Ext.fx.animation.Slide", {
     if (useCssTransform) {
       from.setTransform({
         translateX: fromX,
-        translateY: fromY,
+        translateY: fromY
       });
     } else {
       from.set("left", fromX);
@@ -160,7 +160,7 @@ Ext.define("Ext.fx.animation.Slide", {
     if (useCssTransform) {
       to.setTransform({
         translateX: toX,
-        translateY: toY,
+        translateY: toY
       });
     } else {
       to.set("left", toX);
@@ -168,5 +168,5 @@ Ext.define("Ext.fx.animation.Slide", {
     }
 
     return this.callParent(arguments);
-  },
+  }
 });

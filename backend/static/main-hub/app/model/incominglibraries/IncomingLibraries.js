@@ -3,59 +3,59 @@ Ext.define("MainHub.model.incominglibraries.IncomingLibraries", {
   fields: [
     {
       name: "dilution_factor",
-      type: "int",
+      type: "int"
     },
     {
       name: "selected",
-      type: "bool",
+      type: "bool"
     },
     {
       name: "concentration_facility",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "concentration_method_facility",
-      type: "int",
+      type: "int"
     },
     {
       name: "sample_volume_facility",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "amount_facility",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "size_distribution_facility",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "qpcr_result_facility",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "rna_quality_facility",
       type: "float",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       name: "comments_facility",
-      type: "string",
+      type: "string"
     },
     {
       name: "samples_submitted",
-      type: "bool",
+      type: "bool"
     },
     {
       name: "quality_check",
       type: "string",
-      allowNull: true,
-    },
-  ],
+      allowNull: true
+    }
+  ]
 });

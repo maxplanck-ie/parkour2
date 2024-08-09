@@ -9,7 +9,7 @@ describe("Ext.SegmentedButton", function () {
     for (i = 1; i <= n; ++i) {
       o = {
         text: "Item" + i,
-        itemId: "item" + i,
+        itemId: "item" + i
       };
       if (withValue) {
         o.value = "item" + i;
@@ -28,7 +28,7 @@ describe("Ext.SegmentedButton", function () {
 
   function createButton(cfg) {
     cfg = Ext.apply(cfg, {
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
 
     if (!cfg.items) {
@@ -66,7 +66,7 @@ describe("Ext.SegmentedButton", function () {
       describe("with allowMultiple: false", function () {
         function createMultipleButton(cfg) {
           cfg = Ext.apply(cfg, {
-            allowMultiple: false,
+            allowMultiple: false
           });
           createButton(cfg);
         }
@@ -78,7 +78,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to null", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toBeNull();
                 });
@@ -86,7 +86,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have no buttons pressed", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -98,8 +98,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -109,7 +109,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to the first item", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toBe("item1");
                 });
@@ -117,7 +117,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have the first button pressed", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -129,8 +129,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -145,7 +145,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should set the initial value correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, true, [1]),
+                      items: makeItems(4, true, [1])
                     });
                     expect(button.getValue()).toBe("item2");
                   });
@@ -153,7 +153,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should have the pressed state set correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, true, [1]),
+                      items: makeItems(4, true, [1])
                     });
                     expectPressedState([false, true, false, false]);
                   });
@@ -166,8 +166,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4, true, [1]),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -185,7 +185,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to null", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toBeNull();
                 });
@@ -193,7 +193,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have no buttons pressed", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -205,8 +205,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -216,7 +216,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to the first item", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toBe(0);
                 });
@@ -224,7 +224,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have the first button pressed", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -236,8 +236,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -252,7 +252,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should set the initial value correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, false, [1]),
+                      items: makeItems(4, false, [1])
                     });
                     expect(button.getValue()).toBe(1);
                   });
@@ -260,7 +260,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should have the pressed state set correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, false, [1]),
+                      items: makeItems(4, false, [1])
                     });
                     expectPressedState([false, true, false, false]);
                   });
@@ -273,8 +273,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4, false, [1]),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -295,7 +295,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toBeNull();
                 });
@@ -304,7 +304,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -317,8 +317,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -329,7 +329,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toBe("item1");
                 });
@@ -338,7 +338,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -351,8 +351,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -368,7 +368,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: "item2",
                       forceSelection: forceSelection,
-                      items: makeItems(4, true),
+                      items: makeItems(4, true)
                     });
                     expect(button.getValue()).toBe("item2");
                   });
@@ -377,7 +377,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: "item2",
                       forceSelection: forceSelection,
-                      items: makeItems(4, true),
+                      items: makeItems(4, true)
                     });
                     expectPressedState([false, true, false, false]);
                   });
@@ -391,8 +391,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4, true),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -411,7 +411,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toBeNull();
                 });
@@ -420,7 +420,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -433,8 +433,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -445,7 +445,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toBe(0);
                 });
@@ -454,7 +454,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -467,8 +467,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -484,7 +484,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: 1,
                       forceSelection: forceSelection,
-                      items: makeItems(4),
+                      items: makeItems(4)
                     });
                     expect(button.getValue()).toBe(1);
                   });
@@ -493,7 +493,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: 1,
                       forceSelection: forceSelection,
-                      items: makeItems(4),
+                      items: makeItems(4)
                     });
                     expectPressedState([false, true, false, false]);
                   });
@@ -507,8 +507,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -525,7 +525,7 @@ describe("Ext.SegmentedButton", function () {
       describe("with allowMultiple: true", function () {
         function createMultipleButton(cfg) {
           cfg = Ext.apply(cfg, {
-            allowMultiple: true,
+            allowMultiple: true
           });
           createButton(cfg);
         }
@@ -537,7 +537,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to []", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toEqual([]);
                 });
@@ -545,7 +545,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have no buttons pressed", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -557,8 +557,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -568,7 +568,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to the first item", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toEqual(["item1"]);
                 });
@@ -576,7 +576,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have the first button pressed", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -588,8 +588,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -604,7 +604,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should set the initial value correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, true, [1, 2]),
+                      items: makeItems(4, true, [1, 2])
                     });
                     expect(button.getValue()).toEqual(["item2", "item3"]);
                   });
@@ -612,7 +612,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should have the pressed state set correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, true, [1, 2]),
+                      items: makeItems(4, true, [1, 2])
                     });
                     expectPressedState([false, true, true, false]);
                   });
@@ -625,8 +625,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4, true, [1, 2]),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -644,7 +644,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to []", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toEqual([]);
                 });
@@ -652,7 +652,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have no buttons pressed", function () {
                   createMultipleButton({
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -664,8 +664,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -675,7 +675,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should default the value to the first item", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toEqual([0]);
                 });
@@ -683,7 +683,7 @@ describe("Ext.SegmentedButton", function () {
                 it("should have the first button pressed", function () {
                   createMultipleButton({
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -695,8 +695,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -711,7 +711,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should set the initial value correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, false, [1, 2]),
+                      items: makeItems(4, false, [1, 2])
                     });
                     expect(button.getValue()).toEqual([1, 2]);
                   });
@@ -719,7 +719,7 @@ describe("Ext.SegmentedButton", function () {
                   it("should have the pressed state set correctly", function () {
                     createMultipleButton({
                       forceSelection: forceSelection,
-                      items: makeItems(4, false, [1, 2]),
+                      items: makeItems(4, false, [1, 2])
                     });
                     expectPressedState([false, true, true, false]);
                   });
@@ -732,8 +732,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4, false, [1, 2]),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -754,7 +754,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toEqual([]);
                 });
@@ -763,7 +763,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -776,8 +776,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -788,7 +788,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expect(button.getValue()).toEqual(["item1"]);
                 });
@@ -797,7 +797,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4, true),
+                    items: makeItems(4, true)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -810,8 +810,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4, true),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -827,7 +827,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: ["item2", "item3"],
                       forceSelection: forceSelection,
-                      items: makeItems(4, true),
+                      items: makeItems(4, true)
                     });
                     expect(button.getValue()).toEqual(["item2", "item3"]);
                   });
@@ -836,7 +836,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: ["item2", "item3"],
                       forceSelection: forceSelection,
-                      items: makeItems(4, true),
+                      items: makeItems(4, true)
                     });
                     expectPressedState([false, true, true, false]);
                   });
@@ -850,8 +850,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4, true),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -870,7 +870,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toEqual([]);
                 });
@@ -879,7 +879,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: false,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([false, false, false, false]);
                 });
@@ -892,8 +892,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -904,7 +904,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expect(button.getValue()).toEqual([0]);
                 });
@@ -913,7 +913,7 @@ describe("Ext.SegmentedButton", function () {
                   createMultipleButton({
                     value: null,
                     forceSelection: true,
-                    items: makeItems(4),
+                    items: makeItems(4)
                   });
                   expectPressedState([true, false, false, false]);
                 });
@@ -926,8 +926,8 @@ describe("Ext.SegmentedButton", function () {
                     items: makeItems(4),
                     listeners: {
                       toggle: spy,
-                      change: spy,
-                    },
+                      change: spy
+                    }
                   });
                   expect(spy).not.toHaveBeenCalled();
                 });
@@ -943,7 +943,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: [1, 2],
                       forceSelection: forceSelection,
-                      items: makeItems(4),
+                      items: makeItems(4)
                     });
                     expect(button.getValue()).toEqual([1, 2]);
                   });
@@ -952,7 +952,7 @@ describe("Ext.SegmentedButton", function () {
                     createMultipleButton({
                       value: [1, 2],
                       forceSelection: forceSelection,
-                      items: makeItems(4),
+                      items: makeItems(4)
                     });
                     expectPressedState([false, true, true, false]);
                   });
@@ -966,8 +966,8 @@ describe("Ext.SegmentedButton", function () {
                       items: makeItems(4),
                       listeners: {
                         toggle: spy,
-                        change: spy,
-                      },
+                        change: spy
+                      }
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -988,7 +988,7 @@ describe("Ext.SegmentedButton", function () {
           describe("via setPressed on the button", function () {
             beforeEach(function () {
               createButton({
-                allowMultiple: false,
+                allowMultiple: false
               });
             });
 
@@ -1032,7 +1032,7 @@ describe("Ext.SegmentedButton", function () {
           describe("via user interaction", function () {
             beforeEach(function () {
               createButton({
-                allowMultiple: false,
+                allowMultiple: false
               });
             });
 
@@ -1076,7 +1076,7 @@ describe("Ext.SegmentedButton", function () {
           describe("via setValue", function () {
             beforeEach(function () {
               createButton({
-                allowMultiple: false,
+                allowMultiple: false
               });
             });
 
@@ -1123,7 +1123,7 @@ describe("Ext.SegmentedButton", function () {
             beforeEach(function () {
               createButton({
                 allowMultiple: false,
-                value: "item1",
+                value: "item1"
               });
             });
 
@@ -1215,7 +1215,7 @@ describe("Ext.SegmentedButton", function () {
               createButton({
                 allowMultiple: false,
                 allowDepress: true,
-                value: "item1",
+                value: "item1"
               });
             });
 
@@ -1335,7 +1335,7 @@ describe("Ext.SegmentedButton", function () {
               createButton({
                 allowMultiple: false,
                 allowDepress: true,
-                value: "item1",
+                value: "item1"
               });
             });
 
@@ -1429,7 +1429,7 @@ describe("Ext.SegmentedButton", function () {
           describe("via setPressed on the button", function () {
             beforeEach(function () {
               createButton({
-                allowMultiple: true,
+                allowMultiple: true
               });
             });
 
@@ -1473,7 +1473,7 @@ describe("Ext.SegmentedButton", function () {
           describe("via user interaction", function () {
             beforeEach(function () {
               createButton({
-                allowMultiple: true,
+                allowMultiple: true
               });
             });
 
@@ -1517,7 +1517,7 @@ describe("Ext.SegmentedButton", function () {
           describe("via setValue", function () {
             beforeEach(function () {
               createButton({
-                allowMultiple: true,
+                allowMultiple: true
               });
             });
 
@@ -1608,7 +1608,7 @@ describe("Ext.SegmentedButton", function () {
             beforeEach(function () {
               createButton({
                 allowMultiple: true,
-                value: "item1",
+                value: "item1"
               });
             });
 
@@ -1717,7 +1717,7 @@ describe("Ext.SegmentedButton", function () {
                   expect(spy.mostRecentCall.args[1]).toEqual(["item2"]);
                   expect(spy.mostRecentCall.args[2]).toEqual([
                     "item1",
-                    "item2",
+                    "item2"
                   ]);
                 });
 
@@ -1744,7 +1744,7 @@ describe("Ext.SegmentedButton", function () {
               createButton({
                 allowMultiple: true,
                 allowDepress: true,
-                value: "item1",
+                value: "item1"
               });
             });
 
@@ -1853,7 +1853,7 @@ describe("Ext.SegmentedButton", function () {
                   expect(spy.mostRecentCall.args[1]).toEqual(["item2"]);
                   expect(spy.mostRecentCall.args[2]).toEqual([
                     "item1",
-                    "item2",
+                    "item2"
                   ]);
                 });
 
@@ -1880,7 +1880,7 @@ describe("Ext.SegmentedButton", function () {
               createButton({
                 allowMultiple: true,
                 allowDepress: true,
-                value: "item1",
+                value: "item1"
               });
             });
 
@@ -1989,7 +1989,7 @@ describe("Ext.SegmentedButton", function () {
                   expect(spy.mostRecentCall.args[1]).toEqual(["item2"]);
                   expect(spy.mostRecentCall.args[2]).toEqual([
                     "item1",
-                    "item2",
+                    "item2"
                   ]);
                 });
 
@@ -2017,7 +2017,7 @@ describe("Ext.SegmentedButton", function () {
     describe("value order", function () {
       beforeEach(function () {
         createButton({
-          allowMultiple: true,
+          allowMultiple: true
         });
       });
 
@@ -2034,7 +2034,7 @@ describe("Ext.SegmentedButton", function () {
             "item1",
             "item2",
             "item3",
-            "item4",
+            "item4"
           ]);
         });
       });
@@ -2052,7 +2052,7 @@ describe("Ext.SegmentedButton", function () {
             "item1",
             "item2",
             "item3",
-            "item4",
+            "item4"
           ]);
         });
       });
@@ -2064,7 +2064,7 @@ describe("Ext.SegmentedButton", function () {
             "item1",
             "item2",
             "item3",
-            "item4",
+            "item4"
           ]);
         });
       });
@@ -2073,7 +2073,7 @@ describe("Ext.SegmentedButton", function () {
     describe("event order", function () {
       beforeEach(function () {
         createButton({
-          allowMultiple: true,
+          allowMultiple: true
         });
       });
 
@@ -2085,7 +2085,7 @@ describe("Ext.SegmentedButton", function () {
             expect(button.getValue()).toEqual(["item1"]);
           },
           null,
-          { single: true },
+          { single: true }
         );
         btn1.toggle();
 
@@ -2096,7 +2096,7 @@ describe("Ext.SegmentedButton", function () {
             expect(button.getValue()).toEqual(["item1", "item2"]);
           },
           null,
-          { single: true },
+          { single: true }
         );
         btn2.toggle();
 
@@ -2106,7 +2106,7 @@ describe("Ext.SegmentedButton", function () {
             expect(button.getValue()).toEqual(["item1"]);
           },
           null,
-          { single: true },
+          { single: true }
         );
         btn2.toggle();
 
@@ -2116,7 +2116,7 @@ describe("Ext.SegmentedButton", function () {
             expect(button.getValue()).toEqual([]);
           },
           null,
-          { single: true },
+          { single: true }
         );
         btn1.toggle();
       });
@@ -2134,7 +2134,7 @@ describe("Ext.SegmentedButton", function () {
 
         button.on({
           toggle: toggleSpy,
-          change: changeSpy,
+          change: changeSpy
         });
 
         button.setValue(["item1", "item4"]);

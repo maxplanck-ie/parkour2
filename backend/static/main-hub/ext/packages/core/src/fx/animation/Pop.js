@@ -17,11 +17,11 @@ Ext.define("Ext.fx.animation.Pop", {
 
     before: {
       display: null,
-      opacity: 0,
+      opacity: 0
     },
     after: {
-      opacity: null,
-    },
+      opacity: null
+    }
   },
 
   getData: function () {
@@ -32,25 +32,25 @@ Ext.define("Ext.fx.animation.Pop", {
     if (out) {
       from.set("opacity", 1);
       from.setTransform({
-        scale: 1,
+        scale: 1
       });
 
       to.set("opacity", 0);
       to.setTransform({
-        scale: 0,
+        scale: 0
       });
     } else {
       from.set("opacity", 0);
       from.setTransform({
-        scale: 0,
+        scale: 0
       });
 
       to.set("opacity", 1);
       to.setTransform({
-        scale: 1,
+        scale: 1
       });
     }
 
     return this.callParent(arguments);
-  },
+  }
 });

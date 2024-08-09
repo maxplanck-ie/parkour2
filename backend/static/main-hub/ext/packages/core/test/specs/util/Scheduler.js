@@ -28,8 +28,8 @@ describe("Ext.util.Scheduler", function () {
       privates: {
         sort: function () {
           this.scheduler.sortItems(this.depends);
-        },
-      },
+        }
+      }
     });
   }
 
@@ -43,8 +43,8 @@ describe("Ext.util.Scheduler", function () {
         },
         idle: function () {
           ++idle;
-        },
-      },
+        }
+      }
     });
 
     busy = idle = 0;
@@ -207,7 +207,7 @@ describe("Ext.util.Scheduler", function () {
         react: function () {
           item2.schedule();
           return this.callParent();
-        },
+        }
       });
 
       expect(scheduler.passes).toBe(0);
@@ -238,7 +238,7 @@ describe("Ext.util.Scheduler", function () {
         react: function () {
           item1.schedule();
           return this.callParent();
-        },
+        }
       });
 
       expect(scheduler.passes).toBe(0);
@@ -270,7 +270,7 @@ describe("Ext.util.Scheduler", function () {
           delete this.react;
           item2.schedule();
           return this.callParent();
-        },
+        }
       });
 
       expect(scheduler.passes).toBe(0);
@@ -306,7 +306,7 @@ describe("Ext.util.Scheduler", function () {
           }
           item1.schedule();
           return this.callParent();
-        },
+        }
       });
       Ext.override(item1, {
         react: function () {
@@ -315,7 +315,7 @@ describe("Ext.util.Scheduler", function () {
           }
           item2.schedule();
           return this.callParent();
-        },
+        }
       });
 
       expect(scheduler.passes).toBe(0);
@@ -429,7 +429,7 @@ describe("Ext.util.Scheduler", function () {
         react: function () {
           scheduler.adjustBusy(1);
           return this.callParent();
-        },
+        }
       });
 
       item1.schedule();

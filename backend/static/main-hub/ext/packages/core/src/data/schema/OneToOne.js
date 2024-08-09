@@ -148,7 +148,7 @@ Ext.define("Ext.data.schema.OneToOne", {
           rightRecord,
           node,
           fromReader,
-          readOptions,
+          readOptions
         ]),
         leftRecord;
 
@@ -162,7 +162,7 @@ Ext.define("Ext.data.schema.OneToOne", {
           delete rightRecord.data[me.role];
         }
       }
-    },
+    }
   }),
 
   Right: Ext.define(null, {
@@ -261,7 +261,7 @@ Ext.define("Ext.data.schema.OneToOne", {
           leftRecord,
           node,
           fromReader,
-          readOptions,
+          readOptions
         ]),
         rightRecord,
         field,
@@ -312,6 +312,6 @@ Ext.define("Ext.data.schema.OneToOne", {
           delete data[me.role];
         }
       }
-    },
-  }),
+    }
+  })
 });

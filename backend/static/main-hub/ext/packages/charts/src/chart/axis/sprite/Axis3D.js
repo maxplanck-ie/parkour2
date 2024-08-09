@@ -15,25 +15,25 @@ Ext.define("Ext.chart.axis.sprite.Axis3D", {
   inheritableStatics: {
     def: {
       processors: {
-        depth: "number",
+        depth: "number"
       },
 
       defaults: {
-        depth: 0,
+        depth: 0
       },
 
       triggers: {
-        depth: "layout",
-      },
-    },
+        depth: "layout"
+      }
+    }
   },
 
   config: {
     fx: {
       customDurations: {
-        depth: 0,
-      },
-    },
+        depth: 0
+      }
+    }
   },
 
   layoutUpdater: function () {
@@ -51,7 +51,7 @@ Ext.define("Ext.chart.axis.sprite.Axis3D", {
       context = {
         attr: attr,
         segmenter: me.getSegmenter(),
-        renderer: me.defaultRenderer,
+        renderer: me.defaultRenderer
       };
 
     if (attr.position === "left" || attr.position === "right") {
@@ -120,14 +120,14 @@ Ext.define("Ext.chart.axis.sprite.Axis3D", {
             attr.length,
             0,
             Math.PI * 2,
-            true,
+            true
           );
           break;
         case "gauge":
           gaugeAngles = me.getGaugeAngles();
           ctx.moveTo(
             attr.centerX + Math.cos(gaugeAngles.start) * attr.length,
-            attr.centerY + Math.sin(gaugeAngles.start) * attr.length,
+            attr.centerY + Math.sin(gaugeAngles.start) * attr.length
           );
           ctx.arc(
             attr.centerX,
@@ -135,10 +135,10 @@ Ext.define("Ext.chart.axis.sprite.Axis3D", {
             attr.length,
             gaugeAngles.start,
             gaugeAngles.end,
-            true,
+            true
           );
           break;
       }
     }
-  },
+  }
 });

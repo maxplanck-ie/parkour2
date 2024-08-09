@@ -16,10 +16,10 @@ Ext.define("Ext.data.operation.Create", {
   order: 10,
 
   config: {
-    recordCreator: Ext.identityFn,
+    recordCreator: Ext.identityFn
   },
 
   doExecute: function () {
     return this.getProxy().create(this);
-  },
+  }
 });

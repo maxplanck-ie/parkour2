@@ -28,8 +28,10 @@
                 <tr>
                     <td>Name</td>
                     <td>Barcode</td>
-                    <td>Nucleic Acid Type</td>
+                    <td>Input Type</td>
                     <td>Protocol</td>
+                    <td>Length</td>
+                    <td>Depth (M)</td>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +41,8 @@
                         <td>{{ record.barcode }}</td>
                         <td>{{ record.nucleic_acid_type.name }}</td>
                         <td>{{ record.library_protocol.name }}</td>
+                        <td>{{ record.read_length }}</td>
+                        <td>{{ record.sequencing_depth }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

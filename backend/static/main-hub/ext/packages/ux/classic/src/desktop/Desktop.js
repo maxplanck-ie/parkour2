@@ -22,7 +22,7 @@ Ext.define("Ext.ux.desktop.Desktop", {
     "Ext.window.Window",
 
     "Ext.ux.desktop.TaskBar",
-    "Ext.ux.desktop.Wallpaper",
+    "Ext.ux.desktop.Wallpaper"
   ],
 
   activeWindowCls: "ux-desktop-active-win",
@@ -70,7 +70,7 @@ Ext.define("Ext.ux.desktop.Desktop", {
     '<span class="ux-desktop-shortcut-text">{name}</span>',
     "</div>",
     "</tpl>",
-    '<div class="x-clear"></div>',
+    '<div class="x-clear"></div>'
   ],
 
   /**
@@ -95,7 +95,7 @@ Ext.define("Ext.ux.desktop.Desktop", {
 
     me.items = [
       { xtype: "wallpaper", id: me.id + "_wallpaper" },
-      me.createDataView(),
+      me.createDataView()
     ];
 
     me.callParent();
@@ -128,18 +128,18 @@ Ext.define("Ext.ux.desktop.Desktop", {
       itemSelector: me.shortcutItemSelector,
       store: me.shortcuts,
       style: {
-        position: "absolute",
+        position: "absolute"
       },
       x: 0,
       y: 0,
-      tpl: new Ext.XTemplate(me.shortcutTpl),
+      tpl: new Ext.XTemplate(me.shortcutTpl)
     };
   },
 
   createDesktopMenu: function () {
     var me = this,
       ret = {
-        items: me.contextMenuItems || [],
+        items: me.contextMenuItems || []
       };
 
     if (ret.items.length) {
@@ -148,7 +148,7 @@ Ext.define("Ext.ux.desktop.Desktop", {
 
     ret.items.push(
       { text: "Tile", handler: me.tileWindows, scope: me, minWindows: 1 },
-      { text: "Cascade", handler: me.cascadeWindows, scope: me, minWindows: 1 },
+      { text: "Cascade", handler: me.cascadeWindows, scope: me, minWindows: 1 }
     );
 
     return ret;
@@ -163,13 +163,13 @@ Ext.define("Ext.ux.desktop.Desktop", {
         { text: "Minimize", handler: me.onWindowMenuMinimize, scope: me },
         { text: "Maximize", handler: me.onWindowMenuMaximize, scope: me },
         "-",
-        { text: "Close", handler: me.onWindowMenuClose, scope: me },
+        { text: "Close", handler: me.onWindowMenuClose, scope: me }
       ],
       listeners: {
         beforeshow: me.onWindowMenuBeforeShow,
         hide: me.onWindowMenuHide,
-        scope: me,
-      },
+        scope: me
+      }
     };
   },
 
@@ -312,7 +312,7 @@ Ext.define("Ext.ux.desktop.Desktop", {
         isWindow: true,
         constrainHeader: true,
         minimizable: true,
-        maximizable: true,
+        maximizable: true
       });
 
     cls = cls || Ext.window.Window;
@@ -329,7 +329,7 @@ Ext.define("Ext.ux.desktop.Desktop", {
       deactivate: me.updateActiveWindow,
       minimize: me.minimizeWindow,
       destroy: me.onWindowClose,
-      scope: me,
+      scope: me
     });
 
     win.on({
@@ -342,7 +342,7 @@ Ext.define("Ext.ux.desktop.Desktop", {
           win.resizer.heightIncrement = me.yTickSize;
         }
       },
-      single: true,
+      single: true
     });
 
     // replace normal window close w/fadeOut animation:
@@ -353,8 +353,8 @@ Ext.define("Ext.ux.desktop.Desktop", {
         listeners: {
           afteranimate: function () {
             win.destroy();
-          },
-        },
+          }
+        }
       });
     };
 
@@ -461,5 +461,5 @@ Ext.define("Ext.ux.desktop.Desktop", {
     }
 
     me.taskbar.setActiveButton(activeWindow && activeWindow.taskButton);
-  },
+  }
 });

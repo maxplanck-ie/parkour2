@@ -87,11 +87,11 @@ Ext.define("Ext.form.FieldSet", {
      *
      * @accessor
      */
-    instructions: null,
+    instructions: null
   },
 
   layout: {
-    type: "vbox",
+    type: "vbox"
   },
 
   /**
@@ -104,7 +104,7 @@ Ext.define("Ext.form.FieldSet", {
 
     Ext.applyIf(title, {
       docked: "top",
-      baseCls: this.getBaseCls() + "-title",
+      baseCls: this.getBaseCls() + "-title"
     });
 
     return Ext.factory(title, Ext.Title, this._title);
@@ -145,7 +145,7 @@ Ext.define("Ext.form.FieldSet", {
 
     Ext.applyIf(instructions, {
       docked: "bottom",
-      baseCls: this.getBaseCls() + "-instructions",
+      baseCls: this.getBaseCls() + "-instructions"
     });
 
     return Ext.factory(instructions, Ext.Title, this._instructions);
@@ -206,5 +206,5 @@ Ext.define("Ext.form.FieldSet", {
     this.getItems().each(getFieldsFrom);
 
     return fields;
-  },
+  }
 });

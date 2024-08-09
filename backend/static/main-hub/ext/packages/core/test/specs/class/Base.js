@@ -26,8 +26,8 @@ describe("Ext.Base", function () {
               bar: "foo",
               foo: function () {
                 return this.callParent() + "d";
-              },
-            },
+              }
+            }
           },
 
           5.1: {
@@ -35,9 +35,9 @@ describe("Ext.Base", function () {
               foo: {
                 fn: function () {
                   return this.callParent() + "c";
-                },
-              },
-            },
+                }
+              }
+            }
           },
 
           5.2: {
@@ -46,11 +46,11 @@ describe("Ext.Base", function () {
                 message: "Foo is bad",
                 fn: function () {
                   return this.callParent() + "b";
-                },
-              },
-            },
-          },
-        },
+                }
+              }
+            }
+          }
+        }
       });
     }
 
@@ -162,7 +162,7 @@ describe("Ext.Base", function () {
       overrideFn = function () {};
 
       Cls = Ext.define(null, {
-        someFn: fn,
+        someFn: fn
       });
     });
 
@@ -175,7 +175,7 @@ describe("Ext.Base", function () {
         Ext.define(null, {
           override: Cls,
           compatibility: null,
-          someFn: overrideFn,
+          someFn: overrideFn
         });
         expect(Cls.prototype.someFn).toBe(fn);
       });
@@ -184,7 +184,7 @@ describe("Ext.Base", function () {
         Ext.define(null, {
           override: Cls,
           compatibility: null,
-          someFn: overrideFn,
+          someFn: overrideFn
         });
         expect(Cls.prototype.someFn).toBe(fn);
       });
@@ -195,7 +195,7 @@ describe("Ext.Base", function () {
         Ext.define(null, {
           override: Cls,
           compatibility: false,
-          someFn: overrideFn,
+          someFn: overrideFn
         });
         expect(Cls.prototype.someFn).toBe(fn);
       });
@@ -204,7 +204,7 @@ describe("Ext.Base", function () {
         Ext.define(null, {
           override: Cls,
           compatibility: true,
-          someFn: overrideFn,
+          someFn: overrideFn
         });
         expect(Cls.prototype.someFn).toBe(overrideFn);
       });
@@ -215,7 +215,7 @@ describe("Ext.Base", function () {
         Ext.define(null, {
           override: Cls,
           compatibility: 0,
-          someFn: overrideFn,
+          someFn: overrideFn
         });
         expect(Cls.prototype.someFn).toBe(fn);
       });
@@ -224,7 +224,7 @@ describe("Ext.Base", function () {
         Ext.define(null, {
           override: Cls,
           compatibility: 9,
-          someFn: overrideFn,
+          someFn: overrideFn
         });
         expect(Cls.prototype.someFn).toBe(overrideFn);
       });
@@ -239,7 +239,7 @@ describe("Ext.Base", function () {
       beforeEach(function () {
         oldVersions = Ext.versions;
         Ext.versions = {
-          ext: new Ext.Version("4.2.2.900"),
+          ext: new Ext.Version("4.2.2.900")
         };
       });
 
@@ -253,7 +253,7 @@ describe("Ext.Base", function () {
           Ext.define(null, {
             override: Cls,
             compatibility: "4.2.1",
-            someFn: overrideFn,
+            someFn: overrideFn
           });
           expect(Cls.prototype.someFn).toBe(fn);
         });
@@ -262,7 +262,7 @@ describe("Ext.Base", function () {
           Ext.define(null, {
             override: Cls,
             compatibility: "4.2.2.900",
-            someFn: overrideFn,
+            someFn: overrideFn
           });
           expect(Cls.prototype.someFn).toBe(overrideFn);
         });
@@ -273,7 +273,7 @@ describe("Ext.Base", function () {
           Ext.define(null, {
             override: Cls,
             compatibility: ["4.2.1", "5.1.0-5.1.3"],
-            someFn: overrideFn,
+            someFn: overrideFn
           });
           expect(Cls.prototype.someFn).toBe(fn);
         });
@@ -282,7 +282,7 @@ describe("Ext.Base", function () {
           Ext.define(null, {
             override: Cls,
             compatibility: ["4.1.0-4.1.3", "4.2.0-4.2.4"],
-            someFn: overrideFn,
+            someFn: overrideFn
           });
           expect(Cls.prototype.someFn).toBe(overrideFn);
         });
@@ -301,12 +301,12 @@ describe("Ext.Base", function () {
         },
         c: function () {
           return "foo c";
-        },
+        }
       });
       Ext.define("spec.Bar", {
         a: function () {
           return "bar a";
-        },
+        }
       });
     });
 
@@ -369,7 +369,7 @@ describe("Ext.Base", function () {
       cls.override({
         oldFn: function () {
           values.push(2);
-        },
+        }
       });
       o.newFn();
 
@@ -391,19 +391,19 @@ describe("Ext.Base", function () {
         Ext.define("spec.Mix1", {
           extend: "Ext.Mixin",
           mixinConfig: {
-            id: "mix1",
+            id: "mix1"
           },
 
-          a: aFn,
+          a: aFn
         });
 
         Ext.define("spec.Mix2", {
           extend: "Ext.Mixin",
           mixinConfig: {
-            id: "mix2",
+            id: "mix2"
           },
 
-          b: bFn,
+          b: bFn
         });
       });
 
@@ -419,7 +419,7 @@ describe("Ext.Base", function () {
 
         Ext.define(null, {
           override: "spec.MyBase",
-          mixins: ["spec.Mix1"],
+          mixins: ["spec.Mix1"]
         });
 
         expect(cls.prototype.a).toBe(aFn);
@@ -428,12 +428,12 @@ describe("Ext.Base", function () {
 
       it("should add mixins on a class with existing mixins", function () {
         cls = Ext.define("spec.MyBase", {
-          mixins: ["spec.Mix1"],
+          mixins: ["spec.Mix1"]
         });
 
         Ext.define(null, {
           override: "spec.MyBase",
-          mixins: ["spec.Mix2"],
+          mixins: ["spec.Mix2"]
         });
 
         expect(cls.prototype.a).toBe(aFn);
@@ -446,13 +446,13 @@ describe("Ext.Base", function () {
       it("should add mixins when the type differs", function () {
         cls = Ext.define("spec.MyBase", {
           mixins: {
-            mixFoo: "spec.Mix1",
-          },
+            mixFoo: "spec.Mix1"
+          }
         });
 
         Ext.define(null, {
           override: "spec.MyBase",
-          mixins: ["spec.Mix2"],
+          mixins: ["spec.Mix2"]
         });
 
         expect(cls.prototype.a).toBe(aFn);
@@ -471,7 +471,7 @@ describe("Ext.Base", function () {
       Class = Ext.define(null, {
         constructor: function (config) {
           Ext.apply(this, config);
-        },
+        }
       });
     });
 
@@ -557,7 +557,7 @@ describe("Ext.Base", function () {
         Ext.Base.prototype.clearPropertiesOnDestroy = true;
 
         Class.prototype.$noClearOnDestroy = {
-          bar: true,
+          bar: true
         };
 
         Class.prototype.qux = {};
@@ -579,7 +579,7 @@ describe("Ext.Base", function () {
             fred: Ext.identityFn,
             zumbo: {},
             gurgle: [],
-            zingbong: document.createElement("div"),
+            zingbong: document.createElement("div")
           });
 
           instance.destroy();
@@ -632,7 +632,7 @@ describe("Ext.Base", function () {
         it("should not null properties when the mood is not right", function () {
           instance = new Class({
             foo: {},
-            clearPropertiesOnDestroy: false,
+            clearPropertiesOnDestroy: false
           });
 
           instance.destroy();
@@ -652,7 +652,7 @@ describe("Ext.Base", function () {
 
           it("should set prototype to null when flag is set", function () {
             instance = new Class({
-              clearPrototypeOnDestroy: true,
+              clearPrototypeOnDestroy: true
             });
 
             instance.destroy();

@@ -8,31 +8,31 @@ describe("Ext.data.operation.Update", function () {
   beforeEach(function () {
     Ext.define("spec.Alien", {
       extend: "Ext.data.Model",
-      fields: ["name", "age", "planet"],
+      fields: ["name", "age", "planet"]
     });
 
     clientAlien1 = new spec.Alien({
       name: "Thor",
       age: 5000,
-      planet: "Orilla",
+      planet: "Orilla"
     });
     clientAlien2 = new spec.Alien({
       name: "Teal'c",
       age: 130,
-      planet: "Chulak",
+      planet: "Chulak"
     });
 
     serverAlien1 = {
       id: 5,
       name: "Baal",
       age: 3000,
-      planet: "P3X-888",
+      planet: "P3X-888"
     };
     serverAlien2 = {
       id: 12,
       name: "Jolinar",
       age: 1500,
-      planet: "Vorash",
+      planet: "Vorash"
     };
   });
 
@@ -47,7 +47,7 @@ describe("Ext.data.operation.Update", function () {
       var proxy = new Ext.data.proxy.Proxy();
       spyOn(proxy, "update").andReturn(new Ext.data.Request());
       makeOperation({
-        proxy: proxy,
+        proxy: proxy
       });
       op.execute();
       expect(proxy.update).toHaveBeenCalledWith(op);
@@ -62,14 +62,14 @@ describe("Ext.data.operation.Update", function () {
         clientAlien1.phantom = false;
 
         makeOperation({
-          records: [clientAlien1],
+          records: [clientAlien1]
         });
 
         op.process(
           new Ext.data.ResultSet({
             success: true,
-            records: [serverAlien1],
-          }),
+            records: [serverAlien1]
+          })
         );
       });
 
@@ -96,7 +96,7 @@ describe("Ext.data.operation.Update", function () {
         clientAlien1.phantom = false;
 
         makeOperation({
-          records: [clientAlien1],
+          records: [clientAlien1]
         });
 
         spyOn(Ext.log, "warn");
@@ -105,8 +105,8 @@ describe("Ext.data.operation.Update", function () {
         op.process(
           new Ext.data.ResultSet({
             success: true,
-            records: [serverAlien1],
-          }),
+            records: [serverAlien1]
+          })
         );
       });
 
@@ -137,7 +137,7 @@ describe("Ext.data.operation.Update", function () {
         spyOn(clientAlien2, "set").andCallThrough();
 
         makeOperation({
-          records: [clientAlien1, clientAlien2],
+          records: [clientAlien1, clientAlien2]
         });
 
         spyOn(Ext.log, "warn");
@@ -146,8 +146,8 @@ describe("Ext.data.operation.Update", function () {
         op.process(
           new Ext.data.ResultSet({
             success: true,
-            records: [serverAlien1, serverAlien2],
-          }),
+            records: [serverAlien1, serverAlien2]
+          })
         );
       });
       it("should update the client records with the server records' data", function () {

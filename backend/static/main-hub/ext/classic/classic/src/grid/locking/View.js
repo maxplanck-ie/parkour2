@@ -13,7 +13,7 @@ Ext.define(
     mixins: [
       "Ext.util.Observable",
       "Ext.util.StoreHolder",
-      "Ext.util.Focusable",
+      "Ext.util.Focusable"
     ],
 
     /**
@@ -55,7 +55,7 @@ Ext.define(
         config.normal.viewConfig.navigationModel = me.navigationModel;
 
       me.lockedGrid = me.ownerGrid.lockedGrid = ext.ComponentManager.create(
-        config.locked,
+        config.locked
       );
 
       me.lockedView = lockedView = me.lockedGrid.getView();
@@ -81,7 +81,7 @@ Ext.define(
       // This is because during constraction, it must be possible for descendant components
       // to navigate up to the owning lockable panel and then down into either side.
       me.normalGrid = me.ownerGrid.normalGrid = ext.ComponentManager.create(
-        config.normal,
+        config.normal
       );
       lockedView.lockingPartner =
         normalView =
@@ -91,7 +91,7 @@ Ext.define(
 
       // We need to examine locked grid state at this time to sync the normal grid.
       Ext.override(me.normalGrid, {
-        beforeRender: me.beforeNormalGridRender,
+        beforeRender: me.beforeNormalGridRender
       });
 
       me.loadMask =
@@ -102,26 +102,26 @@ Ext.define(
       // Relay both view's events.
       me.lockedViewEventRelayers = me.relayEvents(
         lockedView,
-        ext.view.Table.events,
+        ext.view.Table.events
       );
 
       // Relay extra events from only the normal view.
       // These are events that both sides fire (selection events), so avoid firing them twice.
       me.normalViewEventRelayers = me.relayEvents(
         normalView,
-        ext.view.Table.events.concat(ext.view.Table.normalSideEvents),
+        ext.view.Table.events.concat(ext.view.Table.normalSideEvents)
       );
 
       normalView.on({
         scope: me,
         itemmouseleave: me.onItemMouseLeave,
-        itemmouseenter: me.onItemMouseEnter,
+        itemmouseenter: me.onItemMouseEnter
       });
 
       lockedView.on({
         scope: me,
         itemmouseleave: me.onItemMouseLeave,
-        itemmouseenter: me.onItemMouseEnter,
+        itemmouseenter: me.onItemMouseEnter
       });
 
       me.loadingText = normalView.loadingText;
@@ -178,7 +178,7 @@ Ext.define(
           msg: me.loadingText,
           msgCls: me.loadingCls,
           useMsg: me.loadingUseMsg,
-          store: me.ownerGrid.store,
+          store: me.ownerGrid.store
         };
 
       // Because this is used as a View, it should have an el. Use the owning Lockable's scrolling el.
@@ -340,7 +340,7 @@ Ext.define(
         update: me.onUpdate,
         clear: me.onDataRefresh,
         beginupdate: me.onBeginUpdate,
-        endupdate: me.onEndUpdate,
+        endupdate: me.onEndUpdate
       };
     },
 
@@ -566,7 +566,7 @@ Ext.define(
     getHeaderByCell: function (cell) {
       if (cell) {
         return this.getVisibleColumnManager().getHeaderById(
-          cell.getAttribute("data-columnId"),
+          cell.getAttribute("data-columnId")
         );
       }
       return false;
@@ -584,7 +584,7 @@ Ext.define(
       // Pass a contextless cell descriptor to the child view
       cellContext.column.getView().onCellSelect({
         record: cellContext.record,
-        column: cellContext.column,
+        column: cellContext.column
       });
     },
 
@@ -592,7 +592,7 @@ Ext.define(
       // Pass a contextless cell descriptor to the child view
       cellContext.column.getView().onCellDeselect({
         record: cellContext.record,
-        column: cellContext.column,
+        column: cellContext.column
       });
     },
 
@@ -605,7 +605,7 @@ Ext.define(
       if (view === me) {
         pos = new Ext.grid.CellContext(col.getView()).setPosition(
           pos.record,
-          pos.column,
+          pos.column
         );
       }
       return view.getCellByPosition(pos, returnDom);
@@ -666,13 +666,13 @@ Ext.define(
         me.navigationModel,
         me.loadMask,
         me.lockedViewEventRelayers,
-        me.normalViewEventRelayers,
+        me.normalViewEventRelayers
       );
 
       me.lockedView.lockingPartner = me.normalView.lockingPartner = null;
 
       me.callParent();
-    },
+    }
   },
   function () {
     this.borrow(Ext.Component, ["up"]);
@@ -680,7 +680,7 @@ Ext.define(
     this.borrow(Ext.view.Table, [
       "cellSelector",
       "selectedCellCls",
-      "selectedItemCls",
+      "selectedItemCls"
     ]);
-  },
+  }
 );

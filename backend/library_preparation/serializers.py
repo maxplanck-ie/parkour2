@@ -86,6 +86,7 @@ class LibraryPreparationSerializer(ModelSerializer):
             "index_i5_id",
             "create_time",
             "quality_check",
+            "smear_analysis",
         )
 
     def to_internal_value(self, data):

@@ -46,5 +46,5 @@ Ext.define("Ext.behavior.Draggable", {
     if (draggable) {
       draggable.destroy();
     }
-  },
+  }
 });

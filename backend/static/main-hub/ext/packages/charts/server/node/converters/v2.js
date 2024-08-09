@@ -6,7 +6,7 @@ var FORMATS = {
   gif: "image/gif",
   jpeg: "image/jpeg",
   pdf: "application/pdf",
-  png: "image/png",
+  png: "image/png"
 };
 
 var VALID_POST_DATA = {
@@ -18,7 +18,7 @@ var VALID_POST_DATA = {
   height: "string",
   scale: "string",
   pdf: "string",
-  jpeg: "string",
+  jpeg: "string"
 };
 
 var VALID_PDF_OPTIONS = {
@@ -26,11 +26,11 @@ var VALID_PDF_OPTIONS = {
   height: "string",
   border: "string",
   format: "string",
-  orientation: "string",
+  orientation: "string"
 };
 
 var VALID_JPEG_OPTIONS = {
-  quality: "string",
+  quality: "string"
 };
 
 function convert(config) {
@@ -45,7 +45,7 @@ function convert(config) {
     try {
       config.pdf = validator.verifyConfig(
         JSON.parse(config.pdf),
-        VALID_PDF_OPTIONS,
+        VALID_PDF_OPTIONS
       );
     } catch (e) {
       console.error("Parsing 'pdf' config failed.", e);
@@ -58,7 +58,7 @@ function convert(config) {
     }
     config.jpeg = validator.verifyConfig(
       JSON.parse(config.jpeg),
-      VALID_JPEG_OPTIONS,
+      VALID_JPEG_OPTIONS
     );
   }
   config.width = config.width || 0;
@@ -68,5 +68,5 @@ function convert(config) {
 }
 
 module.exports = {
-  convert: convert,
+  convert: convert
 };

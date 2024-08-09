@@ -60,5 +60,5 @@ Ext.define("Ext.app.EventBus", {
     for (domain in domains) {
       domains[domain].unlisten(controllerId);
     }
-  },
+  }
 });

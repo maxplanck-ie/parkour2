@@ -184,7 +184,7 @@ Ext.define(
         MSPointerOut: 1,
         MSPointerCancel: 1,
         MSPointerEnter: 1,
-        MSPointerLeave: 1,
+        MSPointerLeave: 1
       },
 
       /**
@@ -197,7 +197,7 @@ Ext.define(
         mouseover: 1,
         mouseout: 1,
         mouseenter: 1,
-        mouseleave: 1,
+        mouseleave: 1
       },
 
       /**
@@ -209,7 +209,7 @@ Ext.define(
        */
       clickEvents: {
         click: 1,
-        dblclick: 1,
+        dblclick: 1
       },
 
       /**
@@ -219,7 +219,7 @@ Ext.define(
         touchstart: 1,
         touchmove: 1,
         touchend: 1,
-        touchcancel: 1,
+        touchcancel: 1
       },
 
       /**
@@ -231,7 +231,7 @@ Ext.define(
         focusin: 1,
         focusout: 1,
         focusenter: 1,
-        focusleave: 1,
+        focusleave: 1
       },
 
       // msPointerTypes in IE10 are numbers, in the w3c spec they are strings.
@@ -244,7 +244,7 @@ Ext.define(
         4: "mouse",
         touch: "touch",
         pen: "pen",
-        mouse: "mouse",
+        mouse: "mouse"
       },
 
       keyFlags: {
@@ -256,14 +256,14 @@ Ext.define(
         COMMAND: "metaKey",
         CMDORCTRL: Ext.isMac ? "metaKey" : "ctrlKey",
         COMMANDORCONTROL: Ext.isMac ? "metaKey" : "ctrlKey",
-        META: "metaKey",
+        META: "metaKey"
       },
 
       modifierGlyphs: {
         ctrlKey: "\u2303",
         altKey: "\u2325",
         metaKey: Ext.isMac ? "\u2318" : "\u229e",
-        shiftKey: "\u21E7",
+        shiftKey: "\u21E7"
       },
 
       specialKeyGlyphs: {
@@ -283,7 +283,7 @@ Ext.define(
         PRINT_SCREEN: "\u2399",
         INSERT: "\u2380",
         DELETE: "\u2326",
-        CONTEXT_MENU: "\u2630",
+        CONTEXT_MENU: "\u2630"
       },
 
       /**
@@ -331,7 +331,7 @@ Ext.define(
         }
         result.push(this.specialKeyGlyphs[rawKey] || rawKey);
         return result.join("");
-      },
+      }
     },
 
     constructor: function (event) {
@@ -519,7 +519,7 @@ Ext.define(
           target = Ext.fly(relatedTarget).findParent(
             selector,
             maxDepth,
-            returnEl,
+            returnEl
           );
         } else {
           target = returnEl ? Ext.get(relatedTarget) : relatedTarget;
@@ -608,7 +608,7 @@ Ext.define(
 
       return {
         x: me.correctWheelDelta(dx),
-        y: me.correctWheelDelta(dy),
+        y: me.correctWheelDelta(dy)
       };
     },
 
@@ -916,10 +916,10 @@ Ext.define(
            * @return {Number}
            * @deprecated 4.0 use {@link #getY} instead
            */
-          getPageY: "getY",
-        },
-      },
-    },
+          getPageY: "getY"
+        }
+      }
+    }
   },
   function (Event) {
     var prototype = Event.prototype,
@@ -1146,7 +1146,7 @@ Ext.define(
           }
 
           return scale;
-        })(),
+        })()
       },
       keyCodes = {},
       keyName,
@@ -1177,5 +1177,5 @@ Ext.define(
      * direction settings.
      */
     prototype.getTrueXY = prototype.getXY;
-  },
+  }
 );

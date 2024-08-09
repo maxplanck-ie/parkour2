@@ -235,7 +235,7 @@ Ext.define("Ext.Mixin", function (Mixin) {
         } else {
           targetClass[methodName] = hook;
         }
-      },
+      }
     },
 
     onClassExtended: function (cls, data) {
@@ -261,7 +261,7 @@ Ext.define("Ext.Mixin", function (Mixin) {
           data.mixinConfig = mixinConfig = Ext.merge(
             {},
             parentMixinConfig,
-            mixinConfig,
+            mixinConfig
           );
         }
 
@@ -270,7 +270,7 @@ Ext.define("Ext.Mixin", function (Mixin) {
         //<debug>
         if (mixinConfig.beforeHooks) {
           Ext.raise(
-            'Use of "beforeHooks" is deprecated - use "before" instead',
+            'Use of "beforeHooks" is deprecated - use "before" instead'
           );
         }
         if (mixinConfig.hooks) {
@@ -333,6 +333,6 @@ Ext.define("Ext.Mixin", function (Mixin) {
           }
         };
       }
-    },
+    }
   };
 });

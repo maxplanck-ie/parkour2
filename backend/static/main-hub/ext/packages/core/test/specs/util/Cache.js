@@ -27,7 +27,7 @@ describe("Ext.util.Cache", function () {
 
       miss: function (key) {
         return "{" + key + "}";
-      },
+      }
     });
   });
 

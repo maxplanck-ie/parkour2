@@ -37,7 +37,7 @@ Ext.define("Ext.chart.sprite.Label", {
         display:
           "enums(none,under,over,rotate,insideStart,insideEnd,inside,outside)",
         orientation: "enums(horizontal,vertical)",
-        renderer: "default",
+        renderer: "default"
       },
 
       defaults: {
@@ -55,7 +55,7 @@ Ext.define("Ext.chart.sprite.Label", {
         labelOverflowPadding: 5,
         display: "none",
         orientation: "",
-        renderer: null,
+        renderer: null
       },
 
       triggers: {
@@ -64,15 +64,15 @@ Ext.define("Ext.chart.sprite.Label", {
         calloutPlaceY: "transform",
         labelOverflowPadding: "transform",
         calloutRotation: "transform",
-        display: "hidden",
+        display: "hidden"
       },
 
       updaters: {
         hidden: function (attr) {
           attr.hidden = attr.display === "none";
-        },
-      },
-    },
+        }
+      }
+    }
   },
 
   config: {
@@ -81,8 +81,8 @@ Ext.define("Ext.chart.sprite.Label", {
      */
     fx: {
       customDurations: {
-        callout: 200,
-      },
+        callout: 200
+      }
     },
     field: null,
     /**
@@ -94,7 +94,7 @@ Ext.define("Ext.chart.sprite.Label", {
      *
      * Default value: false.
      */
-    calloutLine: true,
+    calloutLine: true
   },
 
   applyCalloutLine: function (calloutLine) {
@@ -136,7 +136,7 @@ Ext.define("Ext.chart.sprite.Label", {
         1 * attr.calloutWidth,
         0,
         2 * Math.PI,
-        true,
+        true
       );
       ctx.fill();
 
@@ -147,12 +147,12 @@ Ext.define("Ext.chart.sprite.Label", {
         1 * attr.calloutWidth,
         0,
         2 * Math.PI,
-        true,
+        true
       );
       ctx.fill();
     }
     ctx.restore();
 
     Ext.draw.sprite.Text.prototype.render.apply(me, arguments);
-  },
+  }
 });

@@ -8,7 +8,7 @@ describe("Ext.tip.ToolTip", function () {
   function createTip(config) {
     config = Ext.apply(
       { target: target, width: 50, height: 50, html: "X" },
-      config,
+      config
     );
     tip = new Ext.tip.ToolTip(config);
     return tip;
@@ -21,7 +21,7 @@ describe("Ext.tip.ToolTip", function () {
     target = Ext.getBody().insertHtml(
       "beforeEnd",
       '<a href="#" id="tipTarget" style="position:absolute; left:100px; top:100px; width: 50px; height: 50px;background-color:red">x</a>',
-      true,
+      true
     );
   });
 
@@ -62,7 +62,7 @@ describe("Ext.tip.ToolTip", function () {
 
     it("should show with no errors thrown", function () {
       createTip({
-        target: null,
+        target: null
       });
       expect(function () {
         tip.show();
@@ -74,7 +74,7 @@ describe("Ext.tip.ToolTip", function () {
     it("should not show when not using a delay", function () {
       createTip({
         target: "tipTarget",
-        showDelay: 0,
+        showDelay: 0
       });
       tip.disable();
       mouseOverTarget();
@@ -84,7 +84,7 @@ describe("Ext.tip.ToolTip", function () {
     it("should not show when disabled during a delay and not rendered", function () {
       createTip({
         target: "tipTarget",
-        showDelay: 1000,
+        showDelay: 1000
       });
       mouseOverTarget();
       tip.disable();
@@ -100,7 +100,7 @@ describe("Ext.tip.ToolTip", function () {
       createTip({
         target: "tipTarget",
         showDelay: 1000,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       tip.hide();
       mouseOverTarget();
@@ -141,7 +141,7 @@ describe("Ext.tip.ToolTip", function () {
           target,
           "mouseout",
           target.getX(),
-          target.getY(),
+          target.getY()
         );
       });
       waitsFor(function () {
@@ -257,7 +257,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0],
-        tgtXY[1] + target.getHeight() + tip.anchorSize.y,
+        tgtXY[1] + target.getHeight() + tip.anchorSize.y
       );
     });
 
@@ -267,7 +267,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0] - tip.el.getWidth() - tip.anchorSize.y,
-        tgtXY[1],
+        tgtXY[1]
       );
     });
 
@@ -277,7 +277,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0],
-        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y,
+        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y
       );
     });
 
@@ -287,7 +287,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0] + target.getWidth() + tip.anchorSize.y,
-        tgtXY[1],
+        tgtXY[1]
       );
     });
 
@@ -298,7 +298,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0] - tip.el.getWidth() - tip.anchorSize.y,
-        tgtXY[1],
+        tgtXY[1]
       );
     });
 
@@ -309,7 +309,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0],
-        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y,
+        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y
       );
     });
 
@@ -320,7 +320,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0] - tip.el.getWidth() - tip.anchorSize.y,
-        tgtXY[1],
+        tgtXY[1]
       );
     });
 
@@ -331,7 +331,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0],
-        tgtXY[1] + target.getHeight() + tip.anchorSize.y,
+        tgtXY[1] + target.getHeight() + tip.anchorSize.y
       );
     });
 
@@ -342,7 +342,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0],
-        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y,
+        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y
       );
     });
 
@@ -353,7 +353,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0] + target.getWidth() + tip.anchorSize.y,
-        tgtXY[1],
+        tgtXY[1]
       );
     });
 
@@ -364,7 +364,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0] - tip.el.getWidth() - tip.anchorSize.y,
-        tgtXY[1],
+        tgtXY[1]
       );
     });
 
@@ -375,7 +375,7 @@ describe("Ext.tip.ToolTip", function () {
       var tgtXY = target.getXY();
       expect(tip.el).toBePositionedAt(
         tgtXY[0],
-        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y,
+        tgtXY[1] - tip.el.getHeight() - tip.anchorSize.y
       );
     });
   });
@@ -393,7 +393,7 @@ describe("Ext.tip.ToolTip", function () {
       runs(function () {
         expect(tip.el).toBePositionedAt(
           xy[0] - 15,
-          xy[1] + 18 + tip.anchorSize.y,
+          xy[1] + 18 + tip.anchorSize.y
         );
       });
     });
@@ -410,7 +410,7 @@ describe("Ext.tip.ToolTip", function () {
       runs(function () {
         expect(tip.el).toBePositionedAt(
           xy[0] - tip.el.getWidth() - 15 - tip.anchorSize.y,
-          xy[1] - 18,
+          xy[1] - 18
         );
       });
     });
@@ -427,7 +427,7 @@ describe("Ext.tip.ToolTip", function () {
       runs(function () {
         expect(tip.el).toBePositionedAt(
           xy[0] - 15,
-          xy[1] - 18 - tip.anchorSize.y - tip.el.getHeight(),
+          xy[1] - 18 - tip.anchorSize.y - tip.el.getHeight()
         );
       });
     });
@@ -444,7 +444,7 @@ describe("Ext.tip.ToolTip", function () {
       runs(function () {
         expect(tip.el).toBePositionedAt(
           xy[0] + 15 + tip.anchorSize.y,
-          xy[1] - 18,
+          xy[1] - 18
         );
       });
     });
@@ -456,7 +456,7 @@ describe("Ext.tip.ToolTip", function () {
     beforeEach(function () {
       target.insertHtml(
         "beforeEnd",
-        '<span class="hasTip" id="delegatedTarget">x</span><span class="noTip">x</span>',
+        '<span class="hasTip" id="delegatedTarget">x</span><span class="noTip">x</span>'
       );
       delegatedTarget = Ext.get("delegatedTarget");
     });
@@ -472,7 +472,7 @@ describe("Ext.tip.ToolTip", function () {
         delegatedTarget,
         "mouseover",
         delegatedTarget.getX(),
-        delegatedTarget.getY(),
+        delegatedTarget.getY()
       );
       expect(spy).toHaveBeenCalled();
     });
@@ -490,7 +490,7 @@ describe("Ext.tip.ToolTip", function () {
         delegatedTarget,
         "mouseover",
         delegatedTarget.getX(),
-        delegatedTarget.getY(),
+        delegatedTarget.getY()
       );
       expect(tip.triggerElement).toBe(delegatedTarget.dom);
     });
@@ -501,7 +501,7 @@ describe("Ext.tip.ToolTip", function () {
         delegatedTarget,
         "mouseover",
         delegatedTarget.getX(),
-        delegatedTarget.getY(),
+        delegatedTarget.getY()
       );
       tip.hide();
       expect(tip.triggerElement).toBe(null);
@@ -514,14 +514,14 @@ describe("Ext.tip.ToolTip", function () {
       tip.show();
       expect(tip.getXY()).toEqual([
         100 + tip.mouseOffset[0],
-        100 + tip.mouseOffset[1],
+        100 + tip.mouseOffset[1]
       ]);
     }
 
     afterEach(function () {
       Ext.getBody().un({
         touchstart: showTip,
-        mouseover: showTip,
+        mouseover: showTip
       });
     });
 
@@ -529,18 +529,18 @@ describe("Ext.tip.ToolTip", function () {
       createTip({
         target: null,
         html: "Shown by pointer event",
-        showOnTap: true,
+        showOnTap: true
       });
       if (Ext.supports.TouchEvents) {
         Ext.getBody().on({
           touchstart: showTip,
-          single: true,
+          single: true
         });
         Ext.testHelper.touchStart(document.body, { x: 100, y: 100 });
       } else {
         Ext.getBody().on({
           mouseover: showTip,
-          single: true,
+          single: true
         });
         jasmine.fireMouseEvent(document.body, "mouseover", 100, 100);
       }
@@ -560,13 +560,13 @@ describe("Ext.tip.ToolTip", function () {
         data: [
           {
             abbr: "a",
-            name: "TestName",
+            name: "TestName"
           },
           {
             abbr: "b",
-            name: "TestName2",
-          },
-        ],
+            name: "TestName2"
+          }
+        ]
       });
 
       alwaysOnTopWindow = Ext.create("Ext.window.Window", {
@@ -578,7 +578,7 @@ describe("Ext.tip.ToolTip", function () {
         x: 200,
         y: 0,
         alwaysOnTop: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       }).show();
       extraWindow = Ext.create("Ext.window.Window", {
         title: "Some Extra Window",
@@ -588,9 +588,9 @@ describe("Ext.tip.ToolTip", function () {
         y: 250,
         items: [
           {
-            xtype: "textfield",
-          },
-        ],
+            xtype: "textfield"
+          }
+        ]
       }).show();
 
       // This will not be the topmost window.
@@ -614,17 +614,17 @@ describe("Ext.tip.ToolTip", function () {
             listConfig: {
               getInnerTpl: function () {
                 return '<div data-qtip="<b>Name:</b>{name} <br/><b>Abbreviation:</b>{abbr} <br/>">{name} ({abbr})</div>';
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       }).show();
 
       // We use a QuickTip instance for convenience
       tip = new Ext.tip.QuickTip({
         showDelay: 100,
         autoHide: true,
-        dismissDelay: 100,
+        dismissDelay: 100
       });
 
       combo = centerWindow.down("combobox");
@@ -634,7 +634,7 @@ describe("Ext.tip.ToolTip", function () {
       // Mouseover the dropdown.
       jasmine.fireMouseEvent(
         Ext.fly(combo.getPicker().getNode(0)).down("[data-qtip]"),
-        "mouseover",
+        "mouseover"
       );
 
       // Tip should show, and should be topmost in stack.
@@ -665,7 +665,7 @@ describe("Ext.tip.ToolTip", function () {
       createTip({
         target: document.body,
         delegate: "#tipTarget",
-        showDelay: 1000,
+        showDelay: 1000
       });
       mouseOverTarget();
 
@@ -680,7 +680,7 @@ describe("Ext.tip.ToolTip", function () {
           return tip.isVisible();
         },
         1000,
-        "tooltip to show",
+        "tooltip to show"
       );
     });
   });

@@ -166,7 +166,7 @@ Ext.define(
 
     alias: "reader.base",
     factoryConfig: {
-      defaultType: null,
+      defaultType: null
     },
 
     config: {
@@ -429,7 +429,7 @@ Ext.define(
        * **not** keep the raw data because of the high potential for memory leaks.
        * @since 5.1.1
        */
-      keepRawData: null,
+      keepRawData: null
     },
 
     /**
@@ -489,7 +489,7 @@ Ext.define(
         delete config.root;
         //<debug>
         Ext.log.error(
-          'Ext.data.reader.Reader: Using the deprecated "root" configuration. Use "rootProperty" instead.',
+          'Ext.data.reader.Reader: Using the deprecated "root" configuration. Use "rootProperty" instead.'
         );
         //</debug>
       }
@@ -562,7 +562,7 @@ Ext.define(
               count: 0,
               records: [],
               success: false,
-              message: result.msg,
+              message: result.msg
             });
           } else {
             data = this.readRecords(result, readOptions);
@@ -595,7 +595,7 @@ Ext.define(
     createReadError: function (msg) {
       return {
         __$isError: true,
-        msg: msg,
+        msg: msg
       };
     },
 
@@ -610,7 +610,7 @@ Ext.define(
     readRecords: function (
       data,
       readOptions,
-      /* private */ internalReadOptions,
+      /* private */ internalReadOptions
     ) {
       var me = this,
         recordsOnly = internalReadOptions && internalReadOptions.recordsOnly,
@@ -696,7 +696,7 @@ Ext.define(
             count: recordCount,
             records: records,
             success: success,
-            message: message,
+            message: message
           });
     },
 
@@ -722,7 +722,7 @@ Ext.define(
         includes =
           schema.hasAssociations(entityType) && me.getImplicitIncludes(),
         fieldExtractorInfo = me.getFieldExtractorInfo(
-          entityType.fieldExtractors,
+          entityType.fieldExtractors
         ),
         length = root.length,
         records = new Array(length),
@@ -762,7 +762,7 @@ Ext.define(
               readOptions,
               nodeType,
               schema.hasAssociations(nodeType) && reader.getImplicitIncludes(),
-              reader.getFieldExtractorInfo(nodeType.fieldExtractors),
+              reader.getFieldExtractorInfo(nodeType.fieldExtractors)
             );
           } else {
             record = me.extractRecord(
@@ -770,7 +770,7 @@ Ext.define(
               readOptions,
               entityType,
               includes,
-              fieldExtractorInfo,
+              fieldExtractorInfo
             );
           }
 
@@ -802,7 +802,7 @@ Ext.define(
         case "object":
           namespace = typeProperty.namespace;
           return schema.getEntity(
-            (namespace ? namespace + "." : "") + rawNode[typeProperty.name],
+            (namespace ? namespace + "." : "") + rawNode[typeProperty.name]
           );
         case "function":
           return schema.getEntity(typeProperty(rawNode));
@@ -815,7 +815,7 @@ Ext.define(
             ? Ext.data.schema.Schema.lookupEntity(readOptions.model)
             : this.getModel(),
         fieldExtractorInfo = this.getFieldExtractorInfo(
-          entityType.fieldExtractors,
+          entityType.fieldExtractors
         );
 
       return this.extractRecord(
@@ -823,7 +823,7 @@ Ext.define(
         readOptions,
         entityType,
         false,
-        fieldExtractorInfo,
+        fieldExtractorInfo
       );
     },
 
@@ -832,7 +832,7 @@ Ext.define(
       readOptions,
       entityType,
       includes,
-      fieldExtractorInfo,
+      fieldExtractorInfo
     ) {
       var me = this,
         creatorFn =
@@ -848,7 +848,7 @@ Ext.define(
         me,
         modelData,
         entityType || me.getModel(),
-        readOptions,
+        readOptions
       );
       if (includes && record.isModel) {
         me.readAssociated(record, node, readOptions);
@@ -897,7 +897,7 @@ Ext.define(
               cnt +
               "](raw); if (val !== undefined) { data['" +
               name +
-              "'] = val; }",
+              "'] = val; }"
           );
           extractors.push(extractor);
           ++cnt;
@@ -911,8 +911,8 @@ Ext.define(
             "raw",
             "data",
             "extractors",
-            "var val;" + buffer.join(""),
-          ),
+            "var val;" + buffer.join("")
+          )
         };
       }
       return out;
@@ -1005,7 +1005,7 @@ Ext.define(
     getResponseData: function (response) {
       //<debug>
       Ext.raise(
-        "getResponseData must be implemented in the Ext.data.reader.Reader subclass",
+        "getResponseData must be implemented in the Ext.data.reader.Reader subclass"
       );
       //</debug>
     },
@@ -1047,7 +1047,7 @@ Ext.define(
         newModel = Ext.define(null, {
           extend: "Ext.data.Model",
           fields: fields,
-          clientIdProperty: clientIdProperty,
+          clientIdProperty: clientIdProperty
         });
         me.setModel(newModel);
         proxy = me.getProxy();
@@ -1154,8 +1154,8 @@ Ext.define(
         me.setConfig(reader.getConfig());
         --me.duringInit;
         me.hasExtractors = true;
-      },
-    },
+      }
+    }
   },
   function (Cls) {
     var proto = Cls.prototype;
@@ -1166,10 +1166,10 @@ Ext.define(
         count: 0,
         records: [],
         success: true,
-        message: "",
-      }),
+        message: ""
+      })
     });
 
     proto.extractorCache = new Ext.util.LruCache();
-  },
+  }
 );

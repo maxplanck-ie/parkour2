@@ -26,7 +26,7 @@ Ext.define("Ext.ux.colorpick.Field", {
     "Ext.window.Window",
     "Ext.ux.colorpick.Selector",
     "Ext.ux.colorpick.ColorUtils",
-    "Ext.layout.container.Fit",
+    "Ext.layout.container.Fit"
   ],
 
   editable: false,
@@ -41,7 +41,7 @@ Ext.define("Ext.ux.colorpick.Field", {
       '<div id="{id}-swatchEl" data-ref="swatchEl" class="' +
       Ext.baseCSSPrefix +
       'colorpicker-field-swatch-inner"></div>' +
-      "</div>",
+      "</div>"
   ],
 
   cls: Ext.baseCSSPrefix + "colorpicker-field",
@@ -69,10 +69,10 @@ Ext.define("Ext.ux.colorpick.Field", {
           xtype: "colorselector",
           reference: "selector",
           showPreviousColor: true,
-          showOkCancelButtons: true,
-        },
-      },
-    },
+          showOkCancelButtons: true
+        }
+      }
+    }
   },
 
   /**
@@ -107,12 +107,12 @@ Ext.define("Ext.ux.colorpick.Field", {
     picker.on({
       ok: "onColorPickerOK",
       cancel: "onColorPickerCancel",
-      scope: me,
+      scope: me
     });
 
     popup.on({
       close: "onColorPickerCancel",
-      scope: me,
+      scope: me
     });
 
     return me.colorPickerWindow;
@@ -176,5 +176,5 @@ Ext.define("Ext.ux.colorpick.Field", {
     if (me.colorPicker) {
       me.colorPicker.setColor(c);
     }
-  },
+  }
 });

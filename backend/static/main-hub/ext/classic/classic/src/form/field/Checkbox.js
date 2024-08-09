@@ -103,7 +103,7 @@ Ext.define("Ext.form.field.Checkbox", {
      */
     "boxLabelEl",
     "innerWrapEl",
-    "displayEl",
+    "displayEl"
   ],
 
   // note: {id} here is really {inputId}, but {cmpId} is available
@@ -145,12 +145,12 @@ Ext.define("Ext.form.field.Checkbox", {
     "</div>",
     {
       disableFormats: true,
-      compiled: true,
-    },
+      compiled: true
+    }
   ],
 
   publishes: {
-    checked: 1,
+    checked: 1
   },
 
   subTplInsertions: [
@@ -194,7 +194,7 @@ Ext.define("Ext.form.field.Checkbox", {
      */
     "boxLabelAttrTpl",
 
-    "inputAttrTpl",
+    "inputAttrTpl"
   ],
 
   /**
@@ -390,7 +390,7 @@ Ext.define("Ext.form.field.Checkbox", {
       // as empty, grouping all radio buttons with empty name
       // together. This causes funky but unwanted effects
       // with regards to keyboard navigation.
-      inputName: me.name || me.id,
+      inputName: me.name || me.id
     });
 
     inputElAttr = data.inputElAriaAttributes;
@@ -409,7 +409,7 @@ Ext.define("Ext.form.field.Checkbox", {
     me.callParent();
 
     me.inputEl.on(me.changeEventName, me.onChangeEvent, me, {
-      delegated: false,
+      delegated: false
     });
 
     // In all IE versions it is possible to focus ANY element by clicking
@@ -727,5 +727,5 @@ Ext.define("Ext.form.field.Checkbox", {
 
   getFocusClsEl: function () {
     return this.displayEl;
-  },
+  }
 });

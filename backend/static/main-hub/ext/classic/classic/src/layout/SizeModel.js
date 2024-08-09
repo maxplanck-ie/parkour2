@@ -56,7 +56,7 @@ Ext.define(
        * An object containing all SizeModel instances keyed by `name`.
        * @private
        */
-      sizeModels: {},
+      sizeModels: {}
     },
 
     /**
@@ -155,7 +155,7 @@ Ext.define(
      * @property {String} names.height The height property name (e.g., 'minHeight').
      * @readonly
      */
-    names: null,
+    names: null
   },
   function () {
     var SizeModel = this,
@@ -171,23 +171,23 @@ Ext.define(
 
     new SizeModel({
       // jshint ignore:line
-      name: "calculated",
+      name: "calculated"
     });
 
     new SizeModel({
       // jshint ignore:line
       name: "configured",
-      names: { width: "width", height: "height" },
+      names: { width: "width", height: "height" }
     });
 
     new SizeModel({
       // jshint ignore:line
-      name: "natural",
+      name: "natural"
     });
 
     new SizeModel({
       // jshint ignore:line
-      name: "shrinkWrap",
+      name: "shrinkWrap"
     });
 
     //-------------------------------------------------------------------------------
@@ -199,21 +199,21 @@ Ext.define(
       name: "calculatedFromConfigured",
       configured: true,
       calculatedFrom: true,
-      names: { width: "width", height: "height" },
+      names: { width: "width", height: "height" }
     });
 
     new SizeModel({
       // jshint ignore:line
       name: "calculatedFromNatural",
       natural: true,
-      calculatedFrom: true,
+      calculatedFrom: true
     });
 
     new SizeModel({
       // jshint ignore:line
       name: "calculatedFromShrinkWrap",
       shrinkWrap: true,
-      calculatedFrom: true,
+      calculatedFrom: true
     });
 
     new SizeModel({
@@ -221,7 +221,7 @@ Ext.define(
       name: "constrainedMax",
       configured: true,
       constrained: true,
-      names: { width: "maxWidth", height: "maxHeight" },
+      names: { width: "maxWidth", height: "maxHeight" }
     });
 
     new SizeModel({
@@ -229,7 +229,7 @@ Ext.define(
       name: "constrainedMin",
       configured: true,
       constrained: true,
-      names: { width: "minWidth", height: "minHeight" },
+      names: { width: "minWidth", height: "minHeight" }
     });
 
     new SizeModel({
@@ -238,7 +238,7 @@ Ext.define(
       configured: true,
       constrained: true,
       constrainedByMin: true,
-      names: { width: "dockConstrainedWidth", height: "dockConstrainedHeight" },
+      names: { width: "dockConstrainedWidth", height: "dockConstrainedHeight" }
     });
 
     for (i = 0, n = sizeModelsArray.length; i < n; ++i) {
@@ -271,9 +271,9 @@ Ext.define(
       for (j = 0; j < n; ++j) {
         pairs.push({
           width: sizeModel,
-          height: sizeModelsArray[j],
+          height: sizeModelsArray[j]
         });
       }
     }
-  },
+  }
 );

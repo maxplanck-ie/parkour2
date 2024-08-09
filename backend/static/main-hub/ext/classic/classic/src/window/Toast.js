@@ -199,26 +199,26 @@ Ext.define(
         paddingFactorX: -1,
         paddingFactorY: -1,
         siblingAlignment: "br-br",
-        anchorAlign: "tr-br",
+        anchorAlign: "tr-br"
       },
       bl: {
         paddingFactorX: 1,
         paddingFactorY: -1,
         siblingAlignment: "bl-bl",
-        anchorAlign: "tl-bl",
+        anchorAlign: "tl-bl"
       },
 
       tr: {
         paddingFactorX: -1,
         paddingFactorY: 1,
         siblingAlignment: "tr-tr",
-        anchorAlign: "br-tr",
+        anchorAlign: "br-tr"
       },
       tl: {
         paddingFactorX: 1,
         paddingFactorY: 1,
         siblingAlignment: "tl-tl",
-        anchorAlign: "bl-tl",
+        anchorAlign: "bl-tl"
       },
 
       b: {
@@ -226,28 +226,28 @@ Ext.define(
         paddingFactorY: -1,
         siblingAlignment: "b-b",
         useXAxis: 0,
-        anchorAlign: "t-b",
+        anchorAlign: "t-b"
       },
       t: {
         paddingFactorX: 0,
         paddingFactorY: 1,
         siblingAlignment: "t-t",
         useXAxis: 0,
-        anchorAlign: "b-t",
+        anchorAlign: "b-t"
       },
       l: {
         paddingFactorX: 1,
         paddingFactorY: 0,
         siblingAlignment: "l-l",
         useXAxis: 1,
-        anchorAlign: "r-l",
+        anchorAlign: "r-l"
       },
       r: {
         paddingFactorX: -1,
         paddingFactorY: 0,
         siblingAlignment: "r-r",
         useXAxis: 1,
-        anchorAlign: "l-r",
+        anchorAlign: "l-r"
       },
 
       /*
@@ -256,18 +256,18 @@ Ext.define(
        */
       x: {
         br: {
-          anchorAlign: "bl-br",
+          anchorAlign: "bl-br"
         },
         bl: {
-          anchorAlign: "br-bl",
+          anchorAlign: "br-bl"
         },
         tr: {
-          anchorAlign: "tl-tr",
+          anchorAlign: "tl-tr"
         },
         tl: {
-          anchorAlign: "tr-tl",
-        },
-      },
+          anchorAlign: "tr-tl"
+        }
+      }
     },
 
     updateAlignment: function (align) {
@@ -400,7 +400,7 @@ Ext.define(
         me.anchor =
           Toast.bodyAnchor ||
           (Toast.bodyAnchor = {
-            el: Ext.getBody(),
+            el: Ext.getBody()
           });
       }
     },
@@ -449,7 +449,7 @@ Ext.define(
           me.anchor.el,
           me.anchorAlign,
           [me.paddingX * me.paddingFactorX, me.paddingY * me.paddingFactorY],
-          false,
+          false
         );
 
         me.xPos = me.getXposAlignedToAnchor();
@@ -465,18 +465,18 @@ Ext.define(
         el.animate({
           from: {
             x: xy[0],
-            y: xy[1],
+            y: xy[1]
           },
           to: {
             x: me.xPos,
             y: me.yPos,
-            opacity: 1,
+            opacity: 1
           },
           easing: me.slideInAnimation,
           duration: me.slideInDuration,
           dynamic: true,
           callback: me.afterPositioned,
-          scope: me,
+          scope: me
         });
       } else {
         me.setLocalXY(me.xPos, me.yPos);
@@ -524,11 +524,11 @@ Ext.define(
           el.animate({
             to: {
               x: me.xPos,
-              y: me.yPos,
+              y: me.yPos
             },
             easing: me.slideBackAnimation,
             duration: me.slideBackDuration,
-            dynamic: true,
+            dynamic: true
           });
         }
       }
@@ -644,8 +644,8 @@ Ext.define(
                   if (!me.destroying && !me.destroyed) {
                     me.hide(me.animateTarget, me.doClose, me);
                   }
-                },
-              },
+                }
+              }
             });
           } else {
             me.isFading = false;
@@ -655,7 +655,7 @@ Ext.define(
       }
 
       return me;
-    },
+    }
   },
   function (Toast) {
     Ext.toast = function (message, title, align, iconCls) {
@@ -666,7 +666,7 @@ Ext.define(
         config = {
           title: title,
           html: message,
-          iconCls: iconCls,
+          iconCls: iconCls
         };
         if (align) {
           config.align = align;
@@ -677,5 +677,5 @@ Ext.define(
       toast.show();
       return toast;
     };
-  },
+  }
 );

@@ -119,7 +119,7 @@ Ext.define("Ext.data.schema.Schema", {
     "Ext.data.schema.OneToOne",
     "Ext.data.schema.ManyToOne",
     "Ext.data.schema.ManyToMany",
-    "Ext.data.schema.Namer",
+    "Ext.data.schema.Namer"
   ],
 
   alias: "schema.default", // also configures Factoryable
@@ -263,7 +263,7 @@ Ext.define("Ext.data.schema.Schema", {
                       ret.schema.type +
                       '" and "' +
                       name +
-                      '"',
+                      '"'
                   );
                 }
                 ret = match;
@@ -278,7 +278,7 @@ Ext.define("Ext.data.schema.Schema", {
       }
 
       return ret;
-    },
+    }
   },
 
   /**
@@ -340,7 +340,7 @@ Ext.define("Ext.data.schema.Schema", {
      */
     proxy: {
       type: "ajax",
-      url: "{prefix}/{entityName}",
+      url: "{prefix}/{entityName}"
     },
 
     /**
@@ -348,7 +348,7 @@ Ext.define("Ext.data.schema.Schema", {
      * This is the URL prefix used for all requests to the server. It could be something
      * like "/~api". This value is included in the `proxy` template data as "prefix".
      */
-    urlPrefix: "",
+    urlPrefix: ""
   },
 
   onClassExtended: function (cls, data) {
@@ -581,15 +581,15 @@ Ext.define("Ext.data.schema.Schema", {
         type: leftType,
         role: leftRole,
         field: leftField,
-        associationKey: left.associationKey,
+        associationKey: left.associationKey
       },
       right: {
         cls: rightEntry.cls,
         type: rightType,
         role: rightRole,
         field: rightField,
-        associationKey: right.associationKey,
-      },
+        associationKey: right.associationKey
+      }
     });
 
     leftEntry.associations[matrix.right.role] = matrix.right;
@@ -648,7 +648,7 @@ Ext.define("Ext.data.schema.Schema", {
     referenceField,
     descr,
     unique,
-    dupeCheck,
+    dupeCheck
   ) {
     var me = this,
       namer = me.getNamer(),
@@ -683,7 +683,7 @@ Ext.define("Ext.data.schema.Schema", {
         entityName,
         unique,
         rightRole,
-        rightType,
+        rightType
       );
     }
 
@@ -693,14 +693,14 @@ Ext.define("Ext.data.schema.Schema", {
           entityType,
           leftRole,
           rightType,
-          rightRole,
+          rightRole
         );
       } else {
         association = namer.manyToOne(
           entityType,
           leftRole,
           rightType,
-          rightRole,
+          rightRole
         );
       }
     }
@@ -711,7 +711,7 @@ Ext.define("Ext.data.schema.Schema", {
           associations[association],
           association,
           leftRole,
-          rightRole,
+          rightRole
         ) !== false
       ) {
         return;
@@ -728,7 +728,7 @@ Ext.define("Ext.data.schema.Schema", {
           (referenceField ? "." + referenceField.name : "") +
           " (collides with " +
           associations[association].definedBy.entityName +
-          ")",
+          ")"
       );
     }
     if (referenceField && referenceField.definedBy === entities[rightType]) {
@@ -756,15 +756,15 @@ Ext.define("Ext.data.schema.Schema", {
         cls: entityType,
         type: entityName,
         role: leftRole,
-        extra: left,
+        extra: left
       },
       right: {
         cls: entry.cls,
         type: rightType,
         role: rightRole,
-        extra: descr,
+        extra: descr
       },
-      meta: descr,
+      meta: descr
     });
 
     // Add the left and right association "sides" to the appropriate collections, but
@@ -814,7 +814,7 @@ Ext.define("Ext.data.schema.Schema", {
       if (!entry) {
         entities[entityName] = entry = {
           name: entityName,
-          associations: {},
+          associations: {}
         };
       }
       //<debug>
@@ -825,7 +825,7 @@ Ext.define("Ext.data.schema.Schema", {
             '": ' +
             entry.cls.$className +
             " and " +
-            entityType.$className,
+            entityType.$className
         );
       }
       //</debug>
@@ -952,7 +952,7 @@ Ext.define("Ext.data.schema.Schema", {
         //<debug>
         Ext.Assert.isString(
           matrixDef.type,
-          'No "type" for manyToMany in ' + entityName,
+          'No "type" for manyToMany in ' + entityName
         );
         //</debug>
 
@@ -1042,7 +1042,7 @@ Ext.define("Ext.data.schema.Schema", {
             entry.left.field,
             entry.right.type,
             entry.right.role,
-            entry.right.field,
+            entry.right.field
           ].join("|");
 
         // Call back in to bypass this check and realize the new association:
@@ -1064,12 +1064,12 @@ Ext.define("Ext.data.schema.Schema", {
           after.left.field,
           after.right.type,
           after.right.role,
-          after.right.field,
+          after.right.field
         ].join("|");
 
         if (before != after) {
           Ext.log.warn(
-            matrixName + "(" + entry.definedBy.entityName + "): " + before,
+            matrixName + "(" + entry.definedBy.entityName + "): " + before
           );
           Ext.log.warn(matrixName + "(" + entityName + "): " + after);
           Ext.raise(
@@ -1078,7 +1078,7 @@ Ext.define("Ext.data.schema.Schema", {
               '" declared by ' +
               entityName +
               " was previously declared by " +
-              entry.definedBy.entityName,
+              entry.definedBy.entityName
           );
         }
       }
@@ -1100,7 +1100,7 @@ Ext.define("Ext.data.schema.Schema", {
 
       if (Ext.isString(descr)) {
         descr = {
-          type: descr,
+          type: descr
         };
       } else {
         descr = Ext.apply({}, descr);
@@ -1122,7 +1122,7 @@ Ext.define("Ext.data.schema.Schema", {
 
       assoc = Ext.apply({}, this.checkLegacyAssociation(entityType, assoc));
       assoc.type = this.getEntityName(
-        assoc.child || assoc.parent || assoc.type,
+        assoc.child || assoc.parent || assoc.type
       );
 
       foreignKey = assoc.foreignKey || assoc.type.toLowerCase() + "_id";
@@ -1134,7 +1134,7 @@ Ext.define("Ext.data.schema.Schema", {
         assoc.legacy = true;
         //<debug>
         Ext.log.warn(
-          "Using foreignKey is deprecated, use a keyed association. See Ext.data.field.Field.reference",
+          "Using foreignKey is deprecated, use a keyed association. See Ext.data.field.Field.reference"
         );
         //</debug>
       }
@@ -1157,7 +1157,7 @@ Ext.define("Ext.data.schema.Schema", {
       assoc = Ext.apply({}, this.checkLegacyAssociation(entityType, assoc));
 
       assoc.type = this.getEntityName(
-        assoc.child || assoc.parent || assoc.type,
+        assoc.child || assoc.parent || assoc.type
       );
 
       name = assoc.type;
@@ -1178,9 +1178,9 @@ Ext.define("Ext.data.schema.Schema", {
         assoc = Ext.apply(
           {
             type: name,
-            inverse: inverseOptions,
+            inverse: inverseOptions
           },
-          declaredInverse,
+          declaredInverse
         );
 
         child = inverseOptions.child;
@@ -1195,7 +1195,7 @@ Ext.define("Ext.data.schema.Schema", {
           assoc.legacy = true;
           //<debug>
           Ext.log.warn(
-            "Using foreignKey is deprecated, use a keyed association. See Ext.data.field.Field.reference",
+            "Using foreignKey is deprecated, use a keyed association. See Ext.data.field.Field.reference"
           );
           //</debug>
         }
@@ -1222,12 +1222,12 @@ Ext.define("Ext.data.schema.Schema", {
                   r +
                   '") and belongsTo ("' +
                   l +
-                  '") should not be used in conjunction to declare a relationship. Use only one.',
+                  '") should not be used in conjunction to declare a relationship. Use only one.'
               );
             }
 
             return result;
-          },
+          }
           //</debug>
         );
       } else {
@@ -1242,7 +1242,7 @@ Ext.define("Ext.data.schema.Schema", {
     checkLegacyAssociation: function (entityType, assoc) {
       if (Ext.isString(assoc)) {
         assoc = {
-          type: assoc,
+          type: assoc
         };
       } else {
         assoc = Ext.apply({}, assoc);
@@ -1395,14 +1395,14 @@ Ext.define("Ext.data.schema.Schema", {
       }
       keyCheckQueue.push({
         record: record,
-        role: role,
+        role: role
       });
 
       if (!timer) {
         me.timer = timer = Ext.Function.defer(
           me.processKeyChecks,
           me.getKeyCheckDelay(),
-          me,
+          me
         );
       }
     },
@@ -1449,7 +1449,7 @@ Ext.define("Ext.data.schema.Schema", {
         Ext.raise(
           entityName +
             " has circular foreign-key references: " +
-            topoStack.join(" --> "),
+            topoStack.join(" --> ")
         );
       }
 
@@ -1478,6 +1478,6 @@ Ext.define("Ext.data.schema.Schema", {
       //<debug>
       topoStack.pop();
       //</debug>
-    },
-  }, // private
+    }
+  } // private
 });

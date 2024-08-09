@@ -30,7 +30,7 @@ Ext.define("MainHub.mixins.grid.CheckboxesAndSearchInput", {
           res = res || showSamples;
         }
         return res;
-      },
+      }
     });
 
     var searchFilter = Ext.util.Filter({
@@ -51,10 +51,10 @@ Ext.define("MainHub.mixins.grid.CheckboxesAndSearchInput", {
           res = true;
         }
         return res;
-      },
+      }
     });
 
     store.clearFilter();
     store.filter([showFilter, searchFilter]);
-  },
+  }
 });

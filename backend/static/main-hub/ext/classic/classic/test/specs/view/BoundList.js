@@ -10,9 +10,9 @@ describe("Ext.view.BoundList", function () {
       model: "spec.View",
       data: data || [
         {
-          name: "Item1",
-        },
-      ],
+          name: "Item1"
+        }
+      ]
     });
     boundList = new Ext.view.BoundList(cfg);
   }
@@ -20,7 +20,7 @@ describe("Ext.view.BoundList", function () {
   beforeEach(function () {
     Ext.define("spec.View", {
       extend: "Ext.data.Model",
-      fields: ["name"],
+      fields: ["name"]
     });
   });
 
@@ -38,8 +38,8 @@ describe("Ext.view.BoundList", function () {
           '<div class="header">header</div>',
           '<tpl for=".">',
           '<li class="x-boundlist-item">{name}</li>',
-          "</tpl>",
-        ],
+          "</tpl>"
+        ]
       });
       boundList.refresh();
       boundList.refresh();
@@ -59,7 +59,7 @@ describe("Ext.view.BoundList", function () {
       createBoundList();
 
       expect(boundList.tpl.html).toBe(
-        '<tpl for="."><li role="option" unselectable="on" class="x-boundlist-item">{name}</li></tpl>',
+        '<tpl for="."><li role="option" unselectable="on" class="x-boundlist-item">{name}</li></tpl>'
       );
     });
 
@@ -67,8 +67,8 @@ describe("Ext.view.BoundList", function () {
       createBoundList({}, [
         {
           name: "Item1",
-          id: "itemone",
-        },
+          id: "itemone"
+        }
       ]);
 
       var nodes = boundList.getNodes(),
@@ -87,7 +87,7 @@ describe("Ext.view.BoundList", function () {
         // The <li> items should go indide the <ul>
         expect(boundList.getNodeContainer().dom.childNodes.length).toBe(0);
         store.add({
-          name: "Item1",
+          name: "Item1"
         });
 
         // The <li> items should go indide the <ul>
@@ -103,7 +103,7 @@ describe("Ext.view.BoundList", function () {
         // The <li> items should go indide the <ul>
         expect(boundList.getNodeContainer().dom.childNodes.length).toBe(1);
         store.add({
-          name: "Item2",
+          name: "Item2"
         });
 
         // The <li> items should go indide the <ul>
@@ -119,7 +119,7 @@ describe("Ext.view.BoundList", function () {
         // The <li> items should go indide the <ul>
         expect(boundList.getNodeContainer().dom.childNodes.length).toBe(1);
         store.insert(0, {
-          name: "Item2",
+          name: "Item2"
         });
 
         // The <li> items should go indide the <ul>
@@ -132,23 +132,23 @@ describe("Ext.view.BoundList", function () {
       it("should be able to insert a node in the middle of the BoundList", function () {
         createBoundList({}, [
           {
-            name: "Item1",
+            name: "Item1"
           },
           {
-            name: "Item2",
+            name: "Item2"
           },
           {
-            name: "Item3",
+            name: "Item3"
           },
           {
-            name: "Item4",
-          },
+            name: "Item4"
+          }
         ]);
 
         // The <li> items should go indide the <ul>
         expect(boundList.getNodeContainer().dom.childNodes.length).toBe(4);
         store.insert(2, {
-          name: "new",
+          name: "new"
         });
 
         // The <li> items should go indide the <ul>
@@ -188,11 +188,11 @@ describe("Ext.view.BoundList", function () {
 
         store.add([
           {
-            name: "Item1",
+            name: "Item1"
           },
           {
-            name: "Item2",
-          },
+            name: "Item2"
+          }
         ]);
 
         nodes = boundList.getNodes();
@@ -281,7 +281,7 @@ describe("Ext.view.BoundList", function () {
 
       for (; i <= 10; ++i) {
         nodes.push({
-          name: "Item " + i,
+          name: "Item " + i
         });
       }
 
@@ -290,9 +290,9 @@ describe("Ext.view.BoundList", function () {
           itemCls: "foo",
           renderTo: Ext.getBody(),
           itemTpl: "{name}",
-          overItemCls: "over",
+          overItemCls: "over"
         },
-        nodes,
+        nodes
       );
     });
 
@@ -379,8 +379,8 @@ describe("Ext.view.BoundList", function () {
       createBoundList({}, [
         {
           name: "Item1",
-          id: "itemone",
-        },
+          id: "itemone"
+        }
       ]);
 
       expect(boundList.displayField).toBe("name");
@@ -398,7 +398,7 @@ describe("Ext.view.BoundList", function () {
 
       expect(boundList.tpl.isTemplate).toBe(true);
       expect(boundList.tpl.html).toBe(
-        '<tpl for="."><li role="option" unselectable="on" class="x-boundlist-item">{id}</li></tpl>',
+        '<tpl for="."><li role="option" unselectable="on" class="x-boundlist-item">{id}</li></tpl>'
       );
     });
 
@@ -408,8 +408,8 @@ describe("Ext.view.BoundList", function () {
       createBoundList({}, [
         {
           name: "Item1",
-          id: "itemone",
-        },
+          id: "itemone"
+        }
       ]);
 
       // update boundlist displayField
@@ -447,7 +447,7 @@ describe("Ext.view.BoundList", function () {
     describe("enabling the boundlist", function () {
       beforeEach(function () {
         createBoundList({
-          disabled: true,
+          disabled: true
         });
 
         spyOn(Ext.dom.Element.prototype, "unmask");
@@ -475,7 +475,7 @@ describe("Ext.view.BoundList", function () {
         {
           deselectOnContainerClick: true,
           width: 200,
-          height: 100,
+          height: 100
         },
         [
           { name: "Item 1" },
@@ -486,8 +486,8 @@ describe("Ext.view.BoundList", function () {
           { name: "Item 6" },
           { name: "Item 7" },
           { name: "Item 8" },
-          { name: "Item 9" },
-        ],
+          { name: "Item 9" }
+        ]
       );
     });
 

@@ -33,7 +33,7 @@ Ext.define(
           element: element,
           callback: this.onElementResize,
           scope: this,
-          args: [element],
+          args: [element]
         });
       }
 
@@ -61,7 +61,7 @@ Ext.define(
       Ext.TaskQueue.requestRead("fire", this, [
         element,
         "resize",
-        [element, info],
+        [element, info]
       ]);
     },
 
@@ -88,11 +88,11 @@ Ext.define(
           }
         }
         Ext.TaskQueue.flush();
-      },
-    },
+      }
+    }
     //</debug>
   },
   function (ElementSize) {
     ElementSize.instance = new ElementSize();
-  },
+  }
 );

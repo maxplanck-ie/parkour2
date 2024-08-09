@@ -480,19 +480,19 @@ describe("Ext.util.Region", function () {
       insideEl =
         insideEl ||
         Ext.getBody().createChild({
-          style: "background-color:yellow;position:absolute",
+          style: "background-color:yellow;position:absolute"
         });
       insideEl.setBox(inside);
       targetEl =
         targetEl ||
         Ext.getBody().createChild({
-          style: "background-color:red;position:absolute",
+          style: "background-color:red;position:absolute"
         });
       targetEl.setBox(target);
       resultEl =
         resultEl ||
         Ext.getBody().createChild({
-          style: "background-color:blue;position:absolute",
+          style: "background-color:blue;position:absolute"
         });
       resultEl.setBox(result);
     };
@@ -509,7 +509,7 @@ describe("Ext.util.Region", function () {
           it("should position correctly", function () {
             result = testRegion.alignTo({
               target: target,
-              align: "tl-br",
+              align: "tl-br"
             });
 
             expectXYWH(result, 250, 250, 100, 100);
@@ -522,7 +522,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tl-br",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 200, 250, 100, 100);
@@ -532,7 +532,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tl-br",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 250, 200, 100, 100);
@@ -542,7 +542,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tl-br",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 400, 100, 100, 100);
@@ -553,7 +553,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tl-br",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 300, 400, 100, 100);
@@ -570,7 +570,7 @@ describe("Ext.util.Region", function () {
           it("should position correctly", function () {
             result = testRegion.alignTo({
               target: target,
-              align: "bl-tr",
+              align: "bl-tr"
             });
 
             expectXYWH(result, 250, 150, 100, 100);
@@ -583,7 +583,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "bl-tr",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 200, 150, 100, 100);
@@ -593,7 +593,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "bl-tr",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 250, 0, 100, 100);
@@ -603,7 +603,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "bl-tr",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 400, 300, 100, 100);
@@ -614,7 +614,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "bl-tr",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 300, 0, 100, 100);
@@ -631,7 +631,7 @@ describe("Ext.util.Region", function () {
           it("should position correctly", function () {
             result = testRegion.alignTo({
               target: target,
-              align: "br-tl",
+              align: "br-tl"
             });
 
             expectXYWH(result, 150, 150, 100, 100);
@@ -644,7 +644,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "br-tl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 0, 150, 100, 100);
@@ -654,7 +654,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "br-tl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 150, 0, 100, 100);
@@ -664,7 +664,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "br-tl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 0, 300, 100, 100);
@@ -675,7 +675,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "br-tl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 100, 0, 100, 100);
@@ -692,7 +692,7 @@ describe("Ext.util.Region", function () {
           it("should position correctly", function () {
             result = testRegion.alignTo({
               target: target,
-              align: "tr-bl",
+              align: "tr-bl"
             });
 
             expectXYWH(result, 150, 250, 100, 100);
@@ -705,7 +705,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tr-bl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 0, 250, 100, 100);
@@ -715,7 +715,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tr-bl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 150, 400, 100, 100);
@@ -725,7 +725,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tr-bl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 0, 100, 100, 100);
@@ -736,7 +736,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "tr-bl",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 100, 400, 100, 100);
@@ -750,7 +750,7 @@ describe("Ext.util.Region", function () {
             target.setPosition(0, 50);
             result = testRegion.alignTo({
               target: target,
-              align: "t-b",
+              align: "t-b"
             });
 
             expectXYWH(result, 75, 300, 100, 100);
@@ -762,7 +762,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "t-b",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 250, 400, 100, 100);
@@ -772,7 +772,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "t-b",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 150, 400, 100, 100);
@@ -783,7 +783,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "t-b",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 200, 100, 100, 100);
@@ -796,7 +796,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "t-b",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 200, 350, 100, 100);
@@ -809,7 +809,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "t-b",
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 200, 450, 100, 50);
@@ -822,7 +822,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "t-b",
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 200, 0, 100, 50);
@@ -836,7 +836,7 @@ describe("Ext.util.Region", function () {
             target.setPosition(0, 200);
             result = testRegion.alignTo({
               target: target,
-              align: "b-t",
+              align: "b-t"
             });
 
             expectXYWH(result, 75, 100, 100, 100);
@@ -848,7 +848,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "b-t",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 300, 0, 100, 100);
@@ -858,7 +858,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "b-t",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 100, 0, 100, 100);
@@ -869,7 +869,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "b-t",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 200, 300, 100, 100);
@@ -882,7 +882,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "b-t",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 200, 50, 100, 100);
@@ -895,7 +895,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "b-t",
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 200, 450, 100, 50);
@@ -908,7 +908,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "b-t",
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 200, 0, 100, 50);
@@ -922,7 +922,7 @@ describe("Ext.util.Region", function () {
             target.setPosition(0, 0);
             result = testRegion.alignTo({
               target: target,
-              align: "l-r",
+              align: "l-r"
             });
 
             expectXYWH(result, 250, 75, 100, 100);
@@ -934,7 +934,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "l-r",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 400, 300, 100, 100);
@@ -944,7 +944,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "l-r",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 400, 100, 100, 100);
@@ -955,7 +955,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "l-r",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 100, 200, 100, 100);
@@ -968,7 +968,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "l-r",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 350, 200, 100, 100);
@@ -981,7 +981,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "l-r",
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 400, 0, 100, 125);
@@ -994,7 +994,7 @@ describe("Ext.util.Region", function () {
               align: "l-r",
               inside: inside,
               minWidth: 50,
-              axisLock: true,
+              axisLock: true
             });
 
             expectXYWH(result, 440, 200, 60, 100);
@@ -1008,7 +1008,7 @@ describe("Ext.util.Region", function () {
             target.setPosition(250, 0);
             result = testRegion.alignTo({
               target: target,
-              align: "r-l",
+              align: "r-l"
             });
 
             expectXYWH(result, 150, 75, 100, 100);
@@ -1020,7 +1020,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "r-l",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 0, 300, 100, 100);
@@ -1030,7 +1030,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "r-l",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 0, 100, 100, 100);
@@ -1041,7 +1041,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "r-l",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 300, 200, 100, 100);
@@ -1054,7 +1054,7 @@ describe("Ext.util.Region", function () {
             result = testRegion.alignTo({
               target: target,
               align: "r-l",
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 75, 200, 100, 100);
@@ -1067,7 +1067,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "r-l",
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 0, 0, 100, 125);
@@ -1080,7 +1080,7 @@ describe("Ext.util.Region", function () {
               align: "r-l",
               inside: inside,
               minWidth: 50,
-              axisLock: true,
+              axisLock: true
             });
 
             expectXYWH(result, 0, 200, 60, 100);
@@ -1104,7 +1104,7 @@ describe("Ext.util.Region", function () {
             target.setPosition(250, 0);
             result = testRegion.alignTo({
               target: target,
-              align: "tl-bl",
+              align: "tl-bl"
             });
 
             expectXYWH(result, 250, 250, 100, 100);
@@ -1117,7 +1117,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "tl-bl",
               allowXTranslate: false,
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 250, 100, 100, 100);
@@ -1130,7 +1130,7 @@ describe("Ext.util.Region", function () {
               align: "tl-bl",
               allowXTranslate: false,
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 250, 450, 100, 50);
@@ -1143,7 +1143,7 @@ describe("Ext.util.Region", function () {
               align: "tl-bl",
               allowXTranslate: false,
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 0, 0, 100, 50);
@@ -1157,7 +1157,7 @@ describe("Ext.util.Region", function () {
             target.setPosition(250, 250);
             result = testRegion.alignTo({
               target: target,
-              align: "bl-tl",
+              align: "bl-tl"
             });
 
             expectXYWH(result, 250, 150, 100, 100);
@@ -1170,7 +1170,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "bl-tl",
               allowXTranslate: false,
-              inside: inside,
+              inside: inside
             });
 
             expectXYWH(result, 250, 300, 100, 100);
@@ -1183,7 +1183,7 @@ describe("Ext.util.Region", function () {
               align: "bl-tl",
               allowXTranslate: false,
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 250, 0, 100, 50);
@@ -1196,7 +1196,7 @@ describe("Ext.util.Region", function () {
               align: "bl-tl",
               allowXTranslate: false,
               inside: inside,
-              minHeight: 50,
+              minHeight: 50
             });
 
             expectXYWH(result, 0, 450, 100, 50);
@@ -1220,7 +1220,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "t-b",
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 80, 310, 90, 90);
@@ -1235,7 +1235,7 @@ describe("Ext.util.Region", function () {
               align: "t-b",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 260, 280, 90, 90);
@@ -1248,7 +1248,7 @@ describe("Ext.util.Region", function () {
               align: "t-b",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 150, 280, 90, 90);
@@ -1262,7 +1262,7 @@ describe("Ext.util.Region", function () {
               align: "t-b",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 100, 90, 90);
@@ -1278,7 +1278,7 @@ describe("Ext.util.Region", function () {
               align: "t-b",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 350, 90, 90);
@@ -1294,7 +1294,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 460, 90, 40);
@@ -1310,7 +1310,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 0, 90, 40);
@@ -1327,7 +1327,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "b-t",
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 80, 100, 90, 90);
@@ -1342,7 +1342,7 @@ describe("Ext.util.Region", function () {
               align: "b-t",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 310, 130, 90, 90);
@@ -1355,7 +1355,7 @@ describe("Ext.util.Region", function () {
               align: "b-t",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 100, 130, 90, 90);
@@ -1369,7 +1369,7 @@ describe("Ext.util.Region", function () {
               align: "b-t",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 310, 90, 90);
@@ -1385,7 +1385,7 @@ describe("Ext.util.Region", function () {
               align: "b-t",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 60, 90, 90);
@@ -1401,7 +1401,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 460, 90, 40);
@@ -1417,7 +1417,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 205, 0, 90, 40);
@@ -1434,7 +1434,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "l-r",
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 260, 80, 90, 90);
@@ -1449,7 +1449,7 @@ describe("Ext.util.Region", function () {
               align: "l-r",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 280, 310, 90, 90);
@@ -1462,7 +1462,7 @@ describe("Ext.util.Region", function () {
               align: "l-r",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 280, 100, 90, 90);
@@ -1476,7 +1476,7 @@ describe("Ext.util.Region", function () {
               align: "l-r",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 100, 205, 90, 90);
@@ -1492,7 +1492,7 @@ describe("Ext.util.Region", function () {
               align: "l-r",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 350, 205, 90, 90);
@@ -1508,7 +1508,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 175, 0, 90, 115);
@@ -1525,7 +1525,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "r-l",
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 150, 80, 90, 90);
@@ -1540,7 +1540,7 @@ describe("Ext.util.Region", function () {
               align: "r-l",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 130, 310, 90, 90);
@@ -1553,7 +1553,7 @@ describe("Ext.util.Region", function () {
               align: "r-l",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 130, 100, 90, 90);
@@ -1567,7 +1567,7 @@ describe("Ext.util.Region", function () {
               align: "r-l",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 310, 205, 90, 90);
@@ -1583,7 +1583,7 @@ describe("Ext.util.Region", function () {
               align: "r-l",
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 85, 205, 90, 90);
@@ -1599,7 +1599,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 235, 0, 90, 115);
@@ -1626,7 +1626,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "tl-bl",
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 250, 260, 90, 90);
@@ -1642,7 +1642,7 @@ describe("Ext.util.Region", function () {
               allowXTranslate: false,
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 250, 100, 90, 90);
@@ -1658,7 +1658,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 250, 460, 90, 40);
@@ -1674,7 +1674,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 0, 0, 90, 40);
@@ -1691,7 +1691,7 @@ describe("Ext.util.Region", function () {
               target: target,
               align: "bl-tl",
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 250, 150, 90, 90);
@@ -1707,7 +1707,7 @@ describe("Ext.util.Region", function () {
               allowXTranslate: false,
               inside: inside,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 250, 310, 90, 90);
@@ -1723,7 +1723,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 250, 0, 90, 40);
@@ -1739,7 +1739,7 @@ describe("Ext.util.Region", function () {
               inside: inside,
               minHeight: 40,
               anchorSize: 10,
-              offset: 0,
+              offset: 0
             });
 
             expectXYWH(result, 0, 460, 90, 40);

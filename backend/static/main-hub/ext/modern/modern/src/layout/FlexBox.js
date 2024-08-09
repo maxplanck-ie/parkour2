@@ -31,7 +31,7 @@ Ext.define("Ext.layout.FlexBox", {
   alias: "layout.box",
 
   config: {
-    align: "stretch",
+    align: "stretch"
   },
 
   cls: Ext.baseCSSPrefix + "layout-box",
@@ -43,19 +43,19 @@ Ext.define("Ext.layout.FlexBox", {
       event: "widthchange",
       containerCls: [
         Ext.baseCSSPrefix + "layout-hbox",
-        Ext.baseCSSPrefix + "horizontal",
+        Ext.baseCSSPrefix + "horizontal"
       ],
-      itemCls: Ext.baseCSSPrefix + "layout-hbox-item",
+      itemCls: Ext.baseCSSPrefix + "layout-hbox-item"
     },
     vertical: {
       sizeProp: "height",
       event: "heightchange",
       containerCls: [
         Ext.baseCSSPrefix + "layout-vbox",
-        Ext.baseCSSPrefix + "vertical",
+        Ext.baseCSSPrefix + "vertical"
       ],
-      itemCls: Ext.baseCSSPrefix + "layout-vbox-item",
-    },
+      itemCls: Ext.baseCSSPrefix + "layout-vbox-item"
+    }
   },
 
   setContainer: function (container) {
@@ -70,7 +70,7 @@ Ext.define("Ext.layout.FlexBox", {
       Ext.Logger.error(
         "Invalid box orient of: '" +
           orient +
-          "', must be either 'horizontal' or 'vertical'",
+          "', must be either 'horizontal' or 'vertical'"
       );
     }
     //</debug>
@@ -88,7 +88,7 @@ Ext.define("Ext.layout.FlexBox", {
       newMap = map[orient],
       oldMap = map[oldOrient],
       delegation = {
-        delegate: "> component",
+        delegate: "> component"
       },
       i,
       itemCls,
@@ -240,7 +240,7 @@ Ext.define("Ext.layout.FlexBox", {
       style.setProperty(
         "-ms-flex",
         flex ? flex + " " + flex + " 0px" : "",
-        null,
+        null
       );
     }
 
@@ -277,5 +277,5 @@ Ext.define("Ext.layout.FlexBox", {
 
   updatePack: function (pack, oldPack) {
     this.container.innerElement.swapCls(pack, oldPack, true, "x-pack");
-  },
+  }
 });

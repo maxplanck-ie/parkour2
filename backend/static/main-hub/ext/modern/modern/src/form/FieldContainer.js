@@ -7,7 +7,7 @@
 Ext.define("Ext.form.FieldContainer", {
   extend: "Ext.Mixin",
   mixinConfig: {
-    id: "fieldContainer",
+    id: "fieldContainer"
   },
 
   config: {
@@ -28,7 +28,7 @@ Ext.define("Ext.form.FieldContainer", {
      *
      * Defaults to `false` in the iOS theme
      */
-    inputBorders: null,
+    inputBorders: null
   },
 
   fieldSeparatorsCls: Ext.baseCSSPrefix + "form-field-separators",
@@ -54,5 +54,5 @@ Ext.define("Ext.form.FieldContainer", {
     } else if (oldInputBorders === false) {
       innerElement.removeCls(cls);
     }
-  },
+  }
 });

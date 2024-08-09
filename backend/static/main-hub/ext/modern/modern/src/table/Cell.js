@@ -4,7 +4,7 @@ Ext.define("Ext.table.Cell", {
   xtype: "tablecell",
 
   config: {
-    baseCls: "x-table-cell",
+    baseCls: "x-table-cell"
   },
 
   getElementConfig: function () {
@@ -13,5 +13,5 @@ Ext.define("Ext.table.Cell", {
     config.children.length = 0;
 
     return config;
-  },
+  }
 });

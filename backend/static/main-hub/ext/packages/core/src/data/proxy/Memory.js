@@ -76,8 +76,8 @@ Ext.define("Ext.data.proxy.Memory", {
         } else {
           return Ext.clone(newValue);
         }
-      },
-    },
+      }
+    }
   },
 
   /**
@@ -159,8 +159,8 @@ Ext.define("Ext.data.proxy.Memory", {
         resultSet.setRecords(
           (records = Ext.Array.filter(
             records,
-            Ext.util.Filter.createFilterFn(filters),
-          )),
+            Ext.util.Filter.createFilterFn(filters)
+          ))
         );
         resultSet.setTotal(records.length);
       }
@@ -176,8 +176,8 @@ Ext.define("Ext.data.proxy.Memory", {
         resultSet.setRecords(
           (records = Ext.Array.sort(
             records,
-            Ext.util.Sortable.createComparator(sorters),
-          )),
+            Ext.util.Sortable.createComparator(sorters)
+          ))
         );
       }
 
@@ -189,7 +189,7 @@ Ext.define("Ext.data.proxy.Memory", {
           resultSet.setConfig({
             success: false,
             records: [],
-            total: 0,
+            total: 0
           });
         }
         // Range is valid, slice it up.
@@ -207,5 +207,5 @@ Ext.define("Ext.data.proxy.Memory", {
     }
   },
 
-  clear: Ext.emptyFn,
+  clear: Ext.emptyFn
 });

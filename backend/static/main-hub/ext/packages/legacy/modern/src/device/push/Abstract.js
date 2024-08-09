@@ -114,7 +114,7 @@ Ext.define("Ext.device.push.Abstract", {
       received: function (notifications) {
         me.onReceived(notifications, config.received, config.scope || me);
       },
-      type: config.type,
+      type: config.type
     };
   },
 
@@ -134,5 +134,5 @@ Ext.define("Ext.device.push.Abstract", {
     if (callback) {
       callback.call(scope, notifications);
     }
-  },
+  }
 });

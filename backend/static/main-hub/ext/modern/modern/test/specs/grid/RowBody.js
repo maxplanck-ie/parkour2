@@ -8,12 +8,12 @@ describe("Ext.grid.RowBody", function () {
       "d3",
       {
         name: "expanded",
-        type: "boolean",
-      },
+        type: "boolean"
+      }
     ],
     TestModel = Ext.define(null, {
       extend: "Ext.data.Model",
-      fields: fields,
+      fields: fields
     }),
     TestGrid = Ext.define(null, {
       extend: "Ext.grid.Grid",
@@ -22,9 +22,9 @@ describe("Ext.grid.RowBody", function () {
       $testRefresh: function () {
         var container = this.container;
         this.onContainerResize(container, {
-          height: container.element.getHeight(),
+          height: container.element.getHeight()
         });
-      },
+      }
     }),
     store,
     grid,
@@ -51,7 +51,7 @@ describe("Ext.grid.RowBody", function () {
 
     return new Ext.data.Store({
       model: TestModel,
-      data: data,
+      data: data
     });
   }
 
@@ -66,7 +66,7 @@ describe("Ext.grid.RowBody", function () {
           dataIndex: name,
           width: 100,
           text: name.toUpperCase(),
-          itemId: "col" + name,
+          itemId: "col" + name
         };
       }),
       plugins: "rowexpander",
@@ -74,9 +74,9 @@ describe("Ext.grid.RowBody", function () {
         expandedField: expandField,
         viewModel: {},
         body: {
-          tpl: "{d1}",
-        },
-      },
+          tpl: "{d1}"
+        }
+      }
     };
 
     config = Ext.apply(defaults, config);
@@ -94,7 +94,7 @@ describe("Ext.grid.RowBody", function () {
           dataIndex: name,
           width: 100,
           text: name.toUpperCase(),
-          itemId: "col" + name,
+          itemId: "col" + name
         };
       }),
       plugins: "rowexpander",
@@ -105,10 +105,10 @@ describe("Ext.grid.RowBody", function () {
           widget: {
             xtype: "button",
             height: 42,
-            bind: "{record.d1}",
-          },
-        },
-      },
+            bind: "{record.d1}"
+          }
+        }
+      }
     };
 
     config = Ext.apply(defaults, config);
@@ -276,7 +276,7 @@ describe("Ext.grid.RowBody", function () {
 
           row.expand();
           expect((expandedHeight = row.el.getHeight())).toBeGreaterThan(
-            collapsedHeight,
+            collapsedHeight
           );
 
           // Scroll until the row gets recycled for use by another record

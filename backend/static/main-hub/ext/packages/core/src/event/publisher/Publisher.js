@@ -30,7 +30,7 @@ Ext.define("Ext.event.publisher.Publisher", {
      *     // get the publisher that  handles click:
      *     var publisher = Ext.event.publisher.Publisher.publishersByEvent.click;
      */
-    publishersByEvent: {},
+    publishersByEvent: {}
   },
 
   constructor: function () {
@@ -49,7 +49,7 @@ Ext.define("Ext.event.publisher.Publisher", {
       Ext.raise(
         "Event publisher '" +
           me.$className +
-          "' defined without a 'type' property.",
+          "' defined without a 'type' property."
       );
     }
     if (me.self.instance) {
@@ -59,7 +59,7 @@ Ext.define("Ext.event.publisher.Publisher", {
           "'. " +
           "Use '" +
           me.$className +
-          ".instance' to retrieve the singleton instance.",
+          ".instance' to retrieve the singleton instance."
       );
     }
     //</debug>
@@ -95,7 +95,7 @@ Ext.define("Ext.event.publisher.Publisher", {
     Ext.raise(
       "Ext.event.publisher.Publisher subclass '" +
         this.$className +
-        '" has no subscribe method.',
+        '" has no subscribe method.'
     );
   },
 
@@ -103,7 +103,7 @@ Ext.define("Ext.event.publisher.Publisher", {
     Ext.raise(
       "Ext.event.publisher.Publisher subclass '" +
         this.$className +
-        '" has no unsubscribe method.',
+        '" has no unsubscribe method.'
     );
   },
   //</debug>
@@ -118,5 +118,5 @@ Ext.define("Ext.event.publisher.Publisher", {
         event.fire.apply(event, args);
       }
     }
-  },
+  }
 });

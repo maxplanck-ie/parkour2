@@ -53,5 +53,5 @@ Ext.define("Ext.dom.UnderlayPool", {
     }
 
     this.cache = [];
-  },
+  }
 });

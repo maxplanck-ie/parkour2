@@ -75,7 +75,7 @@ Ext.define("Ext.data.amf.XmlDecoder", {
       var str;
       str = messageId.substr(0, 8);
       return parseInt(str, 16);
-    },
+    }
   },
 
   /**
@@ -175,7 +175,7 @@ Ext.define("Ext.data.amf.XmlDecoder", {
     } else if (node.tagName == "bytearray") {
       // a byte array is usually an AMF stream. Parse it to a byte array, then pass through the AMF decoder to get the objects inside
       return Ext.data.amf.XmlDecoder.readAMF3Value(
-        Ext.data.amf.XmlDecoder.readByteArray(node),
+        Ext.data.amf.XmlDecoder.readByteArray(node)
       );
     }
     //<debug>
@@ -367,7 +367,7 @@ Ext.define("Ext.data.amf.XmlDecoder", {
         //<debug>
         if (i > len) {
           Ext.raise(
-            "Array has more items than declared length: " + i + " > " + len,
+            "Array has more items than declared length: " + i + " > " + len
           );
         }
         //</debug>
@@ -376,7 +376,7 @@ Ext.define("Ext.data.amf.XmlDecoder", {
     //<debug>
     if (i < len) {
       Ext.raise(
-        "Array has less items than declared length: " + i + " < " + len,
+        "Array has less items than declared length: " + i + " < " + len
       );
     }
     //</debug>
@@ -460,6 +460,6 @@ Ext.define("Ext.data.amf.XmlDecoder", {
     },
     "mx.collections.ArrayCollection": function (decoder, node) {
       return decoder.convertObjectWithSourceField(node);
-    },
-  },
+    }
+  }
 });

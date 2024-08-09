@@ -132,10 +132,10 @@ Ext.define(
         this.handleViewportResize();
 
         this.mixins.responsive.updateResponsiveState.call(this);
-      },
-    },
+      }
+    }
   },
   function () {
     Ext.plugin.Viewport.decorate(this);
-  },
+  }
 );

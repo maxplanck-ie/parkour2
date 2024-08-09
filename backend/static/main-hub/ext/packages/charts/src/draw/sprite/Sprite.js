@@ -94,7 +94,7 @@ Ext.define(
     alias: "sprite.sprite",
 
     mixins: {
-      observable: "Ext.mixin.Observable",
+      observable: "Ext.mixin.Observable"
     },
 
     requires: [
@@ -103,7 +103,7 @@ Ext.define(
       "Ext.draw.sprite.AttributeDefinition",
       "Ext.draw.modifier.Target",
       "Ext.draw.modifier.Animation",
-      "Ext.draw.modifier.Highlight",
+      "Ext.draw.modifier.Highlight"
     ],
 
     isSprite: true,
@@ -111,7 +111,7 @@ Ext.define(
     statics: {
       defaultHitTestOptions: {
         fill: true,
-        stroke: true,
+        stroke: true
       },
       //<debug>
       /**
@@ -123,7 +123,7 @@ Ext.define(
        * }
        *
        */
-      debug: false,
+      debug: false
       //</debug>
     },
 
@@ -390,7 +390,7 @@ Ext.define(
            */
           scalingCenterY: "number",
 
-          constrainGradients: "bool",
+          constrainGradients: "bool"
 
           /**
            * @cfg {Number/Object} rotation
@@ -572,7 +572,7 @@ Ext.define(
           scaleX: "scalingX",
           scaleY: "scalingY",
           scaleCenterX: "scalingCenterX",
-          scaleCenterY: "scalingCenterY",
+          scaleCenterY: "scalingCenterY"
         },
 
         defaults: {
@@ -608,7 +608,7 @@ Ext.define(
           scalingCenterX: null,
           scalingCenterY: null,
 
-          constrainGradients: false,
+          constrainGradients: false
         },
 
         triggers: {
@@ -645,7 +645,7 @@ Ext.define(
           scalingCenterX: "transform",
           scalingCenterY: "transform",
 
-          constrainGradients: "canvas",
+          constrainGradients: "canvas"
         },
 
         updaters: {
@@ -660,9 +660,9 @@ Ext.define(
           transform: function (attr) {
             attr.dirtyTransform = true;
             attr.bbox.transform.dirty = true;
-          },
-        },
-      },
+          }
+        }
+      }
     },
 
     /**
@@ -689,7 +689,7 @@ Ext.define(
        * This config is not meant to be used directly.
        * Please use the {@link Ext.draw.Surface#add} method instead.
        */
-      surface: null,
+      surface: null
     },
 
     onClassExtended: function (subClass, data) {
@@ -750,7 +750,7 @@ Ext.define(
               me.$className +
               " sprite has both a config and an attribute with the same name: " +
               name +
-              ".",
+              "."
           );
         }
       }
@@ -990,7 +990,7 @@ Ext.define(
         if (triggers.length) {
           pendingUpdaters[updater] = Ext.Array.merge(
             pendingUpdaters[updater],
-            triggers,
+            triggers
           );
         }
       } else {
@@ -1257,7 +1257,7 @@ Ext.define(
           x: rect[0],
           y: rect[1],
           width: rect[2],
-          height: rect[3],
+          height: rect[3]
         });
       } else {
         ctx.setGradientBBox(this.getBBox(attr.transformFillStroke));
@@ -1321,7 +1321,7 @@ Ext.define(
         -sin * sy,
         cos * sy,
         cos * tx_4 - sin * ty_4 + rcx + tx,
-        sin * tx_4 + cos * ty_4 + rcy + ty,
+        sin * tx_4 + cos * ty_4 + rcy + ty
       ];
       attr.matrix.inverse(attr.inverseMatrix);
       attr.dirtyTransform = false;
@@ -1362,7 +1362,7 @@ Ext.define(
       //<debug>
       if (!(Ext.isArray(elements) && elements.length === 6)) {
         Ext.raise(
-          "An instance of Ext.draw.Matrix or an array of 6 numbers is expected.",
+          "An instance of Ext.draw.Matrix or an array of 6 numbers is expected."
         );
       }
       //</debug>
@@ -1696,7 +1696,7 @@ Ext.define(
             y <= bbox.y + bbox.height;
         if (isBBoxHit) {
           return {
-            sprite: this,
+            sprite: this
           };
         }
       }
@@ -1776,7 +1776,7 @@ Ext.define(
       }
 
       me.callParent();
-    },
+    }
   },
   function () {
     // onClassCreated
@@ -1786,5 +1786,5 @@ Ext.define(
     // attribute definitions for subclasses are created inside onClassExtended method.
     this.def = new Ext.draw.sprite.AttributeDefinition(this.def);
     this.def.spriteClass = this;
-  },
+  }
 );

@@ -316,7 +316,7 @@
               }
               return n.index - t.index;
             }),
-          "value",
+          "value"
         )
       );
     });
@@ -624,7 +624,7 @@
       "toString",
       "propertyIsEnumerable",
       "hasOwnProperty",
-      "toLocaleString",
+      "toLocaleString"
     ];
   (m.keys = function (n) {
     if (!m.isObject(n)) return [];
@@ -800,7 +800,7 @@
         m["is" + n] = function (t) {
           return s.call(t) === "[object " + n + "]";
         };
-      },
+      }
     ),
     m.isArguments(arguments) ||
       (m.isArguments = function (n) {
@@ -881,7 +881,7 @@
       ">": "&gt;",
       '"': "&quot;",
       "'": "&#x27;",
-      "`": "&#x60;",
+      "`": "&#x60;"
     },
     T = m.invert(B),
     R = function (n) {
@@ -909,7 +909,7 @@
     (m.templateSettings = {
       evaluate: /<%([\s\S]+?)%>/g,
       interpolate: /<%=([\s\S]+?)%>/g,
-      escape: /<%-([\s\S]+?)%>/g,
+      escape: /<%-([\s\S]+?)%>/g
     });
   var K = /(.)^/,
     z = {
@@ -918,7 +918,7 @@
       "\r": "r",
       "\n": "n",
       "\u2028": "u2028",
-      "\u2029": "u2029",
+      "\u2029": "u2029"
     },
     D = /\\|'|\r|\n|\u2028|\u2029/g,
     L = function (n) {
@@ -930,9 +930,9 @@
         [
           (t.escape || K).source,
           (t.interpolate || K).source,
-          (t.evaluate || K).source,
+          (t.evaluate || K).source
         ].join("|") + "|$",
-        "g",
+        "g"
       ),
       u = 0,
       i = "__p+='";
@@ -995,7 +995,7 @@
             P(this, r)
           );
         };
-      },
+      }
     ),
     m.each(["concat", "join", "slice"], function (n) {
       var t = o[n];

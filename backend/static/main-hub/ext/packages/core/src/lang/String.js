@@ -77,7 +77,7 @@ Ext.String = (function () {
             codePoint -= 0x10000;
             codeUnits.push(
               (codePoint >> 10) + 0xd800,
-              (codePoint % 0x400) + 0xdc00,
+              (codePoint % 0x400) + 0xdc00
             );
           }
           if (index + 1 === length) {
@@ -261,7 +261,7 @@ Ext.String = (function () {
       charToEntityRegex = new RegExp("(" + charKeys.join("|") + ")", "g");
       entityToCharRegex = new RegExp(
         "(" + entityKeys.join("|") + "|&#[0-9]{1,5};" + ")",
-        "g",
+        "g"
       );
     },
 
@@ -279,7 +279,7 @@ Ext.String = (function () {
         "&gt;": ">",
         "&lt;": "<",
         "&quot;": '"',
-        "&#39;": "'",
+        "&#39;": "'"
       });
     },
 
@@ -354,7 +354,7 @@ Ext.String = (function () {
               vs.lastIndexOf(" "),
               vs.lastIndexOf("."),
               vs.lastIndexOf("!"),
-              vs.lastIndexOf("?"),
+              vs.lastIndexOf("?")
             );
           if (index !== -1 && index >= length - 15) {
             return vs.substr(0, index) + "...";
@@ -503,7 +503,7 @@ Ext.String = (function () {
         return words.replace(basicTrimRe, "").split(whitespaceRe);
       }
       return words || [];
-    },
+    }
   });
 })();
 

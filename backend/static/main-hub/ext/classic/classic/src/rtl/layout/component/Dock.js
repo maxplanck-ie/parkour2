@@ -9,7 +9,7 @@ Ext.define("Ext.rtl.layout.component.Dock", {
     top: "top",
     right: "left",
     bottom: "bottom",
-    left: "right",
+    left: "right"
   },
 
   getDockCls: function (dock) {
@@ -79,5 +79,5 @@ Ext.define("Ext.rtl.layout.component.Dock", {
     rtl[13] = ltr[13]; // 1101 = 13  ==> same
     rtl[14] = ltr[11]; // 1110 = 14  ==> 1011 = 11
     rtl[15] = ltr[15]; // 1111 = 15  ==> same
-  },
+  }
 });

@@ -91,7 +91,7 @@ Ext.define(
             !(Ext.isArray(promisesOrValues) || ExtPromise.is(promisesOrValues))
           ) {
             Ext.raise(
-              "Invalid parameter: expected an Array or Promise of an Array.",
+              "Invalid parameter: expected an Array or Promise of an Array."
             );
           }
           //</debug>
@@ -123,7 +123,7 @@ Ext.define(
                     },
                     function (reason) {
                       return deferred.reject(reason);
-                    },
+                    }
                   );
                 };
 
@@ -143,7 +143,7 @@ Ext.define(
               }
 
               return deferred.promise;
-            },
+            }
           );
         },
 
@@ -199,7 +199,7 @@ Ext.define(
           deferred.resolve(value);
 
           return deferred.promise;
-        },
+        }
       },
 
       /**
@@ -342,7 +342,7 @@ Ext.define(
             }
 
             throw reason;
-          },
+          }
         );
       },
 
@@ -417,7 +417,7 @@ Ext.define(
         return this.owner.then(
           function (value) {
             Ext.log(
-              "" + (identifier || "Promise") + " resolved with value: " + value,
+              "" + (identifier || "Promise") + " resolved with value: " + value
             );
 
             return value;
@@ -427,16 +427,16 @@ Ext.define(
               "" +
                 (identifier || "Promise") +
                 " rejected with reason: " +
-                reason,
+                reason
             );
 
             throw reason;
-          },
+          }
         );
-      },
+      }
     };
   },
   function (ExtPromise) {
     ExtPromise._ready();
-  },
+  }
 );

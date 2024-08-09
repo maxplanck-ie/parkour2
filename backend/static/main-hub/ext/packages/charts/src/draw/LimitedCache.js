@@ -29,7 +29,7 @@ Ext.define("Ext.draw.LimitedCache", {
      * @cfg {Object}
      * The scope for {@link #feeder}
      */
-    scope: null,
+    scope: null
   },
 
   cache: null,
@@ -62,7 +62,7 @@ Ext.define("Ext.draw.LimitedCache", {
     }
     cache[id] = cache.list[cache.tail] = {
       value: feeder.apply(scope, Array.prototype.slice.call(arguments, 1)),
-      cacheId: id,
+      cacheId: id
     };
     cache.tail++;
     if (cache.tail === limit) {
@@ -78,5 +78,5 @@ Ext.define("Ext.draw.LimitedCache", {
     this.cache = {};
     this.cache.list = [];
     this.cache.tail = 0;
-  },
+  }
 });

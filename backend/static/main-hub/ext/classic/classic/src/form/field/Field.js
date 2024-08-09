@@ -41,7 +41,7 @@ Ext.define("Ext.form.field.Field", {
      *
      * @private
      */
-    validationField: null,
+    validationField: null
   },
 
   /**
@@ -152,8 +152,8 @@ Ext.define("Ext.form.field.Field", {
           'It is recommended to not use "',
           name,
           '" as a field name, because it ',
-          "can cause naming collisions during form submission.",
-        ].join(""),
+          "can cause naming collisions during form submission."
+        ].join("")
       );
     }
     //</debug>
@@ -622,6 +622,6 @@ Ext.define("Ext.form.field.Field", {
       me.originalValue = me.initialValue;
       me.reset();
       me.originalValue = originalValue;
-    },
-  },
+    }
+  }
 });

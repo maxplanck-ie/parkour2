@@ -4,7 +4,7 @@
 Ext.define("Ext.fx.easing.Abstract", {
   config: {
     startTime: 0,
-    startValue: 0,
+    startValue: 0
   },
 
   isEasing: true,
@@ -33,5 +33,5 @@ Ext.define("Ext.fx.easing.Abstract", {
     this.isEnded = false;
   },
 
-  getValue: Ext.emptyFn,
+  getValue: Ext.emptyFn
 });

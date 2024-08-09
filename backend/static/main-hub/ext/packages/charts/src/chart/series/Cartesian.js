@@ -40,7 +40,7 @@ Ext.define("Ext.chart.series.Cartesian", {
      * It refers to either axis' ID or the (zero-based) index of the axis
      * in the chart's {@link Ext.chart.AbstractChart#axes axes} config.
      */
-    yAxis: null,
+    yAxis: null
   },
 
   directions: ["X", "Y"],
@@ -104,7 +104,7 @@ Ext.define("Ext.chart.series.Cartesian", {
             index: index,
             record: store.getData().items[index],
             field: me.getYField(),
-            sprite: sprite,
+            sprite: sprite
           };
           return item;
         }
@@ -120,7 +120,7 @@ Ext.define("Ext.chart.series.Cartesian", {
 
     sprite.setAttributes({
       flipXY: chart.getFlipXY(),
-      xAxis: xAxis,
+      xAxis: xAxis
     });
     if (sprite.setAggregator && xAxis && xAxis.getAggregator) {
       if (xAxis.getAggregator) {
@@ -175,7 +175,7 @@ Ext.define("Ext.chart.series.Cartesian", {
         "black",
       disabled: me.getHidden(),
       series: me.getId(),
-      index: 0,
+      index: 0
     });
   },
 
@@ -185,5 +185,5 @@ Ext.define("Ext.chart.series.Cartesian", {
 
   getYRange: function () {
     return [this.dataRange[1], this.dataRange[3]];
-  },
+  }
 });

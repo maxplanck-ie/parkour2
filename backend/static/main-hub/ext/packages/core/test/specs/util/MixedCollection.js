@@ -201,7 +201,7 @@ describe("Ext.util.MixedCollection", function () {
         item6,
         item7,
         item8,
-        item9,
+        item9
       ]);
     });
 
@@ -540,7 +540,7 @@ describe("Ext.util.MixedCollection", function () {
           function () {
             executed = true;
           },
-          this,
+          this
         );
 
         mc.replace(2, item4);
@@ -564,7 +564,7 @@ describe("Ext.util.MixedCollection", function () {
             return o.id;
           },
           mc1 = new Ext.util.MixedCollection({
-            getKey: fn,
+            getKey: fn
           });
 
         var mc2 = mc1.clone();
@@ -630,7 +630,7 @@ describe("Ext.util.MixedCollection", function () {
             item6,
             item7,
             item8,
-            item9,
+            item9
           ]);
         };
 
@@ -747,13 +747,13 @@ describe("Ext.util.MixedCollection", function () {
       mc.addAll([
         { id: 1, name: "Ed", code: "C", modifier: 10 },
         { id: 2, name: "Abe", code: "A", modifier: 100 },
-        { id: 3, name: "Edward", code: "B", modifier: 5 },
+        { id: 3, name: "Edward", code: "B", modifier: 5 }
       ]);
 
       filter = new Ext.util.Filter({
         filterFn: function (item) {
           return item.name.charAt(0) == "E";
-        },
+        }
       });
     });
 
@@ -770,7 +770,7 @@ describe("Ext.util.MixedCollection", function () {
             return o.id;
           },
           mc1 = new Ext.util.MixedCollection({
-            getKey: fn,
+            getKey: fn
           });
 
         var mc2 = mc1.filter("name", "Ed");
@@ -783,7 +783,7 @@ describe("Ext.util.MixedCollection", function () {
             return o.id;
           },
           mc1 = new Ext.util.MixedCollection({
-            getKey: fn,
+            getKey: fn
           });
 
         var mc2 = mc1.filterBy(function () {
@@ -833,7 +833,7 @@ describe("Ext.util.MixedCollection", function () {
       mc.addAll([
         { id: 1, name: "Ed", code: "C", modifier: 10 },
         { id: 2, name: "Abe", code: "A", modifier: 100 },
-        { id: 3, name: "Edward", code: "B", modifier: 5 },
+        { id: 3, name: "Edward", code: "B", modifier: 5 }
       ]);
     });
 
@@ -858,8 +858,8 @@ describe("Ext.util.MixedCollection", function () {
         new Ext.util.Sorter({
           sorterFn: function (a, b) {
             return a.id * a.modifier - b.id * b.modifier;
-          },
-        }),
+          }
+        })
       );
 
       expect(mc.items[0].code).toEqual("C");
@@ -873,8 +873,8 @@ describe("Ext.util.MixedCollection", function () {
           direction: "DESC",
           sorterFn: function (a, b) {
             return a.id * a.modifier - b.id * b.modifier;
-          },
-        }),
+          }
+        })
       );
 
       expect(mc.items[2].code).toEqual("C");
@@ -890,7 +890,7 @@ describe("Ext.util.MixedCollection", function () {
         function () {
           executed = true;
         },
-        this,
+        this
       );
 
       mc.sort("name");
@@ -908,7 +908,7 @@ describe("Ext.util.MixedCollection", function () {
           { amount: 10, name: "Cool things" },
           { amount: 20, name: "Other cool things" },
           { amount: 30, name: "Other cool things" },
-          { amount: 40, name: "Other cool things" },
+          { amount: 40, name: "Other cool things" }
         ]);
       });
 
@@ -931,7 +931,7 @@ describe("Ext.util.MixedCollection", function () {
 
         mc.addAll([
           { data: { amount: 10, name: "Cool things" } },
-          { data: { amount: 20, name: "Other cool things" } },
+          { data: { amount: 20, name: "Other cool things" } }
         ]);
       });
 
@@ -949,7 +949,7 @@ describe("Ext.util.MixedCollection", function () {
         mc.addAll([
           { amount: 10, name: "Ed" },
           { amount: 20, name: "Abe" },
-          { amount: 20, name: "Ed" },
+          { amount: 20, name: "Ed" }
         ]);
       });
 
@@ -967,7 +967,7 @@ describe("Ext.util.MixedCollection", function () {
         mc.addAll([
           { data: { amount: 10, name: "Ed" } },
           { data: { amount: 20, name: "Abe" } },
-          { data: { amount: 20, name: "Ed" } },
+          { data: { amount: 20, name: "Ed" } }
         ]);
       });
 
@@ -988,14 +988,14 @@ describe("Ext.util.MixedCollection", function () {
       mc.addAll([
         { id: 1, name: "Ed", code: "C", modifier: 10 },
         { id: 2, name: "Abe", code: "A", modifier: 100 },
-        { id: 3, name: "Edward", code: "B", modifier: 5 },
+        { id: 3, name: "Edward", code: "B", modifier: 5 }
       ]);
     });
 
     it("should reorder correctly", function () {
       mc.reorder({
         1: 2,
-        2: 0,
+        2: 0
       });
 
       expect(mc.items[0].code).toEqual("B");
@@ -1011,12 +1011,12 @@ describe("Ext.util.MixedCollection", function () {
         function () {
           executed = true;
         },
-        this,
+        this
       );
 
       mc.reorder({
         1: 2,
-        2: 0,
+        2: 0
       });
 
       expect(executed).toBe(true);
@@ -1045,20 +1045,20 @@ describe("Ext.util.MixedCollection", function () {
         startItems = [
           {
             id: 1,
-            text: "foo",
+            text: "foo"
           },
           {
             id: 2,
-            text: "bar",
+            text: "bar"
           },
           {
             id: 1,
-            text: "bletch",
+            text: "bletch"
           },
           {
             id: 2,
-            text: "zarg",
-          },
+            text: "zarg"
+          }
         ];
 
       mc1.add(startItems);

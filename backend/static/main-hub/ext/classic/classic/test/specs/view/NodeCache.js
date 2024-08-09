@@ -26,17 +26,17 @@ describe("Ext.view.NodeCache", function () {
           { name: "Lisa" },
           { name: "Bart" },
           { name: "Homer" },
-          { name: "Marge" },
-        ],
+          { name: "Marge" }
+        ]
       },
 
       proxy: {
         type: "memory",
         reader: {
           type: "json",
-          rootProperty: "items",
-        },
-      },
+          rootProperty: "items"
+        }
+      }
     });
 
     grid = Ext.create("Ext.grid.Panel", {
@@ -47,9 +47,9 @@ describe("Ext.view.NodeCache", function () {
       columns: [
         {
           text: "Name",
-          dataIndex: "name",
-        },
-      ],
+          dataIndex: "name"
+        }
+      ]
     });
     view = grid.getView();
     rows = view.all;

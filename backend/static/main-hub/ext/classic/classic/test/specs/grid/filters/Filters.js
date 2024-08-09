@@ -12,7 +12,7 @@ describe("Ext.grid.filters.Filters", function () {
   function completeWithData(theData) {
     Ext.Ajax.mockComplete({
       status: 200,
-      responseText: Ext.encode(theData || data),
+      responseText: Ext.encode(theData || data)
     });
   }
 
@@ -31,10 +31,10 @@ describe("Ext.grid.filters.Filters", function () {
           asynchronousLoad: true,
           autoDestroy: true,
           fields: ["name", "email", "phone", "age", "dob"],
-          data: data,
+          data: data
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
     Ext.override(store, {
       load: function () {
@@ -50,13 +50,13 @@ describe("Ext.grid.filters.Filters", function () {
           this.flushCallCount = (this.flushCallCount || 0) + 1;
           this.callParent();
         }
-      },
+      }
     });
 
     // Note: lower the updateBuffer (defaults to 500ms) which is what determines the delay between onStateChange
     // being called and reload, which removes/adds store filters and sends a request for remote filtering.
     filtersPlugin = new Ext.grid.filters.Filters({
-      updateBuffer: 0,
+      updateBuffer: 0
     });
 
     grid = new Ext.grid.Panel(
@@ -73,8 +73,8 @@ describe("Ext.grid.filters.Filters", function () {
               dataIndex: "dob",
               width: 100,
               type: "date",
-              dateFormat: "m/d/Y",
-            },
+              dateFormat: "m/d/Y"
+            }
           ],
           autoLoad: true,
           plugins: filtersPlugin,
@@ -82,14 +82,14 @@ describe("Ext.grid.filters.Filters", function () {
           // We need programmatic mouseover events to be handled inline so we can test effects.
           viewConfig: {
             mouseOverOutBuffer: false,
-            deferHighlight: false,
+            deferHighlight: false
           },
           height: 200,
           width: 500,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     synchronousLoad = true;
     if (store.hasPendingLoad()) {
@@ -109,23 +109,23 @@ describe("Ext.grid.filters.Filters", function () {
               {
                 name: "Test 1",
                 description: "My first text",
-                leaf: true,
+                leaf: true
               },
               {
                 name: "Test 2",
                 description: "The second text",
-                leaf: true,
+                leaf: true
               },
               {
                 name: "Test 3",
                 description: "The third text",
-                leaf: true,
-              },
-            ],
-          },
+                leaf: true
+              }
+            ]
+          }
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
     Ext.override(store, {
       load: function () {
@@ -141,7 +141,7 @@ describe("Ext.grid.filters.Filters", function () {
           this.flushCallCount = (this.flushCallCount || 0) + 1;
           this.callParent();
         }
-      },
+      }
     });
 
     tree = new Ext.tree.Panel(
@@ -152,24 +152,24 @@ describe("Ext.grid.filters.Filters", function () {
               header: "Name",
               dataIndex: "name",
               filter: {
-                type: "string",
-              },
+                type: "string"
+              }
             },
             {
               header: "Description",
               dataIndex: "description",
               filter: {
-                type: "string",
-              },
-            },
+                type: "string"
+              }
+            }
           ],
           store: store,
           plugins: "gridfilters",
           rootVisible: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        treeCfg,
-      ),
+        treeCfg
+      )
     );
   }
 
@@ -181,57 +181,57 @@ describe("Ext.grid.filters.Filters", function () {
         email: "jimmy@page.com",
         phone: "555-111-1224",
         age: 69,
-        dob: new Date("1/22/1944"),
+        dob: new Date("1/22/1944")
       },
       {
         name: "Stevie Ray Vaughan",
         email: "stevieray@vaughan.com",
         phone: "555-222-1234",
         age: 35,
-        dob: new Date("1/22/1955"),
+        dob: new Date("1/22/1955")
       },
       {
         name: "John Scofield",
         email: "john@scofield.com",
         phone: "555-222-1234",
         age: 59,
-        dob: new Date("1/22/1954"),
+        dob: new Date("1/22/1954")
       },
       {
         name: "Robben Ford",
         email: "robben@ford.com",
         phone: "555-222-1244",
         age: 60,
-        dob: new Date("1/22/1953"),
+        dob: new Date("1/22/1953")
       },
       {
         name: "Wes Montgomery",
         email: "wes@montgomery.com",
         phone: "555-222-1244",
         age: 45,
-        dob: new Date("1/22/1923"),
+        dob: new Date("1/22/1923")
       },
       {
         name: "Jimmy Herring",
         email: "jimmy@herring.com",
         phone: "555-222-1254",
         age: 50,
-        dob: new Date("1/22/1962"),
+        dob: new Date("1/22/1962")
       },
       {
         name: "Alex Lifeson",
         email: "alex@lifeson.com",
         phone: "555-222-1254",
         age: 60,
-        dob: new Date("1/22/1953"),
+        dob: new Date("1/22/1953")
       },
       {
         name: "Kenny Burrell",
         email: "kenny@burrell.com",
         phone: "555-222-1254",
         age: 82,
-        dob: new Date("1/22/1930"),
-      },
+        dob: new Date("1/22/1930")
+      }
     ];
   });
 
@@ -254,14 +254,14 @@ describe("Ext.grid.filters.Filters", function () {
           columns: [
             {
               dataIndex: "bogus",
-              filter: true,
-            },
-          ],
-        },
+              filter: true
+            }
+          ]
+        }
       );
 
       expect(
-        grid.columnManager.getHeaderByDataIndex("bogus").filter,
+        grid.columnManager.getHeaderByDataIndex("bogus").filter
       ).toBeDefined();
     });
 
@@ -277,11 +277,11 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "email",
                 width: 100,
                 filter: {
-                  value: "stevie",
-                },
-              },
-            ],
-          },
+                  value: "stevie"
+                }
+              }
+            ]
+          }
         );
       });
 
@@ -315,23 +315,23 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "name",
                 width: 100,
                 filter: {
-                  type: "list",
-                },
+                  type: "list"
+                }
               },
               {
                 header: "DOB",
                 dataIndex: "dob",
                 width: 100,
                 filter: {
-                  type: "date",
-                },
-              },
-            ],
-          },
+                  type: "date"
+                }
+              }
+            ]
+          }
         );
 
         expect(grid.columnManager.getHeaderByDataIndex("dob").filter.type).toBe(
-          "date",
+          "date"
         );
       });
 
@@ -340,13 +340,13 @@ describe("Ext.grid.filters.Filters", function () {
           {},
           {
             columns: [
-              { header: "Name", dataIndex: "name", width: 100, filter: true },
-            ],
-          },
+              { header: "Name", dataIndex: "name", width: 100, filter: true }
+            ]
+          }
         );
 
         expect(
-          grid.columnManager.getHeaderByDataIndex("name").filter.active,
+          grid.columnManager.getHeaderByDataIndex("name").filter.active
         ).toBe(false);
       });
 
@@ -360,15 +360,15 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "name",
                 width: 100,
                 filter: {
-                  value: "kenny",
-                },
-              },
-            ],
-          },
+                  value: "kenny"
+                }
+              }
+            ]
+          }
         );
 
         expect(
-          grid.columnManager.getHeaderByDataIndex("name").filter.active,
+          grid.columnManager.getHeaderByDataIndex("name").filter.active
         ).toBe(true);
       });
 
@@ -381,9 +381,9 @@ describe("Ext.grid.filters.Filters", function () {
             {
               columns: [
                 { header: "Name", dataIndex: "name", filter: true },
-                { header: "DOB", dataIndex: "dob", filter: true },
-              ],
-            },
+                { header: "DOB", dataIndex: "dob", filter: true }
+              ]
+            }
           );
 
           colMgr = grid.columnManager;
@@ -419,17 +419,17 @@ describe("Ext.grid.filters.Filters", function () {
             dataIndex: "dob",
             menuDisabled: true,
             filter: {
-              type: "date",
-            },
+              type: "date"
+            }
           },
           {
             dataIndex: "phone",
             menuDisabled: false,
             filter: {
-              type: "string",
-            },
-          },
-        ],
+              type: "string"
+            }
+          }
+        ]
       });
 
       cols = grid.getColumnManager().getColumns();
@@ -454,8 +454,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               dataIndex: "name",
               filter: {
-                value: "Ford",
-              },
+                value: "Ford"
+              }
             },
             {
               columns: [
@@ -464,25 +464,25 @@ describe("Ext.grid.filters.Filters", function () {
                   filter: {
                     type: "number",
                     value: {
-                      lt: 80,
-                    },
-                  },
-                },
-              ],
+                      lt: 80
+                    }
+                  }
+                }
+              ]
             },
             {
               dataIndex: "dob",
               filter: {
-                type: "date",
-              },
+                type: "date"
+              }
             },
             {
               dataIndex: "phone",
               filter: {
-                type: "string",
-              },
-            },
-          ],
+                type: "string"
+              }
+            }
+          ]
         });
 
         cols = grid.getColumnManager().getColumns();
@@ -498,19 +498,19 @@ describe("Ext.grid.filters.Filters", function () {
           columns: [
             {
               dataIndex: "name",
-              filter: true,
+              filter: true
             },
             {
               columns: [
                 {
                   dataIndex: "age",
                   filter: {
-                    type: "number",
-                  },
-                },
-              ],
-            },
-          ],
+                    type: "number"
+                  }
+                }
+              ]
+            }
+          ]
         });
 
         cols = grid.getColumnManager().getColumns();
@@ -528,7 +528,7 @@ describe("Ext.grid.filters.Filters", function () {
         Ext.state.Manager.getProvider().clear();
         createGrid(
           {
-            saveStatefulFilters: true,
+            saveStatefulFilters: true
           },
           {
             stateful: true,
@@ -537,19 +537,19 @@ describe("Ext.grid.filters.Filters", function () {
               {
                 dataIndex: "name",
                 filter: {
-                  type: "string",
-                },
+                  type: "string"
+                }
               },
               {
                 columns: [
                   {
                     dataIndex: "email",
-                    filter: true,
-                  },
-                ],
-              },
-            ],
-          },
+                    filter: true
+                  }
+                ]
+              }
+            ]
+          }
         );
 
         cols = grid.getColumnManager().getColumns();
@@ -562,7 +562,7 @@ describe("Ext.grid.filters.Filters", function () {
 
         createGrid(
           {
-            saveStatefulFilters: true,
+            saveStatefulFilters: true
           },
           {
             stateful: true,
@@ -571,19 +571,19 @@ describe("Ext.grid.filters.Filters", function () {
               {
                 dataIndex: "name",
                 filter: {
-                  type: "string",
-                },
+                  type: "string"
+                }
               },
               {
                 columns: [
                   {
                     dataIndex: "email",
-                    filter: true,
-                  },
-                ],
-              },
-            ],
-          },
+                    filter: true
+                  }
+                ]
+              }
+            ]
+          }
         );
 
         cols = grid.getColumnManager().getColumns();
@@ -598,8 +598,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               dataIndex: "name",
               filter: {
-                value: "x",
-              },
+                value: "x"
+              }
             },
             {
               columns: [
@@ -608,13 +608,13 @@ describe("Ext.grid.filters.Filters", function () {
                   filter: {
                     type: "number",
                     value: {
-                      eq: 43,
-                    },
-                  },
-                },
-              ],
-            },
-          ],
+                      eq: 43
+                    }
+                  }
+                }
+              ]
+            }
+          ]
         });
 
         cols = grid.getColumnManager().getColumns();
@@ -648,11 +648,11 @@ describe("Ext.grid.filters.Filters", function () {
             {
               dataIndex: "name",
               filter: {
-                value: "lifeson",
-              },
-            },
-          ],
-        },
+                value: "lifeson"
+              }
+            }
+          ]
+        }
       );
 
       filters = store.getFilters();
@@ -683,12 +683,12 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "name",
                 filter: withFilter
                   ? {
-                      value: "jimmy",
+                      value: "jimmy"
                     }
-                  : undefined,
-              },
-            ],
-          },
+                  : undefined
+              }
+            ]
+          }
         );
       }
 
@@ -697,7 +697,7 @@ describe("Ext.grid.filters.Filters", function () {
 
         var f = new Ext.util.Filter({
           property: "age",
-          value: 60,
+          value: 60
         });
         var current = store.getCount();
         store.getFilters().add(f);
@@ -714,7 +714,7 @@ describe("Ext.grid.filters.Filters", function () {
 
         var f = new Ext.util.Filter({
           property: "name",
-          value: "invalid",
+          value: "invalid"
         });
         var current = store.getCount();
         store.getFilters().add(f);
@@ -737,8 +737,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/autoLoad",
-              },
+                url: "/grid/filters/Feature/autoLoad"
+              }
             },
             {
               columns: [
@@ -748,8 +748,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -757,11 +757,11 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
           completeWithData();
 
@@ -780,8 +780,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/autoLoad",
-              },
+                url: "/grid/filters/Feature/autoLoad"
+              }
             },
             {
               columns: [
@@ -791,8 +791,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -800,11 +800,11 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           completeWithData();
@@ -817,8 +817,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/autoLoad",
-              },
+                url: "/grid/filters/Feature/autoLoad"
+              }
             },
             {
               columns: [
@@ -828,8 +828,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "ray",
-                  },
+                    value: "ray"
+                  }
                 },
                 {
                   header: "Email",
@@ -837,19 +837,19 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "robben",
-                  },
+                    value: "robben"
+                  }
                 },
                 {
                   header: "Phone",
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           var filter = getFilters();
@@ -863,8 +863,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/autoLoad",
-              },
+                url: "/grid/filters/Feature/autoLoad"
+              }
             },
             {
               columns: [
@@ -873,8 +873,8 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
+                    type: "string"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -882,11 +882,11 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           var filter = getFilters();
@@ -904,8 +904,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/autoLoad",
-              },
+                url: "/grid/filters/Feature/autoLoad"
+              }
             },
             {
               columns: [
@@ -915,8 +915,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "kenny",
-                  },
+                    value: "kenny"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -924,11 +924,11 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           completeWithData();
@@ -943,16 +943,16 @@ describe("Ext.grid.filters.Filters", function () {
       it("should set 'local' to `false`", function () {
         createGrid(
           {
-            remoteFilter: true,
+            remoteFilter: true
           },
           {},
           {
             filters: [
               {
-                dataIndex: "name",
-              },
-            ],
-          },
+                dataIndex: "name"
+              }
+            ]
+          }
         );
         expect(filtersPlugin.local).toBe(false);
       });
@@ -969,8 +969,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/remoteFiltering",
-              },
+                url: "/grid/filters/Feature/remoteFiltering"
+              }
             },
             {
               columns: [
@@ -980,8 +980,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -989,11 +989,11 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           waitsFor(function () {
@@ -1017,8 +1017,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/remoteFiltering",
-              },
+                url: "/grid/filters/Feature/remoteFiltering"
+              }
             },
             {
               columns: [
@@ -1033,22 +1033,22 @@ describe("Ext.grid.filters.Filters", function () {
                         "Jimmy Page",
                         "John Scofield",
                         "Robben Ford",
-                        "Alex Lifeson",
-                      ],
+                        "Alex Lifeson"
+                      ]
                     ],
-                    value: "Robben Ford",
-                  },
+                    value: "Robben Ford"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
-                { header: "Phone", dataIndex: "phone", width: 100 },
-              ],
-            },
+                { header: "Phone", dataIndex: "phone", width: 100 }
+              ]
+            }
           );
           completeWithData();
           store.on("load", spy);
           jasmine.fireMouseEvent(
             grid.columnManager.getColumns()[0].triggerEl.dom,
-            "click",
+            "click"
           );
           completeWithData();
 
@@ -1065,8 +1065,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/remoteFiltering",
-              },
+                url: "/grid/filters/Feature/remoteFiltering"
+              }
             },
             {
               columns: [
@@ -1076,8 +1076,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "ray",
-                  },
+                    value: "ray"
+                  }
                 },
                 {
                   header: "Email",
@@ -1085,19 +1085,19 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "robben",
-                  },
+                    value: "robben"
+                  }
                 },
                 {
                   header: "Phone",
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           waitsFor(function () {
@@ -1121,8 +1121,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/remoteFiltering",
-              },
+                url: "/grid/filters/Feature/remoteFiltering"
+              }
             },
             {
               columns: [
@@ -1131,8 +1131,8 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
+                    type: "string"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -1140,11 +1140,11 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           waitsFor(function () {
@@ -1167,8 +1167,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               stateful: true,
@@ -1180,8 +1180,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -1190,11 +1190,11 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "555",
-                  },
-                },
-              ],
-            },
+                    value: "555"
+                  }
+                }
+              ]
+            }
           );
         });
 
@@ -1209,8 +1209,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               stateful: true,
@@ -1222,8 +1222,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -1232,11 +1232,11 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "555",
-                  },
-                },
-              ],
-            },
+                    value: "555"
+                  }
+                }
+              ]
+            }
           );
 
           completeWithData();
@@ -1254,8 +1254,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/remoteFiltering",
-              },
+                url: "/grid/filters/Feature/remoteFiltering"
+              }
             },
             {
               stateful: true,
@@ -1267,14 +1267,14 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 {
                   header: "Email",
                   dataIndex: "email",
                   locked: true,
-                  width: 100,
+                  width: 100
                 },
                 {
                   header: "Phone",
@@ -1283,11 +1283,11 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "555",
-                  },
-                },
-              ],
-            },
+                    value: "555"
+                  }
+                }
+              ]
+            }
           );
         });
 
@@ -1302,8 +1302,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/remoteFiltering",
-              },
+                url: "/grid/filters/Feature/remoteFiltering"
+              }
             },
             {
               stateful: true,
@@ -1315,14 +1315,14 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 {
                   header: "Email",
                   dataIndex: "email",
                   locked: true,
-                  width: 100,
+                  width: 100
                 },
                 {
                   header: "Phone",
@@ -1331,11 +1331,11 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "555",
-                  },
-                },
-              ],
-            },
+                    value: "555"
+                  }
+                }
+              ]
+            }
           );
 
           completeWithData();
@@ -1364,8 +1364,8 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/remoteFiltering",
-            },
+              url: "/grid/filters/Feature/remoteFiltering"
+            }
           },
           {
             columns: [
@@ -1375,8 +1375,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "stevie ray",
-                },
+                  value: "stevie ray"
+                }
               },
               { header: "Email", dataIndex: "email", width: 100 },
               {
@@ -1384,11 +1384,11 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "phone",
                 width: 100,
                 filter: {
-                  type: "string",
-                },
-              },
-            ],
-          },
+                  type: "string"
+                }
+              }
+            ]
+          }
         );
 
         // Store must now have a pending load. It's going
@@ -1408,8 +1408,8 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/remoteFiltering",
-            },
+              url: "/grid/filters/Feature/remoteFiltering"
+            }
           },
           {
             columns: [
@@ -1419,8 +1419,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "stevie ray",
-                },
+                  value: "stevie ray"
+                }
               },
               { header: "Email", dataIndex: "email", width: 100 },
               {
@@ -1428,11 +1428,11 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "phone",
                 width: 100,
                 filter: {
-                  type: "string",
-                },
-              },
-            ],
-          },
+                  type: "string"
+                }
+              }
+            ]
+          }
         );
 
         waitsFor(function () {
@@ -1454,8 +1454,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               stateful: true,
@@ -1467,8 +1467,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -1477,11 +1477,11 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "555",
-                  },
-                },
-              ],
-            },
+                    value: "555"
+                  }
+                }
+              ]
+            }
           );
         });
 
@@ -1497,8 +1497,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               stateful: true,
@@ -1510,8 +1510,8 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
                 {
@@ -1519,11 +1519,11 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "phone",
                   width: 100,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
-            },
+                    type: "string"
+                  }
+                }
+              ]
+            }
           );
 
           waitsFor(function () {
@@ -1546,8 +1546,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               stateful: true,
@@ -1559,14 +1559,14 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 {
                   header: "Email",
                   dataIndex: "email",
                   locked: true,
-                  width: 100,
+                  width: 100
                 },
                 {
                   header: "Phone",
@@ -1575,11 +1575,11 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "555",
-                  },
-                },
-              ],
-            },
+                    value: "555"
+                  }
+                }
+              ]
+            }
           );
         });
 
@@ -1595,8 +1595,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               stateful: true,
@@ -1608,14 +1608,14 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "stevie ray",
-                  },
+                    value: "stevie ray"
+                  }
                 },
                 {
                   header: "Email",
                   dataIndex: "email",
                   locked: true,
-                  width: 100,
+                  width: 100
                 },
                 {
                   header: "Phone",
@@ -1624,11 +1624,11 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "555",
-                  },
-                },
-              ],
-            },
+                    value: "555"
+                  }
+                }
+              ]
+            }
           );
 
           waitsFor(function () {
@@ -1668,7 +1668,7 @@ describe("Ext.grid.filters.Filters", function () {
         filtersPlugin.addFilter({ dataIndex: columnName, type: "date" });
         expect(
           grid.columnManager.getHeaderByDataIndex(columnName).filter
-            .isGridFilter,
+            .isGridFilter
         ).toBe(true);
       });
 
@@ -1697,9 +1697,9 @@ describe("Ext.grid.filters.Filters", function () {
                 header: "Name",
                 dataIndex: "name",
                 filter: { value: "jimmy" },
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           });
         });
 
@@ -1762,13 +1762,13 @@ describe("Ext.grid.filters.Filters", function () {
 
           jasmine.fireMouseEvent(
             column[column.clickTargetName].dom,
-            "mouseover",
+            "mouseover"
           );
           jasmine.fireMouseEvent(column.triggerEl.dom, "click");
 
           // Showing the menu will have the filters plugin create the column filter menu.
           expect(
-            grid.headerCt.menu.items.getByKey("filters").menu,
+            grid.headerCt.menu.items.getByKey("filters").menu
           ).toBeDefined();
 
           grid.headerCt.menu.hide();
@@ -1815,24 +1815,24 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/addingFilters",
-              },
+                url: "/grid/filters/Feature/addingFilters"
+              }
             },
             {
               filters: [
                 {
                   dataIndex: "name",
-                  value: "alex",
-                },
-              ],
-            },
+                  value: "alex"
+                }
+              ]
+            }
           );
         });
 
         it("should send a network request when adding an active filter config", function () {
           filtersPlugin.addFilter({
             dataIndex: "email",
-            value: "albuquerque@newmexico.com",
+            value: "albuquerque@newmexico.com"
           });
 
           waitsFor(function () {
@@ -1857,7 +1857,7 @@ describe("Ext.grid.filters.Filters", function () {
 
         it("should not send a network request when adding an inactive filter instance", function () {
           filtersPlugin.addFilter(
-            Ext.grid.filters.filter.String({ dataIndex: "email" }),
+            Ext.grid.filters.filter.String({ dataIndex: "email" })
           );
 
           // Need to waits() because we're checking something doesn't happen
@@ -1892,7 +1892,7 @@ describe("Ext.grid.filters.Filters", function () {
         filtersPlugin.addFilters([
           { dataIndex: "name" },
           { dataIndex: "email" },
-          { dataIndex: "phone" },
+          { dataIndex: "phone" }
         ]);
 
         expect(col1.filter.isGridFilter).toBe(true);
@@ -1911,7 +1911,7 @@ describe("Ext.grid.filters.Filters", function () {
 
         filtersPlugin.addFilters([
           { dataIndex: "email", value: "ben@sencha.com" },
-          { dataIndex: "email", value: "toll@sencha.com" },
+          { dataIndex: "email", value: "toll@sencha.com" }
         ]);
 
         expect(filters.getCount()).toBe(1);
@@ -1946,7 +1946,7 @@ describe("Ext.grid.filters.Filters", function () {
         expect(column).toBeNull();
         filtersPlugin.addFilters([
           { dataIndex: columnName },
-          { dataIndex: "phone" },
+          { dataIndex: "phone" }
         ]);
         expect(column).toBeNull();
       });
@@ -1959,7 +1959,7 @@ describe("Ext.grid.filters.Filters", function () {
         expect(column).toBeDefined();
         filtersPlugin.addFilters([
           { dataIndex: "foo" },
-          { dataIndex: columnName },
+          { dataIndex: columnName }
         ]);
         expect(column.filter.isGridFilter).toBe(true);
       });
@@ -1972,7 +1972,7 @@ describe("Ext.grid.filters.Filters", function () {
         expect(filters.getCount()).toBe(0);
         filtersPlugin.addFilters([
           { dataIndex: "foo", value: "bar" },
-          { dataIndex: "phone", value: columnValue },
+          { dataIndex: "phone", value: columnValue }
         ]);
         expect(filters.getCount()).toBe(1);
         expect(filters.getAt(0).getValue()).toBe(columnValue);
@@ -1997,15 +1997,15 @@ describe("Ext.grid.filters.Filters", function () {
               header: "Name",
               dataIndex: "name",
               filter: { value: "jimmy" },
-              width: 100,
+              width: 100
             },
             {
               header: "Email",
               dataIndex: "email",
               filter: { value: "jimmy@" },
-              width: 100,
-            },
-          ],
+              width: 100
+            }
+          ]
         });
 
         filters = grid.getStore().getFilters();
@@ -2019,7 +2019,7 @@ describe("Ext.grid.filters.Filters", function () {
         // Now add the new filter which should replace the existing one.
         filtersPlugin.addFilters([
           { dataIndex: "name", value: "Stevie Ray" },
-          { dataIndex: "email", value: "vaughan.com" },
+          { dataIndex: "email", value: "vaughan.com" }
         ]);
         newFilter = filters.getAt(0);
         newFilter2 = filters.getAt(1);
@@ -2038,7 +2038,7 @@ describe("Ext.grid.filters.Filters", function () {
         filtersPlugin.addFilters([
           { dataIndex: "name" },
           { dataIndex: "email" },
-          { dataIndex: "phone" },
+          { dataIndex: "phone" }
         ]);
 
         expect(filtersPlugin.addFilter).toHaveBeenCalled();
@@ -2051,8 +2051,8 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/addingFilters",
-            },
+              url: "/grid/filters/Feature/addingFilters"
+            }
           });
         });
 
@@ -2060,7 +2060,7 @@ describe("Ext.grid.filters.Filters", function () {
           filtersPlugin.addFilters([
             { dataIndex: "name" },
             { dataIndex: "email", value: "jack" },
-            { dataIndex: "phone" },
+            { dataIndex: "phone" }
           ]);
 
           waitsFor(function () {
@@ -2076,7 +2076,7 @@ describe("Ext.grid.filters.Filters", function () {
           filtersPlugin.addFilters([
             { dataIndex: "name", value: "ginger" },
             { dataIndex: "email", value: "suzy" },
-            { dataIndex: "phone", value: "717" },
+            { dataIndex: "phone", value: "717" }
           ]);
 
           waitsFor(function () {
@@ -2092,7 +2092,7 @@ describe("Ext.grid.filters.Filters", function () {
           filtersPlugin.addFilters([
             { dataIndex: "name" },
             { dataIndex: "email" },
-            { dataIndex: "phone" },
+            { dataIndex: "phone" }
           ]);
 
           // Need to waits because we're checking something doesn't happen
@@ -2125,8 +2125,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "jimmy",
-                },
+                  value: "jimmy"
+                }
               },
               {
                 header: "Email",
@@ -2134,8 +2134,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "ben@sencha.com",
-                },
+                  value: "ben@sencha.com"
+                }
               },
               {
                 header: "Phone",
@@ -2143,11 +2143,11 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "717-555-1212",
-                },
-              },
-            ],
-          },
+                  value: "717-555-1212"
+                }
+              }
+            ]
+          }
         );
       });
 
@@ -2159,13 +2159,13 @@ describe("Ext.grid.filters.Filters", function () {
           text: "DOB",
           filter: {
             value: {
-              eq: new Date("8/8/1992"),
-            },
-          },
+              eq: new Date("8/8/1992")
+            }
+          }
         });
 
         expect(
-          grid.columnManager.getHeaderByDataIndex(columnName).filter.type,
+          grid.columnManager.getHeaderByDataIndex(columnName).filter.type
         ).toBe("string");
       });
 
@@ -2178,13 +2178,13 @@ describe("Ext.grid.filters.Filters", function () {
           filter: {
             type: "date",
             value: {
-              eq: new Date("8/8/1992"),
-            },
-          },
+              eq: new Date("8/8/1992")
+            }
+          }
         });
 
         expect(
-          grid.columnManager.getHeaderByDataIndex(columnName).filter.type,
+          grid.columnManager.getHeaderByDataIndex(columnName).filter.type
         ).toBe("date");
       });
 
@@ -2196,14 +2196,14 @@ describe("Ext.grid.filters.Filters", function () {
           text: "DOB",
           filter: {
             value: {
-              eq: new Date("8/8/1992"),
-            },
-          },
+              eq: new Date("8/8/1992")
+            }
+          }
         });
 
         expect(
           grid.columnManager.getHeaderByDataIndex(columnName).filter
-            .isGridFilter,
+            .isGridFilter
         ).toBe(true);
       });
 
@@ -2212,11 +2212,11 @@ describe("Ext.grid.filters.Filters", function () {
 
         grid.headerCt.add({
           dataIndex: columnName,
-          text: "DOB",
+          text: "DOB"
         });
 
         expect(
-          grid.columnManager.getHeaderByDataIndex(columnName).filter,
+          grid.columnManager.getHeaderByDataIndex(columnName).filter
         ).toBeUndefined();
       });
     });
@@ -2229,16 +2229,16 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/remoteFiltering",
-            },
+              url: "/grid/filters/Feature/remoteFiltering"
+            }
           },
           {
             columns: [
               { header: "Name", dataIndex: "name", width: 100 },
               { header: "Email", dataIndex: "email", width: 100 },
-              { header: "Phone", dataIndex: "phone", width: 100 },
-            ],
-          },
+              { header: "Phone", dataIndex: "phone", width: 100 }
+            ]
+          }
         );
         completeWithData();
       });
@@ -2250,9 +2250,9 @@ describe("Ext.grid.filters.Filters", function () {
           filter: {
             type: "numeric",
             value: {
-              gt: 5,
-            },
-          },
+              gt: 5
+            }
+          }
         });
 
         var filters = getFilters();
@@ -2273,10 +2273,10 @@ describe("Ext.grid.filters.Filters", function () {
                   header: "Phone",
                   dataIndex: "phone",
                   locked: true,
-                  width: 100,
-                },
-              ],
-            },
+                  width: 100
+                }
+              ]
+            }
           );
         });
 
@@ -2291,9 +2291,9 @@ describe("Ext.grid.filters.Filters", function () {
             filter: {
               type: "numeric",
               value: {
-                eq: 10,
-              },
-            },
+                eq: 10
+              }
+            }
           });
           expect(filters.getCount()).toBe(1);
         });
@@ -2309,9 +2309,9 @@ describe("Ext.grid.filters.Filters", function () {
             filter: {
               type: "numeric",
               value: {
-                eq: 10,
-              },
-            },
+                eq: 10
+              }
+            }
           });
           expect(filters.getCount()).toBe(1);
         });
@@ -2326,9 +2326,9 @@ describe("Ext.grid.filters.Filters", function () {
             filter: {
               type: "numeric",
               value: {
-                eq: 10,
-              },
-            },
+                eq: 10
+              }
+            }
           });
 
           expect(filters.getCount()).toBe(1);
@@ -2339,9 +2339,9 @@ describe("Ext.grid.filters.Filters", function () {
             filter: {
               type: "numeric",
               value: {
-                lt: new Date("9/26/2009"),
-              },
-            },
+                lt: new Date("9/26/2009")
+              }
+            }
           });
 
           expect(filters.getCount()).toBe(2);
@@ -2351,8 +2351,8 @@ describe("Ext.grid.filters.Filters", function () {
             text: "Name",
             locked: true,
             filter: {
-              value: "motley",
-            },
+              value: "motley"
+            }
           });
 
           expect(filters.getCount()).toBe(3);
@@ -2367,16 +2367,16 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/remoteFiltering",
-              },
+                url: "/grid/filters/Feature/remoteFiltering"
+              }
             },
             {
               columns: [
                 { header: "Name", dataIndex: "name", locked: true, width: 100 },
                 { header: "Email", dataIndex: "email", width: 100 },
-                { header: "Phone", dataIndex: "phone", width: 100 },
-              ],
-            },
+                { header: "Phone", dataIndex: "phone", width: 100 }
+              ]
+            }
           );
         });
 
@@ -2388,8 +2388,8 @@ describe("Ext.grid.filters.Filters", function () {
               dataIndex: "age",
               text: "Age",
               filter: {
-                type: "numeric",
-              },
+                type: "numeric"
+              }
             });
 
             expect(store.flushCallCount).toBe(initialFlushCallCount);
@@ -2404,9 +2404,9 @@ describe("Ext.grid.filters.Filters", function () {
               filter: {
                 type: "numeric",
                 value: {
-                  gt: 5,
-                },
-              },
+                  gt: 5
+                }
+              }
             });
 
             expect(store.flushCallCount).toBe(initialFlushCallCount + 1);
@@ -2422,8 +2422,8 @@ describe("Ext.grid.filters.Filters", function () {
               text: "Age",
               locked: true,
               filter: {
-                type: "numeric",
-              },
+                type: "numeric"
+              }
             });
 
             expect(store.flushCallCount).toBe(initialFlushCallCount);
@@ -2437,9 +2437,9 @@ describe("Ext.grid.filters.Filters", function () {
               filter: {
                 type: "numeric",
                 value: {
-                  gt: 5,
-                },
-              },
+                  gt: 5
+                }
+              }
             });
 
             expect(store.flushCallCount).toBe(2);
@@ -2470,22 +2470,22 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/setActive",
-            },
+              url: "/grid/filters/Feature/setActive"
+            }
           },
           {
             columns: [
               {
                 dataIndex: "name",
                 filter: {
-                  value: "alex",
-                },
+                  value: "alex"
+                }
               },
               {
-                dataIndex: "age",
-              },
-            ],
-          },
+                dataIndex: "age"
+              }
+            ]
+          }
         );
       });
 
@@ -2561,8 +2561,8 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/setActive",
-            },
+              url: "/grid/filters/Feature/setActive"
+            }
           },
           {
             columns: [
@@ -2571,15 +2571,15 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "name",
                 locked: true,
                 filter: {
-                  value: "alex",
+                  value: "alex"
                 },
-                width: 100,
+                width: 100
               },
               { header: "Email", dataIndex: "email", width: 100 },
               { header: "Phone", dataIndex: "phone", width: 100 },
-              { header: "Age", dataIndex: "age", width: 100 },
-            ],
-          },
+              { header: "Age", dataIndex: "age", width: 100 }
+            ]
+          }
         );
         completeWithData();
       });
@@ -2651,8 +2651,8 @@ describe("Ext.grid.filters.Filters", function () {
               width: 100,
               filter: {
                 type: "string",
-                value: "ben@sencha.com",
-              },
+                value: "ben@sencha.com"
+              }
             },
             {
               header: "Phone",
@@ -2660,15 +2660,15 @@ describe("Ext.grid.filters.Filters", function () {
               width: 100,
               filter: {
                 type: "string",
-                value: "717-555-1212",
-              },
-            },
-          ],
-        },
+                value: "717-555-1212"
+              }
+            }
+          ]
+        }
       );
 
       expect(
-        grid.columnManager.getHeaderByDataIndex("name").filter,
+        grid.columnManager.getHeaderByDataIndex("name").filter
       ).toBeDefined();
     });
 
@@ -2684,8 +2684,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "ben@sencha.com",
-                },
+                  value: "ben@sencha.com"
+                }
               },
               {
                 header: "Email",
@@ -2694,8 +2694,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "ben@sencha.com",
-                },
+                  value: "ben@sencha.com"
+                }
               },
               {
                 header: "Phone",
@@ -2704,17 +2704,17 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "717-555-1212",
-                },
-              },
-            ],
-          },
+                  value: "717-555-1212"
+                }
+              }
+            ]
+          }
         );
       });
 
       it("should get the specified filter", function () {
         expect(
-          grid.columnManager.getHeaderByDataIndex("phone").filter.isGridFilter,
+          grid.columnManager.getHeaderByDataIndex("phone").filter.isGridFilter
         ).toBe(true);
       });
     });
@@ -2733,9 +2733,9 @@ describe("Ext.grid.filters.Filters", function () {
           {},
           {
             columns: [
-              { header: "Name", dataIndex: "name", locked: true, width: 100 },
-            ],
-          },
+              { header: "Name", dataIndex: "name", locked: true, width: 100 }
+            ]
+          }
         );
 
         expect(filtersPlugin.isLocked).toBe(true);
@@ -2748,9 +2748,9 @@ describe("Ext.grid.filters.Filters", function () {
           {},
           {
             columns: [
-              { header: "Name", dataIndex: "name", locked: true, width: 100 },
-            ],
-          },
+              { header: "Name", dataIndex: "name", locked: true, width: 100 }
+            ]
+          }
         );
 
         expect(filtersPlugin.store).toBe(store);
@@ -2767,8 +2767,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "stevie ray",
-                },
+                  value: "stevie ray"
+                }
               },
               {
                 header: "Email",
@@ -2777,8 +2777,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "ben@sencha.com",
-                },
+                  value: "ben@sencha.com"
+                }
               },
               {
                 header: "Phone",
@@ -2787,11 +2787,11 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "717-555-1212",
-                },
-              },
-            ],
-          },
+                  value: "717-555-1212"
+                }
+              }
+            ]
+          }
         );
 
         expect(store.getFilters().getCount()).toBe(3);
@@ -2806,10 +2806,10 @@ describe("Ext.grid.filters.Filters", function () {
             columns: [
               { header: "Name", dataIndex: "name", locked: true, width: 100 },
               { header: "Email", dataIndex: "email", width: 100 },
-              { header: "Phone", dataIndex: "phone", width: 100 },
-            ],
+              { header: "Phone", dataIndex: "phone", width: 100 }
+            ]
           },
-          {},
+          {}
         );
       });
 
@@ -2838,7 +2838,7 @@ describe("Ext.grid.filters.Filters", function () {
           filtersPlugin.addFilter({
             dataIndex: "vanhalen",
             value: "jimmy",
-            locked: true,
+            locked: true
           });
 
           expect(store.getFilters().getCount()).toBe(0);
@@ -2850,7 +2850,7 @@ describe("Ext.grid.filters.Filters", function () {
           filtersPlugin.addFilters([
             { dataIndex: "name" },
             { dataIndex: "email" },
-            { dataIndex: "phone" },
+            { dataIndex: "phone" }
           ]);
 
           expect(filtersPlugin.store.getFilters().getCount()).toBe(0);
@@ -2860,7 +2860,7 @@ describe("Ext.grid.filters.Filters", function () {
           filtersPlugin.addFilters([
             { dataIndex: "name", value: "john" },
             { dataIndex: "email", value: "utley" },
-            { dataIndex: "phone", value: "717-555-1212" },
+            { dataIndex: "phone", value: "717-555-1212" }
           ]);
 
           expect(filtersPlugin.store.getFilters().getCount()).toBe(3);
@@ -2870,7 +2870,7 @@ describe("Ext.grid.filters.Filters", function () {
           filtersPlugin.addFilters([
             { dataIndex: "ledzeppelin", value: "john" },
             { dataIndex: "rush", value: "utley" },
-            { dataIndex: "phone", value: "717-555-1212" },
+            { dataIndex: "phone", value: "717-555-1212" }
           ]);
 
           expect(filtersPlugin.store.getFilters().getCount()).toBe(1);
@@ -2897,10 +2897,10 @@ describe("Ext.grid.filters.Filters", function () {
                     filter: { value: "ford" },
                     dataIndex: "name",
                     locked: true,
-                    width: 100,
-                  },
-                ],
-              },
+                    width: 100
+                  }
+                ]
+              }
             );
 
             storeFilters = store.getFilters();
@@ -2929,12 +2929,12 @@ describe("Ext.grid.filters.Filters", function () {
                     dataIndex: "name",
                     filter: { value: "sco" },
                     locked: true,
-                    width: 100,
+                    width: 100
                   },
                   { header: "Email", dataIndex: "email", width: 100 },
-                  { header: "Phone", dataIndex: "phone", width: 100 },
-                ],
-              },
+                  { header: "Phone", dataIndex: "phone", width: 100 }
+                ]
+              }
             );
 
             columnFilter =
@@ -2965,8 +2965,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "fake",
-              },
+                url: "fake"
+              }
             },
             {
               columns: [
@@ -2975,14 +2975,14 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   locked: true,
                   filter: {
-                    value: "john",
+                    value: "john"
                   },
-                  width: 100,
+                  width: 100
                 },
                 { header: "Email", dataIndex: "email", width: 100 },
-                { header: "Phone", dataIndex: "phone", width: 100 },
-              ],
-            },
+                { header: "Phone", dataIndex: "phone", width: 100 }
+              ]
+            }
           );
           completeWithData();
         });
@@ -3016,8 +3016,8 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/noAutoLoad",
-            },
+              url: "/grid/filters/Feature/noAutoLoad"
+            }
           },
           {
             columns: [
@@ -3027,8 +3027,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "stevie ray",
-                },
+                  value: "stevie ray"
+                }
               },
               { header: "Email", dataIndex: "email", width: 100 },
               {
@@ -3038,11 +3038,11 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "717-555-8879",
-                },
-              },
-            ],
-          },
+                  value: "717-555-8879"
+                }
+              }
+            ]
+          }
         );
 
         // Need to use waits, checking something doesn't run
@@ -3061,8 +3061,8 @@ describe("Ext.grid.filters.Filters", function () {
             data: null,
             proxy: {
               type: "ajax",
-              url: "/grid/filters/Feature/noAutoLoad",
-            },
+              url: "/grid/filters/Feature/noAutoLoad"
+            }
           },
           {
             columns: [
@@ -3072,8 +3072,8 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "stevie ray",
-                },
+                  value: "stevie ray"
+                }
               },
               { header: "Email", dataIndex: "email", width: 100 },
               {
@@ -3083,19 +3083,19 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "717-555-8879",
-                },
-              },
-            ],
+                  value: "717-555-8879"
+                }
+              }
+            ]
           },
           {
             filters: [
               {
                 dataIndex: "name",
-                value: "herring",
-              },
-            ],
-          },
+                value: "herring"
+              }
+            ]
+          }
         );
 
         waitsFor(function () {
@@ -3129,8 +3129,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               columns: [
@@ -3139,13 +3139,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-true-1",
-            },
+              stateId: "remote-filter-true-1"
+            }
           );
 
           grid.saveState();
@@ -3159,8 +3159,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               columns: [
@@ -3169,13 +3169,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-true-1",
-            },
+              stateId: "remote-filter-true-1"
+            }
           );
 
           waitsFor(function () {
@@ -3194,8 +3194,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               columns: [
@@ -3204,13 +3204,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-true-2",
-            },
+              stateId: "remote-filter-true-2"
+            }
           );
 
           grid.saveState();
@@ -3223,8 +3223,8 @@ describe("Ext.grid.filters.Filters", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "/grid/filters/Feature/noAutoLoad",
-              },
+                url: "/grid/filters/Feature/noAutoLoad"
+              }
             },
             {
               columns: [
@@ -3233,13 +3233,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-true-2",
-            },
+              stateId: "remote-filter-true-2"
+            }
           );
 
           waitsFor(function () {
@@ -3258,7 +3258,7 @@ describe("Ext.grid.filters.Filters", function () {
           createGrid(
             {
               autoLoad: false,
-              remoteFilter: false,
+              remoteFilter: false
             },
             {
               columns: [
@@ -3267,13 +3267,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-false-1",
-            },
+              stateId: "remote-filter-false-1"
+            }
           );
 
           grid.columnManager
@@ -3287,7 +3287,7 @@ describe("Ext.grid.filters.Filters", function () {
           createGrid(
             {
               autoLoad: false,
-              remoteFilter: false,
+              remoteFilter: false
             },
             {
               columns: [
@@ -3296,13 +3296,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-false-1",
-            },
+              stateId: "remote-filter-false-1"
+            }
           );
 
           waitsFor(function () {
@@ -3320,7 +3320,7 @@ describe("Ext.grid.filters.Filters", function () {
             {
               autoLoad: true,
               remoteFilter: false,
-              asynchronousLoad: true,
+              asynchronousLoad: true
             },
             {
               columns: [
@@ -3329,13 +3329,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-false-2",
-            },
+              stateId: "remote-filter-false-2"
+            }
           );
 
           grid.columnManager
@@ -3349,7 +3349,7 @@ describe("Ext.grid.filters.Filters", function () {
           createGrid(
             {
               autoLoad: true,
-              remoteFilter: false,
+              remoteFilter: false
             },
             {
               columns: [
@@ -3358,13 +3358,13 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   width: 100,
                   filter: {
-                    value: "jimmy",
-                  },
-                },
+                    value: "jimmy"
+                  }
+                }
               ],
               stateful: true,
-              stateId: "remote-filter-false-2",
-            },
+              stateId: "remote-filter-false-2"
+            }
           );
 
           waitsFor(function () {
@@ -3389,8 +3389,8 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "name",
                 width: 100,
                 filter: {
-                  value: "jimmy",
-                },
+                  value: "jimmy"
+                }
               },
               { header: "Email", dataIndex: "email", width: 100 },
               {
@@ -3398,13 +3398,13 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "phone",
                 width: 100,
                 filter: {
-                  type: "string",
-                },
-              },
+                  type: "string"
+                }
+              }
             ],
             stateful: true,
-            stateId: "foo",
-          },
+            stateId: "foo"
+          }
         );
 
         grid.saveState();
@@ -3419,9 +3419,9 @@ describe("Ext.grid.filters.Filters", function () {
             dataIndex: "name",
             width: 100,
             filter: {
-              value: "lifeson",
-            },
-          },
+              value: "lifeson"
+            }
+          }
         ];
 
         createGrid(
@@ -3429,8 +3429,8 @@ describe("Ext.grid.filters.Filters", function () {
           {
             columns: columns,
             stateful: true,
-            stateId: "foo",
-          },
+            stateId: "foo"
+          }
         );
 
         // Save state or filter state will be null.
@@ -3454,8 +3454,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               columns: columns,
               stateful: true,
-              stateId: "foo",
-            },
+              stateId: "foo"
+            }
           );
 
           // Updated value.
@@ -3470,7 +3470,7 @@ describe("Ext.grid.filters.Filters", function () {
         var columns = [
           { header: "Name", dataIndex: "name", filter: true, width: 100 },
           { header: "Email", dataIndex: "email", width: 100 },
-          { header: "Phone", dataIndex: "phone", width: 100 },
+          { header: "Phone", dataIndex: "phone", width: 100 }
         ];
 
         createGrid(
@@ -3478,8 +3478,8 @@ describe("Ext.grid.filters.Filters", function () {
           {
             columns: columns,
             stateful: true,
-            stateId: "foo",
-          },
+            stateId: "foo"
+          }
         );
 
         // Before filtering.
@@ -3510,8 +3510,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               columns: columns,
               stateful: true,
-              stateId: "foo",
-            },
+              stateId: "foo"
+            }
           );
 
           // After page refresh.
@@ -3523,7 +3523,7 @@ describe("Ext.grid.filters.Filters", function () {
         var columns = [
           { header: "Name", dataIndex: "name", filter: true, width: 100 },
           { header: "Email", dataIndex: "email", width: 100 },
-          { header: "Phone", dataIndex: "phone", width: 100 },
+          { header: "Phone", dataIndex: "phone", width: 100 }
         ];
 
         createGrid(
@@ -3531,8 +3531,8 @@ describe("Ext.grid.filters.Filters", function () {
           {
             columns: columns,
             stateful: true,
-            stateId: "foo",
-          },
+            stateId: "foo"
+          }
         );
 
         var filter = grid.columnManager.getHeaderByDataIndex("name").filter;
@@ -3560,8 +3560,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               columns: columns,
               stateful: true,
-              stateId: "foo",
-            },
+              stateId: "foo"
+            }
           );
 
           // After page refresh.
@@ -3578,11 +3578,11 @@ describe("Ext.grid.filters.Filters", function () {
             dataIndex: "name",
             width: 100,
             filter: {
-              value: "jimmy",
-            },
+              value: "jimmy"
+            }
           },
           { header: "Email", dataIndex: "email", width: 100 },
-          { header: "Phone", dataIndex: "phone", width: 100 },
+          { header: "Phone", dataIndex: "phone", width: 100 }
         ];
 
         createGrid(
@@ -3590,8 +3590,8 @@ describe("Ext.grid.filters.Filters", function () {
           {
             columns: columns,
             stateful: true,
-            stateId: "foo",
-          },
+            stateId: "foo"
+          }
         );
 
         // Before filtering.
@@ -3615,8 +3615,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               columns: columns,
               stateful: true,
-              stateId: "foo",
-            },
+              stateId: "foo"
+            }
           );
 
           // After page refresh.
@@ -3632,11 +3632,11 @@ describe("Ext.grid.filters.Filters", function () {
             width: 100,
             filter: {
               value: "herring",
-              type: "string",
-            },
+              type: "string"
+            }
           },
           { header: "Email", dataIndex: "email", width: 100 },
-          { header: "Phone", dataIndex: "phone", width: 100 },
+          { header: "Phone", dataIndex: "phone", width: 100 }
         ];
 
         createGrid(
@@ -3644,8 +3644,8 @@ describe("Ext.grid.filters.Filters", function () {
           {
             columns: columns,
             stateful: true,
-            stateId: "foo",
-          },
+            stateId: "foo"
+          }
         );
 
         grid.saveState();
@@ -3668,8 +3668,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               columns: columns,
               stateful: true,
-              stateId: "foo",
-            },
+              stateId: "foo"
+            }
           );
 
           // After page refresh.
@@ -3687,10 +3687,10 @@ describe("Ext.grid.filters.Filters", function () {
               filter: {
                 type: "date",
                 value: {
-                  lt: new Date("8/8/1992"),
-                },
-              },
-            },
+                  lt: new Date("8/8/1992")
+                }
+              }
+            }
           ],
           date = new Date("1/22/1962");
 
@@ -3699,8 +3699,8 @@ describe("Ext.grid.filters.Filters", function () {
           {
             columns: columns,
             stateful: true,
-            stateId: "foo",
-          },
+            stateId: "foo"
+          }
         );
 
         var filter = grid.columnManager.getHeaderByDataIndex("dob").filter;
@@ -3721,8 +3721,8 @@ describe("Ext.grid.filters.Filters", function () {
             {
               columns: columns,
               stateful: true,
-              stateId: "foo",
-            },
+              stateId: "foo"
+            }
           );
 
           // After page refresh.
@@ -3730,7 +3730,7 @@ describe("Ext.grid.filters.Filters", function () {
           expect(
             grid.columnManager
               .getHeaderByDataIndex("dob")
-              .filter.filter.eq.getValue(),
+              .filter.filter.eq.getValue()
           ).toEqual(date);
         });
       });
@@ -3752,19 +3752,19 @@ describe("Ext.grid.filters.Filters", function () {
               width: 100,
               filter: {
                 type: "string",
-                value: "ben",
-              },
+                value: "ben"
+              }
             },
-            { header: "Email", dataIndex: "email", width: 100 },
-          ],
-        },
+            { header: "Email", dataIndex: "email", width: 100 }
+          ]
+        }
       );
     });
 
     it("should create the 'Filters' menuItem", function () {
       jasmine.fireMouseEvent(
         grid.columnManager.getColumns()[0].triggerEl.dom,
-        "click",
+        "click"
       );
       expect(grid.headerCt.menu.items.getByKey("filters")).toBeDefined();
     });
@@ -3772,7 +3772,7 @@ describe("Ext.grid.filters.Filters", function () {
     it("should create the column filter menu", function () {
       jasmine.fireMouseEvent(
         grid.columnManager.getColumns()[0].triggerEl.dom,
-        "click",
+        "click"
       );
       expect(grid.headerCt.menu.items.getByKey("filters").menu).toBeDefined();
     });
@@ -3790,23 +3790,23 @@ describe("Ext.grid.filters.Filters", function () {
               width: 100,
               filter: {
                 type: "string",
-                value: "ben",
-              },
+                value: "ben"
+              }
             },
-            { header: "Email", dataIndex: "email", width: 100 },
-          ],
-        },
+            { header: "Email", dataIndex: "email", width: 100 }
+          ]
+        }
       );
 
       jasmine.fireMouseEvent(
         grid.columnManager.getColumns()[0].triggerEl.dom,
-        "click",
+        "click"
       );
 
       expect(filtersPlugin.sep).toBeDefined();
       // next to last item should be a menu separator, and it should be filters.sep
       expect(grid.headerCt.menu.items.getAt(4).id).toEqual(
-        filtersPlugin.sep.id,
+        filtersPlugin.sep.id
       );
     });
 
@@ -3822,16 +3822,16 @@ describe("Ext.grid.filters.Filters", function () {
               dataIndex: "name",
               width: 100,
               filter: {
-                type: "string",
-              },
-            },
-          ],
-        },
+                type: "string"
+              }
+            }
+          ]
+        }
       );
 
       jasmine.fireMouseEvent(
         grid.columnManager.getColumns()[0].triggerEl.dom,
-        "click",
+        "click"
       );
       expect(filtersPlugin.sep).not.toBeDefined();
       // first item should be the filters item
@@ -3858,12 +3858,12 @@ describe("Ext.grid.filters.Filters", function () {
               width: 100,
               filter: {
                 type: "string",
-                value: "ben",
-              },
+                value: "ben"
+              }
             },
-            { header: "Email", dataIndex: "email", width: 100 },
-          ],
-        },
+            { header: "Email", dataIndex: "email", width: 100 }
+          ]
+        }
       );
 
       expect(filtersPlugin.hasActiveFilter()).toBe(true);
@@ -3876,9 +3876,9 @@ describe("Ext.grid.filters.Filters", function () {
           {
             columns: [
               { header: "Name", dataIndex: "name", locked: true, width: 100 },
-              { header: "Email", dataIndex: "email", width: 100 },
-            ],
-          },
+              { header: "Email", dataIndex: "email", width: 100 }
+            ]
+          }
         );
 
         expect(filtersPlugin.hasActiveFilter()).toBe(false);
@@ -3896,12 +3896,12 @@ describe("Ext.grid.filters.Filters", function () {
                 width: 100,
                 filter: {
                   type: "string",
-                  value: "ben",
-                },
+                  value: "ben"
+                }
               },
-              { header: "Email", dataIndex: "email", width: 100 },
-            ],
-          },
+              { header: "Email", dataIndex: "email", width: 100 }
+            ]
+          }
         );
 
         expect(filtersPlugin.hasActiveFilter()).toBe(true);
@@ -3921,15 +3921,15 @@ describe("Ext.grid.filters.Filters", function () {
         fields: ["name"],
         data: [
           {
-            name: "Foo",
+            name: "Foo"
           },
           {
-            name: "Bar",
+            name: "Bar"
           },
           {
-            name: "Baz",
-          },
-        ],
+            name: "Baz"
+          }
+        ]
       });
     });
 
@@ -3945,9 +3945,9 @@ describe("Ext.grid.filters.Filters", function () {
               columns: [
                 {
                   dataIndex: "name",
-                  filter: true,
-                },
-              ],
+                  filter: true
+                }
+              ]
             });
 
             column = grid.columnManager.getColumns()[0];
@@ -3956,14 +3956,14 @@ describe("Ext.grid.filters.Filters", function () {
 
             // Showing the menu will have the filters plugin create the column filter menu.
             expect(
-              grid.headerCt.menu.items.getByKey("filters").menu,
+              grid.headerCt.menu.items.getByKey("filters").menu
             ).toBeDefined();
 
             // Now, let's reconfigure.
             grid.reconfigure(null, []);
 
             expect(grid.headerCt.menu.items.getByKey("filters").menu).toBe(
-              null,
+              null
             );
           });
 
@@ -3981,13 +3981,13 @@ describe("Ext.grid.filters.Filters", function () {
                 {
                   dataIndex: "name",
                   filter: true,
-                  locked: true,
+                  locked: true
                 },
                 {
                   dataIndex: "email",
-                  filter: true,
-                },
-              ],
+                  filter: true
+                }
+              ]
             });
 
             lockedGrid = grid.lockedGrid;
@@ -4008,10 +4008,10 @@ describe("Ext.grid.filters.Filters", function () {
             // Showing the menu will have the filters plugin create the column filter menu.
             // The Filters plugin should now have a reference to each Filters menu item.
             expect(filterMenuItem[lockedGrid.id].menu).toBe(
-              lockedHeaderMenu.down("#filters").menu,
+              lockedHeaderMenu.down("#filters").menu
             );
             expect(filterMenuItem[normalGrid.id].menu).toBe(
-              normalHeaderMenu.down("#filters").menu,
+              normalHeaderMenu.down("#filters").menu
             );
 
             // Now, let's reconfigure.
@@ -4025,7 +4025,7 @@ describe("Ext.grid.filters.Filters", function () {
             var columns = [
               {
                 text: "Name",
-                dataIndex: "name",
+                dataIndex: "name"
               },
               {
                 text: "Contact",
@@ -4033,19 +4033,19 @@ describe("Ext.grid.filters.Filters", function () {
                   {
                     text: "E-Mail",
                     dataIndex: "email",
-                    filter: "string",
+                    filter: "string"
                   },
                   {
                     text: "Phone",
                     dataIndex: "phone",
-                    filter: "string",
-                  },
-                ],
-              },
+                    filter: "string"
+                  }
+                ]
+              }
             ];
 
             createGrid(null, {
-              columns: columns,
+              columns: columns
             });
 
             grid.reconfigure(store, columns);
@@ -4065,9 +4065,9 @@ describe("Ext.grid.filters.Filters", function () {
           columns: [
             {
               dataIndex: "name",
-              filter: true,
-            },
-          ],
+              filter: true
+            }
+          ]
         });
 
         expect(filtersPlugin.store).toBe(store);
@@ -4083,9 +4083,9 @@ describe("Ext.grid.filters.Filters", function () {
             columns: [
               {
                 dataIndex: "name",
-                filter: true,
-              },
-            ],
+                filter: true
+              }
+            ]
           });
 
           grid.reconfigure(newStore);
@@ -4102,39 +4102,39 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "string1",
                 itemId: "string1",
                 filter: {
-                  type: "string",
-                },
+                  type: "string"
+                }
               },
               {
                 dataIndex: "name2",
                 filter: {
-                  type: "string",
-                },
+                  type: "string"
+                }
               },
               {
                 dataIndex: "number1",
                 itemId: "number1",
                 filter: {
-                  type: "number",
-                },
+                  type: "number"
+                }
               },
               {
                 dataIndex: "string2",
                 filter: {
-                  type: "number",
-                },
-              },
-            ],
+                  type: "number"
+                }
+              }
+            ]
           });
 
           store.getFilters().add({
             property: "xxx",
-            value: 100,
+            value: 100
           });
 
           grid.down("#string1").filter.setValue("foo");
           grid.down("#number1").filter.setValue({
-            eq: 1,
+            eq: 1
           });
 
           store.setAutoDestroy(false);
@@ -4154,34 +4154,34 @@ describe("Ext.grid.filters.Filters", function () {
                 dataIndex: "string1",
                 itemId: "string1",
                 filter: {
-                  type: "string",
-                },
+                  type: "string"
+                }
               },
               {
                 dataIndex: "name2",
                 filter: {
-                  type: "string",
-                },
+                  type: "string"
+                }
               },
               {
                 dataIndex: "number1",
                 itemId: "number1",
                 filter: {
-                  type: "number",
-                },
+                  type: "number"
+                }
               },
               {
                 dataIndex: "string2",
                 filter: {
-                  type: "number",
-                },
-              },
-            ],
+                  type: "number"
+                }
+              }
+            ]
           });
 
           grid.down("#string1").filter.setValue("foo");
           grid.down("#number1").filter.setValue({
-            eq: 1,
+            eq: 1
           });
 
           grid.reconfigure(newStore);
@@ -4203,9 +4203,9 @@ describe("Ext.grid.filters.Filters", function () {
                   {
                     dataIndex: "name",
                     locked: locked,
-                    filter: true,
-                  },
-                ],
+                    filter: true
+                  }
+                ]
               });
 
               expect(store.getCount()).toBe(data.length);
@@ -4218,9 +4218,9 @@ describe("Ext.grid.filters.Filters", function () {
                   locked: locked,
                   filter: {
                     type: "string",
-                    value: "Baz",
-                  },
-                },
+                    value: "Baz"
+                  }
+                }
               ]);
 
               expect(newStore.getCount()).toBe(1);
@@ -4235,9 +4235,9 @@ describe("Ext.grid.filters.Filters", function () {
                   {
                     dataIndex: "name",
                     locked: locked,
-                    filter: true,
-                  },
-                ],
+                    filter: true
+                  }
+                ]
               });
 
               expect(store.getCount()).toBe(data.length);
@@ -4250,8 +4250,8 @@ describe("Ext.grid.filters.Filters", function () {
                   locked: locked,
                   filter: {
                     type: "string",
-                    value: "Jimmy",
-                  },
+                    value: "Jimmy"
+                  }
                 },
                 {
                   header: "Email",
@@ -4259,9 +4259,9 @@ describe("Ext.grid.filters.Filters", function () {
                   width: 100,
                   filter: {
                     type: "string",
-                    value: "jimmy@page.com",
-                  },
-                },
+                    value: "jimmy@page.com"
+                  }
+                }
               ]);
 
               expect(store.getCount()).toBe(1);
@@ -4276,9 +4276,9 @@ describe("Ext.grid.filters.Filters", function () {
                   {
                     dataIndex: "name",
                     locked: locked,
-                    filter: true,
-                  },
-                ],
+                    filter: true
+                  }
+                ]
               });
 
               grid.columnManager
@@ -4290,8 +4290,8 @@ describe("Ext.grid.filters.Filters", function () {
                   header: "Name",
                   dataIndex: "name",
                   locked: locked,
-                  filter: true,
-                },
+                  filter: true
+                }
               ]);
 
               expect(store.getCount()).toBe(counter);
@@ -4308,7 +4308,7 @@ describe("Ext.grid.filters.Filters", function () {
   describe("destroy", function () {
     it("should not destroy the store when the plugin is destroyed with autoDestroy: false", function () {
       createGrid({
-        autoDestroy: false,
+        autoDestroy: false
       });
       spyOn(store, "destroy");
       grid.destroy();
@@ -4358,15 +4358,15 @@ describe("Ext.grid.filters.Filters", function () {
                   dataIndex: "name",
                   locked: locked,
                   filter: true,
-                  width: 100,
+                  width: 100
                 },
                 {
                   header: "Email",
                   dataIndex: "email",
                   filter: true,
-                  width: 100,
-                },
-              ],
+                  width: 100
+                }
+              ]
             });
 
             header = grid.headerCt.columnManager.getHeaderByDataIndex("name");
@@ -4391,18 +4391,18 @@ describe("Ext.grid.filters.Filters", function () {
                   header: "Name",
                   dataIndex: "name",
                   filter: {
-                    type: "string",
-                  },
+                    type: "string"
+                  }
                 },
                 {
                   header: "Description",
                   dataIndex: "description",
                   locked: locked,
                   filter: {
-                    type: "string",
-                  },
-                },
-              ],
+                    type: "string"
+                  }
+                }
+              ]
             });
 
             header =

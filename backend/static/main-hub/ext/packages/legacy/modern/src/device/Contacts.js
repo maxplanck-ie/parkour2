@@ -44,5 +44,5 @@ Ext.define("Ext.device.Contacts", {
       }
     }
     return Ext.create("Ext.device.contacts.Abstract");
-  },
+  }
 });

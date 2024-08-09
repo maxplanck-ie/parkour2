@@ -33,7 +33,7 @@ repos:
         files: misc/parkour.env
         args: ["hardreset-envfile"]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
         types: [python]
@@ -47,18 +47,18 @@ repos:
       - id: isort
         args: [--profile, "black"]
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 23.9.1
+    rev: 24.4.2
     hooks:
       - id: black
         language_version: python3
         entry: black --target-version=py311 # 3.11
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.0
+    rev: v3.16.0
     hooks:
       - id: pyupgrade
         args: [--py311-plus] # 3.11
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.15.0
+    rev: 1.19.0
     hooks:
       - id: django-upgrade
         args: [--target-version, "4.2"]
@@ -66,4 +66,5 @@ repos:
     rev: "v4.0.0-alpha.8"
     hooks:
       - id: prettier
+        args: [--trailing-comma, none, --no-error-on-unmatched-pattern]
         types_or: [json, css, javascript, vue]

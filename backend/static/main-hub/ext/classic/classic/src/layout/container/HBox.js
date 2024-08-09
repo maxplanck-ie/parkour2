@@ -123,5 +123,5 @@ Ext.define("Ext.layout.container.HBox", {
 
   type: "hbox",
 
-  vertical: false,
+  vertical: false
 });

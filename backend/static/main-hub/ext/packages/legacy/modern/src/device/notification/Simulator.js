@@ -24,7 +24,7 @@ Ext.define("Ext.device.notification.Simulator", {
       if (Ext.isString(button)) {
         button = {
           text: config.buttons[i],
-          itemId: config.buttons[i].toLowerCase(),
+          itemId: config.buttons[i].toLowerCase()
         };
       }
 
@@ -44,7 +44,7 @@ Ext.define("Ext.device.notification.Simulator", {
       message: config.message,
       scope: this.msg,
       buttons: buttons,
-      fn: callback,
+      fn: callback
     });
   },
 
@@ -77,7 +77,7 @@ Ext.define("Ext.device.notification.Simulator", {
       if (Ext.isString(button)) {
         button = {
           text: config.buttons[i],
-          itemId: config.buttons[i].toLowerCase(),
+          itemId: config.buttons[i].toLowerCase()
         };
       }
 
@@ -99,7 +99,7 @@ Ext.define("Ext.device.notification.Simulator", {
       this.msg,
       config.multiLine,
       config.value,
-      config.prompt,
+      config.prompt
     );
   },
 
@@ -132,7 +132,7 @@ Ext.define("Ext.device.notification.Simulator", {
 
       "body {",
       "    -webkit-animation: vibrate 50ms linear 10 alternate;",
-      "}",
+      "}"
     ];
 
     var head = document.getElementsByTagName("head")[0];
@@ -143,5 +143,5 @@ Ext.define("Ext.device.notification.Simulator", {
     Ext.defer(function () {
       head.removeChild(cssNode);
     }, 400);
-  },
+  }
 });

@@ -28,5 +28,5 @@ Ext.define("Ext.overrides.Progress", {
 
     me.backgroundEl.setWidth(width);
     me.textEl.setWidth(width);
-  },
+  }
 });

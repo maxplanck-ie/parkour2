@@ -11,5 +11,5 @@ Ext.define("Ext.util.CSV", {
 
   singleton: true,
 
-  delimiter: ",",
+  delimiter: ","
 });

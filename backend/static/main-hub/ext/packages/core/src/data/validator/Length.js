@@ -37,10 +37,10 @@ Ext.define("Ext.data.validator.Length", {
      * The error message to return when the value length is not in the specified
      * range and both the minimum and maximum are specified.
      */
-    bothMessage: "Length must be between {0} and {1}",
+    bothMessage: "Length must be between {0} and {1}"
   },
 
   getValue: function (v) {
     return String(v).length;
-  },
+  }
 });

@@ -16,37 +16,37 @@ describe("Ext.grid.column.Column", function () {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              income: 1244.246,
+              income: 1244.246
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              income: 3444.985,
+              income: 3444.985
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              income: 2474.45,
+              income: 2474.45
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              income: 244.745,
+              income: 244.745
             },
             {
               name: "Kid",
               email: "kid@simpsons.com",
               phone: "555-222-1254",
-              income: 0,
-            },
+              income: 0
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     panel = new Ext.grid.Grid(
@@ -58,21 +58,21 @@ describe("Ext.grid.column.Column", function () {
               header: "Income",
               dataIndex: "income",
               width: 100,
-              formatter: 'number("0,000.00")',
+              formatter: 'number("0,000.00")'
             },
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", width: 100 },
-            { header: "Phone", dataIndex: "phone", width: 100 },
+            { header: "Phone", dataIndex: "phone", width: 100 }
           ],
           height: 200,
-          width: 400,
+          width: 400
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     container = panel.container;
     panel.onContainerResize(container, {
-      height: container.element.getHeight(),
+      height: container.element.getHeight()
     });
   }
 
@@ -105,18 +105,18 @@ describe("Ext.grid.column.Column", function () {
         renderTo: Ext.getBody(),
         viewModel: {
           data: {
-            theName: "Foo",
-          },
+            theName: "Foo"
+          }
         },
         columns: [
           {
             dataIndex: "name",
             itemId: "col",
             bind: {
-              text: "{theName}",
-            },
-          },
-        ],
+              text: "{theName}"
+            }
+          }
+        ]
       });
       panel.getViewModel().notify();
       var col = panel.down("#col");
@@ -131,23 +131,23 @@ describe("Ext.grid.column.Column", function () {
           {
             header: "Income",
             dataIndex: "income",
-            width: 100,
-          },
+            width: 100
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1244.246",
+        "1244.246"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3444.985",
+        "3444.985"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2474.45",
+        "2474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.745",
+        "244.745"
       );
     });
 
@@ -159,11 +159,11 @@ describe("Ext.grid.column.Column", function () {
             dataIndex: "income",
             width: 100,
             cell: {
-              zeroValue: "zero",
-            },
-          },
+              zeroValue: "zero"
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(4, 0).el.down(".x-inner-el", true).innerHTML).toBe("zero");
@@ -178,23 +178,23 @@ describe("Ext.grid.column.Column", function () {
             width: 100,
             cell: {
               xtype: "textcell",
-              zeroValue: "zero",
-            },
-          },
+              zeroValue: "zero"
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(
-        getCell(4, 0, "textcell").el.down(".x-inner-el", true).innerHTML,
+        getCell(4, 0, "textcell").el.down(".x-inner-el", true).innerHTML
       ).toBe("zero");
     });
 
     it("should apply the zeroValue of gridcell correctly from a VM", function () {
       var vm = new Ext.app.ViewModel({
         data: {
-          zeroValue: "zero",
-        },
+          zeroValue: "zero"
+        }
       });
 
       createGrid({
@@ -206,12 +206,12 @@ describe("Ext.grid.column.Column", function () {
             cell: {
               viewModel: vm,
               bind: {
-                zeroValue: "{zeroValue}",
-              },
-            },
-          },
+                zeroValue: "{zeroValue}"
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm.notify();
@@ -221,8 +221,8 @@ describe("Ext.grid.column.Column", function () {
     it("should apply the zeroValue of textcell correctly from a VM", function () {
       var vm = new Ext.app.ViewModel({
         data: {
-          zeroValue: "zero",
-        },
+          zeroValue: "zero"
+        }
       });
 
       createGrid({
@@ -235,17 +235,17 @@ describe("Ext.grid.column.Column", function () {
               xtype: "textcell",
               viewModel: vm,
               bind: {
-                zeroValue: "{zeroValue}",
-              },
-            },
-          },
+                zeroValue: "{zeroValue}"
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm.notify();
       expect(
-        getCell(4, 0, "textcell").el.down(".x-inner-el", true).innerHTML,
+        getCell(4, 0, "textcell").el.down(".x-inner-el", true).innerHTML
       ).toBe("zero");
     });
 
@@ -256,23 +256,23 @@ describe("Ext.grid.column.Column", function () {
             header: "Income",
             dataIndex: "income",
             width: 100,
-            formatter: 'number("0,000.00")',
-          },
+            formatter: 'number("0,000.00")'
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
@@ -287,32 +287,32 @@ describe("Ext.grid.column.Column", function () {
             scope: {
               myTest: function (v, format) {
                 return Ext.util.Format.number(v, format);
-              },
-            },
-          },
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
     it("should apply the cell formatter correctly from a VM", function () {
       var vm = new Ext.app.ViewModel({
         data: {
-          formatter: 'number("0,000")',
-        },
+          formatter: 'number("0,000")'
+        }
       });
 
       createGrid({
@@ -324,23 +324,23 @@ describe("Ext.grid.column.Column", function () {
             cell: {
               viewModel: vm,
               bind: {
-                formatter: "{formatter}",
-              },
-            },
-          },
+                formatter: "{formatter}"
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm.notify();
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244",
+        "1,244"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,445",
+        "3,445"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474",
+        "2,474"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe("245");
     });
@@ -352,23 +352,23 @@ describe("Ext.grid.column.Column", function () {
             header: "Income",
             dataIndex: "income",
             width: 100,
-            renderer: Ext.util.Format.numberRenderer("0,000.00"),
-          },
+            renderer: Ext.util.Format.numberRenderer("0,000.00")
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
@@ -383,32 +383,32 @@ describe("Ext.grid.column.Column", function () {
             scope: {
               myTest: function (v) {
                 return Ext.util.Format.number(v, "0,000.00");
-              },
-            },
-          },
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
     it("should apply the cell renderer correctly from a VM", function () {
       var vm = new Ext.app.ViewModel({
         data: {
-          renderer: Ext.util.Format.numberRenderer("0,000"),
-        },
+          renderer: Ext.util.Format.numberRenderer("0,000")
+        }
       });
 
       createGrid({
@@ -420,23 +420,23 @@ describe("Ext.grid.column.Column", function () {
             cell: {
               viewModel: vm,
               bind: {
-                renderer: "{renderer}",
-              },
-            },
-          },
+                renderer: "{renderer}"
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm.notify();
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244",
+        "1,244"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,445",
+        "3,445"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474",
+        "2,474"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe("245");
     });
@@ -447,23 +447,23 @@ describe("Ext.grid.column.Column", function () {
           {
             header: "Income",
             width: 100,
-            tpl: '{income:number("0,000.00")}',
-          },
+            tpl: '{income:number("0,000.00")}'
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
@@ -478,25 +478,25 @@ describe("Ext.grid.column.Column", function () {
               {
                 myTest: function (v, format) {
                   return Ext.util.Format.number(v, format);
-                },
-              },
-            ],
-          },
+                }
+              }
+            ]
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
@@ -507,23 +507,23 @@ describe("Ext.grid.column.Column", function () {
             header: "Income",
             dataIndex: "income",
             width: 100,
-            tpl: '{income:number("0,000.00")}',
-          },
+            tpl: '{income:number("0,000.00")}'
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
@@ -539,25 +539,25 @@ describe("Ext.grid.column.Column", function () {
               {
                 myTest: function (v, format) {
                   return Ext.util.Format.number(v, format);
-                },
-              },
-            ],
-          },
+                }
+              }
+            ]
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
@@ -569,10 +569,10 @@ describe("Ext.grid.column.Column", function () {
             {
               myTest: function (v, format) {
                 return Ext.util.Format.number(v, format);
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       });
 
       createGrid({
@@ -584,23 +584,23 @@ describe("Ext.grid.column.Column", function () {
             cell: {
               viewModel: vm,
               bind: {
-                tpl: "{template}",
-              },
-            },
-          },
+                tpl: "{template}"
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm.notify();
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244",
+        "1,244"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,445",
+        "3,445"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474",
+        "2,474"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe("245");
     });

@@ -13,7 +13,7 @@ Ext.define("Ext.data.validator.List", {
      * @cfg {Array} list (required)
      * The list to check the passed value against.
      */
-    list: null,
+    list: null
   },
 
   inclusion: null,
@@ -26,5 +26,5 @@ Ext.define("Ext.data.validator.List", {
 
     result = (inclusion && contains) || (exclusion && !contains);
     return result || this.getMessage();
-  },
+  }
 });

@@ -6,12 +6,12 @@ Ext.define("MainHub.view.requests.TokenWindowController", {
   config: {
     control: {
       "#": {
-        boxready: "boxready",
+        boxready: "boxready"
       },
       "#send-email-button": {
-        click: "send",
-      },
-    },
+        click: "send"
+      }
+    }
   },
 
   boxready: function (wnd) {
@@ -26,15 +26,15 @@ Ext.define("MainHub.view.requests.TokenWindowController", {
     if (!form.isValid()) {
       new Noty({
         text: "All fields must be filled in.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
 
     form.submit({
       url: Ext.String.format(
-        "api/requests/{0}/solicite_approval/",
-        wnd.record.get("pk"),
+        "api/requests/{0}/solicit_approval/",
+        wnd.record.get("pk")
       ),
       params: form.getFieldValues(),
       success: function (f, action) {
@@ -47,7 +47,7 @@ Ext.define("MainHub.view.requests.TokenWindowController", {
           : action.response.statusText;
         new Noty({ text: error, type: "error" }).show();
         console.error(action);
-      },
+      }
     });
-  },
+  }
 });

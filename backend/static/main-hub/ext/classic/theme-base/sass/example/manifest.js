@@ -17,71 +17,71 @@ Ext.theme.addManifest(
       items: [
         {
           text: "&nbsp;",
-          cls: Ext.baseCSSPrefix + "menu-item-active",
-        },
-      ],
-    },
+          cls: Ext.baseCSSPrefix + "menu-item-active"
+        }
+      ]
+    }
   },
 
   {
     xtype: "widget.button",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.button",
-    ui: "default-toolbar",
+    ui: "default-toolbar"
   },
 
   {
     xtype: "widget.toolbar",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.panel",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.header",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.window",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.tab",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.tabbar",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.progressbar",
-    ui: "default",
+    ui: "default"
   },
 
   {
     xtype: "widget.buttongroup",
-    ui: "default",
+    ui: "default"
   },
 
   //tips
   {
     xtype: "widget.tooltip",
     filename: "tip",
-    ui: "default",
+    ui: "default"
   },
   {
     xtype: "widget.tooltip",
-    ui: "form-invalid",
+    ui: "form-invalid"
   },
 
   /**
@@ -98,14 +98,14 @@ Ext.theme.addManifest(
           el = me.el;
 
         el.addCls(
-          Ext.baseCSSPrefix + "column-header-align-" + me.align,
+          Ext.baseCSSPrefix + "column-header-align-" + me.align
         ).addClsOnOver(me.overCls);
 
         el.setStyle({
-          position: "relative",
+          position: "relative"
         });
-      },
-    },
+      }
+    }
   },
   {
     xtype: "widget.gridcolumn",
@@ -118,15 +118,15 @@ Ext.theme.addManifest(
           el = me.el;
 
         el.addCls(
-          Ext.baseCSSPrefix + "column-header-align-" + me.align,
+          Ext.baseCSSPrefix + "column-header-align-" + me.align
         ).addClsOnOver(me.overCls);
 
         el.setStyle({
-          position: "relative",
+          position: "relative"
         });
         el.addCls(Ext.baseCSSPrefix + "column-header-over");
-      },
-    },
+      }
+    }
   },
 
   /**
@@ -187,16 +187,16 @@ Ext.theme.addManifest(
     xtype: "widget.datepicker",
     folder: "datepicker",
     filename: "datepicker-header",
-    delegate: "." + Ext.baseCSSPrefix + "datepicker-header",
+    delegate: "." + Ext.baseCSSPrefix + "datepicker-header"
   },
   {
     xtype: "widget.datepicker",
     folder: "datepicker",
     filename: "datepicker-footer",
-    delegate: "." + Ext.baseCSSPrefix + "datepicker-footer",
+    delegate: "." + Ext.baseCSSPrefix + "datepicker-footer"
   },
   {
     xtype: "widget.roweditorbuttons",
-    ui: "default",
-  },
+    ui: "default"
+  }
 );

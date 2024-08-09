@@ -81,7 +81,7 @@ Ext.define(
     extend: "Ext.Mixin",
 
     mixinConfig: {
-      id: "inheritable",
+      id: "inheritable"
     },
 
     /**
@@ -129,7 +129,7 @@ Ext.define(
           // from its inheritedState, even components that are not descendants of
           // the viewport.
           Ext.Object.chain(
-            parent ? parent.getInherited(getInner) : Ext.rootInheritedState,
+            parent ? parent.getInherited(getInner) : Ext.rootInheritedState
           );
 
         if (isContainer) {
@@ -211,7 +211,7 @@ Ext.define(
         ret =
           me.getInheritedConfig(
             "defaultListenerScope",
-            hasSkipThis ? skipThis : true,
+            hasSkipThis ? skipThis : true
           ) ||
           defaultScope ||
           me;
@@ -222,7 +222,7 @@ Ext.define(
         // inherited controller.
         ret = me.getInheritedConfig(
           "controller",
-          hasSkipThis ? skipThis : !namedScope.isSelf,
+          hasSkipThis ? skipThis : !namedScope.isSelf
         );
       } else if (namedScope.isSelf) {
         // scope:'self' indicates listeners declared on the class body with unspecified
@@ -230,7 +230,7 @@ Ext.define(
         ret =
           me.getInheritedConfig(
             "defaultListenerScope",
-            hasSkipThis && skipThis,
+            hasSkipThis && skipThis
           ) || me;
       } else if (namedScope.isThis) {
         // scope:'this' always resolves to this instance, regardless of whether the
@@ -414,8 +414,8 @@ Ext.define(
         if (me.inheritedState && !destroying) {
           me.invalidateInheritedState();
         }
-      },
-    },
+      }
+    }
   },
   function () {
     /**
@@ -429,5 +429,5 @@ Ext.define(
      * @since 5.0.0
      */
     Ext.rootInheritedState = {};
-  },
+  }
 );

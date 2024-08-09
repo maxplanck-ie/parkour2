@@ -80,7 +80,7 @@ Ext.Config = function (name) {
     get: "get" + capitalizedName,
     set: "set" + capitalizedName,
     initGet: "initGet" + capitalizedName,
-    changeEvent: name.toLowerCase() + "change",
+    changeEvent: name.toLowerCase() + "change"
   };
 
   // This allows folks to prototype chain on top of these objects and yet still cache
@@ -359,7 +359,7 @@ Ext.Config.prototype = {
               [me, value, oldValue],
               updateFn,
               me,
-              [me, value, oldValue, internalName],
+              [me, value, oldValue, internalName]
             );
           }
         }
@@ -371,5 +371,5 @@ Ext.Config.prototype = {
     setter.$isDefault = true;
 
     return setter;
-  },
+  }
 };

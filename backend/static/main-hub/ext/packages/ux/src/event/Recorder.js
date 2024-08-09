@@ -24,9 +24,9 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
       {
         kind: "keyboard",
         modKeys: true,
-        key: true,
+        key: true
       },
-      extra,
+      extra
     );
   }
 
@@ -36,9 +36,9 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
         kind: "mouse",
         button: true,
         modKeys: true,
-        xy: true,
+        xy: true
       },
-      extra,
+      extra
     );
   }
 
@@ -58,7 +58,7 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
 
     scroll: apply({ listen: false }),
     focus: apply(),
-    blur: apply(),
+    blur: apply()
   };
 
   for (var key in eventsToRecord) {
@@ -100,7 +100,7 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
       if (events) {
         me.eventsToRecord = Ext.apply(
           Ext.apply({}, me.eventsToRecord), // duplicate
-          events,
+          events
         ); // and merge
         delete config.eventsToRecord; // don't smash
       }
@@ -307,7 +307,7 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
         rec = {
           type: e.type,
           ts: me.getTimestamp(),
-          target: me.getElementXPath(e.target),
+          target: me.getElementXPath(e.target)
         },
         xy;
 
@@ -440,7 +440,7 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
         evproto.stopEvent,
         function () {
           me.onEvent(this);
-        },
+        }
       );
     },
 
@@ -495,8 +495,8 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
               type: "scroll",
               target: me.getElementXPath(p),
               ts: ts,
-              pos: [x, y],
-            }),
+              pos: [x, y]
+            })
           );
           me.fireEvent("add", me, rec);
         }
@@ -505,6 +505,6 @@ Ext.define("Ext.ux.event.Recorder", function (Recorder) {
           break;
         }
       }
-    },
+    }
   };
 });

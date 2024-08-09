@@ -32,5 +32,5 @@ Ext.define("Ext.resizer.BorderSplitter", {
     if (this.performCollapse !== false && target.collapseMode == "mini") {
       target.removeCls(target.baseCls + "-" + target.collapsedCls + "-mini");
     }
-  },
+  }
 });

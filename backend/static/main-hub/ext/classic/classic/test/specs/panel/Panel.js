@@ -7,10 +7,10 @@ describe("Ext.panel.Panel", function () {
     panel = new Ext.panel.Panel(
       Ext.apply(
         {
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -27,7 +27,7 @@ describe("Ext.panel.Panel", function () {
     it("should not cause an exception when collapsed & hidden", function () {
       makePanel({
         collapsed: true,
-        hidden: true,
+        hidden: true
       });
 
       expect(function () {
@@ -43,9 +43,9 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             lbar: [
               {
-                text: "Foo",
-              },
-            ],
+                text: "Foo"
+              }
+            ]
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -56,10 +56,10 @@ describe("Ext.panel.Panel", function () {
               vertical: false,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -70,10 +70,10 @@ describe("Ext.panel.Panel", function () {
               vertical: true,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -81,7 +81,7 @@ describe("Ext.panel.Panel", function () {
         it("should take a component instance", function () {
           var bar = new Ext.toolbar.Toolbar();
           makePanel({
-            lbar: bar,
+            lbar: bar
           });
           expect(panel.down("toolbar")).toBe(bar);
         });
@@ -90,32 +90,32 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             lbar: {
               xtype: "container",
-              itemId: "ct",
-            },
+              itemId: "ct"
+            }
           });
           expect(panel.down("#ct").getXType()).toBe("container");
         });
 
         it("should not mutate the config on an instance", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           makePanel({
-            lbar: o,
+            lbar: o
           });
           expect(o.xtype).toBeUndefined();
         });
 
         it("should not mutate the config on a class declaration", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           var Cls = Ext.define(null, {
             extend: "Ext.panel.Panel",
-            lbar: o,
+            lbar: o
           });
           panel = new Cls({
-            renderTo: document.body,
+            renderTo: document.body
           });
           expect(o.xtype).toBeUndefined();
         });
@@ -126,9 +126,9 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             rbar: [
               {
-                text: "Foo",
-              },
-            ],
+                text: "Foo"
+              }
+            ]
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -139,10 +139,10 @@ describe("Ext.panel.Panel", function () {
               vertical: false,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -153,10 +153,10 @@ describe("Ext.panel.Panel", function () {
               vertical: true,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -164,7 +164,7 @@ describe("Ext.panel.Panel", function () {
         it("should take a component instance", function () {
           var bar = new Ext.toolbar.Toolbar();
           makePanel({
-            rbar: bar,
+            rbar: bar
           });
           expect(panel.down("toolbar")).toBe(bar);
         });
@@ -173,32 +173,32 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             rbar: {
               xtype: "container",
-              itemId: "ct",
-            },
+              itemId: "ct"
+            }
           });
           expect(panel.down("#ct").getXType()).toBe("container");
         });
 
         it("should not mutate the config on an instance", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           makePanel({
-            rbar: o,
+            rbar: o
           });
           expect(o.xtype).toBeUndefined();
         });
 
         it("should not mutate the config on a class declaration", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           var Cls = Ext.define(null, {
             extend: "Ext.panel.Panel",
-            rbar: o,
+            rbar: o
           });
           panel = new Cls({
-            renderTo: document.body,
+            renderTo: document.body
           });
           expect(o.xtype).toBeUndefined();
         });
@@ -212,10 +212,10 @@ describe("Ext.panel.Panel", function () {
               dock: "left",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -228,10 +228,10 @@ describe("Ext.panel.Panel", function () {
               dock: "left",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -244,10 +244,10 @@ describe("Ext.panel.Panel", function () {
               dock: "left",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -261,10 +261,10 @@ describe("Ext.panel.Panel", function () {
               dock: "right",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -277,10 +277,10 @@ describe("Ext.panel.Panel", function () {
               dock: "right",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -293,10 +293,10 @@ describe("Ext.panel.Panel", function () {
               dock: "right",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -309,9 +309,9 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             tbar: [
               {
-                text: "Foo",
-              },
-            ],
+                text: "Foo"
+              }
+            ]
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -322,10 +322,10 @@ describe("Ext.panel.Panel", function () {
               vertical: false,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -336,10 +336,10 @@ describe("Ext.panel.Panel", function () {
               vertical: true,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -347,7 +347,7 @@ describe("Ext.panel.Panel", function () {
         it("should take a component instance", function () {
           var bar = new Ext.toolbar.Toolbar();
           makePanel({
-            tbar: bar,
+            tbar: bar
           });
           expect(panel.down("toolbar")).toBe(bar);
         });
@@ -356,32 +356,32 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             tbar: {
               xtype: "container",
-              itemId: "ct",
-            },
+              itemId: "ct"
+            }
           });
           expect(panel.down("#ct").getXType()).toBe("container");
         });
 
         it("should not mutate the config on an instance", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           makePanel({
-            tbar: o,
+            tbar: o
           });
           expect(o.xtype).toBeUndefined();
         });
 
         it("should not mutate the config on a class declaration", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           var Cls = Ext.define(null, {
             extend: "Ext.panel.Panel",
-            tbar: o,
+            tbar: o
           });
           panel = new Cls({
-            renderTo: document.body,
+            renderTo: document.body
           });
           expect(o.xtype).toBeUndefined();
         });
@@ -392,9 +392,9 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             bbar: [
               {
-                text: "Foo",
-              },
-            ],
+                text: "Foo"
+              }
+            ]
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -405,10 +405,10 @@ describe("Ext.panel.Panel", function () {
               vertical: false,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -419,10 +419,10 @@ describe("Ext.panel.Panel", function () {
               vertical: true,
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -430,7 +430,7 @@ describe("Ext.panel.Panel", function () {
         it("should take a component instance", function () {
           var bar = new Ext.toolbar.Toolbar();
           makePanel({
-            bbar: bar,
+            bbar: bar
           });
           expect(panel.down("toolbar")).toBe(bar);
         });
@@ -439,32 +439,32 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             bbar: {
               xtype: "container",
-              itemId: "ct",
-            },
+              itemId: "ct"
+            }
           });
           expect(panel.down("#ct").getXType()).toBe("container");
         });
 
         it("should not mutate the config on an instance", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           makePanel({
-            bbar: o,
+            bbar: o
           });
           expect(o.xtype).toBeUndefined();
         });
 
         it("should not mutate the config on a class declaration", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           var Cls = Ext.define(null, {
             extend: "Ext.panel.Panel",
-            bbar: o,
+            bbar: o
           });
           panel = new Cls({
-            renderTo: document.body,
+            renderTo: document.body
           });
           expect(o.xtype).toBeUndefined();
         });
@@ -478,10 +478,10 @@ describe("Ext.panel.Panel", function () {
               dock: "top",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -494,10 +494,10 @@ describe("Ext.panel.Panel", function () {
               dock: "top",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -510,10 +510,10 @@ describe("Ext.panel.Panel", function () {
               dock: "top",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -527,10 +527,10 @@ describe("Ext.panel.Panel", function () {
               dock: "bottom",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -543,10 +543,10 @@ describe("Ext.panel.Panel", function () {
               dock: "bottom",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(false);
         });
@@ -559,10 +559,10 @@ describe("Ext.panel.Panel", function () {
               dock: "bottom",
               items: [
                 {
-                  text: "Foo",
-                },
-              ],
-            },
+                  text: "Foo"
+                }
+              ]
+            }
           });
           expect(panel.down("toolbar").vertical).toBe(true);
         });
@@ -571,7 +571,7 @@ describe("Ext.panel.Panel", function () {
       describe("fbar", function () {
         it("should use footer ui", function () {
           makePanel({
-            fbar: [{ text: "foo" }],
+            fbar: [{ text: "foo" }]
           });
 
           expect(panel.down("toolbar").ui).toBe("footer");
@@ -580,7 +580,7 @@ describe("Ext.panel.Panel", function () {
         it("should take a component instance", function () {
           var bar = new Ext.toolbar.Toolbar();
           makePanel({
-            fbar: bar,
+            fbar: bar
           });
           expect(panel.down("toolbar")).toBe(bar);
         });
@@ -589,39 +589,39 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             fbar: {
               xtype: "container",
-              itemId: "ct",
-            },
+              itemId: "ct"
+            }
           });
           expect(panel.down("#ct").getXType()).toBe("container");
         });
 
         it("should not mutate the config on an instance", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           makePanel({
-            fbar: o,
+            fbar: o
           });
           expect(o.xtype).toBeUndefined();
         });
 
         it("should not mutate the config on a class declaration", function () {
           var o = {
-            itemId: "foo",
+            itemId: "foo"
           };
           var Cls = Ext.define(null, {
             extend: "Ext.panel.Panel",
-            fbar: o,
+            fbar: o
           });
           panel = new Cls({
-            renderTo: document.body,
+            renderTo: document.body
           });
           expect(o.xtype).toBeUndefined();
         });
 
         it("should not disable focusable container behavior", function () {
           makePanel({
-            fbar: [{ text: "blerg" }],
+            fbar: [{ text: "blerg" }]
           });
 
           expect(panel.down("toolbar").enableFocusableContainer).toBe(true);
@@ -631,7 +631,7 @@ describe("Ext.panel.Panel", function () {
       describe("buttons", function () {
         it("should disable focusable container behavior", function () {
           makePanel({
-            buttons: [{ text: "throbbe" }],
+            buttons: [{ text: "throbbe" }]
           });
 
           expect(panel.down("toolbar").enableFocusableContainer).toBe(false);
@@ -653,21 +653,21 @@ describe("Ext.panel.Panel", function () {
             xtype: "panel",
             title: "Top Inner Panel",
             width: "35%",
-            height: 90,
+            height: 90
           },
           {
             xtype: "panel",
             title: "Bottom Inner Panel",
             width: "75%",
-            height: 90,
-          },
-        ],
+            height: 90
+          }
+        ]
       });
       expect(panel.child("[title=Top Inner Panel]").el.dom.style.width).toEqual(
-        "35%",
+        "35%"
       );
       expect(
-        panel.child("[title=Bottom Inner Panel]").el.dom.style.width,
+        panel.child("[title=Bottom Inner Panel]").el.dom.style.width
       ).toEqual("75%");
     });
   });
@@ -708,12 +708,12 @@ describe("Ext.panel.Panel", function () {
                       region: "west",
                       collapsible: true,
                       animCollapse: anim,
-                      width: 200,
+                      width: 200
                     },
                     {
-                      region: "center",
-                    },
-                  ],
+                      region: "center"
+                    }
+                  ]
                 });
                 p = ct.items.first();
               });
@@ -747,7 +747,7 @@ describe("Ext.panel.Panel", function () {
             function () {
               makeAnimSuite(false);
               makeAnimSuite(true);
-            },
+            }
           );
         }
 
@@ -764,7 +764,7 @@ describe("Ext.panel.Panel", function () {
           title: "Foo",
           collapsible: true,
           animCollapse: false,
-          collapseDirection: "left",
+          collapseDirection: "left"
         });
         panel.collapse();
 
@@ -782,7 +782,7 @@ describe("Ext.panel.Panel", function () {
               title: "Foo",
               collapsible: true,
               animCollapse: false,
-              html: '<div style="height: 20px;"></div>',
+              html: '<div style="height: 20px;"></div>'
             });
             var oldHeight = panel.getHeight();
             panel.collapse();
@@ -797,7 +797,7 @@ describe("Ext.panel.Panel", function () {
               height: 100,
               title: "Foo",
               collapsible: true,
-              animCollapse: false,
+              animCollapse: false
             });
             panel.collapse();
             panel.expand();
@@ -816,7 +816,7 @@ describe("Ext.panel.Panel", function () {
               animCollapse: false,
               html: '<div style="width: 20px;"></div>',
               shadow: false,
-              floating: true,
+              floating: true
             });
             panel.show();
             var oldWidth = panel.getWidth();
@@ -832,7 +832,7 @@ describe("Ext.panel.Panel", function () {
               height: 100,
               title: "Foo",
               collapsible: true,
-              animCollapse: false,
+              animCollapse: false
             });
             panel.collapse();
             panel.expand();
@@ -848,7 +848,7 @@ describe("Ext.panel.Panel", function () {
             height: 100,
             title: "Foo",
             collapsible: true,
-            animCollapse: false,
+            animCollapse: false
           });
           panel.collapse();
           panel.setWidth(200);
@@ -863,7 +863,7 @@ describe("Ext.panel.Panel", function () {
             height: 100,
             title: "Foo",
             collapsible: true,
-            animCollapse: false,
+            animCollapse: false
           });
           panel.collapse();
           panel.setHeight(200);
@@ -882,8 +882,8 @@ describe("Ext.panel.Panel", function () {
                 title: "Foo",
                 collapsible: true,
                 margin: 10,
-                animCollapse: false,
-              },
+                animCollapse: false
+              }
             });
 
             panel = ct.items.first();
@@ -904,8 +904,8 @@ describe("Ext.panel.Panel", function () {
                 collapsible: true,
                 margin: 10,
                 animCollapse: false,
-                collapseDirection: "left",
-              },
+                collapseDirection: "left"
+              }
             });
 
             panel = ct.items.first();
@@ -920,7 +920,7 @@ describe("Ext.panel.Panel", function () {
       describe("setCollapsed", function () {
         it("should call collapse the panel when true is passed", function () {
           makePanel({
-            collapsible: true,
+            collapsible: true
           });
 
           spyOn(panel, "collapse").andCallThrough();
@@ -935,7 +935,7 @@ describe("Ext.panel.Panel", function () {
         it("should call expand() when false is passed", function () {
           makePanel({
             collapsible: true,
-            collapsed: true,
+            collapsed: true
           });
 
           spyOn(panel, "expand").andCallThrough();
@@ -966,7 +966,7 @@ describe("Ext.panel.Panel", function () {
           width: 50,
           height: 50,
           title: "x",
-          collapsible: false,
+          collapsible: false
         });
         expect(getTool()).toBeNull();
       });
@@ -977,43 +977,43 @@ describe("Ext.panel.Panel", function () {
           {
             collapsed: false,
             collapseDirection: "top",
-            expect: "collapse-top",
+            expect: "collapse-top"
           },
           {
             collapsed: false,
             collapseDirection: "right",
-            expect: "collapse-right",
+            expect: "collapse-right"
           },
           {
             collapsed: false,
             collapseDirection: "bottom",
-            expect: "collapse-bottom",
+            expect: "collapse-bottom"
           },
           {
             collapsed: false,
             collapseDirection: "left",
-            expect: "collapse-left",
+            expect: "collapse-left"
           },
           {
             collapsed: true,
             collapseDirection: "top",
-            expect: "expand-bottom",
+            expect: "expand-bottom"
           },
           {
             collapsed: true,
             collapseDirection: "right",
-            expect: "expand-left",
+            expect: "expand-left"
           },
           {
             collapsed: true,
             collapseDirection: "bottom",
-            expect: "expand-top",
+            expect: "expand-top"
           },
           {
             collapsed: true,
             collapseDirection: "left",
-            expect: "expand-right",
-          },
+            expect: "expand-right"
+          }
         ],
         function (item) {
           var answer = item.expect;
@@ -1029,15 +1029,15 @@ describe("Ext.panel.Panel", function () {
                     width: 50,
                     height: 50,
                     title: "x",
-                    collapsible: true,
+                    collapsible: true
                   },
-                  item,
-                ),
+                  item
+                )
               );
               expect(getTool().type).toBe(answer);
-            },
+            }
           );
-        },
+        }
       );
 
       // When using placeHolder, it should never modify the tool of the original panel
@@ -1046,39 +1046,39 @@ describe("Ext.panel.Panel", function () {
           {
             collapsed: false,
             collapseDirection: "top",
-            expect: "collapse-top",
+            expect: "collapse-top"
           },
           {
             collapsed: false,
             collapseDirection: "right",
-            expect: "collapse-right",
+            expect: "collapse-right"
           },
           {
             collapsed: false,
             collapseDirection: "bottom",
-            expect: "collapse-bottom",
+            expect: "collapse-bottom"
           },
           {
             collapsed: false,
             collapseDirection: "left",
-            expect: "collapse-left",
+            expect: "collapse-left"
           },
           { collapsed: true, collapseDirection: "top", expect: "collapse-top" },
           {
             collapsed: true,
             collapseDirection: "right",
-            expect: "collapse-right",
+            expect: "collapse-right"
           },
           {
             collapsed: true,
             collapseDirection: "bottom",
-            expect: "collapse-bottom",
+            expect: "collapse-bottom"
           },
           {
             collapsed: true,
             collapseDirection: "left",
-            expect: "collapse-left",
-          },
+            expect: "collapse-left"
+          }
         ],
         function (item) {
           var answer = item.expect;
@@ -1090,7 +1090,7 @@ describe("Ext.panel.Panel", function () {
             function () {
               // collapsed, collapseDirection, expectedTool
               var ct = new Ext.container.Container({
-                renderTo: Ext.getBody(),
+                renderTo: Ext.getBody()
               });
               makePanel(
                 Ext.apply(
@@ -1100,17 +1100,17 @@ describe("Ext.panel.Panel", function () {
                     height: 50,
                     title: "x",
                     collapsible: true,
-                    collapseMode: "placeholder",
+                    collapseMode: "placeholder"
                   },
-                  item,
-                ),
+                  item
+                )
               );
               ct.add(panel);
               expect(getPlaceholderCollapsedTool().type).toBe(answer);
               Ext.destroy(ct);
-            },
+            }
           );
-        },
+        }
       );
     });
 
@@ -1125,7 +1125,7 @@ describe("Ext.panel.Panel", function () {
             width: 200,
             x: 100,
             y: 100,
-            html: "<p>World!</p>",
+            html: "<p>World!</p>"
           });
 
           panel.collapse();
@@ -1149,7 +1149,7 @@ describe("Ext.panel.Panel", function () {
           width: 200,
           x: 100,
           y: 100,
-          html: "<p>World!</p>",
+          html: "<p>World!</p>"
         });
 
         panel.animCollapse = false;
@@ -1173,7 +1173,7 @@ describe("Ext.panel.Panel", function () {
           height: 200,
           layout: "fit",
           bodyStyle: {
-            "background-color": "green",
+            "background-color": "green"
           },
 
           items: [
@@ -1185,13 +1185,13 @@ describe("Ext.panel.Panel", function () {
               collapsed: true,
               html: "Lorem ipsum dolor sit amet",
               bodyStyle: {
-                "background-color": "red",
+                "background-color": "red"
               },
               listeners: {
-                expand: spy,
-              },
-            },
-          ],
+                expand: spy
+              }
+            }
+          ]
         });
 
         inner = panel.down("#inner");
@@ -1212,12 +1212,12 @@ describe("Ext.panel.Panel", function () {
         renderTo: Ext.getBody(),
         tools: [
           {
-            type: "help",
+            type: "help"
           },
           {
-            type: "pin",
-          },
-        ],
+            type: "pin"
+          }
+        ]
       });
       expect(panel.tools[0].type).toBe("help");
       expect(panel.tools[1].type).toBe("pin");
@@ -1228,16 +1228,16 @@ describe("Ext.panel.Panel", function () {
         renderTo: Ext.getBody(),
         tools: [
           {
-            type: "help",
+            type: "help"
           },
           {
-            type: "pin",
-          },
-        ],
+            type: "pin"
+          }
+        ]
       });
 
       panel.addTool({
-        type: "save",
+        type: "save"
       });
       expect(panel.tools[2].type).toBe("save");
     });
@@ -1260,20 +1260,20 @@ describe("Ext.panel.Panel", function () {
           {
             xtype: "component",
             dock: "top",
-            style: "height:26px;background-color:red;",
+            style: "height:26px;background-color:red;"
           },
           {
             xtype: "component",
             dock: "bottom",
-            style: "height:36px;background-color:blue;",
-          },
+            style: "height:36px;background-color:blue;"
+          }
         ],
         items: [
           {
             xtype: "component",
-            style: "width:100px; height:125px;background-color:green;",
-          },
-        ],
+            style: "width:100px; height:125px;background-color:green;"
+          }
+        ]
       });
 
       // This is the Correct Answer for the classic theme - if this fails in some
@@ -1288,7 +1288,7 @@ describe("Ext.panel.Panel", function () {
           1 + // managed border
           36 + // bottom dockedItem
           4 + // padding
-          1,
+          1
       ); // border
 
       if (failedLayouts != Ext.failedLayouts) {
@@ -1308,10 +1308,10 @@ describe("Ext.panel.Panel", function () {
             listeners: {
               beforerender: function () {
                 return false;
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       });
 
       // Child not rendered
@@ -1326,9 +1326,9 @@ describe("Ext.panel.Panel", function () {
           listeners: {
             beforerender: function (c) {
               c.ownerCt.disable();
-            },
-          },
-        },
+            }
+          }
+        }
       });
       expect(panel.getEl().hasCls(panel.disabledCls)).toBe(true);
     });
@@ -1340,8 +1340,8 @@ describe("Ext.panel.Panel", function () {
     it("should create a header if a header config is passed", function () {
       makePanel({
         header: {
-          title: "Foo",
-        },
+          title: "Foo"
+        }
       });
       var header = panel.header;
       expect(header.isHeader).toBe(true);
@@ -1350,21 +1350,21 @@ describe("Ext.panel.Panel", function () {
 
     it("should create a header when specifying a title", function () {
       makePanel({
-        title: "Foo",
+        title: "Foo"
       });
       expect(panel.header.isHeader).toBe(true);
     });
 
     it("should create a header when specifying an icon", function () {
       makePanel({
-        icon: fooIcon,
+        icon: fooIcon
       });
       expect(panel.header.isHeader).toBe(true);
     });
 
     it("should create a header when specifying a iconCls", function () {
       makePanel({
-        iconCls: "Foo",
+        iconCls: "Foo"
       });
       expect(panel.header.isHeader).toBe(true);
     });
@@ -1373,16 +1373,16 @@ describe("Ext.panel.Panel", function () {
       makePanel({
         tools: [
           {
-            type: "refresh",
-          },
-        ],
+            type: "refresh"
+          }
+        ]
       });
       expect(panel.header.isHeader).toBe(true);
     });
 
     it("should create a header when specifying collapsible", function () {
       makePanel({
-        collapsible: true,
+        collapsible: true
       });
       expect(panel.header.isHeader).toBe(true);
     });
@@ -1391,7 +1391,7 @@ describe("Ext.panel.Panel", function () {
       it("should not create a header with header: false when specifying a title", function () {
         makePanel({
           header: false,
-          title: "Foo",
+          title: "Foo"
         });
         expect(panel.header).toBe(false);
       });
@@ -1399,7 +1399,7 @@ describe("Ext.panel.Panel", function () {
       it("should not create a header with header: false when specifying an icon", function () {
         makePanel({
           header: false,
-          icon: fooIcon,
+          icon: fooIcon
         });
         expect(panel.header).toBe(false);
       });
@@ -1407,7 +1407,7 @@ describe("Ext.panel.Panel", function () {
       it("should not create a header with header: false when specifying a iconCls", function () {
         makePanel({
           header: false,
-          iconCls: "Foo",
+          iconCls: "Foo"
         });
         expect(panel.header).toBe(false);
       });
@@ -1417,9 +1417,9 @@ describe("Ext.panel.Panel", function () {
           header: false,
           tools: [
             {
-              type: "refresh",
-            },
-          ],
+              type: "refresh"
+            }
+          ]
         });
         expect(panel.header).toBe(false);
       });
@@ -1427,7 +1427,7 @@ describe("Ext.panel.Panel", function () {
       it("should not create a header with header: false when specifying collapsible", function () {
         makePanel({
           header: false,
-          collapsible: true,
+          collapsible: true
         });
         expect(panel.header).toBe(false);
       });
@@ -1439,7 +1439,7 @@ describe("Ext.panel.Panel", function () {
       describe("with no title", function () {
         it("should update the title when rendered", function () {
           makePanel({
-            renderTo: null,
+            renderTo: null
           });
           panel.setTitle("Bar");
           panel.render(Ext.getBody());
@@ -1448,7 +1448,7 @@ describe("Ext.panel.Panel", function () {
 
         it("should be able to set a numeric title", function () {
           makePanel({
-            renderTo: null,
+            renderTo: null
           });
           panel.setTitle(123);
           panel.render(Ext.getBody());
@@ -1460,9 +1460,9 @@ describe("Ext.panel.Panel", function () {
             renderTo: null,
             tools: [
               {
-                type: "close",
-              },
-            ],
+                type: "close"
+              }
+            ]
           });
           panel.setTitle("Bar");
           panel.render(Ext.getBody());
@@ -1475,8 +1475,8 @@ describe("Ext.panel.Panel", function () {
             listeners: {
               beforerender: function (p) {
                 p.setTitle("Bar");
-              },
-            },
+              }
+            }
           });
           expect(panel.header.getTitle().textEl.dom).hasHTML("Bar");
         });
@@ -1487,10 +1487,10 @@ describe("Ext.panel.Panel", function () {
             beforeRender: function () {
               this.callParent(arguments);
               this.setTitle("Bar");
-            },
+            }
           });
           panel = new Cls({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(panel.header.getTitle().textEl.dom).hasHTML("Bar");
         });
@@ -1500,7 +1500,7 @@ describe("Ext.panel.Panel", function () {
         it("should update the title when rendered", function () {
           makePanel({
             renderTo: null,
-            title: "Foo",
+            title: "Foo"
           });
           panel.setTitle("Bar");
           panel.render(Ext.getBody());
@@ -1510,7 +1510,7 @@ describe("Ext.panel.Panel", function () {
         it("should update with a numeric title when rendered", function () {
           makePanel({
             renderTo: null,
-            title: "Foo",
+            title: "Foo"
           });
           panel.setTitle(123);
           panel.render(Ext.getBody());
@@ -1522,10 +1522,10 @@ describe("Ext.panel.Panel", function () {
             renderTo: null,
             tools: [
               {
-                type: "close",
-              },
+                type: "close"
+              }
             ],
-            title: "Foo",
+            title: "Foo"
           });
           panel.setTitle("Bar");
           panel.render(Ext.getBody());
@@ -1539,8 +1539,8 @@ describe("Ext.panel.Panel", function () {
             listeners: {
               beforerender: function (p) {
                 p.setTitle("Bar");
-              },
-            },
+              }
+            }
           });
           expect(panel.header.getTitle().textEl.dom).hasHTML("Bar");
         });
@@ -1552,10 +1552,10 @@ describe("Ext.panel.Panel", function () {
             beforeRender: function () {
               this.callParent(arguments);
               this.setTitle("Bar");
-            },
+            }
           });
           panel = new Cls({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(panel.header.getTitle().textEl.dom).hasHTML("Bar");
         });
@@ -1580,7 +1580,7 @@ describe("Ext.panel.Panel", function () {
       describe("with a title", function () {
         it("should update the title when rendered", function () {
           makePanel({
-            title: "Foo",
+            title: "Foo"
           });
           panel.setTitle("Bar");
           expect(panel.header.getTitle().textEl.dom).hasHTML("Bar");
@@ -1588,7 +1588,7 @@ describe("Ext.panel.Panel", function () {
 
         it("should update a numeric title when rendered", function () {
           makePanel({
-            title: "Foo",
+            title: "Foo"
           });
           panel.setTitle(123);
           expect(panel.header.getTitle().textEl.dom).hasHTML("123");
@@ -1603,8 +1603,8 @@ describe("Ext.panel.Panel", function () {
           width: 200,
           headerPosition: "left",
           header: {
-            titleRotation: 0,
-          },
+            titleRotation: 0
+          }
         });
 
         panel.header.setTitle('<div style="width:100px"></div>');
@@ -1655,7 +1655,7 @@ describe("Ext.panel.Panel", function () {
           makeUnrenderedPanel();
           panel.setBodyStyle({
             color: "red",
-            backgroundColor: "blue",
+            backgroundColor: "blue"
           });
           panel.render(Ext.getBody());
           expect(panel.body.dom.style.color).toBe("red");
@@ -1689,7 +1689,7 @@ describe("Ext.panel.Panel", function () {
           makePanel();
           panel.setBodyStyle({
             color: "red",
-            backgroundColor: "blue",
+            backgroundColor: "blue"
           });
           expect(panel.body.dom.style.color).toBe("red");
           expect(panel.body.dom.style.backgroundColor).toBe("blue");
@@ -1760,7 +1760,7 @@ describe("Ext.panel.Panel", function () {
       makePanel({
         margin: 10,
         width: 200,
-        height: 200,
+        height: 200
       });
       var margin = panel.el.getMargin();
       expect(margin.t).toBe(10);
@@ -1772,7 +1772,7 @@ describe("Ext.panel.Panel", function () {
     it("should set margins after render", function () {
       makePanel({
         width: 200,
-        height: 200,
+        height: 200
       });
       panel.setMargin("1 2 3 4");
       var margin = panel.el.getMargin();
@@ -1791,14 +1791,14 @@ describe("Ext.panel.Panel", function () {
         items: [
           {
             title: "Foo",
-            width: 100,
+            width: 100
           },
           {
             title: "Bar",
             margin: "0 0 0 50",
-            width: 100,
-          },
-        ],
+            width: 100
+          }
+        ]
       });
 
       var p = ct.items.last(),
@@ -1819,13 +1819,13 @@ describe("Ext.panel.Panel", function () {
         buttons: [
           {
             itemId: "a",
-            text: "A",
+            text: "A"
           },
           {
             itemId: "b",
-            text: "B",
-          },
-        ],
+            text: "B"
+          }
+        ]
       });
       expect(panel.down("#a").minWidth).toBe(75);
       expect(panel.down("#b").minWidth).toBe(75);
@@ -1839,13 +1839,13 @@ describe("Ext.panel.Panel", function () {
         buttons: [
           new Ext.button.Button({
             itemId: "a",
-            text: "A",
+            text: "A"
           }),
           new Ext.button.Button({
             itemId: "b",
-            text: "B",
-          }),
-        ],
+            text: "B"
+          })
+        ]
       });
       expect(panel.down("#a").minWidth).toBe(75);
       expect(panel.down("#b").minWidth).toBe(75);
@@ -1854,7 +1854,7 @@ describe("Ext.panel.Panel", function () {
     it("should apply minButtonWidth to button subclass configs", function () {
       Ext.define("spec.CustomButton", {
         extend: "Ext.button.Button",
-        alias: "widget.mybutton",
+        alias: "widget.mybutton"
       });
 
       makePanel({
@@ -1865,14 +1865,14 @@ describe("Ext.panel.Panel", function () {
           {
             xtype: "mybutton",
             itemId: "a",
-            text: "A",
+            text: "A"
           },
           {
             xtype: "mybutton",
             itemId: "b",
-            text: "B",
-          },
-        ],
+            text: "B"
+          }
+        ]
       });
       expect(panel.down("#a").minWidth).toBe(75);
       expect(panel.down("#b").minWidth).toBe(75);
@@ -1888,14 +1888,14 @@ describe("Ext.panel.Panel", function () {
           {
             xtype: "component",
             itemId: "a",
-            text: "A",
+            text: "A"
           },
           new Ext.Component({
             xtype: "mybutton",
             itemId: "b",
-            text: "B",
-          }),
-        ],
+            text: "B"
+          })
+        ]
       });
       expect(panel.down("#a").minWidth).not.toBe(75);
       expect(panel.down("#b").minWidth).not.toBe(75);
@@ -1915,7 +1915,7 @@ describe("Ext.panel.Panel", function () {
     describe("draggable true", function () {
       it("should call initDraggable", function () {
         makePanel({
-          draggable: true,
+          draggable: true
         });
 
         spy = spyOn(panel, "initDraggable");
@@ -1927,7 +1927,7 @@ describe("Ext.panel.Panel", function () {
       it("should have a DragSource instance if draggable", function () {
         makePanel({
           draggable: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         expect(panel.dd).toBeDefined();
@@ -1936,7 +1936,7 @@ describe("Ext.panel.Panel", function () {
       it("should call endDrag on its DragSource instance when hiding", function () {
         makePanel({
           draggable: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         spy = spyOn(panel.dd, "endDrag");
@@ -1948,7 +1948,7 @@ describe("Ext.panel.Panel", function () {
       it("should not create a Component Dragger instance  with header: false", function () {
         makePanel({
           draggable: true,
-          header: false,
+          header: false
         });
         expect(panel.dd).toBeUndefined();
       });
@@ -1957,7 +1957,7 @@ describe("Ext.panel.Panel", function () {
     describe("draggable false", function () {
       it("should not call initDraggable", function () {
         makePanel({
-          draggable: false,
+          draggable: false
         });
 
         spy = spyOn(panel, "initDraggable");
@@ -1969,7 +1969,7 @@ describe("Ext.panel.Panel", function () {
       it("should not have a DragSource instance if not draggable", function () {
         makePanel({
           draggable: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         expect(panel.dd).toBeUndefined();
@@ -1978,7 +1978,7 @@ describe("Ext.panel.Panel", function () {
       it("should not call attempt to call endDrag when hiding panel is not draggable", function () {
         makePanel({
           draggable: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         panel.hide();
@@ -2001,10 +2001,10 @@ describe("Ext.panel.Panel", function () {
             renderTo: document.body,
 
             height: 100,
-            width: 300,
+            width: 300
           },
-          cfg,
-        ),
+          cfg
+        )
       );
 
       ghost = panel.ghost();
@@ -2018,7 +2018,7 @@ describe("Ext.panel.Panel", function () {
 
     it("should instantiate a ghost window if the owner is a window", function () {
       makePanel({
-        xtype: "window",
+        xtype: "window"
       });
 
       expect(ghost.xtype).toBe("window");
@@ -2026,7 +2026,7 @@ describe("Ext.panel.Panel", function () {
 
     it("should pass the owner UI along to the ghost", function () {
       makePanel({
-        ui: "foo",
+        ui: "foo"
       });
 
       expect(ghost.ui).toBe("foo");
@@ -2034,7 +2034,7 @@ describe("Ext.panel.Panel", function () {
 
     it("should pass the owner's shim config along to the ghost", function () {
       makePanel({
-        shim: true,
+        shim: true
       });
 
       expect(ghost.shim).toBe(true);
@@ -2047,8 +2047,8 @@ describe("Ext.panel.Panel", function () {
         titleAlign: "center",
         header: {
           titlePosition: 2,
-          tools: [{ type: "close" }, { type: "pin" }],
-        },
+          tools: [{ type: "close" }, { type: "pin" }]
+        }
       });
 
       header = ghost.header;
@@ -2078,17 +2078,17 @@ describe("Ext.panel.Panel", function () {
                 width: 150,
                 split: true,
                 title: "West Region",
-                titleCollapse: titleCollapse,
+                titleCollapse: titleCollapse
               },
               {
                 region: "center",
-                items: [],
-              },
+                items: []
+              }
             ],
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          cfg || {},
-        ),
+          cfg || {}
+        )
       );
 
       westRegion = viewport.down('panel[region="west"]');
@@ -2105,10 +2105,10 @@ describe("Ext.panel.Panel", function () {
             animCollapse: false,
             width: 300,
             title: "My Panel",
-            collapseDirection: "right",
+            collapseDirection: "right"
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -2143,7 +2143,7 @@ describe("Ext.panel.Panel", function () {
     describe("rexpander", function () {
       it("should expand the panel if titleCollapse=true", function () {
         makePanel({
-          titleCollapse: true,
+          titleCollapse: true
         });
 
         panel.collapse();
@@ -2157,7 +2157,7 @@ describe("Ext.panel.Panel", function () {
 
       it("should not expand the panel if titleCollapse=false", function () {
         makePanel({
-          titleCollapse: false,
+          titleCollapse: false
         });
 
         panel.collapse();
@@ -2191,18 +2191,18 @@ describe("Ext.panel.Panel", function () {
                 collapsible: true,
                 animCollapse: false,
                 width: 150,
-                split: split,
+                split: split
               },
               {
                 region: "center",
                 title: "center",
-                items: [],
-              },
+                items: []
+              }
             ],
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          cfg || {},
-        ),
+          cfg || {}
+        )
       );
 
       westRegion = viewport.down('panel[region="west"]');
@@ -2265,22 +2265,22 @@ describe("Ext.panel.Panel", function () {
                 region: "west",
                 title: "west",
                 collapsible: true,
-                width: 150,
+                width: 150
               },
               {
                 region: "center",
                 title: "center",
-                items: [],
-              },
+                items: []
+              }
             ],
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          false,
+          false
         );
 
         var collapseSpy = spyOn(
           westRegion,
-          "doPlaceholderCollapse",
+          "doPlaceholderCollapse"
         ).andCallThrough();
 
         // Start collapsing but don't let the animation kick off yet
@@ -2326,15 +2326,15 @@ describe("Ext.panel.Panel", function () {
                 },
                 expand: function () {
                   wasCalled = true;
-                },
-              },
+                }
+              }
             },
             {
               region: "center",
               title: "center",
-              items: [],
-            },
-          ],
+              items: []
+            }
+          ]
         });
 
         westRegion.expand(true);
@@ -2356,7 +2356,7 @@ describe("Ext.panel.Panel", function () {
 
         runs(function () {
           expect(placeholder.getInherited().hasOwnProperty("hidden")).toBe(
-            false,
+            false
           );
         });
       });
@@ -2374,17 +2374,17 @@ describe("Ext.panel.Panel", function () {
           return value + "!!";
         },
         viewModel: {
-          foo: "",
+          foo: ""
         },
         items: [
           {
             xtype: "panel",
             reference: "subPanel",
             bind: {
-              title: "Hello {foo:this.wow}!",
-            },
-          },
-        ],
+              title: "Hello {foo:this.wow}!"
+            }
+          }
+        ]
       });
 
       var viewModel = panel.getViewModel(),
@@ -2402,7 +2402,7 @@ describe("Ext.panel.Panel", function () {
       hooks = {
         0: elementProto.styleHooks,
         90: elementProto.verticalStyleHooks90,
-        270: elementProto.verticalStyleHooks270,
+        270: elementProto.verticalStyleHooks270
       },
       titleEl;
 
@@ -2414,10 +2414,10 @@ describe("Ext.panel.Panel", function () {
             renderTo: document.body,
             height: 200,
             width: 200,
-            title: "Rotate Panel",
+            title: "Rotate Panel"
           },
-          cfg,
-        ),
+          cfg
+        )
       );
       titleEl = panel.header.getTitle().el;
     }
@@ -2442,21 +2442,21 @@ describe("Ext.panel.Panel", function () {
 
     it("should default to non-rotated when headerPosition is bottom", function () {
       makePanel({
-        headerPosition: "bottom",
+        headerPosition: "bottom"
       });
       expectRotation(0);
     });
 
     it("should default to 90 degree rotation when headerPosition is right", function () {
       makePanel({
-        headerPosition: "right",
+        headerPosition: "right"
       });
       expectRotation(90);
     });
 
     it("should default to 90 degree rotation when headerPosition is left", function () {
       makePanel({
-        headerPosition: "left",
+        headerPosition: "left"
       });
       expectRotation(90);
     });
@@ -2465,7 +2465,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 0 degrees", function () {
         makePanel({
           headerPosition: "top",
-          titleRotation: 0,
+          titleRotation: 0
         });
         expectRotation(0);
       });
@@ -2473,7 +2473,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 90 degrees", function () {
         makePanel({
           headerPosition: "top",
-          titleRotation: 1,
+          titleRotation: 1
         });
         expectRotation(90);
       });
@@ -2481,7 +2481,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 270 degrees", function () {
         makePanel({
           headerPosition: "top",
-          titleRotation: 2,
+          titleRotation: 2
         });
         expectRotation(270);
       });
@@ -2491,7 +2491,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 0 degrees", function () {
         makePanel({
           headerPosition: "right",
-          titleRotation: 0,
+          titleRotation: 0
         });
         expectRotation(0);
       });
@@ -2499,7 +2499,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 90 degrees", function () {
         makePanel({
           headerPosition: "right",
-          titleRotation: 1,
+          titleRotation: 1
         });
         expectRotation(90);
       });
@@ -2507,7 +2507,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 270 degrees", function () {
         makePanel({
           headerPosition: "right",
-          titleRotation: 2,
+          titleRotation: 2
         });
         expectRotation(270);
       });
@@ -2517,7 +2517,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 0 degrees", function () {
         makePanel({
           headerPosition: "bottom",
-          titleRotation: 0,
+          titleRotation: 0
         });
         expectRotation(0);
       });
@@ -2525,7 +2525,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 90 degrees", function () {
         makePanel({
           headerPosition: "bottom",
-          titleRotation: 1,
+          titleRotation: 1
         });
         expectRotation(90);
       });
@@ -2533,7 +2533,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 270 degrees", function () {
         makePanel({
           headerPosition: "bottom",
-          titleRotation: 2,
+          titleRotation: 2
         });
         expectRotation(270);
       });
@@ -2543,7 +2543,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 0 degrees", function () {
         makePanel({
           headerPosition: "left",
-          titleRotation: 0,
+          titleRotation: 0
         });
         expectRotation(0);
       });
@@ -2551,7 +2551,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 90 degrees", function () {
         makePanel({
           headerPosition: "left",
-          titleRotation: 1,
+          titleRotation: 1
         });
         expectRotation(90);
       });
@@ -2559,7 +2559,7 @@ describe("Ext.panel.Panel", function () {
       it("should rotate 270 degrees", function () {
         makePanel({
           headerPosition: "left",
-          titleRotation: 2,
+          titleRotation: 2
         });
         expectRotation(270);
       });
@@ -2608,7 +2608,7 @@ describe("Ext.panel.Panel", function () {
           ", constrainHeader = ",
           !!constrainHeader,
           ", isRtl = ",
-          !!isRtl,
+          !!isRtl
         ].join("");
 
       describe(suite, function () {
@@ -2619,11 +2619,11 @@ describe("Ext.panel.Panel", function () {
             rtl: isRtl,
             title: "A",
             style: {
-              position: !positionAbsolute ? "relative" : "absolute",
+              position: !positionAbsolute ? "relative" : "absolute"
             },
             width: 400,
             height: 400,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
         });
 
@@ -2652,10 +2652,10 @@ describe("Ext.panel.Panel", function () {
                 height: 100,
                 x: x,
                 y: y,
-                html: "nothing to see here",
+                html: "nothing to see here"
               },
-              obj,
-            ),
+              obj
+            )
           );
 
           if (!renderTo) {
@@ -2751,7 +2751,7 @@ describe("Ext.panel.Panel", function () {
 
             expect(xy).toEqual(offsets);
             expect(parseInt(style[!isRtl ? "left" : "right"], 10)).toBe(
-              offsets[0],
+              offsets[0]
             );
             expect(parseInt(style.top, 10)).toBe(offsets[1]);
           });
@@ -2770,7 +2770,7 @@ describe("Ext.panel.Panel", function () {
 
             expect(xy).toEqual(offsets);
             expect(parseInt(style[!isRtl ? "left" : "right"], 10)).toBe(
-              offsets[0],
+              offsets[0]
             );
             expect(parseInt(style.top, 10)).toBe(offsets[1]);
           });
@@ -2799,7 +2799,7 @@ describe("Ext.panel.Panel", function () {
             expect(xy[0]).toBeApprox(offsets[0], 1);
             expect(xy[1]).toBeApprox(offsets[1], 1);
             expect(parseInt(style[!isRtl ? "left" : "right"], 10)).toBe(
-              offsets[0],
+              offsets[0]
             );
             expect(parseInt(style.top, 10)).toBeApprox(offsets[1], 1);
           });
@@ -2830,13 +2830,13 @@ describe("Ext.panel.Panel", function () {
     createConstrainSuite({
       renderTo: true,
       positionAbsolute: true,
-      constrainHeader: true,
+      constrainHeader: true
     });
     // .render()
     createConstrainSuite({
       renderTo: false,
       positionAbsolute: true,
-      constrainHeader: true,
+      constrainHeader: true
     });
     // ... and RTL.
     //        createConstrainSuite({
@@ -2858,12 +2858,12 @@ describe("Ext.panel.Panel", function () {
     createConstrainSuite({
       renderTo: true,
       positionAbsolute: false,
-      constrainHeader: true,
+      constrainHeader: true
     });
     createConstrainSuite({
       renderTo: false,
       positionAbsolute: false,
-      constrainHeader: true,
+      constrainHeader: true
     });
     // ... and RTL.
     //        createConstrainSuite({
@@ -2885,12 +2885,12 @@ describe("Ext.panel.Panel", function () {
     createConstrainSuite({
       renderTo: true,
       positionAbsolute: true,
-      constrainHeader: false,
+      constrainHeader: false
     });
     createConstrainSuite({
       renderTo: false,
       positionAbsolute: true,
-      constrainHeader: false,
+      constrainHeader: false
     });
     // ... and RTL.
     //        createConstrainSuite({
@@ -2912,12 +2912,12 @@ describe("Ext.panel.Panel", function () {
     createConstrainSuite({
       renderTo: true,
       positionAbsolute: false,
-      constrainHeader: false,
+      constrainHeader: false
     });
     createConstrainSuite({
       renderTo: false,
       positionAbsolute: false,
-      constrainHeader: false,
+      constrainHeader: false
     });
     // ... and RTL.
     //        createConstrainSuite({
@@ -2946,10 +2946,10 @@ describe("Ext.panel.Panel", function () {
         Ext.apply(
           {
             width: 100,
-            height: 100,
+            height: 100
           },
-          cfg,
-        ),
+          cfg
+        )
       );
 
       ct = panel;
@@ -2963,14 +2963,14 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "foo",
+              html: "foo"
             },
             {
               xtype: "component",
               itemId: "bar",
-              html: "bar",
-            },
-          ],
+              html: "bar"
+            }
+          ]
         });
 
         fooCmp = ct.items.getAt(0);
@@ -3038,27 +3038,27 @@ describe("Ext.panel.Panel", function () {
             {
               xtype: "textfield",
               fieldLabel: "foo",
-              reference: "fooInput",
+              reference: "fooInput"
             },
             {
               xtype: "textfield",
               fieldLabel: "bar",
-              reference: "barInput",
-            },
+              reference: "barInput"
+            }
           ],
           defaultButton: "okButton",
           buttons: [
             {
               reference: "okButton",
-              text: "OK",
+              text: "OK"
             },
             {
               reference: "cancelButton",
-              text: "Cancel",
-            },
-          ],
+              text: "Cancel"
+            }
+          ]
         },
-        config,
+        config
       );
 
       makePanel(config);
@@ -3105,7 +3105,7 @@ describe("Ext.panel.Panel", function () {
     describe("w/ referenceHolder == true", function () {
       beforeEach(function () {
         setupPanel({
-          referenceHolder: true,
+          referenceHolder: true
         });
 
         okButton.on("click", okSpy);
@@ -3261,21 +3261,21 @@ describe("Ext.panel.Panel", function () {
               {
                 xtype: "textfield",
                 fieldLabel: "Nested",
-                reference: "nestedInput",
-              },
+                reference: "nestedInput"
+              }
             ],
             buttons: [
               {
                 text: "Nested OK",
                 reference: "nestedOk",
-                handler: nestedOkSpy,
+                handler: nestedOkSpy
               },
               {
                 text: "Nested Cancel",
                 reference: "nestedCancel",
-                handler: nestedCancelSpy,
-              },
-            ],
+                handler: nestedCancelSpy
+              }
+            ]
           });
 
           nestedInput = panel.lookupReference("nestedInput");
@@ -3434,23 +3434,23 @@ describe("Ext.panel.Panel", function () {
               reference: "okButton",
               text: "OK",
               listeners: {
-                click: "onOkButton",
-              },
+                click: "onOkButton"
+              }
             },
             {
               reference: "cancelButton",
               text: "Cancel",
               listeners: {
-                click: "onCancelButton",
-              },
-            },
+                click: "onCancelButton"
+              }
+            }
           ],
 
           controller: {
             xclass: "Ext.app.ViewController",
             onOkButton: okSpy,
-            onCancelButton: cancelSpy,
-          },
+            onCancelButton: cancelSpy
+          }
         });
 
         outerPanel = new Ext.panel.Panel({
@@ -3463,8 +3463,8 @@ describe("Ext.panel.Panel", function () {
 
           // Having the outer ViewController triggers the issue
           controller: {
-            xclass: "Ext.app.ViewController",
-          },
+            xclass: "Ext.app.ViewController"
+          }
         });
       });
 
@@ -3541,14 +3541,14 @@ describe("Ext.panel.Panel", function () {
             keyMap: {
               A: "handleA", // Resolved to controller
               B: {
-                handler: "handleB", // Resolved to controller
+                handler: "handleB" // Resolved to controller
               },
               C: {
                 handler: "handleC", // Resolved to this
-                scope: "this",
-              },
+                scope: "this"
+              }
             },
-            handleC: jasmine.createSpy(),
+            handleC: jasmine.createSpy()
           }),
           middlePanel = new Ext.panel.Panel({
             items: [
@@ -3556,23 +3556,23 @@ describe("Ext.panel.Panel", function () {
                 keyMap: {
                   D: "handleD", // Resolved to controller
                   E: {
-                    handler: "handleE", // Resolved to controller
+                    handler: "handleE" // Resolved to controller
                   },
                   F: {
                     handler: "handleF", // Resolved to this
-                    scope: "this",
-                  },
+                    scope: "this"
+                  }
                 },
-                handleF: jasmine.createSpy(),
-              }),
+                handleF: jasmine.createSpy()
+              })
             ],
             controller: {
               xclass: "Ext.app.ViewController",
               handleA: jasmine.createSpy(),
               handleB: jasmine.createSpy(),
               handleD: jasmine.createSpy(),
-              handleE: jasmine.createSpy(),
-            },
+              handleE: jasmine.createSpy()
+            }
           });
 
         outerPanel = new Ext.panel.Panel({
@@ -3583,8 +3583,8 @@ describe("Ext.panel.Panel", function () {
             handleA: jasmine.createSpy(),
             handleB: jasmine.createSpy(),
             handleD: jasmine.createSpy(),
-            handleE: jasmine.createSpy(),
-          },
+            handleE: jasmine.createSpy()
+          }
         });
         controller = middlePanel.controller;
         outerController = outerPanel.controller;
@@ -3619,17 +3619,17 @@ describe("Ext.panel.Panel", function () {
           InnerPanel = Ext.define(null, {
             extend: "Ext.panel.Panel",
             keyMap: {
-              A: "handleA", // Resolved to controller
+              A: "handleA" // Resolved to controller
             },
             controller: {
               xclass: "Ext.app.ViewController",
-              handleA: jasmine.createSpy(),
-            },
+              handleA: jasmine.createSpy()
+            }
           });
 
         outerPanel = new Ext.panel.Panel({
           items: [new InnerPanel({})],
-          renderTo: document.body,
+          renderTo: document.body
         });
 
         panel = outerPanel.down("panel");
@@ -3647,19 +3647,19 @@ describe("Ext.panel.Panel", function () {
             extend: "Ext.panel.Panel",
             controller: {
               xclass: "Ext.app.ViewController",
-              handleA: jasmine.createSpy(),
-            },
+              handleA: jasmine.createSpy()
+            }
           });
 
         outerPanel = new Ext.panel.Panel({
           items: [
             new InnerPanel({
               keyMap: {
-                A: "handleA", // Resolved to controller
-              },
-            }),
+                A: "handleA" // Resolved to controller
+              }
+            })
           ],
-          renderTo: document.body,
+          renderTo: document.body
         });
 
         panel = outerPanel.down("panel");
@@ -3676,8 +3676,8 @@ describe("Ext.panel.Panel", function () {
           InnerPanel = Ext.define(null, {
             extend: "Ext.panel.Panel",
             keyMap: {
-              A: "handleA", // Resolved to controller
-            },
+              A: "handleA" // Resolved to controller
+            }
           });
 
         outerPanel = new Ext.panel.Panel({
@@ -3685,11 +3685,11 @@ describe("Ext.panel.Panel", function () {
             new InnerPanel({
               controller: {
                 xclass: "Ext.app.ViewController",
-                handleA: jasmine.createSpy(),
-              },
-            }),
+                handleA: jasmine.createSpy()
+              }
+            })
           ],
-          renderTo: document.body,
+          renderTo: document.body
         });
 
         panel = outerPanel.down("panel");
@@ -3717,23 +3717,23 @@ describe("Ext.panel.Panel", function () {
               xtype: "component",
               dock: "top",
               height: 50,
-              itemId: "dockA",
+              itemId: "dockA"
             },
             {
               xtype: "component",
               dock: "top",
               height: 50,
-              itemId: "dockB",
+              itemId: "dockB"
             },
             {
               xtype: "component",
               dock: "top",
               height: 50,
-              itemId: "dockC",
-            },
-          ],
+              itemId: "dockC"
+            }
+          ]
         },
-        cfg,
+        cfg
       );
       makePanel(cfg);
       a = panel.down("#dockA");
@@ -3762,12 +3762,12 @@ describe("Ext.panel.Panel", function () {
         d = new Ext.Component({
           dock: "top",
           height: 50,
-          itemId: "dockD",
+          itemId: "dockD"
         });
         e = new Ext.Component({
           dock: "top",
           height: 50,
-          itemId: "dockE",
+          itemId: "dockE"
         });
       });
 
@@ -3789,7 +3789,7 @@ describe("Ext.panel.Panel", function () {
             makeDockPanel();
             panel.addDocked({
               xtype: "component",
-              itemId: "foo",
+              itemId: "foo"
             });
             var items = panel.getDockedItems();
             expect(items.length).toBe(4);
@@ -3905,12 +3905,12 @@ describe("Ext.panel.Panel", function () {
             panel.addDocked([
               {
                 xtype: "component",
-                itemId: "foo",
+                itemId: "foo"
               },
               {
                 xtype: "component",
-                itemId: "bar",
-              },
+                itemId: "bar"
+              }
             ]);
             var items = panel.getDockedItems();
             expect(items.length).toBe(5);
@@ -3924,8 +3924,8 @@ describe("Ext.panel.Panel", function () {
               d,
               {
                 xtype: "component",
-                itemId: "foo",
-              },
+                itemId: "foo"
+              }
             ]);
             var items = panel.getDockedItems();
             expect(items.length).toBe(5);
@@ -4128,7 +4128,7 @@ describe("Ext.panel.Panel", function () {
       describe("autoDestroy", function () {
         it("should not destroy with panel.autoDestroy=true & autoDestroy=false", function () {
           makeDockPanel({
-            autoDestroy: true,
+            autoDestroy: true
           });
           panel.removeDocked(a, false);
           expect(a.destroyed).not.toBe(true);
@@ -4137,7 +4137,7 @@ describe("Ext.panel.Panel", function () {
 
         it("should destroy with panel.autoDestroy=true & autoDestroy=true", function () {
           makeDockPanel({
-            autoDestroy: true,
+            autoDestroy: true
           });
           panel.removeDocked(a, true);
           expect(a.destroyed).toBe(true);
@@ -4145,7 +4145,7 @@ describe("Ext.panel.Panel", function () {
 
         it("should not destroy with panel.autoDestroy=false & autoDestroy=false", function () {
           makeDockPanel({
-            autoDestroy: false,
+            autoDestroy: false
           });
           panel.removeDocked(a, false);
           expect(a.destroyed).not.toBe(true);
@@ -4154,7 +4154,7 @@ describe("Ext.panel.Panel", function () {
 
         it("should destroy with panel.autoDestroy=false & autoDestroy=true", function () {
           makeDockPanel({
-            autoDestroy: true,
+            autoDestroy: true
           });
           panel.removeDocked(a, true);
           expect(a.destroyed).toBe(true);
@@ -4258,7 +4258,7 @@ describe("Ext.panel.Panel", function () {
           describe("no header no title", function () {
             beforeEach(function () {
               makePanel({
-                ariaRole: "throbbe",
+                ariaRole: "throbbe"
               });
             });
 
@@ -4277,7 +4277,7 @@ describe("Ext.panel.Panel", function () {
 
               expect(panel).toHaveAttr(
                 "aria-labelledby",
-                panel.header.titleCmp.textEl.id,
+                panel.header.titleCmp.textEl.id
               );
             });
           });
@@ -4287,7 +4287,7 @@ describe("Ext.panel.Panel", function () {
               makePanel({
                 ariaRole: "bar",
                 title: "blerg",
-                header: false,
+                header: false
               });
             });
 
@@ -4319,14 +4319,14 @@ describe("Ext.panel.Panel", function () {
             beforeEach(function () {
               makePanel({
                 ariaRole: "baz",
-                title: "frob",
+                title: "frob"
               });
             });
 
             it("should have aria-labelledby", function () {
               expect(panel).toHaveAttr(
                 "aria-labelledby",
-                panel.header.titleCmp.textEl.id,
+                panel.header.titleCmp.textEl.id
               );
             });
 
@@ -4347,7 +4347,7 @@ describe("Ext.panel.Panel", function () {
 
               expect(panel).toHaveAttr(
                 "aria-labelledby",
-                panel.header.titleCmp.textEl.id,
+                panel.header.titleCmp.textEl.id
               );
             });
           });
@@ -4357,7 +4357,7 @@ describe("Ext.panel.Panel", function () {
           beforeEach(function () {
             makePanel({
               ariaRole: "region",
-              title: "foo",
+              title: "foo"
             });
           });
 
@@ -4375,7 +4375,7 @@ describe("Ext.panel.Panel", function () {
           beforeEach(function () {
             makePanel({
               ariaRole: "tabpanel",
-              title: "foo",
+              title: "foo"
             });
           });
 
@@ -4396,8 +4396,8 @@ describe("Ext.panel.Panel", function () {
           beforeEach(function () {
             makePanel({
               bodyAriaRenderAttributes: {
-                "aria-foo": "bar",
-              },
+                "aria-foo": "bar"
+              }
             });
           });
 
@@ -4415,8 +4415,8 @@ describe("Ext.panel.Panel", function () {
             makePanel({
               bodyAriaRole: "frob",
               bodyAriaRenderAttributes: {
-                "aria-qux": "bonzo",
-              },
+                "aria-qux": "bonzo"
+              }
             });
           });
 
@@ -4445,7 +4445,7 @@ describe("Ext.panel.Panel", function () {
             title: "foo",
             closable: true,
             collapsible: true,
-            animCollapse: false,
+            animCollapse: false
           });
 
           closeTool = panel.down("tool[type=close]");
@@ -4526,7 +4526,7 @@ describe("Ext.panel.Panel", function () {
           makePanel({
             isViewportBorderChild: true,
             ariaRole: "plugh",
-            title: "xyzzy",
+            title: "xyzzy"
           });
 
           expect(panel.ariaRole).toBe("plugh");
@@ -4572,7 +4572,7 @@ describe("Ext.panel.Panel", function () {
           beforeEach(function () {
             makePanel({
               isViewportBorderChild: true,
-              title: "frobbe",
+              title: "frobbe"
             });
           });
 
@@ -4599,7 +4599,7 @@ describe("Ext.panel.Panel", function () {
           beforeEach(function () {
             makePanel({
               ariaRole: "region",
-              title: "blerg",
+              title: "blerg"
             });
 
             headingEl = panel.headingEl;
@@ -4640,7 +4640,7 @@ describe("Ext.panel.Panel", function () {
                   title: "foo",
                   collapsible: true,
                   animCollapse: animate,
-                  renderTo: undefined,
+                  renderTo: undefined
                 });
               });
 
@@ -4713,8 +4713,8 @@ describe("Ext.panel.Panel", function () {
                   animCollapse: animate,
                   listeners: {
                     collapse: collapseSpy,
-                    expand: expandSpy,
-                  },
+                    expand: expandSpy
+                  }
                 });
               });
 
@@ -4779,16 +4779,16 @@ describe("Ext.panel.Panel", function () {
                   region: "west",
                   collapsible: true,
                   collapseMode: undefined,
-                  width: 200,
+                  width: 200
                 },
-                itemConfig,
+                itemConfig
               ),
               {
-                region: "center",
-              },
-            ],
+                region: "center"
+              }
+            ]
           },
-          ctConfig,
+          ctConfig
         );
 
         ct = new Ext.container.Container(ctConfig);
@@ -4806,8 +4806,8 @@ describe("Ext.panel.Panel", function () {
         it("should copy enableFocusableContainer", function () {
           makeContainer({
             header: {
-              enableFocusableContainer: false,
-            },
+              enableFocusableContainer: false
+            }
           });
 
           expect(west.reExpander.enableFocusableContainer).toBe(false);
@@ -4816,8 +4816,8 @@ describe("Ext.panel.Panel", function () {
         it("should copy inactiveChildTabIndex", function () {
           makeContainer({
             header: {
-              inactiveChildTabIndex: -10,
-            },
+              inactiveChildTabIndex: -10
+            }
           });
 
           expect(west.reExpander.inactiveChildTabIndex).toBe(-10);
@@ -4826,8 +4826,8 @@ describe("Ext.panel.Panel", function () {
         it("should copy allowFocusingDisabledChildren", function () {
           makeContainer({
             header: {
-              allowFocusingDisabledChildren: true,
-            },
+              allowFocusingDisabledChildren: true
+            }
           });
 
           expect(west.reExpander.allowFocusingDisabledChildren).toBe(true);
@@ -4836,8 +4836,8 @@ describe("Ext.panel.Panel", function () {
         it("should set tabIndex to the reExpander tabGuards", function () {
           makeContainer({
             header: {
-              activeChildTabIndex: 42,
-            },
+              activeChildTabIndex: 42
+            }
           });
 
           expect(west.reExpander.tabGuardBeforeEl).toHaveAttr("tabIndex", "42");
@@ -4850,8 +4850,8 @@ describe("Ext.panel.Panel", function () {
           makeContainer({
             collapseMode: "placeholder",
             header: {
-              enableFocusableContainer: false,
-            },
+              enableFocusableContainer: false
+            }
           });
 
           expect(west.placeholder.enableFocusableContainer).toBe(false);
@@ -4861,8 +4861,8 @@ describe("Ext.panel.Panel", function () {
           makeContainer({
             collapseMode: "placeholder",
             header: {
-              inactiveChildTabIndex: -2,
-            },
+              inactiveChildTabIndex: -2
+            }
           });
 
           expect(west.placeholder.inactiveChildTabIndex).toBe(-2);
@@ -4872,8 +4872,8 @@ describe("Ext.panel.Panel", function () {
           makeContainer({
             collapseMode: "placeholder",
             header: {
-              allowFocusingDisabledChildren: true,
-            },
+              allowFocusingDisabledChildren: true
+            }
           });
 
           expect(west.placeholder.allowFocusingDisabledChildren).toBe(true);
@@ -4883,13 +4883,13 @@ describe("Ext.panel.Panel", function () {
           makeContainer({
             collapseMode: "placeholder",
             header: {
-              activeChildTabIndex: 42,
-            },
+              activeChildTabIndex: 42
+            }
           });
 
           expect(west.placeholder.tabGuardBeforeEl).toHaveAttr(
             "tabIndex",
-            "42",
+            "42"
           );
           expect(west.placeholder.tabGuardAfterEl).toHaveAttr("tabIndex", "42");
         });
@@ -4900,7 +4900,7 @@ describe("Ext.panel.Panel", function () {
       it("should contain tab guard elements with no dockedItems", function () {
         makePanel({
           tabGuard: true,
-          width: 300,
+          width: 300
         });
 
         var children = panel.el.dom.childNodes;
@@ -4926,15 +4926,15 @@ describe("Ext.panel.Panel", function () {
           tbar: [
             {
               xtype: "component",
-              html: "first",
-            },
+              html: "first"
+            }
           ],
           bbar: [
             {
               xtype: "component",
-              html: "last",
-            },
-          ],
+              html: "last"
+            }
+          ]
         });
 
         var children = panel.el.dom.childNodes;
@@ -4964,15 +4964,15 @@ describe("Ext.panel.Panel", function () {
           tbar: [
             {
               xtype: "component",
-              html: "first",
-            },
+              html: "first"
+            }
           ],
           bbar: [
             {
               xtype: "component",
-              html: "last",
-            },
-          ],
+              html: "last"
+            }
+          ]
         });
 
         var children = panel.el.dom.childNodes;
@@ -4997,7 +4997,7 @@ describe("Ext.panel.Panel", function () {
         makePanel({
           tabGuard: true,
           width: 300,
-          title: "Hello",
+          title: "Hello"
         });
 
         var elChildren = panel.el.dom.childNodes;
@@ -5021,9 +5021,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "first",
-            },
-          ],
+              html: "first"
+            }
+          ]
         });
 
         var bbar = panel.addDocked({
@@ -5032,9 +5032,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "last",
-            },
-          ],
+              html: "last"
+            }
+          ]
         });
 
         expect(elChildren.length).toBe(4);
@@ -5058,7 +5058,7 @@ describe("Ext.panel.Panel", function () {
         makePanel({
           tabGuard: true,
           width: 300,
-          title: "Hello",
+          title: "Hello"
         });
 
         var elChildren = panel.el.dom.childNodes;
@@ -5077,9 +5077,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "last",
-            },
-          ],
+              html: "last"
+            }
+          ]
         });
 
         var tbar = panel.addDocked({
@@ -5088,9 +5088,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "first",
-            },
-          ],
+              html: "first"
+            }
+          ]
         });
 
         expect(elChildren.length).toBe(4);
@@ -5114,7 +5114,7 @@ describe("Ext.panel.Panel", function () {
         makePanel({
           tabGuard: true,
           width: 300,
-          title: "Hello",
+          title: "Hello"
         });
 
         var elChildren = panel.el.dom.childNodes;
@@ -5133,9 +5133,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "bottom",
-            },
-          ],
+              html: "bottom"
+            }
+          ]
         });
 
         var rbar = panel.addDocked({
@@ -5144,9 +5144,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "right",
-            },
-          ],
+              html: "right"
+            }
+          ]
         });
 
         var lbar = panel.addDocked({
@@ -5155,9 +5155,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "left",
-            },
-          ],
+              html: "left"
+            }
+          ]
         });
 
         var tbar = panel.addDocked({
@@ -5166,9 +5166,9 @@ describe("Ext.panel.Panel", function () {
           items: [
             {
               xtype: "component",
-              html: "top",
-            },
-          ],
+              html: "top"
+            }
+          ]
         });
 
         expect(elChildren.length).toBe(4);
@@ -5218,8 +5218,8 @@ describe("Ext.panel.Panel", function () {
             title: "Docked",
             dock: "right",
             width: 100,
-            html: "Test",
-          },
+            html: "Test"
+          }
         ],
 
         listeners: {
@@ -5228,8 +5228,8 @@ describe("Ext.panel.Panel", function () {
           },
           expand: function () {
             panelExpanded = true;
-          },
-        },
+          }
+        }
       });
 
       panel.collapse();
@@ -5250,7 +5250,7 @@ describe("Ext.panel.Panel", function () {
           title: "Docked foo",
           dock: "left",
           width: 50,
-          html: "No foo",
+          html: "No foo"
         });
 
         panel.expand();
@@ -5274,7 +5274,7 @@ describe("Ext.panel.Panel", function () {
             title: "foo",
             width: 300,
             height: 300,
-            html: "throbbe",
+            html: "throbbe"
           });
         });
 
@@ -5293,7 +5293,7 @@ describe("Ext.panel.Panel", function () {
                 title: "bar",
                 width: 300,
                 height: 300,
-                html: "gurgle",
+                html: "gurgle"
               });
 
               panel.collapse();
@@ -5306,8 +5306,8 @@ describe("Ext.panel.Panel", function () {
                   "last.height": 300,
                   minHeight: null,
                   minWidth: null,
-                  width: 300,
-                },
+                  width: 300
+                }
               });
             });
           });
@@ -5321,7 +5321,7 @@ describe("Ext.panel.Panel", function () {
                 title: "bar",
                 width: 300,
                 height: 300,
-                html: "gurgle",
+                html: "gurgle"
               });
 
               panel.collapse();
@@ -5334,8 +5334,8 @@ describe("Ext.panel.Panel", function () {
                   "last.width": 300,
                   minHeight: null,
                   minWidth: null,
-                  width: 300,
-                },
+                  width: 300
+                }
               });
             });
           });
@@ -5361,12 +5361,12 @@ describe("Ext.panel.Panel", function () {
                     region: "north",
                     collapsible: true,
                     animCollapse: false,
-                    height: 200,
+                    height: 200
                   },
                   {
-                    region: "center",
-                  },
-                ],
+                    region: "center"
+                  }
+                ]
               });
 
               p = ct.items.first();
@@ -5377,7 +5377,7 @@ describe("Ext.panel.Panel", function () {
             it("should populate properties", function () {
               expect(p.getState()).toEqual({
                 collapsed: {},
-                weight: 20,
+                weight: 20
               });
             });
           });
@@ -5395,12 +5395,12 @@ describe("Ext.panel.Panel", function () {
                     region: "west",
                     collapsible: true,
                     animCollapse: false,
-                    width: 200,
+                    width: 200
                   },
                   {
-                    region: "center",
-                  },
-                ],
+                    region: "center"
+                  }
+                ]
               });
 
               p = ct.items.first();
@@ -5411,7 +5411,7 @@ describe("Ext.panel.Panel", function () {
             it("should populate properties", function () {
               expect(p.getState()).toEqual({
                 collapsed: {},
-                weight: -10,
+                weight: -10
               });
             });
           });

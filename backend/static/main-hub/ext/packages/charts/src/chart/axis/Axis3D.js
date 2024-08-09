@@ -26,7 +26,7 @@ Ext.define("Ext.chart.axis.Axis3D", {
      * @private
      * The depth of the axis. Determined automatically.
      */
-    depth: 0,
+    depth: 0
 
     /**
      * @cfg {String} position
@@ -104,5 +104,5 @@ Ext.define("Ext.chart.axis.Axis3D", {
       case "bottom":
         return "vertical3d";
     }
-  },
+  }
 });

@@ -1,2 +1,2 @@
 // @tag full-page
-// @require /root/parkour2/backend/static/main-hub/app.js
+// @require /docker/parkour2/backend/static/main-hub/app.js

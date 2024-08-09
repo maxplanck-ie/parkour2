@@ -23,15 +23,15 @@ Ext.define("Ext.grid.plugin.Clipboard", {
 
   formats: {
     cell: {
-      get: "getCells",
+      get: "getCells"
     },
     html: {
-      get: "getCellData",
+      get: "getCellData"
     },
     raw: {
       get: "getCellData",
-      put: "putCellData",
-    },
+      put: "putCellData"
+    }
   },
 
   getCellData: function (format, erase) {
@@ -108,8 +108,8 @@ Ext.define("Ext.grid.plugin.Clipboard", {
         ret.push(
           (row = {
             model: record.self,
-            fields: [],
-          }),
+            fields: []
+          })
         );
       }
 
@@ -117,7 +117,7 @@ Ext.define("Ext.grid.plugin.Clipboard", {
 
       row.fields.push({
         name: dataIndex,
-        value: record.data[dataIndex],
+        value: record.data[dataIndex]
       });
 
       if (erase && dataIndex) {
@@ -165,7 +165,7 @@ Ext.define("Ext.grid.plugin.Clipboard", {
       // At that point, we can use navModel.getPosition()
       destination = new Ext.grid.CellContext(view).setPosition(
         destination.record,
-        destination.column,
+        destination.column
       );
     } else {
       destination = new Ext.grid.CellContext(view).setPosition(0, 0);
@@ -230,6 +230,6 @@ Ext.define("Ext.grid.plugin.Clipboard", {
       if (view.actionableMode) {
         return false;
       }
-    },
-  },
+    }
+  }
 });

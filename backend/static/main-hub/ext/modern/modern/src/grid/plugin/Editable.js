@@ -142,8 +142,8 @@ Ext.define("Ext.grid.plugin.Editable", {
       xtype: "formpanel",
       scrollable: true,
       items: {
-        xtype: "fieldset",
-      },
+        xtype: "fieldset"
+      }
     },
 
     /**
@@ -158,29 +158,29 @@ Ext.define("Ext.grid.plugin.Editable", {
           ui: "decline",
           text: "Cancel",
           align: "left",
-          action: "cancel",
+          action: "cancel"
         },
         {
           xtype: "button",
           ui: "confirm",
           text: "Submit",
           align: "right",
-          action: "submit",
-        },
-      ],
+          action: "submit"
+        }
+      ]
     },
 
     /**
      *  Creates a delete button, which allows the user to delete the selected row.
      */
-    enableDeleteButton: true,
+    enableDeleteButton: true
   },
 
   init: function (grid) {
     this.setGrid(grid);
 
     grid.setTouchAction({
-      doubleTapZoom: false,
+      doubleTapZoom: false
     });
   },
 
@@ -281,7 +281,7 @@ Ext.define("Ext.grid.plugin.Editable", {
         width: 320,
         layout: "fit",
         stretchY: true,
-        hidden: true,
+        hidden: true
       });
 
       if (me.getEnableDeleteButton()) {
@@ -293,7 +293,7 @@ Ext.define("Ext.grid.plugin.Editable", {
           handler: function () {
             grid.getStore().remove(record);
             sheet.hide();
-          },
+          }
         });
       }
 
@@ -301,5 +301,5 @@ Ext.define("Ext.grid.plugin.Editable", {
 
       sheet.show();
     }
-  },
+  }
 });

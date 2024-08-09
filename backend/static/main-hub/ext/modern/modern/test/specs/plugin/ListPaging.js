@@ -11,14 +11,14 @@ describe("Ext.plugin.ListPaging", function () {
         { id: 3, name: "Third Item" },
         { id: 4, name: "Fourth Item" },
         { id: 5, name: "Fifth Item" },
-        { id: 6, name: "Sixth Item" },
-      ],
+        { id: 6, name: "Sixth Item" }
+      ]
     });
 
     list = Ext.create("Ext.List", {
       plugins: "listpaging",
       store: store,
-      itemTpl: "Yeah",
+      itemTpl: "Yeah"
     });
 
     plugin = list.getPlugins()[0];

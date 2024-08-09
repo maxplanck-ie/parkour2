@@ -33,7 +33,7 @@ Ext.define(
        * A default is provided that returns the `id` property on the object. This function is only used
        * if the `add` method is called with a single argument.
        */
-      keyFn: null,
+      keyFn: null
     },
 
     /**
@@ -369,7 +369,7 @@ Ext.define(
         }
       }
       return undefined;
-    },
+    }
   },
   function (HashMap) {
     var prototype = HashMap.prototype;
@@ -380,5 +380,5 @@ Ext.define(
      * @inheritdoc Ext.util.HashMap#removeAtKey
      */
     prototype.removeByKey = prototype.removeAtKey;
-  },
+  }
 );

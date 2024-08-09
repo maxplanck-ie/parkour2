@@ -56,7 +56,7 @@
       "<'right aligned nine wide column'p>" +
       ">" +
       ">",
-    renderer: "semanticUI",
+    renderer: "semanticUI"
   });
 
   /* Default class modification */
@@ -64,7 +64,7 @@
     sWrapper: "dataTables_wrapper dt-semanticUI",
     sFilter: "dataTables_filter ui input",
     sProcessing: "dataTables_processing ui segment",
-    sPageButton: "paginate_button item",
+    sPageButton: "paginate_button item"
   });
 
   /* Bootstrap paging button renderer */
@@ -74,7 +74,7 @@
     idx,
     buttons,
     page,
-    pages,
+    pages
   ) {
     var api = new DataTable.Api(settings);
     var classes = settings.oClasses;
@@ -150,7 +150,7 @@
               "aria-controls": settings.sTableId,
               "aria-label": aria[button],
               "data-dt-idx": counter,
-              tabindex: settings.iTabIndex,
+              tabindex: settings.iTabIndex
             })
               .html(btnDisplay)
               .appendTo(container);
@@ -180,7 +180,7 @@
         .empty()
         .html('<div class="ui stackable pagination menu"/>')
         .children(),
-      buttons,
+      buttons
     );
 
     if (activeEl !== undefined) {

@@ -30,7 +30,7 @@ Ext.define("Ext.app.bind.RootStub", {
       stub = new Ext.app.bind.LinkStub(
         owner,
         name,
-        previous ? null : parentStub,
+        previous ? null : parentStub
       );
       stub.link("{" + name + "}", parentVM);
     }
@@ -144,5 +144,5 @@ Ext.define("Ext.app.bind.RootStub", {
 
   schedule: Ext.emptyFn,
 
-  unschedule: Ext.emptyFn,
+  unschedule: Ext.emptyFn
 });

@@ -8,14 +8,14 @@ Ext.define("Ext.device.contacts.Cordova", {
   getContacts: function (config) {
     if (!config) {
       Ext.Logger.warn(
-        "Ext.device.Contacts#getContacts: You must specify a `config` object.",
+        "Ext.device.Contacts#getContacts: You must specify a `config` object."
       );
       return false;
     }
 
     if (!config.success) {
       Ext.Logger.warn(
-        "Ext.device.Contacts#getContacts: You must specify a `success` method.",
+        "Ext.device.Contacts#getContacts: You must specify a `success` method."
       );
       return false;
     }
@@ -36,7 +36,7 @@ Ext.define("Ext.device.contacts.Cordova", {
       config.fields,
       config.success,
       config.failure,
-      config,
+      config
     );
-  },
+  }
 });

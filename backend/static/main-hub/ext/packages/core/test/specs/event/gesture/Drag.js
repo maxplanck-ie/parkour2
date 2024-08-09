@@ -39,7 +39,7 @@ describe("Ext.event.gesture.Drag", function () {
   beforeEach(function () {
     targetEl = Ext.getBody().createChild({
       id: "target",
-      style: "width: 200px; height: 200px; border: 1px solid red;",
+      style: "width: 200px; height: 200px; border: 1px solid red;"
     });
     dragstartHandler = jasmine.createSpy();
     dragHandler = jasmine.createSpy();
@@ -99,7 +99,7 @@ describe("Ext.event.gesture.Drag", function () {
         absDeltaY: minDistance,
         previousDeltaX: 0,
         previousDeltaY: 0,
-        longpress: false,
+        longpress: false
       });
 
       expectInfo(dragEvent, {
@@ -117,7 +117,7 @@ describe("Ext.event.gesture.Drag", function () {
         absDeltaY: minDistance,
         previousDeltaX: 0,
         previousDeltaY: 0,
-        longpress: false,
+        longpress: false
       });
 
       move({ id: 1, x: 97, y: 100 - minDistance });
@@ -143,7 +143,7 @@ describe("Ext.event.gesture.Drag", function () {
         absDeltaY: minDistance + 1,
         previousDeltaX: -1,
         previousDeltaY: -minDistance,
-        longpress: false,
+        longpress: false
       });
 
       end({ id: 1, x: 96, y: 99 - minDistance });
@@ -169,7 +169,7 @@ describe("Ext.event.gesture.Drag", function () {
         absDeltaY: minDistance + 2,
         previousDeltaX: -3,
         previousDeltaY: -(minDistance + 1),
-        longpress: false,
+        longpress: false
       });
     });
   });
@@ -196,7 +196,7 @@ describe("Ext.event.gesture.Drag", function () {
       "touchstart",
       touchStart.andCallFake(function (e) {
         e.stopPropagation();
-      }),
+      })
     );
 
     start({ id: 1, x: 100, y: 101 });
@@ -261,7 +261,7 @@ describe("Ext.event.gesture.Drag", function () {
           absDeltaY: minDistance + 2,
           previousDeltaX: -3,
           previousDeltaY: -(minDistance + 1),
-          longpress: false,
+          longpress: false
         });
       });
     });
@@ -308,7 +308,7 @@ describe("Ext.event.gesture.Drag", function () {
           absDeltaY: minDistance + 1,
           previousDeltaX: -1,
           previousDeltaY: -minDistance,
-          longpress: false,
+          longpress: false
         });
       });
     });
@@ -347,7 +347,7 @@ describe("Ext.event.gesture.Drag", function () {
           return longpressed;
         },
         "longpress handler was never called",
-        3000,
+        3000
       );
 
       runs(function () {
@@ -372,7 +372,7 @@ describe("Ext.event.gesture.Drag", function () {
           return longpressed;
         },
         "longpress handler was never called",
-        3000,
+        3000
       );
 
       runs(function () {
@@ -393,7 +393,7 @@ describe("Ext.event.gesture.Drag", function () {
           absDeltaY: 0,
           previousDeltaX: 0,
           previousDeltaY: 0,
-          longpress: true,
+          longpress: true
         });
       });
 
@@ -421,7 +421,7 @@ describe("Ext.event.gesture.Drag", function () {
           absDeltaY: 4,
           previousDeltaX: 0,
           previousDeltaY: 0,
-          longpress: true,
+          longpress: true
         });
 
         move({ id: 1, x: 97, y: 100 - minDistance });
@@ -447,7 +447,7 @@ describe("Ext.event.gesture.Drag", function () {
           absDeltaY: minDistance + 1,
           previousDeltaX: -1,
           previousDeltaY: -4,
-          longpress: true,
+          longpress: true
         });
 
         end({ id: 1, x: 96, y: 99 - minDistance });
@@ -473,7 +473,7 @@ describe("Ext.event.gesture.Drag", function () {
           absDeltaY: minDistance + 2,
           previousDeltaX: -3,
           previousDeltaY: -(minDistance + 1),
-          longpress: true,
+          longpress: true
         });
       });
     });
@@ -523,10 +523,10 @@ describe("Ext.event.gesture.Drag", function () {
 
         beforeEach(function () {
           parent = Ext.getBody().createChild({
-            id: "parent",
+            id: "parent"
           });
           target = parent.createChild({
-            id: "child",
+            id: "child"
           });
 
           // the "firingTarget" attempts to emulate the target that the browser uses
@@ -618,7 +618,7 @@ describe("Ext.event.gesture.Drag", function () {
             expect(dragendEvent.target).toBe(target.dom);
           });
         });
-      },
+      }
     );
   }
 

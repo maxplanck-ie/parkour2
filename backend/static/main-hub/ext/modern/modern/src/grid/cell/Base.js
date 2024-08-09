@@ -58,7 +58,7 @@ Ext.define("Ext.grid.cell.Base", {
      *
      * @protected
      */
-    cellCls: null,
+    cellCls: null
   },
 
   config: {
@@ -88,7 +88,7 @@ Ext.define("Ext.grid.cell.Base", {
      * The value of the {@link Ext.grid.column.Column#dataIndex dataIndex} field of
      * the associated record. Application code should not need to set this value.
      */
-    value: null,
+    value: null
   },
 
   classCls: Ext.baseCSSPrefix + "gridcell",
@@ -100,8 +100,8 @@ Ext.define("Ext.grid.cell.Base", {
         cls: Ext.baseCSSPrefix + "inner-el",
         // hook for subclasses to add elements inside the inner element
         // e.g. checkcell, expandercell
-        children: this.innerTemplate,
-      },
+        children: this.innerTemplate
+      }
     ];
   },
 
@@ -164,5 +164,5 @@ Ext.define("Ext.grid.cell.Base", {
     this.setColumn(null);
     this.setRecord(null);
     this.callParent();
-  },
+  }
 });

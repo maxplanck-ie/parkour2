@@ -149,7 +149,7 @@ Ext.define(
         var me = this,
           cache = me.cache,
           config = {
-            _users: 1, // allow constructor to recognize us as the caller
+            _users: 1 // allow constructor to recognize us as the caller
           },
           instance;
 
@@ -167,7 +167,7 @@ Ext.define(
             Ext.raise(
               'Creating a shared instance of private local store "' +
                 me.id +
-                '".',
+                '".'
             );
           }
           //</debug>
@@ -183,7 +183,7 @@ Ext.define(
        * @property {Boolean} supported
        * @readonly
        */
-      supported: true,
+      supported: true
     },
 
     constructor: function (config) {
@@ -212,7 +212,7 @@ Ext.define(
           Ext.raise(
             'Cannot create duplicate instance of local store "' +
               me.id +
-              '". Use Ext.util.LocalStorage.get() to share instances.',
+              '". Use Ext.util.LocalStorage.get() to share instances.'
           );
         }
 
@@ -397,7 +397,7 @@ Ext.define(
         // Good news here - maintaining the keys collection is easy in this case.
         keys.push(key);
       }
-    },
+    }
   },
   function () {
     var LocalStorage = this;
@@ -564,7 +564,7 @@ Ext.define(
 
         data[key] = value;
         me.save(me.flushDelay);
-      },
+      }
     });
-  },
+  }
 );

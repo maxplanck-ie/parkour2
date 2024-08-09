@@ -47,7 +47,7 @@ Ext.define("Ext.layout.container.Fit", {
     { readsWidth: 1, readsHeight: 1, setsWidth: 0, setsHeight: 0 },
     { readsWidth: 0, readsHeight: 1, setsWidth: 1, setsHeight: 0 },
     { readsWidth: 1, readsHeight: 0, setsWidth: 0, setsHeight: 1 },
-    { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 },
+    { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 }
   ],
 
   getItemSizePolicy: function (item, ownerSizeModel) {
@@ -166,7 +166,7 @@ Ext.define("Ext.layout.container.Fit", {
       info = {
         length: length,
         ownerContext: ownerContext,
-        targetSize: containerSize,
+        targetSize: containerSize
       },
       shrinkWrapWidth = ownerContext.widthModel.shrinkWrap,
       shrinkWrapHeight = ownerContext.heightModel.shrinkWrap,
@@ -188,7 +188,7 @@ Ext.define("Ext.layout.container.Fit", {
         overflowX && containerSize.width,
         overflowY && containerSize.height,
         ownerContext.maxChildMinWidth,
-        ownerContext.maxChildMinHeight,
+        ownerContext.maxChildMinHeight
       );
 
       if (scrollbars) {
@@ -375,5 +375,5 @@ Ext.define("Ext.layout.container.Fit", {
 
   setItemWidth: function (itemContext, info) {
     itemContext.setWidth(info.targetSize.width - info.margins.width);
-  },
+  }
 });

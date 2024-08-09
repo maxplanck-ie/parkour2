@@ -13,10 +13,10 @@ describe("Ext.layout.component.Dock", function () {
       Ext.apply(
         {
           xtype: "panel",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        options,
-      ),
+        options
+      )
     );
 
     if (failedLayouts != Ext.failedLayouts) {
@@ -43,7 +43,7 @@ describe("Ext.layout.component.Dock", function () {
         dock: dock,
         shrinkWrap: true,
         style: style,
-        html: html,
+        html: html
       });
     };
 
@@ -55,17 +55,17 @@ describe("Ext.layout.component.Dock", function () {
               shrinkWrap: true,
               border: false,
               bodyBorder: false,
-              shrinkWrapDock: 2,
+              shrinkWrapDock: 2
             },
-            options,
-          ),
+            options
+          )
         );
       };
 
       it("should stretch the body width if the docked item is larger", function () {
         makeDocker({
           dockedItems: [makeDocked(top, 100, u)],
-          html: "a",
+          html: "a"
         });
         expect(ct.getWidth()).toBe(100);
         expect(ct.body.getWidth()).toBe(100);
@@ -74,7 +74,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should stretch the docked width if the body is larger", function () {
         makeDocker({
           dockedItems: [makeDocked(top, u, u, "a")],
-          html: '<div style="width: 100px;"></div>',
+          html: '<div style="width: 100px;"></div>'
         });
         expect(ct.getWidth()).toBe(100);
         expect(ct.getDockedItems()[0].getWidth()).toBe(100);
@@ -83,7 +83,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should stretch other docked items to the size of the largest docked item if it is bigger than the body", function () {
         makeDocker({
           dockedItems: [makeDocked(top, 100, u), makeDocked(top, u, u, "b")],
-          html: "a",
+          html: "a"
         });
         expect(ct.getDockedItems()[1].getWidth()).toBe(100);
       });
@@ -91,7 +91,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should stretch all docked items to the size of the body if the body is largest", function () {
         makeDocker({
           dockedItems: [makeDocked(top, u, u, "a"), makeDocked(top, u, u, "b")],
-          html: '<div style="width: 100px;"></div>',
+          html: '<div style="width: 100px;"></div>'
         });
         expect(ct.getDockedItems()[0].getWidth()).toBe(100);
         expect(ct.getDockedItems()[1].getWidth()).toBe(100);
@@ -100,7 +100,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should stretch all items if the body and a single docked item are the largest & same size", function () {
         makeDocker({
           dockedItems: [makeDocked(top, 50, u, u), makeDocked(top, 100, u, u)],
-          html: '<div style="width: 100px;"></div>',
+          html: '<div style="width: 100px;"></div>'
         });
         expect(ct.getDockedItems()[0].getWidth()).toBe(100);
         expect(ct.getDockedItems()[1].getWidth()).toBe(100);
@@ -115,17 +115,17 @@ describe("Ext.layout.component.Dock", function () {
               shrinkWrap: true,
               border: false,
               bodyBorder: false,
-              shrinkWrapDock: 1,
+              shrinkWrapDock: 1
             },
-            options,
-          ),
+            options
+          )
         );
       };
 
       it("should stretch the body height if the docked item is larger", function () {
         makeDocker({
           dockedItems: [makeDocked(left, u, 100)],
-          html: "a",
+          html: "a"
         });
         expect(ct.getHeight()).toBe(100);
         expect(ct.body.getHeight()).toBe(100);
@@ -134,7 +134,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should stretch the docked height if the body is larger", function () {
         makeDocker({
           dockedItems: [makeDocked(left, u, u, "a")],
-          html: '<div style="height: 100px;"></div>',
+          html: '<div style="height: 100px;"></div>'
         });
         expect(ct.getHeight()).toBe(100);
         expect(ct.getDockedItems()[0].getHeight()).toBe(100);
@@ -143,7 +143,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should stretch other docked items to the size of the largest docked item if it is bigger than the body", function () {
         makeDocker({
           dockedItems: [makeDocked(left, u, 100), makeDocked(left, u, u, "b")],
-          html: "a",
+          html: "a"
         });
         expect(ct.getDockedItems()[1].getHeight()).toBe(100);
       });
@@ -152,9 +152,9 @@ describe("Ext.layout.component.Dock", function () {
         makeDocker({
           dockedItems: [
             makeDocked(left, u, u, "a"),
-            makeDocked(left, u, u, "b"),
+            makeDocked(left, u, u, "b")
           ],
-          html: '<div style="height: 100px;"></div>',
+          html: '<div style="height: 100px;"></div>'
         });
         expect(ct.getDockedItems()[0].getHeight()).toBe(100);
         expect(ct.getDockedItems()[1].getHeight()).toBe(100);
@@ -164,9 +164,9 @@ describe("Ext.layout.component.Dock", function () {
         makeDocker({
           dockedItems: [
             makeDocked(left, u, 50, u),
-            makeDocked(left, u, 100, u),
+            makeDocked(left, u, 100, u)
           ],
-          html: '<div style="height: 100px;"></div>',
+          html: '<div style="height: 100px;"></div>'
         });
         expect(ct.getDockedItems()[0].getHeight()).toBe(100);
         expect(ct.getDockedItems()[1].getHeight()).toBe(100);
@@ -181,17 +181,17 @@ describe("Ext.layout.component.Dock", function () {
               shrinkWrap: true,
               border: false,
               bodyBorder: false,
-              shrinkWrapDock: true,
+              shrinkWrapDock: true
             },
-            options,
-          ),
+            options
+          )
         );
       };
 
       it("should stretch the body in both dimensions if the docked items are larger", function () {
         makeDocker({
           dockedItems: [makeDocked(top, 100, u), makeDocked(left, u, 75)],
-          html: "a",
+          html: "a"
         });
         expect(ct.getWidth()).toBe(100);
         expect(ct.body.getWidth()).toBe(100);
@@ -202,7 +202,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should only stretch the width the dimension where the body is smaller", function () {
         makeDocker({
           dockedItems: [makeDocked(top, 100, u), makeDocked(left, u, 75)],
-          html: '<div style="width: 50px; height: 100px;">',
+          html: '<div style="width: 50px; height: 100px;">'
         });
         expect(ct.getWidth()).toBe(100);
         expect(ct.body.getWidth()).toBe(100);
@@ -214,7 +214,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should only stretch the height the dimension where the body is smaller", function () {
         makeDocker({
           dockedItems: [makeDocked(top, 100, u), makeDocked(left, u, 75)],
-          html: '<div style="width: 200px; height: 50px;">',
+          html: '<div style="width: 200px; height: 50px;">'
         });
         expect(ct.getHeight()).toBe(75);
         expect(ct.body.getHeight()).toBe(75);
@@ -226,7 +226,7 @@ describe("Ext.layout.component.Dock", function () {
       it("should not stretch the body if neither docked item is bigger", function () {
         makeDocker({
           dockedItems: [makeDocked(top, 100, u), makeDocked(left, u, 75)],
-          html: '<div style="width: 200px; height: 100px;">',
+          html: '<div style="width: 200px; height: 100px;">'
         });
         expect(ct.getWidth()).toBe(200);
         expect(ct.body.getWidth()).toBe(200);
@@ -246,17 +246,17 @@ describe("Ext.layout.component.Dock", function () {
                 shrinkWrap: true,
                 border: false,
                 bodyBorder: false,
-                shrinkWrapDock: 2,
+                shrinkWrapDock: 2
               },
-              options,
-            ),
+              options
+            )
           );
         };
 
         it("should constrain to a minWidth", function () {
           makeDocker({
             minWidth: 200,
-            dockedItems: [makeDocked(top, 100, u)],
+            dockedItems: [makeDocked(top, 100, u)]
           });
           expect(ct.getWidth()).toBe(200);
           expect(ct.getDockedItems()[0].getWidth()).toBe(200);
@@ -265,7 +265,7 @@ describe("Ext.layout.component.Dock", function () {
         it("should constrain to a maxWidth", function () {
           makeDocker({
             maxWidth: 100,
-            dockedItems: [makeDocked(top, 200, u)],
+            dockedItems: [makeDocked(top, 200, u)]
           });
           expect(ct.getWidth()).toBe(100);
           expect(ct.getDockedItems()[0].getWidth()).toBe(100);
@@ -280,17 +280,17 @@ describe("Ext.layout.component.Dock", function () {
                 shrinkWrap: true,
                 border: false,
                 bodyBorder: false,
-                shrinkWrapDock: 1,
+                shrinkWrapDock: 1
               },
-              options,
-            ),
+              options
+            )
           );
         };
 
         it("should constrain to a minHeight", function () {
           makeDocker({
             minHeight: 200,
-            dockedItems: [makeDocked(left, u, 100)],
+            dockedItems: [makeDocked(left, u, 100)]
           });
           expect(ct.getHeight()).toBe(200);
           expect(ct.getDockedItems()[0].getHeight()).toBe(200);
@@ -299,7 +299,7 @@ describe("Ext.layout.component.Dock", function () {
         it("should constrain to a maxWidth", function () {
           makeDocker({
             maxHeight: 100,
-            dockedItems: [makeDocked(left, u, 200)],
+            dockedItems: [makeDocked(left, u, 200)]
           });
           expect(ct.getHeight()).toBe(100);
           expect(ct.getDockedItems()[0].getHeight()).toBe(100);
@@ -314,10 +314,10 @@ describe("Ext.layout.component.Dock", function () {
                 shrinkWrap: true,
                 border: false,
                 bodyBorder: false,
-                shrinkWrapDock: true,
+                shrinkWrapDock: true
               },
-              options,
-            ),
+              options
+            )
           );
         };
 
@@ -325,7 +325,7 @@ describe("Ext.layout.component.Dock", function () {
           makeDocker({
             minHeight: 100,
             maxWidth: 100,
-            dockedItems: [makeDocked(top, 200, u), makeDocked(left, u, 50)],
+            dockedItems: [makeDocked(top, 200, u), makeDocked(left, u, 50)]
           });
           expect(ct.getWidth()).toBe(100);
           expect(ct.getHeight()).toBe(100);
@@ -337,7 +337,7 @@ describe("Ext.layout.component.Dock", function () {
           makeDocker({
             maxHeight: 100,
             minWidth: 100,
-            dockedItems: [makeDocked(top, 50, u), makeDocked(left, u, 200)],
+            dockedItems: [makeDocked(top, 50, u), makeDocked(left, u, 200)]
           });
           expect(ct.getWidth()).toBe(100);
           expect(ct.getHeight()).toBe(100);
@@ -349,7 +349,7 @@ describe("Ext.layout.component.Dock", function () {
           makeDocker({
             minHeight: 100,
             minWidth: 100,
-            dockedItems: [makeDocked(top, 50, u), makeDocked(left, u, 50)],
+            dockedItems: [makeDocked(top, 50, u), makeDocked(left, u, 50)]
           });
           expect(ct.getWidth()).toBe(100);
           expect(ct.getHeight()).toBe(100);
@@ -361,7 +361,7 @@ describe("Ext.layout.component.Dock", function () {
           makeDocker({
             maxHeight: 100,
             maxWidth: 100,
-            dockedItems: [makeDocked(top, 200, u), makeDocked(left, u, 200)],
+            dockedItems: [makeDocked(top, 200, u), makeDocked(left, u, 200)]
           });
           expect(ct.getWidth()).toBe(100);
           expect(ct.getHeight()).toBe(100);
@@ -379,7 +379,7 @@ describe("Ext.layout.component.Dock", function () {
         border: false,
         layout: {
           type: "hbox",
-          align: "stretchmax",
+          align: "stretchmax"
         },
         items: [
           {
@@ -389,25 +389,25 @@ describe("Ext.layout.component.Dock", function () {
               xtype: "component",
               width: 20,
               height: 20,
-              style: "background-color: red",
+              style: "background-color: red"
             },
             dockedItems: [
               {
                 xtype: "component",
                 height: 20,
                 dock: "bottom",
-                style: "background-color: blue",
-              },
+                style: "background-color: blue"
+              }
             ],
-            minHeight: 100,
+            minHeight: 100
           },
           {
             xtype: "component",
             style: "background-color: yellow",
             height: 200,
-            width: 20,
-          },
-        ],
+            width: 20
+          }
+        ]
       });
 
       expect(ct).toHaveLayout({
@@ -416,14 +416,14 @@ describe("Ext.layout.component.Dock", function () {
           0: {
             el: { xywh: "0 0 20 200" },
             items: {
-              0: { el: { xywh: "0 0 20 20" } },
+              0: { el: { xywh: "0 0 20 20" } }
             },
             dockedItems: {
-              0: { el: { xywh: "0 180 20 20" } },
-            },
+              0: { el: { xywh: "0 180 20 20" } }
+            }
           },
-          1: { el: { xywh: "20 0 20 200" } },
-        },
+          1: { el: { xywh: "20 0 20 200" } }
+        }
       });
     });
   });
@@ -437,9 +437,9 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "top outer",
-          },
-        ],
+            html: "top outer"
+          }
+        ]
       },
       {
         dock: "left",
@@ -449,9 +449,9 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "left outer",
-          },
-        ],
+            html: "left outer"
+          }
+        ]
       },
       {
         dock: "bottom",
@@ -460,9 +460,9 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "bottom outer",
-          },
-        ],
+            html: "bottom outer"
+          }
+        ]
       },
       {
         dock: "right",
@@ -472,9 +472,9 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "right outer",
-          },
-        ],
+            html: "right outer"
+          }
+        ]
       },
       {
         xtype: "toolbar",
@@ -483,9 +483,9 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "top inner",
-          },
-        ],
+            html: "top inner"
+          }
+        ]
       },
       {
         dock: "bottom",
@@ -494,9 +494,9 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "bottom inner",
-          },
-        ],
+            html: "bottom inner"
+          }
+        ]
       },
       {
         dock: "right",
@@ -506,9 +506,9 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "right inner",
-          },
-        ],
+            html: "right inner"
+          }
+        ]
       },
       {
         dock: "left",
@@ -518,10 +518,10 @@ describe("Ext.layout.component.Dock", function () {
         items: [
           {
             xtype: "component",
-            html: "left inner",
-          },
-        ],
-      },
+            html: "left inner"
+          }
+        ]
+      }
     ];
 
     function makeSuite(config, elOrder, wrapOrder, changeFn, desc) {
@@ -585,9 +585,9 @@ describe("Ext.layout.component.Dock", function () {
               title: "blerg",
 
               dockedItems: defaultDockedItems,
-              html: "zingbong",
+              html: "zingbong"
             },
-            config,
+            config
           );
 
           makeCt(cfg);
@@ -601,7 +601,7 @@ describe("Ext.layout.component.Dock", function () {
           "should have " + numElChildren + " children in main el",
           function () {
             expect(ct.el.dom.childNodes.length).toBe(numElChildren);
-          },
+          }
         );
 
         it("should have main el children in right order", function () {
@@ -612,7 +612,7 @@ describe("Ext.layout.component.Dock", function () {
           "should have " + numWrapChildren + " children in bodyWrap el",
           function () {
             expect(ct.bodyWrap.dom.childNodes.length).toBe(numWrapChildren);
-          },
+          }
         );
 
         it("should have bodyWrap el children in right order", function () {
@@ -629,7 +629,7 @@ describe("Ext.layout.component.Dock", function () {
               "should have " + numElChildren + " children in main el",
               function () {
                 expect(ct.el.dom.childNodes.length).toBe(numElChildren);
-              },
+              }
             );
 
             it("should have main el children in right order", function () {
@@ -640,7 +640,7 @@ describe("Ext.layout.component.Dock", function () {
               "should have " + numWrapChildren + " children in bodyWrap el",
               function () {
                 expect(ct.bodyWrap.dom.childNodes.length).toBe(numWrapChildren);
-              },
+              }
             );
 
             it("should have bodyWrap el children in right order", function () {
@@ -656,7 +656,7 @@ describe("Ext.layout.component.Dock", function () {
                 "should have " + numElChildren + " children in main el",
                 function () {
                   expect(ct.el.dom.childNodes.length).toBe(numElChildren);
-                },
+                }
               );
 
               it("should have main el children in right order", function () {
@@ -667,9 +667,9 @@ describe("Ext.layout.component.Dock", function () {
                 "should have " + numWrapChildren + " children in bodyWrap el",
                 function () {
                   expect(ct.bodyWrap.dom.childNodes.length).toBe(
-                    numWrapChildren,
+                    numWrapChildren
                   );
-                },
+                }
               );
 
               it("should have bodyWrap el children in right order", function () {
@@ -705,7 +705,7 @@ describe("Ext.layout.component.Dock", function () {
     makeSuite(
       { title: null, dockedItems: null, tabGuard: true },
       ["tabGuardBeforeEl", "bodyWrap", "tabGuardAfterEl"],
-      ["body"],
+      ["body"]
     );
 
     // No header but massive eruption of dockedItems
@@ -715,95 +715,95 @@ describe("Ext.layout.component.Dock", function () {
     makeSuite(
       { title: null, tabGuard: true },
       ["tabGuardBeforeEl", "bodyWrap", "tabGuardAfterEl"],
-      [0, 1, 4, 7, "body", 3, 2, 5, 6],
+      [0, 1, 4, 7, "body", 3, 2, 5, 6]
     );
 
     // Header position
     makeSuite(
       { dockedItems: null, headerPosition: "top" },
       [0, "bodyWrap"],
-      ["body"],
+      ["body"]
     );
     makeSuite(
       { dockedItems: null, headerPosition: "left" },
       [0, "bodyWrap"],
-      ["body"],
+      ["body"]
     );
     makeSuite(
       { dockedItems: null, headerPosition: "right" },
       ["bodyWrap", 0],
-      ["body"],
+      ["body"]
     );
     makeSuite(
       { dockedItems: null, headerPosition: "bottom" },
       ["bodyWrap", 0],
-      ["body"],
+      ["body"]
     );
 
     // Header position *and* dockedItems
     makeSuite(
       { headerPosition: "top" },
       [0, "bodyWrap"],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
     makeSuite(
       { headerPosition: "left" },
       [0, "bodyWrap"],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
     makeSuite(
       { headerPosition: "right" },
       ["bodyWrap", 0],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
     makeSuite(
       { headerPosition: "bottom" },
       ["bodyWrap", 0],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
 
     // Header position with tab guards
     makeSuite(
       { dockedItems: null, tabGuard: true, headerPosition: "top" },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
-      ["body"],
+      ["body"]
     );
     makeSuite(
       { dockedItems: null, tabGuard: true, headerPosition: "left" },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
-      ["body"],
+      ["body"]
     );
     makeSuite(
       { dockedItems: null, tabGuard: true, headerPosition: "right" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
-      ["body"],
+      ["body"]
     );
     makeSuite(
       { dockedItems: null, tabGuard: true, headerPosition: "bottom" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
-      ["body"],
+      ["body"]
     );
 
     // Header position with tab guards and dockedItems
     makeSuite(
       { tabGuard: true, headerPosition: "top" },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
     makeSuite(
       { tabGuard: true, headerPosition: "left" },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
     makeSuite(
       { tabGuard: true, headerPosition: "right" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
     makeSuite(
       { tabGuard: true, headerPosition: "bottom" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
-      [1, 2, 5, 8, "body", 4, 3, 6, 7],
+      [1, 2, 5, 8, "body", 4, 3, 6, 7]
     );
 
     // Header added after rendering
@@ -812,28 +812,28 @@ describe("Ext.layout.component.Dock", function () {
       [0, "bodyWrap"],
       ["body"],
       addHeader,
-      "dynamic header 1",
+      "dynamic header 1"
     );
     makeSuite(
       { dockedItems: null, title: null, headerPosition: "left" },
       [0, "bodyWrap"],
       ["body"],
       addHeader,
-      "dynamic header 2",
+      "dynamic header 2"
     );
     makeSuite(
       { dockedItems: null, title: null, headerPosition: "right" },
       ["bodyWrap", 0],
       ["body"],
       addHeader,
-      "dynamic header 3",
+      "dynamic header 3"
     );
     makeSuite(
       { dockedItems: null, title: null, headerPosition: "bottom" },
       ["bodyWrap", 0],
       ["body"],
       addHeader,
-      "dynamic header 4",
+      "dynamic header 4"
     );
 
     // Header added after rendering onto existing tab guards
@@ -842,43 +842,43 @@ describe("Ext.layout.component.Dock", function () {
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       ["body"],
       addHeader,
-      "dynamic header 5",
+      "dynamic header 5"
     );
     makeSuite(
       {
         dockedItems: null,
         title: null,
         tabGuard: true,
-        headerPosition: "left",
+        headerPosition: "left"
       },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       ["body"],
       addHeader,
-      "dynamic header 6",
+      "dynamic header 6"
     );
     makeSuite(
       {
         dockedItems: null,
         title: null,
         tabGuard: true,
-        headerPosition: "right",
+        headerPosition: "right"
       },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       ["body"],
       addHeader,
-      "dynamic header 7",
+      "dynamic header 7"
     );
     makeSuite(
       {
         dockedItems: null,
         title: null,
         tabGuard: true,
-        headerPosition: "bottom",
+        headerPosition: "bottom"
       },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       ["body"],
       addHeader,
-      "dynamic header 8",
+      "dynamic header 8"
     );
 
     // Header added after rendering onto existing tab guards and dockedItems
@@ -887,28 +887,28 @@ describe("Ext.layout.component.Dock", function () {
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeader,
-      "dynamic header 9",
+      "dynamic header 9"
     );
     makeSuite(
       { title: null, tabGuard: true, headerPosition: "left" },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeader,
-      "dynamic header 10",
+      "dynamic header 10"
     );
     makeSuite(
       { title: null, tabGuard: true, headerPosition: "right" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeader,
-      "dynamic header 11",
+      "dynamic header 11"
     );
     makeSuite(
       { title: null, tabGuard: true, headerPosition: "bottom" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeader,
-      "dynamic header 12",
+      "dynamic header 12"
     );
 
     // Finally, dynamically added dockedItems. One by one. Ha!
@@ -917,28 +917,28 @@ describe("Ext.layout.component.Dock", function () {
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addItems,
-      "dynamic items 1",
+      "dynamic items 1"
     );
     makeSuite(
       { dockedItems: null, tabGuard: true, headerPosition: "left" },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addItems,
-      "dynamic items 2",
+      "dynamic items 2"
     );
     makeSuite(
       { dockedItems: null, tabGuard: true, headerPosition: "right" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addItems,
-      "dynamic items 3",
+      "dynamic items 3"
     );
     makeSuite(
       { dockedItems: null, tabGuard: true, headerPosition: "bottom" },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addItems,
-      "dynamic items 4",
+      "dynamic items 4"
     );
 
     // All together now.
@@ -947,43 +947,43 @@ describe("Ext.layout.component.Dock", function () {
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeaderAndItems,
-      "dynamic items 5",
+      "dynamic items 5"
     );
     makeSuite(
       {
         title: null,
         dockedItems: null,
         tabGuard: true,
-        headerPosition: "left",
+        headerPosition: "left"
       },
       ["tabGuardBeforeEl", 0, "bodyWrap", "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeaderAndItems,
-      "dynamic items 6",
+      "dynamic items 6"
     );
     makeSuite(
       {
         title: null,
         dockedItems: null,
         tabGuard: true,
-        headerPosition: "right",
+        headerPosition: "right"
       },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeaderAndItems,
-      "dynamic items 7",
+      "dynamic items 7"
     );
     makeSuite(
       {
         title: null,
         dockedItems: null,
         tabGuard: true,
-        headerPosition: "bottom",
+        headerPosition: "bottom"
       },
       ["tabGuardBeforeEl", "bodyWrap", 0, "tabGuardAfterEl"],
       [1, 2, 5, 8, "body", 4, 3, 6, 7],
       addHeaderAndItems,
-      "dynamic items 8",
+      "dynamic items 8"
     );
 
     // IE8 gets framed
@@ -992,7 +992,7 @@ describe("Ext.layout.component.Dock", function () {
       makeSuite(
         { frame: true, title: null, dockedItems: null },
         ["frameTL", "frameML", "frameBL"],
-        ["body"],
+        ["body"]
       );
       makeSuite(
         { frame: true, title: null, dockedItems: null, tabGuard: true },
@@ -1001,16 +1001,16 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "frameML",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        ["body"],
+        ["body"]
       );
 
       // No header but massive eruption of dockedItems
       makeSuite(
         { frame: true, title: null },
         ["frameTL", "frameML", "frameBL"],
-        [0, 1, 4, 7, "body", 3, 2, 5, 6],
+        [0, 1, 4, 7, "body", 3, 2, 5, 6]
       );
 
       // No header, dockedItems plus tabGuards
@@ -1021,9 +1021,9 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "frameML",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        [0, 1, 4, 7, "body", 3, 2, 5, 6],
+        [0, 1, 4, 7, "body", 3, 2, 5, 6]
       );
 
       // bodyContainer === frameML after first layout with docked items present
@@ -1032,44 +1032,44 @@ describe("Ext.layout.component.Dock", function () {
       makeSuite(
         { frame: true, dockedItems: null, headerPosition: "top" },
         [0, "frameTL", "bodyContainer", "frameBL"],
-        ["body"],
+        ["body"]
       );
       makeSuite(
         { frame: true, dockedItems: null, headerPosition: "left" },
         [0, "frameTL", "bodyContainer", "frameBL"],
-        ["body"],
+        ["body"]
       );
       makeSuite(
         { frame: true, dockedItems: null, headerPosition: "right" },
         ["frameTL", "bodyContainer", "frameBL", 0],
-        ["body"],
+        ["body"]
       );
       makeSuite(
         { frame: true, dockedItems: null, headerPosition: "bottom" },
         ["frameTL", "bodyContainer", "frameBL", 0],
-        ["body"],
+        ["body"]
       );
 
       // Header position *and* dockedItems
       makeSuite(
         { frame: true, headerPosition: "top" },
         [0, "frameTL", "bodyContainer", "frameBL"],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
       makeSuite(
         { frame: true, headerPosition: "left" },
         [0, "frameTL", "bodyContainer", "frameBL"],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
       makeSuite(
         { frame: true, headerPosition: "right" },
         ["frameTL", "bodyContainer", "frameBL", 0],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
       makeSuite(
         { frame: true, headerPosition: "bottom" },
         ["frameTL", "bodyContainer", "frameBL", 0],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
 
       // Header position with tab guards
@@ -1078,7 +1078,7 @@ describe("Ext.layout.component.Dock", function () {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "top",
+          headerPosition: "top"
         },
         [
           "tabGuardBeforeEl",
@@ -1086,16 +1086,16 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        ["body"],
+        ["body"]
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "left",
+          headerPosition: "left"
         },
         [
           "tabGuardBeforeEl",
@@ -1103,16 +1103,16 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        ["body"],
+        ["body"]
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "right",
+          headerPosition: "right"
         },
         [
           "tabGuardBeforeEl",
@@ -1120,16 +1120,16 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        ["body"],
+        ["body"]
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "bottom",
+          headerPosition: "bottom"
         },
         [
           "tabGuardBeforeEl",
@@ -1137,9 +1137,9 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        ["body"],
+        ["body"]
       );
 
       // Header position with tab guards and dockedItems
@@ -1151,9 +1151,9 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
       makeSuite(
         { frame: true, tabGuard: true, headerPosition: "left" },
@@ -1163,9 +1163,9 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
       makeSuite(
         { frame: true, tabGuard: true, headerPosition: "right" },
@@ -1175,9 +1175,9 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
       makeSuite(
         { frame: true, tabGuard: true, headerPosition: "bottom" },
@@ -1187,9 +1187,9 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
-        [1, 2, 5, 8, "body", 4, 3, 6, 7],
+        [1, 2, 5, 8, "body", 4, 3, 6, 7]
       );
 
       // Header added after rendering
@@ -1198,38 +1198,38 @@ describe("Ext.layout.component.Dock", function () {
         [0, "frameTL", "bodyContainer", "frameBL"],
         ["body"],
         addHeader,
-        "dynamic header 1",
+        "dynamic header 1"
       );
       makeSuite(
         { frame: true, dockedItems: null, title: null, headerPosition: "left" },
         [0, "frameTL", "bodyContainer", "frameBL"],
         ["body"],
         addHeader,
-        "dynamic header 2",
+        "dynamic header 2"
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           title: null,
-          headerPosition: "right",
+          headerPosition: "right"
         },
         ["frameTL", "bodyContainer", "frameBL", 0],
         ["body"],
         addHeader,
-        "dynamic header 3",
+        "dynamic header 3"
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           title: null,
-          headerPosition: "bottom",
+          headerPosition: "bottom"
         },
         ["frameTL", "bodyContainer", "frameBL", 0],
         ["body"],
         addHeader,
-        "dynamic header 4",
+        "dynamic header 4"
       );
 
       // Header added after rendering onto existing tab guards
@@ -1239,7 +1239,7 @@ describe("Ext.layout.component.Dock", function () {
           dockedItems: null,
           title: null,
           tabGuard: true,
-          headerPosition: "top",
+          headerPosition: "top"
         },
         [
           "tabGuardBeforeEl",
@@ -1247,11 +1247,11 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         ["body"],
         addHeader,
-        "dynamic header 5",
+        "dynamic header 5"
       );
       makeSuite(
         {
@@ -1259,7 +1259,7 @@ describe("Ext.layout.component.Dock", function () {
           dockedItems: null,
           title: null,
           tabGuard: true,
-          headerPosition: "left",
+          headerPosition: "left"
         },
         [
           "tabGuardBeforeEl",
@@ -1267,11 +1267,11 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         ["body"],
         addHeader,
-        "dynamic header 6",
+        "dynamic header 6"
       );
       makeSuite(
         {
@@ -1279,7 +1279,7 @@ describe("Ext.layout.component.Dock", function () {
           dockedItems: null,
           title: null,
           tabGuard: true,
-          headerPosition: "right",
+          headerPosition: "right"
         },
         [
           "tabGuardBeforeEl",
@@ -1287,11 +1287,11 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         ["body"],
         addHeader,
-        "dynamic header 7",
+        "dynamic header 7"
       );
       makeSuite(
         {
@@ -1299,7 +1299,7 @@ describe("Ext.layout.component.Dock", function () {
           dockedItems: null,
           title: null,
           tabGuard: true,
-          headerPosition: "bottom",
+          headerPosition: "bottom"
         },
         [
           "tabGuardBeforeEl",
@@ -1307,11 +1307,11 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         ["body"],
         addHeader,
-        "dynamic header 8",
+        "dynamic header 8"
       );
 
       // Header added after rendering onto existing tab guards and dockedItems
@@ -1323,11 +1323,11 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeader,
-        "dynamic header 9",
+        "dynamic header 9"
       );
       makeSuite(
         { frame: true, title: null, tabGuard: true, headerPosition: "left" },
@@ -1337,11 +1337,11 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeader,
-        "dynamic header 10",
+        "dynamic header 10"
       );
       makeSuite(
         { frame: true, title: null, tabGuard: true, headerPosition: "right" },
@@ -1351,11 +1351,11 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeader,
-        "dynamic header 11",
+        "dynamic header 11"
       );
       makeSuite(
         { frame: true, title: null, tabGuard: true, headerPosition: "bottom" },
@@ -1365,11 +1365,11 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeader,
-        "dynamic header 12",
+        "dynamic header 12"
       );
 
       // Finally, dynamically added dockedItems. One by one. Ha!
@@ -1378,7 +1378,7 @@ describe("Ext.layout.component.Dock", function () {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "top",
+          headerPosition: "top"
         },
         [
           "tabGuardBeforeEl",
@@ -1386,18 +1386,18 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addItems,
-        "dynamic items 1",
+        "dynamic items 1"
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "left",
+          headerPosition: "left"
         },
         [
           "tabGuardBeforeEl",
@@ -1405,18 +1405,18 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addItems,
-        "dynamic items 2",
+        "dynamic items 2"
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "right",
+          headerPosition: "right"
         },
         [
           "tabGuardBeforeEl",
@@ -1424,18 +1424,18 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addItems,
-        "dynamic items 3",
+        "dynamic items 3"
       );
       makeSuite(
         {
           frame: true,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "bottom",
+          headerPosition: "bottom"
         },
         [
           "tabGuardBeforeEl",
@@ -1443,11 +1443,11 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addItems,
-        "dynamic items 4",
+        "dynamic items 4"
       );
 
       // All together now.
@@ -1457,7 +1457,7 @@ describe("Ext.layout.component.Dock", function () {
           title: null,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "top",
+          headerPosition: "top"
         },
         [
           "tabGuardBeforeEl",
@@ -1465,11 +1465,11 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeaderAndItems,
-        "dynamic items 5",
+        "dynamic items 5"
       );
       makeSuite(
         {
@@ -1477,7 +1477,7 @@ describe("Ext.layout.component.Dock", function () {
           title: null,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "left",
+          headerPosition: "left"
         },
         [
           "tabGuardBeforeEl",
@@ -1485,11 +1485,11 @@ describe("Ext.layout.component.Dock", function () {
           "frameTL",
           "bodyContainer",
           "frameBL",
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeaderAndItems,
-        "dynamic items 6",
+        "dynamic items 6"
       );
       makeSuite(
         {
@@ -1497,7 +1497,7 @@ describe("Ext.layout.component.Dock", function () {
           title: null,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "right",
+          headerPosition: "right"
         },
         [
           "tabGuardBeforeEl",
@@ -1505,11 +1505,11 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeaderAndItems,
-        "dynamic items 7",
+        "dynamic items 7"
       );
       makeSuite(
         {
@@ -1517,7 +1517,7 @@ describe("Ext.layout.component.Dock", function () {
           title: null,
           dockedItems: null,
           tabGuard: true,
-          headerPosition: "bottom",
+          headerPosition: "bottom"
         },
         [
           "tabGuardBeforeEl",
@@ -1525,11 +1525,11 @@ describe("Ext.layout.component.Dock", function () {
           "bodyContainer",
           "frameBL",
           0,
-          "tabGuardAfterEl",
+          "tabGuardAfterEl"
         ],
         [1, 2, 5, 8, "body", 4, 3, 6, 7],
         addHeaderAndItems,
-        "dynamic items 8",
+        "dynamic items 8"
       );
     }
   });
@@ -1544,21 +1544,21 @@ describe("Ext.layout.component.Dock", function () {
           itemId: "top-toolbar",
           items: [
             {
-              text: "Top Button",
-            },
-          ],
+              text: "Top Button"
+            }
+          ]
         },
         bbar: {
           itemId: "bottom-toolbar",
           items: [
             {
-              text: "Bottom Button",
-            },
-          ],
+              text: "Bottom Button"
+            }
+          ]
         },
         height: 100,
         width: 100,
-        renderTo: document.body,
+        renderTo: document.body
       });
     });
     afterEach(function () {

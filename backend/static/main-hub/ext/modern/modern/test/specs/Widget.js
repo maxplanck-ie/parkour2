@@ -24,7 +24,7 @@ describe("Modern Ext.Widget", function () {
 
         init: spy,
 
-        someFn: function () {},
+        someFn: function () {}
       });
     });
 
@@ -37,7 +37,7 @@ describe("Modern Ext.Widget", function () {
     describe("initializing", function () {
       it("should accept an alias string", function () {
         makeWidget({
-          controller: "test",
+          controller: "test"
         });
         var controller = w.getController();
         expect(controller instanceof spec.TestController).toBe(true);
@@ -47,8 +47,8 @@ describe("Modern Ext.Widget", function () {
       it("should accept a controller config", function () {
         makeWidget({
           controller: {
-            type: "test",
-          },
+            type: "test"
+          }
         });
         var controller = w.getController();
         expect(controller instanceof spec.TestController).toBe(true);
@@ -58,7 +58,7 @@ describe("Modern Ext.Widget", function () {
       it("should accept a controller instance", function () {
         var controller = new spec.TestController();
         makeWidget({
-          controller: controller,
+          controller: controller
         });
         expect(w.getController()).toBe(controller);
         expect(controller.getView()).toBe(w);
@@ -66,14 +66,14 @@ describe("Modern Ext.Widget", function () {
 
       it("should be able to pass null", function () {
         makeWidget({
-          controller: null,
+          controller: null
         });
         expect(w.getController()).toBeNull();
       });
 
       it("should call the controller init method and pass the view", function () {
         makeWidget({
-          controller: "test",
+          controller: "test"
         });
         expect(spy.callCount).toBe(1);
         expect(spy.mostRecentCall.args[0]).toBe(w);
@@ -82,7 +82,7 @@ describe("Modern Ext.Widget", function () {
 
     it("should destroy the controller when destroying the component", function () {
       makeWidget({
-        controller: "test",
+        controller: "test"
       });
       var controller = w.getController();
       spyOn(controller, "destroy");
@@ -100,8 +100,8 @@ describe("Modern Ext.Widget", function () {
         it("should return null when there is no controller in the hierarchy", function () {
           var ct = new Ext.container.Container({
             items: {
-              xtype: "component",
-            },
+              xtype: "component"
+            }
           });
           expect(ct.items.first().lookupController(false)).toBeNull();
           ct.destroy();
@@ -110,7 +110,7 @@ describe("Modern Ext.Widget", function () {
         it("should return the controller attached to the component when it is at the root", function () {
           var controller = new spec.TestController();
           makeWidget({
-            controller: controller,
+            controller: controller
           });
           expect(w.lookupController(false)).toBe(controller);
         });
@@ -120,8 +120,8 @@ describe("Modern Ext.Widget", function () {
           var ct = new Ext.container.Container({
             items: {
               xtype: "component",
-              controller: controller,
-            },
+              controller: controller
+            }
           });
           expect(ct.items.first().lookupController(false)).toBe(controller);
           ct.destroy();
@@ -133,8 +133,8 @@ describe("Modern Ext.Widget", function () {
           var ct = new Ext.container.Container({
             controller: controller,
             items: {
-              xtype: "component",
-            },
+              xtype: "component"
+            }
           });
           expect(ct.items.first().lookupController(false)).toBe(controller);
           ct.destroy();
@@ -151,9 +151,9 @@ describe("Modern Ext.Widget", function () {
               controller: controller2,
               items: {
                 xtype: "component",
-                itemId: "x",
-              },
-            },
+                itemId: "x"
+              }
+            }
           });
           expect(ct.down("#x").lookupController(false)).toBe(controller2);
           ct.destroy();
@@ -169,8 +169,8 @@ describe("Modern Ext.Widget", function () {
         it("should return null when there is no controller in the hierarchy", function () {
           var ct = new Ext.container.Container({
             items: {
-              xtype: "component",
-            },
+              xtype: "component"
+            }
           });
           expect(ct.items.first().lookupController(true)).toBeNull();
           ct.destroy();
@@ -179,7 +179,7 @@ describe("Modern Ext.Widget", function () {
         it("should not return the controller attached to the component when it is at the root", function () {
           var controller = new spec.TestController();
           makeWidget({
-            controller: controller,
+            controller: controller
           });
           expect(w.lookupController(true)).toBeNull();
         });
@@ -189,8 +189,8 @@ describe("Modern Ext.Widget", function () {
           var ct = new Ext.container.Container({
             items: {
               xtype: "component",
-              controller: controller,
-            },
+              controller: controller
+            }
           });
           expect(ct.items.first().lookupController(true)).toBeNull();
           ct.destroy();
@@ -202,8 +202,8 @@ describe("Modern Ext.Widget", function () {
           var ct = new Ext.container.Container({
             controller: controller,
             items: {
-              xtype: "component",
-            },
+              xtype: "component"
+            }
           });
           expect(ct.items.first().lookupController(true)).toBe(controller);
           ct.destroy();
@@ -220,9 +220,9 @@ describe("Modern Ext.Widget", function () {
               controller: controller2,
               items: {
                 xtype: "component",
-                itemId: "x",
-              },
-            },
+                itemId: "x"
+              }
+            }
           });
           expect(ct.down("#x").lookupController(true)).toBe(controller2);
           ct.destroy();
@@ -232,7 +232,7 @@ describe("Modern Ext.Widget", function () {
       it("should default to skipThis: false", function () {
         var controller = new spec.TestController();
         makeWidget({
-          controller: controller,
+          controller: controller
         });
         expect(w.lookupController()).toBe(controller);
       });
@@ -251,7 +251,7 @@ describe("Modern Ext.Widget", function () {
           this.callParent(arguments);
           order.push(this.getId());
           called = true;
-        },
+        }
       });
       order = [];
     });
@@ -265,7 +265,7 @@ describe("Modern Ext.Widget", function () {
 
     it("should accept a string alias", function () {
       makeWidget({
-        viewModel: "test",
+        viewModel: "test"
       });
       expect(w.getViewModel() instanceof spec.ViewModel).toBe(true);
     });
@@ -273,8 +273,8 @@ describe("Modern Ext.Widget", function () {
     it("should accept an object config", function () {
       makeWidget({
         viewModel: {
-          type: "test",
-        },
+          type: "test"
+        }
       });
       expect(w.getViewModel() instanceof spec.ViewModel).toBe(true);
     });
@@ -282,14 +282,14 @@ describe("Modern Ext.Widget", function () {
     it("should accept an object instance", function () {
       var vm = new spec.ViewModel();
       makeWidget({
-        viewModel: vm,
+        viewModel: vm
       });
       expect(w.getViewModel()).toBe(vm);
     });
 
     describe("calling initViewController", function () {
       var TestController = Ext.define(null, {
-        extend: "Ext.app.ViewController",
+        extend: "Ext.app.ViewController"
       });
 
       it("should call initViewController when creating an instance", function () {
@@ -298,11 +298,11 @@ describe("Modern Ext.Widget", function () {
         makeWidget({
           controller: ctrl,
           viewModel: {
-            type: "test",
+            type: "test"
           },
           bind: {
-            width: "{foo}",
-          },
+            width: "{foo}"
+          }
         });
         expect(ctrl.initViewModel.callCount).toBe(1);
         expect(ctrl.initViewModel).toHaveBeenCalledWith(w.getViewModel());
@@ -315,7 +315,7 @@ describe("Modern Ext.Widget", function () {
       function vm(id) {
         return {
           type: "test",
-          id: id,
+          id: id
         };
       }
 
@@ -331,9 +331,9 @@ describe("Modern Ext.Widget", function () {
               xtype: "component",
               id: "bottom",
               viewModel: vm("bottom"),
-              bind: bind || null,
-            },
-          },
+              bind: bind || null
+            }
+          }
         });
         inner = ct.items.first();
         w = inner.items.first();
@@ -356,7 +356,7 @@ describe("Modern Ext.Widget", function () {
         var session = new Ext.data.Session();
         makeWidget({
           session: session,
-          viewModel: {},
+          viewModel: {}
         });
         expect(w.getViewModel().getSession()).toBe(session);
       });
@@ -367,8 +367,8 @@ describe("Modern Ext.Widget", function () {
           session: session,
           items: {
             xtype: "component",
-            viewModel: true,
-          },
+            viewModel: true
+          }
         });
         expect(ct.items.first().getViewModel().getSession()).toBe(session);
         ct.destroy();
@@ -383,8 +383,8 @@ describe("Modern Ext.Widget", function () {
           items: {
             xtype: "component",
             session: session2,
-            viewModel: {},
-          },
+            viewModel: {}
+          }
         });
         expect(ct.items.first().getViewModel().getSession()).toBe(session2);
         ct.destroy();
@@ -394,7 +394,7 @@ describe("Modern Ext.Widget", function () {
     describe("destruction", function () {
       it("should destroy the viewModel when the component is destroyed", function () {
         makeWidget({
-          viewModel: {},
+          viewModel: {}
         });
         var vm = w.getViewModel();
         w.destroy();
@@ -412,14 +412,14 @@ describe("Modern Ext.Widget", function () {
     it("should use a passed session", function () {
       var session = new Ext.data.Session();
       makeWidget({
-        session: session,
+        session: session
       });
       expect(w.getSession()).toBe(session);
     });
 
     it("should create a session when session: true is specified", function () {
       makeWidget({
-        session: true,
+        session: true
       });
       expect(w.getSession().isSession).toBe(true);
     });
@@ -429,7 +429,7 @@ describe("Modern Ext.Widget", function () {
         spy = spyOn(session, "destroy").andCallThrough();
 
       makeWidget({
-        session: session,
+        session: session
       });
       w.destroy();
       expect(spy).toHaveBeenCalled();
@@ -437,11 +437,11 @@ describe("Modern Ext.Widget", function () {
 
     it("should not destroy the session with autoDestroy: false", function () {
       var session = new Ext.data.Session({
-        autoDestroy: false,
+        autoDestroy: false
       });
       var spy = spyOn(session, "destroy").andCallThrough();
       makeWidget({
-        session: session,
+        session: session
       });
       w.destroy();
       expect(spy).not.toHaveBeenCalled();
@@ -455,8 +455,8 @@ describe("Modern Ext.Widget", function () {
         var ct = new Ext.container.Container({
           session: session,
           items: {
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
         expect(ct.items.first().lookupSession()).toBe(session);
 
@@ -470,8 +470,8 @@ describe("Modern Ext.Widget", function () {
           session: session,
           items: {
             xtype: "component",
-            session: true,
-          },
+            session: true
+          }
         });
 
         var child = ct.items.first().getSession();
@@ -488,13 +488,13 @@ describe("Modern Ext.Widget", function () {
         viewModel: {
           data: {
             width: 200,
-            height: 200,
-          },
+            height: 200
+          }
         },
         bind: {
           width: "{width}",
-          height: "{height}",
-        },
+          height: "{height}"
+        }
       });
       w.getViewModel().notify();
       expect(w.getWidth()).toBe(200);
@@ -511,9 +511,9 @@ describe("Modern Ext.Widget", function () {
             customA: 1,
             customB: null,
             customC: undefined,
-            customD: "foo",
+            customD: "foo"
           },
-          twoWayBindable: ["customB", "customC", "customD"],
+          twoWayBindable: ["customB", "customC", "customD"]
         });
       });
 
@@ -530,12 +530,12 @@ describe("Modern Ext.Widget", function () {
         makeCls({
           viewModel: {
             data: {
-              a: 1,
-            },
+              a: 1
+            }
           },
           bind: {
-            customA: "{a}",
-          },
+            customA: "{a}"
+          }
         });
         viewModel.notify();
         w.setCustomA("Foo");
@@ -546,7 +546,7 @@ describe("Modern Ext.Widget", function () {
         expect(function () {
           makeCls({
             viewModel: {},
-            bind: {},
+            bind: {}
           });
         }).not.toThrow();
       });
@@ -556,12 +556,12 @@ describe("Modern Ext.Widget", function () {
           makeCls({
             viewModel: {
               data: {
-                c: 100,
-              },
+                c: 100
+              }
             },
             bind: {
-              customC: "{c}",
-            },
+              customC: "{c}"
+            }
           });
           expect(viewModel.get("c")).toBe(100);
           viewModel.notify();
@@ -572,12 +572,12 @@ describe("Modern Ext.Widget", function () {
           makeCls({
             viewModel: {
               data: {
-                b: 200,
-              },
+                b: 200
+              }
             },
             bind: {
-              customB: "{b}",
-            },
+              customB: "{b}"
+            }
           });
           expect(viewModel.get("b")).toBe(200);
           viewModel.notify();
@@ -588,12 +588,12 @@ describe("Modern Ext.Widget", function () {
           makeCls({
             viewModel: {
               data: {
-                d: "bar",
-              },
+                d: "bar"
+              }
             },
             bind: {
-              customD: "{d}",
-            },
+              customD: "{d}"
+            }
           });
           expect(viewModel.get("d")).toBe("bar");
           viewModel.notify();
@@ -605,12 +605,12 @@ describe("Modern Ext.Widget", function () {
             customD: "baz",
             viewModel: {
               data: {
-                d: "bar",
-              },
+                d: "bar"
+              }
             },
             bind: {
-              customD: "{d}",
-            },
+              customD: "{d}"
+            }
           });
           expect(viewModel.get("d")).toBe("bar");
           viewModel.notify();
@@ -621,12 +621,12 @@ describe("Modern Ext.Widget", function () {
           makeCls({
             viewModel: {
               data: {
-                d: "bar",
-              },
+                d: "bar"
+              }
             },
             bind: {
-              customD: "{d}",
-            },
+              customD: "{d}"
+            }
           });
           w.setCustomD("new");
           expect(viewModel.get("d")).toBe("new");
@@ -637,11 +637,11 @@ describe("Modern Ext.Widget", function () {
         it("should publish undefined", function () {
           makeCls({
             viewModel: {
-              b: "x",
+              b: "x"
             },
             bind: {
-              customB: "{b}",
-            },
+              customB: "{b}"
+            }
           });
           viewModel.notify();
           w.setCustomB(undefined);
@@ -652,11 +652,11 @@ describe("Modern Ext.Widget", function () {
         it("should publish null", function () {
           makeCls({
             viewModel: {
-              b: "x",
+              b: "x"
             },
             bind: {
-              customB: "{b}",
-            },
+              customB: "{b}"
+            }
           });
           viewModel.notify();
           w.setCustomB(null);
@@ -667,12 +667,12 @@ describe("Modern Ext.Widget", function () {
           makeCls({
             viewModel: {
               data: {
-                d: "bar",
-              },
+                d: "bar"
+              }
             },
             bind: {
-              customD: "{d}",
-            },
+              customD: "{d}"
+            }
           });
           viewModel.notify();
           w.setCustomD("foo");
@@ -684,12 +684,12 @@ describe("Modern Ext.Widget", function () {
             customD: "baz",
             viewModel: {
               data: {
-                d: "bar",
-              },
+                d: "bar"
+              }
             },
             bind: {
-              customD: "{d}",
-            },
+              customD: "{d}"
+            }
           });
           viewModel.notify();
           w.setCustomD("baz");
@@ -704,8 +704,8 @@ describe("Modern Ext.Widget", function () {
           extend: "Ext.Component",
           xtype: "bindcls",
           config: {
-            test: null,
-          },
+            test: null
+          }
         });
       });
 
@@ -717,16 +717,16 @@ describe("Modern Ext.Widget", function () {
         var ct = new Ext.Container({
             viewModel: {
               data: {
-                foo: 1,
-              },
+                foo: 1
+              }
             },
             renderTo: Ext.getBody(),
             items: {
               xtype: "bindcls",
               bind: {
-                test: "{foo}",
-              },
-            },
+                test: "{foo}"
+              }
+            }
           }),
           vm = ct.getViewModel();
 

@@ -77,7 +77,7 @@ Ext.define("Ext.view.View", {
       keydown: "KeyDown",
       keyup: "KeyUp",
       keypress: "KeyPress",
-      focus: "Focus",
+      focus: "Focus"
     },
     /**
      * @private
@@ -88,8 +88,8 @@ Ext.define("Ext.view.View", {
       touchstart: "mousedown",
       touchend: "mouseup",
       tap: "click",
-      doubletap: "dblclick",
-    },
+      doubletap: "dblclick"
+    }
   },
 
   /**
@@ -450,7 +450,7 @@ Ext.define("Ext.view.View", {
       keyup: me.handleEvent,
       keypress: me.handleEvent,
       mouseover: me.handleMouseOver,
-      mouseout: me.handleMouseOut,
+      mouseout: me.handleMouseOut
     });
   },
 
@@ -818,7 +818,7 @@ Ext.define("Ext.view.View", {
 
       // Poke on a tabIndex to make the node focusable.
       node.set({
-        tabIndex: -1,
+        tabIndex: -1
       });
 
       node.focus();
@@ -835,7 +835,7 @@ Ext.define("Ext.view.View", {
       if (node) {
         node.className = node.className;
       }
-    },
+    }
     //</feature>
-  },
+  }
 });

@@ -10,7 +10,7 @@ Ext.define("Ext.device.geolocation.Cordova", {
     navigator.geolocation.getCurrentPosition(
       config.success,
       config.failure,
-      config,
+      config
     );
     return config;
   },
@@ -23,7 +23,7 @@ Ext.define("Ext.device.geolocation.Cordova", {
     this.activeWatchID = navigator.geolocation.watchPosition(
       config.callback,
       config.failure,
-      config,
+      config
     );
     return config;
   },
@@ -33,5 +33,5 @@ Ext.define("Ext.device.geolocation.Cordova", {
       navigator.geolocation.clearWatch(this.activeWatchID);
       this.activeWatchID = null;
     }
-  },
+  }
 });

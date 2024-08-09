@@ -18,5 +18,5 @@ Ext.define("Ext.locale.it.picker.Date", {
   monthYearText: "Scegli un Mese (CTRL+Sopra/Sotto per cambiare anno)",
   monthYearFormat: "F Y",
   startDay: 0,
-  longDayFormat: "d F Y",
+  longDayFormat: "d F Y"
 });

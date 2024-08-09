@@ -11,5 +11,5 @@ Ext.define("Ext.theme.triton.grid.column.Column", {
     if (triggerEl) {
       triggerEl.syncRepaint();
     }
-  },
+  }
 });

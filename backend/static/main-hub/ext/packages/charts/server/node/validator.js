@@ -22,5 +22,5 @@ function verifyConfig(config, rules) {
 }
 
 module.exports = {
-  verifyConfig: verifyConfig,
+  verifyConfig: verifyConfig
 };

@@ -13,35 +13,35 @@ describe("Ext.grid.header.Container", function () {
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Homer",
                   email: "homer@simpsons.com",
-                  phone: "555-222-1244",
+                  phone: "555-222-1244"
                 },
                 {
                   name: "Marge",
                   email: "marge@simpsons.com",
-                  phone: "555-222-1254",
-                },
-              ],
+                  phone: "555-222-1254"
+                }
+              ]
             },
             proxy: {
               type: "memory",
               reader: {
                 type: "json",
-                rootProperty: "items",
-              },
-            },
+                rootProperty: "items"
+              }
+            }
           },
-          storeCfg,
-        ),
+          storeCfg
+        )
       );
 
       grid = Ext.create(
@@ -53,14 +53,14 @@ describe("Ext.grid.header.Container", function () {
             columns: [
               { header: "Name", dataIndex: "name", width: 100 },
               { header: "Email", dataIndex: "email", flex: 1 },
-              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
+              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
             ],
             height: 200,
             width: 400,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          gridCfg,
-        ),
+          gridCfg
+        )
       );
     },
     store,
@@ -80,8 +80,8 @@ describe("Ext.grid.header.Container", function () {
         createGrid(
           {},
           {
-            renderTo: Ext.getBody(),
-          },
+            renderTo: Ext.getBody()
+          }
         );
 
         col = grid.columns[0];
@@ -111,8 +111,8 @@ describe("Ext.grid.header.Container", function () {
         createGrid(
           {},
           {
-            renderTo: Ext.getBody(),
-          },
+            renderTo: Ext.getBody()
+          }
         );
 
         col = grid.columns[0];
@@ -131,8 +131,8 @@ describe("Ext.grid.header.Container", function () {
         createGrid(
           {},
           {
-            renderTo: Ext.getBody(),
-          },
+            renderTo: Ext.getBody()
+          }
         );
 
         col = grid.columns[0];
@@ -140,10 +140,10 @@ describe("Ext.grid.header.Container", function () {
         x = col.triggerEl.getX() + col.triggerEl.getWidth() / 2;
         y = col.triggerEl.getY() + col.triggerEl.getHeight() / 2;
         jasmine.fireTouchEvent(col.triggerEl.dom, "touchstart", [
-          { pageX: x, pageY: y },
+          { pageX: x, pageY: y }
         ]);
         jasmine.fireTouchEvent(col.triggerEl.dom, "touchend", [
-          { pageX: x, pageY: y },
+          { pageX: x, pageY: y }
         ]);
 
         menu = col.activeMenu;
@@ -161,8 +161,8 @@ describe("Ext.grid.header.Container", function () {
       createGrid(
         {},
         {
-          renderTo: Ext.getBody(),
-        },
+          renderTo: Ext.getBody()
+        }
       );
 
       col = grid.columns[0];
@@ -184,8 +184,8 @@ describe("Ext.grid.header.Container", function () {
           headerId: "c",
           dataIndex: "phone",
           flex: 1,
-          hidden: true,
-        },
+          hidden: true
+        }
       ];
 
       new Ext.state.Provider();
@@ -195,8 +195,8 @@ describe("Ext.grid.header.Container", function () {
         {
           columns: columns,
           stateful: true,
-          stateId: "foo",
-        },
+          stateId: "foo"
+        }
       );
 
       // Update state information.
@@ -211,8 +211,8 @@ describe("Ext.grid.header.Container", function () {
         {
           columns: columns,
           stateful: true,
-          stateId: "foo",
-        },
+          stateId: "foo"
+        }
       );
 
       expect(grid.headerCt.gridVisibleColumns.length).toBe(3);
@@ -232,8 +232,8 @@ describe("Ext.grid.header.Container", function () {
           headerId: "c",
           dataIndex: "phone",
           flex: 1,
-          hidden: true,
-        },
+          hidden: true
+        }
       ];
 
       new Ext.state.Provider();
@@ -243,8 +243,8 @@ describe("Ext.grid.header.Container", function () {
         {
           columns: columns,
           stateful: true,
-          stateId: "foo",
-        },
+          stateId: "foo"
+        }
       );
 
       // Update state information.
@@ -260,8 +260,8 @@ describe("Ext.grid.header.Container", function () {
         {
           columns: columns,
           stateful: true,
-          stateId: "foo",
-        },
+          stateId: "foo"
+        }
       );
 
       expect(grid.headerCt.gridVisibleColumns.length).toBe(3);
@@ -273,13 +273,13 @@ describe("Ext.grid.header.Container", function () {
       var initialColumns = [
           // It's necessary to pass in columns with a headerId property for this test.
           { header: "Email", headerId: "b", dataIndex: "email", flex: 1 },
-          { header: "Phone", headerId: "c", dataIndex: "phone", flex: 1 },
+          { header: "Phone", headerId: "c", dataIndex: "phone", flex: 1 }
         ],
         newColumns = [
           // It's necessary to pass in columns with a headerId property for this test.
           { header: "Name", headerId: "a", dataIndex: "name", width: 100 },
           { header: "Email", headerId: "b", dataIndex: "email", flex: 1 },
-          { header: "Phone", headerId: "c", dataIndex: "phone", flex: 1 },
+          { header: "Phone", headerId: "c", dataIndex: "phone", flex: 1 }
         ];
 
       new Ext.state.Provider();
@@ -289,8 +289,8 @@ describe("Ext.grid.header.Container", function () {
         {
           columns: initialColumns,
           stateful: true,
-          stateId: "foo",
-        },
+          stateId: "foo"
+        }
       );
 
       // Update state information.
@@ -309,8 +309,8 @@ describe("Ext.grid.header.Container", function () {
         {
           columns: newColumns,
           stateful: true,
-          stateId: "foo",
-        },
+          stateId: "foo"
+        }
       );
 
       // The order of the two initial stateful columns should be restored.
@@ -336,11 +336,11 @@ describe("Ext.grid.header.Container", function () {
               flex: 1,
               items: [
                 {
-                  xtype: "textfield",
-                },
-              ],
-            },
-          ],
+                  xtype: "textfield"
+                }
+              ]
+            }
+          ]
         });
 
         headerCt = grid.headerCt;
@@ -359,7 +359,7 @@ describe("Ext.grid.header.Container", function () {
           var e = {
             getTarget: function () {
               return field.inputEl.dom;
-            },
+            }
           };
 
           headerCt.onHeaderActivate(e);
@@ -448,7 +448,7 @@ describe("Ext.grid.header.Container", function () {
       grid.reconfigure(null, [
         { header: "Name", dataIndex: "name", width: 100 },
         { header: "Email", dataIndex: "email", flex: 1 },
-        { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
+        { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
       ]);
 
       expect(grid.headerCt.tabGuardBeforeEl).toHaveAttr("tabIndex", "0");
@@ -475,7 +475,7 @@ describe("Ext.grid.header.Container", function () {
       grid.headerCt.insert(0, [
         { header: "Name", dataIndex: "name", width: 100 },
         { header: "Email", dataIndex: "email", flex: 1 },
-        { header: "Phone", dataIndex: "phone", flex: 1 },
+        { header: "Phone", dataIndex: "phone", flex: 1 }
       ]);
 
       var view = grid.getView(),
@@ -497,8 +497,8 @@ describe("Ext.grid.header.Container", function () {
         columns: [
           { header: "Name", dataIndex: "name", width: 100 },
           { header: "Email", dataIndex: "email", flex: 1 },
-          { header: "Phone", dataIndex: "phone", flex: 1 },
-        ],
+          { header: "Phone", dataIndex: "phone", flex: 1 }
+        ]
       });
 
       var view = grid.getView(),

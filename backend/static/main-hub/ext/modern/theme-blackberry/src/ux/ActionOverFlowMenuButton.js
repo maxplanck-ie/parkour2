@@ -91,6 +91,6 @@ Ext.define("Ext.theme.blackberry.ActionOverFlowMenuButton", {
     /**
      * @hide
      */
-    menuCls: "action-over-flow",
-  },
+    menuCls: "action-over-flow"
+  }
 });

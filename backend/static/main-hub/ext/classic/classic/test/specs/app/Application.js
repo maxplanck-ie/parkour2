@@ -11,7 +11,7 @@ describe("Ext.app.Application", function () {
         return expected
           ? Ext.isFunction(actual) && actual === expected
           : Ext.isFunction(actual);
-      },
+      }
     });
 
     Ext.app.addNamespaces("TestApplication");
@@ -30,11 +30,11 @@ describe("Ext.app.Application", function () {
 
       onLaunch: function () {
         this.launched = true;
-      },
+      }
     });
 
     Ext.define("TestApplication.view.Viewport", {
-      create: function () {},
+      create: function () {}
     });
 
     Class = Ext.define("TestApplication.Application", {
@@ -59,7 +59,7 @@ describe("Ext.app.Application", function () {
 
       launch: function () {
         launchCalled = true;
-      },
+      }
     });
   });
 
@@ -103,13 +103,13 @@ describe("Ext.app.Application", function () {
         // named "Foo" with autoCreateViewport: true
         // So we must define it to prevent a failed load.
         Ext.define("Foo.view.Viewport", {
-          extend: "Ext.container.Viewport",
+          extend: "Ext.container.Viewport"
         });
 
         Ext.define("TestApplication.AbstractApplication", {
           extend: "Ext.app.Application",
 
-          appFolder: "foo",
+          appFolder: "foo"
         });
 
         Ext.define("TestApplication.Application2", {
@@ -121,7 +121,7 @@ describe("Ext.app.Application", function () {
 
           __handleRequires: function (requires, callback) {
             callback();
-          },
+          }
         });
       });
 
@@ -188,8 +188,8 @@ describe("Ext.app.Application", function () {
       listeners: {
         launch: function () {
           fired = true;
-        },
-      },
+        }
+      }
     });
 
     expect(fired).toBeTruthy();
@@ -230,7 +230,7 @@ describe("Ext.app.Application", function () {
 
     it("adds defaultToken", function () {
       app = new TestApplication.Application({
-        defaultToken: "foo",
+        defaultToken: "foo"
       });
 
       expect(History.getToken()).toEqual("foo");
@@ -242,7 +242,7 @@ describe("Ext.app.Application", function () {
       }
 
       app = new TestApplication.Application({
-        defaultToken: "bar",
+        defaultToken: "bar"
       });
 
       expect(History.getToken()).toEqual("foo");
@@ -261,7 +261,7 @@ describe("Ext.app.Application", function () {
         constructor: function () {
           this.callParent(arguments);
           ctorLog.push(this.$className);
-        },
+        }
       });
 
       Ext.define("CtrlApplication.controller.DeclaredAutoIdShort", {
@@ -269,7 +269,7 @@ describe("Ext.app.Application", function () {
         constructor: function () {
           this.callParent(arguments);
           ctorLog.push(this.$className);
-        },
+        }
       });
 
       Ext.define("CtrlApplication.controller.DeclaredAutoIdLong", {
@@ -277,7 +277,7 @@ describe("Ext.app.Application", function () {
         constructor: function () {
           this.callParent(arguments);
           ctorLog.push(this.$className);
-        },
+        }
       });
 
       Ext.define("CtrlApplication.controller.NotDeclared", {
@@ -285,7 +285,7 @@ describe("Ext.app.Application", function () {
         constructor: function () {
           this.callParent(arguments);
           ctorLog.push(this.$className);
-        },
+        }
       });
 
       Ext.define("CtrlApplication.Application", {
@@ -296,8 +296,8 @@ describe("Ext.app.Application", function () {
         controllers: [
           "DeclaredWithId",
           "DeclaredAutoIdShort",
-          "CtrlApplication.controller.DeclaredAutoIdLong",
-        ],
+          "CtrlApplication.controller.DeclaredAutoIdLong"
+        ]
       });
 
       app = new CtrlApplication.Application();
@@ -333,44 +333,43 @@ describe("Ext.app.Application", function () {
     describe("in controllers collection", function () {
       it("should be able to get a controller with an explicit id by id or class name", function () {
         expect(app.getController("declaredCustomWithId").$className).toBe(
-          "CtrlApplication.controller.DeclaredWithId",
+          "CtrlApplication.controller.DeclaredWithId"
         );
         expect(
           app.getController("CtrlApplication.controller.DeclaredWithId")
-            .$className,
+            .$className
         ).toBe("CtrlApplication.controller.DeclaredWithId");
         expect(times("CtrlApplication.controller.DeclaredWithId")).toBe(1);
       });
 
       it("should be able to get a controller declared with a short name by short & long name", function () {
         expect(app.getController("DeclaredAutoIdShort").$className).toBe(
-          "CtrlApplication.controller.DeclaredAutoIdShort",
+          "CtrlApplication.controller.DeclaredAutoIdShort"
         );
         expect(
           app.getController("CtrlApplication.controller.DeclaredAutoIdShort")
-            .$className,
+            .$className
         ).toBe("CtrlApplication.controller.DeclaredAutoIdShort");
         expect(times("CtrlApplication.controller.DeclaredAutoIdShort")).toBe(1);
       });
 
       it("should be able to get a controller declared with a long name by short & long name", function () {
         expect(app.getController("DeclaredAutoIdLong").$className).toBe(
-          "CtrlApplication.controller.DeclaredAutoIdLong",
+          "CtrlApplication.controller.DeclaredAutoIdLong"
         );
         expect(
           app.getController("CtrlApplication.controller.DeclaredAutoIdLong")
-            .$className,
+            .$className
         ).toBe("CtrlApplication.controller.DeclaredAutoIdLong");
         expect(times("CtrlApplication.controller.DeclaredAutoIdLong")).toBe(1);
       });
 
       it("should be able to get a not declared controller by short & long name", function () {
         expect(app.getController("NotDeclared").$className).toBe(
-          "CtrlApplication.controller.NotDeclared",
+          "CtrlApplication.controller.NotDeclared"
         );
         expect(
-          app.getController("CtrlApplication.controller.NotDeclared")
-            .$className,
+          app.getController("CtrlApplication.controller.NotDeclared").$className
         ).toBe("CtrlApplication.controller.NotDeclared");
         expect(times("CtrlApplication.controller.NotDeclared")).toBe(1);
       });

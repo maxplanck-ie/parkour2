@@ -42,24 +42,24 @@ Ext.define("Ext.ux.TabScrollerMenu", {
         me.layout = me.tabBar.layout;
         me.layout.overflowHandler.handleOverflow = Ext.Function.bind(
           me.showButton,
-          me,
+          me
         );
         me.layout.overflowHandler.clearOverflow = Ext.Function.createSequence(
           me.layout.overflowHandler.clearOverflow,
           me.hideButton,
-          me,
+          me
         );
       },
       destroy: me.destroy,
       scope: me,
-      single: true,
+      single: true
     });
   },
 
   showButton: function () {
     var me = this,
       result = Ext.getClass(
-        me.layout.overflowHandler,
+        me.layout.overflowHandler
       ).prototype.handleOverflow.apply(me.layout.overflowHandler, arguments),
       button = me.menuButton;
 
@@ -67,9 +67,9 @@ Ext.define("Ext.ux.TabScrollerMenu", {
       if (!button) {
         button = me.menuButton = me.tabBar.body.createChild(
           {
-            cls: Ext.baseCSSPrefix + "tab-tabmenu-right",
+            cls: Ext.baseCSSPrefix + "tab-tabmenu-right"
           },
-          me.tabBar.body.child("." + Ext.baseCSSPrefix + "box-scroller-right"),
+          me.tabBar.body.child("." + Ext.baseCSSPrefix + "box-scroller-right")
         );
         button.addClsOnOver(Ext.baseCSSPrefix + "tab-tabmenu-over");
         button.on("click", me.showTabsMenu, me);
@@ -204,7 +204,7 @@ Ext.define("Ext.ux.TabScrollerMenu", {
             (curPage - pageSize + 1) +
             " - " +
             curPage,
-          menu: menuItems,
+          menu: menuItems
         });
       }
       // remaining items
@@ -223,7 +223,7 @@ Ext.define("Ext.ux.TabScrollerMenu", {
             (start + 1) +
             " - " +
             (start + menuItems.length),
-          menu: menuItems,
+          menu: menuItems
         });
       }
     } else {
@@ -247,7 +247,7 @@ Ext.define("Ext.ux.TabScrollerMenu", {
       scope: this,
       disabled: item.disabled,
       tabToShow: item,
-      iconCls: item.iconCls,
+      iconCls: item.iconCls
     };
   },
 
@@ -261,5 +261,5 @@ Ext.define("Ext.ux.TabScrollerMenu", {
   destroy: function () {
     Ext.destroy(this.tabsMenu, this.menuButton);
     this.callParent();
-  },
+  }
 });

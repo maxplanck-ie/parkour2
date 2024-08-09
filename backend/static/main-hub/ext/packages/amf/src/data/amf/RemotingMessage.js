@@ -54,7 +54,7 @@ Ext.define("Ext.data.amf.RemotingMessage", {
     /**
      * @property {Number} timeToLive - how long the message is still valid for passing
      */
-    timeToLive: [],
+    timeToLive: []
   },
 
   /**
@@ -75,9 +75,9 @@ Ext.define("Ext.data.amf.RemotingMessage", {
       {},
       this,
       "$flexType,body,clientId,destination,headers,messageId,operation,source,timestamp,timeToLive",
-      true,
+      true
     );
     encoder.writeObject(cleanObj);
     return encoder.body;
-  },
+  }
 });

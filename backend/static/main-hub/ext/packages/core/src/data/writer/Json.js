@@ -41,7 +41,7 @@ Ext.define("Ext.data.writer.Json", {
      * that the output will instead look like `{ my: { nested: { property: 'foo' }}}`. The output is generated
      * by {@link #getExpandedData}, which can optionally be overridden to apply more customized logic.
      */
-    expandData: false,
+    expandData: false
   },
 
   //<debug>
@@ -51,7 +51,7 @@ Ext.define("Ext.data.writer.Json", {
       config.rootProperty = config.root;
       delete config.root;
       Ext.log.warn(
-        'Ext.data.writer.Json: Using the deprecated "root" configuration. Use "rootProperty" instead.',
+        'Ext.data.writer.Json: Using the deprecated "root" configuration. Use "rootProperty" instead.'
       );
     }
     this.callParent([config]);
@@ -177,5 +177,5 @@ Ext.define("Ext.data.writer.Json", {
       request.setJsonData(json);
     }
     return request;
-  },
+  }
 });

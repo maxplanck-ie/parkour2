@@ -310,7 +310,7 @@ Ext.define(
         "-webkit-font-smoothing": "antialiased",
 
         zIndex: 100000,
-        position: "absolute",
+        position: "absolute"
       };
 
       Ext.getBody().append([
@@ -321,11 +321,11 @@ Ext.define(
               bottom: "50px",
               left: 0,
               width: "50px",
-              height: "20px",
+              height: "20px"
             },
-            styleTpl,
+            styleTpl
           ),
-          html: "Average",
+          html: "Average"
         },
         {
           style: Ext.applyIf(
@@ -337,12 +337,12 @@ Ext.define(
               bottom: 0,
               left: 0,
               width: "50px",
-              height: "50px",
+              height: "50px"
             },
-            styleTpl,
+            styleTpl
           ),
           id: "__averageFps",
-          html: "0",
+          html: "0"
         },
         // --- Min ---
         {
@@ -351,11 +351,11 @@ Ext.define(
               bottom: "50px",
               left: "50px",
               width: "50px",
-              height: "20px",
+              height: "20px"
             },
-            styleTpl,
+            styleTpl
           ),
-          html: "Min (Last 1k)",
+          html: "Min (Last 1k)"
         },
         {
           style: Ext.applyIf(
@@ -367,12 +367,12 @@ Ext.define(
               bottom: 0,
               left: "50px",
               width: "50px",
-              height: "50px",
+              height: "50px"
             },
-            styleTpl,
+            styleTpl
           ),
           id: "__minFps",
-          html: "0",
+          html: "0"
         },
         // --- Max ---
         {
@@ -381,11 +381,11 @@ Ext.define(
               bottom: "50px",
               left: "100px",
               width: "50px",
-              height: "20px",
+              height: "20px"
             },
-            styleTpl,
+            styleTpl
           ),
-          html: "Max (Last 1k)",
+          html: "Max (Last 1k)"
         },
         {
           style: Ext.applyIf(
@@ -397,12 +397,12 @@ Ext.define(
               bottom: 0,
               left: "100px",
               width: "50px",
-              height: "50px",
+              height: "50px"
             },
-            styleTpl,
+            styleTpl
           ),
           id: "__maxFps",
-          html: "0",
+          html: "0"
         },
         // --- Current ---
         {
@@ -411,11 +411,11 @@ Ext.define(
               bottom: "50px",
               left: "150px",
               width: "50px",
-              height: "20px",
+              height: "20px"
             },
-            styleTpl,
+            styleTpl
           ),
-          html: "Current",
+          html: "Current"
         },
         {
           style: Ext.applyIf(
@@ -427,13 +427,13 @@ Ext.define(
               bottom: 0,
               left: "150px",
               width: "50px",
-              height: "50px",
+              height: "50px"
             },
-            styleTpl,
+            styleTpl
           ),
           id: "__currentFps",
-          html: "0",
-        },
+          html: "0"
+        }
       ]);
 
       Ext.AnimationQueue.resetFps();
@@ -470,7 +470,7 @@ Ext.define(
         minFps.setHtml(Math.round(min));
         maxFps.setHtml(Math.round(max));
       };
-    },
+    }
   },
   function () {
     /*
@@ -484,5 +484,5 @@ Ext.define(
       Ext.onReady(Ext.Function.bind(this.showFps, this));
     }
     //</debug>
-  },
+  }
 );

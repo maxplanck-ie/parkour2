@@ -43,7 +43,7 @@ Ext.define(
       showAnimation: {
         type: "popIn",
         duration: 250,
-        easing: "ease-out",
+        easing: "ease-out"
       },
 
       /**
@@ -53,7 +53,7 @@ Ext.define(
       hideAnimation: {
         type: "popOut",
         duration: 250,
-        easing: "ease-out",
+        easing: "ease-out"
       },
 
       /**
@@ -85,8 +85,8 @@ Ext.define(
         defaultType: "button",
         layout: {
           type: "hbox",
-          pack: "center",
-        },
+          pack: "center"
+        }
       },
 
       /**
@@ -132,8 +132,8 @@ Ext.define(
        */
       layout: {
         type: "vbox",
-        pack: "center",
-      },
+        pack: "center"
+      }
     },
 
     statics: {
@@ -149,17 +149,17 @@ Ext.define(
 
       OKCANCEL: [
         { text: "Cancel", itemId: "cancel" },
-        { text: "OK", itemId: "ok" },
+        { text: "OK", itemId: "ok" }
       ],
       YESNOCANCEL: [
         { text: "Cancel", itemId: "cancel" },
         { text: "No", itemId: "no" },
-        { text: "Yes", itemId: "yes" },
+        { text: "Yes", itemId: "yes" }
       ],
       YESNO: [
         { text: "No", itemId: "no" },
-        { text: "Yes", itemId: "yes" },
-      ],
+        { text: "Yes", itemId: "yes" }
+      ]
     },
 
     /**
@@ -174,7 +174,7 @@ Ext.define(
       ) {
         config.prompt = config.prompt || {};
         Ext.applyIf(config.prompt, {
-          multiLine: config.multiline || config.multiLine,
+          multiLine: config.multiline || config.multiLine
         });
 
         delete config.multiline;
@@ -191,7 +191,7 @@ Ext.define(
           "prompt",
           "iconCls",
           "buttons",
-          "defaultTextHeight",
+          "defaultTextHeight"
         ],
         ln = allowedConfigs.length,
         i,
@@ -257,9 +257,9 @@ Ext.define(
             {
               ui: me.getUi(),
               cls: me.getBaseCls() + "-buttons",
-              items: newButtons,
+              items: newButtons
             },
-            buttonToolbarConfig,
+            buttonToolbarConfig
           );
           me.buttonsToolbar = create("Ext.Toolbar", config);
 
@@ -276,7 +276,7 @@ Ext.define(
     applyMessage: function (config) {
       config = {
         html: config,
-        cls: this.getBaseCls() + "-text",
+        cls: this.getBaseCls() + "-text"
       };
 
       return Ext.factory(config, Ext.Component, this._message);
@@ -311,7 +311,7 @@ Ext.define(
           height: 40,
           baseCls: Ext.baseCSSPrefix + "icon",
           hidden: config ? false : true,
-          cls: config,
+          cls: config
         };
         return Ext.factory(config, Ext.Component, this._iconCls);
       }
@@ -352,7 +352,7 @@ Ext.define(
     applyPrompt: function (prompt) {
       if (prompt) {
         var config = {
-          label: false,
+          label: false
         };
 
         if (Ext.isObject(prompt)) {
@@ -403,12 +403,12 @@ Ext.define(
                 config.scope || null,
                 initialConfig.itemId || initialConfig.text,
                 prompt ? prompt.getValue() : null,
-                config,
+                config
               );
               button.enable();
             },
             single: true,
-            scope: this,
+            scope: this
           });
         }
       }
@@ -519,13 +519,13 @@ Ext.define(
               {
                 userConfig: userConfig,
                 scope: this,
-                handler: "onClick",
+                handler: "onClick"
               },
-              buttonConfig,
-            ),
+              buttonConfig
+            )
           );
         },
-        this,
+        this
       );
 
       config.buttons = buttonBarItems;
@@ -583,7 +583,7 @@ Ext.define(
             Ext.callback(fn, scope, arguments);
           }
         },
-        scope: scope,
+        scope: scope
       });
     },
 
@@ -615,7 +615,7 @@ Ext.define(
           if (fn) {
             Ext.callback(fn, scope, arguments);
           }
-        },
+        }
       });
     },
 
@@ -677,9 +677,9 @@ Ext.define(
           if (fn) {
             Ext.callback(fn, scope, arguments);
           }
-        },
+        }
       });
-    },
+    }
   },
   function (MessageBox) {
     Ext.onInternalReady(function () {
@@ -722,5 +722,5 @@ Ext.define(
        */
       Ext.Msg = new Ext.MessageBox();
     });
-  },
+  }
 );

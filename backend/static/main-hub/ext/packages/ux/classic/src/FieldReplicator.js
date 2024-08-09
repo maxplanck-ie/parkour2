@@ -47,5 +47,5 @@ Ext.define("Ext.ux.FieldReplicator", {
       idx = ownerCt.items.indexOf(field);
       ownerCt.add(idx + 1, clone);
     }
-  },
+  }
 });

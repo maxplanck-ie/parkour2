@@ -76,7 +76,7 @@ Ext.define("Ext.draw.ContainerBase", {
   setSurfaceSize: function (width, height) {
     this.resizeHandler({
       width: width,
-      height: height,
+      height: height
     });
     this.renderFrame();
   },
@@ -87,7 +87,7 @@ Ext.define("Ext.draw.ContainerBase", {
     me.callParent([width, height, oldWidth, oldHeight]);
     me.handleResize({
       width: width,
-      height: height,
+      height: height
     });
   },
 
@@ -102,7 +102,7 @@ Ext.define("Ext.draw.ContainerBase", {
     if (image.type === "svg-markup") {
       items = {
         xtype: "container",
-        html: image.data,
+        html: image.data
       };
     } else {
       items = {
@@ -131,8 +131,8 @@ Ext.define("Ext.draw.ContainerBase", {
               me.setWidth(Math.floor(size.width / ratio));
               me.setHeight(Math.floor(size.height / ratio));
             }
-          },
-        },
+          }
+        }
       };
     }
 
@@ -147,12 +147,12 @@ Ext.define("Ext.draw.ContainerBase", {
       layout: {
         type: "hbox",
         pack: "center",
-        align: "middle",
+        align: "middle"
       },
       items: {
         xtype: "container",
-        items: items,
-      },
+        items: items
+      }
     });
   },
 
@@ -169,6 +169,6 @@ Ext.define("Ext.draw.ContainerBase", {
       }
       me.pendingDetachSize = false;
       me.callParent();
-    },
-  },
+    }
+  }
 });

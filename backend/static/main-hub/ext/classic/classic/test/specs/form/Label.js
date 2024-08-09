@@ -5,10 +5,10 @@ describe("Ext.form.Label", function () {
     component = new Ext.form.Label(
       Ext.apply(
         {
-          name: "test",
+          name: "test"
         },
-        config,
-      ),
+        config
+      )
     );
   }
 
@@ -21,7 +21,7 @@ describe("Ext.form.Label", function () {
 
   it("should have a label as the element", function () {
     makeComponent({
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
 
     expect(component.el.dom.tagName.toUpperCase()).toEqual("LABEL");
@@ -30,7 +30,7 @@ describe("Ext.form.Label", function () {
   it("should use the forId attribute", function () {
     makeComponent({
       renderTo: Ext.getBody(),
-      forId: "foo",
+      forId: "foo"
     });
 
     expect(component.el.dom.htmlFor).toEqual("foo");
@@ -39,7 +39,7 @@ describe("Ext.form.Label", function () {
   it("should encode the text attribute", function () {
     makeComponent({
       text: "<div>foo</div>",
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
 
     expect(component.el.dom).hasHTML("&lt;div&gt;foo&lt;/div&gt;");
@@ -48,7 +48,7 @@ describe("Ext.form.Label", function () {
   it("should not encode the html attribute", function () {
     makeComponent({
       html: "<span>foo</span>",
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
     expect(component.el.dom).hasHTML("<span>foo</span>");
   });
@@ -61,7 +61,7 @@ describe("Ext.form.Label", function () {
     component.destroy();
 
     makeComponent({
-      text: "foo",
+      text: "foo"
     });
     component.setText("bar");
     component.render(Ext.getBody());
@@ -83,7 +83,7 @@ describe("Ext.form.Label", function () {
 
   it("should update the layout when text is set after render", function () {
     makeComponent({
-      renderTo: document.body,
+      renderTo: document.body
     });
     var width = component.getWidth();
     component.setText("New text");

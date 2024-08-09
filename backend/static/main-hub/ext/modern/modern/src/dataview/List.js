@@ -101,7 +101,7 @@ Ext.define("Ext.dataview.List", {
     "Ext.dataview.ItemHeader",
     "Ext.dataview.ListItem",
     "Ext.dataview.SimpleListItem",
-    "Ext.util.PositionMap",
+    "Ext.util.PositionMap"
   ],
 
   /**
@@ -136,8 +136,8 @@ Ext.define("Ext.dataview.List", {
       lazy: true,
       $value: {
         xtype: "container",
-        scrollable: {},
-      },
+        scrollable: {}
+      }
     },
 
     /**
@@ -179,7 +179,7 @@ Ext.define("Ext.dataview.List", {
      */
     pinnedHeader: {
       xtype: "itemheader",
-      pinned: true,
+      pinned: true
     },
 
     /**
@@ -341,7 +341,7 @@ Ext.define("Ext.dataview.List", {
      * Set this to `false` to suppress the borders in between the items in this list.
      * By default the presence of borders in between the items is determined by the stylesheet
      */
-    rowLines: null,
+    rowLines: null
   },
 
   classCls: Ext.baseCSSPrefix + "list",
@@ -368,7 +368,7 @@ Ext.define("Ext.dataview.List", {
     var layout = this.getLayout();
     if (layout && !layout.isFit) {
       Ext.Logger.error(
-        "The base layout for a DataView must always be a Fit Layout",
+        "The base layout for a DataView must always be a Fit Layout"
       );
     }
   },
@@ -387,8 +387,8 @@ Ext.define("Ext.dataview.List", {
       recordMap: {},
       scrollDockItems: {
         top: [],
-        bottom: [],
-      },
+        bottom: []
+      }
     });
 
     me.translationMethod = "csstransform";
@@ -409,7 +409,7 @@ Ext.define("Ext.dataview.List", {
     container.getScrollable().on({
       scroll: "onScroll",
       refresh: "onScrollerRefresh",
-      scope: me,
+      scope: me
     });
   },
 
@@ -452,12 +452,12 @@ Ext.define("Ext.dataview.List", {
     container.element.on({
       delegate: me.disclosureSelector,
       tap: "handleItemDisclosure",
-      scope: me,
+      scope: me
     });
 
     container.element.on({
       resize: "onContainerResize",
-      scope: me,
+      scope: me
     });
 
     // Android 2.x not a direct child
@@ -472,7 +472,7 @@ Ext.define("Ext.dataview.List", {
       mouseover: "onItemMouseOver",
       mouseout: "onItemMouseOut",
       delegate: me.itemSelector,
-      scope: me,
+      scope: me
     });
 
     if (me.getStore()) {
@@ -481,7 +481,7 @@ Ext.define("Ext.dataview.List", {
       } else {
         me.on({
           painted: "refresh",
-          single: true,
+          single: true
         });
       }
     }
@@ -580,7 +580,7 @@ Ext.define("Ext.dataview.List", {
     // This is the index of the item that is currently visible at the top
     me.topVisibleIndex = topVisibleIndex = Math.max(
       0,
-      itemMap.findIndex(-y) || 0,
+      itemMap.findIndex(-y) || 0
     );
 
     if (currentTopVisibleIndex !== topVisibleIndex) {
@@ -590,13 +590,13 @@ Ext.define("Ext.dataview.List", {
         if (bufferDistance < minimumBufferDistance) {
           updateCount = Math.min(
             itemsCount,
-            minimumBufferDistance - bufferDistance,
+            minimumBufferDistance - bufferDistance
           );
 
           if (updateCount == itemsCount) {
             me.topRenderedIndex = topRenderedIndex = Math.max(
               0,
-              topVisibleIndex - (bufferSize - minimumBufferDistance),
+              topVisibleIndex - (bufferSize - minimumBufferDistance)
             );
             // Update all
             for (i = 0; i < updateCount; i++) {
@@ -626,13 +626,13 @@ Ext.define("Ext.dataview.List", {
         if (bufferDistance < minimumBufferDistance) {
           updateCount = Math.min(
             itemsCount,
-            minimumBufferDistance - bufferDistance,
+            minimumBufferDistance - bufferDistance
           );
 
           if (updateCount == itemsCount) {
             me.topRenderedIndex = topRenderedIndex = Math.min(
               lastIndex - itemsCount,
-              topVisibleIndex - minimumBufferDistance,
+              topVisibleIndex - minimumBufferDistance
             );
             // Update all
             for (i = 0; i < updateCount; i++) {
@@ -933,7 +933,7 @@ Ext.define("Ext.dataview.List", {
     if (header) {
       if (infinite) {
         header.setTranslatable({
-          translationMethod: this.translationMethod,
+          translationMethod: this.translationMethod
         });
         me.translate(header, 0, -10000);
 
@@ -1016,7 +1016,7 @@ Ext.define("Ext.dataview.List", {
         groupFirstCls,
         groupLastCls,
         selectedCls,
-        oddCls,
+        oddCls
       ],
       headerRemoveCls = [firstCls, lastCls, groupFirstCls, groupLastCls],
       ln,
@@ -1279,7 +1279,7 @@ Ext.define("Ext.dataview.List", {
     if (me._fireResizeOnNextLoad && me.hasLoadedStore) {
       me._fireResizeOnNextLoad = false;
       me.onContainerResize(container, {
-        height: container.element.getHeight(),
+        height: container.element.getHeight()
       });
     }
   },
@@ -1293,7 +1293,7 @@ Ext.define("Ext.dataview.List", {
     if (me._fireResizeOnNextLoad) {
       me._fireResizeOnNextLoad = false;
       me.onContainerResize(container, {
-        height: container.element.getHeight(),
+        height: container.element.getHeight()
       });
     }
   },
@@ -1319,7 +1319,7 @@ Ext.define("Ext.dataview.List", {
       if (!me._fireResizeOnNextPaint) {
         me.on({
           painted: "refresh",
-          single: true,
+          single: true
         });
         me._fireResizeOnNextPaint = true;
       }
@@ -1395,7 +1395,7 @@ Ext.define("Ext.dataview.List", {
           "updatevisiblecount",
           this,
           newVisibleCount,
-          currentVisibleCount,
+          currentVisibleCount
         );
       }
     } else if (me.listItems.length && me.getGrouped() && me.getPinHeaders()) {
@@ -1417,7 +1417,7 @@ Ext.define("Ext.dataview.List", {
 
       if (height != scrollSize.y) {
         scroller.setSize({
-          y: height,
+          y: height
         });
       }
     }
@@ -1484,7 +1484,7 @@ Ext.define("Ext.dataview.List", {
       }
 
       Ext.apply(indexBar, {
-        parentList: this,
+        parentList: this
       });
     }
 
@@ -1500,7 +1500,7 @@ Ext.define("Ext.dataview.List", {
       me.translate(
         pinnedHeader,
         0,
-        pinnedHeaders ? pinnedHeader.$position : -10000,
+        pinnedHeaders ? pinnedHeader.$position : -10000
       );
     }
   },
@@ -1545,7 +1545,7 @@ Ext.define("Ext.dataview.List", {
       indexBar.on({
         scope: me,
         index: me.onIndex,
-        directionchange: me.handleIndexBarSize,
+        directionchange: me.handleIndexBarSize
       });
 
       me.container.element.appendChild(indexBar.renderElement);
@@ -1731,7 +1731,7 @@ Ext.define("Ext.dataview.List", {
       grouped: me.isGrouping(),
       striped: me.getStriped(),
       itemMap: me.getItemMap(),
-      defaultItemHeight: me.getItemHeight(),
+      defaultItemHeight: me.getItemHeight()
     };
   },
 
@@ -1742,12 +1742,12 @@ Ext.define("Ext.dataview.List", {
         xtype: me.getDefaultType(),
         tpl: me.getItemTpl(),
         minHeight: minimumHeight,
-        cls: me.getItemCls(),
+        cls: me.getItemCls()
       };
 
     if (me.getInfinite()) {
       config.translatable = {
-        translationMethod: this.translationMethod,
+        translationMethod: this.translationMethod
       };
     }
 
@@ -1851,12 +1851,12 @@ Ext.define("Ext.dataview.List", {
       if (me.getInfinite()) {
         item.on({
           resize: "onScrollDockItemResize",
-          scope: this,
+          scope: this
         });
 
         item.addCls(me.scrollDockCls);
         item.setTranslatable({
-          translationMethod: this.translationMethod,
+          translationMethod: this.translationMethod
         });
         me.translate(item, 0, -10000);
         item.$scrollDockHeight = 0;
@@ -1908,7 +1908,7 @@ Ext.define("Ext.dataview.List", {
         touchmove: "onItemTouchMove",
         delegate: "." + Ext.baseCSSPrefix + "listitem",
         single: true,
-        scope: me,
+        scope: me
       });
 
       me.callParent(me.parseEvent(e));
@@ -1927,7 +1927,7 @@ Ext.define("Ext.dataview.List", {
       me.container.innerElement.un({
         touchmove: "onItemTouchMove",
         delegate: "." + Ext.baseCSSPrefix + "listitem",
-        scope: me,
+        scope: me
       });
 
       me.callParent(me.parseEvent(e));
@@ -1974,7 +1974,7 @@ Ext.define("Ext.dataview.List", {
     if (Ext.isFunction(config)) {
       return {
         scope: this,
-        handler: config,
+        handler: config
       };
     }
     return config;
@@ -2042,7 +2042,7 @@ Ext.define("Ext.dataview.List", {
   updateRowLines: function (rowLines) {
     this.container.innerElement.toggleCls(
       this.noRowLinesCls,
-      rowLines === false,
+      rowLines === false
     );
   },
 
@@ -2053,8 +2053,8 @@ Ext.define("Ext.dataview.List", {
     pinnedHeader = Ext.apply(pinnedHeader, {
       list: me,
       translatable: {
-        translationMethod: me.translationMethod,
-      },
+        translationMethod: me.translationMethod
+      }
     });
 
     pinnedHeader = Ext.factory(pinnedHeader, null, oldPinnedHeader);
@@ -2132,7 +2132,7 @@ Ext.define("Ext.dataview.List", {
       if (!task) {
         me.indexBarTask = task = new Ext.util.DelayedTask(
           me.doHandleIndexBarSize,
-          me,
+          me
         );
       }
       task.delay(1);
@@ -2168,6 +2168,6 @@ Ext.define("Ext.dataview.List", {
       if (closest) {
         this.scrollToRecord(closest.getAt(0));
       }
-    },
-  },
+    }
+  }
 });

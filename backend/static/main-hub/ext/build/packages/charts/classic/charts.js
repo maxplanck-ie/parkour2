@@ -85,8 +85,8 @@ Ext.define("Ext.draw.ContainerBase", {
               f.setWidth(Math.floor(d.width / e));
               f.setHeight(Math.floor(d.height / e));
             }
-          },
-        },
+          }
+        }
       };
     }
     new Ext.window.Window({
@@ -98,7 +98,7 @@ Ext.define("Ext.draw.ContainerBase", {
       maximized: true,
       border: true,
       layout: { type: "hbox", pack: "center", align: "middle" },
-      items: { xtype: "container", items: a },
+      items: { xtype: "container", items: a }
     });
   },
   privates: {
@@ -112,14 +112,14 @@ Ext.define("Ext.draw.ContainerBase", {
       }
       a.pendingDetachSize = false;
       a.callParent();
-    },
-  },
+    }
+  }
 });
 Ext.define("Ext.draw.SurfaceBase", {
   extend: "Ext.Widget",
   getOwnerBody: function () {
     return this.ownerCt.body;
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.AnimationParser", function () {
   function a(d, c, b) {
@@ -140,7 +140,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
         if (c && c.isColor && b && b.isColor) {
           return [
             [c.r, c.g, c.b, c.a],
-            [b.r, b.g, b.b, b.a],
+            [b.r, b.g, b.b, b.a]
           ];
         } else {
           return [c || b, b || c];
@@ -154,14 +154,14 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
             a(d[0], c[0], b),
             a(d[1], c[1], b),
             a(d[2], c[2], b),
-            a(d[3], c[3], b),
+            a(d[3], c[3], b)
           ];
         }
       },
       serve: function (c) {
         var b = Ext.util.Color.fly(c[0], c[1], c[2], c[3]);
         return b.toString();
-      },
+      }
     },
     number: {
       parse: function (b) {
@@ -173,7 +173,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
         } else {
           return a(d, c, b);
         }
-      },
+      }
     },
     angle: {
       parseInitial: function (c, b) {
@@ -192,7 +192,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
         } else {
           return a(d, c, b);
         }
-      },
+      }
     },
     path: {
       parseInitial: function (m, n) {
@@ -260,7 +260,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
           }
         }
         return l.temp;
-      },
+      }
     },
     data: {
       compute: function (h, j, k, g) {
@@ -287,7 +287,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
           }
         }
         return g;
-      },
+      }
     },
     text: {
       compute: function (d, c, b) {
@@ -295,10 +295,10 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
           d.substr(0, Math.round(d.length * (1 - b))) +
           c.substr(Math.round(c.length * (1 - b)))
         );
-      },
+      }
     },
     limited: "number",
-    limited01: "number",
+    limited01: "number"
   };
 });
 (function () {
@@ -482,13 +482,13 @@ Ext.define("Ext.draw.Draw", {
     ? function () {
         this.iosUpdateEl = Ext.getBody().createChild({
           style:
-            "position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; background: rgba(0,0,0,0.001); z-index: 100000",
+            "position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; background: rgba(0,0,0,0.001); z-index: 100000"
         });
       }
     : Ext.emptyFn,
   endUpdateIOS: function () {
     this.iosUpdateEl = Ext.destroy(this.iosUpdateEl);
-  },
+  }
 });
 Ext.define("Ext.draw.gradient.Gradient", {
   requires: ["Ext.draw.Color"],
@@ -509,9 +509,9 @@ Ext.define("Ext.draw.gradient.Gradient", {
       e.push({
         offset: Math.min(
           1,
-          Math.max(0, "offset" in b ? b.offset : b.position || 0),
+          Math.max(0, "offset" in b ? b.offset : b.position || 0)
         ),
-        color: a.toString(),
+        color: a.toString()
       });
     }
     e.sort(function (h, g) {
@@ -527,7 +527,7 @@ Ext.define("Ext.draw.gradient.Gradient", {
   constructor: function (a) {
     this.initConfig(a);
   },
-  generateGradient: Ext.emptyFn,
+  generateGradient: Ext.emptyFn
 });
 Ext.define("Ext.draw.gradient.GradientDefinition", {
   singleton: true,
@@ -553,7 +553,7 @@ Ext.define("Ext.draw.gradient.GradientDefinition", {
       return c || d;
     }
     return d;
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.AttributeParser", {
   singleton: true,
@@ -651,12 +651,12 @@ Ext.define("Ext.draw.sprite.AttributeParser", {
     return function (e) {
       return e in d ? e : undefined;
     };
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.AttributeDefinition", {
   requires: [
     "Ext.draw.sprite.AttributeParser",
-    "Ext.draw.sprite.AnimationParser",
+    "Ext.draw.sprite.AnimationParser"
   ],
   config: {
     defaults: { $value: {}, lazy: true },
@@ -665,7 +665,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
     processors: { $value: {}, lazy: true },
     dirtyTriggers: {},
     triggers: {},
-    updaters: {},
+    updaters: {}
   },
   inheritableStatics: { processorFactoryRe: /^(\w+)\(([\w\-,]*)\)$/ },
   spriteClass: null,
@@ -1001,7 +1001,7 @@ Ext.define("Ext.draw.sprite.AttributeDefinition", {
   set: function (a, c, b) {
     b = this.normalize(b);
     return this.setBypassingNormalization(a, c, b);
-  },
+  }
 });
 Ext.define(
   "Ext.draw.Matrix",
@@ -1057,7 +1057,7 @@ Ext.define(
           return a;
         }
         return new this(a);
-      },
+      }
     },
     constructor: function (e, d, a, f, c, b) {
       if (e && e.length === 6) {
@@ -1287,7 +1287,7 @@ Ext.define(
         o -= i;
         m = [
           Math.sqrt(b[0] * b[0] + b[2] * b[2]),
-          Math.sqrt(b[1] * b[1] + b[3] * b[3]),
+          Math.sqrt(b[1] * b[1] + b[3] * b[3])
         ];
         p = Math.abs(g * a) + Math.abs(o * n) + Math.abs(m[0] * i);
         f = Math.abs(g * s) + Math.abs(o * k) + Math.abs(m[1] * i);
@@ -1362,7 +1362,7 @@ Ext.define(
         a.get(1, 0),
         a.get(1, 1),
         a.get(2, 0),
-        a.get(2, 1),
+        a.get(2, 1)
       ].join(",");
     },
     toContext: function (a) {
@@ -1423,7 +1423,7 @@ Ext.define(
       a.scaleX = d / Math.cos(a.rotate);
       a.scaleY = (e / d) * a.scaleX;
       return a;
-    },
+    }
   },
   function () {
     function b(e, c, d) {
@@ -1433,7 +1433,7 @@ Ext.define(
         },
         set: function (f) {
           this.elements[d] = f;
-        },
+        }
       };
     }
     if (Object.defineProperties) {
@@ -1447,7 +1447,7 @@ Ext.define(
       Object.defineProperties(this.prototype, a);
     }
     this.prototype.multiply = this.prototype.appendMatrix;
-  },
+  }
 );
 Ext.define("Ext.draw.modifier.Modifier", {
   mixins: { observable: "Ext.mixin.Observable" },
@@ -1488,7 +1488,7 @@ Ext.define("Ext.draw.modifier.Modifier", {
       }
       return c;
     }
-  },
+  }
 });
 Ext.define("Ext.draw.modifier.Target", {
   requires: ["Ext.draw.Matrix"],
@@ -1569,7 +1569,7 @@ Ext.define("Ext.draw.modifier.Target", {
     }
     this.applyChanges(a, b);
     return b;
-  },
+  }
 });
 Ext.define(
   "Ext.draw.TimingFunctions",
@@ -1606,7 +1606,7 @@ Ext.define(
         },
         elastic: function (o, i) {
           return g(2, 10 * --o) * m((20 * o * e * (i || 1)) / 3);
-        },
+        }
       },
       k = {},
       a,
@@ -1642,7 +1642,7 @@ Ext.define(
   },
   function (a) {
     Ext.apply(a, a.easingMap);
-  },
+  }
 );
 Ext.define("Ext.draw.Animator", {
   uses: ["Ext.draw.Draw"],
@@ -1788,7 +1788,7 @@ Ext.define("Ext.draw.Animator", {
       Ext.AnimationQueue.start(this.handleFrame, this);
       Ext.draw.Draw.beginUpdateIOS();
     }
-  },
+  }
 });
 Ext.define("Ext.draw.modifier.Animation", {
   requires: ["Ext.draw.TimingFunctions", "Ext.draw.Animator"],
@@ -1798,7 +1798,7 @@ Ext.define("Ext.draw.modifier.Animation", {
     easing: Ext.identityFn,
     duration: 0,
     customEasings: {},
-    customDurations: {},
+    customDurations: {}
   },
   constructor: function (a) {
     var b = this;
@@ -2096,7 +2096,7 @@ Ext.define("Ext.draw.modifier.Animation", {
   destroy: function () {
     this.stop();
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.draw.modifier.Highlight", {
   extend: "Ext.draw.modifier.Modifier",
@@ -2132,7 +2132,7 @@ Ext.define("Ext.draw.modifier.Highlight", {
     }
     b.self.def.setConfig({
       defaults: { highlighted: false },
-      processors: { highlighted: "bool" },
+      processors: { highlighted: "bool" }
     });
     this.setSprite(b);
   },
@@ -2217,7 +2217,7 @@ Ext.define("Ext.draw.modifier.Highlight", {
   popUp: function (a, b) {
     b = this.filterChanges(a, b);
     Ext.draw.modifier.Modifier.prototype.popUp.call(this, a, b);
-  },
+  }
 });
 Ext.define(
   "Ext.draw.sprite.Sprite",
@@ -2230,7 +2230,7 @@ Ext.define(
       "Ext.draw.sprite.AttributeDefinition",
       "Ext.draw.modifier.Target",
       "Ext.draw.modifier.Animation",
-      "Ext.draw.modifier.Highlight",
+      "Ext.draw.modifier.Highlight"
     ],
     isSprite: true,
     statics: { defaultHitTestOptions: { fill: true, stroke: true } },
@@ -2266,7 +2266,7 @@ Ext.define(
           scalingY: "number",
           scalingCenterX: "number",
           scalingCenterY: "number",
-          constrainGradients: "bool",
+          constrainGradients: "bool"
         },
         aliases: {
           stroke: "strokeStyle",
@@ -2286,7 +2286,7 @@ Ext.define(
           scaleX: "scalingX",
           scaleY: "scalingY",
           scaleCenterX: "scalingCenterX",
-          scaleCenterY: "scalingCenterY",
+          scaleCenterY: "scalingCenterY"
         },
         defaults: {
           hidden: false,
@@ -2316,7 +2316,7 @@ Ext.define(
           scalingY: 1,
           scalingCenterX: null,
           scalingCenterY: null,
-          constrainGradients: false,
+          constrainGradients: false
         },
         triggers: {
           zIndex: "zIndex",
@@ -2346,7 +2346,7 @@ Ext.define(
           scalingY: "transform",
           scalingCenterX: "transform",
           scalingCenterY: "transform",
-          constrainGradients: "canvas",
+          constrainGradients: "canvas"
         },
         updaters: {
           bbox: "bboxUpdater",
@@ -2356,9 +2356,9 @@ Ext.define(
           transform: function (a) {
             a.dirtyTransform = true;
             a.bbox.transform.dirty = true;
-          },
-        },
-      },
+          }
+        }
+      }
     },
     config: { parent: null, surface: null },
     onClassExtended: function (d, c) {
@@ -2669,7 +2669,7 @@ Ext.define(
         -a * i,
         c * i,
         c * n - a * h + e + q,
-        a * n + c * h + d + o,
+        a * n + c * h + d + o
       ];
       k.matrix.inverse(k.inverseMatrix);
       k.dirtyTransform = false;
@@ -2783,19 +2783,19 @@ Ext.define(
         b.fireEvent("destroy", b);
       }
       b.callParent();
-    },
+    }
   },
   function () {
     this.def = new Ext.draw.sprite.AttributeDefinition(this.def);
     this.def.spriteClass = this;
-  },
+  }
 );
 Ext.define("Ext.draw.Path", {
   requires: ["Ext.draw.Draw"],
   statics: {
     pathRe: /,?([achlmqrstvxz]),?/gi,
     pathRe2: /-/gi,
-    pathSplitRe: /\s|,/g,
+    pathSplitRe: /\s|,/g
   },
   svgString: "",
   constructor: function (a) {
@@ -2870,7 +2870,7 @@ Ext.define("Ext.draw.Path", {
       (2 * b + a) / 3,
       (2 * e + d) / 3,
       a,
-      d,
+      d
     );
   },
   closePath: function () {
@@ -3065,7 +3065,7 @@ Ext.define("Ext.draw.Path", {
         j * b + u + i,
         h * b + t + f,
         u + i,
-        t + f,
+        t + f
       );
       r += 6;
       v -= m;
@@ -3088,7 +3088,7 @@ Ext.define("Ext.draw.Path", {
         j * B + u * c + i,
         h * B + t * c + f,
         j * A + u * a + i,
-        h * A + t * a + f,
+        h * A + t * a + f
       );
       r += 6;
     }
@@ -3170,7 +3170,7 @@ Ext.define("Ext.draw.Path", {
         S: 4,
         T: 2,
         V: 1,
-        Z: 0,
+        Z: 0
       },
       k = "",
       g,
@@ -3229,7 +3229,7 @@ Ext.define("Ext.draw.Path", {
               +h[j + 3],
               +h[j + 4],
               (c = +h[j + 5]),
-              (b = +h[j + 6]),
+              (b = +h[j + 6])
             );
             j += 7;
           }
@@ -3242,7 +3242,7 @@ Ext.define("Ext.draw.Path", {
               (g = +h[j + 2]),
               (f = +h[j + 3]),
               (c = +h[j + 4]),
-              (b = +h[j + 5]),
+              (b = +h[j + 5])
             );
             j += 6;
           }
@@ -3275,7 +3275,7 @@ Ext.define("Ext.draw.Path", {
               +h[j + 3],
               +h[j + 4],
               (c += +h[j + 5]),
-              (b += +h[j + 6]),
+              (b += +h[j + 6])
             );
             j += 7;
           }
@@ -3288,7 +3288,7 @@ Ext.define("Ext.draw.Path", {
               (g = c + +h[j + 2]),
               (f = b + +h[j + 3]),
               (c += +h[j + 4]),
-              (b += +h[j + 5]),
+              (b += +h[j + 5])
             );
             j += 6;
           }
@@ -3308,7 +3308,7 @@ Ext.define("Ext.draw.Path", {
               (g = c + +h[j]),
               (f = b + +h[j + 1]),
               (c += +h[j + 2]),
-              (b += +h[j + 3]),
+              (b += +h[j + 3])
             );
             j += 4;
           }
@@ -3325,7 +3325,7 @@ Ext.define("Ext.draw.Path", {
               (g = +h[j]),
               (f = +h[j + 1]),
               (c = +h[j + 2]),
-              (b = +h[j + 3]),
+              (b = +h[j + 3])
             );
             j += 4;
           }
@@ -3336,7 +3336,7 @@ Ext.define("Ext.draw.Path", {
               (g = c + +h[j]),
               (f = b + +h[j + 1]),
               (c += +h[j + 2]),
-              (b += +h[j + 3]),
+              (b += +h[j + 3])
             );
             j += 4;
           }
@@ -3347,7 +3347,7 @@ Ext.define("Ext.draw.Path", {
               (g = +h[j]),
               (f = +h[j + 1]),
               (c = +h[j + 2]),
-              (b = +h[j + 3]),
+              (b = +h[j + 3])
             );
             j += 4;
           }
@@ -3362,7 +3362,7 @@ Ext.define("Ext.draw.Path", {
               (g = c + c - g),
               (f = b + b - f),
               (c += +h[j + 1]),
-              (b += +h[j + 2]),
+              (b += +h[j + 2])
             );
             j += 2;
           }
@@ -3377,7 +3377,7 @@ Ext.define("Ext.draw.Path", {
               (g = c + c - g),
               (f = b + b - f),
               (c = +h[j + 1]),
-              (b = +h[j + 2]),
+              (b = +h[j + 2])
             );
             j += 2;
           }
@@ -3487,7 +3487,7 @@ Ext.define("Ext.draw.Path", {
             g[c + 2],
             g[c + 3],
             (a = g[c + 4]),
-            (h = g[c + 5]),
+            (h = g[c + 5])
           );
           c += 6;
           break;
@@ -3549,7 +3549,7 @@ Ext.define("Ext.draw.Path", {
             c[d + 2] * a + c[d + 3] * k + q,
             c[d + 2] * p + c[d + 3] * h + o,
             (m = c[d + 4] * a + c[d + 5] * k + q),
-            (l = c[d + 4] * p + c[d + 5] * h + o),
+            (l = c[d + 4] * p + c[d + 5] * h + o)
           );
           d += 6;
           break;
@@ -3689,7 +3689,7 @@ Ext.define("Ext.draw.Path", {
             (b + n + n) / 3,
             (a + m + m) / 3,
             (b = n),
-            (a = m),
+            (a = m)
           );
           break;
         case "C":
@@ -3704,7 +3704,7 @@ Ext.define("Ext.draw.Path", {
             (b + n + n) / 3,
             (a + m + m) / 3,
             (b = n),
-            (a = m),
+            (a = m)
           );
           break;
       }
@@ -3741,7 +3741,7 @@ Ext.define("Ext.draw.Path", {
               " " +
               f[c + 4] +
               "," +
-              f[c + 5],
+              f[c + 5]
           );
           c += 6;
           break;
@@ -3757,7 +3757,7 @@ Ext.define("Ext.draw.Path", {
       this.updateSvgString();
     }
     return this.svgString;
-  },
+  }
 });
 Ext.define("Ext.draw.overrides.hittest.Path", {
   override: "Ext.draw.Path",
@@ -3809,7 +3809,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
             p.x,
             p.y,
             o,
-            n,
+            n
           ).length;
           b = f[g + 4];
           a = f[g + 5];
@@ -3870,7 +3870,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
               f[g + 3],
               f[g + 5],
               n,
-              m,
+              m
             )
           ) {
             return true;
@@ -3929,7 +3929,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                   m,
                   l,
                   h,
-                  e,
+                  e
                 );
                 x.push.apply(x, p);
                 break;
@@ -3960,7 +3960,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 h,
                 e,
                 u[n],
-                u[n + 1],
+                u[n + 1]
               );
               x.push.apply(x, p);
               break;
@@ -3984,7 +3984,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 t,
                 d,
                 s,
-                c,
+                c
               );
               x.push.apply(x, p);
               break;
@@ -4005,7 +4005,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 d,
                 c,
                 b,
-                a,
+                a
               );
               x.push.apply(x, p);
               break;
@@ -4036,7 +4036,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                   m,
                   l,
                   h,
-                  e,
+                  e
                 );
                 x.push.apply(x, p);
                 break;
@@ -4088,7 +4088,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
             g[h + 2],
             g[h + 3],
             g[h + 4],
-            g[h + 5],
+            g[h + 5]
           );
           d.push.apply(d, n);
           b = g[h + 4];
@@ -4104,7 +4104,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
       }
     }
     return d;
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Path", {
   extend: "Ext.draw.sprite.Sprite",
@@ -4120,7 +4120,7 @@ Ext.define("Ext.draw.sprite.Path", {
             b = new Ext.draw.Path(b);
           }
           return b;
-        },
+        }
       },
       aliases: { d: "path" },
       triggers: { path: "bbox" },
@@ -4135,9 +4135,9 @@ Ext.define("Ext.draw.sprite.Path", {
           b.clear();
           this.updatePath(b, a);
           this.scheduleUpdater(a, "bbox", ["path"]);
-        },
-      },
-    },
+        }
+      }
+    }
   },
   updatePlainBBox: function (a) {
     if (this.attr.path) {
@@ -4159,7 +4159,7 @@ Ext.define("Ext.draw.sprite.Path", {
     c.appendPath(a.path);
     c.fillStroke(a);
   },
-  updatePath: function (b, a) {},
+  updatePath: function (b, a) {}
 });
 Ext.define("Ext.draw.overrides.hittest.sprite.Path", {
   override: "Ext.draw.sprite.Path",
@@ -4278,7 +4278,7 @@ Ext.define("Ext.draw.overrides.hittest.sprite.Path", {
       h.params = f;
     }
     return b;
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Circle", {
   extend: "Ext.draw.sprite.Path",
@@ -4289,8 +4289,8 @@ Ext.define("Ext.draw.sprite.Circle", {
       processors: { cx: "number", cy: "number", r: "number" },
       aliases: { radius: "r", x: "cx", y: "cy", centerX: "cx", centerY: "cy" },
       defaults: { cx: 0, cy: 0, r: 4 },
-      triggers: { cx: "path", cy: "path", r: "path" },
-    },
+      triggers: { cx: "path", cy: "path", r: "path" }
+    }
   },
   updatePlainBBox: function (c) {
     var b = this.attr,
@@ -4321,7 +4321,7 @@ Ext.define("Ext.draw.sprite.Circle", {
   },
   updatePath: function (b, a) {
     b.arc(a.cx, a.cy, a.r, 0, Math.PI * 2, false);
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Arc", {
   extend: "Ext.draw.sprite.Circle",
@@ -4332,21 +4332,21 @@ Ext.define("Ext.draw.sprite.Arc", {
       processors: {
         startAngle: "number",
         endAngle: "number",
-        anticlockwise: "bool",
+        anticlockwise: "bool"
       },
       aliases: {
         from: "startAngle",
         to: "endAngle",
         start: "startAngle",
-        end: "endAngle",
+        end: "endAngle"
       },
       defaults: { startAngle: 0, endAngle: Math.PI * 2, anticlockwise: false },
-      triggers: { startAngle: "path", endAngle: "path", anticlockwise: "path" },
-    },
+      triggers: { startAngle: "path", endAngle: "path", anticlockwise: "path" }
+    }
   },
   updatePath: function (b, a) {
     b.arc(a.cx, a.cy, a.r, a.startAngle, a.endAngle, a.anticlockwise);
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Arrow", {
   extend: "Ext.draw.sprite.Path",
@@ -4355,8 +4355,8 @@ Ext.define("Ext.draw.sprite.Arrow", {
     def: {
       processors: { x: "number", y: "number", size: "number" },
       defaults: { x: 0, y: 0, size: 4 },
-      triggers: { x: "path", y: "path", size: "path" },
-    },
+      triggers: { x: "path", y: "path", size: "path" }
+    }
   },
   updatePath: function (d, b) {
     var c = b.size * 1.5,
@@ -4380,12 +4380,12 @@ Ext.define("Ext.draw.sprite.Arrow", {
           0,
           -c * 0.4,
           -c * 0.6,
-          0,
+          0
         ],
-        "z",
-      ),
+        "z"
+      )
     );
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Composite", {
   extend: "Ext.draw.sprite.Sprite",
@@ -4533,7 +4533,7 @@ Ext.define("Ext.draw.sprite.Composite", {
     }
     d.length = 0;
     c.callParent();
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Cross", {
   extend: "Ext.draw.sprite.Path",
@@ -4542,8 +4542,8 @@ Ext.define("Ext.draw.sprite.Cross", {
     def: {
       processors: { x: "number", y: "number", size: "number" },
       defaults: { x: 0, y: 0, size: 4 },
-      triggers: { x: "path", y: "path", size: "path" },
-    },
+      triggers: { x: "path", y: "path", size: "path" }
+    }
   },
   updatePath: function (d, b) {
     var c = b.size / 1.7,
@@ -4573,10 +4573,10 @@ Ext.define("Ext.draw.sprite.Cross", {
         c,
         -c,
         -c,
-        "z",
-      ]),
+        "z"
+      ])
     );
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Diamond", {
   extend: "Ext.draw.sprite.Path",
@@ -4585,15 +4585,15 @@ Ext.define("Ext.draw.sprite.Diamond", {
     def: {
       processors: { x: "number", y: "number", size: "number" },
       defaults: { x: 0, y: 0, size: 4 },
-      triggers: { x: "path", y: "path", size: "path" },
-    },
+      triggers: { x: "path", y: "path", size: "path" }
+    }
   },
   updatePath: function (d, b) {
     var c = b.size * 1.25,
       a = b.x - b.lineWidth / 2,
       e = b.y;
     d.fromSvgString(["M", a, e - c, "l", c, c, -c, c, -c, -c, c, -c, "z"]);
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Ellipse", {
   extend: "Ext.draw.sprite.Path",
@@ -4606,7 +4606,7 @@ Ext.define("Ext.draw.sprite.Ellipse", {
         cy: "number",
         rx: "number",
         ry: "number",
-        axisRotation: "number",
+        axisRotation: "number"
       },
       aliases: {
         radius: "r",
@@ -4615,7 +4615,7 @@ Ext.define("Ext.draw.sprite.Ellipse", {
         centerX: "cx",
         centerY: "cy",
         radiusX: "rx",
-        radiusY: "ry",
+        radiusY: "ry"
       },
       defaults: { cx: 0, cy: 0, rx: 1, ry: 1, axisRotation: 0 },
       triggers: {
@@ -4623,9 +4623,9 @@ Ext.define("Ext.draw.sprite.Ellipse", {
         cy: "path",
         rx: "path",
         ry: "path",
-        axisRotation: "path",
-      },
-    },
+        axisRotation: "path"
+      }
+    }
   },
   updatePlainBBox: function (c) {
     var b = this.attr,
@@ -4670,7 +4670,7 @@ Ext.define("Ext.draw.sprite.Ellipse", {
   },
   updatePath: function (b, a) {
     b.ellipse(a.cx, a.cy, a.rx, a.ry, a.axisRotation, 0, Math.PI * 2, false);
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.EllipticalArc", {
   extend: "Ext.draw.sprite.Ellipse",
@@ -4681,17 +4681,17 @@ Ext.define("Ext.draw.sprite.EllipticalArc", {
       processors: {
         startAngle: "number",
         endAngle: "number",
-        anticlockwise: "bool",
+        anticlockwise: "bool"
       },
       aliases: {
         from: "startAngle",
         to: "endAngle",
         start: "startAngle",
-        end: "endAngle",
+        end: "endAngle"
       },
       defaults: { startAngle: 0, endAngle: Math.PI * 2, anticlockwise: false },
-      triggers: { startAngle: "path", endAngle: "path", anticlockwise: "path" },
-    },
+      triggers: { startAngle: "path", endAngle: "path", anticlockwise: "path" }
+    }
   },
   updatePath: function (b, a) {
     b.ellipse(
@@ -4702,9 +4702,9 @@ Ext.define("Ext.draw.sprite.EllipticalArc", {
       a.axisRotation,
       a.startAngle,
       a.endAngle,
-      a.anticlockwise,
+      a.anticlockwise
     );
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Rect", {
   extend: "Ext.draw.sprite.Path",
@@ -4717,7 +4717,7 @@ Ext.define("Ext.draw.sprite.Rect", {
         y: "number",
         width: "number",
         height: "number",
-        radius: "number",
+        radius: "number"
       },
       aliases: {},
       triggers: {
@@ -4725,10 +4725,10 @@ Ext.define("Ext.draw.sprite.Rect", {
         y: "path",
         width: "path",
         height: "path",
-        radius: "path",
+        radius: "path"
       },
-      defaults: { x: 0, y: 0, width: 8, height: 8, radius: 0 },
-    },
+      defaults: { x: 0, y: 0, width: 8, height: 8, radius: 0 }
+    }
   },
   updatePlainBBox: function (b) {
     var a = this.attr;
@@ -4755,7 +4755,7 @@ Ext.define("Ext.draw.sprite.Rect", {
       f.arcTo(c, g + b, c, g, a);
       f.arcTo(c, g, c + a, g, a);
     }
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Image", {
   extend: "Ext.draw.sprite.Rect",
@@ -4767,8 +4767,8 @@ Ext.define("Ext.draw.sprite.Image", {
       processors: { src: "string" },
       triggers: { src: "src" },
       updaters: { src: "updateSource" },
-      defaults: { src: "", width: null, height: null },
-    },
+      defaults: { src: "", width: null, height: null }
+    }
   },
   updateSurface: function (a) {
     if (a) {
@@ -4793,7 +4793,7 @@ Ext.define("Ext.draw.sprite.Image", {
         image: e,
         done: false,
         pendingSprites: [h],
-        pendingSurfaces: [c],
+        pendingSurfaces: [c]
       };
       e.width = b;
       e.height = j;
@@ -4840,7 +4840,7 @@ Ext.define("Ext.draw.sprite.Image", {
         i,
         h,
         b || (d.naturalWidth || d.width) / c.devicePixelRatio,
-        j || (d.naturalHeight || d.height) / c.devicePixelRatio,
+        j || (d.naturalHeight || d.height) / c.devicePixelRatio
       );
     }
   },
@@ -4850,7 +4850,7 @@ Ext.define("Ext.draw.sprite.Image", {
       a = d && (d.isSurface || d.isVisible()),
       c = a && !b.hidden && b.globalAlpha;
     return !!c;
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Instancing", {
   extend: "Ext.draw.sprite.Sprite",
@@ -5003,7 +5003,7 @@ Ext.define("Ext.draw.sprite.Instancing", {
       a.destroy();
     }
     b.callParent();
-  },
+  }
 });
 Ext.define("Ext.draw.overrides.hittest.sprite.Instancing", {
   override: "Ext.draw.sprite.Instancing",
@@ -5032,7 +5032,7 @@ Ext.define("Ext.draw.overrides.hittest.sprite.Instancing", {
     }
     g.attr = b;
     return h;
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Line", {
   extend: "Ext.draw.sprite.Sprite",
@@ -5044,11 +5044,11 @@ Ext.define("Ext.draw.sprite.Line", {
         fromX: "number",
         fromY: "number",
         toX: "number",
-        toY: "number",
+        toY: "number"
       },
       defaults: { fromX: 0, fromY: 0, toX: 1, toY: 1, strokeStyle: "black" },
-      aliases: { x1: "fromX", y1: "fromY", x2: "toX", y2: "toY" },
-    },
+      aliases: { x1: "fromX", y1: "fromY", x2: "toX", y2: "toY" }
+    }
   },
   updateLineBBox: function (b, i, s, g, r, f) {
     var o = this.attr,
@@ -5103,7 +5103,7 @@ Ext.define("Ext.draw.sprite.Line", {
     c.moveTo(a.fromX, a.fromY);
     c.lineTo(a.toX, a.toY);
     c.stroke();
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Plus", {
   extend: "Ext.draw.sprite.Path",
@@ -5112,8 +5112,8 @@ Ext.define("Ext.draw.sprite.Plus", {
     def: {
       processors: { x: "number", y: "number", size: "number" },
       defaults: { x: 0, y: 0, size: 4 },
-      triggers: { x: "path", y: "path", size: "path" },
-    },
+      triggers: { x: "path", y: "path", size: "path" }
+    }
   },
   updatePath: function (d, b) {
     var c = b.size / 1.3,
@@ -5143,10 +5143,10 @@ Ext.define("Ext.draw.sprite.Plus", {
         0,
         0,
         -c,
-        "z",
-      ]),
+        "z"
+      ])
     );
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Sector", {
   extend: "Ext.draw.sprite.Path",
@@ -5161,7 +5161,7 @@ Ext.define("Ext.draw.sprite.Sector", {
         endAngle: "number",
         startRho: "number",
         endRho: "number",
-        margin: "number",
+        margin: "number"
       },
       aliases: { rho: "endRho" },
       triggers: {
@@ -5171,7 +5171,7 @@ Ext.define("Ext.draw.sprite.Sector", {
         endAngle: "path,bbox",
         startRho: "path,bbox",
         endRho: "path,bbox",
-        margin: "path,bbox",
+        margin: "path,bbox"
       },
       defaults: {
         centerX: 0,
@@ -5181,9 +5181,9 @@ Ext.define("Ext.draw.sprite.Sector", {
         startRho: 0,
         endRho: 150,
         margin: 0,
-        path: "M 0,0",
-      },
-    },
+        path: "M 0,0"
+      }
+    }
   },
   getMidAngle: function () {
     return this.midAngle || 0;
@@ -5206,7 +5206,7 @@ Ext.define("Ext.draw.sprite.Sector", {
     j.arc(f, e, a, g, c, false);
     j.lineTo(f + i * Math.cos(c), e + i * Math.sin(c));
     j.arc(f, e, i, c, g, true);
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Square", {
   extend: "Ext.draw.sprite.Path",
@@ -5215,8 +5215,8 @@ Ext.define("Ext.draw.sprite.Square", {
     def: {
       processors: { x: "number", y: "number", size: "number" },
       defaults: { x: 0, y: 0, size: 4 },
-      triggers: { x: "path", y: "path", size: "size" },
-    },
+      triggers: { x: "path", y: "path", size: "size" }
+    }
   },
   updatePath: function (e, b) {
     var c = b.size * 1.2,
@@ -5224,9 +5224,9 @@ Ext.define("Ext.draw.sprite.Square", {
       a = b.x - b.lineWidth / 2,
       f = b.y;
     e.fromSvgString(
-      "M".concat(a - c, ",", f - c, "l", [d, 0, 0, d, -d, 0, 0, -d, "z"]),
+      "M".concat(a - c, ",", f - c, "l", [d, 0, 0, d, -d, 0, 0, -d, "z"])
     );
-  },
+  }
 });
 Ext.define("Ext.draw.TextMeasurer", {
   singleton: true,
@@ -5241,7 +5241,7 @@ Ext.define("Ext.draw.TextMeasurer", {
       position: "relative",
       float: "left",
       width: 0,
-      height: 0,
+      height: 0
     },
     children: {
       tag: "div",
@@ -5253,9 +5253,9 @@ Ext.define("Ext.draw.TextMeasurer", {
         padding: 0,
         margin: 0,
         "z-index": -100000,
-        "white-space": "nowrap",
-      },
-    },
+        "white-space": "nowrap"
+      }
+    }
   },
   actualMeasureText: function (g, b) {
     var e = Ext.draw.TextMeasurer,
@@ -5269,8 +5269,8 @@ Ext.define("Ext.draw.TextMeasurer", {
           position: "relative",
           float: "left",
           width: 0,
-          height: 0,
-        },
+          height: 0
+        }
       });
       e.measureDiv = f = Ext.Element.create({
         style: {
@@ -5281,8 +5281,8 @@ Ext.define("Ext.draw.TextMeasurer", {
           "white-space": "nowrap",
           display: "block",
           padding: 0,
-          margin: 0,
-        },
+          margin: 0
+        }
       });
       Ext.getBody().appendChild(d);
       d.appendChild(f);
@@ -5357,7 +5357,7 @@ Ext.define("Ext.draw.TextMeasurer", {
       a = Math.max(a, j.width);
     }
     return { width: a, height: f, sizes: g };
-  },
+  }
 });
 Ext.define("Ext.draw.sprite.Text", function () {
   var d = {
@@ -5367,7 +5367,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     medium: true,
     large: true,
     "x-large": true,
-    "xx-large": true,
+    "xx-large": true
   };
   var b = {
     normal: true,
@@ -5382,7 +5382,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     600: true,
     700: true,
     800: true,
-    900: true,
+    900: true
   };
   var a = {
     start: "start",
@@ -5390,7 +5390,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     center: "center",
     middle: "center",
     end: "end",
-    right: "end",
+    right: "end"
   };
   var c = {
     top: "top",
@@ -5399,7 +5399,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     center: "middle",
     alphabetic: "alphabetic",
     ideographic: "ideographic",
-    bottom: "bottom",
+    bottom: "bottom"
   };
   return {
     extend: "Ext.draw.sprite.Sprite",
@@ -5443,14 +5443,14 @@ Ext.define("Ext.draw.sprite.Text", function () {
           textBaseline: function (e) {
             return c[e] || "alphabetic";
           },
-          font: "string",
+          font: "string"
         },
         aliases: {
           "font-size": "fontSize",
           "font-family": "fontFamily",
           "font-weight": "fontWeight",
           "font-variant": "fontVariant",
-          "text-anchor": "textAlign",
+          "text-anchor": "textAlign"
         },
         defaults: {
           fontStyle: "",
@@ -5465,7 +5465,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
           fillStyle: "#000",
           x: 0,
           y: 0,
-          text: "",
+          text: ""
         },
         triggers: {
           fontStyle: "fontX,bbox",
@@ -5478,10 +5478,10 @@ Ext.define("Ext.draw.sprite.Text", function () {
           textAlign: "bbox",
           x: "bbox",
           y: "bbox",
-          text: "bbox",
+          text: "bbox"
         },
-        updaters: { fontX: "makeFontShorthand", font: "parseFontShorthand" },
-      },
+        updaters: { fontX: "makeFontShorthand", font: "parseFontShorthand" }
+      }
     },
     config: { preciseMeasurement: undefined },
     constructor: function (e) {
@@ -5517,7 +5517,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
       medium: "fontSize",
       large: "fontSize",
       "x-large": "fontSize",
-      "xx-large": "fontSize",
+      "xx-large": "fontSize"
     },
     makeFontShorthand: function (e) {
       var f = [];
@@ -5598,7 +5598,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
       fontVariant: true,
       fontWeight: true,
       fontSize: true,
-      fontFamily: true,
+      fontFamily: true
     },
     setAttributes: function (g, i, e) {
       var f, h;
@@ -5747,7 +5747,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
           q.strokeText(r[f], l + (s[f] || 0), j + n * f);
         }
       }
-    },
+    }
   };
 });
 Ext.define("Ext.draw.sprite.Tick", {
@@ -5768,12 +5768,12 @@ Ext.define("Ext.draw.sprite.Tick", {
             fromX: a - c,
             fromY: e - d,
             toX: a - c,
-            toY: e + d,
+            toY: e + d
           });
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });
 Ext.define("Ext.draw.sprite.Triangle", {
   extend: "Ext.draw.sprite.Path",
@@ -5782,8 +5782,8 @@ Ext.define("Ext.draw.sprite.Triangle", {
     def: {
       processors: { x: "number", y: "number", size: "number" },
       defaults: { x: 0, y: 0, size: 4 },
-      triggers: { x: "path", y: "path", size: "path" },
-    },
+      triggers: { x: "path", y: "path", size: "path" }
+    }
   },
   updatePath: function (d, b) {
     var c = b.size * 2.2,
@@ -5802,10 +5802,10 @@ Ext.define("Ext.draw.sprite.Triangle", {
         c * 0.87,
         "-",
         c,
-        ",0z",
-      ),
+        ",0z"
+      )
     );
-  },
+  }
 });
 Ext.define("Ext.draw.gradient.Linear", {
   extend: "Ext.draw.gradient.Gradient",
@@ -5854,7 +5854,7 @@ Ext.define("Ext.draw.gradient.Linear", {
       return k;
     }
     return Ext.util.Color.NONE;
-  },
+  }
 });
 Ext.define("Ext.draw.gradient.Radial", {
   extend: "Ext.draw.gradient.Gradient",
@@ -5929,7 +5929,7 @@ Ext.define("Ext.draw.gradient.Radial", {
         a.r * Math.max(k, d),
         j + b.x * k,
         f + b.y * d,
-        b.r * Math.max(k, d),
+        b.r * Math.max(k, d)
       ),
       l = this.getStops(),
       e = l.length,
@@ -5938,7 +5938,7 @@ Ext.define("Ext.draw.gradient.Radial", {
       g.addColorStop(l[c].offset, l[c].color);
     }
     return g;
-  },
+  }
 });
 Ext.define("Ext.draw.Surface", {
   extend: "Ext.draw.SurfaceBase",
@@ -5948,7 +5948,7 @@ Ext.define("Ext.draw.Surface", {
     "Ext.draw.gradient.*",
     "Ext.draw.sprite.AttributeDefinition",
     "Ext.draw.Matrix",
-    "Ext.draw.Draw",
+    "Ext.draw.Draw"
   ],
   uses: ["Ext.draw.engine.Canvas"],
   devicePixelRatio:
@@ -5962,10 +5962,10 @@ Ext.define("Ext.draw.Surface", {
             return Ext.Array.sort(a, function (d, c) {
               return d.attr.zIndex - c.attr.zIndex;
             });
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   cls: Ext.baseCSSPrefix + "surface",
   config: {
@@ -5973,7 +5973,7 @@ Ext.define("Ext.draw.Surface", {
     background: null,
     items: [],
     dirty: false,
-    flipRtlText: false,
+    flipRtlText: false
   },
   isSurface: true,
   isPendingRenderFrame: false,
@@ -6038,7 +6038,7 @@ Ext.define("Ext.draw.Surface", {
           a.x || a.left,
           a.y || a.top,
           a.width || a.right - a.left,
-          a.height || a.bottom - a.top,
+          a.height || a.bottom - a.top
         ];
       }
     }
@@ -6058,7 +6058,7 @@ Ext.define("Ext.draw.Surface", {
         x: 0,
         y: 0,
         width: Math.ceil(g - Math.floor(c)),
-        height: Math.ceil(a - Math.floor(f)),
+        height: Math.ceil(a - Math.floor(f))
       });
     }
     h.setDirty(true);
@@ -6321,7 +6321,7 @@ Ext.define("Ext.draw.Surface", {
       a.fireEvent("destroy", a);
     }
     a.callParent();
-  },
+  }
 });
 Ext.define("Ext.draw.overrides.hittest.Surface", {
   override: "Ext.draw.Surface",
@@ -6346,7 +6346,7 @@ Ext.define("Ext.draw.overrides.hittest.Surface", {
   hitTestEvent: function (b, a) {
     var c = this.getEventXY(b);
     return this.hitTest(c, a);
-  },
+  }
 });
 Ext.define("Ext.draw.engine.SvgContext", {
   requires: ["Ext.draw.Color"],
@@ -6369,7 +6369,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
     "globalCompositeOperation",
     "position",
     "fillGradient",
-    "strokeGradient",
+    "strokeGradient"
   ],
   strokeOpacity: 1,
   strokeStyle: "none",
@@ -6564,19 +6564,19 @@ Ext.define("Ext.draw.engine.SvgContext", {
         "stroke-opacity": this.strokeOpacity,
         style: "font: " + this.font,
         "stroke-dasharray": this.lineDash.join(","),
-        "stroke-dashoffset": this.lineDashOffset,
+        "stroke-dashoffset": this.lineDashOffset
       });
       if (this.lineDash.length) {
         this.surface.setElementAttributes(b, {
           "stroke-dasharray": this.lineDash.join(","),
-          "stroke-dashoffset": this.lineDashOffset,
+          "stroke-dashoffset": this.lineDashOffset
         });
       }
       if (c.dom.firstChild) {
         c.dom.removeChild(c.dom.firstChild);
       }
       this.surface.setElementAttributes(c, {
-        "alignment-baseline": "alphabetic",
+        "alignment-baseline": "alphabetic"
       });
       c.dom.appendChild(document.createTextNode(Ext.String.htmlDecode(d)));
     }
@@ -6593,13 +6593,13 @@ Ext.define("Ext.draw.engine.SvgContext", {
         fill: this.fillStyle,
         opacity: this.globalAlpha,
         "fill-opacity": this.fillOpacity,
-        style: "font: " + this.font,
+        style: "font: " + this.font
       });
       if (c.dom.firstChild) {
         c.dom.removeChild(c.dom.firstChild);
       }
       this.surface.setElementAttributes(c, {
-        "alignment-baseline": "alphabetic",
+        "alignment-baseline": "alphabetic"
       });
       c.dom.appendChild(document.createTextNode(Ext.String.htmlDecode(d)));
     }
@@ -6627,7 +6627,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
       width: b,
       height: m,
       opacity: f.globalAlpha,
-      transform: f.matrix.toSvg(),
+      transform: f.matrix.toSvg()
     });
   },
   fill: function () {
@@ -6646,7 +6646,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
         b = c.path.element = c.getElement("path");
         c.surface.setElementAttributes(b, {
           d: e,
-          transform: c.matrix.toSvg(),
+          transform: c.matrix.toSvg()
         });
       }
       if (a && f) {
@@ -6656,7 +6656,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
       }
       c.surface.setElementAttributes(b, {
         fill: d,
-        "fill-opacity": c.fillOpacity * c.globalAlpha,
+        "fill-opacity": c.fillOpacity * c.globalAlpha
       });
     }
   },
@@ -6680,7 +6680,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
         b.surface.setElementAttributes(a, {
           fill: "none",
           d: e,
-          transform: b.matrix.toSvg(),
+          transform: b.matrix.toSvg()
         });
       }
       if (d && f) {
@@ -6695,12 +6695,12 @@ Ext.define("Ext.draw.engine.SvgContext", {
         "stroke-width": b.lineWidth,
         "stroke-opacity": b.strokeOpacity * b.globalAlpha,
         "stroke-dasharray": b.lineDash.join(","),
-        "stroke-dashoffset": b.lineDashOffset,
+        "stroke-dashoffset": b.lineDashOffset
       });
       if (b.lineDash.length) {
         b.surface.setElementAttributes(a, {
           "stroke-dasharray": b.lineDash.join(","),
-          "stroke-dashoffset": b.lineDashOffset,
+          "stroke-dashoffset": b.lineDashOffset
         });
       }
     }
@@ -6742,7 +6742,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
       y1: f,
       x2: a,
       y2: d,
-      gradientUnits: "userSpaceOnUse",
+      gradientUnits: "userSpaceOnUse"
     });
     g = new Ext.draw.engine.SvgContext.Gradient(e, e.surface, b);
     return g;
@@ -6757,11 +6757,11 @@ Ext.define("Ext.draw.engine.SvgContext", {
       cx: a,
       cy: h,
       r: c,
-      gradientUnits: "userSpaceOnUse",
+      gradientUnits: "userSpaceOnUse"
     });
     g = new Ext.draw.engine.SvgContext.Gradient(f, f.surface, e, d / c);
     return g;
-  },
+  }
 });
 Ext.define("Ext.draw.engine.SvgContext.Gradient", {
   isGradient: true,
@@ -6780,7 +6780,7 @@ Ext.define("Ext.draw.engine.SvgContext.Gradient", {
     d.surface.setElementAttributes(c, {
       offset: (((1 - a) * e + a) * 100).toFixed(2) + "%",
       "stop-color": b,
-      "stop-opacity": Ext.util.Color.fly(b).a.toFixed(15),
+      "stop-opacity": Ext.util.Color.fly(b).a.toFixed(15)
     });
   },
   toString: function () {
@@ -6789,7 +6789,7 @@ Ext.define("Ext.draw.engine.SvgContext.Gradient", {
       Ext.fly(a[a.length - 1]).destroy();
     }
     return "url(#" + this.element.getId() + ")";
-  },
+  }
 });
 Ext.define("Ext.draw.engine.Svg", {
   extend: "Ext.draw.Surface",
@@ -6811,11 +6811,11 @@ Ext.define("Ext.draw.engine.Svg", {
               namespace: "http://www.w3.org/2000/svg",
               width: "100%",
               height: "100%",
-              version: 1.1,
-            },
-          ],
-        },
-      ],
+              version: 1.1
+            }
+          ]
+        }
+      ]
     };
   },
   constructor: function (a) {
@@ -6938,7 +6938,7 @@ Ext.define("Ext.draw.engine.Svg", {
     b += this.toSVG(c, a);
     return {
       data: "data:image/svg+xml;utf8," + encodeURIComponent(b),
-      type: "svg",
+      type: "svg"
     };
   },
   serializeNode: function (d) {
@@ -6983,7 +6983,7 @@ Ext.define("Ext.draw.engine.Svg", {
       a.element = null;
     }
     this.callParent(arguments);
-  },
+  }
 });
 Ext.draw || (Ext.draw = {});
 Ext.draw.engine || (Ext.draw.engine = {});
@@ -7062,7 +7062,7 @@ if (!document.createElement("canvas").getContext) {
           }
         }
         return j;
-      },
+      }
     };
     function x(j) {
       var i = j.srcElement;
@@ -7097,7 +7097,7 @@ if (!document.createElement("canvas").getContext) {
       return [
         [1, 0, 0],
         [0, 1, 0],
-        [0, 0, 1],
+        [0, 0, 1]
       ];
     }
     function J(p, m) {
@@ -7264,7 +7264,7 @@ if (!document.createElement("canvas").getContext) {
       violet: "#EE82EE",
       wheat: "#F5DEB3",
       whitesmoke: "#F5F5F5",
-      yellowgreen: "#9ACD32",
+      yellowgreen: "#9ACD32"
     };
     function M(j) {
       var p = j.indexOf("(", 3);
@@ -7367,7 +7367,7 @@ if (!document.createElement("canvas").getContext) {
       variant: "normal",
       weight: "normal",
       size: 10,
-      family: "sans-serif",
+      family: "sans-serif"
     };
     var L = {};
     function E(i) {
@@ -7384,7 +7384,7 @@ if (!document.createElement("canvas").getContext) {
         variant: m.fontVariant || o.variant,
         weight: m.fontWeight || o.weight,
         size: m.fontSize || o.size,
-        family: m.fontFamily || o.family,
+        family: m.fontFamily || o.family
       });
     }
     function u(m, j) {
@@ -7507,7 +7507,7 @@ if (!document.createElement("canvas").getContext) {
         cp2x: m.x,
         cp2y: m.y,
         x: j.x,
-        y: j.y,
+        y: j.y
       });
       i.currentX_ = j.x;
       i.currentY_ = j.y;
@@ -7517,11 +7517,11 @@ if (!document.createElement("canvas").getContext) {
       var ag = V(this, j, i);
       var aj = {
         x: this.currentX_ + (2 / 3) * (ah.x - this.currentX_),
-        y: this.currentY_ + (2 / 3) * (ah.y - this.currentY_),
+        y: this.currentY_ + (2 / 3) * (ah.y - this.currentY_)
       };
       var Z = {
         x: aj.x + (ag.x - this.currentX_) / 3,
-        y: aj.y + (ag.y - this.currentY_) / 3,
+        y: aj.y + (ag.y - this.currentY_) / 3
       };
       K(this, aj, Z, ag);
     };
@@ -7546,7 +7546,7 @@ if (!document.createElement("canvas").getContext) {
         xStart: ai.x,
         yStart: ai.y,
         xEnd: ah.x,
-        yEnd: ah.y,
+        yEnd: ah.y
       });
     };
     q.rect = function (m, j, i, p) {
@@ -7660,7 +7660,7 @@ if (!document.createElement("canvas").getContext) {
         n(au.x / d),
         "px; rotation:",
         n((Math.atan(ap[0][1] / ap[1][1]) * 180) / Math.PI),
-        ";",
+        ";"
       );
       at.push(
         '" >',
@@ -7686,7 +7686,7 @@ if (!document.createElement("canvas").getContext) {
         (aq - ak - av) / aq,
         '"',
         " />",
-        "</g_vml_:group>",
+        "</g_vml_:group>"
       );
       this.element_.insertAdjacentHTML("BeforeEnd", at.join(""));
     };
@@ -7723,7 +7723,7 @@ if (!document.createElement("canvas").getContext) {
         ' stroked="',
         !ak,
         '"',
-        ' path="',
+        ' path="'
       );
       var Z = { x: null, y: null };
       var aj = { x: null, y: null };
@@ -7755,7 +7755,7 @@ if (!document.createElement("canvas").getContext) {
               ",",
               n(j.x),
               ",",
-              n(j.y),
+              n(j.y)
             );
             break;
           case "at":
@@ -7778,7 +7778,7 @@ if (!document.createElement("canvas").getContext) {
               " ",
               n(j.xEnd),
               ",",
-              n(j.yEnd),
+              n(j.yEnd)
             );
             break;
         }
@@ -7836,7 +7836,7 @@ if (!document.createElement("canvas").getContext) {
         'px"',
         ' color="',
         p,
-        '" />',
+        '" />'
       );
     }
     function G(aq, ai, aK, ar) {
@@ -7916,7 +7916,7 @@ if (!document.createElement("canvas").getContext) {
           aF.x,
           ",",
           aF.y,
-          '" />',
+          '" />'
         );
       } else {
         if (aj instanceof T) {
@@ -7933,7 +7933,7 @@ if (!document.createElement("canvas").getContext) {
               ' type="tile"',
               ' src="',
               aj.src_,
-              '" />',
+              '" />'
             );
           }
         } else {
@@ -7954,7 +7954,7 @@ if (!document.createElement("canvas").getContext) {
       var i = j.m_;
       return {
         x: d * (Z * i[0][0] + p * i[1][0] + i[2][0]) - f,
-        y: d * (Z * i[0][1] + p * i[1][1] + i[2][1]) - f,
+        y: d * (Z * i[0][1] + p * i[1][1] + i[2][1]) - f
       };
     }
     q.save = function () {
@@ -7993,7 +7993,7 @@ if (!document.createElement("canvas").getContext) {
       var i = [
         [1, 0, 0],
         [0, 1, 0],
-        [m, j, 1],
+        [m, j, 1]
       ];
       aa(this, J(i, this.m_), false);
     };
@@ -8003,7 +8003,7 @@ if (!document.createElement("canvas").getContext) {
       var i = [
         [p, m, 0],
         [-m, p, 0],
-        [0, 0, 1],
+        [0, 0, 1]
       ];
       aa(this, J(i, this.m_), false);
     };
@@ -8013,7 +8013,7 @@ if (!document.createElement("canvas").getContext) {
       var i = [
         [m, 0, 0],
         [0, j, 0],
-        [0, 0, 1],
+        [0, 0, 1]
       ];
       aa(this, J(i, this.m_), true);
     };
@@ -8021,7 +8021,7 @@ if (!document.createElement("canvas").getContext) {
       var m = [
         [Z, p, 0],
         [ah, ag, 0],
-        [j, i, 1],
+        [j, i, 1]
       ];
       aa(this, J(m, this.m_), true);
     };
@@ -8029,7 +8029,7 @@ if (!document.createElement("canvas").getContext) {
       var i = [
         [ag, Z, 0],
         [ai, ah, 0],
-        [p, j, 1],
+        [p, j, 1]
       ];
       aa(this, i, true);
     };
@@ -8094,7 +8094,7 @@ if (!document.createElement("canvas").getContext) {
         !ai,
         '" stroked="',
         !!ai,
-        '" style="position:absolute;width:1px;height:1px;left:0px;top:0px;">',
+        '" style="position:absolute;width:1px;height:1px;left:0px;top:0px;">'
       );
       if (ai) {
         w(this, ag);
@@ -8127,7 +8127,7 @@ if (!document.createElement("canvas").getContext) {
         Z,
         ";font:",
         af(p),
-        '" /></g_vml_:line>',
+        '" /></g_vml_:line>'
       );
       this.element_.insertAdjacentHTML("beforeEnd", ag.join(""));
     };
@@ -8237,7 +8237,7 @@ Ext.define(
     requires: [
       "Ext.draw.engine.excanvas",
       "Ext.draw.Animator",
-      "Ext.draw.Color",
+      "Ext.draw.Color"
     ],
     config: { highPrecision: false },
     statics: {
@@ -8336,7 +8336,7 @@ Ext.define(
             h / c,
             i / a,
             -(i * g + h * e) / c,
-            (h * g - i * e) / a,
+            (h * g - i * e) / a
           );
         },
         appendPath: function (f) {
@@ -8364,7 +8364,7 @@ Ext.define(
                   g[b + 2],
                   g[b + 3],
                   g[b + 4],
-                  g[b + 5],
+                  g[b + 5]
                 );
                 b += 6;
                 break;
@@ -8398,8 +8398,8 @@ Ext.define(
             }
           }
           this.$restore();
-        },
-      },
+        }
+      }
     },
     splitThreshold: 3000,
     toSave: ["fillGradient", "strokeGradient"],
@@ -8408,14 +8408,14 @@ Ext.define(
       children: [
         {
           reference: "innerElement",
-          style: { width: "100%", height: "100%", position: "relative" },
-        },
-      ],
+          style: { width: "100%", height: "100%", position: "relative" }
+        }
+      ]
     },
     createCanvas: function () {
       var c = Ext.Element.create({
         tag: "canvas",
-        cls: Ext.baseCSSPrefix + "surface-canvas",
+        cls: Ext.baseCSSPrefix + "surface-canvas"
       });
       if (window.G_vmlCanvasManager) {
         G_vmlCanvasManager.initElement(c.dom);
@@ -8479,7 +8479,7 @@ Ext.define(
       "createRadialGradient",
       "fillText",
       "strokeText",
-      "drawImage",
+      "drawImage"
     ],
     disablePrecisionCompensation: function (b) {
       var a = Ext.draw.engine.Canvas.contextOverrides,
@@ -8593,7 +8593,7 @@ Ext.define(
             n * a + l,
             p * g + k,
             m * a + l,
-            o * g + k,
+            o * g + k
           );
         },
         bezierCurveTo: function (r, p, o, n, m, q) {
@@ -8604,7 +8604,7 @@ Ext.define(
             o * a + l,
             n * g + k,
             m * a + l,
-            q * g + k,
+            q * g + k
           );
         },
         createLinearGradient: function (n, p, m, o) {
@@ -8614,7 +8614,7 @@ Ext.define(
             n * a + l,
             p * g + k,
             m * a + l,
-            o * g + k,
+            o * g + k
           );
           this.updatePrecisionCompensate();
           return q;
@@ -8628,7 +8628,7 @@ Ext.define(
             o * a,
             n * a + l,
             q * a + k,
-            m * a,
+            m * a
           );
           this.updatePrecisionCompensate();
           return s;
@@ -8682,7 +8682,7 @@ Ext.define(
                 s * a + l,
                 r * g + k,
                 q * a,
-                p * g,
+                p * g
               );
             case 9:
               return h.drawImage.call(
@@ -8695,10 +8695,10 @@ Ext.define(
                 o * a + l,
                 n * g * k,
                 m * a,
-                t * g,
+                t * g
               );
           }
-        },
+        }
       };
       Ext.apply(j, f);
       this.setDirty(true);
@@ -8906,8 +8906,8 @@ Ext.define(
         a.canvases = [];
         a.contexts = [];
         a.activeCanvases = a.xSplits = a.ySplits = 0;
-      },
-    },
+      }
+    }
   },
   function () {
     var c = this,
@@ -8921,7 +8921,7 @@ Ext.define(
       }
     }
     b.splitThreshold = a;
-  },
+  }
 );
 Ext.define(
   "Ext.draw.Container",
@@ -8935,7 +8935,7 @@ Ext.define(
       "Ext.draw.Surface",
       "Ext.draw.engine.Svg",
       "Ext.draw.engine.Canvas",
-      "Ext.draw.gradient.GradientDefinition",
+      "Ext.draw.gradient.GradientDefinition"
     ],
     engine: "Ext.draw.engine.Canvas",
     config: {
@@ -8947,8 +8947,8 @@ Ext.define(
         panX: false,
         panY: false,
         pinchZoom: false,
-        doubleTapZoom: false,
-      },
+        doubleTapZoom: false
+      }
     },
     defaultDownloadServerUrl: "http://svg.sencha.io",
     supportedFormats: ["png", "pdf", "jpeg", "gif"],
@@ -8963,12 +8963,12 @@ Ext.define(
       height: Ext.isNumber,
       scale: Ext.isNumber,
       pdf: Ext.isObject,
-      jpeg: Ext.isObject,
+      jpeg: Ext.isObject
     },
     initAnimator: function () {
       this.frameCallbackId = Ext.draw.Animator.addFrameCallback(
         "renderFrame",
-        this,
+        this
       );
     },
     applyGradients: function (b) {
@@ -9053,7 +9053,7 @@ Ext.define(
       if (!b) {
         f.resizeTimerId = Ext.defer(f.handleResize, f.resizeDelay, f, [
           d,
-          true,
+          true
         ]);
         return;
       } else {
@@ -9138,7 +9138,7 @@ Ext.define(
         if (k === "stream") {
           d.data = d.data.replace(
             /^data:image\/[^;]+/,
-            "data:application/octet-stream",
+            "data:application/octet-stream"
           );
           return d;
         }
@@ -9165,8 +9165,8 @@ Ext.define(
                 type: "hidden",
                 name: c,
                 value: Ext.String.htmlEncode(
-                  Ext.isObject(f) ? Ext.JSON.encode(f) : f,
-                ),
+                  Ext.isObject(f) ? Ext.JSON.encode(f) : f
+                )
               });
             }
           }
@@ -9183,16 +9183,16 @@ Ext.define(
                 tag: "form",
                 method: "POST",
                 action: d.url || e.defaultDownloadServerUrl,
-                children: a,
+                children: a
               },
               {
                 tag: "script",
                 type: "text/javascript",
-                children: 'document.getElementsByTagName("form")[0].submit();',
-              },
-            ],
-          },
-        ],
+                children: 'document.getElementsByTagName("form")[0].submit();'
+              }
+            ]
+          }
+        ]
       });
       window.open("", "ImageDownload_" + Date.now()).document.write(b);
     },
@@ -9205,7 +9205,7 @@ Ext.define(
       clearTimeout(a.resizeTimerId);
       a.resizeTimerId = 0;
       a.callParent();
-    },
+    }
   },
   function () {
     if (location.search.match("svg")) {
@@ -9221,7 +9221,7 @@ Ext.define(
         Ext.draw.Container.prototype.engine = "Ext.draw.engine.Svg";
       }
     }
-  },
+  }
 );
 Ext.define("Ext.chart.theme.Base", {
   mixins: { factoryable: "Ext.mixin.Factoryable" },
@@ -9243,19 +9243,19 @@ Ext.define("Ext.chart.theme.Base", {
           fontSize: "default",
           fontFamily: "default",
           fontWeight: "default",
-          fillStyle: "black",
+          fillStyle: "black"
         },
         title: {
           fillStyle: "black",
           fontSize: "default*1.23",
           fontFamily: "default",
-          fontWeight: "default",
+          fontWeight: "default"
         },
         style: { strokeStyle: "black" },
-        grid: { strokeStyle: "rgb(221, 221, 221)" },
+        grid: { strokeStyle: "rgb(221, 221, 221)" }
       },
       top: { style: { textPadding: 5 } },
-      bottom: { style: { textPadding: 5 } },
+      bottom: { style: { textPadding: 5 } }
     },
     series: {
       defaults: {
@@ -9266,40 +9266,40 @@ Ext.define("Ext.chart.theme.Base", {
           fontWeight: "default",
           fontSize: "default*1.077",
           textBaseline: "middle",
-          textAlign: "center",
+          textAlign: "center"
         },
-        labelOverflowPadding: 5,
-      },
+        labelOverflowPadding: 5
+      }
     },
     sprites: {
       text: {
         fontSize: "default",
         fontWeight: "default",
         fontFamily: "default",
-        fillStyle: "black",
-      },
+        fillStyle: "black"
+      }
     },
     legend: {
       label: {
         fontSize: 14,
         fontWeight: "default",
         fontFamily: "default",
-        fillStyle: "black",
+        fillStyle: "black"
       },
       border: {
         lineWidth: 1,
         radius: 4,
         fillStyle: "none",
-        strokeStyle: "gray",
+        strokeStyle: "gray"
       },
-      background: "white",
+      background: "white"
     },
     seriesThemes: undefined,
     markerThemes: {
-      type: ["circle", "cross", "plus", "square", "triangle", "diamond"],
+      type: ["circle", "cross", "plus", "square", "triangle", "diamond"]
     },
     useGradients: false,
-    background: null,
+    background: null
   },
   colorDefaults: [
     "#94ae0a",
@@ -9310,7 +9310,7 @@ Ext.define("Ext.chart.theme.Base", {
     "#a61187",
     "#24ad9a",
     "#7c7474",
-    "#a66111",
+    "#a66111"
   ],
   constructor: function (a) {
     this.initConfig(a);
@@ -9326,7 +9326,7 @@ Ext.define("Ext.chart.theme.Base", {
     },
     "-": function (b, a) {
       return b - a;
-    },
+    }
   },
   resolveDefaults: function () {
     var a = this;
@@ -9345,7 +9345,7 @@ Ext.define("Ext.chart.theme.Base", {
           fontWeight: h.getStyle("fontWeight"),
           fontSize: parseFloat(h.getStyle("fontSize")),
           fontVariant: h.getStyle("fontVariant"),
-          fontStyle: h.getStyle("fontStyle"),
+          fontStyle: h.getStyle("fontStyle")
         };
         h.destroy();
       }
@@ -9415,7 +9415,7 @@ Ext.define("Ext.chart.theme.Base", {
         a.toString(),
         a.createLighter(0.12).toString(),
         a.createLighter(0.24).toString(),
-        a.createLighter(0.31).toString(),
+        a.createLighter(0.31).toString()
       ]);
     }
     return c;
@@ -9451,8 +9451,8 @@ Ext.define("Ext.chart.theme.Base", {
           h = Ext.apply(Ext.Object.chain(a), {
             stops: [
               { offset: 1, color: b.toString() },
-              { offset: 0, color: d.toString() },
-            ],
+              { offset: 0, color: d.toString() }
+            ]
           });
           e.push(h);
         }
@@ -9471,16 +9471,16 @@ Ext.define("Ext.chart.theme.Base", {
         strokeStyle: Ext.Array.map(b, function (d) {
           var c = Ext.util.Color.fromString(d.stops ? d.stops[0].color : d);
           return c.createDarker(0.15).toString();
-        }),
+        })
       };
     }
     return a;
-  },
+  }
 });
 Ext.define("Ext.chart.theme.Default", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
-  alias: ["chart.theme.default", "chart.theme.Base"],
+  alias: ["chart.theme.default", "chart.theme.Base"]
 });
 Ext.define("Ext.chart.Markers", {
   extend: "Ext.draw.sprite.Instancing",
@@ -9567,7 +9567,7 @@ Ext.define("Ext.chart.Markers", {
       m.restore();
     }
     j.attr = d;
-  },
+  }
 });
 Ext.define("Ext.chart.modifier.Callout", {
   extend: "Ext.draw.modifier.Modifier",
@@ -9670,7 +9670,7 @@ Ext.define("Ext.chart.modifier.Callout", {
     } else {
       return Ext.apply(a, b);
     }
-  },
+  }
 });
 Ext.define("Ext.chart.sprite.Label", {
   extend: "Ext.draw.sprite.Text",
@@ -9694,7 +9694,7 @@ Ext.define("Ext.chart.sprite.Label", {
         display:
           "enums(none,under,over,rotate,insideStart,insideEnd,inside,outside)",
         orientation: "enums(horizontal,vertical)",
-        renderer: "default",
+        renderer: "default"
       },
       defaults: {
         callout: 0,
@@ -9711,7 +9711,7 @@ Ext.define("Ext.chart.sprite.Label", {
         labelOverflowPadding: 5,
         display: "none",
         orientation: "",
-        renderer: null,
+        renderer: null
       },
       triggers: {
         callout: "transform",
@@ -9719,19 +9719,19 @@ Ext.define("Ext.chart.sprite.Label", {
         calloutPlaceY: "transform",
         labelOverflowPadding: "transform",
         calloutRotation: "transform",
-        display: "hidden",
+        display: "hidden"
       },
       updaters: {
         hidden: function (a) {
           a.hidden = a.display === "none";
-        },
-      },
-    },
+        }
+      }
+    }
   },
   config: {
     fx: { customDurations: { callout: 200 } },
     field: null,
-    calloutLine: true,
+    calloutLine: true
   },
   applyCalloutLine: function (a) {
     if (a) {
@@ -9768,7 +9768,7 @@ Ext.define("Ext.chart.sprite.Label", {
         1 * a.calloutWidth,
         0,
         2 * Math.PI,
-        true,
+        true
       );
       c.fill();
       c.beginPath();
@@ -9778,13 +9778,13 @@ Ext.define("Ext.chart.sprite.Label", {
         1 * a.calloutWidth,
         0,
         2 * Math.PI,
-        true,
+        true
       );
       c.fill();
     }
     c.restore();
     Ext.draw.sprite.Text.prototype.render.apply(e, arguments);
-  },
+  }
 });
 Ext.define("Ext.chart.series.Series", {
   requires: ["Ext.chart.Markers", "Ext.chart.sprite.Label", "Ext.tip.ToolTip"],
@@ -9824,10 +9824,10 @@ Ext.define("Ext.chart.series.Series", {
       merge: function (a) {
         return a;
       },
-      $value: { fillStyle: "yellow", strokeStyle: "red" },
+      $value: { fillStyle: "yellow", strokeStyle: "red" }
     },
     animation: null,
-    tooltip: null,
+    tooltip: null
   },
   directions: [],
   sprites: null,
@@ -9995,9 +9995,9 @@ Ext.define("Ext.chart.series.Series", {
         constrainPosition: true,
         shrinkWrapDock: true,
         autoHide: true,
-        mouseOffset: [20, 20],
+        mouseOffset: [20, 20]
       },
-      c,
+      c
     );
     return Ext.create(a);
   },
@@ -10034,7 +10034,7 @@ Ext.define("Ext.chart.series.Series", {
     clearTimeout(a.tooltipTimeout);
     d.pointerEvent = b;
     d.currentTarget.attach(
-      (c.sprite.length ? c.sprite[0] : c.sprite).getSurface().el.dom,
+      (c.sprite.length ? c.sprite[0] : c.sprite).getSurface().el.dom
     );
     Ext.callback(d.renderer, d.scope, [d, c.record, c], 0, a);
     if (d.isVisible()) {
@@ -10430,7 +10430,7 @@ Ext.define("Ext.chart.series.Series", {
         g.setTemplate(c);
         g.getTemplate().fx.setCustomDurations({
           translationX: 0,
-          translationY: 0,
+          translationY: 0
         });
         d.dataMarker = g;
         d.bindMarker("markers", g);
@@ -10482,7 +10482,7 @@ Ext.define("Ext.chart.series.Series", {
   },
   applyStyle: function (c, b) {
     var a = Ext.ClassManager.get(
-      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType),
+      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType)
     );
     if (a && a.def) {
       c = a.def.normalize(c);
@@ -10491,7 +10491,7 @@ Ext.define("Ext.chart.series.Series", {
   },
   applySubStyle: function (b, c) {
     var a = Ext.ClassManager.get(
-      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType),
+      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType)
     );
     if (a && a.def) {
       b = a.def.batchedNormalize(b, true);
@@ -10762,7 +10762,7 @@ Ext.define("Ext.chart.series.Series", {
         index: a,
         record: d.getStore().getData().items[a],
         field: d.getYField(),
-        sprite: b,
+        sprite: b
       };
       return c;
     }
@@ -10804,7 +10804,7 @@ Ext.define("Ext.chart.series.Series", {
       mark: "black",
       disabled: this.getHidden(),
       series: this.getId(),
-      index: 0,
+      index: 0
     });
   },
   clearSprites: function () {
@@ -10834,7 +10834,7 @@ Ext.define("Ext.chart.series.Series", {
       clearTimeout(b.tooltipTimeout);
     }
     b.callParent();
-  },
+  }
 });
 Ext.define(
   "Ext.chart.interactions.Abstract",
@@ -10920,7 +10920,7 @@ Ext.define(
               return h;
             }
           }),
-          c,
+          c
         );
       }
       c.listeners = c.listeners || {};
@@ -11006,20 +11006,20 @@ Ext.define(
       a.setChart(null);
       delete a.listeners;
       a.callParent();
-    },
+    }
   },
   function () {
     if (Ext.os.is.Android4) {
       this.prototype.throttleGap = 40;
     }
-  },
+  }
 );
 Ext.define("Ext.chart.MarkerHolder", {
   extend: "Ext.Mixin",
   mixinConfig: {
     id: "markerHolder",
     after: { constructor: "constructor", preRender: "preRender" },
-    before: { destroy: "destroy" },
+    before: { destroy: "destroy" }
   },
   isMarkerHolder: true,
   surfaceMatrix: null,
@@ -11032,10 +11032,10 @@ Ext.define("Ext.chart.MarkerHolder", {
           fn: function (b) {
             var a = this.boundMarkers[b];
             return a ? [a] : a;
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   constructor: function () {
     this.boundMarkers = {};
@@ -11125,7 +11125,7 @@ Ext.define("Ext.chart.MarkerHolder", {
       a = c[b];
       a.destroy();
     }
-  },
+  }
 });
 Ext.define("Ext.chart.axis.sprite.Axis", {
   extend: "Ext.draw.sprite.Sprite",
@@ -11162,7 +11162,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
         totalAngle: "number",
         baseRotation: "number",
         data: "default",
-        enlargeEstStepSizeByText: "bool",
+        enlargeEstStepSizeByText: "bool"
       },
       defaults: {
         grid: false,
@@ -11193,7 +11193,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
         scalingCenterY: 0,
         scalingCenterX: 0,
         strokeStyle: "black",
-        enlargeEstStepSizeByText: false,
+        enlargeEstStepSizeByText: false
       },
       triggers: {
         minorTickSize: "bbox",
@@ -11211,10 +11211,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
         dataMax: "layout",
         visibleMin: "layout",
         visibleMax: "layout",
-        enlargeEstStepSizeByText: "layout",
+        enlargeEstStepSizeByText: "layout"
       },
-      updaters: { layout: "layoutUpdater" },
-    },
+      updaters: { layout: "layoutUpdater" }
+    }
   },
   config: {
     label: null,
@@ -11223,7 +11223,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
     segmenter: null,
     renderer: null,
     layoutContext: null,
-    axis: null,
+    axis: null
   },
   thickness: 0,
   stepSize: 0,
@@ -11391,11 +11391,11 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             w = (w / (k.max + 1)) * Math.PI * 2 + k.baseRotation;
             m.moveTo(
               k.centerX + k.length * Math.cos(w),
-              k.centerY + k.length * Math.sin(w),
+              k.centerY + k.length * Math.sin(w)
             );
             m.lineTo(
               k.centerX + (k.length + d) * Math.cos(w),
-              k.centerY + (k.length + d) * Math.sin(w),
+              k.centerY + (k.length + d) * Math.sin(w)
             );
           });
           break;
@@ -11408,11 +11408,11 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               g.start;
             m.moveTo(
               k.centerX + k.length * Math.cos(w),
-              k.centerY + k.length * Math.sin(w),
+              k.centerY + k.length * Math.sin(w)
             );
             m.lineTo(
               k.centerX + (k.length + d) * Math.cos(w),
-              k.centerY + (k.length + d) * Math.sin(w),
+              k.centerY + (k.length + d) * Math.sin(w)
             );
           });
           break;
@@ -11494,14 +11494,14 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           e = a ? a.y + a.height : 0;
           F.setAttributes(
             { translationY: E.roundPixel(e + (K[3] - e - G) / 2) - i },
-            true,
+            true
           );
           break;
         case "bottom":
           e = a ? K[3] - a.y : 0;
           F.setAttributes(
             { translationY: E.roundPixel(G + (K[3] - G - e) / 2) + i },
-            true,
+            true
           );
           break;
         case "radial":
@@ -11527,7 +11527,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           r = N;
           F.setAttributes(
             { text: String(v), translationY: E.roundPixel(L * g + c) },
-            true,
+            true
           );
           F.applyTransformations();
           n = Math.max(n, F.getBBox().width + G);
@@ -11557,7 +11557,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             r = N;
             F.setAttributes(
               { text: String(v), translationX: E.roundPixel(L * x + d) },
-              true,
+              true
             );
             F.applyTransformations();
             n = Math.max(n, F.getBBox().height + G);
@@ -11598,9 +11598,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                       k.centerY -
                       (E.roundPixel(L) / k.max) *
                         k.length *
-                        Math.sin(k.baseRotation + Math.PI / 2),
+                        Math.sin(k.baseRotation + Math.PI / 2)
                   },
-                  true,
+                  true
                 );
                 F.applyTransformations();
                 p = F.attr.matrix.transformBBox(F.getBBox(true));
@@ -11629,7 +11629,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                 n = Math.max(
                   n,
                   Math.max(k.majorTickSize, k.minorTickSize) +
-                    (k.lineCap !== "butt" ? k.lineWidth * 0.5 : 0),
+                    (k.lineCap !== "butt" ? k.lineWidth * 0.5 : 0)
                 );
                 if (typeof v !== "undefined") {
                   var O = (L / (k.max + 1)) * Math.PI * 2 + k.baseRotation;
@@ -11637,9 +11637,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                     {
                       text: String(v),
                       translationX: k.centerX + (k.length + s) * Math.cos(O),
-                      translationY: k.centerY + (k.length + s) * Math.sin(O),
+                      translationY: k.centerY + (k.length + s) * Math.sin(O)
                     },
-                    true,
+                    true
                   );
                   F.applyTransformations();
                   p = F.attr.matrix.transformBBox(F.getBBox(true));
@@ -11675,9 +11675,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                       {
                         text: String(v),
                         translationX: k.centerX + (k.length + s) * Math.cos(O),
-                        translationY: k.centerY + (k.length + s) * Math.sin(O),
+                        translationY: k.centerY + (k.length + s) * Math.sin(O)
                       },
-                      true,
+                      true
                     );
                     F.applyTransformations();
                     p = F.attr.matrix.transformBBox(F.getBBox(true));
@@ -11747,7 +11747,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           f = h.getGaugeAngles();
           i.moveTo(
             g.centerX + Math.cos(f.start) * g.length,
-            g.centerY + Math.sin(f.start) * g.length,
+            g.centerY + Math.sin(f.start) * g.length
           );
           i.arc(g.centerX, g.centerY, g.length, f.start, f.end, true);
           break;
@@ -11793,7 +11793,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               f + "-" + (v % 2 ? "odd" : "even"),
               { y: e, height: i - e },
               (o = v),
-              true,
+              true
             );
             i = e;
           });
@@ -11803,7 +11803,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             f + "-" + (o % 2 ? "odd" : "even"),
             { y: e, height: i - e },
             o,
-            true,
+            true
           );
         } else {
           if (u === "top" || u === "bottom") {
@@ -11817,7 +11817,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                 f + "-" + (v % 2 ? "odd" : "even"),
                 { x: e, width: i - e },
                 (o = v),
-                true,
+                true
               );
               i = e;
             });
@@ -11827,7 +11827,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               f + "-" + (o % 2 ? "odd" : "even"),
               { x: e, width: i - e },
               o,
-              true,
+              true
             );
           } else {
             if (u === "radial") {
@@ -11840,7 +11840,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                   f + "-" + (v % 2 ? "odd" : "even"),
                   { scalingX: e, scalingY: e },
                   v,
-                  true,
+                  true
                 );
                 i = e;
               });
@@ -11858,10 +11858,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                       rotationCenterX: 0,
                       rotationCenterY: 0,
                       scalingX: l.length,
-                      scalingY: l.length,
+                      scalingY: l.length
                     },
                     v,
-                    true,
+                    true
                   );
                   i = e;
                 });
@@ -11926,7 +11926,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             x: g,
             y: s.line.y - c.height / 2,
             textAlign: j,
-            fillStyle: s.line.title.fillStyle || s.line.strokeStyle,
+            fillStyle: s.line.title.fillStyle || s.line.strokeStyle
           });
         }
       }
@@ -11959,7 +11959,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               x: s.line.x + c.height / 2,
               y: e,
               fillStyle: s.line.title.fillStyle || s.line.strokeStyle,
-              rotationRads: Math.PI / 2,
+              rotationRads: Math.PI / 2
             });
           }
         }
@@ -11985,7 +11985,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               v.setAttributesFor(v.position - 1, {
                 x: m.centerX,
                 y: m.centerY - l - c.height / 2,
-                fillStyle: s.line.title.fillStyle || s.line.strokeStyle,
+                fillStyle: s.line.title.fillStyle || s.line.strokeStyle
               });
             }
           }
@@ -12023,7 +12023,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                     0.5 * m.length * Math.sin(l) -
                     ((b * c.height) / 2) * Math.cos(l),
                   rotationRads: b === 1 ? l : l - Math.PI,
-                  fillStyle: s.line.title.fillStyle || s.line.strokeStyle,
+                  fillStyle: s.line.title.fillStyle || s.line.strokeStyle
                 });
               }
             }
@@ -12055,7 +12055,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
       d.renderLimits(e);
       c.stroke();
     }
-  },
+  }
 });
 Ext.define("Ext.chart.axis.segmenter.Segmenter", {
   config: { axis: null },
@@ -12071,7 +12071,7 @@ Ext.define("Ext.chart.axis.segmenter.Segmenter", {
   diff: Ext.emptyFn,
   align: Ext.emptyFn,
   add: Ext.emptyFn,
-  preferredStep: Ext.emptyFn,
+  preferredStep: Ext.emptyFn
 });
 Ext.define("Ext.chart.axis.segmenter.Names", {
   extend: "Ext.chart.axis.segmenter.Segmenter",
@@ -12090,7 +12090,7 @@ Ext.define("Ext.chart.axis.segmenter.Names", {
   },
   preferredStep: function (c, a, b, d) {
     return { unit: 1, step: 1 };
-  },
+  }
 });
 Ext.define("Ext.chart.axis.segmenter.Numeric", {
   extend: "Ext.chart.axis.segmenter.Segmenter",
@@ -12135,7 +12135,7 @@ Ext.define("Ext.chart.axis.segmenter.Numeric", {
       d = Math.pow(10, c);
     return {
       unit: { fixes: c + (a % d === 0 ? 0 : 1), scale: a < 1 ? a : 1 },
-      step: a < 1 ? 1 : a,
+      step: a < 1 ? 1 : a
     };
   },
   adjustByMajorUnit: function (e, g, c) {
@@ -12150,7 +12150,7 @@ Ext.define("Ext.chart.axis.segmenter.Numeric", {
     if (f !== 0) {
       c[1] = b - f + (b > 0 ? a : 0);
     }
-  },
+  }
 });
 Ext.define("Ext.chart.axis.segmenter.Time", {
   extend: "Ext.chart.axis.segmenter.Segmenter",
@@ -12205,7 +12205,7 @@ Ext.define("Ext.chart.axis.segmenter.Time", {
     [Ext.Date.HOUR, 1, 6, 12],
     [Ext.Date.MINUTE, 1, 5, 15, 30],
     [Ext.Date.SECOND, 1, 5, 15, 30],
-    [Ext.Date.MILLI, 1, 2, 5, 10, 20, 50, 100, 200, 500],
+    [Ext.Date.MILLI, 1, 2, 5, 10, 20, 50, 100, 200, 500]
   ],
   preferredStep: function (b, e) {
     if (this.getStep()) {
@@ -12240,7 +12240,7 @@ Ext.define("Ext.chart.axis.segmenter.Time", {
       l = { unit: Ext.Date.DAY, step: 1 };
     }
     return l;
-  },
+  }
 });
 Ext.define("Ext.chart.axis.layout.Layout", {
   mixins: { observable: "Ext.mixin.Observable" },
@@ -12320,7 +12320,7 @@ Ext.define("Ext.chart.axis.layout.Layout", {
       f.min = f.from;
     }
     f.steps = e - c;
-  },
+  }
 });
 Ext.define("Ext.chart.axis.layout.Discrete", {
   extend: "Ext.chart.axis.layout.Layout",
@@ -12380,7 +12380,7 @@ Ext.define("Ext.chart.axis.layout.Discrete", {
       },
       get: function (g) {
         return this.from + this.step * g;
-      },
+      }
     };
   },
   trimByRange: function (b, f, h, a) {
@@ -12410,7 +12410,7 @@ Ext.define("Ext.chart.axis.layout.Discrete", {
   getCoordFor: function (c, d, a, b) {
     this.labels.push(c);
     return this.labels.length - 1;
-  },
+  }
 });
 Ext.define("Ext.chart.axis.layout.CombineDuplicate", {
   extend: "Ext.chart.axis.layout.Discrete",
@@ -12422,7 +12422,7 @@ Ext.define("Ext.chart.axis.layout.CombineDuplicate", {
       return a;
     }
     return this.labelMap[d];
-  },
+  }
 });
 Ext.define("Ext.chart.axis.layout.Continuous", {
   extend: "Ext.chart.axis.layout.Layout",
@@ -12452,7 +12452,7 @@ Ext.define("Ext.chart.axis.layout.Continuous", {
       unit: k,
       get: function (m) {
         return f.add(this.from, this.step * m, this.unit);
-      },
+      }
     };
   },
   snapMinorEnds: function (a) {
@@ -12481,9 +12481,9 @@ Ext.define("Ext.chart.axis.layout.Continuous", {
         return (o % m) + c + 1 !== 0
           ? f.add(this.from, this.step * o, l)
           : null;
-      },
+      }
     };
-  },
+  }
 });
 Ext.define("Ext.chart.axis.Axis", {
   xtype: "axis",
@@ -12491,7 +12491,7 @@ Ext.define("Ext.chart.axis.Axis", {
   requires: [
     "Ext.chart.axis.sprite.Axis",
     "Ext.chart.axis.segmenter.*",
-    "Ext.chart.axis.layout.*",
+    "Ext.chart.axis.layout.*"
   ],
   isAxis: true,
   config: {
@@ -12528,7 +12528,7 @@ Ext.define("Ext.chart.axis.Axis", {
     visibleRange: [0, 1],
     needHighPrecision: false,
     linkedTo: null,
-    floating: null,
+    floating: null
   },
   titleOffset: 0,
   spriteAnimationCount: 0,
@@ -12649,7 +12649,7 @@ Ext.define("Ext.chart.axis.Axis", {
         e.limits = {
           surface: d.getSurface("overlay"),
           lines: new Ext.chart.Markers(),
-          titles: new Ext.draw.sprite.Instancing(),
+          titles: new Ext.draw.sprite.Instancing()
         };
         e.limits.lines.setTemplate({ xclass: "grid." + f });
         e.limits.lines
@@ -12904,7 +12904,7 @@ Ext.define("Ext.chart.axis.Axis", {
     } else {
       return [
         a[0] === null ? this.dataRange[0] : a[0],
-        a[1] === null ? this.dataRange[1] : a[1],
+        a[1] === null ? this.dataRange[1] : a[1]
       ];
     }
   },
@@ -13086,24 +13086,20 @@ Ext.define("Ext.chart.axis.Axis", {
       a.setAttributes({ centerX: d, centerY: c });
     }
     if (this.gridSpriteEven) {
-      this.gridSpriteEven
-        .getTemplate()
-        .setAttributes({
-          translationX: d,
-          translationY: c,
-          rotationCenterX: d,
-          rotationCenterY: c,
-        });
+      this.gridSpriteEven.getTemplate().setAttributes({
+        translationX: d,
+        translationY: c,
+        rotationCenterX: d,
+        rotationCenterY: c
+      });
     }
     if (this.gridSpriteOdd) {
-      this.gridSpriteOdd
-        .getTemplate()
-        .setAttributes({
-          translationX: d,
-          translationY: c,
-          rotationCenterX: d,
-          rotationCenterY: c,
-        });
+      this.gridSpriteOdd.getTemplate().setAttributes({
+        translationX: d,
+        translationY: c,
+        rotationCenterX: d,
+        rotationCenterY: c
+      });
     }
   },
   getSprites: function () {
@@ -13136,9 +13132,9 @@ Ext.define("Ext.chart.axis.Axis", {
           layout: i.getLayout(),
           segmenter: i.getSegmenter(),
           totalAngle: i.getTotalAngle(),
-          label: i.getLabel(),
+          label: i.getLabel()
         },
-        i.getStyle(),
+        i.getStyle()
       );
       if (!i.sprites.length) {
         while (!h.xtype) {
@@ -13196,7 +13192,7 @@ Ext.define("Ext.chart.axis.Axis", {
         case "top":
           g.setAttributes(
             { x: d, y: c + i / 2, textBaseline: "top", textAlign: "center" },
-            true,
+            true
           );
           g.applyTransformations();
           f.titleOffset = g.getBBox().height + i;
@@ -13204,7 +13200,7 @@ Ext.define("Ext.chart.axis.Axis", {
         case "bottom":
           g.setAttributes(
             { x: d, y: h + i / 2, textBaseline: "top", textAlign: "center" },
-            true,
+            true
           );
           g.applyTransformations();
           f.titleOffset = g.getBBox().height + i;
@@ -13218,9 +13214,9 @@ Ext.define("Ext.chart.axis.Axis", {
               textAlign: "center",
               rotationCenterX: c + i / 2,
               rotationCenterY: d,
-              rotationRads: -Math.PI / 2,
+              rotationRads: -Math.PI / 2
             },
-            true,
+            true
           );
           g.applyTransformations();
           f.titleOffset = g.getBBox().width + i;
@@ -13234,9 +13230,9 @@ Ext.define("Ext.chart.axis.Axis", {
               textAlign: "center",
               rotationCenterX: h + i / 2,
               rotationCenterY: d,
-              rotationRads: Math.PI / 2,
+              rotationRads: Math.PI / 2
             },
-            true,
+            true
           );
           g.applyTransformations();
           f.titleOffset = g.getBBox().width + i;
@@ -13309,7 +13305,7 @@ Ext.define("Ext.chart.axis.Axis", {
     a.surface.destroy();
     a.surface = null;
     a.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.legend.LegendBase", {
   extend: "Ext.view.View",
@@ -13334,11 +13330,11 @@ Ext.define("Ext.chart.legend.LegendBase", {
       "</div>",
       "</tpl>",
       "</div>",
-      "</div>",
+      "</div>"
     ],
     nodeContainerSelector: "div." + Ext.baseCSSPrefix + "legend-inner",
     itemSelector: "div." + Ext.baseCSSPrefix + "legend-item",
-    docked: "bottom",
+    docked: "bottom"
   },
   setDocked: function (c) {
     var b = this,
@@ -13370,7 +13366,7 @@ Ext.define("Ext.chart.legend.LegendBase", {
   onItemClick: function (a, c, b, d) {
     this.callParent(arguments);
     this.toggleItem(b);
-  },
+  }
 });
 Ext.define("Ext.chart.legend.Legend", {
   extend: "Ext.chart.legend.LegendBase",
@@ -13383,7 +13379,7 @@ Ext.define("Ext.chart.legend.Legend", {
   config: {
     baseCls: Ext.baseCSSPrefix + "legend",
     rect: null,
-    toggleable: true,
+    toggleable: true
   },
   horizontalCls: Ext.baseCSSPrefix + "legend-horizontal",
   verticalCls: Ext.baseCSSPrefix + "legend-vertical",
@@ -13415,7 +13411,7 @@ Ext.define("Ext.chart.legend.Legend", {
         }
       }
     }
-  },
+  }
 });
 Ext.define("Ext.chart.legend.sprite.Item", {
   extend: "Ext.draw.sprite.Composite",
@@ -13429,8 +13425,8 @@ Ext.define("Ext.chart.legend.sprite.Item", {
       animationProcessors: { enabled: null, markerLabelGap: null },
       defaults: { enabled: true, markerLabelGap: 5 },
       triggers: { enabled: "enabled", markerLabelGap: "layout" },
-      updaters: { layout: "layoutUpdater", enabled: "enabledUpdater" },
-    },
+      updaters: { layout: "layoutUpdater", enabled: "enabledUpdater" }
+    }
   },
   config: {
     label: { $value: { type: "text" }, lazy: true },
@@ -13438,7 +13434,7 @@ Ext.define("Ext.chart.legend.sprite.Item", {
     legend: null,
     store: null,
     record: null,
-    series: null,
+    series: null
   },
   applyLabel: function (a, c) {
     var b;
@@ -13541,18 +13537,18 @@ Ext.define("Ext.chart.legend.sprite.Item", {
         0,
         1,
         -d.x + a.width + b.markerLabelGap,
-        -d.y + (f - d.height) / 2,
+        -d.y + (f - d.height) / 2
       ],
-      true,
+      true
     );
     g.bboxUpdater(b);
-  },
+  }
 });
 Ext.define("Ext.chart.legend.sprite.Border", {
   extend: "Ext.draw.sprite.Rect",
   alias: "sprite.legendborder",
   type: "legendborder",
-  isLegendBorder: true,
+  isLegendBorder: true
 });
 Ext.define("Ext.draw.PathUtil", function () {
   var a = Math.abs,
@@ -13565,7 +13561,7 @@ Ext.define("Ext.draw.PathUtil", function () {
     singleton: true,
     requires: [
       "Ext.draw.overrides.hittest.Path",
-      "Ext.draw.overrides.hittest.sprite.Path",
+      "Ext.draw.overrides.hittest.sprite.Path"
     ],
     cubicRoots: function (m) {
       var z = m[0],
@@ -13700,7 +13696,7 @@ Ext.define("Ext.draw.PathUtil", function () {
         l = n * o - 3 * j * i * p + 3 * m * h * q - k * g;
       return [
         [g, m * q - i * g, j * p - 2 * m * i * q + h * g, l],
-        [l, j * o - 2 * m * i * p + h * q, m * o - i * p, o],
+        [l, j * o - 2 * m * i * p + h * q, m * o - i * p, o]
       ];
     },
     cubicDimension: function (p, o, l, k) {
@@ -13771,7 +13767,7 @@ Ext.define("Ext.draw.PathUtil", function () {
       m,
       l,
       k,
-      i,
+      i
     ) {
       var C = this,
         x = C.cubicDimension(r, q, p, o),
@@ -13804,19 +13800,19 @@ Ext.define("Ext.draw.PathUtil", function () {
       t = C.splitCubic(m, l, k, i, 0.5);
       w.push.apply(
         w,
-        C.cubicsIntersections.apply(C, j[0].concat(h[0], u[0], t[0])),
+        C.cubicsIntersections.apply(C, j[0].concat(h[0], u[0], t[0]))
       );
       w.push.apply(
         w,
-        C.cubicsIntersections.apply(C, j[0].concat(h[0], u[1], t[1])),
+        C.cubicsIntersections.apply(C, j[0].concat(h[0], u[1], t[1]))
       );
       w.push.apply(
         w,
-        C.cubicsIntersections.apply(C, j[1].concat(h[1], u[0], t[0])),
+        C.cubicsIntersections.apply(C, j[1].concat(h[1], u[0], t[0]))
       );
       w.push.apply(
         w,
-        C.cubicsIntersections.apply(C, j[1].concat(h[1], u[1], t[1])),
+        C.cubicsIntersections.apply(C, j[1].concat(h[1], u[1], t[1]))
       );
       return w;
     },
@@ -13875,15 +13871,15 @@ Ext.define("Ext.draw.PathUtil", function () {
         }
       }
       return false;
-    },
+    }
   };
 });
 Ext.define("Ext.draw.overrides.hittest.All", {
   requires: [
     "Ext.draw.PathUtil",
     "Ext.draw.overrides.hittest.sprite.Instancing",
-    "Ext.draw.overrides.hittest.Surface",
-  ],
+    "Ext.draw.overrides.hittest.Surface"
+  ]
 });
 Ext.define("Ext.chart.legend.SpriteLegend", {
   alias: "legend.sprite",
@@ -13894,7 +13890,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     "Ext.chart.legend.sprite.Item",
     "Ext.chart.legend.sprite.Border",
     "Ext.draw.overrides.hittest.All",
-    "Ext.draw.Animator",
+    "Ext.draw.Animator"
   ],
   config: {
     docked: "bottom",
@@ -13907,7 +13903,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     label: { preciseMeasurement: true },
     marker: {},
     border: { $value: { type: "legendborder" }, lazy: true },
-    background: null,
+    background: null
   },
   sprites: null,
   spriteZIndexes: { background: 0, border: 1, item: 2 },
@@ -13949,7 +13945,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     if (!this.scheduledLayoutId) {
       this.scheduledLayoutId = Ext.draw.Animator.schedule(
         "performLayout",
-        this,
+        this
       );
     }
   },
@@ -14096,7 +14092,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
         x: E - p,
         y: C - p,
         width: c + p * 2,
-        height: D + p * 2,
+        height: D + p * 2
       });
     }
     o.width = w.attr.width + p * 2;
@@ -14142,7 +14138,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
         marker: c,
         label: i,
         series: d.series,
-        record: f,
+        record: f
       };
       k = b.add(a);
     }
@@ -14413,18 +14409,18 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
   destroy: function () {
     this.cancelLayout();
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.legend.store.Item", {
   extend: "Ext.data.Model",
-  fields: ["id", "name", "mark", "disabled", "series", "index"],
+  fields: ["id", "name", "mark", "disabled", "series", "index"]
 });
 Ext.define("Ext.chart.legend.store.Store", {
   extend: "Ext.data.Store",
   requires: ["Ext.chart.legend.store.Item"],
   model: "Ext.chart.legend.store.Item",
   isLegendStore: true,
-  config: { autoDestroy: true },
+  config: { autoDestroy: true }
 });
 Ext.define("Ext.chart.AbstractChart", {
   extend: "Ext.draw.Container",
@@ -14437,7 +14433,7 @@ Ext.define("Ext.chart.AbstractChart", {
     "Ext.chart.legend.Legend",
     "Ext.chart.legend.SpriteLegend",
     "Ext.chart.legend.store.Store",
-    "Ext.data.Store",
+    "Ext.data.Store"
   ],
   isChart: true,
   defaultBindProperty: "store",
@@ -14455,7 +14451,7 @@ Ext.define("Ext.chart.AbstractChart", {
     interactions: [],
     mainRect: null,
     resizeHandler: null,
-    highlightItem: null,
+    highlightItem: null
   },
   animationSuspendCount: 0,
   chartLayoutSuspendCount: 0,
@@ -14470,7 +14466,7 @@ Ext.define("Ext.chart.AbstractChart", {
     chart: 5,
     overlay: 6,
     legend: 7,
-    title: 8,
+    title: 8
   },
   constructor: function (a) {
     var b = this;
@@ -14629,7 +14625,7 @@ Ext.define("Ext.chart.AbstractChart", {
         c = a[b];
         if (c.type) {
           Ext.raise(
-            "To add custom sprites to the chart use the 'sprites' config.",
+            "To add custom sprites to the chart use the 'sprites' config."
           );
         } else {
           this.items.push(c);
@@ -14668,7 +14664,7 @@ Ext.define("Ext.chart.AbstractChart", {
             e = c.add({
               type: "rect",
               fillStyle: b,
-              fx: { customDurations: { x: 0, y: 0, width: 0, height: 0 } },
+              fx: { customDurations: { x: 0, y: 0, width: 0, height: 0 } }
             });
           }
         }
@@ -15118,7 +15114,7 @@ Ext.define("Ext.chart.AbstractChart", {
       if (Ext.isBoolean(c)) {
         a = Ext.create("legend." + d.defaultLegendType, {
           docked: "bottom",
-          chart: d,
+          chart: d
         });
       } else {
         c.docked = c.docked || "bottom";
@@ -15140,7 +15136,7 @@ Ext.define("Ext.chart.AbstractChart", {
       c.getItems();
       c.legendStore = new Ext.chart.legend.store.Store({
         chart: c,
-        store: c.legendStore,
+        store: c.legendStore
       });
       c.refreshLegendStore();
       c.legendStore.on("update", "onUpdateLegendStore", c);
@@ -15183,7 +15179,7 @@ Ext.define("Ext.chart.AbstractChart", {
         b,
         null,
         c[(b.getId && b.getId()) || b.id],
-        "interaction",
+        "interaction"
       );
       if (b) {
         b.setChart(g);
@@ -15225,7 +15221,7 @@ Ext.define("Ext.chart.AbstractChart", {
         datachanged: "onDataChanged",
         update: "onDataChanged",
         scope: b,
-        order: "after",
+        order: "after"
       });
       if (c.autoDestroy) {
         c.destroy();
@@ -15236,7 +15232,7 @@ Ext.define("Ext.chart.AbstractChart", {
         datachanged: "onDataChanged",
         update: "onDataChanged",
         scope: b,
-        order: "after",
+        order: "after"
       });
     }
     b.fireEvent("storechange", b, a, c);
@@ -15488,7 +15484,7 @@ Ext.define("Ext.chart.AbstractChart", {
       }
     }
     return c;
-  },
+  }
 });
 Ext.define("Ext.chart.overrides.AbstractChart", {
   override: "Ext.chart.AbstractChart",
@@ -15515,7 +15511,7 @@ Ext.define("Ext.chart.overrides.AbstractChart", {
   doDestroy: function () {
     this.destroyChart();
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.grid.HorizontalGrid", {
   extend: "Ext.draw.sprite.Sprite",
@@ -15526,10 +15522,10 @@ Ext.define("Ext.chart.grid.HorizontalGrid", {
         x: "number",
         y: "number",
         width: "number",
-        height: "number",
+        height: "number"
       },
-      defaults: { x: 0, y: 0, width: 1, height: 1, strokeStyle: "#DDD" },
-    },
+      defaults: { x: 0, y: 0, width: 1, height: 1, strokeStyle: "#DDD" }
+    }
   },
   render: function (b, c, e) {
     var a = this.attr,
@@ -15542,7 +15538,7 @@ Ext.define("Ext.chart.grid.HorizontalGrid", {
     c.moveTo(e[0] - b.matrix.getDX(), f + d);
     c.lineTo(e[0] + e[2] - b.matrix.getDX(), f + d);
     c.stroke();
-  },
+  }
 });
 Ext.define("Ext.chart.grid.VerticalGrid", {
   extend: "Ext.draw.sprite.Sprite",
@@ -15553,10 +15549,10 @@ Ext.define("Ext.chart.grid.VerticalGrid", {
         x: "number",
         y: "number",
         width: "number",
-        height: "number",
+        height: "number"
       },
-      defaults: { x: 0, y: 0, width: 1, height: 1, strokeStyle: "#DDD" },
-    },
+      defaults: { x: 0, y: 0, width: 1, height: 1, strokeStyle: "#DDD" }
+    }
   },
   render: function (c, d, f) {
     var b = this.attr,
@@ -15569,7 +15565,7 @@ Ext.define("Ext.chart.grid.VerticalGrid", {
     d.moveTo(a - e, f[1] - c.matrix.getDY());
     d.lineTo(a - e, f[1] + f[3] - c.matrix.getDY());
     d.stroke();
-  },
+  }
 });
 Ext.define("Ext.chart.CartesianChart", {
   extend: "Ext.chart.AbstractChart",
@@ -15580,7 +15576,7 @@ Ext.define("Ext.chart.CartesianChart", {
   config: {
     flipXY: false,
     innerRect: [0, 0, 1, 1],
-    innerPadding: { top: 0, left: 0, right: 0, bottom: 0 },
+    innerPadding: { top: 0, left: 0, right: 0, bottom: 0 }
   },
   applyInnerPadding: function (b, a) {
     if (!Ext.isObject(b)) {
@@ -15861,7 +15857,7 @@ Ext.define("Ext.chart.CartesianChart", {
         visibleMaxY: s[1],
         innerWidth: p,
         innerHeight: t,
-        flipXY: y,
+        flipXY: y
       };
       f = h.getSprites();
       for (v = 0, g = f.length; v < g; v++) {
@@ -15911,12 +15907,12 @@ Ext.define("Ext.chart.CartesianChart", {
   renderFrame: function () {
     this.refloatAxes();
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.grid.CircularGrid", {
   extend: "Ext.draw.sprite.Circle",
   alias: "grid.circular",
-  inheritableStatics: { def: { defaults: { r: 1, strokeStyle: "#DDD" } } },
+  inheritableStatics: { def: { defaults: { r: 1, strokeStyle: "#DDD" } } }
 });
 Ext.define("Ext.chart.grid.RadialGrid", {
   extend: "Ext.draw.sprite.Path",
@@ -15929,10 +15925,10 @@ Ext.define("Ext.chart.grid.RadialGrid", {
         endRadius: 1,
         scalingCenterX: 0,
         scalingCenterY: 0,
-        strokeStyle: "#DDD",
+        strokeStyle: "#DDD"
       },
-      triggers: { startRadius: "path,bbox", endRadius: "path,bbox" },
-    },
+      triggers: { startRadius: "path,bbox", endRadius: "path,bbox" }
+    }
   },
   render: function () {
     this.callParent(arguments);
@@ -15942,7 +15938,7 @@ Ext.define("Ext.chart.grid.RadialGrid", {
       c = a.endRadius;
     d.moveTo(b, 0);
     d.lineTo(c, 0);
-  },
+  }
 });
 Ext.define("Ext.chart.PolarChart", {
   extend: "Ext.chart.AbstractChart",
@@ -16006,7 +16002,7 @@ Ext.define("Ext.chart.PolarChart", {
           position: "angular",
           fields: g.xField || g.angleField,
           style: { estStepSize: 1 },
-          grid: true,
+          grid: true
         });
       }
     }
@@ -16200,7 +16196,7 @@ Ext.define("Ext.chart.PolarChart", {
   renderFrame: function () {
     this.refloatAxes();
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.SpaceFillingChart", {
   extend: "Ext.chart.AbstractChart",
@@ -16249,7 +16245,7 @@ Ext.define("Ext.chart.SpaceFillingChart", {
     }
     e.renderFrame();
     e.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.axis.sprite.Axis3D", {
   extend: "Ext.chart.axis.sprite.Axis",
@@ -16259,8 +16255,8 @@ Ext.define("Ext.chart.axis.sprite.Axis3D", {
     def: {
       processors: { depth: "number" },
       defaults: { depth: 0 },
-      triggers: { depth: "layout" },
-    },
+      triggers: { depth: "layout" }
+    }
   },
   config: { fx: { customDurations: { depth: 0 } } },
   layoutUpdater: function () {
@@ -16341,13 +16337,13 @@ Ext.define("Ext.chart.axis.sprite.Axis3D", {
           g = i.getGaugeAngles();
           j.moveTo(
             h.centerX + Math.cos(g.start) * h.length,
-            h.centerY + Math.sin(g.start) * h.length,
+            h.centerY + Math.sin(g.start) * h.length
           );
           j.arc(h.centerX, h.centerY, h.length, g.start, g.end, true);
           break;
       }
     }
-  },
+  }
 });
 Ext.define("Ext.chart.axis.Axis3D", {
   extend: "Ext.chart.axis.Axis",
@@ -16413,27 +16409,27 @@ Ext.define("Ext.chart.axis.Axis3D", {
       case "bottom":
         return "vertical3d";
     }
-  },
+  }
 });
 Ext.define("Ext.chart.axis.Category", {
   requires: [
     "Ext.chart.axis.layout.CombineDuplicate",
-    "Ext.chart.axis.segmenter.Names",
+    "Ext.chart.axis.segmenter.Names"
   ],
   extend: "Ext.chart.axis.Axis",
   alias: "axis.category",
   type: "category",
-  config: { layout: "combineDuplicate", segmenter: "names" },
+  config: { layout: "combineDuplicate", segmenter: "names" }
 });
 Ext.define("Ext.chart.axis.Category3D", {
   requires: [
     "Ext.chart.axis.layout.CombineDuplicate",
-    "Ext.chart.axis.segmenter.Names",
+    "Ext.chart.axis.segmenter.Names"
   ],
   extend: "Ext.chart.axis.Axis3D",
   alias: "axis.category3d",
   type: "category3d",
-  config: { layout: "combineDuplicate", segmenter: "names" },
+  config: { layout: "combineDuplicate", segmenter: "names" }
 });
 Ext.define("Ext.chart.axis.Numeric", {
   extend: "Ext.chart.axis.Axis",
@@ -16441,9 +16437,9 @@ Ext.define("Ext.chart.axis.Numeric", {
   alias: ["axis.numeric", "axis.radial"],
   requires: [
     "Ext.chart.axis.layout.Continuous",
-    "Ext.chart.axis.segmenter.Numeric",
+    "Ext.chart.axis.segmenter.Numeric"
   ],
-  config: { layout: "continuous", segmenter: "numeric", aggregator: "double" },
+  config: { layout: "continuous", segmenter: "numeric", aggregator: "double" }
 });
 Ext.define("Ext.chart.axis.Numeric3D", {
   extend: "Ext.chart.axis.Axis3D",
@@ -16451,9 +16447,9 @@ Ext.define("Ext.chart.axis.Numeric3D", {
   type: "numeric3d",
   requires: [
     "Ext.chart.axis.layout.Continuous",
-    "Ext.chart.axis.segmenter.Numeric",
+    "Ext.chart.axis.segmenter.Numeric"
   ],
-  config: { layout: "continuous", segmenter: "numeric", aggregator: "double" },
+  config: { layout: "continuous", segmenter: "numeric", aggregator: "double" }
 });
 Ext.define("Ext.chart.axis.Time", {
   extend: "Ext.chart.axis.Numeric",
@@ -16461,7 +16457,7 @@ Ext.define("Ext.chart.axis.Time", {
   type: "time",
   requires: [
     "Ext.chart.axis.layout.Continuous",
-    "Ext.chart.axis.segmenter.Time",
+    "Ext.chart.axis.segmenter.Time"
   ],
   config: {
     calculateByLabelSize: true,
@@ -16470,7 +16466,7 @@ Ext.define("Ext.chart.axis.Time", {
     toDate: null,
     layout: "continuous",
     segmenter: "time",
-    aggregator: "time",
+    aggregator: "time"
   },
   updateDateFormat: function (b) {
     var a = this.getRenderer();
@@ -16504,7 +16500,7 @@ Ext.define("Ext.chart.axis.Time", {
       a = new Date(a);
     }
     return +a;
-  },
+  }
 });
 Ext.define("Ext.chart.axis.Time3D", {
   extend: "Ext.chart.axis.Numeric3D",
@@ -16512,7 +16508,7 @@ Ext.define("Ext.chart.axis.Time3D", {
   type: "time3d",
   requires: [
     "Ext.chart.axis.layout.Continuous",
-    "Ext.chart.axis.segmenter.Time",
+    "Ext.chart.axis.segmenter.Time"
   ],
   config: {
     calculateByLabelSize: true,
@@ -16521,7 +16517,7 @@ Ext.define("Ext.chart.axis.Time3D", {
     toDate: null,
     layout: "continuous",
     segmenter: "time",
-    aggregator: "time",
+    aggregator: "time"
   },
   updateDateFormat: function (a) {
     this.setRenderer(function (c, b) {
@@ -16539,13 +16535,13 @@ Ext.define("Ext.chart.axis.Time3D", {
       a = new Date(a);
     }
     return +a;
-  },
+  }
 });
 Ext.define("Ext.chart.grid.HorizontalGrid3D", {
   extend: "Ext.chart.grid.HorizontalGrid",
   alias: "grid.horizontal3d",
   inheritableStatics: {
-    def: { processors: { depth: "number" }, defaults: { depth: 0 } },
+    def: { processors: { depth: "number" }, defaults: { depth: 0 } }
   },
   render: function (a, k, h) {
     var e = this.attr,
@@ -16582,13 +16578,13 @@ Ext.define("Ext.chart.grid.HorizontalGrid3D", {
     k.moveTo(b, f);
     k.lineTo(b + d, f - d);
     k.stroke();
-  },
+  }
 });
 Ext.define("Ext.chart.grid.VerticalGrid3D", {
   extend: "Ext.chart.grid.VerticalGrid",
   alias: "grid.vertical3d",
   inheritableStatics: {
-    def: { processors: { depth: "number" }, defaults: { depth: 0 } },
+    def: { processors: { depth: "number" }, defaults: { depth: 0 } }
   },
   render: function (b, j, e) {
     var g = this.attr,
@@ -16626,7 +16622,7 @@ Ext.define("Ext.chart.grid.VerticalGrid3D", {
     j.moveTo(c, h);
     j.lineTo(c + f, h - f);
     j.stroke();
-  },
+  }
 });
 Ext.define("Ext.chart.interactions.CrossZoom", {
   extend: "Ext.chart.interactions.Abstract",
@@ -16639,9 +16635,9 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
       dragstart: "onGestureStart",
       drag: "onGesture",
       dragend: "onGestureEnd",
-      dblclick: "onDoubleTap",
+      dblclick: "onDoubleTap"
     },
-    undoButton: {},
+    undoButton: {}
   },
   stopAnimationBeforeSync: false,
   zoomAnimationInProgress: false,
@@ -16690,10 +16686,10 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
             disabled: true,
             handler: function () {
               c.undoZoom();
-            },
+            }
           },
-          b,
-        ),
+          b
+        )
       );
     }
   },
@@ -16738,7 +16734,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
         y: k,
         width: 0,
         height: 0,
-        zIndex: 10000,
+        zIndex: 10000
       });
       j.setSeriesOpacity(0.8);
       return false;
@@ -16777,7 +16773,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
       }
       j.selectionRect.setAttributes({
         width: m - j.startX,
-        height: k - j.startY,
+        height: k - j.startY
       });
       if (Math.abs(j.startX - m) < 11 || Math.abs(j.startY - k) < 11) {
         j.selectionRect.setAttributes({ globalAlpha: 0.5 });
@@ -16828,13 +16824,13 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
           Math.min(l.startX, o) / h,
           1 - Math.max(l.startY, m) / j,
           Math.max(l.startX, o) / h,
-          1 - Math.min(l.startY, m) / j,
+          1 - Math.min(l.startY, m) / j
         ]);
         l.selectionRect.setAttributes({
           x: Math.min(l.startX, o),
           y: Math.min(l.startY, m),
           width: Math.abs(l.startX - o),
-          height: Math.abs(l.startY - m),
+          height: Math.abs(l.startY - m)
         });
         l.selectionRect.setAnimation(k.getAnimation() || { duration: 0 });
         l.selectionRect.setAttributes({
@@ -16842,7 +16838,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
           x: 0,
           y: 0,
           width: h,
-          height: j,
+          height: j
         });
         l.zoomAnimationInProgress = true;
         k.suspendThicknessChanged();
@@ -16890,12 +16886,12 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
         if (!e) {
           g.setVisibleRange([
             (m[1] - m[0]) * o[0] + m[0],
-            (m[1] - m[0]) * o[2] + m[0],
+            (m[1] - m[0]) * o[2] + m[0]
           ]);
         } else {
           g.setVisibleRange([
             (m[1] - m[0]) * o[1] + m[0],
-            (m[1] - m[0]) * o[3] + m[0],
+            (m[1] - m[0]) * o[3] + m[0]
           ]);
         }
       }
@@ -16923,7 +16919,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
   destroy: function () {
     this.setUndoButton(null);
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.interactions.Crosshair", {
   extend: "Ext.chart.interactions.Abstract",
@@ -16931,7 +16927,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
     "Ext.chart.grid.HorizontalGrid",
     "Ext.chart.grid.VerticalGrid",
     "Ext.chart.CartesianChart",
-    "Ext.chart.axis.layout.Discrete",
+    "Ext.chart.axis.layout.Discrete"
   ],
   type: "crosshair",
   alias: "interaction.crosshair",
@@ -16940,13 +16936,13 @@ Ext.define("Ext.chart.interactions.Crosshair", {
       top: { label: {}, rect: {} },
       right: { label: {}, rect: {} },
       bottom: { label: {}, rect: {} },
-      left: { label: {}, rect: {} },
+      left: { label: {}, rect: {} }
     },
     lines: {
       horizontal: { strokeStyle: "black", lineDash: [5, 5] },
-      vertical: { strokeStyle: "black", lineDash: [5, 5] },
+      vertical: { strokeStyle: "black", lineDash: [5, 5] }
     },
-    gesture: "drag",
+    gesture: "drag"
   },
   applyAxes: function (b, a) {
     return Ext.merge(a || {}, b);
@@ -17010,11 +17006,11 @@ Ext.define("Ext.chart.interactions.Crosshair", {
       m.lockEvents(m.getGesture());
       H = Ext.apply(
         { xclass: "Ext.chart.grid.HorizontalGrid", x: 0, y: C, width: n },
-        h.horizontal,
+        h.horizontal
       );
       c = Ext.apply(
         { xclass: "Ext.chart.grid.VerticalGrid", x: D, y: 0, height: M },
-        h.vertical,
+        h.vertical
       );
       m.axesLabels = m.axesLabels || {};
       for (K = 0; K < E.length; K++) {
@@ -17044,10 +17040,10 @@ Ext.define("Ext.chart.interactions.Crosshair", {
               width: d - p - (G === "vertical" && a ? a.width : 0),
               height: k - p - (G === "horizontal" && a ? a.height : 0),
               translationX: z === "left" && a ? a.width : 0,
-              translationY: z === "top" && a ? a.height : 0,
+              translationY: z === "top" && a ? a.height : 0
             },
-            u.rect || u[z].rect,
-          ),
+            u.rect || u[z].rect
+          )
         );
         if (G === "vertical" && !c.strokeStyle) {
           c.strokeStyle = l.strokeStyle;
@@ -17084,8 +17080,8 @@ Ext.define("Ext.chart.interactions.Crosshair", {
                 default:
                   return 0;
               }
-            })(),
-          }),
+            })()
+          })
         );
       }
       m.horizontalLine = F.add(H);
@@ -17174,7 +17170,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
           b = s.labelText.getBBox();
           s.labelRect.setAttributes({
             height: b.height + C,
-            y: -(b.height + C) / 2,
+            y: -(b.height + C) / 2
           });
           p.renderFrame();
         } else {
@@ -17194,7 +17190,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
           b = s.labelText.getBBox();
           s.labelRect.setAttributes({
             width: b.width + C,
-            x: -(b.width + C) / 2,
+            x: -(b.width + C) / 2
           });
           p.renderFrame();
         }
@@ -17230,7 +17226,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
     }
     a.renderFrame();
     l.unlockEvents(l.getGesture());
-  },
+  }
 });
 Ext.define("Ext.chart.interactions.ItemHighlight", {
   extend: "Ext.chart.interactions.Abstract",
@@ -17243,9 +17239,9 @@ Ext.define("Ext.chart.interactions.ItemHighlight", {
       mousemove: "onMouseMoveGesture",
       mousedown: "onMouseDownGesture",
       mouseup: "onMouseUpGesture",
-      mouseleave: "onMouseUpGesture",
+      mouseleave: "onMouseUpGesture"
     },
-    sticky: false,
+    sticky: false
   },
   stickyHighlightItem: null,
   onMouseMoveGesture: function (g) {
@@ -17315,7 +17311,7 @@ Ext.define("Ext.chart.interactions.ItemHighlight", {
     }
     b.stickyHighlightItem = a;
     b.highlight(a);
-  },
+  }
 });
 Ext.define("Ext.chart.interactions.ItemEdit", {
   extend: "Ext.chart.interactions.ItemHighlight",
@@ -17330,9 +17326,9 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
     gestures: {
       dragstart: "onDragStart",
       drag: "onDrag",
-      dragend: "onDragEnd",
+      dragend: "onDragEnd"
     },
-    cursors: { ewResize: "ew-resize", nsResize: "ns-resize", move: "move" },
+    cursors: { ewResize: "ew-resize", nsResize: "ns-resize", move: "move" }
   },
   item: null,
   applyTooltip: function (b) {
@@ -17343,7 +17339,7 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
         shrinkWrapDock: true,
         autoHide: true,
         trackMouse: true,
-        mouseOffset: [20, 20],
+        mouseOffset: [20, 20]
       });
       b = new Ext.tip.ToolTip(a);
     }
@@ -17440,7 +17436,7 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
       radius: p.radius,
       fillStyle: "none",
       lineDash: [4, 4],
-      zIndex: 100,
+      zIndex: 100
     };
     Ext.apply(a, m.getStyle());
     if (Ext.isArray(q.series.getYField())) {
@@ -17449,7 +17445,7 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
     m.target = {
       index: q.index,
       yField: q.field,
-      yValue: (h - o.getDY()) / o.getYY(),
+      yValue: (h - o.getDY()) / o.getYY()
     };
     d = [k, { target: m.target, style: a, item: q }];
     n = Ext.callback(j, null, d, 0, k);
@@ -17502,18 +17498,18 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
       r: p.r,
       fillStyle: "none",
       lineDash: [4, 4],
-      zIndex: 100,
+      zIndex: 100
     };
     Ext.apply(m, t.getStyle());
     t.target = {
       index: o.index,
       yField: o.field,
-      yValue: (r - k.getDY()) / k.getYY(),
+      yValue: (r - k.getDY()) / k.getYY()
     };
     if (f) {
       Ext.apply(t.target, {
         xField: o.series.getXField(),
-        xValue: (s - k.getDX()) / k.getXX(),
+        xValue: (s - k.getDX()) / k.getXX()
       });
     }
     q = [g, { target: t.target, style: m, item: o }];
@@ -17576,7 +17572,7 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
     var a = this.getConfig("tooltip", true);
     Ext.destroy(a);
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.interactions.PanZoom", {
   extend: "Ext.chart.interactions.Abstract",
@@ -17599,10 +17595,10 @@ Ext.define("Ext.chart.interactions.PanZoom", {
       cls: Ext.baseCSSPrefix + "panzoom-toggle",
       items: [
         { text: "Pan", value: "pan" },
-        { text: "Zoom", value: "zoom" },
-      ],
+        { text: "Zoom", value: "zoom" }
+      ]
     },
-    hideLabelInGesture: false,
+    hideLabelInGesture: false
   },
   stopAnimationBeforeSync: true,
   applyAxes: function (b, a) {
@@ -17689,7 +17685,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           0,
           0,
           (g.getX() - f[0] - c[0]) / d.startX,
-          d.startY / (g.getY() - f[1] - c[1]),
+          d.startY / (g.getY() - f[1] - c[1])
         );
       } else {
         d.transformAxesBy(
@@ -17697,7 +17693,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           g.getX() - f[0] - c[0] - d.startX,
           g.getY() - f[1] - c[1] - d.startY,
           1,
-          1,
+          1
         );
       }
       d.sync();
@@ -17726,7 +17722,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           b.touches[0].point.x - h,
           b.touches[0].point.y - d,
           b.touches[1].point.x - h,
-          b.touches[1].point.y - d,
+          b.touches[1].point.y - d
         ],
         g = Math.max(44, Math.abs(j[2] - j[0])),
         a = Math.max(44, Math.abs(j[3] - j[1]));
@@ -17753,7 +17749,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           d.touches[0].point.x - k,
           d.touches[0].point.y - h,
           d.touches[1].point.x - k,
-          d.touches[1].point.y - h,
+          d.touches[1].point.y - h
         ],
         g = Math.max(44, o(m[2] - m[0])),
         b = Math.max(44, o(m[3] - m[1])),
@@ -17765,7 +17761,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
         (i[2] * (l - 1)) / 2 + m[2] - c[2] * l,
         (i[3] * (j - 1)) / 2 + m[3] - c[3] * j,
         l,
-        j,
+        j
       );
       f.sync();
       return false;
@@ -17895,7 +17891,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           h,
           e,
           this.minZoom || k.minZoom,
-          this.maxZoom || k.maxZoom,
+          this.maxZoom || k.maxZoom
         ) || l;
     }
     return l;
@@ -17933,7 +17929,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
     }
     c.setVisibleRange([
       (o[0] + o[1] - b) * 0.5 - (n / e) * b,
-      (o[0] + o[1] + b) * 0.5 - (n / e) * b,
+      (o[0] + o[1] + b) * 0.5 - (n / e) * b
     ]);
     return (
       Math.abs(f - c.getVisibleRange()[0]) > 1e-10 ||
@@ -17943,7 +17939,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
   destroy: function () {
     this.setModeToggleButton(null);
     this.callParent();
-  },
+  }
 });
 Ext.define("Ext.chart.interactions.Rotate", {
   extend: "Ext.chart.interactions.Abstract",
@@ -17956,9 +17952,9 @@ Ext.define("Ext.chart.interactions.Rotate", {
       rotateend: "onRotate",
       dragstart: "onGestureStart",
       drag: "onGesture",
-      dragend: "onGestureEnd",
+      dragend: "onGestureEnd"
     },
-    rotation: 0,
+    rotation: 0
   },
   oldRotations: null,
   getAngle: function (f) {
@@ -18044,7 +18040,7 @@ Ext.define("Ext.chart.interactions.Rotate", {
       return false;
     }
   },
-  onRotate: function (a) {},
+  onRotate: function (a) {}
 });
 Ext.define("Ext.chart.interactions.RotatePie3D", {
   extend: "Ext.chart.interactions.Rotate",
@@ -18077,7 +18073,7 @@ Ext.define("Ext.chart.interactions.RotatePie3D", {
       }
     }
     return a;
-  },
+  }
 });
 Ext.define("Ext.chart.plugin.ItemEvents", {
   extend: "Ext.plugin.Abstract",
@@ -18087,7 +18083,7 @@ Ext.define("Ext.chart.plugin.ItemEvents", {
   itemMouseMoveEvents: {
     itemmousemove: true,
     itemmouseover: true,
-    itemmouseout: true,
+    itemmouseout: true
   },
   init: function (b) {
     var a = "handleEvent";
@@ -18101,7 +18097,7 @@ Ext.define("Ext.chart.plugin.ItemEvents", {
       mouseover: a,
       mouseout: a,
       priority: 1001,
-      scope: this,
+      scope: this
     });
   },
   hasItemMouseMoveListeners: function () {
@@ -18141,7 +18137,7 @@ Ext.define("Ext.chart.plugin.ItemEvents", {
       b.series.fireEvent("item" + g.type, b.series, b, g);
     }
     d.lastItem = b;
-  },
+  }
 });
 Ext.define("Ext.chart.series.Cartesian", {
   extend: "Ext.chart.series.Series",
@@ -18186,7 +18182,7 @@ Ext.define("Ext.chart.series.Cartesian", {
             index: c,
             record: b.getData().items[c],
             field: f.getYField(),
-            sprite: d,
+            sprite: d
           };
           return e;
         }
@@ -18246,7 +18242,7 @@ Ext.define("Ext.chart.series.Cartesian", {
         "black",
       disabled: b.getHidden(),
       series: b.getId(),
-      index: 0,
+      index: 0
     });
   },
   getXRange: function () {
@@ -18254,7 +18250,7 @@ Ext.define("Ext.chart.series.Cartesian", {
   },
   getYRange: function () {
     return [this.dataRange[1], this.dataRange[3]];
-  },
+  }
 });
 Ext.define("Ext.chart.series.StackedCartesian", {
   extend: "Ext.chart.series.Cartesian",
@@ -18263,7 +18259,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
     splitStacks: true,
     fullStack: false,
     fullStackTotal: 100,
-    hidden: [],
+    hidden: []
   },
   spriteAnimationCount: 0,
   themeColorCount: function () {
@@ -18489,7 +18485,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
               category: a ? "items" : "markers",
               record: l.getData().items[d],
               field: typeof e === "string" ? e : e[b],
-              sprite: m,
+              sprite: m
             };
             return n;
           }
@@ -18536,7 +18532,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
           "black",
         disabled: d[c],
         series: g.getId(),
-        index: c,
+        index: c
       });
     }
   },
@@ -18551,7 +18547,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
     if (this.spriteAnimationCount === 0) {
       this.fireEvent("animationend");
     }
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Series", {
   extend: "Ext.draw.sprite.Sprite",
@@ -18566,7 +18562,7 @@ Ext.define("Ext.chart.series.sprite.Series", {
         rangeX: "data",
         rangeY: "data",
         dataX: "data",
-        dataY: "data",
+        dataY: "data"
       },
       defaults: {
         dataMinX: 0,
@@ -18576,7 +18572,7 @@ Ext.define("Ext.chart.series.sprite.Series", {
         rangeX: null,
         rangeY: null,
         dataX: null,
-        dataY: null,
+        dataY: null
       },
       triggers: {
         dataX: "bbox",
@@ -18584,11 +18580,11 @@ Ext.define("Ext.chart.series.sprite.Series", {
         dataMinX: "bbox",
         dataMaxX: "bbox",
         dataMinY: "bbox",
-        dataMaxY: "bbox",
-      },
-    },
+        dataMaxY: "bbox"
+      }
+    }
   },
-  config: { store: null, series: null, field: null },
+  config: { store: null, series: null, field: null }
 });
 Ext.define("Ext.chart.series.sprite.Cartesian", {
   extend: "Ext.chart.series.sprite.Series",
@@ -18605,7 +18601,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
         visibleMaxX: "number",
         visibleMaxY: "number",
         innerWidth: "number",
-        innerHeight: "number",
+        innerHeight: "number"
       },
       defaults: {
         labels: null,
@@ -18619,7 +18615,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
         visibleMaxX: 1,
         visibleMaxY: 1,
         innerWidth: 1,
-        innerHeight: 1,
+        innerHeight: 1
       },
       triggers: {
         dataX: "dataX,bbox",
@@ -18629,7 +18625,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
         visibleMaxX: "panzoom",
         visibleMaxY: "panzoom",
         innerWidth: "panzoom",
-        innerHeight: "panzoom",
+        innerHeight: "panzoom"
       },
       updaters: {
         dataX: function (a) {
@@ -18657,9 +18653,9 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
           c.scalingCenterX = 0;
           c.scalingCenterY = 0;
           this.applyTransformations(true);
-        },
-      },
-    },
+        }
+      }
+    }
   },
   processDataY: Ext.emptyFn,
   processDataX: Ext.emptyFn,
@@ -18712,7 +18708,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
     }
     var d = e.transformList([
       [g[0] - 1, g[3] + 1],
-      [g[0] + g[2] + 1, -1],
+      [g[0] + g[2] + 1, -1]
     ]);
     d = d[0].concat(d[1]);
     f.renderClipped(b, c, d, g);
@@ -18751,7 +18747,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
       }
     }
     return c;
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.StackedCartesian", {
   extend: "Ext.chart.series.sprite.Cartesian",
@@ -18760,16 +18756,16 @@ Ext.define("Ext.chart.series.sprite.StackedCartesian", {
       processors: {
         groupCount: "number",
         groupOffset: "number",
-        dataStartY: "data",
+        dataStartY: "data"
       },
       defaults: {
         selectionTolerance: 20,
         groupCount: 1,
         groupOffset: 0,
-        dataStartY: null,
+        dataStartY: null
       },
-      triggers: { dataStartY: "dataY,bbox" },
-    },
+      triggers: { dataStartY: "dataY,bbox" }
+    }
   },
   getIndexNearPoint: function (e, d) {
     var o = this,
@@ -18801,13 +18797,13 @@ Ext.define("Ext.chart.series.sprite.StackedCartesian", {
       }
     }
     return b;
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Area", {
   alias: "sprite.areaSeries",
   extend: "Ext.chart.series.sprite.StackedCartesian",
   inheritableStatics: {
-    def: { processors: { step: "bool" }, defaults: { step: false } },
+    def: { processors: { step: "bool" }, defaults: { step: false } }
   },
   renderClipped: function (w, A, G) {
     var H = this,
@@ -18921,7 +18917,7 @@ Ext.define("Ext.chart.series.sprite.Area", {
       v.matrix.toContext(A);
     }
     A.stroke();
-  },
+  }
 });
 Ext.define("Ext.chart.series.Area", {
   extend: "Ext.chart.series.StackedCartesian",
@@ -18929,7 +18925,7 @@ Ext.define("Ext.chart.series.Area", {
   type: "area",
   seriesType: "areaSeries",
   requires: ["Ext.chart.series.sprite.Area"],
-  config: { splitStacks: false },
+  config: { splitStacks: false }
 });
 Ext.define("Ext.chart.series.sprite.Bar", {
   alias: "sprite.barSeries",
@@ -18941,16 +18937,16 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         maxBarWidth: "number",
         minGapWidth: "number",
         radius: "number",
-        inGroupGapWidth: "number",
+        inGroupGapWidth: "number"
       },
       defaults: {
         minBarWidth: 2,
         maxBarWidth: 100,
         minGapWidth: 5,
         inGroupGapWidth: 3,
-        radius: 0,
-      },
-    },
+        radius: 0
+      }
+    }
   },
   drawLabel: function (k, i, v, h, r) {
     var t = this,
@@ -19079,7 +19075,7 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         null,
         [f, j, { store: f.getStore() }, d],
         0,
-        f.getSeries(),
+        f.getSeries()
       );
       Ext.apply(j, i);
     }
@@ -19138,7 +19134,7 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         "markers",
         { translationX: c.x(a, h), translationY: c.y(a, h) },
         J,
-        true,
+        true
       );
     }
   },
@@ -19173,7 +19169,7 @@ Ext.define("Ext.chart.series.sprite.Bar", {
       }
     }
     return f;
-  },
+  }
 });
 Ext.define("Ext.chart.series.Bar", {
   extend: "Ext.chart.series.StackedCartesian",
@@ -19185,8 +19181,8 @@ Ext.define("Ext.chart.series.Bar", {
   config: {
     itemInstancing: {
       type: "rect",
-      fx: { customDurations: { x: 0, y: 0, width: 0, height: 0, radius: 0 } },
-    },
+      fx: { customDurations: { x: 0, y: 0, width: 0, height: 0, radius: 0 } }
+    }
   },
   getItemForPoint: function (a, f) {
     if (this.getSprites()) {
@@ -19234,7 +19230,7 @@ Ext.define("Ext.chart.series.Bar", {
       }
     }
     e.callParent(arguments);
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Bar3D", {
   extend: "Ext.chart.series.sprite.Bar",
@@ -19246,14 +19242,14 @@ Ext.define("Ext.chart.series.sprite.Bar3D", {
         depthWidthRatio: "number",
         saturationFactor: "number",
         brightnessFactor: "number",
-        colorSpread: "number",
+        colorSpread: "number"
       },
       defaults: {
         depthWidthRatio: 1 / 3,
         saturationFactor: 1,
         brightnessFactor: 1,
         colorSpread: 1,
-        transformFillStroke: true,
+        transformFillStroke: true
       },
       triggers: { groupCount: "panzoom" },
       updaters: {
@@ -19276,9 +19272,9 @@ Ext.define("Ext.chart.series.sprite.Bar3D", {
           c.scalingCenterX = 0;
           c.scalingCenterY = 0;
           g.applyTransformations(true);
-        },
-      },
-    },
+        }
+      }
+    }
   },
   config: { showStroke: false },
   depth: 0,
@@ -19311,7 +19307,7 @@ Ext.define("Ext.chart.series.sprite.Bar3D", {
       Ext.apply(n, m);
     }
     k.putMarker("items", n, h, !j);
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Box", {
   extend: "Ext.draw.sprite.Sprite",
@@ -19329,7 +19325,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
         showStroke: "bool",
         saturationFactor: "number",
         brightnessFactor: "number",
-        colorSpread: "number",
+        colorSpread: "number"
       },
       triggers: {
         x: "bbox",
@@ -19337,7 +19333,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
         width: "bbox",
         height: "bbox",
         depth: "bbox",
-        orientation: "bbox",
+        orientation: "bbox"
       },
       defaults: {
         x: 0,
@@ -19350,9 +19346,9 @@ Ext.define("Ext.chart.series.sprite.Box", {
         saturationFactor: 1,
         brightnessFactor: 1,
         colorSpread: 1,
-        lineJoin: "bevel",
-      },
-    },
+        lineJoin: "bevel"
+      }
+    }
   },
   constructor: function (a) {
     this.callParent([a]);
@@ -19413,17 +19409,17 @@ Ext.define("Ext.chart.series.sprite.Box", {
         color: Ext.util.Color.fromHSV(
           b[0],
           Ext.Number.constrain(b[1] * h, 0, 1),
-          Ext.Number.constrain((0.5 + t * 0.1) * o, 0, 1),
-        ),
+          Ext.Number.constrain((0.5 + t * 0.1) * o, 0, 1)
+        )
       },
       {
         offset: 1,
         color: Ext.util.Color.fromHSV(
           b[0],
           Ext.Number.constrain(b[1] * h, 0, 1),
-          Ext.Number.constrain((0.5 - t * 0.11) * o, 0, 1),
-        ),
-      },
+          Ext.Number.constrain((0.5 - t * 0.11) * o, 0, 1)
+        )
+      }
     ]);
     u.rightGradient.setDegrees(d ? 45 : 90);
     u.rightGradient.setStops([
@@ -19432,17 +19428,17 @@ Ext.define("Ext.chart.series.sprite.Box", {
         color: Ext.util.Color.fromHSV(
           b[0],
           Ext.Number.constrain(b[1] * h, 0, 1),
-          Ext.Number.constrain((0.5 - t * 0.14) * o, 0, 1),
-        ),
+          Ext.Number.constrain((0.5 - t * 0.14) * o, 0, 1)
+        )
       },
       {
         offset: 1,
         color: Ext.util.Color.fromHSV(
           b[0],
           Ext.Number.constrain(b[1] * (1 + t * 0.4) * h, 0, 1),
-          Ext.Number.constrain((0.5 - t * 0.32) * o, 0, 1),
-        ),
-      },
+          Ext.Number.constrain((0.5 - t * 0.32) * o, 0, 1)
+        )
+      }
     ]);
     if (d) {
       u.frontGradient.setDegrees(0);
@@ -19455,17 +19451,17 @@ Ext.define("Ext.chart.series.sprite.Box", {
         color: Ext.util.Color.fromHSV(
           b[0],
           Ext.Number.constrain(b[1] * (1 - t * 0.1) * h, 0, 1),
-          Ext.Number.constrain((0.5 + t * 0.1) * o, 0, 1),
-        ),
+          Ext.Number.constrain((0.5 + t * 0.1) * o, 0, 1)
+        )
       },
       {
         offset: 1,
         color: Ext.util.Color.fromHSV(
           b[0],
           Ext.Number.constrain(b[1] * (1 + t * 0.1) * h, 0, 1),
-          Ext.Number.constrain((0.5 - t * 0.23) * o, 0, 1),
-        ),
-      },
+          Ext.Number.constrain((0.5 - t * 0.23) * o, 0, 1)
+        )
+      }
     ]);
     if (g || i) {
       m.beginPath();
@@ -19480,7 +19476,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
       a.height = v;
       m.fillStyle = (d ? u.rightGradient : u.topGradient).generateGradient(
         m,
-        a,
+        a
       );
       m.fillStroke(k);
     }
@@ -19497,7 +19493,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
       a.height = j + v - f;
       m.fillStyle = (d ? u.topGradient : u.rightGradient).generateGradient(
         m,
-        a,
+        a
       );
       m.fillStroke(k);
     }
@@ -19541,7 +19537,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
     a.height = j - f;
     m.fillStyle = u.frontGradient.generateGradient(m, a);
     m.fillStroke(k);
-  },
+  }
 });
 Ext.define("Ext.chart.series.Bar3D", {
   extend: "Ext.chart.series.Bar",
@@ -19553,9 +19549,9 @@ Ext.define("Ext.chart.series.Bar3D", {
   config: {
     itemInstancing: {
       type: "box",
-      fx: { customDurations: { x: 0, y: 0, width: 0, height: 0, depth: 0 } },
+      fx: { customDurations: { x: 0, y: 0, width: 0, height: 0, depth: 0 } }
     },
-    highlightCfg: { opacity: 0.8 },
+    highlightCfg: { opacity: 0.8 }
   },
   updateXAxis: function (b, a) {
     this.callParent([b, a]);
@@ -19610,7 +19606,7 @@ Ext.define("Ext.chart.series.Bar3D", {
               category: a ? "items" : "markers",
               record: n.getData().items[d],
               field: typeof e === "string" ? e : e[b],
-              sprite: o,
+              sprite: o
             };
             return p;
           }
@@ -19618,7 +19614,7 @@ Ext.define("Ext.chart.series.Bar3D", {
       }
       return null;
     }
-  },
+  }
 });
 Ext.define("Ext.draw.LimitedCache", {
   config: {
@@ -19626,7 +19622,7 @@ Ext.define("Ext.draw.LimitedCache", {
     feeder: function () {
       return 0;
     },
-    scope: null,
+    scope: null
   },
   cache: null,
   constructor: function (a) {
@@ -19648,7 +19644,7 @@ Ext.define("Ext.draw.LimitedCache", {
     }
     c[e] = c.list[c.tail] = {
       value: a.apply(d, Array.prototype.slice.call(arguments, 1)),
-      cacheId: e,
+      cacheId: e
     };
     c.tail++;
     if (c.tail === b) {
@@ -19660,7 +19656,7 @@ Ext.define("Ext.draw.LimitedCache", {
     this.cache = {};
     this.cache.list = [];
     this.cache.tail = 0;
-  },
+  }
 });
 Ext.define("Ext.draw.SegmentTree", {
   config: { strategy: "double" },
@@ -19697,7 +19693,7 @@ Ext.define("Ext.draw.SegmentTree", {
         [D.YEAR, 1, "y1", "mo3"],
         [D.YEAR, 5, "y5", "y1"],
         [D.YEAR, 10, "y10", "y5"],
-        [D.YEAR, 100, "y100", "y10"],
+        [D.YEAR, 100, "y100", "y10"]
       ],
       z,
       b,
@@ -19871,7 +19867,7 @@ Ext.define("Ext.draw.SegmentTree", {
         minY: n,
         maxX: o,
         maxY: m,
-        close: k,
+        close: k
       },
       l;
     for (l = 0; l < b; l++) {
@@ -19980,7 +19976,7 @@ Ext.define("Ext.draw.SegmentTree", {
     f = Math.max(this.binarySearchMin(this.cache, m[0], m[1], d), m[0]);
     h = Math.min(this.binarySearchMax(this.cache, m[0], m[1], k) + 1, m[1]);
     return { data: this.cache, start: f, end: h };
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Aggregative", {
   extend: "Ext.chart.series.sprite.Cartesian",
@@ -19989,8 +19985,8 @@ Ext.define("Ext.chart.series.sprite.Aggregative", {
     def: {
       processors: { dataHigh: "data", dataLow: "data", dataClose: "data" },
       aliases: { dataOpen: "dataY" },
-      defaults: { dataHigh: null, dataLow: null, dataClose: null },
-    },
+      defaults: { dataHigh: null, dataLow: null, dataClose: null }
+    }
   },
   config: { aggregator: {} },
   applyAggregator: function (b, a) {
@@ -20031,7 +20027,7 @@ Ext.define("Ext.chart.series.sprite.Aggregative", {
       f.dataEnd = e.data.endIdx[e.end - 1];
       f.renderAggregates(e.data, e.start, e.end, b, i, c, g);
     }
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.CandleStick", {
   alias: "sprite.candlestickSeries",
@@ -20047,7 +20043,7 @@ Ext.define("Ext.chart.series.sprite.CandleStick", {
         },
         barWidth: "number",
         padding: "number",
-        ohlcType: "enums(candlestick,ohlc)",
+        ohlcType: "enums(candlestick,ohlc)"
       },
       defaults: {
         raiseStyle: { strokeStyle: "green", fillStyle: "green" },
@@ -20057,7 +20053,7 @@ Ext.define("Ext.chart.series.sprite.CandleStick", {
         padding: 3,
         lineJoin: "miter",
         miterLimit: 5,
-        ohlcType: "candlestick",
+        ohlcType: "candlestick"
       },
       triggers: { raiseStyle: "raiseStyle", dropStyle: "dropStyle" },
       updaters: {
@@ -20068,9 +20064,9 @@ Ext.define("Ext.chart.series.sprite.CandleStick", {
         dropStyle: function () {
           this.dropTemplate &&
             this.dropTemplate.setAttributes(this.attr.dropStyle);
-        },
-      },
-    },
+        }
+      }
+    }
   },
   candlestick: function (i, c, a, e, h, f, b) {
     var d = Math.min(c, h),
@@ -20162,7 +20158,7 @@ Ext.define("Ext.chart.series.sprite.CandleStick", {
     }
     u.fillStroke(C.attr);
     u.restore();
-  },
+  }
 });
 Ext.define("Ext.chart.series.CandleStick", {
   extend: "Ext.chart.series.Cartesian",
@@ -20174,12 +20170,12 @@ Ext.define("Ext.chart.series.CandleStick", {
     openField: null,
     highField: null,
     lowField: null,
-    closeField: null,
+    closeField: null
   },
   fieldCategoryY: ["Open", "High", "Low", "Close"],
   themeColorCount: function () {
     return 2;
-  },
+  }
 });
 Ext.define("Ext.chart.series.Polar", {
   extend: "Ext.chart.series.Series",
@@ -20195,7 +20191,7 @@ Ext.define("Ext.chart.series.Polar", {
     angleField: null,
     radiusField: null,
     xAxis: null,
-    yAxis: null,
+    yAxis: null
   },
   directions: ["X", "Y"],
   fieldCategoryX: ["X"],
@@ -20214,7 +20210,7 @@ Ext.define("Ext.chart.series.Polar", {
               d +
               "' config has been deprecated. Please use the '" +
               c.deprecatedConfigs[d] +
-              "' config instead.",
+              "' config instead."
           );
         }
       }
@@ -20259,7 +20255,7 @@ Ext.define("Ext.chart.series.Polar", {
       centerX: 0,
       centerY: 0,
       rotationCenterX: 0,
-      rotationCenterY: 0,
+      rotationCenterY: 0
     };
   },
   applyRotation: function (a) {
@@ -20270,7 +20266,7 @@ Ext.define("Ext.chart.series.Polar", {
     if (b && b[0]) {
       b[0].setAttributes({ baseRotation: a });
     }
-  },
+  }
 });
 Ext.define("Ext.chart.series.Gauge", {
   alias: "series.gauge",
@@ -20294,7 +20290,7 @@ Ext.define("Ext.chart.series.Gauge", {
     rect: [0, 0, 1, 1],
     center: [0.5, 0.75],
     radius: 0.5,
-    wholeDisk: false,
+    wholeDisk: false
   },
   coordinateX: function () {
     return this.coordinate("X", 0, 2);
@@ -20311,7 +20307,7 @@ Ext.define("Ext.chart.series.Gauge", {
         startAngle: b ? c : 0,
         endAngle: c,
         strokeOpacity: b ? 1 : 0,
-        lineWidth: b ? a.getNeedleWidth() : 0,
+        lineWidth: b ? a.getNeedleWidth() : 0
       });
       a.doUpdateStyles();
     }
@@ -20365,7 +20361,7 @@ Ext.define("Ext.chart.series.Gauge", {
       centerX: a[0],
       centerY: a[1],
       rotationCenterX: a[0],
-      rotationCenterY: a[1],
+      rotationCenterY: a[1]
     });
     this.doUpdateStyles();
   },
@@ -20466,9 +20462,9 @@ Ext.define("Ext.chart.series.Gauge", {
           centerY: 0,
           startRho: 0,
           endRho: 0,
-          baseRotation: 0,
-        },
-      },
+          baseRotation: 0
+        }
+      }
     };
   },
   normalizeSectors: function (f) {
@@ -20484,7 +20480,7 @@ Ext.define("Ext.chart.series.Gauge", {
         if (typeof e === "number") {
           f[b] = {
             start: b > 0 ? f[b - 1].end : d.getMinimum(),
-            end: Math.min(e, d.getMaximum()),
+            end: Math.min(e, d.getMaximum())
           };
           if (b == c - 1 && f[b].end < d.getMaximum()) {
             f[b + 1] = { start: f[b].end, end: d.getMaximum() };
@@ -20536,7 +20532,7 @@ Ext.define("Ext.chart.series.Gauge", {
       field: j.getXField(),
       angleField: j.getXField(),
       value: l,
-      series: j,
+      series: j
     };
     o = j.createSprite();
     o.setAttributes({ zIndex: 10 }, true);
@@ -20553,7 +20549,7 @@ Ext.define("Ext.chart.series.Gauge", {
         fillStyle: n[c].color,
         strokeOpacity: 0,
         doCallout: false,
-        labelOverflowPadding: -1,
+        labelOverflowPadding: -1
       };
       Ext.apply(e, n[c].style);
       o = j.createSprite();
@@ -20565,7 +20561,7 @@ Ext.define("Ext.chart.series.Gauge", {
     j.setSubStyle({ lineWidth: a });
     j.doUpdateStyles();
     return f;
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Line", {
   alias: "sprite.lineSeries",
@@ -20579,7 +20575,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
         nullStyle: "enums(gap,connect,origin)",
         preciseStroke: "bool",
         xAxis: "default",
-        yCap: "default",
+        yCap: "default"
       },
       defaults: {
         smooth: false,
@@ -20589,12 +20585,12 @@ Ext.define("Ext.chart.series.sprite.Line", {
         preciseStroke: true,
         xAxis: null,
         yCap: Math.pow(2, 20),
-        yJump: 50,
+        yJump: 50
       },
       triggers: {
         dataX: "dataX,bbox,smooth",
         dataY: "dataY,bbox,smooth",
-        smooth: "smooth",
+        smooth: "smooth"
       },
       updaters: {
         smooth: function (a) {
@@ -20607,9 +20603,9 @@ Ext.define("Ext.chart.series.sprite.Line", {
             delete this.smoothX;
             delete this.smoothY;
           }
-        },
-      },
-    },
+        }
+      }
+    }
   },
   list: null,
   updatePlainBBox: function (d) {
@@ -21005,7 +21001,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
       n.isContinuousLine = X;
       if (g && !X) {
         Ext.raise(
-          "Line smoothing in only supported for gapless data, where all data points are finite numbers.",
+          "Line smoothing in only supported for gapless data, where all data points are finite numbers."
         );
       }
       if (z) {
@@ -21052,7 +21048,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
         }
       }
     }
-  },
+  }
 });
 Ext.define("Ext.chart.series.Line", {
   extend: "Ext.chart.series.Cartesian",
@@ -21066,7 +21062,7 @@ Ext.define("Ext.chart.series.Line", {
     step: false,
     nullStyle: "gap",
     fill: undefined,
-    aggregator: { strategy: "double" },
+    aggregator: { strategy: "double" }
   },
   defaultSmoothness: 3,
   overflowBuffer: 1,
@@ -21105,7 +21101,7 @@ Ext.define("Ext.chart.series.Line", {
       fillArea: a,
       step: d.config.step,
       smooth: d.config.smooth,
-      selectionTolerance: d.config.selectionTolerance,
+      selectionTolerance: d.config.selectionTolerance
     });
   },
   updateStep: function (b) {
@@ -21131,7 +21127,7 @@ Ext.define("Ext.chart.series.Line", {
     if (b && b.attr.nullStyle !== a) {
       b.setAttributes({ nullStyle: a });
     }
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.PieSlice", {
   extend: "Ext.draw.sprite.Sector",
@@ -21144,16 +21140,16 @@ Ext.define("Ext.chart.series.sprite.PieSlice", {
         label: "string",
         rotateLabels: "bool",
         labelOverflowPadding: "number",
-        renderer: "default",
+        renderer: "default"
       },
       defaults: {
         doCallout: true,
         rotateLabels: true,
         label: "",
         labelOverflowPadding: 10,
-        renderer: null,
-      },
-    },
+        renderer: null
+      }
+    }
   },
   config: { rendererData: null, rendererIndex: 0, series: null },
   setGradientBBox: function (q, k) {
@@ -21200,14 +21196,14 @@ Ext.define("Ext.chart.series.sprite.PieSlice", {
         startAngle: Math.min(a.startAngle, a.endAngle),
         endAngle: Math.max(a.startAngle, a.endAngle),
         startRho: Math.min(a.startRho, a.endRho),
-        endRho: Math.max(a.startRho, a.endRho),
+        endRho: Math.max(a.startRho, a.endRho)
       };
       d = Ext.callback(
         a.renderer,
         null,
         [e, g, e.getRendererData(), e.getRendererIndex()],
         0,
-        e.getSeries(),
+        e.getSeries()
       );
       e.setAttributes(d);
       e.useAttributes(c, f);
@@ -21312,7 +21308,7 @@ Ext.define("Ext.chart.series.sprite.PieSlice", {
             z.putMarker(
               "labels",
               { callout: 1 - z.sliceContainsLabel(s, u) },
-              r,
+              r
             );
           }
         }
@@ -21344,7 +21340,7 @@ Ext.define("Ext.chart.series.sprite.PieSlice", {
       return 0;
     }
     return 1;
-  },
+  }
 });
 Ext.define("Ext.chart.series.Pie", {
   extend: "Ext.chart.series.Polar",
@@ -21361,7 +21357,7 @@ Ext.define("Ext.chart.series.Pie", {
     hidden: [],
     radiusFactor: 100,
     highlightCfg: { margin: 20 },
-    style: {},
+    style: {}
   },
   directions: ["X"],
   applyLabel: function (a, b) {
@@ -21440,7 +21436,7 @@ Ext.define("Ext.chart.series.Pie", {
       j[q].setAttributes({
         startAngle: g,
         endAngle: (g = m ? s * d[q] * m : 0),
-        globalAlpha: 1,
+        globalAlpha: 1
       });
     }
     if (c < u.sprites.length) {
@@ -21463,14 +21459,14 @@ Ext.define("Ext.chart.series.Pie", {
   updateCenter: function (a) {
     this.setStyle({
       translationX: a[0] + this.getOffsetX(),
-      translationY: a[1] + this.getOffsetY(),
+      translationY: a[1] + this.getOffsetY()
     });
     this.doUpdateStyles();
   },
   updateRadius: function (a) {
     this.setStyle({
       startRho: a * this.getDonut() * 0.01,
-      endRho: a * this.getRadiusFactor() * 0.01,
+      endRho: a * this.getRadiusFactor() * 0.01
     });
     this.doUpdateStyles();
   },
@@ -21498,7 +21494,7 @@ Ext.define("Ext.chart.series.Pie", {
     var a = this.getRadius();
     this.setStyle({
       startRho: a * b * 0.01,
-      endRho: a * this.getRadiusFactor() * 0.01,
+      endRho: a * this.getRadiusFactor() * 0.01
     });
     this.doUpdateStyles();
   },
@@ -21535,7 +21531,7 @@ Ext.define("Ext.chart.series.Pie", {
       field: k.getXField(),
       angleField: k.getXField(),
       radiusField: k.getYField(),
-      series: k,
+      series: k
     };
     for (e = 0; e < b; e++) {
       o = g[e];
@@ -21547,7 +21543,7 @@ Ext.define("Ext.chart.series.Pie", {
         }
         if (a.getField()) {
           a.setAttributes({
-            labelOverflowPadding: k.getLabelOverflowPadding(),
+            labelOverflowPadding: k.getLabelOverflowPadding()
           });
           a.fx.setCustomDurations({ callout: 200 });
         }
@@ -21616,7 +21612,7 @@ Ext.define("Ext.chart.series.Pie", {
               sprite: f[b],
               index: b,
               record: g[b],
-              field: h.getXField(),
+              field: h.getXField()
             };
           }
         }
@@ -21653,7 +21649,7 @@ Ext.define("Ext.chart.series.Pie", {
                 sprite: c[n],
                 index: n,
                 record: o[n],
-                field: t.getXField(),
+                field: t.getXField()
               };
             }
           }
@@ -21684,11 +21680,11 @@ Ext.define("Ext.chart.series.Pie", {
           mark: k || a.strokeStyle || "black",
           disabled: e[d],
           series: h.getId(),
-          index: d,
+          index: d
         });
       }
     }
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Pie3DPart", {
   extend: "Ext.draw.sprite.Path",
@@ -21711,7 +21707,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         colorSpread: "number",
         baseRotation: "number",
         part: "enums(top,bottom,start,end,innerFront,innerBack,outerFront,outerBack)",
-        label: "string",
+        label: "string"
       },
       aliases: { rho: "endRho" },
       triggers: {
@@ -21729,7 +21725,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         colorSpread: "partColor",
         part: "path,partZIndex",
         globalAlpha: "canvas,alpha",
-        fillOpacity: "canvas,alpha",
+        fillOpacity: "canvas,alpha"
       },
       defaults: {
         centerX: 0,
@@ -21748,14 +21744,14 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         bevelWidth: 5,
         strokeOpacity: 0,
         part: "top",
-        label: "",
+        label: ""
       },
       updaters: {
         alpha: "alphaUpdater",
         partColor: "partColorUpdater",
-        partZIndex: "partZIndexUpdater",
-      },
-    },
+        partZIndex: "partZIndexUpdater"
+      }
+    }
   },
   bevelParams: [],
   constructor: function (a) {
@@ -21764,8 +21760,8 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
       stops: [
         { offset: 0, color: "rgba(255,255,255,0)" },
         { offset: 0.7, color: "rgba(255,255,255,0.6)" },
-        { offset: 1, color: "rgba(255,255,255,0)" },
-      ],
+        { offset: 1, color: "rgba(255,255,255,0)" }
+      ]
     });
   },
   alphaUpdater: function (a) {
@@ -21795,8 +21791,8 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           end: { x: 0, y: 0, r: 1 },
           stops: [
             { offset: 0, color: d.createLighter(0.1 * e) },
-            { offset: 1, color: d.createDarker(0.1 * e) },
-          ],
+            { offset: 1, color: d.createDarker(0.1 * e) }
+          ]
         });
         break;
       case "bottom":
@@ -21805,8 +21801,8 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           end: { x: 0, y: 0, r: 1 },
           stops: [
             { offset: 0, color: d.createDarker(0.2 * e) },
-            { offset: 1, color: d.toString() },
-          ],
+            { offset: 1, color: d.toString() }
+          ]
         });
         break;
       case "outerFront":
@@ -21816,24 +21812,24 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
             { offset: 0, color: d.createDarker(0.15 * e).toString() },
             { offset: 0.3, color: b },
             { offset: 0.8, color: d.createLighter(0.2 * e).toString() },
-            { offset: 1, color: d.createDarker(0.25 * e).toString() },
-          ],
+            { offset: 1, color: d.createDarker(0.25 * e).toString() }
+          ]
         });
         break;
       case "start":
         c = new Ext.draw.gradient.Linear({
           stops: [
             { offset: 0, color: d.createDarker(0.1 * e).toString() },
-            { offset: 1, color: d.createLighter(0.2 * e).toString() },
-          ],
+            { offset: 1, color: d.createLighter(0.2 * e).toString() }
+          ]
         });
         break;
       case "end":
         c = new Ext.draw.gradient.Linear({
           stops: [
             { offset: 0, color: d.createDarker(0.1 * e).toString() },
-            { offset: 1, color: d.createLighter(0.2 * e).toString() },
-          ],
+            { offset: 1, color: d.createLighter(0.2 * e).toString() }
+          ]
         });
         break;
       case "innerFront":
@@ -21843,8 +21839,8 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
             { offset: 0, color: d.createDarker(0.1 * e).toString() },
             { offset: 0.2, color: d.createLighter(0.2 * e).toString() },
             { offset: 0.7, color: b },
-            { offset: 1, color: d.createDarker(0.1 * e).toString() },
-          ],
+            { offset: 1, color: d.createDarker(0.1 * e).toString() }
+          ]
         });
         break;
     }
@@ -22249,7 +22245,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
   },
   outerBackRenderer: function (a) {
     this.rimRenderer(a, this.attr.endRho, false, false);
-  },
+  }
 });
 Ext.define(
   "Ext.chart.series.Pie3D",
@@ -22267,7 +22263,7 @@ Ext.define(
       donut: false,
       hidden: [],
       highlightCfg: { margin: 20 },
-      shadow: false,
+      shadow: false
     },
     rotationOffset: -Math.PI / 2,
     setField: function (a) {
@@ -22394,7 +22390,7 @@ Ext.define(
             startAngle: g,
             endAngle: e[r] - v,
             globalAlpha: 1,
-            baseRotation: p,
+            baseRotation: p
           });
         }
         g = e[r];
@@ -22405,7 +22401,7 @@ Ext.define(
           startAngle: o,
           endAngle: o,
           globalAlpha: 0,
-          baseRotation: p,
+          baseRotation: p
         });
       }
     },
@@ -22473,7 +22469,7 @@ Ext.define(
           endRho: b,
           startRho: (b * y.getDonut()) / 100,
           thickness: y.getThickness(),
-          distortion: y.getDistortion(),
+          distortion: y.getDistortion()
         },
         k = y.sprites,
         h = y.getLabel(),
@@ -22550,7 +22546,7 @@ Ext.define(
                 index: c,
                 record: b[c],
                 category: "sprites",
-                field: h.getXField(),
+                field: h.getXField()
               };
             }
           }
@@ -22577,11 +22573,11 @@ Ext.define(
             mark: c || "black",
             disabled: e[d],
             series: h.getId(),
-            index: d,
+            index: d
           });
         }
       }
-    },
+    }
   },
   function () {
     var b = this.prototype,
@@ -22590,7 +22586,7 @@ Ext.define(
           .part;
     b.partNames = a.replace(/^enums\(|\)/g, "").split(",");
     b.spritesPerSlice = b.partNames.length;
-  },
+  }
 );
 Ext.define("Ext.chart.series.sprite.Polar", {
   extend: "Ext.chart.series.sprite.Series",
@@ -22605,7 +22601,7 @@ Ext.define("Ext.chart.series.sprite.Polar", {
         endRho: "number",
         baseRotation: "number",
         labels: "default",
-        labelOverflowPadding: "number",
+        labelOverflowPadding: "number"
       },
       defaults: {
         centerX: 0,
@@ -22616,7 +22612,7 @@ Ext.define("Ext.chart.series.sprite.Polar", {
         endRho: 150,
         baseRotation: 0,
         labels: null,
-        labelOverflowPadding: 10,
+        labelOverflowPadding: 10
       },
       triggers: {
         centerX: "bbox",
@@ -22625,9 +22621,9 @@ Ext.define("Ext.chart.series.sprite.Polar", {
         endAngle: "bbox",
         startRho: "bbox",
         endRho: "bbox",
-        baseRotation: "bbox",
-      },
-    },
+        baseRotation: "bbox"
+      }
+    }
   },
   updatePlainBBox: function (b) {
     var a = this.attr;
@@ -22635,7 +22631,7 @@ Ext.define("Ext.chart.series.sprite.Polar", {
     b.y = a.centerY + a.endRho;
     b.width = a.endRho * 2;
     b.height = a.endRho * 2;
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Radar", {
   alias: "sprite.radar",
@@ -22699,7 +22695,7 @@ Ext.define("Ext.chart.series.sprite.Radar", {
     }
     l.closePath();
     l.fillStroke(f);
-  },
+  }
 });
 Ext.define("Ext.chart.series.Radar", {
   extend: "Ext.chart.series.Polar",
@@ -22729,7 +22725,7 @@ Ext.define("Ext.chart.series.Radar", {
   updateCenter: function (a) {
     this.setStyle({
       translationX: a[0] + this.getOffsetX(),
-      translationY: a[1] + this.getOffsetY(),
+      translationY: a[1] + this.getOffsetY()
     });
     this.doUpdateStyles();
   },
@@ -22774,7 +22770,7 @@ Ext.define("Ext.chart.series.Radar", {
             index: d,
             category: "markers",
             record: l.getData().items[d],
-            field: h.getYField(),
+            field: h.getYField()
           };
           return o;
         }
@@ -22790,8 +22786,8 @@ Ext.define("Ext.chart.series.Radar", {
           translationY: 0,
           rotationRads: 0,
           dataMinX: 0,
-          dataMaxX: 0,
-        },
+          dataMaxX: 0
+        }
       };
     if (a.fx) {
       Ext.apply(a.fx, b);
@@ -22836,9 +22832,9 @@ Ext.define("Ext.chart.series.Radar", {
         "black",
       disabled: b.getHidden(),
       series: b.getId(),
-      index: 0,
+      index: 0
     });
-  },
+  }
 });
 Ext.define("Ext.chart.series.sprite.Scatter", {
   alias: "sprite.scatterSeries",
@@ -22955,7 +22951,7 @@ Ext.define("Ext.chart.series.sprite.Scatter", {
       }
     }
     r.putMarker("labels", l, p);
-  },
+  }
 });
 Ext.define("Ext.chart.series.Scatter", {
   extend: "Ext.chart.series.Cartesian",
@@ -22965,8 +22961,8 @@ Ext.define("Ext.chart.series.Scatter", {
   requires: ["Ext.chart.series.sprite.Scatter"],
   config: {
     itemInstancing: {
-      fx: { customDurations: { translationX: 0, translationY: 0 } },
-    },
+      fx: { customDurations: { translationX: 0, translationY: 0 } }
+    }
   },
   themeMarkerCount: function () {
     return 1;
@@ -22988,27 +22984,27 @@ Ext.define("Ext.chart.series.Scatter", {
         "black",
       disabled: b.getHidden(),
       series: b.getId(),
-      index: 0,
+      index: 0
     });
-  },
+  }
 });
 Ext.define("Ext.chart.theme.Blue", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.blue", "chart.theme.Blue"],
-  config: { baseColor: "#4d7fe6" },
+  config: { baseColor: "#4d7fe6" }
 });
 Ext.define("Ext.chart.theme.BlueGradients", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.blue-gradients", "chart.theme.Blue:gradients"],
-  config: { baseColor: "#4d7fe6", gradients: { type: "linear", degrees: 90 } },
+  config: { baseColor: "#4d7fe6", gradients: { type: "linear", degrees: 90 } }
 });
 Ext.define("Ext.chart.theme.Category1", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.category1", "chart.theme.Category1"],
-  config: { colors: ["#f0a50a", "#c20024", "#2044ba", "#810065", "#7eae29"] },
+  config: { colors: ["#f0a50a", "#c20024", "#2044ba", "#810065", "#7eae29"] }
 });
 Ext.define("Ext.chart.theme.Category1Gradients", {
   extend: "Ext.chart.theme.Base",
@@ -23016,14 +23012,14 @@ Ext.define("Ext.chart.theme.Category1Gradients", {
   alias: ["chart.theme.category1-gradients", "chart.theme.Category1:gradients"],
   config: {
     colors: ["#f0a50a", "#c20024", "#2044ba", "#810065", "#7eae29"],
-    gradients: { type: "linear", degrees: 90 },
-  },
+    gradients: { type: "linear", degrees: 90 }
+  }
 });
 Ext.define("Ext.chart.theme.Category2", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.category2", "chart.theme.Category2"],
-  config: { colors: ["#6d9824", "#87146e", "#2a9196", "#d39006", "#1e40ac"] },
+  config: { colors: ["#6d9824", "#87146e", "#2a9196", "#d39006", "#1e40ac"] }
 });
 Ext.define("Ext.chart.theme.Category2Gradients", {
   extend: "Ext.chart.theme.Base",
@@ -23031,14 +23027,14 @@ Ext.define("Ext.chart.theme.Category2Gradients", {
   alias: ["chart.theme.category2-gradients", "chart.theme.Category2:gradients"],
   config: {
     colors: ["#6d9824", "#87146e", "#2a9196", "#d39006", "#1e40ac"],
-    gradients: { type: "linear", degrees: 90 },
-  },
+    gradients: { type: "linear", degrees: 90 }
+  }
 });
 Ext.define("Ext.chart.theme.Category3", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.category3", "chart.theme.Category3"],
-  config: { colors: ["#fbbc29", "#ce2e4e", "#7e0062", "#158b90", "#57880e"] },
+  config: { colors: ["#fbbc29", "#ce2e4e", "#7e0062", "#158b90", "#57880e"] }
 });
 Ext.define("Ext.chart.theme.Category3Gradients", {
   extend: "Ext.chart.theme.Base",
@@ -23046,14 +23042,14 @@ Ext.define("Ext.chart.theme.Category3Gradients", {
   alias: ["chart.theme.category3-gradients", "chart.theme.Category3:gradients"],
   config: {
     colors: ["#fbbc29", "#ce2e4e", "#7e0062", "#158b90", "#57880e"],
-    gradients: { type: "linear", degrees: 90 },
-  },
+    gradients: { type: "linear", degrees: 90 }
+  }
 });
 Ext.define("Ext.chart.theme.Category4", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.category4", "chart.theme.Category4"],
-  config: { colors: ["#ef5773", "#fcbd2a", "#4f770d", "#1d3eaa", "#9b001f"] },
+  config: { colors: ["#ef5773", "#fcbd2a", "#4f770d", "#1d3eaa", "#9b001f"] }
 });
 Ext.define("Ext.chart.theme.Category4Gradients", {
   extend: "Ext.chart.theme.Base",
@@ -23061,14 +23057,14 @@ Ext.define("Ext.chart.theme.Category4Gradients", {
   alias: ["chart.theme.category4-gradients", "chart.theme.Category4:gradients"],
   config: {
     colors: ["#ef5773", "#fcbd2a", "#4f770d", "#1d3eaa", "#9b001f"],
-    gradients: { type: "linear", degrees: 90 },
-  },
+    gradients: { type: "linear", degrees: 90 }
+  }
 });
 Ext.define("Ext.chart.theme.Category5", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.category5", "chart.theme.Category5"],
-  config: { colors: ["#7eae29", "#fdbe2a", "#910019", "#27b4bc", "#d74dbc"] },
+  config: { colors: ["#7eae29", "#fdbe2a", "#910019", "#27b4bc", "#d74dbc"] }
 });
 Ext.define("Ext.chart.theme.Category5Gradients", {
   extend: "Ext.chart.theme.Base",
@@ -23076,14 +23072,14 @@ Ext.define("Ext.chart.theme.Category5Gradients", {
   alias: ["chart.theme.category5-gradients", "chart.theme.Category5:gradients"],
   config: {
     colors: ["#7eae29", "#fdbe2a", "#910019", "#27b4bc", "#d74dbc"],
-    gradients: { type: "linear", degrees: 90 },
-  },
+    gradients: { type: "linear", degrees: 90 }
+  }
 });
 Ext.define("Ext.chart.theme.Category6", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.category6", "chart.theme.Category6"],
-  config: { colors: ["#44dce1", "#0b2592", "#996e05", "#7fb325", "#b821a1"] },
+  config: { colors: ["#44dce1", "#0b2592", "#996e05", "#7fb325", "#b821a1"] }
 });
 Ext.define("Ext.chart.theme.Category6Gradients", {
   extend: "Ext.chart.theme.Base",
@@ -23091,26 +23087,26 @@ Ext.define("Ext.chart.theme.Category6Gradients", {
   alias: ["chart.theme.category6-gradients", "chart.theme.Category6:gradients"],
   config: {
     colors: ["#44dce1", "#0b2592", "#996e05", "#7fb325", "#b821a1"],
-    gradients: { type: "linear", degrees: 90 },
-  },
+    gradients: { type: "linear", degrees: 90 }
+  }
 });
 Ext.define("Ext.chart.theme.DefaultGradients", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.default-gradients", "chart.theme.Base:gradients"],
-  config: { gradients: { type: "linear", degrees: 90 } },
+  config: { gradients: { type: "linear", degrees: 90 } }
 });
 Ext.define("Ext.chart.theme.Green", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.green", "chart.theme.Green"],
-  config: { baseColor: "#b1da5a" },
+  config: { baseColor: "#b1da5a" }
 });
 Ext.define("Ext.chart.theme.GreenGradients", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.green-gradients", "chart.theme.Green:gradients"],
-  config: { baseColor: "#b1da5a", gradients: { type: "linear", degrees: 90 } },
+  config: { baseColor: "#b1da5a", gradients: { type: "linear", degrees: 90 } }
 });
 Ext.define("Ext.chart.theme.Midnight", {
   extend: "Ext.chart.theme.Base",
@@ -23124,8 +23120,8 @@ Ext.define("Ext.chart.theme.Midnight", {
         style: { strokeStyle: "rgb(224, 224, 227)" },
         label: { fillStyle: "rgb(224, 224, 227)" },
         title: { fillStyle: "rgb(224, 224, 227)" },
-        grid: { strokeStyle: "rgb(112, 112, 115)" },
-      },
+        grid: { strokeStyle: "rgb(112, 112, 115)" }
+      }
     },
     series: { defaults: { label: { fillStyle: "rgb(224, 224, 227)" } } },
     sprites: { text: { fillStyle: "rgb(224, 224, 227)" } },
@@ -23134,11 +23130,11 @@ Ext.define("Ext.chart.theme.Midnight", {
       border: {
         lineWidth: 2,
         fillStyle: "rgba(255, 255, 255, 0.3)",
-        strokeStyle: "rgb(150, 150, 150)",
+        strokeStyle: "rgb(150, 150, 150)"
       },
-      background: "rgb(52, 52, 53)",
-    },
-  },
+      background: "rgb(52, 52, 53)"
+    }
+  }
 });
 Ext.define("Ext.chart.theme.Muted", {
   extend: "Ext.chart.theme.Base",
@@ -23157,57 +23153,57 @@ Ext.define("Ext.chart.theme.Muted", {
       "#3dcc7e",
       "#a6bed1",
       "#cbaa4b",
-      "#998baa",
-    ],
-  },
+      "#998baa"
+    ]
+  }
 });
 Ext.define("Ext.chart.theme.Purple", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.purple", "chart.theme.Purple"],
-  config: { baseColor: "#da5abd" },
+  config: { baseColor: "#da5abd" }
 });
 Ext.define("Ext.chart.theme.PurpleGradients", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.purple-gradients", "chart.theme.Purple:gradients"],
-  config: { baseColor: "#da5abd", gradients: { type: "linear", degrees: 90 } },
+  config: { baseColor: "#da5abd", gradients: { type: "linear", degrees: 90 } }
 });
 Ext.define("Ext.chart.theme.Red", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.red", "chart.theme.Red"],
-  config: { baseColor: "#e84b67" },
+  config: { baseColor: "#e84b67" }
 });
 Ext.define("Ext.chart.theme.RedGradients", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.red-gradients", "chart.theme.Red:gradients"],
-  config: { baseColor: "#e84b67", gradients: { type: "linear", degrees: 90 } },
+  config: { baseColor: "#e84b67", gradients: { type: "linear", degrees: 90 } }
 });
 Ext.define("Ext.chart.theme.Sky", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.sky", "chart.theme.Sky"],
-  config: { baseColor: "#4ce0e7" },
+  config: { baseColor: "#4ce0e7" }
 });
 Ext.define("Ext.chart.theme.SkyGradients", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.sky-gradients", "chart.theme.Sky:gradients"],
-  config: { baseColor: "#4ce0e7", gradients: { type: "linear", degrees: 90 } },
+  config: { baseColor: "#4ce0e7", gradients: { type: "linear", degrees: 90 } }
 });
 Ext.define("Ext.chart.theme.Yellow", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.yellow", "chart.theme.Yellow"],
-  config: { baseColor: "#fec935" },
+  config: { baseColor: "#fec935" }
 });
 Ext.define("Ext.chart.theme.YellowGradients", {
   extend: "Ext.chart.theme.Base",
   singleton: true,
   alias: ["chart.theme.yellow-gradients", "chart.theme.Yellow:gradients"],
-  config: { baseColor: "#fec935", gradients: { type: "linear", degrees: 90 } },
+  config: { baseColor: "#fec935", gradients: { type: "linear", degrees: 90 } }
 });
 Ext.define("Ext.draw.Point", {
   requires: ["Ext.draw.Draw", "Ext.draw.Matrix"],
@@ -23227,7 +23223,7 @@ Ext.define("Ext.draw.Point", {
         a.constructor(b, c);
         return a;
       };
-    })(),
+    })()
   },
   constructor: function (a, c) {
     var b = this;
@@ -23340,7 +23336,7 @@ Ext.define("Ext.draw.Point", {
       -d,
       e,
       b - e * b + g * d,
-      g - e * g + b * -d,
+      g - e * g + b * -d
     ]).transformPoint(this);
     return new Ext.draw.Point(a);
   },
@@ -23350,7 +23346,7 @@ Ext.define("Ext.draw.Point", {
     } else {
       if (arguments.length === 6) {
         return new Ext.draw.Point(
-          Ext.draw.Matrix.fly(arguments).transformPoint(this),
+          Ext.draw.Matrix.fly(arguments).transformPoint(this)
         );
       } else {
         Ext.raise("Invalid parameters.");
@@ -23389,7 +23385,7 @@ Ext.define("Ext.draw.Point", {
   },
   isNumber: function () {
     return Ext.isNumber(this.x) && Ext.isNumber(this.y);
-  },
+  }
 });
 Ext.define("Ext.draw.plugin.SpriteEvents", {
   extend: "Ext.plugin.Abstract",
@@ -23399,7 +23395,7 @@ Ext.define("Ext.draw.plugin.SpriteEvents", {
   spriteMouseMoveEvents: {
     spritemousemove: true,
     spritemouseover: true,
-    spritemouseout: true,
+    spritemouseout: true
   },
   init: function (a) {
     var b = "handleEvent";
@@ -23413,7 +23409,7 @@ Ext.define("Ext.draw.plugin.SpriteEvents", {
       mouseover: b,
       mouseout: b,
       priority: 1001,
-      scope: this,
+      scope: this
     });
   },
   hasSpriteMouseMoveListeners: function () {
@@ -23462,7 +23458,7 @@ Ext.define("Ext.draw.plugin.SpriteEvents", {
       b.fireEvent("sprite" + f.type, c, f);
     }
     d.lastSprite = c;
-  },
+  }
 });
 Ext.define("Ext.chart.interactions.ItemInfo", {
   extend: "Ext.chart.interactions.Abstract",
@@ -23472,8 +23468,8 @@ Ext.define("Ext.chart.interactions.ItemInfo", {
     extjsGestures: {
       start: { event: "click", handler: "onInfoGesture" },
       move: { event: "mousemove", handler: "onInfoGesture" },
-      end: { event: "mouseleave", handler: "onInfoGesture" },
-    },
+      end: { event: "mouseleave", handler: "onInfoGesture" }
+    }
   },
   item: null,
   onInfoGesture: function (f, a) {
@@ -23492,5 +23488,5 @@ Ext.define("Ext.chart.interactions.ItemInfo", {
       c.item = b;
     }
     return false;
-  },
+  }
 });

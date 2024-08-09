@@ -23,14 +23,14 @@ Ext.define("Ext.util.FocusableContainer", {
       onAdd: "onFocusableChildAdd",
       onRemove: "onFocusableChildRemove",
       doDestroy: "destroyFocusableContainer",
-      onFocusEnter: "onFocusEnter",
+      onFocusEnter: "onFocusEnter"
     },
 
     after: {
       afterRender: "initFocusableContainer",
       onFocusLeave: "onFocusLeave",
-      afterShow: "activateFocusableContainer",
-    },
+      afterShow: "activateFocusableContainer"
+    }
   },
 
   isFocusableContainer: true,
@@ -154,7 +154,7 @@ Ext.define("Ext.util.FocusableContainer", {
         up: me.onFocusableContainerUpKey,
         down: me.onFocusableContainerDownKey,
         left: me.onFocusableContainerLeftKey,
-        right: me.onFocusableContainerRightKey,
+        right: me.onFocusableContainerRightKey
       });
     },
 
@@ -211,7 +211,7 @@ Ext.define("Ext.util.FocusableContainer", {
 
       item = me.findNextFocusableChild({
         items: items,
-        step: true,
+        step: true
       });
 
       if (item) {
@@ -339,7 +339,7 @@ Ext.define("Ext.util.FocusableContainer", {
     focusChild: function (child, forward) {
       var nextChild = this.findNextFocusableChild({
         child: child,
-        step: forward,
+        step: forward
       });
 
       if (nextChild) {
@@ -705,6 +705,6 @@ Ext.define("Ext.util.FocusableContainer", {
     // TODO
     onFocusableChildMasked: Ext.privateFn,
     onFocusableChildDestroy: Ext.privateFn,
-    onFocusableChildUpdate: Ext.privateFn,
-  },
+    onFocusableChildUpdate: Ext.privateFn
+  }
 });

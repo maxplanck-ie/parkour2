@@ -39,26 +39,26 @@ Ext.define("Ext.draw.sprite.Circle", {
         /**
          * @cfg {Number} [r=0] The radius of the sprite.
          */
-        r: "number",
+        r: "number"
       },
       aliases: {
         radius: "r",
         x: "cx",
         y: "cy",
         centerX: "cx",
-        centerY: "cy",
+        centerY: "cy"
       },
       defaults: {
         cx: 0,
         cy: 0,
-        r: 4,
+        r: 4
       },
       triggers: {
         cx: "path",
         cy: "path",
-        r: "path",
-      },
-    },
+        r: "path"
+      }
+    }
   },
 
   updatePlainBBox: function (plain) {
@@ -94,5 +94,5 @@ Ext.define("Ext.draw.sprite.Circle", {
 
   updatePath: function (path, attr) {
     path.arc(attr.cx, attr.cy, attr.r, 0, Math.PI * 2, false);
-  },
+  }
 });

@@ -46,7 +46,7 @@ Ext.define("Ext.ux.PreviewPlugin", {
               Ext.grid.feature.RowBody.prototype.getAdditionalData,
             additionalData = {
               rowBody: data[bodyField],
-              rowBodyCls: grid.getView().previewExpanded ? "" : hideBodyCls,
+              rowBodyCls: grid.getView().previewExpanded ? "" : hideBodyCls
             };
 
           if (Ext.isFunction(getAdditionalData)) {
@@ -54,7 +54,7 @@ Ext.define("Ext.ux.PreviewPlugin", {
             Ext.apply(additionalData, getAdditionalData.apply(this, arguments));
           }
           return additionalData;
-        },
+        }
       }),
       initFeature = function (grid, view) {
         view.previewExpanded = me.previewExpanded;
@@ -75,7 +75,7 @@ Ext.define("Ext.ux.PreviewPlugin", {
     else {
       grid.on({
         viewcreated: initFeature,
-        single: true,
+        single: true
       });
     }
   },
@@ -100,12 +100,12 @@ Ext.define("Ext.ux.PreviewPlugin", {
         if (bufferedRenderer) {
           bufferedRenderer.stretchView(
             view,
-            bufferedRenderer.getScrollHeight(true),
+            bufferedRenderer.getScrollHeight(true)
           );
         } else {
           scrollManager.refresh(true);
         }
       }
     }
-  },
+  }
 });

@@ -5,8 +5,8 @@ Ext.define("Ext.theme.mountainview.picker.Picker", {
     toolbarPosition: "bottom",
     toolbar: {
       defaults: {
-        flex: 1,
-      },
-    },
-  },
+        flex: 1
+      }
+    }
+  }
 });

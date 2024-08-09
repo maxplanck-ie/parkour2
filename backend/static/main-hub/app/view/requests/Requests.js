@@ -9,7 +9,7 @@ Ext.define("MainHub.view.requests.Requests", {
     "MainHub.view.requests.EmailWindow",
     "MainHub.view.requests.TokenWindow",
     "MainHub.view.libraries.LibraryWindow",
-    "MainHub.view.metadataexporter.MetadataExporter",
+    "MainHub.view.metadataexporter.MetadataExporter"
   ],
 
   controller: "requests",
@@ -47,26 +47,26 @@ Ext.define("MainHub.view.requests.Requests", {
                   change: function (checkbox, newValue, oldValue, eOpts) {
                     if (newValue) {
                       Ext.getStore(
-                        "requestsStore",
+                        "requestsStore"
                       ).getProxy().extraParams.showAll = "True";
                       Ext.getStore("requestsStore").load();
                     } else {
                       Ext.getStore(
-                        "requestsStore",
+                        "requestsStore"
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("requestsStore").load();
                     }
-                  },
-                },
-              },
-            ],
+                  }
+                }
+              }
+            ]
           },
           {
             xtype: "searchfield",
             store: "requestsStore",
             emptyText: "Search",
             margin: "0 15px 0 0",
-            width: 320,
+            width: 320
           },
           {
             xtype: "button",
@@ -74,16 +74,16 @@ Ext.define("MainHub.view.requests.Requests", {
             cls: "pl-add-request-button",
             iconCls: "x-fa fa-plus",
             style: {
-              border: "1px solid #ffffffbe !important",
+              border: "1px solid #ffffffbe !important"
             },
-            text: "Add",
-          },
-        ],
+            text: "Add"
+          }
+        ]
       },
       viewConfig: {
         emptyText: '<h1 style="text-align:center;margin:75px">No items</h1>',
         deferEmptyText: false,
-        stripeRows: false,
+        stripeRows: false
       },
       store: "requestsStore",
       sortableColumns: false,
@@ -103,24 +103,24 @@ Ext.define("MainHub.view.requests.Requests", {
                 Ext.util.Format.htmlEncode(value) +
                 '" data-qwidth=300';
               return boldValue;
-            },
+            }
           },
           {
             text: "User",
             dataIndex: "user_full_name",
             hidden: !USER.is_staff,
-            flex: 1,
+            flex: 1
           },
           {
             text: "Date",
             dataIndex: "create_time",
             renderer: Ext.util.Format.dateRenderer("d.m.Y"),
-            flex: 1,
+            flex: 1
           },
           {
             text: "Total Sequencing Depth (M)",
             dataIndex: "total_sequencing_depth",
-            flex: 1,
+            flex: 1
           },
           {
             text: "Description",
@@ -130,14 +130,14 @@ Ext.define("MainHub.view.requests.Requests", {
               var val = Ext.util.Format.htmlEncode(value);
               meta.tdAttr = 'data-qtip="' + val + '" data-qwidth=300';
               return val;
-            },
+            }
           },
           {
             text: "Number of Samples and Libraries",
             dataIndex: "number_of_samples",
-            flex: 1,
-          },
-        ],
+            flex: 1
+          }
+        ]
       },
       listeners: {
         // Open Request Window by double clicking row
@@ -145,15 +145,15 @@ Ext.define("MainHub.view.requests.Requests", {
           Ext.create("MainHub.view.requests.RequestWindow", {
             title: record.get("name"),
             mode: "edit",
-            record: record,
+            record: record
           }).show();
-        },
+        }
       },
       plugins: [
         {
           ptype: "bufferedrenderer",
           trailingBufferZone: 100,
-          leadingBufferZone: 100,
+          leadingBufferZone: 100
         },
         {
           ptype: "rowexpander",
@@ -165,10 +165,10 @@ Ext.define("MainHub.view.requests.Requests", {
             '<span class="attached-file-link">',
             '<a href="{path}" download>{name}</a>',
             "</span><br/>",
-            "</tpl>",
-          ),
-        },
-      ],
-    },
-  ],
+            "</tpl>"
+          )
+        }
+      ]
+    }
+  ]
 });

@@ -33,7 +33,7 @@ Ext.define("Ext.app.bind.TemplateBinding", {
         tokens,
         owner,
         me.onBindData,
-        me,
+        me
       );
     } else {
       me.isStatic = true;
@@ -107,6 +107,6 @@ Ext.define("Ext.app.bind.TemplateBinding", {
 
       // Schedulable#sort === emptyFn
       //me.callParent();
-    },
-  },
+    }
+  }
 });

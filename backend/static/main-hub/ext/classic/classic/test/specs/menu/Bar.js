@@ -13,20 +13,20 @@ describe("Ext.menu.Bar", function () {
               { text: "Open" },
               "-",
               { text: "Close", disabled: true },
-              { text: "Save" },
-            ],
+              { text: "Save" }
+            ]
           },
           {
             text: "Edit",
             disabled: true,
-            menu: [{ text: "Cut" }, { text: "Copy" }, { text: "Paste" }],
+            menu: [{ text: "Cut" }, { text: "Copy" }, { text: "Paste" }]
           },
           {
-            text: "View",
-          },
-        ],
+            text: "View"
+          }
+        ]
       },
-      config,
+      config
     );
 
     return (menu = new Ext.menu.Bar(config));
@@ -50,14 +50,14 @@ describe("Ext.menu.Bar", function () {
     beforeEach(function () {
       beforeBtn = new Ext.button.Button({
         renderTo: Ext.getBody(),
-        text: "before",
+        text: "before"
       });
 
       makeMenuBar();
 
       afterBtn = new Ext.button.Button({
         renderTo: Ext.getBody(),
-        text: "after",
+        text: "after"
       });
 
       fileItem = menu.down("[text=File]");

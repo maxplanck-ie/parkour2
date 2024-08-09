@@ -20,24 +20,24 @@ Ext.define("Ext.chart.series.sprite.Aggregative", {
         /**
          * @cfg {Object} [dataClose=null] Data items representing the closing values of the aggregated data.
          */
-        dataClose: "data",
+        dataClose: "data"
       },
       aliases: {
         /**
          * @cfg {Object} [dataOpen=null] Data items representing the opening values of the aggregated data.
          */
-        dataOpen: "dataY",
+        dataOpen: "dataY"
       },
       defaults: {
         dataHigh: null,
         dataLow: null,
-        dataClose: null,
-      },
-    },
+        dataClose: null
+      }
+    }
   },
 
   config: {
-    aggregator: {},
+    aggregator: {}
   },
 
   applyAggregator: function (aggregator, oldAggr) {
@@ -83,7 +83,7 @@ Ext.define("Ext.chart.series.sprite.Aggregative", {
         aggregator.getAggregation(
           min,
           max,
-          ((max - min) / rect[2]) * me.getGapWidth(),
+          ((max - min) / rect[2]) * me.getGapWidth()
         );
 
     if (aggregates) {
@@ -97,8 +97,8 @@ Ext.define("Ext.chart.series.sprite.Aggregative", {
         surface,
         ctx,
         clip,
-        rect,
+        rect
       );
     }
-  },
+  }
 });

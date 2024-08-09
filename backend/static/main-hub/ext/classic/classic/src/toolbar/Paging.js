@@ -272,7 +272,7 @@ Ext.define("Ext.toolbar.Paging", {
     currentPage: 0,
     pageCount: 0,
     toRecord: 0,
-    fromRecord: 0,
+    fromRecord: 0
   },
 
   /**
@@ -288,7 +288,7 @@ Ext.define("Ext.toolbar.Paging", {
     var me = this,
       inputListeners = {
         scope: me,
-        blur: me.onPagingBlur,
+        blur: me.onPagingBlur
       };
 
     inputListeners[Ext.supports.SpecialKeyDownRepeat ? "keydown" : "keypress"] =
@@ -302,7 +302,7 @@ Ext.define("Ext.toolbar.Paging", {
         iconCls: Ext.baseCSSPrefix + "tbar-page-first",
         disabled: true,
         handler: me.moveFirst,
-        scope: me,
+        scope: me
       },
       {
         itemId: "prev",
@@ -311,7 +311,7 @@ Ext.define("Ext.toolbar.Paging", {
         iconCls: Ext.baseCSSPrefix + "tbar-page-prev",
         disabled: true,
         handler: me.movePrevious,
-        scope: me,
+        scope: me
       },
       "-",
       me.beforePageText,
@@ -331,12 +331,12 @@ Ext.define("Ext.toolbar.Paging", {
         isFormField: false,
         width: me.inputItemWidth,
         margin: "-1 2 3 2",
-        listeners: inputListeners,
+        listeners: inputListeners
       },
       {
         xtype: "tbtext",
         itemId: "afterTextItem",
-        html: Ext.String.format(me.afterPageText, 1),
+        html: Ext.String.format(me.afterPageText, 1)
       },
       "-",
       {
@@ -346,7 +346,7 @@ Ext.define("Ext.toolbar.Paging", {
         iconCls: Ext.baseCSSPrefix + "tbar-page-next",
         disabled: true,
         handler: me.moveNext,
-        scope: me,
+        scope: me
       },
       {
         itemId: "last",
@@ -355,7 +355,7 @@ Ext.define("Ext.toolbar.Paging", {
         iconCls: Ext.baseCSSPrefix + "tbar-page-last",
         disabled: true,
         handler: me.moveLast,
-        scope: me,
+        scope: me
       },
       "-",
       {
@@ -365,8 +365,8 @@ Ext.define("Ext.toolbar.Paging", {
         iconCls: Ext.baseCSSPrefix + "tbar-loading",
         disabled: me.store.isLoading(),
         handler: me.doRefresh,
-        scope: me,
-      },
+        scope: me
+      }
     ];
   },
 
@@ -380,7 +380,7 @@ Ext.define("Ext.toolbar.Paging", {
     //<debug>
     if (me.store && !me.store.nextPage) {
       Ext.raise(
-        "Store is not compatible with this component (does not support paging)",
+        "Store is not compatible with this component (does not support paging)"
       );
     }
     //</debug>
@@ -399,7 +399,7 @@ Ext.define("Ext.toolbar.Paging", {
       me.items.push("->");
       me.items.push({
         xtype: "tbtext",
-        itemId: "displayItem",
+        itemId: "displayItem"
       });
     }
 
@@ -439,7 +439,7 @@ Ext.define("Ext.toolbar.Paging", {
           destroyable: true,
           scope: me,
 
-          storechange: "onOwnerStoreChange",
+          storechange: "onOwnerStoreChange"
         });
       }
 
@@ -483,7 +483,7 @@ Ext.define("Ext.toolbar.Paging", {
           me.displayMsg,
           pageData.fromRecord,
           pageData.toRecord,
-          pageData.total,
+          pageData.total
         );
       }
       displayItem.setText(msg);
@@ -526,7 +526,7 @@ Ext.define("Ext.toolbar.Paging", {
 
       afterText = Ext.String.format(
         me.afterPageText,
-        isNaN(pageCount) ? 1 : pageCount,
+        isNaN(pageCount) ? 1 : pageCount
       );
     } else {
       currPage = 0;
@@ -577,7 +577,7 @@ Ext.define("Ext.toolbar.Paging", {
       currentPage: store.currentPage,
       pageCount: Ext.Number.isFinite(pageCount) ? pageCount : 1,
       fromRecord: (store.currentPage - 1) * store.pageSize + 1,
-      toRecord: toRecord || totalCount,
+      toRecord: toRecord || totalCount
     };
   },
 
@@ -775,7 +775,7 @@ Ext.define("Ext.toolbar.Paging", {
     return {
       beforeload: this.beforeLoad,
       load: this.onLoad,
-      exception: this.onLoadError,
+      exception: this.onLoadError
     };
   },
 
@@ -797,5 +797,5 @@ Ext.define("Ext.toolbar.Paging", {
     me.bindStore(null);
 
     me.callParent();
-  },
+  }
 });

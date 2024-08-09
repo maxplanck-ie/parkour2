@@ -18,7 +18,7 @@ Ext.define("Ext.data.validator.Presence", {
      * @cfg {Boolean} allowEmpty
      * `true` to allow `''` as a valid value.
      */
-    allowEmpty: false,
+    allowEmpty: false
   },
 
   validate: function (value) {
@@ -27,5 +27,5 @@ Ext.define("Ext.data.validator.Presence", {
       valid = !(value === "");
     }
     return valid ? true : this.getMessage();
-  },
+  }
 });

@@ -82,7 +82,7 @@ Ext.define("Ext.navigation.View", {
      * @accessor
      */
     navigationBar: {
-      docked: "top",
+      docked: "top"
     },
 
     /**
@@ -143,9 +143,9 @@ Ext.define("Ext.navigation.View", {
         duration: 300,
         easing: "ease-out",
         type: "slide",
-        direction: "left",
-      },
-    },
+        direction: "left"
+      }
+    }
   },
 
   /**
@@ -179,14 +179,14 @@ Ext.define("Ext.navigation.View", {
     if (navBar) {
       navBar.on({
         back: me.onBackButtonTap,
-        scope: me,
+        scope: me
       });
 
       me.relayEvents(navBar, "rightbuttontap");
 
       me.relayEvents(me, {
         add: "push",
-        remove: "pop",
+        remove: "pop"
       });
     }
 
@@ -194,7 +194,7 @@ Ext.define("Ext.navigation.View", {
     var layout = me.getLayout();
     if (layout && !layout.isCard) {
       Ext.Logger.error(
-        "The base layout for a NavigationView must always be a Card Layout",
+        "The base layout for a NavigationView must always be a Card Layout"
       );
     }
     //</debug>
@@ -322,15 +322,15 @@ Ext.define("Ext.navigation.View", {
           [
             "You have selected to display a title in a component that does not ",
             "support titles in NavigationView. Please remove the `title` configuration from your ",
-            "NavigationView item, or change it to a component that has a `setTitle` method.",
-          ].join(""),
+            "NavigationView item, or change it to a component that has a `setTitle` method."
+          ].join("")
         );
       }
       //</debug>
 
       var item = innerItems[innerItems.length - 2];
       this.$titleContainer.setTitle(
-        item.getTitle ? item.getTitle() : item.config.title,
+        item.getTitle ? item.getTitle() : item.config.title
       );
     }
 
@@ -379,7 +379,7 @@ Ext.define("Ext.navigation.View", {
     item.on({
       scope: this,
       show: this.refreshBackButtonContainer,
-      hide: this.refreshBackButtonContainer,
+      hide: this.refreshBackButtonContainer
     });
     this.refreshBackButtonContainer();
   },
@@ -395,7 +395,7 @@ Ext.define("Ext.navigation.View", {
     item.un({
       scope: this,
       show: this.refreshBackButtonContainer,
-      hide: this.refreshBackButtonContainer,
+      hide: this.refreshBackButtonContainer
     });
     this.refreshBackButtonContainer();
   },
@@ -433,7 +433,7 @@ Ext.define("Ext.navigation.View", {
     if (!config) {
       config = {
         hidden: true,
-        docked: "top",
+        docked: "top"
       };
     }
 
@@ -446,7 +446,7 @@ Ext.define("Ext.navigation.View", {
       //<debug>
       Ext.Logger.warn(
         "Ext.navigation.View: The 'navigationBar' configuration does not accept a 'title' property. You " +
-          "set the title of the navigationBar by giving this navigation view's children a 'title' property.",
+          "set the title of the navigationBar by giving this navigation view's children a 'title' property."
       );
       //</debug>
     }
@@ -459,7 +459,7 @@ Ext.define("Ext.navigation.View", {
         docked: "top",
         xtype: "titlebar",
         ui: "light",
-        title: me.$currentTitle || "",
+        title: me.$currentTitle || ""
       });
 
       var containerConfig =
@@ -468,7 +468,7 @@ Ext.define("Ext.navigation.View", {
       me.$backButtonContainer = me.add({
         xtype: "toolbar",
         docked: "bottom",
-        hidden: true,
+        hidden: true
       });
 
       // Any item that is added to the BackButtonContainer should be monitored for visibility
@@ -476,14 +476,14 @@ Ext.define("Ext.navigation.View", {
       me.$backButtonContainer.on({
         scope: me,
         add: me.onBackButtonContainerAdd,
-        remove: me.onBackButtonContainerRemove,
+        remove: me.onBackButtonContainerRemove
       });
 
       me.$backButton = me.$backButtonContainer.add({
         xtype: "button",
         text: "Back",
         hidden: true,
-        ui: "back",
+        ui: "back"
       });
 
       // Default config items go into the bottom bar
@@ -498,12 +498,12 @@ Ext.define("Ext.navigation.View", {
 
       me.$backButton.on({
         scope: me,
-        tap: me.onBackButtonTap,
+        tap: me.onBackButtonTap
       });
 
       config = {
         hidden: true,
-        docked: "top",
+        docked: "top"
       };
     }
 
@@ -554,7 +554,7 @@ Ext.define("Ext.navigation.View", {
       me.getNavigationBar().onViewRemove(
         me,
         innerItems[innerIndex],
-        innerIndex,
+        innerIndex
       );
     }
   },
@@ -604,7 +604,7 @@ Ext.define("Ext.navigation.View", {
     if (item && item.isInnerItem()) {
       // Update the title container title
       me.updateTitleContainerTitle(
-        item.getTitle ? item.getTitle() : item.config.title,
+        item.getTitle ? item.getTitle() : item.config.title
       );
     }
 
@@ -625,8 +625,8 @@ Ext.define("Ext.navigation.View", {
           [
             "You have selected to display a title in a component that does not ",
             "support titles in NavigationView. Please remove the `title` configuration from your ",
-            "NavigationView item, or change it to a component that has a `setTitle` method.",
-          ].join(""),
+            "NavigationView item, or change it to a component that has a `setTitle` method."
+          ].join("")
         );
       }
       //</debug>
@@ -643,5 +643,5 @@ Ext.define("Ext.navigation.View", {
    */
   reset: function () {
     return this.pop(this.getInnerItems().length);
-  },
+  }
 });

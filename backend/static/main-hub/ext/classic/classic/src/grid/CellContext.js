@@ -91,7 +91,7 @@ Ext.define("Ext.grid.CellContext", {
           row.rowIdx,
           row.colIdx,
           row.record,
-          row.column,
+          row.column
         );
       }
       // An object containing {row: r, column: c}
@@ -321,12 +321,12 @@ Ext.define("Ext.grid.CellContext", {
           } while (!me.getCell(true));
           break;
       }
-    },
+    }
   },
 
   statics: {
     compare: function (c1, c2) {
       return c1.rowIdx - c2.rowIdx || c1.colIdx - c2.colIdx;
-    },
-  },
+    }
+  }
 });

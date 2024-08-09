@@ -38,21 +38,21 @@ describe("Ext.data.field.Date", function () {
   describe("configuring", function () {
     it("should configure dateFormat", function () {
       make({
-        dateFormat: "Y/m/d",
+        dateFormat: "Y/m/d"
       });
       expect(field.getDateFormat()).toBe("Y/m/d");
     });
 
     it("should configure dateReadFormat", function () {
       make({
-        dateReadFormat: "Y-m-d",
+        dateReadFormat: "Y-m-d"
       });
       expect(field.getDateReadFormat()).toBe("Y-m-d");
     });
 
     it("should configure dateWriteFormat", function () {
       make({
-        dateWriteFormat: "Y m d",
+        dateWriteFormat: "Y m d"
       });
       expect(field.getDateWriteFormat()).toBe("Y m d");
     });
@@ -133,7 +133,7 @@ describe("Ext.data.field.Date", function () {
       it("should use the dateFormat", function () {
         var d = new Date();
         make({
-          dateFormat: "Y-m-d",
+          dateFormat: "Y-m-d"
         });
 
         var v, format;
@@ -152,7 +152,7 @@ describe("Ext.data.field.Date", function () {
       it("should use the dateReadFormat", function () {
         var d = new Date();
         make({
-          dateReadFormat: "Y-m-d",
+          dateReadFormat: "Y-m-d"
         });
 
         var v, format;
@@ -172,7 +172,7 @@ describe("Ext.data.field.Date", function () {
         var d = new Date();
         make({
           dateReadFormat: "Y-m-d",
-          dateFormat: "Y/m/d",
+          dateFormat: "Y/m/d"
         });
 
         var v, format;
@@ -195,7 +195,7 @@ describe("Ext.data.field.Date", function () {
           useStrict;
         make({
           dateFormat: "m/d/Y h:i A",
-          useStrict: false,
+          useStrict: false
         });
 
         spyOn(Ext.Date, "parse").andCallFake(function (arg1, arg2, arg3) {
@@ -218,7 +218,7 @@ describe("Ext.data.field.Date", function () {
           useStrict;
         make({
           dateFormat: "m/d/Y h:i A",
-          useStrict: true,
+          useStrict: true
         });
 
         spyOn(Ext.Date, "parse").andCallFake(function (arg1, arg2, arg3) {
@@ -239,7 +239,7 @@ describe("Ext.data.field.Date", function () {
       it("should call native Date.parse", function () {
         make();
         expect(+field.convert("Sat Jan 01 2000 00:00:00 GMT-0700 (MST)")).toBe(
-          946710000000,
+          946710000000
         );
       });
 
@@ -294,7 +294,7 @@ describe("Ext.data.field.Date", function () {
       it("should use dateFormat", function () {
         var d = new Date();
         make({
-          dateFormat: "Y-m-d",
+          dateFormat: "Y-m-d"
         });
 
         var v, format;
@@ -313,7 +313,7 @@ describe("Ext.data.field.Date", function () {
       it("should use dateWriteFormat", function () {
         var d = new Date();
         make({
-          dateWriteFormat: "Y-m-d",
+          dateWriteFormat: "Y-m-d"
         });
 
         var v, format;
@@ -333,7 +333,7 @@ describe("Ext.data.field.Date", function () {
         var d = new Date();
         make({
           dateFormat: "Y/m/d",
-          dateWriteFormat: "Y-m-d",
+          dateWriteFormat: "Y-m-d"
         });
 
         var v, format;

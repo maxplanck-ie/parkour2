@@ -116,7 +116,7 @@
 Ext.define("Ext.form.Panel", {
   extend: "Ext.panel.Panel",
   mixins: {
-    fieldAncestor: "Ext.form.FieldAncestor",
+    fieldAncestor: "Ext.form.FieldAncestor"
   },
   alias: "widget.form",
   alternateClassName: ["Ext.FormPanel", "Ext.form.FormPanel"],
@@ -215,7 +215,7 @@ Ext.define("Ext.form.Panel", {
      * @cfg waitTitle
      * @inheritdoc Ext.form.Basic#waitTitle
      */
-    "waitTitle",
+    "waitTitle"
   ],
 
   initComponent: function () {
@@ -253,7 +253,7 @@ Ext.define("Ext.form.Panel", {
        * @event dirtychange
        * @inheritdoc Ext.form.Basic#dirtychange
        */
-      "dirtychange",
+      "dirtychange"
     ]);
 
     // Start polling if configured
@@ -340,7 +340,7 @@ Ext.define("Ext.form.Panel", {
       asString,
       dirtyOnly,
       includeEmptyText,
-      useDataValues,
+      useDataValues
     );
   },
 
@@ -420,7 +420,7 @@ Ext.define("Ext.form.Panel", {
     task.start({
       interval: 0,
       run: this.checkChange,
-      scope: this,
+      scope: this
     });
     this.pollTask = task;
   },
@@ -448,5 +448,5 @@ Ext.define("Ext.form.Panel", {
     for (f = 0; f < fLen; f++) {
       fields[f].checkChange();
     }
-  },
+  }
 });

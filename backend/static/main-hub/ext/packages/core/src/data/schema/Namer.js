@@ -182,7 +182,7 @@ Ext.define("Ext.data.schema.Namer", {
   matrixRole: function (relation, entityType) {
     var ret = this.apply(
       relation ? "multiRole,capitalize" : "multiRole",
-      entityType,
+      entityType
     );
     return relation ? relation + ret : ret;
   },
@@ -229,5 +229,5 @@ Ext.define("Ext.data.schema.Namer", {
     }
 
     return ret;
-  },
+  }
 });

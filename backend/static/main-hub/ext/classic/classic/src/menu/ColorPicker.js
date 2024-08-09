@@ -78,10 +78,10 @@ Ext.define("Ext.menu.ColorPicker", {
           cls: Ext.baseCSSPrefix + "menu-color-item",
           margin: 0,
           id: me.pickerId,
-          xtype: "colorpicker",
+          xtype: "colorpicker"
         },
-        cfg,
-      ),
+        cfg
+      )
     });
 
     me.callParent(arguments);
@@ -105,5 +105,5 @@ Ext.define("Ext.menu.ColorPicker", {
    */
   hidePickerOnSelect: function () {
     Ext.menu.Manager.hideAll();
-  },
+  }
 });

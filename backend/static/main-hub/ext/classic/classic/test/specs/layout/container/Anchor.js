@@ -27,10 +27,10 @@ describe("Ext.layout.container.Anchor", function () {
             Ext.apply(
               {
                 xtype: "component",
-                style: "margin: 4px; line-height: 20px;",
+                style: "margin: 4px; line-height: 20px;"
               },
-              config,
-            ),
+              config
+            )
           );
         });
 
@@ -42,10 +42,10 @@ describe("Ext.layout.container.Anchor", function () {
               shrinkWrap: shrinkWrap || 2,
               layout: "anchor",
               bodyPadding: "6",
-              items: items,
+              items: items
             },
-            parentConfig,
-          ),
+            parentConfig
+          )
         );
       }
 
@@ -56,14 +56,14 @@ describe("Ext.layout.container.Anchor", function () {
       describe("configured width and height", function () {
         var parentConfig = {
           height: 100,
-          width: 100,
+          width: 100
         };
 
         describe("anchoring items using percentages", function () {
           beforeEach(function () {
             makePanel(parentConfig, [
               { anchor: "100%, 50%" },
-              { anchor: "50%, 50%" },
+              { anchor: "50%, 50%" }
             ]);
           });
 
@@ -86,7 +86,7 @@ describe("Ext.layout.container.Anchor", function () {
               // TODO: should we be able to use bottom anchors insead of using a fixed height?
               // see https://sencha.jira.com/browse/EXTJSIV-5893
               { anchor: "0", height: 37 },
-              { anchor: "-43", height: 37 },
+              { anchor: "-43", height: 37 }
             ]);
           });
 
@@ -159,7 +159,7 @@ describe("Ext.layout.container.Anchor", function () {
             makePanel(parentConfig, {
               xtype: "panel",
               shrinkWrap: 3,
-              html: '<div style="width:20px;height:20px;"></div>',
+              html: '<div style="width:20px;height:20px;"></div>'
             });
           });
 
@@ -177,7 +177,7 @@ describe("Ext.layout.container.Anchor", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { autoScroll: true },
-              parentConfig,
+              parentConfig
             );
 
             describe("large vertical, no horizontal", function () {
@@ -268,7 +268,7 @@ describe("Ext.layout.container.Anchor", function () {
               beforeEach(function () {
                 makePanel(overflowParentConfig, {
                   height: 180,
-                  width: 79 - scrollbarWidth,
+                  width: 79 - scrollbarWidth
                 });
               });
 
@@ -285,7 +285,7 @@ describe("Ext.layout.container.Anchor", function () {
               beforeEach(function () {
                 makePanel(overflowParentConfig, {
                   height: 79 - scrollbarWidth,
-                  width: 180,
+                  width: 180
                 });
               });
 
@@ -303,7 +303,7 @@ describe("Ext.layout.container.Anchor", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow-x:auto;overflow-y:scroll;" },
-              parentConfig,
+              parentConfig
             );
             // TODO
           });
@@ -312,7 +312,7 @@ describe("Ext.layout.container.Anchor", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow-x:scroll;overflow-y:auto;" },
-              parentConfig,
+              parentConfig
             );
 
             // TODO
@@ -322,7 +322,7 @@ describe("Ext.layout.container.Anchor", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow:scroll;" },
-              parentConfig,
+              parentConfig
             );
 
             // TODO
@@ -348,12 +348,12 @@ describe("Ext.layout.container.Anchor", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow:scroll;" },
-              parentConfig,
+              parentConfig
             );
 
             beforeEach(function () {
               makePanel(overflowParentConfig, {
-                style: "height: 50%; width: 50%;",
+                style: "height: 50%; width: 50%;"
               });
             });
 
@@ -371,7 +371,7 @@ describe("Ext.layout.container.Anchor", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { autoScroll: true },
-            parentConfig,
+            parentConfig
           );
 
           beforeEach(function () {
@@ -391,14 +391,14 @@ describe("Ext.layout.container.Anchor", function () {
       describe("configured height, shrink wrap width", function () {
         var parentConfig = {
           height: 100,
-          shrinkWrap: 1,
+          shrinkWrap: 1
         };
 
         describe("anchoring items using percentages", function () {
           beforeEach(function () {
             makePanel(parentConfig, [
               { anchor: "100%, 50%", html: '<div style="width:78px"></div>' },
-              { anchor: "50%, 50%" },
+              { anchor: "50%, 50%" }
             ]);
           });
 
@@ -425,9 +425,9 @@ describe("Ext.layout.container.Anchor", function () {
               {
                 anchor: "0",
                 height: 37,
-                html: '<div style="width:78px"></div>',
+                html: '<div style="width:78px"></div>'
               },
-              { anchor: "-43", height: 37 },
+              { anchor: "-43", height: 37 }
             ]);
           });
 
@@ -462,7 +462,7 @@ describe("Ext.layout.container.Anchor", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { bodyStyle: "overflow:auto;" },
-            parentConfig,
+            parentConfig
           );
 
           describe("vertical", function () {
@@ -470,7 +470,7 @@ describe("Ext.layout.container.Anchor", function () {
               makePanel(overflowParentConfig, {
                 anchor: "0",
                 height: 180,
-                html: '<div style="width:80px;"></div>',
+                html: '<div style="width:80px;"></div>'
               });
             });
 
@@ -486,7 +486,7 @@ describe("Ext.layout.container.Anchor", function () {
             // TODO: enable this spec when https://sencha.jira.com/browse/EXTJSIV-5895 is fixed.
             xit("should not have horizontal overflow", function () {
               expect(panel.body.dom.scrollWidth).toBe(
-                panel.getWidth() - scrollbarWidth,
+                panel.getWidth() - scrollbarWidth
               );
             });
           });
@@ -495,14 +495,14 @@ describe("Ext.layout.container.Anchor", function () {
 
       describe("configured width, shrink wrap height", function () {
         var parentConfig = {
-          width: 100,
+          width: 100
         };
 
         describe("anchoring items using percentages", function () {
           beforeEach(function () {
             makePanel(parentConfig, [
               { anchor: "100%", height: 37 },
-              { anchor: "50%", height: 37 },
+              { anchor: "50%", height: 37 }
             ]);
           });
 
@@ -527,7 +527,7 @@ describe("Ext.layout.container.Anchor", function () {
               // TODO: should we be able to use bottom anchors insead of using a fixed height?
               // see https://sencha.jira.com/browse/EXTJSIV-5893
               { anchor: "0", height: 37 },
-              { anchor: "-43", height: 37 },
+              { anchor: "-43", height: 37 }
             ]);
           });
 
@@ -620,7 +620,7 @@ describe("Ext.layout.container.Anchor", function () {
             makePanel(parentConfig, {
               xtype: "panel",
               shrinkWrap: 3,
-              html: '<div style="width:20px;height:20px;"></div>',
+              html: '<div style="width:20px;height:20px;"></div>'
             });
           });
 
@@ -641,14 +641,14 @@ describe("Ext.layout.container.Anchor", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { bodyStyle: "overflow:auto;" },
-            parentConfig,
+            parentConfig
           );
 
           describe("horizontal", function () {
             beforeEach(function () {
               makePanel(overflowParentConfig, {
                 height: 78 - scrollbarHeight,
-                width: 180,
+                width: 180
               });
             });
 
@@ -664,7 +664,7 @@ describe("Ext.layout.container.Anchor", function () {
             // TODO: enable this spec when https://sencha.jira.com/browse/EXTJSIV-5895 is fixed
             xit("should not have vertical overflow", function () {
               expect(panel.body.dom.scrollHeight).toBe(
-                panel.getHeight() - scrollbarHeight,
+                panel.getHeight() - scrollbarHeight
               );
             });
           });
@@ -673,7 +673,7 @@ describe("Ext.layout.container.Anchor", function () {
 
       describe("shrink wrap width and height", function () {
         var parentConfig = {
-          shrinkWrap: 3,
+          shrinkWrap: 3
         };
 
         describe("anchoring items using percentages", function () {
@@ -681,12 +681,12 @@ describe("Ext.layout.container.Anchor", function () {
             makePanel(parentConfig, [
               {
                 anchor: "100%, 50%",
-                html: '<div style="width:40px;height:20px;"></div>',
+                html: '<div style="width:40px;height:20px;"></div>'
               },
               {
                 anchor: "50%, 50%",
-                html: '<div style="width:20px;height:20px;"></div>',
-              },
+                html: '<div style="width:20px;height:20px;"></div>'
+              }
             ]);
           });
 
@@ -755,48 +755,48 @@ describe("Ext.layout.container.Anchor", function () {
                 x: 0,
                 y: 5,
                 xtype: "label",
-                text: "From:",
+                text: "From:"
               },
               {
                 x: 55,
                 y: 0,
                 name: "from",
                 hideLabel: true,
-                anchor: "100%", // anchor width by %
+                anchor: "100%" // anchor width by %
               },
               {
                 x: 0,
                 y: 32,
                 xtype: "label",
-                text: "To:",
+                text: "To:"
               },
               {
                 x: 55,
                 y: 27,
                 xtype: "button",
-                text: "Contacts...",
+                text: "Contacts..."
               },
               {
                 x: 127,
                 y: 27,
                 name: "to",
                 hideLabel: true,
-                anchor: "100%", // anchor width by %
+                anchor: "100%" // anchor width by %
               },
               {
                 x: 0,
                 y: 59,
                 xtype: "label",
-                text: "Subject:",
+                text: "Subject:"
               },
               {
                 x: 55,
                 y: 54,
                 name: "subject",
                 hideLabel: true,
-                anchor: "100%", // anchor width by %
-              },
-            ],
+                anchor: "100%" // anchor width by %
+              }
+            ]
           },
           horizontalTest = {
             xtype: "form",
@@ -804,8 +804,8 @@ describe("Ext.layout.container.Anchor", function () {
             defaultType: "displayfield",
             defaults: {
               style: {
-                border: "solid red 1px",
-              },
+                border: "solid red 1px"
+              }
             },
             items: [
               // these three will all end up with odd widths
@@ -814,17 +814,17 @@ describe("Ext.layout.container.Anchor", function () {
               {
                 value: "a fairly long lable value",
                 anchor: "100%",
-                minWidth: 150,
+                minWidth: 150
               },
               {
                 value: "a label",
-                anchor: "100%",
+                anchor: "100%"
               },
               {
                 value: "a",
-                anchor: "100%",
-              },
-            ],
+                anchor: "100%"
+              }
+            ]
           },
           verticalTest = {
             xtype: "form",
@@ -832,25 +832,25 @@ describe("Ext.layout.container.Anchor", function () {
             defaultType: "displayfield",
             defaults: {
               style: {
-                border: "solid red 1px",
-              },
+                border: "solid red 1px"
+              }
             },
             items: [
               {
                 x: 0,
                 y: 0,
                 value: "a fairly long lable value",
-                minWidth: 150,
+                minWidth: 150
               },
               {
                 x: 0,
                 y: 30,
-                value: "a label",
+                value: "a label"
               },
               {
                 x: 0,
                 y: 60,
-                value: "a",
+                value: "a"
               },
               // bit odd here, but can be done through the API
               // should probably have a better way to cope with
@@ -862,7 +862,7 @@ describe("Ext.layout.container.Anchor", function () {
                 x: 0,
                 y: 90,
                 value: ["a", "b", "c", "d"].join("<br>"),
-                anchor: "-30 100%",
+                anchor: "-30 100%"
               },
               {
                 x: 30,
@@ -870,9 +870,9 @@ describe("Ext.layout.container.Anchor", function () {
                 width: 30,
                 height: 200,
                 value: ["a", "b", "c", "d", "e", "f", "g", "h"].join("<br>"),
-                anchor: "100% 100%",
-              },
-            ],
+                anchor: "100% 100%"
+              }
+            ]
           },
           getChildren = function (comp) {
             return comp.items.items;
@@ -889,14 +889,14 @@ describe("Ext.layout.container.Anchor", function () {
             shrinkWrap: 3,
             layout: {
               type: "table",
-              columns: 1,
+              columns: 1
             },
             initComponent: function () {
               if (this.columns) {
                 this.layout = Ext.apply(this.layout, { columns: this.columns });
               }
               this.callParent();
-            },
+            }
           });
 
           failedLayouts = Ext.failedLayouts || 0;
@@ -915,7 +915,7 @@ describe("Ext.layout.container.Anchor", function () {
             comp = Ext.ComponentManager.create({
               renderTo: Ext.getBody(),
               xtype: "stretchpanel",
-              items: [absoluteDef],
+              items: [absoluteDef]
             });
 
             expect(getFailedLayoutCount()).toBe(0);
@@ -925,7 +925,7 @@ describe("Ext.layout.container.Anchor", function () {
             comp = Ext.ComponentManager.create({
               renderTo: Ext.getBody(),
               xtype: "stretchpanel",
-              items: [horizontalTest],
+              items: [horizontalTest]
             });
 
             expect(comp.getWidth()).toBe(150);
@@ -935,7 +935,7 @@ describe("Ext.layout.container.Anchor", function () {
             comp = Ext.ComponentManager.create({
               renderTo: Ext.getBody(),
               xtype: "stretchpanel",
-              items: [horizontalTest],
+              items: [horizontalTest]
             });
 
             var children = getChildren(comp);
@@ -951,7 +951,7 @@ describe("Ext.layout.container.Anchor", function () {
             comp = Ext.ComponentManager.create({
               renderTo: Ext.getBody(),
               xtype: "stretchpanel",
-              items: [verticalTest],
+              items: [verticalTest]
             });
 
             expect(getFailedLayoutCount()).toBe(0);
@@ -963,7 +963,7 @@ describe("Ext.layout.container.Anchor", function () {
             comp = Ext.ComponentManager.create({
               renderTo: Ext.getBody(),
               xtype: "stretchpanel",
-              items: [verticalTest],
+              items: [verticalTest]
             });
 
             var children = getChildren(comp);
@@ -994,9 +994,9 @@ describe("Ext.layout.container.Anchor", function () {
         layout: "anchor",
         items: [
           {
-            minHeight: 70,
-          },
-        ],
+            minHeight: 70
+          }
+        ]
       });
       expect(ct.items.first().getHeight()).toBe(70);
       ct.destroy();
@@ -1011,7 +1011,7 @@ describe("Ext.layout.container.Anchor", function () {
       width: 400,
       bodyPadding: 5,
       defaults: {
-        anchor: "100%",
+        anchor: "100%"
       },
       items: [
         {
@@ -1022,17 +1022,17 @@ describe("Ext.layout.container.Anchor", function () {
               xtype: "component",
               flex: 1,
               style: "height: 50px; background-color: green;",
-              html: "&nbsp;",
-            },
-          ],
+              html: "&nbsp;"
+            }
+          ]
         },
         {
           xtype: "textareafield",
           height: 100,
           margin: "0",
-          allowBlank: false,
-        },
-      ],
+          allowBlank: false
+        }
+      ]
     });
 
     expect(panel.getHeight()).toBe(167);

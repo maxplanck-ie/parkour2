@@ -4,19 +4,19 @@ Ext.define("MainHub.model.requests.RequestFile", {
   fields: [
     {
       name: "id",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "size",
-      type: "string",
+      type: "string"
     },
     {
       name: "path",
-      type: "string",
-    },
-  ],
+      type: "string"
+    }
+  ]
 });

@@ -5,13 +5,13 @@ Ext.define("MainHub.view.usage.UsageController", {
   config: {
     control: {
       "#": {
-        activate: "activate",
+        activate: "activate"
       },
       daterangepicker: {
-        select: "setRange",
+        select: "setRange"
       },
-      usagerecords: {},
-    },
+      usagerecords: {}
+    }
   },
 
   activate: function (view) {
@@ -28,7 +28,7 @@ Ext.define("MainHub.view.usage.UsageController", {
       "usagerecords",
       "usageorganizations",
       "usageprincipalinvestigators",
-      "usagelibrarytypes",
+      "usagelibrarytypes"
     ];
 
     chartPanels.forEach(function (name) {
@@ -41,7 +41,7 @@ Ext.define("MainHub.view.usage.UsageController", {
       polar.getStore().load({
         params: {
           start: dateRange.startDateObj,
-          end: dateRange.endDateObj,
+          end: dateRange.endDateObj
         },
         callback: function (data) {
           panel.setLoading(false);
@@ -49,7 +49,7 @@ Ext.define("MainHub.view.usage.UsageController", {
             data &&
             data.length > 0 &&
             Ext.Array.sum(
-              Ext.Array.pluck(Ext.Array.pluck(data, "data"), "data"),
+              Ext.Array.pluck(Ext.Array.pluck(data, "data"), "data")
             ) > 0
           ) {
             emptyText.hide();
@@ -64,8 +64,8 @@ Ext.define("MainHub.view.usage.UsageController", {
               cartesian.hide();
             }
           }
-        },
+        }
       });
     });
-  },
+  }
 });

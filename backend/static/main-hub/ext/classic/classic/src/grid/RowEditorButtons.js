@@ -26,7 +26,7 @@ Ext.define("Ext.grid.RowEditorButtons", {
           ui: rowEditor.buttonUI,
           scope: plugin,
           flex: 1,
-          minWidth: Ext.panel.Panel.prototype.minButtonWidth,
+          minWidth: Ext.panel.Panel.prototype.minButtonWidth
         },
         items: [
           {
@@ -38,8 +38,8 @@ Ext.define("Ext.grid.RowEditorButtons", {
             listeners: {
               element: "el",
               keydown: me.onUpdateKeyDown,
-              scope: me,
-            },
+              scope: me
+            }
           },
           {
             cls: cssPrefix + "row-editor-cancel-button",
@@ -49,12 +49,12 @@ Ext.define("Ext.grid.RowEditorButtons", {
             listeners: {
               element: "el",
               keydown: me.onCancelKeyDown,
-              scope: me,
-            },
-          },
-        ],
+              scope: me
+            }
+          }
+        ]
       },
-      config,
+      config
     );
 
     me.callParent([config]);
@@ -105,7 +105,7 @@ Ext.define("Ext.grid.RowEditorButtons", {
 
     me.el.setStyle({
       top: top,
-      bottom: bottom,
+      bottom: bottom
     });
   },
 
@@ -123,6 +123,6 @@ Ext.define("Ext.grid.RowEditorButtons", {
       frameInfo.top = true;
 
       return frameInfo;
-    },
-  },
+    }
+  }
 });

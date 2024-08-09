@@ -17,8 +17,8 @@ Ext.define("Ext.viewport.WindowsPhone", {
 
   config: {
     translatable: {
-      translationMethod: "csstransform",
-    },
+      translationMethod: "csstransform"
+    }
   },
 
   initialize: function () {
@@ -65,7 +65,7 @@ Ext.define("Ext.viewport.WindowsPhone", {
         this.fireOrientationChangeEvent(newOrientation, currentOrientation);
       },
       Ext.emptyFn,
-      250,
+      250
     );
-  },
+  }
 });

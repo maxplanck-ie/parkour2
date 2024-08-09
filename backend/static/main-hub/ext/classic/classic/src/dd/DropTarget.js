@@ -23,7 +23,7 @@ Ext.define("Ext.dd.DropTarget", {
     this.callParent([
       this.el.dom,
       this.ddGroup || this.group,
-      { isTarget: true },
+      { isTarget: true }
     ]);
   },
 
@@ -139,5 +139,5 @@ Ext.define("Ext.dd.DropTarget", {
       Ext.dd.ScrollManager.unregister(this.el);
     }
     this.callParent();
-  },
+  }
 });

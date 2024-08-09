@@ -9,6 +9,6 @@ Ext.define("Ext.fx.animation.FadeOut", {
     // @hide
     out: true,
 
-    before: {},
-  },
+    before: {}
+  }
 });

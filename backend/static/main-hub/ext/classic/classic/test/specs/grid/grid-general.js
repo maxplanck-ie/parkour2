@@ -15,7 +15,7 @@ describe("grid-general", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -73,8 +73,8 @@ describe("grid-general", function () {
               "field7",
               "field8",
               "field9",
-              "field10",
-            ],
+              "field10"
+            ]
           }),
           view,
           colRef;
@@ -92,13 +92,13 @@ describe("grid-general", function () {
                 field7: 7,
                 field8: 8,
                 field9: 9,
-                field10: 10,
-              },
+                field10: 10
+              }
             ];
           }
           store = new Ext.data.Store({
             model: GridModel,
-            data: data,
+            data: data
           });
           return store;
         }
@@ -117,7 +117,7 @@ describe("grid-general", function () {
                 text: "Field " + i,
                 width: 90,
                 // First column gets locked if we are doing locking tests.
-                locked: locked && i === 1,
+                locked: locked && i === 1
               });
             }
           }
@@ -128,7 +128,7 @@ describe("grid-general", function () {
             data = [];
             for (i = 0; i < dataCount; i++) {
               dataRow = {
-                id: "rec" + i,
+                id: "rec" + i
               };
               for (var j = 0; j < columns.length; j++) {
                 dataRow[columns[j].dataIndex] = i + 1 + ", " + (j + 1);
@@ -155,13 +155,13 @@ describe("grid-general", function () {
                 bufferedRenderer: buffered,
                 viewConfig: Ext.apply(
                   {
-                    mouseOverOutBuffer: 0,
+                    mouseOverOutBuffer: 0
                   },
-                  cfg.viewConfig,
-                ),
+                  cfg.viewConfig
+                )
               },
-              cfg,
-            ),
+              cfg
+            )
           );
 
           // Don't use renderTo since that may throw and we won't set "grid"
@@ -191,7 +191,7 @@ describe("grid-general", function () {
           it("should not throw an exception when scrollable:false", function () {
             // Spec will fail if an error is thrown
             makeGrid(null, undefined, {
-              scrollable: false,
+              scrollable: false
             });
           });
 
@@ -202,15 +202,15 @@ describe("grid-general", function () {
 
               init: function (cmp) {
                 cmp.hide();
-              },
+              }
             });
 
             makeGrid([
               {
                 plugins: [new Plug()],
-                locked: true,
+                locked: true
               },
-              {},
+              {}
             ]);
           });
           // https://sencha.jira.com/browse/EXTJS-14879
@@ -219,19 +219,19 @@ describe("grid-general", function () {
             grid.columns[0].hasCustomRenderer = true;
             Ext.fly(grid.view.all.item(0, true)).addCls("foo-bar");
             expect(Ext.fly(grid.view.all.item(0, true)).hasCls("foo-bar")).toBe(
-              true,
+              true
             );
             store.getAt(0).set("field1", "CHANGED");
 
             // After the update, the new state has to be synched.
             expect(Ext.fly(grid.view.all.item(0, true)).hasCls("foo-bar")).toBe(
-              false,
+              false
             );
           });
 
           it("should not throw an error when the store is loaded in the afterrender of an earlier sibling", function () {
             makeGrid(null, undefined, {
-              renderTo: null,
+              renderTo: null
             });
 
             var ct;
@@ -245,17 +245,17 @@ describe("grid-general", function () {
                     listeners: {
                       afterrender: function () {
                         var proxy = new Ext.data.proxy.Ajax({
-                          url: "foo",
+                          url: "foo"
                         });
 
                         spyOn(proxy, "read").andReturn();
                         store.setProxy(proxy);
                         store.load();
-                      },
-                    },
+                      }
+                    }
                   },
-                  grid,
-                ],
+                  grid
+                ]
               });
             }).not.toThrow();
             Ext.destroy(ct);
@@ -266,7 +266,7 @@ describe("grid-general", function () {
               listeners: {
                 afterrender: function () {
                   var proxy = new Ext.data.proxy.Ajax({
-                    url: "foo",
+                    url: "foo"
                   });
 
                   spyOn(proxy, "read").andReturn();
@@ -274,8 +274,8 @@ describe("grid-general", function () {
                   expect(function () {
                     store.load();
                   }).not.toThrow();
-                },
-              },
+                }
+              }
             });
           });
 
@@ -284,8 +284,8 @@ describe("grid-general", function () {
             it("should destroy lockable", function () {
               makeGrid([
                 {
-                  locked: true,
-                },
+                  locked: true
+                }
               ]);
 
               grid.destroy();
@@ -297,11 +297,11 @@ describe("grid-general", function () {
                 [
                   {
                     locked: true,
-                    dataIndex: "f1",
+                    dataIndex: "f1"
                   },
                   {
-                    dataIndex: "f2",
-                  },
+                    dataIndex: "f2"
+                  }
                 ],
                 null,
                 {
@@ -312,16 +312,16 @@ describe("grid-general", function () {
                         data: [
                           {
                             f1: "a",
-                            f2: "b",
-                          },
-                        ],
-                      },
-                    },
-                  },
+                            f2: "b"
+                          }
+                        ]
+                      }
+                    }
+                  }
                 },
                 {
-                  preventStoreCreate: true,
-                },
+                  preventStoreCreate: true
+                }
               );
 
               grid.getViewModel().notify();
@@ -338,10 +338,10 @@ describe("grid-general", function () {
                 [
                   {
                     text: "Foo",
-                    dataIndex: "field1",
-                  },
+                    dataIndex: "field1"
+                  }
                 ],
-                100,
+                100
               );
 
               var view = grid.getView(),
@@ -356,7 +356,7 @@ describe("grid-general", function () {
 
                 for (i = 0; i < 100; ++i) {
                   data.push({
-                    id: "rec" + i,
+                    id: "rec" + i
                   });
                 }
 
@@ -364,8 +364,8 @@ describe("grid-general", function () {
                 grid.reconfigure(newStore, [
                   {
                     text: "Bar",
-                    dataIndex: "field2",
-                  },
+                    dataIndex: "field2"
+                  }
                 ]);
 
                 rec = store.getAt(10);
@@ -393,14 +393,14 @@ describe("grid-general", function () {
           it("should size the column when passed a header", function () {
             makeGrid(null, [
               {
-                field1: '<div style="width: 125px;>a</div>',
+                field1: '<div style="width: 125px;>a</div>'
               },
               {
-                field1: '<div style="width: 450px;>b</div>',
+                field1: '<div style="width: 450px;>b</div>'
               },
               {
-                field1: '<div style="width: 375px;>c</div>',
-              },
+                field1: '<div style="width: 375px;>c</div>'
+              }
             ]);
             grid.getView().autoSizeColumn(colRef[0]);
             expect(colRef[0].getWidth()).toBe(451 + getPadding());
@@ -409,14 +409,14 @@ describe("grid-general", function () {
           it("should size the column when passed a header index", function () {
             makeGrid(null, [
               {
-                field1: '<div style="width: 125px;>a</div>',
+                field1: '<div style="width: 125px;>a</div>'
               },
               {
-                field1: '<div style="width: 450px;>b</div>',
+                field1: '<div style="width: 450px;>b</div>'
               },
               {
-                field1: '<div style="width: 375px;>c</div>',
-              },
+                field1: '<div style="width: 375px;>c</div>'
+              }
             ]);
             grid.getView().autoSizeColumn(0);
             expect(colRef[0].getWidth()).toBe(451 + getPadding());
@@ -428,8 +428,8 @@ describe("grid-general", function () {
             makeGrid(null, undefined, {
               height: undefined,
               viewConfig: {
-                minHeight: 100,
-              },
+                minHeight: 100
+              }
             });
             expect(view.getHeight()).toBe(100);
             expect(grid.getHeight()).toBe(100 + grid.headerCt.getHeight());
@@ -445,8 +445,8 @@ describe("grid-general", function () {
               viewConfig: {
                 getRowClass: spy.andCallFake(function (rec) {
                   return "customCls" + store.indexOf(rec) + " testCls";
-                }),
-              },
+                })
+              }
             });
           });
 
@@ -530,8 +530,8 @@ describe("grid-general", function () {
               makeGrid(null, null, {
                 viewConfig: {
                   emptyText: "Foo",
-                  deferEmptyText: false,
-                },
+                  deferEmptyText: false
+                }
               });
               expect(getEmpty()).not.toBeNull();
             });
@@ -540,8 +540,8 @@ describe("grid-general", function () {
               makeGrid(null, null, {
                 viewConfig: {
                   emptyText: "Foo",
-                  deferEmptyText: true,
-                },
+                  deferEmptyText: true
+                }
               });
               expect(getEmpty()).toBeNull();
             });
@@ -550,8 +550,8 @@ describe("grid-general", function () {
               makeGrid(null, null, {
                 viewConfig: {
                   emptyText: "Foo",
-                  deferEmptyText: true,
-                },
+                  deferEmptyText: true
+                }
               });
               grid.getView().refresh();
               expect(getEmpty()).not.toBeNull();
@@ -561,8 +561,8 @@ describe("grid-general", function () {
               makeGrid(null, 1, {
                 viewConfig: {
                   emptyText: "Foo",
-                  deferEmptyText: true,
-                },
+                  deferEmptyText: true
+                }
               });
               store.removeAt(0);
               expect(getEmpty()).not.toBeNull();
@@ -572,8 +572,8 @@ describe("grid-general", function () {
               makeGrid(null, 5, {
                 viewConfig: {
                   emptyText: "Foo",
-                  deferEmptyText: true,
-                },
+                  deferEmptyText: true
+                }
               });
               store.removeAll();
               expect(getEmpty()).not.toBeNull();
@@ -587,8 +587,8 @@ describe("grid-general", function () {
                   emptyCls: "foo",
                   viewConfig: {
                     emptyText: "Foo",
-                    deferEmptyText: false,
-                  },
+                    deferEmptyText: false
+                  }
                 });
                 expect(getEmpty().hasCls("foo")).toBe(true);
               });
@@ -599,8 +599,8 @@ describe("grid-general", function () {
                 makeGrid(null, null, {
                   viewConfig: {
                     emptyText: "Foo",
-                    deferEmptyText: false,
-                  },
+                    deferEmptyText: false
+                  }
                 });
                 expect(getEmpty().dom).hasHTML("Foo");
               });
@@ -614,14 +614,14 @@ describe("grid-general", function () {
                 hideHeaders: true,
                 viewConfig: {
                   emptyText: '<div style="width: 50px; height: 100px;">a</div>',
-                  deferEmptyText: false,
-                },
+                  deferEmptyText: false
+                }
               });
               var otherParts =
                 grid.body.getBorderWidth("tb") +
                 grid.el.down(view.bodySelector).getHeight();
               expect(grid.getHeight()).toBe(
-                100 + getEmpty().getPadding("tb") + otherParts,
+                100 + getEmpty().getPadding("tb") + otherParts
               );
             });
           });
@@ -631,20 +631,20 @@ describe("grid-general", function () {
               makeGrid(
                 [
                   {
-                    width: 800,
+                    width: 800
                   },
                   {
-                    width: 800,
-                  },
+                    width: 800
+                  }
                 ],
                 0,
                 {
                   viewConfig: {
                     emptyText:
                       '<div style="width: 50px; height: 100px;">a</div>',
-                    deferEmptyText: false,
-                  },
-                },
+                    deferEmptyText: false
+                  }
+                }
               );
               expect(view.getEl().dom.scrollWidth).toBe(1600);
             });
@@ -664,8 +664,8 @@ describe("grid-general", function () {
             beforeEach(function () {
               makeGrid(null, 11, {
                 viewConfig: {
-                  stripeRows: false,
-                },
+                  stripeRows: false
+                }
               });
             });
 
@@ -698,8 +698,8 @@ describe("grid-general", function () {
             beforeEach(function () {
               makeGrid(null, 11, {
                 viewConfig: {
-                  stripeRows: true,
-                },
+                  stripeRows: true
+                }
               });
             });
 
@@ -712,7 +712,7 @@ describe("grid-general", function () {
                   } else {
                     expect(Ext.fly(node).hasCls(stripeCls)).toBe(false);
                   }
-                },
+                }
               );
             }
 
@@ -777,7 +777,7 @@ describe("grid-general", function () {
                 field7: i + 1 + ", " + 7,
                 field8: i + 1 + ", " + 8,
                 field9: i + 1 + ", " + 9,
-                field10: i + 1 + ", " + 10,
+                field10: i + 1 + ", " + 10
               });
             }
           });
@@ -791,16 +791,16 @@ describe("grid-general", function () {
               makeGrid(null, undefined, {
                 forceFit: true,
                 width: 400,
-                height: 200,
+                height: 200
               });
               var emptyStore = new Ext.data.Store({
                 autoDestroy: false,
                 model: GridModel,
-                data: [],
+                data: []
               });
 
               expect(grid.headerCt.getTableWidth()).toBe(
-                grid.body.getWidth() - grid.body.getBorderWidth("lr"),
+                grid.body.getWidth() - grid.body.getBorderWidth("lr")
               );
 
               // Cause overflow by adding 50 new rows
@@ -810,7 +810,7 @@ describe("grid-general", function () {
               expect(grid.headerCt.getTableWidth()).toBe(
                 grid.body.getWidth() -
                   grid.body.getBorderWidth("lr") -
-                  Ext.getScrollbarSize().width,
+                  Ext.getScrollbarSize().width
               );
 
               // Avoid destruction when we unbind
@@ -826,7 +826,7 @@ describe("grid-general", function () {
               expect(grid.headerCt.getTableWidth()).toBe(
                 grid.body.getWidth() -
                   grid.body.getBorderWidth("lr") -
-                  Ext.getScrollbarSize().width,
+                  Ext.getScrollbarSize().width
               );
               Ext.destroy(emptyStore);
             });
@@ -838,23 +838,23 @@ describe("grid-general", function () {
                 [
                   {
                     dataIndex: "field1",
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     dataIndex: "field2",
-                    hidden: true,
+                    hidden: true
                   },
                   {
                     dataIndex: "field3",
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ],
                 data,
                 {
                   forceFit: true,
                   width: 400,
-                  height: 200,
-                },
+                  height: 200
+                }
               );
 
               expect(function () {
@@ -862,7 +862,7 @@ describe("grid-general", function () {
               }).not.toThrow();
 
               expect(grid.getVisibleColumnManager().getColumns().length).toBe(
-                3,
+                3
               );
             });
 
@@ -873,24 +873,24 @@ describe("grid-general", function () {
                 [
                   {
                     dataIndex: "field1",
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     dataIndex: "field2",
                     hidden: true,
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     dataIndex: "field3",
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ],
                 data,
                 {
                   forceFit: true,
                   width: 400,
-                  height: 200,
-                },
+                  height: 200
+                }
               );
 
               expect(function () {
@@ -910,24 +910,24 @@ describe("grid-general", function () {
                 [
                   {
                     dataIndex: "field1",
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     dataIndex: "field2",
                     hidden: true,
-                    width: 100,
+                    width: 100
                   },
                   {
                     dataIndex: "field3",
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ],
                 data,
                 {
                   forceFit: true,
                   width: 400,
-                  height: 200,
-                },
+                  height: 200
+                }
               );
 
               expect(function () {
@@ -935,7 +935,7 @@ describe("grid-general", function () {
               }).not.toThrow();
 
               expect(grid.getVisibleColumnManager().getColumns().length).toBe(
-                3,
+                3
               );
             });
           });
@@ -945,7 +945,7 @@ describe("grid-general", function () {
               makeGrid(null, data, {
                 forceFit: true,
                 width: 400,
-                height: 200,
+                height: 200
               });
             });
 
@@ -953,7 +953,7 @@ describe("grid-general", function () {
               expect(grid.headerCt.getTableWidth()).toBe(
                 grid.body.getWidth() -
                   grid.body.getBorderWidth("lr") -
-                  Ext.getScrollbarSize().width,
+                  Ext.getScrollbarSize().width
               );
             });
           });
@@ -965,7 +965,7 @@ describe("grid-general", function () {
               it("should be able to configure without columns", function () {
                 expect(function () {
                   makeGrid(null, undefined, null, {
-                    preventColumnCreate: true,
+                    preventColumnCreate: true
                   });
                 }).not.toThrow();
               });
@@ -978,7 +978,7 @@ describe("grid-general", function () {
                     null,
                     undefined,
                     { enableLocking: true },
-                    { preventColumnCreate: true },
+                    { preventColumnCreate: true }
                   );
                 }).not.toThrow();
               });
@@ -1013,7 +1013,7 @@ describe("grid-general", function () {
 
             it("should add the x-grid cls when specifying a custom cls", function () {
               makeGrid(undefined, undefined, {
-                cls: "foo",
+                cls: "foo"
               });
               expect(grid.el.hasCls("x-grid")).toBe(true);
               expect(grid.el.hasCls("foo")).toBe(true);
@@ -1028,8 +1028,8 @@ describe("grid-general", function () {
                 renderTo: preventRender ? null : Ext.getBody(),
                 viewConfig: {
                   markDirty: markDirty,
-                  mouseOverOutBuffer: 0,
-                },
+                  mouseOverOutBuffer: 0
+                }
               });
               dirtyCls = grid.getView().dirtyCls;
             }
@@ -1052,7 +1052,7 @@ describe("grid-general", function () {
                   grid
                     .getEl()
                     .select("." + dirtyCls)
-                    .getCount(),
+                    .getCount()
                 ).toBe(0);
               });
 
@@ -1062,7 +1062,7 @@ describe("grid-general", function () {
                 grid.render(Ext.getBody());
 
                 expect(
-                  grid.getEl().select("[aria-describedby]").getCount(),
+                  grid.getEl().select("[aria-describedby]").getCount()
                 ).toBe(0);
               });
 
@@ -1073,7 +1073,7 @@ describe("grid-general", function () {
                   grid
                     .getEl()
                     .select("." + dirtyCls)
-                    .getCount(),
+                    .getCount()
                 ).toBe(0);
               });
 
@@ -1082,7 +1082,7 @@ describe("grid-general", function () {
                 store.first().set("field1", "bleh");
 
                 expect(
-                  grid.getEl().select("[aria-describedby]").getCount(),
+                  grid.getEl().select("[aria-describedby]").getCount()
                 ).toBe(0);
               });
 
@@ -1092,15 +1092,15 @@ describe("grid-general", function () {
                     dataIndex: "",
                     renderer: function (v, meta, rec) {
                       return rec.get("field1") + rec.get("field2");
-                    },
-                  },
+                    }
+                  }
                 ]);
                 store.first().set("field1", "bleh");
                 expect(
                   grid
                     .getEl()
                     .select("." + dirtyCls)
-                    .getCount(),
+                    .getCount()
                 ).toBe(0);
               });
 
@@ -1110,13 +1110,13 @@ describe("grid-general", function () {
                     dataIndex: "",
                     renderer: function (v, meta, rec) {
                       return rec.get("field1") + rec.get("field2");
-                    },
-                  },
+                    }
+                  }
                 ]);
                 store.first().set("field1", "bleh");
 
                 expect(
-                  grid.getEl().select("[aria-describedby]").getCount(),
+                  grid.getEl().select("[aria-describedby]").getCount()
                 ).toBe(0);
               });
             });
@@ -1139,7 +1139,7 @@ describe("grid-general", function () {
                 var rec = store.first();
                 for (var i = 0; i < colRef.length; ++i) {
                   expect(getCell(rec, colRef[i])).not.toHaveAttr(
-                    "aria-describedby",
+                    "aria-describedby"
                   );
                 }
               });
@@ -1164,12 +1164,12 @@ describe("grid-general", function () {
                 var rec = store.first();
                 expect(getCell(rec, colRef[0])).toHaveAttr(
                   "aria-describedby",
-                  colRef[0].dirtyTextElementId,
+                  colRef[0].dirtyTextElementId
                 );
 
                 for (var i = 1; i < colRef.length; ++i) {
                   expect(getCell(rec, colRef[i])).not.toHaveAttr(
-                    "aria-describedby",
+                    "aria-describedby"
                   );
                 }
               });
@@ -1190,13 +1190,13 @@ describe("grid-general", function () {
                 rec.set("field1", "bleh");
                 expect(getCell(rec, colRef[0])).toHaveAttr(
                   "aria-describedby",
-                  colRef[0].dirtyTextElementId,
+                  colRef[0].dirtyTextElementId
                 );
 
                 rec.set("field4", "qwerty");
                 expect(getCell(rec, colRef[3])).toHaveAttr(
                   "aria-describedby",
-                  colRef[3].dirtyTextElementId,
+                  colRef[3].dirtyTextElementId
                 );
               });
 
@@ -1219,12 +1219,12 @@ describe("grid-general", function () {
                 rec.set("field1", "asdf");
                 expect(getCell(rec, colRef[0])).toHaveAttr(
                   "aria-describedby",
-                  colRef[0].dirtyTextElementId,
+                  colRef[0].dirtyTextElementId
                 );
 
                 rec.set("field1", val);
                 expect(getCell(rec, colRef[0])).not.toHaveAttr(
-                  "aria-describedby",
+                  "aria-describedby"
                 );
               });
 
@@ -1255,29 +1255,29 @@ describe("grid-general", function () {
                 rec.set("field2", "bar");
                 expect(getCell(rec, colRef[0])).toHaveAttr(
                   "aria-describedby",
-                  colRef[0].dirtyTextElementId,
+                  colRef[0].dirtyTextElementId
                 );
                 expect(getCell(rec, colRef[1])).toHaveAttr(
                   "aria-describedby",
-                  colRef[1].dirtyTextElementId,
+                  colRef[1].dirtyTextElementId
                 );
 
                 rec.set("field3", "baz");
                 expect(getCell(rec, colRef[2])).toHaveAttr(
                   "aria-describedby",
-                  colRef[2].dirtyTextElementId,
+                  colRef[2].dirtyTextElementId
                 );
 
                 rec.commit();
 
                 expect(getCell(rec, colRef[0])).not.toHaveAttr(
-                  "aria-describedby",
+                  "aria-describedby"
                 );
                 expect(getCell(rec, colRef[1])).not.toHaveAttr(
-                  "aria-describedby",
+                  "aria-describedby"
                 );
                 expect(getCell(rec, colRef[2])).not.toHaveAttr(
-                  "aria-describedby",
+                  "aria-describedby"
                 );
               });
 
@@ -1308,29 +1308,29 @@ describe("grid-general", function () {
                 rec.set("field2", "bar");
                 expect(getCell(rec, colRef[0])).toHaveAttr(
                   "aria-describedby",
-                  colRef[0].dirtyTextElementId,
+                  colRef[0].dirtyTextElementId
                 );
                 expect(getCell(rec, colRef[1])).toHaveAttr(
                   "aria-describedby",
-                  colRef[1].dirtyTextElementId,
+                  colRef[1].dirtyTextElementId
                 );
 
                 rec.set("field3", "baz");
                 expect(getCell(rec, colRef[2])).toHaveAttr(
                   "aria-describedby",
-                  colRef[2].dirtyTextElementId,
+                  colRef[2].dirtyTextElementId
                 );
 
                 rec.reject();
 
                 expect(getCell(rec, colRef[0])).not.toHaveAttr(
-                  "aria-describedby",
+                  "aria-describedby"
                 );
                 expect(getCell(rec, colRef[1])).not.toHaveAttr(
-                  "aria-describedby",
+                  "aria-describedby"
                 );
                 expect(getCell(rec, colRef[2])).not.toHaveAttr(
-                  "aria-describedby",
+                  "aria-describedby"
                 );
               });
             });
@@ -1349,16 +1349,16 @@ describe("grid-general", function () {
                     [
                       {
                         dataIndex: "field1",
-                        locked: withLocking,
+                        locked: withLocking
                       },
                       {
-                        dataIndex: "field2",
-                      },
+                        dataIndex: "field2"
+                      }
                     ],
                     undefined,
                     {
-                      selModel: sm,
-                    },
+                      selModel: sm
+                    }
                   );
                 });
 
@@ -1397,7 +1397,7 @@ describe("grid-general", function () {
                     cls = view.selectedItemCls;
 
                     expect(grid.lockedGrid.getView().getNode(0)).not.toHaveCls(
-                      cls,
+                      cls
                     );
                     expect(view.getNode(0)).not.toHaveCls(cls);
                   } else {
@@ -1425,7 +1425,7 @@ describe("grid-general", function () {
                     expect(view.getNode(0)).toHaveCls(cls);
                   }
                 });
-              },
+              }
             );
           }
 
@@ -1443,8 +1443,8 @@ describe("grid-general", function () {
                   text: "Field1",
                   renderer: function () {
                     scope = this;
-                  },
-                },
+                  }
+                }
               ]);
               expect(scope).toBe(grid);
             });
@@ -1460,8 +1460,8 @@ describe("grid-general", function () {
                   scope: o,
                   renderer: function () {
                     scope = this;
-                  },
-                },
+                  }
+                }
               ]);
               expect(scope).toBe(o);
             });
@@ -1478,30 +1478,30 @@ describe("grid-general", function () {
                     renderer: function (value, meta) {
                       meta.tdStyle = "background-color:" + backgroundColor;
                       return "<B>" + value.toUpperCase() + "</B>";
-                    },
-                  },
+                    }
+                  }
                 ],
-                1,
+                1
               );
             });
 
             it("should pass the value as the first param", function () {
               expect(view.getCell(0, 0).dom.style.backgroundColor).toBe(
-                backgroundColor,
+                backgroundColor
               );
               expect(
                 view
                   .getCell(0, 0)
                   .child(view.innerSelector, true)
-                  .innerHTML.toUpperCase(),
+                  .innerHTML.toUpperCase()
               ).toBe(
-                "<B>" + store.getAt(0).get("field1").toUpperCase() + "</B>",
+                "<B>" + store.getAt(0).get("field1").toUpperCase() + "</B>"
               );
             });
 
             it("should pass a meta object as the second param when refreshNode is called", function () {
               expect(view.getCell(0, 0).dom.style.backgroundColor).toBe(
-                backgroundColor,
+                backgroundColor
               );
 
               backgroundColor = "red";
@@ -1511,7 +1511,7 @@ describe("grid-general", function () {
 
               // Must have updated the background color
               expect(view.getCell(0, 0).dom.style.backgroundColor).toBe(
-                backgroundColor,
+                backgroundColor
               );
             });
           });
@@ -1526,10 +1526,10 @@ describe("grid-general", function () {
                     args = Array.prototype.slice.call(
                       arguments,
                       0,
-                      arguments.length,
+                      arguments.length
                     );
-                  },
-                },
+                  }
+                }
               ]);
             });
 
@@ -1573,21 +1573,21 @@ describe("grid-general", function () {
                 {
                   locked: true,
                   dataIndex: "field1",
-                  renderer: fn,
+                  renderer: fn
                 },
                 {
                   locked: true,
                   dataIndex: "field2",
-                  renderer: fn,
+                  renderer: fn
                 },
                 {
                   dataIndex: "field3",
-                  renderer: fn,
+                  renderer: fn
                 },
                 {
                   dataIndex: "field4",
-                  renderer: fn,
-                },
+                  renderer: fn
+                }
               ]);
               expect(indexes).toEqual([0, 1, 0, 1]);
             });
@@ -1603,26 +1603,26 @@ describe("grid-general", function () {
               makeGrid([
                 {
                   dataIndex: "field1",
-                  renderer: fn,
+                  renderer: fn
                 },
                 {
                   hidden: true,
                   dataIndex: "field2",
-                  renderer: fn,
+                  renderer: fn
                 },
                 {
                   dataIndex: "field3",
-                  renderer: fn,
+                  renderer: fn
                 },
                 {
                   hidden: true,
                   dataIndex: "field4",
-                  renderer: fn,
+                  renderer: fn
                 },
                 {
                   dataIndex: "field5",
-                  renderer: fn,
-                },
+                  renderer: fn
+                }
               ]);
               expect(indexes).toEqual([0, 2, 4]);
               expect(values).toEqual([1, 3, 5]);
@@ -1640,8 +1640,8 @@ describe("grid-general", function () {
             makeGrid([
               {
                 dataIndex: "field1",
-                formatter: "capitalize",
-              },
+                formatter: "capitalize"
+              }
             ]);
 
             expect(called).toBe(true);
@@ -1666,8 +1666,8 @@ describe("grid-general", function () {
             makeGrid([
               {
                 dataIndex: "field1",
-                formatter: "capitalize:lowercase",
-              },
+                formatter: "capitalize:lowercase"
+              }
             ]);
 
             expect(called).toBe(true);
@@ -1688,14 +1688,14 @@ describe("grid-general", function () {
               [
                 {
                   dataIndex: "field1",
-                  formatter: "this.foo(2)",
-                },
+                  formatter: "this.foo(2)"
+                }
               ],
               undefined,
               {
                 defaultListenerScope: true,
-                foo: formatter,
-              },
+                foo: formatter
+              }
             );
 
             expect(called).toBe(3);
@@ -1716,15 +1716,15 @@ describe("grid-general", function () {
               [
                 {
                   dataIndex: "field1",
-                  formatter: "this.foo(2):this.bar(4)",
-                },
+                  formatter: "this.foo(2):this.bar(4)"
+                }
               ],
               undefined,
               {
                 defaultListenerScope: true,
                 foo: formatter,
-                bar: formatter2,
-              },
+                bar: formatter2
+              }
             );
 
             expect(called).toBe(0.5);
@@ -1737,23 +1737,23 @@ describe("grid-general", function () {
               extend: "Ext.app.ViewController",
               doRender: function () {
                 return "x" + ++x;
-              },
+              }
             });
 
             makeGrid(
               [
                 {
-                  dataIndex: "field1",
+                  dataIndex: "field1"
                 },
                 {
-                  renderer: "doRender",
-                },
+                  renderer: "doRender"
+                }
               ],
               1, // ONE row of data, so that the first call of the custom renderer
               // increments x to one, and the second call renders 2.
               {
-                controller: new VC(),
-              },
+                controller: new VC()
+              }
             );
 
             var rec = store.getAt(0);
@@ -1769,20 +1769,20 @@ describe("grid-general", function () {
               makeGrid(
                 [
                   {
-                    dataIndex: "field1",
-                  },
+                    dataIndex: "field1"
+                  }
                 ],
                 [
                   {
-                    field1: "foo",
+                    field1: "foo"
                   },
                   {
-                    field1: "bar",
+                    field1: "bar"
                   },
                   {
-                    field1: "baz",
-                  },
-                ],
+                    field1: "baz"
+                  }
+                ]
               );
               store.first().erase();
               expect(grid.getView().getNodes().length).toBe(2);
@@ -1865,12 +1865,12 @@ describe("grid-general", function () {
                         makeReconfigureGrid(
                           [
                             {
-                              dataIndex: "field1",
-                            },
+                              dataIndex: "field1"
+                            }
                           ],
                           undefined,
                           null,
-                          { preventStoreCreate: true },
+                          { preventStoreCreate: true }
                         );
                         reconfigure(makeStore());
                       });
@@ -1901,7 +1901,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
                     });
@@ -1913,10 +1913,10 @@ describe("grid-general", function () {
                         makeReconfigureGrid(
                           [
                             {
-                              dataIndex: "field1",
-                            },
+                              dataIndex: "field1"
+                            }
                           ],
-                          20,
+                          20
                         );
                         oldStore = store;
                         reconfigure(makeStore());
@@ -1956,7 +1956,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -1976,10 +1976,10 @@ describe("grid-general", function () {
                   describe("with locking", function () {
                     function expectNodeLength(n) {
                       expect(grid.lockedGrid.getView().getNodes().length).toBe(
-                        n,
+                        n
                       );
                       expect(grid.normalGrid.getView().getNodes().length).toBe(
-                        n,
+                        n
                       );
                     }
 
@@ -1989,15 +1989,15 @@ describe("grid-general", function () {
                           [
                             {
                               locked: true,
-                              dataIndex: "field1",
+                              dataIndex: "field1"
                             },
                             {
-                              dataIndex: "field2",
-                            },
+                              dataIndex: "field2"
+                            }
                           ],
                           undefined,
                           null,
-                          { preventStoreCreate: true },
+                          { preventStoreCreate: true }
                         );
                         reconfigure(makeStore());
                       });
@@ -2028,7 +2028,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
                     });
@@ -2041,13 +2041,13 @@ describe("grid-general", function () {
                           [
                             {
                               locked: true,
-                              dataIndex: "field1",
+                              dataIndex: "field1"
                             },
                             {
-                              dataIndex: "field2",
-                            },
+                              dataIndex: "field2"
+                            }
                           ],
-                          20,
+                          20
                         );
                         oldStore = store;
                         reconfigure(makeStore());
@@ -2087,7 +2087,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2116,16 +2116,16 @@ describe("grid-general", function () {
                     describe("with no columns", function () {
                       beforeEach(function () {
                         makeReconfigureGrid(null, undefined, null, {
-                          preventColumnCreate: true,
+                          preventColumnCreate: true
                         });
                         oldCols = colRef;
                         reconfigure(null, [
                           {
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2141,17 +2141,17 @@ describe("grid-general", function () {
                       beforeEach(function () {
                         makeReconfigureGrid([
                           {
-                            dataIndex: "field1",
-                          },
+                            dataIndex: "field1"
+                          }
                         ]);
                         oldCols = colRef;
                         reconfigure(null, [
                           {
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2184,15 +2184,15 @@ describe("grid-general", function () {
                         {
                           dataIndex: "field2",
                           listeners: {
-                            afterrender: spy,
-                          },
+                            afterrender: spy
+                          }
                         },
                         {
                           dataIndex: "field7",
                           listeners: {
-                            afterrender: spy,
-                          },
-                        },
+                            afterrender: spy
+                          }
+                        }
                       ]);
                       expect(renderCount).toBe(2);
                       expect(view.refreshCounter).toBe(refreshCounter + 1);
@@ -2206,17 +2206,17 @@ describe("grid-general", function () {
                           null,
                           undefined,
                           { enableLocking: true },
-                          { preventColumnCreate: true },
+                          { preventColumnCreate: true }
                         );
                         oldCols = colRef;
                         reconfigure(null, [
                           {
                             locked: true,
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2230,11 +2230,11 @@ describe("grid-general", function () {
                       it("should process locked/unlocked columns", function () {
                         expect(
                           grid.lockedGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                         expect(
                           grid.normalGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                       });
                     });
@@ -2244,21 +2244,21 @@ describe("grid-general", function () {
                         makeReconfigureGrid([
                           {
                             locked: true,
-                            dataIndex: "field1",
+                            dataIndex: "field1"
                           },
                           {
-                            dataIndex: "field3",
-                          },
+                            dataIndex: "field3"
+                          }
                         ]);
                         oldCols = colRef;
                         reconfigure(null, [
                           {
                             locked: true,
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2272,11 +2272,11 @@ describe("grid-general", function () {
                       it("should process locked/unlocked columns", function () {
                         expect(
                           grid.lockedGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                         expect(
                           grid.normalGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                       });
 
@@ -2295,11 +2295,11 @@ describe("grid-general", function () {
                       makeReconfigureGrid([
                         {
                           locked: true,
-                          dataIndex: "field1",
+                          dataIndex: "field1"
                         },
                         {
-                          dataIndex: "field3",
-                        },
+                          dataIndex: "field3"
+                        }
                       ]);
 
                       view = grid.lockedGrid.getView();
@@ -2314,15 +2314,15 @@ describe("grid-general", function () {
                           locked: true,
                           dataIndex: "field2",
                           listeners: {
-                            afterrender: spy,
-                          },
+                            afterrender: spy
+                          }
                         },
                         {
                           dataIndex: "field7",
                           listeners: {
-                            afterrender: spy,
-                          },
-                        },
+                            afterrender: spy
+                          }
+                        }
                       ]);
                       expect(renderCount).toBe(2);
                       expect(view.refreshCounter).toBe(refreshCounter + 1);
@@ -2347,17 +2347,17 @@ describe("grid-general", function () {
                       beforeEach(function () {
                         makeReconfigureGrid(null, undefined, null, {
                           preventStoreCreate: true,
-                          preventColumnCreate: true,
+                          preventColumnCreate: true
                         });
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2388,7 +2388,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2402,17 +2402,17 @@ describe("grid-general", function () {
                     describe("with an existing store and no columns", function () {
                       beforeEach(function () {
                         makeReconfigureGrid(null, undefined, null, {
-                          preventColumnCreate: true,
+                          preventColumnCreate: true
                         });
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2443,7 +2443,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2470,22 +2470,22 @@ describe("grid-general", function () {
                         makeReconfigureGrid(
                           [
                             {
-                              dataIndex: "field1",
-                            },
+                              dataIndex: "field1"
+                            }
                           ],
                           undefined,
                           null,
-                          { preventStoreCreate: true },
+                          { preventStoreCreate: true }
                         );
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2516,7 +2516,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2535,18 +2535,18 @@ describe("grid-general", function () {
                       beforeEach(function () {
                         makeReconfigureGrid([
                           {
-                            dataIndex: "field1",
-                          },
+                            dataIndex: "field1"
+                          }
                         ]);
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2577,7 +2577,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2623,15 +2623,15 @@ describe("grid-general", function () {
                         {
                           dataIndex: "field2",
                           listeners: {
-                            afterrender: spy,
-                          },
+                            afterrender: spy
+                          }
                         },
                         {
                           dataIndex: "field7",
                           listeners: {
-                            afterrender: spy,
-                          },
-                        },
+                            afterrender: spy
+                          }
+                        }
                       ]);
                       expect(renderCount).toBe(2);
                       expect(view.refreshCounter).toBe(refreshCounter + 1);
@@ -2641,10 +2641,10 @@ describe("grid-general", function () {
                   describe("with locking", function () {
                     function expectNodeLength(n) {
                       expect(grid.lockedGrid.getView().getNodes().length).toBe(
-                        n,
+                        n
                       );
                       expect(grid.normalGrid.getView().getNodes().length).toBe(
-                        n,
+                        n
                       );
                     }
 
@@ -2656,19 +2656,19 @@ describe("grid-general", function () {
                           { enableLocking: true },
                           {
                             preventStoreCreate: true,
-                            preventColumnCreate: true,
-                          },
+                            preventColumnCreate: true
+                          }
                         );
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
                             locked: true,
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2699,7 +2699,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2712,11 +2712,11 @@ describe("grid-general", function () {
                       it("should process locked/unlocked columns", function () {
                         expect(
                           grid.lockedGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                         expect(
                           grid.normalGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                       });
                     });
@@ -2727,18 +2727,18 @@ describe("grid-general", function () {
                           null,
                           undefined,
                           { enableLocking: true },
-                          { preventColumnCreate: true },
+                          { preventColumnCreate: true }
                         );
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
                             locked: true,
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2769,7 +2769,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2793,11 +2793,11 @@ describe("grid-general", function () {
                       it("should process locked/unlocked columns", function () {
                         expect(
                           grid.lockedGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                         expect(
                           grid.normalGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                       });
                     });
@@ -2808,26 +2808,26 @@ describe("grid-general", function () {
                           [
                             {
                               locked: true,
-                              dataIndex: "field1",
+                              dataIndex: "field1"
                             },
                             {
-                              dataIndex: "field3",
-                            },
+                              dataIndex: "field3"
+                            }
                           ],
                           undefined,
                           null,
-                          { preventStoreCreate: true },
+                          { preventStoreCreate: true }
                         );
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
                             locked: true,
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2858,7 +2858,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2871,11 +2871,11 @@ describe("grid-general", function () {
                       it("should process locked/unlocked columns", function () {
                         expect(
                           grid.lockedGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                         expect(
                           grid.normalGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                       });
 
@@ -2890,22 +2890,22 @@ describe("grid-general", function () {
                         makeReconfigureGrid([
                           {
                             locked: true,
-                            dataIndex: "field1",
+                            dataIndex: "field1"
                           },
                           {
-                            dataIndex: "field3",
-                          },
+                            dataIndex: "field3"
+                          }
                         ]);
                         oldCols = colRef;
                         oldStore = store;
                         reconfigure(makeStore(), [
                           {
                             locked: true,
-                            dataIndex: "field2",
+                            dataIndex: "field2"
                           },
                           {
-                            dataIndex: "field7",
-                          },
+                            dataIndex: "field7"
+                          }
                         ]);
                         colRef = grid.getVisibleColumnManager().getColumns();
                       });
@@ -2936,7 +2936,7 @@ describe("grid-general", function () {
 
                       it("should bind to the selection model", function () {
                         expect(
-                          grid.getView().getSelectionModel().getStore(),
+                          grid.getView().getSelectionModel().getStore()
                         ).toBe(store);
                       });
 
@@ -2960,11 +2960,11 @@ describe("grid-general", function () {
                       it("should process locked/unlocked columns", function () {
                         expect(
                           grid.lockedGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                         expect(
                           grid.normalGrid.getVisibleColumnManager().getColumns()
-                            .length,
+                            .length
                         ).toBe(1);
                       });
 
@@ -2983,11 +2983,11 @@ describe("grid-general", function () {
                       makeReconfigureGrid([
                         {
                           locked: true,
-                          dataIndex: "field1",
+                          dataIndex: "field1"
                         },
                         {
-                          dataIndex: "field3",
-                        },
+                          dataIndex: "field3"
+                        }
                       ]);
                       oldStore = store;
 
@@ -3003,22 +3003,22 @@ describe("grid-general", function () {
                           locked: true,
                           dataIndex: "field2",
                           listeners: {
-                            afterrender: spy,
-                          },
+                            afterrender: spy
+                          }
                         },
                         {
                           dataIndex: "field7",
                           listeners: {
-                            afterrender: spy,
-                          },
-                        },
+                            afterrender: spy
+                          }
+                        }
                       ]);
                       expect(renderCount).toBe(2);
                       expect(view.refreshCounter).toBe(refreshCounter + 1);
                     });
                   });
                 });
-              },
+              }
             );
           }
 
@@ -3030,31 +3030,31 @@ describe("grid-general", function () {
 
             makeGrid([
               {
-                dataIndex: "field1",
-              },
+                dataIndex: "field1"
+              }
             ]);
             grid.getView().on("refresh", function () {
               ++count;
             });
             grid.reconfigure(null, [
               {
-                dataIndex: "field2",
+                dataIndex: "field2"
               },
               {
-                dataIndex: "field3",
+                dataIndex: "field3"
               },
               {
-                dataIndex: "field4",
+                dataIndex: "field4"
               },
               {
-                dataIndex: "field5",
+                dataIndex: "field5"
               },
               {
-                dataIndex: "field6",
+                dataIndex: "field6"
               },
               {
-                dataIndex: "field7",
-              },
+                dataIndex: "field7"
+              }
             ]);
             expect(count).toBe(1);
           });
@@ -3095,7 +3095,7 @@ describe("grid-general", function () {
                 trailingBufferZone:
                   Ext.grid.plugin.BufferedRenderer.prototype.trailingBufferZone,
                 leadingBufferZone:
-                  Ext.grid.plugin.BufferedRenderer.prototype.leadingBufferZone,
+                  Ext.grid.plugin.BufferedRenderer.prototype.leadingBufferZone
               });
               view = grid.getView();
               rows = view.all;
@@ -3103,7 +3103,7 @@ describe("grid-general", function () {
 
               // Get as close to 15 visible rows as possible
               grid.setHeight(
-                bufferedRenderer.rowHeight * 15 + grid.headerCt.getHeight(),
+                bufferedRenderer.rowHeight * 15 + grid.headerCt.getHeight()
               );
               viewSize = bufferedRenderer.viewSize;
 
@@ -3115,7 +3115,7 @@ describe("grid-general", function () {
                   // This flip-flops between 0px and 1px
                   sStyle.lineHeight =
                     Number(!parseInt(sStyle.lineHeight)) + "px";
-                },
+                }
               });
             });
 
@@ -3129,7 +3129,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64);
@@ -3143,7 +3143,7 @@ describe("grid-general", function () {
 
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBe(
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Operation should bump us up the scroll range
@@ -3154,7 +3154,7 @@ describe("grid-general", function () {
 
               // The table should be positioned according to the start index of the rendered view
               expect(getViewTop(view.body)).toBe(
-                rows.startIndex * rowHeight - view.body.getBorderWidth("t"),
+                rows.startIndex * rowHeight - view.body.getBorderWidth("t")
               );
             });
 
@@ -3164,7 +3164,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64);
@@ -3175,7 +3175,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Operation should bump us up the scroll range
@@ -3186,7 +3186,7 @@ describe("grid-general", function () {
 
               // The table should be positioned according to the start index of the rendered view
               expect(getViewTop(view.body)).toBe(
-                rows.startIndex * rowHeight - view.body.getBorderWidth("t"),
+                rows.startIndex * rowHeight - view.body.getBorderWidth("t")
               );
             });
 
@@ -3196,7 +3196,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64);
@@ -3206,7 +3206,7 @@ describe("grid-general", function () {
 
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBe(
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Operation should not affect scrollTop
@@ -3217,7 +3217,7 @@ describe("grid-general", function () {
 
               // The table should be positioned according to the start index of the rendered view
               expect(getViewTop(view.body)).toBe(
-                rows.startIndex * rowHeight - view.body.getBorderWidth("t"),
+                rows.startIndex * rowHeight - view.body.getBorderWidth("t")
               );
             });
 
@@ -3227,7 +3227,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64);
@@ -3238,7 +3238,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Operation should not affect scrollTop
@@ -3249,7 +3249,7 @@ describe("grid-general", function () {
 
               // The table should be positioned according to the start index of the rendered view
               expect(getViewTop(view.body)).toBe(
-                rows.startIndex * rowHeight - view.body.getBorderWidth("t"),
+                rows.startIndex * rowHeight - view.body.getBorderWidth("t")
               );
             });
 
@@ -3259,7 +3259,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64);
@@ -3269,13 +3269,13 @@ describe("grid-general", function () {
               // This will remove everything from the middle of the view
               store.removeAt(
                 Math.floor((rows.endIndex - rows.startIndex) / 2),
-                1000,
+                1000
               );
 
               // Constant row height, so we know the scroll range.
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Fewer rows than viewSize now left in store
@@ -3291,7 +3291,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64);
@@ -3307,7 +3307,7 @@ describe("grid-general", function () {
               // it appears to be 1 greater than the table's offsetHeight.
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Fewer rows than viewSize now left in store
@@ -3326,7 +3326,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64); //was 50
@@ -3336,7 +3336,7 @@ describe("grid-general", function () {
 
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBe(
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Operation should not affect scrollTop
@@ -3347,7 +3347,7 @@ describe("grid-general", function () {
 
               // The table should be positioned according to the start index of the rendered view
               expect(getViewTop(view.body)).toBe(
-                rows.startIndex * rowHeight - view.body.getBorderWidth("t"),
+                rows.startIndex * rowHeight - view.body.getBorderWidth("t")
               );
             });
 
@@ -3357,7 +3357,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(44); //was 30
@@ -3368,7 +3368,7 @@ describe("grid-general", function () {
               // No scrolling now with only 10 rows left!
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                view.el.dom.clientHeight,
+                view.el.dom.clientHeight
               );
 
               // Obviously... no scrolling with only 10 rows left!
@@ -3387,7 +3387,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(44);
@@ -3397,7 +3397,7 @@ describe("grid-general", function () {
 
               // Constant row height, so we know the scroll range
               expect(
-                bufferedRenderer.bodyTop + view.body.dom.offsetHeight - 1,
+                bufferedRenderer.bodyTop + view.body.dom.offsetHeight - 1
               ).toBe(rowHeight * store.getCount());
 
               // We lose scroll range
@@ -3408,7 +3408,7 @@ describe("grid-general", function () {
 
               // The table should be positioned according to the start index of the rendered view
               expect(getViewTop(view.body)).toBe(
-                Math.max(rows.startIndex * rowHeight, 0),
+                Math.max(rows.startIndex * rowHeight, 0)
               );
             });
 
@@ -3418,7 +3418,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(34);
@@ -3444,14 +3444,14 @@ describe("grid-general", function () {
               scrollTop = view.getScrollY();
 
               store.insert(0, {
-                field1: "Test",
+                field1: "Test"
               });
 
               cell00 = Ext.getDom(
                 view.getCellByPosition({
                   row: 0,
-                  column: 0,
-                }),
+                  column: 0
+                })
               );
 
               // Operation should bump us down the scroll range
@@ -3459,7 +3459,7 @@ describe("grid-general", function () {
 
               // View item must be added
               expect(
-                Ext.String.trim(cell00.textContent || cell00.innerText),
+                Ext.String.trim(cell00.textContent || cell00.innerText)
               ).toBe("Test");
 
               // The table should be at top
@@ -3476,7 +3476,7 @@ describe("grid-general", function () {
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBeWithin(
                 1,
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               bufferedRenderer.scrollTo(64);
@@ -3491,7 +3491,7 @@ describe("grid-general", function () {
 
               // Constant row height, so we know the scroll range
               expect(view.el.dom.scrollHeight).toBe(
-                rowHeight * store.getCount(),
+                rowHeight * store.getCount()
               );
 
               // Operation should bump us down the scroll range
@@ -3502,7 +3502,7 @@ describe("grid-general", function () {
 
               // The table should be positioned according to the start index of the rendered view
               expect(getViewTop(view.body)).toBe(
-                rows.startIndex * rowHeight - view.body.getBorderWidth("t"),
+                rows.startIndex * rowHeight - view.body.getBorderWidth("t")
               );
             });
 
@@ -3540,7 +3540,7 @@ describe("grid-general", function () {
                 // We need a lot of rows so that we get to add more than the original default viewSize
                 for (i = 0; i < 200; i++) {
                   data.push({
-                    field0: "r" + i + ",f0",
+                    field0: "r" + i + ",f0"
                   });
                 }
 
@@ -3553,8 +3553,8 @@ describe("grid-general", function () {
                     // Empty cell. Should only be paddingTop+paddingBottom high
                     renderer: function () {
                       return empty;
-                    },
-                  },
+                    }
+                  }
                 ];
               });
 
@@ -3569,7 +3569,7 @@ describe("grid-general", function () {
                   // We want to get spies in before render
                   renderTo: null,
                   trailingBufferZone: 1,
-                  leadingBufferZone: 1,
+                  leadingBufferZone: 1
                 });
                 var getRangeSpy = spyOn(store, "getRange").andCallThrough();
 
@@ -3581,7 +3581,7 @@ describe("grid-general", function () {
 
                 // The rendered row count should have been bumped up to the calculated viewSize
                 expect(view.all.getCount()).toBe(
-                  view.bufferedRenderer.viewSize,
+                  view.bufferedRenderer.viewSize
                 );
 
                 // Two calls to Store#getRange should have been made...
@@ -3590,13 +3590,13 @@ describe("grid-general", function () {
                 // First call gets the default view size
                 expect(getRangeSpy.calls[0].args).toEqual([
                   0,
-                  Ext.grid.plugin.BufferedRenderer.prototype.viewSize - 1,
+                  Ext.grid.plugin.BufferedRenderer.prototype.viewSize - 1
                 ]);
 
                 // Then we top up the view with the missing rows.
                 // Second getRange will have been called with options, so slice to just test start and end indices
                 expect(
-                  Ext.Array.slice(getRangeSpy.calls[1].args, 0, 2),
+                  Ext.Array.slice(getRangeSpy.calls[1].args, 0, 2)
                 ).toEqual([0, view.bufferedRenderer.viewSize - 1]);
               });
             });
@@ -3609,7 +3609,7 @@ describe("grid-general", function () {
                 // We need a lot of rows so that we get to add more than the original default viewSize
                 for (i = 0; i < 200; i++) {
                   data.push({
-                    field0: "r" + i + ",f0",
+                    field0: "r" + i + ",f0"
                   });
                 }
 
@@ -3622,8 +3622,8 @@ describe("grid-general", function () {
                     // Extra tall cell to make the initially rendered view too large.
                     renderer: function () {
                       return '<div style="height:30px"></div>';
-                    },
-                  },
+                    }
+                  }
                 ];
               });
 
@@ -3638,7 +3638,7 @@ describe("grid-general", function () {
                   // We want to get spies in before render
                   renderTo: null,
                   trailingBufferZone: 1,
-                  leadingBufferZone: 1,
+                  leadingBufferZone: 1
                 });
                 var getRangeSpy = spyOn(store, "getRange").andCallThrough(),
                   clipSpy = spyOn(view.all, "clip").andCallThrough();
@@ -3651,7 +3651,7 @@ describe("grid-general", function () {
 
                 // The rendered row count should have been shrunk to the calculated viewSize
                 expect(view.all.getCount()).toBe(
-                  view.bufferedRenderer.viewSize,
+                  view.bufferedRenderer.viewSize
                 );
 
                 // Two calls to Store#getRange should have been made.
@@ -3661,14 +3661,14 @@ describe("grid-general", function () {
                 // The first refresh uses gets the default view size
                 expect(getRangeSpy.calls[0].args).toEqual([
                   0,
-                  Ext.grid.plugin.BufferedRenderer.prototype.viewSize - 1,
+                  Ext.grid.plugin.BufferedRenderer.prototype.viewSize - 1
                 ]);
 
                 // Shrinking will have been done removing the trailing unwanted elements.
                 expect(clipSpy.calls[0].args).toEqual([
                   -1,
                   Ext.grid.plugin.BufferedRenderer.prototype.viewSize -
-                    view.bufferedRenderer.viewSize,
+                    view.bufferedRenderer.viewSize
                 ]);
               });
             });
@@ -3695,7 +3695,7 @@ describe("grid-general", function () {
               columns.push({
                 dataIndex: "field" + i,
                 text: "Field " + i,
-                width: 90,
+                width: 90
               });
             }
             columns[0].flex = 1;
@@ -3704,7 +3704,7 @@ describe("grid-general", function () {
           it("should allow unconstrained height grids to expand to accommodate content", function () {
             makeGrid(columns, data, {
               height: undefined,
-              border: false,
+              border: false
             });
 
             // View and Grid should be stretched vertically to accommodate content.
@@ -3714,7 +3714,7 @@ describe("grid-general", function () {
             expect(view.getHeight()).toBe(
               grid.getHeight() -
                 grid.body.getBorderWidth("tb") -
-                grid.headerCt.getHeight(),
+                grid.headerCt.getHeight()
             );
             expect(view.el.dom.clientWidth).toBe(grid.getWidth());
             expect(view.el.dom.clientHeight).toBe(view.getHeight());
@@ -3723,7 +3723,7 @@ describe("grid-general", function () {
           it("should reduce height if shrinkwrap height violates height constraint", function () {
             makeGrid(columns, data, {
               maxHeight: 100,
-              border: false,
+              border: false
             });
 
             // The width of the View still fits because of the flexed column
@@ -3737,7 +3737,7 @@ describe("grid-general", function () {
 
             // The height constraint means that the clientHeight is less than the view's scrollable height
             expect(view.el.dom.clientHeight).toBeLessThan(
-              view.el.dom.scrollHeight,
+              view.el.dom.scrollHeight
             );
           });
         });
@@ -3748,35 +3748,35 @@ describe("grid-general", function () {
               [
                 {
                   locked: true,
-                  dataIndex: "field1",
+                  dataIndex: "field1"
                 },
                 {
                   locked: true,
-                  dataIndex: "field2",
+                  dataIndex: "field2"
                 },
                 {
-                  dataIndex: "field3",
+                  dataIndex: "field3"
                 },
                 {
-                  dataIndex: "field4",
-                },
+                  dataIndex: "field4"
+                }
               ],
               undefined,
               {
                 width: 600,
-                height: 200,
-              },
+                height: 200
+              }
             );
 
             // The client height should be the same - scrollbars at the bottom should be synched. Either both there or none there.
             // In this case, there should be none there.
             expect(
-              grid.lockedGrid.getView().getTargetEl().dom.clientHeight,
+              grid.lockedGrid.getView().getTargetEl().dom.clientHeight
             ).toEqual(grid.normalGrid.getView().getTargetEl().dom.clientHeight);
 
             // View's client height is the same as the offset height because there is no horizontal scrollbar
             expect(
-              grid.lockedGrid.getView().getTargetEl().dom.clientHeight,
+              grid.lockedGrid.getView().getTargetEl().dom.clientHeight
             ).toEqual(grid.lockedGrid.getView().getTargetEl().dom.offsetHeight);
 
             // Create horizontal overflow
@@ -3786,18 +3786,18 @@ describe("grid-general", function () {
             // In this case, both should have scrollbars.
             expect(
               grid.lockedGrid.getView().getTargetEl().dom.clientHeight -
-                Ext.getScrollbarSize().height,
+                Ext.getScrollbarSize().height
             ).toEqual(grid.normalGrid.getView().getTargetEl().dom.clientHeight);
 
             // View's client height has been reduced by horizontal scrollbar appearing due to overflow in normal side (if scrollbars take up space)
             if (scrollbarWidth) {
               expect(
-                grid.lockedGrid.getView().getTargetEl().dom.clientHeight,
+                grid.lockedGrid.getView().getTargetEl().dom.clientHeight
               ).toBe(grid.lockedGrid.getView().getTargetEl().dom.offsetHeight);
               expect(
-                grid.normalGrid.getView().getTargetEl().dom.clientHeight,
+                grid.normalGrid.getView().getTargetEl().dom.clientHeight
               ).toBeLessThan(
-                grid.normalGrid.getView().getTargetEl().dom.offsetHeight,
+                grid.normalGrid.getView().getTargetEl().dom.offsetHeight
               );
             }
           });
@@ -3808,37 +3808,37 @@ describe("grid-general", function () {
                 {
                   locked: true,
                   dataIndex: "field1",
-                  width: 120,
+                  width: 120
                 },
                 {
                   locked: true,
                   dataIndex: "field2",
-                  flex: 1,
+                  flex: 1
                 },
                 {
                   dataIndex: "field3",
-                  flex: 1,
+                  flex: 1
                 },
                 {
                   dataIndex: "field4",
-                  width: 120,
-                },
+                  width: 120
+                }
               ],
               undefined,
               {
                 width: 600,
                 height: 200,
                 lockedGridConfig: {
-                  width: 200,
-                },
-              },
+                  width: 200
+                }
+              }
             );
 
             expect(
-              grid.lockedGrid.getView().getTargetEl().getStyle("overflow-y"),
+              grid.lockedGrid.getView().getTargetEl().getStyle("overflow-y")
             ).toBe("hidden");
             expect(
-              grid.normalGrid.getView().getTargetEl().getStyle("overflow-y"),
+              grid.normalGrid.getView().getTargetEl().getStyle("overflow-y")
             ).toBe("hidden");
             expect(grid.scrollBody.getStyle("overflow-y")).toBe("auto");
           });
@@ -3848,24 +3848,24 @@ describe("grid-general", function () {
               [
                 {
                   locked: true,
-                  dataIndex: "field1",
+                  dataIndex: "field1"
                 },
                 {
                   locked: true,
-                  dataIndex: "field2",
+                  dataIndex: "field2"
                 },
                 {
-                  dataIndex: "field3",
+                  dataIndex: "field3"
                 },
                 {
-                  dataIndex: "field4",
-                },
+                  dataIndex: "field4"
+                }
               ],
               undefined,
               {
                 width: 600,
-                height: 200,
-              },
+                height: 200
+              }
             );
 
             expect(store.hasListeners.refresh).toBeDefined();
@@ -3882,8 +3882,8 @@ describe("grid-general", function () {
                 Ext.Ajax.mockComplete({
                   status: 200,
                   responseText: Ext.encode({
-                    success: false,
-                  }),
+                    success: false
+                  })
                 });
               }
             }
@@ -3907,14 +3907,14 @@ describe("grid-general", function () {
                         type: "ajax",
                         url: "fakeUrl",
                         reader: {
-                          type: "json",
-                        },
-                      },
-                    },
+                          type: "json"
+                        }
+                      }
+                    }
                   },
                   {
-                    preventStoreCreate: true,
-                  },
+                    preventStoreCreate: true
+                  }
                 );
                 grid.store.loadPage(1);
 
@@ -3934,24 +3934,24 @@ describe("grid-general", function () {
                 [
                   {
                     locked: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     locked: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ],
                 undefined,
                 {
                   width: 600,
-                  height: 200,
-                },
+                  height: 200
+                }
               );
 
               expect(grid.view.loadMask instanceof Ext.LoadMask).toBe(true);
@@ -3962,25 +3962,25 @@ describe("grid-general", function () {
                 [
                   {
                     locked: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     locked: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ],
                 undefined,
                 {
                   viewConfig: {
-                    loadMask: false,
-                  },
-                },
+                    loadMask: false
+                  }
+                }
               );
 
               expect(grid.view.loadMask).toBe(false);
@@ -3991,23 +3991,23 @@ describe("grid-general", function () {
                 [
                   {
                     locked: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     locked: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ],
                 undefined,
                 {
-                  loadMask: true,
-                },
+                  loadMask: true
+                }
               );
 
               expect(grid.loadMask).toBe(true);
@@ -4019,26 +4019,26 @@ describe("grid-general", function () {
                 [
                   {
                     locked: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     locked: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ],
                 undefined,
                 {
                   loadMask: false,
                   viewConfig: {
-                    loadMask: true,
-                  },
-                },
+                    loadMask: true
+                  }
+                }
               );
 
               expect(grid.loadMask).toBe(false);
@@ -4050,26 +4050,26 @@ describe("grid-general", function () {
                 [
                   {
                     locked: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     locked: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ],
                 undefined,
                 {
                   loadMask: true,
                   viewConfig: {
-                    loadMask: false,
-                  },
-                },
+                    loadMask: false
+                  }
+                }
               );
 
               expect(grid.loadMask).toBe(true);
@@ -4086,14 +4086,14 @@ describe("grid-general", function () {
                 this.addMatchers({
                   toBeAtLeast: function (expected) {
                     return expected <= this.actual;
-                  },
+                  }
                 });
 
                 // Let's make it simpler to measure the width by not having any locked columns.
                 // EnableLocking will have the checkbox column added to the lockedGrid partner.
                 makeGrid(null, undefined, {
                   enableLocking: true,
-                  selModel: new Ext.selection.CheckboxModel(),
+                  selModel: new Ext.selection.CheckboxModel()
                 });
 
                 // No locked columns, so locked grid hidden.
@@ -4103,14 +4103,14 @@ describe("grid-general", function () {
                   {
                     dataIndex: "field1",
                     locked: true,
-                    width: 100,
+                    width: 100
                   },
                   {
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
-                  },
+                    dataIndex: "field3"
+                  }
                 ]);
 
                 var borderWidth = grid.lockedGrid.gridPanelBorderWidth;
@@ -4120,7 +4120,7 @@ describe("grid-general", function () {
                 expect(grid.lockedGrid.width).toBe(
                   Ext.selection.CheckboxModel.prototype.headerWidth +
                     100 +
-                    borderWidth,
+                    borderWidth
                 );
 
                 activeHeader = grid.normalGrid.columnManager.getLast();
@@ -4134,7 +4134,7 @@ describe("grid-general", function () {
                   Ext.selection.CheckboxModel.prototype.headerWidth +
                     100 +
                     activeHeader.width +
-                    borderWidth,
+                    borderWidth
                 );
               });
             });
@@ -4149,31 +4149,31 @@ describe("grid-general", function () {
                   {
                     dataIndex: "name",
                     locked: true,
-                    variableRowHeight: true,
+                    variableRowHeight: true
                   },
                   {
                     dataIndex: "email",
-                    width: 200,
+                    width: 200
                   },
                   {
                     dataIndex: "phone",
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ],
                 [
                   {
-                    field1: "1<br>",
+                    field1: "1<br>"
                   },
                   {
-                    field1: "2<br>1",
+                    field1: "2<br>1"
                   },
                   {
-                    field1: "3<br>1",
+                    field1: "3<br>1"
                   },
                   {
-                    field1: "4<br>1",
-                  },
-                ],
+                    field1: "4<br>1"
+                  }
+                ]
               );
 
               normalRows = grid.normalGrid.getView().all;
@@ -4183,7 +4183,7 @@ describe("grid-general", function () {
               // Check that they are all equal.
               for (i = normalRows.startIndex; i <= normalRows.endIndex; i++) {
                 expect(normalRows.item(i, true).offsetHeight).toEqual(
-                  lockedRows.item(i, true).offsetHeight,
+                  lockedRows.item(i, true).offsetHeight
                 );
               }
 
@@ -4192,7 +4192,7 @@ describe("grid-general", function () {
 
               if (buffered) {
                 expect(
-                  grid.normalGrid.view.bufferedRenderer.variableRowHeight,
+                  grid.normalGrid.view.bufferedRenderer.variableRowHeight
                 ).toBe(true);
 
                 // Hide the variableRowHeight "Name" column
@@ -4203,7 +4203,7 @@ describe("grid-general", function () {
 
                 // Now that the only variableRowHeight column is hidden, the buffered renderer should know about that.
                 expect(
-                  grid.normalGrid.view.bufferedRenderer.variableRowHeight,
+                  grid.normalGrid.view.bufferedRenderer.variableRowHeight
                 ).toBe(false);
               }
             });
@@ -4228,7 +4228,7 @@ describe("grid-general", function () {
                 htmlEl = passedHtmlEl;
                 detectedScope = this;
               },
-              select: true,
+              select: true
             });
             waitsFor(function () {
               return success;
@@ -4247,7 +4247,7 @@ describe("grid-general", function () {
 
               // The bottom of the row should be within view
               expect(Ext.fly(htmlEl).getBox().bottom).toBeLessThanOrEqual(
-                view.getBox().bottom,
+                view.getBox().bottom
               );
 
               grid.ensureVisible("rec100", {
@@ -4256,7 +4256,7 @@ describe("grid-general", function () {
                   record = passedRecord;
                   htmlEl = passedHtmlEl;
                   detectedScope = this;
-                },
+                }
               });
               waitsFor(function () {
                 return success;
@@ -4273,7 +4273,7 @@ describe("grid-general", function () {
 
                 // The top of the row should be within view
                 expect(Ext.fly(htmlEl).getBox().top).toBeGreaterThanOrEqual(
-                  view.getBox().top,
+                  view.getBox().top
                 );
               });
             });
@@ -4288,7 +4288,7 @@ describe("grid-general", function () {
                 htmlEl = passedHtmlEl;
                 detectedScope = this;
               },
-              scope: o,
+              scope: o
             });
             waitsFor(function () {
               return success;
@@ -4304,7 +4304,7 @@ describe("grid-general", function () {
 
               // The bottom of the row should be within view
               expect(Ext.fly(htmlEl).getBox().bottom).toBeLessThanOrEqual(
-                view.getBox().bottom,
+                view.getBox().bottom
               );
 
               grid.ensureVisible(rec100, {
@@ -4314,7 +4314,7 @@ describe("grid-general", function () {
                   htmlEl = passedHtmlEl;
                   detectedScope = this;
                 },
-                scope: o,
+                scope: o
               });
               waitsFor(function () {
                 return success;
@@ -4331,7 +4331,7 @@ describe("grid-general", function () {
 
                 // The top of the row should be within view
                 expect(
-                  Ext.fly(view.getNode(rec100)).getBox().top,
+                  Ext.fly(view.getNode(rec100)).getBox().top
                 ).toBeGreaterThanOrEqual(view.getBox().top);
               });
             });
@@ -4342,7 +4342,7 @@ describe("grid-general", function () {
                 success = passedSuccess;
                 record = passedRecord;
                 htmlEl = passedHtmlEl;
-              },
+              }
             });
             waitsFor(function () {
               return success;
@@ -4355,7 +4355,7 @@ describe("grid-general", function () {
 
               // The bottom of the row should be within view
               expect(Ext.fly(htmlEl).getBox().bottom).toBeLessThanOrEqual(
-                view.getBox().bottom,
+                view.getBox().bottom
               );
 
               grid.ensureVisible(100, {
@@ -4364,7 +4364,7 @@ describe("grid-general", function () {
                   record = passedRecord;
                   htmlEl = passedHtmlEl;
                   detectedScope = this;
-                },
+                }
               });
               waitsFor(function () {
                 return success;
@@ -4378,7 +4378,7 @@ describe("grid-general", function () {
 
                 // The top of the row should be within view
                 expect(Ext.fly(htmlEl).getBox().top).toBeGreaterThanOrEqual(
-                  view.getBox().top,
+                  view.getBox().top
                 );
               });
             });
@@ -4411,15 +4411,15 @@ describe("grid-general", function () {
                 dataIndex: "field1",
                 text: "Field1",
                 width: 100,
-                locked: true,
+                locked: true
               },
               {
                 dataIndex: "field2",
                 text: "Field2",
-                width: 100,
-              },
+                width: 100
+              }
             ],
-            10,
+            10
           );
           lockingExtraWidth = grid.lockedGrid.gridPanelBorderWidth;
           grid.destroy();
@@ -4431,10 +4431,10 @@ describe("grid-general", function () {
               {
                 dataIndex: "field1",
                 text: "Field1",
-                width: 100,
-              },
+                width: 100
+              }
             ],
-            10,
+            10
           );
 
           var gridRef,
@@ -4512,7 +4512,7 @@ describe("grid-general", function () {
                       width: lockedColWidth,
                       dataIndex: "field10",
                       locked: true,
-                      variableRowHeight: lockedIsVariable,
+                      variableRowHeight: lockedIsVariable
                     });
                     cfg.width = 1000 + lockingExtraWidth + lockedColWidth;
                   }
@@ -4551,11 +4551,11 @@ describe("grid-general", function () {
                   if (vertical !== undefined) {
                     if (vertical) {
                       expect(dom.scrollHeight).toBeGreaterThanOrEqual(
-                        clientHeight,
+                        clientHeight
                       );
                     } else {
                       expect(dom.scrollHeight).toBeLessThanOrEqual(
-                        clientHeight,
+                        clientHeight
                       );
                     }
                   }
@@ -4565,7 +4565,7 @@ describe("grid-general", function () {
                       expect(dom.scrollWidth).toBeGreaterThan(dom.clientWidth);
                     } else {
                       expect(dom.scrollWidth).toBeLessThanOrEqual(
-                        dom.clientWidth,
+                        dom.clientWidth
                       );
                     }
                   }
@@ -4597,7 +4597,7 @@ describe("grid-general", function () {
                       field7: i + ".7",
                       field8: i + ".8",
                       field9: i + ".9",
-                      field10: i + ".10",
+                      field10: i + ".10"
                     });
                   }
 
@@ -4618,13 +4618,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        1,
+                        1
                       );
                       expectScroll(false, false);
                       expectColumnWidths([100, 300]);
@@ -4634,13 +4634,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        scrollRowSize,
+                        scrollRowSize
                       );
                       expectScroll(true, false);
                       expectColumnWidths([100, 300]);
@@ -4650,13 +4650,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 600,
+                            width: 600
                           },
                           {
-                            width: 600,
-                          },
+                            width: 600
+                          }
                         ],
-                        1,
+                        1
                       );
                       expectScroll(false, true);
                       expectColumnWidths([600, 600]);
@@ -4666,13 +4666,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 600,
+                            width: 600
                           },
                           {
-                            width: 600,
-                          },
+                            width: 600
+                          }
                         ],
-                        scrollRowSize,
+                        scrollRowSize
                       );
                       expectScroll(true, true);
                       expectColumnWidths([600, 600]);
@@ -4684,17 +4684,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(true, true);
                         expectColumnWidths([600, 600]);
-                      },
+                      }
                     );
 
                     visibleScrollbarsIt(
@@ -4703,17 +4703,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 499,
+                              width: 499
                             },
                             {
-                              width: 499,
-                            },
+                              width: 499
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, true);
                         expectColumnWidths([499, 499]);
-                      },
+                      }
                     );
                   });
 
@@ -4722,13 +4722,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            flex: 1,
+                            flex: 1
                           },
                           {
-                            flex: 1,
-                          },
+                            flex: 1
+                          }
                         ],
-                        1,
+                        1
                       );
                       expectScroll(false, false);
                       expectColumnWidths([500, 500]);
@@ -4738,17 +4738,17 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            flex: 1,
+                            flex: 1
                           },
                           {
-                            flex: 1,
-                          },
+                            flex: 1
+                          }
                         ],
                         1,
                         {
                           hideHeaders: true,
-                          border: true,
-                        },
+                          border: true
+                        }
                       );
                       expectScroll(false, false);
 
@@ -4760,17 +4760,17 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            flex: 1,
+                            flex: 1
                           },
                           {
-                            flex: 1,
-                          },
+                            flex: 1
+                          }
                         ],
-                        scrollRowSize,
+                        scrollRowSize
                       );
                       expectScroll(true, false);
                       expectColumnWidths(
-                        scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                        scrollbarsTakeSpace ? [490, 490] : [500, 500]
                       );
                     });
 
@@ -4778,21 +4778,21 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            flex: 1,
+                            flex: 1
                           },
                           {
-                            flex: 1,
-                          },
+                            flex: 1
+                          }
                         ],
                         scrollRowSize,
                         {
                           hideHeaders: true,
-                          border: true,
-                        },
+                          border: true
+                        }
                       );
                       expectScroll(true, false);
                       expectColumnWidths(
-                        scrollbarsTakeSpace ? [489, 489] : [499, 499],
+                        scrollbarsTakeSpace ? [489, 489] : [499, 499]
                       );
                     });
 
@@ -4805,12 +4805,12 @@ describe("grid-general", function () {
                         makeScrollGrid([
                           {
                             flex: 1,
-                            minWidth: 600,
+                            minWidth: 600
                           },
                           {
                             flex: 1,
-                            minWidth: 600,
-                          },
+                            minWidth: 600
+                          }
                         ]);
                         expectScroll(false, true);
                         expectColumnWidths([600, 600]);
@@ -4821,14 +4821,14 @@ describe("grid-general", function () {
                           [
                             {
                               flex: 1,
-                              minWidth: 600,
+                              minWidth: 600
                             },
                             {
                               flex: 1,
-                              minWidth: 600,
-                            },
+                              minWidth: 600
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, true);
                         expectColumnWidths([600, 600]);
@@ -4841,18 +4841,18 @@ describe("grid-general", function () {
                             [
                               {
                                 flex: 1,
-                                minWidth: 600,
+                                minWidth: 600
                               },
                               {
                                 flex: 1,
-                                minWidth: 600,
-                              },
+                                minWidth: 600
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectScroll(true, true);
                           expectColumnWidths([600, 600]);
-                        },
+                        }
                       );
 
                       visibleScrollbarsIt(
@@ -4862,18 +4862,18 @@ describe("grid-general", function () {
                             [
                               {
                                 flex: 1,
-                                minWidth: 499,
+                                minWidth: 499
                               },
                               {
                                 flex: 1,
-                                minWidth: 499,
-                              },
+                                minWidth: 499
+                              }
                             ],
-                            scrollRowSize,
+                            scrollRowSize
                           );
                           expectScroll(true, true);
                           expectColumnWidths([499, 499]);
-                        },
+                        }
                       );
                     });
                   });
@@ -4883,13 +4883,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            flex: 1,
-                          },
+                            flex: 1
+                          }
                         ],
-                        1,
+                        1
                       );
                       expectScroll(false, false);
                       expectColumnWidths([100, 900]);
@@ -4899,17 +4899,17 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            flex: 1,
-                          },
+                            flex: 1
+                          }
                         ],
-                        scrollRowSize,
+                        scrollRowSize
                       );
                       expectScroll(true, false);
                       expectColumnWidths(
-                        scrollbarsTakeSpace ? [100, 880] : [100, 900],
+                        scrollbarsTakeSpace ? [100, 880] : [100, 900]
                       );
                     });
 
@@ -4917,25 +4917,25 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 200,
+                            width: 200
                           },
                           {
-                            flex: 1,
+                            flex: 1
                           },
                           {
-                            flex: 1,
+                            flex: 1
                           },
                           {
-                            flex: 1,
-                          },
+                            flex: 1
+                          }
                         ],
-                        scrollRowSize,
+                        scrollRowSize
                       );
                       expectScroll(true, false);
                       expectColumnWidths(
                         scrollbarsTakeSpace
                           ? [200, 260, 260, 260]
-                          : [200, 267, 267, 266],
+                          : [200, 267, 267, 266]
                       );
                     });
                   });
@@ -4944,7 +4944,7 @@ describe("grid-general", function () {
                 describe("resizing the grid", function () {
                   function changeHeight(numRows) {
                     grid.setHeight(
-                      grid.getHeight() + numRows * singleRowHeight,
+                      grid.getHeight() + numRows * singleRowHeight
                     );
                   }
 
@@ -4958,13 +4958,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         changeHeight(-10);
@@ -4975,13 +4975,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         changeHeight(-10);
@@ -4992,13 +4992,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         changeHeight(-10);
@@ -5009,13 +5009,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          maxRowsBeforeScroll + 5,
+                          maxRowsBeforeScroll + 5
                         );
                         expectScroll(true, false);
                         changeHeight(10);
@@ -5028,18 +5028,18 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectScroll(false, false);
                           changeHeight(-1);
                           expectScroll(true, true);
-                        },
+                        }
                       );
 
                       // // EXTJS-15789
@@ -5047,13 +5047,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 495,
+                              width: 495
                             },
                             {
-                              width: 495,
-                            },
+                              width: 495
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         changeHeight(-1);
                         expectScroll(true, true);
@@ -5067,13 +5067,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         changeWidth(200);
@@ -5084,13 +5084,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         changeWidth(-100);
@@ -5101,13 +5101,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              width: 400,
-                            },
+                              width: 400
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         changeWidth(-400);
@@ -5118,13 +5118,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         changeWidth(400);
@@ -5137,18 +5137,18 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectScroll(false, false);
                           changeWidth(-50);
                           expectScroll(true, true);
-                        },
+                        }
                       );
 
                       visibleScrollbarsIt(
@@ -5158,16 +5158,16 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 505,
+                                width: 505
                               },
                               {
-                                width: 505,
-                              },
+                                width: 505
+                              }
                             ],
                             maxRowsBeforeScroll,
                             {
-                              height: null,
-                            },
+                              height: null
+                            }
                           );
 
                           // Introduce the vertical scrollbar but only by 5px so that eliminating the vertical scrollbar
@@ -5184,7 +5184,7 @@ describe("grid-general", function () {
                           runs(function () {
                             expectScroll(false, false);
                           });
-                        },
+                        }
                       );
                     });
                   });
@@ -5195,13 +5195,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
@@ -5214,22 +5214,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         changeHeight(-10);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
 
@@ -5237,20 +5237,20 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
                         changeHeight(-10);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
 
@@ -5258,17 +5258,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll + 5,
+                          maxRowsBeforeScroll + 5
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         changeHeight(10);
                         expectScroll(false, false);
@@ -5284,13 +5284,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -5303,22 +5303,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         changeHeight(-10);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
 
@@ -5326,20 +5326,20 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
                         changeHeight(-10);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
 
@@ -5347,17 +5347,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll + 5,
+                          maxRowsBeforeScroll + 5
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         changeHeight(10);
                         expectScroll(false, false);
@@ -5378,13 +5378,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         colRef[0].setWidth(800);
@@ -5395,13 +5395,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         colRef[0].setWidth(300);
@@ -5412,13 +5412,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         colRef[0].setWidth(800);
@@ -5429,13 +5429,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(scrollbarsTakeSpace, true);
                         colRef[0].setWidth(300);
@@ -5450,13 +5450,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -5469,16 +5469,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         expectColumnWidths([600, 600, minColWidth]);
@@ -5491,13 +5491,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -5510,19 +5510,19 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
                           maxRowsBeforeScroll,
                           {
-                            height: null,
-                          },
+                            height: null
+                          }
                         );
                         grid.setHeight(grid.getHeight() - 5);
                         expectScroll(true, true);
@@ -5548,17 +5548,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         addCol({
-                          width: 700,
+                          width: 700
                         });
                         expectScroll(false, true);
                       });
@@ -5567,17 +5567,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         addCol({
-                          width: 300,
+                          width: 300
                         });
                         expectScroll(false, false);
                       });
@@ -5586,17 +5586,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         addCol({
-                          width: 200,
+                          width: 200
                         });
                         expectScroll(scrollbarsTakeSpace, true);
                       });
@@ -5610,22 +5610,22 @@ describe("grid-general", function () {
                             makeScrollGrid(
                               [
                                 {
-                                  width: 100,
+                                  width: 100
                                 },
                                 {
-                                  width: 300,
-                                },
+                                  width: 300
+                                }
                               ],
-                              data,
+                              data
                             );
                             expectScroll(false, false);
                             addCol({
                               width: 200,
                               variableRowHeight: true,
-                              dataIndex: "field3",
+                              dataIndex: "field3"
                             });
                             expectScroll(true, false);
-                          },
+                          }
                         );
 
                         visibleScrollbarsIt(
@@ -5636,22 +5636,22 @@ describe("grid-general", function () {
                             makeScrollGrid(
                               [
                                 {
-                                  width: 330,
+                                  width: 330
                                 },
                                 {
-                                  width: 330,
-                                },
+                                  width: 330
+                                }
                               ],
-                              data,
+                              data
                             );
                             expectScroll(false, false);
                             addCol({
                               width: 330,
                               variableRowHeight: true,
-                              dataIndex: "field3",
+                              dataIndex: "field3"
                             });
                             expectScroll(true, true);
-                          },
+                          }
                         );
                       });
                     });
@@ -5663,18 +5663,18 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
                         addCol({
-                          width: 800,
+                          width: 800
                         });
                         expectScroll(false, true);
                         expectColumnWidths([300, minColWidth, 800]);
@@ -5684,18 +5684,18 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
                         addCol({
-                          width: 300,
+                          width: 300
                         });
                         expectScroll(false, false);
                         expectColumnWidths([300, 400, 300]);
@@ -5705,18 +5705,18 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
                         addCol({
-                          width: 800,
+                          width: 800
                         });
                         expectScroll(scrollbarsTakeSpace, true);
                         expectColumnWidths([300, minColWidth, 800]);
@@ -5729,26 +5729,26 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 300,
+                                width: 300
                               },
                               {
-                                flex: 1,
-                              },
+                                flex: 1
+                              }
                             ],
-                            data,
+                            data
                           );
                           expectScroll(false, false);
                           expectColumnWidths([300, 700]);
                           addCol({
                             width: 200,
                             variableRowHeight: true,
-                            dataIndex: "field3",
+                            dataIndex: "field3"
                           });
                           expectScroll(true, false);
                           expectColumnWidths([
                             300,
                             scrollbarsTakeSpace ? 480 : 500,
-                            200,
+                            200
                           ]);
                         });
                       });
@@ -5761,17 +5761,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
                               width: 700,
-                              hidden: true,
+                              hidden: true
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         colRef[1].show();
@@ -5782,17 +5782,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
                               width: 300,
-                              hidden: true,
+                              hidden: true
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         colRef[1].show();
@@ -5803,17 +5803,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
                               width: 200,
-                              hidden: true,
+                              hidden: true
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         colRef[1].show();
@@ -5829,23 +5829,23 @@ describe("grid-general", function () {
                             makeScrollGrid(
                               [
                                 {
-                                  width: 100,
+                                  width: 100
                                 },
                                 {
-                                  width: 300,
+                                  width: 300
                                 },
                                 {
                                   width: 200,
                                   variableRowHeight: true,
-                                  hidden: true,
-                                },
+                                  hidden: true
+                                }
                               ],
-                              data,
+                              data
                             );
                             expectScroll(false, false);
                             colRef[2].show();
                             expectScroll(true, false);
-                          },
+                          }
                         );
 
                         visibleScrollbarsIt(
@@ -5856,23 +5856,23 @@ describe("grid-general", function () {
                             makeScrollGrid(
                               [
                                 {
-                                  width: 330,
+                                  width: 330
                                 },
                                 {
-                                  width: 330,
+                                  width: 330
                                 },
                                 {
                                   width: 330,
                                   variableRowHeight: true,
-                                  hidden: true,
-                                },
+                                  hidden: true
+                                }
                               ],
-                              data,
+                              data
                             );
                             expectScroll(false, false);
                             colRef[2].show();
                             expectScroll(true, true);
-                          },
+                          }
                         );
                       });
                     });
@@ -5884,17 +5884,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
                               width: 800,
-                              hidden: true,
+                              hidden: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -5907,17 +5907,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
                               width: 300,
-                              hidden: true,
+                              hidden: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -5930,17 +5930,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
                               width: 800,
-                              hidden: true,
+                              hidden: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -5956,18 +5956,18 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 300,
+                                width: 300
                               },
                               {
-                                flex: 1,
+                                flex: 1
                               },
                               {
                                 width: 200,
                                 variableRowHeight: true,
-                                hidden: true,
-                              },
+                                hidden: true
+                              }
                             ],
-                            data,
+                            data
                           );
                           expectScroll(false, false);
                           expectColumnWidths([300, 700]);
@@ -5976,7 +5976,7 @@ describe("grid-general", function () {
                           expectColumnWidths([
                             300,
                             scrollbarsTakeSpace ? 480 : 500,
-                            200,
+                            200
                           ]);
                         });
                       });
@@ -5989,16 +5989,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              width: 700,
-                            },
+                              width: 700
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         colRef[2].destroy();
@@ -6009,16 +6009,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         colRef[2].destroy();
@@ -6029,16 +6029,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              width: 200,
-                            },
+                              width: 200
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(scrollbarsTakeSpace, true);
                         colRef[2].destroy();
@@ -6052,17 +6052,17 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 100,
+                                width: 100
                               },
                               {
-                                width: 300,
+                                width: 300
                               },
                               {
                                 width: 200,
-                                variableRowHeight: true,
-                              },
+                                variableRowHeight: true
+                              }
                             ],
-                            data,
+                            data
                           );
                           expectScroll(true, false);
                           colRef[2].destroy();
@@ -6077,22 +6077,22 @@ describe("grid-general", function () {
                             makeScrollGrid(
                               [
                                 {
-                                  width: 330,
+                                  width: 330
+                                },
+                                {
+                                  width: 330
                                 },
                                 {
                                   width: 330,
-                                },
-                                {
-                                  width: 330,
-                                  variableRowHeight: true,
-                                },
+                                  variableRowHeight: true
+                                }
                               ],
-                              data,
+                              data
                             );
                             expectScroll(true, true);
                             colRef[2].destroy();
                             expectScroll(false, false);
-                          },
+                          }
                         );
                       });
                     });
@@ -6104,16 +6104,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              width: 800,
-                            },
+                              width: 800
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         expectColumnWidths([300, minColWidth, 800]);
@@ -6126,19 +6126,19 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         expectColumnWidths([600, 600, minColWidth, 600]);
@@ -6151,16 +6151,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              width: 800,
-                            },
+                              width: 800
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(scrollbarsTakeSpace, true);
                         expectColumnWidths([300, minColWidth, 800]);
@@ -6181,23 +6181,23 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 300,
+                                width: 300
                               },
                               {
-                                flex: 1,
+                                flex: 1
                               },
                               {
                                 width: 200,
-                                variableRowHeight: true,
-                              },
+                                variableRowHeight: true
+                              }
                             ],
-                            data,
+                            data
                           );
                           expectScroll(true, false);
                           expectColumnWidths([
                             300,
                             scrollbarsTakeSpace ? 480 : 500,
-                            200,
+                            200
                           ]);
                           colRef[2].destroy();
                           expectScroll(false, false);
@@ -6213,16 +6213,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              width: 700,
-                            },
+                              width: 700
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         colRef[2].hide();
@@ -6233,16 +6233,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         colRef[2].hide();
@@ -6253,16 +6253,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              width: 200,
-                            },
+                              width: 200
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(scrollbarsTakeSpace, true);
                         colRef[2].hide();
@@ -6281,17 +6281,17 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 100,
+                                width: 100
                               },
                               {
-                                width: 300,
+                                width: 300
                               },
                               {
                                 width: 200,
-                                variableRowHeight: true,
-                              },
+                                variableRowHeight: true
+                              }
                             ],
-                            data,
+                            data
                           );
                           expectScroll(true, false);
                           colRef[2].hide();
@@ -6311,22 +6311,22 @@ describe("grid-general", function () {
                             makeScrollGrid(
                               [
                                 {
-                                  width: 330,
+                                  width: 330
+                                },
+                                {
+                                  width: 330
                                 },
                                 {
                                   width: 330,
-                                },
-                                {
-                                  width: 330,
-                                  variableRowHeight: true,
-                                },
+                                  variableRowHeight: true
+                                }
                               ],
-                              data,
+                              data
                             );
                             expectScroll(true, true);
                             colRef[2].hide();
                             expectScroll(false, false);
-                          },
+                          }
                         );
                       });
                     });
@@ -6338,16 +6338,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              width: 800,
-                            },
+                              width: 800
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         expectColumnWidths([300, minColWidth, 800]);
@@ -6360,19 +6360,19 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, true);
                         expectColumnWidths([600, 600, minColWidth, 600]);
@@ -6385,16 +6385,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              width: 800,
-                            },
+                              width: 800
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(scrollbarsTakeSpace, true);
                         expectColumnWidths([300, minColWidth, 800]);
@@ -6415,23 +6415,23 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 300,
+                                width: 300
                               },
                               {
-                                flex: 1,
+                                flex: 1
                               },
                               {
                                 width: 200,
-                                variableRowHeight: true,
-                              },
+                                variableRowHeight: true
+                              }
                             ],
-                            data,
+                            data
                           );
                           expectScroll(true, false);
                           expectColumnWidths([
                             300,
                             scrollbarsTakeSpace ? 480 : 500,
-                            200,
+                            200
                           ]);
                           colRef[2].hide();
                           waits(1);
@@ -6454,13 +6454,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         store.add({});
@@ -6471,13 +6471,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         store.add({});
@@ -6488,13 +6488,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         store.add({});
@@ -6507,21 +6507,21 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 600,
+                                width: 600
                               },
                               {
-                                width: 600,
-                              },
+                                width: 600
+                              }
                             ],
                             maxRowsBeforeScrollWithHorizontalScrollBar,
                             {
-                              height: null,
-                            },
+                              height: null
+                            }
                           );
                           expectScroll(false, true);
                           store.add({});
                           expectScroll(true, true);
-                        },
+                        }
                       );
 
                       visibleScrollbarsIt(
@@ -6530,18 +6530,18 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectScroll(false, false);
                           store.add({});
                           expectScroll(true, true);
-                        },
+                        }
                       );
                     });
 
@@ -6550,13 +6550,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
@@ -6569,22 +6569,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         store.add({});
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
 
@@ -6592,20 +6592,20 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
                         store.add({});
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
                     });
@@ -6615,13 +6615,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -6634,22 +6634,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         store.add({});
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
 
@@ -6657,20 +6657,20 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          maxRowsBeforeScroll,
+                          maxRowsBeforeScroll
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
                         store.add({});
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
                     });
@@ -6682,13 +6682,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          2,
+                          2
                         );
                         expectScroll(false, false);
                         store.removeAt(0);
@@ -6699,13 +6699,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         store.removeAt(0);
@@ -6716,13 +6716,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          maxRowsBeforeScroll + 1,
+                          maxRowsBeforeScroll + 1
                         );
                         expectScroll(true, false);
                         store.removeAt(0);
@@ -6735,16 +6735,16 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 600,
+                                width: 600
                               },
                               {
-                                width: 600,
-                              },
+                                width: 600
+                              }
                             ],
                             maxRowsBeforeScrollWithHorizontalScrollBar + 1,
                             {
-                              height: null,
-                            },
+                              height: null
+                            }
                           );
                           grid.setHeight(grid.getHeight() - 5);
                           expectScroll(true, true);
@@ -6755,7 +6755,7 @@ describe("grid-general", function () {
                           runs(function () {
                             expectScroll(false, true);
                           });
-                        },
+                        }
                       );
 
                       // EXTJS-1578
@@ -6763,13 +6763,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 495,
+                              width: 495
                             },
                             {
-                              width: 495,
-                            },
+                              width: 495
+                            }
                           ],
-                          maxRowsBeforeScroll + 1,
+                          maxRowsBeforeScroll + 1
                         );
                         expectScroll(true, true);
                         store.removeAt(0);
@@ -6782,13 +6782,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          2,
+                          2
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
@@ -6801,22 +6801,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         store.removeAt(0);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
 
@@ -6824,22 +6824,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
                           maxRowsBeforeScroll + 1,
                           {
-                            height: null,
-                          },
+                            height: null
+                          }
                         );
                         // Make the grid just height enough so that there is a vertical scrollbar
                         grid.setHeight(grid.getHeight() - 5);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         store.removeAt(0);
 
@@ -6857,13 +6857,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          2,
+                          2
                         );
                         expectScroll(false, false);
                         expectColumnWidths([400, 600]);
@@ -6876,22 +6876,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [400, 580] : [400, 600],
+                          scrollbarsTakeSpace ? [400, 580] : [400, 600]
                         );
                         store.removeAt(0);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [400, 580] : [400, 600],
+                          scrollbarsTakeSpace ? [400, 580] : [400, 600]
                         );
                       });
 
@@ -6899,22 +6899,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
                           maxRowsBeforeScroll + 1,
                           {
-                            height: null,
-                          },
+                            height: null
+                          }
                         );
                         // Make the grid just height enough so that there is a vertical scrollbar
                         grid.setHeight(grid.getHeight() - 5);
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         store.removeAt(0);
                         expectScroll(false, false);
@@ -6930,13 +6930,13 @@ describe("grid-general", function () {
                           [
                             {
                               width: 100,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         store.first().set("field1", makeRowDiv(2));
@@ -6948,13 +6948,13 @@ describe("grid-general", function () {
                           [
                             {
                               width: 100,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         store.first().set("field1", makeRowDiv(2));
@@ -6967,13 +6967,13 @@ describe("grid-general", function () {
                             [
                               {
                                 width: 100,
-                                variableRowHeight: true,
+                                variableRowHeight: true
                               },
                               {
-                                width: 300,
-                              },
+                                width: 300
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectScroll(false, false);
                           store.first().set("field1", makeRowDiv(2));
@@ -6987,23 +6987,23 @@ describe("grid-general", function () {
                               [
                                 {
                                   width: 600,
-                                  variableRowHeight: true,
+                                  variableRowHeight: true
                                 },
                                 {
-                                  width: 600,
-                                },
+                                  width: 600
+                                }
                               ],
                               maxRowsBeforeScrollWithHorizontalScrollBar,
                               {
-                                height: null,
-                              },
+                                height: null
+                              }
                             );
                             // Make the grid just height enough so that there's a horizontal scrollbar, but no vertical
                             grid.setHeight(grid.getHeight() + 5);
                             expectScroll(false, true);
                             store.first().set("field1", makeRowDiv(2));
                             expectScroll(true, true);
-                          },
+                          }
                         );
 
                         visibleScrollbarsIt(
@@ -7013,18 +7013,18 @@ describe("grid-general", function () {
                               [
                                 {
                                   width: 495,
-                                  variableRowHeight: true,
+                                  variableRowHeight: true
                                 },
                                 {
-                                  width: 495,
-                                },
+                                  width: 495
+                                }
                               ],
-                              maxRowsBeforeScroll,
+                              maxRowsBeforeScroll
                             );
                             expectScroll(false, false);
                             store.first().set("field1", makeRowDiv(2));
                             expectScroll(true, true);
-                          },
+                          }
                         );
                       });
 
@@ -7036,13 +7036,13 @@ describe("grid-general", function () {
                             [
                               {
                                 width: 100,
-                                variableRowHeight: true,
+                                variableRowHeight: true
                               },
                               {
-                                width: 300,
-                              },
+                                width: 300
+                              }
                             ],
-                            data,
+                            data
                           );
                           expectScroll(true, false);
                           store.first().set("field1", "1.1");
@@ -7056,16 +7056,16 @@ describe("grid-general", function () {
                               [
                                 {
                                   width: 600,
-                                  variableRowHeight: true,
+                                  variableRowHeight: true
                                 },
                                 {
-                                  width: 600,
-                                },
+                                  width: 600
+                                }
                               ],
                               maxRowsBeforeScroll,
                               {
-                                height: null,
-                              },
+                                height: null
+                              }
                             );
                             grid.setHeight(grid.getHeight() + 2);
                             expectScroll(false, true);
@@ -7073,30 +7073,30 @@ describe("grid-general", function () {
                             expectScroll(true, true);
                             store.first().set("field1", "1.1");
                             expectScroll(false, true);
-                          },
+                          }
                         );
 
                         visibleScrollbarsIt(
                           "should not show a horizontal scrollbar if triggered by a vertical scrollbar",
                           function () {
                             var data = makeRows(
-                              maxRowsBeforeScrollWithHorizontalScrollBar,
+                              maxRowsBeforeScrollWithHorizontalScrollBar
                             );
                             data[0].field1 = makeRowDiv(3);
                             makeScrollGrid(
                               [
                                 {
                                   width: 495,
-                                  variableRowHeight: true,
+                                  variableRowHeight: true
                                 },
                                 {
-                                  width: 495,
-                                },
+                                  width: 495
+                                }
                               ],
                               maxRowsBeforeScroll,
                               {
-                                height: null,
-                              },
+                                height: null
+                              }
                             );
                             grid.setHeight(grid.getHeight() + 5);
                             store.first().set("field1", makeRowDiv(3));
@@ -7108,7 +7108,7 @@ describe("grid-general", function () {
                             runs(function () {
                               expectScroll(false, false);
                             });
-                          },
+                          }
                         );
                       });
                     });
@@ -7119,13 +7119,13 @@ describe("grid-general", function () {
                           [
                             {
                               flex: 1,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
@@ -7138,22 +7138,22 @@ describe("grid-general", function () {
                           [
                             {
                               flex: 1,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         store.first().set("field1", makeRowDiv(2));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
 
@@ -7162,16 +7162,16 @@ describe("grid-general", function () {
                           [
                             {
                               flex: 1,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
                           maxRowsBeforeScroll,
                           {
-                            height: null,
-                          },
+                            height: null
+                          }
                         );
                         grid.setHeight(grid.getHeight() + 5);
                         expectScroll(false, false);
@@ -7179,7 +7179,7 @@ describe("grid-general", function () {
                         store.first().set("field1", makeRowDiv(2));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
 
@@ -7188,22 +7188,22 @@ describe("grid-general", function () {
                           [
                             {
                               flex: 1,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
                           maxRowsBeforeScroll,
                           {
-                            height: null,
-                          },
+                            height: null
+                          }
                         );
                         grid.setHeight(grid.getHeight() + 5);
                         store.first().set("field1", makeRowDiv(2));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         store.first().set("field1", "1.1");
                         expectScroll(false, false);
@@ -7217,13 +7217,13 @@ describe("grid-general", function () {
                           [
                             {
                               width: 300,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -7236,22 +7236,22 @@ describe("grid-general", function () {
                           [
                             {
                               width: 300,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         store.first().set("field1", makeRowDiv(2));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
 
@@ -7260,16 +7260,16 @@ describe("grid-general", function () {
                           [
                             {
                               width: 300,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
                           maxRowsBeforeScroll,
                           {
-                            height: null,
-                          },
+                            height: null
+                          }
                         );
                         grid.setHeight(grid.getHeight() + 5);
                         expectScroll(false, false);
@@ -7277,7 +7277,7 @@ describe("grid-general", function () {
                         store.first().set("field1", makeRowDiv(2));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
 
@@ -7286,22 +7286,22 @@ describe("grid-general", function () {
                           [
                             {
                               width: 300,
-                              variableRowHeight: true,
+                              variableRowHeight: true
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
                           maxRowsBeforeScroll,
                           {
-                            height: null,
-                          },
+                            height: null
+                          }
                         );
                         grid.setHeight(grid.getHeight() + 5);
                         store.first().set("field1", makeRowDiv(2));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         store.first().set("field1", "1.1");
                         expectScroll(false, false);
@@ -7316,13 +7316,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         store.loadData(makeRows(2));
@@ -7333,13 +7333,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         store.loadData(makeRows(scrollRowSize + 20));
@@ -7350,13 +7350,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         store.loadData(makeRows(1));
@@ -7367,13 +7367,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 495,
+                              width: 495
                             },
                             {
-                              width: 495,
-                            },
+                              width: 495
+                            }
                           ],
-                          maxRowsBeforeScroll - 1,
+                          maxRowsBeforeScroll - 1
                         );
                         expectScroll(false, false);
                         store.loadData(makeRows(1));
@@ -7384,13 +7384,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 100,
+                              width: 100
                             },
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         store.loadData(makeRows(scrollRowSize));
@@ -7401,13 +7401,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 495,
+                              width: 495
                             },
                             {
-                              width: 495,
-                            },
+                              width: 495
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         store.loadData(makeRows(scrollRowSize + 1));
@@ -7421,13 +7421,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
@@ -7440,22 +7440,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         store.loadData(makeRows(scrollRowSize + 20));
                         expect(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
 
@@ -7463,17 +7463,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                         store.loadData(makeRows(1));
                         expectScroll(false, false);
@@ -7484,20 +7484,20 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              flex: 1,
+                              flex: 1
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([500, 500]);
                         store.loadData(makeRows(scrollRowSize));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [490, 490] : [500, 500],
+                          scrollbarsTakeSpace ? [490, 490] : [500, 500]
                         );
                       });
                     });
@@ -7507,13 +7507,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
@@ -7526,22 +7526,22 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         store.loadData(makeRows(scrollRowSize + 20));
                         expect(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
 
@@ -7549,17 +7549,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          scrollRowSize,
+                          scrollRowSize
                         );
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                         store.loadData(makeRows(1));
                         expectScroll(false, false);
@@ -7570,20 +7570,20 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
+                              width: 300
                             },
                             {
-                              flex: 1,
-                            },
+                              flex: 1
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectScroll(false, false);
                         expectColumnWidths([300, 700]);
                         store.loadData(makeRows(scrollRowSize));
                         expectScroll(true, false);
                         expectColumnWidths(
-                          scrollbarsTakeSpace ? [300, 680] : [300, 700],
+                          scrollbarsTakeSpace ? [300, 680] : [300, 700]
                         );
                       });
                     });
@@ -7593,7 +7593,7 @@ describe("grid-general", function () {
                 describe("header sizing", function () {
                   function expectHeaderWidth(width) {
                     expect(
-                      gridRef.headerCt.getLayout().innerCt.getWidth(),
+                      gridRef.headerCt.getLayout().innerCt.getWidth()
                     ).toBe(width);
                   }
 
@@ -7604,13 +7604,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectHeaderWidth(1000);
-                      },
+                      }
                     );
                   });
 
@@ -7621,16 +7621,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectHeaderWidth(1200);
-                      },
+                      }
                     );
                   });
 
@@ -7641,13 +7641,13 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 300,
-                            },
+                              width: 300
+                            }
                           ],
-                          100,
+                          100
                         );
                         expectHeaderWidth(1000);
-                      },
+                      }
                     );
                   });
 
@@ -7658,16 +7658,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 600,
+                              width: 600
                             },
                             {
-                              width: 600,
-                            },
+                              width: 600
+                            }
                           ],
-                          100,
+                          100
                         );
                         expectHeaderWidth(1220);
-                      },
+                      }
                     );
 
                     // EXTJS-15789
@@ -7678,16 +7678,16 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 600,
+                                width: 600
                               },
                               {
-                                width: 600,
-                              },
+                                width: 600
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectHeaderWidth(1220);
-                        },
+                        }
                       );
                     });
 
@@ -7698,16 +7698,16 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            scrollRowSize,
+                            scrollRowSize
                           );
                           expectHeaderWidth(1010);
-                        },
+                        }
                       );
                     });
                   });
@@ -7724,7 +7724,7 @@ describe("grid-general", function () {
                       expect(overflowX).toBe(true);
                       if (scrollbarsTakeSpace) {
                         expect(grid.lockedScrollbar.el.isVisible()).toBe(
-                          scroll,
+                          scroll
                         );
                       }
                     }
@@ -7733,13 +7733,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 600,
+                            width: 600
                           },
                           {
-                            width: 600,
-                          },
+                            width: 600
+                          }
                         ],
-                        1,
+                        1
                       );
                       // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                       expectLockedScroll(true);
@@ -7749,13 +7749,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        1,
+                        1
                       );
                       expectLockedScroll(false);
                     });
@@ -7764,13 +7764,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 400,
+                            width: 400
                           },
                           {
-                            width: 400,
-                          },
+                            width: 400
+                          }
                         ],
-                        1,
+                        1
                       );
                       expectLockedScroll(false);
                       grid.setWidth(grid.getWidth() - 400);
@@ -7782,13 +7782,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 600,
+                            width: 600
                           },
                           {
-                            width: 600,
-                          },
+                            width: 600
+                          }
                         ],
-                        1,
+                        1
                       );
                       // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                       expectLockedScroll(true);
@@ -7801,18 +7801,18 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              width: 400,
-                            },
+                              width: 400
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectLockedScroll(false);
                         grid.normalGrid.headerCt.add({
                           width: 400,
-                          dataIndex: "field3",
+                          dataIndex: "field3"
                         });
                         // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                         expectLockedScroll(true);
@@ -7822,17 +7822,17 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 400,
+                              width: 400
+                            },
+                            {
+                              width: 400
                             },
                             {
                               width: 400,
-                            },
-                            {
-                              width: 400,
-                              hidden: true,
-                            },
+                              hidden: true
+                            }
                           ],
-                          1,
+                          1
                         );
                         expectLockedScroll(false);
                         colRef[2].show();
@@ -7844,16 +7844,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              width: 400,
-                            },
+                              width: 400
+                            }
                           ],
-                          1,
+                          1
                         );
                         // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                         expectLockedScroll(true);
@@ -7865,16 +7865,16 @@ describe("grid-general", function () {
                         makeScrollGrid(
                           [
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              width: 400,
+                              width: 400
                             },
                             {
-                              width: 400,
-                            },
+                              width: 400
+                            }
                           ],
-                          1,
+                          1
                         );
                         // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                         expectLockedScroll(true);
@@ -7889,13 +7889,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            1,
+                            1
                           );
                           expectLockedScroll(false);
                           store.add({});
@@ -7906,13 +7906,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            scrollRowSize,
+                            scrollRowSize
                           );
                           // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                           expectLockedScroll(true);
@@ -7925,13 +7925,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectLockedScroll(false);
                           store.add({});
@@ -7945,13 +7945,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            maxRowsBeforeScroll,
+                            maxRowsBeforeScroll
                           );
                           expectLockedScroll(false);
                           store.removeAt(0);
@@ -7962,13 +7962,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            scrollRowSize,
+                            scrollRowSize
                           );
                           // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                           expectLockedScroll(true);
@@ -7981,13 +7981,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            maxRowsBeforeScroll + 1,
+                            maxRowsBeforeScroll + 1
                           );
                           // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                           expectLockedScroll(true);
@@ -8002,20 +8002,20 @@ describe("grid-general", function () {
                             [
                               {
                                 width: 495,
-                                variableRowHeight: true,
+                                variableRowHeight: true
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            1,
+                            1
                           );
                           expectLockedScroll(
-                            scrollbarsTakeSpace ? false : true,
+                            scrollbarsTakeSpace ? false : true
                           );
                           store.first().set("field1", makeRowDiv(2));
                           expectLockedScroll(
-                            scrollbarsTakeSpace ? false : true,
+                            scrollbarsTakeSpace ? false : true
                           );
                         });
 
@@ -8023,19 +8023,19 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
                             maxRowsBeforeScroll,
                             {
                               height: null,
                               viewConfig: {
-                                variableRowHeight: true,
-                              },
-                            },
+                                variableRowHeight: true
+                              }
+                            }
                           );
                           grid.setHeight(grid.getHeight() + 5);
                           store.first().set("field1", makeRowDiv(2));
@@ -8049,19 +8049,19 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
                             maxRowsBeforeScroll,
                             {
                               height: null,
                               viewConfig: {
-                                variableRowHeight: true,
-                              },
-                            },
+                                variableRowHeight: true
+                              }
+                            }
                           );
                           grid.setHeight(grid.getHeight() + 5);
                           expectLockedScroll(false);
@@ -8076,19 +8076,19 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
                             maxRowsBeforeScroll,
                             {
                               height: null,
                               viewConfig: {
-                                variableRowHeight: true,
-                              },
-                            },
+                                variableRowHeight: true
+                              }
+                            }
                           );
                           grid.setHeight(grid.getHeight() + 5);
                           store.first().set("field1", makeRowDiv(2));
@@ -8104,20 +8104,20 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            1,
+                            1
                           );
                           expectLockedScroll(
-                            scrollbarsTakeSpace ? false : true,
+                            scrollbarsTakeSpace ? false : true
                           );
                           store.loadData(makeRows(2));
                           expectLockedScroll(
-                            scrollbarsTakeSpace ? false : true,
+                            scrollbarsTakeSpace ? false : true
                           );
                         });
 
@@ -8125,13 +8125,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            scrollRowSize,
+                            scrollRowSize
                           );
                           // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                           expectLockedScroll(true);
@@ -8144,13 +8144,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            scrollRowSize,
+                            scrollRowSize
                           );
                           // Will only turn the locked side's overflowX to 'scroll' if it has to match a space-taking scrollbar on the normal side
                           expectLockedScroll(true);
@@ -8162,13 +8162,13 @@ describe("grid-general", function () {
                           makeScrollGrid(
                             [
                               {
-                                width: 495,
+                                width: 495
                               },
                               {
-                                width: 495,
-                              },
+                                width: 495
+                              }
                             ],
-                            1,
+                            1
                           );
                           expectLockedScroll(false);
                           store.loadData(makeRows(scrollRowSize));
@@ -8190,13 +8190,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        data,
+                        data
                       );
                       expectScroll(true, false);
                     });
@@ -8205,17 +8205,17 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        maxRowsBeforeScroll - 1,
+                        maxRowsBeforeScroll - 1
                       );
                       expectScroll(false, false);
                       store.add({
-                        field10: makeRowDiv(2),
+                        field10: makeRowDiv(2)
                       });
                       expectScroll(true, false);
                     });
@@ -8226,13 +8226,13 @@ describe("grid-general", function () {
                       makeScrollGrid(
                         [
                           {
-                            width: 100,
+                            width: 100
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        data,
+                        data
                       );
                       expectScroll(true, false);
                       store.removeAt(0);
@@ -8244,13 +8244,13 @@ describe("grid-general", function () {
                         [
                           {
                             width: 100,
-                            variableRowHeight: true,
+                            variableRowHeight: true
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        maxRowsBeforeScroll,
+                        maxRowsBeforeScroll
                       );
                       expectScroll(false, false);
                       store.first().set("field10", makeRowDiv(2));
@@ -8264,13 +8264,13 @@ describe("grid-general", function () {
                         [
                           {
                             width: 100,
-                            variableRowHeight: true,
+                            variableRowHeight: true
                           },
                           {
-                            width: 300,
-                          },
+                            width: 300
+                          }
                         ],
-                        data,
+                        data
                       );
                       expectScroll(true, false);
                       store.first().set("field10", "1.1");
@@ -8278,7 +8278,7 @@ describe("grid-general", function () {
                     });
                   });
                 }
-              },
+              }
             );
           }
           makeScrollSuite(false);
@@ -8294,10 +8294,10 @@ describe("grid-general", function () {
             expect(grid.headerCt.disabled).toBe(true);
             expect(grid.headerCt.isMasked()).toBeFalsy();
             expect(
-              grid.headerCt.tabGuardBeforeEl.dom.getAttribute("tabIndex"),
+              grid.headerCt.tabGuardBeforeEl.dom.getAttribute("tabIndex")
             ).toBe("-1");
             expect(
-              grid.headerCt.tabGuardAfterEl.dom.getAttribute("tabIndex"),
+              grid.headerCt.tabGuardAfterEl.dom.getAttribute("tabIndex")
             ).toBe("-1");
 
             grid.enable();
@@ -8305,10 +8305,10 @@ describe("grid-general", function () {
             expect(grid.headerCt.disabled).toBe(false);
             expect(grid.headerCt.isMasked()).toBeFalsy();
             expect(
-              grid.headerCt.tabGuardBeforeEl.dom.getAttribute("tabIndex"),
+              grid.headerCt.tabGuardBeforeEl.dom.getAttribute("tabIndex")
             ).toBe("0");
             expect(
-              grid.headerCt.tabGuardAfterEl.dom.getAttribute("tabIndex"),
+              grid.headerCt.tabGuardAfterEl.dom.getAttribute("tabIndex")
             ).toBe("0");
           });
 
@@ -8325,13 +8325,13 @@ describe("grid-general", function () {
             expect(grid.lockedGrid.headerCt.isMasked()).toBeFalsy();
             expect(
               grid.lockedGrid.headerCt.tabGuardBeforeEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("-1");
             expect(
               grid.lockedGrid.headerCt.tabGuardAfterEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("-1");
 
             // Normal side
@@ -8340,13 +8340,13 @@ describe("grid-general", function () {
             expect(grid.normalGrid.headerCt.isMasked()).toBeFalsy();
             expect(
               grid.normalGrid.headerCt.tabGuardBeforeEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("-1");
             expect(
               grid.normalGrid.headerCt.tabGuardAfterEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("-1");
 
             grid.enable();
@@ -8360,13 +8360,13 @@ describe("grid-general", function () {
             expect(grid.lockedGrid.headerCt.isMasked()).toBeFalsy();
             expect(
               grid.lockedGrid.headerCt.tabGuardBeforeEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("0");
             expect(
               grid.lockedGrid.headerCt.tabGuardAfterEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("0");
 
             // Normal side
@@ -8375,13 +8375,13 @@ describe("grid-general", function () {
             expect(grid.normalGrid.headerCt.isMasked()).toBeFalsy();
             expect(
               grid.normalGrid.headerCt.tabGuardBeforeEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("0");
             expect(
               grid.normalGrid.headerCt.tabGuardAfterEl.dom.getAttribute(
-                "tabIndex",
-              ),
+                "tabIndex"
+              )
             ).toBe("0");
           });
         });
@@ -8447,7 +8447,7 @@ describe("grid-general", function () {
             expect(grid.lockedGrid.view.isMasked()).toBeFalsy();
           });
         });
-      },
+      }
     );
 
     if (buffered) {
@@ -8467,7 +8467,7 @@ describe("grid-general", function () {
         for (i = 0; i < 500; i++) {
           data.push([
             "Row " + (i + 1),
-            lorem.substr(0, Ext.Number.randomInt(minLen, loremLen)),
+            lorem.substr(0, Ext.Number.randomInt(minLen, loremLen))
           ]);
         }
         afterEach(function () {
@@ -8477,7 +8477,7 @@ describe("grid-general", function () {
         it("should adjust view body position if column width change causes body to move out of view", function () {
           store = new Ext.data.ArrayStore({
             data: data,
-            fields: ["row", "lorem"],
+            fields: ["row", "lorem"]
           });
 
           grid = new Ext.grid.Panel({
@@ -8490,16 +8490,16 @@ describe("grid-general", function () {
               {
                 text: "Row",
                 dataIndex: "row",
-                width: 50,
+                width: 50
               },
               {
                 text: "Lorem",
                 dataIndex: "lorem",
                 flex: 1,
-                cellWrap: true,
-              },
+                cellWrap: true
+              }
             ],
-            renderTo: document.body,
+            renderTo: document.body
           });
           view = grid.view;
           bufferedRenderer = view.bufferedRenderer;
@@ -8516,14 +8516,14 @@ describe("grid-general", function () {
 
           // Body top must be above the top of the viewport
           expect(bufferedRenderer.bodyTop).toBeLessThan(
-            bufferedRenderer.scrollTop,
+            bufferedRenderer.scrollTop
           );
 
           // The body bottom must be below the bottom of the viewport
           expect(
-            bufferedRenderer.bodyTop + view.body.dom.offsetHeight,
+            bufferedRenderer.bodyTop + view.body.dom.offsetHeight
           ).toBeGreaterThan(
-            bufferedRenderer.scrollTop + view.el.dom.clientHeight,
+            bufferedRenderer.scrollTop + view.el.dom.clientHeight
           );
 
           // Remove all but the last record
@@ -8539,7 +8539,7 @@ describe("grid-general", function () {
         it("should not refresh if the rendered view is positioned at the start", function () {
           store = new Ext.data.ArrayStore({
             data: data,
-            fields: ["row", "lorem"],
+            fields: ["row", "lorem"]
           });
 
           grid = new Ext.grid.Panel({
@@ -8552,16 +8552,16 @@ describe("grid-general", function () {
               {
                 text: "Row",
                 dataIndex: "row",
-                width: 50,
+                width: 50
               },
               {
                 text: "Lorem",
                 dataIndex: "lorem",
                 flex: 1,
-                cellWrap: true,
-              },
+                cellWrap: true
+              }
             ],
-            renderTo: document.body,
+            renderTo: document.body
           });
           view = grid.view;
           bufferedRenderer = view.bufferedRenderer;
@@ -8596,11 +8596,11 @@ describe("grid-general", function () {
               text: "Edit",
               handler: function () {
                 grid.store.removeAt(0);
-              },
-            },
-          },
+              }
+            }
+          }
         ],
-        store: [{}],
+        store: [{}]
       });
       var col = grid.getVisibleColumnManager().getColumns()[0],
         cell00 = new Ext.grid.CellContext(grid.view).setPosition(0, 0);
@@ -8624,7 +8624,7 @@ describe("grid-general", function () {
         jasmine.fireKeyEvent(
           document.activeElement,
           "keydown",
-          Ext.event.Event.SPACE,
+          Ext.event.Event.SPACE
         );
       });
 
@@ -8643,10 +8643,10 @@ describe("grid-general", function () {
           width: 600,
           columns: [
             {
-              xtype: "actioncolumn",
-            },
+              xtype: "actioncolumn"
+            }
           ],
-          store: [{}],
+          store: [{}]
         });
         var col = grid.getVisibleColumnManager().getColumns()[0],
           cell00 = new Ext.grid.CellContext(grid.view).setPosition(0, 0),
@@ -8673,10 +8673,10 @@ describe("grid-general", function () {
           width: 600,
           columns: [
             {
-              xtype: "actioncolumn",
-            },
+              xtype: "actioncolumn"
+            }
           ],
-          store: [{}, {}],
+          store: [{}, {}]
         });
         var cell01 = new Ext.grid.CellContext(grid.view).setPosition(1, 0);
 
@@ -8703,13 +8703,13 @@ describe("grid-general", function () {
           syncRowHeight: false,
           store: new Ext.data.Store({
             fields: ["id", "name", "name1"],
-            data: [{ id: 1, name: "1", name1: "one" }],
+            data: [{ id: 1, name: "1", name1: "one" }]
           }),
           columns: [
             { text: "Id", dataIndex: "id", locked: true, width: 100 },
             { text: "Name", dataIndex: "name", locked: true, width: 100 },
-            { text: "Name1", dataIndex: "name1", width: 100 },
-          ],
+            { text: "Name1", dataIndex: "name1", width: 100 }
+          ]
         });
 
         grid.columns[0].setWidth(150);

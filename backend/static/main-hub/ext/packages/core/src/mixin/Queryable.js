@@ -122,7 +122,7 @@ Ext.define("Ext.mixin.Queryable", {
       this.getQueryRoot(),
       fn,
       scope,
-      extraArgs,
+      extraArgs
     );
   },
 
@@ -150,7 +150,7 @@ Ext.define("Ext.mixin.Queryable", {
       this.getQueryRoot(),
       fn,
       scope,
-      extraArgs,
+      extraArgs
     );
   },
 
@@ -175,6 +175,6 @@ Ext.define("Ext.mixin.Queryable", {
         }
       }
       return null;
-    },
-  },
+    }
+  }
 });

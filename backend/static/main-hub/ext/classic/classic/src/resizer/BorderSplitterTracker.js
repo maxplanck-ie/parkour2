@@ -91,14 +91,14 @@ Ext.define("Ext.resizer.BorderSplitterTracker", {
       box,
       minRange,
       maxRange,
-      splitter,
+      splitter
     );
 
     me.dragInfo = {
       minRange: minRange,
       maxRange: maxRange,
       //neighborSizes: neighborSizes,
-      targetSize: targetSize,
+      targetSize: targetSize
     };
 
     return box;
@@ -127,7 +127,7 @@ Ext.define("Ext.resizer.BorderSplitterTracker", {
     right: function (box, minRange, maxRange, splitter) {
       box.right = box.left - minRange;
       box[0] = box.x = box.left = box.x - maxRange + splitter.getWidth();
-    },
+    }
   },
 
   onBeforeStart: function (e) {
@@ -209,7 +209,7 @@ Ext.define("Ext.resizer.BorderSplitterTracker", {
       adjustTarget: function (target, size, delta) {
         target.flex = null;
         target.setSize(size + delta);
-      },
+      }
     },
     vert: {
       index: 1,
@@ -219,11 +219,11 @@ Ext.define("Ext.resizer.BorderSplitterTracker", {
       adjustTarget: function (target, targetSize, delta) {
         target.flex = null;
         target.setSize(undefined, targetSize + delta);
-      },
-    },
+      }
+    }
   },
 
   getCollapseDirection: function () {
     return this.splitter.getCollapseDirection();
-  },
+  }
 });

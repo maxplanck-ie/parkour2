@@ -30,7 +30,6 @@ def test_requests_page(page: Page):
     addBatchButton = page.locator("a.pl-batch-add-button")
     libraryCardButton = page.locator("a.pl-library-card-button")
     sampleCardButton = page.locator("a.pl-sample-card-button")
-    createEmptyRowInput = page.locator("div.pl-num-empty-records>div>div>div>input")
     createEmptyRowButton = page.locator("a.pl-create-empty-records-button")
     nameInput = page.locator("input[name='name']")
     nucleicAcidInput = page.locator("input[name='nucleic_acid_type']")
@@ -50,8 +49,8 @@ def test_requests_page(page: Page):
     updateButton = page.locator("a.x-row-editor-update-button")
     addSaveRequestButton = page.get_by_text("Save").nth(1)
     saveAddedRequestbutton = page.get_by_text("Save").nth(0)
-    addSuccessNotification = page.get_by_text("Request has been saved.")
-    finalSuccessNotification = page.get_by_text("The changes have been saved.")
+    addSuccessNotification = page.get_by_text("The request has been auto-saved.")
+    finalSuccessNotification = page.get_by_text("Changes have been saved successfully.")
 
     addRequestButton.click()
     expect(page.get_by_text("New Request")).to_be_visible()
@@ -60,7 +59,6 @@ def test_requests_page(page: Page):
     expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
     libraryCardButton.click()
     expect(page.get_by_text("Add Libraries")).to_be_visible()
-    createEmptyRowInput.fill("1")
     with open(
         CSV_DATA + "library_request.csv",
         newline="",
@@ -103,7 +101,6 @@ def test_requests_page(page: Page):
     expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
     sampleCardButton.click()
     expect(page.get_by_text("Add Samples")).to_be_visible()
-    createEmptyRowInput.fill("1")
     with open(
         CSV_DATA + "sample_request.csv",
         newline="",

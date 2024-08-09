@@ -4,7 +4,7 @@ describe("Ext", function () {
       expect(Ext.global).toBe(
         function () {
           return this;
-        }.call(),
+        }.call()
       );
     });
   });
@@ -22,7 +22,7 @@ describe("Ext", function () {
         },
         toString: function () {
           this.myToStringCalled = true;
-        },
+        }
       };
     });
 
@@ -31,7 +31,7 @@ describe("Ext", function () {
         name: "newName",
         items: [4, 5, 6],
         otherThing: "not cool",
-        isCool: false,
+        isCool: false
       });
 
       expect(origin.name).toEqual("newName");
@@ -45,7 +45,7 @@ describe("Ext", function () {
       Ext.apply(origin, {
         method: function () {
           this.newMethodCalled = true;
-        },
+        }
       });
 
       origin.method();
@@ -58,7 +58,7 @@ describe("Ext", function () {
       Ext.apply(origin, {
         toString: function () {
           this.newToStringCalled = true;
-        },
+        }
       });
 
       origin.toString();
@@ -72,13 +72,13 @@ describe("Ext", function () {
         {},
         {
           foo: 1,
-          bar: 2,
-        },
+          bar: 2
+        }
       );
 
       expect(o).toEqual({
         foo: 1,
-        bar: 2,
+        bar: 2
       });
     });
 
@@ -86,12 +86,12 @@ describe("Ext", function () {
       o = {};
       Ext.apply(o, {
         opt1: "x",
-        opt2: "y",
+        opt2: "y"
       });
 
       expect(o).toEqual({
         opt1: "x",
-        opt2: "y",
+        opt2: "y"
       });
     });
 
@@ -99,18 +99,18 @@ describe("Ext", function () {
       o = Ext.apply(
         {
           foo: 1,
-          baz: 4,
+          baz: 4
         },
         {
           foo: 2,
-          bar: 3,
-        },
+          bar: 3
+        }
       );
 
       expect(o).toEqual({
         foo: 2,
         bar: 3,
-        baz: 4,
+        baz: 4
       });
     });
 
@@ -121,18 +121,18 @@ describe("Ext", function () {
         o,
         {
           foo: "new",
-          exist: true,
+          exist: true
         },
         {
           foo: "old",
-          def: true,
-        },
+          def: true
+        }
       );
 
       expect(o).toEqual({
         foo: "new",
         def: true,
-        exist: true,
+        exist: true
       });
     });
 
@@ -141,17 +141,17 @@ describe("Ext", function () {
         {},
         {
           foo: "foo",
-          bar: "bar",
+          bar: "bar"
         },
         {
           foo: "oldFoo",
-          bar: "oldBar",
-        },
+          bar: "oldBar"
+        }
       );
 
       expect(o).toEqual({
         foo: "foo",
-        bar: "bar",
+        bar: "bar"
       });
     });
 
@@ -161,7 +161,7 @@ describe("Ext", function () {
 
     it("should return the object if second argument is not defined", function () {
       o = {
-        foo: 1,
+        foo: 1
       };
       expect(Ext.apply(o)).toEqual(o);
     });
@@ -203,7 +203,7 @@ describe("Ext", function () {
         o = {
           n1: 11,
           n2: 13,
-          n3: 18,
+          n3: 18
         };
       });
 
@@ -310,28 +310,28 @@ describe("Ext", function () {
         {},
         {
           foo: "foo",
-          bar: "bar",
-        },
+          bar: "bar"
+        }
       );
 
       expect(o).toEqual({
         foo: "foo",
-        bar: "bar",
+        bar: "bar"
       });
     });
 
     it("should not override default properties", function () {
       o = Ext.applyIf(
         {
-          foo: "foo",
+          foo: "foo"
         },
         {
-          foo: "oldFoo",
-        },
+          foo: "oldFoo"
+        }
       );
 
       expect(o).toEqual({
-        foo: "foo",
+        foo: "foo"
       });
     });
 
@@ -339,18 +339,18 @@ describe("Ext", function () {
       o = Ext.applyIf(
         {
           foo: 1,
-          bar: 2,
+          bar: 2
         },
         {
           bar: 3,
-          baz: 4,
-        },
+          baz: 4
+        }
       );
 
       expect(o).toEqual({
         foo: 1,
         bar: 2,
-        baz: 4,
+        baz: 4
       });
     });
 
@@ -359,15 +359,15 @@ describe("Ext", function () {
       Ext.applyIf(
         o,
         {
-          foo: 2,
+          foo: 2
         },
         {
-          foo: 1,
-        },
+          foo: 1
+        }
       );
 
       expect(o).toEqual({
-        foo: 2,
+        foo: 2
       });
     });
 
@@ -377,7 +377,7 @@ describe("Ext", function () {
 
     it("should return the object if second argument is no defined", function () {
       o = {
-        foo: 1,
+        foo: 1
       };
 
       expect(Ext.applyIf(o)).toEqual(o);
@@ -392,25 +392,25 @@ describe("Ext", function () {
         constructor: function (config) {
           Ext.apply(this, config);
           this.foobar = false;
-        },
+        }
       });
 
       Child = Ext.extend(Parent, {
         constructor: function () {
           Child.superclass.constructor.apply(this, arguments);
           this.foobar = true;
-        },
+        }
       });
 
       baz = new Child({
-        sencha: "isAwesome",
+        sencha: "isAwesome"
       });
 
       it("should throw an error if superclass isn't defined", function () {
         expect(function () {
           Ext.extend(undefined, {});
         }).toThrow(
-          "Attempting to extend from a class which has not been loaded on the page.",
+          "Attempting to extend from a class which has not been loaded on the page."
         );
       });
 
@@ -451,7 +451,7 @@ describe("Ext", function () {
         constructor: function () {
           C.superclass.constructor.call(this);
           this.data += "c";
-        },
+        }
       });
 
       // Extending class produced via 2 argument form using 2 argument form
@@ -459,7 +459,7 @@ describe("Ext", function () {
         constructor: function () {
           D.superclass.constructor.call(this);
           this.data += "d";
-        },
+        }
       });
 
       // Extending again using 3 argument form
@@ -486,7 +486,7 @@ describe("Ext", function () {
       var A = Ext.define(null, {
         constructor: function () {
           this.data = "a";
-        },
+        }
       });
 
       // Extending class created via 3 argument form using 3 arg form
@@ -501,7 +501,7 @@ describe("Ext", function () {
         constructor: function () {
           C.superclass.constructor.call(this);
           this.data += "c";
-        },
+        }
       });
 
       // Extending class produced via 2 argument form using 2 argument form
@@ -509,7 +509,7 @@ describe("Ext", function () {
         constructor: function () {
           D.superclass.constructor.call(this);
           this.data += "d";
-        },
+        }
       });
 
       // Extending again using 3 argument form
@@ -547,7 +547,7 @@ describe("Ext", function () {
 
         Ext.override(Cls, {
           foo: fn3,
-          bar: fn4,
+          bar: fn4
         });
 
         expect(Cls.prototype.foo).toBe(fn3);
@@ -562,13 +562,13 @@ describe("Ext", function () {
           fn2 = function () {};
 
         var Cls = Ext.define(null, {
-          foo: fn1,
+          foo: fn1
         });
 
         expect(Cls.prototype.foo).toBe(fn1);
 
         Ext.override(Cls, {
-          foo: fn2,
+          foo: fn2
         });
 
         expect(Cls.prototype.foo).toBe(fn2);
@@ -579,13 +579,13 @@ describe("Ext", function () {
           fn2 = function () {};
 
         var Cls = Ext.define(null, {
-          foo: fn1,
+          foo: fn1
         });
 
         expect(Cls.prototype.bar).toBeUndefined();
 
         Ext.override(Cls, {
-          bar: fn2,
+          bar: fn2
         });
 
         expect(Cls.prototype.foo).toBe(fn1);
@@ -598,16 +598,16 @@ describe("Ext", function () {
 
         var Cls = Ext.define(null, {
           privates: {
-            foo: fn1,
-          },
+            foo: fn1
+          }
         });
 
         expect(Cls.prototype.foo).toBe(fn1);
 
         Ext.override(Cls, {
           privates: {
-            foo: fn2,
-          },
+            foo: fn2
+          }
         });
 
         expect(Cls.prototype.foo).toBe(fn2);
@@ -619,16 +619,16 @@ describe("Ext", function () {
 
         var Cls = Ext.define(null, {
           statics: {
-            foo: fn1,
-          },
+            foo: fn1
+          }
         });
 
         expect(Cls.foo).toBe(fn1);
 
         Ext.override(Cls, {
           statics: {
-            foo: fn2,
-          },
+            foo: fn2
+          }
         });
 
         expect(Cls.foo).toBe(fn2);
@@ -641,9 +641,9 @@ describe("Ext", function () {
         var Cls = Ext.define(null, {
           privates: {
             statics: {
-              foo: fn1,
-            },
-          },
+              foo: fn1
+            }
+          }
         });
 
         expect(Cls.foo).toBe(fn1);
@@ -651,9 +651,9 @@ describe("Ext", function () {
         Ext.override(Cls, {
           privates: {
             statics: {
-              foo: fn2,
-            },
-          },
+              foo: fn2
+            }
+          }
         });
 
         expect(Cls.foo).toBe(fn2);
@@ -663,13 +663,13 @@ describe("Ext", function () {
         var Cls = Ext.define(null, {
           doIt: function () {
             return 100;
-          },
+          }
         });
 
         Ext.override(Cls, {
           doIt: function () {
             return this.callParent() + 1;
-          },
+          }
         });
 
         var o = new Cls();
@@ -683,13 +683,13 @@ describe("Ext", function () {
           fn2 = function () {};
 
         var Cls = Ext.define(null, {
-          foo: fn1,
+          foo: fn1
         });
 
         var o = new Cls();
 
         Ext.override(o, {
-          foo: fn2,
+          foo: fn2
         });
 
         expect(o.foo).toBe(fn2);
@@ -704,7 +704,7 @@ describe("Ext", function () {
         var o = new Cls();
 
         Ext.override(o, {
-          foo: fn1,
+          foo: fn1
         });
 
         expect(o.foo).toBe(fn1);
@@ -717,16 +717,16 @@ describe("Ext", function () {
 
         var Cls = Ext.define(null, {
           privates: {
-            foo: fn1,
-          },
+            foo: fn1
+          }
         });
 
         var o = new Cls();
 
         Ext.override(o, {
           privates: {
-            foo: fn2,
-          },
+            foo: fn2
+          }
         });
 
         expect(o.foo).toBe(fn2);
@@ -737,7 +737,7 @@ describe("Ext", function () {
         var Cls = Ext.define(null, {
           doIt: function () {
             return 100;
-          },
+          }
         });
 
         var o = new Cls();
@@ -745,7 +745,7 @@ describe("Ext", function () {
         Ext.override(o, {
           doIt: function () {
             return this.callParent() + 1;
-          },
+          }
         });
         expect(o.doIt()).toBe(101);
       });
@@ -828,7 +828,7 @@ describe("Ext", function () {
     it("should return undefined", function () {
       expect(Ext.typeOf(undefined)).toEqual("undefined");
       expect(Ext.typeOf(window.someWeirdPropertyThatDoesntExist)).toEqual(
-        "undefined",
+        "undefined"
       );
     });
 
@@ -889,13 +889,13 @@ describe("Ext", function () {
       expect(Ext.typeOf(document.createTextNode("tada"))).toEqual("textnode");
       expect(Ext.typeOf(document.createTextNode(" "))).toEqual("whitespace");
       expect(Ext.typeOf(document.createTextNode("         "))).toEqual(
-        "whitespace",
+        "whitespace"
       );
     });
 
     it("should return element", function () {
       expect(Ext.typeOf(document.getElementsByTagName("body")[0])).toEqual(
-        "element",
+        "element"
       );
       expect(Ext.typeOf(document.createElement("button"))).toEqual("element");
       expect(Ext.typeOf(new Image())).toEqual("element");
@@ -1024,8 +1024,8 @@ describe("Ext", function () {
       it("should return true for CSSRuleList", function () {
         expect(
           Ext.isIterable(
-            document.styleSheets[0].cssRules || document.styleSheets[0].rules,
-          ),
+            document.styleSheets[0].cssRules || document.styleSheets[0].rules
+          )
         ).toBe(true);
       });
     });
@@ -1082,7 +1082,7 @@ describe("Ext", function () {
 
     it("should return false with custom class that has a length property", function () {
       var C = Ext.extend(Object, {
-        length: 1,
+        length: 1
       });
       expect(Ext.isArray(new C())).toBe(false);
     });
@@ -1389,7 +1389,7 @@ describe("Ext", function () {
 
     it("should return true with function on object", function () {
       var o = {
-        fn: function () {},
+        fn: function () {}
       };
 
       expect(Ext.isFunction(o.fn)).toBe(true);
@@ -1458,7 +1458,7 @@ describe("Ext", function () {
 
       doc.open();
       doc.write(
-        '<html><head><script type="text/javascript">function customFn() {}</script></head><body></body></html>',
+        '<html><head><script type="text/javascript">function customFn() {}</script></head><body></body></html>'
       );
       doc.close();
 
@@ -1712,8 +1712,8 @@ describe("Ext", function () {
     it("should return true with object with properties", function () {
       expect(
         Ext.isObject({
-          foo: 1,
-        }),
+          foo: 1
+        })
       ).toBe(true);
     });
 
@@ -1918,7 +1918,7 @@ describe("Ext", function () {
         fn: function () {
           return 1;
         },
-        b: 2,
+        b: 2
       };
       clone = Ext.clone(object);
       expect(clone).toEqual(object);
@@ -1956,10 +1956,10 @@ describe("Ext", function () {
 
     it("should copy same-named Ext.enumerable property onto cloned object", function () {
       expect(Ext.clone({ toString: true }).hasOwnProperty("toString")).toBe(
-        true,
+        true
       );
       expect(Ext.clone({ toString: true }).hasOwnProperty("valueOf")).toBe(
-        false,
+        false
       );
     });
   });
@@ -2114,7 +2114,7 @@ describe("Ext", function () {
         runs(function () {
           bufferedFn = Ext.Function.createBuffered(fn, 1, fakeScope, [
             "foo",
-            "bar",
+            "bar"
           ]);
           spyOn(Ext, "elevateFunction").andCallThrough();
           bufferedFn();

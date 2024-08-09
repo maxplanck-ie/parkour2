@@ -33,7 +33,7 @@ Ext.define("Ext.field.Select", {
     "Ext.picker.Picker",
     "Ext.data.Store",
     "Ext.data.StoreManager",
-    "Ext.dataview.List",
+    "Ext.dataview.List"
   ],
 
   /**
@@ -120,17 +120,17 @@ Ext.define("Ext.field.Select", {
      * @cfg {Ext.data.Model} selection
      * The selected model. `null` if no value exists.
      */
-    selection: null,
+    selection: null
   },
 
   classCls: Ext.baseCSSPrefix + "selectfield",
 
   twoWayBindable: {
-    selection: 1,
+    selection: 1
   },
 
   publishes: {
-    selection: 1,
+    selection: 1
   },
 
   /**
@@ -244,16 +244,16 @@ Ext.define("Ext.field.Select", {
                 valueField: me.getValueField(),
                 displayField: me.getDisplayField(),
                 value: me.getValue(),
-                store: me.getStore(),
-              },
+                store: me.getStore()
+              }
             ],
             listeners: {
               change: me.onPickerChange,
-              scope: me,
-            },
+              scope: me
+            }
           },
-          config,
-        ),
+          config
+        )
       );
     }
 
@@ -290,10 +290,10 @@ Ext.define("Ext.field.Select", {
             listeners: {
               resize: {
                 fn: "onTabletPickerResize",
-                single: true,
+                single: true
               },
               hiddenchange: "onTabletPickerHiddenChange",
-              scope: me,
+              scope: me
             },
             items: {
               xtype: "list",
@@ -305,12 +305,12 @@ Ext.define("Ext.field.Select", {
               listeners: {
                 select: me.onListSelect,
                 itemtap: me.onListTap,
-                scope: me,
-              },
-            },
+                scope: me
+              }
+            }
           },
-          config,
-        ),
+          config
+        )
       );
     }
 
@@ -408,7 +408,7 @@ Ext.define("Ext.field.Select", {
     this.tabletPicker.hide({
       type: "fade",
       out: true,
-      scope: this,
+      scope: this
     });
   },
 
@@ -462,7 +462,7 @@ Ext.define("Ext.field.Select", {
     if (store === true) {
       store = Ext.create("Ext.data.Store", {
         fields: [this.getValueField(), this.getDisplayField()],
-        autoDestroy: true,
+        autoDestroy: true
       });
     }
 
@@ -488,7 +488,7 @@ Ext.define("Ext.field.Select", {
         add: "onStoreDataChanged",
         remove: "onStoreDataChanged",
         update: "onStoreDataChanged",
-        refresh: "onStoreDataChanged",
+        refresh: "onStoreDataChanged"
       });
       me.onStoreDataChanged(store);
     }
@@ -570,5 +570,5 @@ Ext.define("Ext.field.Select", {
     Ext.destroy(this.phonePicker, this.tabletPicker);
 
     this.callParent();
-  },
+  }
 });

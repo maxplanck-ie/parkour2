@@ -7,27 +7,27 @@ Ext.define("Ext.layout.wrapper.Dock", {
   config: {
     direction: "horizontal",
     element: {
-      className: "x-dock",
+      className: "x-dock"
     },
     bodyElement: {
-      className: "x-dock-body",
+      className: "x-dock-body"
     },
     innerWrapper: null,
     sizeState: false,
-    container: null,
+    container: null
   },
 
   positionMap: {
     top: "start",
     left: "start",
     bottom: "end",
-    right: "end",
+    right: "end"
   },
 
   constructor: function (config) {
     this.items = {
       start: [],
-      end: [],
+      end: []
     };
 
     this.itemsCount = 0;
@@ -68,8 +68,8 @@ Ext.define("Ext.layout.wrapper.Dock", {
     itemWrapper = item.link(
       "$dockItemWrapper",
       new Ext.util.Wrapper({
-        className: "x-dock-item",
-      }),
+        className: "x-dock-item"
+      })
     );
     item.addCls("x-docked-" + docked);
     element = itemWrapper.element;
@@ -100,7 +100,7 @@ Ext.define("Ext.layout.wrapper.Dock", {
 
     itemWrapper.wrap(item.element);
     itemWrapper.bindSize(
-      this.getDirection() === "horizontal" ? "width" : "height",
+      this.getDirection() === "horizontal" ? "width" : "height"
     );
   },
 
@@ -207,5 +207,5 @@ Ext.define("Ext.layout.wrapper.Dock", {
     me.unlink(["_bodyElement", "_element"]);
 
     me.callParent();
-  },
+  }
 });

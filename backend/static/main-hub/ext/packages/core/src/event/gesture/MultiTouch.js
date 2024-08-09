@@ -29,5 +29,5 @@ Ext.define("Ext.event.gesture.MultiTouch", {
   reset: function () {
     this.isTracking = false;
     return this.callParent();
-  },
+  }
 });

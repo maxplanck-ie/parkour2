@@ -3,7 +3,7 @@
 describe("Ext.tree.TreeGrid", function () {
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -14,8 +14,8 @@ describe("Ext.tree.TreeGrid", function () {
       extend: "Ext.data.Model",
       fields: ["f1", "f2"],
       proxy: {
-        type: "memory",
-      },
+        type: "memory"
+      }
     }),
     tree,
     view,
@@ -35,24 +35,24 @@ describe("Ext.tree.TreeGrid", function () {
             {
               f1: "1.1",
               f2: "a.a",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "1.2",
               f2: "a.b",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "1.3",
               f2: "a.c",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "1.4",
               f2: "a.d",
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         },
         {
           f1: "2",
@@ -61,24 +61,24 @@ describe("Ext.tree.TreeGrid", function () {
             {
               f1: "2.1",
               f2: "b.a",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "2.2",
               f2: "b.b",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "2.3",
               f2: "b.c",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "2.4",
               f2: "b.d",
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         },
         {
           f1: "3",
@@ -87,24 +87,24 @@ describe("Ext.tree.TreeGrid", function () {
             {
               f1: "3.1",
               f2: "c.a",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "3.2",
               f2: "c.b",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "3.3",
               f2: "c.c",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "3.4",
               f2: "c.d",
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         },
         {
           f1: "4",
@@ -113,24 +113,24 @@ describe("Ext.tree.TreeGrid", function () {
             {
               f1: "4.1",
               f2: "d.a",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "4.2",
               f2: "d.b",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "4.3",
               f2: "d.c",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "4.4",
               f2: "d.d",
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         },
         {
           f1: "5",
@@ -139,24 +139,24 @@ describe("Ext.tree.TreeGrid", function () {
             {
               f1: "5.1",
               f2: "e.a",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "5.2",
               f2: "e.b",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "5.3",
               f2: "e.c",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "5.4",
               f2: "e.d",
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         },
         {
           f1: "6",
@@ -165,26 +165,26 @@ describe("Ext.tree.TreeGrid", function () {
             {
               f1: "6.1",
               f2: "f.a",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "6.2",
               f2: "f.b",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "6.3",
               f2: "f.c",
-              leaf: true,
+              leaf: true
             },
             {
               f1: "6.4",
               f2: "f.d",
-              leaf: true,
-            },
-          ],
-        },
-      ],
+              leaf: true
+            }
+          ]
+        }
+      ]
     },
     synchronousLoad = true,
     treeStoreLoad = Ext.data.TreeStore.prototype.load,
@@ -206,10 +206,10 @@ describe("Ext.tree.TreeGrid", function () {
             Ext.apply(
               {
                 model: TreeGridItem,
-                root: Ext.clone(treeData),
+                root: Ext.clone(treeData)
               },
-              storeCfg,
-            ),
+              storeCfg
+            )
           )),
           trailingBufferZone: 1000,
           leadingBufferZone: 1000,
@@ -219,17 +219,17 @@ describe("Ext.tree.TreeGrid", function () {
               xtype: "treecolumn",
               text: "F1",
               dataIndex: "f1",
-              width: 100,
+              width: 100
             },
             {
               text: "F2",
               dataIndex: "f2",
-              flex: 1,
-            },
-          ],
+              flex: 1
+            }
+          ]
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     view = tree.getView();
   }
@@ -252,15 +252,13 @@ describe("Ext.tree.TreeGrid", function () {
 
       // Test cls config
       expect(
-        view
-          .getCellByPosition({ row: 0, column: 0 })
-          .hasCls("test-EXTJS-16367"),
+        view.getCellByPosition({ row: 0, column: 0 }).hasCls("test-EXTJS-16367")
       ).toBe(true);
 
       var createRowSpy = spyOn(view, "createRowElement").andCallThrough();
       store.getAt(0).set({
         f1: "ploot",
-        f2: "gronk",
+        f2: "gronk"
       });
 
       // MUST not have created a bew row, we must have just updated the text within the cell
@@ -278,16 +276,16 @@ describe("Ext.tree.TreeGrid", function () {
             xtype: "treecolumn",
             text: "F1",
             dataIndex: "f1",
-            width: 100,
-          },
+            width: 100
+          }
         ],
         store: {
           listeners: {
             load: function () {
               loadCount++;
-            },
-          },
-        },
+            }
+          }
+        }
       });
       expect(loadCount).toBe(0);
     });
@@ -301,16 +299,16 @@ describe("Ext.tree.TreeGrid", function () {
             text: "F1",
             dataIndex: "f1",
             width: 100,
-            locked: true,
-          },
+            locked: true
+          }
         ],
         store: {
           listeners: {
             load: function () {
               loadCount++;
-            },
-          },
-        },
+            }
+          }
+        }
       });
       expect(loadCount).toBe(0);
     });
@@ -324,17 +322,17 @@ describe("Ext.tree.TreeGrid", function () {
             xtype: "treecolumn",
             text: "F1",
             dataIndex: "f1",
-            width: 100,
-          },
+            width: 100
+          }
         ],
         store: {
           proxy: "memory",
           listeners: {
             load: function () {
               loadCount++;
-            },
-          },
-        },
+            }
+          }
+        }
       });
       expect(loadCount).toBe(1);
     });
@@ -349,17 +347,17 @@ describe("Ext.tree.TreeGrid", function () {
             text: "F1",
             dataIndex: "f1",
             width: 100,
-            locked: true,
-          },
+            locked: true
+          }
         ],
         store: {
           proxy: "memory",
           listeners: {
             load: function () {
               loadCount++;
-            },
-          },
-        },
+            }
+          }
+        }
       });
       expect(loadCount).toBe(1);
     });
@@ -373,8 +371,8 @@ describe("Ext.tree.TreeGrid", function () {
         height: 45,
         plugins: Ext.create("Ext.grid.plugin.BufferedRenderer", {
           trailingBufferZone: 1,
-          leadingBufferZone: 1,
-        }),
+          leadingBufferZone: 1
+        })
       });
       tree.expandAll();
       recordCount = tree.view.store.getCount();
@@ -406,7 +404,7 @@ describe("Ext.tree.TreeGrid", function () {
       waitsForEvent(
         tree.getView().getScrollable(),
         "scrollend",
-        "Tree scrollend",
+        "Tree scrollend"
       );
 
       // Expanding a node should not scroll.
@@ -439,7 +437,7 @@ describe("Ext.tree.TreeGrid", function () {
       waitsForEvent(
         tree.getView().getScrollable(),
         "scrollend",
-        "Tree scrollend",
+        "Tree scrollend"
       );
 
       // Expanding a node should not scroll.
@@ -458,7 +456,7 @@ describe("Ext.tree.TreeGrid", function () {
       waitsForEvent(
         tree.getView().getScrollable(),
         "scrollend",
-        "Tree scrollend",
+        "Tree scrollend"
       );
 
       // Expanding a node should not scroll.
@@ -483,24 +481,24 @@ describe("Ext.tree.TreeGrid", function () {
               {
                 f1: "c0",
                 f2: "c0",
-                leaf: true,
+                leaf: true
               },
               {
                 f1: "c1",
                 f2: "c1",
-                leaf: true,
+                leaf: true
               },
               {
                 f1: "c2",
                 f2: "c2",
-                leaf: true,
-              },
-            ],
-          },
+                leaf: true
+              }
+            ]
+          }
         }),
         plugins: Ext.create("Ext.grid.plugin.BufferedRenderer", {
           trailingBufferZone: 1,
-          leadingBufferZone: 1,
+          leadingBufferZone: 1
         }),
         columns: [
           {
@@ -508,15 +506,15 @@ describe("Ext.tree.TreeGrid", function () {
             text: "F1",
             dataIndex: "f1",
             width: 100,
-            locked: true,
+            locked: true
           },
           {
             text: "F2",
             dataIndex: "f2",
-            flex: 1,
-          },
+            flex: 1
+          }
         ],
-        rootVisible: false,
+        rootVisible: false
       });
       recordCount = tree.lockedGrid.view.store.getCount();
       rootNode = tree.getRootNode();
@@ -540,7 +538,7 @@ describe("Ext.tree.TreeGrid", function () {
         height: 45,
         plugins: Ext.create("Ext.grid.plugin.BufferedRenderer", {
           trailingBufferZone: 1,
-          leadingBufferZone: 1,
+          leadingBufferZone: 1
         }),
         columns: [
           {
@@ -548,14 +546,14 @@ describe("Ext.tree.TreeGrid", function () {
             text: "F1",
             dataIndex: "f1",
             width: 100,
-            locked: true,
+            locked: true
           },
           {
             text: "F2",
             dataIndex: "f2",
-            flex: 1,
-          },
-        ],
+            flex: 1
+          }
+        ]
       });
       tree.expandAll();
       recordCount = tree.lockedGrid.view.store.getCount();
@@ -620,14 +618,14 @@ describe("Ext.tree.TreeGrid", function () {
           xtype: "treecolumn",
           text: "Task",
           flex: 1,
-          dataIndex: "task",
+          dataIndex: "task"
         },
         {
           text: "URL",
           flex: 1,
           sortable: false,
-          dataIndex: "url",
-        },
+          dataIndex: "url"
+        }
       ];
 
       var cols2 = [
@@ -635,14 +633,14 @@ describe("Ext.tree.TreeGrid", function () {
           xtype: "treecolumn",
           text: "New Task",
           flex: 1,
-          dataIndex: "new_task",
+          dataIndex: "new_task"
         },
         {
           text: "New URL",
           flex: 1,
           sortable: false,
-          dataIndex: "new_url",
-        },
+          dataIndex: "new_url"
+        }
       ];
 
       Ext.define("ReconfigureTestTask", {
@@ -650,13 +648,13 @@ describe("Ext.tree.TreeGrid", function () {
         fields: [
           {
             name: "task",
-            type: "string",
+            type: "string"
           },
           {
             name: "url",
-            type: "string",
-          },
-        ],
+            type: "string"
+          }
+        ]
       });
 
       Ext.define("ReconfigureTestNewTask", {
@@ -664,13 +662,13 @@ describe("Ext.tree.TreeGrid", function () {
         fields: [
           {
             name: "new_task",
-            type: "string",
+            type: "string"
           },
           {
             name: "new_url",
-            type: "string",
-          },
-        ],
+            type: "string"
+          }
+        ]
       });
 
       var store = Ext.create("Ext.data.TreeStore", {
@@ -686,9 +684,9 @@ describe("Ext.tree.TreeGrid", function () {
                 {
                   task: "task1.1",
                   url: "url1.1",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               task: "task2",
@@ -698,12 +696,12 @@ describe("Ext.tree.TreeGrid", function () {
                 {
                   task: "task2.1",
                   url: "url2.1",
-                  leaf: true,
-                },
-              ],
-            },
-          ],
-        },
+                  leaf: true
+                }
+              ]
+            }
+          ]
+        }
       });
 
       var store2 = Ext.create("Ext.data.TreeStore", {
@@ -719,9 +717,9 @@ describe("Ext.tree.TreeGrid", function () {
                 {
                   new_task: "new-task1.1",
                   new_url: "new-url1.1",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               new_task: "new-task2",
@@ -731,12 +729,12 @@ describe("Ext.tree.TreeGrid", function () {
                 {
                   new_task: "new-task2.1",
                   new_url: "new-url2.1",
-                  leaf: true,
-                },
-              ],
-            },
-          ],
-        },
+                  leaf: true
+                }
+              ]
+            }
+          ]
+        }
       });
 
       var myTree = Ext.create("Ext.tree.Panel", {
@@ -749,7 +747,7 @@ describe("Ext.tree.TreeGrid", function () {
           useArrows: true,
           store: store,
           multiSelect: true,
-          columns: cols,
+          columns: cols
         }),
         root = myTree.getRootNode();
       expect(root.childNodes[0].data.task).toEqual("task1");
@@ -766,18 +764,18 @@ describe("Ext.tree.TreeGrid", function () {
       expect(root.childNodes[0].data.new_task).toEqual("new-task1");
       expect(root.childNodes[0].data.new_url).toEqual("new-url1");
       expect(root.childNodes[0].childNodes[0].data.new_task).toEqual(
-        "new-task1.1",
+        "new-task1.1"
       );
       expect(root.childNodes[0].childNodes[0].data.new_url).toEqual(
-        "new-url1.1",
+        "new-url1.1"
       );
       expect(root.childNodes[1].data.new_task).toEqual("new-task2");
       expect(root.childNodes[1].data.new_url).toEqual("new-url2");
       expect(root.childNodes[1].childNodes[0].data.new_task).toEqual(
-        "new-task2.1",
+        "new-task2.1"
       );
       expect(root.childNodes[1].childNodes[0].data.new_url).toEqual(
-        "new-url2.1",
+        "new-url2.1"
       );
 
       myTree.destroy();
@@ -801,24 +799,24 @@ describe("Ext.tree.TreeGrid", function () {
             children: [
               {
                 Name: "1",
-                Age: 1,
+                Age: 1
               },
               {
                 Name: "2",
-                Age: 2,
-              },
-            ],
-          },
+                Age: 2
+              }
+            ]
+          }
         }),
         syncRowHeight: false,
         lockedGridConfig: {
           collapsible: true,
-          collapseDirection: "left",
+          collapseDirection: "left"
         },
         columns: [
           { xtype: "treecolumn", dataIndex: "Name", width: 100, locked: true },
-          { dataIndex: "Age", flex: 1 },
-        ],
+          { dataIndex: "Age", flex: 1 }
+        ]
       });
       var collapseSpy = spyOnEvent(tree.lockedGrid, "collapse"),
         expandSpy = spyOnEvent(tree.lockedGrid, "expand");
@@ -859,7 +857,7 @@ describe("Ext.tree.TreeGrid", function () {
         children: [
           {
             text: "detention",
-            leaf: true,
+            leaf: true
           },
           {
             text: "homework",
@@ -867,20 +865,20 @@ describe("Ext.tree.TreeGrid", function () {
             children: [
               {
                 text: "book report",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "algebra",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           {
             text: "buy lottery tickets",
-            leaf: true,
-          },
-        ],
-      },
+            leaf: true
+          }
+        ]
+      }
     });
 
     it("should show the headers as soon as any header acquires text", function () {
@@ -890,8 +888,8 @@ describe("Ext.tree.TreeGrid", function () {
         hideHeaders: null,
         viewModel: {
           data: {
-            headerText: "A header",
-          },
+            headerText: "A header"
+          }
         },
         store: store,
         rootVisible: false,
@@ -899,13 +897,13 @@ describe("Ext.tree.TreeGrid", function () {
         columns: [
           {
             bind: {
-              text: "{headerText}",
+              text: "{headerText}"
             },
             xtype: "treecolumn",
             dataIndex: "text",
-            flex: 1,
-          },
-        ],
+            flex: 1
+          }
+        ]
       });
 
       // No header text anywhere in the Panel

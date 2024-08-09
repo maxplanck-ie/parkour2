@@ -22,12 +22,12 @@ Ext.define(
     requires: [
       "Ext.util.SorterCollection",
       "Ext.util.FilterCollection",
-      "Ext.GlobalEvents",
+      "Ext.GlobalEvents"
     ],
 
     statics: {
       zBase: 9000,
-      activeCounter: 0,
+      activeCounter: 0
     },
 
     /**
@@ -50,13 +50,13 @@ Ext.define(
               ret = comp1.getActiveCounter() - comp2.getActiveCounter();
             }
             return ret;
-          },
+          }
         },
         filters: {
           filterFn: function (comp) {
             return comp.isVisible();
-          },
-        },
+          }
+        }
       });
 
       // zIndexStack will call into this class on key lifecycle events if methods exist here.
@@ -74,7 +74,7 @@ Ext.define(
         beforehide: me.onComponentShowHide,
         show: me.onComponentShowHide,
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
 
       if (container) {
@@ -83,12 +83,12 @@ Ext.define(
           me.resizeListeners = container.on({
             resize: me.onContainerResize,
             scope: me,
-            destroyable: true,
+            destroyable: true
           });
 
           me.zseed = Ext.Number.from(
             me.rendered ? container.getEl().getStyle("zIndex") : undefined,
-            me.getNextZSeed(),
+            me.getNextZSeed()
           );
           // The containing element we will be dealing with (eg masking) is the content target
           me.targetEl = container.getTargetEl();
@@ -99,7 +99,7 @@ Ext.define(
           me.resizeListeners = Ext.on({
             resize: me.onContainerResize,
             scope: me,
-            destroyable: true,
+            destroyable: true
           });
 
           me.zseed = me.getNextZSeed();
@@ -117,7 +117,7 @@ Ext.define(
             resize: me.scheduleContainerResize,
             scope: me,
             destroyable: true,
-            priority: -10000,
+            priority: -10000
           });
 
           me.targetEl = Ext.getBody();
@@ -567,7 +567,7 @@ Ext.define(
         me.maskShim,
         me.zIndexStack,
         me.globalListeners,
-        me.resizeListeners,
+        me.resizeListeners
       );
 
       me.callParent();
@@ -582,14 +582,14 @@ Ext.define(
           return {
             height: Math.max(
               document.body.scrollHeight,
-              Ext.dom.Element.getDocumentHeight(),
+              Ext.dom.Element.getDocumentHeight()
             ),
             width: Math.max(
               document.body.scrollWidth,
-              document.documentElement.clientWidth,
+              document.documentElement.clientWidth
             ),
             x: 0,
-            y: 0,
+            y: 0
           };
         } else {
           return maskTarget.getBox();
@@ -604,7 +604,7 @@ Ext.define(
         if (!this.containerResizeTimer) {
           this.containerResizeTimer = Ext.Function.requestAnimationFrame(
             this.onContainerResize,
-            this,
+            this
           );
         }
       },
@@ -680,13 +680,13 @@ Ext.define(
             //</debug>
             role: "presentation",
             cls: Ext.baseCSSPrefix + "mask " + Ext.baseCSSPrefix + "border-box",
-            style: "height:0;width:0",
+            style: "height:0;width:0"
           });
           mask.setVisibilityMode(Ext.Element.DISPLAY);
           mask.on({
             mousedown: me.onMaskMousedown,
             click: me.onMaskClick,
-            scope: me,
+            scope: me
           });
         }
 
@@ -702,7 +702,7 @@ Ext.define(
         // a given z-index, we just cheat and prevent tabbable elements within the
         // topmost component from being made untabbable.
         maskTarget.saveTabbableState({
-          excludeRoot: compEl,
+          excludeRoot: compEl
         });
 
         // Size and zIndex stack the mask (and its shim)
@@ -740,8 +740,8 @@ Ext.define(
             maskShim.hide();
           }
         }
-      },
-    },
+      }
+    }
   },
   function () {
     /**
@@ -760,5 +760,5 @@ Ext.define(
      * @singleton
      */
     Ext.WindowManager = Ext.WindowMgr = new this();
-  },
+  }
 );

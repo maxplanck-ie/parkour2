@@ -159,7 +159,7 @@ Ext.define("Ext.ux.Gauge", {
     trackStyle: {
       outerRadius: "100%",
       innerRadius: "100% - 20",
-      round: false,
+      round: false
     },
 
     /**
@@ -179,7 +179,7 @@ Ext.define("Ext.ux.Gauge", {
     valueStyle: {
       outerRadius: "100% - 2",
       innerRadius: "100% - 18",
-      round: false,
+      round: false
     },
 
     /**
@@ -195,7 +195,7 @@ Ext.define("Ext.ux.Gauge", {
      * - `out` - (default) decelerating to zero velocity
      * - `inOut` - acceleration until halfway, then deceleration
      */
-    animation: true,
+    animation: true
   },
 
   template: [
@@ -204,10 +204,10 @@ Ext.define("Ext.ux.Gauge", {
       children: [
         {
           reference: "textElement",
-          cls: Ext.baseCSSPrefix + "gauge-text",
-        },
-      ],
-    },
+          cls: Ext.baseCSSPrefix + "gauge-text"
+        }
+      ]
+    }
   ],
 
   defaultBindProperty: "value",
@@ -219,7 +219,7 @@ Ext.define("Ext.ux.Gauge", {
     fillOpacity: true,
     stroke: true,
     strokeOpacity: true,
-    strokeWidth: true,
+    strokeWidth: true
   },
 
   easings: {
@@ -233,7 +233,7 @@ Ext.define("Ext.ux.Gauge", {
     },
     inOut: function (t) {
       return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-    },
+    }
   },
 
   resizeDelay: 0, // in milliseconds
@@ -259,7 +259,7 @@ Ext.define("Ext.ux.Gauge", {
       minX: null,
       maxX: null,
       minY: null,
-      maxY: null,
+      maxY: null
     };
 
     me.interpolator = me.createInterpolator();
@@ -305,7 +305,7 @@ Ext.define("Ext.ux.Gauge", {
     } else {
       me.resizeTimerId = Ext.defer(me.handleResize, me.resizeDelay, me, [
         size,
-        true,
+        true
       ]);
       return;
     }
@@ -348,7 +348,7 @@ Ext.define("Ext.ux.Gauge", {
           function (angleOffset) {
             me.fxAngleOffset = angleOffset;
             me.render();
-          },
+          }
         );
       } else {
         me.render();
@@ -431,7 +431,7 @@ Ext.define("Ext.ux.Gauge", {
           function (value) {
             me.fxValue = value;
             me.render();
-          },
+          }
         );
       } else {
         me.render();
@@ -466,7 +466,7 @@ Ext.define("Ext.ux.Gauge", {
       percent: ((value - minValue) / delta) * 100,
       minValue: minValue,
       maxValue: maxValue,
-      delta: delta,
+      delta: delta
     });
   },
 
@@ -482,7 +482,7 @@ Ext.define("Ext.ux.Gauge", {
     ) {
       alignedRegion = textElement.getRegion().alignTo({
         align: textAlign, // align text region's center to sector region's center
-        target: sectorRegion,
+        target: sectorRegion
       });
       textElement.setLeft(alignedRegion.left);
       textElement.setTop(alignedRegion.top);
@@ -698,7 +698,7 @@ Ext.define("Ext.ux.Gauge", {
     if (!trackGradient) {
       trackGradient = me.trackGradient = document.createElementNS(
         me.svgNS,
-        "linearGradient",
+        "linearGradient"
       );
       // Using absolute values for x1, y1, x2, y2 attributes.
       trackGradient.setAttribute("gradientUnits", "userSpaceOnUse");
@@ -716,7 +716,7 @@ Ext.define("Ext.ux.Gauge", {
     if (!valueGradient) {
       valueGradient = me.valueGradient = document.createElementNS(
         me.svgNS,
-        "linearGradient",
+        "linearGradient"
       );
       // Using absolute values for x1, y1, x2, y2 attributes.
       valueGradient.setAttribute("gradientUnits", "userSpaceOnUse");
@@ -732,7 +732,7 @@ Ext.define("Ext.ux.Gauge", {
 
     return [
       centerX + radius * Math.cos(radians),
-      centerY + radius * Math.sin(radians),
+      centerY + radius * Math.sin(radians)
     ];
   },
 
@@ -747,7 +747,7 @@ Ext.define("Ext.ux.Gauge", {
     outerRadius,
     startAngle,
     endAngle,
-    round,
+    round
   ) {
     var me = this,
       isCircle = me.isCircle(startAngle, endAngle),
@@ -757,14 +757,14 @@ Ext.define("Ext.ux.Gauge", {
         centerX,
         centerY,
         innerRadius,
-        startAngle,
+        startAngle
       ),
       innerEndPoint = me.getArcPoint(centerX, centerY, innerRadius, endAngle),
       outerStartPoint = me.getArcPoint(
         centerX,
         centerY,
         outerRadius,
-        startAngle,
+        startAngle
       ),
       outerEndPoint = me.getArcPoint(centerX, centerY, outerRadius, endAngle),
       large = endAngle - startAngle <= 180 ? 0 : 1,
@@ -779,7 +779,7 @@ Ext.define("Ext.ux.Gauge", {
         large,
         1,
         innerEndPoint[0],
-        innerEndPoint[1],
+        innerEndPoint[1]
       ],
       capRadius = (outerRadius - innerRadius) / 2;
 
@@ -795,7 +795,7 @@ Ext.define("Ext.ux.Gauge", {
           0,
           0,
           outerEndPoint[0],
-          outerEndPoint[1],
+          outerEndPoint[1]
         );
       } else {
         path.push("L", outerEndPoint[0], outerEndPoint[1]);
@@ -810,7 +810,7 @@ Ext.define("Ext.ux.Gauge", {
       large,
       0,
       outerStartPoint[0],
-      outerStartPoint[1],
+      outerStartPoint[1]
     );
 
     if (round && !isCircle) {
@@ -822,7 +822,7 @@ Ext.define("Ext.ux.Gauge", {
         0,
         0,
         innerStartPoint[0],
-        innerStartPoint[1],
+        innerStartPoint[1]
       );
     }
     path.push("Z");
@@ -889,7 +889,7 @@ Ext.define("Ext.ux.Gauge", {
       animation = {};
     } else if (false === animation) {
       animation = {
-        duration: 0,
+        duration: 0
       };
     }
     if (!("duration" in animation)) {
@@ -937,7 +937,7 @@ Ext.define("Ext.ux.Gauge", {
     Ext.AnimationQueue.start(frame, scope);
     me.fx = {
       frame: frame,
-      scope: scope,
+      scope: scope
     };
   },
 
@@ -961,7 +961,7 @@ Ext.define("Ext.ux.Gauge", {
     360: [1, 0],
     450: [0, 1],
     540: [-1, 0],
-    630: [0, -1],
+    630: [0, -1]
   },
 
   /**
@@ -994,7 +994,7 @@ Ext.define("Ext.ux.Gauge", {
         cx: width / 2,
         cy: height / 2,
         radius: Math.min(width, height) / 2,
-        region: new Ext.util.Region(0, width, height, 0),
+        region: new Ext.util.Region(0, width, height, 0)
       };
     }
 
@@ -1020,7 +1020,7 @@ Ext.define("Ext.ux.Gauge", {
         me.getArcPoint(0, 0, 1, startAngle), // start angle outer radius point
         me.getArcPoint(0, 0, ratio, startAngle), // start angle inner radius point
         me.getArcPoint(0, 0, 1, startAngle + lengthAngle), // end angle outer radius point
-        me.getArcPoint(0, 0, ratio, startAngle + lengthAngle), // end angle inner radius point
+        me.getArcPoint(0, 0, ratio, startAngle + lengthAngle) // end angle inner radius point
       ]);
       xx = points.map(function (point) {
         return point[0];
@@ -1052,12 +1052,12 @@ Ext.define("Ext.ux.Gauge", {
         minY * scale,
         maxX * scale,
         maxY * scale,
-        minX * scale,
+        minX * scale
       ),
       rectRegion = new Ext.util.Region(0, width, height, 0),
       alignedRegion = sectorRegion.alignTo({
         align: "c-c", // align sector region's center to rect region's center
-        target: rectRegion,
+        target: rectRegion
       }),
       dx = alignedRegion.left - minX * scale,
       dy = alignedRegion.top - minY * scale;
@@ -1066,7 +1066,7 @@ Ext.define("Ext.ux.Gauge", {
       cx: dx,
       cy: dy,
       radius: scale,
-      region: alignedRegion,
+      region: alignedRegion
     };
   },
 
@@ -1079,14 +1079,14 @@ Ext.define("Ext.ux.Gauge", {
     padding,
     startAngle,
     lengthAngle,
-    ratio,
+    ratio
   ) {
     var result = this.fitSectorInRect(
       width - padding * 2,
       height - padding * 2,
       startAngle,
       lengthAngle,
-      ratio,
+      ratio
     );
 
     result.cx += padding;
@@ -1130,7 +1130,7 @@ Ext.define("Ext.ux.Gauge", {
         padding,
         trackStart,
         trackLength,
-        trackStyle.innerRadius.ratio,
+        trackStyle.innerRadius.ratio
       ),
       cx = sector.cx,
       cy = sector.cy,
@@ -1146,7 +1146,7 @@ Ext.define("Ext.ux.Gauge", {
         trackOuterRadius,
         trackStart,
         trackEnd,
-        trackStyle.round,
+        trackStyle.round
       ),
       valuePath = me.getArcPath(
         cx,
@@ -1155,12 +1155,12 @@ Ext.define("Ext.ux.Gauge", {
         valueOuterRadius,
         clockwise ? trackStart : trackEnd - valueLength,
         clockwise ? trackStart + valueLength : trackEnd,
-        valueStyle.round,
+        valueStyle.round
       );
 
     me.centerText(cx, cy, sector.region, trackInnerRadius, trackOuterRadius);
 
     trackArc.setAttribute("d", trackPath);
     valueArc.setAttribute("d", valuePath);
-  },
+  }
 });

@@ -6,27 +6,27 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
     control: {
       "#": {
         boxready: "boxready",
-        beforeshow: "setModelData",
+        beforeshow: "setModelData"
       },
       "#galaxy-url-input, #galaxy-api-key-input": {
-        keyup: "saveToLocalStorage",
+        keyup: "saveToLocalStorage"
       },
       "#samples-grid": {
-        headercontextmenu: "showHeaderMenu",
+        headercontextmenu: "showHeaderMenu"
       },
       "#refresh-galaxy-status-button": {
-        click: "refreshGalaxyStatus",
+        click: "refreshGalaxyStatus"
       },
       enabasegrid: {
-        itemcontextmenu: "showContextMenu",
+        itemcontextmenu: "showContextMenu"
       },
       "#download-button": {
-        click: "handleButtonClick",
+        click: "handleButtonClick"
       },
       "#upload-button": {
-        click: "handleButtonClick",
-      },
-    },
+        click: "handleButtonClick"
+      }
+    }
   },
 
   setModelData: function (wnd) {
@@ -58,7 +58,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
 
     // Load samples
     Ext.getStore("ENASamples").reload({
-      url: Ext.String.format("api/metadata_exporter/{0}/", requestId),
+      url: Ext.String.format("api/metadata_exporter/{0}/", requestId)
     });
   },
 
@@ -76,14 +76,14 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
         text: "Select All",
         handler: function () {
           me.selectAll(true);
-        },
+        }
       },
       {
         text: "Unselect All",
         handler: function () {
           me.selectAll(false);
-        },
-      },
+        }
+      }
     ];
 
     if (selectedSamples.length > 0) {
@@ -92,12 +92,12 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
         {
           text: Ext.String.format(
             "Delete Selected ({0})",
-            selectedSamples.length,
+            selectedSamples.length
           ),
           handler: function () {
             store.remove(selectedSamples);
-          },
-        },
+          }
+        }
       ]);
     }
 
@@ -105,9 +105,9 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
     Ext.create("Ext.menu.Menu", {
       plain: true,
       defaults: {
-        margin: 5,
+        margin: 5
       },
-      items: items,
+      items: items
     }).showAt(e.getXY());
   },
 
@@ -127,22 +127,22 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
     Ext.create("Ext.menu.Menu", {
       plain: true,
       defaults: {
-        margin: 5,
+        margin: 5
       },
       items: [
         {
           text: "Apply to All",
           handler: function () {
             me.applyToAll(gridView, record, dataIndex);
-          },
+          }
         },
         {
           text: "Delete",
           handler: function () {
             record.store.remove(record);
-          },
-        },
-      ],
+          }
+        }
+      ]
     }).showAt(e.getXY());
   },
 
@@ -156,7 +156,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
     if (galaxyURL === "" || galaxyAPIKey === "") {
       new Noty({
         text: "Galaxy URL or Galaxy API Key is missing.",
-        type: "warning",
+        type: "warning"
       }).show();
       return false;
     }
@@ -166,7 +166,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
       timeout: 5000, // 5 seconds
       params: {
         galaxy_url: galaxyURL,
-        galaxy_api_key: galaxyAPIKey,
+        galaxy_api_key: galaxyAPIKey
       },
 
       success: function (response) {
@@ -185,7 +185,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
             : response.statusText;
 
         new Noty({ text: error, type: "error" }).show();
-      },
+      }
     });
   },
 
@@ -226,7 +226,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
       samples: Ext.JSON.encode(Ext.Array.pluck(store.data.items, "data")),
       study_abstract: data.study_abstract,
       study_title: data.study_title,
-      study_type: data.study_type,
+      study_type: data.study_type
     };
 
     if (store.getCount() === 0) {
@@ -259,15 +259,15 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
       downloadForm.submit({
         url: Ext.String.format(
           "api/metadata_exporter/{0}/download/",
-          requestId,
+          requestId
         ),
-        params: params,
+        params: params
       });
     } else {
       if (galaxyURL === "" || galaxyAPIKey === "") {
         new Noty({
           text: "Galaxy URL or Galaxy API Key is missing.",
-          type: "warning",
+          type: "warning"
         }).show();
         return false;
       }
@@ -286,12 +286,12 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
 
           if (obj.success) {
             new Noty({
-              text: "Files have been successfully uploaded!",
+              text: "Files have been successfully uploaded!"
             }).show();
           } else {
             new Noty({
               type: "error",
-              text: obj.message,
+              text: obj.message
             }).show();
           }
           wnd.getViewModel().setData({ galaxyStatus: status });
@@ -300,10 +300,10 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
 
         failure: function (response) {
           console.log(
-            "server-side failure with status code " + response.status,
+            "server-side failure with status code " + response.status
           );
           wnd.setLoading(false);
-        },
+        }
       });
     }
   },
@@ -365,7 +365,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
       meta.tdCls += " invalid-record";
       meta.tdAttr = Ext.String.format(
         'data-qtip="{0}"',
-        record.get("errors")[dataIndex],
+        record.get("errors")[dataIndex]
       );
     }
 
@@ -376,5 +376,5 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
     return store.data.items.filter(function (item) {
       return item.get("selected");
     });
-  },
+  }
 });

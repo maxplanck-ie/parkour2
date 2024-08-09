@@ -101,21 +101,21 @@ Ext.define("Ext.chart.series.Radar", {
   updateCenter: function (center) {
     this.setStyle({
       translationX: center[0] + this.getOffsetX(),
-      translationY: center[1] + this.getOffsetY(),
+      translationY: center[1] + this.getOffsetY()
     });
     this.doUpdateStyles();
   },
 
   updateRadius: function (radius) {
     this.setStyle({
-      endRho: radius,
+      endRho: radius
     });
     this.doUpdateStyles();
   },
 
   updateRotation: function (rotation) {
     this.setStyle({
-      rotationRads: rotation,
+      rotationRads: rotation
     });
     this.doUpdateStyles();
   },
@@ -158,7 +158,7 @@ Ext.define("Ext.chart.series.Radar", {
             index: i,
             category: "markers",
             record: store.getData().items[i],
-            field: me.getYField(),
+            field: me.getYField()
           };
           return item;
         }
@@ -177,8 +177,8 @@ Ext.define("Ext.chart.series.Radar", {
           // Prevent animation of 'dataMinX' and 'dataMaxX' attributes in order
           // to react instantaniously to changes to the 'hidden' attribute.
           dataMinX: 0,
-          dataMaxX: 0,
-        },
+          dataMaxX: 0
+        }
       };
     if (config.fx) {
       Ext.apply(config.fx, fx);
@@ -227,7 +227,7 @@ Ext.define("Ext.chart.series.Radar", {
         "black",
       disabled: me.getHidden(),
       series: me.getId(),
-      index: 0,
+      index: 0
     });
-  },
+  }
 });

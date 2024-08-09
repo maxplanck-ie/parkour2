@@ -172,5 +172,5 @@ Ext.define("Ext.dom.Underlay", {
     el.show();
     me.realign();
     me.hidden = false;
-  },
+  }
 });

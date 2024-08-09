@@ -6,7 +6,7 @@
   if (typeof define === "function" && define.amd) {
     // AMD
     define(["jquery", "datatables.net-bs", "datatables.net-buttons"], function (
-      $,
+      $
     ) {
       return factory($, window, document);
     });
@@ -38,10 +38,10 @@
   $.extend(true, DataTable.Buttons.defaults, {
     dom: {
       container: {
-        className: "dt-buttons btn-group",
+        className: "dt-buttons btn-group"
       },
       button: {
-        className: "btn btn-default",
+        className: "btn btn-default"
       },
       collection: {
         tag: "ul",
@@ -50,14 +50,14 @@
           tag: "li",
           className: "dt-button",
           active: "active",
-          disabled: "disabled",
+          disabled: "disabled"
         },
         buttonLiner: {
           tag: "a",
-          className: "",
-        },
-      },
-    },
+          className: ""
+        }
+      }
+    }
   });
 
   DataTable.ext.buttons.collection.text = function (dt) {

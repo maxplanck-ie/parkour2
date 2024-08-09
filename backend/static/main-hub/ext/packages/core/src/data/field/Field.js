@@ -260,7 +260,7 @@ Ext.define("Ext.data.field.Field", {
   type: "auto",
 
   factoryConfig: {
-    defaultProperty: "name",
+    defaultProperty: "name"
   },
 
   isDataField: true,
@@ -1117,8 +1117,8 @@ Ext.define("Ext.data.field.Field", {
          */
         getSortDir: function () {
           return this.sortDir;
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });

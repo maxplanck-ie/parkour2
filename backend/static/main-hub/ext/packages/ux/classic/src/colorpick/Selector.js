@@ -40,7 +40,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
     "Ext.ux.colorpick.SliderAlpha",
     "Ext.ux.colorpick.SliderSaturation",
     "Ext.ux.colorpick.SliderValue",
-    "Ext.ux.colorpick.SliderHue",
+    "Ext.ux.colorpick.SliderHue"
   ],
 
   width: 580, // default width and height gives 255x255 color map in Crisp
@@ -51,7 +51,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
 
   layout: {
     type: "hbox",
-    align: "stretch",
+    align: "stretch"
   },
 
   defaultBindProperty: "value",
@@ -106,7 +106,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
    */
 
   listeners: {
-    resize: "onResize",
+    resize: "onResize"
   },
 
   constructor: function (config) {
@@ -122,7 +122,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
       me.getSliderAndSField(childViewModel),
       me.getSliderAndVField(childViewModel),
       me.getSliderAndAField(childViewModel),
-      me.getPreviewAndButtons(childViewModel, config),
+      me.getPreviewAndButtons(childViewModel, config)
     ];
 
     me.childViewModel.bind("{selectedColor}", function (color) {
@@ -158,7 +158,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
       flex: 1,
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       margin: "0 10 0 0",
       items: [
@@ -170,13 +170,13 @@ Ext.define("Ext.ux.colorpick.Selector", {
           bind: {
             position: {
               bindTo: "{selectedColor}",
-              deep: true,
+              deep: true
             },
-            hue: "{selectedColor.h}",
+            hue: "{selectedColor.h}"
           },
           listeners: {
-            handledrag: "onColorMapHandleDrag",
-          },
+            handledrag: "onColorMapHandleDrag"
+          }
         },
         // HEX/R/G/B FIELDS
         {
@@ -195,7 +195,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
                 // and override the method, but works for now
                 Ext.form.field.Base.prototype.onChange.apply(this, arguments);
               }
-            },
+            }
           },
 
           items: [
@@ -205,7 +205,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
               flex: 1,
               bind: "{hex}",
               margin: fieldMargin,
-              readOnly: true,
+              readOnly: true
             },
             {
               xtype: "numberfield",
@@ -215,7 +215,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
               hideTrigger: true,
               maxValue: 255,
               minValue: 0,
-              margin: fieldMargin,
+              margin: fieldMargin
             },
             {
               xtype: "numberfield",
@@ -225,7 +225,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
               hideTrigger: true,
               maxValue: 255,
               minValue: 0,
-              margin: fieldMargin,
+              margin: fieldMargin
             },
             {
               xtype: "numberfield",
@@ -235,11 +235,11 @@ Ext.define("Ext.ux.colorpick.Selector", {
               hideTrigger: true,
               maxValue: 255,
               minValue: 0,
-              margin: 0,
-            },
-          ],
-        },
-      ],
+              margin: 0
+            }
+          ]
+        }
+      ]
     };
   },
 
@@ -256,7 +256,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
       width: fieldWidth,
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       items: [
         {
@@ -264,12 +264,12 @@ Ext.define("Ext.ux.colorpick.Selector", {
           reference: "hueSlider",
           flex: 1,
           bind: {
-            hue: "{selectedColor.h}",
+            hue: "{selectedColor.h}"
           },
           width: fieldWidth,
           listeners: {
-            handledrag: "onHueSliderHandleDrag",
-          },
+            handledrag: "onHueSliderHandleDrag"
+          }
         },
         {
           xtype: "numberfield",
@@ -281,9 +281,9 @@ Ext.define("Ext.ux.colorpick.Selector", {
           maxValue: 360,
           minValue: 0,
           allowBlank: false,
-          margin: 0,
-        },
-      ],
+          margin: 0
+        }
+      ]
     };
   },
 
@@ -300,11 +300,11 @@ Ext.define("Ext.ux.colorpick.Selector", {
       width: fieldWidth,
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       margin: {
         right: me.fieldPad,
-        left: me.fieldPad,
+        left: me.fieldPad
       },
       items: [
         {
@@ -313,12 +313,12 @@ Ext.define("Ext.ux.colorpick.Selector", {
           flex: 1,
           bind: {
             saturation: "{saturation}",
-            hue: "{selectedColor.h}",
+            hue: "{selectedColor.h}"
           },
           width: fieldWidth,
           listeners: {
-            handledrag: "onSaturationSliderHandleDrag",
-          },
+            handledrag: "onSaturationSliderHandleDrag"
+          }
         },
         {
           xtype: "numberfield",
@@ -330,9 +330,9 @@ Ext.define("Ext.ux.colorpick.Selector", {
           maxValue: 100,
           minValue: 0,
           allowBlank: false,
-          margin: 0,
-        },
-      ],
+          margin: 0
+        }
+      ]
     };
   },
 
@@ -349,7 +349,7 @@ Ext.define("Ext.ux.colorpick.Selector", {
       width: fieldWidth,
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       items: [
         {
@@ -358,12 +358,12 @@ Ext.define("Ext.ux.colorpick.Selector", {
           flex: 1,
           bind: {
             value: "{value}",
-            hue: "{selectedColor.h}",
+            hue: "{selectedColor.h}"
           },
           width: fieldWidth,
           listeners: {
-            handledrag: "onValueSliderHandleDrag",
-          },
+            handledrag: "onValueSliderHandleDrag"
+          }
         },
         {
           xtype: "numberfield",
@@ -375,9 +375,9 @@ Ext.define("Ext.ux.colorpick.Selector", {
           maxValue: 100,
           minValue: 0,
           allowBlank: false,
-          margin: 0,
-        },
-      ],
+          margin: 0
+        }
+      ]
     };
   },
 
@@ -394,10 +394,10 @@ Ext.define("Ext.ux.colorpick.Selector", {
       width: fieldWidth,
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       margin: {
-        left: me.fieldPad,
+        left: me.fieldPad
       },
       items: [
         {
@@ -408,13 +408,13 @@ Ext.define("Ext.ux.colorpick.Selector", {
             alpha: "{alpha}",
             color: {
               bindTo: "{selectedColor}",
-              deep: true,
-            },
+              deep: true
+            }
           },
           width: fieldWidth,
           listeners: {
-            handledrag: "onAlphaSliderHandleDrag",
-          },
+            handledrag: "onAlphaSliderHandleDrag"
+          }
         },
         {
           xtype: "numberfield",
@@ -426,9 +426,9 @@ Ext.define("Ext.ux.colorpick.Selector", {
           maxValue: 100,
           minValue: 0,
           allowBlank: false,
-          margin: 0,
-        },
-      ],
+          margin: 0
+        }
+      ]
     };
   },
 
@@ -443,10 +443,10 @@ Ext.define("Ext.ux.colorpick.Selector", {
         bind: {
           color: {
             bindTo: "{selectedColor}",
-            deep: true,
-          },
-        },
-      },
+            deep: true
+          }
+        }
+      }
     ];
 
     // previous color preview is optional
@@ -457,12 +457,12 @@ Ext.define("Ext.ux.colorpick.Selector", {
         bind: {
           color: {
             bindTo: "{previousColor}",
-            deep: true,
-          },
+            deep: true
+          }
         },
         listeners: {
-          click: "onPreviousColorSelected",
-        },
+          click: "onPreviousColorSelected"
+        }
       });
     }
 
@@ -473,14 +473,14 @@ Ext.define("Ext.ux.colorpick.Selector", {
           xtype: "button",
           text: "OK",
           margin: "10 0 0 0",
-          handler: "onOK",
+          handler: "onOK"
         },
         {
           xtype: "button",
           text: "Cancel",
           margin: "10 0 0 0",
-          handler: "onCancel",
-        },
+          handler: "onCancel"
+        }
       );
     }
 
@@ -492,8 +492,8 @@ Ext.define("Ext.ux.colorpick.Selector", {
       items: items,
       layout: {
         type: "vbox",
-        align: "stretch",
-      },
+        align: "stretch"
+      }
     };
-  },
+  }
 });

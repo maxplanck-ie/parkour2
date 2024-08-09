@@ -8,7 +8,7 @@ Ext.define("Ext.grid.column.Tree", {
 
   config: {
     cell: {
-      xtype: "treecell",
-    },
-  },
+      xtype: "treecell"
+    }
+  }
 });

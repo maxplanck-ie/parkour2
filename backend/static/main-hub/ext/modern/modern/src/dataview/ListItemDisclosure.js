@@ -11,8 +11,8 @@ Ext.define("Ext.dataview.ListItemDisclosure", {
       reference: "iconElement",
       classList: [
         Ext.baseCSSPrefix + "icon-el",
-        Ext.baseCSSPrefix + "font-icon",
-      ],
-    },
-  ],
+        Ext.baseCSSPrefix + "font-icon"
+      ]
+    }
+  ]
 });

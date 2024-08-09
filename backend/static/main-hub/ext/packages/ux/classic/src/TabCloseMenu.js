@@ -9,7 +9,7 @@ Ext.define("Ext.ux.TabCloseMenu", {
   alias: "plugin.tabclosemenu",
 
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   /**
@@ -67,7 +67,7 @@ Ext.define("Ext.ux.TabCloseMenu", {
     this.mon(this.tabPanel, {
       scope: this,
       afterlayout: this.onAfterLayout,
-      single: true,
+      single: true
     });
   },
 
@@ -75,7 +75,7 @@ Ext.define("Ext.ux.TabCloseMenu", {
     this.mon(this.tabBar.el, {
       scope: this,
       contextmenu: this.onContextMenu,
-      delegate: ".x-tab",
+      delegate: ".x-tab"
     });
   },
 
@@ -134,8 +134,8 @@ Ext.define("Ext.ux.TabCloseMenu", {
           itemId: "close",
           text: me.closeTabText,
           scope: me,
-          handler: me.onClose,
-        },
+          handler: me.onClose
+        }
       ];
 
       if (me.showCloseAll || me.showCloseOthers) {
@@ -147,7 +147,7 @@ Ext.define("Ext.ux.TabCloseMenu", {
           itemId: "closeOthers",
           text: me.closeOthersTabsText,
           scope: me,
-          handler: me.onCloseOthers,
+          handler: me.onCloseOthers
         });
       }
 
@@ -156,7 +156,7 @@ Ext.define("Ext.ux.TabCloseMenu", {
           itemId: "closeAll",
           text: me.closeAllTabsText,
           scope: me,
-          handler: me.onCloseAll,
+          handler: me.onCloseAll
         });
       }
 
@@ -172,8 +172,8 @@ Ext.define("Ext.ux.TabCloseMenu", {
         items: items,
         listeners: {
           hide: me.onHideMenu,
-          scope: me,
-        },
+          scope: me
+        }
       });
     }
 
@@ -214,8 +214,8 @@ Ext.define("Ext.ux.TabCloseMenu", {
       function (item) {
         this.tabPanel.remove(item);
       },
-      this,
+      this
     );
     Ext.resumeLayouts(true);
-  },
+  }
 });

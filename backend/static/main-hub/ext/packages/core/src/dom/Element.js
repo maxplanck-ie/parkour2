@@ -165,19 +165,19 @@ Ext.define(
         t: "border-top-width",
         r: "border-right-width",
         b: "border-bottom-width",
-        l: "border-left-width",
+        l: "border-left-width"
       },
       paddings = {
         t: "padding-top",
         r: "padding-right",
         b: "padding-bottom",
-        l: "padding-left",
+        l: "padding-left"
       },
       margins = {
         t: "margin-top",
         r: "margin-right",
         b: "margin-bottom",
-        l: "margin-left",
+        l: "margin-left"
       },
       paddingsTLRB = [paddings.l, paddings.r, paddings.t, paddings.b],
       bordersTLRB = [borders.l, borders.r, borders.t, borders.b],
@@ -222,7 +222,7 @@ Ext.define(
         text: "text",
         hidden: "hidden",
         html: "html",
-        children: "children",
+        children: "children"
       },
       lastFocusChange = 0,
       lastKeyboardClose = 0,
@@ -256,7 +256,7 @@ Ext.define(
         "Ext.event.publisher.Dom",
         "Ext.event.publisher.Gesture",
         "Ext.event.publisher.ElementSize",
-        "Ext.event.publisher.ElementPaint",
+        "Ext.event.publisher.ElementPaint"
       ],
 
       uses: [
@@ -264,7 +264,7 @@ Ext.define(
         "Ext.dom.CompositeElement",
         "Ext.dom.Fly",
         "Ext.dom.TouchAction",
-        "Ext.event.publisher.Focus",
+        "Ext.event.publisher.Focus"
       ],
 
       observableType: "element",
@@ -288,13 +288,13 @@ Ext.define(
             // this event to prevent mouseover handlers from running after tap events. It
             // is up to the individual component to determine if it has an analog for
             // mouseover, and implement the appropriate event handlers.
-            mouseover: 1,
+            mouseover: 1
           }
         : {},
 
       longpressEvents: {
         longpress: 1,
-        taphold: 1,
+        taphold: 1
       },
 
       /**
@@ -596,7 +596,7 @@ Ext.define(
         if (!dom) {
           //<debug>
           Ext.raise(
-            "Invalid domNode reference or an id of an existing domNode: " + dom,
+            "Invalid domNode reference or an id of an existing domNode: " + dom
           );
           //</debug>
           return null;
@@ -606,7 +606,7 @@ Ext.define(
           Ext.raise(
             "Element cache already contains an entry for id '" +
               dom.id +
-              "'.  Use Ext.get() to create or retrieve Element instances.",
+              "'.  Use Ext.get() to create or retrieve Element instances."
           );
         }
         //</debug>
@@ -742,7 +742,7 @@ Ext.define(
          */
         validNodeTypes: {
           1: 1, // ELEMENT_NODE
-          9: 1, // DOCUMENT_NODE
+          9: 1 // DOCUMENT_NODE
         },
 
         /**
@@ -781,7 +781,7 @@ Ext.define(
             Ext.Logger.warn(
               "Warning, size detected (" +
                 size +
-                ") not a valid property value on Element.addUnits.",
+                ") not a valid property value on Element.addUnits."
             );
             //</debug>
             return size || "";
@@ -1030,7 +1030,7 @@ Ext.define(
               "DOM element with id " +
                 id +
                 " in Element cache is not the same as element in the DOM. " +
-                "Make sure to clean up Element instances using destroy()",
+                "Make sure to clean up Element instances using destroy()"
             );
           }
           //</debug>
@@ -1180,7 +1180,7 @@ Ext.define(
         getDocumentHeight: function () {
           return Math.max(
             !Ext.isStrict ? DOC.body.scrollHeight : docEl.scrollHeight,
-            this.getViewportHeight(),
+            this.getViewportHeight()
           );
         },
 
@@ -1193,7 +1193,7 @@ Ext.define(
         getDocumentWidth: function () {
           return Math.max(
             !Ext.isStrict ? DOC.body.scrollWidth : docEl.scrollWidth,
-            this.getViewportWidth(),
+            this.getViewportWidth()
           );
         },
 
@@ -1312,7 +1312,7 @@ Ext.define(
         getViewSize: function () {
           return {
             width: Element.getViewportWidth(),
-            height: Element.getViewportHeight(),
+            height: Element.getViewportHeight()
           };
         },
 
@@ -1450,7 +1450,7 @@ Ext.define(
               top: box,
               right: box,
               bottom: box,
-              left: box,
+              left: box
             };
           } else if (type !== "string") {
             // If not a number or a string, assume we've been given a box config.
@@ -1473,7 +1473,7 @@ Ext.define(
             top: parseFloat(parts[0]) || 0,
             right: parseFloat(parts[1]) || 0,
             bottom: parseFloat(parts[2]) || 0,
-            left: parseFloat(parts[3]) || 0,
+            left: parseFloat(parts[3]) || 0
           };
         },
 
@@ -1618,7 +1618,7 @@ Ext.define(
                     data += Ext.String.format(
                       "{0}={1}&",
                       encoder(name),
-                      encoder(hasValue ? opt.value : opt.text),
+                      encoder(hasValue ? opt.value : opt.text)
                     );
                   }
                 }
@@ -1660,7 +1660,7 @@ Ext.define(
             }
           }
           return returnDom ? caFly.dom : Ext.get(caFly);
-        },
+        }
       }, // statics
 
       /**
@@ -1799,7 +1799,7 @@ Ext.define(
           },
           function () {
             Ext.fly(dom).removeCls(className);
-          },
+          }
         );
         return me;
       },
@@ -1814,7 +1814,7 @@ Ext.define(
 
         if (len === 1) {
           totalSize = Math.abs(
-            parseFloat(this.getStyle(styles[sidesArr[0]])) || 0,
+            parseFloat(this.getStyle(styles[sidesArr[0]])) || 0
           );
         } else if (len) {
           for (i = 0; i < len; i++) {
@@ -1889,7 +1889,7 @@ Ext.define(
         this._activeAnimation = animation;
         animation.on({
           animationend: this._onAnimationEnd,
-          scope: this,
+          scope: this
         });
         Ext.Animator.run(animation);
         return animation;
@@ -2095,7 +2095,7 @@ Ext.define(
 
         return me.selectNode(
           Ext.makeIdSelector(id) + " > " + selector,
-          !!returnDom,
+          !!returnDom
         );
       },
 
@@ -2141,7 +2141,7 @@ Ext.define(
           return Ext.DomHelper.insertBefore(
             insertBefore,
             config,
-            returnDom !== true,
+            returnDom !== true
           );
         } else {
           return Ext.DomHelper.append(this.dom, config, returnDom !== true);
@@ -2179,7 +2179,7 @@ Ext.define(
         //<debug>
         if (me.destroyed) {
           Ext.Logger.warn(
-            'Cannot destroy Element "' + me.id + '". Already destroyed.',
+            'Cannot destroy Element "' + me.id + '". Already destroyed.'
           );
           return;
         }
@@ -2257,7 +2257,7 @@ Ext.define(
         animate,
         highlight,
         getScrollX,
-        scrollTo,
+        scrollTo
       ) {
         scrollFly = scrollFly || new Ext.dom.Fly();
 
@@ -2277,10 +2277,10 @@ Ext.define(
                 listeners: {
                   afteranimate: function () {
                     scrollFly.attach(dom).highlight();
-                  },
-                },
+                  }
+                }
               },
-              animate,
+              animate
             );
           } else {
             scrollFly.attach(dom).highlight();
@@ -2330,10 +2330,10 @@ Ext.define(
             (me.shadow = new Ext.dom.Shadow(
               Ext.apply(
                 {
-                  target: me,
+                  target: me
                 },
-                options,
-              ),
+                options
+              )
             )),
           shim = me.shim;
 
@@ -2372,10 +2372,10 @@ Ext.define(
             (me.shim = new Ext.dom.Shim(
               Ext.apply(
                 {
-                  target: me,
+                  target: me
                 },
-                options,
-              ),
+                options
+              )
             )),
           shadow = me.shadow;
 
@@ -2610,7 +2610,7 @@ Ext.define(
             (parseFloat(paddingWidth[paddings.t]) || 0),
           afterY:
             (parseFloat(bordersWidth[borders.b]) || 0) +
-            (parseFloat(paddingWidth[paddings.b]) || 0),
+            (parseFloat(paddingWidth[paddings.b]) || 0)
         };
       },
 
@@ -2624,7 +2624,7 @@ Ext.define(
           beforeX: parseFloat(bordersWidth[borders.l]) || 0,
           afterX: parseFloat(bordersWidth[borders.r]) || 0,
           beforeY: parseFloat(bordersWidth[borders.t]) || 0,
-          afterY: parseFloat(bordersWidth[borders.b]) || 0,
+          afterY: parseFloat(bordersWidth[borders.b]) || 0
         };
       },
 
@@ -2820,7 +2820,7 @@ Ext.define(
             "margin-top",
             "margin-left",
             "margin-right",
-            "margin-bottom",
+            "margin-bottom"
           ];
 
         return function (side) {
@@ -2901,7 +2901,7 @@ Ext.define(
 
         return {
           left: left,
-          top: top,
+          top: top
         };
       },
 
@@ -2947,7 +2947,7 @@ Ext.define(
 
         return {
           x: scrollX,
-          y: scrollY,
+          y: scrollY
         };
       },
 
@@ -2989,7 +2989,7 @@ Ext.define(
       getSize: function (contentSize) {
         return {
           width: this.getWidth(contentSize),
-          height: this.getHeight(contentSize),
+          height: this.getHeight(contentSize)
         };
       },
 
@@ -3130,12 +3130,12 @@ Ext.define(
         if (dom === DOC || dom === DOC.body) {
           return {
             width: Element.getViewportWidth(),
-            height: Element.getViewportHeight(),
+            height: Element.getViewportHeight()
           };
         } else {
           return {
             width: dom.clientWidth,
-            height: dom.clientHeight,
+            height: dom.clientHeight
           };
         }
       },
@@ -3391,7 +3391,7 @@ Ext.define(
           // Insert fragment into document
           me.dom.parentNode.insertBefore(
             insertEl.dom,
-            isAfter ? me.dom.nextSibling : me.dom,
+            isAfter ? me.dom.nextSibling : me.dom
           );
           return rt;
         }
@@ -3401,7 +3401,7 @@ Ext.define(
         if (el.nodeType || el.dom) {
           rt = me.dom.parentNode.insertBefore(
             Ext.getDom(el),
-            isAfter ? me.dom.nextSibling : me.dom,
+            isAfter ? me.dom.nextSibling : me.dom
           );
           if (!returnDom) {
             rt = Ext.get(rt);
@@ -3413,7 +3413,7 @@ Ext.define(
             rt = DomHelper[isAfter ? "insertAfter" : "insertBefore"](
               me.dom,
               el,
-              !returnDom,
+              !returnDom
             );
           }
         }
@@ -3486,7 +3486,7 @@ Ext.define(
           : function () {
               var dom = this.dom;
               return Boolean(
-                dom && dom.offsetHeight !== 0 && dom.offsetWidth !== 0,
+                dom && dom.offsetHeight !== 0 && dom.offsetWidth !== 0
               );
             };
       })(),
@@ -3568,7 +3568,7 @@ Ext.define(
           "previousSibling",
           "lastChild",
           selector,
-          returnDom,
+          returnDom
         );
       },
 
@@ -3630,7 +3630,7 @@ Ext.define(
             destroy: function () {
               clearTimeout(timer);
               me.un(listeners);
-            },
+            }
           };
         me.on(listeners);
         return listeners;
@@ -3649,7 +3649,7 @@ Ext.define(
           "nextSibling",
           "nextSibling",
           selector,
-          returnDom,
+          returnDom
         );
       },
 
@@ -3704,7 +3704,7 @@ Ext.define(
           "previousSibling",
           "previousSibling",
           selector,
-          returnDom,
+          returnDom
         );
       },
 
@@ -3953,7 +3953,7 @@ Ext.define(
           Ext.raise(
             'Cannot replace element "' +
               id +
-              '". It is not attached to a parent node.',
+              '". It is not attached to a parent node.'
           );
         }
         //</debug>
@@ -4168,14 +4168,14 @@ Ext.define(
           me.scrollTo(
             "left",
             me.constrainScrollLeft(dom.scrollLeft + deltaX),
-            animate,
+            animate
           );
         }
         if (deltaY) {
           me.scrollTo(
             "top",
             me.constrainScrollTop(dom.scrollTop + deltaY),
-            animate,
+            animate
           );
         }
 
@@ -4253,7 +4253,7 @@ Ext.define(
           animate,
           highlight,
           "getScrollLeft",
-          "scrollTo",
+          "scrollTo"
         );
       },
 
@@ -4281,7 +4281,7 @@ Ext.define(
           dom[prop] = value;
         } else {
           animCfg = {
-            to: {},
+            to: {}
           };
           animCfg.to[prop] = value;
           if (Ext.isObject(animate)) {
@@ -4968,7 +4968,7 @@ Ext.define(
           Ext.raise(
             "visibilityMode must be one of the following: " +
               "Ext.Element.DISPLAY, Ext.Element.VISIBILITY, Ext.Element.OFFSETS, " +
-              "or Ext.Element.CLIP",
+              "or Ext.Element.CLIP"
           );
         }
         //</debug>
@@ -5358,7 +5358,7 @@ Ext.define(
           newEl = Ext.DomHelper.insertBefore(
             dom,
             config || { tag: "div" },
-            !returnDom,
+            !returnDom
           ),
           target = newEl,
           activeElement = Ext.Element.getActiveElement(),
@@ -5435,7 +5435,7 @@ Ext.define(
           options,
           order,
           caller,
-          manager,
+          manager
         ) {
           var me = this,
             gesturePublisher = Ext.$gesturePublisher,
@@ -5481,7 +5481,7 @@ Ext.define(
                   options,
                   order,
                   caller,
-                  manager,
+                  manager
                 );
               }
 
@@ -5505,7 +5505,7 @@ Ext.define(
                 options,
                 order,
                 caller,
-                manager,
+                manager
               )
             ) {
               if (
@@ -5568,7 +5568,7 @@ Ext.define(
                 me,
                 translatedEventName,
                 fn,
-                scope,
+                scope
               );
             }
 
@@ -5592,7 +5592,7 @@ Ext.define(
         _initEvent: function (eventName) {
           return (this.events[eventName] = new Ext.dom.ElementEvent(
             this,
-            eventName,
+            eventName
           ));
         },
 
@@ -5667,7 +5667,7 @@ Ext.define(
               resumeFn.call(this);
             }
           }
-        },
+        }
       },
 
       deprecated: {
@@ -5744,7 +5744,7 @@ Ext.define(
                   width: w,
                   height: h,
                   right: r,
-                  bottom: b,
+                  bottom: b
                 };
               }
             },
@@ -5803,10 +5803,10 @@ Ext.define(
              * Sets the element's top and left positions directly using CSS style.
              * @removed 5.0.0
              */
-            setTopLeft: null,
-          },
-        },
-      },
+            setTopLeft: null
+          }
+        }
+      }
     };
   },
   function (Element) {
@@ -5986,7 +5986,7 @@ Ext.define(
     }
 
     eventOptions = prototype.$eventOptions = Ext.Object.chain(
-      prototype.$eventOptions,
+      prototype.$eventOptions
     );
     eventOptions.translate =
       eventOptions.capture =
@@ -6010,7 +6010,7 @@ Ext.define(
         if (shadow) {
           shadow.setOpacity(value);
         }
-      },
+      }
     };
 
     /**
@@ -6104,7 +6104,7 @@ Ext.define(
       getHead: function () {
         if (!Ext._headEl) {
           Ext._headEl = Ext.get(
-            DOC.head || DOC.getElementsByTagName("head")[0],
+            DOC.head || DOC.getElementsByTagName("head")[0]
           );
         }
 
@@ -6172,7 +6172,7 @@ Ext.define(
             parent.removeChild(node);
           }
         }
-      },
+      }
     });
 
     // TODO: make @inline work - SDKTOOLS-686
@@ -6241,16 +6241,16 @@ Ext.define(
           capture: true,
           delegated: false,
           delay: 1,
-          scope: Element,
+          scope: Element
         });
 
         win.on({
           // Resize listener for tracking virtual keyboard state.
           resize: "_onWindowResize",
           priority: 2000,
-          scope: Element,
+          scope: Element
         });
       });
     }
-  },
+  }
 );

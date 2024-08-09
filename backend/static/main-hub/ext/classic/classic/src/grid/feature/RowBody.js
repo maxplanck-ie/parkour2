@@ -115,7 +115,7 @@ Ext.define("Ext.grid.feature.RowBody", {
 
       if (rowExpanderCol && rowExpanderCol.getView() === view) {
         view.grid.removeCls(
-          Ext.baseCSSPrefix + "grid-hide-row-expander-spacer",
+          Ext.baseCSSPrefix + "grid-hide-row-expander-spacer"
         );
         rowValues.addSpacerCell = true;
         rowValues.rowBodyColspan -= 1;
@@ -138,7 +138,7 @@ Ext.define("Ext.grid.feature.RowBody", {
         rowValues.rowBody =
           null;
     },
-    priority: 100,
+    priority: 100
   },
 
   extraRowTpl: [
@@ -192,8 +192,8 @@ Ext.define("Ext.grid.feature.RowBody", {
         ) {
           Ext.fly(destRowBody).syncContent(sourceRowBody);
         }
-      },
-    },
+      }
+    }
   ],
 
   init: function (grid) {
@@ -203,7 +203,7 @@ Ext.define("Ext.grid.feature.RowBody", {
     // <debug>
     if (!me.rowExpander && grid.findPlugin("rowexpander")) {
       Ext.raise(
-        "The RowBody feature shouldn't be manually added when the grid has a RowExpander.",
+        "The RowBody feature shouldn't be manually added when the grid has a RowExpander."
       );
     }
     // </debug>
@@ -214,7 +214,7 @@ Ext.define("Ext.grid.feature.RowBody", {
 
     view.headerCt.on({
       columnschanged: me.onColumnsChanged,
-      scope: me,
+      scope: me
     });
     view.addTpl(me.outerTpl).rowBody = me;
     view.addRowTpl(Ext.XTemplate.getTpl(this, "extraRowTpl")).rowBody = me;
@@ -272,10 +272,10 @@ Ext.define("Ext.grid.feature.RowBody", {
     if (this.getAdditionalData) {
       Ext.apply(
         rowValues,
-        this.getAdditionalData(record.data, rowIndex, record, rowValues),
+        this.getAdditionalData(record.data, rowIndex, record, rowValues)
       );
     }
-  },
+  }
 
   /**
    * @event beforerowbodymousedown

@@ -118,5 +118,5 @@ Ext.define("Ext.dd.Registry", {
   getTargetFromEvent: function (e) {
     var t = e.getTarget();
     return t ? this.elements[t.id] || this.handles[t.id] : null;
-  },
+  }
 });

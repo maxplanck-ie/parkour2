@@ -133,5 +133,5 @@ Ext.define("Ext.state.CookieProvider", {
       (me.path == null ? "" : "; path=" + me.path) +
       (me.domain == null ? "" : "; domain=" + me.domain) +
       (me.secure ? "; secure" : "");
-  },
+  }
 });

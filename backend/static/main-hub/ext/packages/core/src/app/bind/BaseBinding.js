@@ -116,6 +116,6 @@ Ext.define("Ext.app.bind.BaseBinding", {
         ret = Ext.isArray(value);
       }
       return ret;
-    },
-  },
+    }
+  }
 });

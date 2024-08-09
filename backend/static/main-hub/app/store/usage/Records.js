@@ -13,10 +13,10 @@ Ext.define("MainHub.store.usage.Records", {
     pageParam: false, // to remove param "page"
     startParam: false, // to remove param "start"
     limitParam: false, // to remove param "limit"
-    noCache: false, // to remove param "_dc",
+    noCache: false // to remove param "_dc",
   },
 
   getId: function () {
     return "UsageRecords";
-  },
+  }
 });

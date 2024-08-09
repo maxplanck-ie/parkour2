@@ -17,5 +17,5 @@ Ext.define("Ext.rtl.tip.QuickTipManager", {
     // cached value may be incorrect.  Clear the cached value so that the next call to
     // isLocalRtl() will read the DOM again.
     tip._isOffsetParentRtl = undefined;
-  },
+  }
 });

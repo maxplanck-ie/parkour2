@@ -3,6 +3,6 @@ Ext.define("Ext.chart.theme.Blue", {
   singleton: true,
   alias: ["chart.theme.blue", "chart.theme.Blue"],
   config: {
-    baseColor: "#4d7fe6",
-  },
+    baseColor: "#4d7fe6"
+  }
 });

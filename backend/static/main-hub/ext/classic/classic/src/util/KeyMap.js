@@ -182,7 +182,7 @@ Ext.define("Ext.util.KeyMap", {
     Ext.apply(me, {
       target: Ext.get(el),
       eventName: eventName || me.eventName,
-      bindings: [],
+      bindings: []
     });
     if (binding) {
       me.addBinding(binding);
@@ -248,10 +248,10 @@ Ext.define("Ext.util.KeyMap", {
     me.bindings.push(
       Ext.apply(
         {
-          keyCode: me.processKeys(keyCode),
+          keyCode: me.processKeys(keyCode)
         },
-        binding,
-      ),
+        binding
+      )
     );
   },
 
@@ -499,7 +499,7 @@ Ext.define("Ext.util.KeyMap", {
       ctrl: ctrl,
       alt: alt,
       fn: fn,
-      scope: scope,
+      scope: scope
     });
   },
 
@@ -528,7 +528,7 @@ Ext.define("Ext.util.KeyMap", {
       ctrl: ctrl,
       alt: alt,
       fn: fn,
-      scope: scope,
+      scope: scope
     });
   },
 
@@ -549,7 +549,7 @@ Ext.define("Ext.util.KeyMap", {
     if (!me.enabled) {
       me.target.on(me.eventName, me.handleTargetEvent, me, {
         capture: me.capture,
-        priority: me.priority,
+        priority: me.priority
       });
       me.enabled = true;
     }
@@ -594,5 +594,5 @@ Ext.define("Ext.util.KeyMap", {
     }
     delete me.target;
     me.callParent();
-  },
+  }
 });

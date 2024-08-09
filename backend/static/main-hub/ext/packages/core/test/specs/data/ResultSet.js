@@ -19,14 +19,14 @@ describe("Ext.data.ResultSet", function () {
     beforeEach(function () {
       Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: [{ name: "name", type: "string" }],
+        fields: [{ name: "name", type: "string" }]
       });
 
       nico = new spec.User({ name: "nico" });
       flo = new spec.User({ name: "flo" });
 
       config = {
-        records: [nico, flo],
+        records: [nico, flo]
       };
     });
 

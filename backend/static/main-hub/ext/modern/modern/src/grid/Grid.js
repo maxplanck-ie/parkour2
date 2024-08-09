@@ -243,7 +243,7 @@ Ext.define("Ext.grid.Grid", {
     "Ext.grid.HeaderContainer",
     "Ext.grid.HeaderGroup",
     "Ext.TitleBar",
-    "Ext.MessageBox",
+    "Ext.MessageBox"
   ],
 
   config: {
@@ -293,7 +293,7 @@ Ext.define("Ext.grid.Grid", {
     variableHeights: false,
 
     headerContainer: {
-      xtype: "headercontainer",
+      xtype: "headercontainer"
     },
 
     /**
@@ -305,7 +305,7 @@ Ext.define("Ext.grid.Grid", {
     hideHeaders: false,
 
     pinnedHeader: {
-      xtype: "rowheader",
+      xtype: "rowheader"
     },
 
     /**
@@ -318,7 +318,7 @@ Ext.define("Ext.grid.Grid", {
 
     titleBar: {
       xtype: "titlebar",
-      docked: "top",
+      docked: "top"
     },
 
     /**
@@ -332,7 +332,7 @@ Ext.define("Ext.grid.Grid", {
      * The total column width
      * @private
      */
-    totalColumnWidth: null,
+    totalColumnWidth: null
   },
 
   /**
@@ -398,7 +398,7 @@ Ext.define("Ext.grid.Grid", {
     config.children.push({
       reference: "resizeMarkerElement",
       className: Ext.baseCSSPrefix + "resize-marker-el",
-      hidden: true,
+      hidden: true
     });
 
     return config;
@@ -460,7 +460,7 @@ Ext.define("Ext.grid.Grid", {
         columnadd: "onColumnAdd",
         columnmove: "onColumnMove",
         columnremove: "onColumnRemove",
-        scope: me,
+        scope: me
       });
     }
 
@@ -473,7 +473,7 @@ Ext.define("Ext.grid.Grid", {
         columnadd: "onColumnAdd",
         columnmove: "onColumnMove",
         columnremove: "onColumnRemove",
-        scope: me,
+        scope: me
       });
       headerContainer.setGrid(me);
     }
@@ -738,7 +738,7 @@ Ext.define("Ext.grid.Grid", {
       if (scroller) {
         scroller.setSize({
           x: totalWidth,
-          y: me.getInfinite() ? me.getItemMap().getTotalHeight() : null,
+          y: me.getInfinite() ? me.getItemMap().getTotalHeight() : null
         });
 
         scrollbarSize = me.getVerticalScrollbarSize();
@@ -747,7 +747,7 @@ Ext.define("Ext.grid.Grid", {
           totalWidth -= scrollbarSize;
 
           scroller.setSize({
-            x: totalWidth,
+            x: totalWidth
           });
         }
       }
@@ -757,7 +757,7 @@ Ext.define("Ext.grid.Grid", {
 
         headerScroller.setSize({
           x: totalWidth + scrollbarSize,
-          y: null,
+          y: null
         });
       }
 
@@ -767,7 +767,7 @@ Ext.define("Ext.grid.Grid", {
       if (pinned) {
         if (scrollbarSize) {
           pinned.setWidth(
-            Ext.String.format("calc(100% - {0}px)", scrollbarSize + 1),
+            Ext.String.format("calc(100% - {0}px)", scrollbarSize + 1)
           );
         } else {
           pinned.setWidth("100%");
@@ -831,6 +831,6 @@ Ext.define("Ext.grid.Grid", {
           header.setWidth(totalColumnWidth);
         }
       }
-    },
-  },
+    }
+  }
 });

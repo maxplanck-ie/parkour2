@@ -322,7 +322,7 @@ class IndexGenerator:
     def generate(self):
         """Main method that generates indices."""
         if self.num_libraries > 0:
-            self.add_libraries_to_result()
+            self.add_objects_to_result_directly(self.libraries, True)
 
         # If a single sample was selected, then add it directly to the result
         if not any(self._result) and self.num_samples == 1:
@@ -332,13 +332,29 @@ class IndexGenerator:
             )
             return self.result
 
+        already_processed_samples = []
+        normal_samples = []
+
+        for sample_obj in self.samples:
+            if sample_obj.barcode[2] == "L":
+                already_processed_samples.append(sample_obj)
+            else:
+                normal_samples.append(sample_obj)
+
+        self.samples = normal_samples
+
+        if len(already_processed_samples) > 0:
+            self.add_objects_to_result_directly(already_processed_samples, False)
+            if len(normal_samples) == 0:
+                return self.result
+
         depths = [x.sequencing_depth for x in self.samples]
         init_index_pairs, init_indices_i7, init_indices_i5 = [], [], []
 
         if any(self._result):
             depths = [x["sequencing_depth"] for x in self._result] + depths
 
-            # If there are libraries in the result, extract their indices
+            # If there are libraries or samples in the result, extract their indices
             for item in self._result:
                 init_index_pairs.append((item["index_i7"], item["index_i5"]))
                 init_indices_i7.append(item["index_i7"])
@@ -430,10 +446,10 @@ class IndexGenerator:
 
         return self.result
 
-    def add_libraries_to_result(self):
+    def add_objects_to_result_directly(self, objects, is_library):
         """Add all libraries directly to the result."""
 
-        def idx_dict(class_model, index, index_type):
+        def idx_dict(class_model, index, index_type, is_library):
             idx = class_model.objects.filter(index=index, index_type=index_type)
             if idx:
                 idx = self.index_registry.create_index_dict(
@@ -443,33 +459,27 @@ class IndexGenerator:
                     idx[0].prefix,
                     idx[0].number,
                     idx[0].index,
-                    is_library=True,
+                    is_library=is_library,
                 )
             else:
                 idx = self.index_registry.create_index_dict(
-                    index=index, is_library=True
+                    index=index, is_library=is_library
                 )
             return idx
 
         no_index = []
         with_index = []
 
-        for library in self.libraries:
-            index_i7 = idx_dict(
-                IndexI7,
-                library.index_i7,
-                library.index_type,
-            )
-            index_i5 = self.index_registry.create_index_dict(is_library=True)
+        for object in objects:
+            index_i7 = idx_dict(IndexI7, object.index_i7, object.index_type, is_library)
+            index_i5 = self.index_registry.create_index_dict(is_library=is_library)
 
             if self.mode == "dual":
                 index_i5 = idx_dict(
-                    IndexI5,
-                    library.index_i5,
-                    library.index_type,
+                    IndexI5, object.index_i5, object.index_type, is_library
                 )
 
-            d = self.create_result_dict(library, index_i7, index_i5)
+            d = self.create_result_dict(object, index_i7, index_i5)
             if d["index_i7"]["prefix"] != "":
                 with_index.append(d)
             else:
@@ -783,6 +793,7 @@ class IndexGenerator:
         return {
             "pk": obj.pk,
             "name": obj.name,
+            "barcode": obj.barcode,
             "record_type": obj.__class__.__name__,
             "read_length": obj.read_length_id,
             "sequencing_depth": obj.sequencing_depth,

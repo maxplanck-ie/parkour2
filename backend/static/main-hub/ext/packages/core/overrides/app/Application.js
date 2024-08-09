@@ -36,9 +36,9 @@ Ext.application = function (config) {
   } else {
     config = Ext.apply(
       {
-        extend: "Ext.app.Application", // can be replaced by config!
+        extend: "Ext.app.Application" // can be replaced by config!
       },
-      config,
+      config
     );
 
     // We have to process "paths" before creating Application class,

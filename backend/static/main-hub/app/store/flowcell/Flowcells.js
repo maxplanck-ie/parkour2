@@ -18,13 +18,13 @@ Ext.define("MainHub.store.flowcell.Flowcells", {
     noCache: false, // to remove param "_dc",
     api: {
       read: "api/flowcells/",
-      update: "api/flowcells/edit/",
+      update: "api/flowcells/edit/"
     },
     reader: {
       type: "json",
       rootProperty: "data",
       successProperty: "success",
-      messageProperty: "message",
+      messageProperty: "message"
     },
     writer: {
       type: "json",
@@ -41,21 +41,21 @@ Ext.define("MainHub.store.flowcell.Flowcells", {
             if (record) {
               return Ext.Object.merge(
                 {
-                  pk: record.get("pk"),
+                  pk: record.get("pk")
                 },
-                record.getChanges(),
+                record.getChanges()
               );
             }
           });
 
           return newData;
         },
-        scope: this,
-      },
-    },
+        scope: this
+      }
+    }
   },
 
   getId: function () {
     return "Flowcells";
-  },
+  }
 });

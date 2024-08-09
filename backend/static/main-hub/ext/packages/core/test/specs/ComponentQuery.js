@@ -74,9 +74,9 @@ describe("Ext.ComponentQuery", function () {
 
         self: {
           $config: {
-            configs: {},
-          },
-        },
+            configs: {}
+          }
+        }
       });
 
       cm.register(o);
@@ -116,7 +116,7 @@ describe("Ext.ComponentQuery", function () {
           cls: "child1-cls",
           type: "B/G/Z",
           foo: "bar,baz",
-          scrollable: false,
+          scrollable: false
         }),
         (child2 = {
           $className: "Bar.Baz.Qux",
@@ -124,7 +124,7 @@ describe("Ext.ComponentQuery", function () {
           cls: "child2-cls",
           type: "B/G/Z",
           bar: "foo,bar,baz",
-          scrollable: true,
+          scrollable: true
         }),
         (child3 = {
           $className: "Foo",
@@ -148,37 +148,37 @@ describe("Ext.ComponentQuery", function () {
                       id: "child7",
                       cls: "child7-cls",
                       type: "B/G/H",
-                      scrollable: null,
+                      scrollable: null
                     }),
                     (child8 = {
                       id: "child8",
                       cls: "child8-cls",
                       type: "B/G/I",
-                      scrollable: "x",
+                      scrollable: "x"
                     }),
                     (child9 = {
                       id: "child9",
                       cls: "child9-cls",
-                      type: "B/G/J",
-                    }),
-                  ],
+                      type: "B/G/J"
+                    })
+                  ]
                 }),
                 (child6 = {
                   id: "child6",
                   cls: "child6-cls",
                   type: "B/G/Z",
-                  hidden: true,
+                  hidden: true
                 }),
                 (child10 = {
                   id: "child10",
                   cls: "child10-cls my-foo-cls",
-                  type: "B",
+                  type: "B"
                 }),
                 (child11 = {
                   id: "child.11",
                   cls: "child11-cls my-foo-cls-test",
                   type: "B",
-                  scrollable: "y",
+                  scrollable: "y"
                 }),
                 (child12 = {
                   id: "child.12",
@@ -186,13 +186,13 @@ describe("Ext.ComponentQuery", function () {
                   type: "E.2-E.4",
                   foo: "[foo(bar)!baz#qux\\fred*]",
                   sq: "'single' 'quotes'",
-                  dq: '"double" "quotes"',
-                }),
-              ],
-            }),
-          ],
-        }),
-      ],
+                  dq: '"double" "quotes"'
+                })
+              ]
+            })
+          ]
+        })
+      ]
     };
     setup(root);
   });
@@ -234,28 +234,28 @@ describe("Ext.ComponentQuery", function () {
       it("should warn on missing opening double quote", function () {
         cq.query('[foo=bar"]');
         expect(warning).toMatch(
-          /^ComponentQuery selector.*?unescaped \("\).*?end/,
+          /^ComponentQuery selector.*?unescaped \("\).*?end/
         );
       });
 
       it("should warn on missing closing double quote", function () {
         cq.query('[foo="bar]');
         expect(warning).toMatch(
-          /^ComponentQuery selector.*?unescaped \("\).*?beginning/,
+          /^ComponentQuery selector.*?unescaped \("\).*?beginning/
         );
       });
 
       it("should warn on missing opening single quote", function () {
         cq.query("[foo=bar']");
         expect(warning).toMatch(
-          /^ComponentQuery selector.*?unescaped \('\).*end/,
+          /^ComponentQuery selector.*?unescaped \('\).*end/
         );
       });
 
       it("should warn on missing closing single quote", function () {
         cq.query("[foo='bar]");
         expect(warning).toMatch(
-          /^ComponentQuery selector.*?unescaped \('\).*beginning/,
+          /^ComponentQuery selector.*?unescaped \('\).*beginning/
         );
       });
     });
@@ -299,7 +299,7 @@ describe("Ext.ComponentQuery", function () {
 
     it("should work with the :not pseudo", function () {
       var comp = new Ext.Component({
-        foo: 1,
+        foo: 1
       });
 
       expect(comp.is("[foo]:not([bar])")).toBe(true);
@@ -496,7 +496,7 @@ describe("Ext.ComponentQuery", function () {
       it("should allow escaped metacharacters", function () {
         result = cq.query(
           "[foo=\\[foo\\(bar\\)\\!baz\\#qux\\\\fred\\*\\]]",
-          root,
+          root
         );
         expectChildren(result, child12);
       });
@@ -638,7 +638,7 @@ describe("Ext.ComponentQuery", function () {
       it("should not blow up when card item is not a component", function () {
         var container = new Ext.container.Container({
           renderTo: Ext.getBody(),
-          items: [new Ext.Widget()],
+          items: [new Ext.Widget()]
         });
 
         expect(function () {
@@ -655,24 +655,24 @@ describe("Ext.ComponentQuery", function () {
         items = [
           new Ext.Component({
             action: "type1",
-            id: "id1",
+            id: "id1"
           }),
           new Ext.container.Container({
             action: "type1",
-            id: "id2",
+            id: "id2"
           }),
           new Ext.container.Container({
             action: "type2",
-            id: "id3",
+            id: "id3"
           }),
           new Ext.Component({
             action: "type2",
-            id: "id4",
+            id: "id4"
           }),
           new Ext.container.Container({
             action: "type2",
-            id: "id5",
-          }),
+            id: "id5"
+          })
         ];
       });
 
@@ -772,14 +772,14 @@ describe("Ext.ComponentQuery", function () {
 
       it("should return an a single item if it matches", function () {
         expect(cq.query(":scrollable:first", root)[0]).toEqual(
-          Ext.getCmp("child2"),
+          Ext.getCmp("child2")
         );
       });
 
       it("should not blow up when card item is not a component", function () {
         var container = new Ext.container.Container({
           renderTo: Ext.getBody(),
-          items: [new Ext.Widget()],
+          items: [new Ext.Widget()]
         });
 
         expect(function () {
@@ -797,20 +797,20 @@ describe("Ext.ComponentQuery", function () {
         att1: 0,
         att2: 0,
         att3: 0,
-        att4: 0,
+        att4: 0
       },
       {
         att1: null,
         att2: false,
         att3: true,
-        att4: undefined,
+        att4: undefined
       },
       {
         att1: 0,
         att2: 0,
         att3: 0,
-        att4: 0,
-      },
+        att4: 0
+      }
     ];
 
     if (
@@ -846,7 +846,7 @@ describe("Ext.ComponentQuery", function () {
     var TestClass = Ext.define(null, {
         extend: "Ext.Component",
         foo: "bar",
-        bletch: 0,
+        bletch: 0
       }),
       candidates;
 
@@ -858,8 +858,8 @@ describe("Ext.ComponentQuery", function () {
         new TestClass(),
         new TestClass({
           foo: "bar",
-          bletch: 0,
-        }),
+          bletch: 0
+        })
       ];
     });
 
@@ -871,7 +871,7 @@ describe("Ext.ComponentQuery", function () {
     it('should only match candidates [@foo=bar] with ownProperty "foo" equal to "bar"', function () {
       expect(Ext.ComponentQuery.query("[@foo=bar]", candidates).length).toBe(1);
       expect(Ext.ComponentQuery.query("[@foo=bar]", candidates)[0]).toBe(
-        candidates[1],
+        candidates[1]
       );
       expect(Ext.ComponentQuery.is(candidates[0], "[@foo=bar]")).toBe(false);
       expect(Ext.ComponentQuery.is(candidates[1], "[@foo=bar]")).toBe(true);
@@ -886,7 +886,7 @@ describe("Ext.ComponentQuery", function () {
     it("should match candidates [?bletch] where bletch is a falsy property", function () {
       expect(Ext.ComponentQuery.query("[?bletch]", candidates).length).toBe(1);
       expect(Ext.ComponentQuery.query("[?bletch]", candidates)[0]).toBe(
-        candidates[1],
+        candidates[1]
       );
       expect(Ext.ComponentQuery.is(candidates[0], "[?bletch]")).toBe(false);
       expect(Ext.ComponentQuery.is(candidates[1], "[?bletch]")).toBe(true);
@@ -908,11 +908,11 @@ describe("Ext.ComponentQuery", function () {
             id: "floating-cq-grandchild",
             items: {
               floating: true,
-              id: "floating-cq-great-grandchild",
-            },
-          },
+              id: "floating-cq-great-grandchild"
+            }
+          }
         },
-        renderTo: document.body,
+        renderTo: document.body
       });
     });
     afterEach(function () {
@@ -949,9 +949,9 @@ describe("Ext.ComponentQuery", function () {
         items: {
           xtype: "button",
           text: "Test",
-          action: "selectVendors",
+          action: "selectVendors"
         },
-        renderTo: document.body,
+        renderTo: document.body
       });
     });
 
@@ -1092,7 +1092,7 @@ describe("Ext.ComponentQuery", function () {
         it("should trim spaces on both sides", function () {
           result = cq.query(
             "     #child4      >       [type=B/C/F]        ",
-            root,
+            root
           );
 
           expect(result.length).toBe(1);
@@ -1141,36 +1141,36 @@ describe("Ext.ComponentQuery", function () {
       Ext.define("spec.Foo", {
         extend: "Ext.Component",
         config: {
-          bar: 1,
+          bar: 1
         },
-        baz: 2,
+        baz: 2
       });
 
       foo = new spec.Foo({
-        jaz: 3,
+        jaz: 3
       });
 
       Ext.define("spec.Bar", {
         extend: "Ext.Component",
         config: {
-          bar: 4,
+          bar: 4
         },
-        baz: 5,
+        baz: 5
       });
 
       bar = new spec.Bar({
-        jaz: 6,
+        jaz: 6
       });
 
       Ext.define("spec.Bletch", {
         extend: "Ext.Component",
         config: {
-          bar: 4,
+          bar: 4
         },
         baz: 5,
         getBar: function () {
           return "customBarGetter";
-        },
+        }
       });
 
       bletch = new spec.Bletch();
@@ -1214,7 +1214,7 @@ describe("Ext.ComponentQuery", function () {
           { foo: "screeble" },
           target,
           { foo: "razz" },
-          { foo: "poot" },
+          { foo: "poot" }
         ];
 
       expect(Ext.ComponentQuery.query("[foo=bar]", candidates)[0]).toBe(target);

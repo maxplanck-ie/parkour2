@@ -21,7 +21,7 @@ Ext.onReady(function () {
       "Вересень",
       "Жовтень",
       "Листопад",
-      "Грудень",
+      "Грудень"
     ];
 
     Ext.Date.dayNames = [
@@ -31,7 +31,7 @@ Ext.onReady(function () {
       "Середа",
       "Четвер",
       "П’ятниця",
-      "Субота",
+      "Субота"
     ];
   }
 
@@ -41,35 +41,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u20b4",
       // Ukranian Hryvnia
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.ukr.view.View", {
   override: "Ext.view.View",
-  emptyText: "<Порожньо>",
+  emptyText: "<Порожньо>"
 });
 
 Ext.define("Ext.locale.ukr.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} обраних рядків",
+  dragText: "{0} обраних рядків"
 });
 
 Ext.define("Ext.locale.ukr.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Закрити цю вкладку",
+  closeText: "Закрити цю вкладку"
 });
 
 Ext.define("Ext.locale.ukr.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Хибне значення",
+  invalidText: "Хибне значення"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ukr.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Завантаження...",
+  loadingText: "Завантаження..."
 });
 
 Ext.define("Ext.locale.ukr.picker.Date", {
@@ -84,13 +84,13 @@ Ext.define("Ext.locale.ukr.picker.Date", {
   monthYearText: "Вибір місяця (Control+Вверх/Вниз для вибору року)",
   todayTip: "{0} (Пробіл)",
   format: "d.m.y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.ukr.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Відміна",
+  cancelText: "Відміна"
 });
 
 Ext.define("Ext.locale.ukr.toolbar.Paging", {
@@ -103,7 +103,7 @@ Ext.define("Ext.locale.ukr.toolbar.Paging", {
   lastText: "Остання сторінка",
   refreshText: "Освіжити",
   displayMsg: "Відображення записів з {0} по {1}, всього {2}",
-  emptyMsg: "Дані для відображення відсутні",
+  emptyMsg: "Дані для відображення відсутні"
 });
 
 Ext.define("Ext.locale.ukr.form.field.Text", {
@@ -112,14 +112,14 @@ Ext.define("Ext.locale.ukr.form.field.Text", {
   maxLengthText: "Максимальна довжина цього поля {0}",
   blankText: "Це поле є обов’язковим для заповнення",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.ukr.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Значення у цьому полі не може бути меньше {0}",
   maxText: "Значення у цьому полі не може бути більше {0}",
-  nanText: "{0} не є числом",
+  nanText: "{0} не є числом"
 });
 
 Ext.define("Ext.locale.ukr.form.field.Date", {
@@ -129,20 +129,20 @@ Ext.define("Ext.locale.ukr.form.field.Date", {
   minText: "Дата у цьому полі повинна бути більша {0}",
   maxText: "Дата у цьому полі повинна бути меньша {0}",
   invalidText: "{0} хибна дата - дата повинна бути вказана у форматі {1}",
-  format: "d.m.y",
+  format: "d.m.y"
 });
 
 Ext.define(
   "Ext.locale.ukr.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Завантаження...",
+      loadingText: "Завантаження..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.ukr.form.field.VTypes", {
@@ -154,14 +154,14 @@ Ext.define("Ext.locale.ukr.form.field.VTypes", {
   alphaText:
     'Це поле повинно містити виключно латинські літери та символ підкреслення "_"',
   alphanumText:
-    'Це поле повинно містити виключно латинські літери, цифри та символ підкреслення "_"',
+    'Це поле повинно містити виключно латинські літери, цифри та символ підкреслення "_"'
 });
 
 Ext.define(
   "Ext.locale.ukr.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Будь-ласка введіть адресу:",
+    createLinkText: "Будь-ласка введіть адресу:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -169,76 +169,76 @@ Ext.define(
         bold: {
           title: "Напівжирний (Ctrl+B)",
           text: "Зробити напівжирним виділений текст.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Курсив (Ctrl+I)",
           text: "Зробити курсивом виділений текст.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Підкреслений (Ctrl+U)",
           text: "Зробити підкресленим виділений текст.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Збільшити розмір",
           text: "Збільшити розмір шрифта.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Зменьшити розмір",
           text: "Зменьшити розмір шрифта.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Заливка",
           text: "Змінити колір фону для виділеного тексту або абзацу.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Колір тексту",
           text: "Змінити колір виділеного тексту або абзацу.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Вирівняти текст по лівому полю",
           text: "Вирівнювання тексту по лівому полю.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Вирівняти текст по центру",
           text: "Вирівнювання тексту по центру.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Вирівняти текст по правому полю",
           text: "Вирівнювання тексту по правому полю.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Маркери",
           text: "Почати маркований список.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Нумерація",
           text: "Почати нумернований список.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Вставити гіперпосилання",
           text: "Створення посилання із виділеного тексту.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Джерельний код",
           text: "Режим редагування джерельного коду.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.ukr.grid.header.Container", {
@@ -247,14 +247,14 @@ Ext.define("Ext.locale.ukr.grid.header.Container", {
   sortDescText: "Сортувати по спаданню",
   lockText: "Закріпити стовпець",
   unlockText: "Відкріпити стовпець",
-  columnsText: "Стовпці",
+  columnsText: "Стовпці"
 });
 
 Ext.define("Ext.locale.ukr.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Назва",
   valueText: "Значення",
-  dateFormat: "j.m.Y",
+  dateFormat: "j.m.Y"
 });
 
 Ext.define("Ext.locale.ukr.window.MessageBox", {
@@ -263,11 +263,11 @@ Ext.define("Ext.locale.ukr.window.MessageBox", {
     ok: "OK",
     cancel: "Відміна",
     yes: "Так",
-    no: "Ні",
-  },
+    no: "Ні"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.ukr.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

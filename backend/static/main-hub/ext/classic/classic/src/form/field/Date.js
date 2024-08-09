@@ -406,7 +406,7 @@ Ext.define("Ext.form.field.Date", {
     if (picker) {
       picker.minText = Ext.String.format(
         me.minText,
-        me.formatDate(me.minValue),
+        me.formatDate(me.minValue)
       );
       picker.setMinDate(minValue);
     }
@@ -425,7 +425,7 @@ Ext.define("Ext.form.field.Date", {
     if (picker) {
       picker.maxText = Ext.String.format(
         me.maxText,
-        me.formatDate(me.maxValue),
+        me.formatDate(me.maxValue)
       );
       picker.setMaxDate(maxValue);
     }
@@ -469,7 +469,7 @@ Ext.define("Ext.form.field.Date", {
     value = me.parseDate(value);
     if (!value) {
       errors.push(
-        format(me.invalidText, svalue, Ext.Date.unescapeFormat(me.format)),
+        format(me.invalidText, svalue, Ext.Date.unescapeFormat(me.format))
       );
       return errors;
     }
@@ -612,7 +612,7 @@ Ext.define("Ext.form.field.Date", {
       parsedDate = utilDate.parse(
         value + " " + me.initTime,
         format + " " + me.initTimeFormat,
-        strict,
+        strict
       );
       if (parsedDate) {
         result = utilDate.clearTime(parsedDate);
@@ -711,24 +711,24 @@ Ext.define("Ext.form.field.Date", {
       minText: format(me.minText, me.formatDate(me.minValue)),
       ariaMinText: format(
         me.ariaMinText,
-        me.formatDate(me.minValue, me.ariaFormat),
+        me.formatDate(me.minValue, me.ariaFormat)
       ),
       maxText: format(me.maxText, me.formatDate(me.maxValue)),
       ariaMaxText: format(
         me.ariaMaxText,
-        me.formatDate(me.maxValue, me.ariaFormat),
+        me.formatDate(me.maxValue, me.ariaFormat)
       ),
       listeners: {
         scope: me,
         select: me.onSelect,
-        tabout: me.onTabOut,
+        tabout: me.onTabOut
       },
       keyNavConfig: {
         esc: function () {
           me.inputEl.focus();
           me.collapse();
-        },
-      },
+        }
+      }
     });
   },
 
@@ -773,7 +773,7 @@ Ext.define("Ext.form.field.Date", {
       me.setValue(v);
     }
     me.callParent([e]);
-  },
+  }
 
   /**
    * @cfg {Boolean} grow

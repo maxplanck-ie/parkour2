@@ -21,7 +21,7 @@ Ext.define("Ext.layout.container.SegmentedButton", {
       for (i = 0, ln = result.length; i < ln; i++) {
         result[i] = {
           cls: me._btnRowCls,
-          cn: result[i],
+          cn: result[i]
         };
       }
     }
@@ -50,5 +50,5 @@ Ext.define("Ext.layout.container.SegmentedButton", {
         row.destroy();
       }
     }
-  },
+  }
 });

@@ -336,7 +336,7 @@ Ext.define("Ext.Action", {
   execute: function () {
     this.initialConfig.handler.apply(
       this.initialConfig.scope || Ext.global,
-      arguments,
+      arguments
     );
-  },
+  }
 });

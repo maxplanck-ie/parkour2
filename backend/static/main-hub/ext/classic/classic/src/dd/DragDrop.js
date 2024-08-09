@@ -470,7 +470,7 @@ Ext.define("Ext.dd.DragDrop", {
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0,
+    bottom: 0
   },
 
   /**
@@ -517,7 +517,7 @@ Ext.define("Ext.dd.DragDrop", {
         x: s.left,
         y: s.top,
         width: Ext.Element.getViewportWidth(),
-        height: Ext.Element.getViewportHeight(),
+        height: Ext.Element.getViewportHeight()
       };
     } else {
       xy = constrainEl.getXY();
@@ -525,7 +525,7 @@ Ext.define("Ext.dd.DragDrop", {
         x: xy[0],
         y: xy[1],
         width: constrainDom.clientWidth,
-        height: constrainDom.clientHeight,
+        height: constrainDom.clientHeight
       };
     }
 
@@ -536,12 +536,12 @@ Ext.define("Ext.dd.DragDrop", {
     this.setXConstraint(
       leftSpace - (pad.left || 0), // left
       c.width - leftSpace - ddBox.width - (pad.right || 0), //right
-      this.xTickSize,
+      this.xTickSize
     );
     this.setYConstraint(
       topSpace - (pad.top || 0), //top
       c.height - topSpace - ddBox.height - (pad.bottom || 0), //bottom
-      this.yTickSize,
+      this.yTickSize
     );
   },
 
@@ -1102,7 +1102,7 @@ Ext.define("Ext.dd.DragDrop", {
       this.setXConstraint(
         this.leftConstraint,
         this.rightConstraint,
-        this.xTickSize,
+        this.xTickSize
       );
     }
 
@@ -1110,7 +1110,7 @@ Ext.define("Ext.dd.DragDrop", {
       this.setYConstraint(
         this.topConstraint,
         this.bottomConstraint,
-        this.yTickSize,
+        this.yTickSize
       );
     }
   },
@@ -1156,5 +1156,5 @@ Ext.define("Ext.dd.DragDrop", {
    */
   toString: function () {
     return "DragDrop " + this.id;
-  },
+  }
 });

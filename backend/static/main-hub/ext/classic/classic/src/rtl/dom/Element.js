@@ -7,7 +7,7 @@ Ext.define(
 
     rtlXAnchors: {
       l: "r",
-      r: "l",
+      r: "l"
     },
 
     _positionTopRight: ["position", "top", "right"],
@@ -42,7 +42,7 @@ Ext.define(
           " " +
           a(b.right, units)
         );
-      },
+      }
     },
 
     anchorAnimX: function (anchor) {
@@ -215,7 +215,7 @@ Ext.define(
 
       if (deltaX) {
         left = me.rtlNormalizeScrollLeft(
-          me.constrainScrollLeft(me.rtlGetScrollLeft() + deltaX),
+          me.constrainScrollLeft(me.rtlGetScrollLeft() + deltaX)
         );
 
         me.scrollTo("left", left, animate);
@@ -224,7 +224,7 @@ Ext.define(
         me.scrollTo(
           "top",
           me.constrainScrollTop(dom.scrollTop + deltaY),
-          animate,
+          animate
         );
       }
 
@@ -240,7 +240,7 @@ Ext.define(
         animate,
         highlight,
         "rtlGetScrollLeft",
-        "rtlScrollTo",
+        "rtlScrollTo"
       );
     },
 
@@ -310,7 +310,7 @@ Ext.define(
 
       return {
         right: pos.x,
-        top: pos.y,
+        top: pos.y
       };
     },
 
@@ -356,7 +356,7 @@ Ext.define(
       top = typeof y === "number" ? y - xy[1] + top : undefined;
       return {
         x: right,
-        y: top,
+        y: top
       };
     },
 
@@ -394,7 +394,7 @@ Ext.define(
       }
 
       return wrapEl;
-    },
+    }
   },
   function () {
     var Element = this;
@@ -420,9 +420,9 @@ Ext.define(
           children: [
             {
               tag: "div",
-              style: "height:30px;width:150px;background-color:red",
-            },
-          ],
+              style: "height:30px;width:150px;background-color:red"
+            }
+          ]
         }),
         dom = el.dom,
         inner = dom.firstChild,
@@ -484,7 +484,7 @@ Ext.define(
         // save the direction property so we can set it back when we are done.
         direction = bodyStyle.direction,
         el = Ext.getBody().createChild(
-          '<div style="height:20000px;width:20000px;"></div>',
+          '<div style="height:20000px;width:20000px;"></div>'
         );
 
       bodyStyle.direction = "rtl";
@@ -537,5 +537,5 @@ Ext.define(
       cacheRtlDocScrollFlag();
       cacheRtlScrollFlag();
     });
-  },
+  }
 );

@@ -129,7 +129,7 @@ Ext.define("Ext.dataview.DataView", {
     "Ext.LoadMask",
     "Ext.data.StoreManager",
     "Ext.dataview.component.Container",
-    "Ext.dataview.element.Container",
+    "Ext.dataview.element.Container"
   ],
 
   /**
@@ -285,7 +285,7 @@ Ext.define("Ext.dataview.DataView", {
      * more information about the relationship between Store and DataView.
      * @accessor
      */
-    store: null,
+    store: null
   },
 
   config: {
@@ -427,7 +427,7 @@ Ext.define("Ext.dataview.DataView", {
      * Scroll the DataView to the top when the DataView is refreshed.
      * @accessor
      */
-    scrollToTopOnRefresh: true,
+    scrollToTopOnRefresh: true
   },
 
   classCls: Ext.baseCSSPrefix + "dataview",
@@ -455,7 +455,7 @@ Ext.define("Ext.dataview.DataView", {
     var layout = this.getLayout();
     if (layout && !layout.isAuto) {
       Ext.Logger.error(
-        "The base layout for a DataView must always be an Auto Layout",
+        "The base layout for a DataView must always be an Auto Layout"
       );
     }
     //</debug>
@@ -483,7 +483,7 @@ Ext.define("Ext.dataview.DataView", {
     add: "onStoreAdd",
     remove: "onStoreRemove",
     clear: "onStoreClear",
-    update: "onStoreUpdate",
+    update: "onStoreUpdate"
   },
 
   initialize: function () {
@@ -519,7 +519,7 @@ Ext.define("Ext.dataview.DataView", {
       itemswipe: "onItemSwipe",
       itemmouseover: "onItemMouseOver",
       itemmouseout: "onItemMouseOut",
-      scope: me,
+      scope: me
     });
 
     if (me.getStore()) {
@@ -528,7 +528,7 @@ Ext.define("Ext.dataview.DataView", {
       } else {
         me.on({
           painted: "refresh",
-          single: true,
+          single: true
         });
       }
     }
@@ -607,7 +607,7 @@ Ext.define("Ext.dataview.DataView", {
     me.fireAction(
       "itemtouchstart",
       [me, index, target, record, e],
-      "doItemTouchStart",
+      "doItemTouchStart"
     );
   },
 
@@ -617,7 +617,7 @@ Ext.define("Ext.dataview.DataView", {
     if (record) {
       if (pressedDelay > 0) {
         me.pressedTimeout = Ext.defer(me.doAddPressedCls, pressedDelay, me, [
-          record,
+          record
         ]);
       } else {
         me.doAddPressedCls(record);
@@ -779,7 +779,7 @@ Ext.define("Ext.dataview.DataView", {
         me.fireAction(
           "deselect",
           [me, record, suppressEvent],
-          "doItemDeselect",
+          "doItemDeselect"
         );
       }
     }
@@ -807,8 +807,8 @@ Ext.define("Ext.dataview.DataView", {
       this.setStore(
         Ext.create("Ext.data.Store", {
           data: data,
-          autoDestroy: true,
-        }),
+          autoDestroy: true
+        })
       );
     } else {
       store.add(data);
@@ -898,7 +898,7 @@ Ext.define("Ext.dataview.DataView", {
     if (loadingText && me.isPainted()) {
       me.setMasked({
         xtype: "loadmask",
-        message: loadingText,
+        message: loadingText
       });
     }
 
@@ -919,7 +919,7 @@ Ext.define("Ext.dataview.DataView", {
         xtype: "component",
         cls: me.emptyTextCls,
         html: newEmptyText,
-        hidden: true,
+        hidden: true
       });
       store = me.getStore();
       if (store && me.hasLoadedStore && !store.getCount()) {
@@ -1149,5 +1149,5 @@ Ext.define("Ext.dataview.DataView", {
         container.updateListItem(record, item);
       }
     }
-  },
+  }
 });

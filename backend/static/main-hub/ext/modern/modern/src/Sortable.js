@@ -4,7 +4,7 @@
  */
 Ext.define("Ext.Sortable", {
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
 
   requires: ["Ext.util.Draggable"],
@@ -23,7 +23,7 @@ Ext.define("Ext.Sortable", {
      * @private
      * @accessor
      */
-    delay: 0,
+    delay: 0
   },
 
   /**
@@ -130,7 +130,7 @@ Ext.define("Ext.Sortable", {
        * @param {Ext.Element} el The Element being dragged.
        * @param {Number} index The index of the element after the sort change.
        */
-      "sortchange",
+      "sortchange"
 
       // not yet implemented.
       // 'sortupdate',
@@ -188,12 +188,12 @@ Ext.define("Ext.Sortable", {
       revert: this.revert,
       direction: this.direction,
       constrain: this.constrain === true ? this.el : this.constrain,
-      animationDuration: 100,
+      animationDuration: 100
     });
     draggable.on({
       drag: this.onDrag,
       dragend: this.onDragEnd,
-      scope: this,
+      scope: this
     });
 
     this.dragEl = t;
@@ -283,7 +283,7 @@ Ext.define("Ext.Sortable", {
             "sortchange",
             this,
             draggable.el,
-            this.el.select(this.itemSelector, false).indexOf(draggable.el.dom),
+            this.el.select(this.itemSelector, false).indexOf(draggable.el.dom)
           );
           return;
         }
@@ -308,7 +308,7 @@ Ext.define("Ext.Sortable", {
   enable: function () {
     this.el.on(this.startEventName, this.onStart, this, {
       delegate: this.itemSelector,
-      holdThreshold: this.getDelay(),
+      holdThreshold: this.getDelay()
     });
     this.disabled = false;
   },
@@ -351,5 +351,5 @@ Ext.define("Ext.Sortable", {
    */
   isHorizontal: function () {
     return this.horizontal;
-  },
+  }
 });

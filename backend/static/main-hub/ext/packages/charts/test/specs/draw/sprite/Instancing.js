@@ -3,7 +3,7 @@ describe("Ext.draw.sprite.Instancing", function () {
     it("should set the template's parent to the instancing sprite", function () {
       var template = new Ext.draw.sprite.Rect(),
         instancing = new Ext.draw.sprite.Instancing({
-          template: template,
+          template: template
         });
 
       expect(template.getParent()).toBe(instancing);
@@ -14,7 +14,7 @@ describe("Ext.draw.sprite.Instancing", function () {
     it("should destroy the template when destroyed", function () {
       var template = new Ext.draw.sprite.Rect(),
         instancing = new Ext.draw.sprite.Instancing({
-          template: template,
+          template: template
         });
 
       instancing.destroy();
@@ -28,7 +28,7 @@ describe("Ext.draw.sprite.Instancing", function () {
       var template = new Ext.draw.sprite.Circle({
           cx: 200,
           r: 60,
-          fillStyle: "#00ff00",
+          fillStyle: "#00ff00"
         }),
         instancing = new Ext.draw.sprite.Instancing({
           template: template,
@@ -36,12 +36,12 @@ describe("Ext.draw.sprite.Instancing", function () {
             {
               cy: 150,
               r: 30,
-              fillStyle: "#ff0000",
+              fillStyle: "#ff0000"
             },
             {
-              cy: 300,
-            },
-          ],
+              cy: 300
+            }
+          ]
         });
 
       expect(instancing.getCount()).toBe(2);
@@ -55,7 +55,7 @@ describe("Ext.draw.sprite.Instancing", function () {
     it("should destroy the template when destroyed", function () {
       var template = new Ext.draw.sprite.Rect(),
         instancing = new Ext.draw.sprite.Instancing({
-          template: template,
+          template: template
         });
 
       instancing.destroy();
@@ -76,10 +76,10 @@ describe("Ext.draw.sprite.Instancing", function () {
         fillOpacity: 1,
         strokeOpacity: 1,
         fillStyle: "red",
-        strokeStyle: "red",
+        strokeStyle: "red"
       });
       instancingSprite = new Ext.draw.sprite.Instancing({
-        template: sprite,
+        template: sprite
       });
       surface.add(instancingSprite);
       container.add(surface);
@@ -99,12 +99,12 @@ describe("Ext.draw.sprite.Instancing", function () {
         instancingSprite.add({
           r: 50,
           cx: 300,
-          cy: 300,
+          cy: 300
         });
         instancingSprite.add({
           r: 100,
           cx: 100,
-          cy: 100,
+          cy: 100
         });
         var result = instancingSprite.hitTest([90, 90]);
         expect(result.isInstance).toBe(true);
@@ -112,7 +112,7 @@ describe("Ext.draw.sprite.Instancing", function () {
         expect(result.index).toBe(1);
         expect(result.template).toBe(sprite);
         expect(result.sprite).toBe(instancingSprite);
-      },
+      }
     );
 
     it("should return null for hidden instances", function () {
@@ -120,7 +120,7 @@ describe("Ext.draw.sprite.Instancing", function () {
         r: 100,
         cx: 100,
         cy: 100,
-        hidden: true,
+        hidden: true
       });
       var result = instancingSprite.hitTest([90, 90]);
       expect(result).toBe(null);

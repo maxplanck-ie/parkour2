@@ -27,7 +27,7 @@ Ext.define("Ext.draw.TextMeasurer", {
       position: "relative",
       float: "left", // 'float' is a reserved word. Don't unquote, or it will break the CMD build.
       width: 0,
-      height: 0,
+      height: 0
     },
     //<debug>
     // Tell the spec runner to ignore this element when checking if the dom is clean.
@@ -43,9 +43,9 @@ Ext.define("Ext.draw.TextMeasurer", {
         padding: 0,
         margin: 0,
         "z-index": -100000,
-        "white-space": "nowrap",
-      },
-    },
+        "white-space": "nowrap"
+      }
+    }
   },
 
   /**
@@ -75,8 +75,8 @@ Ext.define("Ext.draw.TextMeasurer", {
           position: "relative",
           float: "left", // DO NOT REMOVE THE QUOTE OR IT WILL BREAK COMPRESSOR
           width: 0,
-          height: 0,
-        },
+          height: 0
+        }
       });
       me.measureDiv = measureDiv = Ext.Element.create({
         style: {
@@ -87,8 +87,8 @@ Ext.define("Ext.draw.TextMeasurer", {
           "white-space": "nowrap",
           display: "block",
           padding: 0,
-          margin: 0,
-        },
+          margin: 0
+        }
       });
       Ext.getBody().appendChild(parent);
       parent.appendChild(measureDiv);
@@ -96,7 +96,7 @@ Ext.define("Ext.draw.TextMeasurer", {
     if (font) {
       measureDiv.setStyle({
         font: font,
-        lineHeight: "normal",
+        lineHeight: "normal"
       });
     }
     measureDiv.setText("(" + text + ")");
@@ -151,7 +151,7 @@ Ext.define("Ext.draw.TextMeasurer", {
     }
     return (cache[text] = {
       width: width,
-      height: height,
+      height: height
     });
   },
 
@@ -202,7 +202,7 @@ Ext.define("Ext.draw.TextMeasurer", {
     return {
       width: width,
       height: height,
-      sizes: sizes,
+      sizes: sizes
     };
-  },
+  }
 });

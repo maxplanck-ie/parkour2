@@ -19,9 +19,9 @@ Ext.theme.addShortcuts({
       config: {
         width: 100,
         height: 40,
-        hide: function () {},
-      },
-    },
+        hide: function () {}
+      }
+    }
   ],
 
   "widget.buttongroup": [
@@ -31,36 +31,36 @@ Ext.theme.addShortcuts({
       config: {
         columns: 2,
         defaults: {
-          scale: "small",
+          scale: "small"
         },
         items: [
           {
             xtype: "splitbutton",
             text: "Menu Button",
             iconCls: "add16",
-            menu: [{ text: "Menu Item 1" }],
+            menu: [{ text: "Menu Item 1" }]
           },
           {
             xtype: "splitbutton",
             text: "Cut",
             iconCls: "add16",
-            menu: [{ text: "Cut Menu Item" }],
+            menu: [{ text: "Cut Menu Item" }]
           },
           {
             text: "Copy",
-            iconCls: "add16",
+            iconCls: "add16"
           },
           {
             text: "Paste",
             iconCls: "add16",
-            menu: [{ text: "Paste Menu Item" }],
+            menu: [{ text: "Paste Menu Item" }]
           },
           {
             text: "Format",
-            iconCls: "add16",
-          },
-        ],
-      },
+            iconCls: "add16"
+          }
+        ]
+      }
     },
     {
       folder: "btn-group",
@@ -69,37 +69,37 @@ Ext.theme.addShortcuts({
         columns: 2,
         title: "Manifest",
         defaults: {
-          scale: "small",
+          scale: "small"
         },
         items: [
           {
             xtype: "splitbutton",
             text: "Menu Button",
             iconCls: "add16",
-            menu: [{ text: "Menu Item 1" }],
+            menu: [{ text: "Menu Item 1" }]
           },
           {
             xtype: "splitbutton",
             text: "Cut",
             iconCls: "add16",
-            menu: [{ text: "Cut Menu Item" }],
+            menu: [{ text: "Cut Menu Item" }]
           },
           {
             text: "Copy",
-            iconCls: "add16",
+            iconCls: "add16"
           },
           {
             text: "Paste",
             iconCls: "add16",
-            menu: [{ text: "Paste Menu Item" }],
+            menu: [{ text: "Paste Menu Item" }]
           },
           {
             text: "Format",
-            iconCls: "add16",
-          },
-        ],
-      },
-    },
+            iconCls: "add16"
+          }
+        ]
+      }
+    }
   ],
 
   "widget.progressbar": [
@@ -111,9 +111,9 @@ Ext.theme.addShortcuts({
       config: {
         width: 100,
         value: 1,
-        animate: false,
-      },
-    },
+        animate: false
+      }
+    }
   ],
 
   "widget.tabbar": [
@@ -128,9 +128,9 @@ Ext.theme.addShortcuts({
         listeners: {
           render: function (tabbar) {
             tabbar.strip.hide();
-          },
-        },
-      },
+          }
+        }
+      }
     },
     {
       xtype: "widget.tabbar",
@@ -143,9 +143,9 @@ Ext.theme.addShortcuts({
         listeners: {
           render: function (tabbar) {
             tabbar.strip.hide();
-          },
-        },
-      },
+          }
+        }
+      }
     },
     {
       xtype: "widget.tabbar",
@@ -158,9 +158,9 @@ Ext.theme.addShortcuts({
         listeners: {
           render: function (tabbar) {
             tabbar.strip.hide();
-          },
-        },
-      },
+          }
+        }
+      }
     },
     {
       xtype: "widget.tabbar",
@@ -173,10 +173,10 @@ Ext.theme.addShortcuts({
         listeners: {
           render: function (tabbar) {
             tabbar.strip.hide();
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   ],
 
   "widget.tab": [
@@ -184,32 +184,32 @@ Ext.theme.addShortcuts({
       filename: "tab-{ui}-top",
       config: {
         text: "Normal Top Tab",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-top-focus",
       config: {
         text: "Focused Top Tab",
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-top-active",
       config: {
         text: "Active Top Tab",
         active: true,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-top-over",
       over: true,
       config: {
         text: "Over Top Tab",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-top-focus-active",
@@ -217,8 +217,8 @@ Ext.theme.addShortcuts({
         text: "Focused Active Top Tab",
         active: true,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-top-focus-over",
@@ -226,16 +226,16 @@ Ext.theme.addShortcuts({
       config: {
         text: "Focused Over Top Tab",
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-top-disabled",
       config: {
         text: "Disabled Top Tab",
         closable: false,
-        disabled: true,
-      },
+        disabled: true
+      }
     },
     {
       filename: "tab-{ui}-right",
@@ -243,8 +243,8 @@ Ext.theme.addShortcuts({
         text: "Normal Right Tab",
         tabPosition: "right",
         rotation: 0,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-right-focus",
@@ -253,8 +253,8 @@ Ext.theme.addShortcuts({
         tabPosition: "right",
         rotation: 0,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-right-active",
@@ -263,8 +263,8 @@ Ext.theme.addShortcuts({
         tabPosition: "right",
         rotation: 0,
         active: true,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-right-over",
@@ -273,8 +273,8 @@ Ext.theme.addShortcuts({
         text: "Over Right Tab",
         tabPosition: "right",
         rotation: 0,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-right-focus-active",
@@ -284,8 +284,8 @@ Ext.theme.addShortcuts({
         rotation: 0,
         active: true,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-right-focus-over",
@@ -295,8 +295,8 @@ Ext.theme.addShortcuts({
         tabPosition: "right",
         rotation: 0,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-right-disabled",
@@ -305,8 +305,8 @@ Ext.theme.addShortcuts({
         tabPosition: "right",
         rotation: 0,
         closable: false,
-        disabled: true,
-      },
+        disabled: true
+      }
     },
     {
       filename: "tab-{ui}-bottom",
@@ -314,8 +314,8 @@ Ext.theme.addShortcuts({
         text: "Normal Bottom Tab",
         tabPosition: "bottom",
         rotation: 0,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-bottom-focus",
@@ -324,8 +324,8 @@ Ext.theme.addShortcuts({
         tabPosition: "bottom",
         rotation: 0,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-bottom-active",
@@ -334,8 +334,8 @@ Ext.theme.addShortcuts({
         tabPosition: "bottom",
         rotation: 0,
         active: true,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-bottom-over",
@@ -344,8 +344,8 @@ Ext.theme.addShortcuts({
         text: "Over Bottom Tab",
         tabPosition: "bottom",
         rotation: 0,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-bottom-focus-active",
@@ -355,8 +355,8 @@ Ext.theme.addShortcuts({
         rotation: 0,
         active: true,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-bottom-focus-over",
@@ -366,8 +366,8 @@ Ext.theme.addShortcuts({
         tabPosition: "bottom",
         rotation: 0,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-bottom-disabled",
@@ -376,8 +376,8 @@ Ext.theme.addShortcuts({
         tabPosition: "bottom",
         rotation: 0,
         closable: false,
-        disabled: true,
-      },
+        disabled: true
+      }
     },
     {
       filename: "tab-{ui}-left",
@@ -385,8 +385,8 @@ Ext.theme.addShortcuts({
         text: "Normal left Tab",
         tabPosition: "left",
         rotation: 0,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-left-focus",
@@ -395,8 +395,8 @@ Ext.theme.addShortcuts({
         tabPosition: "left",
         rotation: 0,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-left-active",
@@ -405,8 +405,8 @@ Ext.theme.addShortcuts({
         tabPosition: "left",
         rotation: 0,
         active: true,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-left-over",
@@ -415,8 +415,8 @@ Ext.theme.addShortcuts({
         text: "Over left Tab",
         tabPosition: "left",
         rotation: 0,
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-left-focus-active",
@@ -426,8 +426,8 @@ Ext.theme.addShortcuts({
         rotation: 0,
         active: true,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-left-focus-over",
@@ -437,8 +437,8 @@ Ext.theme.addShortcuts({
         tabPosition: "left",
         rotation: 0,
         cls: Ext.baseCSSPrefix + "tab-focus",
-        closable: false,
-      },
+        closable: false
+      }
     },
     {
       filename: "tab-{ui}-left-disabled",
@@ -447,9 +447,9 @@ Ext.theme.addShortcuts({
         tabPosition: "left",
         rotation: 0,
         closable: false,
-        disabled: true,
-      },
-    },
+        disabled: true
+      }
+    }
   ],
 
   "widget.window": [
@@ -460,8 +460,8 @@ Ext.theme.addShortcuts({
         header: false,
         resizable: false,
         height: 200,
-        width: 200,
-      },
+        width: 200
+      }
     },
     // window w/header
     {
@@ -471,8 +471,8 @@ Ext.theme.addShortcuts({
         closable: false,
         width: 200,
         html: "&#160;",
-        headerPosition: "top",
-      },
+        headerPosition: "top"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "window-header",
@@ -481,8 +481,8 @@ Ext.theme.addShortcuts({
         closable: false,
         width: 200,
         html: "&#160;",
-        headerPosition: "bottom",
-      },
+        headerPosition: "bottom"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "window-header",
@@ -491,8 +491,8 @@ Ext.theme.addShortcuts({
         closable: false,
         height: 200,
         width: 200,
-        headerPosition: "left",
-      },
+        headerPosition: "left"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "window-header",
@@ -501,8 +501,8 @@ Ext.theme.addShortcuts({
         closable: false,
         height: 200,
         width: 200,
-        headerPosition: "right",
-      },
+        headerPosition: "right"
+      }
     },
     // collapsed window w/header
     {
@@ -513,8 +513,8 @@ Ext.theme.addShortcuts({
         closable: false,
         expandOnShow: false,
         width: 200,
-        headerPosition: "top",
-      },
+        headerPosition: "top"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "window-header",
@@ -524,8 +524,8 @@ Ext.theme.addShortcuts({
         closable: false,
         expandOnShow: false,
         width: 200,
-        headerPosition: "bottom",
-      },
+        headerPosition: "bottom"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "window-header",
@@ -536,8 +536,8 @@ Ext.theme.addShortcuts({
         expandOnShow: false,
         height: 200,
         width: 200,
-        headerPosition: "left",
-      },
+        headerPosition: "left"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "window-header",
@@ -548,9 +548,9 @@ Ext.theme.addShortcuts({
         expandOnShow: false,
         height: 200,
         width: 200,
-        headerPosition: "right",
-      },
-    },
+        headerPosition: "right"
+      }
+    }
   ], // window
 
   "widget.panel": [
@@ -560,8 +560,8 @@ Ext.theme.addShortcuts({
         height: 200,
         frame: true,
         bodyPadding: 20,
-        html: "Framed panel",
-      },
+        html: "Framed panel"
+      }
     },
     // panel w/header
     {
@@ -570,8 +570,8 @@ Ext.theme.addShortcuts({
         title: "Top",
         width: 200,
         html: "&#160;",
-        headerPosition: "top",
-      },
+        headerPosition: "top"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -579,8 +579,8 @@ Ext.theme.addShortcuts({
         title: "Bottom",
         width: 200,
         html: "&#160;",
-        headerPosition: "bottom",
-      },
+        headerPosition: "bottom"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -588,8 +588,8 @@ Ext.theme.addShortcuts({
         title: "Left",
         height: 200,
         width: 200,
-        headerPosition: "left",
-      },
+        headerPosition: "left"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -597,8 +597,8 @@ Ext.theme.addShortcuts({
         title: "Right",
         height: 200,
         width: 200,
-        headerPosition: "right",
-      },
+        headerPosition: "right"
+      }
     },
     // framed panel w/header
     {
@@ -608,8 +608,8 @@ Ext.theme.addShortcuts({
         width: 200,
         frame: true,
         html: "&#160;",
-        headerPosition: "top",
-      },
+        headerPosition: "top"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -618,8 +618,8 @@ Ext.theme.addShortcuts({
         width: 200,
         frame: true,
         html: "&#160;",
-        headerPosition: "bottom",
-      },
+        headerPosition: "bottom"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -628,8 +628,8 @@ Ext.theme.addShortcuts({
         height: 200,
         width: 200,
         frame: true,
-        headerPosition: "left",
-      },
+        headerPosition: "left"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -638,8 +638,8 @@ Ext.theme.addShortcuts({
         height: 200,
         width: 200,
         frame: true,
-        headerPosition: "right",
-      },
+        headerPosition: "right"
+      }
     },
     // collapsed framed panel w/header
     {
@@ -649,8 +649,8 @@ Ext.theme.addShortcuts({
         collapsed: true,
         width: 200,
         frame: true,
-        headerPosition: "top",
-      },
+        headerPosition: "top"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -659,8 +659,8 @@ Ext.theme.addShortcuts({
         collapsed: true,
         width: 200,
         frame: true,
-        headerPosition: "bottom",
-      },
+        headerPosition: "bottom"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -670,8 +670,8 @@ Ext.theme.addShortcuts({
         height: 200,
         width: 200,
         frame: true,
-        headerPosition: "left",
-      },
+        headerPosition: "left"
+      }
     },
     {
       delegate: "." + Ext.baseCSSPrefix + "panel-header",
@@ -681,9 +681,9 @@ Ext.theme.addShortcuts({
         height: 200,
         width: 200,
         frame: true,
-        headerPosition: "right",
-      },
-    },
+        headerPosition: "right"
+      }
+    }
   ],
 
   "widget.toolbar": [
@@ -693,11 +693,11 @@ Ext.theme.addShortcuts({
         width: 200,
         items: [
           {
-            text: "test",
-          },
-        ],
-      },
-    },
+            text: "test"
+          }
+        ]
+      }
+    }
   ],
 
   "widget.button": [
@@ -707,8 +707,8 @@ Ext.theme.addShortcuts({
       config: {
         scale: "small",
         text: "&#160;",
-        width: 100,
-      },
+        width: 100
+      }
     },
     {
       filename: "btn-{ui}-small-over",
@@ -716,8 +716,8 @@ Ext.theme.addShortcuts({
       config: {
         scale: "small",
         text: "&#160;",
-        width: 100,
-      },
+        width: 100
+      }
     },
     {
       filename: "btn-{ui}-small-focus",
@@ -725,8 +725,8 @@ Ext.theme.addShortcuts({
         scale: "small",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-focus",
-      },
+        cls: Ext.baseCSSPrefix + "btn-focus"
+      }
     },
     {
       filename: "btn-{ui}-small-pressed",
@@ -734,8 +734,8 @@ Ext.theme.addShortcuts({
         scale: "small",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-pressed",
-      },
+        cls: Ext.baseCSSPrefix + "btn-pressed"
+      }
     },
     {
       filename: "btn-{ui}-small-focus-over",
@@ -743,8 +743,8 @@ Ext.theme.addShortcuts({
         scale: "small",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-over",
-      },
+        cls: Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-over"
+      }
     },
     {
       filename: "btn-{ui}-small-focus-pressed",
@@ -753,8 +753,8 @@ Ext.theme.addShortcuts({
         text: "&#160;",
         width: 100,
         cls:
-          Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-pressed",
-      },
+          Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-pressed"
+      }
     },
     {
       filename: "btn-{ui}-small-disabled",
@@ -762,8 +762,8 @@ Ext.theme.addShortcuts({
         scale: "small",
         text: "&#160;",
         width: 100,
-        disabled: true,
-      },
+        disabled: true
+      }
     },
 
     //medium button
@@ -772,8 +772,8 @@ Ext.theme.addShortcuts({
       config: {
         scale: "medium",
         text: "&#160;",
-        width: 100,
-      },
+        width: 100
+      }
     },
     {
       filename: "btn-{ui}-medium-over",
@@ -781,8 +781,8 @@ Ext.theme.addShortcuts({
       config: {
         scale: "medium",
         text: "&#160;",
-        width: 100,
-      },
+        width: 100
+      }
     },
     {
       filename: "btn-{ui}-medium-focus",
@@ -790,8 +790,8 @@ Ext.theme.addShortcuts({
         scale: "medium",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-focus",
-      },
+        cls: Ext.baseCSSPrefix + "btn-focus"
+      }
     },
     {
       filename: "btn-{ui}-medium-pressed",
@@ -799,8 +799,8 @@ Ext.theme.addShortcuts({
         scale: "medium",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-pressed",
-      },
+        cls: Ext.baseCSSPrefix + "btn-pressed"
+      }
     },
     {
       filename: "btn-{ui}-medium-focus-over",
@@ -808,8 +808,8 @@ Ext.theme.addShortcuts({
         scale: "medium",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-over",
-      },
+        cls: Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-over"
+      }
     },
     {
       filename: "btn-{ui}-medium-focus-pressed",
@@ -818,8 +818,8 @@ Ext.theme.addShortcuts({
         text: "&#160;",
         width: 100,
         cls:
-          Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-pressed",
-      },
+          Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-pressed"
+      }
     },
     {
       filename: "btn-{ui}-medium-disabled",
@@ -827,8 +827,8 @@ Ext.theme.addShortcuts({
         scale: "medium",
         text: "&#160;",
         width: 100,
-        disabled: true,
-      },
+        disabled: true
+      }
     },
 
     //large button
@@ -837,8 +837,8 @@ Ext.theme.addShortcuts({
       config: {
         scale: "large",
         text: "&#160;",
-        width: 100,
-      },
+        width: 100
+      }
     },
     {
       filename: "btn-{ui}-large-over",
@@ -846,8 +846,8 @@ Ext.theme.addShortcuts({
       config: {
         scale: "large",
         text: "&#160;",
-        width: 100,
-      },
+        width: 100
+      }
     },
     {
       filename: "btn-{ui}-large-focus",
@@ -855,8 +855,8 @@ Ext.theme.addShortcuts({
         scale: "large",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-focus",
-      },
+        cls: Ext.baseCSSPrefix + "btn-focus"
+      }
     },
     {
       filename: "btn-{ui}-large-pressed",
@@ -864,8 +864,8 @@ Ext.theme.addShortcuts({
         scale: "large",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-pressed",
-      },
+        cls: Ext.baseCSSPrefix + "btn-pressed"
+      }
     },
     {
       filename: "btn-{ui}-large-focus-over",
@@ -873,8 +873,8 @@ Ext.theme.addShortcuts({
         scale: "large",
         text: "&#160;",
         width: 100,
-        cls: Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-over",
-      },
+        cls: Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-over"
+      }
     },
     {
       filename: "btn-{ui}-large-focus-pressed",
@@ -883,8 +883,8 @@ Ext.theme.addShortcuts({
         text: "&#160;",
         width: 100,
         cls:
-          Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-pressed",
-      },
+          Ext.baseCSSPrefix + "btn-focus " + Ext.baseCSSPrefix + "btn-pressed"
+      }
     },
     {
       filename: "btn-{ui}-large-disabled",
@@ -892,9 +892,9 @@ Ext.theme.addShortcuts({
         scale: "large",
         text: "&#160;",
         width: 100,
-        disabled: true,
-      },
-    },
+        disabled: true
+      }
+    }
   ],
 
   "widget.roweditorbuttons": [
@@ -908,10 +908,10 @@ Ext.theme.addShortcuts({
           cancelBtnText: "Cancel",
           editingPlugin: {
             completeEdit: Ext.emptyFn,
-            cancelEdit: Ext.emptyFn,
-          },
-        },
-      },
+            cancelEdit: Ext.emptyFn
+          }
+        }
+      }
     },
     {
       config: {
@@ -923,10 +923,10 @@ Ext.theme.addShortcuts({
           cancelBtnText: "Cancel",
           editingPlugin: {
             completeEdit: Ext.emptyFn,
-            cancelEdit: Ext.emptyFn,
-          },
-        },
-      },
-    },
-  ],
+            cancelEdit: Ext.emptyFn
+          }
+        }
+      }
+    }
+  ]
 });

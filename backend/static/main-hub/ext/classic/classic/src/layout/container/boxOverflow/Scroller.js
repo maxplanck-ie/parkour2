@@ -9,10 +9,10 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
   alternateClassName: "Ext.layout.boxOverflow.Scroller",
   alias: [
     "box.overflow.scroller",
-    "box.overflow.Scroller", // capitalized for 4.x compat
+    "box.overflow.Scroller" // capitalized for 4.x compat
   ],
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
 
   /* End Definitions */
@@ -75,7 +75,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       role: "presentation",
       id: this.layout.owner.id + this.beforeSuffix,
       cls: this.createScrollerCls("beforeX"),
-      style: "display:none",
+      style: "display:none"
     };
   },
 
@@ -84,7 +84,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       role: "presentation",
       id: this.layout.owner.id + this.afterSuffix,
       cls: this.createScrollerCls("afterX"),
-      style: "display:none",
+      style: "display:none"
     };
   },
 
@@ -136,7 +136,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       names = layout.names,
       scrollPos = Math.min(
         me.getMaxScrollPosition(),
-        ownerContext.innerCtScrollPos,
+        ownerContext.innerCtScrollPos
       ),
       lastProps;
 
@@ -181,7 +181,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       ownerContext.targetContext.getPaddingInfo()[names.width];
 
     return {
-      reservedSpace: Math.max(scrollerWidth - targetPaddingWidth, 0),
+      reservedSpace: Math.max(scrollerWidth - targetPaddingWidth, 0)
     };
   },
 
@@ -198,7 +198,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       (me._beforeScroller = me.createScroller(
         me.beforeSuffix,
         "beforeRepeater",
-        "scrollLeft",
+        "scrollLeft"
       ))
     );
   },
@@ -216,7 +216,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       (me._afterScroller = me.createScroller(
         me.afterSuffix,
         "afterRepeater",
-        "scrollRight",
+        "scrollRight"
       ))
     );
   },
@@ -237,7 +237,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
     me[repeaterName] = new Ext.util.ClickRepeater(scrollerEl, {
       interval: me.scrollRepeatInterval,
       handler: scrollHandler,
-      scope: me,
+      scope: me
     });
 
     return scrollerEl;
@@ -250,7 +250,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
   createWheelListener: function () {
     var me = this;
     me.wheelListener = me.layout.innerCt.on("mousewheel", me.onMouseWheel, me, {
-      destroyable: true,
+      destroyable: true
     });
   },
 
@@ -283,7 +283,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
     me.getBeforeScroller().show();
     me.getAfterScroller().show();
     me.layout.owner.addClsWithUI(
-      me.layout.direction === "vertical" ? "vertical-scroller" : "scroller",
+      me.layout.direction === "vertical" ? "vertical-scroller" : "scroller"
     );
     // TODO - this may invalidates data in the ContextItem's styleCache
   },
@@ -301,7 +301,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       beforeScroller.hide();
       afterScroller.hide();
       me.layout.owner.removeClsWithUI(
-        me.layout.direction === "vertical" ? "vertical-scroller" : "scroller",
+        me.layout.direction === "vertical" ? "vertical-scroller" : "scroller"
       );
       // TODO - this may invalidates data in the ContextItem's styleCache
     }
@@ -314,7 +314,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       "afterRepeater",
       "_beforeScroller",
       "_afterScroller",
-      "wheelListener",
+      "wheelListener"
     );
     this.callParent();
   },
@@ -336,7 +336,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
     return {
       duration: this.scrollDuration,
       callback: this.updateScrollButtons,
-      scope: this,
+      scope: this
     };
   },
 
@@ -460,7 +460,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       newPosition = Ext.Number.constrain(
         position,
         0,
-        me.getMaxScrollPosition(),
+        me.getMaxScrollPosition()
       );
 
     if (newPosition !== oldPosition && !me.scrolling) {
@@ -472,7 +472,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
       layout.innerCt[names.scrollTo](
         names.beforeScrollX,
         newPosition,
-        animate ? me.getScrollAnim() : false,
+        animate ? me.getScrollAnim() : false
       );
       if (animate) {
         me.scrolling = true;
@@ -483,7 +483,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
         "scroll",
         me,
         newPosition,
-        animate ? me.getScrollAnim() : false,
+        animate ? me.getScrollAnim() : false
       );
     }
   },
@@ -546,7 +546,7 @@ Ext.define("Ext.layout.container.boxOverflow.Scroller", {
     return {
       hiddenStart: itemStart < scrollStart,
       hiddenEnd: itemEnd > scrollEnd,
-      fullyVisible: itemStart >= scrollStart && itemEnd <= scrollEnd,
+      fullyVisible: itemStart >= scrollStart && itemEnd <= scrollEnd
     };
-  },
+  }
 });

@@ -15,7 +15,7 @@ describe("grid-columns", function () {
 
         function spyOnEvent(object, eventName, fn) {
           var obj = {
-              fn: fn || Ext.emptyFn,
+              fn: fn || Ext.emptyFn
             },
             spy = spyOn(obj, "fn");
           object.addListener(eventName, obj.fn);
@@ -36,7 +36,7 @@ describe("grid-columns", function () {
               col = {
                 itemId: "col" + i,
                 text: "Col" + i,
-                dataIndex: "field" + i,
+                dataIndex: "field" + i
               };
 
               if (hiddenFn && hiddenFn(i)) {
@@ -61,9 +61,9 @@ describe("grid-columns", function () {
                 field1: "val2",
                 field2: "val3",
                 field3: "val4",
-                field4: "val5",
-              },
-            ],
+                field4: "val5"
+              }
+            ]
           });
 
           grid = new Ext.grid.Panel(
@@ -77,11 +77,11 @@ describe("grid-columns", function () {
                 store: store,
                 bufferedRenderer: buffered,
                 viewConfig: {
-                  mouseOverOutBuffer: 0,
-                },
+                  mouseOverOutBuffer: 0
+                }
               },
-              gridCfg,
-            ),
+              gridCfg
+            )
           );
 
           view = grid.view;
@@ -91,7 +91,7 @@ describe("grid-columns", function () {
         function getCell(rowIdx, colIdx) {
           return grid.getView().getCellInclusive({
             row: rowIdx,
-            column: colIdx,
+            column: colIdx
           });
         }
 
@@ -132,7 +132,7 @@ describe("grid-columns", function () {
             column.el.dom,
             "mousemove",
             fromMx + dragThresh,
-            fromMy,
+            fromMy
           );
 
           // Move to resize
@@ -140,20 +140,20 @@ describe("grid-columns", function () {
             column.el.dom,
             "mousemove",
             fromMx + by + 2,
-            fromMy,
+            fromMy
           );
           jasmine.fireMouseEvent(
             column.el.dom,
             "mouseup",
             fromMx + by + 2,
-            fromMy,
+            fromMy
           );
         }
 
         function setup() {
           Ext.define("spec.TestModel", {
             extend: "Ext.data.Model",
-            fields: ["field0", "field1", "field2", "field3", "field4"],
+            fields: ["field0", "field1", "field2", "field3", "field4"]
           });
         }
 
@@ -176,7 +176,7 @@ describe("grid-columns", function () {
                 {
                   text: "Col1",
                   dataIndex: "foo",
-                  flex: 1,
+                  flex: 1
                 },
                 {
                   text: "Col2",
@@ -184,29 +184,29 @@ describe("grid-columns", function () {
                     {
                       text: "Col21",
                       dataIndex: "foo2",
-                      width: 140,
+                      width: 140
                     },
                     {
                       text: "Col22",
                       dataIndex: "foo4",
-                      width: 160,
+                      width: 160
                     },
                     {
                       text: "Col23",
                       dataIndex: "foo4",
-                      width: 100,
+                      width: 100
                     },
                     {
                       text: "Col34",
                       dataIndex: "foo4",
-                      width: 85,
-                    },
-                  ],
+                      width: 85
+                    }
+                  ]
                 },
                 {
                   text: "Col3",
                   dataIndex: "foo3",
-                  width: 110,
+                  width: 110
                 },
                 {
                   text: "Col4",
@@ -214,21 +214,21 @@ describe("grid-columns", function () {
                     {
                       text: "Col41",
                       dataIndex: "foo2",
-                      flex: 1,
+                      flex: 1
                     },
                     {
                       text: "Col42",
                       dataIndex: "foo4",
-                      width: 120,
-                    },
-                  ],
-                },
+                      width: 120
+                    }
+                  ]
+                }
               ],
               {
                 autoScroll: true,
                 forceFit: true,
-                width: 1800,
-              },
+                width: 1800
+              }
             );
 
             expect(function () {
@@ -260,28 +260,28 @@ describe("grid-columns", function () {
                       {
                         itemId: "child1",
                         text: "Subcol 1",
-                        flex: 1,
+                        flex: 1
                       },
                       {
                         itemId: "child2",
                         text: "Subcol 2",
-                        flex: 2,
+                        flex: 2
                       },
                       {
                         itemId: "child3",
                         text: "Subcol 3",
-                        flex: 3,
-                      },
-                    ],
-                  },
+                        flex: 3
+                      }
+                    ]
+                  }
                 ],
                 {
                   width: 600,
 
                   // No scrollbar, so we have one calculation pass with
                   // 600 pixels available.
-                  scroll: false,
-                },
+                  scroll: false
+                }
               );
 
               col = grid.down("#main1");
@@ -338,10 +338,10 @@ describe("grid-columns", function () {
                   items: [
                     {
                       xtype: "textfield",
-                      itemId: "foo",
-                    },
-                  ],
-                },
+                      itemId: "foo"
+                    }
+                  ]
+                }
               ]);
 
               col = grid.visibleColumnManager.getHeaderByDataIndex("field0");
@@ -376,11 +376,11 @@ describe("grid-columns", function () {
           it("should size the cells to match fixed header sizes", function () {
             makeGrid([
               {
-                width: 200,
+                width: 200
               },
               {
-                width: 500,
-              },
+                width: 500
+              }
             ]);
             expect(getCell(0, 0).getWidth()).toBe(200);
             expect(getCell(0, 1).getWidth()).toBe(500);
@@ -389,11 +389,11 @@ describe("grid-columns", function () {
           it("should size the cells to match flex header sizes", function () {
             makeGrid([
               {
-                flex: 8,
+                flex: 8
               },
               {
-                flex: 2,
-              },
+                flex: 2
+              }
             ]);
             expect(getCell(0, 0).getWidth()).toBe(800);
             expect(getCell(0, 1).getWidth()).toBe(200);
@@ -403,19 +403,19 @@ describe("grid-columns", function () {
             makeGrid([
               {
                 width: null,
-                text: '<div style="width: 25px;"></div>',
+                text: '<div style="width: 25px;"></div>'
               },
               {
                 width: null,
-                text: '<div style="width: 75px;"></div>',
-              },
+                text: '<div style="width: 75px;"></div>'
+              }
             ]);
 
             expect(getCell(0, 0).getWidth()).toBe(
-              colRef[0].titleEl.getWidth() + colRef[0].el.getBorderWidth("lr"),
+              colRef[0].titleEl.getWidth() + colRef[0].el.getBorderWidth("lr")
             );
             expect(getCell(0, 1).getWidth()).toBe(
-              colRef[1].titleEl.getWidth() + colRef[1].el.getBorderWidth("lr"),
+              colRef[1].titleEl.getWidth() + colRef[1].el.getBorderWidth("lr")
             );
           });
         });
@@ -426,11 +426,11 @@ describe("grid-columns", function () {
               makeGrid([
                 {
                   text: "Foo",
-                  dataIndex: "field0",
-                },
+                  dataIndex: "field0"
+                }
               ]);
               expect(grid.getColumnManager().getHeaderAtIndex(0).text).toBe(
-                "Foo",
+                "Foo"
               );
             });
 
@@ -440,12 +440,12 @@ describe("grid-columns", function () {
                 items: [
                   {
                     text: "Foo",
-                    dataIndex: "field0",
-                  },
-                ],
+                    dataIndex: "field0"
+                  }
+                ]
               });
               expect(grid.getColumnManager().getHeaderAtIndex(0).text).toBe(
-                "Foo",
+                "Foo"
               );
               expect(grid.headerCt.margin).toBe(5);
             });
@@ -457,12 +457,12 @@ describe("grid-columns", function () {
                 {
                   text: "Foo",
                   dataIndex: "field0",
-                  locked: true,
+                  locked: true
                 },
                 {
                   text: "Bar",
-                  dataIndex: "field1",
-                },
+                  dataIndex: "field1"
+                }
               ]);
               expect(grid.lockable).toBe(true);
             });
@@ -473,13 +473,13 @@ describe("grid-columns", function () {
                   {
                     text: "Foo",
                     dataIndex: "field0",
-                    locked: true,
+                    locked: true
                   },
                   {
                     text: "Bar",
-                    dataIndex: "field1",
-                  },
-                ],
+                    dataIndex: "field1"
+                  }
+                ]
               });
               expect(grid.lockable).toBe(true);
 
@@ -559,7 +559,7 @@ describe("grid-columns", function () {
 
             it("should update the columns when adding a column", function () {
               grid.headerCt.add({
-                text: "Col4",
+                text: "Col4"
               });
               expect(gv()[4].text).toBe("Col4");
             });
@@ -636,12 +636,12 @@ describe("grid-columns", function () {
                   text: "Name",
                   width: 100,
                   dataIndex: "name",
-                  hidden: true,
+                  hidden: true
                 },
                 {
                   text: "Email",
                   width: 100,
-                  dataIndex: "email",
+                  dataIndex: "email"
                 },
                 {
                   text: "Stock Price",
@@ -649,20 +649,20 @@ describe("grid-columns", function () {
                     {
                       text: "Price",
                       width: 75,
-                      dataIndex: "price",
+                      dataIndex: "price"
                     },
                     {
                       text: "Phone",
                       width: 80,
                       dataIndex: "phone",
-                      hidden: true,
+                      hidden: true
                     },
                     {
                       text: "% Change",
                       width: 40,
-                      dataIndex: "pctChange",
-                    },
-                  ],
+                      dataIndex: "pctChange"
+                    }
+                  ]
                 },
                 {
                   text: "Foo",
@@ -671,20 +671,20 @@ describe("grid-columns", function () {
                       text: "Foo Price",
                       width: 75,
                       dataIndex: "price",
-                      hidden: true,
+                      hidden: true
                     },
                     {
                       text: "Foo Phone",
                       width: 80,
-                      dataIndex: "phone",
+                      dataIndex: "phone"
                     },
                     {
                       text: "Foo % Change",
                       width: 40,
-                      dataIndex: "pctChange",
-                    },
-                  ],
-                },
+                      dataIndex: "pctChange"
+                    }
+                  ]
+                }
               ]);
 
               headerCtItems = grid.headerCt.items;
@@ -715,7 +715,7 @@ describe("grid-columns", function () {
 
                 it("should return the index of the header in its owner stack - rootHeader", function () {
                   index = gam().getHeaderIndex(
-                    headerCtItems.items[3].items.items[0],
+                    headerCtItems.items[3].items.items[0]
                   );
 
                   expect(index).toBe(5);
@@ -726,7 +726,7 @@ describe("grid-columns", function () {
                   var groupHeader = headerCtItems.items[3];
 
                   index = groupHeader.columnManager.getHeaderIndex(
-                    groupHeader.items.items[0],
+                    groupHeader.items.items[0]
                   );
 
                   expect(index).toBe(0);
@@ -769,10 +769,10 @@ describe("grid-columns", function () {
 
                   expect(colMgrHeader).toBe(groupHeaderFirstHeader);
                   expect(colMgrHeader.hidden).toBe(
-                    groupHeaderFirstHeader.hidden,
+                    groupHeaderFirstHeader.hidden
                   );
                   expect(colMgrHeader.dataIndex).toBe(
-                    groupHeaderFirstHeader.dataIndex,
+                    groupHeaderFirstHeader.dataIndex
                   );
                 });
 
@@ -827,7 +827,7 @@ describe("grid-columns", function () {
 
                 it("should return the index of the header in its owner stack - rootHeader", function () {
                   index = gvm().getHeaderIndex(
-                    headerCtItems.items[3].items.items[2],
+                    headerCtItems.items[3].items.items[2]
                   );
 
                   expect(index).toBe(4);
@@ -838,7 +838,7 @@ describe("grid-columns", function () {
                   var groupHeader = headerCtItems.items[3];
 
                   index = groupHeader.visibleColumnManager.getHeaderIndex(
-                    groupHeader.items.items[2],
+                    groupHeader.items.items[2]
                   );
 
                   expect(index).toBe(1);
@@ -874,7 +874,7 @@ describe("grid-columns", function () {
                   groupedHeader = headerCtItems.items[2];
                   groupHeaderFirstHeader =
                     headerCtItems.items[2].visibleColumnManager.getHeaderAtIndex(
-                      0,
+                      0
                     );
 
                   // First, get the index from the column mgr.  It will retrieve it from the group header's column mgr.
@@ -884,10 +884,10 @@ describe("grid-columns", function () {
 
                   expect(colMgrHeader).toBe(groupHeaderFirstHeader);
                   expect(colMgrHeader.hidden).toBe(
-                    groupHeaderFirstHeader.hidden,
+                    groupHeaderFirstHeader.hidden
                   );
                   expect(colMgrHeader.dataIndex).toBe(
-                    groupHeaderFirstHeader.dataIndex,
+                    groupHeaderFirstHeader.dataIndex
                   );
                 });
 
@@ -920,12 +920,12 @@ describe("grid-columns", function () {
                   text: "Name",
                   width: 100,
                   dataIndex: "name",
-                  hidden: true,
+                  hidden: true
                 },
                 {
                   text: "Email",
                   width: 100,
-                  dataIndex: "email",
+                  dataIndex: "email"
                 },
                 {
                   text: "Stock Price",
@@ -933,20 +933,20 @@ describe("grid-columns", function () {
                     {
                       text: "Price",
                       width: 75,
-                      dataIndex: "price",
+                      dataIndex: "price"
                     },
                     {
                       text: "Phone",
                       width: 80,
                       dataIndex: "phone",
-                      hidden: true,
+                      hidden: true
                     },
                     {
                       text: "% Change",
                       width: 40,
-                      dataIndex: "pctChange",
-                    },
-                  ],
+                      dataIndex: "pctChange"
+                    }
+                  ]
                 },
                 {
                   text: "Foo",
@@ -955,20 +955,20 @@ describe("grid-columns", function () {
                       text: "Foo Price",
                       width: 75,
                       dataIndex: "price",
-                      hidden: true,
+                      hidden: true
                     },
                     {
                       text: "Foo Phone",
                       width: 80,
-                      dataIndex: "phone",
+                      dataIndex: "phone"
                     },
                     {
                       text: "Foo % Change",
                       width: 40,
-                      dataIndex: "pctChange",
-                    },
-                  ],
-                },
+                      dataIndex: "pctChange"
+                    }
+                  ]
+                }
               ]);
 
               headerCtItems = grid.headerCt.items;
@@ -1056,7 +1056,7 @@ describe("grid-columns", function () {
 
                 header =
                   headerCtItems.items[3].visibleColumnManager.getHeaderAtIndex(
-                    0,
+                    0
                   );
 
                 expect(header.text).toBe("Foo Phone");
@@ -1071,25 +1071,25 @@ describe("grid-columns", function () {
                   text: "Name",
                   width: 100,
                   dataIndex: "name",
-                  hidden: true,
+                  hidden: true
                 },
                 {
                   text: "Email",
                   width: 100,
-                  dataIndex: "email",
+                  dataIndex: "email"
                 },
                 {
                   xtype: "templatecolumn",
                   text: "Name & Email",
                   width: 100,
-                  tpl: "{name} & {email}",
-                },
+                  tpl: "{name} & {email}"
+                }
               ]);
             });
 
             it("should return the correct header for dataIndex", function () {
               expect(gam().getHeaderByDataIndex("email").dataIndex).toBe(
-                "email",
+                "email"
               );
             });
 
@@ -1194,14 +1194,14 @@ describe("grid-columns", function () {
 
               it("should update the collection when adding to the locked side", function () {
                 grid.lockedGrid.headerCt.add({
-                  text: "Foo",
+                  text: "Foo"
                 });
                 expect(ga().length).toBe(11);
               });
 
               it("should update the collection when adding to the unlocked side", function () {
                 grid.normalGrid.headerCt.add({
-                  text: "Foo",
+                  text: "Foo"
                 });
                 expect(ga().length).toBe(11);
               });
@@ -1340,12 +1340,12 @@ describe("grid-columns", function () {
                   dataIndex: "field0",
                   width: 200,
                   filter: "string",
-                  menuDisabled: true,
-                },
+                  menuDisabled: true
+                }
               ],
               {
-                plugins: "gridfilters",
-              },
+                plugins: "gridfilters"
+              }
             );
 
             // menuDisabled=true, shouldn't have a trigger
@@ -1357,13 +1357,13 @@ describe("grid-columns", function () {
               [
                 {
                   dataIndex: "field0",
-                  width: 200,
-                },
+                  width: 200
+                }
               ],
               {
                 enableColumnHide: false,
-                sortableColumns: false,
-              },
+                sortableColumns: false
+              }
             );
 
             expect(colRef[0].triggerEl).toBeNull();
@@ -1375,14 +1375,14 @@ describe("grid-columns", function () {
                 {
                   dataIndex: "field0",
                   width: 200,
-                  filter: "string",
-                },
+                  filter: "string"
+                }
               ],
               {
                 enableColumnHide: false,
                 sortableColumns: false,
-                plugins: "gridfilters",
-              },
+                plugins: "gridfilters"
+              }
             );
 
             var col = colRef[0],
@@ -1401,8 +1401,8 @@ describe("grid-columns", function () {
             makeGrid([
               {
                 dataIndex: "field0",
-                sortable: true,
-              },
+                sortable: true
+              }
             ]);
             clickHeader(colRef[0]);
             var sorters = store.getSorters();
@@ -1415,8 +1415,8 @@ describe("grid-columns", function () {
             makeGrid([
               {
                 dataIndex: "field0",
-                sortable: true,
-              },
+                sortable: true
+              }
             ]);
             clickHeader(colRef[0]);
             var sorters = store.getSorters();
@@ -1434,8 +1434,8 @@ describe("grid-columns", function () {
             makeGrid([
               {
                 dataIndex: "field0",
-                sortable: false,
-              },
+                sortable: false
+              }
             ]);
             clickHeader(colRef[0]);
             expect(store.getSorters().getCount()).toBe(0);
@@ -1445,12 +1445,12 @@ describe("grid-columns", function () {
             makeGrid(
               [
                 {
-                  dataIndex: "field0",
-                },
+                  dataIndex: "field0"
+                }
               ],
               {
-                sortableColumns: false,
-              },
+                sortableColumns: false
+              }
             );
             clickHeader(colRef[0]);
             expect(store.getSorters().getCount()).toBe(0);
@@ -1469,7 +1469,7 @@ describe("grid-columns", function () {
             makeGrid(cols, {
               renderTo: null,
               stateful: stateful,
-              stateId: "foo",
+              stateId: "foo"
             });
           }
 
@@ -1489,35 +1489,35 @@ describe("grid-columns", function () {
                     itemId: "main1",
                     columns: [
                       {
-                        itemId: "child1",
+                        itemId: "child1"
                       },
                       {
-                        itemId: "child2",
+                        itemId: "child2"
                       },
                       {
-                        itemId: "child3",
-                      },
-                    ],
+                        itemId: "child3"
+                      }
+                    ]
                   },
                   {
                     itemId: "main2",
                     columns: [
                       {
-                        itemId: "child4",
+                        itemId: "child4"
                       },
                       {
-                        itemId: "child5",
+                        itemId: "child5"
                       },
                       {
-                        itemId: "child6",
-                      },
-                    ],
-                  },
+                        itemId: "child6"
+                      }
+                    ]
+                  }
                 ],
                 {
                   stateful: true,
-                  stateId: "foo",
-                },
+                  stateId: "foo"
+                }
               );
             });
 
@@ -1569,13 +1569,13 @@ describe("grid-columns", function () {
                       listeners: {
                         added: function (c) {
                           c.show();
-                        },
-                      },
-                    },
+                        }
+                      }
+                    }
                   ]);
                 }).not.toThrow();
                 expect(grid.getVisibleColumnManager().getColumns()[0]).toBe(
-                  colRef[0],
+                  colRef[0]
                 );
               });
 
@@ -1587,13 +1587,13 @@ describe("grid-columns", function () {
                       listeners: {
                         added: function (c) {
                           c.hide();
-                        },
-                      },
-                    },
+                        }
+                      }
+                    }
                   ]);
                 }).not.toThrow();
                 expect(grid.getVisibleColumnManager().getColumns().length).toBe(
-                  0,
+                  0
                 );
               });
             });
@@ -1603,20 +1603,20 @@ describe("grid-columns", function () {
                 beforeEach(function () {
                   makeGrid([
                     {
-                      itemId: "main1",
+                      itemId: "main1"
                     },
                     {
                       itemId: "main2",
                       hidden: true,
                       columns: [
                         {
-                          itemId: "child1",
+                          itemId: "child1"
                         },
                         {
-                          itemId: "child2",
-                        },
-                      ],
-                    },
+                          itemId: "child2"
+                        }
+                      ]
+                    }
                   ]);
 
                   cells = grid.view.body.query(".x-grid-row td");
@@ -1641,19 +1641,19 @@ describe("grid-columns", function () {
                 beforeEach(function () {
                   makeGrid([
                     {
-                      itemId: "main1",
+                      itemId: "main1"
                     },
                     {
                       itemId: "main2",
                       columns: [
                         {
-                          itemId: "child1",
+                          itemId: "child1"
                         },
                         {
-                          itemId: "child2",
-                        },
-                      ],
-                    },
+                          itemId: "child2"
+                        }
+                      ]
+                    }
                   ]);
 
                   grid.down("#main2").hide();
@@ -1681,19 +1681,19 @@ describe("grid-columns", function () {
                 beforeEach(function () {
                   makeGrid([
                     {
-                      itemId: "main1",
+                      itemId: "main1"
                     },
                     {
                       itemId: "main2",
                       columns: [
                         {
-                          itemId: "child1",
+                          itemId: "child1"
                         },
                         {
-                          itemId: "child2",
-                        },
-                      ],
-                    },
+                          itemId: "child2"
+                        }
+                      ]
+                    }
                   ]);
 
                   cells = grid.view.body.query(".x-grid-row td");
@@ -1701,10 +1701,10 @@ describe("grid-columns", function () {
 
                 it("should not hide child columns at config time if the parent is shown", function () {
                   expect(
-                    grid.down("#child1").getInherited().hidden,
+                    grid.down("#child1").getInherited().hidden
                   ).not.toBeDefined();
                   expect(
-                    grid.down("#child2").getInherited().hidden,
+                    grid.down("#child2").getInherited().hidden
                   ).not.toBeDefined();
                   // Check the view.
                   expect(cells.length).toBe(3);
@@ -1722,20 +1722,20 @@ describe("grid-columns", function () {
                 beforeEach(function () {
                   makeGrid([
                     {
-                      itemId: "main1",
+                      itemId: "main1"
                     },
                     {
                       itemId: "main2",
                       hidden: true,
                       columns: [
                         {
-                          itemId: "child1",
+                          itemId: "child1"
                         },
                         {
-                          itemId: "child2",
-                        },
-                      ],
-                    },
+                          itemId: "child2"
+                        }
+                      ]
+                    }
                   ]);
 
                   grid.down("#main2").show();
@@ -1744,10 +1744,10 @@ describe("grid-columns", function () {
 
                 it("should show child columns at runtime if the parent is shown", function () {
                   expect(
-                    grid.down("#child1").getInherited().hidden,
+                    grid.down("#child1").getInherited().hidden
                   ).not.toBeDefined();
                   expect(
-                    grid.down("#child2").getInherited().hidden,
+                    grid.down("#child2").getInherited().hidden
                   ).not.toBeDefined();
                   // Check the view.
                   expect(cells.length).toBe(3);
@@ -1769,30 +1769,30 @@ describe("grid-columns", function () {
                     itemId: "col1",
                     columns: [
                       {
-                        itemId: "col11",
+                        itemId: "col11"
                       },
                       {
-                        itemId: "col12",
+                        itemId: "col12"
                       },
                       {
-                        itemId: "col13",
-                      },
-                    ],
+                        itemId: "col13"
+                      }
+                    ]
                   },
                   {
                     itemId: "col2",
                     columns: [
                       {
-                        itemId: "col21",
+                        itemId: "col21"
                       },
                       {
-                        itemId: "col22",
+                        itemId: "col22"
                       },
                       {
-                        itemId: "col23",
-                      },
-                    ],
-                  },
+                        itemId: "col23"
+                      }
+                    ]
+                  }
                 ];
               });
 
@@ -1801,19 +1801,19 @@ describe("grid-columns", function () {
 
                 makeGrid([
                   {
-                    itemId: "main1",
+                    itemId: "main1"
                   },
                   {
                     itemId: "main2",
                     columns: [
                       {
-                        itemId: "child1",
+                        itemId: "child1"
                       },
                       {
-                        itemId: "child2",
-                      },
-                    ],
-                  },
+                        itemId: "child2"
+                      }
+                    ]
+                  }
                 ]);
 
                 subheader = grid.down("#child1");
@@ -1833,22 +1833,22 @@ describe("grid-columns", function () {
 
                 makeGrid([
                   {
-                    itemId: "main1",
+                    itemId: "main1"
                   },
                   {
                     itemId: "main2",
                     columns: [
                       {
-                        itemId: "child1",
+                        itemId: "child1"
                       },
                       {
-                        itemId: "child2",
+                        itemId: "child2"
                       },
                       {
-                        itemId: "child3",
-                      },
-                    ],
-                  },
+                        itemId: "child3"
+                      }
+                    ]
+                  }
                 ]);
 
                 grid.down("#child1").hide();
@@ -1868,22 +1868,22 @@ describe("grid-columns", function () {
 
                 makeGrid([
                   {
-                    itemId: "main1",
+                    itemId: "main1"
                   },
                   {
                     itemId: "main2",
                     columns: [
                       {
-                        itemId: "child1",
+                        itemId: "child1"
                       },
                       {
-                        itemId: "child2",
+                        itemId: "child2"
                       },
                       {
-                        itemId: "child3",
-                      },
-                    ],
-                  },
+                        itemId: "child3"
+                      }
+                    ]
+                  }
                 ]);
 
                 groupheader = grid.down("#main2");
@@ -2033,28 +2033,28 @@ describe("grid-columns", function () {
                                     itemId: "col4",
                                     columns: [
                                       {
-                                        itemId: "col41",
+                                        itemId: "col41"
                                       },
                                       {
-                                        itemId: "col42",
+                                        itemId: "col42"
                                       },
                                       {
-                                        itemId: "col43",
+                                        itemId: "col43"
                                       },
                                       {
-                                        itemId: "col44",
-                                      },
-                                    ],
-                                  },
-                                ],
-                              },
-                            ],
-                          },
-                        ],
+                                        itemId: "col44"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
                       },
                       {
-                        itemId: "col5",
-                      },
+                        itemId: "col5"
+                      }
                     ];
                   });
 
@@ -2132,28 +2132,28 @@ describe("grid-columns", function () {
                                     hidden: true,
                                     columns: [
                                       {
-                                        itemId: "col41",
+                                        itemId: "col41"
                                       },
                                       {
-                                        itemId: "col42",
+                                        itemId: "col42"
                                       },
                                       {
-                                        itemId: "col43",
+                                        itemId: "col43"
                                       },
                                       {
-                                        itemId: "col44",
-                                      },
-                                    ],
-                                  },
-                                ],
-                              },
-                            ],
-                          },
-                        ],
+                                        itemId: "col44"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
                       },
                       {
-                        itemId: "col5",
-                      },
+                        itemId: "col5"
+                      }
                     ];
                   });
 
@@ -2308,7 +2308,7 @@ describe("grid-columns", function () {
                       // All subheaders are visible.
                       col.show();
                       expect(col.visibleColumnManager.getColumns().length).toBe(
-                        4,
+                        4
                       );
 
                       // Hide the group header and hide two subheaders.
@@ -2319,7 +2319,7 @@ describe("grid-columns", function () {
                       // Only two subheaders should now be visible.
                       col.show();
                       expect(col.visibleColumnManager.getColumns().length).toBe(
-                        2,
+                        2
                       );
                     });
                   });
@@ -2334,30 +2334,30 @@ describe("grid-columns", function () {
                     itemId: "col1",
                     columns: [
                       {
-                        itemId: "col11",
+                        itemId: "col11"
                       },
                       {
-                        itemId: "col12",
+                        itemId: "col12"
                       },
                       {
-                        itemId: "col13",
-                      },
-                    ],
+                        itemId: "col13"
+                      }
+                    ]
                   },
                   {
                     itemId: "col2",
                     columns: [
                       {
-                        itemId: "col21",
+                        itemId: "col21"
                       },
                       {
-                        itemId: "col22",
+                        itemId: "col22"
                       },
                       {
-                        itemId: "col23",
-                      },
-                    ],
-                  },
+                        itemId: "col23"
+                      }
+                    ]
+                  }
                 ];
               });
 
@@ -2378,7 +2378,7 @@ describe("grid-columns", function () {
                       true;
                   createGrid(baseCols);
                   getCol("col1").add({
-                    itemId: "col14",
+                    itemId: "col14"
                   });
                   grid.render(Ext.getBody());
                   expect(getCol("col1").hidden).toBe(false);
@@ -2403,7 +2403,7 @@ describe("grid-columns", function () {
                   createGrid(baseCols);
                   grid.render(Ext.getBody());
                   getCol("col1").add({
-                    itemId: "col14",
+                    itemId: "col14"
                   });
                   expect(getCol("col1").hidden).toBe(false);
                 });
@@ -2418,30 +2418,30 @@ describe("grid-columns", function () {
                   itemId: "col1",
                   columns: [
                     {
-                      itemId: "col11",
+                      itemId: "col11"
                     },
                     {
-                      itemId: "col12",
+                      itemId: "col12"
                     },
                     {
-                      itemId: "col13",
-                    },
-                  ],
+                      itemId: "col13"
+                    }
+                  ]
                 },
                 {
                   itemId: "col2",
                   columns: [
                     {
-                      itemId: "col21",
+                      itemId: "col21"
                     },
                     {
-                      itemId: "col22",
+                      itemId: "col22"
                     },
                     {
-                      itemId: "col23",
-                    },
-                  ],
-                },
+                      itemId: "col23"
+                    }
+                  ]
+                }
               ];
 
               createGrid(baseCols);
@@ -2488,7 +2488,7 @@ describe("grid-columns", function () {
 
             it("should update the view when adding a new header", function () {
               grid.headerCt.insert(0, {
-                dataIndex: "field4",
+                dataIndex: "field4"
               });
               expect(getCellText(0, 0)).toBe("val5");
             });
@@ -2570,7 +2570,7 @@ describe("grid-columns", function () {
           describe("initial", function () {
             it("should have both sides visible", function () {
               makeGrid([{ locked: true }, {}], {
-                syncTaskDelay: 0,
+                syncTaskDelay: 0
               });
               expectVisible(true, true);
             });
@@ -2578,14 +2578,14 @@ describe("grid-columns", function () {
             it("should have only the normal side visible if there are no locked columns", function () {
               makeGrid([{}, {}], {
                 enableLocking: true,
-                syncTaskDelay: 0,
+                syncTaskDelay: 0
               });
               expectVisible(false, true);
             });
 
             it("should have only the locked side visible if there are no normal columns", function () {
               makeGrid([{ locked: true }, { locked: true }], {
-                syncTaskDelay: 0,
+                syncTaskDelay: 0
               });
               expectVisible(true, false);
             });
@@ -2597,22 +2597,22 @@ describe("grid-columns", function () {
                 [
                   {
                     locked: true,
-                    itemId: "col0",
+                    itemId: "col0"
                   },
                   {
                     locked: true,
-                    itemId: "col1",
+                    itemId: "col1"
                   },
                   {
-                    itemId: "col2",
+                    itemId: "col2"
                   },
                   {
-                    itemId: "col3",
-                  },
+                    itemId: "col3"
+                  }
                 ],
                 {
-                  syncTaskDelay: 0,
-                },
+                  syncTaskDelay: 0
+                }
               );
             });
 
@@ -2731,18 +2731,18 @@ describe("grid-columns", function () {
             makeGrid(
               [
                 {
-                  width: 100,
+                  width: 100
                 },
                 {
-                  flex: 1,
+                  flex: 1
                 },
                 {
-                  width: 200,
-                },
+                  width: 200
+                }
               ],
               {
-                hiddenHeaders: true,
-              },
+                hiddenHeaders: true
+              }
             );
 
             expect(getCell(0, 0).getWidth()).toBe(100);
@@ -2754,28 +2754,28 @@ describe("grid-columns", function () {
             makeGrid(
               [
                 {
-                  width: 100,
+                  width: 100
                 },
                 {
                   columns: [
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
-                      width: 400,
+                      width: 400
                     },
                     {
-                      width: 100,
-                    },
-                  ],
+                      width: 100
+                    }
+                  ]
                 },
                 {
-                  width: 200,
-                },
+                  width: 200
+                }
               ],
               {
-                hiddenHeaders: true,
-              },
+                hiddenHeaders: true
+              }
             );
             expect(getCell(0, 0).getWidth()).toBe(100);
             expect(getCell(0, 1).getWidth()).toBe(200);
@@ -2795,7 +2795,7 @@ describe("grid-columns", function () {
             el.innerHTML = column.emptyCellText;
 
             expect(cell.textContent || cell.innerText).toBe(
-              el.textContent || el.innerText,
+              el.textContent || el.innerText
             );
           }
 
@@ -2803,12 +2803,12 @@ describe("grid-columns", function () {
             beforeEach(function () {
               makeGrid([
                 {
-                  width: 100,
+                  width: 100
                 },
                 {
                   emptyCellText: "derp",
-                  width: 200,
-                },
+                  width: 200
+                }
               ]);
             });
 
@@ -2825,7 +2825,7 @@ describe("grid-columns", function () {
             function makeEmptySuite(val, label) {
               it("should render " + label + " as empty", function () {
                 makeGrid(null, {
-                  renderTo: null,
+                  renderTo: null
                 });
                 store.getAt(0).set("field0", val);
                 grid.render(Ext.getBody());
@@ -2848,8 +2848,8 @@ describe("grid-columns", function () {
                     dataIndex: "field0",
                     renderer: function (v, meta, rec) {
                       return v;
-                    },
-                  },
+                    }
+                  }
                 ]);
                 // Renderer with >1 arg requires a full row redraw
                 store.getAt(0).set("field0", "");
@@ -2864,8 +2864,8 @@ describe("grid-columns", function () {
                     {
                       width: 100,
                       producesHTML: true,
-                      dataIndex: "field0",
-                    },
+                      dataIndex: "field0"
+                    }
                   ]);
                   store.getAt(0).set("field0", "");
                   expectEmptyText(colRef[0], 0, 0);
@@ -2877,8 +2877,8 @@ describe("grid-columns", function () {
                       width: 100,
                       producesHTML: true,
                       dataIndex: "field0",
-                      renderer: Ext.identityFn,
-                    },
+                      renderer: Ext.identityFn
+                    }
                   ]);
                   store.getAt(0).set("field0", "");
                   expectEmptyText(colRef[0], 0, 0);
@@ -2897,8 +2897,8 @@ describe("grid-columns", function () {
                           metaData.tdStyle = "text-decoration: underline;";
                         }
                         return value;
-                      },
-                    },
+                      }
+                    }
                   ]);
 
                   cell = grid.view.body.el.down(".x-grid-cell");
@@ -2916,8 +2916,8 @@ describe("grid-columns", function () {
                     {
                       width: 100,
                       producesHTML: false,
-                      dataIndex: "field0",
-                    },
+                      dataIndex: "field0"
+                    }
                   ]);
                   store.getAt(0).set("field0", "");
                   expectEmptyText(colRef[0], 0, 0);
@@ -2929,8 +2929,8 @@ describe("grid-columns", function () {
                       width: 100,
                       producesHTML: false,
                       dataIndex: "field0",
-                      renderer: Ext.identityFn,
-                    },
+                      renderer: Ext.identityFn
+                    }
                   ]);
                   store.getAt(0).set("field0", "");
                   expectEmptyText(colRef[0], 0, 0);
@@ -2947,9 +2947,9 @@ describe("grid-columns", function () {
                 width: 100,
                 items: {
                   xtype: "textfield",
-                  itemId: "foo",
-                },
-              },
+                  itemId: "foo"
+                }
+              }
             ]);
             expect(grid.down("#foo").isVisible(true)).toBe(true);
           });
@@ -2959,17 +2959,17 @@ describe("grid-columns", function () {
               {
                 width: 100,
                 items: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 width: 100,
                 hidden: true,
                 items: {
                   xtype: "textfield",
-                  itemId: "foo",
-                },
-              },
+                  itemId: "foo"
+                }
+              }
             ]);
             var field = grid.down("#foo");
             expect(field.isVisible(true)).toBe(false);
@@ -2993,7 +2993,7 @@ describe("grid-columns", function () {
               col0: true,
               col1: true,
               col2: true,
-              col3: true,
+              col3: true
             });
           });
 
@@ -3005,22 +3005,22 @@ describe("grid-columns", function () {
 
               // Default column width
               expect(grid.lockedGrid.getWidth()).toBe(
-                100 + grid.lockedGrid.gridPanelBorderWidth,
+                100 + grid.lockedGrid.gridPanelBorderWidth
               );
               grid.reconfigure(null, [
                 {
                   locked: true,
-                  width: 120,
+                  width: 120
                 },
                 {
                   locked: true,
-                  width: 170,
+                  width: 170
                 },
                 {},
-                {},
+                {}
               ]);
               expect(grid.lockedGrid.getWidth()).toBe(
-                120 + 170 + grid.lockedGrid.gridPanelBorderWidth,
+                120 + 170 + grid.lockedGrid.gridPanelBorderWidth
               );
             });
           });
@@ -3039,7 +3039,7 @@ describe("grid-columns", function () {
           });
           it("should have no borders if configured false, and should show them dynamically", function () {
             makeGrid(null, {
-              headerBorders: false,
+              headerBorders: false
             });
             expect(colRef[0].el.getBorderWidth("r")).toBe(0);
             expect(colRef[1].el.getBorderWidth("r")).toBe(0);
@@ -3062,7 +3062,7 @@ describe("grid-columns", function () {
             expect(dragSpy).not.toHaveBeenCalled();
           });
         });
-      },
+      }
     );
   }
   createSuite(false);

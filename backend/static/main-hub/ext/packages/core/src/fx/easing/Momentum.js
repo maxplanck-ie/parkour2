@@ -7,7 +7,7 @@ Ext.define("Ext.fx.easing.Momentum", {
   config: {
     acceleration: 30,
     friction: 0,
-    startVelocity: 0,
+    startVelocity: 0
   },
 
   alpha: 0,
@@ -45,5 +45,5 @@ Ext.define("Ext.fx.easing.Momentum", {
 
   getVelocity: function () {
     return this.getFrictionFactor() * this.velocity;
-  },
+  }
 });

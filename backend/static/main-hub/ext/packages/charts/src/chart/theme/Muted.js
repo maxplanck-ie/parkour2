@@ -15,7 +15,7 @@ Ext.define("Ext.chart.theme.Muted", {
       "#3dcc7e",
       "#a6bed1",
       "#cbaa4b",
-      "#998baa",
-    ],
-  },
+      "#998baa"
+    ]
+  }
 });

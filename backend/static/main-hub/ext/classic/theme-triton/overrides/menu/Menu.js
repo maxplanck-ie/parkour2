@@ -22,5 +22,5 @@ Ext.define("Ext.theme.triton.menu.Menu", {
         item.repaintIcons();
       }
     }
-  },
+  }
 });

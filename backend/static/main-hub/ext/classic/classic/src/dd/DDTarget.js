@@ -166,5 +166,5 @@ Ext.define("Ext.dd.DDTarget", {
 
   toString: function () {
     return "DDTarget " + this.id;
-  },
+  }
 });

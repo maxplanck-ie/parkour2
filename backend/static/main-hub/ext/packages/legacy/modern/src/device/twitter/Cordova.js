@@ -9,8 +9,8 @@ Ext.define("Ext.device.twitter.Cordova", {
       config.tweet,
       {
         urlAttach: config.url,
-        imageAttach: config.image,
-      },
+        imageAttach: config.image
+      }
     );
   },
 
@@ -32,7 +32,7 @@ Ext.define("Ext.device.twitter.Cordova", {
       config.params,
       config.success,
       config.failure,
-      config.options,
+      config.options
     );
-  },
+  }
 });

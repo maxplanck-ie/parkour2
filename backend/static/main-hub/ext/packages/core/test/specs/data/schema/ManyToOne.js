@@ -17,17 +17,17 @@ describe("Ext.data.schema.ManyToOne", function () {
           name: "threadId",
           reference: Ext.apply(
             {
-              type: "Thread",
+              type: "Thread"
             },
-            refCfg,
-          ),
-        },
+            refCfg
+          )
+        }
       ],
 
       constructor: function () {
         postCalled = true;
         this.callParent(arguments);
-      },
+      }
     });
 
     threadRole = Post.associations.thread;
@@ -37,7 +37,7 @@ describe("Ext.data.schema.ManyToOne", function () {
   function complete(data, status) {
     Ext.Ajax.mockComplete({
       status: status || 200,
-      responseText: Ext.JSON.encode(data),
+      responseText: Ext.JSON.encode(data)
     });
   }
 
@@ -54,7 +54,7 @@ describe("Ext.data.schema.ManyToOne", function () {
       constructor: function () {
         threadCalled = true;
         this.callParent(arguments);
-      },
+      }
     });
   });
 
@@ -78,7 +78,7 @@ describe("Ext.data.schema.ManyToOne", function () {
     it("should have a reference back to the association for each role", function () {
       definePost();
       expect(Post.associations.thread.association).toBe(
-        Thread.associations.posts.association,
+        Thread.associations.posts.association
       );
       expect(Thread.associations.posts.association.isManyToOne).toBe(true);
     });
@@ -162,14 +162,14 @@ describe("Ext.data.schema.ManyToOne", function () {
   describe("configuring", function () {
     it("should set an association name", function () {
       definePost({
-        association: "CustomName",
+        association: "CustomName"
       });
       expect(postRole.association.name).toBe("CustomName");
     });
 
     it("should set the owner based on the child param", function () {
       definePost({
-        child: true,
+        child: true
       });
       expect(postRole.association.owner).toBe(postRole);
       expect(postRole.owner).toBe(true);
@@ -178,7 +178,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
     it("should set the owner based on the parent param", function () {
       definePost({
-        parent: true,
+        parent: true
       });
       expect(postRole.association.owner).toBe(threadRole);
       expect(threadRole.owner).toBe(true);
@@ -187,7 +187,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
     it("should be able to set a custom role", function () {
       definePost({
-        role: "foo",
+        role: "foo"
       });
       threadRole = Post.associations.foo;
       expect(threadRole.association.name).toBe("ThreadFooPosts");
@@ -197,7 +197,7 @@ describe("Ext.data.schema.ManyToOne", function () {
     describe("inverse", function () {
       it("should set with a string", function () {
         definePost({
-          inverse: "foo",
+          inverse: "foo"
         });
         postRole = Thread.associations.foo;
         expect(postRole.association.name).toBe("ThreadFoo");
@@ -207,8 +207,8 @@ describe("Ext.data.schema.ManyToOne", function () {
       it("should set with an object", function () {
         definePost({
           inverse: {
-            role: "foo",
-          },
+            role: "foo"
+          }
         });
         postRole = Thread.associations.foo;
         expect(postRole.association.name).toBe("ThreadFoo");
@@ -236,22 +236,22 @@ describe("Ext.data.schema.ManyToOne", function () {
     it("should allow a custom getter name on the key holder", function () {
       definePost({
         inverse: {
-          getterName: "getFoo",
-        },
+          getterName: "getFoo"
+        }
       });
       expect(typeof Thread.prototype.getFoo).toBe("function");
     });
 
     it("should allow a custom setter name on the key holder", function () {
       definePost({
-        setterName: "setFoo",
+        setterName: "setFoo"
       });
       expect(typeof Post.prototype.setFoo).toBe("function");
     });
 
     it("should allow a custom getter name on the inverse", function () {
       definePost({
-        getterName: "ghosts",
+        getterName: "ghosts"
       });
       expect(typeof Post.prototype.ghosts).toBe("function");
     });
@@ -266,17 +266,17 @@ describe("Ext.data.schema.ManyToOne", function () {
             name: "threadAId",
             reference: {
               type: "Thread",
-              role: "ThreadA",
-            },
+              role: "ThreadA"
+            }
           },
           {
             name: "threadBId",
             reference: {
               type: "Thread",
-              role: "ThreadB",
-            },
-          },
-        ],
+              role: "ThreadB"
+            }
+          }
+        ]
       });
 
       expect(typeof OtherPost.prototype.getThreadA).toBe("function");
@@ -294,7 +294,7 @@ describe("Ext.data.schema.ManyToOne", function () {
       beforeEach(function () {
         definePost();
         SubPost = Ext.define("spec.SubPost", {
-          extend: "spec.Post",
+          extend: "spec.Post"
         });
       });
 
@@ -323,7 +323,7 @@ describe("Ext.data.schema.ManyToOne", function () {
       beforeEach(function () {
         definePost();
         SubThread = Ext.define("spec.SubThread", {
-          extend: "spec.Thread",
+          extend: "spec.Thread"
         });
       });
 
@@ -338,21 +338,21 @@ describe("Ext.data.schema.ManyToOne", function () {
       definePost({
         inverse: {
           storeConfig: {
-            remoteFilter: false,
-          },
-        },
+            remoteFilter: false
+          }
+        }
       });
       var thread = Thread.load(1);
       complete({
         id: 1,
         posts: [
           {
-            id: 101,
+            id: 101
           },
           {
-            id: 102,
-          },
-        ],
+            id: 102
+          }
+        ]
       });
       var posts = thread.posts();
       expect(posts.getAt(0).get("threadId")).toBe(1);
@@ -369,12 +369,12 @@ describe("Ext.data.schema.ManyToOne", function () {
         id: 1,
         posts: [
           {
-            id: 101,
+            id: 101
           },
           {
-            id: 102,
-          },
-        ],
+            id: 102
+          }
+        ]
       });
       expect(thread.get("posts")).toBeUndefined();
       expect(thread.posts().getCount()).toBe(2);
@@ -386,8 +386,8 @@ describe("Ext.data.schema.ManyToOne", function () {
       complete({
         id: 101,
         thread: {
-          id: 1,
-        },
+          id: 1
+        }
       });
       expect(post.get("thread")).toBeUndefined();
       expect(post.getThread().getId()).toBe(1);
@@ -403,15 +403,15 @@ describe("Ext.data.schema.ManyToOne", function () {
               children: [
                 {
                   id: 101,
-                  parentId: 1,
+                  parentId: 1
                 },
                 {
                   id: 102,
-                  parentId: 1,
-                },
-              ],
-            },
-          ],
+                  parentId: 1
+                }
+              ]
+            }
+          ]
         };
       }
       Ext.define("spec.Node", {
@@ -421,23 +421,23 @@ describe("Ext.data.schema.ManyToOne", function () {
             name: "parentId",
             reference: {
               type: "Node",
-              inverse: "children",
-            },
-          },
+              inverse: "children"
+            }
+          }
         ],
         proxy: {
           type: "ajax",
           reader: {
             type: "json",
-            rootProperty: "records",
-          },
-        },
+            rootProperty: "records"
+          }
+        }
       });
 
       var store = new Ext.data.Store({
         // Always want immediate load
         asynchronousLoad: false,
-        model: "Node",
+        model: "Node"
       });
       store.load();
       complete(getData());
@@ -453,7 +453,7 @@ describe("Ext.data.schema.ManyToOne", function () {
       it("should mark the store complete if there are records", function () {
         definePost();
         var store = new Ext.data.Store({
-          model: Thread,
+          model: Thread
         });
 
         store.loadRawData([
@@ -462,14 +462,14 @@ describe("Ext.data.schema.ManyToOne", function () {
             posts: [
               {
                 id: 101,
-                content: "Foo",
+                content: "Foo"
               },
               {
                 id: 102,
-                content: "Bar",
-              },
-            ],
-          },
+                content: "Bar"
+              }
+            ]
+          }
         ]);
 
         expect(store.first().posts().complete).toBe(true);
@@ -478,14 +478,14 @@ describe("Ext.data.schema.ManyToOne", function () {
       it("should mark the store complete if a root exists and there are no records", function () {
         definePost();
         var store = new Ext.data.Store({
-          model: Thread,
+          model: Thread
         });
 
         store.loadRawData([
           {
             id: 1,
-            posts: [],
-          },
+            posts: []
+          }
         ]);
 
         expect(store.first().posts().complete).toBe(true);
@@ -494,13 +494,13 @@ describe("Ext.data.schema.ManyToOne", function () {
       it("should not mark the store complete if a root doesn't exist", function () {
         definePost();
         var store = new Ext.data.Store({
-          model: Thread,
+          model: Thread
         });
 
         store.loadRawData([
           {
-            id: 1,
-          },
+            id: 1
+          }
         ]);
 
         expect(store.first().posts().complete).toBe(false);
@@ -519,12 +519,12 @@ describe("Ext.data.schema.ManyToOne", function () {
             id: 1,
             posts: [
               {
-                id: 101,
+                id: 101
               },
               {
-                id: 102,
-              },
-            ],
+                id: 102
+              }
+            ]
           });
           var posts = thread.posts();
           expect(posts.getCount()).toBe(2);
@@ -539,17 +539,17 @@ describe("Ext.data.schema.ManyToOne", function () {
         it("should infer the key when loading the store, not nested", function () {
           var thread = Thread.load(1);
           complete({
-            id: 1,
+            id: 1
           });
           var posts = thread.posts();
           posts.load();
           complete([
             {
-              id: 101,
+              id: 101
             },
             {
-              id: 102,
-            },
+              id: 102
+            }
           ]);
           expect(posts.getCount()).toBe(2);
           expect(posts.getAt(0).getId()).toBe(101);
@@ -577,7 +577,7 @@ describe("Ext.data.schema.ManyToOne", function () {
         it("should favour an existing reference", function () {
           var post = session.createRecord("Post", {
             id: 101,
-            threadId: 3,
+            threadId: 3
           });
 
           var thread = Thread.load(1, null, session);
@@ -585,12 +585,12 @@ describe("Ext.data.schema.ManyToOne", function () {
             id: 1,
             posts: [
               {
-                id: 101,
+                id: 101
               },
               {
-                id: 102,
-              },
-            ],
+                id: 102
+              }
+            ]
           });
           var posts = thread.posts();
           expect(posts.getCount()).toBe(1);
@@ -606,12 +606,12 @@ describe("Ext.data.schema.ManyToOne", function () {
             id: 1,
             posts: [
               {
-                id: 101,
+                id: 101
               },
               {
-                id: 102,
-              },
-            ],
+                id: 102
+              }
+            ]
           });
           var posts = thread.posts();
           expect(posts.getCount()).toBe(2);
@@ -626,17 +626,17 @@ describe("Ext.data.schema.ManyToOne", function () {
         it("should infer the key when loading the store, not nested", function () {
           var thread = Thread.load(1, null, session);
           complete({
-            id: 1,
+            id: 1
           });
           var posts = thread.posts();
           posts.load();
           complete([
             {
-              id: 101,
+              id: 101
             },
             {
-              id: 102,
-            },
+              id: 102
+            }
           ]);
           expect(posts.getCount()).toBe(2);
           expect(posts.getAt(0).getId()).toBe(101);
@@ -654,12 +654,12 @@ describe("Ext.data.schema.ManyToOne", function () {
             posts: [
               {
                 id: 101,
-                threadId: 100,
+                threadId: 100
               },
               {
-                id: 102,
-              },
-            ],
+                id: 102
+              }
+            ]
           });
           var posts = thread.posts();
           expect(posts.getCount()).toBe(1);
@@ -674,7 +674,7 @@ describe("Ext.data.schema.ManyToOne", function () {
         it("should allow inference for phantom records", function () {
           var thread = session.createRecord("Thread", {}),
             post = session.createRecord("Post", {
-              threadId: thread.getId(),
+              threadId: thread.getId()
             });
 
           expect(thread.posts().getCount()).toBe(1);
@@ -717,7 +717,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
           expect(filter.getValue()).toBe(thread.id);
           posts.add({
-            id: 1,
+            id: 1
           });
           thread.setId(100);
           expect(filter.getValue()).toBe(100);
@@ -771,9 +771,9 @@ describe("Ext.data.schema.ManyToOne", function () {
             beforeEach(function () {
               post = new Post(
                 {
-                  id: 4,
+                  id: 4
                 },
-                session,
+                session
               );
             });
             describe("without an instance", function () {
@@ -794,12 +794,12 @@ describe("Ext.data.schema.ManyToOne", function () {
                     expect(spy).toHaveBeenCalled();
                     spy.reset();
                     post.getThread({
-                      success: spy,
+                      success: spy
                     });
                     expect(spy).toHaveBeenCalled();
                     spy.reset();
                     post.getThread({
-                      callback: spy,
+                      callback: spy
                     });
                     expect(spy).toHaveBeenCalled();
                   });
@@ -821,7 +821,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   it("should accept an options object with success and default the scope to the model", function () {
                     post.getThread({
-                      success: spy,
+                      success: spy
                     });
                     var call = spy.mostRecentCall;
                     expect(call.args[0]).toBe(thread);
@@ -835,7 +835,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                     post.getThread({
                       scope: o,
-                      success: spy,
+                      success: spy
                     });
                     call = spy.mostRecentCall;
                     expect(call.object).toBe(o);
@@ -843,7 +843,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   it("should accept an options object with callback and default the scope to the model", function () {
                     post.getThread({
-                      callback: spy,
+                      callback: spy
                     });
                     var call = spy.mostRecentCall;
                     expect(call.args[0]).toBe(thread);
@@ -858,7 +858,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                     post.getThread({
                       scope: o,
-                      callback: spy,
+                      callback: spy
                     });
                     call = spy.mostRecentCall;
                     expect(call.object).toBe(o);
@@ -874,7 +874,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 if (withSession) {
                   it("should create an instance in the session", function () {
                     expect(post.getThread()).toBe(
-                      session.getRecord("Thread", 17, false),
+                      session.getRecord("Thread", 17, false)
                     );
                   });
 
@@ -887,9 +887,9 @@ describe("Ext.data.schema.ManyToOne", function () {
                     thread = session.getRecord(
                       "Thread",
                       {
-                        id: 17,
+                        id: 17
                       },
-                      false,
+                      false
                     );
                     post.getThread();
                     expect(thread.isLoading()).toBe(false);
@@ -927,7 +927,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                     post.getThread();
                     post.getThread({
                       success: spy,
-                      callback: spy,
+                      callback: spy
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -936,7 +936,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                     post.getThread();
                     post.getThread({
                       success: spy,
-                      callback: spy,
+                      callback: spy
                     });
                     complete({});
                     expect(spy.callCount).toBe(2);
@@ -947,13 +947,13 @@ describe("Ext.data.schema.ManyToOne", function () {
                   it("should not trigger any callbacks until the load completes", function () {
                     post.getThread(spy);
                     post.getThread({
-                      success: spy,
+                      success: spy
                     });
                     post.getThread({
-                      failure: spy,
+                      failure: spy
                     });
                     post.getThread({
-                      callback: spy,
+                      callback: spy
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -978,7 +978,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                     it("should accept an options object with success and default the scope to the model", function () {
                       thread = post.getThread({
-                        success: spy,
+                        success: spy
                       });
                       complete({});
                       var call = spy.mostRecentCall;
@@ -993,7 +993,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                       post.getThread({
                         scope: o,
-                        success: spy,
+                        success: spy
                       });
                       complete({});
                       call = spy.mostRecentCall;
@@ -1002,7 +1002,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                     it("should accept an options object with callback and default the scope to the model", function () {
                       thread = post.getThread({
-                        callback: spy,
+                        callback: spy
                       });
                       complete({});
                       var call = spy.mostRecentCall;
@@ -1018,7 +1018,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                       post.getThread({
                         scope: o,
-                        callback: spy,
+                        callback: spy
                       });
                       complete({});
                       call = spy.mostRecentCall;
@@ -1046,7 +1046,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                     it("should accept an options object with failure and default the scope to the model", function () {
                       thread = post.getThread({
-                        failure: spy,
+                        failure: spy
                       });
                       complete(null, 500);
                       var call = spy.mostRecentCall;
@@ -1061,7 +1061,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                       post.getThread({
                         scope: o,
-                        failure: spy,
+                        failure: spy
                       });
                       complete(null, 500);
                       call = spy.mostRecentCall;
@@ -1070,7 +1070,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                     it("should accept an options object with callback and default the scope to the model", function () {
                       thread = post.getThread({
-                        callback: spy,
+                        callback: spy
                       });
                       complete(null, 500);
                       var call = spy.mostRecentCall;
@@ -1086,7 +1086,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                       post.getThread({
                         scope: o,
-                        callback: spy,
+                        callback: spy
                       });
                       complete(null, 500);
                       call = spy.mostRecentCall;
@@ -1101,9 +1101,9 @@ describe("Ext.data.schema.ManyToOne", function () {
               beforeEach(function () {
                 thread = new Thread(
                   {
-                    id: 2,
+                    id: 2
                   },
-                  session,
+                  session
                 );
 
                 post.setThread(thread);
@@ -1122,14 +1122,14 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should attempt to reload if called with options.reload", function () {
                 spy = spyOn(Thread.getProxy(), "read").andReturn();
                 post.getThread({
-                  reload: true,
+                  reload: true
                 });
                 expect(spy).toHaveBeenCalled();
               });
 
               it("should reload the same record when called with reload", function () {
                 var result = post.getThread({
-                  reload: true,
+                  reload: true
                 });
                 expect(result).toBe(thread);
               });
@@ -1140,12 +1140,12 @@ describe("Ext.data.schema.ManyToOne", function () {
                   expect(spy).toHaveBeenCalled();
                   spy.reset();
                   post.getThread({
-                    success: spy,
+                    success: spy
                   });
                   expect(spy).toHaveBeenCalled();
                   spy.reset();
                   post.getThread({
-                    callback: spy,
+                    callback: spy
                   });
                   expect(spy).toHaveBeenCalled();
                 });
@@ -1167,7 +1167,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 it("should accept an options object with success and default the scope to the model", function () {
                   post.getThread({
-                    success: spy,
+                    success: spy
                   });
                   var call = spy.mostRecentCall;
                   expect(call.args[0]).toBe(thread);
@@ -1181,7 +1181,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   post.getThread({
                     scope: o,
-                    success: spy,
+                    success: spy
                   });
                   call = spy.mostRecentCall;
                   expect(call.object).toBe(o);
@@ -1189,7 +1189,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 it("should accept an options object with callback and default the scope to the model", function () {
                   post.getThread({
-                    callback: spy,
+                    callback: spy
                   });
                   var call = spy.mostRecentCall;
                   expect(call.args[0]).toBe(thread);
@@ -1204,7 +1204,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   post.getThread({
                     scope: o,
-                    callback: spy,
+                    callback: spy
                   });
                   call = spy.mostRecentCall;
                   expect(call.object).toBe(o);
@@ -1217,9 +1217,9 @@ describe("Ext.data.schema.ManyToOne", function () {
             beforeEach(function () {
               post = new Post(
                 {
-                  id: 7,
+                  id: 7
                 },
-                session,
+                session
               );
             });
 
@@ -1229,9 +1229,9 @@ describe("Ext.data.schema.ManyToOne", function () {
               beforeEach(function () {
                 thread = new Thread(
                   {
-                    id: 3,
+                    id: 3
                   },
-                  session,
+                  session
                 );
               });
 
@@ -1281,10 +1281,10 @@ describe("Ext.data.schema.ManyToOne", function () {
                   post.setThread(
                     new Thread(
                       {
-                        id: 1000,
+                        id: 1000
                       },
-                      session,
-                    ),
+                      session
+                    )
                   );
                   post.setThread(thread);
                 });
@@ -1356,10 +1356,10 @@ describe("Ext.data.schema.ManyToOne", function () {
                   post.setThread(
                     new Thread(
                       {
-                        id: 1000,
+                        id: 1000
                       },
-                      session,
-                    ),
+                      session
+                    )
                   );
                 });
 
@@ -1391,13 +1391,13 @@ describe("Ext.data.schema.ManyToOne", function () {
                 joiner = {
                   afterEdit: function () {
                     fn();
-                  },
+                  }
                 };
                 thread = new Thread(
                   {
-                    id: 101,
+                    id: 101
                   },
-                  session,
+                  session
                 );
               });
 
@@ -1462,7 +1462,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                     post.setThread(16, {
                       success: successSpy,
                       callback: callbackSpy,
-                      failure: failureSpy,
+                      failure: failureSpy
                     });
                     complete({});
                     expect(failureSpy).not.toHaveBeenCalled();
@@ -1477,7 +1477,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                     post.setThread(16, {
                       scope: scope,
                       success: successSpy,
-                      callback: callbackSpy,
+                      callback: callbackSpy
                     });
                     complete({});
                     expect(successSpy.mostRecentCall.object).toBe(scope);
@@ -1490,7 +1490,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                     post.setThread(16, {
                       success: successSpy,
                       callback: callbackSpy,
-                      failure: failureSpy,
+                      failure: failureSpy
                     });
                     complete(null, 500);
                     expect(successSpy).not.toHaveBeenCalled();
@@ -1505,7 +1505,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                     post.setThread(16, {
                       scope: scope,
                       failure: failureSpy,
-                      callback: callbackSpy,
+                      callback: callbackSpy
                     });
                     complete(null, 500);
                     expect(failureSpy.mostRecentCall.object).toBe(scope);
@@ -1522,9 +1522,9 @@ describe("Ext.data.schema.ManyToOne", function () {
             beforeEach(function () {
               thread = new Thread(
                 {
-                  id: 1,
+                  id: 1
                 },
-                session,
+                session
               );
               posts = thread.posts();
             });
@@ -1533,9 +1533,9 @@ describe("Ext.data.schema.ManyToOne", function () {
               post = new Post(
                 {
                   id: id,
-                  threadId: threadId || 1,
+                  threadId: threadId || 1
                 },
-                session,
+                session
               );
             }
 
@@ -1581,9 +1581,9 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should add to an existing store if a matching key is found", function () {
                 var otherThread = new Thread(
                   {
-                    id: 2,
+                    id: 2
                   },
-                  session,
+                  session
                 );
                 var otherPosts = otherThread.posts();
 
@@ -1597,9 +1597,9 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should set the many record if it exists in the session", function () {
                 var otherThread = new Thread(
                   {
-                    id: 2,
+                    id: 2
                   },
-                  session,
+                  session
                 );
 
                 makePost(101);
@@ -1620,9 +1620,9 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should not create the store on an existing record", function () {
                 var otherThread = new Thread(
                   {
-                    id: 2,
+                    id: 2
                   },
-                  session,
+                  session
                 );
                 var name = otherThread.associations.posts.getStoreName();
 
@@ -1635,9 +1635,9 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should not add if an existing store is loading", function () {
                 var otherThread = new Thread(
                   {
-                    id: 2,
+                    id: 2
                   },
-                  session,
+                  session
                 );
                 var otherPosts = otherThread.posts();
                 otherPosts.load();
@@ -1656,7 +1656,7 @@ describe("Ext.data.schema.ManyToOne", function () {
           var posts;
           function makeThread(id) {
             var cfg = {
-              id: id || 3,
+              id: id || 3
             };
             if (id === null) {
               delete cfg.id;
@@ -1701,9 +1701,9 @@ describe("Ext.data.schema.ManyToOne", function () {
             definePost({
               inverse: {
                 storeConfig: {
-                  autoLoad: true,
-                },
-              },
+                  autoLoad: true
+                }
+              }
             });
             makeThread();
             posts = thread.posts();
@@ -1743,7 +1743,7 @@ describe("Ext.data.schema.ManyToOne", function () {
               makeThread();
               var spy = spyOn(
                 Ext.data.ProxyStore.prototype,
-                "load",
+                "load"
               ).andReturn();
               thread.posts();
               expect(spy.callCount).toBe(0);
@@ -1752,14 +1752,14 @@ describe("Ext.data.schema.ManyToOne", function () {
             it("should load the store if configured with autoLoad: true", function () {
               definePost({
                 inverse: {
-                  autoLoad: true,
-                },
+                  autoLoad: true
+                }
               });
 
               makeThread();
               var spy = spyOn(
                 Ext.data.ProxyStore.prototype,
-                "load",
+                "load"
               ).andReturn();
               thread.posts();
               expect(spy.callCount).toBe(1);
@@ -1778,7 +1778,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 postData = [
                   { id: 101, threadId: 3 },
                   { id: 102, threadId: 3 },
-                  { id: 103, threadId: 3 },
+                  { id: 103, threadId: 3 }
                 ];
               });
 
@@ -1800,7 +1800,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 thread = Thread.load(3);
                 complete({
                   id: 3,
-                  posts: postData,
+                  posts: postData
                 });
 
                 var posts = thread.posts();
@@ -1835,7 +1835,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 posts.load();
                 complete([]);
                 post = posts.add({
-                  threadId: 1,
+                  threadId: 1
                 })[0];
                 expect(post.get("threadId")).toBe(3);
               });
@@ -1856,7 +1856,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 var posts = thread.posts(),
                   post = posts.add({
                     id: 101,
-                    threadId: thread.getId(),
+                    threadId: thread.getId()
                   })[0];
                 expect(post.getThread()).toBe(thread);
               });
@@ -1904,7 +1904,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 complete([
                   { id: 11, threadId: 3 },
                   { id: 12, threadId: 3 },
-                  { id: 13, threadId: 3 },
+                  { id: 13, threadId: 3 }
                 ]);
 
                 post1 = posts.getAt(0);
@@ -1940,7 +1940,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 complete([
                   { id: 11, threadId: 3 },
                   { id: 12, threadId: 3 },
-                  { id: 13, threadId: 3 },
+                  { id: 13, threadId: 3 }
                 ]);
 
                 post1 = posts.getAt(0);
@@ -1963,7 +1963,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 complete([
                   { id: 11, threadId: 3 },
                   { id: 12, threadId: 3 },
-                  { id: 13, threadId: 3 },
+                  { id: 13, threadId: 3 }
                 ]);
                 post = posts.first();
                 posts.on("remove", function () {
@@ -1987,7 +1987,7 @@ describe("Ext.data.schema.ManyToOne", function () {
               thread.posts();
               spy = spyOn(Post.getProxy(), "read");
               thread.posts({
-                reload: true,
+                reload: true
               });
               expect(spy).toHaveBeenCalled();
             });
@@ -1997,7 +1997,7 @@ describe("Ext.data.schema.ManyToOne", function () {
               expect(posts.isLoading()).toBe(true);
               spy = spyOn(Post.getProxy(), "read");
               thread.posts({
-                reload: true,
+                reload: true
               });
               expect(spy).not.toHaveBeenCalled();
             });
@@ -2020,7 +2020,7 @@ describe("Ext.data.schema.ManyToOne", function () {
               thread.posts({});
               thread.posts({
                 success: spy,
-                callback: spy,
+                callback: spy
               });
               expect(spy).not.toHaveBeenCalled();
             });
@@ -2029,7 +2029,7 @@ describe("Ext.data.schema.ManyToOne", function () {
               thread.posts({});
               thread.posts({
                 success: spy,
-                callback: spy,
+                callback: spy
               });
               complete([]);
               expect(spy.callCount).toBe(2);
@@ -2052,12 +2052,12 @@ describe("Ext.data.schema.ManyToOne", function () {
                 expect(spy).toHaveBeenCalled();
                 spy.reset();
                 thread.posts({
-                  success: spy,
+                  success: spy
                 });
                 expect(spy).toHaveBeenCalled();
                 spy.reset();
                 thread.posts({
-                  callback: spy,
+                  callback: spy
                 });
                 expect(spy).toHaveBeenCalled();
               });
@@ -2079,7 +2079,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
               it("should accept an options object with success and default the scope to the model", function () {
                 posts = thread.posts({
-                  success: spy,
+                  success: spy
                 });
                 var call = spy.mostRecentCall;
                 expect(call.args[0]).toBe(posts);
@@ -2093,7 +2093,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 thread.posts({
                   scope: o,
-                  success: spy,
+                  success: spy
                 });
                 call = spy.mostRecentCall;
                 expect(call.object).toBe(o);
@@ -2101,7 +2101,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
               it("should accept an options object with callback and default the scope to the model", function () {
                 posts = thread.posts({
-                  callback: spy,
+                  callback: spy
                 });
                 var call = spy.mostRecentCall;
                 expect(call.args[0]).toBe(posts);
@@ -2116,7 +2116,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 thread.posts({
                   scope: o,
-                  callback: spy,
+                  callback: spy
                 });
                 call = spy.mostRecentCall;
                 expect(call.object).toBe(o);
@@ -2127,13 +2127,13 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should not trigger any callbacks until the load completes", function () {
                 thread.posts(spy);
                 thread.posts({
-                  success: spy,
+                  success: spy
                 });
                 thread.posts({
-                  failure: spy,
+                  failure: spy
                 });
                 thread.posts({
-                  callback: spy,
+                  callback: spy
                 });
                 expect(spy).not.toHaveBeenCalled();
               });
@@ -2158,7 +2158,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 it("should accept an options object with success and default the scope to the model", function () {
                   posts = thread.posts({
-                    success: spy,
+                    success: spy
                   });
                   complete([]);
                   var call = spy.mostRecentCall;
@@ -2173,7 +2173,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   thread.posts({
                     scope: o,
-                    success: spy,
+                    success: spy
                   });
                   complete([]);
                   call = spy.mostRecentCall;
@@ -2182,7 +2182,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 it("should accept an options object with callback and default the scope to the model", function () {
                   posts = thread.posts({
-                    callback: spy,
+                    callback: spy
                   });
                   complete([]);
                   var call = spy.mostRecentCall;
@@ -2198,7 +2198,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   thread.posts({
                     scope: o,
-                    callback: spy,
+                    callback: spy
                   });
                   complete([]);
                   call = spy.mostRecentCall;
@@ -2226,7 +2226,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 it("should accept an options object with failure and default the scope to the model", function () {
                   posts = thread.posts({
-                    failure: spy,
+                    failure: spy
                   });
                   complete(null, 500);
                   var call = spy.mostRecentCall;
@@ -2241,7 +2241,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   thread.posts({
                     scope: o,
-                    failure: spy,
+                    failure: spy
                   });
                   complete(null, 500);
                   call = spy.mostRecentCall;
@@ -2250,7 +2250,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                 it("should accept an options object with callback and default the scope to the model", function () {
                   posts = thread.posts({
-                    callback: spy,
+                    callback: spy
                   });
                   complete(null, 500);
                   var call = spy.mostRecentCall;
@@ -2266,7 +2266,7 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   thread.posts({
                     scope: o,
-                    callback: spy,
+                    callback: spy
                   });
                   complete(null, 500);
                   call = spy.mostRecentCall;
@@ -2288,16 +2288,16 @@ describe("Ext.data.schema.ManyToOne", function () {
                 data = [
                   {
                     id: 101,
-                    threadId: 3,
+                    threadId: 3
                   },
                   {
                     id: 102,
-                    threadId: 3,
+                    threadId: 3
                   },
                   {
                     id: 103,
-                    threadId: 3,
-                  },
+                    threadId: 3
+                  }
                 ];
               });
 
@@ -2318,7 +2318,7 @@ describe("Ext.data.schema.ManyToOne", function () {
                 complete(data);
                 var rec = session.getRecord("Post", 104);
                 complete({
-                  id: 104,
+                  id: 104
                 });
                 posts.add(rec);
                 expect(rec.get("threadId")).toBe(3);
@@ -2335,17 +2335,17 @@ describe("Ext.data.schema.ManyToOne", function () {
                 var p1 = new Post(
                   {
                     id: 104,
-                    threadId: 3,
+                    threadId: 3
                   },
-                  session,
+                  session
                 );
 
                 var p2 = new Post(
                   {
                     id: 105,
-                    threadId: 7,
+                    threadId: 7
                   },
-                  session,
+                  session
                 );
 
                 expect(posts.indexOf(p1)).toBe(3);
@@ -2375,18 +2375,18 @@ describe("Ext.data.schema.ManyToOne", function () {
             posts: [
               {
                 id: 101,
-                threadId: 1,
+                threadId: 1
               },
               {
                 id: 102,
-                threadId: 1,
+                threadId: 1
               },
               {
                 id: 103,
-                threadId: 1,
-              },
-            ],
-          },
+                threadId: 1
+              }
+            ]
+          }
         ];
       });
 
@@ -2401,7 +2401,7 @@ describe("Ext.data.schema.ManyToOne", function () {
       function makePost(id, threadId) {
         var data = {
           id: id,
-          threadId: threadId,
+          threadId: threadId
         };
 
         // Session will be null if withSession is false
@@ -2412,9 +2412,9 @@ describe("Ext.data.schema.ManyToOne", function () {
         // Session will be null if withSession = false
         thread = new Thread(
           {
-            id: id,
+            id: id
           },
-          session,
+          session
         );
       }
 
@@ -2422,7 +2422,7 @@ describe("Ext.data.schema.ManyToOne", function () {
         var store = new Ext.data.Store({
           model: Thread,
           // Session will be null if withSession = false
-          session: session,
+          session: session
         });
         store.loadRawData(data || storeData);
         return store;
@@ -2515,8 +2515,8 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should not raise an exception with an empty store", function () {
                 store = makeStore([
                   {
-                    id: 1,
-                  },
+                    id: 1
+                  }
                 ]);
                 thread = store.first();
                 expect(function () {
@@ -2588,7 +2588,7 @@ describe("Ext.data.schema.ManyToOne", function () {
               beforeEach(function () {
                 definePost({
                   type: null,
-                  parent: "Thread",
+                  parent: "Thread"
                 });
               });
 
@@ -2599,8 +2599,8 @@ describe("Ext.data.schema.ManyToOne", function () {
               it("should not raise an exception with an empty store", function () {
                 store = makeStore([
                   {
-                    id: 1,
-                  },
+                    id: 1
+                  }
                 ]);
                 thread = store.first();
                 expect(function () {
@@ -2667,38 +2667,38 @@ describe("Ext.data.schema.ManyToOne", function () {
                   it("should drop the child even if the store is not created", function () {
                     thread = new Thread(
                       {
-                        id: 1,
+                        id: 1
                       },
-                      session,
+                      session
                     );
 
                     var post1 = new Post(
                       {
                         id: 101,
-                        threadId: 1,
+                        threadId: 1
                       },
-                      session,
+                      session
                     );
 
                     var post2 = new Post(
                       {
                         id: 102,
-                        threadId: 1,
+                        threadId: 1
                       },
-                      session,
+                      session
                     );
 
                     var post3 = new Post(
                       {
                         id: 103,
-                        threadId: 1,
+                        threadId: 1
                       },
-                      session,
+                      session
                     );
 
                     var post4 = new Post({
                       id: 104,
-                      threadId: 2,
+                      threadId: 2
                     });
 
                     thread.drop();
@@ -2715,9 +2715,9 @@ describe("Ext.data.schema.ManyToOne", function () {
                   createDefaults();
                   var other = new Thread(
                     {
-                      id: 2,
+                      id: 2
                     },
-                    session,
+                    session
                   );
                   post.setThread(other);
                   expect(post.dropped).toBe(false);
@@ -2734,9 +2734,9 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   var otherThread = new Thread(
                     {
-                      id: 2,
+                      id: 2
                     },
-                    session,
+                    session
                   );
                   posts.remove(post);
 
@@ -2759,9 +2759,9 @@ describe("Ext.data.schema.ManyToOne", function () {
 
                   var otherThread = new Thread(
                     {
-                      id: 2,
+                      id: 2
                     },
-                    session,
+                    session
                   );
 
                   posts.remove(post);
@@ -2785,14 +2785,14 @@ describe("Ext.data.schema.ManyToOne", function () {
       definePost();
 
       var thread = new Thread({
-        id: 1,
+        id: 1
       });
       var post = new Post();
 
       thread.posts().add(post);
 
       var store = new Ext.data.Store({
-        model: Post,
+        model: Post
       });
       store.add(post);
 

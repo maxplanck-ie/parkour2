@@ -263,7 +263,7 @@ Ext.define("Ext.tip.ToolTip", {
      * Only effective on platforms with pointing devices, this does not address touch
      * events.
      */
-    trackMouse: false,
+    trackMouse: false
   },
 
   closeToolText: "",
@@ -299,7 +299,7 @@ Ext.define("Ext.tip.ToolTip", {
         mouseenter: "onTipOver",
         mouseleave: "onTipOut",
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
     }
   },
@@ -365,7 +365,7 @@ Ext.define("Ext.tip.ToolTip", {
       me.callParent([
         alignDelegate ? target.child(alignDelegate, true) : target,
         alignment || me.getAlign(),
-        passedOptions,
+        passedOptions
       ]);
     }
   },
@@ -581,7 +581,7 @@ Ext.define("Ext.tip.ToolTip", {
             me.showByTarget,
             me.pointerEvent.pointerType !== "mouse" ? 0 : me.getShowDelay(),
             me,
-            [target],
+            [target]
           );
         }
       } else if (!me.getHidden() && me.getAutoHide() !== false) {
@@ -598,7 +598,7 @@ Ext.define("Ext.tip.ToolTip", {
       // If trackMouse, or we are not anchored to the target, then it's the current pointer event.
       // Otherwise it's either the current target, or the alignDelegate within that.
       me.showBy(isTarget ? target : me.pointerEvent, me.getAlign(), {
-        overlap: me.getTrackMouse() && !me.getAnchor(),
+        overlap: me.getTrackMouse() && !me.getAnchor()
       });
     },
 
@@ -617,7 +617,7 @@ Ext.define("Ext.tip.ToolTip", {
           // Allow the "exclusion area", the zone of mouseOffset
           // created as a Region around the mouse to overlap
           // the tip position.
-          overlap: me.getTrackMouse() && !me.getAnchor(),
+          overlap: me.getTrackMouse() && !me.getAnchor()
         },
         mouseOffset = me.getMouseOffset(),
         target = event
@@ -626,7 +626,7 @@ Ext.define("Ext.tip.ToolTip", {
             -mouseOffset[1],
             mouseOffset[0],
             mouseOffset[1],
-            -mouseOffset[0],
+            -mouseOffset[0]
           ),
         anchor = me.getAnchor(),
         align;
@@ -748,7 +748,7 @@ Ext.define("Ext.tip.ToolTip", {
           mouseout: "onTargetOut",
           mousemove: "onMouseMove",
           scope: me,
-          destroyable: true,
+          destroyable: true
         };
 
         if (me.getShowOnTap()) {
@@ -756,6 +756,6 @@ Ext.define("Ext.tip.ToolTip", {
         }
         me.targetListeners = target.on(listeners);
       }
-    },
-  },
+    }
+  }
 });

@@ -49,8 +49,8 @@ Ext.define("Ext.grid.cell.Tree", {
      */
     text: {
       lazy: true,
-      $value: "",
-    },
+      $value: ""
+    }
   },
 
   element: {
@@ -69,21 +69,21 @@ Ext.define("Ext.grid.cell.Tree", {
             children: [
               {
                 reference: "iconElement",
-                cls: Ext.baseCSSPrefix + "treelist-item-icon",
+                cls: Ext.baseCSSPrefix + "treelist-item-icon"
               },
               {
                 reference: "textElement",
-                cls: Ext.baseCSSPrefix + "treelist-item-text",
+                cls: Ext.baseCSSPrefix + "treelist-item-text"
               },
               {
                 reference: "expanderElement",
-                cls: Ext.baseCSSPrefix + "treelist-item-expander",
-              },
-            ],
-          },
-        ],
-      },
-    ],
+                cls: Ext.baseCSSPrefix + "treelist-item-expander"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
 
   /**
@@ -111,7 +111,7 @@ Ext.define("Ext.grid.cell.Tree", {
       "nodecollapse",
       [me.parent, record, "collapse"],
       "doToggle",
-      this,
+      this
     );
   },
 
@@ -131,7 +131,7 @@ Ext.define("Ext.grid.cell.Tree", {
       "nodeexpand",
       [me.parent, record, "expand"],
       "doToggle",
-      me,
+      me
     );
 
     // Collapse any other expanded sibling if tree is singleExpand
@@ -151,7 +151,7 @@ Ext.define("Ext.grid.cell.Tree", {
 
     this.element.on({
       scope: this,
-      tap: "maybeToggle",
+      tap: "maybeToggle"
     });
   },
 
@@ -289,6 +289,6 @@ Ext.define("Ext.grid.cell.Tree", {
 
     doToggle: function (row, record, fn) {
       record[fn]();
-    },
-  },
+    }
+  }
 });

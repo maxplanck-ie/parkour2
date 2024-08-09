@@ -71,7 +71,7 @@ Ext.define("Ext.data.flash.BinaryXhr", {
       //<debug>
       else {
         Ext.warn.log(
-          "onFlashStateChange for unknown connection ID: " + javascriptId,
+          "onFlashStateChange for unknown connection ID: " + javascriptId
         );
       }
       //</debug>
@@ -110,7 +110,7 @@ Ext.define("Ext.data.flash.BinaryXhr", {
         cn: [
           {
             tag: "p",
-            html: "To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.",
+            html: "To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed."
           },
           {
             tag: "a",
@@ -121,24 +121,24 @@ Ext.define("Ext.data.flash.BinaryXhr", {
                 src:
                   window.location.protocol +
                   "//www.adobe.com/images/shared/download_buttons/get_flash_player.gif",
-                alt: "Get Adobe Flash player",
-              },
-            ],
-          },
-        ],
+                alt: "Get Adobe Flash player"
+              }
+            ]
+          }
+        ]
       });
 
       // Now load the flash-loading script
 
       flashLoaderPath = [
         Ext.Loader.getPath("Ext.data.Connection"),
-        "../../../plugins/flash/swfobject.js",
+        "../../../plugins/flash/swfobject.js"
       ].join("/");
       flashObjectPath = "/plugins/flash/FlashPlugin.swf";
       //<debug>
       flashObjectPath = [
         Ext.Loader.getPath("Ext.data.Connection"),
-        "../../plugins/flash/FlashPlugin.swf",
+        "../../plugins/flash/FlashPlugin.swf"
       ].join("/");
       //</debug>
       if (Ext.flashPluginPath) {
@@ -171,21 +171,21 @@ Ext.define("Ext.data.flash.BinaryXhr", {
             xiSwfUrlStr,
             flashvars,
             params,
-            attributes,
+            attributes
           );
         },
         onError: function () {
           //<debug>
           Ext.raise(
-            "Could not load flash-loader file swfobject.js from " + flashLoader,
+            "Could not load flash-loader file swfobject.js from " + flashLoader
           );
           //</debug>
         },
-        scope: me,
+        scope: me
       });
 
       Ext.data.flash.BinaryXhr.flashPluginInjected = true;
-    },
+    }
   },
 
   /**
@@ -237,7 +237,7 @@ Ext.define("Ext.data.flash.BinaryXhr", {
     if (me.readyState == 4) {
       //<debug>
       Ext.warn.log(
-        "Aborting a connection that's completed its transfer: " + this.url,
+        "Aborting a connection that's completed its transfer: " + this.url
       );
       //</debug>
       return;
@@ -335,7 +335,7 @@ Ext.define("Ext.data.flash.BinaryXhr", {
       mimeType: me.mimeType,
       requestHeaders: me.requestHeaders,
       body: me.body,
-      javascriptId: me.javascriptId,
+      javascriptId: me.javascriptId
     };
     status = Ext.data.flash.BinaryXhr.flashPlugin.postBinary(req);
   },
@@ -409,5 +409,5 @@ Ext.define("Ext.data.flash.BinaryXhr", {
       delete Ext.data.flash.BinaryXhr.liveConnections[me.javascriptId];
     }
     me.setReadyState(state); // notify all listeners
-  },
+  }
 });

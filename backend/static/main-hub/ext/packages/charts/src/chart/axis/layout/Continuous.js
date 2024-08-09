@@ -11,7 +11,7 @@ Ext.define("Ext.chart.axis.layout.Continuous", {
 
   config: {
     adjustMinimumByMajorUnit: false,
-    adjustMaximumByMajorUnit: false,
+    adjustMaximumByMajorUnit: false
   },
 
   getCoordFor: function (value, field, idx, items) {
@@ -45,7 +45,7 @@ Ext.define("Ext.chart.axis.layout.Continuous", {
       unit: unit,
       get: function (currentStep) {
         return segmenter.add(this.from, this.step * currentStep, this.unit);
-      },
+      }
     };
   },
 
@@ -76,7 +76,7 @@ Ext.define("Ext.chart.axis.layout.Continuous", {
         return (current % minorTickSteps) + offset + 1 !== 0 // don't render minor tick in major tick position
           ? segmenter.add(this.from, this.step * current, unit)
           : null;
-      },
+      }
     };
-  },
+  }
 });

@@ -72,23 +72,23 @@ Ext.define("Ext.view.MultiSelectorSearch", {
   border: true,
   keyMap: {
     scope: "this",
-    ESC: "hide",
+    ESC: "hide"
   },
 
   platformConfig: {
     desktop: {
-      resizable: true,
+      resizable: true
     },
     "tablet && rtl": {
       resizable: {
-        handles: "sw",
-      },
+        handles: "sw"
+      }
     },
     "tablet && !rtl": {
       resizable: {
-        handles: "se",
-      },
-    },
+        handles: "se"
+      }
+    }
   },
 
   defaultListenerScope: true,
@@ -132,8 +132,8 @@ Ext.define("Ext.view.MultiSelectorSearch", {
           type: "checkboxmodel",
           pruneRemoved: false,
           listeners: {
-            selectionchange: "onSelectionChange",
-          },
+            selectionchange: "onSelectionChange"
+          }
         };
 
         Ext.merge(item, me.grid);
@@ -143,8 +143,8 @@ Ext.define("Ext.view.MultiSelectorSearch", {
           item.columns = [
             {
               flex: 1,
-              dataIndex: me.field,
-            },
+              dataIndex: me.field
+            }
           ];
         }
 
@@ -173,7 +173,7 @@ Ext.define("Ext.view.MultiSelectorSearch", {
           }
         },
         null,
-        { single: true },
+        { single: true }
       );
     } else {
       me.selectRecords(records);
@@ -221,17 +221,17 @@ Ext.define("Ext.view.MultiSelectorSearch", {
           clear: {
             cls: Ext.baseCSSPrefix + "form-clear-trigger",
             handler: "onClearSearch",
-            hidden: true,
-          },
+            hidden: true
+          }
         },
         listeners: {
           specialKey: "onSpecialKey",
           change: {
             fn: "onSearchChange",
-            buffer: 300,
-          },
-        },
-      },
+            buffer: 300
+          }
+        }
+      }
     ];
   },
 
@@ -251,9 +251,9 @@ Ext.define("Ext.view.MultiSelectorSearch", {
         leadingBufferZone: 2,
         viewConfig: {
           deferEmptyText: false,
-          emptyText: "No results.",
-        },
-      },
+          emptyText: "No results."
+        }
+      }
     ];
   },
 
@@ -308,7 +308,7 @@ Ext.define("Ext.view.MultiSelectorSearch", {
         me.searchFilter = filter = new Ext.util.Filter({
           id: "search",
           property: me.field,
-          value: text,
+          value: text
         });
       }
 
@@ -366,6 +366,6 @@ Ext.define("Ext.view.MultiSelectorSearch", {
       if (add || remove) {
         data.splice(data.length, remove, add);
       }
-    },
-  },
+    }
+  }
 });

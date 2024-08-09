@@ -16,7 +16,7 @@ Ext.onReady(function () {
       "September",
       "Oktoober",
       "November",
-      "Detsember",
+      "Detsember"
     ];
 
     // Month names aren't shortened to strictly three letters
@@ -32,7 +32,7 @@ Ext.onReady(function () {
       "Sept",
       "Okt",
       "Nov",
-      "Dets",
+      "Dets"
     ];
     Ext.Date.getShortMonthName = function (month) {
       return shortMonthNames[month];
@@ -50,7 +50,7 @@ Ext.onReady(function () {
       Sep: 8,
       Oct: 9,
       Nov: 10,
-      Dec: 11,
+      Dec: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -66,7 +66,7 @@ Ext.onReady(function () {
       "Kolmapäev",
       "Neljapäev",
       "Reede",
-      "Laupäev",
+      "Laupäev"
     ];
 
     // Weekday names are abbreviated to single letter
@@ -80,25 +80,25 @@ Ext.onReady(function () {
       thousandSeparator: " ",
       decimalSeparator: ",",
       currencySign: "\u20ac", // Euro
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.et.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.et.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} valitud rida",
+  dragText: "{0} valitud rida"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.et.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Laen...",
+  loadingText: "Laen..."
 });
 
 Ext.define("Ext.locale.et.picker.Date", {
@@ -113,13 +113,13 @@ Ext.define("Ext.locale.et.picker.Date", {
   monthYearText: "Vali kuu (Ctrl+Üles/Alla aastate muutmiseks)",
   todayTip: "{0} (Tühik)",
   format: "d.m.Y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.et.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Katkesta",
+  cancelText: "Katkesta"
 });
 
 Ext.define("Ext.locale.et.toolbar.Paging", {
@@ -132,17 +132,17 @@ Ext.define("Ext.locale.et.toolbar.Paging", {
   lastText: "Viimane lk",
   refreshText: "Värskenda",
   displayMsg: "Näitan {0} - {1} {2}-st",
-  emptyMsg: "Puuduvad andmed mida näidata",
+  emptyMsg: "Puuduvad andmed mida näidata"
 });
 
 Ext.define("Ext.locale.et.form.Basic", {
   override: "Ext.form.Basic",
-  waitTitle: "Palun oota...",
+  waitTitle: "Palun oota..."
 });
 
 Ext.define("Ext.locale.et.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Välja sisu ei vasta nõuetele",
+  invalidText: "Välja sisu ei vasta nõuetele"
 });
 
 Ext.define("Ext.locale.et.form.field.Text", {
@@ -151,14 +151,14 @@ Ext.define("Ext.locale.et.form.field.Text", {
   maxLengthText: "Selle välja maksimaalne pikkus on {0}",
   blankText: "Selle välja täitmine on nõutud",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.et.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Selle välja vähim väärtus võib olla {0}",
   maxText: "Selle välja suurim väärtus võib olla {0}",
-  nanText: "{0} pole korrektne number",
+  nanText: "{0} pole korrektne number"
 });
 
 Ext.define("Ext.locale.et.form.field.Date", {
@@ -168,20 +168,20 @@ Ext.define("Ext.locale.et.form.field.Date", {
   minText: "Kuupäev peab olema alates kuupäevast: {0}",
   maxText: "Kuupäev peab olema kuni kuupäevani: {0}",
   invalidText: "{0} ei ole sobiv kuupäev - õige formaat on: {1}",
-  format: "d.m.Y",
+  format: "d.m.Y"
 });
 
 Ext.define(
   "Ext.locale.et.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Laen...",
+      loadingText: "Laen..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.et.form.field.VTypes", {
@@ -192,15 +192,14 @@ Ext.define("Ext.locale.et.form.field.VTypes", {
     'Selle välja sisuks peab olema veebiaadress kujul "http:/' +
     '/www.domeen.com"',
   alphaText: "See väli võib sisaldada vaid tähemärke ja alakriipsu",
-  alphanumText:
-    "See väli võib sisaldada vaid tähemärke, numbreid ja alakriipsu",
+  alphanumText: "See väli võib sisaldada vaid tähemärke, numbreid ja alakriipsu"
 });
 
 Ext.define(
   "Ext.locale.et.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Palun sisestage selle lingi internetiaadress:",
+    createLinkText: "Palun sisestage selle lingi internetiaadress:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -208,102 +207,102 @@ Ext.define(
         bold: {
           title: "Rasvane kiri (Ctrl+B)",
           text: "Muuda valitud tekst rasvaseks.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Kursiiv (Ctrl+I)",
           text: "Pane valitud tekst kaldkirja.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Allakriipsutus (Ctrl+U)",
           text: "Jooni valitud tekst alla.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Suurenda",
           text: "Suurenda teksti suurust.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Vähenda",
           text: "Vähenda teksti suurust.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Tausta värv",
           text: "Muuda valitud teksti taustavärvi.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Teksti värv",
           text: "Muuda valitud teksti värvi.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Vasakule",
           text: "Joonda tekst vasakule.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Keskele",
           text: "Joonda tekst keskele.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Paremale",
           text: "Joonda tekst paremale.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Loetelu",
           text: "Alusta loetelu.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Numereeritud list",
           text: "Alusta numereeritud nimekirja.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Link",
           text: "Muuda tekst lingiks.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Lähtekoodi muutmine",
           text: "Lülitu lähtekoodi muutmise režiimi.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.et.grid.header.Container", {
   override: "Ext.grid.header.Container",
   sortAscText: "Järjesta kasvavalt",
   sortDescText: "Järjesta kahanevalt",
-  columnsText: "Tulbad",
+  columnsText: "Tulbad"
 });
 
 Ext.define("Ext.locale.et.grid.feature.Grouping", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(Tühi)",
   groupByText: "Grupeeri selle välja järgi",
-  showGroupsText: "Näita gruppides",
+  showGroupsText: "Näita gruppides"
 });
 
 Ext.define("Ext.locale.et.grid.property.HeaderContainer", {
   override: "Ext.grid.property.HeaderContainer",
   nameText: "Nimi",
   valueText: "Väärtus",
-  dateFormat: "d.m.Y",
+  dateFormat: "d.m.Y"
 });
 
 Ext.define("Ext.locale.et.grid.column.Date", {
   override: "Ext.grid.column.Date",
-  format: "d.m.Y",
+  format: "d.m.Y"
 });
 
 Ext.define("Ext.locale.et.form.field.Time", {
@@ -311,17 +310,17 @@ Ext.define("Ext.locale.et.form.field.Time", {
   minText: "Kellaaeg peab olema alates {0}",
   maxText: "Kellaaeg peab olema kuni {0}",
   invalidText: "{0} ei ole sobiv kellaaeg",
-  format: "H:i",
+  format: "H:i"
 });
 
 Ext.define("Ext.locale.et.form.CheckboxGroup", {
   override: "Ext.form.CheckboxGroup",
-  blankText: "Vähemalt üks väli selles grupis peab olema valitud",
+  blankText: "Vähemalt üks väli selles grupis peab olema valitud"
 });
 
 Ext.define("Ext.locale.et.form.RadioGroup", {
   override: "Ext.form.RadioGroup",
-  blankText: "Vähemalt üks väli selles grupis peab olema valitud",
+  blankText: "Vähemalt üks väli selles grupis peab olema valitud"
 });
 
 Ext.define("Ext.locale.et.window.MessageBox", {
@@ -330,11 +329,11 @@ Ext.define("Ext.locale.et.window.MessageBox", {
     ok: "OK",
     cancel: "Katkesta",
     yes: "Jah",
-    no: "Ei",
-  },
+    no: "Ei"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.et.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

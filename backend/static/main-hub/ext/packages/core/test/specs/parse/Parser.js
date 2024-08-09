@@ -22,7 +22,7 @@ describe("Ext.parse.Parser", function () {
       expect(data).toEqual({
         at: 0,
         arity: "literal",
-        value: null,
+        value: null
       });
     });
 
@@ -33,7 +33,7 @@ describe("Ext.parse.Parser", function () {
       expect(data).toEqual({
         at: 0,
         arity: "literal",
-        value: false,
+        value: false
       });
     });
 
@@ -44,7 +44,7 @@ describe("Ext.parse.Parser", function () {
       expect(data).toEqual({
         at: 0,
         arity: "literal",
-        value: true,
+        value: true
       });
     });
   });
@@ -66,19 +66,19 @@ describe("Ext.parse.Parser", function () {
           lhs: {
             at: 0,
             arity: "ident",
-            value: "a",
+            value: "a"
           },
           rhs: {
             at: 2,
             arity: "ident",
-            value: "b",
-          },
+            value: "b"
+          }
         },
         rhs: {
           at: 4,
           arity: "ident",
-          value: "c",
-        },
+          value: "c"
+        }
       });
     });
 
@@ -98,7 +98,7 @@ describe("Ext.parse.Parser", function () {
           lhs: {
             at: 0,
             arity: "ident",
-            value: "a",
+            value: "a"
           },
           rhs: {
             at: 3,
@@ -107,20 +107,20 @@ describe("Ext.parse.Parser", function () {
             lhs: {
               at: 2,
               arity: "ident",
-              value: "b",
+              value: "b"
             },
             rhs: {
               at: 4,
               arity: "ident",
-              value: "c",
-            },
-          },
+              value: "c"
+            }
+          }
         },
         rhs: {
           at: 6,
           arity: "ident",
-          value: "d",
-        },
+          value: "d"
+        }
       });
     });
 
@@ -140,19 +140,19 @@ describe("Ext.parse.Parser", function () {
           lhs: {
             at: 1,
             arity: "ident",
-            value: "a",
+            value: "a"
           },
           rhs: {
             at: 4,
             arity: "ident",
-            value: "b",
-          },
+            value: "b"
+          }
         },
         rhs: {
           at: 8,
           arity: "ident",
-          value: "c",
-        },
+          value: "c"
+        }
       });
     });
   }); // operators
@@ -170,15 +170,15 @@ describe("Ext.parse.Parser", function () {
         operand: {
           at: 0,
           arity: "ident",
-          value: "foo",
+          value: "foo"
         },
         args: [
           {
             at: 4,
             arity: "literal",
-            value: 10,
-          },
-        ],
+            value: 10
+          }
+        ]
       });
     });
   });

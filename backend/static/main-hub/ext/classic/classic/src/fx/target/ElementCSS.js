@@ -16,7 +16,7 @@ Ext.define("Ext.fx.target.ElementCSS", {
     var cssArr = {
         attrs: [],
         duration: [],
-        easing: [],
+        easing: []
       },
       ln = targetData.length,
       cleanerFn = function () {
@@ -24,7 +24,7 @@ Ext.define("Ext.fx.target.ElementCSS", {
         this.setStyle(Ext.supports.CSS3Prefix + "TransitionDuration", null);
         this.setStyle(
           Ext.supports.CSS3Prefix + "TransitionTimingFunction",
-          null,
+          null
         );
       },
       single = { single: true },
@@ -48,7 +48,7 @@ Ext.define("Ext.fx.target.ElementCSS", {
           cssArr.attrs.push(
             attr.replace(/[A-Z]/g, function (v) {
               return "-" + v.toLowerCase();
-            }),
+            })
           );
           cssArr.duration.push(duration + "ms");
           cssArr.easing.push(easing);
@@ -68,15 +68,15 @@ Ext.define("Ext.fx.target.ElementCSS", {
           o = attrs[attr][j];
           o[0].setStyle(
             Ext.supports.CSS3Prefix + "TransitionProperty",
-            isFirstFrame ? "" : attributes,
+            isFirstFrame ? "" : attributes
           );
           o[0].setStyle(
             Ext.supports.CSS3Prefix + "TransitionDuration",
-            isFirstFrame ? "" : duration,
+            isFirstFrame ? "" : duration
           );
           o[0].setStyle(
             Ext.supports.CSS3Prefix + "TransitionTimingFunction",
-            isFirstFrame ? "" : easing,
+            isFirstFrame ? "" : easing
           );
           o[0].setStyle(attr, o[1]);
 
@@ -90,5 +90,5 @@ Ext.define("Ext.fx.target.ElementCSS", {
         }
       }
     }
-  },
+  }
 });

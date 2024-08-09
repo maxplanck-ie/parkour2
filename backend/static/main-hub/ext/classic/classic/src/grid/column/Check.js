@@ -48,7 +48,7 @@ Ext.define("Ext.grid.column.Check", {
      *
      * Clicking the checkbox will check/uncheck all records.
      */
-    headerCheckbox: false,
+    headerCheckbox: false
   },
 
   /**
@@ -157,7 +157,7 @@ Ext.define("Ext.grid.column.Check", {
     // This method may be invoked more than once in an event, so defer its actual invocation.
     // For example it's invoked in the renderer and updater and they may be called from a loop.
     this.updateHeaderState = Ext.Function.createAnimationFrame(
-      config.updateHeaderState || this.updateHeaderState,
+      config.updateHeaderState || this.updateHeaderState
     );
 
     this.scope = this;
@@ -186,7 +186,7 @@ Ext.define("Ext.grid.column.Check", {
       me.storeListeners = me.getView().dataSource.on({
         datachanged: me.onDataChanged,
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
     }
   },
@@ -238,7 +238,7 @@ Ext.define("Ext.grid.column.Check", {
     cellIndex,
     e,
     record,
-    row,
+    row
   ) {
     var me = this,
       key = type === "keydown" && e.getKey(),
@@ -261,7 +261,7 @@ Ext.define("Ext.grid.column.Check", {
           recordIndex,
           checked,
           record,
-          e,
+          e
         ) !== false
       ) {
         me.setRecordCheck(record, recordIndex, checked, cell, e);
@@ -315,7 +315,7 @@ Ext.define("Ext.grid.column.Check", {
           record,
           recordIndex,
           checked,
-          view.getCell(record, me),
+          view.getCell(record, me)
         );
       });
 
@@ -506,7 +506,7 @@ Ext.define("Ext.grid.column.Check", {
         me.id +
           "-header-description" +
           (!isSelected ? "-not" : "") +
-          "-selected",
+          "-selected"
       );
     }
   },
@@ -526,7 +526,7 @@ Ext.define("Ext.grid.column.Check", {
           me.id +
             "-cell-description" +
             (!isSelected ? "-not" : "") +
-            "-selected",
+            "-selected"
         );
       }
     }
@@ -547,7 +547,7 @@ Ext.define("Ext.grid.column.Check", {
       out.push(
         '<span role="presentation" class="',
         me.headerCheckboxCls,
-        '"></span>',
+        '"></span>'
       );
 
       if (me.useAriaElements) {
@@ -579,9 +579,9 @@ Ext.define("Ext.grid.column.Check", {
             Ext.baseCSSPrefix +
             'hidden-offsets">' +
             me.rowSelectText +
-            "</span>",
+            "</span>"
         );
       }
-    },
-  },
+    }
+  }
 });

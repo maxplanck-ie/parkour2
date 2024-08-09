@@ -46,5 +46,5 @@ Ext.define("Ext.draw.overrides.hittest.sprite.Instancing", {
 
     template.attr = originalAttr;
     return result;
-  },
+  }
 });

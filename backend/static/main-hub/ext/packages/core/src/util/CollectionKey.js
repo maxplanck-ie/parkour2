@@ -88,7 +88,7 @@ Ext.define("Ext.util.CollectionKey", {
      */
     rootProperty: null,
 
-    unique: true,
+    unique: true
   },
 
   /**
@@ -256,7 +256,7 @@ Ext.define("Ext.util.CollectionKey", {
               oldKey +
               '" for item with newKey "' +
               me.getKey(item) +
-              '"',
+              '"'
           );
         }
         //</debug>
@@ -376,5 +376,5 @@ Ext.define("Ext.util.CollectionKey", {
 
   clone: function () {
     return new Ext.util.CollectionKey(this.getCurrentConfig());
-  },
+  }
 });

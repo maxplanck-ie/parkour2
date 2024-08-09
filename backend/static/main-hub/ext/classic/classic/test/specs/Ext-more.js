@@ -37,7 +37,7 @@ describe("Ext-more", function () {
   describe("Ext.getHead", function () {
     it("should return current document head as an Ext.Element", function () {
       expect(Ext.getHead()).toEqual(
-        Ext.get(document.getElementsByTagName("head")[0]),
+        Ext.get(document.getElementsByTagName("head")[0])
       );
     });
   });
@@ -121,13 +121,13 @@ describe("Ext-more", function () {
 
     it("should manage question mark", function () {
       expect(Ext.urlAppend(url, "test=1")).toEqual(
-        "http://example.com/?test=1",
+        "http://example.com/?test=1"
       );
     });
 
     it("should manage ampersand", function () {
       expect(Ext.urlAppend(url + "?test=1", "foo=2")).toEqual(
-        "http://example.com/?test=1&foo=2",
+        "http://example.com/?test=1&foo=2"
       );
     });
 
@@ -162,7 +162,7 @@ describe("Ext-more", function () {
     beforeEach(function () {
       el = Ext.getBody().createChild({
         tag: "span",
-        html: "foobar",
+        html: "foobar"
       });
 
       id = el.id;
@@ -224,15 +224,15 @@ describe("Ext-more", function () {
 
     beforeEach(function () {
       span1 = Ext.getBody().createChild({
-        tag: "span",
+        tag: "span"
       });
 
       span2 = Ext.getBody().createChild({
-        tag: "span",
+        tag: "span"
       });
 
       div1 = Ext.getBody().createChild({
-        cls: "foo",
+        cls: "foo"
       });
 
       listener = jasmine.createSpy();
@@ -246,7 +246,7 @@ describe("Ext-more", function () {
 
     it("should apply event listeners to elements by selectors", function () {
       Ext.addBehaviors({
-        "span @mouseup": listener,
+        "span @mouseup": listener
       });
 
       jasmine.fireMouseEvent(span1.dom, "mouseup");
@@ -258,7 +258,7 @@ describe("Ext-more", function () {
 
     it("should manage multiple selectors", function () {
       Ext.addBehaviors({
-        "span, div.foo @mouseup": listener,
+        "span, div.foo @mouseup": listener
       });
 
       jasmine.fireMouseEvent(span1.dom, "mouseup");
@@ -280,16 +280,16 @@ describe("Ext-more", function () {
     it("should not overwrite defined properties", function () {
       var dest = {
         a: 1,
-        b: undefined,
+        b: undefined
       };
       Ext.copyToIf(
         dest,
         {
           a: 2,
           b: 3,
-          c: 4,
+          c: 4
         },
-        "a,b,c",
+        "a,b,c"
       );
       expect(dest.a).toBe(1);
 
@@ -306,16 +306,16 @@ describe("Ext-more", function () {
     it("should not overwrite existing properties", function () {
       var dest = {
         a: 1,
-        b: undefined,
+        b: undefined
       };
       Ext.copyIf(
         dest,
         {
           a: 2,
           b: 3,
-          c: 4,
+          c: 4
         },
-        "a,b,c",
+        "a,b,c"
       );
       expect(dest.a).toBe(1);
 
@@ -335,7 +335,7 @@ describe("Ext-more", function () {
         a: 1,
         b: 2,
         c: 3,
-        d: 4,
+        d: 4
       };
 
       dest = {};
@@ -352,7 +352,7 @@ describe("Ext-more", function () {
 
         expect(dest).toEqual({
           a: 1,
-          b: 2,
+          b: 2
         });
       });
     });
@@ -362,7 +362,7 @@ describe("Ext-more", function () {
         Ext.copyTo(dest, src, "c,b,e");
         expect(dest).toEqual({
           b: 2,
-          c: 3,
+          c: 3
         });
       });
     });
@@ -373,7 +373,7 @@ describe("Ext-more", function () {
       };
 
       CopyToSource.prototype = {
-        prototypeProperty: "I'm from the prototype",
+        prototypeProperty: "I'm from the prototype"
       };
 
       beforeEach(function () {
@@ -381,7 +381,7 @@ describe("Ext-more", function () {
           a: 1,
           b: 2,
           c: 3,
-          d: 4,
+          d: 4
         });
       });
       it("should not copy prototype properties unless asked", function () {
@@ -392,7 +392,7 @@ describe("Ext-more", function () {
         // prototypeProperty was not copied because it's on the prototype and
         // we did not pass the usePrototypeKeys parameter.
         expect(dest).toEqual({
-          a: 1,
+          a: 1
         });
       });
       it("should copy prototype properties when asked", function () {
@@ -403,7 +403,7 @@ describe("Ext-more", function () {
         // prototypeProperty is copied over because we passed the usePrototypeKeys parameter.
         expect(dest).toEqual({
           a: 1,
-          prototypeProperty: "I'm from the prototype",
+          prototypeProperty: "I'm from the prototype"
         });
 
         // Test the bug in the deprecated method.
@@ -422,7 +422,7 @@ describe("Ext-more", function () {
         a: 1,
         b: 2,
         c: 3,
-        d: 4,
+        d: 4
       };
 
       dest = {};
@@ -439,7 +439,7 @@ describe("Ext-more", function () {
 
         expect(dest).toEqual({
           a: 1,
-          b: 2,
+          b: 2
         });
       });
     });
@@ -449,7 +449,7 @@ describe("Ext-more", function () {
         Ext.copy(dest, src, "c,b,e");
         expect(dest).toEqual({
           b: 2,
-          c: 3,
+          c: 3
         });
       });
     });
@@ -460,7 +460,7 @@ describe("Ext-more", function () {
       };
 
       CopyToSource.prototype = {
-        prototypeProperty: "I'm from the prototype",
+        prototypeProperty: "I'm from the prototype"
       };
 
       beforeEach(function () {
@@ -468,7 +468,7 @@ describe("Ext-more", function () {
           a: 1,
           b: 2,
           c: 3,
-          d: 4,
+          d: 4
         });
       });
       it("should not copy prototype properties unless asked", function () {
@@ -479,7 +479,7 @@ describe("Ext-more", function () {
         // prototypeProperty was not copied because it's on the prototype and
         // we did not pass the usePrototypeKeys parameter.
         expect(dest).toEqual({
-          a: 1,
+          a: 1
         });
       });
       it("should copy prototype properties when asked", function () {
@@ -490,7 +490,7 @@ describe("Ext-more", function () {
         // prototypeProperty is copied over because we passed the usePrototypeKeys parameter.
         expect(dest).toEqual({
           a: 1,
-          prototypeProperty: "I'm from the prototype",
+          prototypeProperty: "I'm from the prototype"
         });
 
         // Test that the new version does NOT copy nonexistent properties when usePrototypeKeys is true.
@@ -504,14 +504,14 @@ describe("Ext-more", function () {
 
     beforeEach(function () {
       destroyable = {
-        destroy: jasmine.createSpy(),
+        destroy: jasmine.createSpy()
       };
       obj = {
         a: 1,
         b: 2,
         c: 3,
         d: 4,
-        me: destroyable,
+        me: destroyable
       };
     });
 
@@ -522,7 +522,7 @@ describe("Ext-more", function () {
         b: 2,
         c: null,
         d: 4,
-        me: destroyable,
+        me: destroyable
       });
     });
 
@@ -565,7 +565,7 @@ describe("Ext-more", function () {
     it("should set application path", function () {
       Ext.application({
         name: "Test",
-        appFolder: "fooFolder",
+        appFolder: "fooFolder"
       });
 
       expect(Ext.Loader.setPath).toHaveBeenCalledWith("Test", "fooFolder");
@@ -577,8 +577,8 @@ describe("Ext-more", function () {
         appFolder: "barFolder",
         paths: {
           baz: "bazFolder",
-          qux: "quxFolder",
-        },
+          qux: "quxFolder"
+        }
       });
 
       var args = Ext.Loader.setPath.argsForCall;
@@ -586,7 +586,7 @@ describe("Ext-more", function () {
       expect(args).toEqual([
         ["Test", "barFolder"],
         ["baz", "bazFolder"],
-        ["qux", "quxFolder"],
+        ["qux", "quxFolder"]
       ]);
     });
   });

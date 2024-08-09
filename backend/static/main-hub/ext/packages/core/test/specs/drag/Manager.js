@@ -28,8 +28,8 @@ describe("Ext.drag.Manager", function () {
         height: "20px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid red",
-      },
+        border: "1px solid red"
+      }
     });
   }
 
@@ -49,8 +49,8 @@ describe("Ext.drag.Manager", function () {
         height: "100px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid blue",
-      },
+        border: "1px solid blue"
+      }
     });
   }
 
@@ -106,9 +106,9 @@ describe("Ext.drag.Manager", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -138,9 +138,9 @@ describe("Ext.drag.Manager", function () {
         {
           id: touchId,
           x: xy[0] + xOffset,
-          y: xy[1] + yOffset,
+          y: xy[1] + yOffset
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -152,9 +152,9 @@ describe("Ext.drag.Manager", function () {
         {
           id: touchId,
           x: cursorTrack[0] + (x || 0),
-          y: cursorTrack[1] + (y || 0),
+          y: cursorTrack[1] + (y || 0)
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -169,9 +169,9 @@ describe("Ext.drag.Manager", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -397,11 +397,11 @@ describe("Ext.drag.Manager", function () {
             left: "50px",
             top: "50px",
             zIndex: zIndex,
-            backgroundColor: color,
-          },
+            backgroundColor: color
+          }
         });
         return new Ext.drag.Target({
-          element: el,
+          element: el
         });
       }
 
@@ -416,13 +416,13 @@ describe("Ext.drag.Manager", function () {
           "dragenter",
           enterSpy.andCallFake(function (source, info) {
             enterSpy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
         drop1.on(
           "dragleave",
           leaveSpy.andCallFake(function (source, info) {
             leaveSpy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
 
         startDrag();
@@ -476,9 +476,9 @@ describe("Ext.drag.Manager", function () {
               height: "50px",
               left: "70px",
               top: "70px",
-              border: "1px solid green",
-            },
-          }),
+              border: "1px solid green"
+            }
+          })
         });
 
         makeSource();
@@ -488,26 +488,26 @@ describe("Ext.drag.Manager", function () {
           "dragenter",
           enterSpy.andCallFake(function (target, info) {
             enterSpy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
         target.on(
           "dragleave",
           leaveSpy.andCallFake(function (target, info) {
             leaveSpy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
 
         inner.on(
           "dragenter",
           enterSpy.andCallFake(function (target, info) {
             enterSpy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
         inner.on(
           "dragleave",
           leaveSpy.andCallFake(function (target, info) {
             leaveSpy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
 
         startDrag();
@@ -557,8 +557,8 @@ describe("Ext.drag.Manager", function () {
             style: {
               width: "5000px",
               height: "5000px",
-              border: "1px solid red",
-            },
+              border: "1px solid red"
+            }
           });
           Scroller.viewport.scrollTo(0, 400);
 
@@ -596,13 +596,13 @@ describe("Ext.drag.Manager", function () {
         "dragenter",
         enterSpy.andCallFake(function (target, info) {
           enterSpy.mostRecentCall.valid = info.valid;
-        }),
+        })
       );
       target.on(
         "dragleave",
         leaveSpy.andCallFake(function (target, info) {
           leaveSpy.mostRecentCall.valid = info.valid;
-        }),
+        })
       );
       startDrag();
       moveBy(50, 50);
@@ -645,7 +645,7 @@ describe("Ext.drag.Manager", function () {
         var accepts = jasmine.createSpy().andReturn(true);
         makeSource();
         makeTarget({
-          accepts: accepts,
+          accepts: accepts
         });
 
         target.disable();
@@ -657,11 +657,11 @@ describe("Ext.drag.Manager", function () {
       it("should not call accept if groups don't match", function () {
         var accepts = jasmine.createSpy().andReturn(true);
         makeSource({
-          groups: "foo",
+          groups: "foo"
         });
         makeTarget({
           groups: "bar",
-          accepts: accepts,
+          accepts: accepts
         });
 
         dragInOutTarget();
@@ -672,7 +672,7 @@ describe("Ext.drag.Manager", function () {
         var accepts = jasmine.createSpy().andReturn(false);
         makeSource();
         makeTarget({
-          accepts: accepts,
+          accepts: accepts
         });
 
         dragInOutTarget();
@@ -683,14 +683,14 @@ describe("Ext.drag.Manager", function () {
         var accepts = jasmine.createSpy().andReturn(true);
         makeSource();
         makeTarget({
-          accepts: accepts,
+          accepts: accepts
         });
 
         startDrag();
         moveBy(50, 50);
         runs(function () {
           expect(accepts.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-            true,
+            true
           );
         });
         endDrag();
@@ -700,7 +700,7 @@ describe("Ext.drag.Manager", function () {
         var accepts = jasmine.createSpy().andReturn(true);
         makeSource();
         makeTarget({
-          accepts: accepts,
+          accepts: accepts
         });
 
         startDrag();
@@ -717,7 +717,7 @@ describe("Ext.drag.Manager", function () {
         var accepts = jasmine.createSpy().andReturn(true);
         makeSource();
         makeTarget({
-          accepts: accepts,
+          accepts: accepts
         });
 
         startDrag();
@@ -740,7 +740,7 @@ describe("Ext.drag.Manager", function () {
         var accepts = jasmine.createSpy().andReturn(false);
         makeSource();
         makeTarget({
-          accepts: accepts,
+          accepts: accepts
         });
 
         startDrag();
@@ -763,7 +763,7 @@ describe("Ext.drag.Manager", function () {
         var accepts = jasmine.createSpy().andReturn(true);
         makeSource();
         makeTarget({
-          accepts: accepts,
+          accepts: accepts
         });
         startDrag();
         moveBy(50, 50);
@@ -795,7 +795,7 @@ describe("Ext.drag.Manager", function () {
         it("should not interact", function () {
           makeSource();
           makeTarget({
-            groups: "a",
+            groups: "a"
           });
 
           dragInOutTarget();
@@ -807,7 +807,7 @@ describe("Ext.drag.Manager", function () {
         it("should not interact", function () {
           makeSource();
           makeTarget({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
 
           dragInOutTarget();
@@ -818,7 +818,7 @@ describe("Ext.drag.Manager", function () {
       describe("source: one group, target: no group", function () {
         it("should not interact", function () {
           makeSource({
-            groups: "a",
+            groups: "a"
           });
           makeTarget();
 
@@ -830,10 +830,10 @@ describe("Ext.drag.Manager", function () {
       describe("source: one group, target: one group", function () {
         it("should interact if the groups are the same", function () {
           makeSource({
-            groups: "a",
+            groups: "a"
           });
           makeTarget({
-            groups: "a",
+            groups: "a"
           });
 
           dragInOutTarget();
@@ -842,10 +842,10 @@ describe("Ext.drag.Manager", function () {
 
         it("should not interact if the groups are different", function () {
           makeSource({
-            groups: "a",
+            groups: "a"
           });
           makeTarget({
-            groups: "b",
+            groups: "b"
           });
 
           dragInOutTarget();
@@ -856,10 +856,10 @@ describe("Ext.drag.Manager", function () {
       describe("source: one group, target: multiple groups", function () {
         it("should interact if the source group exists in the target groups", function () {
           makeSource({
-            groups: "b",
+            groups: "b"
           });
           makeTarget({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
 
           dragInOutTarget();
@@ -868,10 +868,10 @@ describe("Ext.drag.Manager", function () {
 
         it("should not interact if the source group doesn't exist in the target groups", function () {
           makeSource({
-            groups: "bleh",
+            groups: "bleh"
           });
           makeTarget({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
 
           dragInOutTarget();
@@ -882,7 +882,7 @@ describe("Ext.drag.Manager", function () {
       describe("source: multiple groups, target: no group", function () {
         it("should not interact", function () {
           makeSource({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
           makeTarget();
 
@@ -894,10 +894,10 @@ describe("Ext.drag.Manager", function () {
       describe("source: multiple groups, target: one group", function () {
         it("should interact if the target group exists in the source groups", function () {
           makeSource({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
           makeTarget({
-            groups: "b",
+            groups: "b"
           });
 
           dragInOutTarget();
@@ -906,10 +906,10 @@ describe("Ext.drag.Manager", function () {
 
         it("should not interact if the target group doesn't exist in the source groups", function () {
           makeSource({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
           makeTarget({
-            groups: "bleh",
+            groups: "bleh"
           });
 
           dragInOutTarget();
@@ -920,10 +920,10 @@ describe("Ext.drag.Manager", function () {
       describe("source: multiple groups, target: multiple groups", function () {
         it("should interact if the groups intersect", function () {
           makeSource({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
           makeTarget({
-            groups: ["a", "c"],
+            groups: ["a", "c"]
           });
 
           dragInOutTarget();
@@ -932,10 +932,10 @@ describe("Ext.drag.Manager", function () {
 
         it("should not interact if the groups don't intersect", function () {
           makeSource({
-            groups: ["a", "b", "c"],
+            groups: ["a", "b", "c"]
           });
           makeTarget({
-            groups: ["x", "y", "z"],
+            groups: ["x", "y", "z"]
           });
 
           dragInOutTarget();

@@ -107,7 +107,7 @@ Ext.define("Ext.data.NodeInterface", {
     "Ext.data.field.Integer",
     "Ext.data.field.String",
     "Ext.data.writer.Json",
-    "Ext.mixin.Observable",
+    "Ext.mixin.Observable"
   ],
 
   /**
@@ -399,7 +399,7 @@ Ext.define("Ext.data.NodeInterface", {
       if (!model.prototype.isObservable) {
         model.mixin(
           Ext.mixin.Observable.prototype.mixinId,
-          Ext.mixin.Observable,
+          Ext.mixin.Observable
         );
       }
       if (proto.isNode) {
@@ -417,42 +417,42 @@ Ext.define("Ext.data.NodeInterface", {
           name: "parentId",
           type: idType,
           defaultValue: null,
-          allowNull: idField.allowNull,
+          allowNull: idField.allowNull
         },
         {
           name: "index",
           type: "int",
           defaultValue: -1,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "depth",
           type: "int",
           defaultValue: 0,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "expanded",
           type: "bool",
           defaultValue: false,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "expandable",
           type: "bool",
           defaultValue: true,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "checked",
           type: "auto",
           defaultValue: null,
           persist: false,
-          convert: null,
+          convert: null
         },
         { name: "leaf", type: "bool", defaultValue: false },
         {
@@ -460,127 +460,127 @@ Ext.define("Ext.data.NodeInterface", {
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "iconCls",
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "icon",
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "glyph",
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "root",
           type: "boolean",
           defaultValue: false,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "isLast",
           type: "boolean",
           defaultValue: false,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "isFirst",
           type: "boolean",
           defaultValue: false,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "allowDrop",
           type: "boolean",
           defaultValue: true,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "allowDrag",
           type: "boolean",
           defaultValue: true,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "loaded",
           type: "boolean",
           defaultValue: false,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "loading",
           type: "boolean",
           defaultValue: false,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "href",
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "hrefTarget",
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "qtip",
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "qtitle",
           type: "string",
           defaultValue: "",
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "qshowDelay",
           type: "int",
           defaultValue: 0,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "children",
           type: "auto",
           defaultValue: null,
           persist: false,
-          convert: null,
+          convert: null
         },
         {
           name: "visible",
           type: "boolean",
           defaultValue: true,
-          persist: false,
+          persist: false
         },
-        { name: "text", type: "string", persist: false },
+        { name: "text", type: "string", persist: false }
       ]);
     },
 
@@ -599,10 +599,10 @@ Ext.define("Ext.data.NodeInterface", {
           collapse: true,
           beforeexpand: true,
           beforecollapse: true,
-          sort: true,
+          sort: true
         },
         silently = {
-          silent: true,
+          silent: true
         };
 
       // bulkUpdate usage:
@@ -842,13 +842,13 @@ Ext.define("Ext.data.NodeInterface", {
 
           commit = {
             silent: true,
-            commit: commit,
+            commit: commit
           };
 
           // The only way child data can be influenced is if this node has changed level in this update.
           if (info.depth !== me.data.depth) {
             var childInfo = {
-                depth: me.data.depth + 1,
+                depth: me.data.depth + 1
               },
               children = me.childNodes,
               childCount = children.length,
@@ -936,7 +936,7 @@ Ext.define("Ext.data.NodeInterface", {
             childInfo = {
               isLast: true,
               parentId: me.getId(),
-              depth: (me.data.depth || 0) + 1,
+              depth: (me.data.depth || 0) + 1
             },
             result,
             treeStore = me.getTreeStore(),
@@ -985,7 +985,7 @@ Ext.define("Ext.data.NodeInterface", {
                   node,
                   oldParent,
                   me,
-                  index,
+                  index
                 ]) === false
               ) {
                 Ext.resumeLayouts(true);
@@ -997,7 +997,7 @@ Ext.define("Ext.data.NodeInterface", {
                   node,
                   false,
                   suppressEvents,
-                  oldParent.getTreeStore() === treeStore,
+                  oldParent.getTreeStore() === treeStore
                 ) === false
               ) {
                 Ext.resumeLayouts(true);
@@ -1025,7 +1025,7 @@ Ext.define("Ext.data.NodeInterface", {
               node.previousSibling = previousSibling;
               previousSibling.nextSibling = node;
               previousSibling.updateInfo(commit, {
-                isLast: false,
+                isLast: false
               });
               // No need to trigger a ui update if we're doing a bulk update
               if (!bulkUpdate) {
@@ -1195,7 +1195,7 @@ Ext.define("Ext.data.NodeInterface", {
             // And if it's the new first child, let it know
             if (index === 0) {
               node.nextSibling.updateInfo(false, {
-                isFirst: true,
+                isFirst: true
               });
             }
 
@@ -1206,7 +1206,7 @@ Ext.define("Ext.data.NodeInterface", {
               i++
             ) {
               me.childNodes[i].updateInfo(false, {
-                index: i,
+                index: i
               });
             }
           }
@@ -1215,7 +1215,7 @@ Ext.define("Ext.data.NodeInterface", {
           // update the previous sibling so it knows it's the last
           else if (previousSibling) {
             previousSibling.updateInfo(false, {
-              isLast: true,
+              isLast: true
             });
 
             // We're removing the last child.
@@ -1245,13 +1245,13 @@ Ext.define("Ext.data.NodeInterface", {
             removeContext = {
               parentNode: node.parentNode,
               previousSibling: node.previousSibling,
-              nextSibling: node.nextSibling,
+              nextSibling: node.nextSibling
             };
             // Inform the TreeStore so that descendant nodes can be removed.
             me.callTreeStore("beforeNodeRemove", [
               [node],
               !!isMove,
-              removeRange,
+              removeRange
             ]);
 
             node.previousSibling = node.nextSibling = node.parentNode = null;
@@ -1280,9 +1280,9 @@ Ext.define("Ext.data.NodeInterface", {
             node.set(
               {
                 parentId: null,
-                lastParentId: me.getId(),
+                lastParentId: me.getId()
               },
-              silently,
+              silently
             );
           }
 
@@ -1487,7 +1487,7 @@ Ext.define("Ext.data.NodeInterface", {
                 oldParent,
                 me,
                 index,
-                refNode,
+                refNode
               ]) === false
             ) {
               return false;
@@ -1498,7 +1498,7 @@ Ext.define("Ext.data.NodeInterface", {
                 node,
                 false,
                 suppressEvents,
-                oldParent.getTreeStore() === treeStore,
+                oldParent.getTreeStore() === treeStore
               ) === false
             ) {
               return false;
@@ -1537,7 +1537,7 @@ Ext.define("Ext.data.NodeInterface", {
             index: refIndex,
             isFirst: refIndex === 0,
             isLast: false,
-            depth: (me.data.depth || 0) + 1,
+            depth: (me.data.depth || 0) + 1
           });
 
           // Update the index for all following siblings.
@@ -1548,7 +1548,7 @@ Ext.define("Ext.data.NodeInterface", {
           ) {
             sibling = me.childNodes[i];
             siblingModifiedFields = sibling.updateInfo(false, {
-              index: i,
+              index: i
             });
             if (siblingModifiedFields) {
               sibling.callJoined("afterEdit", [siblingModifiedFields]);
@@ -1586,7 +1586,7 @@ Ext.define("Ext.data.NodeInterface", {
                 oldParent,
                 me,
                 refIndex,
-                refNode,
+                refNode
               ]);
             }
           }
@@ -1717,7 +1717,7 @@ Ext.define("Ext.data.NodeInterface", {
               me.callTreeStore("beforeNodeRemove", [
                 childNodes,
                 false,
-                removeRange,
+                removeRange
               ]);
             }
           }
@@ -1888,7 +1888,7 @@ Ext.define("Ext.data.NodeInterface", {
                 before,
                 scope,
                 args,
-                after,
+                after
               );
             }
 
@@ -1939,7 +1939,7 @@ Ext.define("Ext.data.NodeInterface", {
               return this.get(attribute) == value;
             },
             null,
-            deep,
+            deep
           );
         },
 
@@ -2012,7 +2012,7 @@ Ext.define("Ext.data.NodeInterface", {
             i,
             n,
             info = {
-              isFirst: true,
+              isFirst: true
             };
 
           if (ln > 0) {
@@ -2145,7 +2145,7 @@ Ext.define("Ext.data.NodeInterface", {
                   me.expand(recursive, callback, scope);
                 },
                 me,
-                { single: true },
+                { single: true }
               );
             } else {
               // Now we check if this record is already expanding or expanded
@@ -2188,7 +2188,7 @@ Ext.define("Ext.data.NodeInterface", {
                   me.callTreeStore("onBeforeNodeExpand", [
                     me.onChildNodesAvailable,
                     me,
-                    [recursive, callback, scope],
+                    [recursive, callback, scope]
                   ]);
 
                   // If we suspended the add event so that all additions of descendant nodes
@@ -2241,7 +2241,7 @@ Ext.define("Ext.data.NodeInterface", {
           ) {
             if (!ancestor.isExpanded()) {
               (collapsedAncestors || (collapsedAncestors = [])).unshift(
-                ancestor,
+                ancestor
               );
             }
           }
@@ -2277,7 +2277,7 @@ Ext.define("Ext.data.NodeInterface", {
               ancestor = collapsedAncestors[i];
               ancestor.fireBubbledEvent("expand", [
                 ancestor,
-                ancestor.childNodes,
+                ancestor.childNodes
               ]);
             }
           } else {
@@ -2307,7 +2307,7 @@ Ext.define("Ext.data.NodeInterface", {
           recursive,
           callback,
           scope,
-          /* private */ singleExpand,
+          /* private */ singleExpand
         ) {
           var me = this,
             origCallback,
@@ -2398,7 +2398,7 @@ Ext.define("Ext.data.NodeInterface", {
                 if (callback) {
                   callback = Ext.Function.createSequence(
                     collapseChildren,
-                    Ext.Function.bind(callback, scope, [me.childNodes]),
+                    Ext.Function.bind(callback, scope, [me.childNodes])
                   );
                 } else {
                   callback = collapseChildren;
@@ -2420,7 +2420,7 @@ Ext.define("Ext.data.NodeInterface", {
               me.callTreeStore("onNodeCollapse", [
                 me.childNodes,
                 callback,
-                scope,
+                scope
               ]);
 
               me.fireBubbledEvent("collapse", [me, me.childNodes]);
@@ -2535,7 +2535,7 @@ Ext.define("Ext.data.NodeInterface", {
         fireEvent: function (eventName) {
           return this.fireBubbledEvent(
             eventName,
-            Ext.Array.slice(arguments, 1),
+            Ext.Array.slice(arguments, 1)
           );
         },
 
@@ -2555,7 +2555,7 @@ Ext.define("Ext.data.NodeInterface", {
               result = eventSource.fireEventArgs.call(
                 eventSource,
                 eventName,
-                args,
+                args
               );
             }
 
@@ -2586,7 +2586,7 @@ Ext.define("Ext.data.NodeInterface", {
           var writer =
               writerParam ||
               new Ext.data.writer.Json({
-                writeAllFields: true,
+                writeAllFields: true
               }),
             result = writer.getRecordData(this),
             childNodes = this.childNodes,
@@ -2702,9 +2702,9 @@ Ext.define("Ext.data.NodeInterface", {
               return cls.split(this.spacesRe);
             }
             return cls;
-          },
-        },
+          }
+        }
       };
-    },
-  },
+    }
+  }
 });

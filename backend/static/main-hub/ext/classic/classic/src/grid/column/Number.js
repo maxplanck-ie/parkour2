@@ -72,5 +72,5 @@ Ext.define("Ext.grid.column.Number", {
   updater: function (cell, value) {
     Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
       Ext.grid.column.Number.prototype.defaultRenderer.call(this, value);
-  },
+  }
 });

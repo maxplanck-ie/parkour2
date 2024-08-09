@@ -48,7 +48,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         field2: n,
         field3: n,
         field4: n,
-        field5: n,
+        field5: n
       });
     }
 
@@ -65,7 +65,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
     for (i = start; i < limit; ++i) {
       data.push({
         id: i,
-        name: "name" + i,
+        name: "name" + i
       });
     }
     return data;
@@ -79,7 +79,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
     for (i = start; i < end; ++i) {
       recs.push({
         id: i,
-        namee: "name" + i,
+        namee: "name" + i
       });
     }
     return recs;
@@ -102,8 +102,8 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         status: 200,
         responseText: Ext.encode({
           total: total || empty ? total : 5000,
-          data: data,
-        }),
+          data: data
+        })
       });
 
       requests = Ext.Ajax.mockGetAllRequests();
@@ -122,37 +122,37 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                 name: "Lisa",
                 email: "lisa@simpsons.com",
                 phone: "555-111-1224",
-                age: 14,
+                age: 14
               },
               {
                 name: "Lisa",
                 email: "aunt_lisa@simpsons.com",
                 phone: "555-111-1274",
-                age: 34,
+                age: 34
               },
               {
                 name: "Bart",
                 email: "bart@simpsons.com",
                 phone: "555-222-1234",
-                age: 12,
+                age: 12
               },
               {
                 name: "Homer",
                 email: "homer@simpsons.com",
                 phone: "555-222-1244",
-                age: 44,
+                age: 44
               },
               {
                 name: "Marge",
                 email: "marge@simpsons.com",
                 phone: "555-222-1254",
-                age: 41,
-              },
+                age: 41
+              }
             ],
-            autoDestroy: true,
+            autoDestroy: true
           },
-          storeCfg,
-        ),
+          storeCfg
+        )
       );
     } else {
       store = storeCfg.store;
@@ -169,19 +169,19 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               flex: 1,
               editor: {
                 xtype: "textfield",
-                allowBlank: false,
-              },
+                allowBlank: false
+              }
             },
             { header: "Phone", dataIndex: "phone", editor: "textfield" },
-            { header: "Age", dataIndex: "age", editor: "textfield" },
+            { header: "Age", dataIndex: "age", editor: "textfield" }
           ],
           store: store,
           width: 200,
           height: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     view = grid.view;
@@ -202,25 +202,25 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
       for (j = 1; j < 7; j++) {
         grandKids.push({
           treeData: "Child of " + i + ", number " + j,
-          leaf: true,
+          leaf: true
         });
       }
 
       children.push({
         treeData: i,
-        children: grandKids,
+        children: grandKids
       });
     }
 
     return {
-      children: children,
+      children: children
     };
   }
 
   function makeTree(treeCfg, count) {
     store = new Ext.data.TreeStore({
       fields: ["treeData"],
-      root: createTreeData(count || 20),
+      root: createTreeData(count || 20)
     });
 
     tree = new Ext.tree.Panel(
@@ -231,18 +231,18 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               xtype: "treecolumn",
               text: "Tree Column",
               width: 300,
-              dataIndex: "treeData",
-            },
+              dataIndex: "treeData"
+            }
           ],
           height: 800,
           width: 500,
           store: store,
           rootVisible: false,
           animate: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        treeCfg || {},
-      ),
+        treeCfg || {}
+      )
     );
 
     view = tree.view;
@@ -252,7 +252,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
   function completeWithData(data) {
     Ext.Ajax.mockComplete({
       status: 200,
-      responseText: Ext.JSON.encode(data),
+      responseText: Ext.JSON.encode(data)
     });
   }
 
@@ -306,7 +306,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
     it("should not create an instance when turned off", function () {
       makeGrid({
-        bufferedRenderer: false,
+        bufferedRenderer: false
       });
 
       expect(plugin instanceof BR).toBe(false);
@@ -334,10 +334,10 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                     header: "Phone",
                     dataIndex: "phone",
                     editor: "textfield",
-                    locked: true,
+                    locked: true
                   },
-                  { header: "Age", dataIndex: "age", editor: "textfield" },
-                ],
+                  { header: "Age", dataIndex: "age", editor: "textfield" }
+                ]
               });
 
               normal = grid.normalGrid.bufferedRenderer;
@@ -351,7 +351,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               function () {
                 plugin = grid.bufferedRenderer;
                 expect(plugin instanceof BR).toBe(false);
-              },
+              }
             );
 
             it(
@@ -361,7 +361,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               function () {
                 expect(normal instanceof BR).toBe(useBR);
                 expect(locked instanceof BR).toBe(useBR);
-              },
+              }
             );
           });
         }
@@ -379,7 +379,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                   header: "Name",
                   dataIndex: "name",
                   editor: "textfield",
-                  locked: true,
+                  locked: true
                 },
                 {
                   header: "Email",
@@ -387,16 +387,16 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                   flex: 1,
                   editor: {
                     xtype: "textfield",
-                    allowBlank: false,
-                  },
+                    allowBlank: false
+                  }
                 },
                 { header: "Phone", dataIndex: "phone", editor: "textfield" },
-                { header: "Age", dataIndex: "age", editor: "textfield" },
-              ],
+                { header: "Age", dataIndex: "age", editor: "textfield" }
+              ]
             },
             {
-              data: makeData(1000),
-            },
+              data: makeData(1000)
+            }
           );
 
           normal = grid.normalGrid.bufferedRenderer;
@@ -430,9 +430,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               type: "ajax",
               url: "/foo",
               reader: {
-                rootProperty: "data",
-              },
-            },
+                rootProperty: "data"
+              }
+            }
           });
 
         function scrollTheGrid() {
@@ -459,19 +459,19 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                   header: "Phone",
                   dataIndex: "phone",
                   editor: "textfield",
-                  locked: true,
+                  locked: true
                 },
-                { header: "Age", dataIndex: "age", editor: "textfield" },
-              ],
+                { header: "Age", dataIndex: "age", editor: "textfield" }
+              ]
             },
             {
               store: new Ext.data.BufferedStore({
                 model: Person,
                 leadingBufferZone: 300,
                 pageSize: 100,
-                autoDestroy: true,
-              }),
-            },
+                autoDestroy: true
+              })
+            }
           );
 
           // Tell the BufferedRenderer that there are 1000 rows.
@@ -481,19 +481,19 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           store.load();
           completeWithData({
             total: 1000,
-            data: makeData(100),
+            data: makeData(100)
           });
           completeWithData({
             total: 1000,
-            data: makeData(100, 101),
+            data: makeData(100, 101)
           });
           completeWithData({
             total: 1000,
-            data: makeData(100, 201),
+            data: makeData(100, 201)
           });
           completeWithData({
             total: 1000,
-            data: makeData(100, 301),
+            data: makeData(100, 301)
           });
         });
         afterEach(function () {
@@ -516,7 +516,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               }
             },
             "grid to scroll to end",
-            40000,
+            40000
           );
 
           // The atteptLoad timer must never have fired during the scroll.
@@ -537,14 +537,14 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           type: "ajax",
           url: "/foo",
           reader: {
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
 
       store = new Ext.data.Store({
         model: Person,
-        data: makeData(12),
+        data: makeData(12)
       });
 
       grid = new Ext.grid.Panel({
@@ -558,13 +558,13 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             renderer: function (v) {
               return '<span style="line-height:25px">' + v + "</span>";
             },
-            producesHTML: true,
+            producesHTML: true
           },
           {
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       view = grid.getView();
 
@@ -590,7 +590,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
         // The new row zero must have been rendered.
         expect((r0.innerText || r0.textContent).replace(/[\r\n\t]/g, "")).toBe(
-          "666Old Nick",
+          "666Old Nick"
         );
       });
     });
@@ -605,16 +605,16 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           type: "ajax",
           url: "/foo",
           reader: {
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
 
       store = new Ext.data.BufferedStore({
         model: Person,
         leadingBufferZone: 300,
         pageSize: 100,
-        autoDestroy: true,
+        autoDestroy: true
       });
 
       grid = new Ext.grid.Panel({
@@ -624,30 +624,30 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         deferRowRender: false,
         columns: [
           {
-            dataIndex: "id",
+            dataIndex: "id"
           },
           {
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       store.load();
       completeWithData({
         total: 5000,
-        data: makeData(100),
+        data: makeData(100)
       });
       completeWithData({
         total: 5000,
-        data: makeData(100, 101),
+        data: makeData(100, 101)
       });
       completeWithData({
         total: 5000,
-        data: makeData(100, 201),
+        data: makeData(100, 201)
       });
       completeWithData({
         total: 5000,
-        data: makeData(100, 301),
+        data: makeData(100, 301)
       });
       var view = grid.getView(),
         rows = view.all;
@@ -665,7 +665,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         },
         "View to scroll record id 100 into the rendered block",
         30000,
-        Ext.isIE ? 100 : null,
+        Ext.isIE ? 100 : null
       );
 
       runs(function () {
@@ -692,9 +692,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             type: "ajax",
             url: "/foo",
             reader: {
-              rootProperty: "data",
-            },
-          },
+              rootProperty: "data"
+            }
+          }
         }),
         lockedView,
         normalView,
@@ -704,7 +704,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         model: Person,
         leadingBufferZone: 300,
         pageSize: 100,
-        autoDestroy: true,
+        autoDestroy: true
       });
 
       grid = new Ext.grid.Panel({
@@ -715,13 +715,13 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         columns: [
           {
             dataIndex: "id",
-            locked: true,
+            locked: true
           },
           {
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       lockedView = grid.lockedGrid.view;
       normalView = grid.normalGrid.view;
@@ -734,7 +734,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
       store.load();
       completeWithData({
         total: 5000,
-        data: makeData(100),
+        data: makeData(100)
       });
 
       maxScroll = grid.getScrollable().getMaxPosition().y;
@@ -755,7 +755,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         },
         "Both views to render the last renderable block",
         30000,
-        Ext.isIE ? 100 : null,
+        Ext.isIE ? 100 : null
       );
     });
 
@@ -771,7 +771,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           "isActive",
           "eyeColor",
           "company",
-          "gender",
+          "gender"
         ],
         autoLoad: true,
         data: [
@@ -787,7 +787,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ZBOO",
             email: "louellamorrison@zboo.com",
-            phone: "+1 (803) 483-2686",
+            phone: "+1 (803) 483-2686"
           },
           {
             _id: "54ff69d918616dbc093ca6cd",
@@ -801,7 +801,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "COMDOM",
             email: "maddencoffey@comdom.com",
-            phone: "+1 (850) 534-2345",
+            phone: "+1 (850) 534-2345"
           },
           {
             _id: "54ff69d91a4917f9643178b0",
@@ -815,7 +815,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "PYRAMAX",
             email: "chasecrawford@pyramax.com",
-            phone: "+1 (944) 494-2920",
+            phone: "+1 (944) 494-2920"
           },
           {
             _id: "54ff69d9a63b6103f9e1530f",
@@ -829,7 +829,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ZEROLOGY",
             email: "johannapollard@zerology.com",
-            phone: "+1 (813) 512-3311",
+            phone: "+1 (813) 512-3311"
           },
           {
             _id: "54ff69d9048722389ffde4bb",
@@ -843,7 +843,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "DIGIPRINT",
             email: "malonebentley@digiprint.com",
-            phone: "+1 (905) 435-2056",
+            phone: "+1 (905) 435-2056"
           },
           {
             _id: "54ff69d9f75a66fb8e08b335",
@@ -857,7 +857,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "LUDAK",
             email: "jenningsrodgers@ludak.com",
-            phone: "+1 (833) 543-2230",
+            phone: "+1 (833) 543-2230"
           },
           {
             _id: "54ff69d974c1757e026721cb",
@@ -871,7 +871,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "AMTAP",
             email: "mosleymcgowan@amtap.com",
-            phone: "+1 (990) 486-3229",
+            phone: "+1 (990) 486-3229"
           },
           {
             _id: "54ff69d949a3873336e2e446",
@@ -885,7 +885,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "IMMUNICS",
             email: "pattonwhitaker@immunics.com",
-            phone: "+1 (944) 557-2615",
+            phone: "+1 (944) 557-2615"
           },
           {
             _id: "54ff69d917f9642ab989e999",
@@ -899,7 +899,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "NETILITY",
             email: "nealrivera@netility.com",
-            phone: "+1 (816) 590-2358",
+            phone: "+1 (816) 590-2358"
           },
           {
             _id: "54ff69d94573c1c04f0a9940",
@@ -913,7 +913,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "TELEPARK",
             email: "maybarron@telepark.com",
-            phone: "+1 (958) 486-2915",
+            phone: "+1 (958) 486-2915"
           },
           {
             _id: "54ff69d9c0e2f4aee9180984",
@@ -927,7 +927,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "PYRAMIS",
             email: "jannahowell@pyramis.com",
-            phone: "+1 (823) 423-2342",
+            phone: "+1 (823) 423-2342"
           },
           {
             _id: "54ff69d96e7f08b674de7cb9",
@@ -941,7 +941,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "PETICULAR",
             email: "nievesshort@peticular.com",
-            phone: "+1 (904) 556-3401",
+            phone: "+1 (904) 556-3401"
           },
           {
             _id: "54ff69d9fb987df7ecf3d8ab",
@@ -955,7 +955,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "AUSTEX",
             email: "taniagillespie@austex.com",
-            phone: "+1 (969) 527-3521",
+            phone: "+1 (969) 527-3521"
           },
           {
             _id: "54ff69d9f586c6e7e9a08b4b",
@@ -969,7 +969,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "GEOFARM",
             email: "joynersuarez@geofarm.com",
-            phone: "+1 (879) 571-3671",
+            phone: "+1 (879) 571-3671"
           },
           {
             _id: "54ff69d94eaa44d993966048",
@@ -983,7 +983,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "ENERVATE",
             email: "hullcooley@enervate.com",
-            phone: "+1 (910) 476-3577",
+            phone: "+1 (910) 476-3577"
           },
           {
             _id: "54ff69d9b341bfef697e75ac",
@@ -997,7 +997,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "CIPROMOX",
             email: "cortezfleming@cipromox.com",
-            phone: "+1 (964) 460-3159",
+            phone: "+1 (964) 460-3159"
           },
           {
             _id: "54ff69d9a1f835d92cb8a017",
@@ -1011,7 +1011,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "SILODYNE",
             email: "hazelrodriguez@silodyne.com",
-            phone: "+1 (962) 492-3107",
+            phone: "+1 (962) 492-3107"
           },
           {
             _id: "54ff69d93989153e00dc5f02",
@@ -1025,7 +1025,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "CENTICE",
             email: "keripearson@centice.com",
-            phone: "+1 (858) 417-3541",
+            phone: "+1 (858) 417-3541"
           },
           {
             _id: "54ff69d9377beb85134e2761",
@@ -1039,7 +1039,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "MONDICIL",
             email: "daisymcconnell@mondicil.com",
-            phone: "+1 (836) 470-3995",
+            phone: "+1 (836) 470-3995"
           },
           {
             _id: "54ff69d999e3637d8287287f",
@@ -1053,7 +1053,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "STEELFAB",
             email: "michelleespinoza@steelfab.com",
-            phone: "+1 (882) 508-2376",
+            phone: "+1 (882) 508-2376"
           },
           {
             _id: "54ff69d93826cfb24af88797",
@@ -1067,7 +1067,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "PLAYCE",
             email: "wallsears@playce.com",
-            phone: "+1 (846) 505-3782",
+            phone: "+1 (846) 505-3782"
           },
           {
             _id: "54ff69d97f6a23afdd06849c",
@@ -1081,7 +1081,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "ORBIXTAR",
             email: "caldwellcain@orbixtar.com",
-            phone: "+1 (831) 456-3297",
+            phone: "+1 (831) 456-3297"
           },
           {
             _id: "54ff69d970154f7ac17b1438",
@@ -1095,7 +1095,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "SPRINGBEE",
             email: "violamckay@springbee.com",
-            phone: "+1 (901) 412-3479",
+            phone: "+1 (901) 412-3479"
           },
           {
             _id: "54ff69d98ac67b26bce2d4a8",
@@ -1109,7 +1109,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "ULTRASURE",
             email: "gutierrezconway@ultrasure.com",
-            phone: "+1 (939) 438-3340",
+            phone: "+1 (939) 438-3340"
           },
           {
             _id: "54ff69d93a9b81bdb7af6473",
@@ -1123,7 +1123,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "ZANITY",
             email: "chandlerschmidt@zanity.com",
-            phone: "+1 (822) 461-2247",
+            phone: "+1 (822) 461-2247"
           },
           {
             _id: "54ff69d99e5b0a9b8db8da2b",
@@ -1137,7 +1137,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "BEDDER",
             email: "bradshawware@bedder.com",
-            phone: "+1 (932) 496-3718",
+            phone: "+1 (932) 496-3718"
           },
           {
             _id: "54ff69d9a9827e6a14480e37",
@@ -1151,7 +1151,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ZOLAREX",
             email: "krystalbush@zolarex.com",
-            phone: "+1 (928) 577-3693",
+            phone: "+1 (928) 577-3693"
           },
           {
             _id: "54ff69d97e57e2cab6272464",
@@ -1165,7 +1165,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "APEXIA",
             email: "madelinegrant@apexia.com",
-            phone: "+1 (895) 521-2877",
+            phone: "+1 (895) 521-2877"
           },
           {
             _id: "54ff69d9431984c9fdb6f25a",
@@ -1179,7 +1179,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ACCUSAGE",
             email: "floraortiz@accusage.com",
-            phone: "+1 (992) 561-2107",
+            phone: "+1 (992) 561-2107"
           },
           {
             _id: "54ff69d9c7c52140a4572361",
@@ -1193,7 +1193,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "GRAINSPOT",
             email: "bobbieatkins@grainspot.com",
-            phone: "+1 (840) 497-2564",
+            phone: "+1 (840) 497-2564"
           },
           {
             _id: "54ff69d982ac77cad23cb28d",
@@ -1207,7 +1207,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "DEEPENDS",
             email: "mayerosborne@deepends.com",
-            phone: "+1 (952) 498-3050",
+            phone: "+1 (952) 498-3050"
           },
           {
             _id: "54ff69d99aefdc9cdd70a0df",
@@ -1221,7 +1221,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "AQUASURE",
             email: "sullivangibson@aquasure.com",
-            phone: "+1 (833) 463-3464",
+            phone: "+1 (833) 463-3464"
           },
           {
             _id: "54ff69d970a46678753362fc",
@@ -1235,7 +1235,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "FUTURIS",
             email: "nikkiwhitley@futuris.com",
-            phone: "+1 (883) 561-2974",
+            phone: "+1 (883) 561-2974"
           },
           {
             _id: "54ff69d9f7ca2fa585ecbac6",
@@ -1249,7 +1249,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "HOUSEDOWN",
             email: "juanadoyle@housedown.com",
-            phone: "+1 (847) 428-3271",
+            phone: "+1 (847) 428-3271"
           },
           {
             _id: "54ff69d9295e29d7b81a31be",
@@ -1263,7 +1263,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "TRASOLA",
             email: "marcishaffer@trasola.com",
-            phone: "+1 (929) 502-2533",
+            phone: "+1 (929) 502-2533"
           },
           {
             _id: "54ff69d9d8f81e674722a7d5",
@@ -1277,7 +1277,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "AEORA",
             email: "maynardwatts@aeora.com",
-            phone: "+1 (896) 418-3281",
+            phone: "+1 (896) 418-3281"
           },
           {
             _id: "54ff69d98f504a9e6c63dedb",
@@ -1291,7 +1291,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ACCUPRINT",
             email: "olliemooney@accuprint.com",
-            phone: "+1 (811) 512-3357",
+            phone: "+1 (811) 512-3357"
           },
           {
             _id: "54ff69d9fc55f5cd34359bf9",
@@ -1305,7 +1305,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "EARGO",
             email: "mattiecollins@eargo.com",
-            phone: "+1 (800) 463-2474",
+            phone: "+1 (800) 463-2474"
           },
           {
             _id: "54ff69d94692077fe1587d2b",
@@ -1319,7 +1319,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "ORBAXTER",
             email: "weeksmcdowell@orbaxter.com",
-            phone: "+1 (913) 562-2677",
+            phone: "+1 (913) 562-2677"
           },
           {
             _id: "54ff69d95c44a1cefcb13a58",
@@ -1333,7 +1333,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "IZZBY",
             email: "hammondvalencia@izzby.com",
-            phone: "+1 (899) 577-2537",
+            phone: "+1 (899) 577-2537"
           },
           {
             _id: "54ff69d9c513f5b3c8ba15d7",
@@ -1347,7 +1347,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "GOLISTIC",
             email: "ramonafitzgerald@golistic.com",
-            phone: "+1 (965) 432-2851",
+            phone: "+1 (965) 432-2851"
           },
           {
             _id: "54ff69d9affa1d1749cd11d5",
@@ -1361,7 +1361,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "COFINE",
             email: "hydealford@cofine.com",
-            phone: "+1 (806) 588-3800",
+            phone: "+1 (806) 588-3800"
           },
           {
             _id: "54ff69d9bd4f8a5bc1e34937",
@@ -1375,7 +1375,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "RENOVIZE",
             email: "soniasalazar@renovize.com",
-            phone: "+1 (855) 547-2046",
+            phone: "+1 (855) 547-2046"
           },
           {
             _id: "54ff69d9c59ba53ca1b15c7f",
@@ -1389,7 +1389,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "VELOS",
             email: "johnstonnolan@velos.com",
-            phone: "+1 (950) 510-3191",
+            phone: "+1 (950) 510-3191"
           },
           {
             _id: "54ff69d96252c760ec1787a4",
@@ -1403,7 +1403,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "GEEKNET",
             email: "salazarwalters@geeknet.com",
-            phone: "+1 (834) 510-2779",
+            phone: "+1 (834) 510-2779"
           },
           {
             _id: "54ff69d9672f19a45f583e87",
@@ -1417,7 +1417,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "COWTOWN",
             email: "emmamcfarland@cowtown.com",
-            phone: "+1 (858) 410-3273",
+            phone: "+1 (858) 410-3273"
           },
           {
             _id: "54ff69d902facac3a9fc9fbf",
@@ -1431,7 +1431,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "EXTRAGEN",
             email: "lisasutton@extragen.com",
-            phone: "+1 (815) 583-2428",
+            phone: "+1 (815) 583-2428"
           },
           {
             _id: "54ff69d958481e8cde608526",
@@ -1445,7 +1445,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "EXTREMO",
             email: "blackburningram@extremo.com",
-            phone: "+1 (800) 407-3564",
+            phone: "+1 (800) 407-3564"
           },
           {
             _id: "54ff69d9e28a5207c6ce32f2",
@@ -1459,7 +1459,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "PROXSOFT",
             email: "prestonhardy@proxsoft.com",
-            phone: "+1 (960) 444-3169",
+            phone: "+1 (960) 444-3169"
           },
           {
             _id: "54ff69d92e96909171f3e1b1",
@@ -1473,7 +1473,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "GEEKOLOGY",
             email: "miamcgee@geekology.com",
-            phone: "+1 (921) 464-2944",
+            phone: "+1 (921) 464-2944"
           },
           {
             _id: "54ff69d94e56363d2f4110cb",
@@ -1487,7 +1487,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "PRIMORDIA",
             email: "dorismccullough@primordia.com",
-            phone: "+1 (823) 470-2961",
+            phone: "+1 (823) 470-2961"
           },
           {
             _id: "54ff69d99d447d751c48fefc",
@@ -1501,7 +1501,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "PAWNAGRA",
             email: "fernandezshepard@pawnagra.com",
-            phone: "+1 (903) 453-3876",
+            phone: "+1 (903) 453-3876"
           },
           {
             _id: "54ff69d949dfc5b655d10e58",
@@ -1515,7 +1515,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "OLUCORE",
             email: "yvettecaldwell@olucore.com",
-            phone: "+1 (861) 417-2291",
+            phone: "+1 (861) 417-2291"
           },
           {
             _id: "54ff69d9e7ab8c4e8029f2d6",
@@ -1529,7 +1529,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "STREZZO",
             email: "gibsonmolina@strezzo.com",
-            phone: "+1 (809) 485-2161",
+            phone: "+1 (809) 485-2161"
           },
           {
             _id: "54ff69d958fcd9a733351136",
@@ -1543,7 +1543,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "COMTEXT",
             email: "hicksferguson@comtext.com",
-            phone: "+1 (897) 565-2845",
+            phone: "+1 (897) 565-2845"
           },
           {
             _id: "54ff69d94a48d9b5a556f495",
@@ -1557,7 +1557,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ZENSOR",
             email: "dalestephens@zensor.com",
-            phone: "+1 (867) 474-3050",
+            phone: "+1 (867) 474-3050"
           },
           {
             _id: "54ff69d94f91296292db728e",
@@ -1571,7 +1571,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "BRAINCLIP",
             email: "burrisnash@brainclip.com",
-            phone: "+1 (873) 533-2943",
+            phone: "+1 (873) 533-2943"
           },
           {
             _id: "54ff69d9b8edd89a22d08814",
@@ -1585,7 +1585,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ZISIS",
             email: "janieharrington@zisis.com",
-            phone: "+1 (920) 441-3329",
+            phone: "+1 (920) 441-3329"
           },
           {
             _id: "54ff69d90550f9ffe4676013",
@@ -1599,7 +1599,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "PLASTO",
             email: "beulahburch@plasto.com",
-            phone: "+1 (904) 452-2143",
+            phone: "+1 (904) 452-2143"
           },
           {
             _id: "54ff69d920a5eed9e3d2cb29",
@@ -1613,7 +1613,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "ARTIQ",
             email: "osbornecarter@artiq.com",
-            phone: "+1 (937) 431-2440",
+            phone: "+1 (937) 431-2440"
           },
           {
             _id: "54ff69d921ee90fcb998a583",
@@ -1627,7 +1627,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "EVENTIX",
             email: "ricemcclain@eventix.com",
-            phone: "+1 (924) 448-3107",
+            phone: "+1 (924) 448-3107"
           },
           {
             _id: "54ff69d9c70b2ae884142f6f",
@@ -1641,7 +1641,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "VANTAGE",
             email: "jerriknowles@vantage.com",
-            phone: "+1 (926) 566-3957",
+            phone: "+1 (926) 566-3957"
           },
           {
             _id: "54ff69d950ea8f13f7e0adc3",
@@ -1655,7 +1655,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "STEELTAB",
             email: "rosechapman@steeltab.com",
-            phone: "+1 (922) 514-3065",
+            phone: "+1 (922) 514-3065"
           },
           {
             _id: "54ff69d939f6877321458bf6",
@@ -1669,7 +1669,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "HALAP",
             email: "larsonbaxter@halap.com",
-            phone: "+1 (968) 451-2570",
+            phone: "+1 (968) 451-2570"
           },
           {
             _id: "54ff69d9e8c4ac69c408d5a5",
@@ -1683,7 +1683,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "OVOLO",
             email: "sweeneyshepherd@ovolo.com",
-            phone: "+1 (963) 413-2263",
+            phone: "+1 (963) 413-2263"
           },
           {
             _id: "54ff69d97caf29d7106b9a22",
@@ -1697,7 +1697,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "CHILLIUM",
             email: "maribelhenry@chillium.com",
-            phone: "+1 (814) 489-2410",
+            phone: "+1 (814) 489-2410"
           },
           {
             _id: "54ff69d9ea34002e4fc91d67",
@@ -1711,7 +1711,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "VERTON",
             email: "deannbray@verton.com",
-            phone: "+1 (847) 540-2423",
+            phone: "+1 (847) 540-2423"
           },
           {
             _id: "54ff69d9837c8279be6854e0",
@@ -1725,7 +1725,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "SOLAREN",
             email: "hartdillon@solaren.com",
-            phone: "+1 (885) 540-3322",
+            phone: "+1 (885) 540-3322"
           },
           {
             _id: "54ff69d975a0df7615047dda",
@@ -1739,7 +1739,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "TERRASYS",
             email: "daphnemercado@terrasys.com",
-            phone: "+1 (915) 491-2470",
+            phone: "+1 (915) 491-2470"
           },
           {
             _id: "54ff69d9a6aafdf53cf7899d",
@@ -1753,7 +1753,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "male",
             company: "SONIQUE",
             email: "aguilarramsey@sonique.com",
-            phone: "+1 (918) 407-2528",
+            phone: "+1 (918) 407-2528"
           },
           {
             _id: "54ff69d98368d84760f7ffb4",
@@ -1767,7 +1767,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "ZORK",
             email: "alyssagarrett@zork.com",
-            phone: "+1 (816) 467-3019",
+            phone: "+1 (816) 467-3019"
           },
           {
             _id: "54ff69d97100f98d64a49826",
@@ -1781,7 +1781,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "QUOTEZART",
             email: "vickiecastro@quotezart.com",
-            phone: "+1 (894) 530-3406",
+            phone: "+1 (894) 530-3406"
           },
           {
             _id: "54ff69d944ae1efb286accdf",
@@ -1795,9 +1795,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             gender: "female",
             company: "TOYLETRY",
             email: "sherylcherry@toyletry.com",
-            phone: "+1 (883) 527-2393",
-          },
-        ],
+            phone: "+1 (883) 527-2393"
+          }
+        ]
       });
 
       grid = Ext.create("Ext.grid.Panel", {
@@ -1810,42 +1810,42 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           {
             text: "index",
             dataIndex: "index",
-            locked: true,
+            locked: true
           },
           {
             text: "Name",
             dataIndex: "name",
             locked: true,
             cellWrap: true,
-            width: 75,
+            width: 75
           },
           {
             text: "Email",
             dataIndex: "email",
-            flex: 1,
+            flex: 1
           },
           {
             text: "Phone",
-            dataIndex: "phone",
+            dataIndex: "phone"
           },
           {
             text: "isActive",
-            dataIndex: "isActive",
+            dataIndex: "isActive"
           },
           {
             text: "eyeColor",
-            dataIndex: "eyeColor",
+            dataIndex: "eyeColor"
           },
           {
             text: "company",
-            dataIndex: "company",
+            dataIndex: "company"
           },
           {
             text: "gender",
-            dataIndex: "gender",
-          },
+            dataIndex: "gender"
+          }
         ],
-        region: "center",
+        region: "center"
       });
 
       var normalView = grid.normalGrid.getView(),
@@ -1862,7 +1862,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
       runs(function () {
         navModel.setPosition(
-          new Ext.grid.CellContext(lockedView).setPosition(0, 0),
+          new Ext.grid.CellContext(lockedView).setPosition(0, 0)
         );
       });
 
@@ -1887,7 +1887,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           }
         },
         "down arrow to scroll to the last row. 20 seconds expired",
-        20000,
+        20000
       );
 
       runs(function () {
@@ -1898,13 +1898,13 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
         // view sizes must still be in sync
         expect(lockedView.bufferedRenderer.viewSize).toBe(
-          normalView.bufferedRenderer.viewSize,
+          normalView.bufferedRenderer.viewSize
         );
 
         // Every row must be the same height
         for (i = normalRows.startIndex; i <= normalRows.endIndex; i++) {
           expect(normalRows.item(i).getHeight()).toBe(
-            lockedRows.item(i).getHeight(),
+            lockedRows.item(i).getHeight()
           );
         }
       });
@@ -1919,22 +1919,22 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               text: "Col 1",
               dataIndex: "field1",
               width: 100,
-              locked: true,
+              locked: true
             },
             {
               text: "Col 2",
               dataIndex: "field2",
-              width: 100,
+              width: 100
             },
             {
               text: "Col 3",
               dataIndex: "field3",
-              width: 100,
+              width: 100
             },
             {
               text: "Col 4",
               dataIndex: "field4",
-              width: 100,
+              width: 100
             },
             {
               text: "Col 5",
@@ -1945,20 +1945,20 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               widget: {
                 xtype: "progressbarwidget",
                 height: 25,
-                textTpl: ['{percent:number("0")}% capacity'],
-              },
-            },
+                textTpl: ['{percent:number("0")}% capacity']
+              }
+            }
           ],
           nodeCache;
 
         makeGrid(
           {
-            columns: columns,
+            columns: columns
           },
           {
             fields: ["field1", "field2", "field3", "field4", "field5"],
-            data: createData(100),
-          },
+            data: createData(100)
+          }
         );
 
         view = grid.view.normalView;
@@ -1982,7 +1982,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           },
           "last node to scroll into view",
           40000,
-          50,
+          50
         );
 
         runs(function () {
@@ -1992,7 +1992,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
           expect(
             view.el.down(".x-grid-item-container").getHeight() ===
-              view.lockingPartner.el.down(".x-grid-item-container").getHeight(),
+              view.lockingPartner.el.down(".x-grid-item-container").getHeight()
           ).toBe(true);
         });
       }
@@ -2020,22 +2020,22 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                 dataIndex: "field1",
                 width: 100,
                 locked: true,
-                variableRowHeight: true,
+                variableRowHeight: true
               },
               {
                 text: "Col 2",
                 dataIndex: "field2",
-                width: 100,
+                width: 100
               },
               {
                 text: "Col 3",
                 dataIndex: "field3",
-                width: 100,
+                width: 100
               },
               {
                 text: "Col 4",
                 dataIndex: "field4",
-                width: 100,
+                width: 100
               },
               {
                 text: "Col 5",
@@ -2046,9 +2046,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                 widget: {
                   xtype: "progressbarwidget",
                   height: 25,
-                  textTpl: ['{percent:number("0")}% capacity'],
-                },
-              },
+                  textTpl: ['{percent:number("0")}% capacity']
+                }
+              }
             ],
             nodeCache,
             lockedView,
@@ -2078,12 +2078,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           makeGrid(
             {
               columns: columns,
-              syncRowHeight: true,
+              syncRowHeight: true
             },
             {
               fields: ["field1", "field2", "field3", "field4", "field5"],
-              data: createData(1000, true),
-            },
+              data: createData(1000, true)
+            }
           );
 
           lockedView = grid.view.lockedView;
@@ -2093,12 +2093,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           // Set up a sequence on the buffered renderers to check that all rows are always synced
           view.bufferedRenderer.syncRowHeights = Ext.Function.createSequence(
             view.bufferedRenderer.syncRowHeights,
-            onSyncHeights,
+            onSyncHeights
           );
           lockedView.bufferedRenderer.syncRowHeights =
             Ext.Function.createSequence(
               view.bufferedRenderer.syncRowHeights,
-              onSyncHeights,
+              onSyncHeights
             );
 
           waitsFor(
@@ -2120,7 +2120,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             },
             "row 99 to be rendered",
             40000,
-            50,
+            50
           );
 
           // Must have invoked the row syncher and the two body heights must be the same
@@ -2129,7 +2129,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             expect(
               view.el.down(".x-grid-item-container", true).offsetHeight ===
                 view.lockingPartner.el.down(".x-grid-item-container", true)
-                  .offsetHeight,
+                  .offsetHeight
             ).toBe(true);
             bufferedRendererInvocationCount = 0;
           });
@@ -2149,7 +2149,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             },
             "row 990 to scroll into view",
             30000,
-            100,
+            100
           );
 
           // Scrolling is too fast for IE8, need to repaint the grid
@@ -2173,7 +2173,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             expect(partnerHeight).toBe(mainHeight);
             bufferedRendererInvocationCount = 0;
           });
-        },
+        }
       );
     });
 
@@ -2187,22 +2187,22 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               text: "Col 1",
               dataIndex: "field1",
               width: 100,
-              locked: true,
+              locked: true
             },
             {
               text: "Col 2",
               dataIndex: "field2",
-              width: 100,
+              width: 100
             },
             {
               text: "Col 3",
               dataIndex: "field3",
-              width: 100,
+              width: 100
             },
             {
               text: "Col 4",
               dataIndex: "field4",
-              width: 100,
+              width: 100
             },
             {
               text: "Col 5",
@@ -2213,9 +2213,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               widget: {
                 xtype: "progressbarwidget",
                 height: 25,
-                textTpl: ['{percent:number("0")}% capacity'],
-              },
-            },
+                textTpl: ['{percent:number("0")}% capacity']
+              }
+            }
           ],
           nodeCache,
           lockedView,
@@ -2245,7 +2245,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         makeGrid(
           {
             columns: columns,
-            syncRowHeight: true,
+            syncRowHeight: true
           },
           {
             fields: ["field1", "field2", "field3", "field4", "field5"],
@@ -2253,8 +2253,8 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
             // Make sure store.isGrouped() returns false
             // otherwise variableRowHeight will be detected
-            groupField: undefined,
-          },
+            groupField: undefined
+          }
         );
 
         lockedView = grid.view.lockedView;
@@ -2264,12 +2264,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         // Set up a sequence on the buffered renderers to check that all rows are always synced
         view.bufferedRenderer.syncRowHeights = Ext.Function.createSequence(
           view.bufferedRenderer.syncRowHeights,
-          onSyncHeights,
+          onSyncHeights
         );
         lockedView.bufferedRenderer.syncRowHeights =
           Ext.Function.createSequence(
             view.bufferedRenderer.syncRowHeights,
-            onSyncHeights,
+            onSyncHeights
           );
 
         waitsFor(
@@ -2291,7 +2291,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           },
           "row 99 to be rendered",
           40000,
-          50,
+          50
         );
 
         // Must have invoked the row syncher and the two body heights must be the same
@@ -2299,7 +2299,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           expect(bufferedRendererInvocationCount).toBeGreaterThan(0);
           expect(
             view.el.down(".x-grid-item-container").getHeight() ===
-              view.lockingPartner.el.down(".x-grid-item-container").getHeight(),
+              view.lockingPartner.el.down(".x-grid-item-container").getHeight()
           ).toBe(true);
           bufferedRendererInvocationCount = 0;
         });
@@ -2319,7 +2319,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           },
           "row 990 to scroll into view",
           30000,
-          100,
+          100
         );
 
         // Scrolling is too fast for IE8, need to repaint the grid
@@ -2360,12 +2360,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             data: [
               {
                 first: "load2 - First1",
-                last: "load2 - Last1",
+                last: "load2 - Last1"
               },
               {
                 first: "load2 - First2",
-                last: "load2 - Last2",
-              },
+                last: "load2 - Last2"
+              }
             ],
             metaData: {
               root: "data",
@@ -2374,46 +2374,46 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               columns: [
                 {
                   text: "First",
-                  dataIndex: "first",
+                  dataIndex: "first"
                 },
                 {
                   text: "Last",
-                  dataIndex: "last",
-                },
-              ],
-            },
+                  dataIndex: "last"
+                }
+              ]
+            }
           },
           initialData = [
             {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              age: 14,
+              age: 14
             },
             {
               name: "Lisa",
               email: "aunt_lisa@simpsons.com",
               phone: "555-111-1274",
-              age: 34,
+              age: 34
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              age: 12,
+              age: 12
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              age: 44,
+              age: 44
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              age: 41,
-            },
+              age: 41
+            }
           ],
           wasCalled = false,
           initialColumnCount,
@@ -2426,14 +2426,14 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           pageSize: 25,
           proxy: {
             type: "ajax",
-            url: "derp",
+            url: "derp"
           },
           listeners: {
             metachange: function (store, meta) {
               grid.reconfigure(store, meta.columns);
               wasCalled = true;
-            },
-          },
+            }
+          }
         });
         store.load();
         completeWithData(initialData);
@@ -2466,7 +2466,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           //
           // See EXTJS-11860 and EXTJS-11892.
           makeGrid({
-            features: [{ ftype: "grouping" }],
+            features: [{ ftype: "grouping" }]
           });
 
           grid.reconfigure(store);
@@ -2492,7 +2492,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               name: str,
               email: str + "@sencha.com",
               phone: "1-888-" + i,
-              age: i,
+              age: i
             });
           }
 
@@ -2509,9 +2509,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                   listeners: {
                     refresh: function () {
                       wasCalled = true;
-                    },
-                  },
-                },
+                    }
+                  }
+                }
               });
 
               if (scroll) {
@@ -2526,7 +2526,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
             it("should reset the view body", function () {
               makeGrid(null, {
-                data: makeData(500),
+                data: makeData(500)
               });
 
               if (scroll) {
@@ -2558,9 +2558,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
 
         makeTree(
           {
-            height: 300,
+            height: 300
           },
-          100,
+          100
         );
 
         nodeCache = view.all;
@@ -2580,7 +2580,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           },
           "last node to scroll into view",
           30000,
-          50,
+          50
         );
 
         // Expanding that last node should append some child nodes to replenish the leading buffer zone.
@@ -2601,20 +2601,20 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           },
           "new last leaf node to scroll into view",
           10000,
-          50,
+          50
         );
 
         // Expanding that last node should append the child nodes to the view even though the buffer rendered block is the correct size already
         runs(function () {
           //expect(view.bufferedRenderer.position).toBe(view.el.dom.scrollTop);
           expect(view.getRecord(view.all.last()).get("treeData")).toBe(
-            "Child of 99, number 6",
+            "Child of 99, number 6"
           );
 
           // Now let's collapse the parent node by simulating a click on the elbow node.
           jasmine.fireMouseEvent(
             nodeCache.item(99).down(".x-tree-expander"),
-            "click",
+            "click"
           );
         });
       });
@@ -2626,9 +2626,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           store: {
             proxy: {
               type: "ajax",
-              url: "foo",
-            },
-          },
+              url: "foo"
+            }
+          }
         });
         expect(view.loadMask instanceof Ext.LoadMask).toBe(true);
       });
@@ -2638,12 +2638,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           store: {
             proxy: {
               type: "ajax",
-              url: "foo",
-            },
+              url: "foo"
+            }
           },
           viewConfig: {
-            loadMask: false,
-          },
+            loadMask: false
+          }
         });
         expect(view.loadMask).toBe(false);
       });
@@ -2658,33 +2658,33 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               name: '<div style="height:30px">Lisa</div>',
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              age: 14,
+              age: 14
             },
             {
               name: "Lisa",
               email: "aunt_lisa@simpsons.com",
               phone: "555-111-1274",
-              age: 34,
+              age: 34
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              age: 12,
+              age: 12
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              age: 44,
+              age: 44
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              age: 41,
-            },
-          ],
+              age: 41
+            }
+          ]
         });
 
         // Should measure the row height be looking at the first row when we do NOT have variableRowHeight: true
@@ -2718,9 +2718,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           type: "ajax",
           url: "/foo",
           reader: {
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
 
       store = new Ext.data.BufferedStore({
@@ -2728,7 +2728,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         remoteGroup: true,
         leadingBufferZone: 300,
         pageSize: 100,
-        autoDestroy: true,
+        autoDestroy: true
       });
 
       makeGrid(
@@ -2736,35 +2736,35 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           columns: [
             {
               dataIndex: "name",
-              width: 100,
-            },
-          ],
+              width: 100
+            }
+          ]
         },
         {
-          store: store,
-        },
+          store: store
+        }
       );
 
       store.load();
 
       completeWithData({
         total: 5000,
-        data: makeData(100),
+        data: makeData(100)
       });
 
       completeWithData({
         total: 5000,
-        data: makeData(100, 101),
+        data: makeData(100, 101)
       });
 
       completeWithData({
         total: 5000,
-        data: makeData(100, 201),
+        data: makeData(100, 201)
       });
 
       completeWithData({
         total: 5000,
-        data: makeData(100, 301),
+        data: makeData(100, 301)
       });
 
       waitsFor(
@@ -2774,13 +2774,13 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         },
         "row 199 to scroll into the rendered block",
         30000,
-        50,
+        50
       );
 
       runs(function () {
         store.addFilter({
           property: "name",
-          value: "name212",
+          value: "name212"
         });
 
         // Unfortunately, we're testing private properties here :(
@@ -2802,9 +2802,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             type: "ajax",
             url: "/foo",
             reader: {
-              rootProperty: "data",
-            },
-          },
+              rootProperty: "data"
+            }
+          }
         });
 
         store = new Ext.data.Store({
@@ -2813,9 +2813,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           autoDestroy: true,
           proxy: {
             type: "memory",
-            data: makeData(5000),
+            data: makeData(5000)
           },
-          autoLoad: true,
+          autoLoad: true
         });
 
         makeGrid(
@@ -2823,17 +2823,17 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             columns: [
               {
                 dataIndex: "name",
-                width: 100,
-              },
+                width: 100
+              }
             ],
             selModel: {
               type: "rowmodel",
-              mode: "MULTI",
-            },
+              mode: "MULTI"
+            }
           },
           {
-            store: store,
-          },
+            store: store
+          }
         );
         selModel = grid.selModel;
 
@@ -2847,7 +2847,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           store.addFilter({
             property: "id",
             value: 2500,
-            operator: "<=",
+            operator: "<="
           });
 
           // We have filtered out the top 2500 IDs: 2501-5000
@@ -2856,7 +2856,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           // Click to select first row
           jasmine.fireMouseEvent(
             view.getCellByPosition({ row: 0, column: 0 }, true),
-            "click",
+            "click"
           );
           expect(view.selModel.getSelection().length).toBe(1);
 
@@ -2870,7 +2870,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             null,
             null,
             null,
-            true,
+            true
           );
           expect(view.selModel.getSelection().length).toBe(2500);
 
@@ -2896,7 +2896,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           expect(plugin.bodyTop).toBe(0);
           expect(plugin.position).toBe(0);
         });
-      },
+      }
     );
   });
 
@@ -2912,9 +2912,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             reader: {
               type: "json",
               rootProperty: "data",
-              totalProperty: "total",
-            },
-          },
+              totalProperty: "total"
+            }
+          }
         });
 
         makeGrid(
@@ -2922,13 +2922,13 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             columns: [
               {
                 dataIndex: "name",
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           },
           {
-            store: store,
-          },
+            store: store
+          }
         );
 
         store.load();
@@ -2950,9 +2950,9 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             reader: {
               type: "json",
               rootProperty: "data",
-              totalProperty: "total",
-            },
-          },
+              totalProperty: "total"
+            }
+          }
         });
 
         makeGrid(
@@ -2960,14 +2960,14 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             columns: [
               {
                 dataIndex: "name",
-                width: 100,
-              },
+                width: 100
+              }
             ],
-            emptyText: "Empty",
+            emptyText: "Empty"
           },
           {
-            store: store,
-          },
+            store: store
+          }
         );
 
         store.load();
@@ -2990,31 +2990,31 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
                 text: "Tree Column",
                 width: 300,
                 locked: locked,
-                dataIndex: "task",
+                dataIndex: "task"
               },
               {
                 text: "Task1",
-                dataIndex: "task1",
+                dataIndex: "task1"
               },
               {
                 text: "Task2",
-                dataIndex: "task2",
+                dataIndex: "task2"
               },
               {
                 text: "Task3",
-                dataIndex: "task3",
+                dataIndex: "task3"
               },
               {
                 text: "Task4",
-                dataIndex: "task4",
+                dataIndex: "task4"
               },
               {
                 text: "Task5",
-                dataIndex: "task5",
-              },
-            ],
+                dataIndex: "task5"
+              }
+            ]
           },
-          1000,
+          1000
         );
       }
 
@@ -3057,26 +3057,26 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           type: "ajax",
           url: "/foo",
           reader: {
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
 
       var store = new Ext.data.Store({
         model: Person,
         proxy: {
           type: "memory",
-          data: makeData(52),
+          data: makeData(52)
         },
-        autoDestroy: true,
+        autoDestroy: true
       });
       store.load();
       var store1 = new Ext.data.Store({
         model: Person,
         proxy: {
           type: "memory",
-          data: makeData(52),
-        },
+          data: makeData(52)
+        }
       });
       store1.load();
 
@@ -3087,12 +3087,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         deferRowRender: false,
         columns: [
           {
-            dataIndex: "id",
+            dataIndex: "id"
           },
           {
-            dataIndex: "name",
-          },
-        ],
+            dataIndex: "name"
+          }
+        ]
       });
       var grid1 = new Ext.grid.Panel({
         hideMode: "offsets",
@@ -3101,12 +3101,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         deferRowRender: false,
         columns: [
           {
-            dataIndex: "id",
+            dataIndex: "id"
           },
           {
-            dataIndex: "name",
-          },
-        ],
+            dataIndex: "name"
+          }
+        ]
       });
 
       window = new Ext.window.Window({
@@ -3122,8 +3122,8 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         layout: "fit",
         items: {
           xtype: "tabpanel",
-          items: [grid, grid1],
-        },
+          items: [grid, grid1]
+        }
       });
       var tabPanel = window.child("tabpanel");
 
@@ -3136,7 +3136,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           return view.all.endIndex === view.store.getCount() - 1;
         },
         "scroll to end",
-        10000,
+        10000
       );
 
       runs(function () {
@@ -3163,7 +3163,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           return view.getScrollY() === 0;
         },
         "scroll to top",
-        10000,
+        10000
       );
 
       runs(function () {
@@ -3187,18 +3187,18 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           type: "ajax",
           url: "/foo",
           reader: {
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
 
       var store = new Ext.data.Store({
         model: Person,
         proxy: {
           type: "memory",
-          data: makeData(100),
+          data: makeData(100)
         },
-        autoDestroy: true,
+        autoDestroy: true
       });
       store.load();
 
@@ -3208,14 +3208,14 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         deferRowRender: false,
         columns: [
           {
-            dataIndex: "id",
+            dataIndex: "id"
           },
           {
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ],
         height: 500,
-        renderTo: document.body,
+        renderTo: document.body
       });
 
       grid.view.getScrollable().scrollBy(0, 2000);
@@ -3243,23 +3243,23 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           {
             text: "Col 1",
             dataIndex: "field1",
-            width: 100,
+            width: 100
           },
           {
             text: "Col 2",
             dataIndex: "field2",
-            width: 100,
+            width: 100
           },
           {
             text: "Col 3",
             dataIndex: "field3",
-            width: 100,
+            width: 100
           },
           {
             text: "Col 4",
             dataIndex: "field4",
-            width: 100,
-          },
+            width: 100
+          }
         ];
 
       makeGrid(
@@ -3270,15 +3270,15 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
               grid.ensureVisible(grid.getStore().last(), {
                 callback: function () {
                   done = true;
-                },
+                }
               });
-            },
-          },
+            }
+          }
         },
         {
           fields: ["field1", "field2", "field3", "field4"],
-          data: createData(1000),
-        },
+          data: createData(1000)
+        }
       );
 
       waitsFor(function () {
@@ -3323,12 +3323,12 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
             makeTree(
               {
                 rootVisible: false,
-                renderTo: null,
+                renderTo: null
               },
-              500,
-            ),
+              500
+            )
           );
-        },
+        }
       });
 
       // There must ALWAYS be a spacer to create a virtual scroll range
@@ -3345,16 +3345,16 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
           type: "ajax",
           url: "/foo",
           reader: {
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
 
       store = new Ext.data.BufferedStore({
         model: Person,
         leadingBufferZone: 300,
         pageSize: 100,
-        autoDestroy: true,
+        autoDestroy: true
       });
 
       grid = new Ext.grid.Panel({
@@ -3365,13 +3365,13 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         columns: [
           {
             dataIndex: "id",
-            locked: true,
+            locked: true
           },
           {
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       var view = grid.normalGrid.view;
 
@@ -3412,33 +3412,33 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
         {
           text: "Col 1",
           dataIndex: "field1",
-          width: 100,
+          width: 100
         },
         {
           text: "Col 2",
           dataIndex: "field2",
-          width: 100,
+          width: 100
         },
         {
           text: "Col 3",
           dataIndex: "field3",
-          width: 100,
+          width: 100
         },
         {
           text: "Col 4",
           dataIndex: "field4",
-          width: 100,
-        },
+          width: 100
+        }
       ];
 
       makeGrid(
         {
-          columns: columns,
+          columns: columns
         },
         {
           fields: ["field1", "field2", "field3", "field4", "field5"],
-          data: createData(1000),
-        },
+          data: createData(1000)
+        }
       );
       view.bufferedRenderer.refreshView(500);
 
@@ -3446,7 +3446,7 @@ describe("Ext.grid.plugin.BufferedRenderer", function () {
       // the view has moved downwards, so the first visible row index must be "trailingBufferZone" rows
       // after the requested refresh start row.
       expect(view.bufferedRenderer.getFirstVisibleRowIndex()).toBe(
-        500 + view.bufferedRenderer.trailingBufferZone,
+        500 + view.bufferedRenderer.trailingBufferZone
       );
     });
   });

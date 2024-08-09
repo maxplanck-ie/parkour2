@@ -3,7 +3,7 @@ Ext.define("Ext.theme.blackberry.dataview.NestedList", {
 
   config: {
     toolbar: {
-      splitNavigation: true,
-    },
-  },
+      splitNavigation: true
+    }
+  }
 });

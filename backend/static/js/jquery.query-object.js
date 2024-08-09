@@ -38,7 +38,7 @@ new (function (settings) {
         if (!target) target = [];
         if (is(target, Array)) {
           target.push(
-            tokens.length == 0 ? value : set(null, tokens.slice(0), value),
+            tokens.length == 0 ? value : set(null, tokens.slice(0), value)
           );
         } else if (is(target, Object)) {
           var i = 0;
@@ -48,7 +48,7 @@ new (function (settings) {
         } else {
           target = [];
           target.push(
-            tokens.length == 0 ? value : set(null, tokens.slice(0), value),
+            tokens.length == 0 ? value : set(null, tokens.slice(0), value)
           );
         }
       } else if (token && token.match(/^\s*[0-9]+\s*$/)) {
@@ -193,7 +193,7 @@ new (function (settings) {
         var search = url.replace(/^.*?[?](.+?)(?:#.+)?$/, "$1");
         return new queryObject(
           url.length == search.length ? "" : search,
-          url.length == hash.length ? "" : hash,
+          url.length == hash.length ? "" : hash
         );
       },
       empty: function () {
@@ -262,7 +262,7 @@ new (function (settings) {
         queryString.push(chunks.join($separator));
 
         return queryString.join("");
-      },
+      }
     };
 
     return new queryObject(location.search, location.hash);

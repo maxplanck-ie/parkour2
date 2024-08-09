@@ -27,7 +27,7 @@ Ext.define("Ext.slider.Multi", {
     "Ext.slider.Tip",
     "Ext.Number",
     "Ext.util.Format",
-    "Ext.Template",
+    "Ext.Template"
   ],
 
   /**
@@ -252,8 +252,8 @@ Ext.define("Ext.slider.Multi", {
           Ext.DomHelper.generateMarkup(thumbConfig, out);
         }
       },
-      disableFormats: true,
-    },
+      disableFormats: true
+    }
   ],
 
   horizontalProp: "left",
@@ -263,7 +263,7 @@ Ext.define("Ext.slider.Multi", {
       extValueFrom = Ext.valueFrom,
       // Fallback for initial values: values config -> value config -> minValue config -> 0
       values = extValueFrom(me.values, [
-        extValueFrom(me.value, extValueFrom(me.minValue, 0)),
+        extValueFrom(me.value, extValueFrom(me.minValue, 0))
       ]),
       i = 0,
       len = values.length;
@@ -344,7 +344,7 @@ Ext.define("Ext.slider.Multi", {
         slider: me,
         index: me.thumbs.length,
         constrain: me.constrainThumbs,
-        disabled: !!me.readOnly,
+        disabled: !!me.readOnly
       });
 
     me.thumbs.push(thumb);
@@ -399,7 +399,7 @@ Ext.define("Ext.slider.Multi", {
       maxValue: me.maxValue,
       value: me.value,
       tabIdx: me.tabIndex,
-      childElCls: "",
+      childElCls: ""
     });
 
     ariaAttr = data.inputElAriaAttributes;
@@ -446,7 +446,7 @@ Ext.define("Ext.slider.Multi", {
     me.mon(me.el, {
       scope: me,
       mousedown: me.onMouseDown,
-      keydown: me.onKeyDown,
+      keydown: me.onKeyDown
     });
   },
 
@@ -547,10 +547,10 @@ Ext.define("Ext.slider.Multi", {
         index,
         Ext.util.Format.round(
           me.reversePixelValue(trackPoint),
-          me.decimalPrecision,
+          me.decimalPrecision
         ),
         undefined,
-        true,
+        true
       );
     }
   },
@@ -900,7 +900,7 @@ Ext.define("Ext.slider.Multi", {
         if (!me.thumbHolder) {
           me.thumbHolder = me.endEl.createChild({
             role: "presentation",
-            cls: Ext.baseCSSPrefix + "slider-thumb " + me.disabledCls,
+            cls: Ext.baseCSSPrefix + "slider-thumb " + me.disabledCls
           });
         }
 
@@ -1029,5 +1029,5 @@ Ext.define("Ext.slider.Multi", {
     }
 
     this.callParent();
-  },
+  }
 });

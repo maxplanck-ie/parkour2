@@ -138,7 +138,7 @@ Ext.define("Ext.field.Field", {
      * not those which are built via `applyTo`.
      * @accessor
      */
-    tabIndex: null,
+    tabIndex: null
 
     /**
      * @cfg {Object} component
@@ -161,7 +161,7 @@ Ext.define("Ext.field.Field", {
     /**
      * @cfg {String} inputCls CSS class to add to the input element of this fields {@link #component}
      */
-    inputCls: null,
+    inputCls: null
   },
 
   classCls: Ext.baseCSSPrefix + "field",
@@ -185,15 +185,15 @@ Ext.define("Ext.field.Field", {
             {
               reference: "labelTextElement",
               cls: Ext.baseCSSPrefix + "label-text-el",
-              tag: "span",
-            },
-          ],
+              tag: "span"
+            }
+          ]
         },
         {
           reference: "bodyElement",
-          cls: Ext.baseCSSPrefix + "body-el",
-        },
-      ],
+          cls: Ext.baseCSSPrefix + "body-el"
+        }
+      ]
     };
   },
 
@@ -258,7 +258,7 @@ Ext.define("Ext.field.Field", {
 
     if (oldLabelTextAlign) {
       element.removeCls(
-        Ext.baseCSSPrefix + "label-text-align-" + oldLabelTextAlign,
+        Ext.baseCSSPrefix + "label-text-align-" + oldLabelTextAlign
       );
     }
 
@@ -376,5 +376,5 @@ Ext.define("Ext.field.Field", {
    */
   isDirty: function () {
     return false;
-  },
+  }
 });

@@ -118,7 +118,7 @@ Ext.define("Ext.container.Monitor", {
         add: me.handleAdd,
         dockedadd: me.handleAdd,
         remove: me.handleRemove,
-        dockedremove: me.handleRemove,
+        dockedremove: me.handleRemove
       });
     }
 
@@ -196,7 +196,7 @@ Ext.define("Ext.container.Monitor", {
       add: me.handleAdd,
       dockedadd: me.handleAdd,
       remove: me.handleRemove,
-      dockedremove: me.handleRemove,
+      dockedremove: me.handleRemove
     });
   },
 
@@ -220,5 +220,5 @@ Ext.define("Ext.container.Monitor", {
     }
 
     me.items = Ext.destroy(me.items);
-  },
+  }
 });

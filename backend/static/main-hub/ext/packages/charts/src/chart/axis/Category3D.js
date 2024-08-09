@@ -4,7 +4,7 @@
 Ext.define("Ext.chart.axis.Category3D", {
   requires: [
     "Ext.chart.axis.layout.CombineDuplicate",
-    "Ext.chart.axis.segmenter.Names",
+    "Ext.chart.axis.segmenter.Names"
   ],
   extend: "Ext.chart.axis.Axis3D",
   alias: "axis.category3d",
@@ -13,6 +13,6 @@ Ext.define("Ext.chart.axis.Category3D", {
   config: {
     layout: "combineDuplicate",
 
-    segmenter: "names",
-  },
+    segmenter: "names"
+  }
 });

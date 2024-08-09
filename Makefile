@@ -23,6 +23,7 @@ check-rootdir:
 set-prod:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_prod#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
+	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 deploy-django: deploy-network deploy-containers
 
@@ -42,11 +43,9 @@ collect-static:
 check-templates:
 	@docker compose exec parkour2-django python manage.py validate_templates
 
-update-extjs:
-	@which sencha > /dev/null \
-		&& cd ./backend/static/main-hub \
-		&& OPENSSL_CONF=/dev/null sencha app build development \
-		|| echo "Warning: Sencha is not installed. See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD"
+update-extjs:  ## See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD
+	@cd ./backend/static/main-hub \
+		&& OPENSSL_CONF=/dev/null sencha app build development
 
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate --traceback
@@ -63,6 +62,7 @@ lint-migras:
 
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
+	@#find backend/ -user root -path '**/migrations/*.py' -print0 | xargs -0 -n 1 -I {_} echo docker compose exec parkour2-django chown 1000:1000 {_}  ## adjust `uid` and `gid`, and run this manually to fix permissions from within container.
 
 check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
@@ -85,16 +85,16 @@ set-base:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 
 clean:
-	#@docker compose exec parkour2-django rm -f backend/logs/*.log
-	@$(MAKE) set-base hardreset-caddyfile > /dev/null
+	@#docker compose exec parkour2-django rm -f backend/logs/*.log
+	@$(MAKE) set-base hardreset-caddyfile disable-explorer > /dev/null
 	@test -e ./misc/parkour.env.ignore && git checkout ./misc/parkour.env || :
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -ctime +7 -name db_\*.sqldump \
-		-not -name "$$(file misc/latest.sqldump | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-not -name "$$(file misc/latest.sqldump | sed 's/.*\(db_.*\.sqldump\).*/\1/')" \
 		-exec /bin/rm -rf {} +;
 	@find ./misc -ctime +7 -name migras_\*.tar.gz \
-		-not -name "$$(file misc/migras.tar.gz | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-not -name "$$(file misc/migras.tar.gz | sed 's/.*\(migras_.*\.tar\.gz\).*/\1/')" \
 		-exec /bin/rm -rf {} +;
 
 prune:
@@ -105,7 +105,10 @@ clearpy:  ## Removes some files, created by 'prod' deployment and owned by root.
 	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 
-prod: down clean deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+
+prod-ci: down set-prod deploy-django collect-static apply-migrations clean
+	@docker exec parkour2-django python manage.py check
 
 dev-easy: down set-dev deploy-django deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
 
@@ -123,7 +126,7 @@ hardreset-caddyfile:
 	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue-assets/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
 hardreset-envfile:
-	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour]\nSERVER_EMAIL=your@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_USER=postgres\nPOSTGRES_DB=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
+	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d
@@ -261,8 +264,9 @@ shell:
 # kill-sessions:
 # 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; for s in Session.objects.iterator(): s.delete()"
 
-reload-code:  ## Gracefully ship small code updates into production backend
-	@docker compose exec -it parkour2-django kill -1 1
+# DEPRECATED. Did BarcodeCounter bug bite us again?!
+#reload-code:  ## Gracefully ship small code updates into production backend
+#	@docker compose exec -it parkour2-django kill -1 1
 
 ## This should be a cronjob on your host VM/ production deployment machine.
 clearsessions:
@@ -280,7 +284,7 @@ models:
 		pip install pydot && \
 		python manage.py graph_models -n --pydot -g -a -o /tmp_parkour.dot && \
 		sed -i -e 's/\(fontsize\)=[0-9]\+/\1=20/' /tmp_parkour.dot && \
-		dot -T pdf -o /tmp_parkour.dot"
+		dot -T pdf -o /tmp_parkour.pdf /tmp_parkour.dot"
 	@docker exec parkour2-django sh -c \
 		"pdfposter -mA3 -pA1 /tmp_parkour.pdf /tmp_models.A3.pdf && \
 		pdfposter -mA4 -pA1 /tmp_parkour.pdf /tmp_models.A4.pdf && \
@@ -383,8 +387,11 @@ tar-old-migras:
 			-exec tar czf ./misc/migras_$(stamp).tar.gz {} \+ && \
 		ln -sf migras_$(stamp).tar.gz misc/migras.tar.gz
 
-put-old-migras: rm-migras
-	@[[ -f misc/migras.tar.gz ]] && tar xzf misc/migras.tar.gz
+put-old-migras:
+	@[[ -f misc/migras.tar.gz ]] && \
+		$(MAKE) rm-migras && \
+		tar xzf misc/migras.tar.gz || \
+		{ echo -n 'Symlink seems to be broken, '; ls -L misc/migras.tar.gz; exit 1; }
 
 dev-migras: dev db-migras
 dev-ez: dev-easy db-migras
@@ -398,5 +405,34 @@ put-new-migras:
 load-fixtures-migras: put-old-migras apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 	@$(MAKE) put-new-migras
+
+update-fixtures: dev load-fixtures-migras  ## Redeploy with fixtures, migrate fields, save data to json.
+	@docker compose exec parkour2-django python manage.py save_initial_data
+
+enable-ollama:
+	@docker run -d -v ./misc/ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+	@echo "Work In Progress: this feature was not finalized, open an issue if you need it."
+
+enable-explorer:
+	@docker exec parkour2-django python manage.py create_readonly_pg
+	@sed -i -e \
+		's%# \(path("explorer/", include("explorer.urls")),\)%\1%' \
+		backend/wui/urls.py
+	@sed -i -e \
+		's%# \("explorer",\)%\1%' \
+		backend/wui/settings/dev.py
+	@$(MAKE) schema collect-static
+
+disable-ollama:
+	@docker container stop ollama
+	@docker container prune -f
+
+disable-explorer:
+	@sed -i -e \
+		's%^\(\s*\)\(path("explorer/", include("explorer.urls")),\)%\1# \2%' \
+		backend/wui/urls.py
+	@sed -i -e \
+		's%^\(\s*\)\("explorer",\)%\1# \2%' \
+		backend/wui/settings/dev.py
 
 # Remember: (docker compose run == docker exec) != docker run

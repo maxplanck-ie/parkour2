@@ -12,9 +12,9 @@ describe("Ext.data.TreeStore", function () {
         type: "ajax",
         url: "foo.json",
         reader: {
-          type: "json",
-        },
-      },
+          type: "json"
+        }
+      }
     }),
     TaskModel = Ext.define(null, {
       extend: "Ext.data.TreeModel",
@@ -22,13 +22,13 @@ describe("Ext.data.TreeStore", function () {
       fields: [
         { name: "id", type: "int", allowNull: true },
         { name: "task", type: "string" },
-        { name: "duration", type: "string" },
-      ],
+        { name: "duration", type: "string" }
+      ]
     });
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -40,7 +40,7 @@ describe("Ext.data.TreeStore", function () {
       nodes = Ext.Array.map(nodes, function (id) {
         return {
           id: id,
-          leaf: true,
+          leaf: true
         };
       });
     }
@@ -66,11 +66,11 @@ describe("Ext.data.TreeStore", function () {
           asynchronousLoad: false,
           root: {
             expanded: true,
-            children: expandify(nodes),
-          },
+            children: expandify(nodes)
+          }
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     root = store.getRootNode();
   }
@@ -95,7 +95,7 @@ describe("Ext.data.TreeStore", function () {
       children: [
         {
           id: 1,
-          name: "aaa",
+          name: "aaa"
         },
         {
           id: 2,
@@ -103,7 +103,7 @@ describe("Ext.data.TreeStore", function () {
           children: [
             {
               id: 3,
-              name: "ccc",
+              name: "ccc"
             },
             {
               id: 4,
@@ -112,18 +112,18 @@ describe("Ext.data.TreeStore", function () {
                 {
                   id: 5,
                   name: "eee",
-                  leaf: true,
-                },
-              ],
-            },
-          ],
+                  leaf: true
+                }
+              ]
+            }
+          ]
         },
         {
           id: 6,
           name: "fff",
-          children: [{ id: 7, name: "ggg" }],
-        },
-      ],
+          children: [{ id: 7, name: "ggg" }]
+        }
+      ]
     };
 
     MockAjaxManager.addMethods();
@@ -142,7 +142,7 @@ describe("Ext.data.TreeStore", function () {
   function completeWithData(data) {
     Ext.Ajax.mockComplete({
       status: 200,
-      responseText: Ext.encode(data),
+      responseText: Ext.encode(data)
     });
   }
 
@@ -150,8 +150,8 @@ describe("Ext.data.TreeStore", function () {
     Ext.Ajax.mockComplete({
       status: 200,
       responseText: Ext.encode({
-        success: false,
-      }),
+        success: false
+      })
     });
   }
 
@@ -165,14 +165,14 @@ describe("Ext.data.TreeStore", function () {
       store = new Ext.data.TreeStore({
         model: NodeModel,
         proxy: {
-          type: "memory",
+          type: "memory"
         },
         root: {
           id: 0,
           name: "Root Node",
           autoLoad: true,
-          children: dummyData.children,
-        },
+          children: dummyData.children
+        }
       });
       store.getRootNode().expand(true);
       expect(Ext.Object.getKeys(store.byIdMap).length).toBe(8);
@@ -197,25 +197,25 @@ describe("Ext.data.TreeStore", function () {
         asynchronousLoad: false,
         root: {
           expanded: true,
-          id: "root-id",
+          id: "root-id"
         },
         listeners: {
           beforeload: function (store, operation) {
             lastLoadedId = operation.getId();
-          },
-        },
+          }
+        }
       });
 
       expect(lastLoadedId).toBe("root-id");
       completeWithData([
         {
           id: "1",
-          name: "Node 1",
+          name: "Node 1"
         },
         {
           id: "2",
-          name: "Node 2",
-        },
+          name: "Node 2"
+        }
       ]);
       store.getNodeById(1).expand();
 
@@ -224,12 +224,12 @@ describe("Ext.data.TreeStore", function () {
       completeWithData([
         {
           id: "1.1",
-          name: "Node 1.1",
+          name: "Node 1.1"
         },
         {
           id: "1.2",
-          name: "Node 1.2",
-        },
+          name: "Node 1.2"
+        }
       ]);
       store.reload();
       // Reloading will put id:'root-id' in the operation
@@ -247,8 +247,8 @@ describe("Ext.data.TreeStore", function () {
           beforeload: function (store, operation) {
             usedProxy = operation.getProxy();
             return false;
-          },
-        },
+          }
+        }
       });
       store.load();
 
@@ -258,7 +258,7 @@ describe("Ext.data.TreeStore", function () {
     });
     it("should use its own Proxy Proxy if it is configured with one", function () {
       var storeProxy = new Ext.data.proxy.Ajax({
-          url: "/foo",
+          url: "/foo"
         }),
         usedProxy;
 
@@ -269,8 +269,8 @@ describe("Ext.data.TreeStore", function () {
           beforeload: function (store, operation) {
             usedProxy = operation.getProxy();
             return false;
-          },
-        },
+          }
+        }
       });
       store.load();
 
@@ -288,13 +288,13 @@ describe("Ext.data.TreeStore", function () {
       store = new Ext.data.TreeStore({
         model: NodeModel,
         root: {
-          expanded: true,
+          expanded: true
         },
         listeners: {
           load: function (store, records, successful, operation, node) {
             wasSuccessful = successful;
-          },
-        },
+          }
+        }
       });
       completeWithFailure();
       expect(wasSuccessful).toBe(false);
@@ -305,16 +305,16 @@ describe("Ext.data.TreeStore", function () {
     it("should be able to use a non TreeModel", function () {
       var Model = Ext.define(null, {
         extend: "Ext.data.Model",
-        fields: ["foo"],
+        fields: ["foo"]
       });
 
       // Important that the proxy gets applied first here
       store = new Ext.data.TreeStore({
         proxy: {
           type: "ajax",
-          url: "fake",
+          url: "fake"
         },
-        model: Model,
+        model: Model
       });
       expect(store.getModel()).toBe(Model);
       expect(Model.prototype.isNode).toBe(true);
@@ -323,7 +323,7 @@ describe("Ext.data.TreeStore", function () {
     describe("using an implicit model", function () {
       it("should use the model's memory proxy when no proxy is defined on the store", function () {
         store = new Ext.data.TreeStore({
-          fields: ["id", "height", "width"],
+          fields: ["id", "height", "width"]
         });
         expect(store.getProxy().isMemoryProxy).toBe(true);
         expect(store.getProxy()).toBe(store.getModel().getProxy());
@@ -334,8 +334,8 @@ describe("Ext.data.TreeStore", function () {
           fields: ["id", "height", "width"],
           proxy: {
             type: "ajax",
-            url: "foo",
-          },
+            url: "foo"
+          }
         });
         expect(store.getProxy().isAjaxProxy).toBe(true);
         expect(store.getProxy().url).toBe("foo");
@@ -347,8 +347,8 @@ describe("Ext.data.TreeStore", function () {
           fields: ["id", "height", "width"],
           proxy: {
             type: "ajax",
-            url: "foo",
-          },
+            url: "foo"
+          }
         });
         expect(store.getProxy().getModel()).toBe(store.getModel());
         expect(store.getProxy().getReader().getModel()).toBe(store.getModel());
@@ -356,7 +356,7 @@ describe("Ext.data.TreeStore", function () {
 
       it("should extend Ext.data.Model", function () {
         store = new Ext.data.TreeStore({
-          fields: ["id", "height", "width"],
+          fields: ["id", "height", "width"]
         });
         expect(store.getModel().superclass.self).toBe(Ext.data.TreeModel);
       });
@@ -385,20 +385,20 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: "l1",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "f1",
+                  id: "f1"
                 },
                 {
                   id: "l2",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "f2",
-                },
-              ],
-            },
+                  id: "f2"
+                }
+              ]
+            }
           });
           store.setFolderSort(true);
           expectOrder(store.getRoot(), ["f1", "f2", "l1", "l2"]);
@@ -413,27 +413,27 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: "l3",
-                  leaf: true,
+                  leaf: true
                 },
                 {
                   id: "l2",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "f3",
+                  id: "f3"
                 },
                 {
                   id: "l1",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "f2",
+                  id: "f2"
                 },
                 {
-                  id: "f1",
-                },
-              ],
-            },
+                  id: "f1"
+                }
+              ]
+            }
           });
           expectOrder(store.getRoot(), ["f3", "f2", "f1", "l3", "l2", "l1"]);
         });
@@ -450,27 +450,27 @@ describe("Ext.data.TreeStore", function () {
                   children: [
                     {
                       id: "l1",
-                      leaf: true,
+                      leaf: true
                     },
                     {
-                      id: "f1",
-                    },
-                  ],
+                      id: "f1"
+                    }
+                  ]
                 },
                 {
                   id: "p2",
                   children: [
                     {
                       id: "l2",
-                      leaf: true,
+                      leaf: true
                     },
                     {
-                      id: "f2",
-                    },
-                  ],
-                },
-              ],
-            },
+                      id: "f2"
+                    }
+                  ]
+                }
+              ]
+            }
           });
           expectOrder(byId("p1"), ["f1", "l1"]);
           expectOrder(byId("p2"), ["f2", "l2"]);
@@ -485,31 +485,31 @@ describe("Ext.data.TreeStore", function () {
               expanded: true,
               children: [
                 {
-                  id: "f4",
+                  id: "f4"
                 },
                 {
-                  id: "l3",
+                  id: "l3"
                 },
                 {
-                  id: "f1",
+                  id: "f1"
                 },
                 {
-                  id: "l1",
+                  id: "l1"
                 },
                 {
-                  id: "l2",
+                  id: "l2"
                 },
                 {
-                  id: "f3",
+                  id: "f3"
                 },
                 {
-                  id: "l4",
+                  id: "l4"
                 },
                 {
-                  id: "f2",
-                },
-              ],
-            },
+                  id: "f2"
+                }
+              ]
+            }
           });
           expectOrder(store.getRoot(), [
             "f1",
@@ -519,7 +519,7 @@ describe("Ext.data.TreeStore", function () {
             "l1",
             "l2",
             "l3",
-            "l4",
+            "l4"
           ]);
         });
       });
@@ -535,20 +535,20 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: "a",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "b",
+                  id: "b"
                 },
                 {
                   id: "c",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "d",
-                },
-              ],
-            },
+                  id: "d"
+                }
+              ]
+            }
           });
           store.setFolderSort(false);
           expectOrder(store.getRoot(), ["a", "b", "c", "d"]);
@@ -568,21 +568,21 @@ describe("Ext.data.TreeStore", function () {
                   children: [
                     {
                       id: "b",
-                      leaf: true,
+                      leaf: true
                     },
                     {
                       id: "c",
-                      leaf: true,
+                      leaf: true
                     },
                     {
                       id: "a",
-                      leaf: true,
+                      leaf: true
                     },
                     {
                       id: "d",
-                      leaf: true,
-                    },
-                  ],
+                      leaf: true
+                    }
+                  ]
                 },
                 {
                   id: "p2",
@@ -590,24 +590,24 @@ describe("Ext.data.TreeStore", function () {
                   children: [
                     {
                       id: "g",
-                      leaf: true,
+                      leaf: true
                     },
                     {
                       id: "e",
-                      leaf: true,
+                      leaf: true
                     },
                     {
                       id: "h",
-                      leaf: true,
+                      leaf: true
                     },
                     {
                       id: "f",
-                      leaf: true,
-                    },
-                  ],
-                },
-              ],
-            },
+                      leaf: true
+                    }
+                  ]
+                }
+              ]
+            }
           });
           store.setFolderSort(false);
           expectOrder(byId("p1"), ["a", "b", "c", "d"]);
@@ -622,24 +622,24 @@ describe("Ext.data.TreeStore", function () {
           store = new Ext.data.TreeStore({
             model: NodeModel,
             root: {
-              expanded: true,
-            },
+              expanded: true
+            }
           });
           completeWithData([
             {
               id: "l1",
-              leaf: true,
+              leaf: true
             },
             {
-              id: "f1",
+              id: "f1"
             },
             {
               id: "l2",
-              leaf: true,
+              leaf: true
             },
             {
-              id: "f2",
-            },
+              id: "f2"
+            }
           ]);
           store.setFolderSort(true);
           expectOrder(store.getRoot(), ["f1", "f2", "l1", "l2"]);
@@ -650,31 +650,31 @@ describe("Ext.data.TreeStore", function () {
             model: NodeModel,
             folderSort: true,
             root: {
-              expanded: true,
-            },
+              expanded: true
+            }
           });
           completeWithData([
             {
               id: "l3",
-              leaf: true,
+              leaf: true
             },
             {
               id: "l2",
-              leaf: true,
+              leaf: true
             },
             {
-              id: "f3",
+              id: "f3"
             },
             {
               id: "l1",
-              leaf: true,
+              leaf: true
             },
             {
-              id: "f2",
+              id: "f2"
             },
             {
-              id: "f1",
-            },
+              id: "f1"
+            }
           ]);
           expectOrder(store.getRoot(), ["f3", "f2", "f1", "l3", "l2", "l1"]);
         });
@@ -684,8 +684,8 @@ describe("Ext.data.TreeStore", function () {
             model: NodeModel,
             folderSort: true,
             root: {
-              expanded: true,
-            },
+              expanded: true
+            }
           });
           completeWithData([
             {
@@ -693,25 +693,25 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: "l1",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "f1",
-                },
-              ],
+                  id: "f1"
+                }
+              ]
             },
             {
               id: "p2",
               children: [
                 {
                   id: "l2",
-                  leaf: true,
+                  leaf: true
                 },
                 {
-                  id: "f2",
-                },
-              ],
-            },
+                  id: "f2"
+                }
+              ]
+            }
           ]);
           expectOrder(byId("p1"), ["f1", "l1"]);
           expectOrder(byId("p2"), ["f2", "l2"]);
@@ -723,34 +723,34 @@ describe("Ext.data.TreeStore", function () {
             folderSort: true,
             sorters: ["id"],
             root: {
-              expanded: true,
-            },
+              expanded: true
+            }
           });
           completeWithData([
             {
-              id: "f4",
+              id: "f4"
             },
             {
-              id: "l3",
+              id: "l3"
             },
             {
-              id: "f1",
+              id: "f1"
             },
             {
-              id: "l1",
+              id: "l1"
             },
             {
-              id: "l2",
+              id: "l2"
             },
             {
-              id: "f3",
+              id: "f3"
             },
             {
-              id: "l4",
+              id: "l4"
             },
             {
-              id: "f2",
-            },
+              id: "f2"
+            }
           ]);
           expectOrder(store.getRoot(), [
             "f1",
@@ -760,7 +760,7 @@ describe("Ext.data.TreeStore", function () {
             "l1",
             "l2",
             "l3",
-            "l4",
+            "l4"
           ]);
         });
       });
@@ -772,24 +772,24 @@ describe("Ext.data.TreeStore", function () {
             folderSort: false,
             sorters: ["id"],
             root: {
-              expanded: true,
-            },
+              expanded: true
+            }
           });
           completeWithData([
             {
               id: "a",
-              leaf: true,
+              leaf: true
             },
             {
-              id: "b",
+              id: "b"
             },
             {
               id: "c",
-              leaf: true,
+              leaf: true
             },
             {
-              id: "d",
-            },
+              id: "d"
+            }
           ]);
           store.setFolderSort(false);
           expectOrder(store.getRoot(), ["a", "b", "c", "d"]);
@@ -801,8 +801,8 @@ describe("Ext.data.TreeStore", function () {
             folderSort: false,
             sorters: ["id"],
             root: {
-              expanded: true,
-            },
+              expanded: true
+            }
           });
           completeWithData([
             {
@@ -811,21 +811,21 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: "b",
-                  leaf: true,
+                  leaf: true
                 },
                 {
                   id: "c",
-                  leaf: true,
+                  leaf: true
                 },
                 {
                   id: "a",
-                  leaf: true,
+                  leaf: true
                 },
                 {
                   id: "d",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               id: "p2",
@@ -833,22 +833,22 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: "g",
-                  leaf: true,
+                  leaf: true
                 },
                 {
                   id: "e",
-                  leaf: true,
+                  leaf: true
                 },
                 {
                   id: "h",
-                  leaf: true,
+                  leaf: true
                 },
                 {
                   id: "f",
-                  leaf: true,
-                },
-              ],
-            },
+                  leaf: true
+                }
+              ]
+            }
           ]);
           store.setFolderSort(false);
           expectOrder(byId("p1"), ["a", "b", "c", "d"]);
@@ -869,37 +869,37 @@ describe("Ext.data.TreeStore", function () {
                 id: "a",
                 children: [
                   {
-                    id: "z",
+                    id: "z"
                   },
                   {
-                    id: "y",
-                  },
-                ],
+                    id: "y"
+                  }
+                ]
               },
               {
                 id: "b",
                 children: [
                   {
-                    id: "x",
+                    id: "x"
                   },
                   {
-                    id: "w",
-                  },
-                ],
+                    id: "w"
+                  }
+                ]
               },
               {
                 id: "c",
                 children: [
                   {
-                    id: "v",
+                    id: "v"
                   },
                   {
-                    id: "u",
-                  },
-                ],
-              },
-            ],
-          },
+                    id: "u"
+                  }
+                ]
+              }
+            ]
+          }
         });
 
         byId("a").expand();
@@ -925,51 +925,51 @@ describe("Ext.data.TreeStore", function () {
               {
                 id: "a",
                 expanded: true,
-                children: [],
+                children: []
               },
               {
                 id: "b",
                 expanded: true,
-                children: [],
+                children: []
               },
               {
                 id: "c",
                 expanded: true,
-                children: [],
-              },
-            ],
-          },
+                children: []
+              }
+            ]
+          }
         });
 
         byId("a").appendChild([
           {
-            id: "y",
+            id: "y"
           },
           {
-            id: "z",
-          },
+            id: "z"
+          }
         ]);
         expectOrder(byId("a"), ["y", "z"]);
         expectStoreOrder(["a", "y", "z", "b", "c"]);
 
         byId("b").appendChild([
           {
-            id: "w",
+            id: "w"
           },
           {
-            id: "x",
-          },
+            id: "x"
+          }
         ]);
         expectOrder(byId("b"), ["w", "x"]);
         expectStoreOrder(["a", "y", "z", "b", "w", "x", "c"]);
 
         byId("c").appendChild([
           {
-            id: "u",
+            id: "u"
           },
           {
-            id: "v",
-          },
+            id: "v"
+          }
         ]);
         expectOrder(byId("c"), ["u", "v"]);
         expectStoreOrder(["a", "y", "z", "b", "w", "x", "c", "u", "v"]);
@@ -983,8 +983,8 @@ describe("Ext.data.TreeStore", function () {
         model: NodeModel,
         root: {
           expanded: true,
-          text: "Root",
-        },
+          text: "Root"
+        }
       });
       expect(store.getNodeById("foo")).toBeNull();
     });
@@ -994,8 +994,8 @@ describe("Ext.data.TreeStore", function () {
         model: NodeModel,
         root: {
           expanded: true,
-          id: "root",
-        },
+          id: "root"
+        }
       });
       expect(store.getNodeById("root")).toBe(store.getRoot());
     });
@@ -1016,16 +1016,16 @@ describe("Ext.data.TreeStore", function () {
                       expanded: true,
                       children: [
                         {
-                          id: "deep",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
+                          id: "deep"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       });
 
       var idNode;
@@ -1055,7 +1055,7 @@ describe("Ext.data.TreeStore", function () {
 
             // nearly useless output on failure (but not infinite expansion):
             expect(c === child).toBe(true);
-          },
+          }
         },
         root: {
           expanded: true,
@@ -1066,12 +1066,12 @@ describe("Ext.data.TreeStore", function () {
               expanded: false,
               children: [
                 {
-                  id: "leaf",
-                },
-              ],
-            },
-          ],
-        },
+                  id: "leaf"
+                }
+              ]
+            }
+          ]
+        }
       });
 
       expect(ids.join(" ")).toBe("root child leaf");
@@ -1087,15 +1087,15 @@ describe("Ext.data.TreeStore", function () {
               expanded: false,
               children: [
                 {
-                  id: "leaf",
-                },
-              ],
-            },
-          ],
-        },
+                  id: "leaf"
+                }
+              ]
+            }
+          ]
+        }
       });
       expect(store.getNodeById("leaf")).toBe(
-        store.getRoot().firstChild.firstChild,
+        store.getRoot().firstChild.firstChild
       );
     });
 
@@ -1106,20 +1106,20 @@ describe("Ext.data.TreeStore", function () {
           expanded: true,
           children: [
             {
-              text: "A",
+              text: "A"
             },
             {
-              text: "A",
+              text: "A"
             },
             {
-              text: "A",
+              text: "A"
             },
             {
               id: "bNode",
-              text: "B",
-            },
-          ],
-        },
+              text: "B"
+            }
+          ]
+        }
       });
       expect(store.getCount()).toBe(4);
       store.filter("text", "A");
@@ -1133,8 +1133,8 @@ describe("Ext.data.TreeStore", function () {
       it("should be false by default", function () {
         store = new Ext.data.TreeStore({
           root: {
-            text: "Root",
-          },
+            text: "Root"
+          }
         });
         expect(store.isLoaded()).toBe(false);
       });
@@ -1142,8 +1142,8 @@ describe("Ext.data.TreeStore", function () {
       it("should be true after a load", function () {
         store = new Ext.data.TreeStore({
           root: {
-            text: "Root",
-          },
+            text: "Root"
+          }
         });
         store.load();
         expect(store.isLoaded()).toBe(true);
@@ -1161,8 +1161,8 @@ describe("Ext.data.TreeStore", function () {
             root: {
               expanded: true,
               id: 0,
-              name: "Root Node",
-            },
+              name: "Root Node"
+            }
           });
 
           expect(store.load.callCount).toBe(1);
@@ -1180,8 +1180,8 @@ describe("Ext.data.TreeStore", function () {
                 root: {
                   expanded: true,
                   id: 0,
-                  name: "Root Node",
-                },
+                  name: "Root Node"
+                }
               });
             });
             // autoLoad runs on a timer, can't use waitsFor here
@@ -1198,7 +1198,7 @@ describe("Ext.data.TreeStore", function () {
               store = Ext.create("Ext.data.TreeStore", {
                 model: NodeModel,
                 autoLoad: true,
-                asynchronousLoad: true,
+                asynchronousLoad: true
               });
             });
 
@@ -1220,8 +1220,8 @@ describe("Ext.data.TreeStore", function () {
             root: {
               expanded: false,
               id: 0,
-              name: "Root Node",
-            },
+              name: "Root Node"
+            }
           });
         });
 
@@ -1252,8 +1252,8 @@ describe("Ext.data.TreeStore", function () {
               root: {
                 expanded: false,
                 id: 0,
-                name: "Root Node",
-              },
+                name: "Root Node"
+              }
             });
           });
 
@@ -1272,8 +1272,8 @@ describe("Ext.data.TreeStore", function () {
             root: {
               expanded: false,
               id: 0,
-              name: "Root Node",
-            },
+              name: "Root Node"
+            }
           });
 
           store.fillNode(
@@ -1282,7 +1282,7 @@ describe("Ext.data.TreeStore", function () {
               .getProxy()
               .getReader()
               .readRecords(dummyData.children)
-              .getRecords(),
+              .getRecords()
           );
         });
 
@@ -1343,7 +1343,7 @@ describe("Ext.data.TreeStore", function () {
               {
                 id: 1,
                 name: "aaa",
-                index: 2,
+                index: 2
               },
               {
                 id: 2,
@@ -1353,22 +1353,22 @@ describe("Ext.data.TreeStore", function () {
                   {
                     id: 3,
                     name: "ccc",
-                    index: 1,
+                    index: 1
                   },
                   {
                     id: 4,
                     name: "ddd",
-                    index: 0,
-                  },
+                    index: 0
+                  }
                 ],
-                expanded: true,
+                expanded: true
               },
               {
                 id: 5,
                 name: "eee",
-                index: 1,
-              },
-            ],
+                index: 1
+              }
+            ]
           };
 
           store = new Ext.data.TreeStore({
@@ -1376,8 +1376,8 @@ describe("Ext.data.TreeStore", function () {
             root: {
               expanded: true,
               id: 0,
-              name: "Root Node",
-            },
+              name: "Root Node"
+            }
           });
 
           loadStore(store);
@@ -1413,27 +1413,27 @@ describe("Ext.data.TreeStore", function () {
           root: {
             expanded: true,
             id: 0,
-            name: "Root Node",
-          },
+            name: "Root Node"
+          }
         });
         completeWithData({
-          children: [],
+          children: []
         });
       });
 
       it("should remove existing nodes with clearOnLoad: true", function () {
         dummyData = {
-          children: [],
+          children: []
         };
         var root = store.getRootNode();
         root.appendChild({
           id: "node1",
-          text: "A",
+          text: "A"
         });
 
         root.appendChild({
           id: "node2",
-          text: "B",
+          text: "B"
         });
         loadStore(store);
         expect(store.getRootNode().childNodes.length).toBe(0);
@@ -1444,7 +1444,7 @@ describe("Ext.data.TreeStore", function () {
       it("should leave existing nodes with clearOnLoad: false", function () {
         store.clearOnLoad = false;
         dummyData = {
-          children: [],
+          children: []
         };
         var root = store.getRootNode(),
           childNodes = root.childNodes,
@@ -1453,13 +1453,13 @@ describe("Ext.data.TreeStore", function () {
 
         root.appendChild({
           id: "node1",
-          text: "A",
+          text: "A"
         });
         node1 = childNodes[0];
 
         root.appendChild({
           id: "node2",
-          text: "B",
+          text: "B"
         });
         node2 = childNodes[1];
 
@@ -1475,23 +1475,23 @@ describe("Ext.data.TreeStore", function () {
           children: [
             {
               id: "node1",
-              text: "A",
+              text: "A"
             },
             {
               id: "node3",
-              text: "C",
-            },
-          ],
+              text: "C"
+            }
+          ]
         };
         var root = store.getRootNode();
         root.appendChild({
           id: "node1",
-          text: "A",
+          text: "A"
         });
 
         root.appendChild({
           id: "node2",
-          text: "B",
+          text: "B"
         });
         loadStore(store);
         expect(store.getRootNode().childNodes.length).toBe(3);
@@ -1531,15 +1531,15 @@ describe("Ext.data.TreeStore", function () {
                   children: [
                     {
                       text: "ben",
-                      leaf: true,
+                      leaf: true
                     },
                     {
                       text: "bill",
-                      leaf: true,
-                    },
-                  ],
-                },
-              ],
+                      leaf: true
+                    }
+                  ]
+                }
+              ]
             });
 
             child = store.getNewRecords()[0];
@@ -1558,8 +1558,8 @@ describe("Ext.data.TreeStore", function () {
       beforeEach(function () {
         store = new Ext.data.TreeStore({
           root: {
-            name: "Root Node",
-          },
+            name: "Root Node"
+          }
         });
 
         root = store.getRootNode();
@@ -1576,15 +1576,15 @@ describe("Ext.data.TreeStore", function () {
         store = new Ext.data.TreeStore({
           model: NodeModel,
           root: {
-            name: "Root Node",
-          },
+            name: "Root Node"
+          }
         });
 
         root = store.getRootNode();
 
         root.appendChild({
           text: "child2",
-          expanded: false,
+          expanded: false
         });
       });
 
@@ -1605,10 +1605,10 @@ describe("Ext.data.TreeStore", function () {
           children: [
             {
               text: "A child",
-              someProp: "a",
-            },
-          ],
-        },
+              someProp: "a"
+            }
+          ]
+        }
       });
 
       var rec = store.getRoot().firstChild,
@@ -1633,10 +1633,10 @@ describe("Ext.data.TreeStore", function () {
           children: [
             {
               text: "A child",
-              someProp: "a",
-            },
-          ],
-        },
+              someProp: "a"
+            }
+          ]
+        }
       });
 
       var rec = store.getRoot().firstChild,
@@ -1644,7 +1644,7 @@ describe("Ext.data.TreeStore", function () {
 
       var other = new Ext.data.Store({
         model: NodeModel,
-        data: [rec],
+        data: [rec]
       });
 
       store.on("update", spy);
@@ -1676,12 +1676,12 @@ describe("Ext.data.TreeStore", function () {
                 {
                   id: "aa",
                   text: "AA child",
-                  someProp: "foo",
-                },
-              ],
-            },
-          ],
-        },
+                  someProp: "foo"
+                }
+              ]
+            }
+          ]
+        }
       });
 
       parent = store.getNodeById("a");
@@ -1716,8 +1716,8 @@ describe("Ext.data.TreeStore", function () {
         asynchronousLoad: false,
         root: {
           expanded: true,
-          name: "Root Node",
-        },
+          name: "Root Node"
+        }
       });
 
       loadStore(store);
@@ -1826,11 +1826,11 @@ describe("Ext.data.TreeStore", function () {
             // Persistent fields must be recorded as modified
             expect(record.modified).toEqual({
               index: -1,
-              parentId: null,
+              parentId: null
             });
             expect(record.getChanges()).toEqual({
               index: 3,
-              parentId: "root",
+              parentId: "root"
             });
 
             // Modifications must come through to the store update event
@@ -1841,7 +1841,7 @@ describe("Ext.data.TreeStore", function () {
               "isLast",
               "parentId",
               "depth",
-              "index",
+              "index"
             ]);
           });
 
@@ -1866,10 +1866,10 @@ describe("Ext.data.TreeStore", function () {
             records = store.getUpdatedRecords();
             expect(records.length).toBe(2);
             expect(Ext.Array.contains(records, store.getNodeById(3))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(4))).toBe(
-              true,
+              true
             );
           });
         });
@@ -1983,10 +1983,10 @@ describe("Ext.data.TreeStore", function () {
             // Second call is when node 1 gets its index bumped
             updateRec = updateSpy.calls[1].args[1];
             expect(updateRec.modified).toEqual({
-              index: 0,
+              index: 0
             });
             expect(updateRec.getChanges()).toEqual({
-              index: 1,
+              index: 1
             });
             expect(updateRec).toBe(store.getNodeById(1));
             expect(updateSpy.calls[1].args[2]).toBe(Ext.data.Model.EDIT);
@@ -1995,10 +1995,10 @@ describe("Ext.data.TreeStore", function () {
             // Then node 2
             updateRec = updateSpy.calls[2].args[1];
             expect(updateRec.modified).toEqual({
-              index: 1,
+              index: 1
             });
             expect(updateRec.getChanges()).toEqual({
-              index: 2,
+              index: 2
             });
             expect(updateRec).toBe(store.getNodeById(2));
             expect(updateSpy.calls[2].args[2]).toBe(Ext.data.Model.EDIT);
@@ -2007,29 +2007,29 @@ describe("Ext.data.TreeStore", function () {
             // Then node 6
             updateRec = updateSpy.calls[3].args[1];
             expect(updateRec.modified).toEqual({
-              index: 2,
+              index: 2
             });
             expect(updateRec.getChanges()).toEqual({
-              index: 0,
+              index: 0
             });
             expect(updateRec).toBe(store.getNodeById(6));
             expect(updateSpy.calls[3].args[2]).toBe(Ext.data.Model.EDIT);
             expect(updateSpy.calls[3].args[3]).toEqual([
               "index",
               "isFirst",
-              "isLast",
+              "isLast"
             ]);
 
             records = store.getUpdatedRecords();
             expect(records.length).toBe(3);
             expect(Ext.Array.contains(records, store.getNodeById(1))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(2))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(6))).toBe(
-              true,
+              true
             );
           });
         });
@@ -2045,16 +2045,16 @@ describe("Ext.data.TreeStore", function () {
             records = store.getUpdatedRecords();
             expect(records.length).toBe(4);
             expect(Ext.Array.contains(records, store.getNodeById(1))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(2))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(5))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(6))).toBe(
-              true,
+              true
             );
           });
         });
@@ -2064,20 +2064,20 @@ describe("Ext.data.TreeStore", function () {
             store.getNodeById(2).appendChild(store.getNodeById(1));
             expect(store.getNodeById(1).modified).toEqual({
               parentId: "root",
-              index: 0,
+              index: 0
             });
             expect(store.getNodeById(1).getChanges()).toEqual({
               parentId: 2,
-              index: 2,
+              index: 2
             });
 
             // This will put node 1 back to index 0 so only the parentId is changed.
             store.getNodeById(7).appendChild(store.getNodeById(1));
             expect(store.getNodeById(1).modified).toEqual({
-              parentId: "root",
+              parentId: "root"
             });
             expect(store.getNodeById(1).getChanges()).toEqual({
-              parentId: 7,
+              parentId: 7
             });
 
             // Now move back to its original position.
@@ -2130,9 +2130,9 @@ describe("Ext.data.TreeStore", function () {
               model: NodeModel,
               root: {
                 expanded: true,
-                name: "Root Node",
+                name: "Root Node"
               },
-              autoSync: true,
+              autoSync: true
             });
             otherSyncSpy = spyOn(otherStore, "sync").andCallFake(function () {
               this.needsSync = false;
@@ -2178,7 +2178,7 @@ describe("Ext.data.TreeStore", function () {
           root.appendChild(node);
           root.removeChild(node);
           expect(Ext.Array.contains(store.getRemovedRecords(), node)).toBe(
-            false,
+            false
           );
         });
       });
@@ -2232,10 +2232,10 @@ describe("Ext.data.TreeStore", function () {
             records = store.getUpdatedRecords();
             expect(records.length).toBe(2);
             expect(Ext.Array.contains(records, store.getNodeById(2))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(6))).toBe(
-              true,
+              true
             );
           });
         });
@@ -2322,16 +2322,16 @@ describe("Ext.data.TreeStore", function () {
             records = store.getUpdatedRecords();
             expect(records.length).toBe(4);
             expect(Ext.Array.contains(records, store.getNodeById(1))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(3))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(4))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(6))).toBe(
-              true,
+              true
             );
           });
 
@@ -2349,10 +2349,10 @@ describe("Ext.data.TreeStore", function () {
             records = store.getUpdatedRecords();
             expect(records.length).toBe(2);
             expect(Ext.Array.contains(records, store.getNodeById(1))).toBe(
-              true,
+              true
             );
             expect(Ext.Array.contains(records, store.getNodeById(6))).toBe(
-              true,
+              true
             );
           });
 
@@ -2378,19 +2378,19 @@ describe("Ext.data.TreeStore", function () {
               expanded: true,
               CHILDREN: [
                 { text: "book report", leaf: true },
-                { text: "alegrbra", leaf: true },
-              ],
+                { text: "alegrbra", leaf: true }
+              ]
             },
-            { text: "buy lottery tickets", leaf: true },
-          ],
+            { text: "buy lottery tickets", leaf: true }
+          ]
         },
         proxy: {
           type: "memory",
           reader: {
             type: "json",
-            rootProperty: "CHILDREN",
-          },
-        },
+            rootProperty: "CHILDREN"
+          }
+        }
       });
       var cn = store.getRootNode().childNodes;
       expect(cn.length).toBe(3);
@@ -2405,7 +2405,7 @@ describe("Ext.data.TreeStore", function () {
       store = new Ext.data.TreeStore({
         model: TaskModel,
         defaultRootId: null,
-        root: {},
+        root: {}
       });
       expect(store.getRootNode().getId()).not.toBeNull();
     });
@@ -2414,7 +2414,7 @@ describe("Ext.data.TreeStore", function () {
       expect(function () {
         store = new Ext.data.TreeStore({
           model: TaskModel,
-          root: {},
+          root: {}
         });
       }).toThrow();
     });
@@ -2423,7 +2423,7 @@ describe("Ext.data.TreeStore", function () {
       store = new Ext.data.TreeStore({
         model: TaskModel,
         defaultRootId: -1,
-        root: {},
+        root: {}
       });
       expect(store.getRootNode().getId()).toBe(-1);
     });
@@ -2438,9 +2438,9 @@ describe("Ext.data.TreeStore", function () {
             {
               text: "Test",
               leaf: true,
-              id: "testId",
-            },
-          ],
+              id: "testId"
+            }
+          ]
         },
         listeners: {
           rootchange: function (newRoot, oldRoot) {
@@ -2454,8 +2454,8 @@ describe("Ext.data.TreeStore", function () {
           },
           remove: function () {
             removed++;
-          },
-        },
+          }
+        }
       });
 
       var rootNode = store.getRootNode(),
@@ -2473,9 +2473,9 @@ describe("Ext.data.TreeStore", function () {
             },
             remove: function () {
               removed++;
-            },
+            }
           },
-          root: {},
+          root: {}
         }),
         storeRefreshed = 0,
         store2Refreshed = 0,
@@ -2532,22 +2532,22 @@ describe("Ext.data.TreeStore", function () {
           children: [
             {
               text: "Child 1",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child 2",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child 3",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child 4",
-              leaf: true,
-            },
-          ],
-        },
+              leaf: true
+            }
+          ]
+        }
       });
       root = store.getRootNode();
     });
@@ -2558,9 +2558,9 @@ describe("Ext.data.TreeStore", function () {
       firstChild = root.firstChild;
       newNode = root.insertBefore(
         {
-          text: "New First",
+          text: "New First"
         },
-        firstChild,
+        firstChild
       );
       spyArgs = spy.calls[0].args;
       expect(spy.calls.length).toBe(1);
@@ -2573,7 +2573,7 @@ describe("Ext.data.TreeStore", function () {
       // Node events are NOT bubbled up to the TreeStore level, only as far as the root
       spy = spyOnEvent(root, "append").andCallThrough();
       newNode = root.appendChild({
-        text: "New Last",
+        text: "New Last"
       });
       spyArgs = spy.calls[0].args;
       expect(spy.calls.length).toBe(1);
@@ -2645,8 +2645,8 @@ describe("Ext.data.TreeStore", function () {
           root: {
             text: "Root 1",
             expanded: true,
-            children: [],
-          },
+            children: []
+          }
         });
         root = store.getRoot();
 
@@ -2658,11 +2658,11 @@ describe("Ext.data.TreeStore", function () {
             children: [
               {
                 id: "A.A",
-                leaf: true,
+                leaf: true
               },
               {
                 id: "A.B",
-                leaf: true,
+                leaf: true
               },
               {
                 id: "A.C",
@@ -2671,19 +2671,19 @@ describe("Ext.data.TreeStore", function () {
                 children: [
                   {
                     id: "A.C.A",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     id: "A.C.B",
-                    leaf: true,
-                  },
-                ],
+                    leaf: true
+                  }
+                ]
               },
               {
                 id: "A.D",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           };
 
         // Node events are NOT bubbled up to the TreeStore level, only as far as the root
@@ -2693,7 +2693,7 @@ describe("Ext.data.TreeStore", function () {
         root.appendChild(nodeData);
         result = result.join(", ");
         expect(result).toBe(
-          "/root/A | /root, /root/A/A.A | /root/A, /root/A/A.B | /root/A, /root/A/A.C | /root/A, /root/A/A.C/A.C.A | /root/A/A.C, /root/A/A.C/A.C.B | /root/A/A.C, /root/A/A.D | /root/A",
+          "/root/A | /root, /root/A/A.A | /root/A, /root/A/A.B | /root/A, /root/A/A.C | /root/A, /root/A/A.C/A.C.A | /root/A/A.C, /root/A/A.C/A.C.B | /root/A/A.C, /root/A/A.D | /root/A"
         );
         store.destroy();
       });
@@ -2711,22 +2711,22 @@ describe("Ext.data.TreeStore", function () {
           children: [
             {
               text: "Child 1",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child 2",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child 3",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child 4",
-              leaf: true,
-            },
-          ],
-        },
+              leaf: true
+            }
+          ]
+        }
       });
       root = store.getRootNode();
     });
@@ -2737,9 +2737,9 @@ describe("Ext.data.TreeStore", function () {
       firstChild = root.firstChild;
       newNode = root.insertBefore(
         {
-          text: "New First",
+          text: "New First"
         },
-        firstChild,
+        firstChild
       );
       spyArgs = spy.calls[0].args;
       expect(spy.calls.length).toBe(1);
@@ -2752,7 +2752,7 @@ describe("Ext.data.TreeStore", function () {
     it("should fire append event", function () {
       spy = spyOnEvent(store, "nodeappend").andCallThrough();
       newNode = root.appendChild({
-        text: "New Last",
+        text: "New Last"
       });
       spyArgs = spy.calls[0].args;
       expect(spy.calls.length).toBe(1);
@@ -2778,8 +2778,8 @@ describe("Ext.data.TreeStore", function () {
           root: {
             text: "Root 1",
             expanded: true,
-            children: [],
-          },
+            children: []
+          }
         });
         root = store.getRoot();
 
@@ -2791,11 +2791,11 @@ describe("Ext.data.TreeStore", function () {
             children: [
               {
                 id: "A.A",
-                leaf: true,
+                leaf: true
               },
               {
                 id: "A.B",
-                leaf: true,
+                leaf: true
               },
               {
                 id: "A.C",
@@ -2804,19 +2804,19 @@ describe("Ext.data.TreeStore", function () {
                 children: [
                   {
                     id: "A.C.A",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     id: "A.C.B",
-                    leaf: true,
-                  },
-                ],
+                    leaf: true
+                  }
+                ]
               },
               {
                 id: "A.D",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           };
 
         // Node events fired through the TreeStore are prepended with "node"
@@ -2827,7 +2827,7 @@ describe("Ext.data.TreeStore", function () {
         root.appendChild(nodeData);
         result = result.join(", ");
         expect(result).toBe(
-          "/root/A | /root, /root/A/A.A | /root/A, /root/A/A.B | /root/A, /root/A/A.C | /root/A, /root/A/A.C/A.C.A | /root/A/A.C, /root/A/A.C/A.C.B | /root/A/A.C, /root/A/A.D | /root/A",
+          "/root/A | /root, /root/A/A.A | /root/A, /root/A/A.B | /root/A, /root/A/A.C | /root/A, /root/A/A.C/A.C.A | /root/A/A.C, /root/A/A.C/A.C.B | /root/A/A.C, /root/A/A.D | /root/A"
         );
         store.destroy();
       });
@@ -2843,8 +2843,8 @@ describe("Ext.data.TreeStore", function () {
           id: 0,
           name: "Root Node",
           autoLoad: true,
-          children: dummyData.children,
-        },
+          children: dummyData.children
+        }
       });
     });
     it("should fire update events from descendants of collapsed nodes", function () {
@@ -2875,10 +2875,10 @@ describe("Ext.data.TreeStore", function () {
           name: "Root Node",
           children: [
             {
-              id: 1,
-            },
-          ],
-        },
+              id: 1
+            }
+          ]
+        }
       });
 
       store.on("beforeload", function (store) {
@@ -2902,12 +2902,12 @@ describe("Ext.data.TreeStore", function () {
         root: {
           expanded: true,
           id: 0,
-          name: "Root Node",
-        },
+          name: "Root Node"
+        }
       });
       store.fillNode(
         store.getRootNode(),
-        store.getProxy().getReader().readRecords(dummyData.children).records,
+        store.getProxy().getReader().readRecords(dummyData.children).records
       );
     });
     it("should convert leaf nodes to branch nodes.", function () {
@@ -2915,7 +2915,7 @@ describe("Ext.data.TreeStore", function () {
 
       expect(leaf.isLeaf()).toBe(true);
       leaf.appendChild({
-        name: "eee-child",
+        name: "eee-child"
       });
       expect(leaf.isLeaf()).toBe(false);
     });
@@ -2940,7 +2940,7 @@ describe("Ext.data.TreeStore", function () {
       store.filter({
         filterFn: function (node) {
           return Ext.Array.indexOf(ids, node.id) > -1;
-        },
+        }
       });
     }
 
@@ -2949,21 +2949,21 @@ describe("Ext.data.TreeStore", function () {
         makeStore(
           [
             {
-              id: 1,
+              id: 1
             },
             {
-              id: 2,
-            },
+              id: 2
+            }
           ],
           {
             filters: [
               {
                 fn: function (rec) {
                   return rec.get("id") > 2;
-                },
-              },
-            ],
-          },
+                }
+              }
+            ]
+          }
         );
 
         // rootVisible is false by default in TreeStore.
@@ -2971,7 +2971,7 @@ describe("Ext.data.TreeStore", function () {
         expect(store.getCount()).toBe(0);
 
         store.getRoot().appendChild({
-          id: 3,
+          id: 3
         });
 
         // We've added the first node which passes the filter.
@@ -2983,7 +2983,7 @@ describe("Ext.data.TreeStore", function () {
           [
             {
               text: "parent 1",
-              filterMeIn: true,
+              filterMeIn: true
             },
             {
               text: "parent 2",
@@ -2996,37 +2996,37 @@ describe("Ext.data.TreeStore", function () {
                   children: [
                     {
                       text: "p2/1/1",
-                      filterMeIn: true,
-                    },
-                  ],
+                      filterMeIn: true
+                    }
+                  ]
                 },
                 {
                   text: "p2/child 2",
                   children: [
                     {
-                      text: "p2/2/1",
+                      text: "p2/2/1"
                     },
                     {
-                      text: "p2/2/3",
-                    },
-                  ],
-                },
-              ],
+                      text: "p2/2/3"
+                    }
+                  ]
+                }
+              ]
             },
             {
               text: "parent 3",
-              filterMeIn: true,
-            },
+              filterMeIn: true
+            }
           ],
           {
             filters: [
               {
                 fn: function (rec) {
                   return rec.get("filterMeIn");
-                },
-              },
-            ],
-          },
+                }
+              }
+            ]
+          }
         );
         var p2 = store.getAt(1);
         expect(p2.get("text")).toBe("parent 2");
@@ -3037,7 +3037,7 @@ describe("Ext.data.TreeStore", function () {
 
         var newNode = p2.appendChild({
           text: "p2/child 3",
-          filterMeIn: true,
+          filterMeIn: true
         });
 
         // Node has been added to the flat store
@@ -3053,21 +3053,21 @@ describe("Ext.data.TreeStore", function () {
         makeStore(
           [
             {
-              id: 1,
+              id: 1
             },
             {
-              id: 2,
-            },
+              id: 2
+            }
           ],
           {
             filters: [
               {
                 fn: function (rec) {
                   return rec.get("id") === 1;
-                },
-              },
-            ],
-          },
+                }
+              }
+            ]
+          }
         );
         expect(vis(1)).toBe(true);
         expect(vis(2)).toBe(false);
@@ -3077,12 +3077,12 @@ describe("Ext.data.TreeStore", function () {
         makeStore([
           {
             id: 1,
-            children: [2, 3],
+            children: [2, 3]
           },
           {
             id: 4,
-            children: [5, 6],
-          },
+            children: [5, 6]
+          }
         ]);
         idFilter([2, 3, 4, 5, 6]);
         expect(vis(1)).toBe(false);
@@ -3097,12 +3097,12 @@ describe("Ext.data.TreeStore", function () {
         makeStore([
           {
             id: 1,
-            children: [2, 3],
+            children: [2, 3]
           },
           {
             id: 4,
-            children: [5, 6],
-          },
+            children: [5, 6]
+          }
         ]);
         idFilter([1, 4]);
         expect(vis(1)).toBe(true);
@@ -3128,16 +3128,16 @@ describe("Ext.data.TreeStore", function () {
                         id: 4,
                         children: [
                           {
-                            id: 5,
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
+                            id: 5
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]);
         idFilter([1, 2]);
         expect(vis(1)).toBe(true);
@@ -3159,49 +3159,49 @@ describe("Ext.data.TreeStore", function () {
                     id: "c",
                     children: [
                       {
-                        id: "a",
+                        id: "a"
                       },
                       {
-                        id: "b",
-                      },
-                    ],
+                        id: "b"
+                      }
+                    ]
                   },
                   {
                     id: "f",
                     children: [
                       {
-                        id: "d",
+                        id: "d"
                       },
                       {
-                        id: "e",
-                      },
-                    ],
+                        id: "e"
+                      }
+                    ]
                   },
                   {
-                    id: "g",
-                  },
-                ],
+                    id: "g"
+                  }
+                ]
               },
               {
                 id: "m",
                 children: [
                   {
-                    id: "i",
+                    id: "i"
                   },
                   {
                     id: "l",
                     children: [
                       {
-                        id: "j",
+                        id: "j"
                       },
                       {
-                        id: "k",
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
+                        id: "k"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             id: "v",
@@ -3213,27 +3213,27 @@ describe("Ext.data.TreeStore", function () {
                     id: "p",
                     children: [
                       {
-                        id: "o",
-                      },
-                    ],
+                        id: "o"
+                      }
+                    ]
                   },
                   {
-                    id: "q",
-                  },
-                ],
+                    id: "q"
+                  }
+                ]
               },
               {
                 id: "u",
                 children: [
                   {
-                    id: "s",
+                    id: "s"
                   },
                   {
-                    id: "t",
-                  },
-                ],
-              },
-            ],
+                    id: "t"
+                  }
+                ]
+              }
+            ]
           },
           {
             id: "z",
@@ -3242,15 +3242,15 @@ describe("Ext.data.TreeStore", function () {
                 id: "x",
                 children: [
                   {
-                    id: "w",
-                  },
-                ],
+                    id: "w"
+                  }
+                ]
               },
               {
-                id: "y",
-              },
-            ],
-          },
+                id: "y"
+              }
+            ]
+          }
         ]);
 
         var order = [];
@@ -3260,7 +3260,7 @@ describe("Ext.data.TreeStore", function () {
               order.push(node.id);
             }
             return node.id !== "h";
-          },
+          }
         });
         expect(order.join("")).toBe("nhcabfdegmiljkvrpoqustzxwy");
       });
@@ -3274,22 +3274,22 @@ describe("Ext.data.TreeStore", function () {
             children: [
               {
                 id: 2,
-                children: [3, 4],
+                children: [3, 4]
               },
               {
-                id: 5,
+                id: 5
               },
               {
                 id: 6,
                 children: [
                   {
                     id: 7,
-                    children: [8, 9],
-                  },
-                ],
-              },
-            ],
-          },
+                    children: [8, 9]
+                  }
+                ]
+              }
+            ]
+          }
         ]);
         idFilter([1, 6]);
         expect(vis(1)).toBe(true);
@@ -3320,22 +3320,22 @@ describe("Ext.data.TreeStore", function () {
             children: [
               {
                 id: 2,
-                children: [3, 4],
+                children: [3, 4]
               },
               {
-                id: 5,
+                id: 5
               },
               {
                 id: 6,
                 children: [
                   {
                     id: 7,
-                    children: [8, 9],
-                  },
-                ],
-              },
-            ],
-          },
+                    children: [8, 9]
+                  }
+                ]
+              }
+            ]
+          }
         ]);
         idFilter([1, 6]);
         var spy = jasmine.createSpy();
@@ -3352,19 +3352,19 @@ describe("Ext.data.TreeStore", function () {
           makeStore(
             [
               {
-                id: 1,
+                id: 1
               },
               {
-                id: 2,
+                id: 2
               },
               {
-                id: 3,
-              },
+                id: 3
+              }
             ],
             {
               rootVisible: true,
-              filterer: "bottomup",
-            },
+              filterer: "bottomup"
+            }
           );
           idFilter([2]);
           expect(vis(store.getRoot())).toBe(true);
@@ -3374,16 +3374,16 @@ describe("Ext.data.TreeStore", function () {
           makeStore(
             [
               {
-                id: 1,
+                id: 1
               },
               {
-                id: 2,
-              },
+                id: 2
+              }
             ],
             {
               rootVisible: true,
-              filterer: "bottomup",
-            },
+              filterer: "bottomup"
+            }
           );
           idFilter([3]);
           expect(vis(store.getRoot())).toBe(false);
@@ -3397,12 +3397,12 @@ describe("Ext.data.TreeStore", function () {
           makeStore([
             {
               id: 1,
-              leaf: false,
-            },
+              leaf: false
+            }
           ]);
           idFilter([2]);
           byId(1).appendChild({
-            id: 2,
+            id: 2
           });
           expect(vis(2)).toBe(false);
         });
@@ -3411,12 +3411,12 @@ describe("Ext.data.TreeStore", function () {
           makeStore([
             {
               id: 1,
-              leaf: false,
-            },
+              leaf: false
+            }
           ]);
           idFilter([1]);
           byId(1).appendChild({
-            id: 2,
+            id: 2
           });
           expect(vis(2)).toBe(false);
         });
@@ -3425,12 +3425,12 @@ describe("Ext.data.TreeStore", function () {
           makeStore([
             {
               id: 1,
-              leaf: false,
-            },
+              leaf: false
+            }
           ]);
           idFilter([1, 2]);
           byId(1).appendChild({
-            id: 2,
+            id: 2
           });
           expect(vis(2)).toBe(true);
         });
@@ -3439,8 +3439,8 @@ describe("Ext.data.TreeStore", function () {
           makeStore([
             {
               id: 1,
-              leaf: false,
-            },
+              leaf: false
+            }
           ]);
           idFilter([1, 2, 3, 4]);
 
@@ -3448,24 +3448,24 @@ describe("Ext.data.TreeStore", function () {
             id: 2,
             leaf: false,
             expanded: true,
-            children: [],
+            children: []
           });
           main
             .appendChild({
               id: 3,
               leaf: false,
               expanded: true,
-              children: [],
+              children: []
             })
             .appendChild({
               id: 4,
               leaf: false,
               expanded: true,
-              children: [],
+              children: []
             })
             .appendChild({
               id: 5,
-              leaf: true,
+              leaf: true
             });
 
           byId(1).appendChild(main);
@@ -3481,12 +3481,12 @@ describe("Ext.data.TreeStore", function () {
           makeStore([
             {
               id: 1,
-              text: "Foo",
-            },
+              text: "Foo"
+            }
           ]);
           store.getFilters().add({
             property: "text",
-            value: "Foo",
+            value: "Foo"
           });
           var storeCount = store.getCount();
 
@@ -3505,10 +3505,10 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: 2,
-                  text: "Leaf",
-                },
-              ],
-            },
+                  text: "Leaf"
+                }
+              ]
+            }
           ]);
           store.getFilters().add({
             filterFn: function (node) {
@@ -3517,7 +3517,7 @@ describe("Ext.data.TreeStore", function () {
               } else {
                 return node.data.text === "Foo";
               }
-            },
+            }
           });
           var storeCount = store.getCount();
 
@@ -3533,12 +3533,12 @@ describe("Ext.data.TreeStore", function () {
           makeStore([
             {
               id: 1,
-              text: "Foo",
-            },
+              text: "Foo"
+            }
           ]);
           store.getFilters().add({
             property: "text",
-            value: "Bar",
+            value: "Bar"
           });
           var storeCount = store.getCount();
 
@@ -3557,10 +3557,10 @@ describe("Ext.data.TreeStore", function () {
               children: [
                 {
                   id: 2,
-                  text: "Leaf",
-                },
-              ],
-            },
+                  text: "Leaf"
+                }
+              ]
+            }
           ]);
           store.getFilters().add({
             filterFn: function (node) {
@@ -3569,7 +3569,7 @@ describe("Ext.data.TreeStore", function () {
               } else {
                 return node.data.text === "Foo";
               }
-            },
+            }
           });
           var storeCount = store.getCount();
 
@@ -3605,22 +3605,22 @@ describe("Ext.data.TreeStore", function () {
                             expanded: true,
                             children: [
                               {
-                                id: 5,
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
+                                id: 5
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
             ],
             {
               // We plan to hide/show it, so it
               // must be visible.
-              rootVisible: true,
-            },
+              rootVisible: true
+            }
           );
           expect(has(1)).toBe(true);
           expect(has(2)).toBe(true);
@@ -3689,20 +3689,20 @@ describe("Ext.data.TreeStore", function () {
                             expanded: true,
                             children: [
                               {
-                                id: 5,
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
+                                id: 5
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
             ],
             {
-              rootVisible: false,
-            },
+              rootVisible: false
+            }
           );
           expect(has(1)).toBe(true);
           expect(has(2)).toBe(true);
@@ -3781,9 +3781,9 @@ describe("Ext.data.TreeStore", function () {
           {
             name: "territoryName",
             mapping: "territoryName",
-            convert: undefined,
-          },
-        ],
+            convert: undefined
+          }
+        ]
       });
       Ext.define("spec.Country", {
         extend: "Ext.data.TreeModel",
@@ -3792,9 +3792,9 @@ describe("Ext.data.TreeStore", function () {
           {
             name: "countryName",
             mapping: "countryName",
-            convert: undefined,
-          },
-        ],
+            convert: undefined
+          }
+        ]
       });
       Ext.define("spec.City", {
         extend: "Ext.data.TreeModel",
@@ -3803,9 +3803,9 @@ describe("Ext.data.TreeStore", function () {
           {
             name: "cityName",
             mapping: "cityName",
-            convert: undefined,
-          },
-        ],
+            convert: undefined
+          }
+        ]
       });
 
       // Must renew the data each time. Because TreeStore mutates input data object by deleting
@@ -3828,14 +3828,14 @@ describe("Ext.data.TreeStore", function () {
                   {
                     mtype: "spec.City",
                     cityName: "Redwood City",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     mtype: "City",
                     cityName: "Frederick, MD",
-                    leaf: true,
-                  },
-                ],
+                    leaf: true
+                  }
+                ]
               },
               {
                 mtype: "Country",
@@ -3844,16 +3844,16 @@ describe("Ext.data.TreeStore", function () {
                   {
                     mtype: "spec.City",
                     cityName: "Vancouver",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     mtype: "City",
                     cityName: "Toronto",
-                    leaf: true,
-                  },
-                ],
-              },
-            ],
+                    leaf: true
+                  }
+                ]
+              }
+            ]
           },
           {
             mtype: "Territory",
@@ -3867,14 +3867,14 @@ describe("Ext.data.TreeStore", function () {
                   {
                     mtype: "spec.City",
                     cityName: "Nottingham",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     mtype: "City",
                     cityName: "London",
-                    leaf: true,
-                  },
-                ],
+                    leaf: true
+                  }
+                ]
               },
               {
                 mtype: "Country",
@@ -3883,18 +3883,18 @@ describe("Ext.data.TreeStore", function () {
                   {
                     mtype: "spec.City",
                     cityName: "Amsterdam",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     mtype: "City",
                     cityName: "Haaksbergen",
-                    leaf: true,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    leaf: true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       };
     });
     afterEach(function () {
@@ -3908,7 +3908,7 @@ describe("Ext.data.TreeStore", function () {
       // Need a special root type which knows about the first level
       Ext.define("spec.World", {
         extend: "Ext.data.TreeModel",
-        childType: "Territory",
+        childType: "Territory"
       });
       // Set the childType on the prototypes.
       // So Territory chould always produce Country childNodes and Country should always produce City childNodes.
@@ -3919,8 +3919,8 @@ describe("Ext.data.TreeStore", function () {
         root: treeData,
         model: "spec.World",
         proxy: {
-          type: "memory",
-        },
+          type: "memory"
+        }
       });
       var root = store.getRootNode(),
         na = root.childNodes[0],
@@ -3935,7 +3935,7 @@ describe("Ext.data.TreeStore", function () {
         toronto = canada.childNodes[1],
         sacramento = usa.appendChild({
           cityName: "Sacramento",
-          leaf: true,
+          leaf: true
         });
 
       // Two top level nodes are North America and Europe, ME, Africa"
@@ -3964,14 +3964,14 @@ describe("Ext.data.TreeStore", function () {
       // typeProperty in the TreeStore
       spain = emea.appendChild({
         mtype: "Country",
-        countryName: "Spain",
+        countryName: "Spain"
       });
       expect(spain instanceof spec.Country).toBe(true);
       expect(spain.get("countryName")).toBe("Spain");
 
       madrid = spain.appendChild({
         mtype: "City",
-        cityName: "Madrid",
+        cityName: "Madrid"
       });
       expect(madrid instanceof spec.City).toBe(true);
       expect(madrid.get("cityName")).toBe("Madrid");
@@ -3984,9 +3984,9 @@ describe("Ext.data.TreeStore", function () {
         proxy: {
           type: "memory",
           reader: {
-            typeProperty: "mtype",
-          },
-        },
+            typeProperty: "mtype"
+          }
+        }
       });
       var root = store.getRootNode(),
         na = root.childNodes[0],
@@ -4024,14 +4024,14 @@ describe("Ext.data.TreeStore", function () {
       // typeProperty in the TreeStore
       spain = emea.appendChild({
         mtype: "Country",
-        countryName: "Spain",
+        countryName: "Spain"
       });
       expect(spain instanceof spec.Country).toBe(true);
       expect(spain.get("countryName")).toBe("Spain");
 
       madrid = spain.appendChild({
         mtype: "City",
-        cityName: "Madrid",
+        cityName: "Madrid"
       });
       expect(madrid instanceof spec.City).toBe(true);
       expect(madrid.get("cityName")).toBe("Madrid");
@@ -4054,10 +4054,10 @@ describe("Ext.data.TreeStore", function () {
           reader: {
             typeProperty: {
               name: "mtype",
-              namespace: "spec",
-            },
-          },
-        },
+              namespace: "spec"
+            }
+          }
+        }
       });
       var root = store.getRootNode(),
         na = root.childNodes[0],
@@ -4094,14 +4094,14 @@ describe("Ext.data.TreeStore", function () {
       // typeProperty in the TreeStore
       spain = emea.appendChild({
         mtype: "Country",
-        countryName: "Spain",
+        countryName: "Spain"
       });
       expect(spain instanceof spec.Country).toBe(true);
       expect(spain.get("countryName")).toBe("Spain");
 
       madrid = spain.appendChild({
         mtype: "City",
-        cityName: "Madrid",
+        cityName: "Madrid"
       });
       expect(madrid instanceof spec.City).toBe(true);
       expect(madrid.get("cityName")).toBe("Madrid");
@@ -4118,11 +4118,11 @@ describe("Ext.data.TreeStore", function () {
               map: {
                 Territory: "Territory",
                 Country: "Country",
-                City: "City",
-              },
-            },
-          },
-        },
+                City: "City"
+              }
+            }
+          }
+        }
       });
       var root = store.getRootNode(),
         na = root.childNodes[0],
@@ -4159,14 +4159,14 @@ describe("Ext.data.TreeStore", function () {
       // typeProperty in the TreeStore
       spain = emea.appendChild({
         mtype: "Country",
-        countryName: "Spain",
+        countryName: "Spain"
       });
       expect(spain instanceof spec.Country).toBe(true);
       expect(spain.get("countryName")).toBe("Spain");
 
       madrid = spain.appendChild({
         mtype: "City",
-        cityName: "Madrid",
+        cityName: "Madrid"
       });
       expect(madrid instanceof spec.City).toBe(true);
       expect(madrid.get("cityName")).toBe("Madrid");
@@ -4185,9 +4185,9 @@ describe("Ext.data.TreeStore", function () {
               return Ext.String.startsWith(rawData.mtype, "spec.")
                 ? rawData.mtype
                 : "spec." + rawData.mtype;
-            },
-          },
-        },
+            }
+          }
+        }
       });
       var root = store.getRootNode(),
         na = root.childNodes[0],
@@ -4227,14 +4227,14 @@ describe("Ext.data.TreeStore", function () {
       // typeProperty in the TreeStore
       spain = emea.appendChild({
         mtype: "Country",
-        countryName: "Spain",
+        countryName: "Spain"
       });
       expect(spain instanceof spec.Country).toBe(true);
       expect(spain.get("countryName")).toBe("Spain");
 
       madrid = spain.appendChild({
         mtype: "City",
-        cityName: "Madrid",
+        cityName: "Madrid"
       });
       expect(madrid instanceof spec.City).toBe(true);
       expect(madrid.get("cityName")).toBe("Madrid");
@@ -4253,8 +4253,8 @@ describe("Ext.data.TreeStore", function () {
         proxy: {
           model: "spec.Territory",
           type: "ajax",
-          url: "territories",
-        },
+          url: "territories"
+        }
       });
       Ext.define("spec.Territory", {
         extend: "Ext.data.TreeModel",
@@ -4263,14 +4263,14 @@ describe("Ext.data.TreeStore", function () {
           {
             name: "territoryName",
             mapping: "territoryName",
-            convert: undefined,
-          },
+            convert: undefined
+          }
         ],
         proxy: {
           model: "spec.Country",
           type: "ajax",
-          url: "countries",
-        },
+          url: "countries"
+        }
       });
       Ext.define("spec.Country", {
         extend: "Ext.data.TreeModel",
@@ -4279,14 +4279,14 @@ describe("Ext.data.TreeStore", function () {
           {
             name: "countryName",
             mapping: "countryName",
-            convert: undefined,
-          },
+            convert: undefined
+          }
         ],
         proxy: {
           model: "spec.City",
           type: "ajax",
-          url: "cities",
-        },
+          url: "cities"
+        }
       });
       Ext.define("spec.City", {
         extend: "Ext.data.TreeModel",
@@ -4295,10 +4295,10 @@ describe("Ext.data.TreeStore", function () {
           {
             name: "cityName",
             mapping: "cityName",
-            convert: undefined,
-          },
+            convert: undefined
+          }
         ],
-        proxy: null,
+        proxy: null
       });
     });
     afterEach(function () {
@@ -4313,9 +4313,9 @@ describe("Ext.data.TreeStore", function () {
       // Use generic TreeModel as root.
       store = new Ext.data.TreeStore({
         root: {
-          expanded: true,
+          expanded: true
         },
-        model: "spec.Root",
+        model: "spec.Root"
       });
       var root = store.getRootNode(),
         northAmerica,
@@ -4325,8 +4325,8 @@ describe("Ext.data.TreeStore", function () {
       expect(
         Ext.String.startsWith(
           Ext.Ajax.requests[Ext.Ajax.latestId].url,
-          "territories",
-        ),
+          "territories"
+        )
       ).toBe(true);
 
       // Respond to root node's expansion request
@@ -4334,16 +4334,16 @@ describe("Ext.data.TreeStore", function () {
         status: 200,
         responseText: Ext.encode([
           {
-            territoryName: "North America",
+            territoryName: "North America"
           },
           {
-            territoryName: "Europe, ME, Africa",
-          },
-        ]),
+            territoryName: "Europe, ME, Africa"
+          }
+        ])
       });
 
       expect(
-        (northAmerica = root.childNodes[0]) instanceof spec.Territory,
+        (northAmerica = root.childNodes[0]) instanceof spec.Territory
       ).toBe(true);
       expect(root.childNodes[1] instanceof spec.Territory).toBe(true);
 
@@ -4354,23 +4354,23 @@ describe("Ext.data.TreeStore", function () {
       expect(
         Ext.String.startsWith(
           Ext.Ajax.requests[Ext.Ajax.latestId].url,
-          "countries",
-        ),
+          "countries"
+        )
       ).toBe(true);
 
       Ext.Ajax.mockComplete({
         status: 200,
         responseText: Ext.encode([
           {
-            countryName: "U.S.A.",
+            countryName: "U.S.A."
           },
           {
-            countryName: "Canada",
-          },
-        ]),
+            countryName: "Canada"
+          }
+        ])
       });
       expect((usa = northAmerica.childNodes[0]) instanceof spec.Country).toBe(
-        true,
+        true
       );
       expect(northAmerica.childNodes[1] instanceof spec.Country).toBe(true);
 
@@ -4381,8 +4381,8 @@ describe("Ext.data.TreeStore", function () {
       expect(
         Ext.String.startsWith(
           Ext.Ajax.requests[Ext.Ajax.latestId].url,
-          "cities",
-        ),
+          "cities"
+        )
       ).toBe(true);
 
       Ext.Ajax.mockComplete({
@@ -4390,13 +4390,13 @@ describe("Ext.data.TreeStore", function () {
         responseText: Ext.encode([
           {
             cityName: "Redwood City",
-            leaf: true,
+            leaf: true
           },
           {
             cityName: "Frederick, MD",
-            leaf: true,
-          },
-        ]),
+            leaf: true
+          }
+        ])
       });
       expect(usa.childNodes[0] instanceof spec.City).toBe(true);
       expect(usa.childNodes[1] instanceof spec.City).toBe(true);
@@ -4415,16 +4415,16 @@ describe("Ext.data.TreeStore", function () {
           name: "Root Node",
           children: [
             {
-              name: "Foo",
+              name: "Foo"
             },
             {
-              name: "Bar",
+              name: "Bar"
             },
             {
-              name: "Bletch",
-            },
-          ],
-        },
+              name: "Bletch"
+            }
+          ]
+        }
       });
       rec0 = store.getAt(0);
       rec1 = store.getAt(1);
@@ -4440,7 +4440,7 @@ describe("Ext.data.TreeStore", function () {
       // Only first node should now be visible
       store.filter({
         property: "name",
-        value: "Foo",
+        value: "Foo"
       });
 
       // Now there's only 1, and it should report that it is the last visible
@@ -4463,16 +4463,16 @@ describe("Ext.data.TreeStore", function () {
             {
               name: "Foo",
               expanded: true,
-              children: [],
+              children: []
             },
             {
-              name: "Bar",
+              name: "Bar"
             },
             {
-              name: "Bletch",
-            },
-          ],
-        },
+              name: "Bletch"
+            }
+          ]
+        }
       });
 
       n1 = store.getAt(0);
@@ -4487,11 +4487,11 @@ describe("Ext.data.TreeStore", function () {
       // Append to expanded node "Foo"
       n2 = n1.appendChild({
         name: "Zarg",
-        expanded: true,
+        expanded: true
       });
       n3 = n2.appendChild({
         name: "Blivit",
-        leaf: true,
+        leaf: true
       });
 
       // The added nodes should be in the store; they are added to expanded nodes.
@@ -4521,7 +4521,7 @@ describe("Ext.data.TreeStore", function () {
         root: {
           expanded: true,
           id: 0,
-          name: "Root Node",
+          name: "Root Node"
         },
         // Read these through a Proxy because we are expecting them NOT to be phantom
         proxy: {
@@ -4530,16 +4530,16 @@ describe("Ext.data.TreeStore", function () {
             {
               name: "Foo",
               expanded: true,
-              children: [],
+              children: []
             },
             {
-              name: "Bar",
+              name: "Bar"
             },
             {
-              name: "Bletch",
-            },
-          ],
-        },
+              name: "Bletch"
+            }
+          ]
+        }
       });
 
       n1 = store.getAt(0);
@@ -4554,11 +4554,11 @@ describe("Ext.data.TreeStore", function () {
       // Append to expanded node "Foo"
       n2 = n1.appendChild({
         name: "Zarg",
-        expanded: true,
+        expanded: true
       });
       n3 = n2.appendChild({
         name: "Blivit",
-        leaf: true,
+        leaf: true
       });
 
       // The added nodes should be in the store; they are added to expanded nodes.
@@ -4589,7 +4589,7 @@ describe("Ext.data.TreeStore", function () {
 
       // Should be in destruction queue
       expect(Ext.Array.contains(store.getRemovedRecords(), bletchNode)).toBe(
-        true,
+        true
       );
 
       // Change ourt mind, add it back
@@ -4597,7 +4597,7 @@ describe("Ext.data.TreeStore", function () {
 
       // Should NOT be in destruction queue
       expect(Ext.Array.contains(store.getRemovedRecords(), bletchNode)).toBe(
-        false,
+        false
       );
     });
   });
@@ -4609,7 +4609,7 @@ describe("Ext.data.TreeStore", function () {
       store = new Ext.data.TreeStore({
         model: NodeModel,
         root: {},
-        parentIdProperty: "foo",
+        parentIdProperty: "foo"
       });
       root = store.getRoot();
     });
@@ -4621,7 +4621,7 @@ describe("Ext.data.TreeStore", function () {
     function makeNode(id, parent) {
       var o = {
         id: id,
-        expanded: true,
+        expanded: true
       };
       if (arguments.length > 1) {
         o.foo = parent;
@@ -4672,7 +4672,7 @@ describe("Ext.data.TreeStore", function () {
         makeNode("b12", "b1"),
         makeNode("b11", "b1"),
         makeNode("a3", "a"),
-        makeNode("a211", "a21"),
+        makeNode("a211", "a21")
       ]);
 
       expectOrder(root, ["a", "c", "b"]);
@@ -4704,7 +4704,7 @@ describe("Ext.data.TreeStore", function () {
           makeNode("a2", "a"),
           makeNode("c1", "c"),
           makeNode("b1", "b"),
-          makeNode("a1", "a"),
+          makeNode("a1", "a")
         ]);
 
         expectOrder(root, ["a", "b", "c"]);
@@ -4722,7 +4722,7 @@ describe("Ext.data.TreeStore", function () {
           { id: "c", index: 0 },
           { id: "a1", foo: "a", index: 2 },
           { id: "a2", foo: "a", index: 1 },
-          { id: "a3", foo: "a", index: 0 },
+          { id: "a3", foo: "a", index: 0 }
         ]);
 
         expectOrder(root, ["c", "b", "a"]);
@@ -4736,7 +4736,7 @@ describe("Ext.data.TreeStore", function () {
         store.getFilters().add({
           filterFn: function (node) {
             return Ext.Array.indexOf(allowed, node.id) > -1;
-          },
+          }
         });
 
         root.expand();
@@ -4755,7 +4755,7 @@ describe("Ext.data.TreeStore", function () {
           makeNode("c12", "c1"),
           makeNode("c13", "c1"),
           makeNode("c2", "c"),
-          makeNode("c3", "c"),
+          makeNode("c3", "c")
         ]);
 
         expect(store.isVisible(byId("a"))).toBe(true);
@@ -4790,16 +4790,16 @@ describe("Ext.data.TreeStore", function () {
               id: 1,
               name: "A",
               value: 10,
-              parentId: null,
+              parentId: null
             },
             {
               id: 2,
               name: "B",
               value: 12,
               parentId: 1,
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         }).load();
       }).not.toThrow();
     });
@@ -4811,7 +4811,7 @@ describe("Ext.data.TreeStore", function () {
         beforeEach(function () {
           store = new Ext.data.TreeStore({
             model: NodeModel,
-            root: {},
+            root: {}
           });
         });
 
@@ -4832,7 +4832,7 @@ describe("Ext.data.TreeStore", function () {
           root = new NodeModel();
           store = new Ext.data.TreeStore({
             model: NodeModel,
-            root: root,
+            root: root
           });
         });
 
@@ -4855,14 +4855,14 @@ describe("Ext.data.TreeStore", function () {
         beforeEach(function () {
           store = new Ext.data.TreeStore({
             model: NodeModel,
-            root: {},
+            root: {}
           });
         });
 
         it("should set the root property", function () {
           var oldRoot = store.getRoot();
           store.setRoot({
-            id: "foo",
+            id: "foo"
           });
           expect(oldRoot.get("root")).toBe(false);
           expect(store.getRoot().get("root")).toBe(true);
@@ -4872,7 +4872,7 @@ describe("Ext.data.TreeStore", function () {
         it("should have the treeStore available", function () {
           var oldRoot = store.getRoot();
           store.setRoot({
-            id: "foo",
+            id: "foo"
           });
           expect(oldRoot.getTreeStore()).toBeNull();
           expect(store.getRoot().getTreeStore()).toBe(store);
@@ -4886,7 +4886,7 @@ describe("Ext.data.TreeStore", function () {
           root = new NodeModel();
           store = new Ext.data.TreeStore({
             model: NodeModel,
-            root: {},
+            root: {}
           });
           oldRoot = store.getRoot();
         });
@@ -4920,14 +4920,14 @@ describe("Ext.data.TreeStore", function () {
           children: [
             {
               text: "A",
-              leaf: true,
+              leaf: true
             },
             {
               text: "B",
-              leaf: true,
-            },
-          ],
-        },
+              leaf: true
+            }
+          ]
+        }
       });
 
       var oldRoot = store.getRootNode();
@@ -4940,13 +4940,13 @@ describe("Ext.data.TreeStore", function () {
         children: [
           {
             text: "New A",
-            leaf: true,
+            leaf: true
           },
           {
             text: "New B",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       });
 
       expect(oldRoot.get("root")).toBe(false);
@@ -4958,8 +4958,8 @@ describe("Ext.data.TreeStore", function () {
       makeStore([
         {
           text: "Foo",
-          leaf: true,
-        },
+          leaf: true
+        }
       ]);
     });
 
@@ -4977,7 +4977,7 @@ describe("Ext.data.TreeStore", function () {
   describe("proxy", function () {
     it("should use the model's memory proxy when no proxy is defined on the store", function () {
       store = new Ext.data.TreeStore({
-        root: { text: "Foo" },
+        root: { text: "Foo" }
       });
       expect(store.getProxy().isMemoryProxy).toBe(true);
       expect(store.getProxy()).toBe(store.model.getProxy());
@@ -4988,8 +4988,8 @@ describe("Ext.data.TreeStore", function () {
         root: { text: "Foo" },
         proxy: {
           type: "ajax",
-          url: "foo",
-        },
+          url: "foo"
+        }
       });
       expect(store.getProxy().isAjaxProxy).toBe(true);
       expect(store.getProxy().url).toBe("foo");
@@ -5005,16 +5005,16 @@ describe("Ext.data.TreeStore", function () {
           makeStore(
             [
               {
-                children: [2, 3],
-              },
+                children: [2, 3]
+              }
             ],
             {
-              rootVisible: rootVisible,
-            },
+              rootVisible: rootVisible
+            }
           );
 
           expect(
-            Ext.Array.contains(store.getRejectRecords(), store.getRoot()),
+            Ext.Array.contains(store.getRejectRecords(), store.getRoot())
           ).toBe(false);
         });
       });
@@ -5032,15 +5032,15 @@ describe("Ext.data.TreeStore", function () {
         asynchronousLoad: false,
         root: {
           expanded: true,
-          children: dummyData.children,
-        },
+          children: dummyData.children
+        }
       });
     });
 
     describe("with collapse option", function () {
       it("should collect values", function () {
         var result = store.collect("name", {
-          collapsed: true,
+          collapsed: true
         });
         expect(result).toEqual([
           "aaa",
@@ -5049,18 +5049,18 @@ describe("Ext.data.TreeStore", function () {
           "ddd",
           "eee",
           "fff",
-          "ggg",
+          "ggg"
         ]);
       });
       it("should honour filters if bypassFilters not passed", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         expect(store.getCount()).toBe(1);
         var result = store.collect("name", {
-          collapsed: true,
+          collapsed: true
         });
 
         // bottom up filtering. Path nodes are visible.
@@ -5070,12 +5070,12 @@ describe("Ext.data.TreeStore", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         expect(store.getCount()).toBe(1);
         var result = store.collect("name", {
           filtered: true,
-          collapsed: true,
+          collapsed: true
         });
 
         // Filters bypassed, all nodes collected
@@ -5086,7 +5086,7 @@ describe("Ext.data.TreeStore", function () {
           "ddd",
           "eee",
           "fff",
-          "ggg",
+          "ggg"
         ]);
       });
     });
@@ -5100,7 +5100,7 @@ describe("Ext.data.TreeStore", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         expect(store.getCount()).toBe(1);
         var result = store.collect("name");
@@ -5112,11 +5112,11 @@ describe("Ext.data.TreeStore", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         expect(store.getCount()).toBe(1);
         var result = store.collect("name", {
-          filtered: true,
+          filtered: true
         });
 
         // Filters bypassed, all nodes collected if path to them is expanded
@@ -5135,8 +5135,8 @@ describe("Ext.data.TreeStore", function () {
           null,
           {
             filtered: bypassFilters,
-            collapsed: bypassCollapsed,
-          },
+            collapsed: bypassCollapsed
+          }
         );
       };
 
@@ -5148,8 +5148,8 @@ describe("Ext.data.TreeStore", function () {
         root: {
           expanded: true,
           children: dummyData.children,
-          name: "root",
-        },
+          name: "root"
+        }
       });
       result = [];
     });
@@ -5163,7 +5163,7 @@ describe("Ext.data.TreeStore", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         collect();
 
@@ -5174,7 +5174,7 @@ describe("Ext.data.TreeStore", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         collect(true);
 
@@ -5194,14 +5194,14 @@ describe("Ext.data.TreeStore", function () {
           "ddd",
           "eee",
           "fff",
-          "ggg",
+          "ggg"
         ]);
       });
       it("should honour filters if bypassFilters not passed", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         collect(false, true);
 
@@ -5212,7 +5212,7 @@ describe("Ext.data.TreeStore", function () {
         store.filter({
           property: "name",
           operator: "=",
-          value: "ddd",
+          value: "ddd"
         });
         collect(true, true);
 
@@ -5225,7 +5225,7 @@ describe("Ext.data.TreeStore", function () {
           "ddd",
           "eee",
           "fff",
-          "ggg",
+          "ggg"
         ]);
       });
     });
@@ -5237,13 +5237,13 @@ describe("Ext.data.TreeStore", function () {
 
       store = new Ext.data.TreeStore({
         root: {
-          text: "Root",
+          text: "Root"
         },
         listeners: {
           beforeload: function (store, operation) {
             opFilters = operation.getFilters();
-          },
-        },
+          }
+        }
       });
       loadStore(store);
       expect(store.loadCount).toBe(1);
@@ -5268,15 +5268,15 @@ describe("Ext.data.TreeStore", function () {
     it("should not pass paging parameters", function () {
       store = new Ext.data.TreeStore({
         root: {
-          text: "Root",
+          text: "Root"
         },
         listeners: {
           beforeload: function (store, operation) {
             expect(operation.getStart()).toBeUndefined();
             expect(operation.getLimit()).toBeUndefined();
             expect(operation.getPage()).toBeUndefined();
-          },
-        },
+          }
+        }
       });
       loadStore(store);
     });
@@ -5288,7 +5288,7 @@ describe("Ext.data.TreeStore", function () {
     }
     function getPreviousVisibleNode(text) {
       return store.getAt(
-        store.indexOfPreviousVisibleNode(getByText(text).previousSibling),
+        store.indexOfPreviousVisibleNode(getByText(text).previousSibling)
       );
     }
 
@@ -5328,20 +5328,20 @@ describe("Ext.data.TreeStore", function () {
                       expanded: true,
                       children: [
                         {
-                          text: "top1/1/2/1",
+                          text: "top1/1/2/1"
                         },
                         {
-                          text: "top1/1/2/2",
+                          text: "top1/1/2/2"
                         },
                         {
                           text: "top1/1/2/3",
-                          exclude: true,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
+                          exclude: true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             {
               text: "top2",
@@ -5349,40 +5349,40 @@ describe("Ext.data.TreeStore", function () {
               exclude: true,
               children: [
                 {
-                  text: "This will be invisible1",
+                  text: "This will be invisible1"
                 },
                 {
-                  text: "This will be invisible2",
+                  text: "This will be invisible2"
                 },
                 {
-                  text: "This will be invisible3",
+                  text: "This will be invisible3"
                 },
                 {
-                  text: "This will be invisible4",
+                  text: "This will be invisible4"
                 },
                 {
-                  text: "This will be invisible5",
+                  text: "This will be invisible5"
                 },
                 {
-                  text: "This will be invisible6",
-                },
-              ],
+                  text: "This will be invisible6"
+                }
+              ]
             },
             {
-              text: "top3",
-            },
-          ],
+              text: "top3"
+            }
+          ]
         },
         filters: function (rec) {
           return rec.get("exclude") !== true;
-        },
+        }
       });
     });
 
     it("should correctly find the store index of the previous visible node", function () {
       // Simplest case of it being the actual previous sibling
       expect(getPreviousVisibleNode("top1/1/2/3")).toBe(
-        getByText("top1/1/2/2"),
+        getByText("top1/1/2/2")
       );
 
       expect(getPreviousVisibleNode("top3")).toBe(getByText("top1/1/2/2"));
@@ -5396,10 +5396,10 @@ describe("Ext.data.TreeStore", function () {
       getByText("This will be invisible6").set("exclude", true);
 
       expect(getPreviousVisibleNode("top3")).toBe(
-        getByText("This will be invisible1"),
+        getByText("This will be invisible1")
       );
       expect(getPreviousVisibleNode("This will be invisible6")).toBe(
-        getByText("This will be invisible1"),
+        getByText("This will be invisible1")
       );
 
       getByText("top1").set("exclude", true);
@@ -5421,9 +5421,9 @@ describe("Ext.data.TreeStore", function () {
           expanded: true,
           children: [
             { id: 1, name: "child 1" },
-            { id: 2, name: "child 2" },
-          ],
-        },
+            { id: 2, name: "child 2" }
+          ]
+        }
       });
 
       store.getProxy().data = [];
@@ -5476,7 +5476,7 @@ describe("Ext.data.TreeStore", function () {
         onUnregisterTreeNode: function () {
           registeredNodeCount--;
           unregisterCount++;
-        },
+        }
       }),
       registeredNodeCount = 0,
       registerCount = 0,
@@ -5484,7 +5484,7 @@ describe("Ext.data.TreeStore", function () {
 
     it("should call register/unregister methods", function () {
       makeStore([], {
-        model: RegisteredNode,
+        model: RegisteredNode
       });
 
       // Just the root node registered
@@ -5497,11 +5497,11 @@ describe("Ext.data.TreeStore", function () {
           {
             children: [
               {
-                id: "removeMe",
-              },
-            ],
-          },
-        ],
+                id: "removeMe"
+              }
+            ]
+          }
+        ]
       });
 
       // Now three descendants in addition to the root
@@ -5547,21 +5547,21 @@ describe("Ext.data.TreeStore", function () {
                       expanded: true,
                       children: [
                         {
-                          id: "deep",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
+                          id: "deep"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         listeners: {
           datachanged: function () {
             dataChangeCount++;
-          },
-        },
+          }
+        }
       });
       expect(dataChangeCount).toBe(1);
     });
@@ -5576,12 +5576,12 @@ describe("Ext.data.TreeStore", function () {
           data: [
             { text: "Aardvark", id: "a" },
             { text: "Bandicoot", id: "b", parent: "a" },
-            { text: "Crocodile", id: "c", parent: "b" },
-          ],
+            { text: "Crocodile", id: "c", parent: "b" }
+          ]
         },
         root: {
-          expanded: true,
-        },
+          expanded: true
+        }
       });
       root = store.getRoot();
       expect(root.data.depth).toBe(0);

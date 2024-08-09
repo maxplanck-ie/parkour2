@@ -18,13 +18,13 @@ Ext.define("MainHub.store.indexgenerator.IndexGenerator", {
     noCache: false, // to remove param "_dc",
     api: {
       read: "api/index_generator/",
-      update: "api/index_generator/edit/",
+      update: "api/index_generator/edit/"
     },
     reader: {
       type: "json",
       rootProperty: "data",
       successProperty: "success",
-      messageProperty: "error",
+      messageProperty: "error"
     },
     writer: {
       type: "json",
@@ -42,20 +42,20 @@ Ext.define("MainHub.store.indexgenerator.IndexGenerator", {
               return Ext.Object.merge(
                 {
                   pk: record.get("pk"),
-                  record_type: record.get("record_type"),
+                  record_type: record.get("record_type")
                 },
-                record.getChanges(),
+                record.getChanges()
               );
             }
           });
           return newData;
         },
-        scope: this,
-      },
-    },
+        scope: this
+      }
+    }
   },
 
   getId: function () {
     return "IndexGenerator";
-  },
+  }
 });

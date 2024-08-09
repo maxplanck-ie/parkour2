@@ -3,7 +3,7 @@
  */
 Ext.define("Ext.device.analytics.Abstract", {
   config: {
-    accountID: null,
+    accountID: null
   },
 
   updateAccountID: function (newID) {
@@ -47,5 +47,5 @@ Ext.define("Ext.device.analytics.Abstract", {
    *
    * @param {String} config.page The page you want to track (must start with a slash).
    */
-  trackPageview: Ext.emptyFn,
+  trackPageview: Ext.emptyFn
 });

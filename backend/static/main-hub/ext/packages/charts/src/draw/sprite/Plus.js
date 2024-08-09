@@ -29,19 +29,19 @@ Ext.define("Ext.draw.sprite.Plus", {
          * @cfg {Number} [size=4] The size of the sprite.
          * Meant to be comparable to the size of a circle sprite with the same radius.
          */
-        size: "number",
+        size: "number"
       },
       defaults: {
         x: 0,
         y: 0,
-        size: 4,
+        size: 4
       },
       triggers: {
         x: "path",
         y: "path",
-        size: "path",
-      },
-    },
+        size: "path"
+      }
+    }
   },
 
   updatePath: function (path, attr) {
@@ -72,8 +72,8 @@ Ext.define("Ext.draw.sprite.Plus", {
         0,
         0,
         -s,
-        "z",
-      ]),
+        "z"
+      ])
     );
-  },
+  }
 });

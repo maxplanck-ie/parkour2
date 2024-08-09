@@ -12,11 +12,11 @@ Ext.define(
       "edgeswipe",
       "edgeswipestart",
       "edgeswipeend",
-      "edgeswipecancel",
+      "edgeswipecancel"
     ],
 
     config: {
-      minDistance: 60,
+      minDistance: 60
     },
 
     onTouchStart: function (e) {
@@ -116,14 +116,14 @@ Ext.define(
           touch: touch,
           direction: direction,
           distance: distance,
-          duration: duration,
+          duration: duration
         });
       } else {
         me.fire("edgeswipe", e, {
           touch: touch,
           direction: direction,
           distance: distance,
-          duration: duration,
+          duration: duration
         });
       }
     },
@@ -139,7 +139,7 @@ Ext.define(
           touch: e.changedTouches[0],
           direction: me.direction,
           distance: me.distance,
-          duration: duration,
+          duration: duration
         });
       }
 
@@ -151,9 +151,9 @@ Ext.define(
         "edgeswipecancel",
         e,
         {
-          touch: e.changedTouches[0],
+          touch: e.changedTouches[0]
         },
-        true,
+        true
       );
     },
 
@@ -170,10 +170,10 @@ Ext.define(
           null;
 
       return me.callParent();
-    },
+    }
   },
   function (EdgeSwipe) {
     var gestures = Ext.manifest.gestures;
     EdgeSwipe.instance = new EdgeSwipe(gestures && gestures.edgeSwipe);
-  },
+  }
 );

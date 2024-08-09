@@ -13,13 +13,13 @@ Ext.define(
         top: TOP,
         right: RIGHT,
         bottom: BOTTOM,
-        left: LEFT,
+        left: LEFT
       },
       oppositeSide = {
         1: BOTTOM,
         2: LEFT,
         4: TOP,
-        8: RIGHT,
+        8: RIGHT
       },
       stripQuoteRe = /"/g;
 
@@ -36,7 +36,7 @@ Ext.define(
         "Ext.GlobalEvents",
         "Ext.LoadMask",
         "Ext.layout.Card",
-        "Ext.util.InputBlocker",
+        "Ext.util.InputBlocker"
       ],
 
       /**
@@ -137,7 +137,7 @@ Ext.define(
         /**
          * @private
          */
-        orientation: null,
+        orientation: null
       },
 
       getElementConfig: function () {
@@ -147,7 +147,7 @@ Ext.define(
         if (!Ext.feature.has.MatchMedia) {
           cfg.children.unshift({
             reference: "orientationElement",
-            className: "x-orientation-inspector",
+            className: "x-orientation-inspector"
           });
         }
         return cfg;
@@ -203,8 +203,8 @@ Ext.define(
           me.getScrollable() || {
             x: false,
             y: false,
-            element: Ext.getBody(),
-          },
+            element: Ext.getBody()
+          }
         );
 
         // The body has to be overflow:hidden
@@ -215,7 +215,7 @@ Ext.define(
         if (Ext.feature.has.OrientationChange) {
           me.addWindowListener(
             "orientationchange",
-            me.onOrientationChange.bind(me),
+            me.onOrientationChange.bind(me)
           );
         }
 
@@ -257,7 +257,7 @@ Ext.define(
           // any derived class poke on the proper object!
           me.initInheritedState(
             (me.inheritedState = root),
-            (me.inheritedStateInner = Ext.Object.chain(root)),
+            (me.inheritedStateInner = Ext.Object.chain(root))
           );
         } else {
           me.callParent([inheritedState, inheritedStateInner]);
@@ -293,7 +293,7 @@ Ext.define(
           this.setHeight(
             "-webkit-calc(100% - " +
               (window.outerHeight - window.innerHeight) / 2 +
-              "px)",
+              "px)"
           );
         }
       },
@@ -395,7 +395,7 @@ Ext.define(
           autoBlurInput,
           touchstart,
           this.doBlurInput,
-          false,
+          false
         );
       },
 
@@ -420,7 +420,7 @@ Ext.define(
           preventPanning,
           "touchmove",
           this.doPreventPanning,
-          false,
+          false
         );
       },
 
@@ -432,7 +432,7 @@ Ext.define(
           preventZooming,
           touchstart,
           this.doPreventZooming,
-          false,
+          false
         );
       },
 
@@ -451,7 +451,7 @@ Ext.define(
             me.fireEvent("ready", me);
           },
           me,
-          { single: true },
+          { single: true }
         );
 
         me.maximize();
@@ -470,7 +470,7 @@ Ext.define(
             me.updateSize();
           },
           me,
-          { single: true },
+          { single: true }
         );
 
         me.maximize();
@@ -618,7 +618,7 @@ Ext.define(
           me,
           newOrientation,
           me.windowWidth,
-          me.windowHeight,
+          me.windowHeight
         );
       },
 
@@ -647,7 +647,7 @@ Ext.define(
         onSatisfied,
         onTimeout,
         delay,
-        timeoutDuration,
+        timeoutDuration
       ) {
         if (!delay) {
           delay = 50;
@@ -729,7 +729,7 @@ Ext.define(
       getSize: function () {
         return {
           width: this.windowWidth,
-          height: this.windowHeight,
+          height: this.windowHeight
         };
       },
 
@@ -775,7 +775,7 @@ Ext.define(
             function () {
               window.scrollTo(0, 0);
             },
-            me,
+            me
           );
         }
 
@@ -790,7 +790,7 @@ Ext.define(
 
         if (!sideValue) {
           Ext.Logger.error(
-            "You must specify a valid side (left, right, top or botom) to dock the menu.",
+            "You must specify a valid side (left, right, top or botom) to dock the menu."
           );
         }
         //</debug>
@@ -822,7 +822,7 @@ Ext.define(
         menu.setFloated(menu.$cover);
         menu.$side = side;
         menu.addCls(
-          Ext.baseCSSPrefix + (menu.$cover ? "menu-cover" : "menu-reveal"),
+          Ext.baseCSSPrefix + (menu.$cover ? "menu-cover" : "menu-reveal")
         );
 
         me.fixMenuSize(menu, side);
@@ -863,7 +863,7 @@ Ext.define(
           edgeswipestart: me.onEdgeSwipeStart,
           edgeswipe: me.onEdgeSwipe,
           edgeswipeend: me.onEdgeSwipeEnd,
-          scope: me,
+          scope: me
         });
       },
 
@@ -871,9 +871,9 @@ Ext.define(
         return Ext.apply(
           {
             xtype: "menu",
-            floated: config.cover !== false && !config.$reveal,
+            floated: config.cover !== false && !config.$reveal
           },
-          menu,
+          menu
         );
       },
 
@@ -929,22 +929,22 @@ Ext.define(
 
         before = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         after = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         viewportBefore = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         viewportAfter = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         if (menu.$reveal) {
@@ -993,13 +993,13 @@ Ext.define(
             },
             me,
             {
-              single: true,
-            },
+              single: true
+            }
           );
 
           menu.translate(after.translateX, after.translateY, {
             preserveEndState: true,
-            duration: 200,
+            duration: 200
           });
         } else {
           me.translate(viewportBefore.translateX, viewportBefore.translateY);
@@ -1011,13 +1011,13 @@ Ext.define(
             },
             me,
             {
-              single: true,
-            },
+              single: true
+            }
           );
 
           me.translate(viewportAfter.translateX, viewportAfter.translateY, {
             preserveEndState: true,
-            duration: 200,
+            duration: 200
           });
         }
 
@@ -1046,12 +1046,12 @@ Ext.define(
 
         after = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         viewportAfter = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         size =
@@ -1079,13 +1079,13 @@ Ext.define(
               },
               me,
               {
-                single: true,
-              },
+                single: true
+              }
             );
 
             menu.translate(after.translateX, after.translateY, {
               preserveEndState: true,
-              duration: 200,
+              duration: 200
             });
           } else {
             menu.translate(after.translateX, after.translateY);
@@ -1101,13 +1101,13 @@ Ext.define(
               },
               me,
               {
-                single: true,
-              },
+                single: true
+              }
             );
 
             me.translate(viewportAfter.translateX, viewportAfter.translateY, {
               preserveEndState: true,
-              duration: 200,
+              duration: 200
             });
           } else {
             me.translate(viewportAfter.translateX, viewportAfter.translateY);
@@ -1242,12 +1242,12 @@ Ext.define(
 
         after = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         viewportAfter = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         if (side === LEFT) {
@@ -1313,12 +1313,12 @@ Ext.define(
 
         after = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         viewportAfter = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         if (side === LEFT) {
@@ -1391,12 +1391,12 @@ Ext.define(
 
         after = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         viewportAfter = {
           translateX: 0,
-          translateY: 0,
+          translateY: 0
         };
 
         if (side === LEFT) {
@@ -1424,13 +1424,13 @@ Ext.define(
             },
             me,
             {
-              single: true,
-            },
+              single: true
+            }
           );
 
           menu.translate(after.translateX, after.translateY, {
             preserveEndState: true,
-            duration: 200,
+            duration: 200
           });
         } else {
           me.getTranslatable().on(
@@ -1442,13 +1442,13 @@ Ext.define(
             },
             me,
             {
-              single: true,
-            },
+              single: true
+            }
           );
 
           me.translate(viewportAfter.translateX, viewportAfter.translateY, {
             preserveEndState: true,
-            duration: 200,
+            duration: 200
           });
         }
 
@@ -1482,7 +1482,7 @@ Ext.define(
           options,
           order,
           caller,
-          manager,
+          manager
         ) {
           var me = this;
           if (eventName === "ready" && me.isReady && !me.isMaximizing) {
@@ -1497,7 +1497,7 @@ Ext.define(
             options,
             order,
             caller,
-            manager,
+            manager
           ]);
         },
 
@@ -1507,8 +1507,8 @@ Ext.define(
           } else {
             this.removeWindowListener(eventName, fn, capturing);
           }
-        },
-      },
+        }
+      }
     };
-  })(),
+  })()
 );

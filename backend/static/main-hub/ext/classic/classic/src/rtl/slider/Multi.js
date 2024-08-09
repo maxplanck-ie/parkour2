@@ -52,5 +52,5 @@ Ext.define("Ext.rtl.slider.Multi", {
     } else {
       return this.callParent(arguments);
     }
-  },
+  }
 });

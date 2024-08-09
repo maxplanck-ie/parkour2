@@ -27,7 +27,7 @@ Ext.define("Ext.mixin.Mashup", function (Mashup) {
 
       extended: function (baseClass, derivedClass) {
         Mashup.process(derivedClass);
-      },
+      }
     },
 
     statics: {
@@ -50,15 +50,15 @@ Ext.define("Ext.mixin.Mashup", function (Mashup) {
               onLoad: function () {
                 hooks.onCreated = onCreated;
                 hooks.onCreated.call(me, args);
-              },
+              }
             });
           };
         }
-      },
+      }
     },
 
     onClassMixedIn: function (targetClass) {
       Mashup.process(targetClass);
-    },
+    }
   };
 });

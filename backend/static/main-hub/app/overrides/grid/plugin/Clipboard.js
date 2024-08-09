@@ -32,7 +32,7 @@ Ext.define("MainHub.overrides.grid.plugin.Clipboard", {
       // Create a new Context based upon the outermost View.
       destination = new Ext.grid.CellContext(view).setPosition(
         destination.record,
-        destination.column,
+        destination.column
       );
     } else {
       destination = new Ext.grid.CellContext(view).setPosition(0, 0);
@@ -76,7 +76,7 @@ Ext.define("MainHub.overrides.grid.plugin.Clipboard", {
               } // NAT is not set
 
               var nucleicAcidTypeRecord = Ext.getStore(
-                "nucleicAcidTypesStore",
+                "nucleicAcidTypesStore"
               ).findRecord("id", nucleicAcidType);
 
               if (
@@ -135,5 +135,5 @@ Ext.define("MainHub.overrides.grid.plugin.Clipboard", {
     if (this.cmp.id === "batchAddGrid") {
       this.cmp.fireEvent("validate");
     }
-  },
+  }
 });

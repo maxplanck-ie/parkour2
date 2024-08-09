@@ -3,6 +3,6 @@ Ext.define("Ext.theme.mountainview.field.Toggle", {
 
   config: {
     activeLabel: "On",
-    inactiveLabel: "Off",
-  },
+    inactiveLabel: "Off"
+  }
 });

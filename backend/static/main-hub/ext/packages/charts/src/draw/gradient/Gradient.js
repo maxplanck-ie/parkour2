@@ -12,7 +12,7 @@ Ext.define("Ext.draw.gradient.Gradient", {
     /**
      * Defines the stops of the gradient.
      */
-    stops: [],
+    stops: []
   },
 
   applyStops: function (newStops) {
@@ -31,9 +31,9 @@ Ext.define("Ext.draw.gradient.Gradient", {
       stops.push({
         offset: Math.min(
           1,
-          Math.max(0, "offset" in stop ? stop.offset : stop.position || 0),
+          Math.max(0, "offset" in stop ? stop.offset : stop.position || 0)
         ),
-        color: color.toString(),
+        color: color.toString()
       });
     }
     stops.sort(function (a, b) {
@@ -60,5 +60,5 @@ Ext.define("Ext.draw.gradient.Gradient", {
    * @param {Object} bbox
    * @return {CanvasGradient/Ext.draw.engine.SvgContext.Gradient/Ext.util.Color.NONE}
    */
-  generateGradient: Ext.emptyFn,
+  generateGradient: Ext.emptyFn
 });

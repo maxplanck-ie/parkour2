@@ -33,7 +33,7 @@ Ext.Inventory.prototype = {
       alias,
       this.aliasToName,
       this.nameToAliases,
-      update,
+      update
     );
   },
 
@@ -42,7 +42,7 @@ Ext.Inventory.prototype = {
       className,
       alternate,
       this.alternateToName,
-      this.nameToAlternates,
+      this.nameToAlternates
     );
   },
 
@@ -87,7 +87,7 @@ Ext.Inventory.prototype = {
                 toName[a] +
                 "' to '" +
                 cls +
-                "'. Is this intentional?",
+                "'. Is this intentional?"
             );
           }
           //</debug>
@@ -406,7 +406,7 @@ Ext.Inventory.prototype = {
         exclude: function () {
           me.getNamesByExpression(arguments, excludes, true);
           return this;
-        },
+        }
       },
       name;
 
@@ -454,5 +454,5 @@ Ext.Inventory.prototype = {
     me.nameToPrefix = {};
 
     return me;
-  }),
+  })
 };

@@ -265,7 +265,7 @@ Ext.Date = (function () {
       "}",
       "}",
 
-      "return (v != null) ? v : null;",
+      "return (v != null) ? v : null;"
     ].join("\n");
 
   // Polyfill Date's toISOString instance method where not implemented.
@@ -369,14 +369,14 @@ Ext.Date = (function () {
       return p
         ? Ext.applyIf(
             {
-              c: p.c ? xf(p.c, currentGroup || "{0}") : p.c,
+              c: p.c ? xf(p.c, currentGroup || "{0}") : p.c
             },
-            p,
+            p
           )
         : {
             g: 0,
             c: null,
-            s: Ext.String.escapeRegex(character), // treat unrecognized characters as literals
+            s: Ext.String.escapeRegex(character) // treat unrecognized characters as literals
           };
     },
 
@@ -426,7 +426,7 @@ Ext.Date = (function () {
           return new nativeDate(num * 1000);
         }
         return null;
-      },
+      }
     },
     parseRegexes: [],
 
@@ -462,7 +462,7 @@ Ext.Date = (function () {
       },
       timestamp: function () {
         return utilDate.format(this, "U");
-      },
+      }
     },
 
     y2kYear: 50,
@@ -589,7 +589,7 @@ Ext.Date = (function () {
       "Wednesday",
       "Thursday",
       "Friday",
-      "Saturday",
+      "Saturday"
     ],
     //</locale>
 
@@ -619,7 +619,7 @@ Ext.Date = (function () {
       "September",
       "October",
       "November",
-      "December",
+      "December"
     ],
     //</locale>
 
@@ -665,7 +665,7 @@ Ext.Date = (function () {
       November: 10,
       Nov: 10,
       December: 11,
-      Dec: 11,
+      Dec: 11
     },
     //</locale>
 
@@ -842,7 +842,7 @@ Ext.Date = (function () {
         return "m.toISOString()";
       },
 
-      U: "Math.round(m.getTime() / 1000)",
+      U: "Math.round(m.getTime() / 1000)"
     },
 
     /**
@@ -872,10 +872,10 @@ Ext.Date = (function () {
           hour,
           minute,
           second,
-          millisecond,
+          millisecond
         ),
         utilDate.YEAR,
-        year < 100 ? year - 100 : 0,
+        year < 100 ? year - 100 : 0
       );
 
       return (
@@ -930,7 +930,7 @@ Ext.Date = (function () {
       return p[format].call(
         utilDate,
         input,
-        Ext.isDefined(strict) ? strict : utilDate.useStrict,
+        Ext.isDefined(strict) ? strict : utilDate.useStrict
       );
     },
 
@@ -979,7 +979,7 @@ Ext.Date = (function () {
         }
       }
       utilDate.formatFunctions[format] = Ext.functionFactory(
-        "var m=this;return " + code.join("+"),
+        "var m=this;return " + code.join("+")
       );
     },
 
@@ -1023,12 +1023,12 @@ Ext.Date = (function () {
 
       utilDate.parseRegexes[regexNum] = new RegExp(
         "^" + regex.join("") + "$",
-        "i",
+        "i"
       );
       utilDate.parseFunctions[format] = Ext.functionFactory(
         "input",
         "strict",
-        xf(code, regexNum, calc.join("")),
+        xf(code, regexNum, calc.join(""))
       );
     },
 
@@ -1045,12 +1045,12 @@ Ext.Date = (function () {
       d: {
         g: 1,
         c: "d = parseInt(results[{0}], 10);\n",
-        s: "(3[0-1]|[1-2][0-9]|0[1-9])", // day of month with leading zeroes (01 - 31)
+        s: "(3[0-1]|[1-2][0-9]|0[1-9])" // day of month with leading zeroes (01 - 31)
       },
       j: {
         g: 1,
         c: "d = parseInt(results[{0}], 10);\n",
-        s: "(3[0-1]|[1-2][0-9]|[1-9])", // day of month without leading zeroes (1 - 31)
+        s: "(3[0-1]|[1-2][0-9]|[1-9])" // day of month without leading zeroes (1 - 31)
       },
       D: function () {
         for (
@@ -1061,48 +1061,48 @@ Ext.Date = (function () {
         return {
           g: 0,
           c: null,
-          s: "(?:" + a.join("|") + ")",
+          s: "(?:" + a.join("|") + ")"
         };
       },
       l: function () {
         return {
           g: 0,
           c: null,
-          s: "(?:" + utilDate.dayNames.join("|") + ")",
+          s: "(?:" + utilDate.dayNames.join("|") + ")"
         };
       },
       N: {
         g: 0,
         c: null,
-        s: "[1-7]", // ISO-8601 day number (1 (monday) - 7 (sunday))
+        s: "[1-7]" // ISO-8601 day number (1 (monday) - 7 (sunday))
       },
       //<locale type="object" property="parseCodes">
       S: {
         g: 0,
         c: null,
-        s: "(?:st|nd|rd|th)",
+        s: "(?:st|nd|rd|th)"
       },
       //</locale>
       w: {
         g: 0,
         c: null,
-        s: "[0-6]", // JavaScript day number (0 (sunday) - 6 (saturday))
+        s: "[0-6]" // JavaScript day number (0 (sunday) - 6 (saturday))
       },
       z: {
         g: 1,
         c: "z = parseInt(results[{0}], 10);\n",
-        s: "(\\d{1,3})", // day of the year (0 - 364 (365 in leap years))
+        s: "(\\d{1,3})" // day of the year (0 - 364 (365 in leap years))
       },
       W: {
         g: 1,
         c: "W = parseInt(results[{0}], 10);\n",
-        s: "(\\d{2})", // ISO-8601 week number (with leading zero)
+        s: "(\\d{2})" // ISO-8601 week number (with leading zero)
       },
       F: function () {
         return {
           g: 1,
           c: "m = parseInt(me.getMonthNumber(results[{0}]), 10);\n", // get localised month number
-          s: "(" + utilDate.monthNames.join("|") + ")",
+          s: "(" + utilDate.monthNames.join("|") + ")"
         };
       },
       M: function () {
@@ -1113,47 +1113,47 @@ Ext.Date = (function () {
         ); // get localised short month names
         return Ext.applyIf(
           {
-            s: "(" + a.join("|") + ")",
+            s: "(" + a.join("|") + ")"
           },
-          utilDate.formatCodeToRegex("F"),
+          utilDate.formatCodeToRegex("F")
         );
       },
       m: {
         g: 1,
         c: "m = parseInt(results[{0}], 10) - 1;\n",
-        s: "(1[0-2]|0[1-9])", // month number with leading zeros (01 - 12)
+        s: "(1[0-2]|0[1-9])" // month number with leading zeros (01 - 12)
       },
       n: {
         g: 1,
         c: "m = parseInt(results[{0}], 10) - 1;\n",
-        s: "(1[0-2]|[1-9])", // month number without leading zeros (1 - 12)
+        s: "(1[0-2]|[1-9])" // month number without leading zeros (1 - 12)
       },
       t: {
         g: 0,
         c: null,
-        s: "(?:\\d{2})", // no. of days in the month (28 - 31)
+        s: "(?:\\d{2})" // no. of days in the month (28 - 31)
       },
       L: {
         g: 0,
         c: null,
-        s: "(?:1|0)",
+        s: "(?:1|0)"
       },
       o: {
         g: 1,
         c: "y = parseInt(results[{0}], 10);\n",
-        s: "(\\d{4})", // ISO-8601 year number (with leading zero)
+        s: "(\\d{4})" // ISO-8601 year number (with leading zero)
       },
       Y: {
         g: 1,
         c: "y = parseInt(results[{0}], 10);\n",
-        s: "(\\d{4})", // 4-digit year
+        s: "(\\d{4})" // 4-digit year
       },
       y: {
         g: 1,
         c:
           "var ty = parseInt(results[{0}], 10);\n" +
           "y = ty > me.y2kYear ? 1900 + ty : 2000 + ty;\n", // 2-digit year
-        s: "(\\d{2})",
+        s: "(\\d{2})"
       },
       /**
        * In the am/pm parsing routines, we allow both upper and lower case
@@ -1168,7 +1168,7 @@ Ext.Date = (function () {
           "if (!h || h == 12) { h = 0; }\n" +
           "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
         s: "(am|pm|AM|PM)",
-        calcAtEnd: true,
+        calcAtEnd: true
       },
       //</locale>
       //<locale type="object" property="parseCodes">
@@ -1179,43 +1179,43 @@ Ext.Date = (function () {
           "if (!h || h == 12) { h = 0; }\n" +
           "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
         s: "(AM|PM|am|pm)",
-        calcAtEnd: true,
+        calcAtEnd: true
       },
       //</locale>
       g: {
         g: 1,
         c: "h = parseInt(results[{0}], 10);\n",
-        s: "(1[0-2]|[0-9])", //  12-hr format of an hour without leading zeroes (1 - 12)
+        s: "(1[0-2]|[0-9])" //  12-hr format of an hour without leading zeroes (1 - 12)
       },
       G: {
         g: 1,
         c: "h = parseInt(results[{0}], 10);\n",
-        s: "(2[0-3]|1[0-9]|[0-9])", // 24-hr format of an hour without leading zeroes (0 - 23)
+        s: "(2[0-3]|1[0-9]|[0-9])" // 24-hr format of an hour without leading zeroes (0 - 23)
       },
       h: {
         g: 1,
         c: "h = parseInt(results[{0}], 10);\n",
-        s: "(1[0-2]|0[1-9])", //  12-hr format of an hour with leading zeroes (01 - 12)
+        s: "(1[0-2]|0[1-9])" //  12-hr format of an hour with leading zeroes (01 - 12)
       },
       H: {
         g: 1,
         c: "h = parseInt(results[{0}], 10);\n",
-        s: "(2[0-3]|[0-1][0-9])", //  24-hr format of an hour with leading zeroes (00 - 23)
+        s: "(2[0-3]|[0-1][0-9])" //  24-hr format of an hour with leading zeroes (00 - 23)
       },
       i: {
         g: 1,
         c: "i = parseInt(results[{0}], 10);\n",
-        s: "([0-5][0-9])", // minutes with leading zeros (00 - 59)
+        s: "([0-5][0-9])" // minutes with leading zeros (00 - 59)
       },
       s: {
         g: 1,
         c: "s = parseInt(results[{0}], 10);\n",
-        s: "([0-5][0-9])", // seconds with leading zeros (00 - 59)
+        s: "([0-5][0-9])" // seconds with leading zeros (00 - 59)
       },
       u: {
         g: 1,
         c: "ms = results[{0}]; ms = parseInt(ms, 10)/Math.pow(10, ms.length - 3);\n",
-        s: "(\\d+)", // decimal fraction of a second (minimum = 1 digit, maximum = unlimited)
+        s: "(\\d+)" // decimal fraction of a second (minimum = 1 digit, maximum = unlimited)
       },
       O: {
         g: 1,
@@ -1224,9 +1224,9 @@ Ext.Date = (function () {
           "var sn = o.substring(0,1),", // get + / - sign
           "hr = o.substring(1,3)*1 + Math.floor(o.substring(3,5) / 60),", // get hours (performs minutes-to-hour conversion also, just in case)
           "mn = o.substring(3,5) % 60;", // get minutes
-          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n", // -12hrs <= GMT offset <= 14hrs
+          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n" // -12hrs <= GMT offset <= 14hrs
         ].join("\n"),
-        s: "([+-]\\d{4})", // GMT offset in hrs and mins
+        s: "([+-]\\d{4})" // GMT offset in hrs and mins
       },
       P: {
         g: 1,
@@ -1235,21 +1235,21 @@ Ext.Date = (function () {
           "var sn = o.substring(0,1),", // get + / - sign
           "hr = o.substring(1,3)*1 + Math.floor(o.substring(4,6) / 60),", // get hours (performs minutes-to-hour conversion also, just in case)
           "mn = o.substring(4,6) % 60;", // get minutes
-          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n", // -12hrs <= GMT offset <= 14hrs
+          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n" // -12hrs <= GMT offset <= 14hrs
         ].join("\n"),
-        s: "([+-]\\d{2}:\\d{2})", // GMT offset in hrs and mins (with colon separator)
+        s: "([+-]\\d{2}:\\d{2})" // GMT offset in hrs and mins (with colon separator)
       },
       T: {
         g: 0,
         c: null,
-        s: "[A-Z]{1,5}", // timezone abbrev. may be between 1 - 5 chars
+        s: "[A-Z]{1,5}" // timezone abbrev. may be between 1 - 5 chars
       },
       Z: {
         g: 1,
         c:
           "zz = results[{0}] * 1;\n" + // -43200 <= UTC offset <= 50400
           "zz = (-43200 <= zz && zz <= 50400)? zz : null;\n",
-        s: "([+-]?\\d{1,5})", // leading '+' sign is optional for UTC offset
+        s: "([+-]?\\d{1,5})" // leading '+' sign is optional for UTC offset
       },
       c: function () {
         var calc = [],
@@ -1261,7 +1261,7 @@ Ext.Date = (function () {
             utilDate.formatCodeToRegex("i", 5), // minute
             utilDate.formatCodeToRegex("s", 6), // second
             {
-              c: "ms = results[7] || '0'; ms = parseInt(ms, 10)/Math.pow(10, ms.length - 3);\n",
+              c: "ms = results[7] || '0'; ms = parseInt(ms, 10)/Math.pow(10, ms.length - 3);\n"
             }, // decimal fraction of a second (minimum = 1 digit, maximum = unlimited)
             {
               c: [
@@ -1274,9 +1274,9 @@ Ext.Date = (function () {
                 "}else{",
                 utilDate.formatCodeToRegex("O", 8).c, // timezone offset without colon separator
                 "}",
-                "}",
-              ].join("\n"),
-            },
+                "}"
+              ].join("\n")
+            }
           ],
           i,
           l;
@@ -1308,15 +1308,15 @@ Ext.Date = (function () {
             "(Z|(?:[-+]\\d{2}(?::)?\\d{2}))?", // "Z" (UTC) or "-0530" (UTC offset without colon delimiter) or "+08:00" (UTC offset with colon delimiter) (optional)
             ")?",
             ")?",
-            ")?",
-          ].join(""),
+            ")?"
+          ].join("")
         };
       },
       U: {
         g: 1,
         c: "u = parseInt(results[{0}], 10);\n",
-        s: "(-?\\d+)", // leading minus sign indicates seconds before UNIX epoch
-      },
+        s: "(-?\\d+)" // leading minus sign indicates seconds before UNIX epoch
+      }
     },
 
     //Old Ext.Date prototype methods.
@@ -1396,7 +1396,7 @@ Ext.Date = (function () {
         .toString()
         .replace(
           /^.* (?:\((.*)\)|([A-Z]{1,5})(?:[\-+][0-9]{4})?(?: -?\d+)?)$/,
-          "$1$2",
+          "$1$2"
         )
         .replace(/[^A-Z]/g, "");
     },
@@ -1467,7 +1467,7 @@ Ext.Date = (function () {
             nativeDate.UTC(
               date.getFullYear(),
               date.getMonth(),
-              date.getDate() + 3,
+              date.getDate() + 3
             ) / ms1d, // an Absolute Day Number
           AWN = Math.floor(DC3 / 7), // an Absolute Week Number
           Wyr = new nativeDate(AWN * ms7d).getUTCFullYear();
@@ -1546,7 +1546,7 @@ Ext.Date = (function () {
       return new nativeDate(
         date.getFullYear(),
         date.getMonth(),
-        utilDate.getDaysInMonth(date),
+        utilDate.getDaysInMonth(date)
       );
     },
 
@@ -1763,10 +1763,10 @@ Ext.Date = (function () {
                     utilDate.add(
                       utilDate.getFirstDateOfMonth(date),
                       utilDate.MONTH,
-                      value,
-                    ),
+                      value
+                    )
                   )
-                  .getDate(),
+                  .getDate()
               );
             }
             d.setDate(day);
@@ -1782,10 +1782,10 @@ Ext.Date = (function () {
                     utilDate.add(
                       utilDate.getFirstDateOfMonth(date),
                       utilDate.YEAR,
-                      value,
-                    ),
+                      value
+                    )
                   )
-                  .getDate(),
+                  .getDate()
               );
             }
             d.setDate(day);
@@ -1899,7 +1899,7 @@ Ext.Date = (function () {
         d.getUTCHours(),
         d.getUTCMinutes(),
         d.getUTCSeconds(),
-        d.getUTCMilliseconds(),
+        d.getUTCMilliseconds()
       );
     },
 
@@ -1921,7 +1921,7 @@ Ext.Date = (function () {
         d.getHours(),
         d.getMinutes(),
         d.getSeconds(),
-        d.getMilliseconds(),
+        d.getMilliseconds()
       );
     },
 
@@ -1940,7 +1940,7 @@ Ext.Date = (function () {
      */
     utc: function (year, month, day, hour, min, s, ms) {
       return new Date(
-        Date.UTC(year, month, day, hour || 0, min || 0, s || 0, ms || 0),
+        Date.UTC(year, month, day, hour || 0, min || 0, s || 0, ms || 0)
       );
     },
 
@@ -1974,7 +1974,7 @@ Ext.Date = (function () {
           "getFormatCode",
           "createFormat",
           "createParser",
-          "parseCodes",
+          "parseCodes"
         ],
         proto = [
           "dateFormat",
@@ -1992,7 +1992,7 @@ Ext.Date = (function () {
           "isDST",
           "clearTime",
           "add",
-          "between",
+          "between"
         ],
         sLen = statics.length,
         pLen = proto.length,
@@ -2099,7 +2099,7 @@ Ext.Date = (function () {
         case utilDate.MONTH:
           num.setUTCMonth(
             num.getUTCMonth() - ((num.getUTCMonth() - 1) % step),
-            1,
+            1
           );
           num.setUTCHours(0);
           num.setUTCMinutes(0);
@@ -2110,7 +2110,7 @@ Ext.Date = (function () {
           num.setUTCFullYear(
             num.getUTCFullYear() - (num.getUTCFullYear() % step),
             1,
-            1,
+            1
           );
           num.setUTCHours(0);
           num.setUTCMinutes(0);
@@ -2118,7 +2118,7 @@ Ext.Date = (function () {
           num.setUTCMilliseconds(0);
           return date;
       }
-    },
+    }
   };
 
   utilDate.parseCodes.C = utilDate.parseCodes.c;

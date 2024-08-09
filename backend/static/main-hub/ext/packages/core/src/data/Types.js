@@ -5,7 +5,7 @@ Ext.define(
   "Ext.data.Types",
   {
     singleton: true,
-    requires: ["Ext.data.SortTypes"],
+    requires: ["Ext.data.SortTypes"]
   },
   function (Types) {
     var SortTypes = Ext.data.SortTypes;
@@ -24,7 +24,7 @@ Ext.define(
        */
       AUTO: {
         sortType: SortTypes.none,
-        type: "auto",
+        type: "auto"
       },
 
       /**
@@ -37,7 +37,7 @@ Ext.define(
           return v === undefined || v === null ? defaultValue : String(v);
         },
         sortType: SortTypes.asUCString,
-        type: "string",
+        type: "string"
       },
 
       /**
@@ -61,7 +61,7 @@ Ext.define(
               : 0;
         },
         sortType: SortTypes.none,
-        type: "int",
+        type: "int"
       },
 
       /**
@@ -82,7 +82,7 @@ Ext.define(
               : 0;
         },
         sortType: SortTypes.none,
-        type: "float",
+        type: "float"
       },
 
       /**
@@ -106,7 +106,7 @@ Ext.define(
           return v === "true" || v == 1;
         },
         sortType: SortTypes.none,
-        type: "bool",
+        type: "bool"
       },
 
       /**
@@ -135,8 +135,8 @@ Ext.define(
           return parsed ? new Date(parsed) : null;
         },
         sortType: SortTypes.asDate,
-        type: "date",
-      },
+        type: "date"
+      }
     });
 
     /**
@@ -163,5 +163,5 @@ Ext.define(
      * The synonym `FLOAT` is equivalent.
      */
     Types.NUMBER = Types.FLOAT;
-  },
+  }
 );

@@ -115,26 +115,26 @@ Ext.define("Ext.field.Spinner", {
      * @inheritdoc
      */
     component: {
-      readOnly: true,
+      readOnly: true
     },
 
     triggers: {
       spindown: {
         type: "spindown",
         group: "spin",
-        repeat: true,
+        repeat: true
       },
       spinup: {
         type: "spinup",
         group: "spin",
-        repeat: true,
-      },
+        repeat: true
+      }
     },
 
     /**
      * @cfg {Number}
      */
-    value: undefined,
+    value: undefined
   },
 
   classCls: Ext.baseCSSPrefix + "spinnerfield",
@@ -166,9 +166,9 @@ Ext.define("Ext.field.Spinner", {
       if (upRepeat) {
         upTrigger.repeat = Ext.apply(
           {
-            accelerate: accelerate,
+            accelerate: accelerate
           },
-          upRepeat,
+          upRepeat
         );
       }
 
@@ -177,9 +177,9 @@ Ext.define("Ext.field.Spinner", {
       if (downRepeat) {
         downTrigger.repeat = Ext.apply(
           {
-            accelerate: accelerate,
+            accelerate: accelerate
           },
-          downRepeat,
+          downRepeat
         );
       }
     }
@@ -255,5 +255,5 @@ Ext.define("Ext.field.Spinner", {
 
   reset: function () {
     this.setValue(this.getDefaultValue());
-  },
+  }
 });

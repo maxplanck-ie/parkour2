@@ -15,7 +15,7 @@ Ext.Number = new (function () {
     ClipDefault = {
       count: false,
       inclusive: false,
-      wrap: true,
+      wrap: true
     };
 
   Ext.apply(ExtNumber, {
@@ -27,24 +27,24 @@ Ext.Number = new (function () {
 
       COUNT: Ext.applyIf(
         {
-          count: true,
+          count: true
         },
-        ClipDefault,
+        ClipDefault
       ),
 
       INCLUSIVE: Ext.applyIf(
         {
-          inclusive: true,
+          inclusive: true
         },
-        ClipDefault,
+        ClipDefault
       ),
 
       NOWRAP: Ext.applyIf(
         {
-          wrap: false,
+          wrap: false
         },
-        ClipDefault,
-      ),
+        ClipDefault
+      )
     },
 
     /**
@@ -393,7 +393,7 @@ Ext.Number = new (function () {
       // a long string of decimals, eg 0.1 + 0.2. When they overflow in this
       // manner, they usually go to 15-16 decimals, so we cut it off at 14.
       return parseFloat(n.toPrecision(14));
-    },
+    }
   });
 
   /**

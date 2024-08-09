@@ -271,5 +271,5 @@ Ext.define("Ext.form.field.Radio", {
 
   getManager: function () {
     return Ext.form.RadioManager;
-  },
+  }
 });

@@ -6,5 +6,5 @@ Ext.define("Ext.theme.triton.list.TreeItem", {
   setFloated: function (floated, wasFloated) {
     this.callParent([floated, wasFloated]);
     this.toolElement.syncRepaint();
-  },
+  }
 });

@@ -225,7 +225,7 @@ Ext.theme = Ext.apply(Ext.theme || {}, {
         for (token in tpl) {
           replacements.push({
             re: new RegExp("\\{" + token + "\\}", "g"),
-            value: tpl[token],
+            value: tpl[token]
           });
         }
       }
@@ -351,7 +351,7 @@ Ext.theme = Ext.apply(Ext.theme || {}, {
             Ext.Error.raise("Layout run failed: " + widget.id);
           }
           return ok;
-        },
+        }
       });
     }
 
@@ -435,7 +435,7 @@ Ext.theme = Ext.apply(Ext.theme || {}, {
       // TODO: Upgrade to later WebKit revision
       css = css.replace(
         /background(-image)?: ?-webkit-linear-gradient(?:.*?);/g,
-        "",
+        ""
       );
 
       style.type = "text/css";
@@ -446,7 +446,7 @@ Ext.theme = Ext.apply(Ext.theme || {}, {
     };
 
     xhr.send(null);
-  },
+  }
 });
 
 console.log("registering ready listener...");

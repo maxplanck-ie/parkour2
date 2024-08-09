@@ -23,7 +23,7 @@ describe("Ext.slider.Slider", function () {
     it("should be an array, in case a number was given and `valueIsArray` is `true`", function () {
       createField({
         value: 50,
-        valueIsArray: true,
+        valueIsArray: true
       });
       var value = slider.getValue();
 

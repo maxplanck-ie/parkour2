@@ -6,7 +6,7 @@ from .models import LibraryPreparation
 
 @admin.register(LibraryPreparation)
 class LibraryPreparationAdmin(admin.ModelAdmin):
-    list_display = ("name", "barcode", "request", "pool", "archived")
+    list_display = ("name", "barcode", "request", "pool", "smear_analysis", "archived")
     list_filter = (ArchivedFilter,)
     search_fields = (
         "sample__name",

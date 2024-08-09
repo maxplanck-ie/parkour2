@@ -280,7 +280,7 @@ Ext.define("Ext.data.proxy.Direct", {
      * separately in the data packet.
      * You may need to update your server side Ext Direct stack to use this feature.
      */
-    metadata: undefined,
+    metadata: undefined
   },
 
   /**
@@ -362,7 +362,7 @@ Ext.define("Ext.data.proxy.Direct", {
           'No Ext Direct function specified for Direct proxy "' +
           action +
           '" operation',
-        proxy: me,
+        proxy: me
       });
     }
 
@@ -370,7 +370,7 @@ Ext.define("Ext.data.proxy.Direct", {
     if (!me.paramOrder && fn.directCfg.method.len > 1) {
       Ext.raise({
         msg: 'Incorrect parameters for Direct proxy "' + action + '" operation',
-        proxy: me,
+        proxy: me
       });
     }
     //</debug>
@@ -403,12 +403,12 @@ Ext.define("Ext.data.proxy.Direct", {
       paramsAsArray: true,
       metadata: me.getMetadata(),
       callback: me.createRequestCallback(request, operation),
-      scope: me,
+      scope: me
     });
 
     request.setConfig({
       args: args,
-      directFn: fn,
+      directFn: fn
     });
 
     fn.apply(window, args);
@@ -484,5 +484,5 @@ Ext.define("Ext.data.proxy.Direct", {
    */
   buildUrl: function () {
     return "";
-  },
+  }
 });

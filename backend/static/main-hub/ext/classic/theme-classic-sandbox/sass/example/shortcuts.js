@@ -6,36 +6,36 @@ $Shortcuts = {
       config: {
         columns: 2,
         defaults: {
-          scale: "small",
+          scale: "small"
         },
         items: [
           {
             xtype: "splitbutton",
             text: "Menu Button",
             iconCls: "add16",
-            menu: [{ text: "Menu Item 1" }],
+            menu: [{ text: "Menu Item 1" }]
           },
           {
             xtype: "splitbutton",
             text: "Cut",
             iconCls: "add16",
-            menu: [{ text: "Cut Menu Item" }],
+            menu: [{ text: "Cut Menu Item" }]
           },
           {
             text: "Copy",
-            iconCls: "add16",
+            iconCls: "add16"
           },
           {
             text: "Paste",
             iconCls: "add16",
-            menu: [{ text: "Paste Menu Item" }],
+            menu: [{ text: "Paste Menu Item" }]
           },
           {
             text: "Format",
-            iconCls: "add16",
-          },
-        ],
-      },
+            iconCls: "add16"
+          }
+        ]
+      }
     },
     {
       folder: "btn-group",
@@ -44,37 +44,37 @@ $Shortcuts = {
         columns: 2,
         title: "Manifest",
         defaults: {
-          scale: "small",
+          scale: "small"
         },
         items: [
           {
             xtype: "splitbutton",
             text: "Menu Button",
             iconCls: "add16",
-            menu: [{ text: "Menu Item 1" }],
+            menu: [{ text: "Menu Item 1" }]
           },
           {
             xtype: "splitbutton",
             text: "Cut",
             iconCls: "add16",
-            menu: [{ text: "Cut Menu Item" }],
+            menu: [{ text: "Cut Menu Item" }]
           },
           {
             text: "Copy",
-            iconCls: "add16",
+            iconCls: "add16"
           },
           {
             text: "Paste",
             iconCls: "add16",
-            menu: [{ text: "Paste Menu Item" }],
+            menu: [{ text: "Paste Menu Item" }]
           },
           {
             text: "Format",
-            iconCls: "add16",
-          },
-        ],
-      },
-    },
+            iconCls: "add16"
+          }
+        ]
+      }
+    }
   ],
 
   "widget.progressbar": [
@@ -86,9 +86,9 @@ $Shortcuts = {
       config: {
         width: 100,
         value: 1,
-        animate: false,
-      },
-    },
+        animate: false
+      }
+    }
   ],
 
   "widget.tab": [
@@ -101,14 +101,14 @@ $Shortcuts = {
         items: [
           {
             title: "Tab 1",
-            html: "test",
+            html: "test"
           },
           {
             title: "Tab 2",
-            html: "test",
-          },
-        ],
-      },
+            html: "test"
+          }
+        ]
+      }
     },
     {
       xtype: "widget.tabpanel",
@@ -117,17 +117,17 @@ $Shortcuts = {
       delegate: ".x-tab-bar",
       offsets: {
         bottom: 3,
-        left: 1,
+        left: 1
       },
       config: {
         dock: "top",
         items: [
           {
-            text: "Tab 1",
-          },
+            text: "Tab 1"
+          }
         ],
-        width: 300,
-      },
+        width: 300
+      }
     },
     {
       filename: "tab-{ui}-top",
@@ -137,12 +137,12 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
-        text: "Normal Top Tab",
-      },
+        text: "Normal Top Tab"
+      }
     },
     {
       filename: "tab-{ui}-top-active",
@@ -152,13 +152,13 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
         active: true,
-        text: "Active Top Tab",
-      },
+        text: "Active Top Tab"
+      }
     },
     {
       filename: "tab-{ui}-top-over",
@@ -168,13 +168,13 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
         cls: "x-tab-over x-tab-top-over",
-        text: "Over Top Tab",
-      },
+        text: "Over Top Tab"
+      }
     },
     {
       filename: "tab-{ui}-top-disabled",
@@ -184,13 +184,13 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
         disabled: true,
-        text: "Disabled Top Tab",
-      },
+        text: "Disabled Top Tab"
+      }
     },
     {
       filename: "tab-{ui}-bottom",
@@ -200,13 +200,13 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
         position: "bottom",
-        text: "Normal Bottom Tab",
-      },
+        text: "Normal Bottom Tab"
+      }
     },
     {
       filename: "tab-{ui}-bottom-active",
@@ -216,14 +216,14 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
         position: "bottom",
         active: true,
-        text: "Active Bottom Tab",
-      },
+        text: "Active Bottom Tab"
+      }
     },
     {
       filename: "tab-{ui}-bottom-over",
@@ -233,14 +233,14 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
         position: "bottom",
         cls: "x-tab-over x-tab-bottom-over",
-        text: "Over Bottom Tab",
-      },
+        text: "Over Bottom Tab"
+      }
     },
     {
       filename: "tab-{ui}-bottom-disabled",
@@ -250,15 +250,15 @@ $Shortcuts = {
           if (which == "tabbar") {
             return {
               minTabWidth: 20,
-              maxTabWidth: 80,
+              maxTabWidth: 80
             };
           }
         },
         position: "bottom",
         disabled: true,
-        text: "Disabled Bottom Tab",
-      },
-    },
+        text: "Disabled Bottom Tab"
+      }
+    }
   ],
 
   "widget.window": [
@@ -269,8 +269,8 @@ $Shortcuts = {
       config: {
         title: "Window Header",
         baseCls: "x-window-header",
-        dock: "top",
-      },
+        dock: "top"
+      }
     },
     {
       xtype: "widget.header",
@@ -279,8 +279,8 @@ $Shortcuts = {
       config: {
         title: "Window Header",
         baseCls: "x-window-header",
-        dock: "bottom",
-      },
+        dock: "bottom"
+      }
     },
     {
       xtype: "widget.header",
@@ -289,8 +289,8 @@ $Shortcuts = {
       config: {
         title: "Window Header",
         baseCls: "x-window-header",
-        dock: "left",
-      },
+        dock: "left"
+      }
     },
     {
       xtype: "widget.header",
@@ -299,8 +299,8 @@ $Shortcuts = {
       config: {
         title: "Window Header",
         baseCls: "x-window-header",
-        dock: "right",
-      },
+        dock: "right"
+      }
     },
     {
       xtype: "widget.window",
@@ -318,19 +318,19 @@ $Shortcuts = {
         fbar: {
           items: [
             {
-              text: "Submit",
-            },
-          ],
+              text: "Submit"
+            }
+          ]
         },
         tbar: {
           items: [
             {
-              text: "Button",
-            },
-          ],
-        },
-      },
-    },
+              text: "Button"
+            }
+          ]
+        }
+      }
+    }
   ],
 
   "widget.panel": [
@@ -340,14 +340,14 @@ $Shortcuts = {
       folder: "panel-header",
       filename: "panel-header-{ui}-framed-top",
       offsets: {
-        left: 1,
+        left: 1
       },
       config: {
         title: "Header",
         baseCls: "x-panel-header",
         dock: "top",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
     {
       xtype: "widget.header",
@@ -355,14 +355,14 @@ $Shortcuts = {
       filename: "panel-header-{ui}-framed-bottom",
       reverse: true,
       offsets: {
-        left: 1,
+        left: 1
       },
       config: {
         title: "Header",
         baseCls: "x-panel-header",
         dock: "bottom",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
     {
       xtype: "widget.header",
@@ -374,8 +374,8 @@ $Shortcuts = {
         height: 200,
         dock: "left",
         orientation: "vertical",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
     {
       xtype: "widget.header",
@@ -388,8 +388,8 @@ $Shortcuts = {
         height: 200,
         dock: "right",
         orientation: "vertical",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
 
     {
@@ -397,15 +397,15 @@ $Shortcuts = {
       folder: "panel-header",
       filename: "panel-header-{ui}-framed-collapsed-top",
       offsets: {
-        left: 1,
+        left: 1
       },
       config: {
         title: "Header",
         baseCls: "x-panel-header",
         cls: "x-collapsed x-panel-header-collapsed x-panel-header-{ui}-framed-collapsed x-collapsed-top x-panel-header-collapsed-top x-panel-header-{ui}-framed-collapsed-top",
         dock: "top",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
     {
       xtype: "widget.header",
@@ -413,15 +413,15 @@ $Shortcuts = {
       filename: "panel-header-{ui}-framed-collapsed-bottom",
       reverse: true,
       offsets: {
-        left: 1,
+        left: 1
       },
       config: {
         title: "Header",
         baseCls: "x-panel-header",
         cls: "x-collapsed x-panel-header-collapsed x-panel-header-{ui}-framed-collapsed x-collapsed-bottom x-panel-header-collapsed-bottom x-panel-header-{ui}-framed-collapsed-bottom",
         dock: "bottom",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
     {
       xtype: "widget.header",
@@ -434,8 +434,8 @@ $Shortcuts = {
         height: 200,
         dock: "left",
         orientation: "vertical",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
     {
       xtype: "widget.header",
@@ -449,8 +449,8 @@ $Shortcuts = {
         height: 200,
         dock: "right",
         orientation: "vertical",
-        ui: "{ui}-framed",
-      },
+        ui: "{ui}-framed"
+      }
     },
 
     {
@@ -460,8 +460,8 @@ $Shortcuts = {
         height: 180,
         width: 250,
         frame: true,
-        html: "Framed panel",
-      },
+        html: "Framed panel"
+      }
     },
 
     //panel
@@ -469,26 +469,26 @@ $Shortcuts = {
       xtype: "widget.header",
       filename: "panel-header-{ui}-top",
       offsets: {
-        left: 1,
+        left: 1
       },
       config: {
         title: "Header",
         baseCls: "x-panel-header",
-        dock: "top",
-      },
+        dock: "top"
+      }
     },
     {
       xtype: "widget.header",
       filename: "panel-header-{ui}-bottom",
       reverse: true,
       offsets: {
-        left: 1,
+        left: 1
       },
       config: {
         title: "Header",
         baseCls: "x-panel-header",
-        dock: "bottom",
-      },
+        dock: "bottom"
+      }
     },
     {
       xtype: "widget.panel",
@@ -496,14 +496,14 @@ $Shortcuts = {
       filename: "panel-header-{ui}-left",
       delegate: ".x-panel-header",
       offsets: {
-        top: 3,
+        top: 3
       },
       config: {
         height: 180,
         width: 250,
         title: "test",
-        headerPosition: "left",
-      },
+        headerPosition: "left"
+      }
     },
     {
       xtype: "widget.panel",
@@ -512,15 +512,15 @@ $Shortcuts = {
       reverse: true,
       delegate: ".x-panel-header",
       offsets: {
-        top: 3,
+        top: 3
       },
       config: {
         height: 180,
         width: 250,
         title: "test",
-        headerPosition: "right",
-      },
-    },
+        headerPosition: "right"
+      }
+    }
   ],
 
   "widget.toolbar": [
@@ -530,11 +530,11 @@ $Shortcuts = {
         width: 200,
         items: [
           {
-            text: "test",
-          },
-        ],
-      },
-    },
+            text: "test"
+          }
+        ]
+      }
+    }
   ],
 
   "widget.button": [
@@ -543,40 +543,40 @@ $Shortcuts = {
       filename: "btn-{ui}-small",
       config: {
         scale: "small",
-        text: "Button",
-      },
+        text: "Button"
+      }
     },
     {
       filename: "btn-{ui}-small-over",
       config: {
         scale: "small",
         text: "Button",
-        cls: "x-btn-{ui}-small-over",
-      },
+        cls: "x-btn-{ui}-small-over"
+      }
     },
     {
       filename: "btn-{ui}-small-focus",
       config: {
         scale: "small",
         text: "Button",
-        cls: "x-btn-{ui}-small-focus",
-      },
+        cls: "x-btn-{ui}-small-focus"
+      }
     },
     {
       filename: "btn-{ui}-small-pressed",
       config: {
         scale: "small",
         text: "Button",
-        cls: "x-btn-{ui}-small-pressed",
-      },
+        cls: "x-btn-{ui}-small-pressed"
+      }
     },
     {
       filename: "btn-{ui}-small-disabled",
       config: {
         scale: "small",
         text: "Button",
-        disabled: true,
-      },
+        disabled: true
+      }
     },
 
     //medium button
@@ -584,40 +584,40 @@ $Shortcuts = {
       filename: "btn-{ui}-medium",
       config: {
         scale: "medium",
-        text: "Button",
-      },
+        text: "Button"
+      }
     },
     {
       filename: "btn-{ui}-medium-over",
       config: {
         scale: "medium",
         text: "Button",
-        cls: "x-btn-{ui}-medium-over",
-      },
+        cls: "x-btn-{ui}-medium-over"
+      }
     },
     {
       filename: "btn-{ui}-medium-focus",
       config: {
         scale: "medium",
         text: "Button",
-        cls: "x-btn-{ui}-medium-focus",
-      },
+        cls: "x-btn-{ui}-medium-focus"
+      }
     },
     {
       filename: "btn-{ui}-medium-pressed",
       config: {
         scale: "medium",
         text: "Button",
-        cls: "x-btn-{ui}-medium-pressed",
-      },
+        cls: "x-btn-{ui}-medium-pressed"
+      }
     },
     {
       filename: "btn-{ui}-medium-disabled",
       config: {
         scale: "medium",
         text: "Button",
-        disabled: true,
-      },
+        disabled: true
+      }
     },
 
     //large button
@@ -625,40 +625,40 @@ $Shortcuts = {
       filename: "btn-{ui}-large",
       config: {
         scale: "large",
-        text: "Button",
-      },
+        text: "Button"
+      }
     },
     {
       filename: "btn-{ui}-large-over",
       config: {
         scale: "large",
         text: "Button",
-        cls: "x-btn-{ui}-large-over",
-      },
+        cls: "x-btn-{ui}-large-over"
+      }
     },
     {
       filename: "btn-{ui}-large-focus",
       config: {
         scale: "large",
         text: "Button",
-        cls: "x-btn-{ui}-large-focus",
-      },
+        cls: "x-btn-{ui}-large-focus"
+      }
     },
     {
       filename: "btn-{ui}-large-pressed",
       config: {
         scale: "large",
         text: "Button",
-        cls: "x-btn-{ui}-large-pressed",
-      },
+        cls: "x-btn-{ui}-large-pressed"
+      }
     },
     {
       filename: "btn-{ui}-large-disabled",
       config: {
         scale: "large",
         text: "Button",
-        disabled: true,
-      },
+        disabled: true
+      }
     },
 
     //small toolbar button
@@ -667,8 +667,8 @@ $Shortcuts = {
       config: {
         scale: "small",
         ui: "{ui}-toolbar",
-        text: "Button",
-      },
+        text: "Button"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-small-over",
@@ -676,8 +676,8 @@ $Shortcuts = {
         scale: "small",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-small-over",
-      },
+        cls: "x-btn-{ui}-toolbar-small-over"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-small-focus",
@@ -685,8 +685,8 @@ $Shortcuts = {
         scale: "small",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-small-focus",
-      },
+        cls: "x-btn-{ui}-toolbar-small-focus"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-small-pressed",
@@ -694,8 +694,8 @@ $Shortcuts = {
         scale: "small",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-small-pressed",
-      },
+        cls: "x-btn-{ui}-toolbar-small-pressed"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-small-disabled",
@@ -703,8 +703,8 @@ $Shortcuts = {
         scale: "small",
         ui: "{ui}-toolbar",
         text: "Button",
-        disabled: true,
-      },
+        disabled: true
+      }
     },
 
     //medium toolbar button
@@ -713,8 +713,8 @@ $Shortcuts = {
       config: {
         scale: "medium",
         ui: "{ui}-toolbar",
-        text: "Button",
-      },
+        text: "Button"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-medium-over",
@@ -722,8 +722,8 @@ $Shortcuts = {
         scale: "medium",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-medium-over",
-      },
+        cls: "x-btn-{ui}-toolbar-medium-over"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-medium-focus",
@@ -731,8 +731,8 @@ $Shortcuts = {
         scale: "medium",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-medium-focus",
-      },
+        cls: "x-btn-{ui}-toolbar-medium-focus"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-medium-pressed",
@@ -740,8 +740,8 @@ $Shortcuts = {
         scale: "medium",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-medium-pressed",
-      },
+        cls: "x-btn-{ui}-toolbar-medium-pressed"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-medium-disabled",
@@ -749,8 +749,8 @@ $Shortcuts = {
         scale: "medium",
         ui: "{ui}-toolbar",
         text: "Button",
-        disabled: true,
-      },
+        disabled: true
+      }
     },
 
     //large toolbar button
@@ -759,8 +759,8 @@ $Shortcuts = {
       config: {
         scale: "large",
         ui: "{ui}-toolbar",
-        text: "Button",
-      },
+        text: "Button"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-large-over",
@@ -768,8 +768,8 @@ $Shortcuts = {
         scale: "large",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-large-over",
-      },
+        cls: "x-btn-{ui}-toolbar-large-over"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-large-focus",
@@ -777,8 +777,8 @@ $Shortcuts = {
         scale: "large",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-large-focus",
-      },
+        cls: "x-btn-{ui}-toolbar-large-focus"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-large-pressed",
@@ -786,8 +786,8 @@ $Shortcuts = {
         scale: "large",
         ui: "{ui}-toolbar",
         text: "Button",
-        cls: "x-btn-{ui}-toolbar-large-pressed",
-      },
+        cls: "x-btn-{ui}-toolbar-large-pressed"
+      }
     },
     {
       filename: "btn-{ui}-toolbar-large-disabled",
@@ -795,8 +795,8 @@ $Shortcuts = {
         scale: "large",
         ui: "{ui}-toolbar",
         text: "Button",
-        disabled: true,
-      },
-    },
-  ],
+        disabled: true
+      }
+    }
+  ]
 };

@@ -13,7 +13,7 @@ Ext.define("Ext.chart.axis.segmenter.Segmenter", {
     /**
      * @cfg {Ext.chart.axis.Axis} axis The axis that the Segmenter is bound.
      */
-    axis: null,
+    axis: null
   },
 
   constructor: function (config) {
@@ -83,5 +83,5 @@ Ext.define("Ext.chart.axis.segmenter.Segmenter", {
    * @return {Number} return.step The step count of units.
    * @return {Number|Object} return.unit The unit.
    */
-  preferredStep: Ext.emptyFn,
+  preferredStep: Ext.emptyFn
 });

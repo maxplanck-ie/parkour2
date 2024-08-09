@@ -146,7 +146,7 @@ Ext.define("Ext.ux.rating.Picker", {
      * need to be set directly by user code.
      * @private
      */
-    trackingValue: null,
+    trackingValue: null
   },
 
   config: {
@@ -155,7 +155,7 @@ Ext.define("Ext.ux.rating.Picker", {
      * Specifies an animation to use when changing the `{@link #value}`. When setting
      * this config, it is probably best to set `{@link #trackOver}` to `false`.
      */
-    animate: null,
+    animate: null
   },
 
   // This object describes our element tree from the root.
@@ -174,21 +174,21 @@ Ext.define("Ext.ux.rating.Picker", {
           click: "onClick",
           mousemove: "onMouseMove",
           mouseenter: "onMouseEnter",
-          mouseleave: "onMouseLeave",
+          mouseleave: "onMouseLeave"
         },
 
         children: [
           {
             reference: "valueEl",
-            cls: "u" + Ext.baseCSSPrefix + "rating-picker-value",
+            cls: "u" + Ext.baseCSSPrefix + "rating-picker-value"
           },
           {
             reference: "trackerEl",
-            cls: "u" + Ext.baseCSSPrefix + "rating-picker-tracker",
-          },
-        ],
-      },
-    ],
+            cls: "u" + Ext.baseCSSPrefix + "rating-picker-tracker"
+          }
+        ]
+      }
+    ]
   },
 
   // Tell the Binding system to default to our "value" config.
@@ -350,10 +350,10 @@ Ext.define("Ext.ux.rating.Picker", {
         Ext.merge(
           {
             from: { width: me.valueToPercent(oldValue) },
-            to: { width: newWidth },
+            to: { width: newWidth }
           },
-          animate,
-        ),
+          animate
+        )
       );
     }
 
@@ -464,7 +464,7 @@ Ext.define("Ext.ux.rating.Picker", {
         component: me,
         tracking: me.getTrackingValue(),
         trackOver: me.getTrackOver(),
-        value: me.getValue(),
+        value: me.getValue()
       };
     },
 
@@ -587,6 +587,6 @@ Ext.define("Ext.ux.rating.Picker", {
     valueToPercent: function (value) {
       value = (value / this.getLimit()) * 100;
       return value + "%";
-    },
-  },
+    }
+  }
 });

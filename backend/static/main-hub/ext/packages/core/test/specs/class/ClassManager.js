@@ -15,7 +15,7 @@ describe("Ext.ClassManager", function () {
         },
         Class2: function () {
           console.log(13);
-        },
+        }
       },
       cool: {
         AnotherClass: function () {
@@ -26,8 +26,8 @@ describe("Ext.ClassManager", function () {
         },
         AnotherClass2: function () {
           console.log(23);
-        },
-      },
+        }
+      }
     };
   });
 
@@ -63,15 +63,15 @@ describe("Ext.ClassManager", function () {
           extend: "My.awesome.Class",
           mixins: {
             name1: My.cool.AnotherClass,
-            name2: "My.cool.AnotherClass1",
-          },
+            name2: "My.cool.AnotherClass1"
+          }
         },
         expected = {
           extend: My.awesome.Class,
           mixins: {
             name1: My.cool.AnotherClass,
-            name2: My.cool.AnotherClass1,
-          },
+            name2: My.cool.AnotherClass1
+          }
         },
         classNames;
 
@@ -94,7 +94,7 @@ describe("Ext.ClassManager", function () {
     beforeEach(function () {
       mixinClass1 = manager.create("I.am.the.MixinClass1", {
         config: {
-          mixinConfig: "mixinConfig",
+          mixinConfig: "mixinConfig"
         },
 
         constructor: function () {
@@ -105,7 +105,7 @@ describe("Ext.ClassManager", function () {
 
         mixinMethod1: function () {
           this.mixinMethodCalled = true;
-        },
+        }
       });
 
       mixinClass2 = manager.create("I.am.the.MixinClass2", {
@@ -117,14 +117,14 @@ describe("Ext.ClassManager", function () {
 
         mixinMethod2: function () {
           this.mixinMethodCalled = true;
-        },
+        }
       });
 
       parentClass = manager.create("I.am.the.ParentClass", {
         alias: ["parentclass", "superclass"],
 
         mixins: {
-          mixin1: "I.am.the.MixinClass1",
+          mixin1: "I.am.the.MixinClass1"
         },
 
         config: {
@@ -132,9 +132,9 @@ describe("Ext.ClassManager", function () {
           isCool: false,
           members: {
             abe: "Abraham Elias",
-            ed: "Ed Spencer",
+            ed: "Ed Spencer"
           },
-          hobbies: ["football", "bowling"],
+          hobbies: ["football", "bowling"]
         },
 
         onClassExtended: function (subClass, data) {
@@ -153,7 +153,7 @@ describe("Ext.ClassManager", function () {
 
         parentMethod: function () {
           this.parentMethodCalled = true;
-        },
+        }
       });
 
       subClass = manager.create("I.am.the.SubClass", {
@@ -163,17 +163,17 @@ describe("Ext.ClassManager", function () {
 
         mixins: {
           mixin1: "I.am.the.MixinClass1",
-          mixin2: "I.am.the.MixinClass2",
+          mixin2: "I.am.the.MixinClass2"
         },
         config: {
           name: "subClass",
           isCool: true,
           members: {
             jacky: "Jacky Nguyen",
-            tommy: "Tommy Maintz",
+            tommy: "Tommy Maintz"
           },
           hobbies: ["sleeping", "eating", "movies"],
-          isSpecial: true,
+          isSpecial: true
         },
         constructor: function () {
           this.subConstrutorCalled = true;
@@ -184,7 +184,7 @@ describe("Ext.ClassManager", function () {
         },
         myOwnMethod: function () {
           this.myOwnMethodCalled = true;
-        },
+        }
       });
     });
 
@@ -213,7 +213,7 @@ describe("Ext.ClassManager", function () {
         subClass.addStatics({
           staticMethod: function () {
             called = true;
-          },
+          }
         });
 
         expect(subClass.staticMethod).toBeDefined();
@@ -225,7 +225,7 @@ describe("Ext.ClassManager", function () {
       it("multiple with object map argument", function () {
         subClass.addStatics({
           staticProperty: "something",
-          staticMethod: function () {},
+          staticMethod: function () {}
         });
 
         expect(subClass.staticProperty).toEqual("something");
@@ -256,10 +256,10 @@ describe("Ext.ClassManager", function () {
             abe: "Abraham Elias",
             ed: "Ed Spencer",
             jacky: "Jacky Nguyen",
-            tommy: "Tommy Maintz",
+            tommy: "Tommy Maintz"
           },
           hobbies: ["sleeping", "eating", "movies"],
-          isSpecial: true,
+          isSpecial: true
         });
       });
 
@@ -276,8 +276,8 @@ describe("Ext.ClassManager", function () {
           name: "newName",
           isCool: false,
           members: {
-            aaron: "Aaron Conran",
-          },
+            aaron: "Aaron Conran"
+          }
         });
 
         expect(obj.getName()).toEqual("newName");
@@ -323,7 +323,7 @@ describe("Ext.ClassManager", function () {
           constructor: function () {
             this.foo = 1;
             this.T = Self;
-          },
+          }
         };
       });
 
@@ -349,7 +349,7 @@ describe("Ext.ClassManager", function () {
 
         eat: function (food) {
           this.eatenFood = food;
-        },
+        }
       });
 
       manager.create("Test.stuff.Developer", {
@@ -366,7 +366,7 @@ describe("Ext.ClassManager", function () {
         code: function (language) {
           this.languageCoded = language;
           this.eat("bugs");
-        },
+        }
       });
     });
 
@@ -405,7 +405,7 @@ describe("Ext.ClassManager", function () {
         true,
         "Jacky",
         24,
-        "male",
+        "male"
       );
       me.code("javascript");
 
@@ -431,7 +431,7 @@ describe("Ext.ClassManager", function () {
           someMethod: function () {
             this.someMethodCalled = true;
           },
-          someProperty: "something",
+          someProperty: "something"
         });
 
         expect(Something.Cool).toBeDefined();
@@ -442,7 +442,7 @@ describe("Ext.ClassManager", function () {
     describe("alias xtype", function () {
       it("should set xtype as a static class property", function () {
         var test = Ext.define("Something.Cool", {
-          alias: "widget.cool",
+          alias: "widget.cool"
         });
 
         expect(Something.Cool.xtype).toEqual("cool");
@@ -458,7 +458,7 @@ describe("Ext.ClassManager", function () {
             this.someMethodCalled = true;
           },
 
-          someProperty: "something",
+          someProperty: "something"
         });
 
         expect(Something.CoolAsWell).toBeDefined();
@@ -467,7 +467,7 @@ describe("Ext.ClassManager", function () {
 
       it("should create the alternate with an array for alternateClassName property", function () {
         Ext.define("Something.Cool", {
-          alternateClassName: ["Something.CoolAsWell", "Something.AlsoCool"],
+          alternateClassName: ["Something.CoolAsWell", "Something.AlsoCool"]
         });
 
         expect(Something.CoolAsWell).toBe(Something.Cool);
@@ -512,7 +512,7 @@ describe("Ext.ClassManager", function () {
         "FooTest5",
         "FooTest5.ns1",
         "FooTest5.ns1.ns2",
-        "FooTest5.ns1.ns2.ns3",
+        "FooTest5.ns1.ns2.ns3"
       );
 
       expect(w.FooTest5).toBeDefined();

@@ -19,7 +19,7 @@ Ext.define("Ext.ux.DateRangePicker", {
             drpItemRole: "containerFrom",
             layout: {
               type: "vbox",
-              align: "left",
+              align: "left"
             },
             items: [
               {
@@ -29,17 +29,17 @@ Ext.define("Ext.ux.DateRangePicker", {
                 listeners: {
                   select: function (picker, date) {
                     this.up("daterangepicker").setRange();
-                  },
-                },
-              },
-            ],
+                  }
+                }
+              }
+            ]
           },
           {
             xtype: "container",
             drpItemRole: "containerTo",
             layout: {
               type: "vbox",
-              align: "right",
+              align: "right"
             },
             items: [
               {
@@ -49,11 +49,11 @@ Ext.define("Ext.ux.DateRangePicker", {
                 listeners: {
                   select: function (picker, date) {
                     this.up("daterangepicker").setRange();
-                  },
-                },
-              },
-            ],
-          },
+                  }
+                }
+              }
+            ]
+          }
         ],
 
         buttons: [
@@ -68,37 +68,37 @@ Ext.define("Ext.ux.DateRangePicker", {
                   drpItemRole: "drpThisWeekPresetOption",
                   handler: function () {
                     this.up("daterangepicker").setPresetPeriod("thisWeek");
-                  },
+                  }
                 },
                 {
                   hideOnClick: false,
                   drpItemRole: "drpLastWeekPresetOption",
                   handler: function () {
                     this.up("daterangepicker").setPresetPeriod("lastWeek");
-                  },
+                  }
                 },
                 {
                   hideOnClick: false,
                   drpItemRole: "drpThisMonthPresetOption",
                   handler: function () {
                     this.up("daterangepicker").setPresetPeriod("thisMonth");
-                  },
+                  }
                 },
                 {
                   hideOnClick: false,
                   drpItemRole: "drpLastMonthPresetOption",
                   handler: function () {
                     this.up("daterangepicker").setPresetPeriod("lastMonth");
-                  },
+                  }
                 },
                 {
                   hideOnClick: false,
                   drpItemRole: "drpThisYearPresetOption",
                   handler: function () {
                     this.up("daterangepicker").setPresetPeriod("thisYear");
-                  },
-                },
-              ],
+                  }
+                }
+              ]
             },
 
             // needed to hide the menu: http://www.sencha.com/forum/showthread.php?262407-Nested-buttons-with-menus/page2
@@ -109,8 +109,8 @@ Ext.define("Ext.ux.DateRangePicker", {
                     btn.menu.hide();
                   }
                 });
-              },
-            },
+              }
+            }
           },
           {
             drpItemRole: "confirmRangeBtn",
@@ -126,13 +126,13 @@ Ext.define("Ext.ux.DateRangePicker", {
               datePicker.fireEvent(
                 "select",
                 datePicker,
-                datePicker.getPickerValue(),
+                datePicker.getPickerValue()
               );
-            },
-          },
-        ],
-      },
-    ],
+            }
+          }
+        ]
+      }
+    ]
   },
 
   initComponent: function () {
@@ -167,7 +167,7 @@ Ext.define("Ext.ux.DateRangePicker", {
       bindDateFields: false,
       boundStartField: null,
       boundEndField: null,
-      diffPreciseUnits: null,
+      diffPreciseUnits: null
     };
 
     // Merge the defaults with the instance configurations if any
@@ -180,11 +180,11 @@ Ext.define("Ext.ux.DateRangePicker", {
       me.drpDefaults.showTimePickers &&
       (Ext.Date.parse(
         me.drpDefaults.timePickerFromValue,
-        me.drpDefaults.timeFormat,
+        me.drpDefaults.timeFormat
       ) == null ||
         Ext.Date.parse(
           me.drpDefaults.timePickerToValue,
-          me.drpDefaults.timeFormat,
+          me.drpDefaults.timeFormat
         ) == null)
     ) {
       me.drpDefaults.timePickerFromValue = null;
@@ -199,32 +199,32 @@ Ext.define("Ext.ux.DateRangePicker", {
         me.setIconCls(drpConfig.mainBtnIconCls);
 
         me.down("button[drpItemRole=drpPresetPeriodsBtn]").setText(
-          drpConfig.presetPeriodsBtnText,
+          drpConfig.presetPeriodsBtnText
         );
         me.down("button[drpItemRole=drpPresetPeriodsBtn]").setIconCls(
-          drpConfig.presetPeriodsBtnIconCls,
+          drpConfig.presetPeriodsBtnIconCls
         );
         me.down("menuitem[drpItemRole=drpThisWeekPresetOption]").setText(
-          drpConfig.presetPeriodsThisWeekText,
+          drpConfig.presetPeriodsThisWeekText
         );
         me.down("menuitem[drpItemRole=drpLastWeekPresetOption]").setText(
-          drpConfig.presetPeriodsLastWeekText,
+          drpConfig.presetPeriodsLastWeekText
         );
         me.down("menuitem[drpItemRole=drpThisMonthPresetOption]").setText(
-          drpConfig.presetPeriodsThisMonthText,
+          drpConfig.presetPeriodsThisMonthText
         );
         me.down("menuitem[drpItemRole=drpLastMonthPresetOption]").setText(
-          drpConfig.presetPeriodsLastMonthText,
+          drpConfig.presetPeriodsLastMonthText
         );
         me.down("menuitem[drpItemRole=drpThisYearPresetOption]").setText(
-          drpConfig.presetPeriodsThisYearText,
+          drpConfig.presetPeriodsThisYearText
         );
 
         me.down("button[drpItemRole=confirmRangeBtn]").setText(
-          drpConfig.confirmBtnText,
+          drpConfig.confirmBtnText
         );
         me.down("button[drpItemRole=confirmRangeBtn]").setIconCls(
-          drpConfig.confirmBtnIconCls,
+          drpConfig.confirmBtnIconCls
         );
 
         var panel = me.down("panel[drpItemRole=pickContainer]");
@@ -237,7 +237,7 @@ Ext.define("Ext.ux.DateRangePicker", {
           Ext.Date.parse(drpConfig.selectedStart, "Y-m-d", true)
         ) {
           pickFrom.setValue(
-            Ext.Date.parse(drpConfig.selectedStart, "Y-m-d", true),
+            Ext.Date.parse(drpConfig.selectedStart, "Y-m-d", true)
           );
         } else {
           var dt = new Date();
@@ -255,7 +255,7 @@ Ext.define("Ext.ux.DateRangePicker", {
         // add time pickers if requested
         if (drpConfig.showTimePickers) {
           var fromContainer = panel.down(
-            "container[drpItemRole=containerFrom]",
+            "container[drpItemRole=containerFrom]"
           );
           var toContainer = panel.down("container[drpItemRole=containerTo]");
 
@@ -271,7 +271,7 @@ Ext.define("Ext.ux.DateRangePicker", {
               ? Ext.Date.parse("00:00:00", "00:00:00")
               : Ext.Date.parse(
                   drpConfig.timePickerFromValue,
-                  drpConfig.timeFormat,
+                  drpConfig.timeFormat
                 ),
             queryDelay: drpConfig.timePickersQueryDelay,
             listeners: {
@@ -281,8 +281,8 @@ Ext.define("Ext.ux.DateRangePicker", {
                 }
                 fld.up("daterangepicker").setSecondMinDate();
                 fld.up("daterangepicker").setRange();
-              },
-            },
+              }
+            }
           });
 
           toContainer.add({
@@ -297,7 +297,7 @@ Ext.define("Ext.ux.DateRangePicker", {
               ? new Date()
               : Ext.Date.parse(
                   drpConfig.timePickerToValue,
-                  drpConfig.timeFormat,
+                  drpConfig.timeFormat
                 ),
             queryDelay: drpConfig.timePickersQueryDelay,
             listeners: {
@@ -307,13 +307,13 @@ Ext.define("Ext.ux.DateRangePicker", {
                 }
                 fld.up("daterangepicker").setSecondMinDate();
                 fld.up("daterangepicker").setRange();
-              },
-            },
+              }
+            }
           });
         }
 
         me.setRange();
-      },
+      }
     });
 
     me.callParent();
@@ -330,11 +330,11 @@ Ext.define("Ext.ux.DateRangePicker", {
     var panel = me.down("panel[drpItemRole=pickContainer]");
     var dFrom = Ext.Date.format(
       panel.down("datepicker[drpItemRole=pickFrom]").getValue(),
-      drpConfig.dateFormat,
+      drpConfig.dateFormat
     );
     var dTo = Ext.Date.format(
       panel.down("datepicker[drpItemRole=pickTo]").getValue(),
-      drpConfig.dateFormat,
+      drpConfig.dateFormat
     );
 
     me.setText(
@@ -345,7 +345,7 @@ Ext.define("Ext.ux.DateRangePicker", {
         dFrom +
         " - " +
         dTo +
-        "</b>",
+        "</b>"
     );
 
     if (drpConfig.showButtonTip) {
@@ -355,7 +355,7 @@ Ext.define("Ext.ux.DateRangePicker", {
           ? " " +
             Ext.Date.format(
               me.down("timefield[drpItemRole=timePickerFrom]").getValue(),
-              drpConfig.timeFormat,
+              drpConfig.timeFormat
             )
           : "") +
         " - " +
@@ -364,7 +364,7 @@ Ext.define("Ext.ux.DateRangePicker", {
           ? " " +
             Ext.Date.format(
               me.down("timefield[drpItemRole=timePickerTo]").getValue(),
-              drpConfig.timeFormat,
+              drpConfig.timeFormat
             )
           : "");
 
@@ -382,10 +382,10 @@ Ext.define("Ext.ux.DateRangePicker", {
       drpConfig.boundEndField.isXType("datefield")
     ) {
       drpConfig.boundStartField.setValue(
-        panel.down("datepicker[drpItemRole=pickFrom]").getValue(),
+        panel.down("datepicker[drpItemRole=pickFrom]").getValue()
       );
       drpConfig.boundEndField.setValue(
-        panel.down("datepicker[drpItemRole=pickTo]").getValue(),
+        panel.down("datepicker[drpItemRole=pickTo]").getValue()
       );
     }
   },
@@ -423,18 +423,18 @@ Ext.define("Ext.ux.DateRangePicker", {
 
         var compDateFrom = Ext.Date.parse(
           "2015-01-01 " + Ext.Date.format(tFrom, "H:i:s"),
-          "Y-m-d H:i:s",
+          "Y-m-d H:i:s"
         );
         var compDateTo = Ext.Date.parse(
           "2015-01-01 " + Ext.Date.format(tTo, "H:i:s"),
-          "Y-m-d H:i:s",
+          "Y-m-d H:i:s"
         );
 
         if (compDateFrom.getTime() > compDateTo.getTime()) {
           panel
             .down("timefield[drpItemRole=timePickerTo]")
             .setValue(
-              panel.down("timefield[drpItemRole=timePickerFrom]").getValue(),
+              panel.down("timefield[drpItemRole=timePickerFrom]").getValue()
             );
         }
       }
@@ -462,7 +462,7 @@ Ext.define("Ext.ux.DateRangePicker", {
 
       case "lastWeek":
         var beforeOneWeek = new Date(
-          new Date().getTime() - 60 * 60 * 24 * 7 * 1000,
+          new Date().getTime() - 60 * 60 * 24 * 7 * 1000
         );
         var day = beforeOneWeek.getDay();
         var diffToMonday = beforeOneWeek.getDate() - day + (day === 0 ? -6 : 1);
@@ -545,11 +545,11 @@ Ext.define("Ext.ux.DateRangePicker", {
       // start/end times as strings in the user-provided format
       var startTimeFmt = Ext.Date.format(
         startTimeField.getValue(),
-        drpConfig.timeFormat,
+        drpConfig.timeFormat
       );
       var endTimeFmt = Ext.Date.format(
         endTimeField.getValue(),
-        drpConfig.timeFormat,
+        drpConfig.timeFormat
       );
     }
 
@@ -578,7 +578,7 @@ Ext.define("Ext.ux.DateRangePicker", {
       endDateWeekNumber: Ext.Date.format(endDateObj, "W"), // ISO-8601 week number of year, weeks ending on Monday
       endDateDay: Ext.Date.format(endDateObj, "d"), // day number of the end date (01-31)
       endDateDayName: Ext.Date.format(endDateObj, "l"), // day name of the end date (Monday-Sunday, according to the current Ext locale)
-      endDateDayOfWeek: Ext.Date.format(endDateObj, "N"), // ISO-8601 numeric representation of the day of the week (1-Monday ... 7-Sunday)
+      endDateDayOfWeek: Ext.Date.format(endDateObj, "N") // ISO-8601 numeric representation of the day of the week (1-Monday ... 7-Sunday)
     };
 
     if (drpConfig.showTimePickers) {
@@ -589,17 +589,14 @@ Ext.define("Ext.ux.DateRangePicker", {
         startDateTimeFmt: startDateFmt + " " + startTimeFmt,
         startDateObj: Ext.Date.parse(
           startDateYmd + " " + startTimeHis,
-          "Y-m-d H:i:s",
+          "Y-m-d H:i:s"
         ), // add the time to the date object
 
         endTimeHis: endTimeHis,
         endTimeFmt: endTimeFmt,
         endDateTimeYmdHis: endDateYmd + " " + endTimeHis,
         endDateTimeFmt: endDateFmt + " " + endTimeFmt,
-        endDateObj: Ext.Date.parse(
-          endDateYmd + " " + endTimeHis,
-          "Y-m-d H:i:s",
-        ), // add the time to the date object
+        endDateObj: Ext.Date.parse(endDateYmd + " " + endTimeHis, "Y-m-d H:i:s") // add the time to the date object
       };
     }
 
@@ -614,12 +611,12 @@ Ext.define("Ext.ux.DateRangePicker", {
       periodFmt:
         Ext.Date.format(
           retObj.startDateObj,
-          drpConfig.dateFormat + " " + drpConfig.timeFormat,
+          drpConfig.dateFormat + " " + drpConfig.timeFormat
         ) +
         " - " +
         Ext.Date.format(
           retObj.endDateObj,
-          drpConfig.dateFormat + " " + drpConfig.timeFormat,
+          drpConfig.dateFormat + " " + drpConfig.timeFormat
         ),
       yearsCount: Ext.Date.diff(retObj.startDateObj, retObj.endDateObj, "y"), // full years within the period
       monthsCount: Ext.Date.diff(retObj.startDateObj, retObj.endDateObj, "mo"), // full months within the period
@@ -631,8 +628,8 @@ Ext.define("Ext.ux.DateRangePicker", {
       millisecondsCount: Ext.Date.diff(
         retObj.startDateObj,
         retObj.endDateObj,
-        "ms",
-      ), // milliseconds within the period
+        "ms"
+      ) // milliseconds within the period
     };
 
     return Ext.apply(retObj, {
@@ -640,8 +637,8 @@ Ext.define("Ext.ux.DateRangePicker", {
       periodDetailsPrecise: Ext.Date.diffPrecise(
         retObj.startDateObj,
         retObj.endDateObj,
-        drpConfig.diffPreciseUnits,
-      ),
+        drpConfig.diffPreciseUnits
+      )
     });
-  },
+  }
 });

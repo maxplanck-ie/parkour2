@@ -225,6 +225,6 @@ Ext.define("Ext.util.ProtoElement", function () {
       }
 
       return to;
-    },
+    }
   };
 });

@@ -22,7 +22,7 @@ Ext.define("Ext.tree.NavigationModel", {
 
     me.view.grid.on({
       columnschanged: me.onColumnsChanged,
-      scope: me,
+      scope: me
     });
   },
 
@@ -34,13 +34,13 @@ Ext.define("Ext.tree.NavigationModel", {
         key: "8",
         shift: true,
         handler: fn,
-        scope: this,
+        scope: this
       },
       {
         key: Ext.event.Event.NUM_MULTIPLY,
         handler: fn,
-        scope: this,
-      },
+        scope: this
+      }
     ]);
   },
 
@@ -57,7 +57,7 @@ Ext.define("Ext.tree.NavigationModel", {
     record,
     row,
     recordIndex,
-    clickEvent,
+    clickEvent
   ) {
     this.callParent([
       view,
@@ -66,7 +66,7 @@ Ext.define("Ext.tree.NavigationModel", {
       record,
       row,
       recordIndex,
-      clickEvent,
+      clickEvent
     ]);
 
     // Return false if node toggled.
@@ -142,5 +142,5 @@ Ext.define("Ext.tree.NavigationModel", {
   // (asterisk) on keypad expands all nodes.
   onAsterisk: function (keyEvent) {
     this.view.ownerGrid.expandAll();
-  },
+  }
 });

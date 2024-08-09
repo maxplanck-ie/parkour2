@@ -34,7 +34,7 @@ Ext.define("Ext.data.session.BatchVisitor", {
         delete bucket.entity; // so we don't think its an operation
         for (operation in bucket) {
           operation = proxy.createOperation(operation, {
-            records: bucket[operation],
+            records: bucket[operation]
           });
           operation.entityType = entity;
 
@@ -62,7 +62,7 @@ Ext.define("Ext.data.session.BatchVisitor", {
       bucket =
         map[name] ||
         (map[name] = {
-          entity: record.self,
+          entity: record.self
         });
 
     //  User: {
@@ -73,5 +73,5 @@ Ext.define("Ext.data.session.BatchVisitor", {
     //  }
     bucket = bucket[operation] || (bucket[operation] = []);
     bucket.push(record);
-  },
+  }
 });

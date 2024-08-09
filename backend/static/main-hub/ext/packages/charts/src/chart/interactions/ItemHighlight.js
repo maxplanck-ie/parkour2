@@ -18,7 +18,7 @@ Ext.define("Ext.chart.interactions.ItemHighlight", {
       mousemove: "onMouseMoveGesture",
       mousedown: "onMouseDownGesture",
       mouseup: "onMouseUpGesture",
-      mouseleave: "onMouseUpGesture",
+      mouseleave: "onMouseUpGesture"
     },
 
     /**
@@ -27,7 +27,7 @@ Ext.define("Ext.chart.interactions.ItemHighlight", {
      * Series items will only be highlighted/unhighlighted on mouse click.
      * This config has no effect on touch devices.
      */
-    sticky: false,
+    sticky: false
   },
 
   stickyHighlightItem: null,
@@ -123,5 +123,5 @@ Ext.define("Ext.chart.interactions.ItemHighlight", {
     }
     me.stickyHighlightItem = item;
     me.highlight(item);
-  },
+  }
 });

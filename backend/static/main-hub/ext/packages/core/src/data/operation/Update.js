@@ -16,10 +16,10 @@ Ext.define("Ext.data.operation.Update", {
   order: 20,
 
   config: {
-    recordCreator: Ext.identityFn,
+    recordCreator: Ext.identityFn
   },
 
   doExecute: function () {
     return this.getProxy().update(this);
-  },
+  }
 });

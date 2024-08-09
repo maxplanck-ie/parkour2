@@ -114,7 +114,7 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
       LITERAL: LITERAL,
       NULL: NULL,
       NUMBER: NUMBER,
-      STRING: STRING,
+      STRING: STRING
     },
 
     config: {
@@ -127,7 +127,7 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
       keywords: {
         null: { type: "literal", is: NULL, value: null },
         false: { type: "literal", is: BOOLEAN, value: false },
-        true: { type: "literal", is: BOOLEAN, value: true },
+        true: { type: "literal", is: BOOLEAN, value: true }
       },
 
       /**
@@ -148,8 +148,8 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
         "{": "curlyOpen",
         "}": "curlyClose",
         "(": "parenOpen",
-        ")": "parenClose",
-      },
+        ")": "parenClose"
+      }
     },
 
     /**
@@ -348,7 +348,7 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
             block.token = def = {
               type: "operator",
               value: op,
-              is: { operator: true },
+              is: { operator: true }
             };
 
             def.is[name] = true;
@@ -467,7 +467,7 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
           (keywords && keywords[value]) || {
             type: "ident",
             is: IDENT,
-            value: value,
+            value: value
           }
         );
       },
@@ -525,7 +525,7 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
           is: NUMBER,
           // Beware parseFloat as it will stop parsing and return what it could
           // parse. For example parseFloat('1x') == 1 whereas +'1x' == NaN.
-          value: +text.substring(start, me.pos),
+          value: +text.substring(start, me.pos)
         };
 
         if (!isFinite(token.value)) {
@@ -611,7 +611,7 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
         return {
           type: "literal",
           is: STRING,
-          value: str,
+          value: str
         };
       },
 
@@ -639,7 +639,7 @@ Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
         }
 
         return (this.error = error);
-      },
-    },
+      }
+    }
   };
 });

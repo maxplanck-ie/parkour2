@@ -41,7 +41,7 @@ Ext.define(
         '<div class="{0}-br" role="presentation">',
         '<div class="{0}-bc" role="presentation"></div>',
         "</div>",
-        "</div>",
+        "</div>"
       ].join(""),
       scriptTagRe = /(?:<script([^>]*)?>)((\n|\r|.)*?)(?:<\/script>)/gi,
       replaceScriptTagRe = /(?:<script.*?>)((\n|\r|.)*?)(?:<\/script>)/gi,
@@ -70,7 +70,7 @@ Ext.define(
       emptyRange = DOC.createRange ? DOC.createRange() : null,
       inputTags = {
         INPUT: true,
-        TEXTAREA: true,
+        TEXTAREA: true
       };
 
     //<feature legacyBrowser>
@@ -104,7 +104,7 @@ Ext.define(
         "Ext.dom.Fly",
         "Ext.event.publisher.MouseEnterLeave",
         "Ext.fx.Manager",
-        "Ext.fx.Anim",
+        "Ext.fx.Anim"
       ],
 
       skipGarbageCollection: false,
@@ -146,7 +146,7 @@ Ext.define(
           SELECT: true,
           TEXTAREA: true,
           HTML: Ext.isIE ? true : false,
-          BODY: Ext.isIE ? false : true,
+          BODY: Ext.isIE ? false : true
         },
 
         // <object> element is naturally tabbable only in IE8 and below
@@ -156,7 +156,7 @@ Ext.define(
           INPUT: true,
           SELECT: true,
           TEXTAREA: true,
-          OBJECT: Ext.isIE8m ? true : false,
+          OBJECT: Ext.isIE8m ? true : false
         },
 
         tabbableSavedCounterAttribute: "data-tabindex-counter",
@@ -173,7 +173,7 @@ Ext.define(
               .replace(msRe, "ms-")
               .replace(camelRe, camelReplaceFn))
           );
-        },
+        }
       },
 
       /**
@@ -195,7 +195,7 @@ Ext.define(
             target: this,
             key: key,
             fn: fn,
-            scope: scope,
+            scope: scope
           };
         } else {
           config = {
@@ -205,7 +205,7 @@ Ext.define(
             ctrl: key.ctrl,
             alt: key.alt,
             fn: fn,
-            scope: scope,
+            scope: scope
           };
         }
         return new Ext.util.KeyMap(config);
@@ -220,10 +220,10 @@ Ext.define(
         return new Ext.util.KeyMap(
           Ext.apply(
             {
-              target: this,
+              target: this
             },
-            config,
-          ),
+            config
+          )
         );
       },
 
@@ -268,7 +268,7 @@ Ext.define(
 
         // Clear any 'paused' defaults.
         Ext.fx.Manager.setFxDefaults(me.id, {
-          delay: 0,
+          delay: 0
         });
 
         animConfig = {
@@ -289,7 +289,7 @@ Ext.define(
           keyframes: config.keyframes,
           from: config.from || {},
           to: Ext.apply({}, config),
-          userConfig: config,
+          userConfig: config
         };
         Ext.apply(animConfig.to, config.to);
 
@@ -376,7 +376,7 @@ Ext.define(
             afteranimate: "afterAnimate",
             beforeanimate: "beforeAnimate",
             scope: me,
-            single: true,
+            single: true
           });
           if (listeners) {
             anim.on(listeners);
@@ -437,8 +437,8 @@ Ext.define(
               cls +
               "' role='presentation'>" +
               Ext.String.format(boxMarkup, cls) +
-              "</div>",
-          ),
+              "</div>"
+          )
         );
         el.selectNode("." + cls + "-mc").appendChild(this.dom);
         return el;
@@ -527,7 +527,7 @@ Ext.define(
           top: value,
           bottom: value,
           "z-index": "",
-          position: "static",
+          position: "static"
         });
       },
 
@@ -581,7 +581,7 @@ Ext.define(
           data[ORIGINALCLIP] = {
             o: style[OVERFLOW],
             x: style[OVERFLOWX],
-            y: style[OVERFLOWY],
+            y: style[OVERFLOWY]
           };
           me.setStyle(OVERFLOW, HIDDEN);
           me.setStyle(OVERFLOWX, HIDDEN);
@@ -697,9 +697,9 @@ Ext.define(
                 } else {
                   el.show();
                 }
-              },
-            },
-          }),
+              }
+            }
+          })
         );
         return this;
       },
@@ -744,10 +744,10 @@ Ext.define(
                     el.hide();
                   }
                 }
-              },
-            },
+              }
+            }
           },
-          o,
+          o
         );
         me.animate(o);
         return me;
@@ -813,8 +813,8 @@ Ext.define(
               position: "absolute",
               "pointer-events": "none",
               "z-index": 35000,
-              border: "0px solid " + color,
-            },
+              border: "0px solid " + color
+            }
           });
 
           proxyAnim = new Ext.fx.Anim({
@@ -827,7 +827,7 @@ Ext.define(
               borderWidth: 0,
               opacity: 1,
               height: box.height,
-              width: box.width,
+              width: box.width
             },
             to: {
               top: box.y - 20,
@@ -835,8 +835,8 @@ Ext.define(
               borderWidth: 10,
               opacity: 0,
               height: box.height + 40,
-              width: box.width + 40,
-            },
+              width: box.width + 40
+            }
           });
           proxyAnim.on("afteranimate", function () {
             proxy.destroy();
@@ -850,11 +850,11 @@ Ext.define(
           duration: Math.max(obj.duration, 500) * 2 || 2000,
           listeners: {
             beforeanimate: {
-              fn: beforeAnim,
-            },
+              fn: beforeAnim
+            }
           },
           callback: obj.callback,
-          scope: obj.scope,
+          scope: obj.scope
         });
         return me;
       },
@@ -904,7 +904,7 @@ Ext.define(
 
         if (!loader) {
           data.loader = loader = new Ext.ElementLoader({
-            target: me,
+            target: me
           });
         }
         return loader;
@@ -966,7 +966,7 @@ Ext.define(
             xy = el.getXY(),
             position = el.getPositioning(),
             to = {
-              opacity: 0,
+              opacity: 0
             };
           switch (anchor) {
             case "t":
@@ -1014,9 +1014,9 @@ Ext.define(
             duration: 500,
             easing: "ease-out",
             listeners: {
-              beforeanimate: beforeAnim,
-            },
-          }),
+              beforeanimate: beforeAnim
+            }
+          })
         );
         return me;
       },
@@ -1110,7 +1110,7 @@ Ext.define(
               fn = event.fn || event;
               fn.apply(event.scope || lns.scope || WIN, arguments);
             }
-          },
+          }
         });
 
         me.animate(
@@ -1118,8 +1118,8 @@ Ext.define(
             duration: 1000,
             easing: "ease-in",
             from: from,
-            to: to,
-          }),
+            to: to
+          })
         );
         return me;
       },
@@ -1383,7 +1383,7 @@ Ext.define(
       mask: function (
         msg,
         msgCls /* private - passed by AbstractComponent.mask to avoid the need to interrogate the DOM to get the height*/,
-        elHeight,
+        elHeight
       ) {
         var me = this,
           dom = me.dom,
@@ -1418,12 +1418,12 @@ Ext.define(
                   tag: "div",
                   role: "presentation",
                   cls: Ext.baseCSSPrefix + "mask-msg-text",
-                  html: msg || "",
-                },
-              },
-            },
+                  html: msg || ""
+                }
+              }
+            }
           },
-          true,
+          true
         );
         maskMsg = Ext.get(maskEl.dom.firstChild);
 
@@ -1445,7 +1445,7 @@ Ext.define(
 
         // When masking the body, don't touch its tabbable state
         me.saveTabbableState({
-          skipSelf: dom === DOC.body,
+          skipSelf: dom === DOC.body
         });
 
         // ie will not expand full height automatically
@@ -1488,15 +1488,15 @@ Ext.define(
               "position",
               "z-index",
               "font-size",
-              "opacity",
+              "opacity"
             ],
-            true,
+            true
           );
 
         obj = Ext.applyIf(obj || {}, {
           easing: "ease-out",
           duration: 500,
-          useDisplay: false,
+          useDisplay: false
         });
 
         beforeAnim = function () {
@@ -1510,7 +1510,7 @@ Ext.define(
             x: box.x - box.width / 2,
             y: box.y - box.height / 2,
             opacity: 0,
-            fontSize: "200%",
+            fontSize: "200%"
           };
           this.on("afteranimate", function () {
             var el = Ext.fly(dom, "_anim");
@@ -1531,9 +1531,9 @@ Ext.define(
           easing: obj.easing,
           listeners: {
             beforeanimate: {
-              fn: beforeAnim,
-            },
-          },
+              fn: beforeAnim
+            }
+          }
         });
         return me;
       },
@@ -1605,11 +1605,11 @@ Ext.define(
             Ext.applyIf(
               {
                 to: {
-                  height: height,
-                },
+                  height: height
+                }
               },
-              animate,
-            ),
+              animate
+            )
           );
         }
 
@@ -1754,7 +1754,7 @@ Ext.define(
           if (typeof animate != "object") {
             animate = {
               duration: 350,
-              easing: "ease-in",
+              easing: "ease-in"
             };
           }
 
@@ -1762,11 +1762,11 @@ Ext.define(
             Ext.applyIf(
               {
                 to: {
-                  opacity: opacity,
-                },
+                  opacity: opacity
+                }
               },
-              animate,
-            ),
+              animate
+            )
           );
         }
         return me;
@@ -1866,11 +1866,11 @@ Ext.define(
               {
                 to: {
                   width: width,
-                  height: height,
-                },
+                  height: height
+                }
               },
-              animate,
-            ),
+              animate
+            )
           );
         }
 
@@ -1935,7 +1935,7 @@ Ext.define(
           if (!Ext.isObject(animate)) {
             animate = {
               duration: 350,
-              easing: "ease-in",
+              easing: "ease-in"
             };
           }
           me.animate(
@@ -1948,11 +1948,11 @@ Ext.define(
                   }
                 },
                 to: {
-                  opacity: visible ? 1 : 0,
-                },
+                  opacity: visible ? 1 : 0
+                }
               },
-              animate,
-            ),
+              animate
+            )
           );
         }
         me.getData()[ISVISIBLE] = visible;
@@ -1998,11 +1998,11 @@ Ext.define(
             Ext.applyIf(
               {
                 to: {
-                  width: width,
-                },
+                  width: width
+                }
               },
-              animate,
-            ),
+              animate
+            )
           );
         }
         return me;
@@ -2114,9 +2114,9 @@ Ext.define(
               "top",
               "bottom",
               "position",
-              "z-index",
+              "z-index"
             ],
-            true,
+            true
           );
           el.setSize(box.width, box.height);
 
@@ -2129,8 +2129,8 @@ Ext.define(
             role: "presentation",
             id: Ext.id() + "-anim-wrap-for-" + el.dom.id,
             style: {
-              visibility: slideOut ? "visible" : "hidden",
-            },
+              visibility: slideOut ? "visible" : "hidden"
+            }
           });
           wrapDomParentNode = wrap.dom.parentNode;
           wrap.setPositioning(el.getPositioning());
@@ -2150,7 +2150,7 @@ Ext.define(
           // We cannot explicitly poke visibility:visible into its style because that overrides the visibility of the wrap.
           el.setStyle({
             visibility: "",
-            position: "absolute",
+            position: "absolute"
           });
           if (slideOut) {
             wrap.setSize(box.width, box.height);
@@ -2161,12 +2161,12 @@ Ext.define(
               anim = {
                 from: {
                   width: box.width + "px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               elStyle.bottom = "0px";
               break;
@@ -2174,12 +2174,12 @@ Ext.define(
               anim = {
                 from: {
                   width: "0px",
-                  height: box.height + "px",
+                  height: box.height + "px"
                 },
                 to: {
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               me.anchorAnimX(anchor);
               break;
@@ -2188,13 +2188,13 @@ Ext.define(
                 from: {
                   x: box.x + box.width,
                   width: "0px",
-                  height: box.height + "px",
+                  height: box.height + "px"
                 },
                 to: {
                   x: box.x,
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               me.anchorAnimX(anchor);
               break;
@@ -2203,13 +2203,13 @@ Ext.define(
                 from: {
                   y: box.y + box.height,
                   width: box.width + "px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   y: box.y,
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               break;
             case "tl":
@@ -2218,12 +2218,12 @@ Ext.define(
                   x: box.x,
                   y: box.y,
                   width: "0px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               elStyle.bottom = "0px";
               me.anchorAnimX("l");
@@ -2233,13 +2233,13 @@ Ext.define(
                 from: {
                   y: box.y + box.height,
                   width: "0px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   y: box.y,
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               me.anchorAnimX("l");
               break;
@@ -2249,14 +2249,14 @@ Ext.define(
                   x: box.x + box.width,
                   y: box.y + box.height,
                   width: "0px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   x: box.x,
                   y: box.y,
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               me.anchorAnimX("r");
               break;
@@ -2265,13 +2265,13 @@ Ext.define(
                 from: {
                   x: box.x + box.width,
                   width: "0px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   x: box.x,
                   width: box.width + "px",
-                  height: box.height + "px",
-                },
+                  height: box.height + "px"
+                }
               };
               elStyle.bottom = "0px";
               me.anchorAnimX("r");
@@ -2287,8 +2287,8 @@ Ext.define(
               duration: 500,
               easing: "ease-out",
               from: slideOut ? anim.to : anim.from,
-              to: slideOut ? anim.from : anim.to,
-            }),
+              to: slideOut ? anim.from : anim.to
+            })
           );
 
           // In the absence of a callback, this listener MUST be added first
@@ -2328,8 +2328,8 @@ Ext.define(
           // See "A Note About Wrapped Animations" at the top of this class:
           duration: obj.duration ? Math.max(obj.duration, 500) * 2 : 1000,
           listeners: {
-            beforeanimate: beforeAnim, // kick off the wrap animation
-          },
+            beforeanimate: beforeAnim // kick off the wrap animation
+          }
         });
         return me;
       },
@@ -2461,7 +2461,7 @@ Ext.define(
           easing: "ease-in",
           duration: 500,
           remove: false,
-          useDisplay: false,
+          useDisplay: false
         });
 
         beforeAnim = function () {
@@ -2482,17 +2482,17 @@ Ext.define(
             easing: options.easing,
             keyframes: {
               33: {
-                opacity: 0.3,
+                opacity: 0.3
               },
               66: {
                 height: 1,
-                y: xy[1] + size.height / 2,
+                y: xy[1] + size.height / 2
               },
               100: {
                 width: 1,
-                x: xy[0] + size.width / 2,
-              },
-            },
+                x: xy[0] + size.width / 2
+              }
+            }
           });
           keyframe.on("afteranimate", function () {
             var el = Ext.fly(dom, "_anim");
@@ -2514,11 +2514,11 @@ Ext.define(
           duration: Math.max(options.duration, 500) * 2,
           listeners: {
             beforeanimate: {
-              fn: beforeAnim,
-            },
+              fn: beforeAnim
+            }
           },
           callback: options.callback,
-          scope: options.scope,
+          scope: options.scope
         });
         return me;
       },
@@ -2903,7 +2903,7 @@ Ext.define(
 
           if (!skipChildren) {
             nodes = Ext.Array.from(
-              dom.querySelectorAll("[" + counterAttr + "]"),
+              dom.querySelectorAll("[" + counterAttr + "]")
             );
           }
 
@@ -2943,7 +2943,7 @@ Ext.define(
           }
 
           return nodes;
-        },
+        }
       },
 
       deprecated: {
@@ -2962,7 +2962,7 @@ Ext.define(
             pause: function (ms) {
               var me = this;
               Ext.fx.Manager.setFxDefaults(me.id, {
-                delay: ms,
+                delay: ms
               });
               return me;
             },
@@ -2994,8 +2994,8 @@ Ext.define(
               this.animate(
                 Ext.apply({}, o, {
                   width: w,
-                  height: h,
-                }),
+                  height: h
+                })
               );
               return this;
             },
@@ -3027,8 +3027,8 @@ Ext.define(
             shift: function (config) {
               this.animate(config);
               return this;
-            },
-          },
+            }
+          }
         },
         4.2: {
           methods: {
@@ -3073,9 +3073,9 @@ Ext.define(
                   x: x,
                   y: y,
                   width: width,
-                  height: height,
+                  height: height
                 },
-                animate,
+                animate
               );
             },
 
@@ -3113,8 +3113,8 @@ Ext.define(
              */
             setLocation: function (x, y, animate) {
               return this.setXY([x, y], animate);
-            },
-          },
+            }
+          }
         },
         "5.0": {
           methods: {
@@ -3194,7 +3194,7 @@ Ext.define(
               if (isDoc) {
                 return {
                   width: Element.getViewportWidth(),
-                  height: Element.getViewportHeight(),
+                  height: Element.getViewportHeight()
                 };
               }
 
@@ -3210,7 +3210,7 @@ Ext.define(
               // Use getWidth/getHeight if style not set.
               return {
                 width: w || me.getWidth(true),
-                height: h || me.getHeight(true),
+                height: h || me.getHeight(true)
               };
             },
 
@@ -3240,10 +3240,10 @@ Ext.define(
              * @return {Boolean} True if the element is focusable
              * @deprecated 5.0.0 use {@link #isFocusable} instead
              */
-            focusable: "isFocusable",
-          },
-        },
-      },
+            focusable: "isFocusable"
+          }
+        }
+      }
     };
   })(),
   function () {
@@ -3306,7 +3306,7 @@ Ext.define(
           } else {
             style.filter = val;
           }
-        },
+        }
       });
     }
 
@@ -3317,7 +3317,7 @@ Ext.define(
         fragment,
         classMatcher = function (tag, cls) {
           var classRe = new RegExp(
-            "(?:^|\\s+)" + cls.replace(dashRe, "\\-") + "(?:\\s+|$)",
+            "(?:^|\\s+)" + cls.replace(dashRe, "\\-") + "(?:\\s+|$)"
           );
           if (tag && tag !== "*") {
             tag = tag.toUpperCase();
@@ -3483,7 +3483,7 @@ Ext.define(
         ] = {
           name: borderWidth,
           styleName: "border" + edge + "Style",
-          get: getBorderWidth,
+          get: getBorderWidth
         };
       }
 
@@ -3576,7 +3576,7 @@ Ext.define(
           }
 
           return me;
-        },
+        }
       });
     }
 
@@ -3653,7 +3653,7 @@ Ext.define(
           }
           cache = null;
         }
-      },
+      }
     });
 
     if (Ext.isIE9m) {
@@ -3694,7 +3694,7 @@ Ext.define(
                     "Stale Element with id '" +
                       el.id +
                       "' found in Element cache. " +
-                      "Make sure to clean up Element instances using destroy()",
+                      "Make sure to clean up Element instances using destroy()"
                   );
                   //</debug>
                   entry.destroy();
@@ -3790,7 +3790,7 @@ Ext.define(
                 dom.scrollWidth; // jshint ignore:line
                 style.display = origDisplay;
               }
-            },
+            }
           };
           proto.setWidth = function (width, animate) {
             var me = this,
@@ -3861,7 +3861,7 @@ Ext.define(
               }
 
               dom.style.height = value;
-            },
+            }
           };
 
           proto.setHeight = function (height, animate) {
@@ -4067,7 +4067,7 @@ Ext.define(
               supports.DisplayChangeInputSelectionBug ||
               supports.DisplayChangeTextAreaSelectionBug
                 ? fixRightMarginAndInputFocus
-                : fixRightMargin,
+                : fixRightMargin
           };
         }
 
@@ -4076,7 +4076,7 @@ Ext.define(
             "background-color",
             "border-color",
             "color",
-            "outline-color",
+            "outline-color"
           ];
           for (i = colorStyles.length; i--; ) {
             name = colorStyles[i];
@@ -4084,7 +4084,7 @@ Ext.define(
 
             styleHooks[name] = styleHooks[camel] = {
               name: camel,
-              get: fixTransparent,
+              get: fixTransparent
             };
           }
         }
@@ -4227,7 +4227,7 @@ Ext.define(
         Ext.getBody().addCls(bodyCls);
       },
       null,
-      { priority: 1500 },
+      { priority: 1500 }
     ); // onReady
-  },
+  }
 );

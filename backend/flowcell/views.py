@@ -6,6 +6,7 @@ import unicodedata
 
 from common.mixins import MultiEditMixin
 from common.views import CsrfExemptSessionAuthentication
+from dateutil.relativedelta import relativedelta
 from django.apps import apps
 from django.conf import settings
 from django.db.models import F, Prefetch, Q
@@ -95,24 +96,40 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = LaneSerializer
 
     def get_queryset(self):
+        today = timezone.datetime.today()
+
+        default_start_date = today - relativedelta(months=0)
+        default_end_date = today
+
+        start_date_param = self.request.query_params.get(
+            "start", default_start_date.strftime("%Y-%m")
+        )
+        end_date_param = self.request.query_params.get(
+            "end", default_end_date.strftime("%Y-%m")
+        )
+
+        start_date = timezone.datetime.strptime(start_date_param, "%Y-%m")
+        end_date = timezone.datetime.strptime(end_date_param, "%Y-%m")
+
+        start_date = start_date.replace(day=1)
+        end_date = end_date.replace(day=1) + relativedelta(months=1, seconds=-1)
+
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
-            .select_related("read_length", "index_type")
+            .prefetch_related("read_length", "index_type")
             .only("read_length", "index_type", "equal_representation_nucleotides")
         )
 
         samples_qs = (
             Sample.objects.filter(~Q(status=-1))
-            .select_related("read_length", "index_type")
+            .prefetch_related("read_length", "index_type")
             .only("read_length", "index_type", "equal_representation_nucleotides")
         )
 
         lanes_qs = (
             Lane.objects.filter(completed=False)
-            .select_related(
-                "pool",
-            )
             .prefetch_related(
+                "pool",
                 Prefetch("pool__libraries", queryset=libraries_qs),
                 Prefetch("pool__samples", queryset=samples_qs),
             )
@@ -120,11 +137,11 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Flowcell.objects.select_related(
-                "sequencer",
+            Flowcell.objects.filter(
+                create_time__gte=start_date, create_time__lte=end_date, archived=False
             )
-            .filter(archived=False)
             .prefetch_related(
+                "sequencer",
                 Prefetch("lanes", queryset=lanes_qs),
             )
             .order_by("-create_time")
@@ -133,14 +150,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         return queryset
 
     def list(self, request, *args, **kwargs):
-        today = timezone.datetime.today()
-        year = request.query_params.get("year", today.year)
-        month = request.query_params.get("month", today.month)
-
-        queryset = self.get_queryset().filter(
-            create_time__year=year,
-            create_time__month=month,
-        )
+        queryset = self.get_queryset()
 
         serializer = FlowcellListSerializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
@@ -187,20 +197,20 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         # Libraries which have reached the Pooling step
         libraries_qs = (
             Library.objects.filter(status__gte=2)
-            .select_related("read_length")
+            .prefetch_related("read_length")
             .only("status", "read_length")
         )
 
         # Samples which have reached the Pooling step
         samples_qs = (
             Sample.objects.filter(status__gte=3)
-            .select_related("read_length")
+            .prefetch_related("read_length")
             .only("status", "read_length")
         )
 
         queryset = (
-            Pool.objects.select_related("size")
-            .prefetch_related(
+            Pool.objects.prefetch_related(
+                "size",
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )
@@ -334,28 +344,8 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         response = HttpResponse(content_type="text/csv")
         ids = json.loads(request.data.get("ids", "[]"))
         flowcell_id = request.data.get("flowcell_id", "")
-
         writer = csv.writer(response)
-
-        #        writer.writerow(['[Header]'] + [''] * 10)
-        #        writer.writerow(['IEMFileVersion', '4'] + [''] * 9)
-        #        writer.writerow(['Date', '11/3/2016'] + [''] * 9)
-        #        writer.writerow(['Workflow', 'GenerateFASTQ'] + [''] * 9)
-        #        writer.writerow(['Application', 'HiSeq FASTQ Only'] + ['' * 9])
-        #        writer.writerow(['Assay', 'Nextera XT'] + [''] * 9)
-        #        writer.writerow(['Description'] + [''] * 10)
-        #        writer.writerow(['Chemistry', 'Amplicon'] + [''] * 9)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Reads]'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Settings]'] + [''] * 10)
-        #        writer.writerow(['ReverseComplement', '0'] + [''] * 9)
-        #        writer.writerow(['Adapter', 'CTGTCTCTTATACACATCT'] + [''] * 9)
-        #        writer.writerow([''] * 11)
         writer.writerow(["[Data]"] + [""] * 10)
-
         writer.writerow(
             [
                 "Lane",
@@ -396,6 +386,19 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             writer.writerow(row)
 
         return response
+
+    @action(methods=["get"], detail=False)
+    def retrieve_samplesheet(self, request):
+        """Download SampleSheet for all lanes of a flowcell."""
+        flowcell_id = request.query_params.get("flowcell_id", "")
+        flowcell = get_object_or_404(Flowcell, flowcell_id=flowcell_id)
+        lane_pks_list = list(flowcell.lanes.all().values_list("pk", flat=True))
+        post_request = type("MockRequest", (), {})()
+        post_request.data = {
+            "ids": json.dumps(lane_pks_list),
+            "flowcell_id": flowcell.pk,
+        }
+        return self.download_sample_sheet(post_request)
 
 
 class FlowcellAnalysisViewSet(viewsets.ViewSet):

@@ -17,8 +17,8 @@ describe("Ext.chart.axis.layout.Continuous", function () {
             { category: 4, value: 0.5 },
             { category: 3, value: 0.1 },
             { category: 2, value: 0.4 },
-            { category: 1, value: 0 },
-          ],
+            { category: 1, value: 0 }
+          ]
         },
         axes: [
           {
@@ -26,20 +26,20 @@ describe("Ext.chart.axis.layout.Continuous", function () {
             position: "left",
             maximum: 1,
             minimum: 0,
-            majorTickSteps: 10,
+            majorTickSteps: 10
           },
           {
             type: "category",
-            position: "bottom",
-          },
+            position: "bottom"
+          }
         ],
         series: [
           {
             type: "bar",
             xField: "category",
-            yField: "value",
-          },
-        ],
+            yField: "value"
+          }
+        ]
       });
       chart.performLayout();
 

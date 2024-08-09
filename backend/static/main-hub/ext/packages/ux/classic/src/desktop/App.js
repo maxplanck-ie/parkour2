@@ -7,7 +7,7 @@
  */
 Ext.define("Ext.ux.desktop.App", {
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   requires: ["Ext.container.Viewport", "Ext.ux.desktop.Desktop"],
@@ -46,7 +46,7 @@ Ext.define("Ext.ux.desktop.App", {
 
     me.viewport = new Ext.container.Viewport({
       layout: "fit",
-      items: [me.desktop],
+      items: [me.desktop]
     });
 
     Ext.getWin().on("beforeunload", me.onUnload, me);
@@ -64,7 +64,7 @@ Ext.define("Ext.ux.desktop.App", {
     var me = this,
       cfg = {
         app: me,
-        taskbarConfig: me.getTaskbarConfig(),
+        taskbarConfig: me.getTaskbarConfig()
       };
 
     Ext.apply(cfg, me.desktopConfig);
@@ -82,7 +82,7 @@ Ext.define("Ext.ux.desktop.App", {
     var me = this,
       cfg = {
         app: me,
-        menu: [],
+        menu: []
       },
       launcher;
 
@@ -114,7 +114,7 @@ Ext.define("Ext.ux.desktop.App", {
     var me = this,
       cfg = {
         app: me,
-        startConfig: me.getStartConfig(),
+        startConfig: me.getStartConfig()
       };
 
     Ext.apply(cfg, me.taskbarConfig);
@@ -146,7 +146,7 @@ Ext.define("Ext.ux.desktop.App", {
       this.on({
         ready: fn,
         scope: scope,
-        single: true,
+        single: true
       });
     }
   },
@@ -159,5 +159,5 @@ Ext.define("Ext.ux.desktop.App", {
     if (this.fireEvent("beforeunload", this) === false) {
       e.stopEvent();
     }
-  },
+  }
 });

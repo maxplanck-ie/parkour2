@@ -12,7 +12,7 @@ Ext.define("Ext.field.trigger.Trigger", {
 
   factoryConfig: {
     defaultType: "trigger",
-    aliasPrefix: "trigger.",
+    aliasPrefix: "trigger."
   },
 
   config: {
@@ -66,7 +66,7 @@ Ext.define("Ext.field.trigger.Trigger", {
      */
     triggers: null,
 
-    weight: null,
+    weight: null
   },
 
   classCls: Ext.baseCSSPrefix + "trigger",
@@ -78,9 +78,9 @@ Ext.define("Ext.field.trigger.Trigger", {
       reference: "iconElement",
       classList: [
         Ext.baseCSSPrefix + "icon-el",
-        Ext.baseCSSPrefix + "font-icon",
-      ],
-    },
+        Ext.baseCSSPrefix + "font-icon"
+      ]
+    }
   ],
 
   statics: {
@@ -106,7 +106,7 @@ Ext.define("Ext.field.trigger.Trigger", {
      */
     weightComparator: function (triggerA, triggerB) {
       return (triggerA.getWeight() || 0) - (triggerB.getWeight() || 0);
-    },
+    }
   },
 
   constructor: function (config) {
@@ -123,10 +123,10 @@ Ext.define("Ext.field.trigger.Trigger", {
       me.repeater = new Ext.util.TapRepeater(
         Ext.apply(
           {
-            el: element,
+            el: element
           },
-          repeat,
-        ),
+          repeat
+        )
       );
 
       me.repeater.on("tap", "onClick", this);
@@ -199,5 +199,5 @@ Ext.define("Ext.field.trigger.Trigger", {
         dom.appendChild(triggers[i].element.dom);
       }
     }
-  },
+  }
 });

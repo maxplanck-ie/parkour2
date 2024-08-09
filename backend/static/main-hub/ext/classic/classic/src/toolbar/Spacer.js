@@ -33,5 +33,5 @@ Ext.define("Ext.toolbar.Spacer", {
   alternateClassName: "Ext.Toolbar.Spacer",
   baseCls: Ext.baseCSSPrefix + "toolbar-spacer",
 
-  ariaRole: "presentation",
+  ariaRole: "presentation"
 });

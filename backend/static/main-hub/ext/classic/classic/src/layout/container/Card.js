@@ -165,7 +165,7 @@ Ext.define("Ext.layout.container.Card", {
           boxready: function () {
             activeItem.fireEvent("activate", activeItem);
           },
-          single: true,
+          single: true
         });
       }
 
@@ -460,5 +460,5 @@ Ext.define("Ext.layout.container.Card", {
   setItemHideMode: function (item) {
     item.originalHideMode = item.hideMode;
     item.hideMode = "offsets";
-  },
+  }
 });

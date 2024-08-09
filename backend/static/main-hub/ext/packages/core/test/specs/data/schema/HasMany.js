@@ -7,7 +7,7 @@ describe("Ext.data.schema.HasMany", function () {
   function defineThread(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "title"],
+      fields: ["id", "title"]
     };
 
     if (options) {
@@ -20,7 +20,7 @@ describe("Ext.data.schema.HasMany", function () {
   function definePost(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "title"],
+      fields: ["id", "title"]
     };
 
     if (options) {
@@ -33,7 +33,7 @@ describe("Ext.data.schema.HasMany", function () {
   function defineVote(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "title"],
+      fields: ["id", "title"]
     };
 
     if (options) {
@@ -81,7 +81,7 @@ describe("Ext.data.schema.HasMany", function () {
       it("should accept a string", function () {
         definePost();
         defineThread({
-          hasMany: "Post",
+          hasMany: "Post"
         });
         expectFn("posts");
         expectFn("getThread", Post);
@@ -92,7 +92,7 @@ describe("Ext.data.schema.HasMany", function () {
         definePost();
         defineVote();
         defineThread({
-          hasMany: ["Post", "Vote"],
+          hasMany: ["Post", "Vote"]
         });
         expectFn("posts");
         expectFn("votes");
@@ -106,8 +106,8 @@ describe("Ext.data.schema.HasMany", function () {
         definePost();
         defineThread({
           hasMany: {
-            type: "Post",
-          },
+            type: "Post"
+          }
         });
         expectFn("posts");
         expectFn("getThread", Post);
@@ -120,12 +120,12 @@ describe("Ext.data.schema.HasMany", function () {
         defineThread({
           hasMany: [
             {
-              type: "Post",
+              type: "Post"
             },
             {
-              type: "Vote",
-            },
-          ],
+              type: "Vote"
+            }
+          ]
         });
         expectFn("posts");
         expectFn("votes");
@@ -143,8 +143,8 @@ describe("Ext.data.schema.HasMany", function () {
           defineThread({
             hasMany: {
               type: "Post",
-              role: "comments",
-            },
+              role: "comments"
+            }
           });
 
           expectFn("comments");
@@ -160,8 +160,8 @@ describe("Ext.data.schema.HasMany", function () {
           defineThread({
             hasMany: {
               type: "Post",
-              getterName: "comments",
-            },
+              getterName: "comments"
+            }
           });
           expectFn("comments");
           expectNotFn("posts");
@@ -177,9 +177,9 @@ describe("Ext.data.schema.HasMany", function () {
             hasMany: {
               type: "Post",
               inverse: {
-                role: "discussion",
-              },
-            },
+                role: "discussion"
+              }
+            }
           });
 
           expectFn("discussionPosts");
@@ -194,8 +194,8 @@ describe("Ext.data.schema.HasMany", function () {
           definePost();
           defineThread({
             hasMany: {
-              child: "Post",
-            },
+              child: "Post"
+            }
           });
 
           expectFn("posts");
@@ -210,7 +210,7 @@ describe("Ext.data.schema.HasMany", function () {
         it("should setup methods on both classes", function () {
           definePost();
           defineThread({
-            hasMany: "Post",
+            hasMany: "Post"
           });
           expectFn("posts");
           expectFn("getThread", Post);
@@ -221,7 +221,7 @@ describe("Ext.data.schema.HasMany", function () {
       describe("when the many class does not exist", function () {
         it("should setup methods on both classes when the many arrives", function () {
           defineThread({
-            hasMany: "Post",
+            hasMany: "Post"
           });
           expectNotFn("posts");
           definePost();
@@ -241,9 +241,9 @@ describe("Ext.data.schema.HasMany", function () {
           hasMany: {
             type: "Post",
             storeConfig: {
-              autoSync: true,
-            },
-          },
+              autoSync: true
+            }
+          }
         });
 
         var thread = new Thread();
@@ -257,8 +257,8 @@ describe("Ext.data.schema.HasMany", function () {
         defineThread({
           hasMany: {
             type: "Post",
-            associationKey: "comments",
-          },
+            associationKey: "comments"
+          }
         });
 
         var thread = Thread.load(1);
@@ -266,12 +266,12 @@ describe("Ext.data.schema.HasMany", function () {
           id: 1,
           posts: [
             {
-              id: 101,
+              id: 101
             },
             {
-              id: 102,
-            },
-          ],
+              id: 102
+            }
+          ]
         });
         // Key is comments, should be nothing
         expect(thread.posts().getCount()).toBe(0);
@@ -281,12 +281,12 @@ describe("Ext.data.schema.HasMany", function () {
           id: 2,
           comments: [
             {
-              id: 201,
+              id: 201
             },
             {
-              id: 202,
-            },
-          ],
+              id: 202
+            }
+          ]
         });
         expect(thread.posts().getCount()).toBe(2);
       });
@@ -297,8 +297,8 @@ describe("Ext.data.schema.HasMany", function () {
         definePost();
         defineThread({
           hasMany: {
-            child: "Post",
-          },
+            child: "Post"
+          }
         });
 
         var thread = new Thread({ id: 1 }),
@@ -315,10 +315,10 @@ describe("Ext.data.schema.HasMany", function () {
     describe("foreignKey", function () {
       it("should recognize a default foreignKey as entity_id", function () {
         definePost({
-          fields: ["id", "name", "thread_id"],
+          fields: ["id", "name", "thread_id"]
         });
         defineThread({
-          hasMany: "Post",
+          hasMany: "Post"
         });
 
         var thread = new Thread({ id: 1 }),
@@ -330,13 +330,13 @@ describe("Ext.data.schema.HasMany", function () {
 
       it("should recognize a custom foreignKey as entity_id", function () {
         definePost({
-          fields: ["id", "name", "customField"],
+          fields: ["id", "name", "customField"]
         });
         defineThread({
           hasMany: {
             type: "Post",
-            foreignKey: "customField",
-          },
+            foreignKey: "customField"
+          }
         });
 
         var thread = new Thread({ id: 1 }),
@@ -352,8 +352,8 @@ describe("Ext.data.schema.HasMany", function () {
       defineThread({
         hasMany: {
           model: "Post",
-          name: "comments",
-        },
+          name: "comments"
+        }
       });
       expectFn("comments");
       expectFn("getThread", Post);
@@ -365,8 +365,8 @@ describe("Ext.data.schema.HasMany", function () {
       defineThread({
         hasMany: {
           model: "Post",
-          associatedName: "comments",
-        },
+          associatedName: "comments"
+        }
       });
       expectFn("comments");
     });
@@ -378,9 +378,9 @@ describe("Ext.data.schema.HasMany", function () {
           model: "Post",
           name: "comments",
           storeConfig: {
-            trackRemoved: false,
-          },
-        },
+            trackRemoved: false
+          }
+        }
       });
       var thread = new Thread();
       expect(thread.comments().getTrackRemoved()).toBe(false);
@@ -393,9 +393,9 @@ describe("Ext.data.schema.HasMany", function () {
           model: "Post",
           associationKey: "someValue",
           storeConfig: {
-            trackRemoved: false,
-          },
-        },
+            trackRemoved: false
+          }
+        }
       });
       var thread = new Thread();
       expect(thread.posts().getTrackRemoved()).toBe(false);
@@ -406,8 +406,8 @@ describe("Ext.data.schema.HasMany", function () {
       defineThread({
         hasMany: {
           model: "Post",
-          role: "comments",
-        },
+          role: "comments"
+        }
       });
 
       expectFn("comments");

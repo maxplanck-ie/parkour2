@@ -4,8 +4,8 @@ describe("Ext.util.ObjectTemplate", function () {
     context = Ext.Object.chain({
       direct: false,
       object: {
-        property: 456,
-      },
+        property: 456
+      }
     });
 
   context.text = "Don";
@@ -30,7 +30,7 @@ describe("Ext.util.ObjectTemplate", function () {
         fn2,
         null,
         0,
-        false,
+        false
       ],
       object: {
         prop: 3,
@@ -44,18 +44,18 @@ describe("Ext.util.ObjectTemplate", function () {
             v: "{direct}",
             x: 1,
             s: "-- {text}",
-            innerFn: fn4,
+            innerFn: fn4
           },
           "Oy {text}",
-          fn5,
+          fn5
         ],
         aNull: null,
         aZero: 0,
-        aBool: false,
+        aBool: false
       },
       aNull: null,
       aZero: 0,
-      aBool: false,
+      aBool: false
     });
 
     output = tpl.apply(context);

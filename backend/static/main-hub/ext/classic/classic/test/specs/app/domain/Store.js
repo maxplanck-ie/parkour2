@@ -5,13 +5,13 @@ describe("Ext.app.domain.Store", function () {
     storeFoo = new Ext.data.Store({
       storeId: "foo",
 
-      fields: ["foo", "bar"],
+      fields: ["foo", "bar"]
     });
 
     storeBar = new Ext.data.Store({
       storeId: "bar",
 
-      fields: ["baz", "qux"],
+      fields: ["baz", "qux"]
     });
 
     handlerFoo = jasmine.createSpy("event handler foo");
@@ -19,7 +19,7 @@ describe("Ext.app.domain.Store", function () {
 
     Ext.define("spec.CustomStore", {
       extend: "Ext.data.Store",
-      alias: "store.customstore",
+      alias: "store.customstore"
     });
 
     ctrl = new Ext.app.Controller({ id: "foo" });
@@ -36,9 +36,9 @@ describe("Ext.app.domain.Store", function () {
     ctrl.listen({
       store: {
         "#foo": {
-          foo: handlerFoo,
-        },
-      },
+          foo: handlerFoo
+        }
+      }
     });
 
     storeFoo.fireEvent("FOO");
@@ -50,9 +50,9 @@ describe("Ext.app.domain.Store", function () {
     ctrl.listen({
       store: {
         "#foo": {
-          foo: handlerFoo,
-        },
-      },
+          foo: handlerFoo
+        }
+      }
     });
 
     storeFoo.fireEvent("foo");
@@ -64,12 +64,12 @@ describe("Ext.app.domain.Store", function () {
     ctrl.listen({
       store: {
         "#foo": {
-          bar: handlerFoo,
+          bar: handlerFoo
         },
         "#bar": {
-          bar: handlerBar,
-        },
-      },
+          bar: handlerBar
+        }
+      }
     });
 
     storeBar.fireEvent("bar");
@@ -83,9 +83,9 @@ describe("Ext.app.domain.Store", function () {
     ctrl.listen({
       store: {
         "*": {
-          baz: handlerFoo,
-        },
-      },
+          baz: handlerFoo
+        }
+      }
     });
 
     storeFoo.fireEvent("baz");
@@ -102,9 +102,9 @@ describe("Ext.app.domain.Store", function () {
     ctrl.listen({
       store: {
         customstore: {
-          baz: handlerFoo,
-        },
-      },
+          baz: handlerFoo
+        }
+      }
     });
 
     s.fireEvent("baz");
@@ -115,15 +115,15 @@ describe("Ext.app.domain.Store", function () {
   it("passes event arguments correctly", function () {
     var data = [
       { foo: 1, bar: 2 },
-      { foo: 3, bar: 4 },
+      { foo: 3, bar: 4 }
     ];
 
     ctrl.listen({
       store: {
         "*": {
-          datachanged: handlerFoo,
-        },
-      },
+          datachanged: handlerFoo
+        }
+      }
     });
 
     storeFoo.loadData(data);

@@ -8,8 +8,8 @@ describe("Ext.Evented", function () {
         base = {
           extend: "Ext.Evented",
           eventedConfig: {
-            foo: "foo",
-          },
+            foo: "foo"
+          }
         };
       } else {
         base = {
@@ -17,9 +17,9 @@ describe("Ext.Evented", function () {
           config: {
             foo: {
               $value: "foo",
-              evented: true,
-            },
-          },
+              evented: true
+            }
+          }
         };
       }
       Ext.merge(cfg, base);
@@ -52,7 +52,7 @@ describe("Ext.Evented", function () {
             applyFoo: function (newValue, oldValue) {
               return newValue;
             },
-            updateFoo: function (newValue) {},
+            updateFoo: function (newValue) {}
           };
           Cls = getCls(cfg);
         });
@@ -93,10 +93,10 @@ describe("Ext.Evented", function () {
           var cfg = {
             listeners: {
               foochange: "onFooChange",
-              beforefoochange: "onBeforeFooChange",
+              beforefoochange: "onBeforeFooChange"
             },
             onFooChange: function (cmp, newValue, oldValue) {},
-            onBeforeFooChange: function (cmp, newValue, oldValue) {},
+            onBeforeFooChange: function (cmp, newValue, oldValue) {}
           };
           Cls = getCls(cfg);
         });
@@ -144,7 +144,7 @@ describe("Ext.Evented", function () {
             },
             this,
             null,
-            "before",
+            "before"
           );
           cmp.on("foochange", function () {
             order.push(3);
@@ -156,7 +156,7 @@ describe("Ext.Evented", function () {
             },
             this,
             null,
-            "after",
+            "after"
           );
           cmp.setFoo("bar");
 
@@ -192,15 +192,15 @@ describe("Ext.Evented", function () {
         it("beforeChange event should be given a controller as the 4th parameter with resume/pause functions", function () {
           var cfg = {
               listeners: {
-                beforefoochange: "onBeforeFooChange",
+                beforefoochange: "onBeforeFooChange"
               },
               onBeforeFooChange: function (
                 cmp,
                 newValue,
                 oldValue,
-                controller,
+                controller
               ) {},
-              updateFoo: function (newValue, oldValue) {},
+              updateFoo: function (newValue, oldValue) {}
             },
             Cls = getCls(cfg),
             cmp = Ext.create(Cls, {}),
@@ -220,13 +220,13 @@ describe("Ext.Evented", function () {
         it("controller pause should delay updater until resume is called", function (done) {
           var cfg = {
               listeners: {
-                beforefoochange: "onBeforeFooChange",
+                beforefoochange: "onBeforeFooChange"
               },
               onBeforeFooChange: function (
                 cmp,
                 newValue,
                 oldValue,
-                controller,
+                controller
               ) {
                 controller.pause();
                 setTimeout(function () {
@@ -235,7 +235,7 @@ describe("Ext.Evented", function () {
                   done();
                 }, 500);
               },
-              updateFoo: function (newValue, oldValue) {},
+              updateFoo: function (newValue, oldValue) {}
             },
             Cls = getCls(cfg),
             cmp = Ext.create(Cls, {});

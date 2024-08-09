@@ -6,11 +6,11 @@ Ext.define("Ext.data.LocalStore", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "localstore",
+    id: "localstore"
   },
 
   config: {
-    extraKeys: null,
+    extraKeys: null
   },
 
   applyExtraKeys: function (extraKeys) {
@@ -50,13 +50,13 @@ Ext.define("Ext.data.LocalStore", {
   add: function (arg) {
     return this.insert(
       this.getCount(),
-      arguments.length === 1 ? arg : arguments,
+      arguments.length === 1 ? arg : arguments
     );
   },
 
   constructDataCollection: function () {
     var result = new Ext.util.Collection({
-      rootProperty: "data",
+      rootProperty: "data"
     });
 
     // Add this store as an observer immediately so that we are informed of any
@@ -376,7 +376,7 @@ Ext.define("Ext.data.LocalStore", {
       value,
       anyMatch,
       caseSensitive,
-      exactMatch,
+      exactMatch
     );
   },
 
@@ -537,7 +537,7 @@ Ext.define("Ext.data.LocalStore", {
           fn,
           scope || me,
           group.items,
-          field,
+          field
         );
       }
       return out;
@@ -676,9 +676,9 @@ Ext.define("Ext.data.LocalStore", {
       return {
         byInternalId: {
           property: "internalId",
-          rootProperty: "",
-        },
+          rootProperty: ""
+        }
       };
-    },
-  },
+    }
+  }
 });

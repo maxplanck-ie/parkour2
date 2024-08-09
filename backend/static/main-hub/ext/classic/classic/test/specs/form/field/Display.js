@@ -5,9 +5,9 @@ describe("Ext.form.field.Display", function () {
     config = Ext.apply(
       {
         name: "fieldname",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
 
     return (component = new Ext.form.field.Display(config));
@@ -162,7 +162,7 @@ describe("Ext.form.field.Display", function () {
       it("should return the value", function () {
         makeComponent({ value: "the field value", name: "myfield" });
         expect(component.getModelData()).toEqual({
-          myfield: "the field value",
+          myfield: "the field value"
         });
       });
     });
@@ -186,7 +186,7 @@ describe("Ext.form.field.Display", function () {
         makeComponent({ value: "the field value", htmlEncode: true });
         component.setRawValue("<p>the new value</p>");
         expect(component.inputEl.dom).hasHTML(
-          "&lt;p&gt;the new value&lt;/p&gt;",
+          "&lt;p&gt;the new value&lt;/p&gt;"
         );
       });
     });
@@ -208,20 +208,20 @@ describe("Ext.form.field.Display", function () {
         makeComponent({ value: "the field value", htmlEncode: true });
         component.setValue("<p>the new value</p>");
         expect(component.inputEl.dom).hasHTML(
-          "&lt;p&gt;the new value&lt;/p&gt;",
+          "&lt;p&gt;the new value&lt;/p&gt;"
         );
       });
 
       it("should accept 0", function () {
         makeComponent({
-          value: 0,
+          value: 0
         });
         expect(component.inputEl.dom).hasHTML("0");
       });
 
       it("should accept false", function () {
         makeComponent({
-          value: false,
+          value: false
         });
         expect(component.inputEl.dom).hasHTML("false");
       });
@@ -231,7 +231,7 @@ describe("Ext.form.field.Display", function () {
           value: [1, 2, 3, 4],
           renderer: function (v) {
             return v.join(",");
-          },
+          }
         });
         expect(component.inputEl.dom).hasHTML("1,2,3,4");
       });
@@ -241,11 +241,11 @@ describe("Ext.form.field.Display", function () {
           value: {
             foo: true,
             bar: true,
-            baz: true,
+            baz: true
           },
           renderer: function (v) {
             return Ext.Object.getKeys(v).join(",");
-          },
+          }
         });
         expect(component.inputEl.dom).hasHTML("foo,bar,baz");
       });
@@ -258,7 +258,7 @@ describe("Ext.form.field.Display", function () {
         value: "foo",
         renderer: function (v) {
           return v + "bar";
-        },
+        }
       });
       expect(component.inputEl.dom).hasHTML("foobar");
     });
@@ -268,7 +268,7 @@ describe("Ext.form.field.Display", function () {
         value: "foo",
         renderer: function (v) {
           return v + "bar";
-        },
+        }
       });
       expect(component.rawValue).toBe("foo");
     });
@@ -279,7 +279,7 @@ describe("Ext.form.field.Display", function () {
         value: "foo",
         renderer: function (v) {
           scope = this;
-        },
+        }
       });
       expect(scope).toBe(component);
     });
@@ -293,7 +293,7 @@ describe("Ext.form.field.Display", function () {
         scope: o,
         renderer: function (v) {
           scope = this;
-        },
+        }
       });
       expect(scope).toBe(o);
     });
@@ -306,7 +306,7 @@ describe("Ext.form.field.Display", function () {
         renderer: function (a, b) {
           arg1 = a;
           arg2 = b;
-        },
+        }
       });
 
       expect(arg1).toBe("foo");
@@ -319,7 +319,7 @@ describe("Ext.form.field.Display", function () {
         value: undefined,
         renderer: function (a) {
           arg1 = a;
-        },
+        }
       });
       expect(arg1).toBe("");
     });
@@ -331,22 +331,22 @@ describe("Ext.form.field.Display", function () {
       makeComponent({
         height: 100,
         fieldLabel: "foo",
-        value: "bar",
+        value: "bar"
       });
 
       expect(component.inputEl.getY()).toBe(
-        component.bodyEl.getY() + component.inputEl.getMargin("t"),
+        component.bodyEl.getY() + component.inputEl.getMargin("t")
       );
     });
 
     it("should be able to auto height with multi line text", function () {
       makeComponent({
-        value: "foo",
+        value: "foo"
       });
       var height = component.getHeight();
       component.destroy();
       makeComponent({
-        value: "foo<br>bar<br>baz",
+        value: "foo<br>bar<br>baz"
       });
       expect(component.getHeight()).toBeGreaterThan(height);
     });

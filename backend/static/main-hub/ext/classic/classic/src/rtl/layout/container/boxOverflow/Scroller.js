@@ -10,5 +10,5 @@ Ext.define("Ext.rtl.layout.container.boxOverflow.Scroller", {
     }
 
     return delta;
-  },
+  }
 });

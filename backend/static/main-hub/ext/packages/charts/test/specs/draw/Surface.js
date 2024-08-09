@@ -52,13 +52,13 @@ describe("Ext.draw.Surface", function () {
         items: [
           {
             type: "rect",
-            id: "sprite1",
+            id: "sprite1"
           },
           {
             type: "text",
-            id: "sprite2",
-          },
-        ],
+            id: "sprite2"
+          }
+        ]
       });
     });
 

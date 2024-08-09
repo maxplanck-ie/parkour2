@@ -4,7 +4,7 @@ Ext.define("MainHub.model.invoicing.FixedCost", {
   fields: [
     {
       name: "sequencer",
-      type: "int",
-    },
-  ],
+      type: "int"
+    }
+  ]
 });

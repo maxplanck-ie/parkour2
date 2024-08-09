@@ -68,7 +68,7 @@ Ext.define("Ext.view.TableLayout", {
 
     if (ownerContext.syncRowHeights) {
       ownerContext.target.syncRowHeightClear(
-        ownerContext.rowHeightSynchronizer,
+        ownerContext.rowHeightSynchronizer
       );
       ownerContext.syncRowHeights = false;
     }
@@ -123,9 +123,9 @@ Ext.define("Ext.view.TableLayout", {
               columnsChanged: columnsChanged,
               layout: me,
               id: me.columnFlusherId,
-              flush: me.flushColumnWidths,
+              flush: me.flushColumnWidths
             }),
-          true,
+          true
         );
       }
 
@@ -168,9 +168,9 @@ Ext.define("Ext.view.TableLayout", {
               otherSynchronizer: otherSynchronizer,
               layout: me,
               id: me.rowHeightFlusherId,
-              flush: me.flushRowHeights,
+              flush: me.flushRowHeights
             }),
-          true,
+          true
         );
       }
 
@@ -218,7 +218,7 @@ Ext.define("Ext.view.TableLayout", {
       if (!owner.lockingPartner) {
         ownerContext.setProp(
           "overflowX",
-          !!ownerContext.headerContext.state.boxPlan.tooNarrow,
+          !!ownerContext.headerContext.state.boxPlan.tooNarrow
         );
       }
     }
@@ -307,7 +307,7 @@ Ext.define("Ext.view.TableLayout", {
 
     ownerContext.target.syncRowHeightFinish(
       flusher.synchronizer,
-      flusher.otherSynchronizer,
+      flusher.otherSynchronizer
     );
 
     flusher.flushed = true;
@@ -345,5 +345,5 @@ Ext.define("Ext.view.TableLayout", {
 
   isValidParent: function () {
     return true;
-  },
+  }
 });

@@ -29,7 +29,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     medium: true,
     large: true,
     "x-large": true,
-    "xx-large": true,
+    "xx-large": true
   };
   var fontWeights = {
     normal: true,
@@ -44,7 +44,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     600: true,
     700: true,
     800: true,
-    900: true,
+    900: true
   };
   var textAlignments = {
     start: "start",
@@ -52,7 +52,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     center: "center",
     middle: "center",
     end: "end",
-    right: "end",
+    right: "end"
   };
   var textBaselines = {
     top: "top",
@@ -61,7 +61,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     center: "middle",
     alphabetic: "alphabetic",
     ideographic: "ideographic",
-    bottom: "bottom",
+    bottom: "bottom"
   };
 
   return {
@@ -85,13 +85,13 @@ Ext.define("Ext.draw.sprite.Text", function () {
       fontSizes: fontSizes,
       fontWeights: fontWeights,
       textAlignments: textAlignments,
-      textBaselines: textBaselines,
+      textBaselines: textBaselines
     },
     //</debug>
     inheritableStatics: {
       def: {
         animationProcessors: {
-          text: "text",
+          text: "text"
         },
         processors: {
           /**
@@ -182,7 +182,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
            */
           font: "string",
           //<debug>
-          debug: "default",
+          debug: "default"
           //</debug>
         },
         aliases: {
@@ -190,7 +190,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
           "font-family": "fontFamily",
           "font-weight": "fontWeight",
           "font-variant": "fontVariant",
-          "text-anchor": "textAlign",
+          "text-anchor": "textAlign"
         },
         defaults: {
           fontStyle: "",
@@ -205,7 +205,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
           fillStyle: "#000",
           x: 0,
           y: 0,
-          text: "",
+          text: ""
         },
         triggers: {
           fontStyle: "fontX,bbox",
@@ -218,13 +218,13 @@ Ext.define("Ext.draw.sprite.Text", function () {
           textAlign: "bbox",
           x: "bbox",
           y: "bbox",
-          text: "bbox",
+          text: "bbox"
         },
         updaters: {
           fontX: "makeFontShorthand",
-          font: "parseFontShorthand",
-        },
-      },
+          font: "parseFontShorthand"
+        }
+      }
     },
 
     config: {
@@ -233,7 +233,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
        * If the value is boolean, it overrides the TextMeasurer's 'precise' config
        * (for the given sprite only).
        */
-      preciseMeasurement: undefined,
+      preciseMeasurement: undefined
     },
 
     constructor: function (config) {
@@ -277,7 +277,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
       medium: "fontSize",
       large: "fontSize",
       "x-large": "fontSize",
-      "xx-large": "fontSize",
+      "xx-large": "fontSize"
       // Relative font sizes like 'smaller' and 'larger'
       // have no meaning, and are not included.
     },
@@ -302,9 +302,9 @@ Ext.define("Ext.draw.sprite.Text", function () {
       }
       this.setAttributes(
         {
-          font: parts.join(" "),
+          font: parts.join(" ")
         },
-        true,
+        true
       );
     },
 
@@ -381,7 +381,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
       fontVariant: true,
       fontWeight: true,
       fontSize: true,
-      fontFamily: true,
+      fontFamily: true
     },
 
     setAttributes: function (changes, bypassNormalization, avoidCopy) {
@@ -452,7 +452,7 @@ Ext.define("Ext.draw.sprite.Text", function () {
     rtlAlignments: {
       start: "end",
       center: "center",
-      end: "start",
+      end: "start"
     },
 
     updatePlainBBox: function (plain, useOldSize) {
@@ -614,6 +614,6 @@ Ext.define("Ext.draw.sprite.Text", function () {
         debug.bbox && me.renderBBox(surface, ctx);
       }
       //</debug>
-    },
+    }
   };
 });

@@ -63,7 +63,7 @@ describe("Ext.Util", function () {
               undefined,
               undefined,
               undefined,
-              fakeScope,
+              fakeScope
             );
             expect(spy.mostRecentCall.object).toBe(fakeScope);
           });
@@ -92,7 +92,7 @@ describe("Ext.Util", function () {
               undefined,
               undefined,
               undefined,
-              fakeScope,
+              fakeScope
             );
             expect(spy.mostRecentCall.object).toBe(fakeScope);
           });
@@ -109,7 +109,7 @@ describe("Ext.Util", function () {
               undefined,
               undefined,
               {},
-              fakeScope,
+              fakeScope
             );
             expect(spy.mostRecentCall.object).toBe(fakeScope);
           });
@@ -136,7 +136,7 @@ describe("Ext.Util", function () {
 
         beforeEach(function () {
           scopeInfo = {
-            foo: function () {},
+            foo: function () {}
           };
           spyOn(scopeInfo, "foo");
         });
@@ -192,12 +192,12 @@ describe("Ext.Util", function () {
           var theScope, caller;
           beforeEach(function () {
             theScope = {
-              foo: function () {},
+              foo: function () {}
             };
             caller = {
               resolveListenerScope: function () {
                 return theScope;
-              },
+              }
             };
             spyOn(theScope, "foo");
           });
@@ -220,7 +220,7 @@ describe("Ext.Util", function () {
               Ext.callback("foo", undefined, undefined, undefined, caller);
               expect(theScope.foo).toHaveBeenCalled();
               expect(theScope.foo.mostRecentCall.object).toBe(
-                caller.resolveListenerScope(),
+                caller.resolveListenerScope()
               );
             });
 
@@ -235,7 +235,7 @@ describe("Ext.Util", function () {
               runs(function () {
                 expect(theScope.foo).toHaveBeenCalled();
                 expect(theScope.foo.mostRecentCall.object).toBe(
-                  caller.resolveListenerScope(),
+                  caller.resolveListenerScope()
                 );
               });
             });
@@ -276,7 +276,7 @@ describe("Ext.Util", function () {
               spyOn(caller, "resolveListenerScope").andCallThrough();
               Ext.callback("foo", "controller", undefined, undefined, caller);
               expect(caller.resolveListenerScope).toHaveBeenCalledWith(
-                "controller",
+                "controller"
               );
               expect(theScope.foo).toHaveBeenCalled();
               expect(theScope.foo.mostRecentCall.object).toBe(theScope);
@@ -289,7 +289,7 @@ describe("Ext.Util", function () {
                   "controller",
                   undefined,
                   undefined,
-                  caller,
+                  caller
                 );
               }).toThrow();
             });
@@ -366,7 +366,7 @@ describe("Ext.Util", function () {
           res,
         function () {
           expect(coerce(v, type)).toBe(res);
-        },
+        }
       );
     }
 

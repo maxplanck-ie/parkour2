@@ -2,7 +2,7 @@ describe("AlternateClassName", function () {
   describe("Ext.button.Button", function () {
     it("should have Ext.Button as the alternate class name", function () {
       expect(Ext.button.Button.prototype.alternateClassName).toEqual(
-        "Ext.Button",
+        "Ext.Button"
       );
     });
 
@@ -14,7 +14,7 @@ describe("AlternateClassName", function () {
   describe("Ext.button.Cycle", function () {
     it("should have Ext.CycleButton as the alternate class name", function () {
       expect(Ext.button.Cycle.prototype.alternateClassName).toEqual(
-        "Ext.CycleButton",
+        "Ext.CycleButton"
       );
     });
 
@@ -26,7 +26,7 @@ describe("AlternateClassName", function () {
   describe("Ext.button.Split", function () {
     it("should have Ext.SplitButton as the alternate class name", function () {
       expect(Ext.button.Split.prototype.alternateClassName).toEqual(
-        "Ext.SplitButton",
+        "Ext.SplitButton"
       );
     });
 
@@ -38,7 +38,7 @@ describe("AlternateClassName", function () {
   describe("Ext.container.ButtonGroup", function () {
     it("should have Ext.ButtonGroup as the alternate class name", function () {
       expect(Ext.container.ButtonGroup.prototype.alternateClassName).toEqual(
-        "Ext.ButtonGroup",
+        "Ext.ButtonGroup"
       );
     });
 
@@ -51,7 +51,7 @@ describe("AlternateClassName", function () {
     it("should have Ext.Container as the alternate class name", function () {
       expect(Ext.container.Container.prototype.alternateClassName).toEqual([
         "Ext.Container",
-        "Ext.AbstractContainer",
+        "Ext.AbstractContainer"
       ]);
     });
 
@@ -63,7 +63,7 @@ describe("AlternateClassName", function () {
   describe("Ext.container.Viewport", function () {
     it("should have Ext.Viewport as the alternate class name", function () {
       expect(Ext.container.Viewport.prototype.alternateClassName).toEqual(
-        "Ext.Viewport",
+        "Ext.Viewport"
       );
     });
 
@@ -75,7 +75,7 @@ describe("AlternateClassName", function () {
   describe("Ext.form.action.DirectLoad", function () {
     it("should have Ext.form.Action.DirectLoad as the alternate class name", function () {
       expect(Ext.form.action.DirectLoad.prototype.alternateClassName).toEqual(
-        "Ext.form.Action.DirectLoad",
+        "Ext.form.Action.DirectLoad"
       );
     });
 
@@ -87,7 +87,7 @@ describe("AlternateClassName", function () {
   describe("Ext.form.action.DirectSubmit", function () {
     it("should have Ext.form.Action.DirectSubmit as the alternate class name", function () {
       expect(Ext.form.action.DirectSubmit.prototype.alternateClassName).toEqual(
-        "Ext.form.Action.DirectSubmit",
+        "Ext.form.Action.DirectSubmit"
       );
     });
 
@@ -99,7 +99,7 @@ describe("AlternateClassName", function () {
   describe("Ext.form.action.Load", function () {
     it("should have Ext.form.Action.Load as the alternate class name", function () {
       expect(Ext.form.action.Load.prototype.alternateClassName).toEqual(
-        "Ext.form.Action.Load",
+        "Ext.form.Action.Load"
       );
     });
 
@@ -111,7 +111,7 @@ describe("AlternateClassName", function () {
   describe("Ext.form.action.Submit", function () {
     it("should have Ext.form.Action.Submit as the alternate class name", function () {
       expect(Ext.form.action.Submit.prototype.alternateClassName).toEqual(
-        "Ext.form.Action.Submit",
+        "Ext.form.Action.Submit"
       );
     });
 
@@ -123,7 +123,7 @@ describe("AlternateClassName", function () {
   describe("Ext.form.Basic", function () {
     it("should have Ext.form.BasicForm as the alternate class name", function () {
       expect(Ext.form.Basic.prototype.alternateClassName).toEqual(
-        "Ext.form.BasicForm",
+        "Ext.form.BasicForm"
       );
     });
 
@@ -136,7 +136,7 @@ describe("AlternateClassName", function () {
     it("should have Ext.form.DateField as the alternate class name", function () {
       expect(Ext.form.field.Date.prototype.alternateClassName).toEqual([
         "Ext.form.DateField",
-        "Ext.form.Date",
+        "Ext.form.Date"
       ]);
     });
 
@@ -149,7 +149,7 @@ describe("AlternateClassName", function () {
     it("should have Ext.form.DisplayField as the alternate class name", function () {
       expect(Ext.form.field.Display.prototype.alternateClassName).toEqual([
         "Ext.form.DisplayField",
-        "Ext.form.Display",
+        "Ext.form.Display"
       ]);
     });
 
@@ -162,7 +162,7 @@ describe("AlternateClassName", function () {
     it("should have Ext.form.NumberField as the alternate class name", function () {
       expect(Ext.form.field.Number.prototype.alternateClassName).toEqual([
         "Ext.form.NumberField",
-        "Ext.form.Number",
+        "Ext.form.Number"
       ]);
     });
 
@@ -175,7 +175,7 @@ describe("AlternateClassName", function () {
     it("should have Ext.form.TextField as the alternate class name", function () {
       expect(Ext.form.field.Text.prototype.alternateClassName).toEqual([
         "Ext.form.TextField",
-        "Ext.form.Text",
+        "Ext.form.Text"
       ]);
     });
 
@@ -188,7 +188,7 @@ describe("AlternateClassName", function () {
     it("should have Ext.form.TimeField as the alternate class name", function () {
       expect(Ext.form.field.Time.prototype.alternateClassName).toEqual([
         "Ext.form.TimeField",
-        "Ext.form.Time",
+        "Ext.form.Time"
       ]);
     });
 
@@ -200,7 +200,7 @@ describe("AlternateClassName", function () {
   describe("Ext.layout.container.Card", function () {
     it("should have Ext.layout.CardLayout as the alternate class name", function () {
       expect(Ext.layout.container.Card.prototype.alternateClassName).toEqual(
-        "Ext.layout.CardLayout",
+        "Ext.layout.CardLayout"
       );
     });
 
@@ -222,7 +222,7 @@ describe("AlternateClassName", function () {
   describe("Ext.picker.Color", function () {
     it("should have Ext.ColorPalette as the alternate class name", function () {
       expect(Ext.picker.Color.prototype.alternateClassName).toEqual(
-        "Ext.ColorPalette",
+        "Ext.ColorPalette"
       );
     });
 
@@ -234,7 +234,7 @@ describe("AlternateClassName", function () {
   describe("Ext.picker.Date", function () {
     it("should have Ext.DatePicker as the alternate class name", function () {
       expect(Ext.picker.Date.prototype.alternateClassName).toEqual(
-        "Ext.DatePicker",
+        "Ext.DatePicker"
       );
     });
 
@@ -246,7 +246,7 @@ describe("AlternateClassName", function () {
   describe("Ext.picker.Month", function () {
     it("should have Ext.MonthPicker as the alternate class name", function () {
       expect(Ext.picker.Month.prototype.alternateClassName).toEqual(
-        "Ext.MonthPicker",
+        "Ext.MonthPicker"
       );
     });
 
@@ -258,7 +258,7 @@ describe("AlternateClassName", function () {
   describe("Ext.toolbar.Paging", function () {
     it("should have Ext.PagingToolbar as the alternate class name", function () {
       expect(Ext.toolbar.Paging.prototype.alternateClassName).toEqual(
-        "Ext.PagingToolbar",
+        "Ext.PagingToolbar"
       );
     });
 
@@ -270,7 +270,7 @@ describe("AlternateClassName", function () {
   describe("Ext.toolbar.Toolbar", function () {
     it("should have Ext.Toolbar as the alternate class name", function () {
       expect(Ext.toolbar.Toolbar.prototype.alternateClassName).toEqual(
-        "Ext.Toolbar",
+        "Ext.Toolbar"
       );
     });
 
@@ -292,7 +292,7 @@ describe("AlternateClassName", function () {
   describe("Ext.util.KeyMap", function () {
     it("should have Ext.KeyMap as the alternate class name", function () {
       expect(Ext.util.KeyMap.prototype.alternateClassName).toEqual(
-        "Ext.KeyMap",
+        "Ext.KeyMap"
       );
     });
 
@@ -304,7 +304,7 @@ describe("AlternateClassName", function () {
   describe("Ext.util.KeyNav", function () {
     it("should have Ext.KeyNav as the alternate class name", function () {
       expect(Ext.util.KeyNav.prototype.alternateClassName).toEqual(
-        "Ext.KeyNav",
+        "Ext.KeyNav"
       );
     });
 
@@ -316,7 +316,7 @@ describe("AlternateClassName", function () {
   describe("Ext.view.BoundList", function () {
     it("should have Ext.BoundList as the alternate class name", function () {
       expect(Ext.view.BoundList.prototype.alternateClassName).toEqual(
-        "Ext.BoundList",
+        "Ext.BoundList"
       );
     });
 
@@ -328,7 +328,7 @@ describe("AlternateClassName", function () {
   describe("Ext.window.Window", function () {
     it("should have Ext.Window as the alternate class name", function () {
       expect(Ext.window.Window.prototype.alternateClassName).toEqual(
-        "Ext.Window",
+        "Ext.Window"
       );
     });
 

@@ -9,7 +9,7 @@ describe("Ext.util.TextMetrics", function () {
   beforeEach(function () {
     makeEl = function (style, value) {
       return Ext.getBody().createChild({
-        style: style + ":" + value,
+        style: style + ":" + value
       });
     };
 
@@ -28,7 +28,7 @@ describe("Ext.util.TextMetrics", function () {
       measurement = Ext.util.TextMetrics.measure(
         el,
         text || defaultText,
-        fixedWidth,
+        fixedWidth
       );
       el.destroy();
       return measurement;

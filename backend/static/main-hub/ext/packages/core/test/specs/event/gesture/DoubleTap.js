@@ -165,7 +165,7 @@
           e.stopEvent();
         },
         null,
-        { single: true },
+        { single: true }
       );
 
       runs(function () {
@@ -271,5 +271,5 @@
         });
       });
     }
-  },
+  }
 );

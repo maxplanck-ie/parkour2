@@ -105,7 +105,7 @@ Ext.define("Ext.form.field.ComboBox", {
   requires: [
     "Ext.util.DelayedTask",
     "Ext.view.BoundList",
-    "Ext.data.StoreManager",
+    "Ext.data.StoreManager"
   ],
   alternateClassName: "Ext.form.ComboBox",
   alias: ["widget.combobox", "widget.combo"],
@@ -160,7 +160,7 @@ Ext.define("Ext.form.field.ComboBox", {
      *
      * See also `{@link #valueField}`.
      */
-    displayField: "text",
+    displayField: "text"
   },
 
   publishes: ["selection"],
@@ -220,7 +220,7 @@ Ext.define("Ext.form.field.ComboBox", {
   autoDestroyBoundStore: true,
 
   childEls: {
-    hiddenDataEl: true,
+    hiddenDataEl: true
   },
 
   /**
@@ -539,7 +539,7 @@ Ext.define("Ext.form.field.ComboBox", {
     loadingHeight: 70,
     minWidth: 70,
     maxHeight: 300,
-    shadow: "sides",
+    shadow: "sides"
   },
 
   /**
@@ -670,17 +670,17 @@ Ext.define("Ext.form.field.ComboBox", {
     //<debug>
     if (me.typeAhead && me.multiSelect) {
       Ext.raise(
-        "typeAhead and multiSelect are mutually exclusive options -- please remove one of them.",
+        "typeAhead and multiSelect are mutually exclusive options -- please remove one of them."
       );
     }
     if (me.typeAhead && !me.editable) {
       Ext.raise(
-        "If typeAhead is enabled the combo must be editable: true -- please change one of those settings.",
+        "If typeAhead is enabled the combo must be editable: true -- please change one of those settings."
       );
     }
     if (me.selectOnFocus && !me.editable) {
       Ext.raise(
-        "If selectOnFocus is enabled the combo must be editable: true -- please change one of those settings.",
+        "If selectOnFocus is enabled the combo must be editable: true -- please change one of those settings."
       );
     }
     //</debug>
@@ -699,7 +699,7 @@ Ext.define("Ext.form.field.ComboBox", {
             Ext.Array.from(transformSelect.options),
             function (option) {
               return [option.value, option.text];
-            },
+            }
           );
         }
         if (!me.name) {
@@ -757,12 +757,12 @@ Ext.define("Ext.form.field.ComboBox", {
 
       down: {
         alt: true,
-        handler: me.onAltDownArrow,
+        handler: me.onAltDownArrow
       },
       up: {
         alt: true,
-        handler: me.onAltUpArrow,
-      },
+        handler: me.onAltUpArrow
+      }
     });
   },
 
@@ -817,7 +817,7 @@ Ext.define("Ext.form.field.ComboBox", {
           '<tpl if="xindex < xcount">' +
           me.getDelimiter() +
           "</tpl>" +
-          "</tpl>",
+          "</tpl>"
       );
       displayTpl.auto = true;
     } else if (!displayTpl.isTemplate) {
@@ -1136,8 +1136,8 @@ Ext.define("Ext.form.field.ComboBox", {
       extraKeySpec = {
         byValue: {
           rootProperty: "data",
-          unique: false,
-        },
+          unique: false
+        }
       };
       extraKeySpec.byValue.property = me.valueField;
       store.setExtraKeys(extraKeySpec);
@@ -1147,7 +1147,7 @@ Ext.define("Ext.form.field.ComboBox", {
       } else {
         extraKeySpec.byText = {
           rootProperty: "data",
-          unique: false,
+          unique: false
         };
         extraKeySpec.byText.property = me.displayField;
         store.setExtraKeys(extraKeySpec);
@@ -1159,20 +1159,20 @@ Ext.define("Ext.form.field.ComboBox", {
         rootProperty: "data",
         extraKeys: {
           byInternalId: {
-            property: "internalId",
+            property: "internalId"
           },
           byValue: {
             property: me.valueField,
-            rootProperty: "data",
-          },
+            rootProperty: "data"
+          }
         },
         // Whenever this collection is changed by anyone, whether by this field adding to it,
         // or the BoundList operating, we must refresh our value.
         listeners: {
           beginupdate: me.onValueCollectionBeginUpdate,
           endupdate: me.onValueCollectionEndUpdate,
-          scope: me,
-        },
+          scope: me
+        }
       };
 
       // This becomes our collection of selected records for the Field.
@@ -1196,8 +1196,8 @@ Ext.define("Ext.form.field.ComboBox", {
         store: store,
         listeners: {
           scope: me,
-          lastselectedchanged: me.updateBindSelection,
-        },
+          lastselectedchanged: me.updateBindSelection
+        }
       });
 
       if (!initial) {
@@ -1208,7 +1208,7 @@ Ext.define("Ext.form.field.ComboBox", {
         me.pickerSelectionModel.on({
           scope: me,
           beforeselect: me.onBeforeSelect,
-          beforedeselect: me.onBeforeDeselect,
+          beforedeselect: me.onBeforeDeselect
         });
 
         picker.setSelectionModel(me.pickerSelectionModel);
@@ -1251,7 +1251,7 @@ Ext.define("Ext.form.field.ComboBox", {
           load: me.onLoad,
           exception: me.onException,
           update: me.onStoreUpdate,
-          remove: me.checkValueOnChange,
+          remove: me.checkValueOnChange
         };
 
       // If we are doing remote filtering, then mutating the store's filters should not
@@ -1382,7 +1382,7 @@ Ext.define("Ext.form.field.ComboBox", {
         rawQuery: rawQuery,
         forceAll: forceAll,
         combo: me,
-        cancel: false,
+        cancel: false
       }),
       refreshFilters;
 
@@ -1499,7 +1499,7 @@ Ext.define("Ext.form.field.ComboBox", {
           caseSensitive: me.caseSensitive,
           root: "data",
           property: me.displayField,
-          value: value,
+          value: value
         });
         store.addFilter(filter, true);
         me.changingFilters = false;
@@ -1536,13 +1536,13 @@ Ext.define("Ext.form.field.ComboBox", {
       // if we're paging, we've changed the query so start at page 1.
       me.loadPage(1, {
         rawQuery: queryPlan.rawQuery,
-        callback: loadCallback,
+        callback: loadCallback
       });
     } else {
       me.store.load({
         params: me.getParams(queryPlan.query),
         rawQuery: queryPlan.rawQuery,
-        callback: loadCallback,
+        callback: loadCallback
       });
     }
   },
@@ -1585,10 +1585,10 @@ Ext.define("Ext.form.field.ComboBox", {
       pageNum,
       Ext.apply(
         {
-          params: this.getParams(this.lastQuery),
+          params: this.getParams(this.lastQuery)
         },
-        options,
-      ),
+        options
+      )
     );
   },
 
@@ -1797,10 +1797,10 @@ Ext.define("Ext.form.field.ComboBox", {
           preserveScrollOnRefresh: true,
           pageSize: me.pageSize,
           tpl: me.tpl,
-          ariaSelectable: me.ariaSelectable,
+          ariaSelectable: me.ariaSelectable
         },
         me.listConfig,
-        me.defaultListConfig,
+        me.defaultListConfig
       );
 
     picker = me.picker = Ext.widget(pickerCfg);
@@ -1813,14 +1813,14 @@ Ext.define("Ext.form.field.ComboBox", {
     if (!picker.initialConfig.maxHeight) {
       picker.on({
         beforeshow: me.onBeforePickerShow,
-        scope: me,
+        scope: me
       });
     }
     picker.getSelectionModel().on({
       beforeselect: me.onBeforeSelect,
       beforedeselect: me.onBeforeDeselect,
       focuschange: me.onFocusChange,
-      scope: me,
+      scope: me
     });
 
     picker.getNavigationModel().navigateOnSpace = false;
@@ -2395,8 +2395,8 @@ Ext.define("Ext.form.field.ComboBox", {
         Ext.DomHelper.markup({
           tag: "input",
           type: "hidden",
-          name: name,
-        }),
+          name: name
+        })
       );
       childrenCount = 1;
       input = dom.firstChild;
@@ -2516,5 +2516,5 @@ Ext.define("Ext.form.field.ComboBox", {
    */
   clearValue: function () {
     this.setValue(null);
-  },
+  }
 });

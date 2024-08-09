@@ -19,9 +19,9 @@ describe("Ext.data.proxy.Direct", function () {
         namespace: "spec",
         type: "remoting",
         url: "fake",
-        enableBuffer: false,
+        enableBuffer: false
       },
-      cfg,
+      cfg
     );
 
     provider = Ext.direct.Manager.addProvider(cfg);
@@ -34,9 +34,9 @@ describe("Ext.data.proxy.Direct", function () {
 
     cfg = Ext.apply(
       {
-        writer: writer,
+        writer: writer
       },
-      cfg,
+      cfg
     );
 
     proxy = new (ctor || Ext.data.proxy.Direct)(cfg);
@@ -57,8 +57,8 @@ describe("Ext.data.proxy.Direct", function () {
         null,
         {
           status: true,
-          result: data,
-        },
+          result: data
+        }
       ]);
     });
   }
@@ -121,10 +121,10 @@ describe("Ext.data.proxy.Direct", function () {
 
       fields: [
         { name: "id", type: "integer" },
-        { name: "name", type: "string" },
+        { name: "name", type: "string" }
       ],
 
-      idProperty: "id",
+      idProperty: "id"
     });
 
     Writer = Ext.define(null, {
@@ -141,7 +141,7 @@ describe("Ext.data.proxy.Direct", function () {
         }
 
         return request;
-      },
+      }
     });
 
     MockAjaxManager.addMethods();
@@ -174,26 +174,26 @@ describe("Ext.data.proxy.Direct", function () {
           DirectSpecs: [
             {
               len: 0,
-              name: "read",
+              name: "read"
             },
             {
               len: 0,
-              name: "create",
+              name: "create"
             },
             {
               len: 0,
-              name: "update",
+              name: "update"
             },
             {
               len: 0,
-              name: "destroy",
+              name: "destroy"
             },
             {
               len: 0,
-              name: "directFn",
-            },
-          ],
-        },
+              name: "directFn"
+            }
+          ]
+        }
       });
 
       readSpy = makeSpy("read");
@@ -207,14 +207,14 @@ describe("Ext.data.proxy.Direct", function () {
         create: createSpy,
         update: updateSpy,
         destroy: destroySpy,
-        directFn: directSpy,
+        directFn: directSpy
       };
     });
 
     describe("directFn", function () {
       beforeEach(function () {
         makeProxy({
-          directFn: directSpy,
+          directFn: directSpy
         });
       });
 
@@ -250,8 +250,8 @@ describe("Ext.data.proxy.Direct", function () {
             read: readSpy,
             create: createSpy,
             update: updateSpy,
-            destroy: destroySpy,
-          },
+            destroy: destroySpy
+          }
         });
       });
 
@@ -306,9 +306,9 @@ describe("Ext.data.proxy.Direct", function () {
           api: {
             create: createSpy,
             update: updateSpy,
-            destroy: destroySpy,
+            destroy: destroySpy
           },
-          directFn: directSpy,
+          directFn: directSpy
         });
       });
 
@@ -330,7 +330,7 @@ describe("Ext.data.proxy.Direct", function () {
       describe("directFn", function () {
         beforeEach(function () {
           makeProxy({
-            directFn: "spec.DirectSpecs.directFn",
+            directFn: "spec.DirectSpecs.directFn"
           });
         });
 
@@ -360,8 +360,8 @@ describe("Ext.data.proxy.Direct", function () {
                   read: "spec.DirectSpecs.read",
                   create: "spec.DirectSpecs.create",
                   update: "spec.DirectSpecs.update",
-                  destroy: "spec.DirectSpecs.destroy",
-                },
+                  destroy: "spec.DirectSpecs.destroy"
+                }
               });
             });
 
@@ -397,8 +397,8 @@ describe("Ext.data.proxy.Direct", function () {
                   read: "spec.DirectSpecs.directFn",
                   create: "spec.DirectSpecs.directFn",
                   update: "spec.DirectSpecs.directFn",
-                  destroy: "spec.DirectSpecs.directFn",
-                },
+                  destroy: "spec.DirectSpecs.directFn"
+                }
               });
 
               it("should resolve to directFn upfront", function () {
@@ -413,7 +413,7 @@ describe("Ext.data.proxy.Direct", function () {
                     read: "spec.DirectSpecs.read",
                     create: "spec.DirectSpecs.create",
                     update: "spec.DirectSpecs.update",
-                    destroy: "spec.DirectSpecs.destroy",
+                    destroy: "spec.DirectSpecs.destroy"
                   });
                 });
 
@@ -454,8 +454,8 @@ describe("Ext.data.proxy.Direct", function () {
                   read: "read",
                   create: "create",
                   update: "update",
-                  destroy: "destroy",
-                },
+                  destroy: "destroy"
+                }
               });
             });
 
@@ -492,8 +492,8 @@ describe("Ext.data.proxy.Direct", function () {
                   read: "directFn",
                   create: "directFn",
                   update: "directFn",
-                  destroy: "directFn",
-                },
+                  destroy: "directFn"
+                }
               });
 
               it("should resolve to directFn upfront", function () {
@@ -508,7 +508,7 @@ describe("Ext.data.proxy.Direct", function () {
                     read: "read",
                     create: "create",
                     update: "update",
-                    destroy: "destroy",
+                    destroy: "destroy"
                   });
                 });
 
@@ -544,7 +544,7 @@ describe("Ext.data.proxy.Direct", function () {
                     read: "spec.DirectSpecs.read",
                     create: "spec.DirectSpecs.create",
                     update: "spec.DirectSpecs.update",
-                    destroy: "spec.DirectSpecs.destroy",
+                    destroy: "spec.DirectSpecs.destroy"
                   });
                 });
 
@@ -586,16 +586,16 @@ describe("Ext.data.proxy.Direct", function () {
                   read: "read",
                   create: "create",
                   update: "update",
-                  destroy: "destroy",
-                },
+                  destroy: "destroy"
+                }
               });
 
               Bar = Ext.define(null, {
                 extend: Foo,
 
                 api: {
-                  prefix: "spec.DirectSpecs",
-                },
+                  prefix: "spec.DirectSpecs"
+                }
               });
 
               makeProxy(null, Bar);
@@ -639,9 +639,9 @@ describe("Ext.data.proxy.Direct", function () {
               read: "spec.DirectSpecs.read",
               create: "spec.DirectSpecs.create",
               update: "spec.DirectSpecs.update",
-              destroy: "spec.DirectSpecs.destroy",
+              destroy: "spec.DirectSpecs.destroy"
             },
-            directFn: "spec.DirectSpecs.directFn",
+            directFn: "spec.DirectSpecs.directFn"
           });
 
           proxy.resolveMethods();
@@ -680,10 +680,10 @@ describe("Ext.data.proxy.Direct", function () {
               name: "GetUserlog",
               strict: false,
               params: ["username", "start", "limit", "sort"],
-              len: 4,
-            },
-          ],
-        },
+              len: 4
+            }
+          ]
+        }
       });
 
       makeProxy({ directFn: "Proxy.Query.GetUserlog" });
@@ -708,9 +708,9 @@ describe("Ext.data.proxy.Direct", function () {
             { name: "readOrdered", len: 1 },
             { name: "create", len: 1 },
             { name: "update", len: 1 },
-            { name: "destroy", len: 1 },
-          ],
-        },
+            { name: "destroy", len: 1 }
+          ]
+        }
       });
 
       namedSpy = makeSpy("readNamed");
@@ -724,8 +724,8 @@ describe("Ext.data.proxy.Direct", function () {
           read: orderedSpy,
           create: createSpy,
           update: updateSpy,
-          destroy: destroySpy,
-        },
+          destroy: destroySpy
+        }
       });
 
       loadSpy = jasmine.createSpy("store load");
@@ -736,8 +736,8 @@ describe("Ext.data.proxy.Direct", function () {
         autoLoad: false,
         asynchronousLoad: false,
         listeners: {
-          load: loadSpy,
-        },
+          load: loadSpy
+        }
       });
     });
 
@@ -749,7 +749,7 @@ describe("Ext.data.proxy.Direct", function () {
       var result = [
         { id: 1, name: "foo" },
         { id: 2, name: "bar" },
-        { id: 3, name: "qux" },
+        { id: 3, name: "qux" }
       ];
 
       beforeEach(function () {
@@ -775,7 +775,7 @@ describe("Ext.data.proxy.Direct", function () {
           expectArgs(proxy.api.read, {
             page: 1,
             start: 0,
-            limit: 25,
+            limit: 25
           });
         });
       });
@@ -802,7 +802,7 @@ describe("Ext.data.proxy.Direct", function () {
             expectArgs(proxy.api.read, {
               page: 1,
               start: 0,
-              limit: 25,
+              limit: 25
             });
           });
         });
@@ -842,7 +842,7 @@ describe("Ext.data.proxy.Direct", function () {
           it("should pass correct params to the fn", function () {
             expectArgs(createSpy, {
               id: store.getAt(0).id,
-              name: "xyzzy",
+              name: "xyzzy"
             });
           });
         });
@@ -926,7 +926,7 @@ describe("Ext.data.proxy.Direct", function () {
           it("should pass correct params to the fn", function () {
             expectArgs(createSpy, [
               { id: store.getAt(0).id, name: "xyzzy" },
-              { id: store.getAt(1).id, name: "zyxxy" },
+              { id: store.getAt(1).id, name: "zyxxy" }
             ]);
           });
         });
@@ -952,7 +952,7 @@ describe("Ext.data.proxy.Direct", function () {
             it("should pass correct params to the fn", function () {
               expectArgs(createSpy, [
                 [store.getAt(0).id, "xyzzy"],
-                [store.getAt(1).id, "zyxxy"],
+                [store.getAt(1).id, "zyxxy"]
               ]);
             });
           });
@@ -964,7 +964,7 @@ describe("Ext.data.proxy.Direct", function () {
       beforeEach(function () {
         store.loadRawData([
           { id: 41, name: "blergo" },
-          { id: 42, name: "frobbe" },
+          { id: 42, name: "frobbe" }
         ]);
 
         store.getAt(1).set({ name: "throbbe" });
@@ -979,7 +979,7 @@ describe("Ext.data.proxy.Direct", function () {
           it("should pass correct params to the fn", function () {
             expectArgs(updateSpy, {
               id: 42,
-              name: "throbbe",
+              name: "throbbe"
             });
           });
         });
@@ -1062,7 +1062,7 @@ describe("Ext.data.proxy.Direct", function () {
           it("should pass correct params to the fn", function () {
             expectArgs(updateSpy, [
               { id: 41, name: "zingbong" },
-              { id: 42, name: "throbbe" },
+              { id: 42, name: "throbbe" }
             ]);
           });
         });
@@ -1088,7 +1088,7 @@ describe("Ext.data.proxy.Direct", function () {
             it("should pass correct params to the fn", function () {
               expectArgs(updateSpy, [
                 [41, "zingbong"],
-                [42, "throbbe"],
+                [42, "throbbe"]
               ]);
             });
           });
@@ -1100,7 +1100,7 @@ describe("Ext.data.proxy.Direct", function () {
       beforeEach(function () {
         store.loadRawData([
           { id: 7, name: "yin" },
-          { id: 8, name: "yang" },
+          { id: 8, name: "yang" }
         ]);
       });
 
@@ -1194,18 +1194,18 @@ describe("Ext.data.proxy.Direct", function () {
           DirectSpecs: [
             {
               name: "named",
-              params: ["blerg"],
+              params: ["blerg"]
             },
             {
               name: "ordered",
-              len: 1,
+              len: 1
             },
             {
               name: "ordered2",
-              len: 2,
-            },
-          ],
-        },
+              len: 2
+            }
+          ]
+        }
       });
 
       namedSpy = makeSpy("named");
@@ -1226,7 +1226,7 @@ describe("Ext.data.proxy.Direct", function () {
         readSome(proxy, { params: { blerg: -1 } });
 
         expectArgs(namedSpy, {
-          blerg: -1,
+          blerg: -1
         });
       });
     });
@@ -1261,7 +1261,7 @@ describe("Ext.data.proxy.Direct", function () {
 
           expect(orderedSpy.mostRecentCall.args[0]).toEqual({
             foo: "bar",
-            blerg: "throbbe",
+            blerg: "throbbe"
           });
         });
       });
@@ -1277,7 +1277,7 @@ describe("Ext.data.proxy.Direct", function () {
 
           expect(orderedSpy.mostRecentCall.args[0]).toEqual({
             throbbe: "knurl",
-            bonzo: "gurgle",
+            bonzo: "gurgle"
           });
         });
       });
@@ -1293,18 +1293,18 @@ describe("Ext.data.proxy.Direct", function () {
           DirectSpecs: [
             {
               name: "named",
-              params: ["blerg"],
+              params: ["blerg"]
             },
             {
               name: "ordered",
-              len: 1,
+              len: 1
             },
             {
               name: "ordered2",
-              len: 2,
-            },
-          ],
-        },
+              len: 2
+            }
+          ]
+        }
       });
 
       namedSpy = makeSpy("named");
@@ -1320,7 +1320,7 @@ describe("Ext.data.proxy.Direct", function () {
       beforeEach(function () {
         makeProxy({
           directFn: namedSpy,
-          extraParams: { foo: true, bar: false },
+          extraParams: { foo: true, bar: false }
         });
       });
 
@@ -1330,7 +1330,7 @@ describe("Ext.data.proxy.Direct", function () {
         expect(namedSpy.mostRecentCall.args[0]).toEqual({
           foo: true,
           bar: false,
-          blerg: 42,
+          blerg: 42
         });
       });
 
@@ -1357,7 +1357,7 @@ describe("Ext.data.proxy.Direct", function () {
       beforeEach(function () {
         makeProxy({
           directFn: orderedSpy,
-          extraParams: { foo: true, bar: false },
+          extraParams: { foo: true, bar: false }
         });
       });
 
@@ -1370,7 +1370,7 @@ describe("Ext.data.proxy.Direct", function () {
           expect(orderedSpy.mostRecentCall.args[0]).toEqual({
             blerg: 43,
             foo: true,
-            bar: false,
+            bar: false
           });
         });
 
@@ -1382,7 +1382,7 @@ describe("Ext.data.proxy.Direct", function () {
           expect(orderedSpy.mostRecentCall.args[0]).toEqual({
             blerg: 44,
             foo: true,
-            bar: false,
+            bar: false
           });
         });
 
@@ -1449,11 +1449,11 @@ describe("Ext.data.proxy.Direct", function () {
                 name: "named",
                 params: ["blerg"],
                 metadata: {
-                  params: ["foo", "bar"],
-                },
-              },
-            ],
-          },
+                  params: ["foo", "bar"]
+                }
+              }
+            ]
+          }
         });
 
         namedSpy = makeSpy("named");
@@ -1474,7 +1474,7 @@ describe("Ext.data.proxy.Direct", function () {
           readSome();
 
           expect(namedSpy.mostRecentCall.args[3]).toEqual({
-            metadata: { foo: 42, bar: false },
+            metadata: { foo: 42, bar: false }
           });
         });
       });
@@ -1492,7 +1492,7 @@ describe("Ext.data.proxy.Direct", function () {
           createSome();
 
           expect(namedSpy.mostRecentCall.args[3]).toEqual({
-            metadata: { foo: false, bar: null },
+            metadata: { foo: false, bar: null }
           });
         });
       });
@@ -1510,7 +1510,7 @@ describe("Ext.data.proxy.Direct", function () {
           updateSome();
 
           expect(namedSpy.mostRecentCall.args[3]).toEqual({
-            metadata: { foo: { baz: 1 }, bar: ["foo"] },
+            metadata: { foo: { baz: 1 }, bar: ["foo"] }
           });
         });
       });
@@ -1530,8 +1530,8 @@ describe("Ext.data.proxy.Direct", function () {
           expect(namedSpy.mostRecentCall.args[3]).toEqual({
             metadata: {
               foo: { bar: { baz: 42 } },
-              bar: "blerg",
-            },
+              bar: "blerg"
+            }
           });
         });
       });
@@ -1546,11 +1546,11 @@ describe("Ext.data.proxy.Direct", function () {
                 name: "ordered",
                 len: 0,
                 metadata: {
-                  len: 1,
-                },
-              },
-            ],
-          },
+                  len: 1
+                }
+              }
+            ]
+          }
         });
 
         orderedSpy = makeSpy("ordered");
@@ -1571,7 +1571,7 @@ describe("Ext.data.proxy.Direct", function () {
           readSome();
 
           expect(orderedSpy.mostRecentCall.args[2]).toEqual({
-            metadata: [42],
+            metadata: [42]
           });
         });
       });
@@ -1589,7 +1589,7 @@ describe("Ext.data.proxy.Direct", function () {
           createSome();
 
           expect(orderedSpy.mostRecentCall.args[2]).toEqual({
-            metadata: [43],
+            metadata: [43]
           });
         });
       });
@@ -1607,7 +1607,7 @@ describe("Ext.data.proxy.Direct", function () {
           updateSome();
 
           expect(orderedSpy.mostRecentCall.args[2]).toEqual({
-            metadata: [44],
+            metadata: [44]
           });
         });
       });
@@ -1625,7 +1625,7 @@ describe("Ext.data.proxy.Direct", function () {
           destroySome();
 
           expect(orderedSpy.mostRecentCall.args[2]).toEqual({
-            metadata: [45],
+            metadata: [45]
           });
         });
       });
@@ -1641,10 +1641,10 @@ describe("Ext.data.proxy.Direct", function () {
           DirectSpecs: [
             {
               len: 0,
-              name: "directFn",
-            },
-          ],
-        },
+              name: "directFn"
+            }
+          ]
+        }
       });
 
       directFn = makeSpy("directFn").andCallFake(function (cb, proxy) {
@@ -1652,7 +1652,7 @@ describe("Ext.data.proxy.Direct", function () {
       });
 
       makeProxy({
-        directFn: directFn,
+        directFn: directFn
       });
 
       spyOn(proxy, "processResponse").andCallThrough();

@@ -302,14 +302,14 @@ Ext.define("Ext.grid.selection.Rows", {
                     scope || me,
                     context,
                     context.colIdx,
-                    context.rowIdx,
+                    context.rowIdx
                   ) === false
                 ) {
                   abort = true;
                 }
               }
             }
-          },
+          }
         });
       }
     }
@@ -505,14 +505,14 @@ Ext.define("Ext.grid.selection.Rows", {
           extraKeys: {
             byInternalId: {
               rootProperty: false,
-              property: "internalId",
-            },
+              property: "internalId"
+            }
           },
           sorters: [
             function (r1, r2) {
               return store.indexOf(r1) - store.indexOf(r2);
-            },
-          ],
+            }
+          ]
         });
 
       return result;
@@ -537,7 +537,7 @@ Ext.define("Ext.grid.selection.Rows", {
           forRender: false,
           callback: function (range) {
             selection.add.apply(selection, range);
-          },
+          }
         });
 
         // Clear the drag range
@@ -557,8 +557,8 @@ Ext.define("Ext.grid.selection.Rows", {
             new Ext.grid.CellContext(me.view).setPosition(range[0], 0),
             new Ext.grid.CellContext(me.view).setPosition(
               range[1],
-              me.view.getVisibleColumnManager().getColumns().length - 1,
-            ),
+              me.view.getVisibleColumnManager().getColumns().length - 1
+            )
           );
       } else {
         me.view.getSelectionModel().onSelectionFinish(me);
@@ -581,7 +581,7 @@ Ext.define("Ext.grid.selection.Rows", {
           this.selectedRecords.getRange(),
           function (r1, r2) {
             return store.indexOf(r1) - store.indexOf(r2);
-          },
+          }
         );
         len = selection.length;
         if (len) {
@@ -595,10 +595,10 @@ Ext.define("Ext.grid.selection.Rows", {
           }
           return [
             store.indexOf(selection[0]),
-            store.indexOf(selection[len - 1]),
+            store.indexOf(selection[len - 1])
           ];
         }
       }
-    },
-  },
+    }
+  }
 });

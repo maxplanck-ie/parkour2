@@ -25,7 +25,7 @@ Ext.define("Ext.picker.Slot", {
     "Ext.XTemplate",
     "Ext.data.Store",
     "Ext.Component",
-    "Ext.data.StoreManager",
+    "Ext.data.StoreManager"
   ],
 
   /**
@@ -112,14 +112,14 @@ Ext.define("Ext.picker.Slot", {
     scrollable: {
       x: false,
       y: true,
-      scrollbars: false,
+      scrollbars: false
     },
 
     /**
      * @cfg {Boolean} verticallyCenterItems
      * @private
      */
-    verticallyCenterItems: true,
+    verticallyCenterItems: true
   },
 
   snapSelector: "." + Ext.baseCSSPrefix + "dataview-item",
@@ -144,7 +144,7 @@ Ext.define("Ext.picker.Slot", {
       title = Ext.create("Ext.Component", {
         cls: Ext.baseCSSPrefix + "picker-slot-title",
         docked: "top",
-        html: title,
+        html: title
       });
     }
 
@@ -180,7 +180,7 @@ Ext.define("Ext.picker.Slot", {
           Ext.baseCSSPrefix +
           'picker-invalid</tpl>">{' +
           newDisplayField +
-          "}</div>",
+          "}</div>"
       );
     }
   },
@@ -240,24 +240,24 @@ Ext.define("Ext.picker.Slot", {
       itemtap: "doItemTap",
       resize: {
         fn: "onResize",
-        single: true,
-      },
+        single: true
+      }
     });
 
     this.picker.on({
       scope: this,
-      beforehiddenchange: "onBeforeHiddenChange",
+      beforehiddenchange: "onBeforeHiddenChange"
     });
 
     this.element.on({
       scope: this,
       touchstart: "onTouchStart",
-      touchend: "onTouchEnd",
+      touchend: "onTouchEnd"
     });
 
     scroller.on({
       scope: this,
-      scrollend: "onScrollEnd",
+      scrollend: "onScrollEnd"
     });
   },
 
@@ -331,18 +331,18 @@ Ext.define("Ext.picker.Slot", {
 
     if (this.getVerticallyCenterItems()) {
       innerElement.setStyle({
-        padding: offset + "px 0 " + offset + "px",
+        padding: offset + "px 0 " + offset + "px"
       });
     }
 
     scroller.setSnapOffset({
-      y: offset,
+      y: offset
     });
 
     scroller.setSnapSelector(this.snapSelector);
 
     scroller.setMsSnapInterval({
-      y: barHeight,
+      y: barHeight
     });
 
     this.doSetValue(value);
@@ -479,5 +479,5 @@ Ext.define("Ext.picker.Slot", {
     }
 
     me._value = value;
-  },
+  }
 });

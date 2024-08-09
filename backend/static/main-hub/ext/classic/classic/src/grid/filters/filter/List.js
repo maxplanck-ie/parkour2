@@ -102,7 +102,7 @@ Ext.define("Ext.grid.filters.filter.List", {
    */
   itemDefaults: {
     checked: false,
-    hideOnClick: false,
+    hideOnClick: false
   },
 
   /**
@@ -207,7 +207,7 @@ Ext.define("Ext.grid.filters.filter.List", {
     add: "onDataChanged",
     refresh: "onDataChanged",
     remove: "onDataChanged",
-    update: "onDataChanged",
+    update: "onDataChanged"
   },
 
   constructor: function (config) {
@@ -219,7 +219,7 @@ Ext.define("Ext.grid.filters.filter.List", {
     //<debug>
     if (me.itemDefaults.checked) {
       Ext.raise(
-        "The itemDefaults.checked config is not supported, use the value config instead.",
+        "The itemDefaults.checked config is not supported, use the value config instead."
       );
     }
     //</debug>
@@ -262,17 +262,17 @@ Ext.define("Ext.grid.filters.filter.List", {
           Ext.apply(
             {
               scope: me,
-              destroyable: true,
+              destroyable: true
             },
-            me.gridStoreListenersCfg,
-          ),
+            me.gridStoreListenersCfg
+          )
         );
       }
 
       me.gridListeners = me.grid.on({
         reconfigure: me.onReconfigure,
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
 
       me.inferOptionsFromGridStore = true;
@@ -402,7 +402,7 @@ Ext.define("Ext.grid.filters.filter.List", {
 
       store = me.store = new Ext.data.Store({
         fields: [idField, labelField],
-        data: storeData,
+        data: storeData
       });
 
       // Note that the grid store listeners may have been bound in the constructor if it was determined
@@ -412,10 +412,10 @@ Ext.define("Ext.grid.filters.filter.List", {
           Ext.apply(
             {
               scope: me,
-              destroyable: true,
+              destroyable: true
             },
-            me.gridStoreListenersCfg,
-          ),
+            me.gridStoreListenersCfg
+          )
         );
       }
 
@@ -449,14 +449,14 @@ Ext.define("Ext.grid.filters.filter.List", {
       if (!store.getCount()) {
         menu.add({
           text: me.loadingText,
-          iconCls: Ext.baseCSSPrefix + "mask-msg-text",
+          iconCls: Ext.baseCSSPrefix + "mask-msg-text"
         });
 
         // Add a listener that will auto-load the menu store if `loadOnShow` is true (the default).
         // Don't bother with mon here, the menu is destroyed when we are.
         menu.on({
           show: me.show,
-          scope: me,
+          scope: me
         });
 
         store.on("load", me.bindMenuStore, me, { single: true });
@@ -530,10 +530,10 @@ Ext.define("Ext.grid.filters.filter.List", {
               group: gid,
               value: idValue,
               checkHandler: me.onCheckChange,
-              scope: me,
+              scope: me
             },
-            itemDefaults,
-          ),
+            itemDefaults
+          )
         );
       }
 
@@ -590,8 +590,8 @@ Ext.define("Ext.grid.filters.filter.List", {
       null,
       {
         filtered: true, // Include filtered out nodes.
-        collapsed: true, // Include nodes below collapsed ancestors.
-      },
+        collapsed: true // Include nodes below collapsed ancestors.
+      }
     );
 
     return ret;
@@ -702,5 +702,5 @@ Ext.define("Ext.grid.filters.filter.List", {
     if (this.loadOnShow && !this.loaded && !store.hasPendingLoad()) {
       store.load();
     }
-  },
+  }
 });

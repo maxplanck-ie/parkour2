@@ -22,13 +22,13 @@ describe("Ext.util.TaskRunner", function () {
     it("it should not fire idle event when configured", function () {
       runs(function () {
         runner = new Ext.util.TaskRunner({
-          fireIdleEvent: false,
+          fireIdleEvent: false
         });
 
         task = runner.newTask({
           fireIdleEvent: false,
           interval: 10,
-          run: Ext.emptyFn,
+          run: Ext.emptyFn
         });
 
         task.start();
@@ -61,7 +61,7 @@ describe("Ext.util.TaskRunner", function () {
       task = runner.newTask({
         interval: 10,
         run: spy,
-        args: ["Foo"],
+        args: ["Foo"]
       });
 
       task.start();
@@ -80,7 +80,7 @@ describe("Ext.util.TaskRunner", function () {
         interval: 10,
         run: spy,
         addCountToArgs: true,
-        args: ["Foo"],
+        args: ["Foo"]
       });
 
       task.start();
@@ -99,7 +99,7 @@ describe("Ext.util.TaskRunner", function () {
         interval: 10,
         run: spy,
         args: ["Foo"],
-        repeat: 2,
+        repeat: 2
       });
 
       task.start();

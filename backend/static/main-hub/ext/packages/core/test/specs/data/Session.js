@@ -3,9 +3,9 @@ describe("Ext.data.Session", function () {
     Ext.Ajax.mockComplete(
       {
         status: 200,
-        responseText: Ext.encode(data),
+        responseText: Ext.encode(data)
       },
-      requestId,
+      requestId
     );
   }
 
@@ -38,23 +38,23 @@ describe("Ext.data.Session", function () {
 
     adminGroup = {
       id: 42,
-      name: "Admins",
+      name: "Admins"
     };
     peonGroup = {
       id: 427,
-      name: "Peons",
+      name: "Peons"
     };
     userRufus = {
       id: 10,
-      name: "Rufus",
+      name: "Rufus"
     };
     userBill = {
       id: 20,
-      name: "Bill",
+      name: "Bill"
     };
     userTed = {
       id: 30,
-      name: "Ted",
+      name: "Ted"
     };
 
     rufusGroups = [adminGroup, peonGroup];
@@ -81,10 +81,10 @@ describe("Ext.data.Session", function () {
           {
             name: "addressId",
             reference: "Address",
-            unique: true,
-          },
+            unique: true
+          }
         ],
-        manyToMany: "Group",
+        manyToMany: "Group"
       });
       parent = new Ext.data.Session();
       session = new Ext.data.Session();
@@ -100,7 +100,7 @@ describe("Ext.data.Session", function () {
     describe("adopt", function () {
       it("should cache the record into the session", function () {
         rec = new User({
-          id: 1,
+          id: 1
         });
         session.adopt(rec);
         expect(session.peekRecord("User", 1)).toBe(rec);
@@ -108,7 +108,7 @@ describe("Ext.data.Session", function () {
 
       it("should put the session on the record", function () {
         rec = new User({
-          id: 1,
+          id: 1
         });
         session.adopt(rec);
         expect(rec.session).toBe(session);
@@ -136,11 +136,11 @@ describe("Ext.data.Session", function () {
           var customSchema = new Ext.data.schema.Schema();
           Ext.define("spec.CustomModel", {
             extend: "Ext.data.Model",
-            schema: customSchema,
+            schema: customSchema
           });
 
           rec = new spec.CustomModel({
-            id: 1,
+            id: 1
           });
           expect(function () {
             session.adopt(rec);
@@ -152,8 +152,8 @@ describe("Ext.data.Session", function () {
           expect(function () {
             session.adopt(
               new User({
-                id: 1,
-              }),
+                id: 1
+              })
             );
           }).toThrow();
         });
@@ -170,9 +170,9 @@ describe("Ext.data.Session", function () {
                 "content",
                 {
                   name: "userId",
-                  reference: "User",
-                },
-              ],
+                  reference: "User"
+                }
+              ]
             });
           });
 
@@ -183,7 +183,7 @@ describe("Ext.data.Session", function () {
 
           function makeUser(id) {
             user = new User({
-              id: id,
+              id: id
             });
           }
 
@@ -191,7 +191,7 @@ describe("Ext.data.Session", function () {
             it("should not attempt to load the owner", function () {
               var post = new spec.Post({
                 id: 101,
-                userId: 1,
+                userId: 1
               });
 
               var spy = spyOn(User.getProxy(), "read");
@@ -202,7 +202,7 @@ describe("Ext.data.Session", function () {
             it("should also adopt the owner", function () {
               var post = new spec.Post({
                 id: 101,
-                userId: 1,
+                userId: 1
               });
 
               makeUser(1);
@@ -246,7 +246,7 @@ describe("Ext.data.Session", function () {
               completeRequest([
                 { id: 101, userId: 1 },
                 { id: 102, userId: 1 },
-                { id: 103, userId: 1 },
+                { id: 103, userId: 1 }
               ]);
               expect(posts.getAt(0).session).toBe(session);
               expect(posts.getAt(1).session).toBe(session);
@@ -259,7 +259,7 @@ describe("Ext.data.Session", function () {
           beforeEach(function () {
             Ext.define("spec.Address", {
               extend: "Ext.data.Model",
-              fields: ["city"],
+              fields: ["city"]
             });
           });
 
@@ -271,7 +271,7 @@ describe("Ext.data.Session", function () {
             it("should not attempt to load the non key holder", function () {
               var user = new User({
                 id: 1,
-                addressId: 101,
+                addressId: 101
               });
               var spy = spyOn(spec.Address.getProxy(), "read");
               session.adopt(user);
@@ -280,11 +280,11 @@ describe("Ext.data.Session", function () {
 
             it("should adopt the non key holder", function () {
               var address = new spec.Address({
-                id: 101,
+                id: 101
               });
 
               var user = new User({
-                id: 1,
+                id: 1
               });
 
               user.setAddress(address);
@@ -296,7 +296,7 @@ describe("Ext.data.Session", function () {
           describe("the non key holder", function () {
             it("should not attempt to load the key holder", function () {
               var address = new spec.Address({
-                id: 101,
+                id: 101
               });
               var spy = spyOn(User.getProxy(), "read");
               session.adopt(address);
@@ -305,11 +305,11 @@ describe("Ext.data.Session", function () {
 
             it("should also adopt the key holder", function () {
               var address = new spec.Address({
-                id: 101,
+                id: 101
               });
 
               var user = new User({
-                id: 1,
+                id: 1
               });
               address.setUser(user);
 
@@ -325,7 +325,7 @@ describe("Ext.data.Session", function () {
           beforeEach(function () {
             Group = Ext.define("spec.Group", {
               extend: "Ext.data.Model",
-              fields: ["name"],
+              fields: ["name"]
             });
           });
 
@@ -424,14 +424,14 @@ describe("Ext.data.Session", function () {
               fields: [
                 {
                   name: "userId",
-                  reference: "User",
+                  reference: "User"
                 },
                 {
                   name: "addressId",
                   reference: "Address",
-                  unique: true,
-                },
-              ],
+                  unique: true
+                }
+              ]
             });
 
             Ext.define("spec.OrderItem", {
@@ -439,14 +439,14 @@ describe("Ext.data.Session", function () {
               fields: [
                 {
                   name: "orderId",
-                  reference: "Order",
-                },
-              ],
+                  reference: "Order"
+                }
+              ]
             });
 
             Ext.define("spec.Address", {
               extend: "Ext.data.Model",
-              fields: ["city"],
+              fields: ["city"]
             });
           });
 
@@ -465,37 +465,37 @@ describe("Ext.data.Session", function () {
                   id: 101,
                   userId: 1,
                   address: {
-                    id: 201,
+                    id: 201
                   },
                   orderItems: [
                     {
                       id: 301,
-                      orderId: 101,
+                      orderId: 101
                     },
                     {
                       id: 302,
-                      orderId: 101,
-                    },
-                  ],
+                      orderId: 101
+                    }
+                  ]
                 },
                 {
                   id: 102,
                   userId: 1,
                   address: {
-                    id: 202,
+                    id: 202
                   },
                   orderItems: [
                     {
                       id: 303,
-                      orderId: 102,
+                      orderId: 102
                     },
                     {
                       id: 304,
-                      orderId: 102,
-                    },
-                  ],
-                },
-              ],
+                      orderId: 102
+                    }
+                  ]
+                }
+              ]
             });
             session.adopt(user);
 
@@ -518,7 +518,7 @@ describe("Ext.data.Session", function () {
     describe("createRecord", function () {
       it("should accept the entity name", function () {
         rec = session.createRecord("User", {
-          name: "Foo",
+          name: "Foo"
         });
         expect(rec.$className).toBe("spec.User");
         expect(rec.get("name")).toBe("Foo");
@@ -526,7 +526,7 @@ describe("Ext.data.Session", function () {
 
       it("should accept the entity class", function () {
         rec = session.createRecord(spec.User, {
-          name: "Foo",
+          name: "Foo"
         });
         expect(rec.$className).toBe("spec.User");
         expect(rec.get("name")).toBe("Foo");
@@ -541,7 +541,7 @@ describe("Ext.data.Session", function () {
       it("should throw an exception creating an anonymous model", function () {
         var Model = Ext.define(null, {
           extend: "Ext.data.Model",
-          fields: ["name"],
+          fields: ["name"]
         });
 
         expect(function () {
@@ -564,7 +564,7 @@ describe("Ext.data.Session", function () {
         expect(function () {
           rec = session
             .createRecord("User", {
-              id: 1,
+              id: 1
             })
             .toThrow();
         });
@@ -580,7 +580,7 @@ describe("Ext.data.Session", function () {
 
       it("should become dirty", function () {
         rec = session.createRecord("User", {
-          name: "Foo",
+          name: "Foo"
         });
 
         expect(session.isDirty()).toBe(true);
@@ -600,7 +600,7 @@ describe("Ext.data.Session", function () {
           getAndComplete("User", 1, parent);
           expect(function () {
             session.createRecord("User", {
-              id: 1,
+              id: 1
             });
           }).toThrow();
         });
@@ -625,7 +625,7 @@ describe("Ext.data.Session", function () {
       it("should throw an exception creating an anonymous model", function () {
         var Model = Ext.define(null, {
           extend: "Ext.data.Model",
-          fields: ["name"],
+          fields: ["name"]
         });
 
         expect(function () {
@@ -648,7 +648,7 @@ describe("Ext.data.Session", function () {
 
         it("should accept an existing record and adopt it", function () {
           rec = new spec.User({
-            id: 1,
+            id: 1
           });
           expect(session.getRecord(rec)).toBe(rec);
           expect(rec.session).toBe(session);
@@ -681,11 +681,11 @@ describe("Ext.data.Session", function () {
             var spy = spyOn(spec.User.getProxy(), "read");
             session.getRecord("User", 1, {
               params: {
-                someId: 1,
-              },
+                someId: 1
+              }
             });
             expect(spy.mostRecentCall.args[0].getParams()).toEqual({
-              someId: 1,
+              someId: 1
             });
           });
         });
@@ -877,7 +877,7 @@ describe("Ext.data.Session", function () {
       it("should throw an exception creating an anonymous model", function () {
         var Model = Ext.define(null, {
           extend: "Ext.data.Model",
-          fields: ["name"],
+          fields: ["name"]
         });
 
         expect(function () {
@@ -930,9 +930,9 @@ describe("Ext.data.Session", function () {
               "content",
               {
                 name: "userId",
-                reference: "User",
-              },
-            ],
+                reference: "User"
+              }
+            ]
           });
         });
 
@@ -975,7 +975,7 @@ describe("Ext.data.Session", function () {
               user = post.getUser();
 
             completeRequest({
-              id: 1,
+              id: 1
             });
             expect(session.getRecord("User", 1)).toBe(user);
           });
@@ -1009,7 +1009,7 @@ describe("Ext.data.Session", function () {
             completeRequest([
               { id: 101, userId: 1 },
               { id: 102, userId: 1 },
-              { id: 103, userId: 1 },
+              { id: 103, userId: 1 }
             ]);
             expect(posts.getAt(0)).toBe(session.peekRecord("Post", 101));
             expect(posts.getAt(1)).toBe(session.peekRecord("Post", 102));
@@ -1048,7 +1048,7 @@ describe("Ext.data.Session", function () {
               completeRequest([
                 { id: 103, userId: 1 },
                 { id: 102, userId: 1 },
-                { id: 101, userId: 1 },
+                { id: 101, userId: 1 }
               ]);
 
               expect(posts.getAt(0)).toBe(post3);
@@ -1065,7 +1065,7 @@ describe("Ext.data.Session", function () {
               posts.load();
               completeRequest([
                 { id: 103, userId: 1 },
-                { id: 101, userId: 1 },
+                { id: 101, userId: 1 }
               ]);
               expect(posts.getAt(0)).toBe(session.peekRecord("Post", 103));
               expect(posts.getAt(1)).toBe(session.peekRecord("Post", 101));
@@ -1083,7 +1083,7 @@ describe("Ext.data.Session", function () {
               completeRequest([
                 { id: 101, userId: 1 },
                 { id: 102, userId: 1 },
-                { id: 103, userId: 1 },
+                { id: 103, userId: 1 }
               ]);
               expect(posts.getCount()).toBe(2);
               expect(posts.getAt(0)).toBe(session.peekRecord("Post", 101));
@@ -1097,7 +1097,7 @@ describe("Ext.data.Session", function () {
         beforeEach(function () {
           Ext.define("spec.Address", {
             extend: "Ext.data.Model",
-            fields: ["city"],
+            fields: ["city"]
           });
         });
 
@@ -1140,7 +1140,7 @@ describe("Ext.data.Session", function () {
               address = user.getAddress();
 
             completeRequest({
-              id: 1,
+              id: 1
             });
             expect(session.getRecord("Address", 1)).toBe(address);
           });
@@ -1151,7 +1151,7 @@ describe("Ext.data.Session", function () {
         beforeEach(function () {
           Ext.define("spec.Group", {
             extend: "Ext.data.Model",
-            fields: ["name"],
+            fields: ["name"]
           });
         });
 
@@ -1308,7 +1308,7 @@ describe("Ext.data.Session", function () {
     beforeEach(function () {
       identifier = new Ext.data.identifier.Sequential({
         id: "spec-session",
-        seed: 10,
+        seed: 10
       });
 
       Ext.data.Model.schema.setNamespace("spec");
@@ -1317,21 +1317,21 @@ describe("Ext.data.Session", function () {
       User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
         identifier: "spec-session",
-        fields: ["id"],
+        fields: ["id"]
       });
 
       Order = Ext.define("spec.Order", {
         extend: "Ext.data.Model",
         identifier: "spec-session",
-        fields: ["id"],
+        fields: ["id"]
       });
 
       Job = Ext.define("spec.Job", {
         extend: "Ext.data.Model",
         identifier: {
-          id: "sequential",
+          id: "sequential"
         },
-        fields: ["id"],
+        fields: ["id"]
       });
     });
 
@@ -1344,7 +1344,7 @@ describe("Ext.data.Session", function () {
 
       var Generator = Ext.data.identifier.Generator;
       Generator.all = {
-        uuid: Generator.all.uuid,
+        uuid: Generator.all.uuid
       };
     });
 
@@ -1435,26 +1435,26 @@ describe("Ext.data.Session", function () {
           {
             name: "addressId",
             reference: "Address",
-            unique: true,
+            unique: true
           },
           {
             name: "serializeField",
             serialize: function (v) {
               return v.toString();
-            },
-          },
+            }
+          }
         ],
-        manyToMany: "#Group",
+        manyToMany: "#Group"
       });
 
       Ext.define("spec.Group", {
         extend: "Ext.data.Model",
-        fields: ["name"],
+        fields: ["name"]
       });
 
       Ext.define("spec.Address", {
         extend: "Ext.data.Model",
-        fields: ["city"],
+        fields: ["city"]
       });
 
       Ext.define("spec.Post", {
@@ -1463,9 +1463,9 @@ describe("Ext.data.Session", function () {
           "content",
           {
             name: "userId",
-            reference: "User",
-          },
-        ],
+            reference: "User"
+          }
+        ]
       });
     });
 
@@ -1481,17 +1481,17 @@ describe("Ext.data.Session", function () {
     describe("serialization options", function () {
       it("should serialize field data", function () {
         var user = session.createRecord("User", {
-          serializeField: 1000,
+          serializeField: 1000
         });
         expect(session.getChanges()).toEqual({
           User: {
             C: [
               {
                 id: user.getId(),
-                serializeField: "1000",
-              },
-            ],
-          },
+                serializeField: "1000"
+              }
+            ]
+          }
         });
       });
     });
@@ -1501,7 +1501,7 @@ describe("Ext.data.Session", function () {
         it("should include a phantom record", function () {
           var user = session.createRecord("User", {
             name: "Foo",
-            age: 34,
+            age: 34
           });
           expect(session.getChanges()).toEqual({
             User: {
@@ -1509,17 +1509,17 @@ describe("Ext.data.Session", function () {
                 {
                   id: user.getId(),
                   name: "Foo",
-                  age: 34,
-                },
-              ],
-            },
+                  age: 34
+                }
+              ]
+            }
           });
         });
 
         it("should become dirty with new phantom record", function () {
           var user = session.createRecord("User", {
             name: "Foo",
-            age: 34,
+            age: 34
           });
 
           expect(session.isDirty()).toBe(true);
@@ -1528,7 +1528,7 @@ describe("Ext.data.Session", function () {
         it("should include the updated record state", function () {
           var user = session.createRecord("User", {
             name: "Foo",
-            age: 34,
+            age: 34
           });
           user.set("name", "Bar");
           user.set("age", 5000);
@@ -1538,17 +1538,17 @@ describe("Ext.data.Session", function () {
                 {
                   id: user.getId(),
                   name: "Bar",
-                  age: 5000,
-                },
-              ],
-            },
+                  age: 5000
+                }
+              ]
+            }
           });
         });
 
         it("should still be dirty after updating record state", function () {
           var user = session.createRecord("User", {
             name: "Foo",
-            age: 34,
+            age: 34
           });
           user.set("name", "Bar");
           user.set("age", 5000);
@@ -1566,9 +1566,9 @@ describe("Ext.data.Session", function () {
               C: [
                 { id: user1.getId() },
                 { id: user2.getId() },
-                { id: user3.getId() },
-              ],
-            },
+                { id: user3.getId() }
+              ]
+            }
           });
         });
 
@@ -1606,10 +1606,10 @@ describe("Ext.data.Session", function () {
               U: [
                 {
                   id: 1,
-                  name: "Foo",
-                },
-              ],
-            },
+                  name: "Foo"
+                }
+              ]
+            }
           });
         });
 
@@ -1630,10 +1630,10 @@ describe("Ext.data.Session", function () {
               U: [
                 {
                   id: 1,
-                  name: "Baz",
-                },
-              ],
-            },
+                  name: "Baz"
+                }
+              ]
+            }
           });
         });
 
@@ -1660,18 +1660,18 @@ describe("Ext.data.Session", function () {
               U: [
                 {
                   id: 1,
-                  name: "Foo",
+                  name: "Foo"
                 },
                 {
                   id: 2,
-                  name: "Bar",
+                  name: "Bar"
                 },
                 {
                   id: 3,
-                  name: "Baz",
-                },
-              ],
-            },
+                  name: "Baz"
+                }
+              ]
+            }
           });
         });
 
@@ -1718,8 +1718,8 @@ describe("Ext.data.Session", function () {
           user.drop();
           expect(session.getChanges()).toEqual({
             User: {
-              D: [1],
-            },
+              D: [1]
+            }
           });
         });
 
@@ -1740,8 +1740,8 @@ describe("Ext.data.Session", function () {
           user3.drop();
           expect(session.getChanges()).toEqual({
             User: {
-              D: [1, 2, 3],
-            },
+              D: [1, 2, 3]
+            }
           });
         });
 
@@ -1784,10 +1784,10 @@ describe("Ext.data.Session", function () {
                 name: "addressId",
                 unique: true,
                 reference: {
-                  child: "Address",
-                },
-              },
-            ],
+                  child: "Address"
+                }
+              }
+            ]
           });
           Ext.define("spec.OrderItem", {
             extend: "Ext.data.Model",
@@ -1798,10 +1798,10 @@ describe("Ext.data.Session", function () {
               {
                 name: "orderId",
                 reference: {
-                  parent: "Order",
-                },
-              },
-            ],
+                  parent: "Order"
+                }
+              }
+            ]
           });
         });
 
@@ -1812,7 +1812,7 @@ describe("Ext.data.Session", function () {
 
         it("should resolve any pending drops", function () {
           var order = getAndComplete("Order", 1, session, {
-            addressId: 101,
+            addressId: 101
           });
 
           var address = order.getAddress();
@@ -1824,12 +1824,12 @@ describe("Ext.data.Session", function () {
           completeRequest([
             {
               id: 201,
-              orderId: 1,
+              orderId: 1
             },
             {
               id: 202,
-              orderId: 1,
-            },
+              orderId: 1
+            }
           ]);
 
           var orderItem = orderItems.getAt(0);
@@ -1841,19 +1841,19 @@ describe("Ext.data.Session", function () {
           expect(orderItem.dropped).toBe(false);
           expect(session.getChanges()).toEqual({
             Address: {
-              D: [101],
+              D: [101]
             },
             Order: {
               U: [
                 {
                   id: 1,
-                  addressId: null,
-                },
-              ],
+                  addressId: null
+                }
+              ]
             },
             OrderItem: {
-              D: [201],
-            },
+              D: [201]
+            }
           });
         });
       });
@@ -1867,7 +1867,7 @@ describe("Ext.data.Session", function () {
         describe("basic operations", function () {
           beforeEach(function () {
             user = getAndComplete("User", 1, session, {
-              addressId: 17,
+              addressId: 17
             });
             address = user.getAddress();
             getAndComplete("Address", 17);
@@ -1884,10 +1884,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     id: 1,
-                    addressId: 3,
-                  },
-                ],
-              },
+                    addressId: 3
+                  }
+                ]
+              }
             });
           });
 
@@ -1898,10 +1898,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     id: 1,
-                    addressId: null,
-                  },
-                ],
-              },
+                    addressId: null
+                  }
+                ]
+              }
             });
           });
         });
@@ -1916,18 +1916,18 @@ describe("Ext.data.Session", function () {
               Address: {
                 C: [
                   {
-                    id: 1000,
-                  },
-                ],
+                    id: 1000
+                  }
+                ]
               },
               User: {
                 C: [
                   {
                     id: user.getId(),
-                    addressId: 1000,
-                  },
-                ],
-              },
+                    addressId: 1000
+                  }
+                ]
+              }
             });
           });
         });
@@ -1948,7 +1948,7 @@ describe("Ext.data.Session", function () {
             completeRequest([
               { id: 101, userId: 1 },
               { id: 102, userId: 1 },
-              { id: 103, userId: 1 },
+              { id: 103, userId: 1 }
             ]);
           });
 
@@ -1963,10 +1963,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     id: 101,
-                    userId: null,
-                  },
-                ],
-              },
+                    userId: null
+                  }
+                ]
+              }
             });
           });
 
@@ -1978,10 +1978,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     id: 104,
-                    userId: 1,
-                  },
-                ],
-              },
+                    userId: 1
+                  }
+                ]
+              }
             });
           });
 
@@ -1993,10 +1993,10 @@ describe("Ext.data.Session", function () {
                 C: [
                   {
                     id: post.getId(),
-                    userId: 1,
-                  },
-                ],
-              },
+                    userId: 1
+                  }
+                ]
+              }
             });
           });
         });
@@ -2012,18 +2012,18 @@ describe("Ext.data.Session", function () {
               User: {
                 C: [
                   {
-                    id: 1000,
-                  },
-                ],
+                    id: 1000
+                  }
+                ]
               },
               Post: {
                 C: [
                   {
                     id: post.getId(),
-                    userId: 1000,
-                  },
-                ],
-              },
+                    userId: 1000
+                  }
+                ]
+              }
             });
           });
         });
@@ -2050,10 +2050,10 @@ describe("Ext.data.Session", function () {
                 User: {
                   groups: {
                     C: {
-                      1: [101],
-                    },
-                  },
-                },
+                      1: [101]
+                    }
+                  }
+                }
               });
             });
 
@@ -2066,17 +2066,17 @@ describe("Ext.data.Session", function () {
                 User: {
                   groups: {
                     C: {
-                      1: [id],
-                    },
-                  },
+                      1: [id]
+                    }
+                  }
                 },
                 Group: {
                   C: [
                     {
-                      id: group.getId(),
-                    },
-                  ],
-                },
+                      id: group.getId()
+                    }
+                  ]
+                }
               });
             });
 
@@ -2105,10 +2105,10 @@ describe("Ext.data.Session", function () {
                 User: {
                   groups: {
                     C: {
-                      1: [104],
-                    },
-                  },
-                },
+                      1: [104]
+                    }
+                  }
+                }
               });
             });
 
@@ -2121,17 +2121,17 @@ describe("Ext.data.Session", function () {
                 User: {
                   groups: {
                     C: {
-                      1: [id],
-                    },
-                  },
+                      1: [id]
+                    }
+                  }
                 },
                 Group: {
                   C: [
                     {
-                      id: group.getId(),
-                    },
-                  ],
-                },
+                      id: group.getId()
+                    }
+                  ]
+                }
               });
             });
 
@@ -2148,10 +2148,10 @@ describe("Ext.data.Session", function () {
                 User: {
                   groups: {
                     D: {
-                      1: [101],
-                    },
-                  },
-                },
+                      1: [101]
+                    }
+                  }
+                }
               });
             });
           });
@@ -2163,20 +2163,20 @@ describe("Ext.data.Session", function () {
               User: {
                 groups: {
                   C: {
-                    1: [101, 102],
-                  },
-                },
-              },
+                    1: [101, 102]
+                  }
+                }
+              }
             });
 
             expect(session.getChanges()).toEqual({
               User: {
                 groups: {
                   C: {
-                    1: [101, 102],
-                  },
-                },
-              },
+                    1: [101, 102]
+                  }
+                }
+              }
             });
           });
 
@@ -2185,20 +2185,20 @@ describe("Ext.data.Session", function () {
               User: {
                 groups: {
                   D: {
-                    1: [103, 104],
-                  },
-                },
-              },
+                    1: [103, 104]
+                  }
+                }
+              }
             });
 
             expect(session.getChanges()).toEqual({
               User: {
                 groups: {
                   D: {
-                    1: [103, 104],
-                  },
-                },
-              },
+                    1: [103, 104]
+                  }
+                }
+              }
             });
           });
         });
@@ -2215,22 +2215,22 @@ describe("Ext.data.Session", function () {
               User: {
                 C: [
                   {
-                    id: 1000,
-                  },
+                    id: 1000
+                  }
                 ],
                 groups: {
                   C: {
-                    1000: [group.getId()],
-                  },
-                },
+                    1000: [group.getId()]
+                  }
+                }
               },
               Group: {
                 C: [
                   {
-                    id: group.getId(),
-                  },
-                ],
-              },
+                    id: group.getId()
+                  }
+                ]
+              }
             });
           });
 
@@ -2248,20 +2248,20 @@ describe("Ext.data.Session", function () {
               User: {
                 C: [
                   {
-                    id: user.getId(),
-                  },
+                    id: user.getId()
+                  }
                 ],
                 groups: {
-                  C: o,
-                },
+                  C: o
+                }
               },
               Group: {
                 C: [
                   {
-                    id: 1000,
-                  },
-                ],
-              },
+                    id: 1000
+                  }
+                ]
+              }
             });
           });
         });
@@ -2284,7 +2284,7 @@ describe("Ext.data.Session", function () {
 
       function wrapBlock(action, data) {
         var o = {
-          User: {},
+          User: {}
         };
         o.User[action] = data;
         return o;
@@ -2293,7 +2293,7 @@ describe("Ext.data.Session", function () {
       beforeEach(function () {
         User = Ext.define("spec.User", {
           extend: "Ext.data.Model",
-          fields: ["id", "name", "age"],
+          fields: ["id", "name", "age"]
         });
       });
 
@@ -2305,7 +2305,7 @@ describe("Ext.data.Session", function () {
       it("should throw an exception for an unrecognized entity", function () {
         expect(function () {
           session.update({
-            Luser: {},
+            Luser: {}
           });
         }).toThrow();
       });
@@ -2315,9 +2315,9 @@ describe("Ext.data.Session", function () {
           session.update(
             wrapBlock("R", [
               {
-                id: 17,
-              },
-            ]),
+                id: 17
+              }
+            ])
           );
           expect(session.peekRecord("User", 17)).not.toBeNull();
         });
@@ -2328,9 +2328,9 @@ describe("Ext.data.Session", function () {
               {
                 id: 17,
                 name: "Foo",
-                age: 32,
-              },
-            ]),
+                age: 32
+              }
+            ])
           );
           var user = session.getRecord("User", 17);
           expect(user.get("name")).toBe("Foo");
@@ -2343,9 +2343,9 @@ describe("Ext.data.Session", function () {
               {
                 id: 17,
                 name: "Foo",
-                age: 32,
-              },
-            ]),
+                age: 32
+              }
+            ])
           );
           var user = session.getRecord("User", 17);
           expect(user.dirty).toBe(false);
@@ -2356,9 +2356,9 @@ describe("Ext.data.Session", function () {
             wrapBlock("R", [
               {
                 name: "Foo",
-                age: 32,
-              },
-            ]),
+                age: 32
+              }
+            ])
           );
           var user = session.getRecord("User", "User-1");
           expect(user.phantom).toBe(false);
@@ -2369,17 +2369,17 @@ describe("Ext.data.Session", function () {
             wrapBlock("R", [
               {
                 id: 1,
-                name: "Foo",
+                name: "Foo"
               },
               {
                 id: 2,
-                name: "Bar",
+                name: "Bar"
               },
               {
                 id: 3,
-                name: "Baz",
-              },
-            ]),
+                name: "Baz"
+              }
+            ])
           );
           expect(session.peekRecord("User", 1)).not.toBeNull();
           expect(session.peekRecord("User", 2)).not.toBeNull();
@@ -2392,9 +2392,9 @@ describe("Ext.data.Session", function () {
             session.update(
               wrapBlock("R", [
                 {
-                  id: 1,
-                },
-              ]),
+                  id: 1
+                }
+              ])
             );
           }).toThrow();
         });
@@ -2405,9 +2405,9 @@ describe("Ext.data.Session", function () {
           session.update(
             wrapBlock("C", [
               {
-                id: 17,
-              },
-            ]),
+                id: 17
+              }
+            ])
           );
           expect(session.peekRecord("User", 17)).not.toBeNull();
         });
@@ -2418,9 +2418,9 @@ describe("Ext.data.Session", function () {
               {
                 id: 17,
                 name: "Foo",
-                age: 32,
-              },
-            ]),
+                age: 32
+              }
+            ])
           );
           var user = session.getRecord("User", 17);
           expect(user.get("name")).toBe("Foo");
@@ -2432,9 +2432,9 @@ describe("Ext.data.Session", function () {
             wrapBlock("C", [
               {
                 name: "Foo",
-                age: 32,
-              },
-            ]),
+                age: 32
+              }
+            ])
           );
           var user = session.getRecord("User", "User-1");
           expect(user.phantom).toBe(true);
@@ -2444,15 +2444,15 @@ describe("Ext.data.Session", function () {
           session.update(
             wrapBlock("C", [
               {
-                name: "Foo",
+                name: "Foo"
               },
               {
-                name: "Bar",
+                name: "Bar"
               },
               {
-                name: "Baz",
-              },
-            ]),
+                name: "Baz"
+              }
+            ])
           );
           expect(session.peekRecord("User", "User-1")).not.toBeNull();
           expect(session.peekRecord("User", "User-2")).not.toBeNull();
@@ -2465,9 +2465,9 @@ describe("Ext.data.Session", function () {
             session.update(
               wrapBlock("C", [
                 {
-                  id: 17,
-                },
-              ]),
+                  id: 17
+                }
+              ])
             );
           }).toThrow();
         });
@@ -2500,16 +2500,16 @@ describe("Ext.data.Session", function () {
           User.getProxy().getWriter().setWriteAllFields(true);
           var user = getAndComplete("User", 100, session, {
             name: "Foo",
-            age: 100,
+            age: 100
           });
           session.update(
             wrapBlock("D", [
               {
                 id: 100,
                 name: "Foo",
-                age: 100,
-              },
-            ]),
+                age: 100
+              }
+            ])
           );
           expect(user.dropped).toBe(true);
         });
@@ -2519,15 +2519,15 @@ describe("Ext.data.Session", function () {
         it("should update the record data", function () {
           var user = session.createRecord("User", {
             id: 100,
-            name: "Foo",
+            name: "Foo"
           });
           session.update(
             wrapBlock("U", [
               {
                 id: 100,
-                name: "Bar",
-              },
-            ]),
+                name: "Bar"
+              }
+            ])
           );
           expect(user.get("name")).toBe("Bar");
         });
@@ -2536,16 +2536,16 @@ describe("Ext.data.Session", function () {
           var user = session.createRecord("User", {
             id: 100,
             name: "Foo",
-            age: 10,
+            age: 10
           });
           session.update(
             wrapBlock("U", [
               {
                 id: 100,
                 name: "Bar",
-                age: 11,
-              },
-            ]),
+                age: 11
+              }
+            ])
           );
           expect(user.dirty).toBe(true);
           expect(user.isModified("name")).toBe(true);
@@ -2556,16 +2556,16 @@ describe("Ext.data.Session", function () {
           var user = session.createRecord("User", {
             id: 100,
             name: "Foo",
-            age: 23,
+            age: 23
           });
           session.update(
             wrapBlock("U", [
               {
                 id: 100,
                 name: "Foo",
-                age: 23,
-              },
-            ]),
+                age: 23
+              }
+            ])
           );
           expect(user.dirty).toBe(false);
         });
@@ -2573,32 +2573,32 @@ describe("Ext.data.Session", function () {
         it("should handle multiple updates", function () {
           var user101 = session.createRecord("User", {
             id: 101,
-            name: "Foo",
+            name: "Foo"
           });
           var user102 = session.createRecord("User", {
             id: 102,
-            name: "Bar",
+            name: "Bar"
           });
           var user103 = session.createRecord("User", {
             id: 103,
-            name: "Baz",
+            name: "Baz"
           });
 
           session.update(
             wrapBlock("U", [
               {
                 id: 101,
-                name: "A",
+                name: "A"
               },
               {
                 id: 102,
-                name: "B",
+                name: "B"
               },
               {
                 id: 103,
-                name: "C",
-              },
-            ]),
+                name: "C"
+              }
+            ])
           );
           expect(user101.get("name")).toBe("A");
           expect(user102.get("name")).toBe("B");
@@ -2608,29 +2608,29 @@ describe("Ext.data.Session", function () {
         it("should handle object syntax", function () {
           var user101 = session.createRecord("User", {
             id: 101,
-            name: "Foo",
+            name: "Foo"
           });
           var user102 = session.createRecord("User", {
             id: 102,
-            name: "Bar",
+            name: "Bar"
           });
           var user103 = session.createRecord("User", {
             id: 103,
-            name: "Baz",
+            name: "Baz"
           });
 
           session.update(
             wrapBlock("U", {
               101: {
-                name: "A",
+                name: "A"
               },
               102: {
-                name: "B",
+                name: "B"
               },
               103: {
-                name: "C",
-              },
-            }),
+                name: "C"
+              }
+            })
           );
           expect(user101.get("name")).toBe("A");
           expect(user102.get("name")).toBe("B");
@@ -2643,9 +2643,9 @@ describe("Ext.data.Session", function () {
               wrapBlock("U", [
                 {
                   id: 100,
-                  name: "Bar",
-                },
-              ]),
+                  name: "Bar"
+                }
+              ])
             );
           }).toThrow();
         });
@@ -2658,9 +2658,9 @@ describe("Ext.data.Session", function () {
               wrapBlock("U", [
                 {
                   id: 100,
-                  name: "Bar",
-                },
-              ]),
+                  name: "Bar"
+                }
+              ])
             );
           }).toThrow();
         });
@@ -2677,15 +2677,15 @@ describe("Ext.data.Session", function () {
               "content",
               {
                 name: "userId",
-                reference: "User",
-              },
-            ],
+                reference: "User"
+              }
+            ]
           });
 
           Group = Ext.define("spec.Group", {
             extend: "Ext.data.Model",
             fields: ["id", "name"],
-            manyToMany: "User",
+            manyToMany: "User"
           });
         });
 
@@ -2706,15 +2706,15 @@ describe("Ext.data.Session", function () {
                   name: "addressId",
                   unique: true,
                   reference: {
-                    child: "Address",
-                  },
-                },
-              ],
+                    child: "Address"
+                  }
+                }
+              ]
             });
 
             Ext.define("spec.Address", {
               extend: "Ext.data.Model",
-              fields: ["id", "city"],
+              fields: ["id", "city"]
             });
 
             Ext.define("spec.OrderItem", {
@@ -2726,10 +2726,10 @@ describe("Ext.data.Session", function () {
                 {
                   name: "orderId",
                   reference: {
-                    parent: "Order",
-                  },
-                },
-              ],
+                    parent: "Order"
+                  }
+                }
+              ]
             });
           });
 
@@ -2741,7 +2741,7 @@ describe("Ext.data.Session", function () {
 
           it("should resolve any pending", function () {
             var order = getAndComplete("Order", 1, session, {
-              addressId: 101,
+              addressId: 101
             });
 
             var address = order.getAddress();
@@ -2753,12 +2753,12 @@ describe("Ext.data.Session", function () {
             completeRequest([
               {
                 id: 201,
-                orderId: 1,
+                orderId: 1
               },
               {
                 id: 202,
-                orderId: 1,
-              },
+                orderId: 1
+              }
             ]);
 
             var orderItem = orderItems.getAt(0);
@@ -2773,10 +2773,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     id: 1,
-                    date: new Date(),
-                  },
-                ],
-              },
+                    date: new Date()
+                  }
+                ]
+              }
             });
             expect(address.dropped).toBe(true);
             expect(orderItem.dropped).toBe(true);
@@ -2790,18 +2790,18 @@ describe("Ext.data.Session", function () {
                 R: [{ id: 1 }],
                 posts: {
                   R: {
-                    1: [101],
-                  },
-                },
+                    1: [101]
+                  }
+                }
               },
               Post: {
                 R: [
                   {
                     id: 101,
-                    userId: 1,
-                  },
-                ],
-              },
+                    userId: 1
+                  }
+                ]
+              }
             });
 
             var user = session.getRecord("User", 1);
@@ -2816,10 +2816,10 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [101],
-                      },
-                    },
-                  },
+                        1: [101]
+                      }
+                    }
+                  }
                 });
               }).toThrow();
             });
@@ -2831,10 +2831,10 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [101],
-                      },
-                    },
-                  },
+                        1: [101]
+                      }
+                    }
+                  }
                 });
               }).toThrow();
             });
@@ -2847,18 +2847,18 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [101],
-                      },
-                    },
+                        1: [101]
+                      }
+                    }
                   },
                   Post: {
                     R: [
                       {
                         id: 101,
-                        userId: 1,
-                      },
-                    ],
-                  },
+                        userId: 1
+                      }
+                    ]
+                  }
                 });
               }).toThrow();
             });
@@ -2870,10 +2870,10 @@ describe("Ext.data.Session", function () {
                     R: [{ id: 1 }],
                     posts: {
                       R: {
-                        1: [101],
-                      },
-                    },
-                  },
+                        1: [101]
+                      }
+                    }
+                  }
                 });
               }).toThrow();
             });
@@ -2887,26 +2887,26 @@ describe("Ext.data.Session", function () {
                 User: {
                   posts: {
                     R: {
-                      1: [101, 102, 103],
-                    },
-                  },
+                      1: [101, 102, 103]
+                    }
+                  }
                 },
                 Post: {
                   R: [
                     {
                       id: 101,
-                      userId: 1,
+                      userId: 1
                     },
                     {
                       id: 102,
-                      userId: 1,
+                      userId: 1
                     },
                     {
                       id: 103,
-                      userId: 1,
-                    },
-                  ],
-                },
+                      userId: 1
+                    }
+                  ]
+                }
               });
 
               var posts = user.posts();
@@ -2924,18 +2924,18 @@ describe("Ext.data.Session", function () {
                 User: {
                   posts: {
                     R: {
-                      1: [101],
-                    },
-                  },
+                      1: [101]
+                    }
+                  }
                 },
                 Post: {
                   R: [
                     {
                       id: 101,
-                      userId: 1,
-                    },
-                  ],
-                },
+                      userId: 1
+                    }
+                  ]
+                }
               });
               var posts = user.posts();
               expect(posts.getCount()).toBe(1);
@@ -2954,18 +2954,18 @@ describe("Ext.data.Session", function () {
                 User: {
                   posts: {
                     R: {
-                      1: [102],
-                    },
-                  },
+                      1: [102]
+                    }
+                  }
                 },
                 Post: {
                   R: [
                     {
                       id: 102,
-                      userId: 1,
-                    },
-                  ],
-                },
+                      userId: 1
+                    }
+                  ]
+                }
               });
 
               var posts = user.posts();
@@ -2981,10 +2981,10 @@ describe("Ext.data.Session", function () {
                 User: {
                   posts: {
                     R: {
-                      1: [101],
-                    },
-                  },
-                },
+                      1: [101]
+                    }
+                  }
+                }
               });
 
               var posts = user.posts();
@@ -2995,7 +2995,7 @@ describe("Ext.data.Session", function () {
             it("should exclude local records where the FK does not match", function () {
               var user = getAndComplete("User", 1),
                 post1 = getAndComplete("Post", 101, null, {
-                  userId: 2,
+                  userId: 2
                 });
 
               // Post exists, but doesn't have a FK to the user
@@ -3003,10 +3003,10 @@ describe("Ext.data.Session", function () {
                 User: {
                   posts: {
                     R: {
-                      1: [101],
-                    },
-                  },
-                },
+                      1: [101]
+                    }
+                  }
+                }
               });
 
               var posts = user.posts();
@@ -3023,26 +3023,26 @@ describe("Ext.data.Session", function () {
                 User: {
                   posts: {
                     R: {
-                      1: [101, 102, 103],
-                    },
-                  },
+                      1: [101, 102, 103]
+                    }
+                  }
                 },
                 Post: {
                   R: [
                     {
                       id: 101,
-                      userId: 1,
+                      userId: 1
                     },
                     {
                       id: 102,
-                      userId: 1,
+                      userId: 1
                     },
                     {
                       id: 103,
-                      userId: 1,
-                    },
-                  ],
-                },
+                      userId: 1
+                    }
+                  ]
+                }
               });
 
               expect(posts.getCount()).toBe(3);
@@ -3063,18 +3063,18 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [102],
-                      },
-                    },
+                        1: [102]
+                      }
+                    }
                   },
                   Post: {
                     R: [
                       {
                         id: 102,
-                        userId: 1,
-                      },
-                    ],
-                  },
+                        userId: 1
+                      }
+                    ]
+                  }
                 });
                 expect(posts.getCount()).toBe(2);
                 expect(posts.indexOf(post1)).toBe(1);
@@ -3090,18 +3090,18 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [102],
-                      },
-                    },
+                        1: [102]
+                      }
+                    }
                   },
                   Post: {
                     R: [
                       {
                         id: 102,
-                        userId: 1,
-                      },
-                    ],
-                  },
+                        userId: 1
+                      }
+                    ]
+                  }
                 });
                 expect(posts.getCount()).toBe(2);
                 expect(posts.indexOf(session.peekRecord("Post", 102))).toBe(0);
@@ -3120,10 +3120,10 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [101, 102],
-                      },
-                    },
-                  },
+                        1: [101, 102]
+                      }
+                    }
+                  }
                 });
 
                 expect(posts.getCount()).toBe(1);
@@ -3143,10 +3143,10 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [101, 102],
-                      },
-                    },
-                  },
+                        1: [101, 102]
+                      }
+                    }
+                  }
                 });
 
                 expect(posts.getCount()).toBe(1);
@@ -3168,18 +3168,18 @@ describe("Ext.data.Session", function () {
                   User: {
                     posts: {
                       R: {
-                        1: [102],
-                      },
-                    },
+                        1: [102]
+                      }
+                    }
                   },
                   Post: {
                     R: [
                       {
                         id: 102,
-                        userId: 1,
-                      },
-                    ],
-                  },
+                        userId: 1
+                      }
+                    ]
+                  }
                 });
                 expect(posts.getCount()).toBe(2);
                 expect(posts.getAt(0)).toBe(session.peekRecord("Post", 102));
@@ -3194,17 +3194,17 @@ describe("Ext.data.Session", function () {
                 completeRequest([
                   { id: 101, userId: 1 },
                   { id: 102, userId: 1 },
-                  { id: 103, userId: 1 },
+                  { id: 103, userId: 1 }
                 ]);
                 posts.removeAt(0);
                 session.update({
                   User: {
                     posts: {
                       R: {
-                        1: [101, 102, 103],
-                      },
-                    },
-                  },
+                        1: [101, 102, 103]
+                      }
+                    }
+                  }
                 });
                 expect(posts.getCount()).toBe(2);
                 expect(posts.getAt(0)).toBe(session.peekRecord("Post", 102));
@@ -3222,13 +3222,13 @@ describe("Ext.data.Session", function () {
                   R: [{ id: 1 }],
                   groups: {
                     R: {
-                      1: [101, 102],
-                    },
-                  },
+                      1: [101, 102]
+                    }
+                  }
                 },
                 Group: {
-                  R: [{ id: 101 }, { id: 102 }],
-                },
+                  R: [{ id: 101 }, { id: 102 }]
+                }
               });
               var user = session.getRecord("User", 1),
                 groups = user.groups();
@@ -3246,10 +3246,10 @@ describe("Ext.data.Session", function () {
                     R: [{ id: 1 }],
                     groups: {
                       R: {
-                        1: [101, 102],
-                      },
-                    },
-                  },
+                        1: [101, 102]
+                      }
+                    }
+                  }
                 });
               }).toThrow();
             });
@@ -3261,17 +3261,17 @@ describe("Ext.data.Session", function () {
                   User: {
                     groups: {
                       R: {
-                        1: [101],
-                      },
-                    },
+                        1: [101]
+                      }
+                    }
                   },
                   Post: {
                     R: [
                       {
-                        id: 101,
-                      },
-                    ],
-                  },
+                        id: 101
+                      }
+                    ]
+                  }
                 });
               }).toThrow();
             });
@@ -3284,17 +3284,17 @@ describe("Ext.data.Session", function () {
                   User: {
                     groups: {
                       R: {
-                        1: [101],
-                      },
-                    },
+                        1: [101]
+                      }
+                    }
                   },
                   Group: {
                     R: [
                       {
-                        id: 101,
-                      },
-                    ],
-                  },
+                        id: 101
+                      }
+                    ]
+                  }
                 });
                 var groups = user.groups();
                 expect(groups.getCount()).toBe(1);
@@ -3309,17 +3309,17 @@ describe("Ext.data.Session", function () {
                   User: {
                     groups: {
                       R: {
-                        1: [101],
-                      },
-                    },
+                        1: [101]
+                      }
+                    }
                   },
                   Group: {
                     R: [
                       {
-                        id: 101,
-                      },
-                    ],
-                  },
+                        id: 101
+                      }
+                    ]
+                  }
                 });
                 expect(spy).not.toHaveBeenCalled();
               });
@@ -3331,17 +3331,17 @@ describe("Ext.data.Session", function () {
                   User: {
                     groups: {
                       R: {
-                        1: [101],
-                      },
-                    },
+                        1: [101]
+                      }
+                    }
                   },
                   Group: {
                     R: [
                       {
-                        id: 101,
-                      },
-                    ],
-                  },
+                        id: 101
+                      }
+                    ]
+                  }
                 });
                 expect(user.groups().complete).toBe(true);
               });
@@ -3353,27 +3353,27 @@ describe("Ext.data.Session", function () {
                   User: {
                     groups: {
                       C: {
-                        1: [101],
-                      },
-                    },
-                  },
+                        1: [101]
+                      }
+                    }
+                  }
                 });
 
                 session.update({
                   User: {
                     groups: {
                       R: {
-                        1: [102],
-                      },
-                    },
+                        1: [102]
+                      }
+                    }
                   },
                   Group: {
                     R: [
                       {
-                        id: 102,
-                      },
-                    ],
-                  },
+                        id: 102
+                      }
+                    ]
+                  }
                 });
 
                 getAndComplete("Group", 101);
@@ -3390,30 +3390,30 @@ describe("Ext.data.Session", function () {
                   User: {
                     groups: {
                       D: {
-                        1: [101],
-                      },
-                    },
-                  },
+                        1: [101]
+                      }
+                    }
+                  }
                 });
 
                 session.update({
                   User: {
                     groups: {
                       R: {
-                        1: [101, 102],
-                      },
-                    },
+                        1: [101, 102]
+                      }
+                    }
                   },
                   Group: {
                     R: [
                       {
-                        id: 101,
+                        id: 101
                       },
                       {
-                        id: 102,
-                      },
-                    ],
-                  },
+                        id: 102
+                      }
+                    ]
+                  }
                 });
 
                 var groups = user.groups();
@@ -3432,21 +3432,21 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         R: {
-                          1: [101],
-                        },
-                      },
+                          1: [101]
+                        }
+                      }
                     },
                     Group: {
                       R: [
                         {
-                          id: 101,
-                        },
-                      ],
-                    },
+                          id: 101
+                        }
+                      ]
+                    }
                   });
                   expect(groups.getCount()).toBe(1);
                   expect(groups.getAt(0)).toBe(
-                    session.peekRecord("Group", 101),
+                    session.peekRecord("Group", 101)
                   );
                 });
 
@@ -3461,22 +3461,22 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         R: {
-                          1: [102],
-                        },
-                      },
+                          1: [102]
+                        }
+                      }
                     },
                     Group: {
                       R: [
                         {
-                          id: 102,
-                        },
-                      ],
-                    },
+                          id: 102
+                        }
+                      ]
+                    }
                   });
 
                   expect(groups.getCount()).toBe(2);
                   expect(groups.getAt(0)).toBe(
-                    session.peekRecord("Group", 102),
+                    session.peekRecord("Group", 102)
                   );
                   expect(groups.getAt(1)).toBe(group1);
                 });
@@ -3489,34 +3489,34 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         D: {
-                          1: [101],
-                        },
-                      },
-                    },
+                          1: [101]
+                        }
+                      }
+                    }
                   });
 
                   session.update({
                     User: {
                       groups: {
                         R: {
-                          1: [101, 102],
-                        },
-                      },
+                          1: [101, 102]
+                        }
+                      }
                     },
                     Group: {
                       R: [
                         {
-                          id: 101,
+                          id: 101
                         },
                         {
-                          id: 102,
-                        },
-                      ],
-                    },
+                          id: 102
+                        }
+                      ]
+                    }
                   });
                   expect(groups.getCount()).toBe(1);
                   expect(groups.getAt(0)).toBe(
-                    session.peekRecord("Group", 102),
+                    session.peekRecord("Group", 102)
                   );
                 });
               });
@@ -3535,10 +3535,10 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         R: {
-                          1: [101, 102, 103],
-                        },
-                      },
-                    },
+                          1: [101, 102, 103]
+                        }
+                      }
+                    }
                   });
                   expect(groups.getCount()).toBe(4);
                   expect(groups.indexOf(group4)).toBe(3);
@@ -3556,10 +3556,10 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         R: {
-                          1: [101, 102],
-                        },
-                      },
-                    },
+                          1: [101, 102]
+                        }
+                      }
+                    }
                   });
                   expect(groups.getCount()).toBe(1);
                 });
@@ -3578,10 +3578,10 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         C: {
-                          1: [101],
-                        },
-                      },
-                    },
+                          1: [101]
+                        }
+                      }
+                    }
                   });
 
                   var groups = user.groups();
@@ -3598,10 +3598,10 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         C: {
-                          1: [101],
-                        },
-                      },
-                    },
+                          1: [101]
+                        }
+                      }
+                    }
                   });
 
                   var groups = user.groups();
@@ -3625,10 +3625,10 @@ describe("Ext.data.Session", function () {
                       User: {
                         groups: {
                           C: {
-                            1: [101],
-                          },
-                        },
-                      },
+                            1: [101]
+                          }
+                        }
+                      }
                     });
 
                     expect(groups.getCount()).toBe(1);
@@ -3645,10 +3645,10 @@ describe("Ext.data.Session", function () {
                       User: {
                         groups: {
                           C: {
-                            1: [101],
-                          },
-                        },
-                      },
+                            1: [101]
+                          }
+                        }
+                      }
                     });
                     expect(groups.getCount()).toBe(0);
                     var group1 = getAndComplete("Group", 101);
@@ -3673,10 +3673,10 @@ describe("Ext.data.Session", function () {
                       User: {
                         groups: {
                           C: {
-                            1: [103],
-                          },
-                        },
-                      },
+                            1: [103]
+                          }
+                        }
+                      }
                     });
                     expect(groups.getCount()).toBe(3);
                     expect(groups.getAt(2)).toBe(group3);
@@ -3695,10 +3695,10 @@ describe("Ext.data.Session", function () {
                       User: {
                         groups: {
                           C: {
-                            1: [103],
-                          },
-                        },
-                      },
+                            1: [103]
+                          }
+                        }
+                      }
                     });
                     expect(groups.getCount()).toBe(2);
 
@@ -3721,10 +3721,10 @@ describe("Ext.data.Session", function () {
                   User: {
                     groups: {
                       D: {
-                        1: [101],
-                      },
-                    },
-                  },
+                        1: [101]
+                      }
+                    }
+                  }
                 });
 
                 var groups = user.groups();
@@ -3745,17 +3745,17 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         D: {
-                          1: [101],
-                        },
-                      },
-                    },
+                          1: [101]
+                        }
+                      }
+                    }
                   });
 
                   groups.load();
                   completeRequest([{ id: 101 }, { id: 102 }]);
                   expect(groups.getCount()).toBe(1);
                   expect(groups.getAt(0)).toBe(
-                    session.peekRecord("Group", 102),
+                    session.peekRecord("Group", 102)
                   );
                 });
               });
@@ -3772,14 +3772,14 @@ describe("Ext.data.Session", function () {
                     User: {
                       groups: {
                         D: {
-                          1: [101],
-                        },
-                      },
-                    },
+                          1: [101]
+                        }
+                      }
+                    }
                   });
                   expect(groups.getCount()).toBe(1);
                   expect(groups.getAt(0)).toBe(
-                    session.peekRecord("Group", 102),
+                    session.peekRecord("Group", 102)
                   );
                 });
               });
@@ -3795,7 +3795,7 @@ describe("Ext.data.Session", function () {
       Ext.data.Model.schema.setNamespace("spec");
       Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["name"],
+        fields: ["name"]
       });
       session = new Ext.data.Session();
     });
@@ -3835,7 +3835,7 @@ describe("Ext.data.Session", function () {
       Ext.data.Model.schema.setNamespace("spec");
       User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["name"],
+        fields: ["name"]
       });
       session = new Ext.data.Session();
     });
@@ -3852,10 +3852,10 @@ describe("Ext.data.Session", function () {
         User: {
           C: [
             {
-              id: user.getId(),
-            },
-          ],
-        },
+              id: user.getId()
+            }
+          ]
+        }
       });
       session.commit();
       expect(session.getChanges()).toBeNull();
@@ -3869,10 +3869,10 @@ describe("Ext.data.Session", function () {
           U: [
             {
               id: 1,
-              name: "Bar",
-            },
-          ],
-        },
+              name: "Bar"
+            }
+          ]
+        }
       });
       session.commit();
       expect(session.getChanges()).toBeNull();
@@ -3883,8 +3883,8 @@ describe("Ext.data.Session", function () {
       user.drop();
       expect(session.getChanges()).toEqual({
         User: {
-          D: [1],
-        },
+          D: [1]
+        }
       });
       session.commit();
       expect(session.getChanges()).toBeNull();
@@ -3898,7 +3898,7 @@ describe("Ext.data.Session", function () {
           Group = Ext.define("spec.Group", {
             extend: "Ext.data.Model",
             fields: ["name"],
-            manyToMany: "User",
+            manyToMany: "User"
           });
         });
 
@@ -3916,10 +3916,10 @@ describe("Ext.data.Session", function () {
             Group: {
               users: {
                 C: {
-                  100: [1],
-                },
-              },
-            },
+                  100: [1]
+                }
+              }
+            }
           });
           session.commit();
           expect(session.getChanges()).toBeNull();
@@ -3932,14 +3932,14 @@ describe("Ext.data.Session", function () {
           groups.load();
           completeRequest([
             {
-              id: 101,
+              id: 101
             },
             {
-              id: 102,
+              id: 102
             },
             {
-              id: 103,
-            },
+              id: 103
+            }
           ]);
           expect(session.getChanges()).toBeNull();
           groups.removeAt(0);
@@ -3947,10 +3947,10 @@ describe("Ext.data.Session", function () {
             Group: {
               users: {
                 D: {
-                  101: [1],
-                },
-              },
-            },
+                  101: [1]
+                }
+              }
+            }
           });
           session.commit();
           expect(session.getChanges()).toBeNull();
@@ -3966,7 +3966,7 @@ describe("Ext.data.Session", function () {
       Ext.data.Model.schema.setNamespace("spec");
       Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["name"],
+        fields: ["name"]
       });
     });
 
@@ -3981,7 +3981,7 @@ describe("Ext.data.Session", function () {
       var schema = new Ext.data.schema.Schema();
 
       parent = new Ext.data.Session({
-        schema: schema,
+        schema: schema
       });
 
       session = parent.spawn();
@@ -4009,8 +4009,8 @@ describe("Ext.data.Session", function () {
           session: session,
           proxy: {
             type: "ajax",
-            url: "fakeUrl",
-          },
+            url: "fakeUrl"
+          }
         });
         store.load();
         completeRequest([{ id: 1, name: "Bar" }]);
@@ -4078,9 +4078,9 @@ describe("Ext.data.Session", function () {
           fields: [
             {
               name: "userId",
-              reference: "User",
-            },
-          ],
+              reference: "User"
+            }
+          ]
         });
       });
 
@@ -4093,7 +4093,7 @@ describe("Ext.data.Session", function () {
           parent = new Ext.data.Session();
           getAndComplete("User", 1, parent);
           var post = parent.createRecord("Post", {
-            userId: 1,
+            userId: 1
           });
 
           session = parent.spawn();
@@ -4107,7 +4107,7 @@ describe("Ext.data.Session", function () {
           parent = new Ext.data.Session();
           getAndComplete("User", 1, parent);
           var post = getAndComplete("Post", 101, parent, {
-            userId: 1,
+            userId: 1
           });
 
           session = parent.spawn();
@@ -4130,13 +4130,13 @@ describe("Ext.data.Session", function () {
               posts: [
                 {
                   id: 101,
-                  userId: 1,
+                  userId: 1
                 },
                 {
                   id: 102,
-                  userId: 1,
-                },
-              ],
+                  userId: 1
+                }
+              ]
             });
 
             session = parent.spawn();
@@ -4154,7 +4154,7 @@ describe("Ext.data.Session", function () {
           it("should not mark stores as complete if not loaded", function () {
             getAndComplete("User", 1, parent);
             getAndComplete("Post", 101, parent, {
-              userId: 1,
+              userId: 1
             });
 
             session = parent.spawn();
@@ -4191,7 +4191,7 @@ describe("Ext.data.Session", function () {
 
           it("should not mark the store as complete if the parent record is not a phantom", function () {
             var user = parent.createRecord("User", {
-                id: 1,
+                id: 1
               }),
               childUser;
 
@@ -4218,9 +4218,9 @@ describe("Ext.data.Session", function () {
             name: "serializeField",
             serialize: function (v) {
               return v.toString();
-            },
-          },
-        ],
+            }
+          }
+        ]
       });
 
       session = new Ext.data.Session();
@@ -4243,13 +4243,13 @@ describe("Ext.data.Session", function () {
     it("should not attempt to serialize values when pushing up to a parent", function () {
       child = session.spawn();
       rec = child.createRecord("User", {
-        serializeField: 1000,
+        serializeField: 1000
       });
       var spy = spyOn(rec.getField("serializeField"), "serialize");
       child.save();
       expect(spy).not.toHaveBeenCalled();
       expect(session.getRecord("User", rec.id).get("serializeField")).toBe(
-        1000,
+        1000
       );
     });
 
@@ -4257,7 +4257,7 @@ describe("Ext.data.Session", function () {
       it("should push up creates to the parent", function () {
         child = session.spawn();
         rec = child.createRecord("User", {
-          name: "Foo",
+          name: "Foo"
         });
         child.save();
         expect(session.getChanges()).toEqual({
@@ -4265,10 +4265,10 @@ describe("Ext.data.Session", function () {
             C: [
               {
                 id: rec.getId(),
-                name: "Foo",
-              },
-            ],
-          },
+                name: "Foo"
+              }
+            ]
+          }
         });
       });
     });
@@ -4284,16 +4284,16 @@ describe("Ext.data.Session", function () {
             U: [
               {
                 id: 1,
-                name: "Foo",
-              },
-            ],
-          },
+                name: "Foo"
+              }
+            ]
+          }
         });
       });
 
       it("should use a record that is a phantom in the parent as an update from the child", function () {
         var rec = session.createRecord("User", {
-            name: "Foo",
+            name: "Foo"
           }),
           id = rec.getId();
 
@@ -4305,10 +4305,10 @@ describe("Ext.data.Session", function () {
             C: [
               {
                 id: id,
-                name: "Bar",
-              },
-            ],
-          },
+                name: "Bar"
+              }
+            ]
+          }
         });
       });
     });
@@ -4321,8 +4321,8 @@ describe("Ext.data.Session", function () {
         child.save();
         expect(session.getChanges()).toEqual({
           User: {
-            D: [1],
-          },
+            D: [1]
+          }
         });
       });
 
@@ -4349,15 +4349,15 @@ describe("Ext.data.Session", function () {
                 name: "addressId",
                 unique: true,
                 reference: {
-                  child: "Address",
-                },
-              },
-            ],
+                  child: "Address"
+                }
+              }
+            ]
           });
 
           Ext.define("spec.Address", {
             extend: "Ext.data.Model",
-            fields: ["id", "city"],
+            fields: ["id", "city"]
           });
 
           Ext.define("spec.OrderItem", {
@@ -4369,10 +4369,10 @@ describe("Ext.data.Session", function () {
               {
                 name: "orderId",
                 reference: {
-                  parent: "Order",
-                },
-              },
-            ],
+                  parent: "Order"
+                }
+              }
+            ]
           });
         });
 
@@ -4386,7 +4386,7 @@ describe("Ext.data.Session", function () {
           var child = session.spawn();
 
           var order = getAndComplete("Order", 1, child, {
-            addressId: 101,
+            addressId: 101
           });
 
           var address = order.getAddress();
@@ -4398,12 +4398,12 @@ describe("Ext.data.Session", function () {
           completeRequest([
             {
               id: 201,
-              orderId: 1,
+              orderId: 1
             },
             {
               id: 202,
-              orderId: 1,
-            },
+              orderId: 1
+            }
           ]);
 
           var orderItem = orderItems.getAt(0);
@@ -4416,19 +4416,19 @@ describe("Ext.data.Session", function () {
           child.save();
           expect(session.getChanges()).toEqual({
             Address: {
-              D: [101],
+              D: [101]
             },
             Order: {
               U: [
                 {
                   id: 1,
-                  addressId: null,
-                },
-              ],
+                  addressId: null
+                }
+              ]
             },
             OrderItem: {
-              D: [201],
-            },
+              D: [201]
+            }
           });
         });
       });
@@ -4441,9 +4441,9 @@ describe("Ext.data.Session", function () {
               "content",
               {
                 name: "userId",
-                reference: "User",
-              },
-            ],
+                reference: "User"
+              }
+            ]
           });
         });
 
@@ -4461,7 +4461,7 @@ describe("Ext.data.Session", function () {
             posts.load();
             completeRequest([
               { id: 101, userId: 1 },
-              { id: 102, userId: 1 },
+              { id: 102, userId: 1 }
             ]);
             child = session.spawn();
 
@@ -4481,10 +4481,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     userId: null,
-                    id: 101,
-                  },
-                ],
-              },
+                    id: 101
+                  }
+                ]
+              }
             });
             expect(session.peekRecord("Post", 101).dirty).toBe(true);
           });
@@ -4495,8 +4495,8 @@ describe("Ext.data.Session", function () {
 
             expect(session.getChanges()).toEqual({
               Post: {
-                D: [101],
-              },
+                D: [101]
+              }
             });
             expect(session.peekRecord("Post", 101).dropped).toBe(true);
           });
@@ -4510,10 +4510,10 @@ describe("Ext.data.Session", function () {
                 C: [
                   {
                     id: id,
-                    userId: 1,
-                  },
-                ],
-              },
+                    userId: 1
+                  }
+                ]
+              }
             });
             expect(session.peekRecord("Post", id).phantom).toBe(true);
           });
@@ -4528,10 +4528,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     id: 105,
-                    userId: 1,
-                  },
-                ],
-              },
+                    userId: 1
+                  }
+                ]
+              }
             });
             expect(session.peekRecord("Post", 105).dirty).toBe(true);
           });
@@ -4557,7 +4557,7 @@ describe("Ext.data.Session", function () {
             completeRequest([
               { id: 101, userId: 1 },
               { id: 102, userId: 1 },
-              { id: 103, userId: 1 },
+              { id: 103, userId: 1 }
             ]);
             posts.removeAt(1);
             child.save();
@@ -4567,10 +4567,10 @@ describe("Ext.data.Session", function () {
                 U: [
                   {
                     id: 102,
-                    userId: null,
-                  },
-                ],
-              },
+                    userId: null
+                  }
+                ]
+              }
             });
             expect(session.peekRecord("Post", 102).dirty).toBe(true);
           });
@@ -4580,15 +4580,15 @@ describe("Ext.data.Session", function () {
             completeRequest([
               { id: 101, userId: 1 },
               { id: 102, userId: 1 },
-              { id: 103, userId: 1 },
+              { id: 103, userId: 1 }
             ]);
             posts.getAt(1).drop();
             child.save();
 
             expect(session.getChanges()).toEqual({
               Post: {
-                D: [102],
-              },
+                D: [102]
+              }
             });
             expect(session.peekRecord("Post", 102).dropped).toBe(true);
           });
@@ -4596,7 +4596,7 @@ describe("Ext.data.Session", function () {
           it("should push up phantom records as creates", function () {
             var id = posts
               .add({
-                content: "Foo",
+                content: "Foo"
               })[0]
               .getId();
             child.save();
@@ -4607,10 +4607,10 @@ describe("Ext.data.Session", function () {
                   {
                     id: id,
                     userId: 1,
-                    content: "Foo",
-                  },
-                ],
-              },
+                    content: "Foo"
+                  }
+                ]
+              }
             });
             expect(session.peekRecord("Post", id).phantom).toBe(true);
           });
@@ -4620,7 +4620,7 @@ describe("Ext.data.Session", function () {
             completeRequest([
               { id: 101, userId: 1 },
               { id: 102, userId: 1 },
-              { id: 103, userId: 1 },
+              { id: 103, userId: 1 }
             ]);
             child.save();
             expect(session.getChanges()).toBeNull();
@@ -4635,7 +4635,7 @@ describe("Ext.data.Session", function () {
           Ext.define("spec.Group", {
             extend: "Ext.data.Model",
             fields: ["name"],
-            manyToMany: "User",
+            manyToMany: "User"
           });
         });
 
@@ -4668,10 +4668,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [104],
-                  },
-                },
-              },
+                    1: [104]
+                  }
+                }
+              }
             });
             expect(users.getCount()).toBe(4);
             expect(users.getAt(3)).toBe(user);
@@ -4685,10 +4685,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [104],
-                  },
-                },
-              },
+                    1: [104]
+                  }
+                }
+              }
             });
             expect(session.peekRecord("User", 104)).toBeNull();
             // Doesn't exist yet
@@ -4706,10 +4706,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   D: {
-                    1: [101],
-                  },
-                },
-              },
+                    1: [101]
+                  }
+                }
+              }
             });
             expect(users.getCount()).toBe(2);
           });
@@ -4746,10 +4746,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [101, 102, 104],
-                  },
-                },
-              },
+                    1: [101, 102, 104]
+                  }
+                }
+              }
             });
             expect(users.getCount()).toBe(3);
             expect(users.getAt(2)).toBe(user);
@@ -4763,10 +4763,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [101, 102, 104],
-                  },
-                },
-              },
+                    1: [101, 102, 104]
+                  }
+                }
+              }
             });
             // Doesn't exist yet
             expect(users.getCount()).toBe(2);
@@ -4783,10 +4783,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [102],
-                  },
-                },
-              },
+                    1: [102]
+                  }
+                }
+              }
             });
             expect(users.getCount()).toBe(1);
           });
@@ -4811,10 +4811,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [104],
-                  },
-                },
-              },
+                    1: [104]
+                  }
+                }
+              }
             });
             users = group.users();
             expect(users.getCount()).toBe(1);
@@ -4829,10 +4829,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [104],
-                  },
-                },
-              },
+                    1: [104]
+                  }
+                }
+              }
             });
             // Doesn't exist yet
             users = group.users();
@@ -4850,10 +4850,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   D: {
-                    1: [101],
-                  },
-                },
-              },
+                    1: [101]
+                  }
+                }
+              }
             });
             users = group.users();
             // We don't have any users in the session
@@ -4891,10 +4891,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [101, 102, 104],
-                  },
-                },
-              },
+                    1: [101, 102, 104]
+                  }
+                }
+              }
             });
             // 101 & 102 don't exist in the parent, don't read them up
             users = group.users();
@@ -4908,10 +4908,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [101, 102],
-                  },
-                },
-              },
+                    1: [101, 102]
+                  }
+                }
+              }
             });
             // Doesn't exist yet
             users = group.users();
@@ -4947,10 +4947,10 @@ describe("Ext.data.Session", function () {
               Group: {
                 users: {
                   C: {
-                    1: [101],
-                  },
-                },
-              },
+                    1: [101]
+                  }
+                }
+              }
             });
           });
 
@@ -4984,15 +4984,15 @@ describe("Ext.data.Session", function () {
 
             schema: schema,
 
-            fields: ["id", "name", "key"],
+            fields: ["id", "name", "key"]
           });
 
           Derived = Ext.define("spec.Derived", {
-            extend: Base,
+            extend: Base
           });
 
           session = new Ext.data.Session({
-            schema: Base.schema,
+            schema: Base.schema
           });
         });
 
@@ -5009,7 +5009,7 @@ describe("Ext.data.Session", function () {
             var standaloneRecord = new Base();
 
             var sessionRecord = session.createRecord("Base", {
-              name: "Don",
+              name: "Don"
             });
 
             expect(standaloneRecord).not.toBe(sessionRecord);
@@ -5018,12 +5018,12 @@ describe("Ext.data.Session", function () {
 
           it("should track all created records", function () {
             var a = session.createRecord("Base", {
-              name: "Don",
+              name: "Don"
             });
             expect(a.id).toBe(expectations["B-1"]);
 
             var b = session.createRecord("Derived", {
-              name: "Evan",
+              name: "Evan"
             });
             expect(b.id).toBe(expectations["D-1"]);
 
@@ -5034,18 +5034,18 @@ describe("Ext.data.Session", function () {
                 C: [
                   {
                     id: a.id,
-                    name: "Don",
-                  },
-                ],
+                    name: "Don"
+                  }
+                ]
               },
               Derived: {
                 C: [
                   {
                     id: b.id,
-                    name: "Evan",
-                  },
-                ],
-              },
+                    name: "Evan"
+                  }
+                ]
+              }
             });
           });
         }); // record creation
@@ -5054,29 +5054,29 @@ describe("Ext.data.Session", function () {
 
     makeSuite("default identities", Ext.data.Model.schema, {
       "B-1": "Base-1",
-      "D-1": "Derived-1",
+      "D-1": "Derived-1"
     });
 
     makeSuite(
       "negative identities",
       new Ext.data.schema.Schema({
-        defaultIdentifier: "negative",
+        defaultIdentifier: "negative"
       }),
       {
         "B-1": -1,
-        "D-1": -1,
-      },
+        "D-1": -1
+      }
     );
 
     makeSuite(
       "sequential identities",
       new Ext.data.schema.Schema({
-        defaultIdentifier: "sequential",
+        defaultIdentifier: "sequential"
       }),
       {
         "B-1": 1,
-        "D-1": 1,
-      },
+        "D-1": 1
+      }
     );
   });
 
@@ -5087,7 +5087,7 @@ describe("Ext.data.Session", function () {
     beforeEach(function () {
       if (!schema) {
         schema = new Ext.data.schema.Schema({
-          defaultIdentifier: "uuid",
+          defaultIdentifier: "uuid"
         });
       }
       schema.setNamespace("spec");
@@ -5097,11 +5097,11 @@ describe("Ext.data.Session", function () {
 
         schema: schema,
 
-        fields: ["id", "name", "key"],
+        fields: ["id", "name", "key"]
       });
 
       session = new Ext.data.Session({
-        schema: Base.schema,
+        schema: Base.schema
       });
     });
 
@@ -5118,7 +5118,7 @@ describe("Ext.data.Session", function () {
         var standaloneRecord = new Base();
 
         var sessionRecord = session.createRecord("Base", {
-          name: "Don",
+          name: "Don"
         });
 
         expect(standaloneRecord).not.toBe(sessionRecord);
@@ -5146,8 +5146,8 @@ describe("Ext.data.Session", function () {
             version: 1,
             timestamp: 0xdefaced,
             salt: 0xbeeff00d,
-            clockSeq: 0xbad,
-          },
+            clockSeq: 0xbad
+          }
         });
       }
       schema.setNamespace("spec");
@@ -5157,11 +5157,11 @@ describe("Ext.data.Session", function () {
 
         schema: schema,
 
-        fields: ["id", "name", "key"],
+        fields: ["id", "name", "key"]
       });
 
       session = new Ext.data.Session({
-        schema: Base.schema,
+        schema: Base.schema
       });
     });
 
@@ -5178,7 +5178,7 @@ describe("Ext.data.Session", function () {
         var standaloneRec = new Base();
 
         var sessionRecord = session.createRecord("Base", {
-          name: "Don",
+          name: "Don"
         });
 
         expect(standaloneRec.id).toBe("0defaced-0000-1000-8bad-0100beeff00d");
@@ -5207,19 +5207,19 @@ describe("Ext.data.Session", function () {
 
         fields: ["name", "key"],
 
-        manyToMany: "#Group",
+        manyToMany: "#Group"
       });
 
       Group = Ext.define("spec.Group", {
         extend: Ext.data.Model,
 
-        fields: ["name", "key"],
+        fields: ["name", "key"]
 
         // should not need to specify manyToMany here
       });
 
       session = new Ext.data.Session({
-        schema: User.schema,
+        schema: User.schema
       });
     });
 
@@ -5282,7 +5282,7 @@ describe("Ext.data.Session", function () {
         expect(adminUsersStore.isStore).toBe(true);
         expect(adminUsersStore.getCount()).toBe(1);
         expect(
-          (rufusRec1 = adminUsersStore.getById(userRufus.id)),
+          (rufusRec1 = adminUsersStore.getById(userRufus.id))
         ).toBeTruthy();
 
         expect(peonUsersStore.isStore).toBe(true);
@@ -5345,13 +5345,13 @@ describe("Ext.data.Session", function () {
           User: {
             groups: {
               C: {
-                20: [42],
+                20: [42]
               },
               D: {
-                10: [42],
-              },
-            },
-          },
+                10: [42]
+              }
+            }
+          }
         });
       }); // should allow editing on both sides of a matrix
     }); // loading a many-to-many
@@ -5366,21 +5366,21 @@ describe("Ext.data.Session", function () {
 
       parentData = [
         { id: 1, name: "parent1", code: "abc", foo: 42 },
-        { id: 2, name: "parent2", code: "def", foo: 427 },
+        { id: 2, name: "parent2", code: "def", foo: 427 }
       ];
 
       childData = [
         { id: 10, name: "child1", parentId: 1 },
-        { id: 20, name: "child2", parentId: 2 },
+        { id: 20, name: "child2", parentId: 2 }
       ];
 
       grandChildData = [
         { id: 100, name: "grand1", childId: 10 },
-        { id: 200, name: "grand2", childId: 20 },
+        { id: 200, name: "grand2", childId: 20 }
       ];
 
       Base = Ext.define("spec.Base", {
-        extend: Ext.data.Model,
+        extend: Ext.data.Model
       });
 
       User = Ext.define("spec.User", {
@@ -5388,13 +5388,13 @@ describe("Ext.data.Session", function () {
 
         fields: ["name", "key"],
 
-        manyToMany: "#Group",
+        manyToMany: "#Group"
       });
 
       Group = Ext.define("spec.Group", {
         extend: Ext.data.Model,
 
-        fields: ["name", "key"],
+        fields: ["name", "key"]
 
         // should not need to specify manyToMany here
       });
@@ -5403,9 +5403,9 @@ describe("Ext.data.Session", function () {
         extend: Base,
 
         identifier: {
-          type: "negative",
+          type: "negative"
         },
-        fields: ["name", "code", { name: "foo", critical: true }],
+        fields: ["name", "code", { name: "foo", critical: true }]
       });
 
       Child = Ext.define("spec.Child", {
@@ -5413,9 +5413,9 @@ describe("Ext.data.Session", function () {
 
         identifier: {
           type: "negative",
-          seed: -10,
+          seed: -10
         },
-        fields: ["name", { name: "parentId", reference: "Parent" }],
+        fields: ["name", { name: "parentId", reference: "Parent" }]
       });
 
       GrandChild = Ext.define("spec.GrandChild", {
@@ -5423,16 +5423,16 @@ describe("Ext.data.Session", function () {
 
         identifier: {
           type: "negative",
-          seed: -100,
+          seed: -100
         },
 
         clientIdProperty: "cid",
 
-        fields: ["name", { name: "childId", reference: "Child" }],
+        fields: ["name", { name: "childId", reference: "Child" }]
       });
 
       session = new Ext.data.Session({
-        schema: Base.schema,
+        schema: Base.schema
       });
     });
 
@@ -5457,12 +5457,12 @@ describe("Ext.data.Session", function () {
         state = {
           parentRecs: [],
           childRecs: [],
-          grandChildRecs: [],
+          grandChildRecs: []
         };
 
         Ext.each([0, 1], function (n) {
           state.grandChildRecs.push(
-            session.createRecord("GrandChild", grandChildData[n]),
+            session.createRecord("GrandChild", grandChildData[n])
           );
           state.childRecs.push(session.createRecord("Child", childData[n]));
           state.parentRecs.push(session.createRecord("Parent", parentData[n]));
@@ -5479,7 +5479,7 @@ describe("Ext.data.Session", function () {
 
         state.newParent = session.createRecord("Parent", {
           name: "newParent",
-          foo: -42,
+          foo: -42
         });
         state.newChild = session.createRecord("Child", { name: "newChild" });
         state.newGrandChild = session.createRecord("GrandChild");
@@ -5499,18 +5499,18 @@ describe("Ext.data.Session", function () {
           Parent: {
             C: [{ id: -1, name: "newParent", foo: -42 }],
             U: [{ id: 1, code: "xyz", foo: 42 }], // foo is a "critical" field
-            D: [2],
+            D: [2]
           },
           Child: {
             C: [{ id: -10, name: "newChild", parentId: -1 }],
             U: [{ id: 10, name: "child1a" }],
-            D: [20],
+            D: [20]
           },
           GrandChild: {
             C: [{ id: -100, childId: -10 }],
             U: [{ id: 100, name: "grand1a" }],
-            D: [200],
-          },
+            D: [200]
+          }
         });
       });
 
@@ -5531,7 +5531,7 @@ describe("Ext.data.Session", function () {
 
             ["destroy", "GrandChild", [state.grandChildRecs[1]]],
             ["destroy", "Child", [state.childRecs[1]]],
-            ["destroy", "Parent", [state.parentRecs[1]]],
+            ["destroy", "Parent", [state.parentRecs[1]]]
           ],
           function (expectedData, index) {
             var operation = batch.operations[index],
@@ -5542,7 +5542,7 @@ describe("Ext.data.Session", function () {
 
             str = "operation[" + index + "].type=";
             expect(str + operation.entityType.entityName).toBe(
-              str + expectedData[1],
+              str + expectedData[1]
             );
 
             str = "operation[" + index + "].records=";
@@ -5551,7 +5551,7 @@ describe("Ext.data.Session", function () {
             var expected = Ext.Array.pluck(expectedData[2], "id");
             expected = Ext.encode(expected);
             expect(str + actual).toBe(str + expected);
-          },
+          }
         );
       });
 
@@ -5577,14 +5577,14 @@ describe("Ext.data.Session", function () {
 
         // Create Parent
         completeRequest({
-          id: 1000,
+          id: 1000
         });
         expect(state.newParent.id).toBe(1000);
         expect(state.newChild.data.parentId).toBe(1000);
 
         // Create Child
         completeRequest({
-          id: 2000,
+          id: 2000
         });
         expect(state.newChild.id).toBe(2000);
         expect(state.newGrandChild.data.childId).toBe(2000);
@@ -5598,12 +5598,12 @@ describe("Ext.data.Session", function () {
         completeRequest([
           {
             cid: newGrandChild2.id,
-            id: 3001,
+            id: 3001
           },
           {
             cid: state.newGrandChild.id,
-            id: 3000,
-          },
+            id: 3000
+          }
         ]);
         expect(state.newGrandChild.id).toBe(3000);
         expect(newGrandChild2.id).toBe(3001);
@@ -5630,21 +5630,21 @@ describe("Ext.data.Session", function () {
           User: {
             C: [
               {
-                id: "User-1",
-              },
+                id: "User-1"
+              }
             ],
 
             groups: {
               C: {
-                "User-1": [42], // this is the generated id
-              },
-            },
-          },
+                "User-1": [42] // this is the generated id
+              }
+            }
+          }
         });
 
         batch.start();
         completeRequest({
-          id: 500,
+          id: 500
         });
 
         var remainingChanges = session.getChanges();
@@ -5652,10 +5652,10 @@ describe("Ext.data.Session", function () {
           User: {
             groups: {
               C: {
-                500: [42], // make sure the matrix has the newId
-              },
-            },
-          },
+                500: [42] // make sure the matrix has the newId
+              }
+            }
+          }
         });
       });
     });

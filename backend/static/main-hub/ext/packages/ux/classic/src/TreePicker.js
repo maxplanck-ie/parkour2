@@ -45,7 +45,7 @@ Ext.define("Ext.ux.TreePicker", {
      * @cfg {Number} minPickerHeight
      * The minimum height of the tree dropdown. Defaults to 100.
      */
-    minPickerHeight: 100,
+    minPickerHeight: 100
   },
 
   editable: false,
@@ -65,7 +65,7 @@ Ext.define("Ext.ux.TreePicker", {
     me.mon(me.store, {
       scope: me,
       load: me.onLoad,
-      update: me.onUpdate,
+      update: me.onUpdate
     });
   },
 
@@ -88,8 +88,8 @@ Ext.define("Ext.ux.TreePicker", {
         listeners: {
           scope: me,
           itemclick: me.onItemClick,
-          itemkeydown: me.onPickerKeyDown,
-        },
+          itemkeydown: me.onPickerKeyDown
+        }
       }),
       view = picker.getView();
 
@@ -101,7 +101,7 @@ Ext.define("Ext.ux.TreePicker", {
         highlightitem: me.repaintPickerView,
         unhighlightitem: me.repaintPickerView,
         afteritemexpand: me.repaintPickerView,
-        afteritemcollapse: me.repaintPickerView,
+        afteritemcollapse: me.repaintPickerView
       });
     }
     return picker;
@@ -177,7 +177,7 @@ Ext.define("Ext.ux.TreePicker", {
 
     picker.ensureVisible(node, {
       select: true,
-      focus: true,
+      focus: true
     });
   },
 
@@ -247,5 +247,5 @@ Ext.define("Ext.ux.TreePicker", {
     ) {
       this.setRawValue(rec.get(display));
     }
-  },
+  }
 });

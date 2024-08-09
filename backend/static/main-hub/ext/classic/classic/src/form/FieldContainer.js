@@ -95,7 +95,7 @@ Ext.define("Ext.form.FieldContainer", {
   extend: "Ext.container.Container",
   mixins: {
     labelable: "Ext.form.Labelable",
-    fieldAncestor: "Ext.form.FieldAncestor",
+    fieldAncestor: "Ext.form.FieldAncestor"
   },
   requires: "Ext.layout.component.field.FieldContainer",
 
@@ -109,7 +109,7 @@ Ext.define("Ext.form.FieldContainer", {
 
   autoEl: {
     tag: "div",
-    role: "presentation",
+    role: "presentation"
   },
 
   childEls: ["containerEl"],
@@ -152,7 +152,7 @@ Ext.define("Ext.form.FieldContainer", {
     "</tpl>",
     ">",
     "{%this.renderContainer(out,values)%}",
-    "</div>",
+    "</div>"
   ],
 
   initComponent: function () {
@@ -288,7 +288,7 @@ Ext.define("Ext.form.FieldContainer", {
           me.query("[isFormField]"),
           function (field) {
             return field.hasActiveError();
-          },
+          }
         ),
         newErrors = me.getCombinedErrors(invalidFields);
 
@@ -358,6 +358,6 @@ Ext.define("Ext.form.FieldContainer", {
         me.renderTpl = me.lookupTpl("labelableRenderTpl");
       }
       return me.callParent();
-    },
-  },
+    }
+  }
 });

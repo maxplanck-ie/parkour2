@@ -102,7 +102,7 @@ Ext.define("Ext.panel.Proxy", {
         // of where the panel previously was
         me.proxy = me.panel.el.insertSibling({
           role: "presentation",
-          cls: Ext.baseCSSPrefix + "panel-dd-spacer",
+          cls: Ext.baseCSSPrefix + "panel-dd-spacer"
         });
         me.proxy.setSize(panelSize);
       }
@@ -130,5 +130,5 @@ Ext.define("Ext.panel.Proxy", {
     if (this.proxy) {
       parentNode.insertBefore(this.proxy.dom, before);
     }
-  },
+  }
 });

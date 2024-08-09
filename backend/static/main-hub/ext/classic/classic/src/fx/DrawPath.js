@@ -52,7 +52,7 @@ Ext.define("Ext.fx.DrawPath", {
         s: 4,
         t: 2,
         v: 1,
-        z: 0,
+        z: 0
       },
       data = [],
       me = this;
@@ -227,7 +227,7 @@ Ext.define("Ext.fx.DrawPath", {
               pp,
               i++,
               0,
-              ["C"].concat(Ext.Array.splice(pi, 0, 6)),
+              ["C"].concat(Ext.Array.splice(pi, 0, 6))
             );
           }
           Ext.Array.erase(pp, i, 1);
@@ -289,14 +289,14 @@ Ext.define("Ext.fx.DrawPath", {
         break;
       case "A":
         pathCommand = ["C"].concat(
-          me.arc2curve.apply(me, [d.x, d.y].concat(pathCommand.slice(1))),
+          me.arc2curve.apply(me, [d.x, d.y].concat(pathCommand.slice(1)))
         );
         break;
       case "S":
         pathCommand = [
           "C",
           d.x + (d.x - (d.bx || d.x)),
-          d.y + (d.y - (d.by || d.y)),
+          d.y + (d.y - (d.by || d.y))
         ].concat(pathCommand.slice(1));
         break;
       case "T":
@@ -309,8 +309,8 @@ Ext.define("Ext.fx.DrawPath", {
             d.qx,
             d.qy,
             pathCommand[1],
-            pathCommand[2],
-          ),
+            pathCommand[2]
+          )
         );
         break;
       case "Q":
@@ -323,8 +323,8 @@ Ext.define("Ext.fx.DrawPath", {
             pathCommand[1],
             pathCommand[2],
             pathCommand[3],
-            pathCommand[4],
-          ),
+            pathCommand[4]
+          )
         );
         break;
       case "L":
@@ -334,7 +334,7 @@ Ext.define("Ext.fx.DrawPath", {
           pathCommand[1],
           pathCommand[2],
           pathCommand[1],
-          pathCommand[2],
+          pathCommand[2]
         );
         break;
       case "H":
@@ -344,7 +344,7 @@ Ext.define("Ext.fx.DrawPath", {
           pathCommand[1],
           d.y,
           pathCommand[1],
-          d.y,
+          d.y
         );
         break;
       case "V":
@@ -354,7 +354,7 @@ Ext.define("Ext.fx.DrawPath", {
           d.x,
           pathCommand[1],
           d.x,
-          pathCommand[1],
+          pathCommand[1]
         );
         break;
       case "Z":
@@ -373,7 +373,7 @@ Ext.define("Ext.fx.DrawPath", {
       _13 * x2 + _23 * ax,
       _13 * y2 + _23 * ay,
       x2,
-      y2,
+      y2
     ];
   },
 
@@ -395,7 +395,7 @@ Ext.define("Ext.fx.DrawPath", {
     sweep_flag,
     x2,
     y2,
-    recursive,
+    recursive
   ) {
     // for more information of where this Math came from visit:
     // http://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes
@@ -462,8 +462,8 @@ Ext.define("Ext.fx.DrawPath", {
         msqrt(
           mabs(
             (rx2 * ry2 - rx2 * y * y - ry2 * x * x) /
-              (rx2 * y * y + ry2 * x * x),
-          ),
+              (rx2 * y * y + ry2 * x * x)
+          )
         );
       cx = (k * rx * y) / ry + (x1 + x2) / 2;
       cy = (k * -ry * x) / rx + (y1 + y2) / 2;
@@ -502,7 +502,7 @@ Ext.define("Ext.fx.DrawPath", {
         f2,
         f2old,
         cx,
-        cy,
+        cy
       ]);
     }
     df = f2 - f1;
@@ -533,5 +533,5 @@ Ext.define("Ext.fx.DrawPath", {
       }
       return newres;
     }
-  },
+  }
 });

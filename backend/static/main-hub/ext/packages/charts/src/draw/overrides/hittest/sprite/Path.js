@@ -100,26 +100,26 @@ Ext.define("Ext.draw.overrides.hittest.sprite.Path", {
       if (isFilled) {
         if (path.isPointInPath(x, y)) {
           result = {
-            sprite: me,
+            sprite: me
           };
         }
       } else {
         if (path.isPointInPath(x, y) || path.isPointOnPath(x, y)) {
           result = {
-            sprite: me,
+            sprite: me
           };
         }
       }
     } else if (options.stroke && !options.fill) {
       if (path.isPointOnPath(x, y)) {
         result = {
-          sprite: me,
+          sprite: me
         };
       }
     } else if (options.fill && !options.stroke) {
       if (path.isPointInPath(x, y)) {
         result = {
-          sprite: me,
+          sprite: me
         };
       }
     }
@@ -171,5 +171,5 @@ Ext.define("Ext.draw.overrides.hittest.sprite.Path", {
       bPath.params = bParams;
     }
     return intersections;
-  },
+  }
 });

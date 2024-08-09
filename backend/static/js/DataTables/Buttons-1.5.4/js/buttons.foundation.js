@@ -6,7 +6,7 @@
   if (typeof define === "function" && define.amd) {
     // AMD
     define(["jquery", "datatables.net-zf", "datatables.net-buttons"], function (
-      $,
+      $
     ) {
       return factory($, window, document);
     });
@@ -43,7 +43,7 @@
       ? {
           tag: "div",
           className:
-            "dt-button-collection dropdown-pane is-open button-group stacked",
+            "dt-button-collection dropdown-pane is-open button-group stacked"
         }
       : {
           tag: "ul",
@@ -53,33 +53,33 @@
             tag: "li",
             className: "small",
             active: "active",
-            disabled: "disabled",
+            disabled: "disabled"
           },
           buttonLiner: {
-            tag: "a",
-          },
+            tag: "a"
+          }
         };
 
   $.extend(true, DataTable.Buttons.defaults, {
     dom: {
       container: {
         tag: "div",
-        className: "dt-buttons button-group",
+        className: "dt-buttons button-group"
       },
       buttonContainer: {
         tag: null,
-        className: "",
+        className: ""
       },
       button: {
         tag: "a",
         className: "button small",
-        active: "secondary",
+        active: "secondary"
       },
       buttonLiner: {
-        tag: null,
+        tag: null
       },
-      collection: collection,
-    },
+      collection: collection
+    }
   });
 
   DataTable.ext.buttons.collection.className = "buttons-collection dropdown";

@@ -3,7 +3,7 @@ describe("Ext.chart.AbstractChart", function () {
 
   var Model = Ext.define(null, {
     extend: "Ext.data.Model",
-    fields: ["label", "value"],
+    fields: ["label", "value"]
   });
 
   function makeStore(rows) {
@@ -13,13 +13,13 @@ describe("Ext.chart.AbstractChart", function () {
     for (i = 1; i <= rows; ++i) {
       data.push({
         label: "Item" + i,
-        value: i,
+        value: i
       });
     }
 
     store = new Ext.data.Store({
       model: Model,
-      data: data,
+      data: data
     });
   }
 
@@ -41,24 +41,24 @@ describe("Ext.chart.AbstractChart", function () {
           axes: [
             {
               type: "numeric",
-              position: "left",
+              position: "left"
             },
             {
               type: "category",
-              position: "bottom",
-            },
+              position: "bottom"
+            }
           ],
           animation: false,
           series: Ext.apply(
             {
               type: "bar",
               xField: "label",
-              yField: "value",
+              yField: "value"
             },
-            seriesCfg,
-          ),
+            seriesCfg
+          )
         },
-        chartCfg,
+        chartCfg
       );
       if (storeOnSeries) {
         if (!cfg.series.store) {
@@ -93,10 +93,10 @@ describe("Ext.chart.AbstractChart", function () {
         it("should accept a store id", function () {
           store = new Ext.data.Store({
             model: Model,
-            storeId: "foo",
+            storeId: "foo"
           });
           makeStoreChart({
-            store: "foo",
+            store: "foo"
           });
           expect(chart.getStore()).toBe(store);
         });
@@ -105,8 +105,8 @@ describe("Ext.chart.AbstractChart", function () {
           makeStoreChart({
             store: {
               model: Model,
-              data: [{}],
-            },
+              data: [{}]
+            }
           });
           expect(chart.getStore().getCount()).toBe(1);
           expect(chart.getStore().getModel()).toBe(Model);
@@ -115,7 +115,7 @@ describe("Ext.chart.AbstractChart", function () {
         it("should accept a store instance", function () {
           makeStore(10);
           makeStoreChart({
-            store: store,
+            store: store
           });
           expect(chart.getStore()).toBe(store);
         });
@@ -126,7 +126,7 @@ describe("Ext.chart.AbstractChart", function () {
           makeStore(3);
           var listeners = extractHasListeners(store.hasListeners);
           makeStoreChart({
-            store: store,
+            store: store
           });
           chart.destroy();
           expect(extractHasListeners(store.hasListeners)).toEqual(listeners);
@@ -135,7 +135,7 @@ describe("Ext.chart.AbstractChart", function () {
         it("should not destroy the store by default", function () {
           makeStore(3);
           makeStoreChart({
-            store: store,
+            store: store
           });
           chart.destroy();
           expect(store.destroyed).toBe(false);
@@ -145,7 +145,7 @@ describe("Ext.chart.AbstractChart", function () {
           makeStore(3);
           store.setAutoDestroy(true);
           makeStoreChart({
-            store: store,
+            store: store
           });
           chart.destroy();
           expect(store.destroyed).toBe(true);
@@ -156,17 +156,17 @@ describe("Ext.chart.AbstractChart", function () {
         it("should fire 'storechange' event", function () {
           var isFired = false,
             store1 = new Ext.data.Store({
-              model: Model,
+              model: Model
             }),
             store2 = new Ext.data.Store({
-              model: Model,
+              model: Model
             }),
             param1,
             param2,
             param3;
 
           makeStoreChart({
-            store: store1,
+            store: store1
           });
 
           chart.on("storechange", function (chart, newStore, oldStore) {
@@ -195,10 +195,10 @@ describe("Ext.chart.AbstractChart", function () {
         it("should accept a store id", function () {
           store = new Ext.data.Store({
             model: Model,
-            storeId: "foo",
+            storeId: "foo"
           });
           makeSeriesChart(null, {
-            store: "foo",
+            store: "foo"
           });
           expect(chart.getStore().isEmptyStore).toBe(true);
           expect(chart.getSeries()[0].getStore()).toBe(store);
@@ -208,8 +208,8 @@ describe("Ext.chart.AbstractChart", function () {
           makeSeriesChart(null, {
             store: {
               model: Model,
-              data: [{}],
-            },
+              data: [{}]
+            }
           });
           expect(chart.getStore().isEmptyStore).toBe(true);
           expect(chart.getSeries()[0].getStore().getCount()).toBe(1);
@@ -219,7 +219,7 @@ describe("Ext.chart.AbstractChart", function () {
         it("should accept a store instance", function () {
           makeStore(10);
           makeSeriesChart(null, {
-            store: store,
+            store: store
           });
           expect(chart.getStore().isEmptyStore).toBe(true);
           expect(chart.getSeries()[0].getStore()).toBe(store);
@@ -231,7 +231,7 @@ describe("Ext.chart.AbstractChart", function () {
           makeStore(3);
           var listeners = extractHasListeners(store.hasListeners);
           makeSeriesChart(null, {
-            store: store,
+            store: store
           });
           chart.destroy();
           expect(extractHasListeners(store.hasListeners)).toEqual(listeners);
@@ -240,7 +240,7 @@ describe("Ext.chart.AbstractChart", function () {
         it("should not destroy the store by default", function () {
           makeStore(3);
           makeSeriesChart(null, {
-            store: store,
+            store: store
           });
           chart.destroy();
           expect(store.destroyed).toBe(false);
@@ -250,7 +250,7 @@ describe("Ext.chart.AbstractChart", function () {
           makeStore(3);
           store.setAutoDestroy(true);
           makeSeriesChart(null, {
-            store: store,
+            store: store
           });
           chart.destroy();
           expect(store.destroyed).toBe(true);
@@ -259,14 +259,14 @@ describe("Ext.chart.AbstractChart", function () {
         it("should not destroy the store when destroying the series by default", function () {
           makeStore(3);
           makeSeriesChart(null, {
-            store: store,
+            store: store
           });
           chart.setSeries([
             {
               type: "bar",
               xField: "label",
-              yField: "value",
-            },
+              yField: "value"
+            }
           ]);
           expect(store.destroyed).toBe(false);
         });
@@ -275,14 +275,14 @@ describe("Ext.chart.AbstractChart", function () {
           makeStore(3);
           store.setAutoDestroy(true);
           makeSeriesChart(null, {
-            store: store,
+            store: store
           });
           chart.setSeries([
             {
               type: "bar",
               xField: "label",
-              yField: "value",
-            },
+              yField: "value"
+            }
           ]);
           expect(store.destroyed).toBe(true);
         });
@@ -292,10 +292,10 @@ describe("Ext.chart.AbstractChart", function () {
         it("should fire 'storechange' event", function () {
           var isFired = false,
             store1 = new Ext.data.Store({
-              model: Model,
+              model: Model
             }),
             store2 = new Ext.data.Store({
-              model: Model,
+              model: Model
             }),
             series,
             param1,
@@ -303,7 +303,7 @@ describe("Ext.chart.AbstractChart", function () {
             param3;
 
           makeSeriesChart(null, {
-            store: store1,
+            store: store1
           });
 
           series = chart.getSeries()[0];
@@ -332,21 +332,21 @@ describe("Ext.chart.AbstractChart", function () {
         fields: ["x", "y", "z"],
         data: [
           { x: 0, y: 0, z: 0 },
-          { x: 1, y: 1, z: 1 },
-        ],
+          { x: 1, y: 1, z: 1 }
+        ]
       });
       chart = new Ext.chart.CartesianChart({
         store: store,
         axes: [
           {
             position: "left",
-            type: "numeric",
+            type: "numeric"
           },
           {
             position: "bottom",
-            type: "numeric",
-          },
-        ],
+            type: "numeric"
+          }
+        ]
       });
     });
 
@@ -362,8 +362,8 @@ describe("Ext.chart.AbstractChart", function () {
           type: "line",
           xField: "x",
           yField: "y",
-          id: "xySeries",
-        },
+          id: "xySeries"
+        }
       ]);
       series = chart.getSeries();
 
@@ -375,8 +375,8 @@ describe("Ext.chart.AbstractChart", function () {
           type: "line",
           xField: "x",
           yField: "z",
-          id: "xzSeries",
-        },
+          id: "xzSeries"
+        }
       ]);
       series = chart.getSeries();
 
@@ -392,8 +392,8 @@ describe("Ext.chart.AbstractChart", function () {
           type: "line",
           xField: "x",
           yField: "y",
-          id: "xySeries",
-        },
+          id: "xySeries"
+        }
       ]);
       series = chart.getSeries();
 
@@ -404,7 +404,7 @@ describe("Ext.chart.AbstractChart", function () {
         type: "line",
         xField: "x",
         yField: "z",
-        id: "xzSeries",
+        id: "xzSeries"
       });
       series = chart.getSeries();
 
@@ -421,14 +421,14 @@ describe("Ext.chart.AbstractChart", function () {
           type: "line",
           xField: "x",
           yField: "y",
-          id: "xySeries",
+          id: "xySeries"
         },
         {
           type: "line",
           xField: "x",
           yField: "z",
-          id: "xzSeries",
-        },
+          id: "xzSeries"
+        }
       ]);
       series = chart.getSeries();
 
@@ -455,30 +455,30 @@ describe("Ext.chart.AbstractChart", function () {
         store: store,
         interactions: [
           {
-            type: "itemhighlight",
+            type: "itemhighlight"
           },
           {
-            type: "itemedit",
+            type: "itemedit"
           },
           {
-            type: "crosszoom",
-          },
+            type: "crosszoom"
+          }
         ],
         axes: [
           {
             type: "numeric",
-            position: "left",
+            position: "left"
           },
           {
             type: "category",
-            position: "bottom",
-          },
+            position: "bottom"
+          }
         ],
         series: {
           type: "bar",
           xField: "label",
-          yField: "value",
-        },
+          yField: "value"
+        }
       });
 
       var itemhighlight = chart.getInteraction("itemhighlight"),
@@ -499,20 +499,20 @@ describe("Ext.chart.AbstractChart", function () {
         axes: [
           {
             type: "numeric",
-            position: "left",
+            position: "left"
           },
           {
             type: "category",
-            position: "bottom",
-          },
+            position: "bottom"
+          }
         ],
         series: {
           type: "bar",
           xField: "label",
           yField: "value",
           style: {
-            fillStyle: "url(#foo)",
-          },
+            fillStyle: "url(#foo)"
+          }
         },
         gradients: [
           {
@@ -522,19 +522,19 @@ describe("Ext.chart.AbstractChart", function () {
             stops: [
               {
                 offset: 0,
-                color: "#78C5D6",
+                color: "#78C5D6"
               },
               {
                 offset: 0.56,
-                color: "#F5D63D",
+                color: "#F5D63D"
               },
               {
                 offset: 1,
-                color: "#BF62A6",
-              },
-            ],
-          },
-        ],
+                color: "#BF62A6"
+              }
+            ]
+          }
+        ]
       });
     });
 
@@ -557,18 +557,18 @@ describe("Ext.chart.AbstractChart", function () {
             stops: [
               {
                 offset: 0,
-                color: "#000000",
+                color: "#000000"
               },
               {
                 offset: 0.56,
-                color: "#F5D63D",
+                color: "#F5D63D"
               },
               {
                 offset: 1,
-                color: "#000000",
-              },
-            ],
-          },
+                color: "#000000"
+              }
+            ]
+          }
         ];
 
       // first, make sure correct color is applied on initial construction

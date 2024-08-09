@@ -298,9 +298,9 @@ Ext.define("Ext.util.Animate", {
     return Ext.apply(
       {
         target: me,
-        paused: true,
+        paused: true
       },
-      config,
+      config
     );
   },
 
@@ -341,7 +341,7 @@ Ext.define("Ext.util.Animate", {
    */
   syncFx: function () {
     Ext.fx.Manager.setFxDefaults(this.id, {
-      concurrent: true,
+      concurrent: true
     });
     return this;
   },
@@ -353,7 +353,7 @@ Ext.define("Ext.util.Animate", {
    */
   sequenceFx: function () {
     Ext.fx.Manager.setFxDefaults(this.id, {
-      concurrent: false,
+      concurrent: false
     });
     return this;
   },
@@ -371,5 +371,5 @@ Ext.define("Ext.util.Animate", {
    */
   getActiveAnimation: function () {
     return Ext.fx.Manager.getActiveAnimation(this.id);
-  },
+  }
 });

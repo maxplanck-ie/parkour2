@@ -39,5 +39,5 @@ Ext.define("Ext.dom.CompositeElement", {
    */
   transformElement: function (el) {
     return Ext.get(el);
-  },
+  }
 });

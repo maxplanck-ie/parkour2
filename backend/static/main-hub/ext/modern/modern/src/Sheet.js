@@ -57,7 +57,7 @@ Ext.define("Ext.Sheet", {
     showAnimation: {
       type: "slideIn",
       duration: 250,
-      easing: "ease-out",
+      easing: "ease-out"
     },
 
     /**
@@ -67,8 +67,8 @@ Ext.define("Ext.Sheet", {
     hideAnimation: {
       type: "slideOut",
       duration: 250,
-      easing: "ease-in",
-    },
+      easing: "ease-in"
+    }
   },
 
   baseCls: Ext.baseCSSPrefix + "sheet",
@@ -93,7 +93,7 @@ Ext.define("Ext.Sheet", {
 
     if (config === true) {
       config = {
-        type: "slideOut",
+        type: "slideOut"
       };
     }
     var anim = this.callParent([config]);
@@ -120,7 +120,7 @@ Ext.define("Ext.Sheet", {
 
     if (config === true) {
       config = {
-        type: "slideIn",
+        type: "slideIn"
       };
     }
     var anim = this.callParent([config]);
@@ -133,7 +133,7 @@ Ext.define("Ext.Sheet", {
         direction = "up";
       }
       anim.setBefore({
-        display: null,
+        display: null
       });
       anim.setReverse(true);
       anim.setDirection(direction);
@@ -159,5 +159,5 @@ Ext.define("Ext.Sheet", {
       this.setTop(0);
       this.setBottom(0);
     }
-  },
+  }
 });

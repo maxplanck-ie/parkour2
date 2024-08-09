@@ -7,13 +7,13 @@ Ext.define("Ext.chart.axis.Numeric3D", {
   type: "numeric3d",
   requires: [
     "Ext.chart.axis.layout.Continuous",
-    "Ext.chart.axis.segmenter.Numeric",
+    "Ext.chart.axis.segmenter.Numeric"
   ],
   config: {
     layout: "continuous",
 
     segmenter: "numeric",
 
-    aggregator: "double",
-  },
+    aggregator: "double"
+  }
 });

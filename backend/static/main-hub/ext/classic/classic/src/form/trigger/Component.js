@@ -43,5 +43,5 @@ Ext.define("Ext.form.trigger.Component", {
 
     this.component = null;
     this.callParent();
-  },
+  }
 });

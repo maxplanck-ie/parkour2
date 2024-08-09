@@ -13,25 +13,25 @@ Ext.define("Ext.chart.legend.sprite.Item", {
     def: {
       processors: {
         enabled: "limited01",
-        markerLabelGap: "number",
+        markerLabelGap: "number"
       },
       animationProcessors: {
         enabled: null,
-        markerLabelGap: null,
+        markerLabelGap: null
       },
       defaults: {
         enabled: true,
-        markerLabelGap: 5,
+        markerLabelGap: 5
       },
       triggers: {
         enabled: "enabled",
-        markerLabelGap: "layout",
+        markerLabelGap: "layout"
       },
       updaters: {
         layout: "layoutUpdater",
-        enabled: "enabledUpdater",
-      },
-    },
+        enabled: "enabledUpdater"
+      }
+    }
   },
 
   config: {
@@ -42,21 +42,21 @@ Ext.define("Ext.chart.legend.sprite.Item", {
     // composite doesn't have yet.
     label: {
       $value: {
-        type: "text",
+        type: "text"
       },
-      lazy: true,
+      lazy: true
     },
     marker: {
       $value: {
-        type: "circle",
+        type: "circle"
       },
-      lazy: true,
+      lazy: true
     },
 
     legend: null,
     store: null,
     record: null,
-    series: null,
+    series: null
   },
 
   applyLabel: function (label, oldLabel) {
@@ -86,7 +86,7 @@ Ext.define("Ext.chart.legend.sprite.Item", {
 
     me.removeSprite(oldLabel);
     label.setAttributes({
-      textBaseline: "middle",
+      textBaseline: "middle"
     });
     me.add(label);
     me.scheduleUpdater(me.attr, "layout");
@@ -139,7 +139,7 @@ Ext.define("Ext.chart.legend.sprite.Item", {
     if (config.type === "image") {
       sprite.setAttributes({
         width: size,
-        height: size,
+        height: size
       });
     } else {
       // This should work with any sprite, irrespective of what attribute
@@ -150,7 +150,7 @@ Ext.define("Ext.chart.legend.sprite.Item", {
       scale = size / max;
       sprite.setAttributes({
         scalingX: scale,
-        scalingY: scale,
+        scalingY: scale
       });
     }
 
@@ -179,7 +179,7 @@ Ext.define("Ext.chart.legend.sprite.Item", {
 
     if (marker) {
       marker.setAttributes({
-        globalAlpha: attr.enabled ? 1 : 0.3,
+        globalAlpha: attr.enabled ? 1 : 0.3
       });
     }
   },
@@ -213,9 +213,9 @@ Ext.define("Ext.chart.legend.sprite.Item", {
         0,
         1,
         -markerBBox.x,
-        -markerBBox.y + (totalHeight - markerBBox.height) / 2,
+        -markerBBox.y + (totalHeight - markerBBox.height) / 2
       ],
-      true,
+      true
     );
     label.transform(
       [
@@ -224,11 +224,11 @@ Ext.define("Ext.chart.legend.sprite.Item", {
         0,
         1,
         -labelBBox.x + markerBBox.width + attr.markerLabelGap,
-        -labelBBox.y + (totalHeight - labelBBox.height) / 2,
+        -labelBBox.y + (totalHeight - labelBBox.height) / 2
       ],
-      true,
+      true
     );
 
     me.bboxUpdater(attr);
-  },
+  }
 });

@@ -5,7 +5,7 @@ Ext.define("Ext.util.translatable.Dom", {
   extend: "Ext.util.translatable.Abstract",
 
   config: {
-    element: null,
+    element: null
   },
 
   applyElement: function (element) {
@@ -18,5 +18,5 @@ Ext.define("Ext.util.translatable.Dom", {
 
   updateElement: function () {
     this.refresh();
-  },
+  }
 });

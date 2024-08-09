@@ -80,7 +80,7 @@ Ext.define(
       //<debug>
       if (key === undefined) {
         Ext.raise(
-          "Component id is undefined. Please ensure the component has an id.",
+          "Component id is undefined. Please ensure the component has an id."
         );
       }
       if (key in all) {
@@ -257,7 +257,7 @@ Ext.define(
               target: fromElement,
               relatedTarget: toElement,
               fromComponent: fromComponent,
-              toComponent: toComponent,
+              toComponent: toComponent
             });
           }
         }
@@ -279,7 +279,7 @@ Ext.define(
             relatedTarget: fromElement,
             target: toElement,
             fromComponent: fromComponent,
-            toComponent: toComponent,
+            toComponent: toComponent
           });
         }
       }
@@ -352,7 +352,7 @@ Ext.define(
         }
 
         return null;
-      },
+      }
     },
 
     deprecated: {
@@ -372,10 +372,10 @@ Ext.define(
            * @param {Function} cls The new instance class.
            * @deprecated 5.0
            */
-          registerType: null,
-        },
-      },
-    },
+          registerType: null
+        }
+      }
+    }
   },
   function () {
     /**
@@ -391,5 +391,5 @@ Ext.define(
     Ext.getCmp = function (id) {
       return Ext.ComponentManager.get(id);
     };
-  },
+  }
 );

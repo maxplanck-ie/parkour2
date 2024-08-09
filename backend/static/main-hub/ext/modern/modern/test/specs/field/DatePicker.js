@@ -19,7 +19,7 @@ describe("Ext.field.DatePicker", function () {
 
     it("should accept a string that matches the dateFormat", function () {
       makeField({
-        dateFormat: "Y-m-d",
+        dateFormat: "Y-m-d"
       });
       field.setValue("2010-01-01");
       expect(field.getValue()).toEqual(new Date(2010, 0, 1));
@@ -27,7 +27,7 @@ describe("Ext.field.DatePicker", function () {
 
     it("should return null for a string that does not match the format", function () {
       makeField({
-        dateFormat: "Y-m-d",
+        dateFormat: "Y-m-d"
       });
       field.setValue("01/01/2010");
       expect(field.getValue()).toBeNull();
@@ -35,7 +35,7 @@ describe("Ext.field.DatePicker", function () {
 
     it("should update the text field with the formatted value when specifying a date", function () {
       makeField({
-        dateFormat: "Y-m-d",
+        dateFormat: "Y-m-d"
       });
       field.setValue(new Date(2010, 0, 1));
       expect(field.getComponent().inputElement.dom.value).toBe("2010-01-01");
@@ -43,7 +43,7 @@ describe("Ext.field.DatePicker", function () {
 
     it("should clear the text field when specifying null", function () {
       makeField({
-        dateFormat: "Y-m-d",
+        dateFormat: "Y-m-d"
       });
       field.setValue(new Date(2010, 0, 1));
       field.setValue(null);
@@ -102,7 +102,7 @@ describe("Ext.field.DatePicker", function () {
   describe("getValue", function () {
     it("should return a date object when configured with a value", function () {
       makeField({
-        value: new Date(2010, 0, 1),
+        value: new Date(2010, 0, 1)
       });
       expect(field.getValue()).toEqual(new Date(2010, 0, 1));
     });
@@ -120,7 +120,7 @@ describe("Ext.field.DatePicker", function () {
 
     it("should return null after clearing a value", function () {
       makeField({
-        value: new Date(2010, 0, 1),
+        value: new Date(2010, 0, 1)
       });
       field.setValue(null);
       expect(field.getValue()).toBeNull();
@@ -131,14 +131,14 @@ describe("Ext.field.DatePicker", function () {
     it("should return the formatted value when configured with a value", function () {
       makeField({
         dateFormat: "Y-m-d",
-        value: new Date(2010, 0, 1),
+        value: new Date(2010, 0, 1)
       });
       expect(field.getFormattedValue()).toBe("2010-01-01");
     });
 
     it("should return the formatted value after having a value set", function () {
       makeField({
-        dateFormat: "Y-m-d",
+        dateFormat: "Y-m-d"
       });
       field.setValue(new Date(2010, 0, 1));
       expect(field.getFormattedValue()).toBe("2010-01-01");
@@ -146,7 +146,7 @@ describe("Ext.field.DatePicker", function () {
 
     it("should favour a passed format over the class format", function () {
       makeField({
-        dateFormat: "d/m/Y",
+        dateFormat: "d/m/Y"
       });
       field.setValue(new Date(2010, 0, 1));
       expect(field.getFormattedValue("Y-m-d")).toBe("2010-01-01");
@@ -159,7 +159,7 @@ describe("Ext.field.DatePicker", function () {
 
     it("should return '' after clearing a value", function () {
       makeField({
-        value: new Date(2010, 0, 1),
+        value: new Date(2010, 0, 1)
       });
       field.setValue(null);
       expect(field.getFormattedValue()).toBe("");

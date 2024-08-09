@@ -26,7 +26,7 @@ Ext.define("Ext.mixin.Dirty", {
      * cases this config's value is maintained by the object and should be considered
      * readonly. The class implementor should be the only one to call the setter.
      */
-    dirty: null,
+    dirty: null
   },
 
   dirty: false, // on the prototype as false (not undefined)
@@ -168,5 +168,5 @@ Ext.define("Ext.mixin.Dirty", {
     }
 
     return changed;
-  },
+  }
 });

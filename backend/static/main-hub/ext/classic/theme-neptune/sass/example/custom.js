@@ -10,16 +10,16 @@
 Ext.theme.addManifest(
   {
     xtype: "button",
-    ui: "plain-toolbar",
+    ui: "plain-toolbar"
   },
   {
     xtype: "widget.panel",
-    ui: "light",
+    ui: "light"
   },
   {
     xtype: "widget.header",
-    ui: "light",
-  },
+    ui: "light"
+  }
 );
 
 //Ext.theme.addShortcuts();

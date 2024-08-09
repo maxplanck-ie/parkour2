@@ -421,7 +421,7 @@ Ext.define("Ext.container.Container", {
     "Ext.util.MixedCollection",
     "Ext.layout.container.Auto",
     "Ext.ZIndexManager",
-    "Ext.util.ItemCollection",
+    "Ext.util.ItemCollection"
   ],
 
   mixins: ["Ext.mixin.Queryable", "Ext.mixin.Container"],
@@ -461,7 +461,7 @@ Ext.define("Ext.container.Container", {
      * See the {@link Ext.Action} class for an example of reusable Actions.
      * @since 6.2.0
      */
-    actions: null,
+    actions: null
   },
 
   /**
@@ -725,7 +725,7 @@ Ext.define("Ext.container.Container", {
    */
   tabGuardElements: {
     before: "tabGuardBeforeEl",
-    after: "tabGuardAfterEl",
+    after: "tabGuardAfterEl"
   },
 
   /**
@@ -765,7 +765,7 @@ Ext.define("Ext.container.Container", {
    */
   _applyDefaultsOptions: {
     defaults: true,
-    strict: false,
+    strict: false
   },
 
   ariaRole: "presentation",
@@ -939,7 +939,7 @@ Ext.define("Ext.container.Container", {
       //<debug>
       if (!item) {
         Ext.raise(
-          "Cannot add null item to Container with itemId/id: " + me.getItemId(),
+          "Cannot add null item to Container with itemId/id: " + me.getItemId()
         );
       }
 
@@ -949,7 +949,7 @@ Ext.define("Ext.container.Container", {
             item.getId() +
             "' to Container '" +
             me.getId() +
-            "'",
+            "'"
         );
       }
       //</debug>
@@ -1831,7 +1831,7 @@ Ext.define("Ext.container.Container", {
     //<debug>
     if (!arguments.length) {
       Ext.log.warn(
-        "Ext.container.Container: remove takes an argument of the component to remove. cmp.remove() is incorrect usage.",
+        "Ext.container.Container: remove takes an argument of the component to remove. cmp.remove() is incorrect usage."
       );
     }
     //</debug>
@@ -1920,7 +1920,7 @@ Ext.define("Ext.container.Container", {
 
     if (typeof layout === "string") {
       layout = {
-        type: layout,
+        type: layout
       };
     }
 
@@ -2243,7 +2243,7 @@ Ext.define("Ext.container.Container", {
       }
 
       nodes = me.el.findTabbableElements({
-        skipSelf: true,
+        skipSelf: true
       });
 
       // Both tab guards may be in the list, disregard them
@@ -2298,7 +2298,7 @@ Ext.define("Ext.container.Container", {
       "margin-top": "",
       "margin-right": "",
       "margin-bottom": "",
-      "margin-left": "",
+      "margin-left": ""
     },
 
     // Removes inline margins set by the layout system (see ContextItem#getMarginInfo)
@@ -2319,6 +2319,6 @@ Ext.define("Ext.container.Container", {
     setupRenderTpl: function (renderTpl) {
       this.callParent(arguments);
       this.getLayout().setupRenderTpl(renderTpl);
-    },
-  }, // private
+    }
+  } // private
 });

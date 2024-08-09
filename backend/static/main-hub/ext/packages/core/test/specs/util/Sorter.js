@@ -28,7 +28,7 @@ describe("Ext.util.Sorter", function () {
   describe("building sorter functions", function () {
     it("should default to sorting ASC", function () {
       sorter = new Ext.util.Sorter({
-        property: "age",
+        property: "age"
       });
 
       var rec1 = { age: 24 },
@@ -41,7 +41,7 @@ describe("Ext.util.Sorter", function () {
     it("should accept DESC direction", function () {
       sorter = new Ext.util.Sorter({
         property: "age",
-        direction: "DESC",
+        direction: "DESC"
       });
 
       var rec1 = { age: 24 },
@@ -54,7 +54,7 @@ describe("Ext.util.Sorter", function () {
     it("should allow specification of the root property", function () {
       sorter = new Ext.util.Sorter({
         root: "data",
-        property: "age",
+        property: "age"
       });
 
       var rec1 = { data: { age: 24 } },
@@ -70,7 +70,7 @@ describe("Ext.util.Sorter", function () {
       property: "age",
       transform: function (v) {
         return v * -1;
-      },
+      }
     });
 
     var rec1 = { age: 18 },
@@ -89,7 +89,7 @@ describe("Ext.util.Sorter", function () {
         group: "code",
         old: false,
         age: 25,
-        valid: "yes",
+        valid: "yes"
       },
       abeRaw = {
         name: "Abe Elias",
@@ -98,7 +98,7 @@ describe("Ext.util.Sorter", function () {
         group: "admin",
         old: false,
         age: 20,
-        valid: "yes",
+        valid: "yes"
       },
       aaronRaw = {
         name: "Aaron Conran",
@@ -107,7 +107,7 @@ describe("Ext.util.Sorter", function () {
         group: "admin",
         old: true,
         age: 26,
-        valid: "yes",
+        valid: "yes"
       },
       tommyRaw = {
         name: "Tommy Maintz",
@@ -116,7 +116,7 @@ describe("Ext.util.Sorter", function () {
         group: "code",
         old: true,
         age: 70,
-        valid: "yes",
+        valid: "yes"
       },
       User = Ext.define(null, {
         extend: "Ext.data.Model",
@@ -129,22 +129,22 @@ describe("Ext.util.Sorter", function () {
           { name: "group", type: "string" },
           { name: "old", type: "boolean" },
           { name: "valid", type: "string" },
-          { name: "age", type: "int" },
-        ],
+          { name: "age", type: "int" }
+        ]
       }),
       records = [
         new User(edRaw),
         new User(abeRaw),
         new User(aaronRaw),
-        new User(tommyRaw),
+        new User(tommyRaw)
       ],
       sorters = [
         new Ext.util.Sorter({
           sorterFn: function () {
             return 0;
-          },
+          }
         }),
-        new Ext.util.Sorter({ root: "data", property: "age" }),
+        new Ext.util.Sorter({ root: "data", property: "age" })
       ];
 
     // Should not throw error.
@@ -159,7 +159,7 @@ describe("Ext.util.Sorter", function () {
       var sorter = new Ext.util.Sorter({
         nullFirst: nullFirst,
         sorterFn: defaultSorterFn,
-        transform: candidate.transform,
+        transform: candidate.transform
       });
 
       return function (v1, v2) {
@@ -204,34 +204,34 @@ describe("Ext.util.Sorter", function () {
     var candidates = {
       asFloat: {
         test: [5.3, null, 2.4, null],
-        transform: SortTypes.asFloat,
+        transform: SortTypes.asFloat
       },
       asInt: {
         test: [5, null, 2, null],
-        transform: SortTypes.asInt,
+        transform: SortTypes.asInt
       },
       asText: {
         test: [
           "<p>hello, <span>world!</span></p>",
           null,
           "<div>i am <p>in</p>a block</div>",
-          null,
+          null
         ],
-        transform: SortTypes.asText,
+        transform: SortTypes.asText
       },
       asUCString: {
         test: ["z", null, "a", null],
-        transform: SortTypes.asUCString,
+        transform: SortTypes.asUCString
       },
       asUCText: {
         test: [
           "<p>hello, <span>world!</span></p>",
           null,
           "<div>i am <p>in</p>a block</div>",
-          null,
+          null
         ],
-        transform: SortTypes.asUCText,
-      },
+        transform: SortTypes.asUCText
+      }
     };
 
     function sortIt(method, nullFirst) {
@@ -244,9 +244,9 @@ describe("Ext.util.Sorter", function () {
           "should sort null values " + (nullFirst ? "first" : "last"),
           function () {
             expect(
-              testArr.concat().sort(nullFirstComparator(nullFirst)),
+              testArr.concat().sort(nullFirstComparator(nullFirst))
             ).toEqual(testArr.concat().sort(compare));
-          },
+          }
         );
       });
     }

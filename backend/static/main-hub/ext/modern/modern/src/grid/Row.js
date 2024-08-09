@@ -21,9 +21,9 @@ Ext.define("Ext.grid.Row", {
     // update list to not call getHeader unless grouped is true
     header: {
       $value: {
-        xtype: "rowheader",
+        xtype: "rowheader"
       },
-      lazy: true,
+      lazy: true
     },
 
     /**
@@ -50,7 +50,7 @@ Ext.define("Ext.grid.Row", {
     /**
      * A default {@link #ui ui} to use for {@link Ext.grid.cell.Base cells} in this row.
      */
-    defaultCellUI: null,
+    defaultCellUI: null
   },
 
   classCls: [Ext.baseCSSPrefix + "listitem", Ext.baseCSSPrefix + "gridrow"],
@@ -62,14 +62,14 @@ Ext.define("Ext.grid.Row", {
     children: [
       {
         reference: "cellsElement",
-        className: Ext.baseCSSPrefix + "cells-el",
-      },
-    ],
+        className: Ext.baseCSSPrefix + "cells-el"
+      }
+    ]
   },
 
   // Causes this config to only run against the first instance
   cachedConfig: {
-    collapsed: true,
+    collapsed: true
   },
 
   constructor: function (config) {
@@ -344,7 +344,7 @@ Ext.define("Ext.grid.Row", {
           record: me.getRecord(),
           ui: me.getDefaultCellUI(),
           hidden: column.isHidden(me.getGrid().getHeaderContainer()),
-          width: column.getComputedWidth() || column.getWidth(),
+          width: column.getComputedWidth() || column.getWidth()
         },
         align = column.getAlign();
 
@@ -368,6 +368,6 @@ Ext.define("Ext.grid.Row", {
       if (cell) {
         cell.setHidden(hidden);
       }
-    },
-  },
+    }
+  }
 });

@@ -149,7 +149,7 @@ Ext.define("Ext.data.proxy.JsonP", {
      * @cfg {Boolean} autoAppendParams
      * True to automatically append the request's params to the generated url. Defaults to true
      */
-    autoAppendParams: true,
+    autoAppendParams: true
   },
 
   /**
@@ -172,7 +172,7 @@ Ext.define("Ext.data.proxy.JsonP", {
       timeout: me.timeout,
       scope: me,
       disableCaching: false, // handled by the proxy
-      callback: me.createRequestCallback(request, operation),
+      callback: me.createRequestCallback(request, operation)
     });
 
     // If we are responsible for appending the params to the URL, clear them now so that
@@ -305,5 +305,5 @@ Ext.define("Ext.data.proxy.JsonP", {
     }
 
     return encoded;
-  },
+  }
 });

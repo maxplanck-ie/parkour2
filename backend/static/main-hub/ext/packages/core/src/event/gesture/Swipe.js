@@ -44,7 +44,7 @@ Ext.define(
     config: {
       minDistance: 80,
       maxOffset: 35,
-      maxDuration: 1000,
+      maxDuration: 1000
     },
 
     onTouchStart: function (e) {
@@ -120,7 +120,7 @@ Ext.define(
           touch: touch,
           direction: direction,
           distance: distance,
-          duration: duration,
+          duration: duration
         });
       }
     },
@@ -170,7 +170,7 @@ Ext.define(
           touch: touch,
           direction: direction,
           distance: distance,
-          duration: duration,
+          duration: duration
         });
       }
 
@@ -192,10 +192,10 @@ Ext.define(
           null;
 
       return me.callParent();
-    },
+    }
   },
   function (Swipe) {
     var gestures = Ext.manifest.gestures;
     Swipe.instance = new Swipe(gestures && gestures.swipe);
-  },
+  }
 );

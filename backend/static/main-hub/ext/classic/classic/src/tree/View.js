@@ -7,8 +7,8 @@ Ext.define("Ext.tree.View", {
 
   config: {
     selectionModel: {
-      type: "treemodel",
-    },
+      type: "treemodel"
+    }
   },
 
   /**
@@ -91,8 +91,8 @@ Ext.define("Ext.tree.View", {
         if (record.isLoading()) {
           rowValues.rowClasses.push(view.loadingCls);
         }
-      },
-    },
+      }
+    }
   ],
 
   /**
@@ -177,7 +177,7 @@ Ext.define("Ext.tree.View", {
       scope: me,
       delegate: me.expanderSelector,
       mouseover: me.onExpanderMouseOver,
-      mouseout: me.onExpanderMouseOut,
+      mouseout: me.onExpanderMouseOut
     });
   },
 
@@ -221,9 +221,9 @@ Ext.define("Ext.tree.View", {
       {
         role: "presentation",
         tag: "div",
-        cls: me.nodeAnimWrapCls,
+        cls: me.nodeAnimWrapCls
       },
-      "after",
+      "after"
     );
 
     return {
@@ -233,7 +233,7 @@ Ext.define("Ext.tree.View", {
       expanding: false,
       collapsing: false,
       animateEl: tmpEl,
-      targetEl: tmpEl,
+      targetEl: tmpEl
     };
   },
 
@@ -324,7 +324,7 @@ Ext.define("Ext.tree.View", {
       Ext.fly(childNodes[relativeIndex]).insertSibling(
         children,
         "before",
-        true,
+        true
       );
     }
 
@@ -451,15 +451,15 @@ Ext.define("Ext.tree.View", {
         animateEl.dom.style.height = "0px";
       },
       null,
-      { single: true },
+      { single: true }
     );
 
     animateEl.animate({
       from: {
-        height: 0,
+        height: 0
       },
       to: {
-        height: targetEl.dom.scrollHeight,
+        height: targetEl.dom.scrollHeight
       },
       duration: me.expandDuration,
       listeners: {
@@ -484,7 +484,7 @@ Ext.define("Ext.tree.View", {
 
           animWrap.el.destroy();
           me.animWraps[animWrap.record.internalId] = queue[id] = null;
-        },
+        }
       },
       callback: function () {
         parent.isExpandingOrCollapsing = false;
@@ -492,7 +492,7 @@ Ext.define("Ext.tree.View", {
           me.refreshSize(true);
         }
         me.fireEvent("afteritemexpand", parent, index, node);
-      },
+      }
     });
   },
 
@@ -511,7 +511,7 @@ Ext.define("Ext.tree.View", {
           if (!animWrap) {
             animWrap = me.animWraps[parent.internalId] = me.createAnimWrap(
               parent,
-              index,
+              index
             );
           } else if (animWrap.expanding) {
             // If we collapse this node while it is still expanding then we
@@ -565,7 +565,7 @@ Ext.define("Ext.tree.View", {
     animateEl.stopAnimation();
     animateEl.animate({
       to: {
-        height: 0,
+        height: 0
       },
       duration: me.collapseDuration,
       listeners: {
@@ -573,7 +573,7 @@ Ext.define("Ext.tree.View", {
           // In case lastframe did not fire because the animation was stopped.
           animWrap.el.destroy();
           me.animWraps[animWrap.record.internalId] = queue[id] = null;
-        },
+        }
       },
       callback: function () {
         parent.isExpandingOrCollapsing = false;
@@ -585,7 +585,7 @@ Ext.define("Ext.tree.View", {
         // Call any collapse callback cached in the onBeforeCollapse handler
         Ext.callback(animWrap.callback, animWrap.scope);
         animWrap.callback = animWrap.scope = null;
-      },
+      }
     });
   },
 
@@ -770,7 +770,7 @@ Ext.define("Ext.tree.View", {
         // We are setting child nodes, so pass the
         // checkParent flag as false to avoid reentry back into this node.
         me.setChecked(childNodes[i], meChecked, e, {
-          checkParent: false,
+          checkParent: false
         });
 
         if (childNodes[i].get("checked") === meChecked) {
@@ -831,7 +831,7 @@ Ext.define("Ext.tree.View", {
         // We are setting the parent node, so pass the
         // progagateCheck flag as false to avoid reentry back into this node.
         me.setChecked(parentNode, parentChecked, e, {
-          propagateCheck: false,
+          propagateCheck: false
         });
       }
     }
@@ -843,14 +843,14 @@ Ext.define("Ext.tree.View", {
 
   onExpanderMouseOut: function (e) {
     e.getTarget(this.cellSelector, 10, true).removeCls(
-      this.expanderIconOverCls,
+      this.expanderIconOverCls
     );
   },
 
   getStoreListeners: function () {
     return Ext.apply(this.callParent(), {
       rootchange: this.onRootChange,
-      fillcomplete: this.onFillComplete,
+      fillcomplete: this.onFillComplete
     });
   },
 
@@ -884,7 +884,7 @@ Ext.define("Ext.tree.View", {
         beforecollapse: me.onBeforeCollapse,
         collapse: me.onCollapse,
         destroyable: true,
-        scope: me,
+        scope: me
       });
 
       grid.addRelayers(newRoot);
@@ -907,7 +907,7 @@ Ext.define("Ext.tree.View", {
       none: 0,
       down: 1,
       up: 2,
-      both: 3,
+      both: 3
     },
 
     deferRefreshForLoad: function (store) {
@@ -925,6 +925,6 @@ Ext.define("Ext.tree.View", {
         }
       }
       return ret;
-    },
-  },
+    }
+  }
 });

@@ -60,13 +60,13 @@ Ext.define("Ext.chart.axis.Axis", {
   xtype: "axis",
 
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
 
   requires: [
     "Ext.chart.axis.sprite.Axis",
     "Ext.chart.axis.segmenter.*",
-    "Ext.chart.axis.layout.*",
+    "Ext.chart.axis.layout.*"
   ],
 
   isAxis: true,
@@ -384,7 +384,7 @@ Ext.define("Ext.chart.axis.Axis", {
      *          }
      *      ]
      */
-    floating: null,
+    floating: null
   },
 
   titleOffset: 0,
@@ -425,7 +425,7 @@ Ext.define("Ext.chart.axis.Axis", {
       position = this.getPosition();
     if (!this.getHidden() && position === "angular" && sprites[0]) {
       sprites[0].setAttributes({
-        baseRotation: rotation,
+        baseRotation: rotation
       });
     }
   },
@@ -452,12 +452,12 @@ Ext.define("Ext.chart.axis.Axis", {
     if (floating === null) {
       floating = {
         value: null,
-        alongAxis: null,
+        alongAxis: null
       };
     } else if (Ext.isNumber(floating)) {
       floating = {
         value: floating,
-        alongAxis: null,
+        alongAxis: null
       };
     }
     if (Ext.isObject(floating)) {
@@ -558,7 +558,7 @@ Ext.define("Ext.chart.axis.Axis", {
         me.limits = {
           surface: chart.getSurface("overlay"),
           lines: new Ext.chart.Markers(),
-          titles: new Ext.draw.sprite.Instancing(),
+          titles: new Ext.draw.sprite.Instancing()
         };
         me.limits.lines.setTemplate({ xclass: "grid." + gridAlignment });
         me.limits.lines
@@ -593,7 +593,7 @@ Ext.define("Ext.chart.axis.Axis", {
     if (!chart) {
       me.on({
         chartattached: Ext.bind(me.updateGrid, me, [grid]),
-        single: true,
+        single: true
       });
       return;
     }
@@ -642,7 +642,7 @@ Ext.define("Ext.chart.axis.Axis", {
 
     if (axisSprite) {
       axisSprite.setAttributes({
-        minorTicks: !!minorTickSteps,
+        minorTicks: !!minorTickSteps
       });
       surface = me.getSurface();
       if (!me.isConfiguring && surface) {
@@ -882,7 +882,7 @@ Ext.define("Ext.chart.axis.Axis", {
     } else {
       return [
         newRange[0] === null ? this.dataRange[0] : newRange[0],
-        newRange[1] === null ? this.dataRange[1] : newRange[1],
+        newRange[1] === null ? this.dataRange[1] : newRange[1]
       ];
     }
   },
@@ -993,7 +993,7 @@ Ext.define("Ext.chart.axis.Axis", {
       attr.visibleMax = visibleRange[1];
       context = {
         attr: attr,
-        segmenter: segmenter,
+        segmenter: segmenter
       };
       layout.calculateLayout(context);
       majorTicks = context.majorTicks;
@@ -1001,7 +1001,7 @@ Ext.define("Ext.chart.axis.Axis", {
         segmenter.adjustByMajorUnit(
           majorTicks.step,
           majorTicks.unit.scale,
-          me.range,
+          me.range
         );
 
         attr.min = me.range[0];
@@ -1012,7 +1012,7 @@ Ext.define("Ext.chart.axis.Axis", {
         segmenter.adjustByMajorUnit(
           majorTicks.step,
           majorTicks.unit.scale,
-          me.range,
+          me.range
         );
       } else if (!me.hasClearRangePending) {
         // Axis hasn't been rendered yet.
@@ -1082,7 +1082,7 @@ Ext.define("Ext.chart.axis.Axis", {
   },
 
   themeOnlyIfConfigured: {
-    grid: true,
+    grid: true
   },
 
   updateTheme: function (theme) {
@@ -1131,7 +1131,7 @@ Ext.define("Ext.chart.axis.Axis", {
     if (axisSprite) {
       axisSprite.setAttributes({
         centerX: centerX,
-        centerY: centerY,
+        centerY: centerY
       });
     }
     if (this.gridSpriteEven) {
@@ -1139,7 +1139,7 @@ Ext.define("Ext.chart.axis.Axis", {
         translationX: centerX,
         translationY: centerY,
         rotationCenterX: centerX,
-        rotationCenterY: centerY,
+        rotationCenterY: centerY
       });
     }
     if (this.gridSpriteOdd) {
@@ -1147,7 +1147,7 @@ Ext.define("Ext.chart.axis.Axis", {
         translationX: centerX,
         translationY: centerY,
         rotationCenterX: centerX,
-        rotationCenterY: centerY,
+        rotationCenterY: centerY
       });
     }
   },
@@ -1169,7 +1169,7 @@ Ext.define("Ext.chart.axis.Axis", {
     // If animation is false, then stop animation.
     if (animation === false) {
       animation = {
-        duration: 0,
+        duration: 0
       };
     }
     if (range) {
@@ -1186,9 +1186,9 @@ Ext.define("Ext.chart.axis.Axis", {
           layout: me.getLayout(),
           segmenter: me.getSegmenter(),
           totalAngle: me.getTotalAngle(),
-          label: me.getLabel(),
+          label: me.getLabel()
         },
-        me.getStyle(),
+        me.getStyle()
       );
 
       // If the sprites are not created.
@@ -1198,7 +1198,7 @@ Ext.define("Ext.chart.axis.Axis", {
         }
         baseSprite = Ext.create("sprite." + axisClass.xtype, style);
         baseSprite.fx.setCustomDurations({
-          baseRotation: 0,
+          baseRotation: 0
         });
         baseSprite.fx.on("animationstart", "onAnimationStart", me);
         baseSprite.fx.on("animationend", "onAnimationEnd", me);
@@ -1264,9 +1264,9 @@ Ext.define("Ext.chart.axis.Axis", {
               x: anchor,
               y: margin + titleMargin / 2,
               textBaseline: "top",
-              textAlign: "center",
+              textAlign: "center"
             },
-            true,
+            true
           );
           title.applyTransformations();
           me.titleOffset = title.getBBox().height + titleMargin;
@@ -1277,9 +1277,9 @@ Ext.define("Ext.chart.axis.Axis", {
               x: anchor,
               y: thickness + titleMargin / 2,
               textBaseline: "top",
-              textAlign: "center",
+              textAlign: "center"
             },
-            true,
+            true
           );
           title.applyTransformations();
           me.titleOffset = title.getBBox().height + titleMargin;
@@ -1293,9 +1293,9 @@ Ext.define("Ext.chart.axis.Axis", {
               textAlign: "center",
               rotationCenterX: margin + titleMargin / 2,
               rotationCenterY: anchor,
-              rotationRads: -Math.PI / 2,
+              rotationRads: -Math.PI / 2
             },
-            true,
+            true
           );
           title.applyTransformations();
           me.titleOffset = title.getBBox().width + titleMargin;
@@ -1309,9 +1309,9 @@ Ext.define("Ext.chart.axis.Axis", {
               textAlign: "center",
               rotationCenterX: thickness + titleMargin / 2,
               rotationCenterY: anchor,
-              rotationRads: Math.PI / 2,
+              rotationRads: Math.PI / 2
             },
-            true,
+            true
           );
           title.applyTransformations();
           me.titleOffset = title.getBBox().width + titleMargin;
@@ -1399,5 +1399,5 @@ Ext.define("Ext.chart.axis.Axis", {
     me.surface.destroy();
     me.surface = null;
     me.callParent();
-  },
+  }
 });

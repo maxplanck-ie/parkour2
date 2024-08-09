@@ -53,7 +53,7 @@ Ext.Boot =
          * @cfg {String} [charset=UTF-8]
          * Optional charset to specify encoding of dynamic content.
          */
-        charset: "UTF-8",
+        charset: "UTF-8"
       },
       _assetConfig = {},
       cssRe = /\.css(?:\?|$)/i,
@@ -64,7 +64,7 @@ Ext.Boot =
         node: !isBrowser && typeof require === "function",
         phantom:
           (window && (window._phantom || window.callPhantom)) ||
-          /PhantomJS/.test(window.navigator.userAgent),
+          /PhantomJS/.test(window.navigator.userAgent)
       },
       _tags = (Ext.platformTags = {}),
       _apply = function (object, config, defaults) {
@@ -198,7 +198,7 @@ Ext.Boot =
           chromeMobile: "ChromeMobile",
           chromeiOS: "ChromeiOS",
           silk: "Silk",
-          other: "Other",
+          other: "Other"
         },
 
         osNames: {
@@ -214,7 +214,7 @@ Ext.Boot =
           linux: "Linux",
           bada: "Bada",
           chromeOS: "ChromeOS",
-          other: "Other",
+          other: "Other"
         },
 
         browserPrefixes: {
@@ -228,7 +228,7 @@ Ext.Boot =
           webosbrowser: "wOSBrowser/",
           chromeMobile: "CrMo/",
           chromeiOS: "CriOS/",
-          silk: "Silk/",
+          silk: "Silk/"
         },
 
         // When a UA reports multiple browsers this list is used to prioritize the 'real' browser
@@ -244,7 +244,7 @@ Ext.Boot =
           "ie",
           "firefox",
           "safari",
-          "chrome",
+          "chrome"
         ],
 
         osPrefixes: {
@@ -257,19 +257,19 @@ Ext.Boot =
           rimTablet: "RIM Tablet OS ",
           webos: "(?:webOS|hpwOS)/",
           bada: "Bada/",
-          chromeOS: "CrOS ",
+          chromeOS: "CrOS "
         },
 
         fallbackOSPrefixes: {
           windows: "win",
           mac: "mac",
-          linux: "linux",
+          linux: "linux"
         },
 
         devicePrefixes: {
           iPhone: "iPhone",
           iPod: "iPod",
-          iPad: "iPad",
+          iPad: "iPad"
         },
 
         maxIEVersion: 12,
@@ -632,7 +632,7 @@ Ext.Boot =
                   state === "loaded" ||
                   state === "complete", // IE only
                 el: script,
-                prop: "src",
+                prop: "src"
               });
             }
           }
@@ -763,7 +763,7 @@ Ext.Boot =
           var cfg = {
             content: content,
             loaded: true,
-            css: type === "css",
+            css: type === "css"
           };
 
           return Boot.getEntry(url, cfg);
@@ -901,7 +901,7 @@ Ext.Boot =
                 result = {
                   content: content,
                   status: status,
-                  exception: exception,
+                  exception: exception
                 };
                 if (complete) {
                   complete.call(scope, result);
@@ -933,7 +933,7 @@ Ext.Boot =
 
         notifyAll: function (entry) {
           entry.notifyRequests();
-        },
+        }
       };
 
     function Request(cfg) {
@@ -979,7 +979,7 @@ Ext.Boot =
         indexMap,
         loadOrder,
         includeUses,
-        skipLoaded,
+        skipLoaded
       ) {
         var resolved = [],
           queue = [item],
@@ -1055,7 +1055,7 @@ Ext.Boot =
         loadOrderMap,
         indexMap,
         includeUses,
-        skipLoaded,
+        skipLoaded
       ) {
         var item, resolved;
 
@@ -1068,7 +1068,7 @@ Ext.Boot =
               indexMap,
               loadOrder,
               includeUses,
-              skipLoaded,
+              skipLoaded
             );
 
             if (resolved.length) {
@@ -1117,7 +1117,7 @@ Ext.Boot =
             loadOrderMap,
             indexMap,
             includeUses,
-            false,
+            false
           );
 
           for (t = 0, tlen = tmpExpanded.length; t < tlen; t++) {
@@ -1202,9 +1202,9 @@ Ext.Boot =
               url,
               {
                 buster: me.buster,
-                charset: me.charset,
+                charset: me.charset
               },
-              item && item.canonicalPath,
+              item && item.canonicalPath
             );
 
             entry.requests.push(me);
@@ -1323,7 +1323,7 @@ Ext.Boot =
             listener(this);
           }
         }
-      },
+      }
     };
 
     function Entry(cfg) {
@@ -1609,7 +1609,7 @@ Ext.Boot =
           async: false,
           complete: function (response) {
             me.onContentLoaded(response);
-          },
+          }
         });
         me.evaluate();
         me.notifyRequests();
@@ -1663,7 +1663,7 @@ Ext.Boot =
                 complete: function (response) {
                   me.onContentLoaded(response);
                   me.notifyRequests();
-                },
+                }
               });
             }
           }
@@ -1771,7 +1771,7 @@ Ext.Boot =
             listener(this);
           }
         }
-      },
+      }
     };
 
     /**
@@ -1785,7 +1785,7 @@ Ext.Boot =
     Ext.disableCacheBuster = function (disable, path) {
       var date = new Date();
       date.setTime(
-        date.getTime() + (disable ? 10 * 365 : -1) * 24 * 60 * 60 * 1000,
+        date.getTime() + (disable ? 10 * 365 : -1) * 24 * 60 * 60 * 1000
       );
       date = date.toGMTString();
       doc.cookie = "ext-cache=1; expires=" + date + "; path=" + (path || "/");
@@ -1834,7 +1834,7 @@ if (!Function.prototype.bind) {
             // avoid the slice/concat if the caller does not supply args
             return method.apply(
               me,
-              t.length ? args.concat(slice.call(t)) : args,
+              t.length ? args.concat(slice.call(t)) : args
             );
           };
         }
@@ -1995,13 +1995,13 @@ Ext.Microloader =
             if (_storage && e.code == e.QUOTA_EXCEEDED_ERR) {
             }
           }
-        },
+        }
       };
 
     var Asset = function (cfg) {
       if (typeof cfg.assetConfig === "string") {
         this.assetConfig = {
-          path: cfg.assetConfig,
+          path: cfg.assetConfig
         };
       } else {
         this.assetConfig = cfg.assetConfig;
@@ -2056,7 +2056,7 @@ Ext.Microloader =
         if (this.shouldCache()) {
           this.content = LocalStorage.retrieveAsset(this.key);
         }
-      },
+      }
     };
 
     var Manifest = function (cfg) {
@@ -2113,7 +2113,7 @@ Ext.Microloader =
           manifest: this,
           assetConfig: assetConfig,
           type: type,
-          loadFromCache: this.assetCache,
+          loadFromCache: this.assetCache
         });
         this.assetMap[assetConfig.path] = processedAsset;
         return processedAsset;
@@ -2154,7 +2154,7 @@ Ext.Microloader =
         if (this.shouldCache()) {
           LocalStorage.setAsset(
             this.key,
-            JSON.stringify(content || this.content),
+            JSON.stringify(content || this.content)
           );
         }
       },
@@ -2171,11 +2171,11 @@ Ext.Microloader =
       exportContent: function () {
         return Boot.apply(
           {
-            loadOrderMap: this.loadOrderMap,
+            loadOrderMap: this.loadOrderMap
           },
-          this.content,
+          this.content
         );
-      },
+      }
     };
 
     /**
@@ -2240,7 +2240,7 @@ Ext.Microloader =
               manifest = new Manifest({
                 url: url,
                 content: content,
-                cached: true,
+                cached: true
               });
               if (postProcessor) {
                 postProcessor(manifest);
@@ -2257,7 +2257,7 @@ Ext.Microloader =
                   Microloader.applyCacheBuster(url),
                   function (result) {
                     Microloader.setManifest(result.content);
-                  },
+                  }
                 );
               }
             }
@@ -2265,7 +2265,7 @@ Ext.Microloader =
             // Embedded Manifest into JS file
           } else {
             manifest = new Manifest({
-              content: manifest,
+              content: manifest
             });
             Microloader.load(manifest);
           }
@@ -2278,7 +2278,7 @@ Ext.Microloader =
         setManifest: function (cfg) {
           var manifest = new Manifest({
             url: Manifest.url,
-            content: cfg,
+            content: cfg
           });
           manifest.cache();
           if (postProcessor) {
@@ -2314,13 +2314,13 @@ Ext.Microloader =
                   entry = Boot.registerContent(
                     asset.assetConfig.path,
                     asset.type,
-                    asset.content,
+                    asset.content
                   );
                   if (entry.evaluated) {
                     _warn(
                       "Asset: " +
                         asset.assetConfig.path +
-                        " was evaluated prior to local storage being consulted.",
+                        " was evaluated prior to local storage being consulted."
                     );
                   }
                   //load via AJAX and seed content into Boot
@@ -2331,7 +2331,7 @@ Ext.Microloader =
               Microloader.urls.push(asset.assetConfig.path);
               Boot.assetConfig[asset.assetConfig.path] = Boot.apply(
                 { type: asset.type },
-                asset.assetConfig,
+                asset.assetConfig
               );
             }
           }
@@ -2347,7 +2347,7 @@ Ext.Microloader =
                   return function (result) {
                     Microloader.onCachedAssetLoaded(asset, result);
                   };
-                })(asset),
+                })(asset)
               );
             }
           } else {
@@ -2364,13 +2364,13 @@ Ext.Microloader =
           if (!result.error) {
             checksum = Microloader.checksum(
               result.content,
-              asset.assetConfig.hash,
+              asset.assetConfig.hash
             );
             if (!checksum) {
               _warn(
                 "Cached Asset '" +
                   asset.assetConfig.path +
-                  "' has failed checksum. This asset will be uncached for future loading",
+                  "' has failed checksum. This asset will be uncached for future loading"
               );
 
               // Un cache this asset so it is loaded next time
@@ -2380,7 +2380,7 @@ Ext.Microloader =
             Boot.registerContent(
               asset.assetConfig.path,
               asset.type,
-              result.content,
+              result.content
             );
             asset.updateContent(result.content);
             asset.cache();
@@ -2388,7 +2388,7 @@ Ext.Microloader =
             _warn(
               "There was an error pre-loading the asset '" +
                 asset.assetConfig.path +
-                "'. This asset will be uncached for future loading",
+                "'. This asset will be uncached for future loading"
             );
 
             // Un cache this asset so it is loaded next time
@@ -2407,7 +2407,7 @@ Ext.Microloader =
             loadOrderMap: Microloader.manifest.loadOrderMap,
             sequential: true,
             success: Microloader.onAllAssetsReady,
-            failure: Microloader.onAllAssetsReady,
+            failure: Microloader.onAllAssetsReady
           });
         },
 
@@ -2422,7 +2422,7 @@ Ext.Microloader =
               window.addEventListener(
                 "online",
                 Microloader.checkAllUpdates,
-                false,
+                false
               );
             }
           }
@@ -2475,7 +2475,7 @@ Ext.Microloader =
             window.removeEventListener(
               "online",
               Microloader.checkAllUpdates,
-              false,
+              false
             );
           }
 
@@ -2503,7 +2503,7 @@ Ext.Microloader =
             _cache.addEventListener("error", Microloader.onAppCacheError);
             _cache.addEventListener(
               "noupdate",
-              Microloader.onAppCacheNotUpdated,
+              Microloader.onAppCacheNotUpdated
             );
             _cache.addEventListener("cached", Microloader.onAppCacheNotUpdated);
             _cache.addEventListener("updateready", Microloader.onAppCacheReady);
@@ -2517,7 +2517,7 @@ Ext.Microloader =
           // Fetch the Latest Manifest from the server
           Boot.fetch(
             Microloader.applyCacheBuster(Microloader.manifest.url),
-            Microloader.onUpdatedManifestLoaded,
+            Microloader.onUpdatedManifestLoaded
           );
         },
 
@@ -2572,7 +2572,7 @@ Ext.Microloader =
               manifest = new Manifest({
                 url: Microloader.manifest.url,
                 content: result.content,
-                assetCache: false,
+                assetCache: false
               });
 
             Microloader.remainingUpdatingAssets = 0;
@@ -2601,7 +2601,7 @@ Ext.Microloader =
               for (prop in newAssets) {
                 newAsset = newAssets[prop];
                 currentAsset = Microloader.manifest.getAsset(
-                  newAsset.assetConfig.path,
+                  newAsset.assetConfig.path
                 );
                 include = Microloader.filterAsset(newAsset);
 
@@ -2612,7 +2612,7 @@ Ext.Microloader =
                 ) {
                   updatingAssets.push({
                     _new: newAsset,
-                    _current: currentAsset,
+                    _current: currentAsset
                   });
                 }
               }
@@ -2651,7 +2651,7 @@ Ext.Microloader =
                         return function (result) {
                           Microloader.onFullAssetUpdateLoaded(asset, result);
                         };
-                      })(newAsset),
+                      })(newAsset)
                     );
 
                     // Delta updates will be given a delta patch
@@ -2672,10 +2672,10 @@ Ext.Microloader =
                           Microloader.onDeltaAssetUpdateLoaded(
                             asset,
                             oldAsset,
-                            result,
+                            result
                           );
                         };
-                      })(newAsset, currentAsset),
+                      })(newAsset, currentAsset)
                     );
                   }
                 }
@@ -2699,7 +2699,7 @@ Ext.Microloader =
           if (!result.error) {
             checksum = Microloader.checksum(
               result.content,
-              asset.assetConfig.hash,
+              asset.assetConfig.hash
             );
             if (!checksum) {
               // uncache this asset as there is a new version somewhere that has not been loaded.
@@ -2741,7 +2741,7 @@ Ext.Microloader =
                   asset.assetConfig.path +
                   " with hash " +
                   oldAsset.assetConfig.hash +
-                  " . This asset will be uncached for future loading",
+                  " . This asset will be uncached for future loading"
               );
               // uncache this asset as there is a new version somewhere that has not been loaded.
               asset.uncache();
@@ -2752,7 +2752,7 @@ Ext.Microloader =
                 asset.assetConfig.path +
                 " with hash " +
                 oldAsset.assetConfig.hash +
-                " . This asset will be uncached for future loading",
+                " . This asset will be uncached for future loading"
             );
 
             // uncache this asset as there is a new version somewhere that has not been loaded.
@@ -2801,7 +2801,7 @@ Ext.Microloader =
                 app: Microloader.appCacheState === "updated",
                 manifest:
                   Microloader.updatedManifest &&
-                  Microloader.updatedManifest.exportContent(),
+                  Microloader.updatedManifest.exportContent()
               };
 
               Microloader.fireAppUpdate();
@@ -2858,7 +2858,7 @@ Ext.Microloader =
             rst.error = true;
           }
           return rst;
-        },
+        }
       };
 
     return Microloader;

@@ -42,14 +42,14 @@ describe("Ext.data.proxy.JsonP", function () {
           fields: [
             { name: "name", type: "string" },
             { name: "age", type: "int" },
-            { name: "planet", type: "string" },
-          ],
+            { name: "planet", type: "string" }
+          ]
         }),
           (nicolas = new spec.Human({
             id: 1,
             name: "Nicolas",
             age: 27,
-            planet: "Earth",
+            planet: "Earth"
           })),
           (request = new Ext.data.Request({
             url: "somewhere",
@@ -59,11 +59,11 @@ describe("Ext.data.proxy.JsonP", function () {
               filters: [
                 new Ext.util.Filter({
                   property: "filter",
-                  value: "value",
-                }),
-              ],
+                  value: "value"
+                })
+              ]
             },
-            operation: new Ext.data.operation.Read({}),
+            operation: new Ext.data.operation.Read({})
           }));
       });
 

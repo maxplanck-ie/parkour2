@@ -19,7 +19,7 @@ Ext.onReady(function () {
       "Sept",
       "Oct",
       "Nov",
-      "Déc",
+      "Déc"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -38,7 +38,7 @@ Ext.onReady(function () {
       "Septembre",
       "Octobre",
       "Novembre",
-      "Décembre",
+      "Décembre"
     ];
 
     Ext.Date.monthNumbers = {
@@ -61,7 +61,7 @@ Ext.onReady(function () {
       Novembre: 10,
       Nov: 10,
       Décembre: 11,
-      Déc: 11,
+      Déc: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -75,7 +75,7 @@ Ext.onReady(function () {
       "Mercredi",
       "Jeudi",
       "Vendredi",
-      "Samedi",
+      "Samedi"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -95,30 +95,30 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u20ac",
       // French Euro
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
   }
 });
 
 Ext.define("Ext.locale.fr.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.fr.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} ligne{1} sélectionnée{1}",
+  dragText: "{0} ligne{1} sélectionnée{1}"
 });
 
 Ext.define("Ext.locale.fr.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Fermer cet onglet",
+  closeText: "Fermer cet onglet"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.fr.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "En cours de chargement...",
+  loadingText: "En cours de chargement..."
 });
 
 Ext.define("Ext.locale.fr.picker.Date", {
@@ -134,13 +134,13 @@ Ext.define("Ext.locale.fr.picker.Date", {
     "Choisissez un mois (CTRL+Flèche haut ou bas pour changer d'année.)",
   todayTip: "{0} (Barre d'espace)",
   format: "d/m/y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.fr.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Annuler",
+  cancelText: "Annuler"
 });
 
 Ext.define("Ext.locale.fr.toolbar.Paging", {
@@ -153,17 +153,17 @@ Ext.define("Ext.locale.fr.toolbar.Paging", {
   lastText: "Dernière page",
   refreshText: "Actualiser la page",
   displayMsg: "Page courante {0} - {1} sur {2}",
-  emptyMsg: "Aucune donnée à afficher",
+  emptyMsg: "Aucune donnée à afficher"
 });
 
 Ext.define("Ext.locale.fr.form.Basic", {
   override: "Ext.form.Basic",
-  waitTitle: "Veuillez patienter...",
+  waitTitle: "Veuillez patienter..."
 });
 
 Ext.define("Ext.locale.fr.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "La valeur de ce champ est invalide",
+  invalidText: "La valeur de ce champ est invalide"
 });
 
 Ext.define("Ext.locale.fr.form.field.Text", {
@@ -172,7 +172,7 @@ Ext.define("Ext.locale.fr.form.field.Text", {
   maxLengthText: "La longueur maximum de ce champ est de {0} caractère(s)",
   blankText: "Ce champ est obligatoire",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.fr.form.field.Number", {
@@ -181,12 +181,12 @@ Ext.define("Ext.locale.fr.form.field.Number", {
   minText: "La valeur minimum de ce champ doit être de {0}",
   maxText: "La valeur maximum de ce champ doit être de {0}",
   nanText: "{0} n'est pas un nombre valide",
-  negativeText: "La valeur de ce champ ne peut être négative",
+  negativeText: "La valeur de ce champ ne peut être négative"
 });
 
 Ext.define("Ext.locale.fr.form.field.File", {
   override: "Ext.form.field.File",
-  buttonText: "Parcourir...",
+  buttonText: "Parcourir..."
 });
 
 Ext.define("Ext.locale.fr.form.field.Date", {
@@ -198,20 +198,20 @@ Ext.define("Ext.locale.fr.form.field.Date", {
   invalidText:
     "{0} n'est pas une date valide - elle doit être au format suivant: {1}",
   format: "d/m/y",
-  altFormats: "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d",
+  altFormats: "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
 });
 
 Ext.define(
   "Ext.locale.fr.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "En cours de chargement...",
+      loadingText: "En cours de chargement..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.fr.form.field.VTypes", {
@@ -224,14 +224,14 @@ Ext.define("Ext.locale.fr.form.field.VTypes", {
   alphaText:
     "Ce champ ne peut contenir que des lettres et le caractère souligné (_)",
   alphanumText:
-    "Ce champ ne peut contenir que des caractères alphanumériques ainsi que le caractère souligné (_)",
+    "Ce champ ne peut contenir que des caractères alphanumériques ainsi que le caractère souligné (_)"
 });
 
 Ext.define(
   "Ext.locale.fr.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Veuillez entrer l'URL pour ce lien:",
+    createLinkText: "Veuillez entrer l'URL pour ce lien:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -239,90 +239,90 @@ Ext.define(
         bold: {
           title: "Gras (Ctrl+B)",
           text: "Met le texte sélectionné en gras.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Italique (Ctrl+I)",
           text: "Met le texte sélectionné en italique.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Souligné (Ctrl+U)",
           text: "Souligne le texte sélectionné.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Agrandir la police",
           text: "Augmente la taille de la police.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Réduire la police",
           text: "Réduit la taille de la police.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Couleur de surbrillance",
           text: "Modifie la couleur de fond du texte sélectionné.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Couleur de police",
           text: "Modifie la couleur du texte sélectionné.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Aligner à gauche",
           text: "Aligne le texte à gauche.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Centrer",
           text: "Centre le texte.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Aligner à droite",
           text: "Aligner le texte à droite.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Liste à puce",
           text: "Démarre une liste à puce.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Liste numérotée",
           text: "Démarre une liste numérotée.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Lien hypertexte",
           text: "Transforme en lien hypertexte.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Code source",
           text: "Basculer en mode édition du code source.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.fr.grid.header.Container", {
   override: "Ext.grid.header.Container",
   sortAscText: "Tri croissant",
   sortDescText: "Tri décroissant",
-  columnsText: "Colonnes",
+  columnsText: "Colonnes"
 });
 
 Ext.define("Ext.locale.fr.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(Aucun)",
   groupByText: "Grouper par ce champ",
-  showGroupsText: "Afficher par groupes",
+  showGroupsText: "Afficher par groupes"
 });
 
 Ext.define("Ext.locale.fr.grid.PropertyColumnModel", {
@@ -331,7 +331,7 @@ Ext.define("Ext.locale.fr.grid.PropertyColumnModel", {
   valueText: "Valeur",
   dateFormat: "d/m/Y",
   trueText: "vrai",
-  falseText: "faux",
+  falseText: "faux"
 });
 
 Ext.define("Ext.locale.fr.form.field.Time", {
@@ -341,17 +341,17 @@ Ext.define("Ext.locale.fr.form.field.Time", {
   invalidText: "{0} n'est pas une heure valide",
   format: "H:i",
   altFormats:
-    "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|h a|g a|g A|gi|hi|Hi|gia|hia|g|H",
+    "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|h a|g a|g A|gi|hi|Hi|gia|hia|g|H"
 });
 
 Ext.define("Ext.locale.fr.form.CheckboxGroup", {
   override: "Ext.form.CheckboxGroup",
-  blankText: "Vous devez sélectionner au moins un élément dans ce groupe",
+  blankText: "Vous devez sélectionner au moins un élément dans ce groupe"
 });
 
 Ext.define("Ext.locale.fr.form.RadioGroup", {
   override: "Ext.form.RadioGroup",
-  blankText: "Vous devez sélectionner au moins un élément dans ce groupe",
+  blankText: "Vous devez sélectionner au moins un élément dans ce groupe"
 });
 
 Ext.define("Ext.locale.fr.window.MessageBox", {
@@ -360,11 +360,11 @@ Ext.define("Ext.locale.fr.window.MessageBox", {
     ok: "OK",
     cancel: "Annuler",
     yes: "Oui",
-    no: "Non",
-  },
+    no: "Non"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.fr.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

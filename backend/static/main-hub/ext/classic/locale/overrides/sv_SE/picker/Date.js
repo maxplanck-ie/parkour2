@@ -10,5 +10,5 @@ Ext.define("Ext.locale.sv_SE.picker.Date", {
   monthYearText: "Välj en månad (Ctrl + uppåtpil/neråtpil för att ändra årtal)",
   todayTip: "{0} (mellanslag)",
   format: "Y-m-d",
-  startDay: 1,
+  startDay: 1
 });

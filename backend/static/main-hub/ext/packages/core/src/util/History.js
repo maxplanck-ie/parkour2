@@ -13,7 +13,7 @@ Ext.define("Ext.util.History", {
   singleton: true,
   alternateClassName: "Ext.History",
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   /**
@@ -104,7 +104,7 @@ Ext.define("Ext.util.History", {
         fireIdleEvent: false,
         run: me.onHashChange,
         interval: 50,
-        scope: me,
+        scope: me
       });
     }
     me.ready = true;
@@ -201,5 +201,5 @@ Ext.define("Ext.util.History", {
    */
   getToken: function () {
     return this.ready ? this.currentToken : this.getHash();
-  },
+  }
 });

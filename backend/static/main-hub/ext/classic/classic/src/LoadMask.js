@@ -108,7 +108,7 @@ Ext.define("Ext.LoadMask", {
     "mask-msg-text",
     '{childElCls}" role="presentation">{msg}</div>',
     "</div>",
-    "</div>",
+    "</div>"
   ],
 
   maskOnDisable: false,
@@ -130,7 +130,7 @@ Ext.define("Ext.LoadMask", {
       //<debug>
       if (Ext.isDefined(Ext.global.console)) {
         Ext.global.console.warn(
-          "Ext.LoadMask: LoadMask now uses a standard 1 arg constructor: use the target config",
+          "Ext.LoadMask: LoadMask now uses a standard 1 arg constructor: use the target config"
         );
       }
       //</debug>
@@ -143,7 +143,7 @@ Ext.define("Ext.LoadMask", {
     //<debug>
     if (config.maskCls) {
       Ext.log.warn(
-        "Ext.LoadMask property maskCls is deprecated, use msgWrapCls instead",
+        "Ext.LoadMask property maskCls is deprecated, use msgWrapCls instead"
       );
       config.msgWrapCls = config.msgWrapCls || config.maskCls;
     }
@@ -169,7 +169,7 @@ Ext.define("Ext.LoadMask", {
       //<debug>
       if (Ext.isDefined(Ext.global.console)) {
         Ext.global.console.warn(
-          "Ext.LoadMask: LoadMask for elements has been deprecated, use Ext.dom.Element.mask & Ext.dom.Element.unmask",
+          "Ext.LoadMask: LoadMask for elements has been deprecated, use Ext.dom.Element.mask & Ext.dom.Element.unmask"
         );
       }
       //</debug>
@@ -202,7 +202,7 @@ Ext.define("Ext.LoadMask", {
     var me = this,
       listeners = {
         scope: this,
-        resize: me.sizeMask,
+        resize: me.sizeMask
       };
 
     if (me.external) {
@@ -226,7 +226,7 @@ Ext.define("Ext.LoadMask", {
         hide: me.onContainerHide,
         expand: me.onContainerExpand,
         collapse: me.onContainerCollapse,
-        scope: me,
+        scope: me
       });
     }
   },
@@ -403,7 +403,7 @@ Ext.define("Ext.LoadMask", {
         me.proxyListeners = store.getProxy().on({
           exception: me.onLoad,
           scope: me,
-          destroyable: true,
+          destroyable: true
         });
       }
 
@@ -424,8 +424,8 @@ Ext.define("Ext.LoadMask", {
         // buffer so that scrolling and store filling has settled, and the results have been rendered.
         cachefilled: {
           fn: onLoad,
-          buffer: 100,
-        },
+          buffer: 100
+        }
       };
 
     // Only need to mask on load if the proxy is asynchronous - ie: Ajax/JsonP
@@ -614,5 +614,5 @@ Ext.define("Ext.LoadMask", {
     }
 
     me.callParent();
-  },
+  }
 });

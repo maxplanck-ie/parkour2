@@ -17,7 +17,7 @@ describe("Ext.form.FieldSet", function () {
       describe("method", function () {
         beforeEach(function () {
           create({
-            title: "testing",
+            title: "testing"
           });
         });
 
@@ -34,11 +34,11 @@ describe("Ext.form.FieldSet", function () {
 
     beforeEach(function () {
       field = Ext.create("Ext.field.Text", {
-        name: "test",
+        name: "test"
       });
 
       create({
-        items: [field],
+        items: [field]
       });
     });
 

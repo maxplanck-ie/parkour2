@@ -28,13 +28,13 @@ describe("Ext.String", function () {
 
       it("should be able to break on '!'", function () {
         expect(S.ellipsis(longStringWithExclamationMark, 9, true)).toEqual(
-          "Yeah...",
+          "Yeah..."
         );
       });
 
       it("should be able to break on '?'", function () {
         expect(S.ellipsis(longStringWithQuestionMark, 8, true)).toEqual(
-          "Who...",
+          "Who..."
         );
       });
     });
@@ -163,7 +163,7 @@ describe("Ext.String", function () {
           "&ccedil;": "\u00e7",
           "&ntilde;": "\u00f1",
           "&egrave;": "\u00e9",
-          "&para;": "\u00b6",
+          "&para;": "\u00b6"
         });
       });
 
@@ -216,7 +216,7 @@ describe("Ext.String", function () {
           "&ccedil;": "\u00e7",
           "&ntilde;": "\u00f1",
           "&egrave;": "\u00e9",
-          "&para;": "\u00b6",
+          "&para;": "\u00b6"
         });
       });
 
@@ -267,13 +267,13 @@ describe("Ext.String", function () {
 
     it("should ignore nonexistent format functions", function () {
       expect(S.format("{0:foo} {0} person {1}", 1, "came")).toEqual(
-        "{0:foo} 1 person came",
+        "{0:foo} 1 person came"
       );
     });
 
     it("should ignore alphabetic format tokens which end with numerals", function () {
       expect(S.format("{foo:0} {0} person {1}", 1, "came")).toEqual(
-        "{foo:0} 1 person came",
+        "{foo:0} 1 person came"
       );
     });
   });
@@ -356,13 +356,13 @@ describe("Ext.String", function () {
 
     it("should append a ? if one doesn't exist", function () {
       expect(S.urlAppend("sencha.com", "foo=bar")).toEqual(
-        "sencha.com?foo=bar",
+        "sencha.com?foo=bar"
       );
     });
 
     it("should append any new values with & if a ? exists", function () {
       expect(S.urlAppend("sencha.com?x=y", "foo=bar")).toEqual(
-        "sencha.com?x=y&foo=bar",
+        "sencha.com?x=y&foo=bar"
       );
     });
   });
@@ -412,7 +412,7 @@ describe("Ext.String", function () {
 
     it("should uncapitalize even when spaces are included", function () {
       expect(S.uncapitalize("This is a sentence")).toEqual(
-        "this is a sentence",
+        "this is a sentence"
       );
     });
   });
@@ -428,10 +428,10 @@ describe("Ext.String", function () {
     it("should repeat the pattern as many times as required using the specified separator", function () {
       expect(S.repeat("an ordinary string", 1, "/")).toBe("an ordinary string");
       expect(S.repeat("an ordinary string", 2, "&")).toBe(
-        "an ordinary string&an ordinary string",
+        "an ordinary string&an ordinary string"
       );
       expect(S.repeat("an ordinary string", 3, "%")).toBe(
-        "an ordinary string%an ordinary string%an ordinary string",
+        "an ordinary string%an ordinary string%an ordinary string"
       );
     });
     it("should concatenate the repetitions if no separator is specified", function () {

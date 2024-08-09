@@ -15,7 +15,7 @@ Ext.define(
     isCancelEvent: {
       touchcancel: 1,
       pointercancel: 1,
-      MSPointerCancel: 1,
+      MSPointerCancel: 1
     },
 
     handledEvents: [],
@@ -47,7 +47,7 @@ Ext.define(
         MSPointerCancel: onTouchEnd,
         mousedown: onTouchStart,
         mousemove: onTouchMove,
-        mouseup: onTouchEnd,
+        mouseup: onTouchEnd
       };
 
       me.activeTouchesMap = {};
@@ -68,7 +68,7 @@ Ext.define(
           "pointerdown",
           "pointermove",
           "pointerup",
-          "pointercancel",
+          "pointercancel"
         );
         me.mousePointerType = "mouse";
       } else if (supports.MSPointerEvents) {
@@ -77,7 +77,7 @@ Ext.define(
           "MSPointerDown",
           "MSPointerMove",
           "MSPointerUp",
-          "MSPointerCancel",
+          "MSPointerCancel"
         );
         me.mousePointerType = 4;
       } else if (supportsTouchEvents) {
@@ -85,7 +85,7 @@ Ext.define(
           "touchstart",
           "touchmove",
           "touchend",
-          "touchcancel",
+          "touchcancel"
         );
       }
 
@@ -370,7 +370,7 @@ Ext.define(
         me.publish(
           cancelEvents,
           me.getPropagatingTargets(cancelEvents[0].target),
-          true,
+          true
         );
       }
 
@@ -384,7 +384,7 @@ Ext.define(
         me.publish(
           events,
           gestureTargets || me.getPropagatingTargets(events[0].target),
-          claimed,
+          claimed
         );
       }
     },
@@ -440,7 +440,7 @@ Ext.define(
             // want any gestures listeners on elements that were above the
             // target to complete.  This means the propagating targets must reflect
             // the target element's initial hierarchy when the gesture began
-            targets: me.getPropagatingTargets(target),
+            targets: me.getPropagatingTargets(target)
           };
           activeTouches.push(touch);
         }
@@ -585,7 +585,7 @@ Ext.define(
       try {
         me.invokeRecognizers(
           me.isCancelEvent[e.type] ? "onTouchCancel" : "onTouchEnd",
-          e,
+          e
         );
       } finally {
         if (!touchCount) {
@@ -714,10 +714,10 @@ Ext.define(
             delete map[id];
           }
         }
-      },
-    },
+      }
+    }
   },
   function (Gesture) {
     Gesture.instance = Ext.$gesturePublisher = new Gesture();
-  },
+  }
 );

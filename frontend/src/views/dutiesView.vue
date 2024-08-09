@@ -271,7 +271,7 @@ import {
   showNotification,
   handleError,
   getProp,
-  urlStringStartsWith,
+  urlStringStartsWith
 } from "../utils/utilities";
 import { toRaw } from "vue";
 import axios from "axios";
@@ -282,8 +282,8 @@ const axiosRef = axios.create({
   withCredentials: true,
   headers: {
     "content-type": "application/json",
-    "X-CSRFToken": Cookies.get("csrftoken"),
-  },
+    "X-CSRFToken": Cookies.get("csrftoken")
+  }
 });
 
 const urlStringStart = urlStringStartsWith();
@@ -291,7 +291,7 @@ const urlStringStart = urlStringStartsWith();
 export default {
   name: "Duties",
   components: {
-    AgGridVue,
+    AgGridVue
   },
   data() {
     return {
@@ -303,7 +303,7 @@ export default {
       columnsList: [],
       gridOptions: {},
       gridData: [],
-      selectedFilter: "ongoing",
+      selectedFilter: "ongoing"
     };
   },
   setup() {},
@@ -315,7 +315,7 @@ export default {
   watch: {
     selectedFilter(value) {
       this.getFilteredDuties(true, value);
-    },
+    }
   },
   computed: {},
   methods: {
@@ -332,7 +332,7 @@ export default {
           event.target.value == "";
         this.userListFiltered = toRaw(this.userList).filter(
           (element) =>
-            element.facility === document.getElementById("facility").value,
+            element.facility === document.getElementById("facility").value
         );
         newDuty[event.target.id] = event.target.value;
         this.newDuty = newDuty;
@@ -359,7 +359,7 @@ export default {
       ) {
         showNotification(
           "Please check all the necessary fields: \n 1. Facility \n 2. Responsible Person \n 3. Backup Person \n 4. Start Date \n 5. Platform",
-          "error",
+          "error"
         );
         this.gridOptions.api.hideOverlay();
       } else {
@@ -392,7 +392,7 @@ export default {
         const response = await axiosRef.get(
           urlStringStart +
             "/api/duties/" +
-            (additionalUrl !== "" ? "?" + additionalUrl : ""),
+            (additionalUrl !== "" ? "?" + additionalUrl : "")
         );
         let fetchedRows = [];
         let userList = this.userList;
@@ -403,28 +403,28 @@ export default {
               userList.find(
                 (matcherElement) =>
                   getProp(matcherElement, "id", 0) ==
-                  getProp(element, "main_name", 0),
+                  getProp(element, "main_name", 0)
               ) || {},
               "facility",
-              "-",
+              "-"
             ),
             main_name: getProp(
               userList.find(
                 (matcherElement_1) =>
                   getProp(matcherElement_1, "id", 0) ==
-                  getProp(element, "main_name", 0),
+                  getProp(element, "main_name", 0)
               ) || {},
               "first_name",
-              "-",
+              "-"
             ),
             backup_name: getProp(
               userList.find(
                 (matcherElement_2) =>
                   getProp(matcherElement_2, "id", 0) ==
-                  getProp(element, "backup_name", 0),
+                  getProp(element, "backup_name", 0)
               ) || {},
               "first_name",
-              "-",
+              "-"
             ),
             start_date:
               getProp(element, "start_date", "") &&
@@ -437,7 +437,7 @@ export default {
                 ? "Short + Long"
                 : String(getProp(element, "platform", "-"))[0].toUpperCase() +
                   String(getProp(element, "platform", "-")).slice(1),
-            comment: getProp(element, "comment", ""),
+            comment: getProp(element, "comment", "")
           });
         });
         if (refresh == true) {
@@ -502,19 +502,19 @@ export default {
           case "main_name":
             newValue = getProp(
               toRaw(this.userList).find(
-                (user) => user["first_name"] === newValue,
+                (user) => user["first_name"] === newValue
               ),
               "id",
-              0,
+              0
             );
             break;
           case "backup_name":
             newValue = getProp(
               toRaw(this.userList).find(
-                (user) => user["first_name"] === newValue,
+                (user) => user["first_name"] === newValue
               ),
               "id",
-              0,
+              0
             );
             break;
           case "start_date":
@@ -535,7 +535,7 @@ export default {
         }
         await axiosRef
           .patch(urlStringStart + "/api/duties/" + String(dutyId) + "/", {
-            [columnName]: newValue,
+            [columnName]: newValue
           })
           .then(() => {
             this.getFilteredDuties(false, this.selectedFilter);
@@ -567,18 +567,14 @@ export default {
                 .toLowerCase()
                 .replace(/[^a-zA-Z0-9 ]/g, "")
                 .includes(
-                  event.target.value
-                    .toLowerCase()
-                    .replace(/[^a-zA-Z0-9 ]/g, ""),
+                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
                 )) ||
             (element.end_date &&
               element.end_date
                 .toLowerCase()
                 .replace(/[^a-zA-Z0-9 ]/g, "")
                 .includes(
-                  event.target.value
-                    .toLowerCase()
-                    .replace(/[^a-zA-Z0-9 ]/g, ""),
+                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
                 )) ||
             (element.facility &&
               element.facility
@@ -591,7 +587,7 @@ export default {
             (element.comment &&
               element.comment
                 .toLowerCase()
-                .includes(event.target.value.toLowerCase())),
+                .includes(event.target.value.toLowerCase()))
         );
       }
     },
@@ -630,10 +626,10 @@ export default {
               values: userList
                 .filter((element) => element.facility === params.data.facility)
                 .map((element) => element.first_name),
-              valueListGap: 0,
+              valueListGap: 0
             };
           },
-          rowDrag: true,
+          rowDrag: true
         },
         {
           headerName: "Backup Person",
@@ -650,9 +646,9 @@ export default {
               values: userList
                 .filter((element) => element.facility === params.data.facility)
                 .map((element) => element.first_name),
-              valueListGap: 0,
+              valueListGap: 0
             };
-          },
+          }
         },
         {
           headerName: "Start Date",
@@ -660,7 +656,7 @@ export default {
           cellEditor: "agDateStringCellEditor",
           cellEditorParams: {
             min: "2015-01-01",
-            max: "2099-12-31",
+            max: "2099-12-31"
           },
           cellRenderer: (data) => {
             return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
@@ -671,7 +667,7 @@ export default {
           sortable: true,
           resizable: true,
           editable: true,
-          sort: "asc",
+          sort: "asc"
         },
         {
           headerName: "End Date",
@@ -679,7 +675,7 @@ export default {
           cellEditor: "agDateStringCellEditor",
           cellEditorParams: {
             min: "2015-01-01",
-            max: "2099-12-31",
+            max: "2099-12-31"
           },
           cellRenderer: (data) => {
             return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
@@ -689,7 +685,7 @@ export default {
           filter: true,
           sortable: true,
           resizable: true,
-          editable: true,
+          editable: true
         },
         {
           headerName: "Facility",
@@ -698,7 +694,7 @@ export default {
           flex: 2,
           filter: true,
           sortable: true,
-          resizable: true,
+          resizable: true
         },
         {
           headerName: "Platform",
@@ -712,12 +708,12 @@ export default {
           cellEditor: "agSelectCellEditor",
           cellEditorParams: {
             values: ["Short", "Long", "Short + Long"],
-            valueListGap: 0,
+            valueListGap: 0
           },
           cellRenderer: (data) => {
             if (data.value === "shortlong") return "Short + Long";
             else return data.value[0].toUpperCase() + data.value.slice(1);
-          },
+          }
         },
         {
           headerName: "Comments",
@@ -731,9 +727,9 @@ export default {
           cellEditorParams: {
             maxLength: 100,
             rows: 10,
-            cols: 50,
-          },
-        },
+            cols: 50
+          }
+        }
       ];
     },
     updateGridDataObject() {
@@ -742,8 +738,8 @@ export default {
         gridData.push(rowNode.data);
       });
       this.gridData = gridData;
-    },
-  },
+    }
+  }
 };
 </script>
 

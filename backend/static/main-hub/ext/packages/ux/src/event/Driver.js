@@ -16,7 +16,7 @@ Ext.define(
       LEFT: 37,
       UP: 38,
       RIGHT: 39,
-      DOWN: 40,
+      DOWN: 40
     },
 
     specialKeysByCode: {},
@@ -97,7 +97,7 @@ Ext.define(
         me.onStop();
         me.fireEvent("stop", me);
       }
-    },
+    }
   },
   function () {
     var proto = this.prototype;
@@ -105,5 +105,5 @@ Ext.define(
     Ext.Object.each(proto.specialKeysByName, function (name, value) {
       proto.specialKeysByCode[value] = name;
     });
-  },
+  }
 );

@@ -136,5 +136,5 @@ Ext.define("Ext.dd.DragZone", {
     }
 
     this.callParent();
-  },
+  }
 });

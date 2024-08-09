@@ -29,7 +29,7 @@ Ext.define("Ext.chart.axis.segmenter.Names", {
   preferredStep: function (min, estStepSize, minIdx, data) {
     return {
       unit: 1,
-      step: 1,
+      step: 1
     };
-  },
+  }
 });

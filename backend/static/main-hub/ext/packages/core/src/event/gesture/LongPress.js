@@ -10,7 +10,7 @@ Ext.define(
 
     config: {
       moveDistance: 8,
-      minDuration: 1000,
+      minDuration: 1000
     },
 
     handledEvents: ["longpress", "taphold"],
@@ -54,7 +54,7 @@ Ext.define(
         scale = Ext.Element.getViewportScale(),
         // account for scale so that move distance is actual screen pixels, not page pixels
         distance = Math.round(
-          Math.abs(point.getDistanceTo(me.startPoint) * scale),
+          Math.abs(point.getDistanceTo(me.startPoint) * scale)
         );
 
       if (distance >= me.getMoveDistance()) {
@@ -77,7 +77,7 @@ Ext.define(
         info = {
           touch: e.changedTouches[0],
           duration: me.getMinDuration(),
-          startDrag: me.startDrag,
+          startDrag: me.startDrag
         };
 
       this.fire("taphold", e, info);
@@ -106,12 +106,12 @@ Ext.define(
       dragRecognizer.doDragStart(touchStartEvent, true);
       Ext.event.publisher.Gesture.instance.claimRecognizer(
         dragRecognizer,
-        touchStartEvent,
+        touchStartEvent
       );
-    },
+    }
   },
   function (LongPress) {
     var gestures = Ext.manifest.gestures;
     LongPress.instance = new LongPress(gestures && gestures.longPress);
-  },
+  }
 );

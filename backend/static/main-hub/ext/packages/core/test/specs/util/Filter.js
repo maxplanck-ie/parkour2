@@ -40,7 +40,7 @@ describe("Ext.util.Filter", function () {
       filter = new Ext.util.Filter({
         disableOnEmpty: true,
         property: "foo",
-        value: v,
+        value: v
       });
     }
 
@@ -58,7 +58,7 @@ describe("Ext.util.Filter", function () {
   describe("filterFn", function () {
     it("should null generated filterFn when value is updated", function () {
       var filter = new Ext.util.Filter({
-        property: "bar",
+        property: "bar"
       });
 
       filter.setValue("foo");
@@ -69,7 +69,7 @@ describe("Ext.util.Filter", function () {
     it("should preserve non-generated filterFn when value is updated", function () {
       var myFilterFn = function (record) {},
         filter = new Ext.util.Filter({
-          filterFn: myFilterFn,
+          filterFn: myFilterFn
         });
 
       filter.setValue("foo");
@@ -79,7 +79,7 @@ describe("Ext.util.Filter", function () {
 
     it("should null generated filterFn when operator is updated", function () {
       var filter = new Ext.util.Filter({
-        property: "bar",
+        property: "bar"
       });
 
       filter.setOperator("<");
@@ -90,7 +90,7 @@ describe("Ext.util.Filter", function () {
     it("should preserve non-generated filterFn when operator is updated", function () {
       var myFilterFn = function (record) {},
         filter = new Ext.util.Filter({
-          filterFn: myFilterFn,
+          filterFn: myFilterFn
         });
 
       filter.setOperator("<");
@@ -122,37 +122,37 @@ describe("Ext.util.Filter", function () {
       doTest(
         {
           property: "name",
-          value: "Ed",
+          value: "Ed"
         },
         "should mark as generated when a filterFn is not defined",
         true,
-        false,
+        false
       );
 
       doTest(
         {
-          filterFn: Ext.emptyFn,
+          filterFn: Ext.emptyFn
         },
         "should not mark as generated when a filterFn is defined",
         undefined,
-        false,
+        false
       );
 
       doTest(
         {
           property: "name",
-          value: "Ed",
+          value: "Ed"
         },
         "should not mark as generated when setFilterFn is called",
         undefined,
-        true,
+        true
       );
     });
 
     it("should honor a simple property matcher", function () {
       filter = new Ext.util.Filter({
         property: "name",
-        value: "Ed",
+        value: "Ed"
       });
 
       var fn = filter.getFilterFn();
@@ -167,7 +167,7 @@ describe("Ext.util.Filter", function () {
       filter = new Ext.util.Filter({
         anyMatch: true,
         property: "name",
-        value: "Ed",
+        value: "Ed"
       });
 
       var fn = filter.getFilterFn();
@@ -182,7 +182,7 @@ describe("Ext.util.Filter", function () {
       filter = new Ext.util.Filter({
         exactMatch: true,
         property: "name",
-        value: "Ed",
+        value: "Ed"
       });
 
       var fn = filter.getFilterFn();
@@ -197,7 +197,7 @@ describe("Ext.util.Filter", function () {
       filter = new Ext.util.Filter({
         caseSensitive: true,
         property: "name",
-        value: "Ed",
+        value: "Ed"
       });
 
       var fn = filter.getFilterFn();
@@ -212,7 +212,7 @@ describe("Ext.util.Filter", function () {
         caseSensitive: true,
         anyMatch: true,
         property: "name",
-        value: "ed",
+        value: "ed"
       });
 
       var fn = filter.getFilterFn();
@@ -225,22 +225,22 @@ describe("Ext.util.Filter", function () {
     it("should honor the root property", function () {
       var users = [
           {
-            data: { name: "Ed" },
+            data: { name: "Ed" }
           },
           {
-            data: { name: "Ted" },
+            data: { name: "Ted" }
           },
           {
-            data: { name: "Edward" },
+            data: { name: "Edward" }
           },
           {
-            data: { name: "Abe" },
-          },
+            data: { name: "Abe" }
+          }
         ],
         filter = new Ext.util.Filter({
           root: "data",
           property: "name",
-          value: "Ed",
+          value: "Ed"
         }),
         fn = filter.getFilterFn();
 
@@ -258,10 +258,10 @@ describe("Ext.util.Filter", function () {
       filter = new Ext.util.Filter(
         Ext.apply(
           {
-            property: "value",
+            property: "value"
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -270,10 +270,10 @@ describe("Ext.util.Filter", function () {
         Ext.apply(
           {
             operator: operator,
-            value: candidate,
+            value: candidate
           },
-          cfg,
-        ),
+          cfg
+        )
       );
       return filter.filter({ value: v });
     }
@@ -1423,7 +1423,7 @@ describe("Ext.util.Filter", function () {
           return v + 1;
         };
         expect(match("notin", 0, [1, 2, 3, 4], { convert: convert })).toBe(
-          false,
+          false
         );
       });
     });

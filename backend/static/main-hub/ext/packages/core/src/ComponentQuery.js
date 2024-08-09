@@ -393,8 +393,8 @@ Ext.define(
     requires: [
       "Ext.ComponentManager",
       "Ext.util.Operators",
-      "Ext.util.LruCache",
-    ],
+      "Ext.util.LruCache"
+    ]
   },
   function () {
     var cq = this,
@@ -404,7 +404,7 @@ Ext.define(
       stripLeadingSpaceRe = /^(\s)+/,
       unescapeRe = /\\(.)/g,
       regexCache = new Ext.util.LruCache({
-        maxSize: 100,
+        maxSize: 100
       }),
       // A function source code pattern with a placeholder which accepts an expression which yields a truth value when applied
       // as a member on each item in the passed array.
@@ -420,7 +420,7 @@ Ext.define(
         "r.push(c);",
         "}",
         "}",
-        "return r;",
+        "return r;"
       ].join(""),
       filterItems = function (items, operation) {
         // Argument list for the operation is [ itemsArray, operationArg1, operationArg2...]
@@ -531,7 +531,7 @@ Ext.define(
                 if (
                   queryOperators[operator](
                     Ext.coerce(propValue[j], compareTo),
-                    compareTo,
+                    compareTo
                   )
                 ) {
                   result.push(candidate);
@@ -548,7 +548,7 @@ Ext.define(
               ? !!candidate[property]
               : queryOperators[operator](
                   Ext.coerce(propValue, compareTo),
-                  compareTo,
+                  compareTo
                 )
           ) {
             result.push(candidate);
@@ -596,7 +596,7 @@ Ext.define(
                 '" ComponentQuery selector style is deprecated,' +
                 ' use "' +
                 selector.replace(/^\./, "") +
-                '" without the leading dot instead',
+                '" without the leading dot instead'
             );
             //</debug>
 
@@ -605,7 +605,7 @@ Ext.define(
             }
 
             return args.slice(1);
-          },
+          }
         },
         {
           // Allow [@attribute] to check truthy ownProperty
@@ -660,12 +660,12 @@ Ext.define(
             }
 
             return [property, operator, compareTo];
-          },
+          }
         },
         {
           // checks for #cmpItemId
           re: /^#((?:\\\.|[\w\-])+)/,
-          method: filterById,
+          method: filterById
         },
         {
           // checks for :<pseudo_class>(<selector>)
@@ -677,13 +677,13 @@ Ext.define(
             }
 
             return args.slice(1);
-          },
+          }
         },
         {
           // checks for {<member_expression>}
           re: /^(?:\{([^\}]+)\})/,
-          method: filterFnPattern,
-        },
+          method: filterFnPattern
+        }
       ];
 
     // Internal class Ext.ComponentQuery.Query
@@ -754,7 +754,7 @@ Ext.define(
           } else {
             workingItems = filterItems(
               workingItems || getItems([root]),
-              operation,
+              operation
             );
           }
 
@@ -845,7 +845,7 @@ Ext.define(
             // part of the tree
             active = filterItems(active, {
               method: filterById,
-              args: [root.id, true],
+              args: [root.id, true]
             });
           }
 
@@ -873,7 +873,7 @@ Ext.define(
 
       isMultiMatch: function () {
         return this.operations.length > 1;
-      },
+      }
     });
 
     Ext.apply(cq, {
@@ -882,7 +882,7 @@ Ext.define(
        * Cache of selectors and matching ComponentQuery.Query objects
        */
       cache: new Ext.util.LruCache({
-        maxSize: 100,
+        maxSize: 100
       }),
 
       /**
@@ -963,7 +963,7 @@ Ext.define(
               (a === "even" && "2n") ||
                 (a === "odd" && "2n+1") ||
                 (!nthRe2.test(a) && "n+" + a) ||
-                a,
+                a
             ),
             f = (m[1] || 1) - 0,
             len = m[2] - 0,
@@ -1019,7 +1019,7 @@ Ext.define(
           }
 
           return results;
-        },
+        }
       },
 
       /**
@@ -1168,7 +1168,7 @@ Ext.define(
               children[i],
               fn,
               scope,
-              extraArgs,
+              extraArgs
             ) === false
           ) {
             return false;
@@ -1234,7 +1234,7 @@ Ext.define(
         //  Now that we have all our operations in an array, we are going
         // to create a new Query using these operations.
         return new cq.Query({
-          operations: operations,
+          operations: operations
         });
       },
 
@@ -1271,7 +1271,7 @@ Ext.define(
             if (matchedChar === "#") {
               operations.push({
                 method: filterById,
-                args: [token],
+                args: [token]
               });
             }
             // If the token is a * or an xtype string, we push a filterByXType
@@ -1279,7 +1279,7 @@ Ext.define(
             else {
               operations.push({
                 method: filterByXType,
-                args: [token, Boolean(tokenMatch[3])],
+                args: [token, Boolean(tokenMatch[3])]
               });
             }
 
@@ -1321,11 +1321,11 @@ Ext.define(
                         "items",
                         Ext.String.format.apply(
                           Ext.String,
-                          [method].concat(selectorMatch.slice(1)),
-                        ),
+                          [method].concat(selectorMatch.slice(1))
+                        )
                       )
                     : matcher.method,
-                  args: args,
+                  args: args
                 });
 
                 selector = selector
@@ -1336,7 +1336,7 @@ Ext.define(
               // Exhausted all matches: It's an error
               if (i === length - 1) {
                 Ext.raise(
-                  'Invalid ComponentQuery selector: "' + arguments[0] + '"',
+                  'Invalid ComponentQuery selector: "' + arguments[0] + '"'
                 );
               }
             }
@@ -1349,7 +1349,7 @@ Ext.define(
           if (modeMatch[1]) {
             // Assignment, and test for truthiness!
             operations.push({
-              mode: modeMatch[2] || modeMatch[1],
+              mode: modeMatch[2] || modeMatch[1]
             });
 
             // When we have consumed the mode character, clean up leading spaces
@@ -1360,7 +1360,7 @@ Ext.define(
         }
 
         return operations;
-      },
+      }
     });
 
     /**
@@ -1394,5 +1394,5 @@ Ext.define(
       var matches = cq.query.apply(cq, arguments);
       return (matches && matches[0]) || null;
     };
-  },
+  }
 );

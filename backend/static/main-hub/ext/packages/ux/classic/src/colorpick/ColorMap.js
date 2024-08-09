@@ -25,24 +25,24 @@ Ext.define("Ext.ux.colorpick.ColorMap", {
       html:
         '<div class="' +
         Ext.baseCSSPrefix +
-        'colorpicker-colormap-draghandle"></div>',
-    },
+        'colorpicker-colormap-draghandle"></div>'
+    }
   ],
 
   listeners: {
     boxready: {
       single: true,
       fn: "onFirstBoxReady",
-      scope: "controller",
+      scope: "controller"
     },
     colorbindingchanged: {
       fn: "onColorBindingChanged",
-      scope: "controller",
+      scope: "controller"
     },
     huebindingchanged: {
       fn: "onHueBindingChanged",
-      scope: "controller",
-    },
+      scope: "controller"
+    }
   },
 
   afterRender: function () {
@@ -77,7 +77,7 @@ Ext.define("Ext.ux.colorpick.ColorMap", {
     el.createChild({
       tag: "img",
       cls: Ext.baseCSSPrefix + "colorpicker-colormap-blender",
-      src: src,
+      src: src
     });
   },
 
@@ -112,5 +112,5 @@ Ext.define("Ext.ux.colorpick.ColorMap", {
     }
 
     me.fireEvent("huebindingchanged", hue);
-  },
+  }
 });

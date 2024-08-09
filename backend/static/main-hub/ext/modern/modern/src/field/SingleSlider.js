@@ -60,7 +60,7 @@ Ext.define("Ext.field.SingleSlider", {
   defaultBindProperty: "value",
 
   publishes: {
-    value: 1,
+    value: 1
   },
 
   initialize: function () {
@@ -103,5 +103,5 @@ Ext.define("Ext.field.SingleSlider", {
 
   onSliderDragEnd: function (slider, thumb, startValue, e) {
     this.fireEvent("dragend", this, slider, startValue, e);
-  },
+  }
 });

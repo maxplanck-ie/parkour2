@@ -50,7 +50,7 @@ Ext.define("Ext.grid.column.Check", {
      *
      * Clicking the checkbox will check/uncheck all records.
      */
-    headerCheckbox: null,
+    headerCheckbox: null
   },
 
   classCls: Ext.baseCSSPrefix + "checkcolumn",
@@ -61,7 +61,7 @@ Ext.define("Ext.grid.column.Check", {
   ignoreExport: true,
 
   cell: {
-    xtype: "checkcell",
+    xtype: "checkcell"
   },
 
   afterTitleTemplate: [
@@ -69,9 +69,9 @@ Ext.define("Ext.grid.column.Check", {
       reference: "checkboxElement",
       classList: [
         Ext.baseCSSPrefix + "checkbox-el",
-        Ext.baseCSSPrefix + "font-icon",
-      ],
-    },
+        Ext.baseCSSPrefix + "font-icon"
+      ]
+    }
   ],
 
   onColumnTap: function (e) {
@@ -195,5 +195,5 @@ Ext.define("Ext.grid.column.Check", {
       // Keep the header checkbox up to date
       me.updateHeaderState();
     }
-  },
+  }
 });

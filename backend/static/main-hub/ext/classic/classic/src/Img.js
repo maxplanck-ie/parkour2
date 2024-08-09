@@ -63,7 +63,7 @@ Ext.define("Ext.Img", {
      * @cfg {Number/String} glyph
      * @inheritdoc Ext.panel.Header#glyph
      */
-    glyph: null,
+    glyph: null
   },
 
   /**
@@ -131,8 +131,8 @@ Ext.define("Ext.Img", {
       config.cn = [
         (img = {
           tag: "img",
-          id: me.id + "-img",
-        }),
+          id: me.id + "-img"
+        })
       ];
     }
 
@@ -156,7 +156,7 @@ Ext.define("Ext.Img", {
 
       //<debug>
       Ext.log.warn(
-        "For WAI-ARIA compliance, IMG elements SHOULD have an alt attribute.",
+        "For WAI-ARIA compliance, IMG elements SHOULD have an alt attribute."
       );
       //</debug>
     }
@@ -230,7 +230,7 @@ Ext.define("Ext.Img", {
       h = height + "px";
       this.setStyle({
         "line-height": h,
-        "font-size": h,
+        "font-size": h
       });
     }
     this.callParent([width, height, oldWidth, oldHeight]);
@@ -278,7 +278,7 @@ Ext.define("Ext.Img", {
 
       me._naturalSize = naturalSize = {
         width: (w = img.naturalWidth),
-        height: img.naturalHeight,
+        height: img.naturalHeight
       };
 
       if (!w) {
@@ -331,5 +331,5 @@ Ext.define("Ext.Img", {
       el.dom.innerHTML = glyph.character;
       el.setStyle(glyph.getStyle());
     }
-  },
+  }
 });

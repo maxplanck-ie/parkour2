@@ -24,24 +24,24 @@ Ext.define(
         } else {
           delete me.border;
         }
-      },
-    },
+      }
+    }
   },
   function () {
     Ext.namespace("Ext.theme.is").Neptune = true;
     Ext.theme.name = "Neptune";
-  },
+  }
 );
 
 Ext.define(
   "Ext.theme.triton.Component",
   {
-    override: "Ext.Component",
+    override: "Ext.Component"
   },
   function () {
     Ext.namespace("Ext.theme.is").Triton = true;
     Ext.theme.name = "Triton";
-  },
+  }
 );
 
 Ext.define("Ext.theme.triton.list.TreeItem", {
@@ -50,23 +50,23 @@ Ext.define("Ext.theme.triton.list.TreeItem", {
   setFloated: function (floated, wasFloated) {
     this.callParent([floated, wasFloated]);
     this.toolElement.syncRepaint();
-  },
+  }
 });
 
 Ext.define("Ext.theme.neptune.resizer.Splitter", {
   override: "Ext.resizer.Splitter",
-  size: 8,
+  size: 8
 });
 
 Ext.define("Ext.theme.triton.resizer.Splitter", {
   override: "Ext.resizer.Splitter",
-  size: 10,
+  size: 10
 });
 
 Ext.define("Ext.theme.neptune.toolbar.Toolbar", {
   override: "Ext.toolbar.Toolbar",
   usePlainButtons: false,
-  border: false,
+  border: false
 });
 
 Ext.define("Ext.theme.neptune.layout.component.Dock", {
@@ -113,7 +113,7 @@ Ext.define("Ext.theme.neptune.layout.component.Dock", {
     // 1101 = 13
     Ext.baseCSSPrefix + "noborder-trb",
     // 1110 = 14
-    Ext.baseCSSPrefix + "noborder-trbl",
+    Ext.baseCSSPrefix + "noborder-trbl"
   ],
   // 1111 = 15
   /**
@@ -124,7 +124,7 @@ Ext.define("Ext.theme.neptune.layout.component.Dock", {
     top: 8,
     right: 4,
     bottom: 2,
-    left: 1,
+    left: 1
   },
   handleItemBorders: function () {
     var me = this,
@@ -354,7 +354,7 @@ Ext.define("Ext.theme.neptune.layout.component.Dock", {
       }
     }
     me.callParent([item]);
-  },
+  }
 });
 
 Ext.define("Ext.theme.neptune.panel.Panel", {
@@ -370,12 +370,12 @@ Ext.define("Ext.theme.neptune.panel.Panel", {
     if (this.bodyBorder !== true) {
       this.callParent();
     }
-  },
+  }
 });
 
 Ext.define("Ext.theme.neptune.container.ButtonGroup", {
   override: "Ext.container.ButtonGroup",
-  usePlainButtons: false,
+  usePlainButtons: false
 });
 
 Ext.define("Ext.theme.triton.form.field.Checkbox", {
@@ -385,7 +385,7 @@ Ext.define("Ext.theme.triton.form.field.Checkbox", {
     this.callParent();
     Ext.on({
       show: "onGlobalShow",
-      scope: this,
+      scope: this
     });
   },
   onFocus: function (e) {
@@ -408,18 +408,18 @@ Ext.define("Ext.theme.triton.form.field.Checkbox", {
     if (cmp.isAncestor(this)) {
       this.getFocusClsEl().syncRepaint();
     }
-  },
+  }
 });
 
 Ext.define("Ext.theme.neptune.toolbar.Paging", {
   override: "Ext.toolbar.Paging",
   defaultButtonUI: "plain-toolbar",
-  inputItemWidth: 40,
+  inputItemWidth: 40
 });
 
 Ext.define("Ext.theme.triton.toolbar.Paging", {
   override: "Ext.toolbar.Paging",
-  inputItemWidth: 50,
+  inputItemWidth: 50
 });
 
 Ext.define("Ext.theme.neptune.picker.Month", {
@@ -433,23 +433,23 @@ Ext.define("Ext.theme.neptune.picker.Month", {
   // determine that the text has wrapped if the height of the item exceeds 36px.
   // this allows theme developers some leeway to increase the month item size in
   // a neptune-derived theme.
-  measureMaxHeight: 36,
+  measureMaxHeight: 36
 });
 
 Ext.define("Ext.theme.triton.picker.Month", {
   override: "Ext.picker.Month",
   footerButtonUI: "default-toolbar",
-  calculateMonthMargin: Ext.emptyFn,
+  calculateMonthMargin: Ext.emptyFn
 });
 
 Ext.define("Ext.theme.triton.picker.Date", {
   override: "Ext.picker.Date",
-  footerButtonUI: "default-toolbar",
+  footerButtonUI: "default-toolbar"
 });
 
 Ext.define("Ext.theme.neptune.form.field.HtmlEditor", {
   override: "Ext.form.field.HtmlEditor",
-  defaultButtonUI: "plain-toolbar",
+  defaultButtonUI: "plain-toolbar"
 });
 
 Ext.define("Ext.theme.neptune.panel.Table", {
@@ -465,12 +465,12 @@ Ext.define("Ext.theme.neptune.panel.Table", {
     ) {
       me.bodyBorder = true;
     }
-  },
+  }
 });
 
 Ext.define("Ext.theme.neptune.grid.RowEditor", {
   override: "Ext.grid.RowEditor",
-  buttonUI: "default-toolbar",
+  buttonUI: "default-toolbar"
 });
 
 Ext.define("Ext.theme.triton.grid.column.Column", {
@@ -482,7 +482,7 @@ Ext.define("Ext.theme.triton.grid.column.Column", {
     if (triggerEl) {
       triggerEl.syncRepaint();
     }
-  },
+  }
 });
 
 Ext.define("Ext.theme.triton.grid.column.Check", {
@@ -491,17 +491,17 @@ Ext.define("Ext.theme.triton.grid.column.Check", {
   setRecordCheck: function (record, checked, cell) {
     this.callParent([record, checked, cell]);
     cell.syncRepaint();
-  },
+  }
 });
 
 Ext.define("Ext.theme.neptune.grid.column.RowNumberer", {
   override: "Ext.grid.column.RowNumberer",
-  width: 25,
+  width: 25
 });
 
 Ext.define("Ext.theme.triton.grid.column.RowNumberer", {
   override: "Ext.grid.column.RowNumberer",
-  width: 32,
+  width: 32
 });
 
 Ext.define("Ext.theme.triton.menu.Item", {
@@ -529,18 +529,18 @@ Ext.define("Ext.theme.triton.menu.Item", {
       if (checkEl) {
         checkEl.syncRepaint();
       }
-    },
-  },
+    }
+  }
 });
 
 Ext.define("Ext.theme.neptune.menu.Separator", {
   override: "Ext.menu.Separator",
-  border: true,
+  border: true
 });
 
 Ext.define("Ext.theme.neptune.menu.Menu", {
   override: "Ext.menu.Menu",
-  showSeparator: false,
+  showSeparator: false
 });
 
 Ext.define("Ext.theme.triton.menu.Menu", {
@@ -561,17 +561,17 @@ Ext.define("Ext.theme.triton.menu.Menu", {
         item.repaintIcons();
       }
     }
-  },
+  }
 });
 
 Ext.define("Ext.theme.triton.grid.plugin.RowExpander", {
   override: "Ext.grid.plugin.RowExpander",
-  headerWidth: 32,
+  headerWidth: 32
 });
 
 Ext.define("Ext.theme.triton.grid.selection.SpreadsheetModel", {
   override: "Ext.grid.selection.SpreadsheetModel",
-  checkboxHeaderWidth: 32,
+  checkboxHeaderWidth: 32
 });
 
 Ext.define("Ext.theme.triton.selection.CheckboxModel", {
@@ -583,5 +583,5 @@ Ext.define("Ext.theme.triton.selection.CheckboxModel", {
     if (Ext.isIE8) {
       header.getView().ownerGrid.el.syncRepaint();
     }
-  },
+  }
 });

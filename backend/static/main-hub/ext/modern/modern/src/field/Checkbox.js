@@ -68,11 +68,11 @@ Ext.define("Ext.field.Checkbox", {
   defaultBindProperty: "checked",
 
   twoWayBindable: {
-    checked: 1,
+    checked: 1
   },
 
   publishes: {
-    checked: 1,
+    checked: 1
   },
 
   /**
@@ -119,8 +119,8 @@ Ext.define("Ext.field.Checkbox", {
      * @inheritdoc
      */
     component: {
-      xtype: "checkboxinput",
-    },
+      xtype: "checkboxinput"
+    }
 
     /**
      * @cfg {Boolean} labelMaskTap
@@ -143,14 +143,14 @@ Ext.define("Ext.field.Checkbox", {
     component.on({
       scope: me,
       order: "before",
-      masktap: "onMaskTap",
+      masktap: "onMaskTap"
     });
 
     component.doMaskTap = Ext.emptyFn;
 
     me.labelElement.on({
       scope: me,
-      tap: "onMaskTap",
+      tap: "onMaskTap"
     });
 
     // Important to publish the value here, since we
@@ -281,7 +281,7 @@ Ext.define("Ext.field.Checkbox", {
     if (!component) {
       // <debug>
       Ext.Logger.warn(
-        "Ext.field.Radio components must always be descendants of an Ext.form.Panel or Ext.form.FieldSet.",
+        "Ext.field.Radio components must always be descendants of an Ext.form.Panel or Ext.form.FieldSet."
       );
       // </debug>
       component = Ext.Viewport;
@@ -337,5 +337,5 @@ Ext.define("Ext.field.Checkbox", {
   reset: function () {
     this.setChecked(this.originalState);
     return this;
-  },
+  }
 });

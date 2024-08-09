@@ -20,7 +20,7 @@ describe("Ext.field.Slider", function () {
         readOnly: true,
         value: 50,
         minValue: 0,
-        maxValue: 100,
+        maxValue: 100
       });
     });
 

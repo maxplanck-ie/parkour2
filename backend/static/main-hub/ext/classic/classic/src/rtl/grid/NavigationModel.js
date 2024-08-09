@@ -10,5 +10,5 @@ Ext.define("Ext.rtl.grid.NavigationModel", {
       me.onKeyRight = proto.onKeyLeft;
     }
     me.callParent([view]);
-  },
+  }
 });

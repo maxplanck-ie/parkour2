@@ -119,7 +119,7 @@ Ext.define("Ext.drag.Target", {
      * A class to add to the {@link #element} when an
      * invalid drag is over this target.
      */
-    validCls: "",
+    validCls: ""
   },
 
   /**
@@ -316,7 +316,7 @@ Ext.define("Ext.drag.Target", {
         dragenter: "handleNativeDragEnter",
         dragleave: "handleNativeDragLeave",
         dragover: "handleNativeDragMove",
-        drop: "handleNativeDrop",
+        drop: "handleNativeDrop"
       };
     },
 
@@ -476,6 +476,6 @@ Ext.define("Ext.drag.Target", {
           me.fireEvent("drop", me, info);
         }
       }
-    },
-  },
+    }
+  }
 });

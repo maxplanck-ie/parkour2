@@ -102,7 +102,7 @@ Ext.define("Ext.data.matrix.Slice", {
           if (!otherSlice) {
             otherSlices[otherId] = otherSlice = new MatrixSlice(
               otherSide,
-              otherId,
+              otherId
             );
           }
           otherSlice.members[id] = assoc;
@@ -165,5 +165,5 @@ Ext.define("Ext.data.matrix.Slice", {
 
     me.notify = me.scope = me.store = me.side = me.members = null;
     me.callParent();
-  },
+  }
 });

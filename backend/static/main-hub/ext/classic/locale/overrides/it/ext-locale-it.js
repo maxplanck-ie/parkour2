@@ -19,7 +19,7 @@ Ext.onReady(function () {
       "Settembre",
       "Ottobre",
       "Novembre",
-      "Dicembre",
+      "Dicembre"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -38,7 +38,7 @@ Ext.onReady(function () {
       Set: 8,
       Ott: 9,
       Nov: 10,
-      Dic: 11,
+      Dic: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -54,7 +54,7 @@ Ext.onReady(function () {
       "Mercoledi",
       "Giovedi",
       "Venerdi",
-      "Sabato",
+      "Sabato"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -67,7 +67,7 @@ Ext.onReady(function () {
       thousandSeparator: ".",
       decimalSeparator: ",",
       currencySign: "\u20ac", // Euro
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
   }
 });

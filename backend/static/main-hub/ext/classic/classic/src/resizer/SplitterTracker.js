@@ -16,7 +16,7 @@ Ext.define("Ext.resizer.SplitterTracker", {
     overlay = this.overlay = Ext.getBody().createChild({
       role: "presentation",
       cls: this.overlayCls,
-      html: "&#160;",
+      html: "&#160;"
     });
 
     overlay.unselectable();
@@ -120,7 +120,7 @@ Ext.define("Ext.resizer.SplitterTracker", {
     }
     if (me.active) {
       me.lastKeyDownXY[incrIdx] = Math.round(
-        me.lastKeyDownXY[incrIdx] + incr * me.easing.getValue(),
+        me.lastKeyDownXY[incrIdx] + incr * me.easing.getValue()
       );
       me.lastXY = me.lastKeyDownXY;
       splitter.setXY(me.getXY("dragTarget"));
@@ -157,7 +157,7 @@ Ext.define("Ext.resizer.SplitterTracker", {
         prevBox: prevBox,
         nextBox: nextBox,
         defaultMin: defaultMin,
-        splitWidth: splitWidth,
+        splitWidth: splitWidth
       };
       // Region constructor accepts (top, right, bottom, left)
       // anchored/calculated from the left
@@ -165,14 +165,14 @@ Ext.define("Ext.resizer.SplitterTracker", {
         prevBox.y,
         me.getVertPrevConstrainRight(constrainOptions),
         prevBox.bottom,
-        me.getVertPrevConstrainLeft(constrainOptions),
+        me.getVertPrevConstrainLeft(constrainOptions)
       );
       // anchored/calculated from the right
       nextConstrainRegion = new Ext.util.Region(
         nextBox.y,
         me.getVertNextConstrainRight(constrainOptions),
         nextBox.bottom,
-        me.getVertNextConstrainLeft(constrainOptions),
+        me.getVertNextConstrainLeft(constrainOptions)
       );
     } else {
       // anchored/calculated from the top
@@ -184,7 +184,7 @@ Ext.define("Ext.resizer.SplitterTracker", {
         (prevCmp.maxHeight
           ? prevBox.y + prevCmp.maxHeight
           : nextBox.bottom - (nextCmp.minHeight || defaultMin)) + splitWidth,
-        prevBox.x,
+        prevBox.x
       );
       // anchored/calculated from the bottom
       nextConstrainRegion = new Ext.util.Region(
@@ -195,7 +195,7 @@ Ext.define("Ext.resizer.SplitterTracker", {
           : prevBox.y + (prevCmp.minHeight || defaultMin)) - splitWidth,
         nextBox.right,
         nextBox.bottom - (nextCmp.minHeight || defaultMin),
-        nextBox.x,
+        nextBox.x
       );
     }
 
@@ -323,5 +323,5 @@ Ext.define("Ext.resizer.SplitterTracker", {
 
   getResizeOffset: function () {
     return this.getOffset("dragTarget");
-  },
+  }
 });

@@ -54,7 +54,7 @@ Ext.define("Ext.tree.ViewDropZone", {
       this.expandNode,
       this.expandDelay,
       this,
-      [node],
+      [node]
     );
   },
 
@@ -359,12 +359,12 @@ Ext.define("Ext.tree.ViewDropZone", {
       targetNode.on({
         expand: transferData,
         delay: 1,
-        single: true,
+        single: true
       });
     }
     // Otherwise, call the data transfer function immediately
     else {
       transferData();
     }
-  },
+  }
 });

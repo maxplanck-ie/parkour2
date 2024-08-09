@@ -14,7 +14,7 @@ Ext.define("Ext.ux.DataView.LabelEditor", {
 
   autoSize: {
     width: "boundEl",
-    height: "field",
+    height: "field"
   },
 
   labelSelector: "x-editable",
@@ -26,7 +26,7 @@ Ext.define("Ext.ux.DataView.LabelEditor", {
       config.field ||
       Ext.create("Ext.form.field.Text", {
         allowOnlyWhitespace: false,
-        selectOnFocus: true,
+        selectOnFocus: true
       });
     this.callParent([config]);
   },
@@ -42,8 +42,8 @@ Ext.define("Ext.ux.DataView.LabelEditor", {
     this.mon(this.view.getEl(), {
       click: {
         fn: this.onClick,
-        scope: this,
-      },
+        scope: this
+      }
     });
   },
 
@@ -73,5 +73,5 @@ Ext.define("Ext.ux.DataView.LabelEditor", {
   // update record
   onSave: function (ed, value) {
     this.activeRecord.set(this.dataIndex, value);
-  },
+  }
 });

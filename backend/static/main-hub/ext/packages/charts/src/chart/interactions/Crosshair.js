@@ -91,7 +91,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
     "Ext.chart.grid.HorizontalGrid",
     "Ext.chart.grid.VerticalGrid",
     "Ext.chart.CartesianChart",
-    "Ext.chart.axis.layout.Discrete",
+    "Ext.chart.axis.layout.Discrete"
   ],
 
   type: "crosshair",
@@ -140,7 +140,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
       top: { label: {}, rect: {} },
       right: { label: {}, rect: {} },
       bottom: { label: {}, rect: {} },
-      left: { label: {}, rect: {} },
+      left: { label: {}, rect: {} }
     },
 
     /**
@@ -162,19 +162,19 @@ Ext.define("Ext.chart.interactions.Crosshair", {
     lines: {
       horizontal: {
         strokeStyle: "black",
-        lineDash: [5, 5],
+        lineDash: [5, 5]
       },
       vertical: {
         strokeStyle: "black",
-        lineDash: [5, 5],
-      },
+        lineDash: [5, 5]
+      }
     },
 
     /**
      * @cfg {String} gesture
      * Specifies which gesture should be used for starting/maintaining/ending the interaction.
      */
-    gesture: "drag",
+    gesture: "drag"
   },
 
   applyAxes: function (axesConfig, oldAxesConfig) {
@@ -248,18 +248,18 @@ Ext.define("Ext.chart.interactions.Crosshair", {
           xclass: "Ext.chart.grid.HorizontalGrid",
           x: 0,
           y: y,
-          width: chartWidth,
+          width: chartWidth
         },
-        linesConfig.horizontal,
+        linesConfig.horizontal
       );
       verticalLineCfg = Ext.apply(
         {
           xclass: "Ext.chart.grid.VerticalGrid",
           x: x,
           y: 0,
-          height: chartHeight,
+          height: chartHeight
         },
-        linesConfig.vertical,
+        linesConfig.vertical
       );
       me.axesLabels = me.axesLabels || {};
       for (i = 0; i < axes.length; i++) {
@@ -281,7 +281,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
           Math.max(attr.majorTickSize, attr.minorTickSize) + lineWidth;
 
         axisLabel = me.axesLabels[axisPosition] = axisSurface.add({
-          type: "composite",
+          type: "composite"
         });
 
         axisLabel.labelRect = axisLabel.add(
@@ -306,10 +306,10 @@ Ext.define("Ext.chart.interactions.Crosshair", {
               translationX:
                 axisPosition === "left" && titleBBox ? titleBBox.width : 0,
               translationY:
-                axisPosition === "top" && titleBBox ? titleBBox.height : 0,
+                axisPosition === "top" && titleBBox ? titleBBox.height : 0
             },
-            axesConfig.rect || axesConfig[axisPosition].rect,
-          ),
+            axesConfig.rect || axesConfig[axisPosition].rect
+          )
         );
 
         if (axisAlignment === "vertical" && !verticalLineCfg.strokeStyle) {
@@ -365,8 +365,8 @@ Ext.define("Ext.chart.interactions.Crosshair", {
                 default:
                   return 0;
               }
-            })(),
-          }),
+            })()
+          })
         );
       }
       me.horizontalLine = surface.add(horizontalLineCfg);
@@ -456,7 +456,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
           labelBBox = axisLabel.labelText.getBBox();
           axisLabel.labelRect.setAttributes({
             height: labelBBox.height + textPadding,
-            y: -(labelBBox.height + textPadding) / 2,
+            y: -(labelBBox.height + textPadding) / 2
           });
           axisSurface.renderFrame();
         } else {
@@ -477,7 +477,7 @@ Ext.define("Ext.chart.interactions.Crosshair", {
           labelBBox = axisLabel.labelText.getBBox();
           axisLabel.labelRect.setAttributes({
             width: labelBBox.width + textPadding,
-            x: -(labelBBox.width + textPadding) / 2,
+            x: -(labelBBox.width + textPadding) / 2
           });
           axisSurface.renderFrame();
         }
@@ -485,11 +485,11 @@ Ext.define("Ext.chart.interactions.Crosshair", {
     }
     me.horizontalLine.setAttributes({
       y: y,
-      strokeStyle: axisSprite.attr.strokeStyle,
+      strokeStyle: axisSprite.attr.strokeStyle
     });
     me.verticalLine.setAttributes({
       x: x,
-      strokeStyle: axisSprite.attr.strokeStyle,
+      strokeStyle: axisSprite.attr.strokeStyle
     });
     surface.renderFrame();
     return false;
@@ -523,5 +523,5 @@ Ext.define("Ext.chart.interactions.Crosshair", {
 
     surface.renderFrame();
     me.unlockEvents(me.getGesture());
-  },
+  }
 });

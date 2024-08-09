@@ -232,7 +232,7 @@ Ext.define("Ext.data.reader.Json", {
      *         "root": [{}, {}, {}] // The objects here will be modified
      *     }
      */
-    preserveRawData: false,
+    preserveRawData: false
   },
 
   updateRootProperty: function () {
@@ -472,6 +472,6 @@ Ext.define("Ext.data.reader.Json", {
     copyFrom: function (reader) {
       this.callParent([reader]);
       this.getRoot = reader.getRoot;
-    },
-  },
+    }
+  }
 });

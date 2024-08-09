@@ -9,7 +9,7 @@ Ext.define("Ext.device.accelerometer.Cordova", {
     config = this.callParent(arguments);
     navigator.accelerometer.getCurrentAcceleration(
       config.success,
-      config.failure,
+      config.failure
     );
     return config;
   },
@@ -22,7 +22,7 @@ Ext.define("Ext.device.accelerometer.Cordova", {
     this.activeWatchID = navigator.accelerometer.watchAcceleration(
       config.callback,
       config.failure,
-      config,
+      config
     );
     return config;
   },
@@ -32,5 +32,5 @@ Ext.define("Ext.device.accelerometer.Cordova", {
       navigator.accelerometer.clearWatch(this.activeWatchID);
       this.activeWatchID = null;
     }
-  },
+  }
 });

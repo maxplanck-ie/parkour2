@@ -17,15 +17,15 @@ describe("Ext.chart.series.sprite.Pie3DPart", function () {
             { os: "iOS", data1: 17.9, data2: 200 },
             { os: "Windows Phone", data1: 10.2, data2: 250 },
             { os: "BlackBerry", data1: 1.7, data2: 90 },
-            { os: "Others", data1: 1.9, data2: 190 },
-          ],
+            { os: "Others", data1: 1.9, data2: 190 }
+          ]
         },
         series: {
           type: "pie3d",
           angleField: "data1",
           donut: 30,
-          distortion: 0.6,
-        },
+          distortion: 0.6
+        }
       });
 
       var series = chart.getSeries()[0];
@@ -43,7 +43,7 @@ describe("Ext.chart.series.sprite.Pie3DPart", function () {
       }
 
       series.setStyle({
-        opacity: 0.8, // converted to 'globalAlpha' during attribute normalization
+        opacity: 0.8 // converted to 'globalAlpha' during attribute normalization
       });
 
       for (i = 0, ln = sprites.length; i < ln; i++) {
@@ -77,15 +77,15 @@ describe("Ext.chart.series.sprite.Pie3DPart", function () {
             { os: "iOS", data1: 17.9, data2: 200 },
             { os: "Windows Phone", data1: 10.2, data2: 250 },
             { os: "BlackBerry", data1: 1.7, data2: 90 },
-            { os: "Others", data1: 1.9, data2: 190 },
-          ],
+            { os: "Others", data1: 1.9, data2: 190 }
+          ]
         },
         series: {
           type: "pie3d",
           angleField: "data1",
           donut: 30,
-          distortion: 0.6,
-        },
+          distortion: 0.6
+        }
       });
 
       var series = chart.getSeries()[0];
@@ -103,7 +103,7 @@ describe("Ext.chart.series.sprite.Pie3DPart", function () {
       }
 
       series.setStyle({
-        fillOpacity: 0.8, // converted to 'globalAlpha' during attribute normalization
+        fillOpacity: 0.8 // converted to 'globalAlpha' during attribute normalization
       });
 
       for (i = 0, ln = sprites.length; i < ln; i++) {

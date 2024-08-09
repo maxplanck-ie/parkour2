@@ -19,7 +19,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
     "Ext.resizer.Splitter",
     "Ext.menu.Menu",
 
-    "Ext.ux.desktop.StartMenu",
+    "Ext.ux.desktop.StartMenu"
   ],
 
   alias: "widget.taskbar",
@@ -50,7 +50,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
         iconCls: "ux-start-button-icon",
         menu: me.startMenu,
         menuAlign: "bl-tl",
-        text: me.startBtnText,
+        text: me.startBtnText
       },
       me.quickStart,
       {
@@ -58,11 +58,11 @@ Ext.define("Ext.ux.desktop.TaskBar", {
         html: "&#160;",
         height: 14,
         width: 2, // TODO - there should be a CSS way here
-        cls: "x-toolbar-separator x-toolbar-separator-horizontal",
+        cls: "x-toolbar-separator x-toolbar-separator-horizontal"
       },
       me.windowBar,
       "-",
-      me.tray,
+      me.tray
     ];
 
     me.callParent();
@@ -85,7 +85,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
         minWidth: 20,
         width: Ext.themeName === "neptune" ? 70 : 60,
         items: [],
-        enableOverflow: true,
+        enableOverflow: true
       };
 
     Ext.each(this.quickStart, function (item) {
@@ -96,7 +96,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
         iconCls: item.iconCls,
         module: item.module,
         handler: me.onQuickStartClick,
-        scope: me,
+        scope: me
       });
     });
 
@@ -110,7 +110,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
    */
   getTrayConfig: function () {
     var ret = {
-      items: this.trayItems,
+      items: this.trayItems
     };
     delete this.trayItems;
     return ret;
@@ -121,7 +121,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
       flex: 1,
       cls: "ux-desktop-windowbar",
       items: ["&#160;"],
-      layout: { overflowHandler: "Scroller" },
+      layout: { overflowHandler: "Scroller" }
     };
   },
 
@@ -167,7 +167,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
           btn.enable();
         },
         null,
-        { single: true },
+        { single: true }
       );
       win.minimize();
     } else {
@@ -185,9 +185,9 @@ Ext.define("Ext.ux.desktop.TaskBar", {
       text: Ext.util.Format.ellipsis(win.title, 20),
       listeners: {
         click: this.onWindowBtnClick,
-        scope: this,
+        scope: this
       },
-      win: win,
+      win: win
     };
 
     var cmp = this.windowBar.add(config);
@@ -220,7 +220,7 @@ Ext.define("Ext.ux.desktop.TaskBar", {
         }
       });
     }
-  },
+  }
 });
 
 /**
@@ -277,5 +277,5 @@ Ext.define("Ext.ux.desktop.TrayClock", {
       me.lastText = text;
     }
     me.timer = Ext.Function.defer(me.updateTime, 10000, me);
-  },
+  }
 });

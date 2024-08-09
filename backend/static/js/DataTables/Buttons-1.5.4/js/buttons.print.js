@@ -7,7 +7,7 @@
   if (typeof define === "function" && define.amd) {
     // AMD
     define(["jquery", "datatables.net", "datatables.net-buttons"], function (
-      $,
+      $
     ) {
       return factory($, window, document);
     });
@@ -86,7 +86,7 @@
 
     action: function (e, dt, button, config) {
       var data = dt.buttons.exportData(
-        $.extend({ decodeEntities: false }, config.exportOptions), // XSS protection
+        $.extend({ decodeEntities: false }, config.exportOptions) // XSS protection
       );
       var exportInfo = dt.buttons.exportInfo(config);
       var columnClasses = dt
@@ -203,7 +203,7 @@
 
     autoPrint: true,
 
-    customize: null,
+    customize: null
   };
 
   return DataTable.Buttons;

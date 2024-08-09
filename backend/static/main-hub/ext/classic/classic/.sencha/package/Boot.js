@@ -53,7 +53,7 @@ Ext.Boot =
          * @cfg {String} [charset=UTF-8]
          * Optional charset to specify encoding of dynamic content.
          */
-        charset: "UTF-8",
+        charset: "UTF-8"
       },
       _assetConfig = {},
       cssRe = /\.css(?:\?|$)/i,
@@ -64,7 +64,7 @@ Ext.Boot =
         node: !isBrowser && typeof require === "function",
         phantom:
           (window && (window._phantom || window.callPhantom)) ||
-          /PhantomJS/.test(window.navigator.userAgent),
+          /PhantomJS/.test(window.navigator.userAgent)
       },
       _tags = (Ext.platformTags = {}),
       //<debug>
@@ -209,7 +209,7 @@ Ext.Boot =
           chromeMobile: "ChromeMobile",
           chromeiOS: "ChromeiOS",
           silk: "Silk",
-          other: "Other",
+          other: "Other"
         },
 
         osNames: {
@@ -225,7 +225,7 @@ Ext.Boot =
           linux: "Linux",
           bada: "Bada",
           chromeOS: "ChromeOS",
-          other: "Other",
+          other: "Other"
         },
 
         browserPrefixes: {
@@ -239,7 +239,7 @@ Ext.Boot =
           webosbrowser: "wOSBrowser/",
           chromeMobile: "CrMo/",
           chromeiOS: "CriOS/",
-          silk: "Silk/",
+          silk: "Silk/"
         },
 
         // When a UA reports multiple browsers this list is used to prioritize the 'real' browser
@@ -255,7 +255,7 @@ Ext.Boot =
           "ie",
           "firefox",
           "safari",
-          "chrome",
+          "chrome"
         ],
 
         osPrefixes: {
@@ -268,19 +268,19 @@ Ext.Boot =
           rimTablet: "RIM Tablet OS ",
           webos: "(?:webOS|hpwOS)/",
           bada: "Bada/",
-          chromeOS: "CrOS ",
+          chromeOS: "CrOS "
         },
 
         fallbackOSPrefixes: {
           windows: "win",
           mac: "mac",
-          linux: "linux",
+          linux: "linux"
         },
 
         devicePrefixes: {
           iPhone: "iPhone",
           iPod: "iPod",
-          iPad: "iPad",
+          iPad: "iPad"
         },
 
         maxIEVersion: 12,
@@ -646,7 +646,7 @@ Ext.Boot =
                   state === "loaded" ||
                   state === "complete", // IE only
                 el: script,
-                prop: "src",
+                prop: "src"
               });
             }
           }
@@ -777,7 +777,7 @@ Ext.Boot =
           var cfg = {
             content: content,
             loaded: true,
-            css: type === "css",
+            css: type === "css"
           };
 
           return Boot.getEntry(url, cfg);
@@ -927,7 +927,7 @@ Ext.Boot =
                 result = {
                   content: content,
                   status: status,
-                  exception: exception,
+                  exception: exception
                 };
                 if (complete) {
                   complete.call(scope, result);
@@ -962,7 +962,7 @@ Ext.Boot =
 
         notifyAll: function (entry) {
           entry.notifyRequests();
-        },
+        }
       };
 
     function Request(cfg) {
@@ -1008,7 +1008,7 @@ Ext.Boot =
         indexMap,
         loadOrder,
         includeUses,
-        skipLoaded,
+        skipLoaded
       ) {
         var resolved = [],
           queue = [item],
@@ -1084,7 +1084,7 @@ Ext.Boot =
         loadOrderMap,
         indexMap,
         includeUses,
-        skipLoaded,
+        skipLoaded
       ) {
         var item, resolved;
 
@@ -1097,7 +1097,7 @@ Ext.Boot =
               indexMap,
               loadOrder,
               includeUses,
-              skipLoaded,
+              skipLoaded
             );
 
             if (resolved.length) {
@@ -1146,7 +1146,7 @@ Ext.Boot =
             loadOrderMap,
             indexMap,
             includeUses,
-            false,
+            false
           );
 
           for (t = 0, tlen = tmpExpanded.length; t < tlen; t++) {
@@ -1231,9 +1231,9 @@ Ext.Boot =
               url,
               {
                 buster: me.buster,
-                charset: me.charset,
+                charset: me.charset
               },
-              item && item.canonicalPath,
+              item && item.canonicalPath
             );
 
             entry.requests.push(me);
@@ -1355,7 +1355,7 @@ Ext.Boot =
             listener(this);
           }
         }
-      },
+      }
     };
 
     function Entry(cfg) {
@@ -1670,7 +1670,7 @@ Ext.Boot =
           async: false,
           complete: function (response) {
             me.onContentLoaded(response);
-          },
+          }
         });
         me.evaluate();
         me.notifyRequests();
@@ -1724,7 +1724,7 @@ Ext.Boot =
                 complete: function (response) {
                   me.onContentLoaded(response);
                   me.notifyRequests();
-                },
+                }
               });
             }
           }
@@ -1835,7 +1835,7 @@ Ext.Boot =
             listener(this);
           }
         }
-      },
+      }
     };
 
     /**
@@ -1849,7 +1849,7 @@ Ext.Boot =
     Ext.disableCacheBuster = function (disable, path) {
       var date = new Date();
       date.setTime(
-        date.getTime() + (disable ? 10 * 365 : -1) * 24 * 60 * 60 * 1000,
+        date.getTime() + (disable ? 10 * 365 : -1) * 24 * 60 * 60 * 1000
       );
       date = date.toGMTString();
       doc.cookie = "ext-cache=1; expires=" + date + "; path=" + (path || "/");
@@ -1910,7 +1910,7 @@ if (!Function.prototype.bind) {
             // avoid the slice/concat if the caller does not supply args
             return method.apply(
               me,
-              t.length ? args.concat(slice.call(t)) : args,
+              t.length ? args.concat(slice.call(t)) : args
             );
           };
         }

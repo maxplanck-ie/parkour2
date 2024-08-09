@@ -271,7 +271,7 @@ Ext.define("Ext.layout.container.Container", {
       this._hasTargetWarning = true;
       Ext.log.warn(
         "targetCls is missing. This may mean that getTargetEl() is being overridden but not applyTargetCls(). " +
-          this.owner.id,
+          this.owner.id
       );
     }
     //</debug>
@@ -352,7 +352,7 @@ Ext.define("Ext.layout.container.Container", {
       got: got,
       gotAll: got === needed,
       gotWidth: gotWidth,
-      gotHeight: gotHeight,
+      gotHeight: gotHeight
     };
   },
 
@@ -392,7 +392,7 @@ Ext.define("Ext.layout.container.Container", {
     return {
       $comp: comp,
       $layout: this,
-      ownerId: comp.id,
+      ownerId: comp.id
     };
   },
 
@@ -611,5 +611,5 @@ Ext.define("Ext.layout.container.Container", {
       --this.activeItemCount;
     }
     this.callParent([item, isDestroying]);
-  },
+  }
 });

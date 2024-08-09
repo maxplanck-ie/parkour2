@@ -9,7 +9,7 @@ describe("Ext.Date", function () {
           getTime: function () {},
           valueOf: function () {
             return PredictableDate.now();
-          },
+          }
         };
       };
 
@@ -99,7 +99,7 @@ describe("Ext.Date", function () {
         "sep",
         "oct",
         "nov",
-        "dec",
+        "dec"
       ];
 
       Ext.Array.forEach(names, function (name, idx) {
@@ -122,7 +122,7 @@ describe("Ext.Date", function () {
         "september",
         "october",
         "november",
-        "december",
+        "december"
       ];
 
       Ext.Array.forEach(names, function (name, idx) {
@@ -403,8 +403,8 @@ describe("Ext.Date", function () {
             expect(
               Ext.Date.parse(
                 i + "-" + Ext.String.leftPad(j, 2, "0"),
-                "Y-W",
-              ).getDay(),
+                "Y-W"
+              ).getDay()
             ).toBe(1);
           }
         }
@@ -471,19 +471,19 @@ describe("Ext.Date", function () {
   describe("getFirstDateOfMonth", function () {
     it("should return the date corresponding to the first day of month of the given date", function () {
       expect(Ext.Date.getFirstDateOfMonth(new Date(2007, 0, 1))).toEqual(
-        new Date(2007, 0, 1),
+        new Date(2007, 0, 1)
       );
       expect(Ext.Date.getFirstDateOfMonth(new Date(2000, 0, 2))).toEqual(
-        new Date(2000, 0, 1),
+        new Date(2000, 0, 1)
       );
       expect(Ext.Date.getFirstDateOfMonth(new Date(2011, 0, 3))).toEqual(
-        new Date(2011, 0, 1),
+        new Date(2011, 0, 1)
       );
       expect(Ext.Date.getFirstDateOfMonth(new Date(2011, 6, 4))).toEqual(
-        new Date(2011, 6, 1),
+        new Date(2011, 6, 1)
       );
       expect(Ext.Date.getFirstDateOfMonth(new Date(2011, 11, 5))).toEqual(
-        new Date(2011, 11, 1),
+        new Date(2011, 11, 1)
       );
     });
   });
@@ -491,19 +491,19 @@ describe("Ext.Date", function () {
   describe("getLastDateOfMonth", function () {
     it("should return the date corresponding to the last day of month of the given date", function () {
       expect(Ext.Date.getLastDateOfMonth(new Date(2007, 1, 1))).toEqual(
-        new Date(2007, 1, 28),
+        new Date(2007, 1, 28)
       );
       expect(Ext.Date.getLastDateOfMonth(new Date(2000, 1, 2))).toEqual(
-        new Date(2000, 1, 29),
+        new Date(2000, 1, 29)
       );
       expect(Ext.Date.getLastDateOfMonth(new Date(2011, 0, 3))).toEqual(
-        new Date(2011, 0, 31),
+        new Date(2011, 0, 31)
       );
       expect(Ext.Date.getLastDateOfMonth(new Date(2011, 5, 4))).toEqual(
-        new Date(2011, 5, 30),
+        new Date(2011, 5, 30)
       );
       expect(Ext.Date.getLastDateOfMonth(new Date(2011, 11, 5))).toEqual(
-        new Date(2011, 11, 31),
+        new Date(2011, 11, 31)
       );
     });
   });
@@ -627,62 +627,62 @@ describe("Ext.Date", function () {
     var date = new Date(2000, 0, 1, 0, 0, 0, 0);
     it("should add milliseconds", function () {
       expect(Ext.Date.add(date, Ext.Date.MILLI, 1)).toEqual(
-        new Date(2000, 0, 1, 0, 0, 0, 1),
+        new Date(2000, 0, 1, 0, 0, 0, 1)
       );
     });
     it("should add seconds", function () {
       expect(Ext.Date.add(date, Ext.Date.SECOND, 1)).toEqual(
-        new Date(2000, 0, 1, 0, 0, 1, 0),
+        new Date(2000, 0, 1, 0, 0, 1, 0)
       );
     });
     it("should add minutes", function () {
       expect(Ext.Date.add(date, Ext.Date.MINUTE, 1)).toEqual(
-        new Date(2000, 0, 1, 0, 1, 0, 0),
+        new Date(2000, 0, 1, 0, 1, 0, 0)
       );
     });
     it("should add hours", function () {
       expect(Ext.Date.add(date, Ext.Date.HOUR, 1)).toEqual(
-        new Date(2000, 0, 1, 1, 0, 0, 0),
+        new Date(2000, 0, 1, 1, 0, 0, 0)
       );
     });
     it("should add days", function () {
       expect(Ext.Date.add(date, Ext.Date.DAY, 1)).toEqual(
-        new Date(2000, 0, 2, 0, 0, 0, 0),
+        new Date(2000, 0, 2, 0, 0, 0, 0)
       );
     });
     it("should add months", function () {
       expect(Ext.Date.add(date, Ext.Date.MONTH, 1)).toEqual(
-        new Date(2000, 1, 1, 0, 0, 0, 0),
+        new Date(2000, 1, 1, 0, 0, 0, 0)
       );
     });
     it("should add years", function () {
       expect(Ext.Date.add(date, Ext.Date.YEAR, 1)).toEqual(
-        new Date(2001, 0, 1, 0, 0, 0, 0),
+        new Date(2001, 0, 1, 0, 0, 0, 0)
       );
     });
     it("should consider last day of month when adding months", function () {
       expect(Ext.Date.add(new Date(2001, 0, 29), Ext.Date.MONTH, 1)).toEqual(
-        new Date(2001, 1, 28),
+        new Date(2001, 1, 28)
       );
       expect(Ext.Date.add(new Date(2001, 0, 30), Ext.Date.MONTH, 1)).toEqual(
-        new Date(2001, 1, 28),
+        new Date(2001, 1, 28)
       );
       expect(Ext.Date.add(new Date(2001, 0, 31), Ext.Date.MONTH, 1)).toEqual(
-        new Date(2001, 1, 28),
+        new Date(2001, 1, 28)
       );
       expect(Ext.Date.add(new Date(2000, 0, 29), Ext.Date.MONTH, 1)).toEqual(
-        new Date(2000, 1, 29),
+        new Date(2000, 1, 29)
       );
       expect(Ext.Date.add(new Date(2000, 0, 30), Ext.Date.MONTH, 1)).toEqual(
-        new Date(2000, 1, 29),
+        new Date(2000, 1, 29)
       );
       expect(Ext.Date.add(new Date(2000, 0, 31), Ext.Date.MONTH, 1)).toEqual(
-        new Date(2000, 1, 29),
+        new Date(2000, 1, 29)
       );
     });
     it("should consider last day of month when adding years", function () {
       expect(Ext.Date.add(new Date(2000, 1, 29), Ext.Date.YEAR, 1)).toEqual(
-        new Date(2001, 1, 28),
+        new Date(2001, 1, 28)
       );
     });
   });
@@ -692,31 +692,27 @@ describe("Ext.Date", function () {
       endDate = new Date(2000, 0, 31);
     it("should return true if the date is equal to the start date", function () {
       expect(
-        Ext.Date.between(new Date(2000, 0, 1), startDate, endDate),
+        Ext.Date.between(new Date(2000, 0, 1), startDate, endDate)
       ).toBeTruthy();
     });
     it("should return true if the date is equal to the end date", function () {
       expect(
-        Ext.Date.between(new Date(2000, 0, 31), startDate, endDate),
+        Ext.Date.between(new Date(2000, 0, 31), startDate, endDate)
       ).toBeTruthy();
     });
     it("should return true if date is between start and end dates", function () {
       expect(
-        Ext.Date.between(new Date(2000, 0, 15), startDate, endDate),
+        Ext.Date.between(new Date(2000, 0, 15), startDate, endDate)
       ).toBeTruthy();
     });
     it("should return false if date is before start date", function () {
       expect(
-        Ext.Date.between(
-          new Date(1999, 11, 31, 23, 59, 59),
-          startDate,
-          endDate,
-        ),
+        Ext.Date.between(new Date(1999, 11, 31, 23, 59, 59), startDate, endDate)
       ).toBeFalsy();
     });
     it("should return false if date is after end date", function () {
       expect(
-        Ext.Date.between(new Date(2000, 0, 31, 0, 0, 1), startDate, endDate),
+        Ext.Date.between(new Date(2000, 0, 31, 0, 0, 1), startDate, endDate)
       ).toBeFalsy();
     });
   });
@@ -949,7 +945,7 @@ describe("Ext.Date", function () {
 
         it("should behave the same as Y when not parsed with another option", function () {
           expect(ExtDate.parse("2012", "o").getTime()).toBe(
-            ExtDate.parse("2012", "Y").getTime(),
+            ExtDate.parse("2012", "Y").getTime()
           );
         });
       });

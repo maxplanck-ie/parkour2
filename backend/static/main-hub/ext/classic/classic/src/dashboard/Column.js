@@ -36,7 +36,7 @@ Ext.define("Ext.dashboard.Column", {
         ownerCt.query(">" + me.xtype + "[rowIndex=" + me.rowIndex + "]"),
         function (c) {
           return c !== me;
-        },
+        }
       );
       numRemaining = remainingSiblings.length;
 
@@ -68,5 +68,5 @@ Ext.define("Ext.dashboard.Column", {
         }
       }
     }
-  },
+  }
 });

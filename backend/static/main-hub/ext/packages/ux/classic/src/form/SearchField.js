@@ -9,14 +9,14 @@ Ext.define("Ext.ux.form.SearchField", {
       cls: Ext.baseCSSPrefix + "form-clear-trigger",
       hidden: true,
       handler: "onClearClick",
-      scope: "this",
+      scope: "this"
     },
     search: {
       weight: 1,
       cls: Ext.baseCSSPrefix + "form-search-trigger",
       handler: "onSearchClick",
-      scope: "this",
-    },
+      scope: "this"
+    }
   },
 
   hasSearch: false,
@@ -71,11 +71,11 @@ Ext.define("Ext.ux.form.SearchField", {
       // id is used by the Store to replace any previous filter
       me.activeFilter = new Ext.util.Filter({
         property: me.paramName,
-        value: value,
+        value: value
       });
       me.store.getFilters().add(me.activeFilter);
       me.getTrigger("clear").show();
       me.updateLayout();
     }
-  },
+  }
 });

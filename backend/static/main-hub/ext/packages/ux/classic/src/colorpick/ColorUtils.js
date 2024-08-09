@@ -24,7 +24,7 @@ Ext.define(
               var tpl = Ext.XTemplate.getTpl(ColorUtils, "backgroundTpl"),
                 data = {
                   hex: ColorUtils.rgb2hex(color.r, color.g, color.b),
-                  alpha: Math.floor(color.a * 255).toString(16),
+                  alpha: Math.floor(color.a * 255).toString(16)
                 },
                 bgStyle = tpl.apply(data);
 
@@ -35,7 +35,7 @@ Ext.define(
             if (el) {
               var tpl = Ext.XTemplate.getTpl(ColorUtils, "backgroundTpl"),
                 data = {
-                  rgba: ColorUtils.getRGBAString(color),
+                  rgba: ColorUtils.getRGBAString(color)
                 },
                 bgStyle = tpl.apply(data);
 
@@ -67,7 +67,7 @@ Ext.define(
           hex += opacityHex.toUpperCase();
 
           return hex;
-        },
+        }
       },
 
       hexRe: /#?([0-9a-f]{3,8})/i,
@@ -115,14 +115,14 @@ Ext.define(
             r: rgb[0],
             g: rgb[1],
             b: rgb[2],
-            a: 1,
+            a: 1
           };
         } else if (color === "transparent") {
           ret = {
             r: 0,
             g: 0,
             b: 0,
-            a: 0,
+            a: 0
           };
         } else {
           match = me.hexRe.exec(color);
@@ -138,7 +138,7 @@ Ext.define(
                   r: parseInt(match[0] + match[0], 16),
                   g: parseInt(match[1] + match[1], 16),
                   b: parseInt(match[2] + match[2], 16),
-                  a: 1,
+                  a: 1
                 };
                 break;
 
@@ -148,7 +148,7 @@ Ext.define(
                   r: parseInt(match.substr(0, 2), 16),
                   g: parseInt(match.substr(2, 2), 16),
                   b: parseInt(match.substr(4, 2), 16),
-                  a: parseInt(match.substr(6, 2) || "ff", 16) / 255,
+                  a: parseInt(match.substr(6, 2) || "ff", 16) / 255
                 };
                 break;
             }
@@ -160,7 +160,7 @@ Ext.define(
                 r: parseFloat(match[1]),
                 g: parseFloat(match[2]),
                 b: parseFloat(match[3]),
-                a: parseFloat(match[4]),
+                a: parseFloat(match[4])
               };
             } else {
               match = me.rgbaAltRe.exec(color);
@@ -178,7 +178,7 @@ Ext.define(
                   r: parseFloat(match[1]),
                   g: parseFloat(match[2]),
                   b: parseFloat(match[3]),
-                  a: 1,
+                  a: 1
                 };
               } else {
                 return null;
@@ -276,7 +276,7 @@ Ext.define(
         return {
           r: rgb[0],
           g: rgb[1],
-          b: rgb[2],
+          b: rgb[2]
         };
       },
 
@@ -328,7 +328,7 @@ Ext.define(
         return {
           h: h,
           s: s,
-          v: v,
+          v: v
         };
       },
 
@@ -506,8 +506,8 @@ Ext.define(
         white: [255, 255, 255],
         whitesmoke: [245, 245, 245],
         yellow: [255, 255, 0],
-        yellowgreen: [154, 205, 5],
-      },
+        yellowgreen: [154, 205, 5]
+      }
     };
   },
   function (ColorUtils) {
@@ -530,5 +530,5 @@ Ext.define(
     });
 
     Ext.apply(formats, lowerized);
-  },
+  }
 );

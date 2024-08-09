@@ -29,7 +29,7 @@ Ext.define("Ext.panel.Header", {
   titleRotation: "default",
 
   autoEl: {
-    role: "presentation",
+    role: "presentation"
   },
 
   beforeRenderConfig: {
@@ -134,17 +134,17 @@ Ext.define("Ext.panel.Header", {
     title: {
       $value: {
         xtype: "title",
-        flex: 1,
+        flex: 1
       },
       merge: function (newValue, oldValue) {
         if (typeof newValue !== "object") {
           newValue = {
-            text: newValue,
+            text: newValue
           };
         }
 
         return Ext.merge(oldValue ? Ext.Object.chain(oldValue) : {}, newValue);
-      },
+      }
     },
 
     /**
@@ -184,7 +184,7 @@ Ext.define("Ext.panel.Header", {
      * - `'right'` - `1`
      * - `'left'` - `1`
      */
-    titleRotation: null,
+    titleRotation: null
   },
 
   // a class for styling that is shared between panel and window headers
@@ -268,7 +268,7 @@ Ext.define("Ext.panel.Header", {
       dblclick: me.onDblClick,
       click: me.onClick,
       element: "el",
-      scope: me,
+      scope: me
     });
   },
 
@@ -324,7 +324,7 @@ Ext.define("Ext.panel.Header", {
 
     if (!Ext.isObject(title)) {
       title = {
-        text: title.toString(),
+        text: title.toString()
       };
     }
 
@@ -619,6 +619,6 @@ Ext.define("Ext.panel.Header", {
       } else {
         me.removeCls(noBorderCls);
       }
-    },
-  }, // private
+    }
+  } // private
 });

@@ -303,7 +303,7 @@ describe("Ext.Array", function () {
 
     it("should remove all occurrences of empty values", function () {
       expect(
-        Ext.Array.clean([null, null, null, undefined, "", "", "", undefined]),
+        Ext.Array.clean([null, null, null, undefined, "", "", "", undefined])
       ).toEqual([]);
     });
 
@@ -317,19 +317,7 @@ describe("Ext.Array", function () {
 
     it("should preserve order on removal", function () {
       expect(
-        Ext.Array.clean([
-          1,
-          null,
-          2,
-          null,
-          null,
-          null,
-          3,
-          undefined,
-          "",
-          "",
-          4,
-        ]),
+        Ext.Array.clean([1, null, 2, null, null, null, 3, undefined, "", "", 4])
       ).toEqual([1, 2, 3, 4]);
     });
   });
@@ -354,7 +342,7 @@ describe("Ext.Array", function () {
 
     it("should preserve the order when removing", function () {
       expect(Ext.Array.unique([1, 2, 1, 3, 1, 1, 1, 6, 5, 1])).toEqual([
-        1, 2, 3, 6, 5,
+        1, 2, 3, 6, 5
       ]);
     });
   });
@@ -377,7 +365,7 @@ describe("Ext.Array", function () {
       expect(
         Ext.Array.map([1, 2, 3, 4, 5], function (v) {
           return v * 2;
-        }),
+        })
       ).toEqual([2, 4, 6, 8, 10]);
     });
 
@@ -389,7 +377,7 @@ describe("Ext.Array", function () {
         function () {
           realScope = this;
         },
-        scope,
+        scope
       );
       expect(realScope).toBe(scope);
     });
@@ -428,7 +416,7 @@ describe("Ext.Array", function () {
       expect(Ext.Array.from(["a", "string", "here"])).toEqual([
         "a",
         "string",
-        "here",
+        "here"
       ]);
     });
 
@@ -510,7 +498,7 @@ describe("Ext.Array", function () {
     describe("start/end parameters", function () {
       it("should default to whole of the array", function () {
         expect(Ext.Array.toArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).toEqual([
-          1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+          1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         ]);
       });
 
@@ -520,7 +508,7 @@ describe("Ext.Array", function () {
 
       it("should work with only the end parameter specified", function () {
         expect(Ext.Array.toArray([1, 2, 3, 4, 5, 6], null, 4)).toEqual([
-          1, 2, 3, 4,
+          1, 2, 3, 4
         ]);
       });
 
@@ -560,7 +548,7 @@ describe("Ext.Array", function () {
       }
 
       expect(
-        Ext.Array.pluck(ct.getElementsByTagName("div"), "className"),
+        Ext.Array.pluck(ct.getElementsByTagName("div"), "className")
       ).toEqual(["node0", "node1", "node2", "node3", "node4"]);
       document.body.removeChild(ct);
     });
@@ -584,7 +572,7 @@ describe("Ext.Array", function () {
       expect(
         Ext.Array.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], function (val) {
           return val % 2 === 0;
-        }),
+        })
       ).toEqual([2, 4, 6, 8, 10]);
     });
 
@@ -594,7 +582,7 @@ describe("Ext.Array", function () {
           if (val % 2 === 0) {
             return 1;
           }
-        }),
+        })
       ).toEqual([2, 4, 6, 8, 10]);
     });
 
@@ -602,7 +590,7 @@ describe("Ext.Array", function () {
       expect(
         Ext.Array.filter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], function (val) {
           return 0;
-        }),
+        })
       ).toEqual([]);
     });
 
@@ -641,8 +629,8 @@ describe("Ext.Array", function () {
           function () {
             actual = this;
           },
-          scope,
-        ),
+          scope
+        )
       );
       expect(actual).toBe(scope);
     });
@@ -674,7 +662,7 @@ describe("Ext.Array", function () {
         function () {
           actual = this;
         },
-        scope,
+        scope
       );
 
       expect(actual).toBe(scope);
@@ -708,7 +696,7 @@ describe("Ext.Array", function () {
         expect(
           Ext.Array.each([1, 2, 3], function (val) {
             return val != 2;
-          }),
+          })
         ).toEqual(1);
       });
 
@@ -716,7 +704,7 @@ describe("Ext.Array", function () {
         expect(
           Ext.Array.each([4, 5, 6], function () {
             return true;
-          }),
+          })
         ).toBeTruthy();
       });
     });
@@ -731,7 +719,7 @@ describe("Ext.Array", function () {
           function () {
             actual = this;
           },
-          scope,
+          scope
         );
         expect(actual).toBe(scope);
       });
@@ -856,7 +844,7 @@ describe("Ext.Array", function () {
           function () {
             actual = this;
           },
-          scope,
+          scope
         );
         expect(actual).toBe(scope);
       });
@@ -906,7 +894,7 @@ describe("Ext.Array", function () {
       expect(
         Ext.Array.every([1, 2, 3, 4, 5, 6, 7, 8, 9], function (v) {
           return v < 10;
-        }),
+        })
       ).toBeTruthy();
     });
   });
@@ -922,7 +910,7 @@ describe("Ext.Array", function () {
           function () {
             actual = this;
           },
-          scope,
+          scope
         );
         expect(actual).toBe(scope);
       });
@@ -1006,8 +994,8 @@ describe("Ext.Array", function () {
           ["1", "2", "3"],
           [4, 1, 5, 2],
           [6, 3, 7, "1"],
-          [8, "2", 9, "3"],
-        ),
+          [8, "2", 9, "3"]
+        )
       ).toEqual([1, 2, 3, "1", "2", "3", 4, 5, 6, 7, 8, 9]);
     });
   });
@@ -1032,7 +1020,7 @@ describe("Ext.Array", function () {
 
     it("should return an intersection of two or more arrays with items in order of first appearance", function () {
       expect(Ext.Array.intersect([1, 2, 3], [4, 3, 2, 5], [2, 6, 3])).toEqual([
-        2, 3,
+        2, 3
       ]);
     });
 
@@ -1042,7 +1030,7 @@ describe("Ext.Array", function () {
 
     it("should contain the unique set of intersected values only", function () {
       expect(Ext.Array.intersect([1, 1, 2, 3, 3], [1, 1, 2, 3, 3])).toEqual([
-        1, 2, 3,
+        1, 2, 3
       ]);
     });
 
@@ -1053,8 +1041,8 @@ describe("Ext.Array", function () {
       expect(
         Ext.Array.intersect(
           [undefined, null, false, 0, ""],
-          [undefined, null, false, 0, ""],
-        ),
+          [undefined, null, false, 0, ""]
+        )
       ).toEqual([undefined, null, false, 0, ""]);
     });
   });
@@ -1132,7 +1120,7 @@ describe("Ext.Array", function () {
         expect(
           Ext.Array.min([1, 2, 3, 4, 5, 6], function (a, b) {
             return a < b ? 1 : -1;
-          }),
+          })
         ).toEqual(6);
       });
     });
@@ -1148,7 +1136,7 @@ describe("Ext.Array", function () {
         expect(
           Ext.Array.max([1, 2, 3, 4, 5, 6], function (a, b) {
             return a < b ? 1 : -1;
-          }),
+          })
         ).toEqual(1);
       });
     });
@@ -1272,7 +1260,7 @@ describe("Ext.Array", function () {
           "F",
           "F",
           "F",
-          "F",
+          "F"
         );
         // the fact that this is an APPLY is not instrumental to reproducing this bug
 
@@ -1294,7 +1282,7 @@ describe("Ext.Array", function () {
   // and test the wrapper on other browsers
   describe(
     "replace with native implementation",
-    testReplace(Ext.Array.replace),
+    testReplace(Ext.Array.replace)
   );
 
   describe("splice", function () {
@@ -1390,7 +1378,7 @@ describe("Ext.Array", function () {
       expect(map).toEqual({
         a: 1,
         b: 2,
-        c: 3,
+        c: 3
       });
     });
 
@@ -1398,13 +1386,13 @@ describe("Ext.Array", function () {
       it("should extract the property name from the object and default the value to index + 1", function () {
         var map = Ext.Array.toMap(
           [{ name: "aaa" }, { name: "bbb" }, { name: "ccc" }],
-          "name",
+          "name"
         );
 
         expect(map).toEqual({
           aaa: 1,
           bbb: 2,
-          ccc: 3,
+          ccc: 3
         });
       });
 
@@ -1413,13 +1401,13 @@ describe("Ext.Array", function () {
           [{ name: "aaa" }, { name: "bbb" }, { name: "ccc" }],
           function (obj) {
             return obj.name.toUpperCase();
-          },
+          }
         );
 
         expect(map).toEqual({
           AAA: 1,
           BBB: 2,
-          CCC: 3,
+          CCC: 3
         });
       });
 
@@ -1429,7 +1417,7 @@ describe("Ext.Array", function () {
           map = Ext.Array.toMap(
             [{ name: "aaa" }, { name: "bbb" }, { name: "ccc" }],
             spy,
-            o,
+            o
           );
 
         expect(spy.mostRecentCall.object).toBe(o);
@@ -1461,7 +1449,7 @@ describe("Ext.Array", function () {
       expect(map).toEqual({
         a: "a",
         b: "b",
-        c: "c",
+        c: "c"
       });
     });
 
@@ -1470,7 +1458,7 @@ describe("Ext.Array", function () {
       expect(map).toEqual({
         1: 1,
         2: 2,
-        3: 3,
+        3: 3
       });
     });
 
@@ -1481,7 +1469,7 @@ describe("Ext.Array", function () {
           expect(map).toEqual({
             a: a,
             b: b,
-            c: c,
+            c: c
           });
         });
 
@@ -1491,7 +1479,7 @@ describe("Ext.Array", function () {
             expect(map).toEqual({
               a: aDup,
               b: b,
-              c: c,
+              c: c
             });
           });
 
@@ -1500,7 +1488,7 @@ describe("Ext.Array", function () {
             expect(map).toEqual({
               a: [a, aDup],
               b: [b],
-              c: [c],
+              c: [c]
             });
           });
 
@@ -1509,7 +1497,7 @@ describe("Ext.Array", function () {
             expect(map).toEqual({
               a: [a, aDup],
               b: b,
-              c: c,
+              c: c
             });
           });
         });
@@ -1525,7 +1513,7 @@ describe("Ext.Array", function () {
           expect(map).toEqual({
             A: a,
             B: b,
-            C: c,
+            C: c
           });
         });
 
@@ -1535,7 +1523,7 @@ describe("Ext.Array", function () {
             expect(map).toEqual({
               A: aDup,
               B: b,
-              C: c,
+              C: c
             });
           });
 
@@ -1544,7 +1532,7 @@ describe("Ext.Array", function () {
             expect(map).toEqual({
               A: [a, aDup],
               B: [b],
-              C: [c],
+              C: [c]
             });
           });
 
@@ -1553,7 +1541,7 @@ describe("Ext.Array", function () {
             expect(map).toEqual({
               A: [a, aDup],
               B: b,
-              C: c,
+              C: c
             });
           });
 
@@ -1629,7 +1617,7 @@ describe("Ext.Array", function () {
 
     it("should match booleans", function () {
       expect(
-        equals([false, false, false, true], [false, false, false, true]),
+        equals([false, false, false, true], [false, false, false, true])
       ).toBe(true);
     });
 

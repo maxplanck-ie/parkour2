@@ -4,5 +4,5 @@
 Ext.define("Ext.grid.cell.Summary", {
   extend: "Ext.grid.cell.Cell",
   xtype: "summarycell",
-  classCls: Ext.baseCSSPrefix + "summarycell",
+  classCls: Ext.baseCSSPrefix + "summarycell"
 });

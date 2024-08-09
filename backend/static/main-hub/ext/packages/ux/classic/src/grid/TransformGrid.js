@@ -40,8 +40,8 @@ Ext.define("Ext.ux.grid.TransformGrid", {
       fields.push(
         Ext.applyIf(configFields[i] || {}, {
           name: name,
-          mapping: "td:nth(" + (i + 1) + ")/@innerHTML",
-        }),
+          mapping: "td:nth(" + (i + 1) + ")/@innerHTML"
+        })
       );
 
       cols.push(
@@ -50,8 +50,8 @@ Ext.define("Ext.ux.grid.TransformGrid", {
           dataIndex: name,
           width: col.offsetWidth,
           tooltip: col.title,
-          sortable: true,
-        }),
+          sortable: true
+        })
       );
     }
 
@@ -73,13 +73,13 @@ Ext.define("Ext.ux.grid.TransformGrid", {
           type: "memory",
           reader: {
             record: "tbody tr",
-            type: "xml",
-          },
-        },
+            type: "xml"
+          }
+        }
       },
       columns: cols,
       width: width,
-      height: height,
+      height: height
     });
     this.callParent([config]);
 
@@ -94,5 +94,5 @@ Ext.define("Ext.ux.grid.TransformGrid", {
     this.table.remove();
     this.tabl = null;
     this.callParent();
-  },
+  }
 });

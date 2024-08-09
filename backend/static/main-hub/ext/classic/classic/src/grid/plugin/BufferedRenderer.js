@@ -98,11 +98,11 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         columnschanged: me.checkVariableRowHeight,
         boxready: me.onViewBoxReady,
         scope: me,
-        destroyable: true,
+        destroyable: true
       },
       scrollerListeners = {
         scroll: me.onViewScroll,
-        scope: me,
+        scope: me
       },
       initialConfig = view.initialConfig;
 
@@ -196,7 +196,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       clear: me.onStoreClear,
       beforeload: me.onBeforeStoreLoad,
       load: me.onStoreLoad,
-      destroyable: true,
+      destroyable: true
     });
 
     me.store = newStore;
@@ -235,7 +235,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
               me.position =
               me.scrollHeight =
               me.nextRefreshStartIndex =
-                0),
+                0)
           );
           me.scroller.scrollTo(null, 0);
         }
@@ -299,7 +299,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
     ) {
       view.on({
         boxready: Ext.Function.pass(me.onViewRefresh, [view, records], me),
-        single: true,
+        single: true
       });
 
       // AbstractView will call refreshSize() immediately after firing the 'refresh'
@@ -345,7 +345,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
             records.length = 0;
             records.push.apply(
               records,
-              me.store.getRange(rows.startIndex, rows.endIndex),
+              me.store.getRange(rows.startIndex, rows.endIndex)
             );
           }
         }
@@ -414,7 +414,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         if (view.all.endIndex === view.dataSource.getCount() - 1) {
           me.stretchView(
             view,
-            (me.scrollHeight = me.bodyTop + renderedBlockHeight - 1),
+            (me.scrollHeight = me.bodyTop + renderedBlockHeight - 1)
           );
         }
       }
@@ -507,14 +507,14 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       // Ensure the scroller knows about content size
       scroller.setSize({
         x: view.headerCt.getTableWidth(),
-        y: scrollRange,
+        y: scrollRange
       });
 
       // In a locking assembly, stretch the yScroller
       if (view.lockingPartner) {
         this.scroller.setSize({
           x: 0,
-          y: scrollRange,
+          y: scrollRange
         });
       }
     }
@@ -540,7 +540,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       pointyEnd = Ext.Number.sign(
         me.getFirstVisibleRowIndex() -
           rows.startIndex -
-          (rows.endIndex - me.getLastVisibleRowIndex()),
+          (rows.endIndex - me.getLastVisibleRowIndex())
       );
 
     // Exchange largest view size as long as the partner has been laid out (and thereby calculated a true view size)
@@ -609,7 +609,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
                     rows.scroll(
                       Ext.Array.slice(newRecords, rows.endIndex + 1, Infinity),
                       1,
-                      0,
+                      0
                     );
                   }
                   // Prepend if necessary
@@ -618,7 +618,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
                     rows.scroll(
                       Ext.Array.slice(newRecords, 0, rows.startIndex - start),
                       -1,
-                      0,
+                      0
                     );
 
                     // We just added some rows to the top of the rendered block
@@ -637,7 +637,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
                     lockingPartner.setViewSize(viewSize, true);
                     ownerGrid.syncRowHeights();
                   }
-                },
+                }
               });
             }
             // If not possible just refresh
@@ -698,7 +698,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       endIndex = Math.min(
         lockingPartnerRows.endIndex,
         startIndex + me.viewSize - 1,
-        store.getCount() - 1,
+        store.getCount() - 1
       );
     } else {
       // If there already is a view range, then the startIndex from that
@@ -805,7 +805,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           rows.startIndex,
           Math.min(store.getCount(), rows.startIndex + me.viewSize) - 1,
           null,
-          true,
+          true
         );
       }
       view.refreshSize(rows.getCount() !== renderedSize);
@@ -881,7 +881,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       options = {
         select: args[1],
         callback: args[2],
-        scope: args[3],
+        scope: args[3]
       };
     }
 
@@ -896,7 +896,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         record = recordIdx;
       } else {
         record = view.store.getAt(
-          Math.min(Math.max(recordIdx, 0), view.store.getCount() - 1),
+          Math.min(Math.max(recordIdx, 0), view.store.getCount() - 1)
         );
       }
 
@@ -908,7 +908,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           record !== metaGroup.placeholder
         ) {
           groupingFeature.expand(
-            groupingFeature.getGroup(record).getGroupKey(),
+            groupingFeature.getGroup(record).getGroupKey()
           );
           total = store.getCount();
           recordIdx = groupingFeature.indexOf(record);
@@ -961,9 +961,9 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         Math.min(
           recordIdx -
             Math.floor((me.leadingBufferZone + me.trailingBufferZone) / 2),
-          total - me.viewSize + 1,
+          total - me.viewSize + 1
         ),
-        0,
+        0
       );
       endIdx = Math.min(startIdx + me.viewSize - 1, total - 1);
     }
@@ -974,7 +974,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       endIdx = Math.min(
         recordIdx +
           Math.floor((me.leadingBufferZone + me.trailingBufferZone) / 2),
-        total - 1,
+        total - 1
       );
       startIdx = Math.max(endIdx - (me.viewSize - 1), 0);
     }
@@ -1007,7 +1007,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           // bodyTop property must track the translated position of the body
           lockingPartner.view.body.translate(
             null,
-            (lockingPartner.bodyTop = tableTop),
+            (lockingPartner.bodyTop = tableTop)
           );
 
           // Ensure the scroller knows about the range if we're going down
@@ -1028,7 +1028,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         if (lockingPartner) {
           lockingPartner.position = lockingPartner.scrollTop = me.scrollTop;
         }
-      },
+      }
     });
   },
 
@@ -1038,7 +1038,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
     Ext.getDoc().on({
       mouseup: me.onDocumentMouseUp,
       scope: me,
-      single: true,
+      single: true
     });
 
     me.preservePointerEvents = true;
@@ -1127,7 +1127,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         if (me.topOfViewCloseToEdge()) {
           requestStart = Math.max(
             0,
-            me.getLastVisibleRowIndex() + me.trailingBufferZone - viewSize,
+            me.getLastVisibleRowIndex() + me.trailingBufferZone - viewSize
           );
 
           // If, having scrolled up, a variableRowHeight calculation based
@@ -1152,8 +1152,8 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
             0,
             Math.min(
               me.getFirstVisibleRowIndex() - me.trailingBufferZone,
-              maxRequestStart,
-            ),
+              maxRequestStart
+            )
           );
         }
       }
@@ -1254,7 +1254,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       endIndex = Math.min(
         lockingPartnerRows.endIndex,
         startIndex + viewSize - 1,
-        maxIndex,
+        maxIndex
       );
     }
     // Work out range to refresh
@@ -1286,7 +1286,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
     } else {
       store.getRange(startIndex, endIndex, {
         callback: me.doRefreshView,
-        scope: me,
+        scope: me
       });
     }
   },
@@ -1356,7 +1356,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
                   (calculatedTop < me.bodyTop
                     ? me.leadingBufferZone
                     : me.trailingBufferZone),
-              0,
+              0
             );
           }
         }
@@ -1402,7 +1402,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         "rendered block refreshed at " +
           rows.getCount() +
           " rows while BufferedRenderer view size is " +
-          me.viewSize,
+          me.viewSize
       );
     }
     //</debug>
@@ -1430,7 +1430,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
               me.onRangeFetched,
               me,
               null,
-              false,
+              false
             );
           }
           // Render the new range very soon after this scroll event handler exits.
@@ -1442,7 +1442,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
             start,
             end,
             null,
-            fromLockingPartner,
+            fromLockingPartner
           ]);
         }
       }
@@ -1566,7 +1566,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           newTop = Math.max(
             me.scrollTop -
               rows.item(rows.startIndex + topBufferZone - 1, true).offsetTop,
-            0,
+            0
           );
         }
       }
@@ -1581,7 +1581,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         newRows = rows.scroll(
           Ext.Array.slice(range, rows.endIndex + 1 - start),
           1,
-          removeCount,
+          removeCount
         );
 
         // We only have to bump the table down by the height of removed rows if rows are not a standard size
@@ -1601,7 +1601,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         newRows = rows.scroll(
           Ext.Array.slice(range, 0, rows.startIndex - start),
           -1,
-          removeCount,
+          removeCount
         );
 
         // We only have to bump the table up by the height of top-added rows if rows are not a standard size
@@ -1685,7 +1685,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           start,
           end,
           options,
-          true,
+          true
         );
 
         // Sync the row heights if configured to do so, or if one side has variableRowHeight but the other doesn't.
@@ -1736,7 +1736,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
         "rendered block refreshed at " +
           rows.getCount() +
           " rows while BufferedRenderer view size is " +
-          me.viewSize,
+          me.viewSize
       );
     }
     //</debug>
@@ -1774,7 +1774,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
     for (i = 0; i < otherLn; i++) {
       otherSynchronizer[i] = rowSync = new RowSynchronizer(
         me.view.lockingPartner,
-        partnerItemEls[i],
+        partnerItemEls[i]
       );
       rowSync.measure();
     }
@@ -1854,7 +1854,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
     startRow,
     endRow,
     viewportTop,
-    viewportBottom,
+    viewportBottom
   ) {
     var me = this,
       view = me.view,
@@ -1887,7 +1887,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
               (me.lastScrollDirection === -1
                 ? me.leadingBufferZone
                 : me.trailingBufferZone),
-            Math.floor((endRow - startRow) / 2),
+            Math.floor((endRow - startRow) / 2)
           );
       } else {
         if (startRow === endRow) {
@@ -1903,7 +1903,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           target + 1,
           endRow,
           viewportTop,
-          viewportBottom,
+          viewportBottom
         );
       }
 
@@ -1917,7 +1917,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           startRow,
           target - 1,
           viewportTop,
-          viewportBottom,
+          viewportBottom
         );
       }
     }
@@ -1933,7 +1933,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
     startRow,
     endRow,
     viewportTop,
-    viewportBottom,
+    viewportBottom
   ) {
     var me = this,
       view = me.view,
@@ -1970,7 +1970,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
               (me.lastScrollDirection === 1
                 ? me.leadingBufferZone
                 : me.trailingBufferZone),
-            Math.floor((endRow - startRow) / 2),
+            Math.floor((endRow - startRow) / 2)
           );
       } else {
         if (startRow === endRow) {
@@ -1986,7 +1986,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           startRow,
           target - 1,
           viewportTop,
-          viewportBottom,
+          viewportBottom
         );
       }
       targetBottom = targetTop + elements[target].offsetHeight;
@@ -2001,7 +2001,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
           target + 1,
           endRow,
           viewportTop,
-          viewportBottom,
+          viewportBottom
         );
       }
     }
@@ -2085,7 +2085,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       me.loadTask.delay(me.scrollToLoadBuffer, me.doAttemptLoad, me, [
         start,
         end,
-        loadScrollPosition,
+        loadScrollPosition
       ]);
     } else {
       me.doAttemptLoad(start, end, loadScrollPosition);
@@ -2116,7 +2116,7 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
             me.onRangeFetched(range, start, end, options);
           }
         },
-        fireEvent: false,
+        fireEvent: false
       });
     }
   },
@@ -2140,9 +2140,9 @@ Ext.define("Ext.grid.plugin.BufferedRenderer", {
       me.viewListeners,
       me.stretcher,
       me.gridListeners,
-      me.scrollListeners,
+      me.scrollListeners
     );
 
     me.callParent();
-  },
+  }
 });

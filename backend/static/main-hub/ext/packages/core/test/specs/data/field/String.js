@@ -24,7 +24,7 @@ describe("Ext.data.field.String", function () {
     describe("with allowNull: true", function () {
       beforeEach(function () {
         make({
-          allowNull: true,
+          allowNull: true
         });
       });
 
@@ -40,7 +40,7 @@ describe("Ext.data.field.String", function () {
     describe("with allowNull: false", function () {
       beforeEach(function () {
         make({
-          allowNull: false,
+          allowNull: false
         });
       });
 

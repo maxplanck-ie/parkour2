@@ -12,7 +12,7 @@ Ext.define(
       "Ext.CompositeElementLite",
       "Ext.selection.DataViewModel",
       "Ext.view.NavigationModel",
-      "Ext.util.CSS",
+      "Ext.util.CSS"
     ],
     mixins: ["Ext.util.StoreHolder"],
 
@@ -35,7 +35,7 @@ Ext.define(
        */
       getBoundView: function (node) {
         return Ext.getCmp(node.getAttribute("data-boundView"));
-      },
+      }
     },
 
     defaultBindProperty: "store",
@@ -61,7 +61,7 @@ Ext.define(
         store,
         record,
         operation,
-        modifiedFieldNames,
+        modifiedFieldNames
       ) {
         var me = this,
           changeQueue = me.changeQueue || (me.changeQueue = {}),
@@ -80,7 +80,7 @@ Ext.define(
             operation: operation,
             record: record,
             data: {},
-            views: [],
+            views: []
           });
 
         // Hash of original values
@@ -131,7 +131,7 @@ Ext.define(
               ? Ext.Function.createAnimationFrame(me.onFlushTick, me)
               : Ext.Function.bind(me.onFlushTick, me),
             interval: Ext.view.AbstractView.updateDelay,
-            repeat: 1,
+            repeat: 1
           });
         }
         me.flushQueueTask.start();
@@ -191,13 +191,13 @@ Ext.define(
                 view.dataSource,
                 recChange.record,
                 recChange.operation,
-                Ext.Object.getKeys(recChange.data),
+                Ext.Object.getKeys(recChange.data)
               );
             }
           }
         }
         Ext.AnimationQueue.stop(me.flushChangeQueue, me);
-      },
+      }
     },
 
     config: {
@@ -221,7 +221,7 @@ Ext.define(
        * @since 5.0.1
        */
       navigationModel: {
-        type: "default",
+        type: "default"
       },
 
       // @cmd-auto-dependency { aliasPrefix: 'selection.' }
@@ -231,8 +231,8 @@ Ext.define(
        * @since 5.1.0
        */
       selectionModel: {
-        type: "dataviewmodel",
-      },
+        type: "dataviewmodel"
+      }
     },
 
     publishes: ["selection"],
@@ -526,7 +526,7 @@ Ext.define(
           '<tpl for="."><div class="{0}" role="{2}">{1}</div></tpl>',
           me.itemCls,
           itemTpl,
-          me.itemAriaRole,
+          me.itemAriaRole
         );
         me.tpl = new Ext.XTemplate(itemTpl, memberFn);
       }
@@ -537,7 +537,7 @@ Ext.define(
           sourceClass: "Ext.view.View",
           tpl: me.tpl,
           itemSelector: me.itemSelector,
-          msg: "DataView requires both tpl and itemSelector configurations to be defined.",
+          msg: "DataView requires both tpl and itemSelector configurations to be defined."
         });
       }
       //</debug>
@@ -551,7 +551,7 @@ Ext.define(
       if (isDef(me.overCls) || isDef(me.overClass)) {
         if (Ext.isDefined(Ext.global.console)) {
           Ext.global.console.warn(
-            "Ext.view.View: Using the deprecated overCls or overClass configuration. Use overItemCls instead.",
+            "Ext.view.View: Using the deprecated overCls or overClass configuration. Use overItemCls instead."
           );
         }
         me.overItemCls = me.overCls || me.overClass;
@@ -562,7 +562,7 @@ Ext.define(
       if (isDef(me.selectedCls) || isDef(me.selectedClass)) {
         if (Ext.isDefined(Ext.global.console)) {
           Ext.global.console.warn(
-            "Ext.view.View: Using the deprecated selectedCls or selectedClass configuration. Use selectedItemCls instead.",
+            "Ext.view.View: Using the deprecated selectedCls or selectedClass configuration. Use selectedItemCls instead."
           );
         }
         me.selectedItemCls = me.selectedCls || me.selectedClass;
@@ -579,7 +579,7 @@ Ext.define(
 
       // Look up the configured Store. If none configured, use the fieldless, empty Store defined in Ext.data.Store.
       store = me.store = Ext.data.StoreManager.lookup(
-        me.store || "ext-empty-store",
+        me.store || "ext-empty-store"
       );
 
       // Use the provided store as the data source unless a Feature or plugin has injected a special one
@@ -600,7 +600,7 @@ Ext.define(
       // We track the scroll position
       me.scrollState = {
         top: 0,
-        left: 0,
+        left: 0
       };
 
       me.savedTabIndexAttribute = "data-savedtabindex-" + me.id;
@@ -739,7 +739,7 @@ Ext.define(
           oldSelModel.un({
             scope: me,
             selectionchange: me.updateBindSelection,
-            lastselectedchanged: me.updateBindSelection,
+            lastselectedchanged: me.updateBindSelection
           });
         }
 
@@ -761,7 +761,7 @@ Ext.define(
 
           if (typeof selModel === "string") {
             selModel = {
-              type: selModel,
+              type: selModel
             };
           }
           selModel = Ext.Factory.selection(
@@ -769,10 +769,10 @@ Ext.define(
               {
                 allowDeselect: me.allowDeselect || me.multiSelect,
                 mode: mode,
-                locked: me.disableSelection,
+                locked: me.disableSelection
               },
-              selModel,
-            ),
+              selModel
+            )
           );
         }
       }
@@ -795,13 +795,13 @@ Ext.define(
         "beforedeselect",
         "select",
         "deselect",
-        "focuschange",
+        "focuschange"
       ]);
 
       selModel.on({
         scope: me,
         lastselectedchanged: me.updateBindSelection,
-        selectionchange: me.updateBindSelection,
+        selectionchange: me.updateBindSelection
       });
 
       return selModel;
@@ -845,7 +845,7 @@ Ext.define(
           focusPosition || 0,
           e.event,
           null,
-          !focusPosition,
+          !focusPosition
         );
 
         // We now contain focus is that was successful
@@ -1027,10 +1027,10 @@ Ext.define(
               "tab-guard " +
               Ext.baseCSSPrefix +
               "tab-guard-after",
-            tabIndex: "0",
+            tabIndex: "0"
           },
           null,
-          true,
+          true
         );
       }
     },
@@ -1047,7 +1047,7 @@ Ext.define(
         me.emptyEl = Ext.core.DomHelper.insertHtml(
           "beforeEnd",
           me.getTargetEl().dom,
-          me.emptyText,
+          me.emptyText
         );
       }
     },
@@ -1101,7 +1101,7 @@ Ext.define(
           scroll: me.onViewScroll,
           scrollend: me.onViewScrollEnd,
           scope: me,
-          onFrame: !!Ext.global.requestAnimationFrame,
+          onFrame: !!Ext.global.requestAnimationFrame
         });
       }
       me.callParent([width, height]);
@@ -1123,9 +1123,7 @@ Ext.define(
       removedRecs = [];
       for (i = all.startIndex; i <= all.endIndex; i++) {
         removedRecs.push(
-          store.getByInternalId(
-            all.item(i, true).getAttribute("data-recordId"),
-          ),
+          store.getByInternalId(all.item(i, true).getAttribute("data-recordId"))
         );
       }
       me.fireItemMutationEvent(
@@ -1133,7 +1131,7 @@ Ext.define(
         removedRecs,
         all.startIndex || 0,
         removedItems,
-        me,
+        me
       );
 
       me.clearEmptyEl();
@@ -1272,7 +1270,7 @@ Ext.define(
       }
       return {
         fragment: result,
-        children: nodes,
+        children: nodes
       };
     },
 
@@ -1323,7 +1321,7 @@ Ext.define(
         Ext.util.CSS.createRule(
           styleSheet,
           selector,
-          "touch-action: pinch-zoom double-tap-zoom;-ms-touch-action: pinch-zoom double-tap-zoom;-webkit-user-drag: none;",
+          "touch-action: pinch-zoom double-tap-zoom;-ms-touch-action: pinch-zoom double-tap-zoom;-webkit-user-drag: none;"
         );
       } else if (styleSheet) {
         Ext.util.CSS.deleteRule(selector);
@@ -1353,7 +1351,7 @@ Ext.define(
             store,
             record,
             operation,
-            modifiedFieldNames,
+            modifiedFieldNames
           );
         } else {
           // Cannot use arguments array.
@@ -1365,7 +1363,7 @@ Ext.define(
             record,
             operation,
             modifiedFieldNames,
-            details,
+            details
           );
         }
       }
@@ -1461,7 +1459,7 @@ Ext.define(
           oldRecords,
           origStart,
           oldItems,
-          me,
+          me
         );
 
         me.fireItemMutationEvent(
@@ -1469,7 +1467,7 @@ Ext.define(
           newRecords,
           origStart,
           children,
-          me,
+          me
         );
 
         // If focus was in this view, this will restore it
@@ -1595,7 +1593,7 @@ Ext.define(
     eventLifecycleMap: {
       refresh: "onViewRefresh",
       itemremove: "onItemRemove",
-      itemadd: "onItemAdd",
+      itemadd: "onItemAdd"
     },
 
     fireItemMutationEvent: function (eventName) {
@@ -1606,7 +1604,7 @@ Ext.define(
       if (ownerGrid) {
         me.ownerGrid[me.eventLifecycleMap[eventName]].apply(
           me.ownerGrid,
-          Ext.Array.slice(arguments, 1),
+          Ext.Array.slice(arguments, 1)
         );
       }
       me.fireEvent.apply(me, arguments);
@@ -1650,7 +1648,7 @@ Ext.define(
             // might have been wrought on this view's DOM during focus save.
             lastFocusedIndex = Math.min(
               lastFocusedIndex,
-              me.all.getCount() - 1,
+              me.all.getCount() - 1
             );
             navModel.setPosition(
               store.contains(lastFocusedRec)
@@ -1659,7 +1657,7 @@ Ext.define(
               null,
               null,
               true,
-              !containsFocus,
+              !containsFocus
             );
           }
         };
@@ -1801,7 +1799,7 @@ Ext.define(
         update: me.onUpdate,
         clear: me.onDataRefresh,
         beginupdate: me.onBeginUpdate,
-        endupdate: me.onEndUpdate,
+        endupdate: me.onEndUpdate
       };
     },
 
@@ -1874,7 +1872,7 @@ Ext.define(
     findItemByChild: function (node) {
       return Ext.fly(node).findParent(
         this.getItemSelector(),
-        this.getTargetEl(),
+        this.getTargetEl()
       );
     },
 
@@ -1918,7 +1916,7 @@ Ext.define(
 
       for (; i < len; i++) {
         records[records.length] = data.getByKey(
-          nodes[i].getAttribute("data-recordId"),
+          nodes[i].getAttribute("data-recordId")
         );
       }
 
@@ -1934,7 +1932,7 @@ Ext.define(
      */
     getRecord: function (node) {
       return this.dataSource.getByInternalId(
-        Ext.getDom(node).getAttribute("data-recordId"),
+        Ext.getDom(node).getAttribute("data-recordId")
       );
     },
 
@@ -2172,7 +2170,7 @@ Ext.define(
           // Once an item has had tabbability saved, do not increment its save level
           focusEl.saveTabbableState({
             skipSelf: true,
-            includeSaved: false,
+            includeSaved: false
           });
         }
       },
@@ -2184,12 +2182,12 @@ Ext.define(
       collectNodes: function (targetEl) {
         var all = this.all,
           options = {
-            role: this.itemAriaRole,
+            role: this.itemAriaRole
           };
 
         all.fill(
           Ext.fly(targetEl).query(this.getItemSelector()),
-          all.startIndex || 0,
+          all.startIndex || 0
         );
 
         // Subclasses may set focusable to false (BoundList is not focusable)
@@ -2216,7 +2214,7 @@ Ext.define(
             useMsg: me.loadingUseMsg,
             // The store gets bound in initComponent, so while
             // rendering let's push on the store
-            store: maskStore,
+            store: maskStore
           };
           // Do not overwrite default msgCls if we do not have a loadingCls
           if (me.loadingCls) {
@@ -2234,7 +2232,7 @@ Ext.define(
           me.loadMask.on({
             scope: me,
             beforeshow: me.onMaskBeforeShow,
-            hide: me.onMaskHide,
+            hide: me.onMaskHide
           });
         }
         return me.loadMask;
@@ -2245,8 +2243,8 @@ Ext.define(
         // the superclass method calls this.getTargetEl, which sends us into an infinte
         // loop because our getTargetEl may call getScrollerEl(), which calls getOverflowEl()
         return Ext.Component.prototype.getTargetEl.call(this);
-      },
-    },
+      }
+    }
   },
   function () {
     // all of this information is available directly
@@ -2286,7 +2284,7 @@ Ext.define(
         getSelectionCount: function () {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: getSelectionCount will be removed, please interact with the Ext.selection.DataViewModel",
+              "DataView: getSelectionCount will be removed, please interact with the Ext.selection.DataViewModel"
             );
           }
           return this.selModel.getSelection().length;
@@ -2301,7 +2299,7 @@ Ext.define(
         getSelectedRecords: function () {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: getSelectedRecords will be removed, please interact with the Ext.selection.DataViewModel",
+              "DataView: getSelectedRecords will be removed, please interact with the Ext.selection.DataViewModel"
             );
           }
           return this.selModel.getSelection();
@@ -2312,7 +2310,7 @@ Ext.define(
         select: function (records, keepExisting, supressEvents) {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: select will be removed, please access select through a DataView's SelectionModel, ie: view.getSelectionModel().select()",
+              "DataView: select will be removed, please access select through a DataView's SelectionModel, ie: view.getSelectionModel().select()"
             );
           }
           var sm = this.getSelectionModel();
@@ -2327,13 +2325,13 @@ Ext.define(
         clearSelections: function () {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: clearSelections will be removed, please access deselectAll through DataView's SelectionModel, ie: view.getSelectionModel().deselectAll()",
+              "DataView: clearSelections will be removed, please access deselectAll through DataView's SelectionModel, ie: view.getSelectionModel().deselectAll()"
             );
           }
           var sm = this.getSelectionModel();
           return sm.deselectAll();
-        },
+        }
       });
     });
-  },
+  }
 );

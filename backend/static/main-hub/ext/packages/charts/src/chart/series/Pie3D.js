@@ -83,7 +83,7 @@ Ext.define(
        * Slides highlighted pie sector outward.
        */
       highlightCfg: {
-        margin: 20,
+        margin: 20
       },
 
       /**
@@ -94,7 +94,7 @@ Ext.define(
        * @private
        * @cfg {Boolean/Object} [shadow=false]
        */
-      shadow: false,
+      shadow: false
     },
 
     // Subtract 90 degrees from rotation, so that `rotation` config's default
@@ -111,7 +111,7 @@ Ext.define(
 
     updateRotation: function (rotation) {
       this.setStyle({
-        baseRotation: rotation + this.rotationOffset,
+        baseRotation: rotation + this.rotationOffset
       });
       this.doUpdateStyles();
     },
@@ -132,11 +132,11 @@ Ext.define(
       if (shadow === true) {
         shadow = {
           shadowColor: "rgba(0,0,0,0.8)",
-          shadowBlur: 30,
+          shadowBlur: 30
         };
       } else if (!Ext.isObject(shadow)) {
         shadow = {
-          shadowColor: Ext.util.Color.RGBA_NONE,
+          shadowColor: Ext.util.Color.RGBA_NONE
         };
       }
 
@@ -259,7 +259,7 @@ Ext.define(
             startAngle: lastAngle,
             endAngle: summation[i] - delta,
             globalAlpha: 1,
-            baseRotation: rotation,
+            baseRotation: rotation
           });
         }
         lastAngle = summation[i];
@@ -271,7 +271,7 @@ Ext.define(
           startAngle: twoPi,
           endAngle: twoPi,
           globalAlpha: 0,
-          baseRotation: rotation,
+          baseRotation: rotation
         });
       }
     },
@@ -306,7 +306,7 @@ Ext.define(
           sprite.putMarker(
             "labels",
             { hidden: hidden[j] },
-            sprite.attr.attributeId,
+            sprite.attr.attributeId
           );
         }
       }
@@ -361,7 +361,7 @@ Ext.define(
           endRho: radius,
           startRho: (radius * me.getDonut()) / 100,
           thickness: me.getThickness(),
-          distortion: me.getDistortion(),
+          distortion: me.getDistortion()
         },
         sprites = me.sprites,
         label = me.getLabel(),
@@ -376,13 +376,13 @@ Ext.define(
         sliceAttributes = Ext.apply(
           {},
           this.getStyleByIndex(i),
-          commonAttributes,
+          commonAttributes
         );
         if (!sprites[i * spritesPerSlice]) {
           for (j = 0; j < me.partNames.length; j++) {
             sprite = surface.add({
               type: "pie3dPart",
-              part: me.partNames[j],
+              part: me.partNames[j]
             });
             if (j === 0 && labelTpl.getField()) {
               // Make the 'top' part hold the label.
@@ -399,7 +399,7 @@ Ext.define(
         } else {
           sliceSprites = sprites.slice(
             i * spritesPerSlice,
-            (i + 1) * spritesPerSlice,
+            (i + 1) * spritesPerSlice
           );
           for (j = 0; j < sliceSprites.length; j++) {
             sprite = sliceSprites[j];
@@ -465,12 +465,12 @@ Ext.define(
                 series: me,
                 sprite: sprites.slice(
                   topPartIndex,
-                  topPartIndex + spritesPerSlice,
+                  topPartIndex + spritesPerSlice
                 ),
                 index: i,
                 record: records[i],
                 category: "sprites",
-                field: me.getXField(),
+                field: me.getXField()
               };
             }
           }
@@ -502,11 +502,11 @@ Ext.define(
             mark: color || "black",
             disabled: hidden[i],
             series: me.getId(),
-            index: i,
+            index: i
           });
         }
       }
-    },
+    }
   },
   function () {
     var proto = this.prototype,
@@ -516,5 +516,5 @@ Ext.define(
 
     proto.partNames = definition.replace(/^enums\(|\)/g, "").split(",");
     proto.spritesPerSlice = proto.partNames.length;
-  },
+  }
 );

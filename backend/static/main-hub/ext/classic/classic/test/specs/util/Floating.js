@@ -10,16 +10,16 @@ describe("Ext.util.Floating", function () {
     component = new Ext.Component(
       Ext.apply(
         {
-          floating: true,
+          floating: true
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
   function spyOnEvent(object, eventName, fn, options) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
 
@@ -71,7 +71,7 @@ describe("Ext.util.Floating", function () {
 
   it("should have the x-fixed-layer CSS class if fixed is true", function () {
     makeComponent({
-      fixed: true,
+      fixed: true
     });
     component.show();
 
@@ -92,7 +92,7 @@ describe("Ext.util.Floating", function () {
   it("should render the component to the renderTo element", function () {
     var el = Ext.getBody().createChild();
     makeComponent({
-      renderTo: el,
+      renderTo: el
     });
 
     expect(component.rendered).toBe(true);
@@ -105,7 +105,7 @@ describe("Ext.util.Floating", function () {
     var el = Ext.getBody().createChild();
     makeComponent({
       renderTo: el,
-      hidden: true,
+      hidden: true
     });
 
     expect(component.rendered).toBe(true);
@@ -139,7 +139,7 @@ describe("Ext.util.Floating", function () {
 
     it("should create a shim if shim is true", function () {
       makeComponent({
-        shim: true,
+        shim: true
       });
       component.show();
 
@@ -149,7 +149,7 @@ describe("Ext.util.Floating", function () {
     it("should create a shim if Ext.useShims is true", function () {
       Ext.useShims = true;
       makeComponent({
-        shim: true,
+        shim: true
       });
       component.show();
 
@@ -161,7 +161,7 @@ describe("Ext.util.Floating", function () {
     it("should set position:fixed on the shim if fixed is true", function () {
       makeComponent({
         fixed: true,
-        shim: true,
+        shim: true
       });
       component.show();
 
@@ -179,7 +179,7 @@ describe("Ext.util.Floating", function () {
 
     it("should not have a shadow if shadow is false", function () {
       makeComponent({
-        shadow: false,
+        shadow: false
       });
       component.show();
 
@@ -188,7 +188,7 @@ describe("Ext.util.Floating", function () {
 
     it("should pass shadowOffset along to the shadow", function () {
       makeComponent({
-        shadowOffset: 15,
+        shadowOffset: 15
       });
       component.show();
 
@@ -204,7 +204,7 @@ describe("Ext.util.Floating", function () {
 
     it("should pass a string shadow config along as the 'mode' config of the shadow", function () {
       makeComponent({
-        shadow: "drop",
+        shadow: "drop"
       });
       component.show();
 
@@ -213,7 +213,7 @@ describe("Ext.util.Floating", function () {
 
     it("should set position:fixed on the shadow if fixed is true", function () {
       makeComponent({
-        fixed: true,
+        fixed: true
       });
       component.show();
 
@@ -229,7 +229,7 @@ describe("Ext.util.Floating", function () {
         width: 200,
         height: 100,
         x: 100,
-        y: 100,
+        y: 100
       });
       component.show();
 
@@ -243,8 +243,8 @@ describe("Ext.util.Floating", function () {
         listeners: {
           afteranimate: function () {
             animationDone = true;
-          },
-        },
+          }
+        }
       });
 
       waitsFor(
@@ -252,7 +252,7 @@ describe("Ext.util.Floating", function () {
           return !shadow.el && !shadowEl.isVisible();
         },
         "Shadow was never hidden",
-        150,
+        150
       );
 
       waitsFor(
@@ -260,7 +260,7 @@ describe("Ext.util.Floating", function () {
           return animationDone;
         },
         "Animation never completed",
-        300,
+        300
       );
 
       runs(function () {
@@ -285,7 +285,7 @@ describe("Ext.util.Floating", function () {
         width: 200,
         height: 100,
         x: 100,
-        y: 100,
+        y: 100
       });
       component.show();
 
@@ -300,8 +300,8 @@ describe("Ext.util.Floating", function () {
         listeners: {
           afteranimate: function () {
             animationDone = true;
-          },
-        },
+          }
+        }
       });
 
       waitsFor(
@@ -309,7 +309,7 @@ describe("Ext.util.Floating", function () {
           return animationDone;
         },
         "Animation never completed",
-        300,
+        300
       );
 
       runs(function () {
@@ -334,9 +334,9 @@ describe("Ext.util.Floating", function () {
           items: [
             {
               xtype: "textfield",
-              itemId: "text",
-            },
-          ],
+              itemId: "text"
+            }
+          ]
         });
         var text = component.down("#text");
         jasmine.focusAndWait(text);
@@ -352,14 +352,14 @@ describe("Ext.util.Floating", function () {
       it("should not focus the floater if a descandant component contains focus and it is not in the same DOM hierarchy", function () {
         component = new Ext.window.Window({
           autoShow: true,
-          floating: true,
+          floating: true
         });
 
         var text = new Ext.form.field.Text({
           renderTo: Ext.getBody(),
           getRefOwner: function () {
             return component;
-          },
+          }
         });
 
         jasmine.focusAndWait(text);
@@ -392,7 +392,7 @@ describe("Ext.util.Floating", function () {
         renderTo: Ext.getBody(),
         width: 400,
         height: 400,
-        scrollable: true,
+        scrollable: true
       };
       if (alignToComponent) {
         c.items = [
@@ -400,17 +400,17 @@ describe("Ext.util.Floating", function () {
             xtype: "component",
             autoEl: {
               html: "A",
-              style: "float:left;width:100px;height:500px",
-            },
+              style: "float:left;width:100px;height:500px"
+            }
           },
           {
             xtype: "component",
             id: "align",
             autoEl: {
               html: "B",
-              style: "float:left;width:100px;height:200px",
-            },
-          },
+              style: "float:left;width:100px;height:200px"
+            }
+          }
         ];
       } else {
         c.html = Ext.DomHelper.createHtml({
@@ -420,8 +420,8 @@ describe("Ext.util.Floating", function () {
               style: {
                 float: "left",
                 width: "100px",
-                height: "500px",
-              },
+                height: "500px"
+              }
             },
             {
               html: "B",
@@ -429,10 +429,10 @@ describe("Ext.util.Floating", function () {
               style: {
                 float: "left",
                 width: "100px",
-                height: "200px",
-              },
-            },
-          ],
+                height: "200px"
+              }
+            }
+          ]
         });
       }
       c = new (alignToComponent ? Ext.Container : Ext.Component)(c);
@@ -445,7 +445,7 @@ describe("Ext.util.Floating", function () {
         shadow: false,
         width: 50,
         height: 50,
-        style: "border: 1px solid black",
+        style: "border: 1px solid black"
       });
     }
 
@@ -520,7 +520,7 @@ describe("Ext.util.Floating", function () {
       it("should unbind the resize listener when alignTo element is destroyed", function () {
         var alignEl = c.getEl().down(".align"),
           spy = spyOnEvent(Ext.GlobalEvents, "resize", null, {
-            buffer: 200,
+            buffer: 200
           }),
           onErrorSpy = jasmine.createSpy();
 
@@ -628,7 +628,7 @@ describe("Ext.util.Floating", function () {
         renderTo: Ext.getBody(),
         width: 400,
         height: 400,
-        scrollable: true,
+        scrollable: true
       };
       if (alignToComponent) {
         c.items = [
@@ -636,17 +636,17 @@ describe("Ext.util.Floating", function () {
             xtype: "component",
             autoEl: {
               html: "A",
-              style: "float:left;width:100px;height:500px",
-            },
+              style: "float:left;width:100px;height:500px"
+            }
           },
           {
             xtype: "component",
             id: "align",
             autoEl: {
               html: "B",
-              style: "float:left;width:100px;height:200px",
-            },
-          },
+              style: "float:left;width:100px;height:200px"
+            }
+          }
         ];
       } else {
         c.html = Ext.DomHelper.createHtml({
@@ -656,8 +656,8 @@ describe("Ext.util.Floating", function () {
               style: {
                 float: "left",
                 width: "100px",
-                height: "500px",
-              },
+                height: "500px"
+              }
             },
             {
               html: "B",
@@ -665,10 +665,10 @@ describe("Ext.util.Floating", function () {
               style: {
                 float: "left",
                 width: "100px",
-                height: "200px",
-              },
-            },
-          ],
+                height: "200px"
+              }
+            }
+          ]
         });
       }
       c = new (alignToComponent ? Ext.Container : Ext.Component)(c);
@@ -685,7 +685,7 @@ describe("Ext.util.Floating", function () {
         style: "border: 1px solid black",
         renderTo: scroller.getInnerElement
           ? scroller.getInnerElement()
-          : c.getContentTarget(),
+          : c.getContentTarget()
       });
     }
 
@@ -702,7 +702,7 @@ describe("Ext.util.Floating", function () {
       it("should keep the floater aligned on scroll", function () {
         var alignToSpy = spyOn(
           floater.mixins.positionable,
-          "alignTo",
+          "alignTo"
         ).andCallThrough();
 
         floater.alignTo(c.getEl().down(".align"), "tl-bl");
@@ -752,7 +752,7 @@ describe("Ext.util.Floating", function () {
       it("should keep the floater aligned on scroll", function () {
         var alignToSpy = spyOn(
           floater.mixins.positionable,
-          "alignTo",
+          "alignTo"
         ).andCallThrough();
 
         floater.alignTo(c.down("#align"), "tl-bl");
@@ -824,8 +824,8 @@ describe("Ext.util.Floating", function () {
                 "Honk",
                 "Flap",
                 "Gibber",
-                "Tweet",
-              ],
+                "Tweet"
+              ]
             },
             {
               xtype: "grid",
@@ -837,22 +837,22 @@ describe("Ext.util.Floating", function () {
               columns: [
                 {
                   text: "Col 1",
-                  dataIndex: "col1",
+                  dataIndex: "col1"
                 },
                 {
                   text: "Col 2",
-                  dataIndex: "col2",
-                },
+                  dataIndex: "col2"
+                }
               ],
               store: {
                 fields: ["col1", "col2"],
                 data: [
                   {
                     col1: "grid" + (i + 1) + "/1",
-                    col2: "grid" + (i + 1) + "/2",
-                  },
-                ],
-              },
+                    col2: "grid" + (i + 1) + "/2"
+                  }
+                ]
+              }
             },
             {
               xtype: "button",
@@ -861,13 +861,13 @@ describe("Ext.util.Floating", function () {
               style: "margin:0 0 5px 100px",
               menu: [
                 {
-                  text: "Button Menu 1",
+                  text: "Button Menu 1"
                 },
                 {
-                  text: "Button Menu 2",
-                },
-              ],
-            },
+                  text: "Button Menu 2"
+                }
+              ]
+            }
           );
         }
         panel = new Ext.form.Panel({
@@ -878,7 +878,7 @@ describe("Ext.util.Floating", function () {
           height: 400,
           width: 600,
           renderTo: document.body,
-          items: items,
+          items: items
         });
       });
       afterEach(function () {
@@ -932,11 +932,11 @@ describe("Ext.util.Floating", function () {
             expect(
               Ext.String.startsWith(
                 headerMenu.el.dom.style.clip,
-                "rect(" + overflow + "px",
-              ),
+                "rect(" + overflow + "px"
+              )
             ).toBe(true);
           });
-        },
+        }
       );
 
       itNotTouch(
@@ -964,7 +964,7 @@ describe("Ext.util.Floating", function () {
             // No clipping
             expect(columnsMenu.el.dom.style.clip).toBe("");
           });
-        },
+        }
       );
 
       // If the flaoters overflow the scroll area, but we've reached the scroll end, and there's not enough scroll left
@@ -1034,14 +1034,14 @@ describe("Ext.util.Floating", function () {
             // The header trigger ell is clipped, so both menus should be clipped out of visibility.
             // Note that some browsers return comma separated values for the clip rect.
             expect(headerMenu.el.dom.style.clip.replace(/,\s*/g, " ")).toBe(
-              "rect(-10000px 10000px 0px -10000px)",
+              "rect(-10000px 10000px 0px -10000px)"
             );
             expect(headerMenu.el.dom.style.clip.replace(/,\s*/g, " ")).toBe(
-              "rect(-10000px 10000px 0px -10000px)",
+              "rect(-10000px 10000px 0px -10000px)"
             );
           });
-        },
+        }
       );
-    },
+    }
   );
 });

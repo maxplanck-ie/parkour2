@@ -5,7 +5,7 @@ Ext.define("Ext.locale.it.grid.filters.filter.Date", {
     return {
       lt: { text: "Prima del" },
       gt: { text: "Dopo il" },
-      eq: { text: "Il giorno" },
+      eq: { text: "Il giorno" }
     };
-  },
+  }
 });

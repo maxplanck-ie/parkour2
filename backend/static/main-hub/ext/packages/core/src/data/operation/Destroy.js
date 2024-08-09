@@ -39,5 +39,5 @@ Ext.define("Ext.data.operation.Destroy", {
     data[idField[nameProperty]] = record.id;
 
     return data;
-  },
+  }
 });

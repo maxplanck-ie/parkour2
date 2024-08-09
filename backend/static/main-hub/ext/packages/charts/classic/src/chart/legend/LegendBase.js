@@ -25,11 +25,11 @@ Ext.define("Ext.chart.legend.LegendBase", {
       "</div>",
       "</tpl>",
       "</div>",
-      "</div>",
+      "</div>"
     ],
     nodeContainerSelector: "div." + Ext.baseCSSPrefix + "legend-inner", // element that contains rows (see AbstractView)
     itemSelector: "div." + Ext.baseCSSPrefix + "legend-item", // row element (see AbstractView)
-    docked: "bottom",
+    docked: "bottom"
   },
 
   setDocked: function (docked) {
@@ -71,5 +71,5 @@ Ext.define("Ext.chart.legend.LegendBase", {
   onItemClick: function (record, item, index, e) {
     this.callParent(arguments);
     this.toggleItem(index);
-  },
+  }
 });

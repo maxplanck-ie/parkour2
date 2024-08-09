@@ -19,8 +19,8 @@ describe("Ext.data.schema.ManyToMany", function () {
         extend: "Ext.data.Model",
 
         schema: {
-          namespace: "spec.many2many",
-        },
+          namespace: "spec.many2many"
+        }
       });
 
       schema = Base.schema;
@@ -29,22 +29,22 @@ describe("Ext.data.schema.ManyToMany", function () {
       // Simple (one-side specified, default ordering)
       SimpleUser = Ext.define("spec.many2many.User", {
         extend: "spec.many2many.Base",
-        manyToMany: "Group",
+        manyToMany: "Group"
       });
 
       SimpleGroup = Ext.define("spec.many2many.Group", {
-        extend: "spec.many2many.Base",
+        extend: "spec.many2many.Base"
       });
 
       // Side-specified
       User2 = Ext.define("spec.many2many.User2", {
         extend: "spec.many2many.Base",
-        manyToMany: "#Group2",
+        manyToMany: "#Group2"
       });
 
       Group2 = Ext.define("spec.many2many.Group2", {
         extend: "spec.many2many.Base",
-        manyToMany: "User2#",
+        manyToMany: "User2#"
       });
 
       // Object form
@@ -53,9 +53,9 @@ describe("Ext.data.schema.ManyToMany", function () {
         manyToMany: [
           {
             type: "Group3",
-            left: true,
-          },
-        ],
+            left: true
+          }
+        ]
       });
 
       Group3 = Ext.define("spec.many2many.Group3", {
@@ -63,9 +63,9 @@ describe("Ext.data.schema.ManyToMany", function () {
         manyToMany: [
           {
             type: "User3",
-            right: true,
-          },
-        ],
+            right: true
+          }
+        ]
       });
 
       // Full Object form
@@ -78,10 +78,10 @@ describe("Ext.data.schema.ManyToMany", function () {
             field: "groupId",
             left: {
               role: "users",
-              field: "userId",
-            },
-          },
-        ],
+              field: "userId"
+            }
+          }
+        ]
       });
 
       Group4 = Ext.define("spec.many2many.Group4", {
@@ -93,10 +93,10 @@ describe("Ext.data.schema.ManyToMany", function () {
             field: "userId",
             right: {
               role: "groups",
-              field: "groupId",
-            },
-          },
-        ],
+              field: "groupId"
+            }
+          }
+        ]
       });
 
       // Named Full Object form
@@ -109,10 +109,10 @@ describe("Ext.data.schema.ManyToMany", function () {
             field: "theGroup_id",
             left: {
               role: "theUsers",
-              field: "theUser_id",
-            },
-          },
-        },
+              field: "theUser_id"
+            }
+          }
+        }
       });
 
       Group5 = Ext.define("spec.many2many.Group5", {
@@ -124,29 +124,29 @@ describe("Ext.data.schema.ManyToMany", function () {
             field: "theUser_id",
             right: {
               role: "theGroups",
-              field: "theGroup_id",
-            },
-          },
-        },
+              field: "theGroup_id"
+            }
+          }
+        }
       });
 
       Base = Ext.define("spec.many2many.FooBase", {
         extend: "Ext.data.Model",
 
         schema: {
-          namespace: "spec.many2many",
-        },
+          namespace: "spec.many2many"
+        }
       });
 
       // Nested namespace
       FooBarThing = Ext.define("spec.many2many.foo.bar.Thing", {
         extend: "spec.many2many.FooBase",
-        manyToMany: "foo.Goo",
+        manyToMany: "foo.Goo"
       });
 
       FooGoo = Ext.define("spec.many2many.foo.Goo", {
         extend: "spec.many2many.FooBase",
-        manyToMany: "foo.bar.Thing",
+        manyToMany: "foo.bar.Thing"
       });
       Ext.data.Model.schema.setNamespace("spec.many2many");
     });
@@ -617,12 +617,12 @@ describe("Ext.data.schema.ManyToMany", function () {
       Group = Ext.define("spec.Group", {
         extend: "Ext.data.Model",
         fields: ["id", "name"],
-        manyToMany: cfg || "User",
+        manyToMany: cfg || "User"
       });
 
       User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["id", "name"],
+        fields: ["id", "name"]
       });
     }
 
@@ -642,7 +642,7 @@ describe("Ext.data.schema.ManyToMany", function () {
     function complete(data) {
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.JSON.encode(data),
+        responseText: Ext.JSON.encode(data)
       });
     }
 
@@ -656,9 +656,9 @@ describe("Ext.data.schema.ManyToMany", function () {
             right: {
               type: "User",
               role: "users",
-              associationKey: "users.data",
-            },
-          },
+              associationKey: "users.data"
+            }
+          }
         });
       });
 
@@ -669,13 +669,13 @@ describe("Ext.data.schema.ManyToMany", function () {
           users: {
             data: [
               {
-                id: 101,
+                id: 101
               },
               {
-                id: 102,
-              },
-            ],
-          },
+                id: 102
+              }
+            ]
+          }
         });
         var users = group.users();
         expect(users.getCount()).toBe(2);
@@ -690,13 +690,13 @@ describe("Ext.data.schema.ManyToMany", function () {
           groups: {
             data: [
               {
-                id: 101,
+                id: 101
               },
               {
-                id: 102,
-              },
-            ],
-          },
+                id: 102
+              }
+            ]
+          }
         });
         var groups = user.groups();
         expect(groups.getCount()).toBe(2);
@@ -717,17 +717,17 @@ describe("Ext.data.schema.ManyToMany", function () {
           users: [
             {
               id: 101,
-              name: "User1",
+              name: "User1"
             },
             {
               id: 102,
-              name: "User2",
+              name: "User2"
             },
             {
               id: 103,
-              name: "User3",
-            },
-          ],
+              name: "User3"
+            }
+          ]
         });
         var users = group.users();
         expect(users.getCount()).toBe(3);
@@ -743,17 +743,17 @@ describe("Ext.data.schema.ManyToMany", function () {
           groups: [
             {
               id: 101,
-              name: "Group1",
+              name: "Group1"
             },
             {
               id: 102,
-              name: "Group2",
+              name: "Group2"
             },
             {
               id: 103,
-              name: "Group3",
-            },
-          ],
+              name: "Group3"
+            }
+          ]
         });
         var groups = user.groups();
         expect(groups.getCount()).toBe(3);
@@ -782,17 +782,17 @@ describe("Ext.data.schema.ManyToMany", function () {
           users: [
             {
               id: 101,
-              name: "User1",
+              name: "User1"
             },
             {
               id: 102,
-              name: "User2",
+              name: "User2"
             },
             {
               id: 103,
-              name: "User3",
-            },
-          ],
+              name: "User3"
+            }
+          ]
         });
         var users = group.users();
         expect(users.getCount()).toBe(3);
@@ -808,17 +808,17 @@ describe("Ext.data.schema.ManyToMany", function () {
           users: [
             {
               id: 101,
-              name: "User1",
+              name: "User1"
             },
             {
               id: 102,
-              name: "User2",
+              name: "User2"
             },
             {
               id: 103,
-              name: "User3",
-            },
-          ],
+              name: "User3"
+            }
+          ]
         });
 
         var users = group.users(),
@@ -843,17 +843,17 @@ describe("Ext.data.schema.ManyToMany", function () {
           groups: [
             {
               id: 101,
-              name: "Group1",
+              name: "Group1"
             },
             {
               id: 102,
-              name: "Group2",
+              name: "Group2"
             },
             {
               id: 103,
-              name: "Group3",
-            },
-          ],
+              name: "Group3"
+            }
+          ]
         });
         var groups = user.groups();
         expect(groups.getCount()).toBe(3);
@@ -869,17 +869,17 @@ describe("Ext.data.schema.ManyToMany", function () {
           groups: [
             {
               id: 101,
-              name: "Group1",
+              name: "Group1"
             },
             {
               id: 102,
-              name: "Group2",
+              name: "Group2"
             },
             {
               id: 103,
-              name: "Group3",
-            },
-          ],
+              name: "Group3"
+            }
+          ]
         });
 
         var groups = user.groups(),
@@ -913,12 +913,12 @@ describe("Ext.data.schema.ManyToMany", function () {
           Group = Ext.define("spec.Group", {
             extend: "Ext.data.Model",
             fields: ["id", "name"],
-            manyToMany: "User",
+            manyToMany: "User"
           });
 
           User = Ext.define("spec.User", {
             extend: "Ext.data.Model",
-            fields: ["id", "name"],
+            fields: ["id", "name"]
           });
         });
 
@@ -966,12 +966,12 @@ describe("Ext.data.schema.ManyToMany", function () {
       Group = Ext.define("spec.Group", {
         extend: "Ext.data.Model",
         fields: ["id", "name"],
-        manyToMany: "User",
+        manyToMany: "User"
       });
 
       User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["id", "name"],
+        fields: ["id", "name"]
       });
 
       session = new Ext.data.Session();

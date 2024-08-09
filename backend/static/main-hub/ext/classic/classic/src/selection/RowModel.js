@@ -154,7 +154,7 @@ Ext.define("Ext.selection.RowModel", {
     if (firstSelection) {
       return new Ext.grid.CellContext(this.view).setPosition(
         this.store.indexOf(firstSelection),
-        0,
+        0
       );
     }
   },
@@ -163,7 +163,7 @@ Ext.define("Ext.selection.RowModel", {
     if (!position.isCellContext) {
       position = new Ext.grid.CellContext(this.view).setPosition(
         position.row,
-        position.column,
+        position.column
       );
     }
     this.select(position.record, keepExisting);
@@ -233,5 +233,5 @@ Ext.define("Ext.selection.RowModel", {
       (isLeftRight && navModel.previousRecord === navModel.record) ||
       this.callParent([e])
     );
-  },
+  }
 });

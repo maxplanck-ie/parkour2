@@ -11,7 +11,7 @@ Ext.define("Ext.grid.plugin.HeaderReorderer", {
     headerCt.on({
       boxready: this.onHeaderCtRender,
       single: true,
-      scope: this,
+      scope: this
     });
   },
 
@@ -51,5 +51,5 @@ Ext.define("Ext.grid.plugin.HeaderReorderer", {
     if (this.dragZone) {
       this.dragZone.disable();
     }
-  },
+  }
 });

@@ -7,9 +7,9 @@ describe("Ext.Action", function () {
     cfg = Ext.apply(
       {
         xtype: "button",
-        text: "Foo",
+        text: "Foo"
       },
-      cfg,
+      cfg
     );
 
     action = new Ext.Action(cfg);
@@ -30,7 +30,7 @@ describe("Ext.Action", function () {
 
           onOperationToggle: function (btn, pressed) {
             this.view.getAction("operation").setDisabled(pressed);
-          },
+          }
         }),
         ActionsPanel = Ext.define(null, {
           extend: "Ext.panel.Panel",
@@ -47,14 +47,14 @@ describe("Ext.Action", function () {
               text: "Do operation",
               handler: "onOperationClick",
               glyph: "xf005@FontAwesome",
-              tooltip: "Perform the operation",
+              tooltip: "Perform the operation"
             },
             disableOperation: {
               text: "Disable operation",
               enableToggle: true,
               toggleHandler: "onOperationToggle",
-              tooltip: "Disable the operation",
-            },
+              tooltip: "Disable the operation"
+            }
           },
 
           // Added Actions are interpreted as Buttons in this view
@@ -69,26 +69,26 @@ describe("Ext.Action", function () {
               text: "Action Menu",
               menu: [
                 // Add the Action to a menu as a text item
-                "@operation",
-              ],
+                "@operation"
+              ]
             },
-            "@disableOperation",
+            "@disableOperation"
           ],
 
           bodyPadding: 10,
           layout: {
             type: "vbox",
-            align: "stretch",
+            align: "stretch"
           },
           items: [
             // Add the Action to the panel body.
             // defaultActionType will ensure it is converted to a Button.
-            "@operation",
-          ],
+            "@operation"
+          ]
         });
 
       panel = new ActionsPanel({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       var toolbar = panel.child("toolbar"),
@@ -132,13 +132,13 @@ describe("Ext.Action", function () {
           text: "Do operation",
           handler: "onOperationClick",
           glyph: "xf005@FontAwesome",
-          tooltip: "Perform the operation",
+          tooltip: "Perform the operation"
         }),
         disableOperationAction = new Ext.Action({
           text: "Disable operation",
           enableToggle: true,
           toggleHandler: "onOperationToggle",
-          tooltip: "Disable the operation",
+          tooltip: "Disable the operation"
         }),
         ActionsController = Ext.define(null, {
           extend: "Ext.app.ViewController",
@@ -149,7 +149,7 @@ describe("Ext.Action", function () {
 
           onOperationToggle: function (btn, pressed) {
             operationAction.setDisabled(pressed);
-          },
+          }
         }),
         ActionsPanel = Ext.define(null, {
           extend: "Ext.panel.Panel",
@@ -171,26 +171,26 @@ describe("Ext.Action", function () {
               text: "Action Menu",
               menu: [
                 // Add the Action to a menu as a text item
-                operationAction,
-              ],
+                operationAction
+              ]
             },
-            disableOperationAction,
+            disableOperationAction
           ],
 
           bodyPadding: 10,
           layout: {
             type: "vbox",
-            align: "stretch",
+            align: "stretch"
           },
           items: [
             // Add the Action to the panel body.
             // defaultActionType will ensure it is converted to a Button.
-            operationAction,
-          ],
+            operationAction
+          ]
         });
 
       panel = new ActionsPanel({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       var toolbar = panel.child("toolbar"),
@@ -425,17 +425,17 @@ describe("Ext.Action", function () {
 
       Ext.define("spec.TestController1", {
         extend: "Ext.app.ViewController",
-        alias: "controller.myvc",
+        alias: "controller.myvc"
       });
 
       makeAction({
-        reference: "foo",
+        reference: "foo"
       });
 
       // test as config
       ct = new Ext.panel.Panel({
         tbar: [action],
-        controller: "myvc",
+        controller: "myvc"
       });
 
       item = ct.getDockedItems()[0].items.getAt(0);
@@ -447,7 +447,7 @@ describe("Ext.Action", function () {
       // test as instance
       ct = new Ext.panel.Panel({
         items: [new Ext.button.Button(action)],
-        controller: "myvc",
+        controller: "myvc"
       });
 
       item = ct.items.getAt(0);

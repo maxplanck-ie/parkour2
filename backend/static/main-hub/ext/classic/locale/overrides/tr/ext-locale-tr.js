@@ -12,7 +12,7 @@ Ext.onReady(function () {
       "Eylül",
       "Ekim",
       "Kasım",
-      "Aralık",
+      "Aralık"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -31,7 +31,7 @@ Ext.onReady(function () {
       Eylül: 8,
       Ekim: 9,
       Kasım: 10,
-      Aralık: 11,
+      Aralık: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -47,7 +47,7 @@ Ext.onReady(function () {
       "Çarşamba",
       "Perşembe",
       "Cuma",
-      "Cumartesi",
+      "Cumartesi"
     ];
 
     Ext.Date.shortDayNames = ["Paz", "Pzt", "Sal", "Çrş", "Prş", "Cum", "Cmt"];
@@ -63,35 +63,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "TL",
       // Turkish Lira
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
   }
 });
 
 Ext.define("Ext.locale.tr.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.tr.grid.Grid", {
   override: "Ext.grid.Grid",
-  ddText: "Seçili satır sayısı : {0}",
+  ddText: "Seçili satır sayısı : {0}"
 });
 
 Ext.define("Ext.locale.tr.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Sekmeyi kapat",
+  closeText: "Sekmeyi kapat"
 });
 
 Ext.define("Ext.locale.tr.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Bu alandaki değer geçersiz",
+  invalidText: "Bu alandaki değer geçersiz"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.tr.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Yükleniyor ...",
+  loadingText: "Yükleniyor ..."
 });
 
 Ext.define("Ext.locale.tr.picker.Date", {
@@ -106,13 +106,13 @@ Ext.define("Ext.locale.tr.picker.Date", {
   monthYearText: "Bir ay seçiniz (Yılı artırmak/azaltmak için Control+Up/Down)",
   todayTip: "{0} (Boşluk Tuşu - Spacebar)",
   format: "d/m/Y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.tr.picker.Month", {
   override: "Ext.picker.Month",
   okText: "*Tamam*",
-  cancelText: "İptal",
+  cancelText: "İptal"
 });
 
 Ext.define("Ext.locale.tr.toolbar.Paging", {
@@ -125,7 +125,7 @@ Ext.define("Ext.locale.tr.toolbar.Paging", {
   lastText: "Son Sayfa",
   refreshText: "Yenile",
   displayMsg: "Gösterilen {0} - {1} / {2}",
-  emptyMsg: "Gösterilebilecek veri yok",
+  emptyMsg: "Gösterilebilecek veri yok"
 });
 
 Ext.define("Ext.locale.tr.form.field.Text", {
@@ -134,14 +134,14 @@ Ext.define("Ext.locale.tr.form.field.Text", {
   maxLengthText: "Girilen verinin uzunluğu en fazla {0} olabilir",
   blankText: "Bu alan boş bırakılamaz",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.tr.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "En az {0} girilebilir",
   maxText: "En çok {0} girilebilir",
-  nanText: "{0} geçersiz bir sayıdır",
+  nanText: "{0} geçersiz bir sayıdır"
 });
 
 Ext.define("Ext.locale.tr.form.field.Date", {
@@ -154,20 +154,20 @@ Ext.define("Ext.locale.tr.form.field.Date", {
     "{0} geçersiz bir tarihdir - tarih formatı {1} şeklinde olmalıdır",
   format: "d/m/Y",
   altFormats:
-    "d.m.y|d.m.Y|d/m/y|d-m-Y|d-m-y|d.m|d/m|d-m|dm|dmY|dmy|d|Y.m.d|Y-m-d|Y/m/d",
+    "d.m.y|d.m.Y|d/m/y|d-m-Y|d-m-y|d.m|d/m|d-m|dm|dmY|dmy|d|Y.m.d|Y-m-d|Y/m/d"
 });
 
 Ext.define(
   "Ext.locale.tr.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Yükleniyor ...",
+      loadingText: "Yükleniyor ..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.tr.form.field.VTypes", {
@@ -177,14 +177,14 @@ Ext.define("Ext.locale.tr.form.field.VTypes", {
   urlText:
     'Bu alan "http://www.example.com" şeklinde URL adres formatında olmalıdır',
   alphaText: "Bu alan sadece harf ve _ içermeli",
-  alphanumText: "Bu alan sadece harf, sayı ve _ içermeli",
+  alphanumText: "Bu alan sadece harf, sayı ve _ içermeli"
 });
 
 Ext.define(
   "Ext.locale.tr.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Lütfen bu bağlantı için gerekli URL adresini giriniz:",
+    createLinkText: "Lütfen bu bağlantı için gerekli URL adresini giriniz:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -192,76 +192,76 @@ Ext.define(
         bold: {
           title: "Kalın(Bold) (Ctrl+B)",
           text: "Seçili yazıyı kalın yapar.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "İtalik(Italic) (Ctrl+I)",
           text: "Seçili yazıyı italik yapar.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Alt Ã‡izgi(Underline) (Ctrl+U)",
           text: "Seçili yazının altını çizer.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Fontu büyült",
           text: "Yazı fontunu büyütür.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Fontu küçült",
           text: "Yazı fontunu küçültür.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Arka Plan Rengi",
           text: "Seçili yazının arka plan rengini değiştir.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Yazı Rengi",
           text: "Seçili yazının rengini değiştir.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Sola Daya",
           text: "Yazıyı sola daya.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Ortala",
           text: "Yazıyı editörde ortala.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Sağa daya",
           text: "Yazıyı sağa daya.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Noktalı Liste",
           text: "Noktalı listeye başla.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Numaralı Liste",
           text: "Numaralı lisyeye başla.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Web Adresi(Hyperlink)",
           text: "Seçili yazıyı web adresi(hyperlink) yap.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Kaynak kodu Düzenleme",
           text: "Kaynak kodu düzenleme moduna geç.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.tr.grid.header.Container", {
@@ -270,21 +270,21 @@ Ext.define("Ext.locale.tr.grid.header.Container", {
   sortDescText: "Azalan sırada sırala",
   lockText: "Kolonu kilitle",
   unlockText: "Kolon kilidini kaldır",
-  columnsText: "Kolonlar",
+  columnsText: "Kolonlar"
 });
 
 Ext.define("Ext.locale.tr.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(Yok)",
   groupByText: "Bu Alana Göre Grupla",
-  showGroupsText: "Gruplar Halinde Göster",
+  showGroupsText: "Gruplar Halinde Göster"
 });
 
 Ext.define("Ext.locale.tr.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Ad",
   valueText: "Değer",
-  dateFormat: "d/m/Y",
+  dateFormat: "d/m/Y"
 });
 
 Ext.define("Ext.locale.tr.window.MessageBox", {
@@ -293,11 +293,11 @@ Ext.define("Ext.locale.tr.window.MessageBox", {
     ok: "Tamam",
     cancel: "İptal",
     yes: "Evet",
-    no: "Hayır",
-  },
+    no: "Hayır"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.tr.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

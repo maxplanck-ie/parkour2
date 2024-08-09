@@ -46,8 +46,8 @@ Ext.define("Ext.form.field.Display", {
     ' class="{fieldCls} {fieldCls}-{ui}">{value}</div>',
     {
       compiled: true,
-      disableFormats: true,
-    },
+      disableFormats: true
+    }
   ],
 
   // We have the ARIA markup pre-rendered so we don't want it to be applied
@@ -180,7 +180,7 @@ Ext.define("Ext.form.field.Display", {
     ret.value = this.getDisplayValue();
 
     return ret;
-  },
+  }
 
   /**
    * @cfg {String} inputType

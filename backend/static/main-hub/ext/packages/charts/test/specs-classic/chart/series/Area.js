@@ -15,54 +15,54 @@ describe("Ext.chart.series.Area", function () {
             data: [
               {
                 month: "JAN",
-                data1: 12,
+                data1: 12
               },
               {
                 month: "FEB",
-                data1: 14,
+                data1: 14
               },
               {
                 month: "MAR",
-                data1: 10,
+                data1: 10
               },
               {
                 month: "APR",
-                data1: 18,
+                data1: 18
               },
               {
                 month: "MAY",
-                data1: 17,
-              },
-            ],
+                data1: 17
+              }
+            ]
           },
           axes: [
             {
               type: "numeric",
-              position: "left",
+              position: "left"
             },
             {
               type: "category",
-              position: "bottom",
-            },
+              position: "bottom"
+            }
           ],
           series: [
             {
               type: "area",
               renderer: function (sprite, config, rendererData, index) {
                 return {
-                  fillStyle: index % 2 ? red : green,
+                  fillStyle: index % 2 ? red : green
                 };
               },
               xField: "month",
               yField: "data1",
-              marker: true,
-            },
+              marker: true
+            }
           ],
           listeners: {
             redraw: function () {
               redrawCount++;
-            },
-          },
+            }
+          }
         });
       });
 
@@ -102,57 +102,57 @@ describe("Ext.chart.series.Area", function () {
             data: [
               {
                 month: "JAN",
-                data1: 12,
+                data1: 12
               },
               {
                 month: "FEB",
-                data1: 14,
+                data1: 14
               },
               {
                 month: "MAR",
-                data1: 10,
+                data1: 10
               },
               {
                 month: "APR",
-                data1: 18,
+                data1: 18
               },
               {
                 month: "MAY",
-                data1: 17,
-              },
-            ],
+                data1: 17
+              }
+            ]
           },
           axes: [
             {
               type: "numeric",
-              position: "left",
+              position: "left"
             },
             {
               type: "category",
-              position: "bottom",
-            },
+              position: "bottom"
+            }
           ],
           series: [
             {
               type: "area",
               style: {
-                step: true,
+                step: true
               },
               renderer: function (sprite, config, rendererData, index) {
                 return {
-                  fillStyle: index % 2 ? red : green,
+                  fillStyle: index % 2 ? red : green
                 };
               },
               xField: "month",
               yField: "data1",
-              marker: true,
-            },
+              marker: true
+            }
           ],
           listeners: {
             redraw: function () {
               redrawCount++;
-            },
-          },
+            }
+          }
         });
       });
 

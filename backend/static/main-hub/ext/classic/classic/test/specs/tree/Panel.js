@@ -5,8 +5,8 @@ describe("Ext.tree.Panel", function () {
       extend: "Ext.data.TreeModel",
       fields: ["id", "text", "secondaryId"],
       proxy: {
-        type: "memory",
-      },
+        type: "memory"
+      }
     }),
     tree,
     view,
@@ -26,7 +26,7 @@ describe("Ext.tree.Panel", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -53,21 +53,21 @@ describe("Ext.tree.Panel", function () {
                 id: "C",
                 text: "C",
                 secondaryId: "C",
-                leaf: true,
+                leaf: true
               },
               {
                 id: "D",
                 text: "D",
                 secondaryId: "D",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           {
             id: "E",
             text: "E",
             secondaryId: "EE",
-            leaf: true,
+            leaf: true
           },
           {
             id: "F",
@@ -83,13 +83,13 @@ describe("Ext.tree.Panel", function () {
                     id: "H",
                     text: "H",
                     secondaryId: "HH",
-                    leaf: true,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    leaf: true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         id: "I",
@@ -105,17 +105,17 @@ describe("Ext.tree.Panel", function () {
                 id: "K",
                 text: "K",
                 secondaryId: "KK",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           {
             id: "L",
             text: "L",
             secondaryId: "LL",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       },
       {
         id: "M",
@@ -126,10 +126,10 @@ describe("Ext.tree.Panel", function () {
             id: "N",
             text: "N",
             secondaryId: "NN",
-            leaf: true,
-          },
-        ],
-      },
+            leaf: true
+          }
+        ]
+      }
     ];
 
     makeTree = function (nodes, cfg, storeCfg, rootCfg) {
@@ -138,7 +138,7 @@ describe("Ext.tree.Panel", function () {
         animate: false,
         renderTo: Ext.getBody(),
         viewConfig: {
-          loadMask: false,
+          loadMask: false
         },
         store: (store = new Ext.data.TreeStore(
           Ext.apply(
@@ -149,14 +149,14 @@ describe("Ext.tree.Panel", function () {
                   secondaryId: "root",
                   id: "root",
                   text: "Root",
-                  children: nodes,
+                  children: nodes
                 },
-                rootCfg,
-              ),
+                rootCfg
+              )
             },
-            storeCfg,
-          ),
-        )),
+            storeCfg
+          )
+        ))
       });
       tree = new Ext.tree.Panel(cfg);
       view = tree.view;
@@ -211,7 +211,7 @@ describe("Ext.tree.Panel", function () {
 
       for (i = 1; i <= n; ++i) {
         nodes.push({
-          text: "Node" + i,
+          text: "Node" + i
         });
       }
       return nodes;
@@ -222,17 +222,17 @@ describe("Ext.tree.Panel", function () {
         makeTree(
           [
             {
-              text: "Foo",
-            },
+              text: "Foo"
+            }
           ],
           {
             width: 400,
-            height: 400,
+            height: 400
           },
           null,
           {
-            expanded: true,
-          },
+            expanded: true
+          }
         );
         expectScroll(false, false);
       });
@@ -242,12 +242,12 @@ describe("Ext.tree.Panel", function () {
           makeNodes(50),
           {
             width: 400,
-            height: 200,
+            height: 200
           },
           null,
           {
-            expanded: true,
-          },
+            expanded: true
+          }
         );
         expectScroll(true, false);
       });
@@ -256,17 +256,17 @@ describe("Ext.tree.Panel", function () {
         makeTree(
           [
             {
-              text: "A really long node that causes horizontal scroll",
-            },
+              text: "A really long node that causes horizontal scroll"
+            }
           ],
           {
             width: 200,
-            height: 200,
+            height: 200
           },
           null,
           {
-            expanded: true,
-          },
+            expanded: true
+          }
         );
         expectScroll(false, true);
       });
@@ -274,18 +274,18 @@ describe("Ext.tree.Panel", function () {
       it("should show a scrollbar in both directions", function () {
         var nodes = makeNodes(50);
         nodes.unshift({
-          text: "A really long node that causes horizontal scroll",
+          text: "A really long node that causes horizontal scroll"
         });
         makeTree(
           nodes,
           {
             width: 200,
-            height: 400,
+            height: 400
           },
           null,
           {
-            expanded: true,
-          },
+            expanded: true
+          }
         );
         expectScroll(true, true);
       });
@@ -298,7 +298,7 @@ describe("Ext.tree.Panel", function () {
     function clickCheckboxId(id) {
       var checkbox = Ext.get(view.getRow(store.getById(id))).down(
         view.checkboxSelector,
-        true,
+        true
       );
       jasmine.fireMouseEvent(checkbox, "click");
     }
@@ -319,8 +319,8 @@ describe("Ext.tree.Panel", function () {
         listeners: {
           checkchange: function (rec) {
             eventRec = rec;
-          },
-        },
+          }
+        }
       });
       store.getRoot().cascade(function (r) {
         r.set("checked", false);
@@ -344,7 +344,7 @@ describe("Ext.tree.Panel", function () {
         beforecheckchange: function (rec) {
           eventRec = rec;
           return false;
-        },
+        }
       });
       jasmine.fireMouseEvent(checkbox, "click");
       expect(eventRec).toBe(record);
@@ -479,12 +479,12 @@ describe("Ext.tree.Panel", function () {
           {
             proxy: {
               type: "ajax",
-              url: "fake",
-            },
+              url: "fake"
+            }
           },
           {
-            expanded: true,
-          },
+            expanded: true
+          }
         );
       }).not.toThrow();
     });
@@ -492,7 +492,7 @@ describe("Ext.tree.Panel", function () {
     describe("with invisible root", function () {
       it("should expand the root node by default", function () {
         makeTree(null, {
-          rootVisible: false,
+          rootVisible: false
         });
 
         expect(rootNode.isExpanded()).toBe(true);
@@ -505,13 +505,13 @@ describe("Ext.tree.Panel", function () {
         makeTree(
           null,
           {
-            rootVisible: false,
+            rootVisible: false
           },
           null,
           {
             // Pretend that the root node is loaded
-            loaded: true,
-          },
+            loaded: true
+          }
         );
 
         expect(rootNode.expand).not.toHaveBeenCalled();
@@ -523,11 +523,11 @@ describe("Ext.tree.Panel", function () {
         makeTree(
           null,
           {
-            rootVisible: false,
+            rootVisible: false
           },
           {
-            autoLoad: false,
-          },
+            autoLoad: false
+          }
         );
 
         expect(rootNode.isExpanded()).toBe(false);
@@ -537,12 +537,12 @@ describe("Ext.tree.Panel", function () {
         makeTree(
           null,
           {
-            rootVisible: false,
+            rootVisible: false
           },
           {
             // Pretend that we're loading the store
-            loading: true,
-          },
+            loading: true
+          }
         );
 
         expect(rootNode.isExpanded()).toBe(false);
@@ -555,7 +555,7 @@ describe("Ext.tree.Panel", function () {
       makeTree();
       store.setRootNode({
         expanded: true,
-        children: testNodes,
+        children: testNodes
       });
       expect(store.getCount()).toBe(4);
       expect(store.getAt(0).id).toBe("root");
@@ -568,7 +568,7 @@ describe("Ext.tree.Panel", function () {
       makeTree();
       tree.setRootNode({
         expanded: true,
-        children: testNodes,
+        children: testNodes
       });
       expect(store.getCount()).toBe(4);
       expect(store.getAt(0).id).toBe("root");
@@ -581,14 +581,14 @@ describe("Ext.tree.Panel", function () {
       var spy = jasmine.createSpy();
       var root2 = {
         expanded: true,
-        children: testNodes,
+        children: testNodes
       };
       makeTree();
       tree.on({
         beforeitemcollapse: spy,
         beforeitemexpand: spy,
         itemcollapse: spy,
-        itemexpand: spy,
+        itemexpand: spy
       });
       tree.setRootNode(root2);
 
@@ -613,13 +613,13 @@ describe("Ext.tree.Panel", function () {
                 id: "root",
                 text: "Root",
                 children: testNodes,
-                expanded: true,
-              },
-            },
-          },
+                expanded: true
+              }
+            }
+          }
         },
         store: null,
-        bind: "{nodes}",
+        bind: "{nodes}"
       });
 
       tree.getViewModel().notify();
@@ -640,10 +640,10 @@ describe("Ext.tree.Panel", function () {
                 id: "root",
                 text: "Root",
                 children: testNodes,
-                expanded: true,
-              },
-            },
-          },
+                expanded: true
+              }
+            }
+          }
         },
         store: null,
         bind: "{nodes}",
@@ -652,13 +652,13 @@ describe("Ext.tree.Panel", function () {
             dataIndex: "text",
             locked: true,
             xtype: "treecolumn",
-            width: 100,
+            width: 100
           },
           {
             dataIndex: "secondaryId",
-            flex: 1,
-          },
-        ],
+            flex: 1
+          }
+        ]
       });
 
       tree.getViewModel().notify();
@@ -674,14 +674,14 @@ describe("Ext.tree.Panel", function () {
         data,
         Ext.apply(
           {
-            animate: animate,
+            animate: animate
           },
-          cfg,
+          cfg
         ),
         null,
         {
-          expanded: true,
-        },
+          expanded: true
+        }
       );
     }
 
@@ -693,10 +693,10 @@ describe("Ext.tree.Panel", function () {
             expanded: false,
             children: [
               {
-                id: "b",
-              },
-            ],
-          },
+                id: "b"
+              }
+            ]
+          }
         ]);
         var spy = jasmine.createSpy(),
           cellClickSpy = jasmine.createSpy(),
@@ -735,14 +735,14 @@ describe("Ext.tree.Panel", function () {
         data,
         Ext.apply(
           {
-            animate: animate,
+            animate: animate
           },
-          cfg,
+          cfg
         ),
         null,
         {
-          expanded: true,
-        },
+          expanded: true
+        }
       );
     }
 
@@ -754,10 +754,10 @@ describe("Ext.tree.Panel", function () {
             expanded: false,
             children: [
               {
-                id: "b",
-              },
-            ],
-          },
+                id: "b"
+              }
+            ]
+          }
         ]);
         var spy = jasmine.createSpy(),
           height = tree.getHeight();
@@ -779,10 +779,10 @@ describe("Ext.tree.Panel", function () {
             expanded: true,
             children: [
               {
-                id: "b",
-              },
-            ],
-          },
+                id: "b"
+              }
+            ]
+          }
         ]);
         var spy = jasmine.createSpy(),
           height = tree.getHeight();
@@ -826,15 +826,15 @@ describe("Ext.tree.Panel", function () {
                 {
                   id: "k",
                   expanded: false,
-                  children: [{ id: "l", leaf: true }],
-                },
-              ],
-            },
+                  children: [{ id: "l", leaf: true }]
+                }
+              ]
+            }
           ],
           {
             maxWidth: 400,
-            maxHeight: 100,
-          },
+            maxHeight: 100
+          }
         );
 
         view.getScrollable().scrollTo(0, Infinity);
@@ -865,10 +865,10 @@ describe("Ext.tree.Panel", function () {
             expanded: false,
             children: [
               {
-                id: "b",
-              },
-            ],
-          },
+                id: "b"
+              }
+            ]
+          }
         ]);
 
         var height = tree.getHeight();
@@ -883,10 +883,10 @@ describe("Ext.tree.Panel", function () {
             expanded: true,
             children: [
               {
-                id: "b",
-              },
-            ],
-          },
+                id: "b"
+              }
+            ]
+          }
         ]);
 
         var height = tree.getHeight();
@@ -901,7 +901,7 @@ describe("Ext.tree.Panel", function () {
       for (var i = 0; i < 100; i++) {
         testNodes[0].children.push({
           text: "Extra node " + i,
-          id: "extra-node-" + i,
+          id: "extra-node-" + i
         });
       }
       testNodes[0].expanded = true;
@@ -911,12 +911,12 @@ describe("Ext.tree.Panel", function () {
         {
           renderTo: document.body,
           height: 200,
-          width: 400,
+          width: 400
         },
         null,
         {
-          expanded: true,
-        },
+          expanded: true
+        }
       );
     });
 
@@ -937,9 +937,9 @@ describe("Ext.tree.Panel", function () {
         columns: [
           {
             xtype: "treecolumn",
-            dataIndex: "text",
-          },
-        ],
+            dataIndex: "text"
+          }
+        ]
       });
       tree.on("sortchange", spy);
       // Pass the position so we don't click right on the edge (trigger a resize)
@@ -947,7 +947,7 @@ describe("Ext.tree.Panel", function () {
         tree.down("treecolumn").titleEl.dom,
         "click",
         20,
-        10,
+        10
       );
       expect(spy).toHaveBeenCalled();
       expect(spy.callCount).toBe(1);
@@ -961,12 +961,12 @@ describe("Ext.tree.Panel", function () {
         {
           rootVisible: false,
           singleExpand: true,
-          height: 200,
+          height: 200
         },
         null,
         {
-          expanded: true,
-        },
+          expanded: true
+        }
       );
     });
     it("should preserve singleExpand:true", function () {
@@ -990,8 +990,8 @@ describe("Ext.tree.Panel", function () {
           id: "root",
           text: "Root",
           children: testNodes,
-          expanded: true,
-        },
+          expanded: true
+        }
       });
 
       tree.reconfigure(newStore);
@@ -1017,7 +1017,7 @@ describe("Ext.tree.Panel", function () {
   describe("autoexpand collapsed ancestors", function () {
     beforeEach(function () {
       makeTree(testNodes, {
-        height: 250,
+        height: 250
       });
     });
     it("should expand the whole path down to 'G' as well as 'G'", function () {
@@ -1034,7 +1034,7 @@ describe("Ext.tree.Panel", function () {
   describe("removeAll", function () {
     beforeEach(function () {
       makeTree(testNodes, {
-        height: 100,
+        height: 100
       });
     });
     it("should only refresh once when removeAll called", function () {
@@ -1149,7 +1149,7 @@ describe("Ext.tree.Panel", function () {
               function () {
                 scope = this;
               },
-              o,
+              o
             );
             expect(scope).toBe(o);
           });
@@ -1183,7 +1183,7 @@ describe("Ext.tree.Panel", function () {
               function () {
                 scope = this;
               },
-              o,
+              o
             );
             expect(scope).toBe(o);
           });
@@ -1199,7 +1199,7 @@ describe("Ext.tree.Panel", function () {
                 function (success, lastExpanded) {
                   expectedSuccess = success;
                   expectedNode = lastExpanded;
-                },
+                }
               );
               expect(expectedSuccess).toBe(true);
               expect(expectedNode).toBe(tree.getStore().getNodeById("B"));
@@ -1214,7 +1214,7 @@ describe("Ext.tree.Panel", function () {
                 null,
                 function (success, lastExpanded) {
                   scope = this;
-                },
+                }
               );
               expect(scope).toBe(tree);
             });
@@ -1229,7 +1229,7 @@ describe("Ext.tree.Panel", function () {
                 function (success, lastExpanded) {
                   scope = this;
                 },
-                o,
+                o
               );
               expect(scope).toBe(o);
             });
@@ -1242,7 +1242,7 @@ describe("Ext.tree.Panel", function () {
                 function (success, lastExpanded) {
                   expectedSuccess = success;
                   expectedNode = lastExpanded;
-                },
+                }
               );
               expect(expectedSuccess).toBe(true);
               expect(expectedNode).toBe(store.getNodeById("G"));
@@ -1259,7 +1259,7 @@ describe("Ext.tree.Panel", function () {
                   expectedNode = lastExpanded;
                   lastHtmlNode = lastNode;
                 },
-                select: true,
+                select: true
               });
               waitsFor(function () {
                 return expectedSuccess;
@@ -1268,10 +1268,10 @@ describe("Ext.tree.Panel", function () {
                 expect(expectedNode).toBe(tree.getStore().getNodeById("B"));
                 expect(view.all.getCount()).toBe(9);
                 expect(tree.getSelectionModel().getSelection()[0]).toBe(
-                  expectedNode,
+                  expectedNode
                 );
                 expect(lastHtmlNode).toBe(
-                  view.getNode(tree.getStore().getNodeById("B")),
+                  view.getNode(tree.getStore().getNodeById("B"))
                 );
               });
             });
@@ -1281,7 +1281,7 @@ describe("Ext.tree.Panel", function () {
               tree.expandPath("/root/A/B", {
                 callback: function (success, lastExpanded) {
                   scope = this;
-                },
+                }
               });
               waitsFor(function () {
                 return scope === tree;
@@ -1295,7 +1295,7 @@ describe("Ext.tree.Panel", function () {
                 callback: function (success, lastExpanded) {
                   scope = this;
                 },
-                scope: o,
+                scope: o
               });
               waitsFor(function () {
                 return scope === o;
@@ -1307,7 +1307,7 @@ describe("Ext.tree.Panel", function () {
                 callback: function (success, lastExpanded) {
                   expectedSuccess = success;
                   expectedNode = lastExpanded;
-                },
+                }
               });
               waitsFor(function () {
                 return expectedSuccess;
@@ -1329,7 +1329,7 @@ describe("Ext.tree.Panel", function () {
               function (success, node) {
                 expectedSuccess = success;
                 expectedNode = node;
-              },
+              }
             );
             expect(expectedSuccess).toBe(false);
             expect(expectedNode).toBe(tree.getStore().getById("A"));
@@ -1353,7 +1353,7 @@ describe("Ext.tree.Panel", function () {
               function () {
                 scope = this;
               },
-              o,
+              o
             );
             expect(scope).toBe(o);
           });
@@ -1443,7 +1443,7 @@ describe("Ext.tree.Panel", function () {
               function () {
                 scope = this;
               },
-              o,
+              o
             );
             expect(scope).toBe(o);
           });
@@ -1478,7 +1478,7 @@ describe("Ext.tree.Panel", function () {
               function () {
                 scope = this;
               },
-              o,
+              o
             );
             expect(scope).toBe(o);
           });
@@ -1513,7 +1513,7 @@ describe("Ext.tree.Panel", function () {
               function () {
                 scope = this;
               },
-              o,
+              o
             );
             expect(scope).toBe(o);
           });
@@ -1529,7 +1529,7 @@ describe("Ext.tree.Panel", function () {
               function (success, node) {
                 expectedSuccess = success;
                 expectedNode = node;
-              },
+              }
             );
             expect(expectedSuccess).toBe(false);
             expect(expectedNode).toBe(tree.getStore().getById("A"));
@@ -1553,7 +1553,7 @@ describe("Ext.tree.Panel", function () {
               function () {
                 scope = this;
               },
-              o,
+              o
             );
             expect(scope).toBe(o);
           });
@@ -1606,14 +1606,14 @@ describe("Ext.tree.Panel", function () {
       it("should be able to select a path where the values are numeric", function () {
         Ext.define(null, {
           extend: "Ext.data.TreeModel",
-          fields: [{ name: "id", type: "int" }],
+          fields: [{ name: "id", type: "int" }]
         });
 
         makeTree(
           [
             {
               id: 1,
-              text: "A",
+              text: "A"
             },
             {
               id: 2,
@@ -1625,9 +1625,9 @@ describe("Ext.tree.Panel", function () {
                   children: [
                     {
                       id: 4,
-                      text: "B1_1",
-                    },
-                  ],
+                      text: "B1_1"
+                    }
+                  ]
                 },
                 {
                   id: 5,
@@ -1635,18 +1635,18 @@ describe("Ext.tree.Panel", function () {
                   children: [
                     {
                       id: 6,
-                      text: "B2_1",
-                    },
-                  ],
-                },
-              ],
-            },
+                      text: "B2_1"
+                    }
+                  ]
+                }
+              ]
+            }
           ],
           null,
           null,
           {
-            id: -1,
-          },
+            id: -1
+          }
         );
 
         tree.selectPath("2/3/4");
@@ -1670,11 +1670,11 @@ describe("Ext.tree.Panel", function () {
               children: [
                 {
                   id: 1,
-                  text: "child1",
-                },
-              ],
-            },
-          },
+                  text: "child1"
+                }
+              ]
+            }
+          }
         });
 
         tree.selectPath("/0/1");
@@ -1690,8 +1690,8 @@ describe("Ext.tree.Panel", function () {
           extend: "Ext.tree.Panel",
           animate: false,
           viewConfig: {
-            loadMask: false,
-          },
+            loadMask: false
+          }
         });
 
         tree = new Cls({
@@ -1702,9 +1702,9 @@ describe("Ext.tree.Panel", function () {
               secondaryId: "root",
               id: "root",
               text: "Root",
-              children: testNodes,
-            },
-          })),
+              children: testNodes
+            }
+          }))
         });
         tree.selectPath("/root/A/B/C");
         expect(tree.getSelectionModel().isSelected(store.getNodeById("C")));
@@ -1868,7 +1868,7 @@ describe("Ext.tree.Panel", function () {
             function () {
               expectedScope = this;
             },
-            o,
+            o
           );
           expect(expectedScope).toBe(o);
         });
@@ -1925,7 +1925,7 @@ describe("Ext.tree.Panel", function () {
             function () {
               expectedScope = this;
             },
-            o,
+            o
           );
           expect(expectedScope).toBe(o);
         });
@@ -1968,9 +1968,9 @@ describe("Ext.tree.Panel", function () {
               secondaryId: "root",
               id: "root",
               text: "Root",
-              children: nodes,
-            },
-          }),
+              children: nodes
+            }
+          })
         });
         tree = new Ext.tree.Panel(cfg);
       };
@@ -2009,19 +2009,19 @@ describe("Ext.tree.Panel", function () {
         store: new Ext.data.TreeStore({
           proxy: {
             type: "ajax",
-            url: "fakeUrl",
+            url: "fakeUrl"
           },
           root: {
             text: "Ext JS",
-            id: "src",
+            id: "src"
           },
           folderSort: true,
           sorters: [
             {
               property: "text",
-              direction: "ASC",
-            },
-          ],
+              direction: "ASC"
+            }
+          ]
         }),
         listeners: {
           beforeitemexpand: function () {
@@ -2034,15 +2034,15 @@ describe("Ext.tree.Panel", function () {
           },
           load: function () {
             loadOrder = order;
-          },
-        },
+          }
+        }
       });
       layoutCounter = tree.layoutCounter;
       tree.getStore().getRoot().expand();
 
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.encode(testNodes),
+        responseText: Ext.encode(testNodes)
       });
 
       // The order of events expected: beforeitemexpand, beforeload, load.
@@ -2068,8 +2068,8 @@ describe("Ext.tree.Panel", function () {
         rowLines: true,
         selModel: {
           selType: "rowmodel",
-          mode: "MULTI",
-        },
+          mode: "MULTI"
+        }
       });
       tree.getRootNode().expand();
       view = tree.view;
@@ -2086,10 +2086,10 @@ describe("Ext.tree.Panel", function () {
       store.getNodeById("I").expand();
 
       expect(view.getNodeByRecord(store.getNodeById("A"))).toHaveCls(
-        selectedItemCls,
+        selectedItemCls
       );
       expect(view.getNodeByRecord(store.getNodeById("M"))).toHaveCls(
-        selectedItemCls,
+        selectedItemCls
       );
     });
 
@@ -2098,7 +2098,7 @@ describe("Ext.tree.Panel", function () {
       tree.getView().getNavigationModel().setPosition(rec);
       store.getNodeById("A").expand();
       expect(
-        view.getCell(rec, view.getVisibleColumnManager().getColumns()[0]),
+        view.getCell(rec, view.getVisibleColumnManager().getColumns()[0])
       ).toHaveCls(focusedItemCls);
     });
 
@@ -2111,7 +2111,7 @@ describe("Ext.tree.Panel", function () {
       store.getNodeById("M").collapse();
 
       expect(view.getNodeByRecord(store.getNodeById("M"))).toHaveCls(
-        selectedItemCls,
+        selectedItemCls
       );
     });
 
@@ -2131,7 +2131,7 @@ describe("Ext.tree.Panel", function () {
         renderColText: function (v) {
           return v + "NoScope";
         },
-        renderer: "renderColText",
+        renderer: "renderColText"
       }),
       CustomTreeColumnScopeThis = Ext.define(null, {
         extend: "Ext.tree.Column",
@@ -2140,17 +2140,17 @@ describe("Ext.tree.Panel", function () {
           return v + "ScopeThis";
         },
         renderer: "renderColText",
-        scope: "this",
+        scope: "this"
       }),
       CustomTreeColumnScopeController = Ext.define(null, {
         extend: "Ext.tree.Column",
-        scope: "controller",
+        scope: "controller"
       }),
       TreeRendererTestController = Ext.define(null, {
         extend: "Ext.app.ViewController",
         renderColText: function (v) {
           return v + "ViewController";
-        },
+        }
       });
 
     describe("String renderer in a column subclass", function () {
@@ -2162,18 +2162,18 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             new CustomTreeColumnNoScope({
               flex: 1,
-              dataIndex: "text",
-            }),
-          ],
+              dataIndex: "text"
+            })
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootNoScope",
+          "RootNoScope"
         );
       });
       it("should be able to use a named renderer in the column with scope: 'this'", function () {
@@ -2184,18 +2184,18 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             new CustomTreeColumnScopeThis({
               flex: 1,
-              dataIndex: "text",
-            }),
-          ],
+              dataIndex: "text"
+            })
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootScopeThis",
+          "RootScopeThis"
         );
       });
       // Note: xit because thrown errors inside the TableView rendering path leaves an invalid state
@@ -2208,17 +2208,17 @@ describe("Ext.tree.Panel", function () {
               model: TreeItem,
               root: {
                 id: "root",
-                text: "Root",
-              },
+                text: "Root"
+              }
             }),
             columns: [
               new CustomTreeColumnScopeController({
                 flex: 1,
                 dataIndex: "text",
                 renderer: "renderColText",
-                scope: "controller",
-              }),
-            ],
+                scope: "controller"
+              })
+            ]
           });
           tree.render(document.body);
         }).toThrow();
@@ -2232,19 +2232,19 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             new CustomTreeColumnNoScope({
               flex: 1,
               dataIndex: "text",
-              renderer: "renderColText",
-            }),
-          ],
+              renderer: "renderColText"
+            })
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootViewController",
+          "RootViewController"
         );
         tree.destroy();
 
@@ -2256,19 +2256,19 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             new CustomTreeColumnScopeController({
               flex: 1,
               dataIndex: "text",
-              renderer: "renderColText",
-            }),
-          ],
+              renderer: "renderColText"
+            })
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootViewController",
+          "RootViewController"
         );
         tree.destroy();
 
@@ -2279,8 +2279,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             new CustomTreeColumnNoScope({
@@ -2288,12 +2288,12 @@ describe("Ext.tree.Panel", function () {
               flex: 1,
               dataIndex: "text",
               renderer: "renderColText",
-              scope: "self.controller",
-            }),
-          ],
+              scope: "self.controller"
+            })
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootViewController",
+          "RootViewController"
         );
       });
       it("should be able to use a named renderer in the Column with no scope when Column uses defaultListenerScope: true", function () {
@@ -2304,8 +2304,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             new CustomTreeColumnNoScope({
@@ -2315,12 +2315,12 @@ describe("Ext.tree.Panel", function () {
               renderColText: function (v) {
                 return v + "ColDefaultScope";
               },
-              renderer: "renderColText",
-            }),
-          ],
+              renderer: "renderColText"
+            })
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootColDefaultScope",
+          "RootColDefaultScope"
         );
       });
       it("should be able to use a named renderer in the Panel with no scope when Panel uses defaultListenerScope: true", function () {
@@ -2331,8 +2331,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           defaultListenerScope: true,
           panelRenderColText: function (v) {
@@ -2342,12 +2342,12 @@ describe("Ext.tree.Panel", function () {
             new CustomTreeColumnNoScope({
               flex: 1,
               dataIndex: "text",
-              renderer: "panelRenderColText",
-            }),
-          ],
+              renderer: "panelRenderColText"
+            })
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootPanelDefaultScope",
+          "RootPanelDefaultScope"
         );
       });
     });
@@ -2361,8 +2361,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             {
@@ -2372,12 +2372,12 @@ describe("Ext.tree.Panel", function () {
               renderColText: function (v) {
                 return v + "NoScope";
               },
-              renderer: "renderColText",
-            },
-          ],
+              renderer: "renderColText"
+            }
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootNoScope",
+          "RootNoScope"
         );
       });
       it("should be able to use a named renderer in the column with scope: 'this'", function () {
@@ -2388,8 +2388,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             {
@@ -2400,12 +2400,12 @@ describe("Ext.tree.Panel", function () {
                 return v + "ScopeThis";
               },
               renderer: "renderColText",
-              scope: "this",
-            },
-          ],
+              scope: "this"
+            }
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootScopeThis",
+          "RootScopeThis"
         );
       });
       // Note: xit because thrown errors inside the TableView rendering path leaves an invalid state
@@ -2418,8 +2418,8 @@ describe("Ext.tree.Panel", function () {
               model: TreeItem,
               root: {
                 id: "root",
-                text: "Root",
-              },
+                text: "Root"
+              }
             }),
             columns: [
               {
@@ -2430,9 +2430,9 @@ describe("Ext.tree.Panel", function () {
                   return v + "Foo";
                 },
                 renderer: "renderColText",
-                scope: "controller",
-              },
-            ],
+                scope: "controller"
+              }
+            ]
           });
           tree.render(document.body);
         }).toThrow();
@@ -2446,20 +2446,20 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             {
               xtype: "treecolumn",
               flex: 1,
               dataIndex: "text",
-              renderer: "renderColText",
-            },
-          ],
+              renderer: "renderColText"
+            }
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootViewController",
+          "RootViewController"
         );
         tree.destroy();
 
@@ -2471,8 +2471,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             {
@@ -2480,12 +2480,12 @@ describe("Ext.tree.Panel", function () {
               flex: 1,
               dataIndex: "text",
               renderer: "renderColText",
-              scope: "controller",
-            },
-          ],
+              scope: "controller"
+            }
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootViewController",
+          "RootViewController"
         );
         tree.destroy();
 
@@ -2496,8 +2496,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             {
@@ -2506,12 +2506,12 @@ describe("Ext.tree.Panel", function () {
               flex: 1,
               dataIndex: "text",
               renderer: "renderColText",
-              scope: "self.controller",
-            },
-          ],
+              scope: "self.controller"
+            }
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootViewController",
+          "RootViewController"
         );
       });
       it("should be able to use a named renderer in the Column with no scope when Column uses defaultListenerScope: true", function () {
@@ -2522,8 +2522,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           columns: [
             {
@@ -2534,12 +2534,12 @@ describe("Ext.tree.Panel", function () {
               renderColText: function (v) {
                 return v + "ColDefaultScope";
               },
-              renderer: "renderColText",
-            },
-          ],
+              renderer: "renderColText"
+            }
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootColDefaultScope",
+          "RootColDefaultScope"
         );
       });
       it("should be able to use a named renderer in the Panel with no scope when Panel uses defaultListenerScope: true", function () {
@@ -2550,8 +2550,8 @@ describe("Ext.tree.Panel", function () {
             model: TreeItem,
             root: {
               id: "root",
-              text: "Root",
-            },
+              text: "Root"
+            }
           }),
           defaultListenerScope: true,
           panelRenderColText: function (v) {
@@ -2562,12 +2562,12 @@ describe("Ext.tree.Panel", function () {
               xtype: "treecolumn",
               flex: 1,
               dataIndex: "text",
-              renderer: "panelRenderColText",
-            },
-          ],
+              renderer: "panelRenderColText"
+            }
+          ]
         });
         expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-          "RootPanelDefaultScope",
+          "RootPanelDefaultScope"
         );
       });
     });
@@ -2580,8 +2580,8 @@ describe("Ext.tree.Panel", function () {
           model: TreeItem,
           root: {
             id: "root",
-            text: "Root",
-          },
+            text: "Root"
+          }
         }),
         columns: [
           {
@@ -2590,12 +2590,12 @@ describe("Ext.tree.Panel", function () {
             dataIndex: "text",
             renderer: function (v) {
               return v + "Foo";
-            },
-          },
-        ],
+            }
+          }
+        ]
       });
       expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual(
-        "RootFoo",
+        "RootFoo"
       );
     });
 
@@ -2607,17 +2607,17 @@ describe("Ext.tree.Panel", function () {
           model: TreeItem,
           root: {
             id: "root",
-            text: "Root",
-          },
+            text: "Root"
+          }
         }),
         columns: [
           {
             xtype: "treecolumn",
             flex: 1,
             formatter: "uppercase",
-            dataIndex: "text",
-          },
-        ],
+            dataIndex: "text"
+          }
+        ]
       });
       expect(tree.el.down(".x-tree-node-text").dom.innerHTML).toEqual("ROOT");
     });
@@ -2629,7 +2629,7 @@ describe("Ext.tree.Panel", function () {
       Ext.define("spec.Foo", {
         extend: "Ext.data.Model",
         fields: ["Name", "Id"],
-        idProperty: "Id",
+        idProperty: "Id"
       });
     });
 
@@ -2660,7 +2660,7 @@ describe("Ext.tree.Panel", function () {
               TaskType: "LowPrio",
               StartDate: "2010-01-18",
               BaselineStartDate: "2010-01-20",
-              Duration: 10,
+              Duration: 10
             },
             {
               BaselineEndDate: "2010-02-01",
@@ -2670,7 +2670,7 @@ describe("Ext.tree.Panel", function () {
               PercentDone: 50,
               StartDate: "2010-01-18",
               BaselineStartDate: "2010-01-25",
-              Duration: 10,
+              Duration: 10
             },
             {
               BaselineEndDate: "2010-02-01",
@@ -2681,7 +2681,7 @@ describe("Ext.tree.Panel", function () {
               PercentDone: 50,
               StartDate: "2010-01-18",
               BaselineStartDate: "2010-01-25",
-              Duration: 10,
+              Duration: 10
             },
             {
               BaselineEndDate: "2010-02-04",
@@ -2692,10 +2692,10 @@ describe("Ext.tree.Panel", function () {
               PercentDone: 0,
               StartDate: "2010-02-02",
               BaselineStartDate: "2010-02-04",
-              Duration: 0,
-            },
-          ],
-        },
+              Duration: 0
+            }
+          ]
+        }
       ];
     }
 
@@ -2704,12 +2704,12 @@ describe("Ext.tree.Panel", function () {
           model: "spec.Foo",
           proxy: {
             type: "ajax",
-            url: "/data/AjaxProxy/treeLoadData",
+            url: "/data/AjaxProxy/treeLoadData"
           },
           root: {
             Name: "ROOOOOOOOT",
-            expanded: true,
-          },
+            expanded: true
+          }
         }),
         refreshSpy;
 
@@ -2719,7 +2719,7 @@ describe("Ext.tree.Panel", function () {
         height: 400,
         store: store,
         viewConfig: {
-          loadMask: false,
+          loadMask: false
         },
         columns: [
           {
@@ -2727,13 +2727,13 @@ describe("Ext.tree.Panel", function () {
             header: "Tasks",
             dataIndex: "Name",
             locked: true,
-            width: 200,
+            width: 200
           },
           {
             width: 200,
-            dataIndex: "Id",
-          },
-        ],
+            dataIndex: "Id"
+          }
+        ]
       });
 
       var lockedView = tree.lockedGrid.view,
@@ -2743,7 +2743,7 @@ describe("Ext.tree.Panel", function () {
 
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.encode(getData()),
+        responseText: Ext.encode(getData())
       });
 
       expect(refreshSpy.callCount).toBe(1);
@@ -2759,8 +2759,8 @@ describe("Ext.tree.Panel", function () {
         fields: ["id", "text", "secondaryId"],
         proxy: {
           type: "ajax",
-          url: "fakeUrl",
-        },
+          url: "fakeUrl"
+        }
       });
 
       makeTree(
@@ -2773,21 +2773,21 @@ describe("Ext.tree.Panel", function () {
                 id: "node1",
                 text: "Node1",
                 expandable: true,
-                expanded: true,
+                expanded: true
               },
               {
                 id: "node2",
                 text: "Node2",
                 expandable: true,
-                expanded: false,
-              },
-            ],
-          },
+                expanded: false
+              }
+            ]
+          }
         },
         {
           model: ProxyModel,
-          root: null,
-        },
+          root: null
+        }
       );
 
       expect(view.getNodes().length).toBe(3);
@@ -2797,9 +2797,9 @@ describe("Ext.tree.Panel", function () {
         status: 200,
         responseText: Ext.encode([
           {
-            id: "node1.1",
-          },
-        ]),
+            id: "node1.1"
+          }
+        ])
       });
       expect(view.getNodes().length).toBe(4);
     });
@@ -2812,84 +2812,84 @@ describe("Ext.tree.Panel", function () {
         children: [
           {
             text: "foo",
-            leaf: true,
+            leaf: true
           },
           {
             text: "bar",
-            leaf: true,
+            leaf: true
           },
           {
             text: "Second level 1",
             children: [
               {
                 text: "foo",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "bar",
-                leaf: true,
-              },
-            ],
-          },
-        ],
+                leaf: true
+              }
+            ]
+          }
+        ]
       },
       {
         text: "Top 2",
         children: [
           {
             text: "foo",
-            leaf: true,
+            leaf: true
           },
           {
             text: "wonk",
-            leaf: true,
+            leaf: true
           },
           {
             text: "Second level 2",
             children: [
               {
                 text: "foo",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "wonk",
-                leaf: true,
-              },
-            ],
-          },
-        ],
+                leaf: true
+              }
+            ]
+          }
+        ]
       },
       {
         text: "Top 3",
         children: [
           {
             text: "zarg",
-            leaf: true,
+            leaf: true
           },
           {
             text: "bar",
-            leaf: true,
+            leaf: true
           },
           {
             text: "Second level 3",
             children: [
               {
                 text: "zarg",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "bar",
-                leaf: true,
-              },
-            ],
-          },
-        ],
-      },
+                leaf: true
+              }
+            ]
+          }
+        ]
+      }
     ];
 
     beforeEach(function () {
       makeTree(treeData, {
-        rootVisible: false,
+        rootVisible: false
       });
     });
 
@@ -2916,7 +2916,7 @@ describe("Ext.tree.Panel", function () {
         filterFn: function (node) {
           return node.get("text") === "foo";
         },
-        id: "testFilter",
+        id: "testFilter"
       });
 
       // The setting of the visible field in the filtered out record should NOT have resulted
@@ -2955,7 +2955,7 @@ describe("Ext.tree.Panel", function () {
         filterFn: function (node) {
           return node.get("text") === "bar";
         },
-        id: "testFilter",
+        id: "testFilter"
       });
 
       // The setting of the visible field in the filtered out record should NOT have resulted
@@ -3013,9 +3013,9 @@ describe("Ext.tree.Panel", function () {
         sorters: [
           {
             property: "text",
-            direction: "ASC",
-          },
-        ],
+            direction: "ASC"
+          }
+        ]
       });
       tree.expandAll();
       bNode = tree.store.getNodeById("B");
@@ -3024,7 +3024,7 @@ describe("Ext.tree.Panel", function () {
       // MUST be leaf: true so that the automatically prepended sort by leaf status has no effect.
       bNode.insertChild(0, {
         text: "Z",
-        leaf: true,
+        leaf: true
       });
 
       // Check that we have disrupted the sorted state.
@@ -3064,14 +3064,14 @@ describe("Ext.tree.Panel", function () {
         node = {
           id: "n" + ip1,
           text: "Node" + ip1,
-          children: [],
+          children: []
         };
         for (j = 0; j < 50; j++) {
           jp1 = j + 1;
           node.children.push({
             id: "n" + ip1 + "." + jp1,
             text: "Node" + ip1 + "/" + jp1,
-            leaf: true,
+            leaf: true
           });
         }
         nodes.push(node);
@@ -3082,7 +3082,7 @@ describe("Ext.tree.Panel", function () {
     function completeWithNodes() {
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.encode(makeNodes()),
+        responseText: Ext.encode(makeNodes())
       });
     }
 
@@ -3091,19 +3091,19 @@ describe("Ext.tree.Panel", function () {
         null,
         {
           height: 400,
-          width: 350,
+          width: 350
         },
         {
           proxy: {
             type: "ajax",
-            url: "/tree/Panel/load",
+            url: "/tree/Panel/load"
           },
           root: {
             id: "root",
             text: "Root",
-            expanded: true,
-          },
-        },
+            expanded: true
+          }
+        }
       );
 
       completeWithNodes();
@@ -3113,7 +3113,7 @@ describe("Ext.tree.Panel", function () {
 
       // Child nodes must be in view
       expect(view.all.getCount()).toBe(
-        Math.min(store.getCount(), view.bufferedRenderer.viewSize),
+        Math.min(store.getCount(), view.bufferedRenderer.viewSize)
       );
 
       view.setScrollY(500);
@@ -3130,25 +3130,25 @@ describe("Ext.tree.Panel", function () {
         {
           height: 400,
           width: 350,
-          animate: true,
+          animate: true
         },
         {
           proxy: {
             type: "ajax",
-            url: "/tree/Panel/load",
+            url: "/tree/Panel/load"
           },
           root: {
             id: "root",
             text: "Root",
-            expanded: true,
-          },
-        },
+            expanded: true
+          }
+        }
       );
       completeWithNodes();
 
       // EXTJS-13673 buffered rendering should be turned on by default
       expect(
-        tree.view.bufferedRenderer instanceof Ext.grid.plugin.BufferedRenderer,
+        tree.view.bufferedRenderer instanceof Ext.grid.plugin.BufferedRenderer
       ).toBe(true);
     });
 
@@ -3157,21 +3157,21 @@ describe("Ext.tree.Panel", function () {
         null,
         {
           height: 400,
-          width: 350,
+          width: 350
         },
         {
           // lazyFill means childNodes do not load locally available children arrays until expanded.
           lazyFill: true,
           proxy: {
             type: "ajax",
-            url: "/tree/Panel/load",
+            url: "/tree/Panel/load"
           },
           root: {
             id: "root",
             text: "Root",
-            expanded: false,
-          },
-        },
+            expanded: false
+          }
+        }
       );
 
       // forces the root to load even though we configure it expanded: false.
@@ -3182,7 +3182,7 @@ describe("Ext.tree.Panel", function () {
 
       tree.ensureVisible("/root/n50/n50.50");
       expect(
-        Ext.fly(view.getNode(store.getById("n50.50"))).getBox().bottom,
+        Ext.fly(view.getNode(store.getById("n50.50"))).getBox().bottom
       ).toBeLessThanOrEqual(view.getBox().bottom);
     });
 
@@ -3192,21 +3192,21 @@ describe("Ext.tree.Panel", function () {
         {
           height: 400,
           width: 350,
-          rootVisible: false,
+          rootVisible: false
         },
         {
           // lazyFill means childNodes do not load locally available children arrays until expanded.
           lazyFill: true,
           proxy: {
             type: "ajax",
-            url: "/tree/Panel/load",
+            url: "/tree/Panel/load"
           },
           root: {
             id: "root",
             text: "Root",
-            expanded: true,
-          },
-        },
+            expanded: true
+          }
+        }
       );
 
       // forces the root to load even though we configure it expanded: false.
@@ -3227,19 +3227,19 @@ describe("Ext.tree.Panel", function () {
         null,
         {
           height: 400,
-          width: 350,
+          width: 350
         },
         {
           proxy: {
             type: "ajax",
-            url: "/tree/Panel/load",
+            url: "/tree/Panel/load"
           },
           root: {
             id: "root",
             text: "Root",
-            expanded: false,
-          },
-        },
+            expanded: false
+          }
+        }
       );
 
       // forces the root to load even though we configure it expanded: false.
@@ -3251,7 +3251,7 @@ describe("Ext.tree.Panel", function () {
       runs(function () {
         tree.ensureVisible("n50.50");
         expect(
-          Ext.fly(view.getNode(store.getById("n50.50"))).getBox().bottom,
+          Ext.fly(view.getNode(store.getById("n50.50"))).getBox().bottom
         ).toBeLessThanOrEqual(view.getBox().bottom);
       });
     });
@@ -3262,7 +3262,7 @@ describe("Ext.tree.Panel", function () {
 
     beforeEach(function () {
       makeTree(testNodes, null, null, {
-        expanded: true,
+        expanded: true
       });
       layoutCounter = view.componentLayoutCounter;
     });
@@ -3274,28 +3274,28 @@ describe("Ext.tree.Panel", function () {
         {
           id: "append-1",
           text: "append-1",
-          secondaryId: "append-1",
+          secondaryId: "append-1"
         },
         {
           id: "append-2",
           text: "append-2",
-          secondaryId: "append-2",
+          secondaryId: "append-2"
         },
         {
           id: "append-3",
           text: "append-3",
-          secondaryId: "append-3",
+          secondaryId: "append-3"
         },
         {
           id: "append-4",
           text: "append-4",
-          secondaryId: "append-4",
+          secondaryId: "append-4"
         },
         {
           id: "append-5",
           text: "append-5",
-          secondaryId: "append-5",
-        },
+          secondaryId: "append-5"
+        }
       ]);
 
       // We added 5 nodes
@@ -3313,7 +3313,7 @@ describe("Ext.tree.Panel", function () {
     it("should not add nodes removed by virtue of their parent collapsing to the removed list", function () {
       var done = false;
       makeTree(testNodes, null, {
-        trackRemoved: true,
+        trackRemoved: true
       });
       tree.expandAll(function () {
         tree.collapseAll(function () {
@@ -3331,7 +3331,7 @@ describe("Ext.tree.Panel", function () {
     it("should add descendants of collapsed nodes to the removed list", function () {
       // Create tree with collapsed root node;
       makeTree(testNodes, null, {
-        trackRemoved: true,
+        trackRemoved: true
       });
       runs(function () {
         tree.store.getRootNode().drop();
@@ -3346,7 +3346,7 @@ describe("Ext.tree.Panel", function () {
 
       // Create tree with collapsed root node;
       makeTree(testNodes, null, {
-        trackRemoved: true,
+        trackRemoved: true
       });
       tree.expandAll(function () {
         done = true;
@@ -3383,21 +3383,21 @@ describe("Ext.tree.Panel", function () {
           children: [
             {
               text: "A",
-              leaf: true,
+              leaf: true
             },
             {
               text: "B",
-              leaf: true,
-            },
-          ],
-        },
+              leaf: true
+            }
+          ]
+        }
       });
 
       var oldRoot = tree.getRootNode();
 
       // The old root should have some listeners
       expect(Ext.Object.getKeys(oldRoot.hasListeners).length).toBeGreaterThan(
-        0,
+        0
       );
 
       tree.store.setRoot({
@@ -3406,13 +3406,13 @@ describe("Ext.tree.Panel", function () {
         children: [
           {
             text: "New A",
-            leaf: true,
+            leaf: true
           },
           {
             text: "New B",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       });
 
       // The old root should have no listeners
@@ -3427,9 +3427,9 @@ describe("Ext.tree.Panel", function () {
         sorters: [
           {
             property: "text",
-            direction: "ASC",
-          },
-        ],
+            direction: "ASC"
+          }
+        ]
       });
       rootNode.expand();
       var aNode = tree.store.getNodeById("A");
@@ -3466,13 +3466,13 @@ describe("Ext.tree.Panel", function () {
               xtype: "treecolumn",
               locked: true,
               width: 200,
-              dataIndex: "text",
+              dataIndex: "text"
             },
             {
               width: 200,
-              dataIndex: "text",
-            },
-          ],
+              dataIndex: "text"
+            }
+          ]
         });
         var cell = tree.getView().getCell(rootNode, tree.down("treecolumn"));
         jasmine.fireMouseEvent(cell, "click", 5, 5);
@@ -3486,7 +3486,7 @@ describe("Ext.tree.Panel", function () {
   describe("bottom up filtering", function () {
     it("should show path to all filtered in leaf nodes", function () {
       makeTree(testNodes, null, {
-        filterer: "bottomup",
+        filterer: "bottomup"
       });
       tree.expandAll();
 
@@ -3498,7 +3498,7 @@ describe("Ext.tree.Panel", function () {
       store.filter({
         property: "text",
         operator: "=",
-        value: "H",
+        value: "H"
       });
 
       // The H node must be visible
@@ -3520,13 +3520,13 @@ describe("Ext.tree.Panel", function () {
             renderer: function (v, metaData, record) {
               metaData.glyph = record.data.text + "@FontAwesome";
               return v;
-            },
+            }
           },
           {
             width: 200,
-            dataIndex: "text",
-          },
-        ],
+            dataIndex: "text"
+          }
+        ]
       });
       tree.expandAll();
 
@@ -3535,13 +3535,13 @@ describe("Ext.tree.Panel", function () {
         view
           .getCellByPosition({ row: 0, column: 0 })
           .down(".x-tree-icon")
-          .getStyle("font-family"),
+          .getStyle("font-family")
       ).toBe("FontAwesome");
 
       // Check that the glyph is the first character of the text.
       expect(
         view.getCellByPosition({ row: 0, column: 0 }).down(".x-tree-icon").dom
-          .innerHTML,
+          .innerHTML
       ).toBe(store.getAt(0).get("text").substr(0, 1));
     });
   });

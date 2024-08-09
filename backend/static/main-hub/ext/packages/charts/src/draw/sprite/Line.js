@@ -29,7 +29,7 @@ Ext.define("Ext.draw.sprite.Line", {
         fromX: "number",
         fromY: "number",
         toX: "number",
-        toY: "number",
+        toY: "number"
       },
 
       defaults: {
@@ -37,16 +37,16 @@ Ext.define("Ext.draw.sprite.Line", {
         fromY: 0,
         toX: 1,
         toY: 1,
-        strokeStyle: "black",
+        strokeStyle: "black"
       },
 
       aliases: {
         x1: "fromX",
         y1: "fromY",
         x2: "toX",
-        y2: "toY",
-      },
-    },
+        y2: "toY"
+      }
+    }
   },
 
   updateLineBBox: function (bbox, isTransform, x1, y1, x2, y2) {
@@ -105,7 +105,7 @@ Ext.define("Ext.draw.sprite.Line", {
       attr.fromX,
       attr.fromY,
       attr.toX,
-      attr.toY,
+      attr.toY
     );
   },
 
@@ -118,7 +118,7 @@ Ext.define("Ext.draw.sprite.Line", {
       attr.fromX,
       attr.fromY,
       attr.toX,
-      attr.toY,
+      attr.toY
     );
   },
 
@@ -144,5 +144,5 @@ Ext.define("Ext.draw.sprite.Line", {
       debug.bbox && this.renderBBox(surface, ctx);
     }
     //</debug>
-  },
+  }
 });

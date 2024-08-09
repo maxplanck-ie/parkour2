@@ -2,7 +2,7 @@
 Ext.define(
   "Ext.overrides.event.publisher.Dom",
   {
-    override: "Ext.event.publisher.Dom",
+    override: "Ext.event.publisher.Dom"
   },
   function (DomPublisher) {
     if (Ext.isIE9m) {
@@ -57,7 +57,7 @@ Ext.define(
               onDirectEvent,
               dom,
               [me, capture],
-              true,
+              true
             ),
             directBoundListeners = me.directBoundListeners,
             handlers =
@@ -80,7 +80,7 @@ Ext.define(
           if (dom.detachEvent) {
             dom.detachEvent(
               "on" + eventName,
-              this.directBoundListeners[eventName][dom.id],
+              this.directBoundListeners[eventName][dom.id]
             );
           } else {
             this.callParent([eventName, element, capture]);
@@ -104,7 +104,7 @@ Ext.define(
           }
 
           return this.callParent([e]);
-        },
+        }
       });
 
       // can't capture any events without addEventListener.  Have to have direct
@@ -115,11 +115,11 @@ Ext.define(
       Ext.apply(prototype.directEvents, {
         change: 1,
         input: 1,
-        paste: 1,
+        paste: 1
       });
 
       prototype.captureEvents = {};
     }
-  },
+  }
 );
 //</feature>

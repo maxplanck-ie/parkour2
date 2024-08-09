@@ -20,7 +20,7 @@ Ext.define(
       onDocumentMouseDown: function (e) {
         var selector = Ext.Widget.prototype.floatedSelector,
           targetFloated = Ext.Component.fromElement(
-            e.getTarget(selector, Ext.getBody()),
+            e.getTarget(selector, Ext.getBody())
           );
 
         // If the mousedown is in a floated, move it to top.
@@ -37,7 +37,7 @@ Ext.define(
         }
       },
 
-      range: document.createRange(),
+      range: document.createRange()
     },
 
     config: {
@@ -51,7 +51,7 @@ Ext.define(
        */
       flex: {
         evented: true,
-        $value: null,
+        $value: null
       },
 
       /**
@@ -179,7 +179,7 @@ Ext.define(
        * @private
        * @accessor
        */
-      translatable: null,
+      translatable: null
     },
 
     /**
@@ -475,7 +475,7 @@ Ext.define(
         !this.isFloated() &&
           !this.isCentered() &&
           !this.isPositioned() &&
-          !this.isDocked(),
+          !this.isDocked()
       );
     },
 
@@ -521,7 +521,7 @@ Ext.define(
 
       if (!behavior) {
         behavior = this.translatableBehavior = new Ext.behavior.Translatable(
-          this,
+          this
         );
       }
 
@@ -573,7 +573,7 @@ Ext.define(
           alignToHeight: alignToBox.height || 0,
 
           width: box.width,
-          height: box.height,
+          height: box.height
         },
         currentAlignmentInfo = me.getCurrentAlignmentInfo(),
         isAligned = true;
@@ -610,7 +610,7 @@ Ext.define(
         ? null
         : Ext.merge(
             {},
-            alignmentInfo.stats ? alignmentInfo.stats : alignmentInfo,
+            alignmentInfo.stats ? alignmentInfo.stats : alignmentInfo
           );
     },
 
@@ -721,10 +721,10 @@ Ext.define(
             align: matches[1] + "-" + matches[2],
             inside: inside,
             minWidth: me.getMinWidth && me.getMinWidth(),
-            minHeight: me.getMinHeight && me.getMinHeight(),
+            minHeight: me.getMinHeight && me.getMinHeight()
           },
-          options,
-        ),
+          options
+        )
       );
     },
 
@@ -945,8 +945,8 @@ Ext.define(
             parentNode.createChild({
               cls: me.floatWrapCls,
               id: me.id + "-floatWrap",
-              "data-componentId": me.id,
-            }),
+              "data-componentId": me.id
+            })
           );
 
           // Need a link to the owning component so that floateds which are hosted
@@ -983,7 +983,7 @@ Ext.define(
         if (!Widget.$mousedownListeners) {
           Widget.$mousedownListeners = Ext.getDoc().on({
             mousedown: Widget.onDocumentMouseDown,
-            destroyable: true,
+            destroyable: true
           });
         }
       },
@@ -999,10 +999,10 @@ Ext.define(
           return Ext.getBody().createChild(
             Ext.apply(
               {
-                cls: this.shimCls,
+                cls: this.shimCls
               },
-              shim,
-            ),
+              shim
+            )
           );
         } else {
           Ext.destroy(this.shim);
@@ -1039,13 +1039,13 @@ Ext.define(
           } else {
             mask = data.modalMask = floatParentNode.createChild(
               {
-                cls: "x-mask",
+                cls: "x-mask"
               },
-              positionEl,
+              positionEl
             );
             mask.on({
               tap: Widget.onModalMaskTap,
-              scope: Widget,
+              scope: Widget
             });
           }
           Widget.topModal = me;
@@ -1218,8 +1218,8 @@ Ext.define(
           }
         }
         me.syncShim();
-      },
-    },
+      }
+    }
   },
   function (Widget) {
     this.borrow(Ext.util.Positionable, ["clipTo", "clearClip"]);
@@ -1245,18 +1245,18 @@ Ext.define(
           fp = viewport.floatWrap = viewport.element.createChild({
             cls: Widget.prototype.floatWrapCls,
             id: "global-floatWrap",
-            "data-sticky": true,
+            "data-sticky": true
           });
         } else {
           fp = Ext.getBody().createChild({
             cls: Widget.prototype.floatWrapCls,
             id: "global-floatWrap",
-            "data-sticky": true,
+            "data-sticky": true
           });
         }
         Ext.floatRoot = fp;
       }
       return fp;
     };
-  },
+  }
 );

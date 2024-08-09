@@ -125,11 +125,11 @@ Ext.define("Ext.app.ViewController", {
 
   factoryConfig: {
     // configure Factoryable
-    type: "controller",
+    type: "controller"
   },
 
   config: {
-    closeViewAction: "destroy",
+    closeViewAction: "destroy"
   },
 
   view: null,
@@ -394,6 +394,6 @@ Ext.define("Ext.app.ViewController", {
       if (!this.beforeInit.$nullFn) {
         this.beforeInit(view);
       }
-    },
-  },
+    }
+  }
 });

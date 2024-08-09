@@ -9,7 +9,7 @@ Ext.define("Ext.device.Capture", {
   requires: [
     "Ext.device.Communicator",
     "Ext.device.capture.Cordova",
-    "Ext.device.capture.Simulator",
+    "Ext.device.capture.Simulator"
   ],
 
   constructor: function () {
@@ -20,5 +20,5 @@ Ext.define("Ext.device.Capture", {
     }
 
     return Ext.create("Ext.device.capture.Simulator");
-  },
+  }
 });

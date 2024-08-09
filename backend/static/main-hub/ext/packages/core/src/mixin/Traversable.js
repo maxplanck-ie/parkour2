@@ -6,7 +6,7 @@ Ext.define("Ext.mixin.Traversable", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "traversable",
+    id: "traversable"
   },
 
   setParent: function (parent) {
@@ -53,5 +53,5 @@ Ext.define("Ext.mixin.Traversable", {
     }
 
     return ancestorIds;
-  },
+  }
 });

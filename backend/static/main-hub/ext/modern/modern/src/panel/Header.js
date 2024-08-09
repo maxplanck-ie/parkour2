@@ -124,8 +124,8 @@ Ext.define("Ext.panel.Header", {
 
     layout: {
       type: "hbox",
-      align: "center",
-    },
+      align: "center"
+    }
   },
 
   add: function (item) {
@@ -203,13 +203,13 @@ Ext.define("Ext.panel.Header", {
   createTitle: function (config) {
     var ret = {
       xtype: "paneltitle",
-      flex: 1,
+      flex: 1
     };
 
     if (config) {
       if (typeof config === "string") {
         config = {
-          text: config,
+          text: config
         };
       }
 
@@ -234,7 +234,7 @@ Ext.define("Ext.panel.Header", {
         c = {
           xtype: "paneltool",
           type: c,
-          toolOwner: toolOwner,
+          toolOwner: toolOwner
         };
       } else if (c.isInstance) {
         if (toolOwner) {
@@ -244,9 +244,9 @@ Ext.define("Ext.panel.Header", {
         c = Ext.apply(
           {
             xtype: "paneltool",
-            toolOwner: toolOwner,
+            toolOwner: toolOwner
           },
-          c,
+          c
         );
       }
 
@@ -319,6 +319,6 @@ Ext.define("Ext.panel.Header", {
 
     sortByWeight: function (item1, item2) {
       return (item1.weight || 0) - (item2.weight || 0);
-    },
-  },
+    }
+  }
 });

@@ -15,7 +15,7 @@ describe("Ext.form.action.Submit", function () {
       hasUpload: function () {
         return false;
       },
-      markInvalid: Ext.emptyFn,
+      markInvalid: Ext.emptyFn
     });
     action = new Ext.form.action.Submit(config);
   }
@@ -53,8 +53,8 @@ describe("Ext.form.action.Submit", function () {
         form: {
           isValid: function () {
             return false;
-          },
-        },
+          }
+        }
       });
       action.run();
       expect(action.failureType).toEqual(Ext.form.action.Action.CLIENT_INVALID);
@@ -65,8 +65,8 @@ describe("Ext.form.action.Submit", function () {
         form: {
           isValid: function () {
             return false;
-          },
-        },
+          }
+        }
       });
       spyOn(action.form, "afterAction");
       action.run();
@@ -81,7 +81,7 @@ describe("Ext.form.action.Submit", function () {
       formBase = {
         getValues: function () {
           return { field1: "foo", field2: "bar" };
-        },
+        }
       };
 
       spyOn(Ext.Ajax, "request").andCallFake(function () {
@@ -117,7 +117,7 @@ describe("Ext.form.action.Submit", function () {
 
     it("should use the BasicForm's 'url' config as the ajax call url if specified", function () {
       createAction({
-        form: Ext.apply({}, { url: "/url-from-form" }, formBase),
+        form: Ext.apply({}, { url: "/url-from-form" }, formBase)
       });
       action.run();
       expect(ajaxRequestCfg.url).toEqual("/url-from-form");
@@ -151,7 +151,7 @@ describe("Ext.form.action.Submit", function () {
           field1: "foo",
           field2: "bar",
           one: "1",
-          two: "2",
+          two: "2"
         });
       });
 
@@ -163,7 +163,7 @@ describe("Ext.form.action.Submit", function () {
           field1: "foo",
           field2: "bar",
           one: "1",
-          two: "2",
+          two: "2"
         });
       });
 
@@ -175,7 +175,7 @@ describe("Ext.form.action.Submit", function () {
           field1: "foo",
           field2: "bar",
           one: "1",
-          two: "2",
+          two: "2"
         });
       });
 
@@ -185,8 +185,8 @@ describe("Ext.form.action.Submit", function () {
           form: Ext.apply(
             {},
             { baseParams: { three: "3", four: "4" } },
-            formBase,
-          ),
+            formBase
+          )
         });
         action.run();
         expect(ajaxRequestCfg.params).toEqual({
@@ -195,7 +195,7 @@ describe("Ext.form.action.Submit", function () {
           one: "1",
           two: "2",
           three: "3",
-          four: "4",
+          four: "4"
         });
       });
 
@@ -205,8 +205,8 @@ describe("Ext.form.action.Submit", function () {
           form: Ext.apply(
             {},
             { baseParams: { three: "3", four: "4" } },
-            formBase,
-          ),
+            formBase
+          )
         });
         action.run();
         expect(ajaxRequestCfg.params).toEqual({
@@ -215,19 +215,19 @@ describe("Ext.form.action.Submit", function () {
           one: "1",
           two: "2",
           three: "3",
-          four: "4",
+          four: "4"
         });
       });
 
       it("should set the jsonData if using jsonSubmit", function () {
         createAction({
           form: formBase,
-          jsonSubmit: true,
+          jsonSubmit: true
         });
         action.run();
         expect(ajaxRequestCfg.jsonData).toEqual({
           field1: "foo",
-          field2: "bar",
+          field2: "bar"
         });
       });
     });
@@ -277,7 +277,7 @@ describe("Ext.form.action.Submit", function () {
         action.run();
         expect(ajaxRequestCfg.jsonData).toEqual({
           field1: "foo",
-          field2: "bar",
+          field2: "bar"
         });
       });
 
@@ -286,8 +286,8 @@ describe("Ext.form.action.Submit", function () {
           params: { one: "1", two: "2" },
           form: Ext.apply(
             { jsonSubmit: true, baseParams: { three: "3", four: "4" } },
-            formBase,
-          ),
+            formBase
+          )
         });
         action.run();
         expect(ajaxRequestCfg.jsonData).toEqual({
@@ -296,7 +296,7 @@ describe("Ext.form.action.Submit", function () {
           one: "1",
           two: "2",
           three: "3",
-          four: "4",
+          four: "4"
         });
       });
 
@@ -305,8 +305,8 @@ describe("Ext.form.action.Submit", function () {
           params: "one=1&two=2",
           form: Ext.apply(
             { jsonSubmit: true, baseParams: { three: "3", four: "4" } },
-            formBase,
-          ),
+            formBase
+          )
         });
         action.run();
         expect(ajaxRequestCfg.jsonData).toEqual({
@@ -315,7 +315,7 @@ describe("Ext.form.action.Submit", function () {
           one: "1",
           two: "2",
           three: "3",
-          four: "4",
+          four: "4"
         });
       });
     });
@@ -337,10 +337,10 @@ describe("Ext.form.action.Submit", function () {
             afterAction: jasmine.createSpy("afterAction"),
             getValues: function () {
               return "";
-            },
+            }
           },
-          form,
-        ),
+          form
+        )
       });
       action.run();
     }
@@ -349,7 +349,7 @@ describe("Ext.form.action.Submit", function () {
       run();
 
       expect(action.failureType).toEqual(
-        Ext.form.action.Action.CONNECT_FAILURE,
+        Ext.form.action.Action.CONNECT_FAILURE
       );
     });
 
@@ -387,8 +387,8 @@ describe("Ext.form.action.Submit", function () {
       createAction({
         form: {
           markInvalid: jasmine.createSpy(),
-          errorReader: reader,
-        },
+          errorReader: reader
+        }
       });
       action.run();
     }
@@ -396,10 +396,10 @@ describe("Ext.form.action.Submit", function () {
     it("should parse the responseText as JSON if no errorReader is configured", function () {
       run(
         { responseText: '{"success":false,"errors":{"from":"responseText"}}' },
-        undefined,
+        undefined
       );
       expect(action.form.markInvalid).toHaveBeenCalledWith({
-        from: "responseText",
+        from: "responseText"
       });
     });
 
@@ -410,14 +410,14 @@ describe("Ext.form.action.Submit", function () {
           success: false,
           records: [
             { data: { id: "field1", msg: "message 1" } },
-            { data: { id: "field2", msg: "message 2" } },
-          ],
-        }),
+            { data: { id: "field2", msg: "message 2" } }
+          ]
+        })
       });
       expect(action.form.errorReader.read).toHaveBeenCalledWith(response);
       expect(action.form.markInvalid).toHaveBeenCalledWith([
         { id: "field1", msg: "message 1" },
-        { id: "field2", msg: "message 2" },
+        { id: "field2", msg: "message 2" }
       ]);
     });
   });
@@ -435,10 +435,10 @@ describe("Ext.form.action.Submit", function () {
             afterAction: jasmine.createSpy("afterAction"),
             getValues: function () {
               return "";
-            },
+            }
           },
-          form,
-        ),
+          form
+        )
       });
       action.run();
     }
@@ -488,10 +488,10 @@ describe("Ext.form.action.Submit", function () {
             afterAction: jasmine.createSpy("afterAction"),
             getValues: function () {
               return "";
-            },
+            }
           },
-          form,
-        ),
+          form
+        )
       });
       action.run();
     }
@@ -514,7 +514,7 @@ describe("Ext.form.action.Submit", function () {
     it("should not call afterAction if the form is destroying", function () {
       run(
         { responseText: '{"success":true,"data":{"from":"responseText"}}' },
-        { destroying: true },
+        { destroying: true }
       );
 
       expect(action.form.afterAction).not.toHaveBeenCalled();
@@ -523,7 +523,7 @@ describe("Ext.form.action.Submit", function () {
     it("should not call afterAction if the form is already destroyed", function () {
       run(
         { responseText: '{"success":true,"data":{"from":"responseText"}}' },
-        { destroyed: true },
+        { destroyed: true }
       );
 
       expect(action.form.afterAction).not.toHaveBeenCalled();
@@ -535,7 +535,7 @@ describe("Ext.form.action.Submit", function () {
 
     function makeCtr(items) {
       ctr = new Ext.container.Container({
-        items: items,
+        items: items
       });
     }
 
@@ -574,15 +574,15 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         spyOn(action, "buildForm").andCallThrough();
@@ -598,15 +598,15 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         ctx = action.doSubmit();
@@ -619,15 +619,15 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         ctx = action.doSubmit();
@@ -639,15 +639,15 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         ctx = action.doSubmit();
@@ -667,15 +667,15 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         params = action.getParams();
@@ -687,15 +687,15 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         spyOn(action.form, "getValues");
@@ -709,17 +709,17 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         spyOn(Ext.form.field.Base.prototype, "getSubmitData");
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         params = action.getParams();
@@ -732,23 +732,23 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         spyOn(Ext.form.field.Base.prototype, "getModelData");
 
         createAction({
-          form: new Ext.form.Basic(ctr),
+          form: new Ext.form.Basic(ctr)
         });
 
         params = action.getParams();
 
         expect(
-          Ext.form.field.Base.prototype.getModelData,
+          Ext.form.field.Base.prototype.getModelData
         ).not.toHaveBeenCalled();
         expect(Ext.form.field.Base.prototype.getModelData.callCount).toBe(0);
       });
@@ -766,16 +766,16 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
           form: new Ext.form.Basic(ctr),
-          target: "foo",
+          target: "foo"
         });
 
         returnVal = action.buildForm();
@@ -791,16 +791,16 @@ describe("Ext.form.action.Submit", function () {
         makeCtr([
           new Ext.form.field.Base({
             name: "field1",
-            value: "foo",
+            value: "foo"
           }),
           new Ext.form.field.File({
-            name: "field2",
-          }),
+            name: "field2"
+          })
         ]);
 
         createAction({
           form: new Ext.form.Basic(ctr),
-          target: iframe,
+          target: iframe
         });
 
         returnVal = action.buildForm();

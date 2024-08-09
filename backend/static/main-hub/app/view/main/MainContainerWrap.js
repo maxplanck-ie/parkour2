@@ -14,8 +14,8 @@ Ext.define("MainHub.view.main.MainContainerWrap", {
     animate: true,
     animatePolicy: {
       x: true,
-      width: true,
-    },
+      width: true
+    }
   },
 
   beforeLayout: function () {
@@ -31,9 +31,9 @@ Ext.define("MainHub.view.main.MainContainerWrap", {
     me.minHeight = height;
 
     navTree.setStyle({
-      "min-height": height + "px",
+      "min-height": height + "px"
     });
 
     me.callParent(arguments);
-  },
+  }
 });

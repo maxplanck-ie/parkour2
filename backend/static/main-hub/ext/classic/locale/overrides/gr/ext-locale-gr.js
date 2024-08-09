@@ -16,7 +16,7 @@ Ext.onReady(function () {
       "ÓåðôÝìâñéïò",
       "Ïêôþâñéïò",
       "ÍïÝìâñéïò",
-      "ÄåêÝìâñéïò",
+      "ÄåêÝìâñéïò"
     ];
 
     Ext.Date.dayNames = [
@@ -26,7 +26,7 @@ Ext.onReady(function () {
       "ÔåôÜñôç",
       "ÐÝìðôç",
       "ÐáñáóêåõÞ",
-      "ÓÜââáôï",
+      "ÓÜââáôï"
     ];
   }
 
@@ -36,35 +36,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u20ac",
       // Greek Euro
-      dateFormat: "ì/ç/Å",
+      dateFormat: "ì/ç/Å"
     });
   }
 });
 
 Ext.define("Ext.locale.gr.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.gr.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} åðéëåãìÝíç(åò) ãñáììÞ(Ýò)",
+  dragText: "{0} åðéëåãìÝíç(åò) ãñáììÞ(Ýò)"
 });
 
 Ext.define("Ext.locale.gr.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Êëåßóôå áõôÞ ôçí êáñôÝëá",
+  closeText: "Êëåßóôå áõôÞ ôçí êáñôÝëá"
 });
 
 Ext.define("Ext.locale.gr.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Ç ôéìÞ óôï ðåäßï äåí åßíáé Ýãêõñç",
+  invalidText: "Ç ôéìÞ óôï ðåäßï äåí åßíáé Ýãêõñç"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.gr.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Öüñôùóç...",
+  loadingText: "Öüñôùóç..."
 });
 
 Ext.define("Ext.locale.gr.picker.Date", {
@@ -78,7 +78,7 @@ Ext.define("Ext.locale.gr.picker.Date", {
   prevText: "Ðñïçãïýìåíïò ÌÞíáò (Control+Left)",
   monthYearText: "ÅðéëÝîôå ÌÞíá (Control+Up/Down ãéá ìåôáêßíçóç óôá Ýôç)",
   todayTip: "{0} (Spacebar)",
-  format: "ì/ç/Å",
+  format: "ì/ç/Å"
 });
 
 Ext.define("Ext.locale.gr.toolbar.Paging", {
@@ -91,7 +91,7 @@ Ext.define("Ext.locale.gr.toolbar.Paging", {
   lastText: "Ôåëåõôáßá óåëßäá",
   refreshText: "ÁíáíÝùóç",
   displayMsg: "ÅìöÜíéóç {0} - {1} áðü {2}",
-  emptyMsg: "Äåí âñÝèçêáí åããñáöÝò ãéá åìöÜíéóç",
+  emptyMsg: "Äåí âñÝèçêáí åããñáöÝò ãéá åìöÜíéóç"
 });
 
 Ext.define("Ext.locale.gr.form.field.Text", {
@@ -100,14 +100,14 @@ Ext.define("Ext.locale.gr.form.field.Text", {
   maxLengthText: "Ôï ìÝãéóôï ìÝãåèïò ãéá áõôü ôï ðåäßï åßíáé {0}",
   blankText: "Ôï ðåäßï áõôü åßíáé õðï÷ñåùôïêü",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.gr.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Ç åëÜ÷éóôç ôéìÞ ãéá áõôü ôï ðåäßï åßíáé {0}",
   maxText: "Ç ìÝãéóôç ôéìÞ ãéá áõôü ôï ðåäßï åßíáé {0}",
-  nanText: "{0} äåí åßíáé Ýãêõñïò áñéèìüò",
+  nanText: "{0} äåí åßíáé Ýãêõñïò áñéèìüò"
 });
 
 Ext.define("Ext.locale.gr.form.field.Date", {
@@ -118,20 +118,20 @@ Ext.define("Ext.locale.gr.form.field.Date", {
   maxText: "Ç çìåñïìçíßá ó' áõôü ôï ðåäßï ðñÝðåé íá åßíáé ðñéí áðü {0}",
   invalidText:
     "{0} äåí åßíáé Ýãêõñç çìåñïìçíßá - ðñÝðåé íá åßíáé ôçò ìïñöÞò {1}",
-  format: "ì/ç/Å",
+  format: "ì/ç/Å"
 });
 
 Ext.define(
   "Ext.locale.gr.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Öüñôùóç...",
+      loadingText: "Öüñôùóç..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.gr.form.field.VTypes", {
@@ -142,7 +142,7 @@ Ext.define("Ext.locale.gr.form.field.VTypes", {
     'Áõôü ôï ðåäßï ðñÝðåé íá åßíáé ìéá äéåýèõíóç URL ôçò ìïñöÞò "http:/' +
     '/www.example.com"',
   alphaText: "Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá êáé _",
-  alphanumText: "Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá, áñéèìïýò êáé _",
+  alphanumText: "Áõôü ôï ðåäßï ðñÝðåé íá ðåñéÝ÷åé ãñÜììáôá, áñéèìïýò êáé _"
 });
 
 Ext.define("Ext.locale.gr.grid.header.Container", {
@@ -151,14 +151,14 @@ Ext.define("Ext.locale.gr.grid.header.Container", {
   sortDescText: "Öèßíïõóá Ôáîéíüìçóç",
   lockText: "Êëåßäùìá óôÞëçò",
   unlockText: "Îåêëåßäùìá óôÞëçò",
-  columnsText: "ÓôÞëåò",
+  columnsText: "ÓôÞëåò"
 });
 
 Ext.define("Ext.locale.gr.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "¼íïìá",
   valueText: "ÔéìÞ",
-  dateFormat: "ì/ç/Å",
+  dateFormat: "ì/ç/Å"
 });
 
 Ext.define("Ext.locale.gr.window.MessageBox", {
@@ -167,11 +167,11 @@ Ext.define("Ext.locale.gr.window.MessageBox", {
     ok: "ÅíôÜîåé",
     cancel: "Áêýñùóç",
     yes: "Íáé",
-    no: "¼÷é",
-  },
+    no: "¼÷é"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.gr.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

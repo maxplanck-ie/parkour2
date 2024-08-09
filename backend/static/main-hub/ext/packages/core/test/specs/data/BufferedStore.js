@@ -20,7 +20,7 @@ describe("Ext.data.BufferedStore", function () {
       recs.push({
         id: i + 1,
         threadid: i + 1,
-        title: "Title" + (i + 1),
+        title: "Title" + (i + 1)
       });
     }
     return recs;
@@ -45,8 +45,8 @@ describe("Ext.data.BufferedStore", function () {
         status: 200,
         responseText: Ext.encode({
           total: total || empty ? total : 5000,
-          data: data,
-        }),
+          data: data
+        })
       });
 
       requests = Ext.Ajax.mockGetAllRequests();
@@ -64,12 +64,12 @@ describe("Ext.data.BufferedStore", function () {
             url: "fakeUrl",
             reader: {
               type: "json",
-              rootProperty: "data",
-            },
-          },
+              rootProperty: "data"
+            }
+          }
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -86,19 +86,19 @@ describe("Ext.data.BufferedStore", function () {
         "username",
         {
           name: "replycount",
-          type: "int",
+          type: "int"
         },
         {
           name: "lastpost",
           mapping: "lastpost",
           type: "date",
-          dateFormat: "timestamp",
+          dateFormat: "timestamp"
         },
         "lastposter",
         "excerpt",
-        "threadid",
+        "threadid"
       ],
-      idProperty: "threadid",
+      idProperty: "threadid"
     });
 
     MockAjaxManager.addMethods();
@@ -134,7 +134,7 @@ describe("Ext.data.BufferedStore", function () {
 
     // Looking up nonexistent internalId should return undefined
     expect(
-      bufferedStore.getByInternalId("DefinitelyDoesntExist"),
+      bufferedStore.getByInternalId("DefinitelyDoesntExist")
     ).toBeUndefined();
   });
 
@@ -162,7 +162,7 @@ describe("Ext.data.BufferedStore", function () {
     expect(
       bufferedStore.findBy(function (rec) {
         return rec.get("title") === "Title10";
-      }),
+      })
     ).toBe(9);
 
     expect(bufferedStore.findExact("title", "Title10")).toBe(9);
@@ -175,8 +175,8 @@ describe("Ext.data.BufferedStore", function () {
 
     createStore({
       listeners: {
-        load: spy,
-      },
+        load: spy
+      }
     });
 
     // Filter mutation shuold trigger a load
@@ -203,8 +203,8 @@ describe("Ext.data.BufferedStore", function () {
 
       createStore({
         listeners: {
-          beforesort: spy,
-        },
+          beforesort: spy
+        }
       });
 
       // Sorter mutation shuold trigger a load
@@ -218,8 +218,8 @@ describe("Ext.data.BufferedStore", function () {
 
       createStore({
         listeners: {
-          load: spy,
-        },
+          load: spy
+        }
       });
 
       // Sorter mutation shuold trigger a load
@@ -232,9 +232,9 @@ describe("Ext.data.BufferedStore", function () {
       createStore({
         sorters: [
           {
-            property: "title",
-          },
-        ],
+            property: "title"
+          }
+        ]
       });
 
       bufferedStore.sort("title", "DESC");
@@ -248,8 +248,8 @@ describe("Ext.data.BufferedStore", function () {
 
       createStore({
         listeners: {
-          load: spy,
-        },
+          load: spy
+        }
       });
 
       bufferedStore.filter("username", "germanicus");
@@ -267,8 +267,8 @@ describe("Ext.data.BufferedStore", function () {
     createStore({
       pageSize: 5,
       listeners: {
-        load: spy,
-      },
+        load: spy
+      }
     });
 
     bufferedStore.load();
@@ -294,15 +294,15 @@ describe("Ext.data.BufferedStore", function () {
 
           bufferedStore.load({
             // Called after first prefetch and first page has been added.
-            callback: spy,
+            callback: spy
           });
 
           Ext.Ajax.mockComplete({
             status: status,
             responseText: Ext.encode({
               total: records.length,
-              data: records,
-            }),
+              data: records
+            })
           });
 
           args = spy.mostRecentCall.args;
@@ -319,7 +319,7 @@ describe("Ext.data.BufferedStore", function () {
           expect(args[1].$className).toBe("Ext.data.operation.Read");
 
           expect(args[2]).toBe(true);
-        },
+        }
       );
     }
 
@@ -335,7 +335,7 @@ describe("Ext.data.BufferedStore", function () {
         var spy = jasmine.createSpy();
         bufferedStore.load({
           // Called after first prefetch and first page has been added.
-          callback: spy,
+          callback: spy
         });
 
         satisfyRequests();
@@ -348,13 +348,13 @@ describe("Ext.data.BufferedStore", function () {
 
       it("should not exceed 50 records", function () {
         createStore({
-          pageSize: 50,
+          pageSize: 50
         });
 
         var spy = jasmine.createSpy();
         bufferedStore.load({
           // Called after first prefetch and first page has been added.
-          callback: spy,
+          callback: spy
         });
 
         satisfyRequests(50);
@@ -439,7 +439,7 @@ describe("Ext.data.BufferedStore", function () {
         leadingBufferZone: 300,
         pageSize: 100,
         defaultViewSize: viewSize,
-        preserveScrollOnReload: true,
+        preserveScrollOnReload: true
       });
 
       bufferedStore.load();
@@ -459,7 +459,7 @@ describe("Ext.data.BufferedStore", function () {
       expect(captured[captured.length - 1]).toEqual({
         page: 67,
         start: 6600,
-        limit: 100,
+        limit: 100
       });
     });
 
@@ -470,7 +470,7 @@ describe("Ext.data.BufferedStore", function () {
       createStore({
         leadingBufferZone: 300,
         pageSize: 100,
-        defaultViewSize: viewSize,
+        defaultViewSize: viewSize
       });
 
       bufferedStore.load();
@@ -490,7 +490,7 @@ describe("Ext.data.BufferedStore", function () {
       expect(captured[captured.length - 1]).toEqual({
         page: 3,
         start: 200,
-        limit: 100,
+        limit: 100
       });
     });
   });
@@ -505,7 +505,7 @@ describe("Ext.data.BufferedStore", function () {
         viewSize: 10,
         leadingBufferZone: 0,
         trailingBufferZone: 0,
-        purgePageCount: new Number(0),
+        purgePageCount: new Number(0)
       });
       bufferedStore.load();
       satisfyRequests();
@@ -520,7 +520,7 @@ describe("Ext.data.BufferedStore", function () {
 
       // The indexMap must contain only the keys to the records that are now there.
       expect(Ext.Object.getKeys(bufferedStore.getData().indexMap)).toEqual(
-        keys,
+        keys
       );
 
       // This should not evict page one because the cache size is TWICE the required zone
@@ -535,12 +535,12 @@ describe("Ext.data.BufferedStore", function () {
       expect(keys.length).toBe(20);
       expect(Ext.Object.getKeys(bufferedStore.getData().map)).toEqual([
         "1",
-        "2",
+        "2"
       ]);
 
       // The indexMap must contain only the keys to the records that are now there.
       expect(Ext.Object.getKeys(bufferedStore.getData().indexMap)).toEqual(
-        keys,
+        keys
       );
 
       // This should evict page one because there are no buffer zones, and a non-falsy purgePageCount of zero
@@ -555,12 +555,12 @@ describe("Ext.data.BufferedStore", function () {
       expect(keys.length).toBe(20);
       expect(Ext.Object.getKeys(bufferedStore.getData().map)).toEqual([
         "2",
-        "3",
+        "3"
       ]);
 
       // The indexMap must contain only the keys to the records that are now there.
       expect(Ext.Object.getKeys(bufferedStore.getData().indexMap)).toEqual(
-        keys,
+        keys
       );
     });
   });

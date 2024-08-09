@@ -114,10 +114,10 @@ Ext.Assert = {
         property = object.$className + "#" + property;
       }
       Ext.raise(
-        "Expected a truthy value for " + property + " but was " + typeof b,
+        "Expected a truthy value for " + property + " but was " + typeof b
       );
     }
-  },
+  }
 };
 
 (function () {
@@ -144,7 +144,7 @@ Ext.Assert = {
               (object.$className ? object.$className + "#" : "") +
               prop +
               " to be " +
-              kind),
+              kind)
         );
       }
     };
@@ -173,7 +173,7 @@ Ext.Assert = {
               (object.$className ? object.$className + "#" : "") +
               prop +
               " to NOT be " +
-              kind),
+              kind)
         );
       }
     };

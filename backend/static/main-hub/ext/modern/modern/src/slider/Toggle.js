@@ -7,7 +7,7 @@ Ext.define("Ext.slider.Toggle", {
 
   config: {
     onThumbUi: "toggle-on",
-    offThumbUi: "toggle-off",
+    offThumbUi: "toggle-off"
   },
 
   /**
@@ -25,7 +25,7 @@ Ext.define("Ext.slider.Toggle", {
     this.callParent();
 
     this.on({
-      change: "onChange",
+      change: "onChange"
     });
   },
 
@@ -117,6 +117,6 @@ Ext.define("Ext.slider.Toggle", {
       } else {
         fillElement.hide();
       }
-    },
-  },
+    }
+  }
 });

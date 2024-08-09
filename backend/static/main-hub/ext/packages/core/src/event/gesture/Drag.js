@@ -21,7 +21,7 @@ Ext.define(
        * @cfg {Number} minDistance
        * The minimum distance of pixels before a touch event becomes a drag event.
        */
-      minDistance: 8,
+      minDistance: 8
     },
 
     constructor: function () {
@@ -35,34 +35,34 @@ Ext.define(
         touch: null,
         previous: {
           x: 0,
-          y: 0,
+          y: 0
         },
         x: 0,
         y: 0,
         delta: {
           x: 0,
-          y: 0,
+          y: 0
         },
         absDelta: {
           x: 0,
-          y: 0,
+          y: 0
         },
         flick: {
           velocity: {
             x: 0,
-            y: 0,
-          },
+            y: 0
+          }
         },
         direction: {
           x: 0,
-          y: 0,
+          y: 0
         },
         time: 0,
         previousTime: {
           x: 0,
-          y: 0,
+          y: 0
         },
-        longpress: false,
+        longpress: false
       };
     },
 
@@ -85,7 +85,7 @@ Ext.define(
         scale = Ext.Element.getViewportScale(),
         // account for scale so that move distance is actual screen pixels, not page pixels
         distance = Math.round(
-          Math.abs(point.getDistanceTo(me.startPoint) * scale),
+          Math.abs(point.getDistanceTo(me.startPoint) * scale)
         );
 
       if (distance >= minDistance) {
@@ -291,10 +291,10 @@ Ext.define(
       me.initInfo();
 
       return me.callParent();
-    },
+    }
   },
   function (Drag) {
     var gestures = Ext.manifest.gestures;
     Drag.instance = new Drag(gestures && gestures.drag);
-  },
+  }
 );

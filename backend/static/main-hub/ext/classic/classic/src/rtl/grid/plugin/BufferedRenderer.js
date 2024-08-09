@@ -9,5 +9,5 @@ Ext.define("Ext.rtl.grid.plugin.BufferedRenderer", {
     } else {
       this.callParent([body, bodyTop]);
     }
-  },
+  }
 });

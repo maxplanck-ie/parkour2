@@ -3,7 +3,7 @@ Ext.define("Ext.scroll.TableScroller", {
   alias: "scroller.table",
 
   config: {
-    lockingScroller: null,
+    lockingScroller: null
   },
 
   private: {
@@ -20,6 +20,6 @@ Ext.define("Ext.scroll.TableScroller", {
       }
 
       this.callParent([x, y, animate]);
-    },
-  },
+    }
+  }
 });

@@ -78,7 +78,7 @@ Ext.define("Ext.field.Input", {
      * @cfg {Boolean} checked `true` if the checkbox should render initially checked.
      * @accessor
      */
-    checked: false,
+    checked: false
   },
 
   config: {
@@ -223,7 +223,7 @@ Ext.define("Ext.field.Input", {
      *
      * @accessor
      */
-    fastFocus: false,
+    fastFocus: false
   },
 
   classCls: Ext.baseCSSPrefix + "input",
@@ -254,16 +254,16 @@ Ext.define("Ext.field.Input", {
         {
           reference: "inputElement",
           tag: this.tag,
-          cls: Ext.baseCSSPrefix + "input-el",
+          cls: Ext.baseCSSPrefix + "input-el"
         },
         {
           reference: "maskElement",
           classList: [
             Ext.baseCSSPrefix + "mask-el",
-            Ext.baseCSSPrefix + "hidden-display",
-          ],
-        },
-      ],
+            Ext.baseCSSPrefix + "hidden-display"
+          ]
+        }
+      ]
     });
 
     if (afterTemplate) {
@@ -288,7 +288,7 @@ Ext.define("Ext.field.Input", {
       blur: "onBlur",
       input: "onInput",
       paste: "onPaste",
-      tap: "onInputTap",
+      tap: "onInputTap"
     });
 
     // Stock android has a delayed mousedown event that is dispatched
@@ -307,14 +307,14 @@ Ext.define("Ext.field.Input", {
 
     me.maskElement.on({
       scope: me,
-      tap: "onMaskTap",
+      tap: "onMaskTap"
     });
 
     // Hack for IE10. Seems like keyup event is not fired for 'enter' keyboard button, so we use keypress event instead to handle enter.
     if (Ext.browser.is.ie && Ext.browser.version.major >= 10) {
       me.inputElement.on({
         scope: me,
-        keypress: "onKeyPress",
+        keypress: "onKeyPress"
       });
     }
   },
@@ -325,13 +325,13 @@ Ext.define("Ext.field.Input", {
       if (this.getFastFocus() && Ext.os.is.iOS) {
         this.inputElement.on({
           scope: this,
-          touchstart: "onTouchStart",
+          touchstart: "onTouchStart"
         });
       }
     } else {
       this.inputElement.un({
         scope: this,
-        touchstart: "onTouchStart",
+        touchstart: "onTouchStart"
       });
     }
   },
@@ -450,7 +450,7 @@ Ext.define("Ext.field.Input", {
   applyTabIndex: function (tabIndex) {
     if (tabIndex !== null && typeof tabIndex != "number") {
       throw new Error(
-        "Ext.field.Field: [applyTabIndex] trying to pass a value which is not a number",
+        "Ext.field.Field: [applyTabIndex] trying to pass a value which is not a number"
       );
     }
     return tabIndex;
@@ -476,7 +476,7 @@ Ext.define("Ext.field.Input", {
   applyMaxLength: function (maxLength) {
     if (maxLength !== null && typeof maxLength != "number") {
       throw new Error(
-        "Ext.field.Text: [applyMaxLength] trying to pass a value which is not a number",
+        "Ext.field.Text: [applyMaxLength] trying to pass a value which is not a number"
       );
     }
     return maxLength;
@@ -629,7 +629,7 @@ Ext.define("Ext.field.Input", {
   applyMaxRows: function (maxRows) {
     if (maxRows !== null && typeof maxRows !== "number") {
       throw new Error(
-        "Ext.field.Input: [applyMaxRows] trying to pass a value which is not a number",
+        "Ext.field.Input: [applyMaxRows] trying to pass a value which is not a number"
       );
     }
 
@@ -894,5 +894,5 @@ Ext.define("Ext.field.Input", {
         this.setValue(value.slice(0, maxLength));
       }
     }
-  },
+  }
 });

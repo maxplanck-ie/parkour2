@@ -32,5 +32,5 @@ Ext.define("Ext.data.proxy.SessionStorage", {
 
   getStorageObject: function () {
     return window.sessionStorage;
-  },
+  }
 });

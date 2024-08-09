@@ -57,7 +57,7 @@ Ext.define("Ext.view.DragZone", {
     var me = this,
       eventSpec = {
         itemmousedown: me.onItemMouseDown,
-        scope: me,
+        scope: me
       };
 
     // If there may be ambiguity with touch/swipe to scroll and a drag gesture
@@ -69,7 +69,7 @@ Ext.define("Ext.view.DragZone", {
       // inhibit the contextmenu on this element
       eventSpec.contextmenu = {
         element: "el",
-        fn: me.onViewContextMenu,
+        fn: me.onViewContextMenu
       };
     }
     me.initTarget(id, sGroup, config);
@@ -165,7 +165,7 @@ Ext.define("Ext.view.DragZone", {
         ddel: this.ddel,
         item: item,
         records: view.getSelectionModel().getSelection(),
-        fromPosition: Ext.fly(item).getXY(),
+        fromPosition: Ext.fly(item).getXY()
       };
     }
   },
@@ -197,5 +197,5 @@ Ext.define("Ext.view.DragZone", {
 
   getRepairXY: function (e, data) {
     return data ? data.fromPosition : false;
-  },
+  }
 });

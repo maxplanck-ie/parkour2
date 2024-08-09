@@ -28,7 +28,7 @@ describe("Modern form - Ext.field.Number", function () {
     describe("when value is a number", function () {
       beforeEach(function () {
         createField({
-          value: 123,
+          value: 123
         });
       });
 
@@ -40,7 +40,7 @@ describe("Modern form - Ext.field.Number", function () {
     describe("when value is 0", function () {
       beforeEach(function () {
         createField({
-          value: 0,
+          value: 0
         });
       });
 
@@ -52,7 +52,7 @@ describe("Modern form - Ext.field.Number", function () {
     describe("when value is -123", function () {
       beforeEach(function () {
         createField({
-          value: -123,
+          value: -123
         });
       });
 
@@ -64,7 +64,7 @@ describe("Modern form - Ext.field.Number", function () {
     describe("when value is a string", function () {
       beforeEach(function () {
         createField({
-          value: "123",
+          value: "123"
         });
       });
 

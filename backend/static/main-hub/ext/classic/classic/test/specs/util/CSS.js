@@ -4,7 +4,7 @@ describe("Ext.util.CSS", function () {
   beforeEach(function () {
     div = Ext.getBody().createChild({
       tag: "div",
-      style: "height:100px;width:100px",
+      style: "height:100px;width:100px"
     });
     div.dom.className = "ext-css-test";
   });
@@ -16,32 +16,32 @@ describe("Ext.util.CSS", function () {
     // Create a stylesheet with a single rule in it
     var stylesheet = Ext.util.CSS.createStyleSheet(
       ".ext-css-test { background-color:red}",
-      "unit-test-stylesheet",
+      "unit-test-stylesheet"
     );
     expect(
       div.getStyle("background-color") === "rgb(255, 0, 0)" ||
-        div.getStyle("background-color") === "red",
+        div.getStyle("background-color") === "red"
     ).toBe(true);
 
     // Update the single rule in the above stylesheet
     Ext.util.CSS.updateRule(".ext-css-test", "background-color", "blue");
     expect(
       div.getStyle("background-color") === "rgb(0, 0, 255)" ||
-        div.getStyle("background-color") === "blue",
+        div.getStyle("background-color") === "blue"
     ).toBe(true);
 
     // Create a new rule in the stylesheet
     Ext.util.CSS.createRule(stylesheet, ".ext-css-test", "color:green");
     expect(
       div.getStyle("color") === "rgb(0, 128, 0)" ||
-        div.getStyle("color") === "green",
+        div.getStyle("color") === "green"
     ).toBe(true);
 
     // Update the new rule
     Ext.util.CSS.updateRule(".ext-css-test", "color", "red");
     expect(
       div.getStyle("color") === "rgb(255, 0, 0)" ||
-        div.getStyle("color") === "red",
+        div.getStyle("color") === "red"
     ).toBe(true);
   });
 

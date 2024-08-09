@@ -60,7 +60,7 @@ Ext.define("Ext.field.TextArea", {
      * @inheritdoc
      */
     component: {
-      xtype: "textareainput",
+      xtype: "textareainput"
     },
 
     /**
@@ -69,7 +69,7 @@ Ext.define("Ext.field.TextArea", {
      */
     maxRows: null,
 
-    clearIcon: false,
+    clearIcon: false
   },
 
   classCls: Ext.baseCSSPrefix + "textareafield",
@@ -98,5 +98,5 @@ Ext.define("Ext.field.TextArea", {
   doKeyUp: function (me) {
     // getValue to ensure that we are in sync with the dom
     this.toggleClearTrigger(this.getValue());
-  },
+  }
 });

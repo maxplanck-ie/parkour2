@@ -11,12 +11,12 @@ Ext.define("Ext.data.AbstractStore", {
   requires: [
     "Ext.util.Collection",
     "Ext.data.schema.Schema",
-    "Ext.util.Filter",
+    "Ext.util.Filter"
   ],
 
   factoryConfig: {
     defaultType: "store",
-    type: "store",
+    type: "store"
   },
 
   $configPrefixed: false,
@@ -74,7 +74,7 @@ Ext.define("Ext.data.AbstractStore", {
      */
     remoteSort: {
       lazy: true,
-      $value: false,
+      $value: false
     },
 
     /**
@@ -83,7 +83,7 @@ Ext.define("Ext.data.AbstractStore", {
      */
     remoteFilter: {
       lazy: true,
-      $value: false,
+      $value: false
     },
 
     /**
@@ -127,7 +127,7 @@ Ext.define("Ext.data.AbstractStore", {
      * sort order will always be maintained.
      * @private
      */
-    autoSort: null,
+    autoSort: null
   },
 
   /**
@@ -344,7 +344,7 @@ Ext.define("Ext.data.AbstractStore", {
     startIndex,
     anyMatch,
     caseSensitive,
-    exactMatch,
+    exactMatch
   ) {
     //             exactMatch
     //  anyMatch    F       T
@@ -360,7 +360,7 @@ Ext.define("Ext.data.AbstractStore", {
       startIndex,
       startsWith,
       endsWith,
-      !caseSensitive,
+      !caseSensitive
     );
   },
 
@@ -414,7 +414,7 @@ Ext.define("Ext.data.AbstractStore", {
         return rec.isEqual(rec.get(fieldName), value);
       },
       this,
-      startIndex,
+      startIndex
     );
   },
 
@@ -467,12 +467,12 @@ Ext.define("Ext.data.AbstractStore", {
   getRange: function (
     start,
     end,
-    /* private - use by BufferedRenderer. It may be using a BufferedStore */ options,
+    /* private - use by BufferedRenderer. It may be using a BufferedStore */ options
   ) {
     // Collection's getRange is exclusive. Do NOT mutate the value: it is passed to the callback.
     var result = this.getData().getRange(
       start,
-      Ext.isNumber(end) ? end + 1 : end,
+      Ext.isNumber(end) ? end + 1 : end
     );
 
     // BufferedRenderer requests a range with a callback to process that range.
@@ -571,7 +571,7 @@ Ext.define("Ext.data.AbstractStore", {
     if (Ext.isString(filters)) {
       filters = {
         property: filters,
-        value: value,
+        value: value
       };
     }
     this.suppressNextFilter = !!supressEvent;
@@ -643,7 +643,7 @@ Ext.define("Ext.data.AbstractStore", {
   filterBy: function (fn, scope) {
     this.getFilters().add({
       filterFn: fn,
-      scope: scope || this,
+      scope: scope || this
     });
   },
 
@@ -979,7 +979,7 @@ Ext.define("Ext.data.AbstractStore", {
         me.load({
           callback: function () {
             me.fireEvent("sort", me, sorters);
-          },
+          }
         });
       } else {
         me.fireEvent("datachanged", me);
@@ -1007,7 +1007,7 @@ Ext.define("Ext.data.AbstractStore", {
       me.getFilters().each(function (filter) {
         if (filter.getInitialConfig().filterFn) {
           Ext.raise(
-            "Unable to use a filtering function in conjunction with remote filtering.",
+            "Unable to use a filtering function in conjunction with remote filtering."
           );
         }
       });
@@ -1034,7 +1034,7 @@ Ext.define("Ext.data.AbstractStore", {
     if (field) {
       this.setGrouper({
         property: field,
-        direction: this.getGroupDir(),
+        direction: this.getGroupDir()
       });
     } else {
       this.setGrouper(null);
@@ -1067,7 +1067,7 @@ Ext.define("Ext.data.AbstractStore", {
     if (grouper && typeof grouper === "string") {
       grouper = {
         property: grouper,
-        direction: direction || me.getGroupDir(),
+        direction: direction || me.getGroupDir()
       };
     }
 
@@ -1079,7 +1079,7 @@ Ext.define("Ext.data.AbstractStore", {
       if (me.getRemoteSort()) {
         me.load({
           scope: me,
-          callback: me.fireGroupChange,
+          callback: me.fireGroupChange
         });
       } else {
         me.fireEvent("datachanged", me);
@@ -1180,7 +1180,7 @@ Ext.define("Ext.data.AbstractStore", {
         filters[remoteFilter ? "on" : "un"](
           "endupdate",
           this.onFilterEndUpdate,
-          this,
+          this
         );
       }
     },
@@ -1197,15 +1197,15 @@ Ext.define("Ext.data.AbstractStore", {
         sorters[remoteSort ? "on" : "un"](
           "endupdate",
           me.onSorterEndUpdate,
-          me,
+          me
         );
         me.getData()[remoteSort ? "un" : "on"](
           "beforesort",
           me.onBeforeCollectionSort,
-          me,
+          me
         );
       }
-    },
+    }
   },
 
   deprecated: {
@@ -1213,8 +1213,8 @@ Ext.define("Ext.data.AbstractStore", {
       methods: {
         destroyStore: function () {
           this.destroy();
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });

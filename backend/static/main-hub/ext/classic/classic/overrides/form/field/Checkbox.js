@@ -27,5 +27,5 @@ Ext.define(null, {
     if (displayEl && checked !== me.lastValue) {
       displayEl.repaint();
     }
-  },
+  }
 });

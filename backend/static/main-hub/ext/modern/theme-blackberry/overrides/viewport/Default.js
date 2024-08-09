@@ -45,9 +45,9 @@ Ext.define("Ext.theme.blackberry.viewport.Default", {
     }
     return Ext.apply(
       {
-        xclass: type,
+        xclass: type
       },
-      menu,
+      menu
     );
-  },
+  }
 });

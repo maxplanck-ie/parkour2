@@ -195,7 +195,7 @@ Ext.define("Ext.promise.Consequence", function (Consequence) {
         }
 
         Consequence.queueSize = 0;
-      },
-    },
+      }
+    }
   };
 });

@@ -99,10 +99,10 @@ Ext.define("Ext.chart.series.Scatter", {
       fx: {
         customDurations: {
           translationX: 0,
-          translationY: 0,
-        },
-      },
-    },
+          translationY: 0
+        }
+      }
+    }
   },
 
   themeMarkerCount: function () {
@@ -128,7 +128,7 @@ Ext.define("Ext.chart.series.Scatter", {
         "black",
       disabled: me.getHidden(),
       series: me.getId(),
-      index: 0,
+      index: 0
     });
-  },
+  }
 });

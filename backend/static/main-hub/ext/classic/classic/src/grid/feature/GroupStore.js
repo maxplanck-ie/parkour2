@@ -50,7 +50,7 @@ Ext.define("Ext.grid.feature.GroupStore", {
         idchanged: me.onIdChanged,
         update: me.onUpdate,
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
 
       me.store = store;
@@ -106,9 +106,9 @@ Ext.define("Ext.grid.feature.GroupStore", {
         extraKeys: {
           byInternalId: {
             property: "internalId",
-            rootProperty: "",
-          },
-        },
+            rootProperty: ""
+          }
+        }
       });
     }
 
@@ -430,7 +430,7 @@ Ext.define("Ext.grid.feature.GroupStore", {
           modifiedFieldNames &&
           Ext.Array.contains(
             modifiedFieldNames,
-            groupingFeature.getGroupField(),
+            groupingFeature.getGroupField()
           )
         ) {
           return me.onDataChanged();
@@ -505,5 +505,5 @@ Ext.define("Ext.grid.feature.GroupStore", {
     me.groupingFeature = null;
 
     me.callParent();
-  },
+  }
 });

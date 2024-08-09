@@ -9,7 +9,7 @@ export class Push {
       onSubscriptionCancel: [],
       onWorkerError: [],
       onWorkerSuccess: [],
-      onWorkerNotSupported: [],
+      onWorkerNotSupported: []
     };
     return this;
   }
@@ -152,7 +152,7 @@ export class Push {
                 self.fire("onWorkerSuccess");
                 serviceWorkerRegistration.pushManager
                   .subscribe({
-                    userVisibleOnly: userVisibleOnly,
+                    userVisibleOnly: userVisibleOnly
                   })
                   .then(function (subscription) {
                     const key = subscription.getKey("p256dh");
@@ -162,20 +162,17 @@ export class Push {
                       endpoint: self.getEndpoint(subscription),
                       p256dh: key
                         ? window.btoa(
-                            String.fromCharCode.apply(
-                              null,
-                              new Uint8Array(key),
-                            ),
+                            String.fromCharCode.apply(null, new Uint8Array(key))
                           )
                         : null,
                       auth: token
                         ? window.btoa(
                             String.fromCharCode.apply(
                               null,
-                              new Uint8Array(token),
-                            ),
+                              new Uint8Array(token)
+                            )
                           )
-                        : null,
+                        : null
                     };
 
                     self.fire("onSubscriptionSuccess", [self.subData]);
@@ -183,7 +180,7 @@ export class Push {
                   .catch(function (err) {
                     self.fire("onWorkerError", [err]);
                   });
-              },
+              }
             );
           });
         } else {

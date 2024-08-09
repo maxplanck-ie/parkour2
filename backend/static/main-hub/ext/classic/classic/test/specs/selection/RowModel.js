@@ -26,11 +26,11 @@ describe("Ext.selection.RowModel", function () {
           fields: ["name"],
           proxy: {
             type: "memory",
-            data: rawData,
-          },
+            data: rawData
+          }
         },
-        config,
-      ),
+        config
+      )
     );
   }
 
@@ -45,10 +45,10 @@ describe("Ext.selection.RowModel", function () {
           selModel: selModel,
           height: 200,
           width: 200,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     store = grid.getStore();
@@ -75,7 +75,7 @@ describe("Ext.selection.RowModel", function () {
       { id: 3, name: "Evan" },
       { id: 4, name: "Don" },
       { id: 5, name: "Nige" },
-      { id: 6, name: "Alex" },
+      { id: 6, name: "Alex" }
     ];
   });
 
@@ -91,8 +91,8 @@ describe("Ext.selection.RowModel", function () {
     createGrid({
       columns: [
         { text: "ID", dataIndex: "id" },
-        { text: "Name", dataIndex: "name" },
-      ],
+        { text: "Name", dataIndex: "name" }
+      ]
     });
 
     navModel.setPosition(0, 0, null, null, true);
@@ -106,7 +106,7 @@ describe("Ext.selection.RowModel", function () {
       jasmine.fireKeyEvent(
         navModel.getPosition().getCell(true),
         "keydown",
-        Ext.event.Event.RIGHT,
+        Ext.event.Event.RIGHT
       );
 
       // No selection should take place navigating INSIDE a row
@@ -118,7 +118,7 @@ describe("Ext.selection.RowModel", function () {
       jasmine.fireKeyEvent(
         navModel.getPosition().getCell(true),
         "keydown",
-        Ext.event.Event.DOWN,
+        Ext.event.Event.DOWN
       );
 
       expect(view.selModel.getSelection().length).toBe(1);
@@ -142,8 +142,8 @@ describe("Ext.selection.RowModel", function () {
         selType: "rowmodel", // rowmodel is the default selection model
         mode: "SINGLE",
         allowDeselect: true,
-        toggleOnClick: false,
-      },
+        toggleOnClick: false
+      }
     );
 
     // Select row 1
@@ -175,8 +175,8 @@ describe("Ext.selection.RowModel", function () {
       {},
       {
         selType: "rowmodel", // rowmodel is the default selection model
-        mode: "SINGLE",
-      },
+        mode: "SINGLE"
+      }
     );
 
     // Select row 2 by clicking on its first column
@@ -193,7 +193,7 @@ describe("Ext.selection.RowModel", function () {
     jasmine.fireKeyEvent(
       navModel.getPosition().getCell(true),
       "keydown",
-      Ext.event.Event.LEFT,
+      Ext.event.Event.LEFT
     );
     var selection = selModel.getSelection();
 
@@ -206,7 +206,7 @@ describe("Ext.selection.RowModel", function () {
     jasmine.fireKeyEvent(
       navModel.getPosition().getCell(true),
       "keydown",
-      Ext.event.Event.RIGHT,
+      Ext.event.Event.RIGHT
     );
     var selection = selModel.getSelection();
 
@@ -220,8 +220,8 @@ describe("Ext.selection.RowModel", function () {
     createGrid(
       {},
       {
-        allowDeselect: false,
-      },
+        allowDeselect: false
+      }
     );
 
     // Select row 1
@@ -262,7 +262,7 @@ describe("Ext.selection.RowModel", function () {
     describe("deselectOnContainerClick: false", function () {
       it("should not deselect when clicking the container", function () {
         createGrid(null, {
-          deselectOnContainerClick: false,
+          deselectOnContainerClick: false
         });
         selModel.select(0);
         jasmine.fireMouseEvent(view.getEl(), "click", 180, 180);
@@ -273,7 +273,7 @@ describe("Ext.selection.RowModel", function () {
     describe("deselectOnContainerClick: true", function () {
       it("should deselect when clicking the container", function () {
         createGrid(null, {
-          deselectOnContainerClick: true,
+          deselectOnContainerClick: true
         });
         selModel.select(0);
         jasmine.fireMouseEvent(view.getEl(), "click", 180, 180);
@@ -288,14 +288,14 @@ describe("Ext.selection.RowModel", function () {
         createGrid(
           {
             bbar: {
-              xtype: "pagingtoolbar",
-            },
+              xtype: "pagingtoolbar"
+            }
           },
           null,
           {
             autoLoad: false,
-            pageSize: 2,
-          },
+            pageSize: 2
+          }
         );
         store.proxy.enablePaging = true;
 
@@ -313,7 +313,7 @@ describe("Ext.selection.RowModel", function () {
 
         // Row zero has the selected class
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          true,
+          true
         );
 
         // Load page 2
@@ -321,7 +321,7 @@ describe("Ext.selection.RowModel", function () {
 
         // First row in new page NOT selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          false,
+          false
         );
 
         // Go back to page 1
@@ -333,7 +333,7 @@ describe("Ext.selection.RowModel", function () {
 
         // Row zero must not be selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          false,
+          false
         );
       });
     });
@@ -343,16 +343,16 @@ describe("Ext.selection.RowModel", function () {
         createGrid(
           {
             bbar: {
-              xtype: "pagingtoolbar",
-            },
+              xtype: "pagingtoolbar"
+            }
           },
           {
-            pruneRemoved: false,
+            pruneRemoved: false
           },
           {
             autoLoad: false,
-            pageSize: 2,
-          },
+            pageSize: 2
+          }
         );
         store.proxy.enablePaging = true;
 
@@ -370,7 +370,7 @@ describe("Ext.selection.RowModel", function () {
 
         // Row zero has the selected class
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          true,
+          true
         );
 
         // Load page 2
@@ -378,7 +378,7 @@ describe("Ext.selection.RowModel", function () {
 
         // First row in new page NOT selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          false,
+          false
         );
 
         // Go back to page 1
@@ -391,7 +391,7 @@ describe("Ext.selection.RowModel", function () {
 
         // Row zero must be selected
         expect(Ext.fly(view.getNode(0)).hasCls(view.selectedItemCls)).toBe(
-          true,
+          true
         );
       });
     });
@@ -403,12 +403,12 @@ describe("Ext.selection.RowModel", function () {
       createGrid(
         {},
         {
-          mode: "MULTI",
-        },
+          mode: "MULTI"
+        }
       );
       selModel.select(0);
       selModel.selectWithEvent(grid.store.getAt(2), {
-        shiftKey: true,
+        shiftKey: true
       });
       expect(selModel.selected.length).toBe(3);
     });
@@ -418,16 +418,16 @@ describe("Ext.selection.RowModel", function () {
       createGrid(
         {},
         {
-          mode: "MULTI",
-        },
+          mode: "MULTI"
+        }
       );
 
       selModel.selectWithEvent(grid.store.getAt(2), {
-        shiftKey: true,
+        shiftKey: true
       });
 
       selModel.selectWithEvent(grid.store.getAt(0), {
-        shiftKey: true,
+        shiftKey: true
       });
 
       expect(selModel.selected.length).toBe(3);
@@ -439,8 +439,8 @@ describe("Ext.selection.RowModel", function () {
       createGrid(
         {},
         {
-          mode: "MULTI",
-        },
+          mode: "MULTI"
+        }
       );
     });
 
@@ -449,7 +449,7 @@ describe("Ext.selection.RowModel", function () {
       selModel.select(4);
 
       selModel.selectWithEvent(grid.store.getAt(0), {
-        shiftKey: true,
+        shiftKey: true
       });
 
       // Right-click on a row in the range.
@@ -465,13 +465,13 @@ describe("Ext.selection.RowModel", function () {
       selModel.select(4);
 
       selModel.selectWithEvent(grid.store.getAt(0), {
-        shiftKey: true,
+        shiftKey: true
       });
 
       // Right-click on a row not in the range.
       var cell = grid.view.getCell(
         5,
-        grid.view.getVisibleColumnManager().getColumns()[0],
+        grid.view.getVisibleColumnManager().getColumns()[0]
       );
       jasmine.fireMouseEvent(cell, "mousedown", null, null, 2);
 
@@ -516,11 +516,11 @@ describe("Ext.selection.RowModel", function () {
       beforeEach(function () {
         createGrid(
           {
-            renderTo: null,
+            renderTo: null
           },
           {
-            mode: "MULTI",
-          },
+            mode: "MULTI"
+          }
         );
         setupRecords();
       });
@@ -558,7 +558,7 @@ describe("Ext.selection.RowModel", function () {
     describe("after render", function () {
       beforeEach(function () {
         createGrid(null, {
-          mode: "MULTI",
+          mode: "MULTI"
         });
         setupRecords();
       });
@@ -627,9 +627,9 @@ describe("Ext.selection.RowModel", function () {
         expanded: true,
         children: [
           { text: "foo", leaf: true },
-          { text: "bar", leaf: true },
-        ],
-      },
+          { text: "bar", leaf: true }
+        ]
+      }
     });
 
     tree.selModel.select(0);
@@ -664,7 +664,7 @@ describe("Ext.selection.RowModel", function () {
       beforeEach(function () {
         createGrid({
           reference: "userList",
-          viewModel: viewModel,
+          viewModel: viewModel
         });
         viewModel.bind("{userList.selection}", spy);
         viewModel.notify();
@@ -713,8 +713,8 @@ describe("Ext.selection.RowModel", function () {
         createGrid({
           viewModel: viewModel,
           bind: {
-            selection: "{foo}",
-          },
+            selection: "{foo}"
+          }
         });
         viewModel.bind("{foo}", spy);
         viewModel.notify();
@@ -792,7 +792,7 @@ describe("Ext.selection.RowModel", function () {
 
           store.setProxy({
             type: "ajax",
-            url: "fake",
+            url: "fake"
           });
           store.load();
         });
@@ -805,7 +805,7 @@ describe("Ext.selection.RowModel", function () {
           it("should trigger the selection binding", function () {
             Ext.Ajax.mockComplete({
               status: 200,
-              responseText: Ext.encode(rawData.slice(0, 4)),
+              responseText: Ext.encode(rawData.slice(0, 4))
             });
             viewModel.notify();
             expect(spy.callCount).toBe(1);
@@ -817,7 +817,7 @@ describe("Ext.selection.RowModel", function () {
           it("should trigger the selection binding", function () {
             Ext.Ajax.mockComplete({
               status: 200,
-              responseText: "[]",
+              responseText: "[]"
             });
             viewModel.notify();
             expect(spy.callCount).toBe(1);
@@ -833,11 +833,11 @@ describe("Ext.selection.RowModel", function () {
       // See EXTJS-16067
       createGrid({
         bbar: {
-          xtype: "pagingtoolbar",
+          xtype: "pagingtoolbar"
         },
         store: new Ext.data.ChainedStore({
-          source: createStore(),
-        }),
+          source: createStore()
+        })
       });
 
       var source = store.getSource();

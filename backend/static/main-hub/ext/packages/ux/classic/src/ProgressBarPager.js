@@ -25,7 +25,7 @@ Ext.define("Ext.ux.ProgressBarPager", {
    */
   defaultAnimCfg: {
     duration: 1000,
-    easing: "bounceOut",
+    easing: "bounceOut"
   },
 
   /**
@@ -54,14 +54,14 @@ Ext.define("Ext.ux.ProgressBarPager", {
         width: this.width,
         animate: this.defaultAnimCfg,
         style: {
-          cursor: "pointer",
+          cursor: "pointer"
         },
         listeners: {
           el: {
             scope: this,
-            click: this.handleProgressBarClick,
-          },
-        },
+            click: this.handleProgressBarClick
+          }
+        }
       });
 
       parent.displayItem = this.progressBar;
@@ -108,7 +108,7 @@ Ext.define("Ext.ux.ProgressBarPager", {
                   this.displayMsg,
                   pageData.fromRecord,
                   pageData.toRecord,
-                  this.store.getTotalCount(),
+                  this.store.getTotalCount()
                 ),
           percentage =
             pageData.pageCount > 0
@@ -118,9 +118,9 @@ Ext.define("Ext.ux.ProgressBarPager", {
         this.displayItem.updateProgress(
           percentage,
           message,
-          this.animate || this.defaultAnimConfig,
+          this.animate || this.defaultAnimConfig
         );
       }
-    },
-  },
+    }
+  }
 });

@@ -18,7 +18,7 @@ Ext.define("Ext.data.validator.Format", {
     /**
      * @cfg {RegExp} matcher (required) The matcher regex to test against the value.
      */
-    matcher: undefined,
+    matcher: undefined
   },
 
   //<debug>
@@ -35,5 +35,5 @@ Ext.define("Ext.data.validator.Format", {
       result = matcher && matcher.test(value);
 
     return result ? result : this.getMessage();
-  },
+  }
 });

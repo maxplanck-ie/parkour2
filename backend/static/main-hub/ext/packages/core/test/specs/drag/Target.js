@@ -28,8 +28,8 @@ describe("Ext.drag.Target", function () {
         height: "20px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid red",
-      },
+        border: "1px solid red"
+      }
     });
   }
 
@@ -49,8 +49,8 @@ describe("Ext.drag.Target", function () {
         height: "100px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid blue",
-      },
+        border: "1px solid blue"
+      }
     });
   }
 
@@ -107,9 +107,9 @@ describe("Ext.drag.Target", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -121,9 +121,9 @@ describe("Ext.drag.Target", function () {
         {
           id: touchId,
           x: cursorTrack[0] + (x || 0),
-          y: cursorTrack[1] + (y || 0),
+          y: cursorTrack[1] + (y || 0)
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -138,9 +138,9 @@ describe("Ext.drag.Target", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -181,8 +181,8 @@ describe("Ext.drag.Target", function () {
         height: "20px",
         left: "50px",
         top: "50px",
-        border: "1px solid red",
-      },
+        border: "1px solid red"
+      }
     };
   });
 
@@ -237,7 +237,7 @@ describe("Ext.drag.Target", function () {
 
     it("should destroy the element with autoDestroy: true", function () {
       makeTarget({
-        autoDestroy: true,
+        autoDestroy: true
       });
 
       target.destroy();
@@ -246,7 +246,7 @@ describe("Ext.drag.Target", function () {
 
     it("should not destroy the element with autoDestroy: false", function () {
       makeTarget({
-        autoDestroy: false,
+        autoDestroy: false
       });
 
       target.destroy();
@@ -261,7 +261,7 @@ describe("Ext.drag.Target", function () {
 
         makeSource();
         makeTarget({
-          accepts: spy,
+          accepts: spy
         });
 
         startDrag();
@@ -275,14 +275,14 @@ describe("Ext.drag.Target", function () {
 
         makeSource();
         makeTarget({
-          accepts: spy,
+          accepts: spy
         });
 
         startDrag();
         moveBy(50, 50);
         runs(function () {
           expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-            true,
+            true
           );
         });
         endDrag();
@@ -295,7 +295,7 @@ describe("Ext.drag.Target", function () {
 
         var T = Ext.define(null, {
           extend: "Ext.drag.Target",
-          accepts: spy,
+          accepts: spy
         });
 
         makeSource();
@@ -312,7 +312,7 @@ describe("Ext.drag.Target", function () {
 
         var T = Ext.define(null, {
           extend: "Ext.drag.Target",
-          accepts: spy,
+          accepts: spy
         });
 
         makeSource();
@@ -322,7 +322,7 @@ describe("Ext.drag.Target", function () {
         moveBy(50, 50);
         runs(function () {
           expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-            true,
+            true
           );
         });
         endDrag();
@@ -380,7 +380,7 @@ describe("Ext.drag.Target", function () {
           runs(function () {
             var info = spy.mostRecentCall.dragInfo;
             expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-              true,
+              true
             );
             expect(info.target).toBe(target);
             expect(info.source).toBe(source);
@@ -432,7 +432,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -483,7 +483,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -536,7 +536,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -593,7 +593,7 @@ describe("Ext.drag.Target", function () {
           runs(function () {
             var info = spy.mostRecentCall.dragInfo;
             expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-              true,
+              true
             );
             expect(info.target).toBe(target);
             expect(info.source).toBe(source);
@@ -645,7 +645,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -696,7 +696,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -749,7 +749,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -809,7 +809,7 @@ describe("Ext.drag.Target", function () {
           runs(function () {
             var info = spy.mostRecentCall.dragInfo;
             expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-              true,
+              true
             );
             expect(info.target).toBe(target);
             expect(info.source).toBe(source);
@@ -871,7 +871,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -932,7 +932,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -995,7 +995,7 @@ describe("Ext.drag.Target", function () {
             runs(function () {
               var info = spy.mostRecentCall.dragInfo;
               expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-                true,
+                true
               );
               expect(info.target).toBe(target);
               expect(info.source).toBe(source);
@@ -1044,7 +1044,7 @@ describe("Ext.drag.Target", function () {
           runs(function () {
             var info = spy.mostRecentCall.dragInfo;
             expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-              true,
+              true
             );
             expect(info.target).toBe(target);
             expect(info.source).toBe(source);
@@ -1127,7 +1127,7 @@ describe("Ext.drag.Target", function () {
           runs(function () {
             var info = spy.mostRecentCall.dragInfo;
             expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-              true,
+              true
             );
             expect(info.target).toBe(target);
             expect(info.source).toBe(source);
@@ -1228,7 +1228,7 @@ describe("Ext.drag.Target", function () {
           "dragenter",
           spy.andCallFake(function (target, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
       });
 
@@ -1435,7 +1435,7 @@ describe("Ext.drag.Target", function () {
           "dragmove",
           spy.andCallFake(function (target, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
       });
 
@@ -1642,7 +1642,7 @@ describe("Ext.drag.Target", function () {
           "dragleave",
           spy.andCallFake(function (target, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
       });
 
@@ -1889,7 +1889,7 @@ describe("Ext.drag.Target", function () {
           "beforedrop",
           spy.andCallFake(function (target, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
       });
 
@@ -1989,7 +1989,7 @@ describe("Ext.drag.Target", function () {
             "drop",
             spy.andCallFake(function (target, info) {
               spy.mostRecentCall.dragInfo = info.clone();
-            }),
+            })
           );
         });
 
@@ -2131,14 +2131,14 @@ describe("Ext.drag.Target", function () {
     describe("invalidCls", function () {
       beforeEach(function () {
         makeSource({
-          groups: "group1",
+          groups: "group1"
         });
       });
 
       it("should have the class when over the target and invalid", function () {
         makeTarget({
           groups: "group2",
-          invalidCls: "foo",
+          invalidCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2149,7 +2149,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class by default", function () {
         makeTarget({
           groups: "group2",
-          invalidCls: "foo",
+          invalidCls: "foo"
         });
         expect(target.getElement()).not.toHaveCls("foo");
       });
@@ -2157,7 +2157,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class if the source is not over the target", function () {
         makeTarget({
           groups: "group2",
-          invalidCls: "foo",
+          invalidCls: "foo"
         });
         startDrag();
         moveBy(10, 10);
@@ -2168,7 +2168,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class if the source is valid", function () {
         makeTarget({
           groups: "group1",
-          invalidCls: "foo",
+          invalidCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2179,7 +2179,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class after dropping", function () {
         makeTarget({
           groups: "group2",
-          invalidCls: "foo",
+          invalidCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2190,7 +2190,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class after the source leaves the target", function () {
         makeTarget({
           groups: "group2",
-          invalidCls: "foo",
+          invalidCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2204,7 +2204,7 @@ describe("Ext.drag.Target", function () {
         describe("before first drag", function () {
           it("should be able to set a cls", function () {
             makeTarget({
-              groups: "group2",
+              groups: "group2"
             });
             target.setInvalidCls("foo");
             startDrag();
@@ -2217,7 +2217,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to clear a cls", function () {
             makeTarget({
               groups: "group2",
-              invalidCls: "foo",
+              invalidCls: "foo"
             });
             target.setInvalidCls("");
             startDrag();
@@ -2230,7 +2230,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to change a cls", function () {
             makeTarget({
               groups: "group2",
-              invalidCls: "foo",
+              invalidCls: "foo"
             });
             target.setInvalidCls("bar");
             startDrag();
@@ -2246,7 +2246,7 @@ describe("Ext.drag.Target", function () {
         describe("after first drag", function () {
           it("should be able to set a cls", function () {
             makeTarget({
-              groups: "group2",
+              groups: "group2"
             });
             dragBy(10, 10);
             runs(function () {
@@ -2262,7 +2262,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to clear a cls", function () {
             makeTarget({
               groups: "group2",
-              invalidCls: "foo",
+              invalidCls: "foo"
             });
             dragBy(10, 10);
             runs(function () {
@@ -2278,7 +2278,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to change a cls", function () {
             makeTarget({
               groups: "group2",
-              invalidCls: "foo",
+              invalidCls: "foo"
             });
             dragBy(10, 10);
             runs(function () {
@@ -2298,7 +2298,7 @@ describe("Ext.drag.Target", function () {
       describe("during drag", function () {
         it("should be able to set a cls", function () {
           makeTarget({
-            groups: "group2",
+            groups: "group2"
           });
           startDrag();
           moveBy(50, 50);
@@ -2314,7 +2314,7 @@ describe("Ext.drag.Target", function () {
         it("should be able to clear a cls", function () {
           makeTarget({
             groups: "group2",
-            invalidCls: "foo",
+            invalidCls: "foo"
           });
           startDrag();
           moveBy(50, 50);
@@ -2330,7 +2330,7 @@ describe("Ext.drag.Target", function () {
         it("should be able to change a cls", function () {
           makeTarget({
             groups: "group2",
-            invalidCls: "foo",
+            invalidCls: "foo"
           });
           startDrag();
           moveBy(50, 50);
@@ -2350,14 +2350,14 @@ describe("Ext.drag.Target", function () {
     describe("validCls", function () {
       beforeEach(function () {
         makeSource({
-          groups: "group2",
+          groups: "group2"
         });
       });
 
       it("should have the class when over the target and valid", function () {
         makeTarget({
           groups: "group2",
-          validCls: "foo",
+          validCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2368,7 +2368,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class by default", function () {
         makeTarget({
           groups: "group2",
-          validCls: "foo",
+          validCls: "foo"
         });
         expect(target.getElement()).not.toHaveCls("foo");
       });
@@ -2376,7 +2376,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class if the source is not over the target", function () {
         makeTarget({
           groups: "group2",
-          validCls: "foo",
+          validCls: "foo"
         });
         startDrag();
         moveBy(10, 10);
@@ -2387,7 +2387,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class if the source is invalid", function () {
         makeTarget({
           groups: "group1",
-          validCls: "foo",
+          validCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2398,7 +2398,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class after dropping", function () {
         makeTarget({
           groups: "group2",
-          validCls: "foo",
+          validCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2409,7 +2409,7 @@ describe("Ext.drag.Target", function () {
       it("should not have the class after the source leaves the target", function () {
         makeTarget({
           groups: "group2",
-          validCls: "foo",
+          validCls: "foo"
         });
         startDrag();
         moveBy(50, 50);
@@ -2423,7 +2423,7 @@ describe("Ext.drag.Target", function () {
         describe("before first drag", function () {
           it("should be able to set a cls", function () {
             makeTarget({
-              groups: "group2",
+              groups: "group2"
             });
             target.setValidCls("foo");
             startDrag();
@@ -2436,7 +2436,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to clear a cls", function () {
             makeTarget({
               groups: "group2",
-              validCls: "foo",
+              validCls: "foo"
             });
             target.setValidCls("");
             startDrag();
@@ -2449,7 +2449,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to change a cls", function () {
             makeTarget({
               groups: "group2",
-              validCls: "foo",
+              validCls: "foo"
             });
             target.setValidCls("bar");
             startDrag();
@@ -2465,7 +2465,7 @@ describe("Ext.drag.Target", function () {
         describe("after first drag", function () {
           it("should be able to set a cls", function () {
             makeTarget({
-              groups: "group2",
+              groups: "group2"
             });
             dragBy(10, 10);
             runs(function () {
@@ -2481,7 +2481,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to clear a cls", function () {
             makeTarget({
               groups: "group2",
-              validCls: "foo",
+              validCls: "foo"
             });
             dragBy(10, 10);
             runs(function () {
@@ -2497,7 +2497,7 @@ describe("Ext.drag.Target", function () {
           it("should be able to change a cls", function () {
             makeTarget({
               groups: "group2",
-              validCls: "foo",
+              validCls: "foo"
             });
             dragBy(10, 10);
             runs(function () {
@@ -2517,7 +2517,7 @@ describe("Ext.drag.Target", function () {
       describe("during drag", function () {
         it("should be able to set a cls", function () {
           makeTarget({
-            groups: "group2",
+            groups: "group2"
           });
           startDrag();
           moveBy(50, 50);
@@ -2533,7 +2533,7 @@ describe("Ext.drag.Target", function () {
         it("should be able to clear a cls", function () {
           makeTarget({
             groups: "group2",
-            validCls: "foo",
+            validCls: "foo"
           });
           startDrag();
           moveBy(50, 50);
@@ -2549,7 +2549,7 @@ describe("Ext.drag.Target", function () {
         it("should be able to change a cls", function () {
           makeTarget({
             groups: "group2",
-            validCls: "foo",
+            validCls: "foo"
           });
           startDrag();
           moveBy(50, 50);
@@ -2578,9 +2578,9 @@ describe("Ext.drag.Target", function () {
             {
               id: touchId,
               x: center[0],
-              y: center[1],
+              y: center[1]
             },
-            handle,
+            handle
           );
         });
         waitsForAnimation();
@@ -2597,7 +2597,7 @@ describe("Ext.drag.Target", function () {
           width: "600px",
           height: "600px",
           border: "1px solid blue",
-          position: "relative",
+          position: "relative"
         },
         children: [
           {
@@ -2608,10 +2608,10 @@ describe("Ext.drag.Target", function () {
               border: "1px solid red",
               position: "absolute",
               left: "100px",
-              top: "100px",
-            },
-          },
-        ],
+              top: "100px"
+            }
+          }
+        ]
       });
 
       makeSource({
@@ -2625,17 +2625,17 @@ describe("Ext.drag.Target", function () {
                 style: {
                   width: "100px",
                   height: "100px",
-                  border: "1px solid green",
-                },
+                  border: "1px solid green"
+                }
               });
             return this.element;
-          },
-        },
+          }
+        }
       });
       makeTarget({
         listeners: {
-          drop: spy,
-        },
+          drop: spy
+        }
       });
 
       var handle = dragEl.down(".foo");

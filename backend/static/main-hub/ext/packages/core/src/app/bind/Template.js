@@ -111,7 +111,7 @@ Ext.define("Ext.app.bind.Template", {
     },
     getTokens: function () {
       return this.parse().getTokens();
-    },
+    }
   },
 
   /**
@@ -221,6 +221,6 @@ Ext.define("Ext.app.bind.Template", {
       me.single = buffer.length === 0 && slots.length === 1;
 
       return me;
-    },
-  },
+    }
+  }
 });

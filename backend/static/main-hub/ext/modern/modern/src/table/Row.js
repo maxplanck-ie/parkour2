@@ -5,6 +5,6 @@ Ext.define("Ext.table.Row", {
 
   config: {
     baseCls: "x-table-row",
-    defaultType: "tablecell",
-  },
+    defaultType: "tablecell"
+  }
 });

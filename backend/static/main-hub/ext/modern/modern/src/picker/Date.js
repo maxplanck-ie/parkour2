@@ -124,7 +124,7 @@ Ext.define("Ext.picker.Date", {
      * - `false` or `null` to hide it.
      * @accessor
      */
-    doneButton: true,
+    doneButton: true
   },
 
   initialize: function () {
@@ -133,12 +133,12 @@ Ext.define("Ext.picker.Date", {
     this.on({
       scope: this,
       delegate: "> slot",
-      slotpick: this.onSlotPick,
+      slotpick: this.onSlotPick
     });
 
     this.on({
       scope: this,
-      show: this.onSlotPick,
+      show: this.onSlotPick
     });
   },
 
@@ -147,7 +147,7 @@ Ext.define("Ext.picker.Date", {
       value = {
         day: value.getDate(),
         month: value.getMonth() + 1,
-        year: value.getFullYear(),
+        year: value.getFullYear()
       };
     }
 
@@ -305,7 +305,7 @@ Ext.define("Ext.picker.Date", {
     while (yearsFrom) {
       years.push({
         text: yearsFrom,
-        value: yearsFrom,
+        value: yearsFrom
       });
 
       if (yearsFrom === yearsTo) {
@@ -324,14 +324,14 @@ Ext.define("Ext.picker.Date", {
     for (i = 0; i < daysInMonth; i++) {
       days.push({
         text: i + 1,
-        value: i + 1,
+        value: i + 1
       });
     }
 
     for (i = 0, ln = Ext.Date.monthNames.length; i < ln; i++) {
       months.push({
         text: Ext.Date.monthNames[i],
-        value: i + 1,
+        value: i + 1
       });
     }
 
@@ -356,7 +356,7 @@ Ext.define("Ext.picker.Date", {
           align: "center",
           data: years,
           title: this.getYearText(),
-          flex: 3,
+          flex: 3
         };
       case "month":
         return {
@@ -364,7 +364,7 @@ Ext.define("Ext.picker.Date", {
           align: "right",
           data: months,
           title: this.getMonthText(),
-          flex: 4,
+          flex: 4
         };
       case "day":
         return {
@@ -372,7 +372,7 @@ Ext.define("Ext.picker.Date", {
           align: "center",
           data: days,
           title: this.getDayText(),
-          flex: 2,
+          flex: 2
         };
     }
   },
@@ -397,7 +397,7 @@ Ext.define("Ext.picker.Date", {
     for (i = 0; i < daysInMonth; i++) {
       days.push({
         text: i + 1,
-        value: i + 1,
+        value: i + 1
       });
     }
 
@@ -481,5 +481,5 @@ Ext.define("Ext.picker.Date", {
 
     this.hide();
     Ext.util.InputBlocker.unblockInputs();
-  },
+  }
 });

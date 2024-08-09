@@ -39,7 +39,7 @@ Ext.define("Ext.device.Connection", {
   requires: [
     "Ext.device.Communicator",
     "Ext.device.connection.Cordova",
-    "Ext.device.connection.Simulator",
+    "Ext.device.connection.Simulator"
   ],
 
   /**
@@ -56,5 +56,5 @@ Ext.define("Ext.device.Connection", {
       }
     }
     return Ext.create("Ext.device.connection.Simulator");
-  },
+  }
 });

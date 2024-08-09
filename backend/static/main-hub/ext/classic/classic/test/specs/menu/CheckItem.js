@@ -9,11 +9,11 @@ describe("Ext.menu.CheckItem", function () {
         Ext.apply(
           {
             xtype: "menucheckitem",
-            text: "foo",
+            text: "foo"
           },
-          cfg,
-        ),
-      ],
+          cfg
+        )
+      ]
     });
     c = menu.items.getAt(0);
   }
@@ -110,10 +110,10 @@ describe("Ext.menu.CheckItem", function () {
           menu: {
             items: [
               {
-                text: "bar",
-              },
-            ],
-          },
+                text: "bar"
+              }
+            ]
+          }
         });
 
         menu.show();
@@ -175,7 +175,7 @@ describe("Ext.menu.CheckItem", function () {
 
       it("should add the uncheckedCls and remove checkedCls when unchecking", function () {
         makeItem({
-          checked: true,
+          checked: true
         });
         c.setChecked(false);
         expect(c.el.hasCls(c.uncheckedCls)).toBe(true);
@@ -198,7 +198,7 @@ describe("Ext.menu.CheckItem", function () {
         it("should not fire any events setting checked: true when checked", function () {
           var called = false;
           makeItem({
-            checked: true,
+            checked: true
           });
           c.on("beforecheckchange", function () {
             called = true;
@@ -234,7 +234,7 @@ describe("Ext.menu.CheckItem", function () {
           makeItem({
             checkHandler: function () {
               called = true;
-            },
+            }
           });
           c.setChecked(true, true);
           expect(called).toBe(false);
@@ -283,7 +283,7 @@ describe("Ext.menu.CheckItem", function () {
             checkHandler: function (arg1, arg2) {
               comp = arg1;
               state = arg2;
-            },
+            }
           });
           c.setChecked(true);
           expect(comp).toBe(c);
@@ -296,7 +296,7 @@ describe("Ext.menu.CheckItem", function () {
             makeItem({
               checkHandler: function () {
                 scope = this;
-              },
+              }
             });
             c.setChecked(true);
             expect(scope).toBe(c);
@@ -310,7 +310,7 @@ describe("Ext.menu.CheckItem", function () {
               scope: o,
               checkHandler: function () {
                 scope = this;
-              },
+              }
             });
             c.setChecked(true);
             expect(scope).toBe(o);
@@ -318,20 +318,20 @@ describe("Ext.menu.CheckItem", function () {
 
           it("should be able to resolve to a ViewController", function () {
             makeItem({
-              checkHandler: "doFoo",
+              checkHandler: "doFoo"
             });
 
             var ctrl = new Ext.app.ViewController({
               doFoo: function () {
                 return true;
-              },
+              }
             });
             var checkSpy = spyOn(ctrl, "doFoo");
 
             var ct = new Ext.container.Container({
               renderTo: Ext.getBody(),
               controller: ctrl,
-              items: c,
+              items: c
             });
             c.setChecked(true);
             expect(checkSpy).toHaveBeenCalled();
@@ -350,7 +350,7 @@ describe("Ext.menu.CheckItem", function () {
       makeItem({
         handler: function () {
           scope = this;
-        },
+        }
       });
       clickIt();
       expect(scope).toBe(c);
@@ -364,7 +364,7 @@ describe("Ext.menu.CheckItem", function () {
         scope: o,
         handler: function () {
           scope = this;
-        },
+        }
       });
       clickIt();
       expect(scope).toBe(o);
@@ -372,20 +372,20 @@ describe("Ext.menu.CheckItem", function () {
 
     it("should be able to resolve to a ViewController", function () {
       makeItem({
-        handler: "doFoo",
+        handler: "doFoo"
       });
 
       var ctrl = new Ext.app.ViewController({
         doFoo: function () {
           return true;
-        },
+        }
       });
       var checkSpy = spyOn(ctrl, "doFoo");
 
       var ct = new Ext.container.Container({
         renderTo: Ext.getBody(),
         controller: ctrl,
-        items: menu, // the menu is the one that adds onClick listener. without it the checkitem click won't work.
+        items: menu // the menu is the one that adds onClick listener. without it the checkitem click won't work.
       });
 
       clickIt();
@@ -403,10 +403,10 @@ describe("Ext.menu.CheckItem", function () {
           menu: {
             items: [
               {
-                text: "bar",
-              },
-            ],
-          },
+                text: "bar"
+              }
+            ]
+          }
         });
 
         menu.show();

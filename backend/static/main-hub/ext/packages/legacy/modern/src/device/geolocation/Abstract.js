@@ -25,7 +25,7 @@ Ext.define("Ext.device.geolocation.Abstract", {
      * @cfg {Number} timeout
      * The maximum number of milliseconds allowed to elapse between a location update operation.
      */
-    timeout: Infinity,
+    timeout: Infinity
   },
 
   /**
@@ -73,13 +73,13 @@ Ext.define("Ext.device.geolocation.Abstract", {
       maximumAge: defaultConfig.maximumAge,
       frequency: defaultConfig.frequency,
       allowHighAccuracy: defaultConfig.allowHighAccuracy,
-      timeout: defaultConfig.timeout,
+      timeout: defaultConfig.timeout
     });
 
     // <debug>
     if (!config.success) {
       Ext.Logger.warn(
-        "You need to specify a `success` function for #getCurrentPosition",
+        "You need to specify a `success` function for #getCurrentPosition"
       );
     }
     // </debug>
@@ -124,13 +124,13 @@ Ext.define("Ext.device.geolocation.Abstract", {
       maximumAge: defaultConfig.maximumAge,
       frequency: defaultConfig.frequency,
       allowHighAccuracy: defaultConfig.allowHighAccuracy,
-      timeout: defaultConfig.timeout,
+      timeout: defaultConfig.timeout
     });
 
     // <debug>
     if (!config.callback) {
       Ext.Logger.warn(
-        "You need to specify a `callback` function for #watchPosition",
+        "You need to specify a `callback` function for #watchPosition"
       );
     }
     // </debug>
@@ -141,5 +141,5 @@ Ext.define("Ext.device.geolocation.Abstract", {
   /**
    * If you are currently watching for the current position, this will stop that task.
    */
-  clearWatch: function () {},
+  clearWatch: function () {}
 });

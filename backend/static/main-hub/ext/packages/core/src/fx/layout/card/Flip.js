@@ -14,24 +14,24 @@ Ext.define("Ext.fx.layout.card.Flip", {
       half: true,
       easing: "ease-out",
       before: {
-        "backface-visibility": "hidden",
+        "backface-visibility": "hidden"
       },
       after: {
-        "backface-visibility": null,
-      },
+        "backface-visibility": null
+      }
     },
     outAnimation: {
       type: "flip",
       half: true,
       easing: "ease-in",
       before: {
-        "backface-visibility": "hidden",
+        "backface-visibility": "hidden"
       },
       after: {
-        "backface-visibility": null,
+        "backface-visibility": null
       },
-      out: true,
-    },
+      out: true
+    }
   },
 
   onActiveItemChange: function (cardLayout, newItem, oldItem, controller) {
@@ -44,7 +44,7 @@ Ext.define("Ext.fx.layout.card.Flip", {
         parent.removeCls(Ext.baseCSSPrefix + "layout-card-perspective");
       },
       this,
-      { single: true },
+      { single: true }
     );
 
     this.callParent(arguments);
@@ -58,5 +58,5 @@ Ext.define("Ext.fx.layout.card.Flip", {
     inAnimation.setDelay(halfDuration);
     inAnimation.setDuration(halfDuration);
     outAnimation.setDuration(halfDuration);
-  },
+  }
 });

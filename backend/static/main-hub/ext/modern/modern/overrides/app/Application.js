@@ -52,5 +52,5 @@ Ext.define("Ext.overrides.app.Application", {
     if (oldQuickTips) {
       oldQuickTips.destroy();
     }
-  },
+  }
 });

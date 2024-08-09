@@ -168,7 +168,7 @@ Ext.define("Ext.button.Cycle", {
       "Using Cycle buttons is not recommended in accessible " +
         "applications, because their behavior conflicts " +
         "with accessibility best practices. See WAI-ARIA 1.0 " +
-        "Authoring guide: http://www.w3.org/TR/wai-aria-practices/#menubutton",
+        "Authoring guide: http://www.w3.org/TR/wai-aria-practices/#menubutton"
     );
     //</debug>
 
@@ -178,9 +178,9 @@ Ext.define("Ext.button.Cycle", {
     me.menu = Ext.applyIf(
       {
         cls: Ext.baseCSSPrefix + "cycle-menu",
-        items: [],
+        items: []
       },
-      me.menu,
+      me.menu
     );
 
     iLen = items.length;
@@ -195,9 +195,9 @@ Ext.define("Ext.button.Cycle", {
           itemIndex: i,
           checkHandler: me.checkHandler,
           scope: me,
-          checked: item.checked || false,
+          checked: item.checked || false
         },
-        item,
+        item
       );
 
       me.menu.items.push(item);
@@ -234,5 +234,5 @@ Ext.define("Ext.button.Cycle", {
 
     checkItem = me.activeItem.next(":not([disabled])") || m.items.getAt(0);
     checkItem.setChecked(true);
-  },
+  }
 });

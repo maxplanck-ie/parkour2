@@ -86,8 +86,8 @@ Ext.define("Ext.field.Number", {
      * @inheritdoc
      */
     component: {
-      type: "number",
-    },
+      type: "number"
+    }
   },
 
   proxyConfig: {
@@ -108,7 +108,7 @@ Ext.define("Ext.field.Number", {
      * Defaults to undefined, which means that the field goes up or down by 1 each time the spinner is tapped
      * @accessor
      */
-    stepValue: null,
+    stepValue: null
   },
 
   classCls: Ext.baseCSSPrefix + "numberfield",
@@ -170,5 +170,5 @@ Ext.define("Ext.field.Number", {
     me.getComponent().setValue("");
     me.hideClearTrigger();
     me.callParent([me, e]);
-  },
+  }
 });

@@ -7,7 +7,7 @@
   if (typeof define === "function" && define.amd) {
     // AMD
     define(["jquery", "datatables.net", "datatables.net-buttons"], function (
-      $,
+      $
     ) {
       return factory($, window, document);
     });
@@ -49,9 +49,9 @@
           {
             extend: "columnsToggle",
             columns: conf.columns,
-            columnText: conf.columnText,
-          },
-        ],
+            columnText: conf.columnText
+          }
+        ]
       };
     },
 
@@ -64,7 +64,7 @@
           return {
             extend: "columnToggle",
             columns: idx,
-            columnText: conf.columnText,
+            columnText: conf.columnText
           };
         })
         .toArray();
@@ -77,7 +77,7 @@
       return {
         extend: "columnVisibility",
         columns: conf.columns,
-        columnText: conf.columnText,
+        columnText: conf.columnText
       };
     },
 
@@ -91,7 +91,7 @@
             extend: "columnVisibility",
             columns: idx,
             visibility: conf.visibility,
-            columnText: conf.columnText,
+            columnText: conf.columnText
           };
         })
         .toArray();
@@ -113,7 +113,7 @@
         col.visible(
           conf.visibility !== undefined
             ? conf.visibility
-            : !(curr.length ? curr[0] : false),
+            : !(curr.length ? curr[0] : false)
         );
       },
       init: function (dt, button, conf) {
@@ -150,14 +150,14 @@
                 );
               })
               .appendTo(button.parent());
-          },
+          }
         );
 
         this.active(dt.column(conf.columns).visible());
       },
       destroy: function (dt, button, conf) {
         dt.off("column-visibility.dt" + conf.namespace).off(
-          "column-reorder.dt" + conf.namespace,
+          "column-reorder.dt" + conf.namespace
         );
       },
 
@@ -177,7 +177,7 @@
           .replace(/^\s+|\s+$/g, ""); // trim
 
         return conf.columnText ? conf.columnText(dt, idx, title) : title;
-      },
+      }
     },
 
     colvisRestore: {
@@ -208,7 +208,7 @@
 
           this.visible(conf._visOriginal[idx]);
         });
-      },
+      }
     },
 
     colvisGroup: {
@@ -223,8 +223,8 @@
 
       show: [],
 
-      hide: [],
-    },
+      hide: []
+    }
   });
 
   return DataTable.Buttons;

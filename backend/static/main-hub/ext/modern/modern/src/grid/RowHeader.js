@@ -7,5 +7,5 @@ Ext.define("Ext.grid.RowHeader", {
   xtype: "rowheader",
   classCls: Ext.baseCSSPrefix + "rowheader",
 
-  manageWidth: false,
+  manageWidth: false
 });

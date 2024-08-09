@@ -18,7 +18,7 @@ Ext.define("Ext.grid.HeaderContainer", {
     defaultType: "column",
     layout: {
       type: "hbox",
-      align: "stretch",
+      align: "stretch"
     },
 
     /**
@@ -29,10 +29,10 @@ Ext.define("Ext.grid.HeaderContainer", {
 
     scrollable: {
       x: false,
-      y: false,
+      y: false
     },
 
-    grid: null,
+    grid: null
   },
 
   classCls: Ext.baseCSSPrefix + "headercontainer",
@@ -51,7 +51,7 @@ Ext.define("Ext.grid.HeaderContainer", {
       hide: "onColumnHide",
       sort: "onColumnSort",
       scope: me,
-      delegate: "column",
+      delegate: "column"
     });
 
     me.on({
@@ -62,14 +62,14 @@ Ext.define("Ext.grid.HeaderContainer", {
       move: "onColumnMove",
       remove: "onColumnRemove",
       scope: me,
-      delegate: "gridheadergroup",
+      delegate: "gridheadergroup"
     });
 
     me.on({
       add: "onColumnAdd",
       move: "onColumnMove",
       remove: "onColumnRemove",
-      scope: me,
+      scope: me
     });
   },
 
@@ -97,7 +97,7 @@ Ext.define("Ext.grid.HeaderContainer", {
       ln = items.length,
       ret = {
         found: false,
-        index: 0,
+        index: 0
       },
       innerIndex,
       item,
@@ -318,6 +318,6 @@ Ext.define("Ext.grid.HeaderContainer", {
 
       me.innerElement.appendChild(spacerEl); // spacer element must always be the last child
       spacerEl.setStyle("min-width", scrollbarSize + "px");
-    },
-  },
+    }
+  }
 });

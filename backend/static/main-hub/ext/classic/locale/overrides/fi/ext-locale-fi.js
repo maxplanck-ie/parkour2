@@ -17,7 +17,7 @@ Ext.onReady(function () {
       "syyskuu",
       "lokakuu",
       "marraskuu",
-      "joulukuu",
+      "joulukuu"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -36,7 +36,7 @@ Ext.onReady(function () {
       syyskuu: 8,
       lokakuu: 9,
       marraskuu: 10,
-      joulukuu: 11,
+      joulukuu: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -54,7 +54,7 @@ Ext.onReady(function () {
       "keskiviikko",
       "torstai",
       "perjantai",
-      "lauantai",
+      "lauantai"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -68,7 +68,7 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u20ac",
       // Finnish Euro
-      dateFormat: "j.n.Y",
+      dateFormat: "j.n.Y"
     });
 
     Ext.util.Format.date = function (v, format) {
@@ -81,23 +81,23 @@ Ext.onReady(function () {
 
 Ext.define("Ext.locale.fi.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.fi.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} rivi(ä) valittu",
+  dragText: "{0} rivi(ä) valittu"
 });
 
 Ext.define("Ext.locale.fi.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Sulje tämä välilehti",
+  closeText: "Sulje tämä välilehti"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.fi.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Ladataan...",
+  loadingText: "Ladataan..."
 });
 
 Ext.define("Ext.locale.fi.picker.Date", {
@@ -113,13 +113,13 @@ Ext.define("Ext.locale.fi.picker.Date", {
     "Valitse kuukausi (vaihda vuotta painamalla Control+ylös/alas)",
   todayTip: "{0} (välilyönti)",
   format: "j.n.Y",
-  startDay: 1, // viikko alkaa maanantaista
+  startDay: 1 // viikko alkaa maanantaista
 });
 
 Ext.define("Ext.locale.fi.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Peruuta",
+  cancelText: "Peruuta"
 });
 
 Ext.define("Ext.locale.fi.toolbar.Paging", {
@@ -132,12 +132,12 @@ Ext.define("Ext.locale.fi.toolbar.Paging", {
   lastText: "Viimeinen sivu",
   refreshText: "Päivitä",
   displayMsg: "Näytetään {0} - {1} / {2}",
-  emptyMsg: "Ei tietoja",
+  emptyMsg: "Ei tietoja"
 });
 
 Ext.define("Ext.locale.fi.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Tämän kentän arvo ei kelpaa",
+  invalidText: "Tämän kentän arvo ei kelpaa"
 });
 
 Ext.define("Ext.locale.fi.form.field.Text", {
@@ -146,14 +146,14 @@ Ext.define("Ext.locale.fi.form.field.Text", {
   maxLengthText: "Tämän kentän maksimipituus on {0}",
   blankText: "Tämä kenttä on pakollinen",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.fi.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Tämän kentän pienin sallittu arvo on {0}",
   maxText: "Tämän kentän suurin sallittu arvo on {0}",
-  nanText: "{0} ei ole numero",
+  nanText: "{0} ei ole numero"
 });
 
 Ext.define("Ext.locale.fi.form.field.Date", {
@@ -165,20 +165,20 @@ Ext.define("Ext.locale.fi.form.field.Date", {
   invalidText:
     "Päivämäärä {0} ei ole oikeassa muodossa - kirjoita päivämäärä muodossa {1}",
   format: "j.n.Y",
-  altFormats: "j.n.|d.m.|mdy|mdY|d|Y-m-d|Y/m/d",
+  altFormats: "j.n.|d.m.|mdy|mdY|d|Y-m-d|Y/m/d"
 });
 
 Ext.define(
   "Ext.locale.fi.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Ladataan...",
+      loadingText: "Ladataan..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.fi.form.field.VTypes", {
@@ -188,14 +188,14 @@ Ext.define("Ext.locale.fi.form.field.VTypes", {
   urlText: 'Syötä tähän kenttään URL-osoite, esim. "http:/' + '/www.osoite.fi"',
   alphaText: "Syötä tähän kenttään vain kirjaimia (a-z, A-Z) ja alaviivoja (_)",
   alphanumText:
-    "Syötä tähän kenttään vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivoja (_)",
+    "Syötä tähän kenttään vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivoja (_)"
 });
 
 Ext.define(
   "Ext.locale.fi.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Anna linkin URL-osoite:",
+    createLinkText: "Anna linkin URL-osoite:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -203,81 +203,81 @@ Ext.define(
         bold: {
           title: "Lihavoi (Ctrl+B)",
           text: "Lihavoi valittu teksti.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Kursivoi (Ctrl+I)",
           text: "Kursivoi valittu teksti.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Alleviivaa (Ctrl+U)",
           text: "Alleviivaa valittu teksti.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Suurenna tekstiä",
           text: "Kasvata tekstin kirjasinkokoa.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Pienennä tekstiä",
           text: "Pienennä tekstin kirjasinkokoa.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Tekstin korostusväri",
           text: "Vaihda valitun tekstin taustaväriä.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Tekstin väri",
           text: "Vaihda valitun tekstin väriä.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Tasaa vasemmalle",
           text: "Tasaa teksti vasempaan reunaan.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Keskitä",
           text: "Keskitä teksti.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Tasaa oikealle",
           text: "Tasaa teksti oikeaan reunaan.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Luettelo",
           text: "Luo luettelo.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Numeroitu luettelo",
           text: "Luo numeroitu luettelo.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Linkki",
           text: "Tee valitusta tekstistä hyperlinkki.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Lähdekoodin muokkaus",
           text: "Vaihda lähdekoodin muokkausnäkymään.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.fi.form.Basic", {
   override: "Ext.form.Basic",
-  waitTitle: "Odota...",
+  waitTitle: "Odota..."
 });
 
 Ext.define("Ext.locale.fi.grid.header.Container", {
@@ -286,21 +286,21 @@ Ext.define("Ext.locale.fi.grid.header.Container", {
   sortDescText: "Järjestä Ö-A",
   lockText: "Lukitse sarake",
   unlockText: "Vapauta sarakkeen lukitus",
-  columnsText: "Sarakkeet",
+  columnsText: "Sarakkeet"
 });
 
 Ext.define("Ext.locale.fi.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(ei mitään)",
   groupByText: "Ryhmittele tämän kentän mukaan",
-  showGroupsText: "Näytä ryhmissä",
+  showGroupsText: "Näytä ryhmissä"
 });
 
 Ext.define("Ext.locale.fi.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Nimi",
   valueText: "Arvo",
-  dateFormat: "j.m.Y",
+  dateFormat: "j.m.Y"
 });
 
 Ext.define("Ext.locale.fi.window.MessageBox", {
@@ -309,11 +309,11 @@ Ext.define("Ext.locale.fi.window.MessageBox", {
     ok: "OK",
     cancel: "Peruuta",
     yes: "Kyllä",
-    no: "Ei",
-  },
+    no: "Ei"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.fi.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

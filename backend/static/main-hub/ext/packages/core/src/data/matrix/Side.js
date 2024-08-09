@@ -82,5 +82,5 @@ Ext.define("Ext.data.matrix.Side", {
 
     me.inverse = me.matrix = me.role = me.slices = null;
     me.callParent();
-  },
+  }
 });

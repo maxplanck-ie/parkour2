@@ -64,5 +64,5 @@ Ext.define("Ext.plugin.Manager", {
       result.setCmpCalled = true;
     }
     return result;
-  },
+  }
 });

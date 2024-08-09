@@ -8,10 +8,10 @@ describe("Ext.util.ClickRepeater", function () {
         style: {
           width: "100px",
           height: "100px",
-          "background-color": "green",
-        },
+          "background-color": "green"
+        }
       },
-      cfg,
+      cfg
     );
 
     el = Ext.getBody().appendChild(cfg);
@@ -63,7 +63,7 @@ describe("Ext.util.ClickRepeater", function () {
     describe("when no flags", function () {
       beforeEach(function () {
         makeRepeater({
-          handler: handler,
+          handler: handler
         });
 
         clickElement();
@@ -82,7 +82,7 @@ describe("Ext.util.ClickRepeater", function () {
       beforeEach(function () {
         makeRepeater({
           handler: handler,
-          mousedownPreventDefault: true,
+          mousedownPreventDefault: true
         });
 
         clickElement();
@@ -101,7 +101,7 @@ describe("Ext.util.ClickRepeater", function () {
       beforeEach(function () {
         makeRepeater({
           handler: handler,
-          mousedownStopEvent: true,
+          mousedownStopEvent: true
         });
 
         clickElement();

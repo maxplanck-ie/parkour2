@@ -156,5 +156,5 @@ Ext.define("Ext.dom.GarbageCollector", {
     if (!me.timerId) {
       me.timerId = Ext.defer(me.onTick, me.interval);
     }
-  },
+  }
 });

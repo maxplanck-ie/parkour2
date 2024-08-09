@@ -66,7 +66,7 @@ Ext.define("Ext.data.matrix.Matrix", {
     //<debug>
     Ext.Assert.truthy(
       association.isManyToMany,
-      "Association is not many-to-many",
+      "Association is not many-to-many"
     );
     //</debug>
 
@@ -117,5 +117,5 @@ Ext.define("Ext.data.matrix.Matrix", {
 
     me.association = me.session = me.left = me.right = null;
     me.callParent();
-  },
+  }
 });

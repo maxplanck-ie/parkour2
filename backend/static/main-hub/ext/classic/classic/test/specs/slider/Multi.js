@@ -13,10 +13,10 @@ describe("Ext.slider.Multi", function () {
             hideEmptyLabel: false,
             minValue: 0,
             maxValue: 100,
-            animate: false,
+            animate: false
           },
-          config,
-        ),
+          config
+        )
       );
     };
   });
@@ -34,7 +34,7 @@ describe("Ext.slider.Multi", function () {
         it("should equal passed keyIncrement", function () {
           createSlider({
             keyIncrement: 10,
-            increment: 4,
+            increment: 4
           });
 
           expect(slider.keyIncrement).toEqual(10);
@@ -45,7 +45,7 @@ describe("Ext.slider.Multi", function () {
         it("should equal passed keyIncrement", function () {
           createSlider({
             keyIncrement: 7,
-            increment: 11,
+            increment: 11
           });
 
           expect(slider.keyIncrement).toEqual(11);
@@ -67,7 +67,7 @@ describe("Ext.slider.Multi", function () {
       beforeEach(function () {
         createSlider({
           vertical: true,
-          height: 214,
+          height: 214
         });
       });
 
@@ -103,7 +103,7 @@ describe("Ext.slider.Multi", function () {
 
           beforeEach(function () {
             createSlider({
-              values: values,
+              values: values
             });
           });
 
@@ -112,7 +112,7 @@ describe("Ext.slider.Multi", function () {
               "should set the thumb " + property + " value to " + value,
               function () {
                 expect(slider.thumbs[property].value).toEqual(value);
-              },
+              }
             );
           });
         });
@@ -122,7 +122,7 @@ describe("Ext.slider.Multi", function () {
     describe("ARIA attributes", function () {
       beforeEach(function () {
         createSlider({
-          value: 42,
+          value: 42
         });
       });
 
@@ -180,10 +180,10 @@ describe("Ext.slider.Multi", function () {
           createSlider(
             Ext.apply(
               {
-                values: [0, 60, 90],
+                values: [0, 60, 90]
               },
-              config,
-            ),
+              config
+            )
           );
 
           thumb0 = slider.thumbs[0];
@@ -216,14 +216,14 @@ describe("Ext.slider.Multi", function () {
 
             dragConfig["drag without snapping"] = {
               config: {},
-              expected: 3,
+              expected: 3
             };
 
             dragConfig["drag with snapping"] = {
               config: {
-                increment: 5,
+                increment: 5
               },
-              expected: 5,
+              expected: 5
             };
 
             specFor(dragConfig, function (key, value) {
@@ -237,7 +237,7 @@ describe("Ext.slider.Multi", function () {
                     xOffset =
                       trackLength *
                       (slider.calculateThumbPosition(
-                        value.expected - slider.getValue(0),
+                        value.expected - slider.getValue(0)
                       ) /
                         100);
 
@@ -248,13 +248,13 @@ describe("Ext.slider.Multi", function () {
                     thumb0.el.dom.ownerDocument,
                     "mousemove",
                     xy[0],
-                    xy[1],
+                    xy[1]
                   );
                   jasmine.fireMouseEvent(
                     thumb0.el.dom.ownerDocument,
                     "mouseup",
                     xy[0],
-                    xy[1],
+                    xy[1]
                   );
                 });
 
@@ -262,20 +262,20 @@ describe("Ext.slider.Multi", function () {
                   expect(slider.fireEvent.calls[0].args[0]).toBe("dragstart");
                   expect(slider.fireEvent.calls[0].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[0].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
                 it("should fire beforechange event", function () {
                   expect(slider.fireEvent.calls[1].args[0]).toBe(
-                    "beforechange",
+                    "beforechange"
                   );
                   expect(slider.fireEvent.calls[1].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[1].args[2]).toBe(
-                    value.expected,
+                    value.expected
                   );
                   expect(slider.fireEvent.calls[1].args[4].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
@@ -283,10 +283,10 @@ describe("Ext.slider.Multi", function () {
                   expect(slider.fireEvent.calls[2].args[0]).toBe("change");
                   expect(slider.fireEvent.calls[2].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[2].args[2]).toBe(
-                    value.expected,
+                    value.expected
                   );
                   expect(slider.fireEvent.calls[2].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
@@ -300,7 +300,7 @@ describe("Ext.slider.Multi", function () {
                   expect(slider.fireEvent.calls[4].args[0]).toBe("drag");
                   expect(slider.fireEvent.calls[4].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[4].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
@@ -311,14 +311,14 @@ describe("Ext.slider.Multi", function () {
 
                 it("should fire changecomplete event", function () {
                   expect(slider.fireEvent.calls[6].args[0]).toBe(
-                    "changecomplete",
+                    "changecomplete"
                   );
                   expect(slider.fireEvent.calls[6].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[6].args[2]).toBe(
-                    value.expected,
+                    value.expected
                   );
                   expect(slider.fireEvent.calls[6].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
               });
@@ -337,7 +337,7 @@ describe("Ext.slider.Multi", function () {
                   slider.el,
                   "click",
                   xy[0] + 100,
-                  xy[1] + 8,
+                  xy[1] + 8
                 );
               });
 
@@ -347,7 +347,7 @@ describe("Ext.slider.Multi", function () {
                   slider,
                   50,
                   60,
-                  thumb60,
+                  thumb60
                 );
               });
 
@@ -356,7 +356,7 @@ describe("Ext.slider.Multi", function () {
                   "change",
                   slider,
                   50,
-                  thumb60,
+                  thumb60
                 );
               });
 
@@ -365,7 +365,7 @@ describe("Ext.slider.Multi", function () {
                   "changecomplete",
                   slider,
                   50,
-                  thumb60,
+                  thumb60
                 );
               });
             });
@@ -378,7 +378,7 @@ describe("Ext.slider.Multi", function () {
                   slider.el,
                   "mousedown",
                   xy[0] + 10,
-                  xy[1] + 10,
+                  xy[1] + 10
                 );
               });
 
@@ -409,10 +409,10 @@ describe("Ext.slider.Multi", function () {
               {
                 values: [0, 60, 90],
                 height: 214,
-                vertical: true,
+                vertical: true
               },
-              config,
-            ),
+              config
+            )
           );
 
           thumb0 = slider.thumbs[0];
@@ -433,7 +433,7 @@ describe("Ext.slider.Multi", function () {
                   thumb0.el,
                   "mousedown",
                   xy[0],
-                  xy[1] - 17,
+                  xy[1] - 17
                 );
                 jasmine.fireMouseEvent(thumb0.el, "mouseup", xy[0], xy[1] - 17);
               });
@@ -450,14 +450,14 @@ describe("Ext.slider.Multi", function () {
 
             dragConfig["drag without snapping"] = {
               config: {},
-              expected: 12,
+              expected: 12
             };
 
             dragConfig["drag with snapping"] = {
               config: {
-                increment: 10,
+                increment: 10
               },
-              expected: 10,
+              expected: 10
             };
 
             specFor(dragConfig, function (key, value) {
@@ -471,7 +471,7 @@ describe("Ext.slider.Multi", function () {
                     yOffset =
                       trackLength *
                       (slider.calculateThumbPosition(
-                        slider.getValue(0) - value.expected,
+                        slider.getValue(0) - value.expected
                       ) /
                         100);
 
@@ -482,13 +482,13 @@ describe("Ext.slider.Multi", function () {
                     thumb0.el.dom.ownerDocument,
                     "mousemove",
                     xy[0],
-                    xy[1],
+                    xy[1]
                   );
                   jasmine.fireMouseEvent(
                     thumb0.el.dom.ownerDocument,
                     "mouseup",
                     xy[0],
-                    xy[1],
+                    xy[1]
                   );
                 });
 
@@ -496,20 +496,20 @@ describe("Ext.slider.Multi", function () {
                   expect(slider.fireEvent.calls[0].args[0]).toBe("dragstart");
                   expect(slider.fireEvent.calls[0].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[0].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
                 it("should fire beforechange event", function () {
                   expect(slider.fireEvent.calls[1].args[0]).toBe(
-                    "beforechange",
+                    "beforechange"
                   );
                   expect(slider.fireEvent.calls[1].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[1].args[2]).toBe(
-                    value.expected,
+                    value.expected
                   );
                   expect(slider.fireEvent.calls[1].args[4].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
@@ -517,10 +517,10 @@ describe("Ext.slider.Multi", function () {
                   expect(slider.fireEvent.calls[2].args[0]).toBe("change");
                   expect(slider.fireEvent.calls[2].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[2].args[2]).toBe(
-                    value.expected,
+                    value.expected
                   );
                   expect(slider.fireEvent.calls[2].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
@@ -534,7 +534,7 @@ describe("Ext.slider.Multi", function () {
                   expect(slider.fireEvent.calls[4].args[0]).toBe("drag");
                   expect(slider.fireEvent.calls[4].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[4].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
 
@@ -545,14 +545,14 @@ describe("Ext.slider.Multi", function () {
 
                 it("should fire changecomplete event", function () {
                   expect(slider.fireEvent.calls[6].args[0]).toBe(
-                    "changecomplete",
+                    "changecomplete"
                   );
                   expect(slider.fireEvent.calls[6].args[1].id).toBe(slider.id);
                   expect(slider.fireEvent.calls[6].args[2]).toBe(
-                    value.expected,
+                    value.expected
                   );
                   expect(slider.fireEvent.calls[6].args[3].el.id).toBe(
-                    thumb0.el.id,
+                    thumb0.el.id
                   );
                 });
               });
@@ -573,7 +573,7 @@ describe("Ext.slider.Multi", function () {
                   slider.el,
                   "click",
                   xy[0] + 8,
-                  xy[1] + offset,
+                  xy[1] + offset
                 );
               });
 
@@ -591,7 +591,7 @@ describe("Ext.slider.Multi", function () {
                 expect(slider.fireEvent.calls[2].args[2]).toBe(50);
                 expect(slider.fireEvent.calls[2].args[3]).toBe(60);
                 expect(slider.fireEvent.calls[2].args[4].el.id).toBe(
-                  thumb60.el.id,
+                  thumb60.el.id
                 );
               });
 
@@ -600,7 +600,7 @@ describe("Ext.slider.Multi", function () {
                 expect(slider.fireEvent.calls[3].args[1].id).toBe(slider.id);
                 expect(slider.fireEvent.calls[3].args[2]).toBe(50);
                 expect(slider.fireEvent.calls[3].args[3].el.id).toBe(
-                  thumb60.el.id,
+                  thumb60.el.id
                 );
               });
 
@@ -612,12 +612,12 @@ describe("Ext.slider.Multi", function () {
 
               it("should fire changecomplete event", function () {
                 expect(slider.fireEvent.calls[5].args[0]).toBe(
-                  "changecomplete",
+                  "changecomplete"
                 );
                 expect(slider.fireEvent.calls[5].args[1].id).toBe(slider.id);
                 expect(slider.fireEvent.calls[5].args[2]).toBe(50);
                 expect(slider.fireEvent.calls[5].args[3].el.id).toBe(
-                  thumb60.el.id,
+                  thumb60.el.id
                 );
               });
 
@@ -634,7 +634,7 @@ describe("Ext.slider.Multi", function () {
                   slider.el,
                   "mousedown",
                   xy[0],
-                  xy[1] - 93,
+                  xy[1] - 93
                 );
               });
 
@@ -665,7 +665,7 @@ describe("Ext.slider.Multi", function () {
       createSlider({
         renderTo: Ext.getBody(),
         readOnly: true,
-        value: 0,
+        value: 0
       });
       expect(slider.thumbs[0].disabled).toBe(true);
     });
@@ -674,7 +674,7 @@ describe("Ext.slider.Multi", function () {
       createSlider({
         renderTo: Ext.getBody(),
         readOnly: true,
-        values: [1, 2, 3],
+        values: [1, 2, 3]
       });
       expect(slider.thumbs[0].disabled).toBe(true);
       expect(slider.thumbs[1].disabled).toBe(true);
@@ -684,7 +684,7 @@ describe("Ext.slider.Multi", function () {
     it("should disable thumbs if setReadOnly(true) is called after render", function () {
       createSlider({
         renderTo: Ext.getBody(),
-        values: [1, 2, 3],
+        values: [1, 2, 3]
       });
       slider.setReadOnly(true);
       expect(slider.thumbs[0].disabled).toBe(true);
@@ -696,7 +696,7 @@ describe("Ext.slider.Multi", function () {
       createSlider({
         renderTo: Ext.getBody(),
         readOnly: true,
-        values: [1, 2, 3],
+        values: [1, 2, 3]
       });
       slider.setReadOnly(false);
       expect(slider.thumbs[0].disabled).toBe(false);
@@ -713,7 +713,7 @@ describe("Ext.slider.Multi", function () {
         increment: 100,
         minValue: 50,
         maxValue: 1000,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(slider.maxValue).toBe(1000);
     });
@@ -725,7 +725,7 @@ describe("Ext.slider.Multi", function () {
         values: [10, 20, 30],
         minValue: 5,
         maxValue: 100,
-        decimalPrecision: 2,
+        decimalPrecision: 2
       });
     });
 
@@ -779,13 +779,13 @@ describe("Ext.slider.Multi", function () {
         xit("should set the aria-valuenow attribute", function () {
           slider.setValue(1, 23);
           expect(slider.inputEl.dom.getAttribute("aria-valuenow") + "").toEqual(
-            "23",
+            "23"
           );
         });
         xit("should set the aria-valuetext attribute", function () {
           slider.setValue(1, 23);
           expect(
-            slider.inputEl.dom.getAttribute("aria-valuetext") + "",
+            slider.inputEl.dom.getAttribute("aria-valuetext") + ""
           ).toEqual("23");
         });
         it("should fire the beforechange event", function () {
@@ -1033,7 +1033,7 @@ describe("Ext.slider.Multi", function () {
       createSlider({
         values: [30, 70],
         minValue: 0,
-        maxValue: 100,
+        maxValue: 100
       });
       slider.setValue([100, 100]);
       jasmine.fireMouseEvent(slider.el, "click", 0, 0);
@@ -1045,7 +1045,7 @@ describe("Ext.slider.Multi", function () {
       createSlider({
         values: [30, 70],
         minValue: 0,
-        maxValue: 100,
+        maxValue: 100
       });
       slider.setValue([0, 0]);
       jasmine.fireMouseEvent(slider.el, "click", slider.el.getWidth(), 0);
@@ -1058,20 +1058,20 @@ describe("Ext.slider.Multi", function () {
   describe("configuring invalid values", function () {
     it("should constrain configured value within minimum", function () {
       createSlider({
-        value: -10,
+        value: -10
       });
       expect(slider.getValue(0)).toBe(0);
     });
     it("should constrain configured value within maximum", function () {
       createSlider({
-        value: 120,
+        value: 120
       });
       expect(slider.getValue(0)).toBe(100);
     });
     it("should constrain configured value to snap points", function () {
       createSlider({
         increment: 2,
-        value: 3,
+        value: 3
       });
       expect(slider.getValue(0)).toBe(4);
     });

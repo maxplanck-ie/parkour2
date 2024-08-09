@@ -12,7 +12,7 @@ Ext.define("Ext.dashboard.Dashboard", {
     "Ext.layout.container.Dashboard",
     "Ext.dashboard.DropZone",
     "Ext.dashboard.Column",
-    "Ext.dashboard.Part",
+    "Ext.dashboard.Part"
   ],
 
   isDashboard: true,
@@ -36,7 +36,7 @@ Ext.define("Ext.dashboard.Dashboard", {
      * @cfg {Object} parts
      * An object keyed by `id` for the parts that can be created for this `Dashboard`.
      */
-    parts: null,
+    parts: null
   },
 
   renderConfig: {
@@ -45,7 +45,7 @@ Ext.define("Ext.dashboard.Dashboard", {
      * The maximum number of visible columns.
      * @accessor
      */
-    maxColumns: 4,
+    maxColumns: 4
   },
 
   /**
@@ -135,7 +135,7 @@ Ext.define("Ext.dashboard.Dashboard", {
 
     if (!me.layout) {
       me.layout = {
-        type: "dashboard",
+        type: "dashboard"
       };
     }
 
@@ -145,7 +145,7 @@ Ext.define("Ext.dashboard.Dashboard", {
   applyParts: function (parts, collection) {
     if (!collection) {
       collection = new Ext.util.Collection({
-        decoder: Ext.Factory.part,
+        decoder: Ext.Factory.part
       });
     }
 
@@ -155,7 +155,7 @@ Ext.define("Ext.dashboard.Dashboard", {
       part = parts[id];
       if (Ext.isString(part)) {
         part = {
-          type: part,
+          type: part
         };
       }
 
@@ -198,8 +198,8 @@ Ext.define("Ext.dashboard.Dashboard", {
       column = me.add(
         0,
         me.createColumn({
-          columnWidth: Ext.isArray(columnWidths) ? columnWidths[0] : 1,
-        }),
+          columnWidth: Ext.isArray(columnWidths) ? columnWidths[0] : 1
+        })
       );
 
       items = [column];
@@ -249,10 +249,10 @@ Ext.define("Ext.dashboard.Dashboard", {
           remove: this.onRemoveItem,
           expand: cycle,
           collapse: cycle,
-          scope: this,
-        },
+          scope: this
+        }
       },
-      config,
+      config
     );
   },
 
@@ -268,7 +268,7 @@ Ext.define("Ext.dashboard.Dashboard", {
 
     view.bubbleEvents = Ext.Array.from(view.bubbleEvents).concat([
       "expand",
-      "collapse",
+      "collapse"
     ]);
     view.stateful = me.stateful;
     return view;
@@ -316,7 +316,7 @@ Ext.define("Ext.dashboard.Dashboard", {
 
       for (i = 0; i < length; ++i) {
         me.columnWidths.push(
-          (items[i].columnWidth = i < n ? columnWidths[i] : 1 / length),
+          (items[i].columnWidth = i < n ? columnWidths[i] : 1 / length)
         );
       }
     }
@@ -409,9 +409,9 @@ Ext.define("Ext.dashboard.Dashboard", {
       {
         type: item.part.id,
         id: item.id,
-        columnIndex: item.columnIndex,
+        columnIndex: item.columnIndex
       },
-      item._partConfig,
+      item._partConfig
     );
   },
 
@@ -453,5 +453,5 @@ Ext.define("Ext.dashboard.Dashboard", {
     if (item.stateful && !item.isMoving) {
       Ext.state.Manager.clear(item.getStateId());
     }
-  },
+  }
 });

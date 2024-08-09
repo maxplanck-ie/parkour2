@@ -8,6 +8,6 @@ Ext.define("Ext.chart.legend.store.Store", {
   isLegendStore: true,
 
   config: {
-    autoDestroy: true,
-  },
+    autoDestroy: true
+  }
 });

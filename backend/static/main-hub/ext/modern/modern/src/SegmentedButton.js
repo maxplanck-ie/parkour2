@@ -160,7 +160,7 @@ Ext.define("Ext.SegmentedButton", {
      * @cfg {Boolean} vertical
      * `true` to display the buttons vertically
      */
-    vertical: false,
+    vertical: false
   },
 
   /**
@@ -170,7 +170,7 @@ Ext.define("Ext.SegmentedButton", {
   layout: {
     type: "box",
     vertical: false,
-    align: "stretch",
+    align: "stretch"
   },
 
   defaultBindProperty: "value",
@@ -209,7 +209,7 @@ Ext.define("Ext.SegmentedButton", {
       delegate: "> button",
       scope: me,
       hide: "onButtonHiddenChange",
-      show: "onButtonHiddenChange",
+      show: "onButtonHiddenChange"
     });
   },
 
@@ -337,7 +337,7 @@ Ext.define("Ext.SegmentedButton", {
       else {
         // no matched button. fail.
         Ext.raise(
-          "Invalid value '" + value + "' for segmented button: '" + me.id + "'",
+          "Invalid value '" + value + "' for segmented button: '" + me.id + "'"
         );
       }
       //</debug>
@@ -423,7 +423,7 @@ Ext.define("Ext.SegmentedButton", {
       beforepressedchange: "onBeforePressedChange",
       pressedchange: "onPressedChange",
       order: "before",
-      destroyable: true,
+      destroyable: true
     });
 
     me.callParent([item, index]);
@@ -711,6 +711,6 @@ Ext.define("Ext.SegmentedButton", {
           break;
         }
       }
-    },
-  },
+    }
+  }
 });

@@ -7,7 +7,7 @@ Ext.define("Ext.drag.Constraint", {
 
   factoryConfig: {
     defaultType: "base",
-    type: "drag.constraint",
+    type: "drag.constraint"
   },
 
   config: {
@@ -82,7 +82,7 @@ Ext.define("Ext.drag.Constraint", {
      * - `[null, 100]`, constrain only the maximum
      * - `[200, 200]`, constrain both.
      */
-    y: null,
+    y: null
   },
 
   constructor: function (config) {
@@ -104,7 +104,7 @@ Ext.define("Ext.drag.Constraint", {
     if (typeof snap === "number") {
       snap = {
         x: snap,
-        y: snap,
+        y: snap
       };
     }
     return snap;
@@ -341,7 +341,7 @@ Ext.define("Ext.drag.Constraint", {
           x: snap.x,
           xFn: typeof snap.x === "function",
           y: snap.y,
-          yFn: typeof snap.y === "function",
+          yFn: typeof snap.y === "function"
         };
       }
 
@@ -351,8 +351,8 @@ Ext.define("Ext.drag.Constraint", {
         horizontal: me.getHorizontal(),
         x: x,
         y: y,
-        snap: snap,
+        snap: snap
       };
-    },
-  },
+    }
+  }
 });

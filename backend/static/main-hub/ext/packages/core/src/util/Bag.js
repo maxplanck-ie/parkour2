@@ -227,7 +227,7 @@ Ext.define("Ext.util.Bag", {
             newKey +
             '" for item with oldKey "' +
             oldKey +
-            '"',
+            '"'
         );
       }
 
@@ -240,7 +240,7 @@ Ext.define("Ext.util.Bag", {
             oldKey +
             '" for item with newKey "' +
             newKey +
-            '"',
+            '"'
         );
       }
     }
@@ -351,5 +351,5 @@ Ext.define("Ext.util.Bag", {
 
       ++me.generation;
     }
-  },
+  }
 });

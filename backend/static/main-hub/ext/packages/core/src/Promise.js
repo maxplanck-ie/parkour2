@@ -135,7 +135,7 @@ Ext.define(
           deferred.resolve(value);
 
           return deferred.promise;
-        },
+        }
       },
 
       constructor: function (action) {
@@ -144,7 +144,7 @@ Ext.define(
         action(deferred.resolve.bind(deferred), deferred.reject.bind(deferred));
 
         return deferred.promise;
-      },
+      }
     };
   },
   function (ExtPromise) {
@@ -155,5 +155,5 @@ Ext.define(
     } else {
       ExtPromise._ready();
     }
-  },
+  }
 );

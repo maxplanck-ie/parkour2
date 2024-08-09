@@ -65,7 +65,7 @@
 Ext.define("Ext.form.FieldSet", {
   extend: "Ext.container.Container",
   mixins: {
-    fieldAncestor: "Ext.form.FieldAncestor",
+    fieldAncestor: "Ext.form.FieldAncestor"
   },
   alias: "widget.fieldset",
 
@@ -73,7 +73,7 @@ Ext.define("Ext.form.FieldSet", {
     "Ext.form.field.Checkbox",
     "Ext.panel.Tool",
     "Ext.layout.container.Anchor",
-    "Ext.layout.component.FieldSet",
+    "Ext.layout.component.FieldSet"
   ],
 
   /**
@@ -178,7 +178,7 @@ Ext.define("Ext.form.FieldSet", {
     '<div id="{id}-body" data-ref="body" class="{baseCls}-body {baseCls}-body-{ui} {bodyTargetCls}" ',
     'role="presentation"<tpl if="bodyStyle"> style="{bodyStyle}"</tpl>>',
     "{%this.renderContainer(out,values);%}",
-    "</div>",
+    "</div>"
   ],
 
   /**
@@ -227,7 +227,7 @@ Ext.define("Ext.form.FieldSet", {
     if (me.ariaRole && !me.ariaLabel) {
       me.ariaLabel = Ext.String.formatEncode(
         me.descriptionText,
-        me.title || "",
+        me.title || ""
       );
     }
 
@@ -324,7 +324,7 @@ Ext.define("Ext.form.FieldSet", {
         items: items,
         ownerCt: me,
         shrinkWrap: true,
-        ownerLayout: me.componentLayout,
+        ownerLayout: me.componentLayout
       },
       legend;
 
@@ -358,7 +358,7 @@ Ext.define("Ext.form.FieldSet", {
         ui: me.ui,
         cls: me.baseCls + "-header-text",
         id: me.id + "-legendTitle",
-        ariaRole: "presentation",
+        ariaRole: "presentation"
       };
 
     if (me.collapsible && me.toggleOnTitleClick) {
@@ -366,8 +366,8 @@ Ext.define("Ext.form.FieldSet", {
         click: {
           element: "el",
           scope: me,
-          fn: me.toggle,
-        },
+          fn: me.toggle
+        }
       };
       cfg.cls += " " + me.baseCls + "-header-text-collapsible";
     }
@@ -409,12 +409,12 @@ Ext.define("Ext.form.FieldSet", {
           msgTarget: "none",
           listeners: {
             change: me.onCheckChange,
-            scope: me,
+            scope: me
           },
-          ariaLabel: me.expandText,
+          ariaLabel: me.expandText
         },
-        me.checkbox,
-      ),
+        me.checkbox
+      )
     );
 
     return checkboxCmp;
@@ -452,8 +452,8 @@ Ext.define("Ext.form.FieldSet", {
       ariaRole: "checkbox",
       ariaLabel: me.expandText,
       ariaRenderAttributes: {
-        "aria-checked": !me.collapsed,
-      },
+        "aria-checked": !me.collapsed
+      }
     });
 
     return toggleCmp;
@@ -648,7 +648,7 @@ Ext.define("Ext.form.FieldSet", {
       if (!body) {
         me.protoBody = body = new Ext.util.ProtoElement({
           styleProp: "bodyStyle",
-          styleIsText: true,
+          styleIsText: true
         });
       }
 
@@ -709,6 +709,6 @@ Ext.define("Ext.form.FieldSet", {
       this.callParent(arguments);
 
       renderTpl.renderLegend = this.doRenderLegend;
-    },
-  },
+    }
+  }
 });

@@ -3,7 +3,7 @@ describe("Ext.form.field.Field", function () {
 
   function makeContainer(items) {
     ct = new Ext.container.Container({
-      items: items,
+      items: items
     });
   }
 
@@ -21,7 +21,7 @@ describe("Ext.form.field.Field", function () {
       hasUpload: function () {
         return false;
       },
-      markInvalid: Ext.emptyFn,
+      markInvalid: Ext.emptyFn
     });
     action = new Ext.form.action.Submit(config);
   }
@@ -48,16 +48,16 @@ describe("Ext.form.field.Field", function () {
                 xtype: "textfield",
                 fieldLabel: "tf",
                 msgTarget: "side",
-                allowBlank: !!!required,
+                allowBlank: !!!required
               },
               {
                 xtype: "textfield",
-                fieldLabel: "dummy",
-              },
-            ],
+                fieldLabel: "dummy"
+              }
+            ]
           },
-          cfg || {},
-        ),
+          cfg || {}
+        )
       );
       tf = form.down("textfield");
       errorDom = tf.errorEl.dom;
@@ -79,7 +79,7 @@ describe("Ext.form.field.Field", function () {
 
     it("should show a quicktip if mouse over the invalid icon", function () {
       createForm(true, {
-        title: "quicktip",
+        title: "quicktip"
       });
       tf.validate();
 
@@ -102,9 +102,9 @@ describe("Ext.form.field.Field", function () {
     function makeField(cfg) {
       cfg = Ext.apply(
         {
-          viewModel: viewModel,
+          viewModel: viewModel
         },
-        cfg,
+        cfg
       );
       field = new Ext.form.field.Base(cfg);
     }
@@ -123,7 +123,7 @@ describe("Ext.form.field.Field", function () {
         makeField({
           valuePublishEvent: "foo",
           renderTo: Ext.getBody(),
-          bind: "{theValue}",
+          bind: "{theValue}"
         });
         field.setValue("XXX");
         field.fireEvent("foo");
@@ -134,7 +134,7 @@ describe("Ext.form.field.Field", function () {
         makeField({
           valuePublishEvent: ["foo", "bar"],
           renderTo: Ext.getBody(),
-          bind: "{theValue}",
+          bind: "{theValue}"
         });
         field.setValue("XXX");
         field.fireEvent("foo");
@@ -152,7 +152,7 @@ describe("Ext.form.field.Field", function () {
       it("should publish a valid value", function () {
         makeField({
           renderTo: Ext.getBody(),
-          bind: "{theValue}",
+          bind: "{theValue}"
         });
         field.getErrors = function () {
           return [];
@@ -165,7 +165,7 @@ describe("Ext.form.field.Field", function () {
       it("should not publish an invalid value", function () {
         makeField({
           renderTo: Ext.getBody(),
-          bind: "{theValue}",
+          bind: "{theValue}"
         });
         field.getErrors = function () {
           var v = this.getValue();
@@ -184,11 +184,11 @@ describe("Ext.form.field.Field", function () {
       beforeEach(function () {
         Ext.define("Ext.data.validator.Custom", {
           extend: "Ext.data.validator.Validator",
-          alias: "data.validator.custom",
+          alias: "data.validator.custom"
         });
 
         validator = Ext.data.validator.Validator.create({
-          type: "custom",
+          type: "custom"
         });
 
         Ext.define("spec.Person", {
@@ -197,15 +197,15 @@ describe("Ext.form.field.Field", function () {
           validators: {
             name: {
               type: "length",
-              min: 3,
+              min: 3
             },
-            address: validator,
-          },
+            address: validator
+          }
         });
 
         rec = new spec.Person({
           name: "FooBar",
-          age: 10,
+          age: 10
         });
         viewModel.set("thePerson", rec);
       });
@@ -220,7 +220,7 @@ describe("Ext.form.field.Field", function () {
       it("should not validate model fields without modelValidation", function () {
         makeField({
           renderTo: Ext.getBody(),
-          bind: "{thePerson.name}",
+          bind: "{thePerson.name}"
         });
         viewModel.notify();
         field.setValue("");
@@ -231,7 +231,7 @@ describe("Ext.form.field.Field", function () {
         makeField({
           renderTo: Ext.getBody(),
           modelValidation: true,
-          bind: "{thePerson.something}",
+          bind: "{thePerson.something}"
         });
         expect(field.getErrors()).toEqual([]);
       });
@@ -240,7 +240,7 @@ describe("Ext.form.field.Field", function () {
         makeField({
           renderTo: Ext.getBody(),
           modelValidation: true,
-          bind: "{thePerson.age}",
+          bind: "{thePerson.age}"
         });
         viewModel.notify();
         expect(field.getErrors()).toEqual([]);
@@ -250,7 +250,7 @@ describe("Ext.form.field.Field", function () {
         makeField({
           renderTo: Ext.getBody(),
           modelValidation: true,
-          bind: "{thePerson.name}",
+          bind: "{thePerson.name}"
         });
         viewModel.notify();
         field.setValue("");
@@ -263,14 +263,14 @@ describe("Ext.form.field.Field", function () {
         makeField({
           renderTo: Ext.getBody(),
           modelValidation: true,
-          bind: "{thePerson.address}",
+          bind: "{thePerson.address}"
         });
         viewModel.notify();
         field.setValue("Foo");
 
         expect(validator.validate.mostRecentCall.args).toEqual([
           "Foo",
-          viewModel.get("thePerson"),
+          viewModel.get("thePerson")
         ]);
       });
 
@@ -278,7 +278,7 @@ describe("Ext.form.field.Field", function () {
         makeField({
           renderTo: Ext.getBody(),
           modelValidation: true,
-          bind: "{thePerson.name}",
+          bind: "{thePerson.name}"
         });
         viewModel.notify();
         Ext.override(field, {
@@ -286,7 +286,7 @@ describe("Ext.form.field.Field", function () {
             var result = this.callParent(arguments);
             result.push("Fail");
             return result;
-          },
+          }
         });
         field.setValue("");
         expect(field.getErrors()).toEqual(["Must be present", "Fail"]);
@@ -305,12 +305,12 @@ describe("Ext.form.field.Field", function () {
     it("should return filefield data", function () {
       var field1 = new Ext.form.field.Display({
         name: "field1",
-        value: "foo",
+        value: "foo"
       });
 
       var field2 = new Ext.form.field.File({
         name: "field2",
-        value: "bar",
+        value: "bar"
       });
 
       expect(field1.getModelData()).toEqual({ field1: "foo" });
@@ -325,26 +325,26 @@ describe("Ext.form.field.Field", function () {
           new Ext.form.field.Base({
             name: "field1",
             value: "foo",
-            submitValue: true,
+            submitValue: true
           }),
           new Ext.form.field.File({
             name: "field2",
-            value: "bar",
+            value: "bar"
           }),
           new Ext.form.field.Display({
             name: "field3",
             value: "baz",
-            submitValue: false,
-          }),
+            submitValue: false
+          })
         ]);
         form = new Ext.form.Basic(ct, {
-          jsonSubmit: true,
+          jsonSubmit: true
         });
 
         expect(form.getFieldValues()).toEqual({
           field1: "foo",
           field2: "",
-          field3: "baz",
+          field3: "baz"
         });
       });
     });
@@ -360,7 +360,7 @@ describe("Ext.form.field.Field", function () {
 
     it("should not be able to get the submit data for a filefield by default, non-submission", function () {
       file = new Ext.form.field.File({
-        name: "foo",
+        name: "foo"
       });
 
       expect(file.getSubmitData()).toBe(null);
@@ -369,7 +369,7 @@ describe("Ext.form.field.Field", function () {
     it("should be able to get the submit data for a filefield when configured with submitValue: true, non-submission", function () {
       file = new Ext.form.field.File({
         name: "foo",
-        submitValue: true,
+        submitValue: true
       });
 
       expect(file.getSubmitData()).toEqual({ foo: "" });
@@ -380,15 +380,15 @@ describe("Ext.form.field.Field", function () {
       makeContainer([
         new Ext.form.field.Base({
           name: "field1",
-          value: "foo",
+          value: "foo"
         }),
         new Ext.form.field.File({
-          name: "field2",
-        }),
+          name: "field2"
+        })
       ]);
 
       createAction({
-        form: new Ext.form.Basic(ct),
+        form: new Ext.form.Basic(ct)
       });
 
       expect(ct.items.getAt(0).getSubmitData()).toEqual({ field1: "foo" });
@@ -410,16 +410,16 @@ describe("Ext.form.field.Field", function () {
         new Ext.form.field.Base({
           name: "field1",
           value: "foo",
-          submitValue: true,
+          submitValue: true
         }),
         new Ext.form.field.Base({
           name: "field2",
-          value: "bar",
-        }),
+          value: "bar"
+        })
       ]);
 
       form = new Ext.form.Basic(ct, {
-        jsonSubmit: true,
+        jsonSubmit: true
       });
 
       createAction({ form: form });
@@ -433,17 +433,17 @@ describe("Ext.form.field.Field", function () {
         new Ext.form.field.Base({
           name: "field1",
           value: "foo",
-          submitValue: true,
+          submitValue: true
         }),
         new Ext.form.field.Base({
           name: "field2",
           value: "bar",
-          submitValue: false,
-        }),
+          submitValue: false
+        })
       ]);
 
       form = new Ext.form.Basic(ct, {
-        jsonSubmit: true,
+        jsonSubmit: true
       });
 
       createAction({ form: form });
@@ -457,16 +457,16 @@ describe("Ext.form.field.Field", function () {
         new Ext.form.field.Base({
           name: "field1",
           value: "foo",
-          submitValue: true,
+          submitValue: true
         }),
         new Ext.form.field.Display({
           name: "field2",
-          value: "bar",
-        }),
+          value: "bar"
+        })
       ]);
 
       form = new Ext.form.Basic(ct, {
-        jsonSubmit: true,
+        jsonSubmit: true
       });
 
       createAction({ form: form });
@@ -479,21 +479,21 @@ describe("Ext.form.field.Field", function () {
       makeContainer([
         new Ext.form.field.Base({
           name: "field1",
-          value: "foo",
+          value: "foo"
         }),
         new Ext.form.field.Display({
           name: "field2",
-          value: "bar",
+          value: "bar"
         }),
         new Ext.form.field.Display({
           name: "field3",
           value: "baz",
-          submitValue: true,
-        }),
+          submitValue: true
+        })
       ]);
 
       form = new Ext.form.Basic(ct, {
-        jsonSubmit: true,
+        jsonSubmit: true
       });
 
       createAction({ form: form });

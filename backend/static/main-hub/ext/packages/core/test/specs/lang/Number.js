@@ -764,7 +764,7 @@ describe("Ext.Number", function () {
       { length: 8, indices: [-1, 8], options: "NOWRAP", expect: [0, 8] },
       { length: 8, indices: [-1, 9], options: "NOWRAP", expect: [0, 8] },
       { length: 8, indices: [-1, -1], options: "NOWRAP", expect: [0, 0] },
-      { length: 8, indices: [-1, -10], options: "NOWRAP", expect: [0, 0] },
+      { length: 8, indices: [-1, -10], options: "NOWRAP", expect: [0, 0] }
     ];
 
     Ext.each(testSuites, function (suite) {
@@ -780,7 +780,7 @@ describe("Ext.Number", function () {
           var opt = suite.options && Ext.Number.Clip[suite.options];
           var actual = Ext.Number.clipIndices(suite.length, suite.indices, opt);
           expect(actual).toEqual(suite.expect);
-        },
+        }
       );
     });
   }); // clipIndices

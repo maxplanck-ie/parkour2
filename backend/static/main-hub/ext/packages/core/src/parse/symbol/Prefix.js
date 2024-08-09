@@ -20,5 +20,5 @@ Ext.define("Ext.parse.symbol.Prefix", {
     me.isUnary = true;
 
     return me;
-  },
+  }
 });

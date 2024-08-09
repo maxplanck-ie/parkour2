@@ -20,7 +20,7 @@ describe("Ext.grid.feature.Grouping", function () {
   function completeWithData(data) {
     Ext.Ajax.mockComplete({
       status: 200,
-      responseText: Ext.JSON.encode(data),
+      responseText: Ext.JSON.encode(data)
     });
   }
 
@@ -34,34 +34,34 @@ describe("Ext.grid.feature.Grouping", function () {
             Ext.apply(
               {
                 model: spec.Restaurant,
-                data: [],
+                data: []
               },
-              storeCfg,
-            ),
+              storeCfg
+            )
           ),
           width: 200,
           height: 200,
           features: [
             Ext.apply(
               {
-                ftype: "grouping",
+                ftype: "grouping"
               },
-              featureCfg,
-            ),
+              featureCfg
+            )
           ],
           columns: [
             {
               text: "Name",
-              dataIndex: "name",
+              dataIndex: "name"
             },
             {
               text: "Cuisine",
-              dataIndex: "cuisine",
-            },
-          ],
+              dataIndex: "cuisine"
+            }
+          ]
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     store = grid.store;
@@ -91,9 +91,9 @@ describe("Ext.grid.feature.Grouping", function () {
     return grid.getView().getCellInclusive(
       {
         row: rowIdx,
-        column: cellIdx,
+        column: cellIdx
       },
-      true,
+      true
     );
   }
 
@@ -124,7 +124,7 @@ describe("Ext.grid.feature.Grouping", function () {
     schema = Ext.data.Model.schema;
     Ext.define("spec.Restaurant", {
       extend: "Ext.data.Model",
-      fields: ["name", "cuisine"],
+      fields: ["name", "cuisine"]
     });
   });
 
@@ -151,7 +151,7 @@ describe("Ext.grid.feature.Grouping", function () {
         renderTo: Ext.getBody(),
         store: new Ext.data.Store({
           model: spec.Restaurant,
-          data: [],
+          data: []
         }),
         width: 200,
         height: 200,
@@ -160,17 +160,17 @@ describe("Ext.grid.feature.Grouping", function () {
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
 
       expect(
-        grid.headerCt.getMenu().child("#groupToggleMenuItem").checked,
+        grid.headerCt.getMenu().child("#groupToggleMenuItem").checked
       ).toBe(false);
     });
 
@@ -180,7 +180,7 @@ describe("Ext.grid.feature.Grouping", function () {
         store: new Ext.data.Store({
           model: spec.Restaurant,
           groupField: "cuisine",
-          data: [],
+          data: []
         }),
         width: 200,
         height: 200,
@@ -189,17 +189,17 @@ describe("Ext.grid.feature.Grouping", function () {
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
 
       expect(
-        grid.headerCt.getMenu().child("#groupToggleMenuItem").checked,
+        grid.headerCt.getMenu().child("#groupToggleMenuItem").checked
       ).toBe(true);
     });
 
@@ -215,8 +215,8 @@ describe("Ext.grid.feature.Grouping", function () {
           groupDir: "DESC",
           data: [
             { name: "Beardog's", cuisine: "Home cooking" },
-            { name: "World Service", cuisine: "Poncy" },
-          ],
+            { name: "World Service", cuisine: "Poncy" }
+          ]
         }),
         width: 200,
         height: 200,
@@ -225,13 +225,13 @@ describe("Ext.grid.feature.Grouping", function () {
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
       var bufferedRenderer = grid.view.bufferedRenderer,
         rowHeight = bufferedRenderer.rowHeight;
@@ -243,7 +243,7 @@ describe("Ext.grid.feature.Grouping", function () {
         refresh: function () {
           viewRefreshed = true;
         },
-        single: true,
+        single: true
       });
 
       // While grouping is enabled, the group header row introduces
@@ -279,25 +279,25 @@ describe("Ext.grid.feature.Grouping", function () {
         store: new Ext.data.Store({
           model: spec.Restaurant,
           groupField: "cuisine",
-          data: [],
+          data: []
         }),
         width: 200,
         height: 200,
         features: [
           new Ext.grid.feature.Grouping({
-            disabled: true,
-          }),
+            disabled: true
+          })
         ],
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
 
       expect(grid.getStore().getGrouper()).toBeNull();
@@ -309,37 +309,37 @@ describe("Ext.grid.feature.Grouping", function () {
         store: new Ext.data.Store({
           model: spec.Restaurant,
           groupField: "cuisine",
-          data: [],
+          data: []
         }),
         width: 200,
         height: 200,
         features: [
           new Ext.grid.feature.Grouping({
-            disabled: true,
-          }),
+            disabled: true
+          })
         ],
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
       var header = grid.headerCt.items.getAt(0);
       grid.headerCt.showMenuBy(null, header.triggerEl, header);
       expect(
-        grid.headerCt.getMenu().child("#groupToggleMenuItem").isDisabled(),
+        grid.headerCt.getMenu().child("#groupToggleMenuItem").isDisabled()
       ).toBe(true);
     });
 
     describe("view.isGrouping property", function () {
       it("should be set on the view if `groupField` is configured", function () {
         makeGrid({
-          groupField: "cuisine",
+          groupField: "cuisine"
         });
 
         expect(view.isGrouping).toBe(true);
@@ -353,7 +353,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
       it("should be set on the view if `grouper` is configured", function () {
         makeGrid({
-          grouper: "cuisine",
+          grouper: "cuisine"
         });
 
         expect(view.isGrouping).toBe(true);
@@ -370,9 +370,9 @@ describe("Ext.grid.feature.Grouping", function () {
       makeGrid({
         data: [
           { name: "Germanicus", cuisine: "Roman" },
-          { name: "Alexander", cuisine: "Greek" },
+          { name: "Alexander", cuisine: "Greek" }
         ],
-        groupField: "cuisine",
+        groupField: "cuisine"
       });
 
       expect(groupingFeature.getMetaGroup("Roman").isCollapsed).toBe(false);
@@ -390,7 +390,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Integrate 2.0 Forms with 2.0 Layouts",
           estimate: 6,
           rate: 150,
-          due: "06/24/2007",
+          due: "06/24/2007"
         },
         {
           projectId: 100,
@@ -399,7 +399,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Implement AnchorLayout",
           estimate: 4,
           rate: 150,
-          due: "06/25/2007",
+          due: "06/25/2007"
         },
         {
           projectId: 100,
@@ -408,7 +408,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Add support for multiple<br>types of anchors",
           estimate: 4,
           rate: 150,
-          due: "06/27/2007",
+          due: "06/27/2007"
         },
         {
           projectId: 100,
@@ -417,7 +417,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Testing and debugging",
           estimate: 8,
           rate: 0,
-          due: "06/29/2007",
+          due: "06/29/2007"
         },
         {
           projectId: 101,
@@ -426,7 +426,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: 'Add required rendering "hooks" to GridView',
           estimate: 6,
           rate: 100,
-          due: "07/01/2007",
+          due: "07/01/2007"
         },
         {
           projectId: 101,
@@ -435,7 +435,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Extend GridView and override rendering functions",
           estimate: 6,
           rate: 100,
-          due: "07/03/2007",
+          due: "07/03/2007"
         },
         {
           projectId: 101,
@@ -444,7 +444,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Extend Store with grouping functionality",
           estimate: 4,
           rate: 100,
-          due: "07/04/2007",
+          due: "07/04/2007"
         },
         {
           projectId: 101,
@@ -453,7 +453,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Default CSS Styling",
           estimate: 2,
           rate: 100,
-          due: "07/05/2007",
+          due: "07/05/2007"
         },
         {
           projectId: 101,
@@ -462,7 +462,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Testing and debugging",
           estimate: 6,
           rate: 100,
-          due: "07/06/2007",
+          due: "07/06/2007"
         },
         {
           projectId: 102,
@@ -471,7 +471,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Ext Grid plugin integration",
           estimate: 4,
           rate: 125,
-          due: "07/01/2007",
+          due: "07/01/2007"
         },
         {
           projectId: 102,
@@ -480,7 +480,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Summary creation during rendering phase",
           estimate: 4,
           rate: 125,
-          due: "07/02/2007",
+          due: "07/02/2007"
         },
         {
           projectId: 102,
@@ -489,7 +489,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Dynamic summary updates in editor grids",
           estimate: 6,
           rate: 125,
-          due: "07/05/2007",
+          due: "07/05/2007"
         },
         {
           projectId: 102,
@@ -498,7 +498,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Remote summary integration",
           estimate: 4,
           rate: 125,
-          due: "07/05/2007",
+          due: "07/05/2007"
         },
         {
           projectId: 102,
@@ -507,7 +507,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Summary renderers and calculators",
           estimate: 4,
           rate: 125,
-          due: "07/06/2007",
+          due: "07/06/2007"
         },
         {
           projectId: 102,
@@ -516,7 +516,7 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Integrate summaries with GroupingView",
           estimate: 10,
           rate: 125,
-          due: "07/11/2007",
+          due: "07/11/2007"
         },
         {
           projectId: 102,
@@ -525,8 +525,8 @@ describe("Ext.grid.feature.Grouping", function () {
           description: "Testing and debugging",
           estimate: 8,
           rate: 125,
-          due: "07/15/2007",
-        },
+          due: "07/15/2007"
+        }
       ],
       lockedGridStore,
       showSummary,
@@ -559,14 +559,14 @@ describe("Ext.grid.feature.Grouping", function () {
           { name: "description", type: "string" },
           { name: "estimate", type: "float" },
           { name: "rate", type: "float" },
-          { name: "due", type: "date", dateFormat: "m/d/Y" },
-        ],
+          { name: "due", type: "date", dateFormat: "m/d/Y" }
+        ]
       });
       lockedGridStore = new Ext.data.Store({
         model: "spec.Task",
         data: data,
         sorters: { property: "due", direction: "ASC" },
-        groupField: "project",
+        groupField: "project"
       });
 
       showSummary = true;
@@ -585,12 +585,12 @@ describe("Ext.grid.feature.Grouping", function () {
             ftype: "groupingsummary",
             groupHeaderTpl: "{name}",
             hideGroupedHeader: true,
-            enableGroupingMenu: false,
+            enableGroupingMenu: false
           },
           {
             ftype: "summary",
-            dock: "bottom",
-          },
+            dock: "bottom"
+          }
         ],
         columns: [
           {
@@ -611,14 +611,14 @@ describe("Ext.grid.feature.Grouping", function () {
                 : "(1 Task)";
             },
             field: {
-              xtype: "textfield",
-            },
+              xtype: "textfield"
+            }
           },
           {
             header: "Project",
             width: 180,
             sortable: true,
-            dataIndex: "project",
+            dataIndex: "project"
           },
           {
             header: "Schedule",
@@ -630,7 +630,7 @@ describe("Ext.grid.feature.Grouping", function () {
                 dataIndex: "due",
                 summaryType: "max",
                 renderer: Ext.util.Format.dateRenderer("m/d/Y"),
-                summaryRenderer: Ext.util.Format.dateRenderer("m/d/Y"),
+                summaryRenderer: Ext.util.Format.dateRenderer("m/d/Y")
               },
               {
                 header: "Estimate",
@@ -645,13 +645,13 @@ describe("Ext.grid.feature.Grouping", function () {
                   rowIdx,
                   colIdx,
                   store,
-                  view,
+                  view
                 ) {
                   return value + " hours";
                 },
                 summaryRenderer: function (value, summaryData, dataIndex) {
                   return value + " hours";
-                },
+                }
               },
               {
                 header: "Rate",
@@ -660,7 +660,7 @@ describe("Ext.grid.feature.Grouping", function () {
                 renderer: Ext.util.Format.usMoney,
                 summaryRenderer: Ext.util.Format.usMoney,
                 dataIndex: "rate",
-                summaryType: "average",
+                summaryType: "average"
               },
               {
                 header: "Cost",
@@ -675,10 +675,10 @@ describe("Ext.grid.feature.Grouping", function () {
                   rowIdx,
                   colIdx,
                   store,
-                  view,
+                  view
                 ) {
                   return Ext.util.Format.usMoney(
-                    record.get("estimate") * record.get("rate"),
+                    record.get("estimate") * record.get("rate")
                   );
                 },
                 summaryType: function (records, values) {
@@ -693,11 +693,11 @@ describe("Ext.grid.feature.Grouping", function () {
                   }
                   return total;
                 },
-                summaryRenderer: Ext.util.Format.usMoney,
-              },
-            ],
-          },
-        ],
+                summaryRenderer: Ext.util.Format.usMoney
+              }
+            ]
+          }
+        ]
       });
       groupSummaryFeature = lockedGrid.lockedGrid.view.getFeature("group");
     });
@@ -716,7 +716,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
       // Now there are fewer TRs because there are no summary rows.
       expect(
-        lockedGrid.normalGrid.getView().el.query("tr").length,
+        lockedGrid.normalGrid.getView().el.query("tr").length
       ).toBeLessThan(trCount);
     });
 
@@ -762,7 +762,7 @@ describe("Ext.grid.feature.Grouping", function () {
           (
             dataRowOfFirstRowInGroup1.innerText ||
             dataRowOfFirstRowInGroup1.textContent
-          ).replace(/[\r\n\t]/g, ""),
+          ).replace(/[\r\n\t]/g, "")
         ).toEqual("6 hours$100.00$600.0007/01/2007");
 
         // Show group summaries
@@ -771,7 +771,7 @@ describe("Ext.grid.feature.Grouping", function () {
         var collapsedGroup0Placeholder =
           lockedGrid.normalGrid.view.all.item(0).dom;
         expect(Ext.fly(collapsedGroup0Placeholder).hasCls("x-grid-item")).toBe(
-          true,
+          true
         );
 
         // Move Due date back to left side
@@ -785,15 +785,15 @@ describe("Ext.grid.feature.Grouping", function () {
           lockedGrid.normalGrid.view.all.item(0).dom;
         var group0SummaryRow = Ext.fly(collapsedGroup0Placeholder).down(
           "tr.x-grid-row-summary",
-          true,
+          true
         );
 
         //Extract the text content of the summary row. The due date should have moved back to the left
         expect(
           (group0SummaryRow.innerText || group0SummaryRow.textContent).replace(
             /[\r\n\t]/g,
-            "",
-          ),
+            ""
+          )
         ).toBe("06/29/200722 hours$112.50$2,100.00");
       });
     });
@@ -815,7 +815,7 @@ describe("Ext.grid.feature.Grouping", function () {
         lockedGrid.lockedGrid.view,
         groupHeader,
         firstGroupName,
-        { ctrlKey: true },
+        { ctrlKey: true }
       );
 
       expect(groupStore.getCount()).toBe(6);
@@ -829,7 +829,7 @@ describe("Ext.grid.feature.Grouping", function () {
       return new Ext.data.Store({
         model: spec.Restaurant,
         data: [],
-        autoDestroy: true,
+        autoDestroy: true
       });
     }
 
@@ -845,13 +845,13 @@ describe("Ext.grid.feature.Grouping", function () {
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
     });
 
@@ -864,8 +864,8 @@ describe("Ext.grid.feature.Grouping", function () {
       var ds = grouping.dataSource;
       grid.reconfigure(null, [
         {
-          text: "Foo",
-        },
+          text: "Foo"
+        }
       ]);
       expect(grouping.dataSource).toBe(ds);
     });
@@ -873,7 +873,7 @@ describe("Ext.grid.feature.Grouping", function () {
     it("should not call the Grouping's dataSource (GroupStore) bindStore method when reconfigured with a new store", function () {
       var store2 = new Ext.data.Store({
           model: spec.Restaurant,
-          data: [],
+          data: []
         }),
         ds;
 
@@ -888,42 +888,42 @@ describe("Ext.grid.feature.Grouping", function () {
       var data = [
           {
             name: "Cheesecake Factory",
-            cuisine: "American",
+            cuisine: "American"
           },
           {
             name: "University Cafe",
-            cuisine: "American",
+            cuisine: "American"
           },
           {
             name: "Nola's",
-            cuisine: "Cajun",
+            cuisine: "Cajun"
           },
           {
             name: "House of Bagels",
-            cuisine: "Bagels",
+            cuisine: "Bagels"
           },
           {
             name: "The Prolific Oven",
-            cuisine: "Sandwiches",
+            cuisine: "Sandwiches"
           },
           {
             name: "La Strada",
-            cuisine: "Italian",
+            cuisine: "Italian"
           },
           {
             name: "Buca di Beppo",
-            cuisine: "Italian",
+            cuisine: "Italian"
           },
           {
             name: "Pasta?",
-            cuisine: "Italian",
-          },
+            cuisine: "Italian"
+          }
         ],
         storeCfg = {
           fields: ["name", "cuisine"],
           groupField: "cuisine",
           sorters: ["cuisine", "name"],
-          data: data,
+          data: data
         },
         store = new Ext.data.Store(storeCfg),
         store2 = new Ext.data.Store(storeCfg),
@@ -955,10 +955,10 @@ describe("Ext.grid.feature.Grouping", function () {
           {
             text: "Name",
             dataIndex: "name",
-            width: 100,
-          },
+            width: 100
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       // Pass in a different store.
@@ -987,7 +987,7 @@ describe("Ext.grid.feature.Grouping", function () {
       // See EXTJS-13421.
       var grouping = new Ext.grid.feature.Grouping({
           ftype: "grouping",
-          startCollapsed: true,
+          startCollapsed: true
         }),
         view,
         node;
@@ -1000,8 +1000,8 @@ describe("Ext.grid.feature.Grouping", function () {
           groupDir: "DESC",
           data: [
             { name: "Beardog's", cuisine: "Home cooking" },
-            { name: "World Service", cuisine: "Poncy" },
-          ],
+            { name: "World Service", cuisine: "Poncy" }
+          ]
         }),
         width: 200,
         height: 200,
@@ -1011,19 +1011,19 @@ describe("Ext.grid.feature.Grouping", function () {
         plugins: [
           {
             ptype: "rowexpander",
-            rowBodyTpl: ["<p>{name}</p>"],
-          },
+            rowBodyTpl: ["<p>{name}</p>"]
+          }
         ],
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
 
       view = grid.view;
@@ -1041,23 +1041,23 @@ describe("Ext.grid.feature.Grouping", function () {
             fields: ["name", "seniority", "department"],
             groupField: "department",
             data: {
-              root: [],
+              root: []
             },
             proxy: {
               type: "memory",
               data: {
-                root: [],
+                root: []
               },
               reader: {
                 type: "json",
-                rootProperty: "root",
-              },
-            },
+                rootProperty: "root"
+              }
+            }
           }),
           grouping = new Ext.grid.feature.Grouping({
             ftype: "grouping",
             showSummaryRow: true,
-            remoteRoot: "summaryData",
+            remoteRoot: "summaryData"
           }),
           wasCalled = false;
 
@@ -1068,9 +1068,9 @@ describe("Ext.grid.feature.Grouping", function () {
           renderTo: Ext.getBody(),
           columns: [
             { text: "Name", dataIndex: "name" },
-            { text: "Seniority", dataIndex: "seniority" },
+            { text: "Seniority", dataIndex: "seniority" }
           ],
-          features: grouping,
+          features: grouping
         });
 
         store.proxy.data = {
@@ -1078,16 +1078,16 @@ describe("Ext.grid.feature.Grouping", function () {
           summaryData: [
             {
               name: "Test",
-              seniority: 1,
-            },
+              seniority: 1
+            }
           ],
-          root: [],
+          root: []
         };
 
         store.load({
           callback: function () {
             wasCalled = true;
-          },
+          }
         });
 
         waitsFor(function () {
@@ -1114,15 +1114,15 @@ describe("Ext.grid.feature.Grouping", function () {
         columns: [
           {
             dataIndex: "text",
-            flex: 1,
-          },
+            flex: 1
+          }
         ],
         features: [{ ftype: "grouping" }],
         store: {
           data: [
             {
-              text: "a",
-            },
+              text: "a"
+            }
           ],
           fields: ["text"],
           grouper: {
@@ -1130,11 +1130,11 @@ describe("Ext.grid.feature.Grouping", function () {
               if (record.get("text") === "a") {
                 return 0;
               }
-            },
+            }
           },
-          xtype: "store",
+          xtype: "store"
         },
-        xtype: "grid",
+        xtype: "grid"
       });
       grouping = grid.view.findFeature("grouping");
     });
@@ -1167,26 +1167,26 @@ describe("Ext.grid.feature.Grouping", function () {
           student: "Student 1",
           subject: "Math",
           mark: 84,
-          allowance: 15.5,
+          allowance: 15.5
         },
         {
           student: "Student 1",
           subject: "Science",
           mark: 72,
-          allowance: 10.75,
+          allowance: 10.75
         },
         {
           student: "Student 2",
           subject: "Math",
           mark: 96,
-          allowance: 100.75,
+          allowance: 100.75
         },
         {
           student: "Student 2",
           subject: "Science",
           mark: 68,
-          allowance: 1.55,
-        },
+          allowance: 1.55
+        }
       ];
 
       Ext.define("spec.Grouping", {
@@ -1196,13 +1196,13 @@ describe("Ext.grid.feature.Grouping", function () {
           "subject",
           {
             name: "mark",
-            type: "int",
+            type: "int"
           },
           {
             name: "allowance",
-            type: "float",
-          },
-        ],
+            type: "float"
+          }
+        ]
       });
 
       store = new Ext.data.Store(
@@ -1211,19 +1211,19 @@ describe("Ext.grid.feature.Grouping", function () {
             model: "spec.Grouping",
             data: data,
             groupField: "subject",
-            autoDestroy: true,
+            autoDestroy: true
           },
-          storeCfg,
-        ),
+          storeCfg
+        )
       );
 
       grouping = new Ext.grid.feature.Grouping(
         Ext.apply(
           {
-            ftype: "grouping",
+            ftype: "grouping"
           },
-          groupingCfg,
-        ),
+          groupingCfg
+        )
       );
 
       columns = columns || [
@@ -1237,15 +1237,15 @@ describe("Ext.grid.feature.Grouping", function () {
             return Ext.String.format(
               "{0} student{1}",
               value,
-              value !== 1 ? "s" : "",
+              value !== 1 ? "s" : ""
             );
-          },
+          }
         },
         {
           itemId: "markColumn",
           dataIndex: "mark",
           text: "Mark",
-          summaryType: "average",
+          summaryType: "average"
         },
         {
           itemId: "noDataIndexColumn",
@@ -1269,11 +1269,11 @@ describe("Ext.grid.feature.Grouping", function () {
             rowIdx,
             colIdx,
             store,
-            view,
+            view
           ) {
             return Ext.util.Format.usMoney(record.get("allowance"));
-          },
-        },
+          }
+        }
       ];
 
       grid = new Ext.grid.Panel(
@@ -1284,10 +1284,10 @@ describe("Ext.grid.feature.Grouping", function () {
             width: 600,
             height: 300,
             features: grouping,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          gridCfg,
-        ),
+          gridCfg
+        )
       );
 
       view = grid.view;
@@ -1307,11 +1307,11 @@ describe("Ext.grid.feature.Grouping", function () {
       createGrid(
         {
           stateful: true,
-          stateId: stateId.toString(),
+          stateId: stateId.toString()
         },
         null,
         null,
-        storeCfg || {},
+        storeCfg || {}
       );
     }
 
@@ -1323,7 +1323,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
       // Trigger grouping.
       header = grid.headerCt.down(
-        '[dataIndex="' + (groupField || "student") + '"]',
+        '[dataIndex="' + (groupField || "student") + '"]'
       );
 
       if (!dir) {
@@ -1334,7 +1334,7 @@ describe("Ext.grid.feature.Grouping", function () {
         // Click 'Group by this field'.
         jasmine.fireMouseEvent(
           header.ownerCt.menu.down("#groupMenuItem").itemEl.dom,
-          "click",
+          "click"
         );
       } else {
         header.sort(dir);
@@ -1351,7 +1351,7 @@ describe("Ext.grid.feature.Grouping", function () {
       tearDown();
 
       doGrid({
-        groupField: groupField,
+        groupField: groupField
       });
 
       if (!dir) {
@@ -1385,18 +1385,18 @@ describe("Ext.grid.feature.Grouping", function () {
           it("should maintain the grouping", function () {
             doUITest(
               {
-                groupField: groupField,
+                groupField: groupField
               },
-              "ASC",
+              "ASC"
             );
           });
 
           it("should maintain the sort direction", function () {
             doUITest(
               {
-                groupField: groupField,
+                groupField: groupField
               },
-              "DESC",
+              "DESC"
             );
           });
 
@@ -1405,9 +1405,9 @@ describe("Ext.grid.feature.Grouping", function () {
               doUITest(
                 {
                   autoLoad: false,
-                  groupField: groupField,
+                  groupField: groupField
                 },
-                "ASC",
+                "ASC"
               );
             });
 
@@ -1415,9 +1415,9 @@ describe("Ext.grid.feature.Grouping", function () {
               doUITest(
                 {
                   autoLoad: true,
-                  groupField: groupField,
+                  groupField: groupField
                 },
-                "ASC",
+                "ASC"
               );
             });
           });
@@ -1428,9 +1428,9 @@ describe("Ext.grid.feature.Grouping", function () {
                 {
                   autoLoad: false,
                   groupField: groupField,
-                  remoteSort: false,
+                  remoteSort: false
                 },
-                "ASC",
+                "ASC"
               );
             });
           });
@@ -1454,7 +1454,7 @@ describe("Ext.grid.feature.Grouping", function () {
       // Click 'Group by this field'.
       jasmine.fireMouseEvent(
         header.ownerCt.menu.down("#groupMenuItem").itemEl.dom,
-        "click",
+        "click"
       );
 
       grid.saveState();
@@ -1474,7 +1474,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
       // Ensure that not only is there a selection but it's the correct one, and also that the row has the correct class.
       expect(
-        Ext.fly(el).up(view.getItemSelector()).hasCls("x-grid-item-selected"),
+        Ext.fly(el).up(view.getItemSelector()).hasCls("x-grid-item-selected")
       ).toBe(true);
       expect(selection.length).toBe(1);
       expect(selection[0] === view.getRecord(el)).toBe(true);
@@ -1493,7 +1493,7 @@ describe("Ext.grid.feature.Grouping", function () {
       // Click 'Group by this field'.
       jasmine.fireMouseEvent(
         header.ownerCt.menu.down("#groupMenuItem").itemEl.dom,
-        "click",
+        "click"
       );
 
       expect(view.isGrouping).toBe(true);
@@ -1521,14 +1521,14 @@ describe("Ext.grid.feature.Grouping", function () {
           {
             data: [
               { name: "Sulla", cuisine: "Roman" },
-              { name: "Pericles", cuisine: "Greek" },
+              { name: "Pericles", cuisine: "Greek" }
             ],
-            groupField: "cuisine",
+            groupField: "cuisine"
           },
-          storeCfg,
+          storeCfg
         ),
         filterCfg,
-        gridCfg,
+        gridCfg
       );
 
       viewBody = view.body;
@@ -1556,11 +1556,11 @@ describe("Ext.grid.feature.Grouping", function () {
               makeUI(
                 null,
                 {
-                  startCollapsed: startCollapsed,
+                  startCollapsed: startCollapsed
                 },
                 {
-                  bufferedRenderer: isBR,
-                },
+                  bufferedRenderer: isBR
+                }
               );
 
               expect(roman.isCollapsed).toBe(startCollapsed);
@@ -1569,9 +1569,9 @@ describe("Ext.grid.feature.Grouping", function () {
               // Query if the first view item has a descendant node that matches the cls that is poked onto
               // the <tr> of the group header node when the item is collapsed.
               expect(
-                !!viewBody.down(view.itemSelector).down("." + hdCollapsedCls),
+                !!viewBody.down(view.itemSelector).down("." + hdCollapsedCls)
               ).toBe(startCollapsed);
-            },
+            }
           );
         }
 
@@ -1594,7 +1594,7 @@ describe("Ext.grid.feature.Grouping", function () {
               (collapseState ? "starting collapsed" : "starting expanded"),
             function () {
               makeUI(null, {
-                startCollapsed: collapseState,
+                startCollapsed: collapseState
               });
 
               expect(roman.isCollapsed).toBe(collapseState);
@@ -1602,14 +1602,14 @@ describe("Ext.grid.feature.Grouping", function () {
 
               store.addFilter({
                 property: "cuisine",
-                value: filterValue,
+                value: filterValue
               });
 
               store.clearFilter();
 
               expect(roman.isCollapsed).toBe(collapseState);
               expect(greek.isCollapsed).toBe(collapseState);
-            },
+            }
           );
         }
 
@@ -1639,20 +1639,20 @@ describe("Ext.grid.feature.Grouping", function () {
             function () {
               it("should retain its state of " + !initialState, function () {
                 makeUI(null, {
-                  startCollapsed: initialState,
+                  startCollapsed: initialState
                 });
 
                 groupingFeature[method](group);
 
                 store.addFilter({
                   property: "cuisine",
-                  value: filterValue,
+                  value: filterValue
                 });
 
                 store.clearFilter();
 
                 expect(groupingFeature.getMetaGroup(group).isCollapsed).toBe(
-                  !initialState,
+                  !initialState
                 );
               });
 
@@ -1663,21 +1663,21 @@ describe("Ext.grid.feature.Grouping", function () {
                 function () {
                   var row;
                   makeUI(null, {
-                    startCollapsed: initialState,
+                    startCollapsed: initialState
                   });
                   groupingFeature[method](group);
                   row = view.body.query(
                     "." + groupingFeature.ctCls + ">div div",
-                    true,
+                    true
                   )[group === "Greek" ? 0 : 1];
                   expect(row.getAttribute("data-qtip")).toEqual(
                     initialState
                       ? groupingFeature.collapseTip
-                      : groupingFeature.expandTip,
+                      : groupingFeature.expandTip
                   );
-                },
+                }
               );
-            },
+            }
           );
         }
 
@@ -1718,13 +1718,13 @@ describe("Ext.grid.feature.Grouping", function () {
           {
             data: [
               { name: "Cincinnatus", cuisine: "Roman" },
-              { name: "Cleisthenes", cuisine: "Greek" },
+              { name: "Cleisthenes", cuisine: "Greek" }
             ],
-            groupField: "cuisine",
+            groupField: "cuisine"
           },
-          storeCfg,
+          storeCfg
         ),
-        filterCfg,
+        filterCfg
       );
 
       greek = groupingFeature.getMetaGroup("Greek");
@@ -1740,9 +1740,9 @@ describe("Ext.grid.feature.Grouping", function () {
         makeGrid({
           data: [
             { name: "Cincinnatus", cuisine: "Roman" },
-            { name: "Cleisthenes", cuisine: "Greek" },
+            { name: "Cleisthenes", cuisine: "Greek" }
           ],
-          groupField: groupField,
+          groupField: groupField
         });
       }
 
@@ -1789,7 +1789,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
             grid.store.addFilter({
               property: "cuisine",
-              value: "Roman",
+              value: "Roman"
             });
 
             if (method === "getGroup") {
@@ -1797,10 +1797,10 @@ describe("Ext.grid.feature.Grouping", function () {
             } else {
               // Note that we can't use .getMetaGroup b/c that will return a new group if the groupName isn't in the cache.
               expect(
-                groupingFeature.getCache(groupName)[groupName],
+                groupingFeature.getCache(groupName)[groupName]
               ).toBeDefined();
             }
-          },
+          }
         );
       }
 
@@ -1822,10 +1822,10 @@ describe("Ext.grid.feature.Grouping", function () {
             } else {
               // Note that we can't use .getMetaGroup b/c that will return a new group if the groupName isn't in the cache.
               expect(
-                groupingFeature.getCache(groupName)[groupName],
+                groupingFeature.getCache(groupName)[groupName]
               ).toBeUndefined();
             }
-          },
+          }
         );
       }
 
@@ -1835,13 +1835,13 @@ describe("Ext.grid.feature.Grouping", function () {
             "getGroup",
             "should not be able to lookup the group if filtered",
             "Greek",
-            false,
+            false
           );
           filterIt(
             "getGroup",
             "should be able to lookup the group if not filtered",
             "Roman",
-            true,
+            true
           );
         });
 
@@ -1849,12 +1849,12 @@ describe("Ext.grid.feature.Grouping", function () {
           removeIt(
             "getGroup",
             "should not be able to lookup the group if removed",
-            "Greek",
+            "Greek"
           );
           removeIt(
             "getGroup",
             "should not be able to lookup the group if removed",
-            "Roman",
+            "Roman"
           );
         });
       });
@@ -1865,13 +1865,13 @@ describe("Ext.grid.feature.Grouping", function () {
             "getCache",
             "should not remove the metaGroup if it is not among the filtered values",
             "Greek",
-            false,
+            false
           );
           filterIt(
             "getCache",
             "should not remove the metaGroup if it is among the filtered values",
             "Roman",
-            false,
+            false
           );
         });
 
@@ -1879,12 +1879,12 @@ describe("Ext.grid.feature.Grouping", function () {
           removeIt(
             "getCache",
             "should remove the metaGroup if the grouper is removed",
-            "Greek",
+            "Greek"
           );
           removeIt(
             "getCache",
             "should remove the metaGroup if the grouper is removed",
-            "Roman",
+            "Roman"
           );
         });
       });
@@ -1903,7 +1903,7 @@ describe("Ext.grid.feature.Grouping", function () {
         beforeEach(function () {
           Ext.define("spec.Movie", {
             extend: "Ext.data.Model",
-            fields: ["name", "type", { name: "released", type: "date" }],
+            fields: ["name", "type", { name: "released", type: "date" }]
           });
         });
 
@@ -1920,20 +1920,20 @@ describe("Ext.grid.feature.Grouping", function () {
                 property: "released",
                 groupFn: function (record) {
                   return Ext.Date.format(record.get("released"), "Y-m-d");
-                },
+                }
               },
               data: [
                 {
                   name: "Star Wars",
                   genre: "fantasy",
-                  released: new Date("May 25, 1977"),
+                  released: new Date("May 25, 1977")
                 },
                 {
                   name: "The Godfather",
                   genre: "drama",
-                  released: new Date("March 14, 1972"),
-                },
-              ],
+                  released: new Date("March 14, 1972")
+                }
+              ]
             },
             null,
             {
@@ -1941,18 +1941,18 @@ describe("Ext.grid.feature.Grouping", function () {
               columns: [
                 {
                   text: "Name",
-                  dataIndex: "name",
+                  dataIndex: "name"
                 },
                 {
                   text: "Genre",
-                  dataIndex: "genre",
+                  dataIndex: "genre"
                 },
                 {
                   text: "Released",
-                  dataIndex: "released",
-                },
-              ],
-            },
+                  dataIndex: "released"
+                }
+              ]
+            }
           );
 
           // Do something to trigger an event that will refresh the GroupStore.
@@ -1974,10 +1974,10 @@ describe("Ext.grid.feature.Grouping", function () {
             data: [
               {
                 name: "Utley",
-                cuisine: "Please",
-              },
+                cuisine: "Please"
+              }
             ],
-            groupField: "name",
+            groupField: "name"
           });
 
           grid.headerCt.visibleColumnManager.getColumns()[0].sort();
@@ -1994,7 +1994,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
       beforeEach(function () {
         makeGrid(null, null, {
-          enableLocking: true,
+          enableLocking: true
         });
 
         lockedGroupingFeature = view.lockedView.summaryFeature;
@@ -2007,10 +2007,10 @@ describe("Ext.grid.feature.Grouping", function () {
 
       it("should share this object with any locking partner", function () {
         expect(lockedGroupingFeature.lockingPartner.getCache()).toBe(
-          lockedGroupingFeature.getCache(),
+          lockedGroupingFeature.getCache()
         );
         expect(normalGroupingFeature.lockingPartner.getCache()).toBe(
-          normalGroupingFeature.getCache(),
+          normalGroupingFeature.getCache()
         );
       });
     });
@@ -2019,7 +2019,7 @@ describe("Ext.grid.feature.Grouping", function () {
   describe("the hideGroupedHeader config", function () {
     it("should default to false", function () {
       makeGrid({
-        groupField: "cuisine",
+        groupField: "cuisine"
       });
 
       expect(groupingFeature.hideGroupedHeader).toBe(false);
@@ -2028,11 +2028,11 @@ describe("Ext.grid.feature.Grouping", function () {
     it("should honor a given config", function () {
       makeGrid(
         {
-          groupField: "cuisine",
+          groupField: "cuisine"
         },
         {
-          hideGroupedHeader: true,
-        },
+          hideGroupedHeader: true
+        }
       );
 
       expect(groupingFeature.hideGroupedHeader).toBe(true);
@@ -2042,7 +2042,7 @@ describe("Ext.grid.feature.Grouping", function () {
       var menu;
 
       makeGrid({
-        groupField: "name",
+        groupField: "name"
       });
 
       menu = getMenu();
@@ -2055,12 +2055,12 @@ describe("Ext.grid.feature.Grouping", function () {
       // Note the following Grouping configs must be turned on for the menu item to be in the menu!
       makeGrid(
         {
-          groupField: "name",
+          groupField: "name"
         },
         {
           enableGroupingMenu: true,
-          enableNoGroups: true,
-        },
+          enableNoGroups: true
+        }
       );
 
       showMenu();
@@ -2069,7 +2069,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
     it("should disable the 'Show in groups' menu item when it's unchecked", function () {
       makeGrid({
-        groupField: "name",
+        groupField: "name"
       });
 
       showMenu();
@@ -2082,11 +2082,11 @@ describe("Ext.grid.feature.Grouping", function () {
         var groupField = "cuisine";
 
         makeGrid({
-          groupField: groupField,
+          groupField: groupField
         });
 
         expect(grid.columnManager.getHeaderByDataIndex(groupField).hidden).toBe(
-          false,
+          false
         );
       });
     });
@@ -2103,15 +2103,15 @@ describe("Ext.grid.feature.Grouping", function () {
 
         makeGrid(
           {
-            groupField: groupField,
+            groupField: groupField
           },
           {
-            hideGroupedHeader: true,
-          },
+            hideGroupedHeader: true
+          }
         );
 
         expect(grid.columnManager.getHeaderByDataIndex(groupField).hidden).toBe(
-          true,
+          true
         );
       });
 
@@ -2122,34 +2122,34 @@ describe("Ext.grid.feature.Grouping", function () {
 
         makeGrid(
           {
-            groupField: groupField,
+            groupField: groupField
           },
           {
-            hideGroupedHeader: true,
-          },
+            hideGroupedHeader: true
+          }
         );
 
         columnManager = grid.columnManager;
 
         // First, do a sanity that the column is hidden.
         expect(columnManager.getHeaderByDataIndex(groupField).hidden).toBe(
-          true,
+          true
         );
 
         // Now, let's begin the process of toggling.
         // Unchecking 'Show in groups' shows the hidden column.
         clickItem("groupToggleMenuItem");
         expect(columnManager.getHeaderByDataIndex(groupField).hidden).toBe(
-          false,
+          false
         );
 
         // Clicking 'Group by this field' should hide the target column again.
         clickItem(
           "groupMenuItem",
-          columnManager.getHeaderByDataIndex(groupField),
+          columnManager.getHeaderByDataIndex(groupField)
         );
         expect(columnManager.getHeaderByDataIndex(groupField).hidden).toBe(
-          true,
+          true
         );
       });
     });
@@ -2170,31 +2170,31 @@ describe("Ext.grid.feature.Grouping", function () {
               name: {
                 first: "Bob",
                 middle: "The",
-                last: "Cat",
-              },
+                last: "Cat"
+              }
             },
             {
               cuisine: "Beef Gizzards",
               name: {
                 first: "Chuck",
                 middle: "The",
-                last: "Cat",
-              },
-            },
+                last: "Cat"
+              }
+            }
           ];
         }
 
         beforeEach(function () {
           storeCfg = {
             buffered: buffered,
-            data: !buffered ? getData() : null,
+            data: !buffered ? getData() : null
           };
 
           if (buffered) {
             storeCfg.pageSize = 20;
             storeCfg.proxy = {
               type: "ajax",
-              url: "fakeUrl",
+              url: "fakeUrl"
             };
           }
         });
@@ -2210,10 +2210,10 @@ describe("Ext.grid.feature.Grouping", function () {
             makeGrid(
               Ext.apply(
                 {
-                  groupField: "name",
+                  groupField: "name"
                 },
-                storeCfg,
-              ),
+                storeCfg
+              )
             );
 
             if (buffered) {
@@ -2231,10 +2231,10 @@ describe("Ext.grid.feature.Grouping", function () {
             makeGrid(
               Ext.apply(
                 {
-                  groupField: "cuisine",
+                  groupField: "cuisine"
                 },
-                storeCfg,
-              ),
+                storeCfg
+              )
             );
 
             if (buffered) {
@@ -2275,13 +2275,13 @@ describe("Ext.grid.feature.Grouping", function () {
                       groupers: [
                         {
                           property: "name",
-                          groupFn: Ext.emptyFn,
+                          groupFn: Ext.emptyFn
                         },
                         {
                           property: "cuisine",
-                          groupFn: Ext.emptyFn,
-                        },
-                      ],
+                          groupFn: Ext.emptyFn
+                        }
+                      ]
                     });
 
                     groupers = groupingFeature.groupers;
@@ -2309,7 +2309,7 @@ describe("Ext.grid.feature.Grouping", function () {
                     makeGrid(
                       {
                         groupField: "name",
-                        data: getData(),
+                        data: getData()
                       },
                       {
                         groupers: [
@@ -2318,7 +2318,7 @@ describe("Ext.grid.feature.Grouping", function () {
                             groupFn: function (val) {
                               var name = val.data.name,
                                 ret = [name.first, name.middle, name.last].join(
-                                  " ",
+                                  " "
                                 );
 
                               if (!contains(groupNames, ret)) {
@@ -2326,10 +2326,10 @@ describe("Ext.grid.feature.Grouping", function () {
                               }
 
                               return ret;
-                            },
-                          },
+                            }
+                          }
                         ],
-                        startCollapsed: startCollapsed,
+                        startCollapsed: startCollapsed
                       },
                       {
                         columns: [
@@ -2342,12 +2342,12 @@ describe("Ext.grid.feature.Grouping", function () {
                               }
 
                               return [val.first, val.middle, val.last].join(
-                                " ",
+                                " "
                               );
-                            },
-                          },
-                        ],
-                      },
+                            }
+                          }
+                        ]
+                      }
                     );
 
                     cache = groupingFeature.getCache();
@@ -2376,20 +2376,20 @@ describe("Ext.grid.feature.Grouping", function () {
                       it("should create a group container row for each group with the correct group name", function () {
                         cells = view.body.query(
                           "." + groupingFeature.ctCls,
-                          true,
+                          true
                         );
 
                         expect(
                           (cells[0].textContent || cells[0].innerText).replace(
                             /\s/g,
-                            "",
-                          ),
+                            ""
+                          )
                         ).toBe("Name:BobTheCat");
                         expect(
                           (cells[1].textContent || cells[1].innerText).replace(
                             /\s/g,
-                            "",
-                          ),
+                            ""
+                          )
                         ).toBe("Name:ChuckTheCat");
                       });
                     });
@@ -2402,12 +2402,12 @@ describe("Ext.grid.feature.Grouping", function () {
                           expect(
                             (
                               cells[0].textContent || cells[0].innerText
-                            ).replace(/\s/g, ""),
+                            ).replace(/\s/g, "")
                           ).toBe("BobTheCat");
                           expect(
                             (
                               cells[1].textContent || cells[1].innerText
-                            ).replace(/\s/g, ""),
+                            ).replace(/\s/g, "")
                           ).toBe("ChuckTheCat");
                         });
                       });
@@ -2430,7 +2430,7 @@ describe("Ext.grid.feature.Grouping", function () {
               makeGrid(
                 {
                   groupField: "cuisine",
-                  data: getData(),
+                  data: getData()
                 },
                 {
                   groupers: [
@@ -2440,9 +2440,9 @@ describe("Ext.grid.feature.Grouping", function () {
                         var name = val.data.name;
 
                         return [name.first, name.middle, name.last].join(" ");
-                      },
-                    },
-                  ],
+                      }
+                    }
+                  ]
                 },
                 {
                   columns: [
@@ -2451,14 +2451,14 @@ describe("Ext.grid.feature.Grouping", function () {
                       dataIndex: "name",
                       renderer: function (val) {
                         return [val.first, val.middle, val.last].join(" ");
-                      },
+                      }
                     },
                     {
                       text: "Cuisine",
-                      dataIndex: "cuisine",
-                    },
-                  ],
-                },
+                      dataIndex: "cuisine"
+                    }
+                  ]
+                }
               );
             });
 
@@ -2499,7 +2499,7 @@ describe("Ext.grid.feature.Grouping", function () {
             });
           });
         });
-      },
+      }
     );
   }
 
@@ -2513,9 +2513,9 @@ describe("Ext.grid.feature.Grouping", function () {
       makeGrid({
         data: [
           { name: "Pericles", cuisine: groupKey },
-          { name: "Sulla", cuisine: "Roman" },
+          { name: "Sulla", cuisine: "Roman" }
         ],
-        groupField: "cuisine",
+        groupField: "cuisine"
       });
     }
 
@@ -2601,8 +2601,8 @@ describe("Ext.grid.feature.Grouping", function () {
           groupDir: "DESC",
           data: [
             { name: "Beardog's", cuisine: "Home cooking" },
-            { name: "World Service", cuisine: "Poncy" },
-          ],
+            { name: "World Service", cuisine: "Poncy" }
+          ]
         }),
         width: 200,
         height: 200,
@@ -2610,19 +2610,19 @@ describe("Ext.grid.feature.Grouping", function () {
         deferRowRender: false,
         features: [
           {
-            ftype: "grouping",
-          },
+            ftype: "grouping"
+          }
         ],
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Cuisine",
-            dataIndex: "cuisine",
-          },
-        ],
+            dataIndex: "cuisine"
+          }
+        ]
       });
 
       store = grid.store;
@@ -2656,9 +2656,9 @@ describe("Ext.grid.feature.Grouping", function () {
           filters: [
             {
               property: "cuisine",
-              value: true,
-            },
-          ],
+              value: true
+            }
+          ]
         });
 
         expect(store.data.length).toBe(1);
@@ -2702,13 +2702,13 @@ describe("Ext.grid.feature.Grouping", function () {
           data: [
             {
               name: "Larry",
-              type: "user",
+              type: "user"
             },
             {
               name: "Curly",
-              type: "employee",
-            },
-          ],
+              type: "employee"
+            }
+          ]
         },
         groupStoreCfg = Ext.apply({ groupField: "type" }, storeCfg),
         store = new Ext.data.Store(storeCfg),
@@ -2720,20 +2720,20 @@ describe("Ext.grid.feature.Grouping", function () {
         columns: [
           {
             dataIndex: "name",
-            text: "Name",
-          },
+            text: "Name"
+          }
         ],
         features: {
-          ftype: "grouping",
+          ftype: "grouping"
         },
-        store: store,
+        store: store
       });
 
       grid.reconfigure(groupStore);
 
       grid.getStore().add({
         name: "Moe",
-        type: "employee",
+        type: "employee"
       });
 
       expect(grid.getView().getNodes().length).toBe(3);
@@ -2749,12 +2749,12 @@ describe("Ext.grid.feature.Grouping", function () {
       data = [
         {
           cuisine: "Tuna Delight",
-          name: "Bob The Cat",
+          name: "Bob The Cat"
         },
         {
           cuisine: "Beef Gizzards",
-          name: "Chuck The Cat",
-        },
+          name: "Chuck The Cat"
+        }
       ];
     });
 
@@ -2774,7 +2774,7 @@ describe("Ext.grid.feature.Grouping", function () {
 
       makeGrid({
         data: data,
-        groupField: "cuisine",
+        groupField: "cuisine"
       });
 
       // Toggle.
@@ -2788,7 +2788,7 @@ describe("Ext.grid.feature.Grouping", function () {
       groupingFeature.collapse(groupField);
 
       expect(
-        groupingFeature.getMetaGroup(groupField).placeholder.groupKey,
+        groupingFeature.getMetaGroup(groupField).placeholder.groupKey
       ).toBe(groupKey);
     });
   });
@@ -2804,7 +2804,7 @@ describe("Ext.grid.feature.Grouping", function () {
             groupField: "cuisine",
             sorters: {
               property: "name",
-              direction: "ASC",
+              direction: "ASC"
             },
             data: [
               { name: "Chicks' Ciao", cuisine: "Fine Dining" },
@@ -2812,19 +2812,19 @@ describe("Ext.grid.feature.Grouping", function () {
               { name: "Pete's Place", cuisine: "Fine Dining" },
               { name: "World of Utley", cuisine: "Fine Dining" },
               { name: "Lily's Leapers", cuisine: "Fine Dining" },
-              { name: "Who? Roo?", cuisine: "Fine Dining" },
-            ],
+              { name: "Who? Roo?", cuisine: "Fine Dining" }
+            ]
           },
           null,
           {
             height: 500,
-            bufferedRenderer: isBR,
-          },
+            bufferedRenderer: isBR
+          }
         );
 
         store.insert(0, {
           name: "Beardog's",
-          cuisine: "Fine Dining",
+          cuisine: "Fine Dining"
         });
       }
 
@@ -2835,7 +2835,7 @@ describe("Ext.grid.feature.Grouping", function () {
           function () {
             doTheGrid(isBR);
             expect(store.getGroups().length).toBe(1);
-          },
+          }
         );
 
         it(
@@ -2843,7 +2843,7 @@ describe("Ext.grid.feature.Grouping", function () {
           function () {
             doTheGrid(isBR);
             expect(view.body.el.query(".x-grid-group-hd").length).toBe(1);
-          },
+          }
         );
       }
 
@@ -2865,8 +2865,8 @@ describe("Ext.grid.feature.Grouping", function () {
             { name: "Pete's Place", cuisine: "Fine Dining" },
             { name: "World of Utley", cuisine: "Fine Dining" },
             { name: "Lily's Leapers", cuisine: "Fine Dining" },
-            { name: "Who? Roo?", cuisine: "Fine Dining" },
-          ],
+            { name: "Who? Roo?", cuisine: "Fine Dining" }
+          ]
         });
       });
 
@@ -2921,8 +2921,8 @@ describe("Ext.grid.feature.Grouping", function () {
             { name: "Chicks' Ciao", cuisine: "Fine Dining" },
             { name: "Molly's Table", cuisine: "Fine Dining" },
             { name: "Gary's Grille", cuisine: "" },
-            { name: "Henry's Hibachi", cuisine: "" },
-          ],
+            { name: "Henry's Hibachi", cuisine: "" }
+          ]
         });
       });
 
@@ -2951,8 +2951,8 @@ describe("Ext.grid.feature.Grouping", function () {
             groupField: "name",
             data: [
               { name: "Chicks' Ciao", cuisine: "Fine Dining" },
-              { name: groupName, cuisine: "Fine Dining" },
-            ],
+              { name: groupName, cuisine: "Fine Dining" }
+            ]
           });
         });
 
@@ -2960,7 +2960,7 @@ describe("Ext.grid.feature.Grouping", function () {
           groupingFeature.collapse(groupName);
 
           expect(groupingFeature.getMetaGroup(groupName).isCollapsed).toBe(
-            true,
+            true
           );
         });
 
@@ -2969,7 +2969,7 @@ describe("Ext.grid.feature.Grouping", function () {
           jasmine.fireMouseEvent(dom, "click");
 
           expect(groupingFeature.getMetaGroup(groupName).isCollapsed).toBe(
-            true,
+            true
           );
         });
       });
@@ -2986,8 +2986,8 @@ describe("Ext.grid.feature.Grouping", function () {
               { name: "Pete's Place", cuisine: "Fine Dining" },
               { name: "Who? Roo?", cuisine: "Fine Dining" },
               { name: "Lily's Leapers", cuisine: "Fine Dining" },
-              { name: groupName, cuisine: "Fine Dining" },
-            ],
+              { name: groupName, cuisine: "Fine Dining" }
+            ]
           });
         });
 
@@ -2995,7 +2995,7 @@ describe("Ext.grid.feature.Grouping", function () {
           groupingFeature.collapse(groupName);
 
           expect(groupingFeature.getMetaGroup(groupName).isCollapsed).toBe(
-            true,
+            true
           );
         });
 
@@ -3007,7 +3007,7 @@ describe("Ext.grid.feature.Grouping", function () {
           jasmine.fireMouseEvent(dom, "click");
 
           expect(groupingFeature.getMetaGroup(groupName).isCollapsed).toBe(
-            true,
+            true
           );
         });
       });
@@ -3023,7 +3023,7 @@ describe("Ext.grid.feature.Grouping", function () {
             { name: "Molly's Table", cuisine: "Fine Dining" },
             { name: "Pete's Place", cuisine: "Fine Dining" },
             { name: "Who? Roo?", cuisine: "Fine Dining" },
-            { name: "Lily's Leapers", cuisine: "Fine Dining" },
+            { name: "Lily's Leapers", cuisine: "Fine Dining" }
           ];
         });
 
@@ -3035,11 +3035,11 @@ describe("Ext.grid.feature.Grouping", function () {
           makeGrid(
             {
               groupField: "name",
-              data: null,
+              data: null
             },
             {
-              startCollapsed: startCollapsed,
-            },
+              startCollapsed: startCollapsed
+            }
           );
 
           store.load();
@@ -3099,7 +3099,7 @@ describe("Ext.grid.feature.Grouping", function () {
         from.el.dom,
         "mousemove",
         fromMx + dragThresh,
-        fromMy,
+        fromMy
       );
 
       // The move to left of the centre of the target element
@@ -3114,9 +3114,9 @@ describe("Ext.grid.feature.Grouping", function () {
         data: [
           { name: "Sulla", cuisine: "Roman" },
           { name: "Sulla2", cuisine: "Roman" },
-          { name: "Pericles", cuisine: "Greek" },
+          { name: "Pericles", cuisine: "Greek" }
         ],
-        groupField: "cuisine",
+        groupField: "cuisine"
       });
       grid.getStore().filter("name", "Sulla");
       var name = grid.down("[text=Name]"),

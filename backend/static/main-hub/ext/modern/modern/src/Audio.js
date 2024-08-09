@@ -95,7 +95,7 @@ Ext.define("Ext.Audio", {
      * @cfg
      * @inheritdoc
      */
-    cls: Ext.baseCSSPrefix + "audio",
+    cls: Ext.baseCSSPrefix + "audio"
 
     /**
      * @cfg {String} url
@@ -141,7 +141,7 @@ Ext.define("Ext.Audio", {
       reference: "media",
       preload: "auto",
       tag: "audio",
-      cls: Ext.baseCSSPrefix + "component",
-    },
-  ],
+      cls: Ext.baseCSSPrefix + "component"
+    }
+  ]
 });

@@ -41,5 +41,5 @@ Ext.define("Ext.util.translatable.ScrollPosition", {
     position.y = element.getScrollTop();
 
     return position;
-  },
+  }
 });

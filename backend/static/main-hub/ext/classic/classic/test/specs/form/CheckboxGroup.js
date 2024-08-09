@@ -4,9 +4,9 @@ describe("Ext.form.CheckboxGroup", function () {
   function makeComponent(config) {
     config = Ext.apply(
       {
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
     component = new Ext.form.CheckboxGroup(config);
   }
@@ -20,7 +20,7 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should assign group name to child items", function () {
       makeComponent({
         name: "zurg",
-        items: [{}, {}],
+        items: [{}, {}]
       });
 
       expect(component.items.getAt(0)).toHaveAttr("name", "zurg");
@@ -29,7 +29,7 @@ describe("Ext.form.CheckboxGroup", function () {
 
     it("should assign its id as group name to child items", function () {
       makeComponent({
-        items: [{}, {}],
+        items: [{}, {}]
       });
 
       expect(component.items.getAt(0)).toHaveAttr("name", component.id);
@@ -39,7 +39,7 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should not override child name config", function () {
       makeComponent({
         name: "throbbe",
-        items: [{ name: "gurgle" }, {}],
+        items: [{ name: "gurgle" }, {}]
       });
 
       expect(component.items.getAt(0)).toHaveAttr("name", "gurgle");
@@ -54,12 +54,12 @@ describe("Ext.form.CheckboxGroup", function () {
           { name: "one", checked: true },
           { name: "two", checked: true, inputValue: "two-1" },
           { name: "two", checked: false, inputValue: "two-2" },
-          { name: "two", checked: true, inputValue: "two-3" },
-        ],
+          { name: "two", checked: true, inputValue: "two-3" }
+        ]
       });
       expect(component.originalValue).toEqual({
         one: "on",
-        two: ["two-1", "two-3"],
+        two: ["two-1", "two-3"]
       });
     });
 
@@ -69,9 +69,9 @@ describe("Ext.form.CheckboxGroup", function () {
           { name: "one", checked: true },
           { name: "two", checked: true, inputValue: "two-1" },
           { name: "two", checked: false, inputValue: "two-2" },
-          { name: "two", checked: true, inputValue: "two-3" },
+          { name: "two", checked: true, inputValue: "two-3" }
         ],
-        value: { two: ["two-1", "two-2"] },
+        value: { two: ["two-1", "two-2"] }
       });
       expect(component.originalValue).toEqual({ two: ["two-1", "two-2"] });
       expect(component.items.getAt(0).getValue()).toBe(false);
@@ -96,11 +96,11 @@ describe("Ext.form.CheckboxGroup", function () {
 
           for (i = 0; i < 50; ++i) {
             checkboxes.push({
-              xtype: "checkbox",
+              xtype: "checkbox"
             });
           }
           return checkboxes;
-        })(),
+        })()
       });
       expect(component.getHeight()).toBe(100);
     });
@@ -108,7 +108,7 @@ describe("Ext.form.CheckboxGroup", function () {
 
   it("should fire the change event when a sub-checkbox is changed", function () {
     makeComponent({
-      items: [{ name: "foo", checked: true }],
+      items: [{ name: "foo", checked: true }]
     });
     var spy = jasmine.createSpy();
     component.on("change", spy);
@@ -123,7 +123,7 @@ describe("Ext.form.CheckboxGroup", function () {
   describe("getValue", function () {
     it("should return an object with keys matching the names of checked items", function () {
       makeComponent({
-        items: [{ name: "one", checked: true }, { name: "two" }],
+        items: [{ name: "one", checked: true }, { name: "two" }]
       });
       var val = component.getValue();
       expect(val.one).toBeDefined();
@@ -133,8 +133,8 @@ describe("Ext.form.CheckboxGroup", function () {
       makeComponent({
         items: [
           { name: "one", checked: true, inputValue: "foo" },
-          { name: "two" },
-        ],
+          { name: "two" }
+        ]
       });
       expect(component.getValue().one).toEqual("foo");
     });
@@ -143,8 +143,8 @@ describe("Ext.form.CheckboxGroup", function () {
         items: [
           { name: "one", checked: true, inputValue: "1" },
           { name: "one", checked: true, inputValue: "2" },
-          { name: "one" },
-        ],
+          { name: "one" }
+        ]
       });
       expect(component.getValue().one).toEqual(["1", "2"]);
     });
@@ -154,7 +154,7 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should return null", function () {
       makeComponent({
         value: { foo: true },
-        items: [{ name: "foo", inputValue: "bar" }],
+        items: [{ name: "foo", inputValue: "bar" }]
       });
       expect(component.getSubmitData()).toBeNull();
     });
@@ -164,7 +164,7 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should return null", function () {
       makeComponent({
         value: { foo: true },
-        items: [{ name: "foo", inputValue: "bar" }],
+        items: [{ name: "foo", inputValue: "bar" }]
       });
       expect(component.getModelData()).toBeNull();
     });
@@ -176,8 +176,8 @@ describe("Ext.form.CheckboxGroup", function () {
         items: [
           { name: "one", checked: true },
           { name: "two" },
-          { name: "three", checked: true },
-        ],
+          { name: "three", checked: true }
+        ]
       });
       component.setValue({ one: false, two: true });
       component.reset();
@@ -191,7 +191,7 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should return a validation error when no sub-checkboxes are checked", function () {
       makeComponent({
         allowBlank: false,
-        items: [{ name: "one" }],
+        items: [{ name: "one" }]
       });
       expect(component.isValid()).toBe(false);
     });
@@ -199,7 +199,7 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should not return an error when a sub-checkbox is checked", function () {
       makeComponent({
         allowBlank: false,
-        items: [{ name: "one", checked: true }],
+        items: [{ name: "one", checked: true }]
       });
       expect(component.isValid()).toBe(true);
     });
@@ -207,14 +207,14 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should fire the validitychange event with true when checking a box previously undefined", function () {
       makeComponent({
         allowBlank: false,
-        items: [{ name: "one" }],
+        items: [{ name: "one" }]
       });
       var isValid;
       component.on("validitychange", function (field, validState) {
         isValid = validState;
       });
       component.setValue({
-        one: true,
+        one: true
       });
       expect(isValid).toBe(true);
     });
@@ -222,14 +222,14 @@ describe("Ext.form.CheckboxGroup", function () {
     it("should fire the validitychange event with true when unchecking a box", function () {
       makeComponent({
         allowBlank: false,
-        items: [{ name: "one", checked: true }],
+        items: [{ name: "one", checked: true }]
       });
       var isValid;
       component.on("validitychange", function (field, validState) {
         isValid = validState;
       });
       component.setValue({
-        one: false,
+        one: false
       });
       expect(isValid).toBe(false);
     });
@@ -242,33 +242,33 @@ describe("Ext.form.CheckboxGroup", function () {
           data: {
             theValue: {
               foo: true,
-              baz: true,
-            },
-          },
+              baz: true
+            }
+          }
         });
 
         makeComponent({
           renderTo: Ext.getBody(),
           items: [
             {
-              name: "foo",
+              name: "foo"
             },
             {
-              name: "bar",
+              name: "bar"
             },
             {
-              name: "baz",
-            },
+              name: "baz"
+            }
           ],
           viewModel: vm,
           bind: {
-            value: "{theValue}",
-          },
+            value: "{theValue}"
+          }
         });
         vm.notify();
         expect(component.getValue()).toEqual({
           foo: "on",
-          baz: "on",
+          baz: "on"
         });
       });
 
@@ -279,37 +279,37 @@ describe("Ext.form.CheckboxGroup", function () {
           data: {
             theValue: {
               foo: true,
-              baz: true,
-            },
-          },
+              baz: true
+            }
+          }
         });
 
         makeComponent({
           renderTo: Ext.getBody(),
           items: [
             {
-              name: "foo",
+              name: "foo"
             },
             {
-              name: "bar",
+              name: "bar"
             },
             {
-              name: "baz",
-            },
+              name: "baz"
+            }
           ],
           viewModel: {
-            type: "bar",
+            type: "bar"
           },
           bind: {
-            value: "{theValue}",
-          },
+            value: "{theValue}"
+          }
         });
 
         component.getViewModel().notify();
 
         expect(component.getValue()).toEqual({
           foo: "on",
-          baz: "on",
+          baz: "on"
         });
         Ext.undefine("spec.Bar");
         Ext.Factory.viewModel.instance.clearCache();
@@ -323,15 +323,15 @@ describe("Ext.form.CheckboxGroup", function () {
         renderTo: Ext.getBody(),
         items: [
           {
-            name: "foo",
+            name: "foo"
           },
           {
-            name: "bar",
+            name: "bar"
           },
           {
-            name: "baz",
-          },
-        ],
+            name: "baz"
+          }
+        ]
       });
     });
 

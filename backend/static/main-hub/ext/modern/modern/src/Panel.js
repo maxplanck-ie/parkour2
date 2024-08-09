@@ -143,7 +143,7 @@ Ext.define("Ext.Panel", {
      *
      * **Note:** Applicable when the panel is {@link #closable}: true
      */
-    closeToolText: "Close panel",
+    closeToolText: "Close panel"
     //</locale>
   },
 
@@ -160,14 +160,14 @@ Ext.define("Ext.Panel", {
       children: [
         {
           reference: "innerElement",
-          className: "x-inner",
+          className: "x-inner"
         },
         {
           reference: "tipElement",
           className: "x-anchor",
-          hidden: true,
-        },
-      ],
+          hidden: true
+        }
+      ]
     };
   },
 
@@ -280,7 +280,7 @@ Ext.define("Ext.Panel", {
       ret = {
         xtype: "panelheader",
         docked: "top",
-        ui: me.getUi(),
+        ui: me.getUi()
       },
       icon,
       title;
@@ -300,12 +300,12 @@ Ext.define("Ext.Panel", {
       if (title != null) {
         if (typeof title === "string") {
           title = {
-            text: title,
+            text: title
           };
         }
 
         Ext.merge(ret, {
-          title: title,
+          title: title
         });
       }
 
@@ -372,7 +372,7 @@ Ext.define("Ext.Panel", {
         weight: 1000,
         scope: me,
         handler: me.close,
-        tooltip: me.getCloseToolText(),
+        tooltip: me.getCloseToolText()
       })[0];
     } else {
       Ext.destroy(me.closeTool);
@@ -455,7 +455,7 @@ Ext.define("Ext.Panel", {
 
       me.anchorSize = new Ext.util.Offset(
         tipElement.getWidth(),
-        tipElement.getHeight(),
+        tipElement.getHeight()
       );
       tipElement.removeCls(cls);
       tipElement.hide();
@@ -473,10 +473,10 @@ Ext.define("Ext.Panel", {
       Ext.apply(
         {
           anchorSize: me.anchorSize,
-          axisLock: me.getAxisLock(),
+          axisLock: me.getAxisLock()
         },
-        options,
-      ),
+        options
+      )
     );
 
     // If already aligned, will return undefined
@@ -514,7 +514,7 @@ Ext.define("Ext.Panel", {
         me.setAnchorPosition({
           side: resultRegion.anchor.position,
           x: x,
-          y: y,
+          y: y
         });
       } else {
         me.setAnchorPosition(null);
@@ -551,6 +551,6 @@ Ext.define("Ext.Panel", {
 
     setBodyBorderEnabled: function (enabled) {
       this.innerElement.setStyle("border-width", enabled ? "" : "0");
-    },
-  },
+    }
+  }
 });

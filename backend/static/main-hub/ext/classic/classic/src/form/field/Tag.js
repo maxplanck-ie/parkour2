@@ -49,7 +49,7 @@ Ext.define("Ext.form.field.Tag", {
     "Ext.selection.Model",
     "Ext.data.Store",
     "Ext.data.ChainedStore",
-    "Ext.view.TagKeyNav",
+    "Ext.view.TagKeyNav"
   ],
 
   xtype: "tagfield",
@@ -335,15 +335,15 @@ Ext.define("Ext.form.field.Tag", {
     "</ul>",
     "</div>",
     {
-      disableFormats: true,
-    },
+      disableFormats: true
+    }
   ],
 
   postSubTpl: [
     '<label id="{cmpId}-placeholderLabel" data-ref="placeholderLabel" for="{cmpId}-inputEl" class="{placeholderCoverCls} {placeholderCoverCls}-{ui} {emptyCls}">{emptyText}</label>',
     "</div>", // end inputWrap
     '<tpl for="triggers">{[values.renderTrigger(parent)]}</tpl>',
-    "</div>", // end triggerWrap
+    "</div>" // end triggerWrap
   ],
 
   extraFieldBodyCls: Ext.baseCSSPrefix + "tagfield-body",
@@ -357,7 +357,7 @@ Ext.define("Ext.form.field.Tag", {
     "inputEl",
     "inputElCt",
     "selectedText",
-    "ariaList",
+    "ariaList"
   ],
 
   /**
@@ -383,7 +383,7 @@ Ext.define("Ext.form.field.Tag", {
     // <debug>
     if (typeAhead && !me.editable) {
       Ext.raise(
-        "If typeAhead is enabled the combo must be editable: true -- please change one of those settings.",
+        "If typeAhead is enabled the combo must be editable: true -- please change one of those settings."
       );
     }
     // </debug>
@@ -410,8 +410,8 @@ Ext.define("Ext.form.field.Tag", {
       listeners: {
         scope: me,
         selectionchange: me.onSelectionChange,
-        focuschange: me.onFocusChange,
-      },
+        focuschange: me.onFocusChange
+      }
     });
 
     // Users might want to implement centralized help
@@ -444,7 +444,7 @@ Ext.define("Ext.form.field.Tag", {
     me.listWrapper.on({
       scope: me,
       click: me.onItemListClick,
-      mousedown: me.onItemMouseDown,
+      mousedown: me.onItemMouseDown
     });
   },
 
@@ -455,14 +455,14 @@ Ext.define("Ext.form.field.Tag", {
     // Avoid munging config on the prototype
     config = Ext.apply(
       {
-        navigationModel: "tagfield",
+        navigationModel: "tagfield"
       },
-      me.defaultListConfig,
+      me.defaultListConfig
     );
 
     if (me.ariaAvailableListLabel) {
       config.ariaRenderAttributes = {
-        "aria-label": Ext.String.htmlEncode(me.ariaAvailableListLabel),
+        "aria-label": Ext.String.htmlEncode(me.ariaAvailableListLabel)
       };
     }
 
@@ -491,7 +491,7 @@ Ext.define("Ext.form.field.Tag", {
         // Assign a proxy here so we don't get the proxy from the model
         proxy: "memory",
         // We may have the empty store here, so just ignore empty models
-        useModelWarning: false,
+        useModelWarning: false
       });
 
       me.selectionModel.bindStore(me.valueStore);
@@ -500,7 +500,7 @@ Ext.define("Ext.form.field.Tag", {
       if (me.filterPickList) {
         me.listFilter = new Ext.util.Filter({
           scope: me,
-          filterFn: me.filterPicked,
+          filterFn: me.filterPicked
         });
         me.changingFilters = true;
         store.filter(me.listFilter);
@@ -543,7 +543,7 @@ Ext.define("Ext.form.field.Tag", {
 
     if (valueRecords.length && inputValue) {
       lastDisplayValue = valueRecords[valueRecords.length - 1].get(
-        me.displayField,
+        me.displayField
       );
 
       if (!Ext.String.startsWith(lastDisplayValue, inputValue, true)) {
@@ -684,7 +684,7 @@ Ext.define("Ext.form.field.Tag", {
     if (!me.ariaStaticRoles[me.ariaRole]) {
       data.multiSelect = me.multiSelect;
       data.ariaSelectedListLabel = Ext.String.htmlEncode(
-        me.ariaSelectedListLabel,
+        me.ariaSelectedListLabel
       );
 
       attr = data.ariaElAttributes;
@@ -841,7 +841,7 @@ Ext.define("Ext.form.field.Tag", {
         if (text) {
           me.ariaErrorEl.dom.innerHTML = Ext.String.formatEncode(
             me.ariaDeselectedText,
-            text,
+            text
           );
         }
 
@@ -931,7 +931,7 @@ Ext.define("Ext.form.field.Tag", {
       if (me.createNewOnEnter && rawValue) {
         me.ariaErrorEl.dom.innerHTML = Ext.String.formatEncode(
           me.ariaSelectedText,
-          rawValue,
+          rawValue
         );
       }
 
@@ -1083,8 +1083,8 @@ Ext.define("Ext.form.field.Tag", {
           getTip: function (values) {
             return Ext.String.htmlEncode(me.tipTpl.apply(values));
           },
-          strict: true,
-        },
+          strict: true
+        }
       ]);
     }
     if (!me.multiSelectItemTpl.isTemplate) {
@@ -1139,8 +1139,8 @@ Ext.define("Ext.form.field.Tag", {
           getItemLabel: function (values) {
             return Ext.String.htmlEncode(me.labelTpl.apply(values));
           },
-          strict: true,
-        },
+          strict: true
+        }
       ]);
     }
 
@@ -1175,8 +1175,8 @@ Ext.define("Ext.form.field.Tag", {
           getItemLabel: function (values) {
             return Ext.String.htmlEncode(me.labelTpl.apply(values));
           },
-          strict: true,
-        },
+          strict: true
+        }
       ]);
     }
 
@@ -1186,7 +1186,7 @@ Ext.define("Ext.form.field.Tag", {
 
     return Ext.String.format(
       me.ariaSelectedText,
-      me.ariaSelectedItemTpl.apply(values),
+      me.ariaSelectedItemTpl.apply(values)
     );
   },
 
@@ -1406,7 +1406,7 @@ Ext.define("Ext.form.field.Tag", {
       if (unknownValues.length) {
         params = {};
         params[me.valueParam || me.valueField] = unknownValues.join(
-          me.delimiter,
+          me.delimiter
         );
         store.load({
           params: params,
@@ -1414,7 +1414,7 @@ Ext.define("Ext.form.field.Tag", {
             me.setValue(value, add, true);
             me.autoSize();
             me.lastQuery = false;
-          },
+          }
         });
         return false;
       }
@@ -1625,5 +1625,5 @@ Ext.define("Ext.form.field.Tag", {
         me.autoSizing = false;
       }
     }
-  },
+  }
 });

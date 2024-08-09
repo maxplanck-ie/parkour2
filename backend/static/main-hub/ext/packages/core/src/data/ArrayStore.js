@@ -40,8 +40,8 @@ Ext.define("Ext.data.ArrayStore", {
   config: {
     proxy: {
       type: "memory",
-      reader: "array",
-    },
+      reader: "array"
+    }
   },
 
   loadData: function (data, append) {
@@ -58,5 +58,5 @@ Ext.define("Ext.data.ArrayStore", {
     }
 
     this.callParent([data, append]);
-  },
+  }
 });

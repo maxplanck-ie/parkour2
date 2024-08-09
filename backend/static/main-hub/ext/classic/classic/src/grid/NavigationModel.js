@@ -39,7 +39,7 @@ Ext.define("Ext.grid.NavigationModel", {
     return {
       focusmove: {
         element: "el",
-        fn: me.onFocusMove,
+        fn: me.onFocusMove
       },
 
       containermousedown: me.onContainerMouseDown,
@@ -52,7 +52,7 @@ Ext.define("Ext.grid.NavigationModel", {
       // We focus on click if the mousedown handler did not focus because it was a translated "touchstart" event.
       itemclick: me.onItemClick,
       itemcontextmenu: me.onItemClick,
-      scope: me,
+      scope: me
     };
   },
 
@@ -100,9 +100,9 @@ Ext.define("Ext.grid.NavigationModel", {
         ctrl: true,
         // Need a separate function because we don't want the key
         // events passed on to selectAll (causes event suppression).
-        handler: me.onSelectAllKeyPress,
+        handler: me.onSelectAllKeyPress
       },
-      scope: me,
+      scope: me
     });
     me.keyNav.push(nav);
     me.onKeyNavCreate(nav);
@@ -174,11 +174,11 @@ Ext.define("Ext.grid.NavigationModel", {
     record,
     row,
     recordIndex,
-    mousedownEvent,
+    mousedownEvent
   ) {
     var targetComponent = Ext.Component.fromElement(
         mousedownEvent.target,
-        cell,
+        cell
       ),
       targetEl = mousedownEvent.getTarget(null, null, true),
       onActionable =
@@ -256,7 +256,7 @@ Ext.define("Ext.grid.NavigationModel", {
     record,
     row,
     recordIndex,
-    clickEvent,
+    clickEvent
   ) {
     var me = this,
       targetComponent = Ext.Component.fromElement(clickEvent.target, cell),
@@ -308,7 +308,7 @@ Ext.define("Ext.grid.NavigationModel", {
         item: clickEvent.item,
         cell: clickEvent.position.cellElement,
         columnIndex: clickEvent.position.colIdx,
-        column: clickEvent.position.column,
+        column: clickEvent.position.column
       });
     } else {
       // If the mousedown that initiated the click has navigated us to the correct spot, just fire the event
@@ -354,7 +354,7 @@ Ext.define("Ext.grid.NavigationModel", {
         if (record && column) {
           newPosition = new Ext.grid.CellContext(view).setPosition(
             record,
-            column,
+            column
           );
 
           // The focus might have been the *result* of setting the position
@@ -371,7 +371,7 @@ Ext.define("Ext.grid.NavigationModel", {
         view.ownerGrid.fireEvent(
           "cellactivate",
           view.ownerGrid,
-          view.actionPosition,
+          view.actionPosition
         );
       }
     }
@@ -449,7 +449,7 @@ Ext.define("Ext.grid.NavigationModel", {
     columnIndex,
     keyEvent,
     suppressEvent,
-    preventNavigation,
+    preventNavigation
   ) {
     var setPositionTask = this.view.getFocusTask();
 
@@ -460,7 +460,7 @@ Ext.define("Ext.grid.NavigationModel", {
       columnIndex,
       keyEvent,
       suppressEvent,
-      preventNavigation,
+      preventNavigation
     ]);
     return setPositionTask;
   },
@@ -470,7 +470,7 @@ Ext.define("Ext.grid.NavigationModel", {
     columnIndex,
     keyEvent,
     suppressEvent,
-    preventNavigation,
+    preventNavigation
   ) {
     var me = this,
       clearing = recordIndex == null && columnIndex == null,
@@ -547,7 +547,7 @@ Ext.define("Ext.grid.NavigationModel", {
         }
         newRecordIndex = Math.min(
           recordIndex.rowIdx,
-          dataSource.getCount() - 1,
+          dataSource.getCount() - 1
         );
         newRecord = dataSource.getAt(newRecordIndex);
       }
@@ -565,7 +565,7 @@ Ext.define("Ext.grid.NavigationModel", {
         if (typeof recordIndex === "number") {
           newRecordIndex = Math.max(
             Math.min(recordIndex, dataSource.getCount() - 1),
-            0,
+            0
           );
           newRecord = dataSource.getAt(recordIndex);
         }
@@ -634,7 +634,7 @@ Ext.define("Ext.grid.NavigationModel", {
     if (view.actionableMode && !clearing) {
       return view.ownerGrid.setActionableMode(
         false,
-        new Ext.grid.CellContext(view).setPosition(newRecord, newColumn),
+        new Ext.grid.CellContext(view).setPosition(newRecord, newColumn)
       );
     }
 
@@ -670,7 +670,7 @@ Ext.define("Ext.grid.NavigationModel", {
       (me.recordIndex = newRecordIndex),
       (me.columnIndex = newColumnIndex),
       (me.record = newRecord),
-      (me.column = newColumn),
+      (me.column = newColumn)
     );
 
     if (clearing) {
@@ -762,7 +762,7 @@ Ext.define("Ext.grid.NavigationModel", {
             row,
             false,
             me.afterBufferedScrollTo,
-            me,
+            me
           );
         }
       }
@@ -859,7 +859,7 @@ Ext.define("Ext.grid.NavigationModel", {
       keyEvent.target,
       keyEvent.position,
       forward,
-      keyEvent,
+      keyEvent
     );
 
     focusTarget = ret.target;
@@ -879,7 +879,7 @@ Ext.define("Ext.grid.NavigationModel", {
         keyEvent,
         keyEvent.item,
         keyEvent.item[forward ? "nextSibling" : "previousSibling"],
-        forward,
+        forward
       );
     }
 
@@ -948,7 +948,7 @@ Ext.define("Ext.grid.NavigationModel", {
         keyEvent.record,
         keyEvent.position.rowElement,
         keyEvent.recordIndex,
-        keyEvent,
+        keyEvent
       ],
       actionCell = keyEvent.position.getCell();
 
@@ -977,7 +977,7 @@ Ext.define("Ext.grid.NavigationModel", {
 
     grid.setActionableMode(
       !actionableMode,
-      actionableMode ? null : this.getPosition(),
+      actionableMode ? null : this.getPosition()
     );
   },
 
@@ -1009,7 +1009,7 @@ Ext.define("Ext.grid.NavigationModel", {
           keyEvent.shiftKey && (dir === "right" || dir === "left")
             ? me.vetoRowChange
             : null,
-          me,
+          me
         );
 
         // If the new position is fousable, we're done.
@@ -1043,14 +1043,14 @@ Ext.define("Ext.grid.NavigationModel", {
       if (view.bufferedRenderer) {
         newIdx = Math.min(
           keyEvent.recordIndex + rowsVisible,
-          view.dataSource.getCount() - 1,
+          view.dataSource.getCount() - 1
         );
         me.lastKeyEvent = keyEvent;
         view.bufferedRenderer.scrollTo(
           newIdx,
           false,
           me.afterBufferedScrollTo,
-          me,
+          me
         );
       } else {
         newRecord = view.walkRecs(keyEvent.record, rowsVisible);
@@ -1078,7 +1078,7 @@ Ext.define("Ext.grid.NavigationModel", {
           newIdx,
           false,
           me.afterBufferedScrollTo,
-          me,
+          me
         );
       } else {
         newRecord = view.walkRecs(keyEvent.record, -rowsVisible);
@@ -1105,10 +1105,10 @@ Ext.define("Ext.grid.NavigationModel", {
         me.setPosition(
           view.walkRecs(
             keyEvent.record,
-            -view.dataSource.indexOf(keyEvent.record),
+            -view.dataSource.indexOf(keyEvent.record)
           ),
           null,
-          keyEvent,
+          keyEvent
         );
       }
     }
@@ -1124,7 +1124,7 @@ Ext.define("Ext.grid.NavigationModel", {
       null,
       this.lastKeyEvent,
       null,
-      !this.lastKeyEvent,
+      !this.lastKeyEvent
     );
   },
 
@@ -1144,7 +1144,7 @@ Ext.define("Ext.grid.NavigationModel", {
           view.store.getCount() - 1,
           false,
           me.afterBufferedScrollTo,
-          me,
+          me
         );
       } else {
         // Walk forwards to the end record
@@ -1153,10 +1153,10 @@ Ext.define("Ext.grid.NavigationModel", {
             keyEvent.record,
             view.dataSource.getCount() -
               1 -
-              view.dataSource.indexOf(keyEvent.record),
+              view.dataSource.indexOf(keyEvent.record)
           ),
           null,
-          keyEvent,
+          keyEvent
         );
       }
     }
@@ -1165,7 +1165,7 @@ Ext.define("Ext.grid.NavigationModel", {
       me.setPosition(
         keyEvent.record,
         keyEvent.view.getVisibleColumnManager().getColumns().length - 1,
-        keyEvent,
+        keyEvent
       );
     }
   },
@@ -1210,7 +1210,7 @@ Ext.define("Ext.grid.NavigationModel", {
       item: me.item,
       cell: me.cell,
       columnIndex: me.columnIndex,
-      column: me.column,
+      column: me.column
     });
-  },
+  }
 });

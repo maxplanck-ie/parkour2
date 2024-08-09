@@ -25,7 +25,7 @@ Ext.define("Ext.drag.Item", {
      * can interact with each other. Only items that have the same (or intersecting) groups will
      * react to each other. Items with no groups will be in the default pool.
      */
-    groups: null,
+    groups: null
   },
 
   constructor: function (config) {
@@ -123,12 +123,12 @@ Ext.define("Ext.drag.Item", {
           Ext.apply(
             {
               scope: me,
-              destroyable: true,
+              destroyable: true
             },
-            me.getElListeners(),
-          ),
+            me.getElListeners()
+          )
         );
       }
-    },
-  },
+    }
+  }
 });

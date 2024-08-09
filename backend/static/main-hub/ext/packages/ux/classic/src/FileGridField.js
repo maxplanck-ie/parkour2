@@ -17,7 +17,7 @@ Ext.define("Ext.ux.FileGridField", {
         height: 200,
         viewConfig: {
           loadMask: false,
-          stripeRows: false,
+          stripeRows: false
         },
         sortableColumns: false,
         enableColumnMove: false,
@@ -28,7 +28,7 @@ Ext.define("Ext.ux.FileGridField", {
             {
               text: "Name",
               dataIndex: "name",
-              flex: 1,
+              flex: 1
             },
             {
               text: "Size",
@@ -52,13 +52,13 @@ Ext.define("Ext.ux.FileGridField", {
                 }
 
                 return val + dim;
-              },
+              }
             },
             {
               width: 36,
               dataIndex: "path",
               xtype: "templatecolumn",
-              tpl: '<a href="{path}" download><img src="/static/main-hub/resources/images/download.png"></a>',
+              tpl: '<a href="{path}" download><img src="/static/main-hub/resources/images/download.png"></a>'
             },
             {
               xtype: "actioncolumn",
@@ -68,11 +68,11 @@ Ext.define("Ext.ux.FileGridField", {
                 {
                   icon: "/static/main-hub/resources/images/delete.png",
                   tooltip: "Delete",
-                  handler: me.deleteFile,
-                },
-              ],
-            },
-          ],
+                  handler: me.deleteFile
+                }
+              ]
+            }
+          ]
         },
         store: me.store,
         bbar: [
@@ -100,10 +100,10 @@ Ext.define("Ext.ux.FileGridField", {
                         buttonText: "Select",
                         allowBlank: false,
                         width: 413,
-                        margin: 15,
-                      },
-                    ],
-                  },
+                        margin: 15
+                      }
+                    ]
+                  }
                 ],
                 bbar: [
                   "->",
@@ -112,14 +112,14 @@ Ext.define("Ext.ux.FileGridField", {
                     handler: me.uploadFiles,
                     uploadFileUrl: me.uploadFileUrl,
                     getFileUrl: me.getFileUrl,
-                    grid: me.down("grid"),
-                  },
-                ],
+                    grid: me.down("grid")
+                  }
+                ]
               });
-            },
-          },
-        ],
-      },
+            }
+          }
+        ]
+      }
     ];
 
     me.callParent(arguments);
@@ -134,7 +134,7 @@ Ext.define("Ext.ux.FileGridField", {
     if (!form.isValid()) {
       new Noty({
         text: "You did not select any files.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -154,7 +154,7 @@ Ext.define("Ext.ux.FileGridField", {
             timeout: 1000000,
             scope: this,
             params: {
-              file_ids: Ext.JSON.encode(obj.fileIds),
+              file_ids: Ext.JSON.encode(obj.fileIds)
             },
             success: function (response) {
               var obj = Ext.JSON.decode(response.responseText);
@@ -164,7 +164,7 @@ Ext.define("Ext.ux.FileGridField", {
                 new Noty({ text: response.statusText, type: "error" }).show();
                 console.error(response);
               }
-            },
+            }
           });
         } else {
           new Noty({ text: obj.message, type: "error" }).show();
@@ -177,7 +177,7 @@ Ext.define("Ext.ux.FileGridField", {
         new Noty({ text: errorMsg, type: "error" }).show();
         console.error(action.response);
         wnd.close();
-      },
+      }
     });
   },
 
@@ -187,5 +187,5 @@ Ext.define("Ext.ux.FileGridField", {
 
   getValue: function () {
     return Ext.pluck(this.down("grid").getStore().data.items, "id");
-  },
+  }
 });

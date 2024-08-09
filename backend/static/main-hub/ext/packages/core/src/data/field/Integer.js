@@ -51,5 +51,5 @@ Ext.define("Ext.data.field.Integer", {
     }
 
     return s;
-  },
+  }
 });

@@ -11,7 +11,7 @@ Ext.define("Ext.layout.Default", {
   requires: [
     "Ext.util.Wrapper",
     "Ext.layout.wrapper.BoxDock",
-    "Ext.layout.wrapper.Inner",
+    "Ext.layout.wrapper.Inner"
   ],
 
   config: {
@@ -32,7 +32,7 @@ Ext.define("Ext.layout.Default", {
      * - slide
      * @accessor
      */
-    animation: null,
+    animation: null
   },
 
   centerWrapperClass: Ext.baseCSSPrefix + "center",
@@ -48,14 +48,14 @@ Ext.define("Ext.layout.Default", {
     left: "start",
     middle: "center",
     bottom: "end",
-    right: "end",
+    right: "end"
   },
 
   positionDirectionMap: {
     top: "vertical",
     bottom: "vertical",
     left: "horizontal",
-    right: "horizontal",
+    right: "horizontal"
   },
 
   setContainer: function (container) {
@@ -86,7 +86,7 @@ Ext.define("Ext.layout.Default", {
       positionedchange: "onItemPositionedChange",
       afterdockedchange: "onAfterItemDockedChange", // see Component#updateDocked
 
-      scope: me,
+      scope: me
     });
   },
 
@@ -212,10 +212,10 @@ Ext.define("Ext.layout.Default", {
           wrapperName,
           new Ext.util.Wrapper(
             {
-              className: this.centerWrapperClass,
+              className: this.centerWrapperClass
             },
-            item.element,
-          ),
+            item.element
+          )
         );
       } else {
         item.unlink([wrapperName]);
@@ -329,8 +329,8 @@ Ext.define("Ext.layout.Default", {
       dockInnerWrapper = me.link(
         "dockInnerWrapper",
         new Ext.layout.wrapper.Inner({
-          container: container,
-        }),
+          container: container
+        })
       );
     }
 
@@ -339,7 +339,7 @@ Ext.define("Ext.layout.Default", {
 
       newWrapper = new DockClass({
         container: container,
-        direction: direction,
+        direction: direction
       });
 
       newWrapper.addItem(item);
@@ -376,7 +376,7 @@ Ext.define("Ext.layout.Default", {
 
         newWrapper = new DockClass({
           container: container,
-          direction: direction,
+          direction: direction
         });
 
         if (slice.length > 0) {
@@ -387,7 +387,7 @@ Ext.define("Ext.layout.Default", {
           } else {
             nestedWrapper = new DockClass({
               container: container,
-              direction: referenceDirection,
+              direction: referenceDirection
             });
             nestedWrapper.setInnerWrapper(referenceWrapper.getInnerWrapper());
             nestedWrapper.addItems(slice);
@@ -487,7 +487,7 @@ Ext.define("Ext.layout.Default", {
     Ext.baseCSSPrefix + "noborder-tr", // 1100 = 12
     Ext.baseCSSPrefix + "noborder-trl", // 1101 = 13
     Ext.baseCSSPrefix + "noborder-trb", // 1110 = 14
-    Ext.baseCSSPrefix + "noborder-trbl", // 1111 = 15
+    Ext.baseCSSPrefix + "noborder-trbl" // 1111 = 15
   ],
 
   /**
@@ -498,7 +498,7 @@ Ext.define("Ext.layout.Default", {
     top: 8,
     right: 4,
     bottom: 2,
-    left: 1,
+    left: 1
   },
 
   handleDockedItemBorders: function () {
@@ -790,10 +790,10 @@ Ext.define("Ext.layout.Default", {
         baseCls + "tr", // 1100 = 12
         baseCls + "trl", // 1101 = 13
         baseCls + "trb", // 1110 = 14
-        baseCls + "trbl", // 1111 = 15
+        baseCls + "trbl" // 1111 = 15
       ];
     }
 
     return table;
-  },
+  }
 });

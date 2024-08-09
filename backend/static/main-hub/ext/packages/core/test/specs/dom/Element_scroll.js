@@ -29,16 +29,16 @@ describe("Ext.dom.Element_scroll", function () {
         style: {
           width: "400px",
           height: "400px",
-          overflow: "auto",
+          overflow: "auto"
         },
         cn: [
           {
             style: {
               width: "1000px",
-              height: "1000px",
-            },
-          },
-        ],
+              height: "1000px"
+            }
+          }
+        ]
       });
     });
 

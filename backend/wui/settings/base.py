@@ -109,13 +109,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-# SQLite is fallback option if no DATABASE_URL env-var is found by the extension
+
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:////usr/src/db.sqlite")
+
 DATABASES = {
     "default": dj_database_url.config(
-        default="sqlite:////usr/src/db.sqlite",
+        default=dj_database_url.parse(DATABASE_URL),
         conn_max_age=600,
         conn_health_checks=True,
-    )
+    ),
 }
 
 # Password validation
@@ -206,7 +208,7 @@ LOGGING = {
 }
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/

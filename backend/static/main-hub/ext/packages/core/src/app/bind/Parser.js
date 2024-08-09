@@ -19,7 +19,7 @@ Ext.define("Ext.app.bind.Parser", {
             arity: me.arity,
             value: me.value,
             operand: me.operand.dump(),
-            fmt: [],
+            fmt: []
           },
           fmt = me.fmt,
           i;
@@ -42,7 +42,7 @@ Ext.define("Ext.app.bind.Parser", {
         me.fmt = me.parser.parseFmt();
 
         return me;
-      },
+      }
     },
     "?": {
       priority: 20,
@@ -69,7 +69,7 @@ Ext.define("Ext.app.bind.Parser", {
         me.arity = "ternary";
 
         return me;
-      },
+      }
     },
     "===": 40,
     "!==": 40,
@@ -78,7 +78,7 @@ Ext.define("Ext.app.bind.Parser", {
     "<": 40,
     "<=": 40,
     ">": 40,
-    ">=": 40,
+    ">=": 40
   },
 
   symbols: {
@@ -99,12 +99,12 @@ Ext.define("Ext.app.bind.Parser", {
         // restore priority of `:`
         symbol.priority = temp;
         return ret;
-      },
-    },
+      }
+    }
   },
 
   prefix: {
-    "@": 0,
+    "@": 0
   },
 
   tokenizer: {
@@ -120,8 +120,8 @@ Ext.define("Ext.app.bind.Parser", {
       ">": "gt",
       ">=": "gte",
       "&&": "and",
-      "||": "or",
-    },
+      "||": "or"
+    }
   },
 
   /**
@@ -178,8 +178,8 @@ Ext.define("Ext.app.bind.Parser", {
         fmt: this.parseFmt(),
         operand: {
           arity: "ident",
-          value: "dummy",
-        },
+          value: "dummy"
+        }
       });
       this.expect("(end)");
       //<debug>
@@ -279,7 +279,7 @@ Ext.define("Ext.app.bind.Parser", {
       defs.push(
         (me.useEval ? "$=" : "return") + " function (values, scope) {",
         body,
-        "}",
+        "}"
       );
 
       code = defs.join("\n");
@@ -408,7 +408,7 @@ Ext.define("Ext.app.bind.Parser", {
 
       if (fmt.length) {
         body.push(
-          "ret = " + me.compileFormatFn(fmt[0], me.compile(expr.operand)) + ";",
+          "ret = " + me.compileFormatFn(fmt[0], me.compile(expr.operand)) + ";"
         );
         for (i = 1; i < length; i++) {
           body.push("ret = " + me.compileFormatFn(fmt[i], "ret") + ";");
@@ -449,7 +449,7 @@ Ext.define("Ext.app.bind.Parser", {
         if (!(fmt in Ext.util.Format)) {
           return this.syntaxError(
             expr.at,
-            'Compile error! Invalid format specified "' + fmt + '"',
+            'Compile error! Invalid format specified "' + fmt + '"'
           );
         }
         fmt = "fm." + fmt;
@@ -511,6 +511,6 @@ Ext.define("Ext.app.bind.Parser", {
       }
 
       return "v" + pos;
-    },
-  },
+    }
+  }
 });

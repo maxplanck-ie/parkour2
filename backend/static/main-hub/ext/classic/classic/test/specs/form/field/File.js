@@ -5,9 +5,9 @@ describe("Ext.form.field.File", function () {
     makeField = function (cfg) {
       cfg = Ext.apply(
         {
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
+        cfg
       );
       field = new Ext.form.field.File(cfg);
     };
@@ -39,7 +39,7 @@ describe("Ext.form.field.File", function () {
   describe("config", function () {
     it("should respect the buttonText config", function () {
       makeField({
-        buttonText: "Foo",
+        buttonText: "Foo"
       });
       expect(field.button.text).toBe("Foo");
     });
@@ -48,23 +48,23 @@ describe("Ext.form.field.File", function () {
       makeField({
         buttonConfig: {
           text: "FooBar",
-          iconCls: "download",
+          iconCls: "download"
         },
-        buttonText: "Foo",
+        buttonText: "Foo"
       });
       expect(field.button.text).toBe("FooBar");
     });
 
     it("should respect the buttonOnly config", function () {
       makeField({
-        buttonOnly: true,
+        buttonOnly: true
       });
       expect(field.inputWrap.getStyle("display")).toBe("none");
     });
 
     it("should respect tabIndex config", function () {
       makeField({
-        tabIndex: 42,
+        tabIndex: 42
       });
 
       expect(field.inputEl).toHaveAttr("tabIndex", "-1");
@@ -81,7 +81,7 @@ describe("Ext.form.field.File", function () {
 
     it("should be be able to be configured as disabled", function () {
       makeField({
-        disabled: true,
+        disabled: true
       });
       expect(field.inputEl.dom.disabled).toBe(true);
     });
@@ -90,7 +90,7 @@ describe("Ext.form.field.File", function () {
     it("should respect accept config", function () {
       makeField({
         renderTo: Ext.getBody(),
-        accept: "foo/bar",
+        accept: "foo/bar"
       });
 
       expect(field.fileInputEl).toHaveAttr("accept", "foo/bar");
@@ -179,7 +179,7 @@ describe("Ext.form.field.File", function () {
   describe("extraction", function () {
     it("should be able to produce a fake input when not rendered", function () {
       makeField({
-        name: "foo",
+        name: "foo"
       });
       var input = field.extractFileInput();
       expect(input.name).toBe("foo");
@@ -197,20 +197,20 @@ describe("Ext.form.field.File", function () {
       beforeBtn = new Ext.button.Button({
         renderTo: Ext.getBody(),
         id: "beforeBtn",
-        text: "before",
+        text: "before"
       });
 
       makeField({
         listeners: {
           focus: focusSpy,
-          blur: blurSpy,
-        },
+          blur: blurSpy
+        }
       });
 
       afterBtn = new Ext.button.Button({
         renderTo: Ext.getBody(),
         id: "afterBtn",
-        text: "after",
+        text: "after"
       });
     });
 
@@ -284,7 +284,7 @@ describe("Ext.form.field.File", function () {
     beforeEach(function () {
       makeField({
         accept: "zumbo/blergh",
-        tabIndex: 42,
+        tabIndex: 42
       });
 
       field.reset();
@@ -325,7 +325,7 @@ describe("Ext.form.field.File", function () {
 
         expect(beforeGuard).toHaveAttr("data-tabguard", "true");
         expect(afterGuard).toHaveAttr("data-tabguard", "true");
-      },
+      }
     );
   });
 });

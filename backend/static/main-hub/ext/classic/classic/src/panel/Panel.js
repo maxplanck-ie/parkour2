@@ -119,11 +119,11 @@ Ext.define(
       "Ext.panel.DD",
       "Ext.XTemplate",
       "Ext.layout.component.Dock",
-      "Ext.util.Memento",
+      "Ext.util.Memento"
     ],
 
     mixins: {
-      docking: "Ext.container.DockingContainer",
+      docking: "Ext.container.DockingContainer"
     },
 
     childEls: ["bodyWrap", "body"],
@@ -162,7 +162,7 @@ Ext.define(
       "</div>",
       "{% this.renderDockedItems(out,values,1); %}",
       "</div>",
-      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
     ],
 
     // <editor-fold desc="Config">
@@ -235,7 +235,7 @@ Ext.define(
        * @inheritdoc Ext.panel.Header#cfg-titleRotation
        * @accessor
        */
-      titleRotation: null,
+      titleRotation: null
     },
 
     /**
@@ -919,7 +919,7 @@ Ext.define(
 
     bodyPosProps: {
       x: "x",
-      y: "y",
+      y: "y"
     },
 
     componentLayout: "dock",
@@ -1178,7 +1178,7 @@ Ext.define(
       me.addBodyCls([
         Ext.baseCSSPrefix + cls,
         me.baseCls + "-body-" + cls,
-        me.baseCls + "-body-" + me.ui + "-" + cls,
+        me.baseCls + "-body-" + me.ui + "-" + cls
       ]);
       return result;
     },
@@ -1250,7 +1250,7 @@ Ext.define(
         me.dd,
         me.accordionHeaderKeyNav,
         me.accordionBodyKeyNav,
-        me.defaultButtonKeyNav,
+        me.defaultButtonKeyNav
       );
 
       me.destroyDockedItems();
@@ -1490,12 +1490,12 @@ Ext.define(
         toolbar,
         pos,
         useButtonAlign,
-        disableFocusableContainer,
+        disableFocusableContainer
       ) {
         if (Ext.isArray(toolbar)) {
           toolbar = {
             xtype: "toolbar",
-            items: toolbar,
+            items: toolbar
           };
         } else if (!toolbar.isComponent) {
           // Incoming toolbar config can be a property on the prototype
@@ -1516,7 +1516,7 @@ Ext.define(
         if (useButtonAlign) {
           toolbar.layout = Ext.applyIf(toolbar.layout || {}, {
             // default to 'end' (right-aligned) if me.buttonAlign is undefined or invalid
-            pack: { left: "start", center: "center" }[me.buttonAlign] || "end",
+            pack: { left: "start", center: "center" }[me.buttonAlign] || "end"
           });
         }
         return toolbar;
@@ -1701,7 +1701,7 @@ Ext.define(
         hidden: false,
         header: header
           ? {
-              titleAlign: header.getTitleAlign(),
+              titleAlign: header.getTitleAlign()
             }
           : null,
         ui: frame ? me.ui.replace(/-framed$/, "") : me.ui,
@@ -1731,7 +1731,7 @@ Ext.define(
         getRefOwner: function () {
           return me.getRefOwner();
         },
-        cls: me.baseCls + "-ghost " + (cls || ""),
+        cls: me.baseCls + "-ghost " + (cls || "")
       };
     },
 
@@ -1771,9 +1771,9 @@ Ext.define(
             // TODO: When https://sencha.jira.com/browse/EXTJS-19718 is
             // fixed, this should not be needed.
             // placeholder is a FocusableContainer
-            defaultFocus: "tool[isDefaultExpandTool]",
+            defaultFocus: "tool[isDefaultExpandTool]"
           },
-          defaults,
+          defaults
         );
 
       // If we're in mini mode, set the placeholder size to only 1px since
@@ -1791,7 +1791,7 @@ Ext.define(
           enableFocusableContainer: header.enableFocusableContainer,
           activeChildTabIndex: header.activeChildTabIndex,
           inactiveChildTabIndex: header.inactiveChildTabIndex,
-          allowFocusingDisabledChildren: header.allowFocusingDisabledChildren,
+          allowFocusingDisabledChildren: header.allowFocusingDisabledChildren
         });
       }
 
@@ -1812,8 +1812,8 @@ Ext.define(
             uiCls: ["top"],
             handler: me.toggleCollapse,
             scope: me,
-            tooltip: me.expandToolText,
-          },
+            tooltip: me.expandToolText
+          }
         ];
       }
       result = new Ext.panel.Header(result);
@@ -1989,7 +1989,7 @@ Ext.define(
           mouseleave: me.onMouseLeaveFloated,
           mouseenter: me.onMouseEnterFloated,
           scope: me,
-          destroyable: true,
+          destroyable: true
         };
 
       if (me.isSliding) {
@@ -2032,14 +2032,14 @@ Ext.define(
         mousedown: me.onFloatedPointerEvent,
         mousemove: me.onFloatedPointerEvent,
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
 
       if (!me.placeholderListener) {
         me.placeholderListener = placeholder.on({
           resize: me.onPlaceholderResize,
           scope: me,
-          destroyable: true,
+          destroyable: true
         });
       }
       me.phHoverListeners = placeholder.el.on(hoverlisteners);
@@ -2087,15 +2087,15 @@ Ext.define(
         preserveScroll: true,
         duration: Ext.Number.from(
           me.animCollapse,
-          Ext.fx.Anim.prototype.duration,
+          Ext.fx.Anim.prototype.duration
         ),
         listeners: {
           afteranimate: function () {
             me.isSliding = false;
             me.fireEvent("endfloat", me);
             me.fireEvent("float", me);
-          },
-        },
+          }
+        }
       });
     },
 
@@ -2169,7 +2169,7 @@ Ext.define(
       }
 
       me.updateLayout({
-        isRoot: true,
+        isRoot: true
       });
     },
 
@@ -2245,7 +2245,7 @@ Ext.define(
 
       collapsedClasses = [
         collapsedCls,
-        collapsedCls + "-" + header.getDockName(),
+        collapsedCls + "-" + header.getDockName()
       ];
       if (
         me.border &&
@@ -2295,16 +2295,16 @@ Ext.define(
                 }
               },
               element: "el",
-              scope: me,
-            },
+              scope: me
+            }
           };
         }
 
         me.placeholder = placeholder = Ext.widget(
           me.createReExpander(collapseDir, {
             id: me.id + "-placeholder",
-            listeners: listeners,
-          }),
+            listeners: listeners
+          })
         );
       }
 
@@ -2317,7 +2317,7 @@ Ext.define(
         Ext.applyIf(placeholder, {
           margin: me.margin,
           placeholderFor: me,
-          synthetic: true, // not user-defined
+          synthetic: true // not user-defined
         });
 
         placeholder.addCls([
@@ -2326,7 +2326,7 @@ Ext.define(
             "region-collapsed-" +
             collapseDir +
             "-placeholder",
-          me.collapsedCls,
+          me.collapsedCls
         ]);
       }
 
@@ -2343,7 +2343,7 @@ Ext.define(
           style: me.bodyStyle,
           clsProp: "bodyCls",
           styleProp: "bodyStyle",
-          styleIsText: true,
+          styleIsText: true
         });
       }
 
@@ -2365,8 +2365,8 @@ Ext.define(
             click: {
               fn: me.toggleCollapse,
               element: "el",
-              scope: me,
-            },
+              scope: me
+            }
           };
         }
         // We did not find a Header of the required orientation: create one.
@@ -2380,7 +2380,7 @@ Ext.define(
             me.ui +
             "-collapsed",
           isCollapsedExpander: true,
-          listeners: listeners,
+          listeners: listeners
         });
 
         me.dockedItems.insert(0, reExpander);
@@ -2405,7 +2405,7 @@ Ext.define(
       // And the rest.
       result.push.apply(
         result,
-        this.getDockingRefItems(deep, this.callParent([deep])),
+        this.getDockingRefItems(deep, this.callParent([deep]))
       );
       return result;
     },
@@ -2570,14 +2570,14 @@ Ext.define(
           // a simple bare-minimum clone of each tool for ghosting purposes.
           tools.push({
             type: tool.type,
-            tooltip: tool.tooltip,
+            tooltip: tool.tooltip
           });
         }
       } else {
         tools = [
           {
-            type: "placeholder",
-          },
+            type: "placeholder"
+          }
         ];
       }
       return tools;
@@ -2592,7 +2592,7 @@ Ext.define(
         }
         me.getProtoBody().setStyle(
           "border-width",
-          this.unitizeBox(me.bodyBorder),
+          this.unitizeBox(me.bodyBorder)
         );
       }
     },
@@ -2618,7 +2618,7 @@ Ext.define(
         } else {
           body.setStyle(
             "padding",
-            this.unitizeBox(me.bodyPadding === true ? 5 : me.bodyPadding),
+            this.unitizeBox(me.bodyPadding === true ? 5 : me.bodyPadding)
           );
         }
       }
@@ -2704,7 +2704,7 @@ Ext.define(
 
       if (bodyWrapRole) {
         data.bodyWrapAriaAttributes = {
-          role: bodyWrapRole,
+          role: bodyWrapRole
         };
 
         if (
@@ -2713,14 +2713,14 @@ Ext.define(
         ) {
           Ext.apply(
             data.bodyWrapAriaAttributes,
-            me.bodyWrapAriaRenderAttributes,
+            me.bodyWrapAriaRenderAttributes
           );
         }
       }
 
       if (bodyRole) {
         data.bodyAriaAttributes = {
-          role: bodyRole,
+          role: bodyRole
         };
 
         if (!me.ariaStaticRoles[bodyRole] && me.bodyAriaRenderAttributes) {
@@ -2740,7 +2740,7 @@ Ext.define(
       constrainTo,
       proposedPosition,
       local,
-      proposedSize,
+      proposedSize
     ) {
       var me = this,
         header = me.header,
@@ -2755,12 +2755,12 @@ Ext.define(
           if (!header.vertical) {
             proposedSize = [
               proposedSize[0],
-              lastBox ? lastBox.height : proposedSize[1],
+              lastBox ? lastBox.height : proposedSize[1]
             ];
           } else {
             proposedSize = [
               lastBox ? lastBox.width : proposedSize[0],
-              proposedSize[1],
+              proposedSize[1]
             ];
           }
         } else if (lastBox) {
@@ -2779,7 +2779,7 @@ Ext.define(
         constrainTo,
         proposedPosition,
         local,
-        proposedSize,
+        proposedSize
       ]);
     },
 
@@ -2831,7 +2831,7 @@ Ext.define(
           type: "close",
           scope: me,
           handler: me.close,
-          tooltip: me.closeToolText,
+          tooltip: me.closeToolText
         };
 
         // Same as with the collapse/expand tool, we have a way to close
@@ -2910,8 +2910,8 @@ Ext.define(
           enter: me.toggleCollapse,
           del: {
             alt: true,
-            fn: me.maybeClose,
-          },
+            fn: me.maybeClose
+          }
         });
 
         me.accordionBodyKeyNav = new Ext.util.KeyNav({
@@ -2920,8 +2920,8 @@ Ext.define(
 
           up: {
             ctrl: true,
-            fn: me.navigateAccordionBody,
-          },
+            fn: me.navigateAccordionBody
+          }
         });
       }
 
@@ -2933,7 +2933,7 @@ Ext.define(
           scope: me,
           defaultEventAction: "stopEvent",
 
-          enter: me.fireDefaultButton,
+          enter: me.fireDefaultButton
         });
       }
     },
@@ -3097,14 +3097,14 @@ Ext.define(
                     duration: 100,
                     listeners: {
                       afteranimate: me.doPlaceholderCollapse,
-                      scope: me,
-                    },
+                      scope: me
+                    }
                   });
                 } else {
                   me.doPlaceholderCollapse();
                 }
-              },
-            },
+              }
+            }
           });
         } else {
           me.el.hide();
@@ -3260,8 +3260,8 @@ Ext.define(
                 me.isCollapsingOrExpanding = 0;
                 me.fireEvent("expand", me);
                 me.fireEvent("endfloat", me);
-              },
-            },
+              }
+            }
           });
         }
         // Not floated, slide it in to the correct place
@@ -3277,8 +3277,8 @@ Ext.define(
             duration: Ext.Number.from(animate, Ext.fx.Anim.prototype.duration),
             listeners: {
               afteranimate: me.doPlaceholderExpand,
-              scope: me,
-            },
+              scope: me
+            }
           });
         }
       } else {
@@ -3380,7 +3380,7 @@ Ext.define(
       me.removeBodyCls([
         Ext.baseCSSPrefix + cls,
         me.baseCls + "-body-" + cls,
-        me.baseCls + "-body-" + me.ui + "-" + cls,
+        me.baseCls + "-body-" + me.ui + "-" + cls
       ]);
       return result;
     },
@@ -3661,7 +3661,7 @@ Ext.define(
         toolCfg = {
           xtype: "tool",
           handler: me.toggleCollapse,
-          scope: me,
+          scope: me
         };
 
         // In accordion layout panels are collapsible/expandable with keyboard
@@ -3682,7 +3682,7 @@ Ext.define(
       if (collapseTool) {
         if (me.collapsed && !me.isPlaceHolderCollapse()) {
           collapseTool.setType(
-            "expand-" + me.getOppositeDirection(me.collapseDirection),
+            "expand-" + me.getOppositeDirection(me.collapseDirection)
           );
           collapseTool.setTooltip(me.expandToolText);
         } else {
@@ -3833,7 +3833,7 @@ Ext.define(
             me.xtype +
             " " +
             me.id,
-          panel: me,
+          panel: me
         });
       } else {
         Ext.raise({
@@ -3845,7 +3845,7 @@ Ext.define(
             " " +
             me.id +
             " does not have click() method",
-          component: btn,
+          component: btn
         });
       }
       //</debug>
@@ -3875,7 +3875,7 @@ Ext.define(
       return this.mixins.focusable.canFocus.call(
         this,
         skipVisibility,
-        includeFocusTarget,
+        includeFocusTarget
       );
     },
 
@@ -4037,12 +4037,12 @@ Ext.define(
                   me.collapsible && me.titleCollapse
                     ? {
                         click: me.toggleCollapse,
-                        scope: me,
+                        scope: me
                       }
-                    : null,
+                    : null
               },
-              me.header,
-            ),
+              me.header
+            )
           );
 
           // Header's onAdd mutates the tools array.
@@ -4073,7 +4073,7 @@ Ext.define(
               if (ariaDom) {
                 ariaDom.setAttribute(
                   "aria-labelledby",
-                  header.id + "-title-textEl",
+                  header.id + "-title-textEl"
                 );
                 ariaDom.removeAttribute("aria-label");
               } else {
@@ -4134,7 +4134,7 @@ Ext.define(
             me.id +
             " is a region section of the application, " +
             "but it does not have a title. Per WAI-ARIA, all regions " +
-            "should have a heading element that contains region's title.",
+            "should have a heading element that contains region's title."
         );
       }
       //</debug>
@@ -4159,9 +4159,9 @@ Ext.define(
                 role: "heading",
                 class: Ext.baseCSSPrefix + "hidden-clip",
                 style: "height:0",
-                html: title,
+                html: title
               },
-              true,
+              true
             );
 
             ariaDom.removeAttribute("aria-label");
@@ -4187,7 +4187,7 @@ Ext.define(
     // </editor-fold>
 
     statics: {
-      floatCls: Ext.baseCSSPrefix + "border-region-slide-in",
+      floatCls: Ext.baseCSSPrefix + "border-region-slide-in"
     },
 
     privates: {
@@ -4249,7 +4249,7 @@ Ext.define(
            */
           me.dd = new Ext.panel.DD(
             me,
-            Ext.isBoolean(me.draggable) ? null : me.draggable,
+            Ext.isBoolean(me.draggable) ? null : me.draggable
           );
         }
       },
@@ -4283,9 +4283,9 @@ Ext.define(
           dd = Ext.apply(
             {
               el: me.el,
-              delegate: me.header && me.header.el,
+              delegate: me.header && me.header.el
             },
-            dd,
+            dd
           );
 
           // Add extra configs if Window is specified to be constrained
@@ -4349,11 +4349,11 @@ Ext.define(
           preserveScroll: true,
           duration: Ext.Number.from(
             me.animCollapse,
-            Ext.fx.Anim.prototype.duration,
+            Ext.fx.Anim.prototype.duration
           ),
           listeners: {
-            afteranimate: afterSlideOut,
-          },
+            afteranimate: afterSlideOut
+          }
         });
 
         // Focus the placeholder which should delegate into itself
@@ -4383,7 +4383,7 @@ Ext.define(
         Ext.destroy(
           me.pointerLeaveListener,
           me.phHoverListeners,
-          me.elHoverListeners,
+          me.elHoverListeners
         );
         if (bodyMousedownListener) {
           me.bodyMousedownListener = bodyMousedownListener.destroy();
@@ -4405,13 +4405,13 @@ Ext.define(
         if (!suppressEvents) {
           me.fireEvent("unfloat", me);
         }
-      },
-    }, // private
+      }
+    } // private
   },
   function () {
     var proto = this.prototype;
 
     proto.animCollapse = Ext.enableFx;
     proto.placeholderCollapseHideMode = Ext.Element.VISIBILITY;
-  },
+  }
 );

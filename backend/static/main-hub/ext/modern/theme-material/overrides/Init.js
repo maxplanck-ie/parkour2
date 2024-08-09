@@ -12,7 +12,7 @@ if (
 
   if (toolbarIsDynamic && Ext.supports.CSSVariables) {
     color = getComputedStyle(document.body).getPropertyValue(
-      "--primary-color-md",
+      "--primary-color-md"
     );
     color = color.replace(/ /g, "").replace(/^#(?:\\3)?/, "#");
   }

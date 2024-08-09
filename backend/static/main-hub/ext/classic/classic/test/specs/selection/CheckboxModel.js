@@ -28,16 +28,16 @@ describe("Ext.selection.CheckboxModel", function () {
         {
           store: store,
           columns: [
-            { text: "name", flex: 1, sortable: true, dataIndex: "name" },
+            { text: "name", flex: 1, sortable: true, dataIndex: "name" }
           ],
           columnLines: true,
           selModel: checkboxModel,
           width: 300,
           height: 300,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
-      ),
+        cfg
+      )
     );
 
     view = grid.view;
@@ -52,9 +52,9 @@ describe("Ext.selection.CheckboxModel", function () {
       extend: "Ext.data.Model",
       fields: [
         {
-          name: "name",
-        },
-      ],
+          name: "name"
+        }
+      ]
     });
 
     store = Ext.create("Ext.data.Store", {
@@ -63,17 +63,17 @@ describe("Ext.selection.CheckboxModel", function () {
       data: data || [
         {
           id: 1,
-          name: "Don",
+          name: "Don"
         },
         {
           id: 2,
-          name: "Evan",
+          name: "Evan"
         },
         {
           id: 3,
-          name: "Nige",
-        },
-      ],
+          name: "Nige"
+        }
+      ]
     });
 
     donRec = store.getById(1);
@@ -107,7 +107,7 @@ describe("Ext.selection.CheckboxModel", function () {
           col.id +
             "-header-description" +
             (!checked ? "-not" : "") +
-            "-selected",
+            "-selected"
         );
       } else {
         expect(col).not.toHaveAttr("aria-describedby");
@@ -125,7 +125,7 @@ describe("Ext.selection.CheckboxModel", function () {
   function clickCheckbox(rowIdx) {
     var cell = view.getCellByPosition({
       row: rowIdx,
-      column: 0,
+      column: 0
     });
     jasmine.fireMouseEvent(cell.down(checkboxModel.checkSelector), "click");
   }
@@ -133,7 +133,7 @@ describe("Ext.selection.CheckboxModel", function () {
   function clickCell(rowIdx, colIdx) {
     var cell = view.getCellByPosition({
       row: rowIdx,
-      column: colIdx,
+      column: colIdx
     });
     jasmine.fireMouseEvent(cell, "click");
   }
@@ -141,7 +141,7 @@ describe("Ext.selection.CheckboxModel", function () {
   function keyCheckbox(rowIdx, keyCode, shiftKey, ctrlKey, altKey) {
     var cell = grid.getView().getCellByPosition({
       row: rowIdx,
-      column: 0,
+      column: 0
     });
     jasmine.fireKeyEvent(
       cell.down(checkboxModel.checkSelector),
@@ -149,7 +149,7 @@ describe("Ext.selection.CheckboxModel", function () {
       keyCode,
       shiftKey,
       ctrlKey,
-      altKey,
+      altKey
     );
   }
 
@@ -159,9 +159,9 @@ describe("Ext.selection.CheckboxModel", function () {
         fields: ["foo"],
         data: [
           {
-            foo: "bar",
-          },
-        ],
+            foo: "bar"
+          }
+        ]
       });
       makeGrid();
 
@@ -184,15 +184,15 @@ describe("Ext.selection.CheckboxModel", function () {
           defaults: {
             xtype: "widgetcolumn",
             widget: {
-              xtype: "button",
-            },
+              xtype: "button"
+            }
           },
           items: [
             {
-              dataIndex: "name",
-            },
-          ],
-        },
+              dataIndex: "name"
+            }
+          ]
+        }
       });
       var allCols = grid.getColumnManager().getColumns();
       expect(allCols[0].$className).toBe("Ext.grid.column.Check");
@@ -202,20 +202,20 @@ describe("Ext.selection.CheckboxModel", function () {
       beforeEach(function () {
         cols = [
           {
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ];
       });
 
       it("should insert the column at the start by default", function () {
         makeGrid(null, {
-          columns: cols,
+          columns: cols
         });
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -229,11 +229,11 @@ describe("Ext.selection.CheckboxModel", function () {
       it("should insert the column at the start with injectCheckbox: 'first'", function () {
         makeGrid(
           {
-            injectCheckbox: "first",
+            injectCheckbox: "first"
           },
           {
-            columns: cols,
-          },
+            columns: cols
+          }
         );
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -247,11 +247,11 @@ describe("Ext.selection.CheckboxModel", function () {
       it("should insert the column at the end with injectCheckbox: 'last'", function () {
         makeGrid(
           {
-            injectCheckbox: "last",
+            injectCheckbox: "last"
           },
           {
-            columns: cols,
-          },
+            columns: cols
+          }
         );
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -265,11 +265,11 @@ describe("Ext.selection.CheckboxModel", function () {
       it("should insert the column at the specified index", function () {
         makeGrid(
           {
-            injectCheckbox: 1,
+            injectCheckbox: 1
           },
           {
-            columns: cols,
-          },
+            columns: cols
+          }
         );
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -286,23 +286,23 @@ describe("Ext.selection.CheckboxModel", function () {
         cols = [
           {
             text: "Name1",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Name2",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Name3",
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ];
       });
 
       it("should migrate the check column to locked when the first column is locked", function () {
         makeGrid(null, {
           enableLocking: true,
-          columns: cols,
+          columns: cols
         });
         var checkColumn = grid.down("[isCheckerHd]"),
           name1Column = grid.down("[text=Name1]");
@@ -328,36 +328,36 @@ describe("Ext.selection.CheckboxModel", function () {
           {
             text: "Name 1",
             dataIndex: "name",
-            locked: true,
+            locked: true
           },
           {
             text: "Name 2",
             dataIndex: "name",
-            locked: true,
+            locked: true
           },
           {
             text: "Name 3",
             dataIndex: "name",
-            locked: true,
+            locked: true
           },
           {
             text: "Name 4",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Name 5",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Name 6",
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ];
       });
 
       it("should insert the column at the start by default", function () {
         makeGrid(null, {
-          columns: cols,
+          columns: cols
         });
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -372,7 +372,7 @@ describe("Ext.selection.CheckboxModel", function () {
       it("should unlock the column when all other columns are unlocked", function () {
         makeGrid(null, {
           width: 800,
-          columns: cols,
+          columns: cols
         });
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -393,11 +393,11 @@ describe("Ext.selection.CheckboxModel", function () {
       it("should insert the column at the start with injectCheckbox: 'first'", function () {
         makeGrid(
           {
-            injectCheckbox: "first",
+            injectCheckbox: "first"
           },
           {
-            columns: cols,
-          },
+            columns: cols
+          }
         );
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -412,11 +412,11 @@ describe("Ext.selection.CheckboxModel", function () {
       it("should insert the column at the end with injectCheckbox: 'last'", function () {
         makeGrid(
           {
-            injectCheckbox: "last",
+            injectCheckbox: "last"
           },
           {
-            columns: cols,
-          },
+            columns: cols
+          }
         );
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -431,11 +431,11 @@ describe("Ext.selection.CheckboxModel", function () {
       it("should insert the column at the specified index", function () {
         makeGrid(
           {
-            injectCheckbox: 1,
+            injectCheckbox: 1
           },
           {
-            columns: cols,
-          },
+            columns: cols
+          }
         );
 
         var allCols = grid.getColumnManager().getColumns(),
@@ -556,8 +556,8 @@ describe("Ext.selection.CheckboxModel", function () {
         store.getProxy().setData([
           {
             id: 1,
-            name: "Don",
-          },
+            name: "Don"
+          }
         ]);
         store.load();
         expectHeaderChecked(true);
@@ -570,8 +570,8 @@ describe("Ext.selection.CheckboxModel", function () {
         store.getProxy().setData([
           {
             id: 4,
-            name: "Foo",
-          },
+            name: "Foo"
+          }
         ]);
         store.load();
         expectHeaderChecked(false);
@@ -612,7 +612,7 @@ describe("Ext.selection.CheckboxModel", function () {
           expectHeaderChecked(true);
 
           store.add({
-            name: "Foo",
+            name: "Foo"
           });
           expectHeaderChecked(true);
         });
@@ -623,7 +623,7 @@ describe("Ext.selection.CheckboxModel", function () {
           expectHeaderChecked(true);
 
           store.add({
-            name: "Don",
+            name: "Don"
           });
           expectHeaderChecked(false);
         });
@@ -644,7 +644,7 @@ describe("Ext.selection.CheckboxModel", function () {
           store.getFilters().add({
             filterFn: function (rec) {
               return rec === donRec || rec === evanRec;
-            },
+            }
           });
           expectHeaderChecked(true);
 
@@ -698,11 +698,11 @@ describe("Ext.selection.CheckboxModel", function () {
     describe('mode="SINGLE"', function () {
       it("should not render the header checkbox by default", function () {
         makeGrid({
-          mode: "SINGLE",
+          mode: "SINGLE"
         });
 
         expect(checkboxModel.column.el.down(checkboxModel.checkSelector)).toBe(
-          null,
+          null
         );
       });
 
@@ -710,10 +710,10 @@ describe("Ext.selection.CheckboxModel", function () {
         expect(function () {
           makeGrid({
             mode: "SINGLE",
-            showHeaderCheckbox: true,
+            showHeaderCheckbox: true
           });
         }).toThrow(
-          "The header checkbox is not supported for SINGLE mode selection models.",
+          "The header checkbox is not supported for SINGLE mode selection models."
         );
       });
     });
@@ -748,7 +748,7 @@ describe("Ext.selection.CheckboxModel", function () {
 
       it("should not do anything with showHeaderCheckbox: false", function () {
         makeGrid({
-          showHeaderCheckbox: false,
+          showHeaderCheckbox: false
         });
 
         clickOnHeaderCheckbox();
@@ -816,14 +816,14 @@ describe("Ext.selection.CheckboxModel", function () {
     function byPos(row, col) {
       return grid.getView().getCellByPosition({
         row: row,
-        column: col,
+        column: col
       });
     }
 
     function makeCheckGrid(checkOnly, mode) {
       makeGrid({
         checkOnly: checkOnly,
-        mode: mode,
+        mode: mode
       });
     }
 
@@ -841,7 +841,7 @@ describe("Ext.selection.CheckboxModel", function () {
         it("should not select when calling selectByPosition on a cell other than the checkbox cell", function () {
           checkboxModel.selectByPosition({
             row: 0,
-            column: 1,
+            column: 1
           });
           expect(checkboxModel.isSelected(donRec)).toBe(false);
         });
@@ -882,7 +882,7 @@ describe("Ext.selection.CheckboxModel", function () {
         it("should select when calling selectByPosition on a cell other than the checkbox cell", function () {
           checkboxModel.selectByPosition({
             row: 0,
-            column: 1,
+            column: 1
           });
           expect(checkboxModel.isSelected(donRec)).toBe(true);
         });
@@ -1003,7 +1003,7 @@ describe("Ext.selection.CheckboxModel", function () {
         beforeEach(function () {
           makeGrid({
             mode: "MULTI",
-            checkOnly: false,
+            checkOnly: false
           });
         });
 
@@ -1058,7 +1058,7 @@ describe("Ext.selection.CheckboxModel", function () {
           beforeEach(function () {
             philRec = store.add({
               id: 4,
-              name: "Phil",
+              name: "Phil"
             })[0];
           });
 
@@ -1088,7 +1088,7 @@ describe("Ext.selection.CheckboxModel", function () {
         beforeEach(function () {
           makeGrid({
             mode: "MULTI",
-            checkOnly: true,
+            checkOnly: true
           });
         });
 
@@ -1143,7 +1143,7 @@ describe("Ext.selection.CheckboxModel", function () {
           beforeEach(function () {
             philRec = store.add({
               id: 4,
-              name: "Phil",
+              name: "Phil"
             })[0];
           });
 
@@ -1193,7 +1193,7 @@ describe("Ext.selection.CheckboxModel", function () {
       describe("with checkOnly: false", function () {
         beforeEach(function () {
           makeGrid({
-            mode: "SINGLE",
+            mode: "SINGLE"
           });
         });
 
@@ -1236,7 +1236,7 @@ describe("Ext.selection.CheckboxModel", function () {
         beforeEach(function () {
           makeGrid({
             mode: "SINGLE",
-            checkOnly: true,
+            checkOnly: true
           });
         });
 
@@ -1250,7 +1250,7 @@ describe("Ext.selection.CheckboxModel", function () {
 
             var cell = view.getCellByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
 
             expectFocused(cell, true);
@@ -1267,7 +1267,7 @@ describe("Ext.selection.CheckboxModel", function () {
 
             var cell = view.getCellByPosition({
               row: 1,
-              column: 0,
+              column: 0
             });
 
             expectFocused(cell, true);
@@ -1297,7 +1297,7 @@ describe("Ext.selection.CheckboxModel", function () {
         beforeEach(function () {
           makeGrid({
             checkOnly: false,
-            showHeaderCheckbox: false,
+            showHeaderCheckbox: false
           });
         });
 
@@ -1329,7 +1329,7 @@ describe("Ext.selection.CheckboxModel", function () {
           beforeEach(function () {
             cell = view.getCellByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
           });
 
@@ -1363,7 +1363,7 @@ describe("Ext.selection.CheckboxModel", function () {
         beforeEach(function () {
           makeGrid({
             checkOnly: false,
-            showHeaderCheckbox: true,
+            showHeaderCheckbox: true
           });
         });
 
@@ -1395,7 +1395,7 @@ describe("Ext.selection.CheckboxModel", function () {
           beforeEach(function () {
             cell = view.getCellByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
           });
 
@@ -1431,7 +1431,7 @@ describe("Ext.selection.CheckboxModel", function () {
         beforeEach(function () {
           makeGrid({
             checkOnly: true,
-            showHeaderCheckbox: false,
+            showHeaderCheckbox: false
           });
         });
 
@@ -1447,7 +1447,7 @@ describe("Ext.selection.CheckboxModel", function () {
           it("should have aria-label", function () {
             expect(column).toHaveAttr(
               "aria-label",
-              checkboxModel.headerAriaLabel,
+              checkboxModel.headerAriaLabel
             );
           });
 
@@ -1471,7 +1471,7 @@ describe("Ext.selection.CheckboxModel", function () {
           beforeEach(function () {
             cell = view.getCellByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
           });
 
@@ -1498,7 +1498,7 @@ describe("Ext.selection.CheckboxModel", function () {
           it("should have aria-describedby when not selected", function () {
             expect(cell).toHaveAttr(
               "aria-describedby",
-              column.id + "-cell-description-not-selected",
+              column.id + "-cell-description-not-selected"
             );
           });
 
@@ -1506,7 +1506,7 @@ describe("Ext.selection.CheckboxModel", function () {
             checkboxModel.select(0);
             expect(cell).toHaveAttr(
               "aria-describedby",
-              column.id + "-cell-description-selected",
+              column.id + "-cell-description-selected"
             );
           });
         });
@@ -1516,7 +1516,7 @@ describe("Ext.selection.CheckboxModel", function () {
         beforeEach(function () {
           makeGrid({
             checkOnly: true,
-            showHeaderCheckbox: true,
+            showHeaderCheckbox: true
           });
         });
 
@@ -1532,7 +1532,7 @@ describe("Ext.selection.CheckboxModel", function () {
           it("should have aria-label", function () {
             expect(column).toHaveAttr(
               "aria-label",
-              checkboxModel.headerAriaLabel,
+              checkboxModel.headerAriaLabel
             );
           });
 
@@ -1543,7 +1543,7 @@ describe("Ext.selection.CheckboxModel", function () {
           it("should have aria-describedby when not all rows are selected", function () {
             expect(column).toHaveAttr(
               "aria-describedby",
-              column.id + "-header-description-not-selected",
+              column.id + "-header-description-not-selected"
             );
           });
 
@@ -1551,7 +1551,7 @@ describe("Ext.selection.CheckboxModel", function () {
             checkboxModel.selectAll();
             expect(column).toHaveAttr(
               "aria-describedby",
-              column.id + "-header-description-selected",
+              column.id + "-header-description-selected"
             );
           });
         });
@@ -1562,7 +1562,7 @@ describe("Ext.selection.CheckboxModel", function () {
           beforeEach(function () {
             cell = view.getCellByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
           });
 
@@ -1589,7 +1589,7 @@ describe("Ext.selection.CheckboxModel", function () {
           it("should have aria-describedby when not selected", function () {
             expect(cell).toHaveAttr(
               "aria-describedby",
-              column.id + "-cell-description-not-selected",
+              column.id + "-cell-description-not-selected"
             );
           });
 
@@ -1597,7 +1597,7 @@ describe("Ext.selection.CheckboxModel", function () {
             checkboxModel.select(0);
             expect(cell).toHaveAttr(
               "aria-describedby",
-              column.id + "-cell-description-selected",
+              column.id + "-cell-description-selected"
             );
           });
         });

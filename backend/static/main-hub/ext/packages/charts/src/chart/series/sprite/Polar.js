@@ -53,7 +53,7 @@ Ext.define("Ext.chart.series.sprite.Polar", {
         /**
          * @cfg {Number} [labelOverflowPadding=10] Padding around labels to determine overlap.
          */
-        labelOverflowPadding: "number",
+        labelOverflowPadding: "number"
       },
       defaults: {
         centerX: 0,
@@ -64,7 +64,7 @@ Ext.define("Ext.chart.series.sprite.Polar", {
         endRho: 150,
         baseRotation: 0,
         labels: null,
-        labelOverflowPadding: 10,
+        labelOverflowPadding: 10
       },
       triggers: {
         centerX: "bbox",
@@ -73,9 +73,9 @@ Ext.define("Ext.chart.series.sprite.Polar", {
         endAngle: "bbox",
         startRho: "bbox",
         endRho: "bbox",
-        baseRotation: "bbox",
-      },
-    },
+        baseRotation: "bbox"
+      }
+    }
   },
 
   updatePlainBBox: function (plain) {
@@ -84,5 +84,5 @@ Ext.define("Ext.chart.series.sprite.Polar", {
     plain.y = attr.centerY + attr.endRho;
     plain.width = attr.endRho * 2;
     plain.height = attr.endRho * 2;
-  },
+  }
 });

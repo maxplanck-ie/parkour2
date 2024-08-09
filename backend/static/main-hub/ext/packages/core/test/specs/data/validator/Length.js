@@ -4,7 +4,7 @@ describe("Ext.data.validator.Length", function () {
   function validate(value, min, max) {
     v = new Ext.data.validator.Length({
       min: min,
-      max: max,
+      max: max
     });
     return v.validate(value);
   }
@@ -37,7 +37,7 @@ describe("Ext.data.validator.Length", function () {
       it("should not validate if the value is greater than the maximum", function () {
         var max = 3;
         expect(validate("LongValue", undefined, max)).toBe(
-          f(v.getMaxOnlyMessage(), max),
+          f(v.getMaxOnlyMessage(), max)
         );
       });
     });
@@ -52,7 +52,7 @@ describe("Ext.data.validator.Length", function () {
 
       it("should not validate if the value is greater than the maximum", function () {
         expect(validate("ReallyLongValue", min, max)).toBe(
-          f(v.getBothMessage(), min, max),
+          f(v.getBothMessage(), min, max)
         );
       });
     });
@@ -119,7 +119,7 @@ describe("Ext.data.validator.Length", function () {
   describe("messages", function () {
     it("should accept a custom empty message", function () {
       v = new Ext.data.validator.Length({
-        emptyMessage: "Foo",
+        emptyMessage: "Foo"
       });
       expect(v.validate(undefined)).toBe("Foo");
     });
@@ -127,7 +127,7 @@ describe("Ext.data.validator.Length", function () {
     it("should accept a custom min message", function () {
       v = new Ext.data.validator.Length({
         minOnlyMessage: "Foo{0}",
-        min: 1,
+        min: 1
       });
       expect(v.validate("")).toBe("Foo1");
     });
@@ -135,7 +135,7 @@ describe("Ext.data.validator.Length", function () {
     it("should accept a custom max message", function () {
       v = new Ext.data.validator.Length({
         maxOnlyMessage: "Foo{0}",
-        max: 3,
+        max: 3
       });
       expect(v.validate("Value")).toBe("Foo3");
     });
@@ -144,7 +144,7 @@ describe("Ext.data.validator.Length", function () {
       v = new Ext.data.validator.Length({
         bothMessage: "Foo{0}{1}",
         min: 5,
-        max: 7,
+        max: 7
       });
       expect(v.validate("Foo")).toBe("Foo57");
     });
@@ -154,7 +154,7 @@ describe("Ext.data.validator.Length", function () {
     var make = function (min, max) {
       v = new Ext.data.validator.Length({
         min: min,
-        max: max,
+        max: max
       });
     };
 

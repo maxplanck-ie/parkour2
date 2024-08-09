@@ -93,7 +93,7 @@ Ext.define("Ext.form.action.Submit", {
       ajaxOptions = Ext.apply(me.createCallback(), {
         url: me.getUrl(),
         method: me.getMethod(),
-        headers: me.headers,
+        headers: me.headers
       }),
       form = me.form,
       jsonSubmit = me.jsonSubmit || form.jsonSubmit,
@@ -148,7 +148,7 @@ Ext.define("Ext.form.action.Submit", {
         falseVal,
         this.submitEmptyText !== falseVal,
         useModelValues,
-        /*isSubmitting*/ true,
+        /*isSubmitting*/ true
       );
     return Ext.apply({}, fieldParams, configParams);
   },
@@ -216,7 +216,7 @@ Ext.define("Ext.form.action.Submit", {
           : Ext.fly(me.target).dom.name
         : "_self",
       style: "display:none",
-      cn: fieldsSpec,
+      cn: fieldsSpec
     };
 
     // <debug>
@@ -247,7 +247,7 @@ Ext.define("Ext.form.action.Submit", {
     return {
       formEl: formEl,
       uploadFields: uploadFields,
-      uploadEls: uploadEls,
+      uploadEls: uploadEls
     };
   },
 
@@ -256,7 +256,7 @@ Ext.define("Ext.form.action.Submit", {
       tag: "input",
       type: "hidden",
       name: name,
-      value: Ext.String.htmlEncode(value),
+      value: Ext.String.htmlEncode(value)
     };
   },
 
@@ -309,7 +309,7 @@ Ext.define("Ext.form.action.Submit", {
       }
       result = {
         success: rs.success,
-        errors: errors,
+        errors: errors
       };
     } else {
       try {
@@ -317,10 +317,10 @@ Ext.define("Ext.form.action.Submit", {
       } catch (e) {
         result = {
           success: false,
-          errors: [],
+          errors: []
         };
       }
     }
     return result;
-  },
+  }
 });

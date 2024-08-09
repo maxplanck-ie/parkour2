@@ -18,7 +18,7 @@ describe("Ext.TitleBar", function () {
       describe("method", function () {
         beforeEach(function () {
           createToolbar({
-            title: "testing",
+            title: "testing"
           });
         });
 

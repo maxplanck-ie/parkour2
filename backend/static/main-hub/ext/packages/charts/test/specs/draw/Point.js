@@ -32,7 +32,7 @@ describe("Ext.draw.Point", function () {
     it("should take an object", function () {
       var p = new Ext.draw.Point({
         x: 3,
-        y: 4,
+        y: 4
       });
 
       expect(p.x).toEqual(3);
@@ -107,7 +107,7 @@ describe("Ext.draw.Point", function () {
         expect(p.x).toEqual(-2);
         expect(p.y).toEqual(8);
         expect(p).not.toBe(p1);
-      },
+      }
     );
   });
 
@@ -124,7 +124,7 @@ describe("Ext.draw.Point", function () {
         expect(p.x).toEqual(6);
         expect(p.y).toEqual(-2);
         expect(p).not.toBe(p1);
-      },
+      }
     );
   });
 
@@ -139,7 +139,7 @@ describe("Ext.draw.Point", function () {
         expect(mp.x).toEqual(6);
         expect(mp.y).toEqual(9);
         expect(mp).not.toBe(p);
-      },
+      }
     );
   });
 
@@ -154,7 +154,7 @@ describe("Ext.draw.Point", function () {
         expect(dp.x).toEqual(1);
         expect(dp.y).toEqual(1.5);
         expect(dp).not.toBe(p);
-      },
+      }
     );
   });
 
@@ -182,7 +182,7 @@ describe("Ext.draw.Point", function () {
           isEqual = p1.equals(p2);
 
         expect(isEqual).toBe(true);
-      },
+      }
     );
   });
 
@@ -202,7 +202,7 @@ describe("Ext.draw.Point", function () {
         expect(rp.y).toEqual(Math.sin(rads));
         expect(rcp.x).toBeCloseTo(Math.sqrt(2), precision);
         expect(rcp.y).toBeCloseTo(1, precision);
-      },
+      }
     );
   });
 
@@ -228,7 +228,7 @@ describe("Ext.draw.Point", function () {
 
         expect(tp.x).toBeCloseTo(1, precision);
         expect(tp.y).toBeCloseTo(5, precision);
-      },
+      }
     );
   });
 

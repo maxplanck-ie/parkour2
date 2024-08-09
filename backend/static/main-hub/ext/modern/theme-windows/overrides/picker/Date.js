@@ -5,7 +5,7 @@ Ext.define("Ext.theme.windows.picker.Date", {
     doneButton: {
       iconCls: "check2",
       ui: "round",
-      text: "",
-    },
-  },
+      text: ""
+    }
+  }
 });

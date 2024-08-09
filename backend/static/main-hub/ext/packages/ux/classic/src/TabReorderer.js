@@ -48,5 +48,5 @@ Ext.define("Ext.ux.TabReorderer", {
       me.container.tabPanel.setActiveTab(me.dragCmp.card);
       me.container.tabPanel.move(me.dragCmp.card, me.curIndex);
     }
-  },
+  }
 });

@@ -54,7 +54,7 @@ Ext.define("Ext.data.ResultSet", {
      * @cfg {Object} metadata
      * The metadata object from a server sourced JSON data packet.
      */
-    metadata: null,
+    metadata: null
   },
 
   /**
@@ -76,5 +76,5 @@ Ext.define("Ext.data.ResultSet", {
       }
     }
     return count;
-  },
+  }
 });

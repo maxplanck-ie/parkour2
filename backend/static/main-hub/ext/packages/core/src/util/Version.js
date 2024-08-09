@@ -220,7 +220,7 @@
 
     padModes: {
       "~": NaN,
-      "^": Infinity,
+      "^": Infinity
     },
 
     /**
@@ -426,7 +426,7 @@
         me.getMinor(),
         me.getPatch(),
         me.getBuild(),
-        me.getRelease(),
+        me.getRelease()
       ];
     },
 
@@ -472,7 +472,7 @@
      */
     ltEq: function (target) {
       return this.compareTo(target) <= 0;
-    },
+    }
   };
 
   Ext.apply(Version, {
@@ -480,13 +480,13 @@
       from: {
         extjs: "ext",
         core: "core",
-        touch: "modern",
+        touch: "modern"
       },
       to: {
         ext: ["extjs"],
         core: ["core"],
-        modern: ["touch"],
-      },
+        modern: ["touch"]
+      }
     },
 
     /**
@@ -501,7 +501,7 @@
       rc: -3,
       "#": -2,
       p: -1,
-      pl: -1,
+      pl: -1
     },
 
     /**
@@ -546,7 +546,7 @@
       }
 
       return ver;
-    },
+    }
   });
 
   /**
@@ -621,7 +621,7 @@
       Ext.lastRegisteredVersion = Version.set(
         Ext.versions,
         packageName,
-        version,
+        version
       );
       return this;
     },
@@ -882,7 +882,7 @@
       if (Version.compare(Ext.getVersion(packageName), since) < 1) {
         closure.call(scope);
       }
-    },
+    }
   }); // End Versioning
 })();
 

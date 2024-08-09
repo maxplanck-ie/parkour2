@@ -13,5 +13,5 @@ Ext.define("Ext.data.soap.Reader", {
       prefix = envelope.prefix;
 
     return Ext.DomQuery.selectNode(prefix + "|Body", data);
-  },
+  }
 });

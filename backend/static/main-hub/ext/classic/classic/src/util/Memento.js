@@ -88,7 +88,7 @@ Ext.define(
           me.data || (me.data = {}),
           target || me.target,
           props,
-          prefix,
+          prefix
         );
       },
 
@@ -137,7 +137,7 @@ Ext.define(
             }
           }
         }
-      },
+      }
     };
-  })(),
+  })()
 );

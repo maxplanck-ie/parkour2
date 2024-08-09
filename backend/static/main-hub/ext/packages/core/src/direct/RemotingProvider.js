@@ -20,7 +20,7 @@ Ext.define("Ext.direct.RemotingProvider", {
     "Ext.util.DelayedTask",
     "Ext.direct.Transaction",
     "Ext.direct.RemotingMethod",
-    "Ext.direct.Manager",
+    "Ext.direct.Manager"
   ],
 
   type: "remoting",
@@ -283,7 +283,7 @@ Ext.define("Ext.direct.RemotingProvider", {
       Ext.raise(
         'Error initializing RemotingProvider "' +
           me.id +
-          '", no url configured.',
+          '", no url configured.'
       );
     }
     //</debug>
@@ -407,7 +407,7 @@ Ext.define("Ext.direct.RemotingProvider", {
       me.invokeFunction(
         action,
         method,
-        Array.prototype.slice.call(arguments, 0),
+        Array.prototype.slice.call(arguments, 0)
       );
     };
 
@@ -416,7 +416,7 @@ Ext.define("Ext.direct.RemotingProvider", {
 
     handler.directCfg = handler.$directCfg = {
       action: action,
-      method: method,
+      method: method
     };
 
     return handler;
@@ -454,7 +454,7 @@ Ext.define("Ext.direct.RemotingProvider", {
           extAction: action,
           extMethod: method.name,
           extType: "rpc",
-          extUpload: String(isUpload),
+          extUpload: String(isUpload)
         };
 
         if (transaction.metadata) {
@@ -464,7 +464,7 @@ Ext.define("Ext.direct.RemotingProvider", {
         Ext.apply(transaction, {
           form: form,
           isUpload: isUpload,
-          params: postParams,
+          params: postParams
         });
       }
 
@@ -501,7 +501,7 @@ Ext.define("Ext.direct.RemotingProvider", {
           "for Ext Direct method " +
           action +
           "." +
-          method.name,
+          method.name
       );
     }
     //</debug>
@@ -523,8 +523,8 @@ Ext.define("Ext.direct.RemotingProvider", {
         callbackOptions: options,
         callback: cb,
         isForm: !!method.formHandler,
-        disableBatching: method.disableBatching,
-      },
+        disableBatching: method.disableBatching
+      }
     );
 
     if (options && options.timeout != null) {
@@ -607,7 +607,7 @@ Ext.define("Ext.direct.RemotingProvider", {
       callback: me.onData,
       scope: me,
       transaction: transaction,
-      headers: me.getHeaders(),
+      headers: me.getHeaders()
     };
 
     // Explicitly specified timeout for Ext Direct call overrides defaults
@@ -621,7 +621,7 @@ Ext.define("Ext.direct.RemotingProvider", {
       Ext.apply(request, {
         params: transaction.params,
         form: transaction.form,
-        isUpload: transaction.isUpload,
+        isUpload: transaction.isUpload
       });
     } else {
       if (Ext.isArray(transaction)) {
@@ -663,7 +663,7 @@ Ext.define("Ext.direct.RemotingProvider", {
       method: transaction.method,
       data: transaction.data,
       type: "rpc",
-      tid: transaction.id,
+      tid: transaction.id
     };
 
     if (transaction.metadata) {
@@ -725,7 +725,7 @@ Ext.define("Ext.direct.RemotingProvider", {
           transaction: transaction,
           code: Ext.direct.Manager.exceptions.TRANSPORT,
           message: "Unable to connect to the server.",
-          xhr: response,
+          xhr: response
         });
 
       for (i = 0, len = transactions.length; i < len; ++i) {
@@ -794,13 +794,13 @@ Ext.define("Ext.direct.RemotingProvider", {
           result,
           event,
           success,
-          options,
+          options
         ]);
         Ext.callback(callback.callback, callback.scope, [
           result,
           event,
           success,
-          options,
+          options
         ]);
       }
     }
@@ -821,6 +821,6 @@ Ext.define("Ext.direct.RemotingProvider", {
         config.url &&
         Ext.isArray(config.actions)
       );
-    },
-  },
+    }
+  }
 });

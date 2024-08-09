@@ -4,7 +4,7 @@
 Ext.define("Ext.layout.wrapper.Inner", {
   config: {
     sizeState: null,
-    container: null,
+    container: null
   },
 
   constructor: function (config) {
@@ -17,5 +17,5 @@ Ext.define("Ext.layout.wrapper.Inner", {
 
   setInnerWrapper: Ext.emptyFn,
 
-  getInnerWrapper: Ext.emptyFn,
+  getInnerWrapper: Ext.emptyFn
 });

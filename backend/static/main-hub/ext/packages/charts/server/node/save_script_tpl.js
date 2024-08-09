@@ -22,7 +22,7 @@ if (format === "pdf") {
   page.paperSize = pdfOptions || {
     format: "Letter",
     orientation: "portrait",
-    border: "1cm",
+    border: "1cm"
   };
 }
 
@@ -47,7 +47,7 @@ function adjustSize() {
 
     return {
       width: img.naturalWidth,
-      height: img.naturalHeight,
+      height: img.naturalHeight
     };
   });
 
@@ -68,7 +68,7 @@ function adjustSize() {
       img.style.height = height;
     },
     width,
-    height,
+    height
   );
 
   // Let the image to scale before rendering.
@@ -78,7 +78,7 @@ function adjustSize() {
 function render() {
   page.render("#{filename}", {
     format: format,
-    quality: (jpegOptions && jpegOptions.quality) || 80,
+    quality: (jpegOptions && jpegOptions.quality) || 80
   });
   phantom.exit();
 }

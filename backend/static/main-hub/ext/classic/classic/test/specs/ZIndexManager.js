@@ -17,28 +17,28 @@ describe("Ext.ZIndexManager", function () {
         id: "c1",
         height: 100,
         width: 100,
-        focusOnToFront: false,
+        focusOnToFront: false
       });
       c2 = new Ext.window.Window({
         title: "c2",
         id: "c2",
         height: 100,
         width: 100,
-        focusOnToFront: false,
+        focusOnToFront: false
       });
       c3 = new Ext.window.Window({
         title: "c3",
         id: "c3",
         height: 100,
         width: 100,
-        focusOnToFront: false,
+        focusOnToFront: false
       });
       c4 = new Ext.window.Window({
         title: "c4",
         id: "c4",
         height: 100,
         width: 100,
-        modal: true,
+        modal: true
       });
     });
 
@@ -67,7 +67,7 @@ describe("Ext.ZIndexManager", function () {
 
       // Fake mousedown because sythetic events won't work with capture which is what Floating's listener uses
       c1.onMouseDown({
-        target: c1.el.dom,
+        target: c1.el.dom
       });
 
       // Mousedown moves to top
@@ -91,7 +91,7 @@ describe("Ext.ZIndexManager", function () {
 
       // Fake mousedown because sythetic events won't work with capture which is what Floating's listener uses
       c2.onMouseDown({
-        target: c2.el.dom,
+        target: c2.el.dom
       });
 
       // c2 should have gone up as far as it can to just below the alwaysOnTop c1
@@ -147,7 +147,7 @@ describe("Ext.ZIndexManager", function () {
 
       // Fake mousedown because sythetic events won't work with capture which is what Floating's listener uses
       c1.onMouseDown({
-        target: c1.el.dom,
+        target: c1.el.dom
       });
 
       // c1 moved to top
@@ -156,7 +156,7 @@ describe("Ext.ZIndexManager", function () {
       expect(c3.el.getZIndex()).toBeGreaterThan(c2.el.getZIndex());
       // Fake mousedown because sythetic events won't work with capture which is what Floating's listener uses
       c2.onMouseDown({
-        target: c2.el.dom,
+        target: c2.el.dom
       });
 
       // onMousedown quits if there is a pending focus task.
@@ -172,7 +172,7 @@ describe("Ext.ZIndexManager", function () {
       var c = new Ext.Component({
         renderTo: Ext.getBody(),
         floating: true,
-        html: "Foo",
+        html: "Foo"
       });
       c.show();
       expect(c.getEl().getZIndex()).toBe(Ext.WindowManager.zseed);
@@ -203,8 +203,8 @@ describe("Ext.ZIndexManager", function () {
           height: 200,
           title: "Foo",
           autoShow: true,
-          modal: true,
-        }),
+          modal: true
+        })
       );
     }
 
@@ -246,7 +246,7 @@ describe("Ext.ZIndexManager", function () {
       beforeEach(function () {
         btn = new Ext.button.Button({
           renderTo: Ext.getBody(),
-          text: "foo",
+          text: "foo"
         });
       });
 
@@ -264,7 +264,7 @@ describe("Ext.ZIndexManager", function () {
           // skipSelf = true, skipChildren = false, excludeRoot = w.el
           tabbables = Ext.getBody().findTabbableElements({
             skipSelf: true,
-            excludeRoot: w.el,
+            excludeRoot: w.el
           });
 
           expect(tabbables.length).toBe(0);
@@ -276,7 +276,7 @@ describe("Ext.ZIndexManager", function () {
           // skipSelf = true, skipChildren = false, excludeRoot = w.el
           tabbables = Ext.getBody().findTabbableElements({
             skipSelf: true,
-            excludeRoot: w.el,
+            excludeRoot: w.el
           });
 
           expect(tabbables).toEqual([btn.getFocusEl().dom]);
@@ -289,7 +289,7 @@ describe("Ext.ZIndexManager", function () {
           // skipSelf = true, skipChildren = false, excludeRoot = w.el
           tabbables = Ext.getBody().findTabbableElements({
             skipSelf: true,
-            excludeRoot: w.el,
+            excludeRoot: w.el
           });
 
           expect(tabbables.length).toBe(0);
@@ -301,16 +301,16 @@ describe("Ext.ZIndexManager", function () {
           makeWindow({
             items: [
               { xtype: "textfield", fieldLabel: "Login" },
-              { xtype: "textfield", fieldLabel: "Password" },
+              { xtype: "textfield", fieldLabel: "Password" }
             ],
 
-            buttons: [{ text: "OK" }],
+            buttons: [{ text: "OK" }]
           });
         });
 
         it("should keep items above the mask tabbable", function () {
           tabbables = w.getEl().findTabbableElements({
-            skipSelf: true,
+            skipSelf: true
           });
 
           // 6 tababbles:
@@ -337,7 +337,7 @@ describe("Ext.ZIndexManager", function () {
         var ct = new Ext.container.Container({
           renderTo: Ext.getBody(),
           width: 400,
-          height: 400,
+          height: 400
         });
 
         w = ct.add({
@@ -345,14 +345,14 @@ describe("Ext.ZIndexManager", function () {
           width: 100,
           height: 100,
           modal: true,
-          title: "Foo",
+          title: "Foo"
         });
 
         w.show();
         mask = w.zIndexManager.mask;
         expect(mask.getSize()).toEqual({
           width: 400,
-          height: 400,
+          height: 400
         });
         ct.destroy();
       });
@@ -362,7 +362,7 @@ describe("Ext.ZIndexManager", function () {
         var ct = new Ext.container.Container({
           renderTo: Ext.getBody(),
           width: 400,
-          height: 400,
+          height: 400
         });
 
         w = ct.add({
@@ -371,7 +371,7 @@ describe("Ext.ZIndexManager", function () {
           width: 100,
           height: 100,
           modal: true,
-          title: "Foo",
+          title: "Foo"
         });
 
         w.show();
@@ -379,7 +379,7 @@ describe("Ext.ZIndexManager", function () {
         ct.setSize(200, 200);
         expect(mask.getSize()).toEqual({
           width: 200,
-          height: 200,
+          height: 200
         });
         ct.destroy();
       });
@@ -391,17 +391,17 @@ describe("Ext.ZIndexManager", function () {
       var a = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var b = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var c = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       a.hide();
       expect(a.isVisible()).toBe(false);
@@ -427,17 +427,17 @@ describe("Ext.ZIndexManager", function () {
       var a = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var b = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var c = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
 
       Ext.WindowManager.hideAll();
@@ -452,18 +452,18 @@ describe("Ext.ZIndexManager", function () {
       var a = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var b = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var c = new Ext.window.Window({
         width: 100,
         height: 100,
         autoShow: true,
-        modal: true,
+        modal: true
       });
 
       expect(Ext.WindowManager.mask.isVisible()).toBe(true);
@@ -477,17 +477,17 @@ describe("Ext.ZIndexManager", function () {
       var a = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var b = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       var c = new Ext.window.Window({
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
 
       Ext.WindowManager.hideAll();
@@ -502,7 +502,7 @@ describe("Ext.ZIndexManager", function () {
         width: 100,
         height: 100,
         modal: true,
-        autoShow: true,
+        autoShow: true
       });
 
       expect(mask.isVisible()).toBe(true);
@@ -524,24 +524,24 @@ describe("Ext.ZIndexManager", function () {
             columns: [
               {
                 dataIndex: "f1",
-                editor: {},
-              },
+                editor: {}
+              }
             ],
             store: {
               data: [
                 {
-                  f1: "edit me",
-                },
-              ],
+                  f1: "edit me"
+                }
+              ]
             },
             plugins: {
-              ptype: "cellediting",
-            },
-          },
+              ptype: "cellediting"
+            }
+          }
         ],
         width: 400,
         height: 130,
-        modal: true,
+        modal: true
       }).show();
 
       grid = win.down("grid");
@@ -562,9 +562,9 @@ describe("Ext.ZIndexManager", function () {
       cell = grid.getView().getCellInclusive(
         {
           row: 0,
-          column: 0,
+          column: 0
         },
-        true,
+        true
       );
 
       jasmine.fireMouseEvent(cell, "dblclick");
@@ -577,7 +577,7 @@ describe("Ext.ZIndexManager", function () {
         jasmine.fireKeyEvent(
           Ext.Element.getActiveElement(),
           "keydown",
-          Ext.event.Event.ENTER,
+          Ext.event.Event.ENTER
         );
       });
 
@@ -587,7 +587,7 @@ describe("Ext.ZIndexManager", function () {
 
       runs(function () {
         expect(Ext.MessageBox.el.getZIndex()).toBeGreaterThan(
-          win.el.getZIndex(),
+          win.el.getZIndex()
         );
       });
     });
@@ -603,13 +603,13 @@ describe("Ext.ZIndexManager", function () {
           fieldLabel: "Combo",
           renderTo: Ext.getBody(),
           listConfig: {
-            alwaysOnTop: -1,
-          },
+            alwaysOnTop: -1
+          }
         }),
         dateField = new Ext.form.Date({
           editable: false,
           fieldLabel: "Date",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         }),
         window = new Ext.window.Window({
           autoShow: true,
@@ -623,24 +623,24 @@ describe("Ext.ZIndexManager", function () {
               store: ["A", "b", "C"],
               editable: false,
               listCOnfig: {
-                alwaysOnTop: -1,
-              },
-            })),
-          ],
+                alwaysOnTop: -1
+              }
+            }))
+          ]
         });
       dateField.getPicker().setAlwaysOnTop(-1);
 
       // The combo dropdown should be below the window
       combo.expand();
       expect(combo.getPicker().el.getZIndex()).toBeLessThan(
-        window.el.getZIndex(),
+        window.el.getZIndex()
       );
       combo.collapse();
 
       // The combo dropdown should be below the window
       dateField.expand();
       expect(dateField.getPicker().el.getZIndex()).toBeLessThan(
-        window.el.getZIndex(),
+        window.el.getZIndex()
       );
       dateField.collapse();
 
@@ -648,14 +648,14 @@ describe("Ext.ZIndexManager", function () {
       // It should go above the window
       windowCombo.expand();
       expect(windowCombo.getPicker().el.getZIndex()).toBeGreaterThan(
-        window.el.getZIndex(),
+        window.el.getZIndex()
       );
       windowCombo.collapse();
 
       // The combo dropdown should be below the window
       combo.expand();
       expect(combo.getPicker().el.getZIndex()).toBeLessThan(
-        window.el.getZIndex(),
+        window.el.getZIndex()
       );
 
       Ext.destroy(combo, dateField, window);
@@ -669,7 +669,7 @@ describe("Ext.ZIndexManager", function () {
         id: "theWin",
         width: 100,
         height: 100,
-        autoShow: true,
+        autoShow: true
       });
       expect(Ext.WindowManager.bringToFront("theWin")).toBe(false);
       win.destroy();
@@ -680,7 +680,7 @@ describe("Ext.ZIndexManager", function () {
         title: "Win",
         id: "theWin",
         width: 100,
-        height: 100,
+        height: 100
       });
 
       // It is not rendered, so will not have regsitered with the default ZIndexManager.
@@ -705,7 +705,7 @@ describe("Ext.ZIndexManager", function () {
     beforeEach(function () {
       btn = new Ext.button.Button({
         renderTo: Ext.getBody(),
-        text: "foo",
+        text: "foo"
       });
 
       win = new Ext.window.Window({
@@ -719,14 +719,14 @@ describe("Ext.ZIndexManager", function () {
         items: [
           {
             xtype: "textfield",
-            itemId: "input1",
+            itemId: "input1"
           },
           {
             xtype: "textfield",
             itemId: "input2",
-            allowBlank: false,
-          },
-        ],
+            allowBlank: false
+          }
+        ]
       });
 
       input1 = win.down("#input1");
@@ -788,7 +788,7 @@ describe("Ext.ZIndexManager", function () {
           height: 100,
           x: 300,
           y: 30,
-          html: "floating panel",
+          html: "floating panel"
         });
 
         win.show();
@@ -830,8 +830,8 @@ describe("Ext.ZIndexManager", function () {
           listeners: {
             hide: function () {
               events.push("hide");
-            },
-          },
+            }
+          }
         }).show();
 
         // Can't use jasmine spy here because it can't be chained
@@ -869,7 +869,7 @@ describe("Ext.ZIndexManager", function () {
       win = new Ext.window.Window({
         title: "Test Window",
         width: 410,
-        height: 400,
+        height: 400
       });
 
       win.show();
@@ -881,8 +881,8 @@ describe("Ext.ZIndexManager", function () {
         width: 200,
         height: 100,
         items: {
-          xtype: "textfield",
-        },
+          xtype: "textfield"
+        }
       });
 
       win.add(child);

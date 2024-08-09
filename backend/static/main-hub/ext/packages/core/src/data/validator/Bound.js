@@ -46,7 +46,7 @@ Ext.define("Ext.data.validator.Bound", {
      * The error message to return when the value is not in the specified range
      * and both the minimum and maximum are specified.
      */
-    bothOnlyMessage: null,
+    bothOnlyMessage: null
   },
 
   constructor: function () {
@@ -151,5 +151,5 @@ Ext.define("Ext.data.validator.Bound", {
     return true;
   },
 
-  getValue: Ext.identityFn,
+  getValue: Ext.identityFn
 });

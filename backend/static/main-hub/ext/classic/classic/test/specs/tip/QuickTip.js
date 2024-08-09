@@ -5,7 +5,7 @@ describe("Ext.tip.QuickTip", function () {
     target = Ext.getBody().insertHtml(
       "beforeEnd",
       '<a href="#" ' + attrString + ">x</a>",
-      true,
+      true
     );
   }
 
@@ -89,8 +89,8 @@ describe("Ext.tip.QuickTip", function () {
         tip.register(
           Ext.apply({}, registerConfig || {}, {
             target: targ || target,
-            text: "tip text",
-          }),
+            text: "tip text"
+          })
         );
         mouseoverTarget();
       });
@@ -222,7 +222,7 @@ describe("Ext.tip.QuickTip", function () {
           return tip.isVisible();
         },
         "QuickTip never showed",
-        2000,
+        2000
       );
 
       runs(function () {
@@ -240,7 +240,7 @@ describe("Ext.tip.QuickTip", function () {
           return tip.isVisible();
         },
         "QuickTip never showed",
-        2000,
+        2000
       );
 
       runs(function () {

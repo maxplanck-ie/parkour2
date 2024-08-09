@@ -43,7 +43,7 @@ Ext.define("Ext.data.identifier.Sequential", {
      * @cfg {Number} seed
      * The number at which to start generating sequential id's.
      */
-    seed: 1,
+    seed: 1
   },
 
   /**
@@ -59,5 +59,5 @@ Ext.define("Ext.data.identifier.Sequential", {
     me._seed += me._increment;
 
     return prefix !== null ? prefix + seed : seed;
-  },
+  }
 });

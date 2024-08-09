@@ -10,8 +10,8 @@ describe("Ext.data.reader.Array", function () {
         { name: "id" },
         { name: "totalProp", type: "integer" },
         { name: "bool", type: "boolean" },
-        { name: "msg" },
-      ],
+        { name: "msg" }
+      ]
     });
 
     Ext.define("spec.MapModel", {
@@ -21,12 +21,12 @@ describe("Ext.data.reader.Array", function () {
         { name: "b", mapping: 2 },
         { name: "c", mapping: 3 },
         { name: "d", mapping: 4 },
-        { name: "e", mapping: 0 },
-      ],
+        { name: "e", mapping: 0 }
+      ]
     });
 
     reader = new Ext.data.reader.Array({
-      model: "spec.SomeModel",
+      model: "spec.SomeModel"
     });
 
     data = [[1.23, 1, 6, true, "hello"]];
@@ -57,7 +57,7 @@ describe("Ext.data.reader.Array", function () {
 
   it("should work with custom index mappings", function () {
     reader = new Ext.data.reader.Array({
-      model: "spec.MapModel",
+      model: "spec.MapModel"
     });
     records = reader.readRecords(data);
     var recData = records.getRecords()[0].getData();

@@ -64,12 +64,12 @@ Ext.define("Ext.data.proxy.Sql", {
      * @cfg {String} database
      * Database name to access tables from
      */
-    database: "Sencha",
+    database: "Sencha"
   },
 
   _createOptions: {
     silent: true,
-    dirty: false,
+    dirty: false
   },
 
   updateModel: function (model) {
@@ -116,7 +116,7 @@ Ext.define("Ext.data.proxy.Sql", {
           function (resultSet, statementError) {
             result = resultSet;
             error = statementError;
-          },
+          }
         );
       },
       function (transactionError) {
@@ -128,7 +128,7 @@ Ext.define("Ext.data.proxy.Sql", {
         } else {
           operation.process(result);
         }
-      },
+      }
     );
   },
 
@@ -151,7 +151,7 @@ Ext.define("Ext.data.proxy.Sql", {
     if (id !== undefined) {
       params = {
         idOnly: true,
-        id: id,
+        id: id
       };
     } else {
       params = {
@@ -159,7 +159,7 @@ Ext.define("Ext.data.proxy.Sql", {
         start: operation.getStart(),
         limit: operation.getLimit(),
         sorters: operation.getSorters(),
-        filters: operation.getFilters(),
+        filters: operation.getFilters()
       };
     }
 
@@ -173,7 +173,7 @@ Ext.define("Ext.data.proxy.Sql", {
           function (resultSet, statementError) {
             result = resultSet;
             error = statementError;
-          },
+          }
         );
       },
       function (transactionError) {
@@ -185,7 +185,7 @@ Ext.define("Ext.data.proxy.Sql", {
         } else {
           operation.process(result);
         }
-      },
+      }
     );
   },
 
@@ -205,7 +205,7 @@ Ext.define("Ext.data.proxy.Sql", {
           function (resultSet, statementError) {
             result = resultSet;
             error = statementError;
-          },
+          }
         );
       },
       function (transactionError) {
@@ -217,7 +217,7 @@ Ext.define("Ext.data.proxy.Sql", {
         } else {
           operation.process(result);
         }
-      },
+      }
     );
   },
 
@@ -237,7 +237,7 @@ Ext.define("Ext.data.proxy.Sql", {
           function (resultSet, statementError) {
             result = resultSet;
             error = statementError;
-          },
+          }
         );
       },
       function (transactionError) {
@@ -249,7 +249,7 @@ Ext.define("Ext.data.proxy.Sql", {
         } else {
           operation.process(result);
         }
-      },
+      }
     );
   },
 
@@ -270,7 +270,7 @@ Ext.define("Ext.data.proxy.Sql", {
         ")",
       function () {
         me.tableExists = true;
-      },
+      }
     );
   },
 
@@ -297,9 +297,9 @@ Ext.define("Ext.data.proxy.Sql", {
         callback.call(
           me,
           new Ext.data.ResultSet({
-            success: !errors,
+            success: !errors
           }),
-          errors,
+          errors
         );
       }
     };
@@ -336,7 +336,7 @@ Ext.define("Ext.data.proxy.Sql", {
             }
             errors.push(error);
             completeIf();
-          },
+          }
         );
       })(record);
     }
@@ -467,8 +467,8 @@ Ext.define("Ext.data.proxy.Sql", {
             records: records,
             success: true,
             total: count,
-            count: count,
-          }),
+            count: count
+          })
         );
       },
       function (transaction, error) {
@@ -477,11 +477,11 @@ Ext.define("Ext.data.proxy.Sql", {
           new Ext.data.ResultSet({
             success: false,
             total: 0,
-            count: 0,
+            count: 0
           }),
-          error,
+          error
         );
-      },
+      }
     );
   },
 
@@ -509,9 +509,9 @@ Ext.define("Ext.data.proxy.Sql", {
         callback.call(
           me,
           new Ext.data.ResultSet({
-            success: !errors,
+            success: !errors
           }),
-          errors,
+          errors
         );
       }
     };
@@ -550,7 +550,7 @@ Ext.define("Ext.data.proxy.Sql", {
             }
             errors.push(error);
             completeIf();
-          },
+          }
         );
       })(record);
     }
@@ -585,19 +585,19 @@ Ext.define("Ext.data.proxy.Sql", {
         callback.call(
           me,
           new Ext.data.ResultSet({
-            success: true,
-          }),
+            success: true
+          })
         );
       },
       function (transaction, error) {
         callback.call(
           me,
           new Ext.data.ResultSet({
-            success: false,
+            success: false
           }),
-          error,
+          error
         );
-      },
+      }
     );
   },
 
@@ -677,7 +677,7 @@ Ext.define("Ext.data.proxy.Sql", {
           schema.unshift('"' + idProperty + '" ' + type);
         } else {
           schema.unshift(
-            '"' + idProperty + '" INTEGER PRIMARY KEY AUTOINCREMENT',
+            '"' + idProperty + '" INTEGER PRIMARY KEY AUTOINCREMENT'
           );
         }
       } else {
@@ -714,12 +714,12 @@ Ext.define("Ext.data.proxy.Sql", {
           'DROP TABLE "' + me.getTable() + '"',
           function () {
             me.tableExists = false;
-          },
+          }
         );
       },
       null,
       null,
-      false,
+      false
     );
   },
 
@@ -728,7 +728,7 @@ Ext.define("Ext.data.proxy.Sql", {
       this.getDatabase(),
       "1.0",
       "Sencha Database",
-      5 * 1024 * 1024,
+      5 * 1024 * 1024
     );
   },
 
@@ -747,7 +747,7 @@ Ext.define("Ext.data.proxy.Sql", {
           ? function () {
               failure.apply(me, arguments);
             }
-          : null,
+          : null
       );
     },
 
@@ -774,7 +774,7 @@ Ext.define("Ext.data.proxy.Sql", {
           ? function () {
               success.apply(me, arguments);
             }
-          : null,
+          : null
       );
     },
 
@@ -819,6 +819,6 @@ Ext.define("Ext.data.proxy.Sql", {
         value = value ? 1 : 0;
       }
       return value;
-    },
-  },
+    }
+  }
 });

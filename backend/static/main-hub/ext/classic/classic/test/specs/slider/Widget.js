@@ -13,8 +13,8 @@ describe("Ext.slider.Widget", function () {
     if (useBinding) {
       viewModel = new Ext.app.ViewModel({
         data: {
-          val: 20,
-        },
+          val: 20
+        }
       });
       data = viewModel.getData();
 
@@ -31,11 +31,11 @@ describe("Ext.slider.Widget", function () {
             xtype: "sliderwidget",
             width: 200,
             height: 20,
-            animate: false,
+            animate: false
           },
-          config,
-        ),
-      )),
+          config
+        )
+      ))
     });
 
     if (useBinding) {
@@ -65,9 +65,9 @@ describe("Ext.slider.Widget", function () {
     it("should update viewModel on setValue complete", function () {
       makeSlider(
         {
-          publishOnComplete: true,
+          publishOnComplete: true
         },
-        true,
+        true
       );
 
       slider.setValue(50);
@@ -79,9 +79,9 @@ describe("Ext.slider.Widget", function () {
     it("should update viewModel on setValue when publishOnComplete:false", function () {
       makeSlider(
         {
-          publishOnComplete: false,
+          publishOnComplete: false
         },
-        true,
+        true
       );
 
       slider.setValue(50);
@@ -99,9 +99,9 @@ describe("Ext.slider.Widget", function () {
         {
           minValue: 10,
           maxValue: 50,
-          value: 20,
+          value: 20
         },
-        false,
+        false
       );
 
       thumb = slider.getThumb(0);
@@ -176,9 +176,9 @@ describe("Ext.slider.Widget", function () {
       makeSlider(
         {
           maxValue: 40,
-          value: 20,
+          value: 20
         },
-        false,
+        false
       );
 
       thumb = slider.getThumb(0);

@@ -23,7 +23,7 @@ Ext.define("Ext.dashboard.Panel", {
   stateful: true,
 
   draggable: {
-    moveOnDrag: false,
+    moveOnDrag: false
   },
 
   animateClose: true,
@@ -47,7 +47,7 @@ Ext.define("Ext.dashboard.Panel", {
         me.el.animate({
           opacity: 0,
           callback: me.finishClose,
-          scope: me,
+          scope: me
         });
       }
     } else {
@@ -89,7 +89,7 @@ Ext.define("Ext.dashboard.Panel", {
 
     if (loadMask && !loadMask.isComponent) {
       config = {
-        target: me,
+        target: me
       };
 
       if (loadMask === true) {
@@ -110,7 +110,7 @@ Ext.define("Ext.dashboard.Panel", {
     view.on({
       beforeload: "onViewBeforeLoad",
       load: "onViewLoaded",
-      scope: this,
+      scope: this
     });
   },
 
@@ -155,10 +155,10 @@ Ext.define("Ext.dashboard.Panel", {
       me.addPropertyToState(
         state,
         "height",
-        me.rendered ? me.getHeight() : me.height || me.minHeight || 100,
+        me.rendered ? me.getHeight() : me.height || me.minHeight || 100
       );
     }
 
     return state;
-  },
+  }
 });

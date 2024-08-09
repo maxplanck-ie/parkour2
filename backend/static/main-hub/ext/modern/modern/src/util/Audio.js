@@ -33,8 +33,8 @@ Ext.define("Ext.util.Audio", {
       }, duration);
     } catch (e) {
       throw new Error(
-        "[Ext.util.Audio.oscillate] Error with Oscillator playback",
+        "[Ext.util.Audio.oscillate] Error with Oscillator playback"
       );
     }
-  },
+  }
 });

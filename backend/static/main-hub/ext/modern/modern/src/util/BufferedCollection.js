@@ -12,7 +12,7 @@ Ext.define("Ext.util.BufferedCollection", {
     totalCount: 0,
     autoSort: false,
     autoFilter: false,
-    pageSize: 0,
+    pageSize: 0
   },
 
   updateTotalCount: function (totalCount) {
@@ -39,5 +39,5 @@ Ext.define("Ext.util.BufferedCollection", {
       }
     }
     return true;
-  },
+  }
 });

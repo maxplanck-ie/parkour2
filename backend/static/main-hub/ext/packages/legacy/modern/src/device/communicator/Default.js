@@ -114,7 +114,7 @@ Ext.define("Ext.device.communicator.Default", {
       id = this.generateId();
       data = {
         callback: callback,
-        scope: scope,
+        scope: scope
       };
 
       idMap[scopeId][callbackId] = id;
@@ -174,7 +174,7 @@ Ext.define("Ext.device.communicator.Default", {
         Ext.Object.toQueryString(args) +
         "&_dc=" +
         new Date().getTime(),
-      false,
+      false
     );
 
     // wrap the request in a try/catch block so we can check if any errors are thrown and attempt to call any
@@ -190,5 +190,5 @@ Ext.define("Ext.device.communicator.Default", {
         this.invoke(args.callback);
       }
     }
-  },
+  }
 });

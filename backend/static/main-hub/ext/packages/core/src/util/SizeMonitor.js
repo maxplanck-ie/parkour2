@@ -4,7 +4,7 @@
 Ext.define("Ext.util.SizeMonitor", {
   requires: [
     "Ext.util.sizemonitor.Scroll",
-    "Ext.util.sizemonitor.OverflowChange",
+    "Ext.util.sizemonitor.OverflowChange"
   ],
 
   constructor: function (config) {
@@ -15,5 +15,5 @@ Ext.define("Ext.util.SizeMonitor", {
     } else {
       return new namespace.Scroll(config);
     }
-  },
+  }
 });

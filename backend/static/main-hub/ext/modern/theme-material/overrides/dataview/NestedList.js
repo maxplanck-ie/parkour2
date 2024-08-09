@@ -6,7 +6,7 @@ Ext.define("Ext.theme.material.dataview.NestedList", {
     useTitleAsBackText: false,
     backButton: {
       iconCls: "md-icon-arrow-back",
-      hidden: true,
-    },
-  },
+      hidden: true
+    }
+  }
 });

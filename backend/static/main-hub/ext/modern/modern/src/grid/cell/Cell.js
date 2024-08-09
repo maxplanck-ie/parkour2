@@ -112,7 +112,7 @@ Ext.define("Ext.grid.cell.Cell", {
      * @cfg {Object} scope
      * The scope to use when calling the {@link #renderer} or {@link #formatter} function.
      */
-    scope: null,
+    scope: null
   },
 
   updateColumn: function (column, oldColumn) {
@@ -237,7 +237,7 @@ Ext.define("Ext.grid.cell.Cell", {
             record,
             dataIndex,
             me,
-            column,
+            column
           );
         } else {
           raw = Ext.callback(
@@ -245,11 +245,11 @@ Ext.define("Ext.grid.cell.Cell", {
             scope,
             [v, record, dataIndex, me, column],
             0,
-            me,
+            me
           );
         }
       }
     }
     me.setRawValue(raw);
-  },
+  }
 });

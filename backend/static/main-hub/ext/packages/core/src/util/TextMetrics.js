@@ -161,7 +161,7 @@ Ext.define(
         var me = this;
         Ext.destroy(me.shared);
         me.shared = null;
-      },
+      }
     },
 
     /**
@@ -177,7 +177,7 @@ Ext.define(
           "data-sticky": true,
           //</debug>
           role: "presentation",
-          cls: Ext.baseCSSPrefix + "textmetrics",
+          cls: Ext.baseCSSPrefix + "textmetrics"
         });
 
       measure.setVisibilityMode(1);
@@ -228,8 +228,8 @@ Ext.define(
           "line-height",
           "text-transform",
           "letter-spacing",
-          "word-break",
-        ]),
+          "word-break"
+        ])
       );
     },
 
@@ -268,7 +268,7 @@ Ext.define(
       var me = this;
       me.el = me.measure = Ext.destroy(me.measure);
       me.callParent();
-    },
+    }
   },
   function () {
     Ext.Element.override({
@@ -284,12 +284,12 @@ Ext.define(
         return Ext.Number.constrain(
           Ext.util.TextMetrics.measure(
             this.dom,
-            Ext.valueFrom(text, this.dom.innerHTML, true),
+            Ext.valueFrom(text, this.dom.innerHTML, true)
           ).width,
           min || 0,
-          max || 1000000,
+          max || 1000000
         );
-      },
+      }
     });
-  },
+  }
 );

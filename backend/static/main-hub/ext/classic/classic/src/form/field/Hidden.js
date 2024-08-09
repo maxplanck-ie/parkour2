@@ -110,5 +110,5 @@ Ext.define("Ext.form.field.Hidden", {
    * @method
    * @hide
    */
-  clearInvalid: Ext.emptyFn,
+  clearInvalid: Ext.emptyFn
 });

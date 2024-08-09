@@ -17,7 +17,7 @@ Ext.define("Ext.ux.colorpick.SliderAlpha", {
           "background: -webkit-linear-gradient(top,rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);" /* Chrome10+,Safari5.1+ */ +
           "background: -o-linear-gradient(top, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);" /* Opera 11.10+ */ +
           "background: -ms-linear-gradient(top, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);" /* IE10+ */ +
-          "background: linear-gradient(to bottom, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);" /* W3C */,
+          "background: linear-gradient(to bottom, rgba({r}, {g}, {b}, 1) 0%, rgba({r}, {g}, {b}, 0) 100%);" /* W3C */
   ),
 
   // Called via data binding whenever selectedColor.a changes; param is 0-100
@@ -49,7 +49,7 @@ Ext.define("Ext.ux.colorpick.SliderAlpha", {
     // Position dragger
     el = dragHandle.getEl();
     el.setStyle({
-      top: top + "px",
+      top: top + "px"
     });
   },
 
@@ -74,8 +74,8 @@ Ext.define("Ext.ux.colorpick.SliderAlpha", {
         hex: hex,
         r: color.r,
         g: color.g,
-        b: color.b,
-      }),
+        b: color.b
+      })
     );
-  },
+  }
 });

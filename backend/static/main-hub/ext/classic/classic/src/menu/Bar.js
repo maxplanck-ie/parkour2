@@ -47,7 +47,7 @@ Ext.define("Ext.menu.Bar", {
     type: "hbox",
     align: "stretchmax",
     pack: "start",
-    overflowHandler: "menu",
+    overflowHandler: "menu"
   },
 
   lookupComponent: function (comp) {
@@ -94,6 +94,6 @@ Ext.define("Ext.menu.Bar", {
       if (focusItem && focusItem.expandMenu) {
         focusItem.expandMenu(e, 0);
       }
-    },
-  },
+    }
+  }
 });

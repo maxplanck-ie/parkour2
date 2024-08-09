@@ -29,7 +29,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
     "globalCompositeOperation",
     "position",
     "fillGradient",
-    "strokeGradient",
+    "strokeGradient"
   ],
 
   strokeOpacity: 1,
@@ -341,7 +341,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
     rotation,
     startAngle,
     endAngle,
-    anticlockwise,
+    anticlockwise
   ) {
     if (!this.path) {
       this.beginPath();
@@ -354,7 +354,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
       rotation,
       startAngle,
       endAngle,
-      anticlockwise,
+      anticlockwise
     );
     this.path.element = null;
   },
@@ -417,22 +417,22 @@ Ext.define("Ext.draw.engine.SvgContext", {
         "stroke-opacity": this.strokeOpacity,
         style: "font: " + this.font,
         "stroke-dasharray": this.lineDash.join(","),
-        "stroke-dashoffset": this.lineDashOffset,
+        "stroke-dashoffset": this.lineDashOffset
       });
       if (this.lineDash.length) {
         this.surface.setElementAttributes(element, {
           "stroke-dasharray": this.lineDash.join(","),
-          "stroke-dashoffset": this.lineDashOffset,
+          "stroke-dashoffset": this.lineDashOffset
         });
       }
       if (tspan.dom.firstChild) {
         tspan.dom.removeChild(tspan.dom.firstChild);
       }
       this.surface.setElementAttributes(tspan, {
-        "alignment-baseline": "alphabetic",
+        "alignment-baseline": "alphabetic"
       });
       tspan.dom.appendChild(
-        document.createTextNode(Ext.String.htmlDecode(text)),
+        document.createTextNode(Ext.String.htmlDecode(text))
       );
     }
   },
@@ -455,16 +455,16 @@ Ext.define("Ext.draw.engine.SvgContext", {
         fill: this.fillStyle,
         opacity: this.globalAlpha,
         "fill-opacity": this.fillOpacity,
-        style: "font: " + this.font,
+        style: "font: " + this.font
       });
       if (tspan.dom.firstChild) {
         tspan.dom.removeChild(tspan.dom.firstChild);
       }
       this.surface.setElementAttributes(tspan, {
-        "alignment-baseline": "alphabetic",
+        "alignment-baseline": "alphabetic"
       });
       tspan.dom.appendChild(
-        document.createTextNode(Ext.String.htmlDecode(text)),
+        document.createTextNode(Ext.String.htmlDecode(text))
       );
     }
   },
@@ -500,7 +500,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
     element.dom.setAttributeNS(
       "http:/" + "/www.w3.org/1999/xlink",
       "href",
-      image.src,
+      image.src
     );
     me.surface.setElementAttributes(element, {
       viewBox: viewBox,
@@ -509,7 +509,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
       width: width,
       height: height,
       opacity: me.globalAlpha,
-      transform: me.matrix.toSvg(),
+      transform: me.matrix.toSvg()
     });
   },
 
@@ -534,7 +534,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
         element = me.path.element = me.getElement("path");
         me.surface.setElementAttributes(element, {
           d: path,
-          transform: me.matrix.toSvg(),
+          transform: me.matrix.toSvg()
         });
       }
       if (fillGradient && bbox) {
@@ -547,7 +547,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
       }
       me.surface.setElementAttributes(element, {
         fill: fill,
-        "fill-opacity": me.fillOpacity * me.globalAlpha,
+        "fill-opacity": me.fillOpacity * me.globalAlpha
       });
     }
   },
@@ -577,7 +577,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
         me.surface.setElementAttributes(element, {
           fill: "none",
           d: path,
-          transform: me.matrix.toSvg(),
+          transform: me.matrix.toSvg()
         });
       }
       if (strokeGradient && bbox) {
@@ -595,12 +595,12 @@ Ext.define("Ext.draw.engine.SvgContext", {
         "stroke-width": me.lineWidth,
         "stroke-opacity": me.strokeOpacity * me.globalAlpha,
         "stroke-dasharray": me.lineDash.join(","),
-        "stroke-dashoffset": me.lineDashOffset,
+        "stroke-dashoffset": me.lineDashOffset
       });
       if (me.lineDash.length) {
         me.surface.setElementAttributes(element, {
           "stroke-dasharray": me.lineDash.join(","),
-          "stroke-dashoffset": me.lineDashOffset,
+          "stroke-dashoffset": me.lineDashOffset
         });
       }
     }
@@ -669,7 +669,7 @@ Ext.define("Ext.draw.engine.SvgContext", {
       y1: y0,
       x2: x1,
       y2: y1,
-      gradientUnits: "userSpaceOnUse",
+      gradientUnits: "userSpaceOnUse"
     });
     gradient = new Ext.draw.engine.SvgContext.Gradient(me, me.surface, element);
 
@@ -699,17 +699,17 @@ Ext.define("Ext.draw.engine.SvgContext", {
       cx: x1,
       cy: y1,
       r: r1,
-      gradientUnits: "userSpaceOnUse",
+      gradientUnits: "userSpaceOnUse"
     });
     gradient = new Ext.draw.engine.SvgContext.Gradient(
       me,
       me.surface,
       element,
-      r0 / r1,
+      r0 / r1
     );
 
     return gradient;
-  },
+  }
 });
 
 /**
@@ -772,7 +772,7 @@ Ext.define("Ext.draw.engine.SvgContext.Gradient", {
       offset:
         (((1 - compression) * offset + compression) * 100).toFixed(2) + "%",
       "stop-color": color,
-      "stop-opacity": Ext.util.Color.fly(color).a.toFixed(15),
+      "stop-opacity": Ext.util.Color.fly(color).a.toFixed(15)
     });
   },
 
@@ -783,5 +783,5 @@ Ext.define("Ext.draw.engine.SvgContext.Gradient", {
       Ext.fly(children[children.length - 1]).destroy();
     }
     return "url(#" + this.element.getId() + ")";
-  },
+  }
 });

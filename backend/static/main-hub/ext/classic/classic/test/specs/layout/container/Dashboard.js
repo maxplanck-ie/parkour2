@@ -5,9 +5,9 @@ describe("Ext.layout.container.Dashboard", function () {
     return Ext.apply(
       {
         xtype: "component",
-        style: "margin: 4px;",
+        style: "margin: 4px;"
       },
-      itemConfig,
+      itemConfig
     );
   }
 
@@ -34,10 +34,10 @@ describe("Ext.layout.container.Dashboard", function () {
           items: items,
           getMaxColumns: function () {
             return this.maxColumns;
-          },
+          }
         },
-        parentConfig,
-      ),
+        parentConfig
+      )
     );
   }
 
@@ -48,14 +48,14 @@ describe("Ext.layout.container.Dashboard", function () {
   describe("splitters", function () {
     var parentConfig = {
       height: 100,
-      width: 1000,
+      width: 1000
     };
 
     it("should put splitters between each", function () {
       makePanel(parentConfig, [
         { height: 80, columnWidth: 0.25 },
         { height: 80, columnWidth: 0.25 },
-        { height: 80, columnWidth: 0.5 },
+        { height: 80, columnWidth: 0.5 }
       ]);
 
       var items = panel.items.items;
@@ -74,7 +74,7 @@ describe("Ext.layout.container.Dashboard", function () {
         { height: 80, columnWidth: 0.25 },
         { height: 80, columnWidth: 0.5 },
         { height: 80, columnWidth: 0.5 },
-        { height: 80, columnWidth: 0.5 },
+        { height: 80, columnWidth: 0.5 }
       ]);
 
       var items = panel.items.items;
@@ -99,7 +99,7 @@ describe("Ext.layout.container.Dashboard", function () {
         // splitter
         { height: 80, columnWidth: 0.5 },
         // splitter
-        { height: 80, columnWidth: 0.25 },
+        { height: 80, columnWidth: 0.25 }
       ]);
 
       panel.insert(2, makeItem({ height: 80, columnWidth: 0.5 }));
@@ -128,7 +128,7 @@ describe("Ext.layout.container.Dashboard", function () {
         // splitter
         { height: 80, columnWidth: 0.5 },
         // splitter
-        { height: 80, columnWidth: 0.5 },
+        { height: 80, columnWidth: 0.5 }
       ]);
 
       panel.remove(2);

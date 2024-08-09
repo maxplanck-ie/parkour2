@@ -6,15 +6,15 @@ describe("Ext.grid.column.Boolean", function () {
     fields: [
       {
         name: "field",
-        defaultValue: undefined,
-      },
-    ],
+        defaultValue: undefined
+      }
+    ]
   });
 
   function getCell(rowIdx, colIdx) {
     return grid.getView().getCellInclusive({
       row: rowIdx,
-      column: colIdx,
+      column: colIdx
     });
   }
 
@@ -28,9 +28,9 @@ describe("Ext.grid.column.Boolean", function () {
       model: Model,
       data: [
         {
-          field: value,
-        },
-      ],
+          field: value
+        }
+      ]
     });
 
     grid = new Ext.grid.Panel({
@@ -41,15 +41,15 @@ describe("Ext.grid.column.Boolean", function () {
             xtype: "booleancolumn",
             text: "Col",
             dataIndex: "field",
-            flex: 1,
+            flex: 1
           },
-          colCfg,
-        ),
+          colCfg
+        )
       ],
       width: 400,
       height: 100,
       border: false,
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
     colRef = grid.getColumnManager().getColumns();
   }
@@ -94,7 +94,7 @@ describe("Ext.grid.column.Boolean", function () {
     it("should update correctly with html in the true/false text", function () {
       makeGrid(false, {
         trueText: '<div class="foo">isTrue</div>',
-        falseText: '<div class="bar">isFalse</div>',
+        falseText: '<div class="bar">isFalse</div>'
       });
 
       store.first().set("field", true);

@@ -18,7 +18,7 @@ Ext.define("Ext.draw.PathUtil", function () {
 
     requires: [
       "Ext.draw.overrides.hittest.Path",
-      "Ext.draw.overrides.hittest.sprite.Path",
+      "Ext.draw.overrides.hittest.sprite.Path"
     ],
 
     /**
@@ -188,7 +188,7 @@ Ext.define("Ext.draw.PathUtil", function () {
       x1,
       y1,
       x2,
-      y2,
+      y2
     ) {
       var P = [],
         intersections = [],
@@ -269,7 +269,7 @@ Ext.define("Ext.draw.PathUtil", function () {
 
       return [
         [P1, z * P2 - iz * P1, zz * P3 - 2 * z * iz * P2 + izz * P1, P],
-        [P, zz * P4 - 2 * z * iz * P3 + izz * P2, z * P4 - iz * P3, P4],
+        [P, zz * P4 - 2 * z * iz * P3 + izz * P2, z * P4 - iz * P3, P4]
       ];
     },
 
@@ -388,7 +388,7 @@ Ext.define("Ext.draw.PathUtil", function () {
       by1,
       by2,
       by3,
-      by4,
+      by4
     ) {
       var me = this,
         axDim = me.cubicDimension(ax1, ax2, ax3, ax4),
@@ -433,29 +433,29 @@ Ext.define("Ext.draw.PathUtil", function () {
         points,
         me.cubicsIntersections.apply(
           me,
-          splitAx[0].concat(splitAy[0], splitBx[0], splitBy[0]),
-        ),
+          splitAx[0].concat(splitAy[0], splitBx[0], splitBy[0])
+        )
       );
       points.push.apply(
         points,
         me.cubicsIntersections.apply(
           me,
-          splitAx[0].concat(splitAy[0], splitBx[1], splitBy[1]),
-        ),
+          splitAx[0].concat(splitAy[0], splitBx[1], splitBy[1])
+        )
       );
       points.push.apply(
         points,
         me.cubicsIntersections.apply(
           me,
-          splitAx[1].concat(splitAy[1], splitBx[0], splitBy[0]),
-        ),
+          splitAx[1].concat(splitAy[1], splitBx[0], splitBy[0])
+        )
       );
       points.push.apply(
         points,
         me.cubicsIntersections.apply(
           me,
-          splitAx[1].concat(splitAy[1], splitBx[1], splitBy[1]),
-        ),
+          splitAx[1].concat(splitAy[1], splitBx[1], splitBy[1])
+        )
       );
 
       return points;
@@ -490,7 +490,7 @@ Ext.define("Ext.draw.PathUtil", function () {
       if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
         return [
           x1 + ua * (x2 - x1), // x
-          y1 + ua * (y2 - y1), // y
+          y1 + ua * (y2 - y1) // y
         ];
       }
       return null; // The intersection point is outside one or both segments.
@@ -575,6 +575,6 @@ Ext.define("Ext.draw.PathUtil", function () {
       }
 
       return false;
-    },
+    }
   };
 });

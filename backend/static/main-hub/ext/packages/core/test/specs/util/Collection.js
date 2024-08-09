@@ -18,7 +18,7 @@ describe("Ext.util.Collection", function () {
           "add " +
             Ext.encode(Ext.Array.pluck(details.items, property)) +
             " at " +
-            details.at,
+            details.at
         );
         if (details.keys) {
           log[log.length - 1] += " w/keys " + Ext.encode(details.keys);
@@ -30,7 +30,7 @@ describe("Ext.util.Collection", function () {
           "remove " +
             Ext.encode(Ext.Array.pluck(details.items, property)) +
             " at " +
-            details.at,
+            details.at
         );
         if (details.keys) {
           log[log.length - 1] += " w/keys " + Ext.encode(details.keys);
@@ -39,7 +39,7 @@ describe("Ext.util.Collection", function () {
       endupdate: function (sender) {
         expect(sender === col).toBe(true);
         log.push("endupdate");
-      },
+      }
     });
   }
 
@@ -95,7 +95,7 @@ describe("Ext.util.Collection", function () {
 
     it("should honour the new insertion point if we have a source collection", function () {
       var downstreamCollection = new Ext.util.Collection({
-        source: collection,
+        source: collection
       });
       downstreamCollection.sort({ property: "id" });
 
@@ -169,7 +169,7 @@ describe("Ext.util.Collection", function () {
       collection = new Ext.util.Collection({
         keyFn: function (item) {
           return item.myKey;
-        },
+        }
       });
 
       var item1 = { myKey: "a", data: "first item" },
@@ -186,7 +186,7 @@ describe("Ext.util.Collection", function () {
       source.add({ id: 1 }, { id: 2 }, { id: 3 });
 
       collection = new Ext.util.Collection({
-        source: source,
+        source: source
       });
       expect(collection.getCount()).toBe(3);
     });
@@ -390,7 +390,7 @@ describe("Ext.util.Collection", function () {
               for (var i = 0; i < 30; i++) {
                 records.push({
                   id: i,
-                  order: i < 10 ? "mac" : i < 20 ? "and" : "cheese",
+                  order: i < 10 ? "mac" : i < 20 ? "and" : "cheese"
                 });
               }
 
@@ -586,7 +586,7 @@ describe("Ext.util.Collection", function () {
         item6,
         item7,
         item8,
-        item9,
+        item9
       ]);
     });
 
@@ -663,7 +663,7 @@ describe("Ext.util.Collection", function () {
 
         for (i = 0; i < 1000; ++i) {
           items.push({
-            id: i + 1,
+            id: i + 1
           });
         }
         collection.add(items);
@@ -812,7 +812,7 @@ describe("Ext.util.Collection", function () {
           item6,
           item7,
           item8,
-          item9,
+          item9
         ]);
         expect(details.keys.length).toBe(9);
         expect(details.keys).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -916,7 +916,7 @@ describe("Ext.util.Collection", function () {
         item6, // 5    -4
         item7, // 6    -3
         item8, // 7    -2
-        item9, // 8    -1
+        item9 // 8    -1
       ]);
     }
 
@@ -1044,7 +1044,7 @@ describe("Ext.util.Collection", function () {
 
           newItem = {
             id: 100,
-            name: "Foo",
+            name: "Foo"
           };
         });
 
@@ -1191,7 +1191,7 @@ describe("Ext.util.Collection", function () {
               expect(function () {
                 collection.itemChanged(item, ["name"]);
               }).not.toThrow();
-            },
+            }
           };
 
           child.getSorters().add("name");
@@ -1200,7 +1200,7 @@ describe("Ext.util.Collection", function () {
 
           collection.add({
             id: 1000,
-            name: "q",
+            name: "q"
           });
         });
       });
@@ -1232,7 +1232,7 @@ describe("Ext.util.Collection", function () {
           "beginupdate",
           'remove ["second"] at 1 w/keys [2]',
           'add ["fourth"] at 1 w/keys [4]',
-          "endupdate",
+          "endupdate"
         ]);
       });
     });
@@ -1252,7 +1252,7 @@ describe("Ext.util.Collection", function () {
             return o.id;
           },
           mc1 = new Ext.util.Collection({
-            keyFn: fn,
+            keyFn: fn
           });
 
         var mc2 = mc1.clone();
@@ -1468,7 +1468,7 @@ describe("Ext.util.Collection", function () {
                 ++count;
               },
               null,
-              1000,
+              1000
             );
             expect(count).toBe(0);
           });
@@ -1480,7 +1480,7 @@ describe("Ext.util.Collection", function () {
                 keys.push(key);
               },
               null,
-              4,
+              4
             );
             expect(keys.join(",")).toBe("5,6,7,8,9");
           });
@@ -1491,7 +1491,7 @@ describe("Ext.util.Collection", function () {
                 return item.name === "second";
               },
               null,
-              6,
+              6
             );
             expect(matched).toBeNull();
           });
@@ -1502,7 +1502,7 @@ describe("Ext.util.Collection", function () {
                 return item.name === "third" || item.name === "ninth";
               },
               null,
-              5,
+              5
             );
             expect(matched).toBe(item9);
           });
@@ -1573,7 +1573,7 @@ describe("Ext.util.Collection", function () {
                 ++count;
               },
               null,
-              1000,
+              1000
             );
             expect(count).toBe(0);
           });
@@ -1585,7 +1585,7 @@ describe("Ext.util.Collection", function () {
                 keys.push(key);
               },
               null,
-              4,
+              4
             );
             expect(keys.join(",")).toBe("5,6,7,8,9");
           });
@@ -1596,7 +1596,7 @@ describe("Ext.util.Collection", function () {
                 return item.name === "second";
               },
               null,
-              6,
+              6
             );
             expect(index).toBe(-1);
           });
@@ -1607,7 +1607,7 @@ describe("Ext.util.Collection", function () {
                 return item.name === "third" || item.name === "ninth";
               },
               null,
-              5,
+              5
             );
             expect(index).toBe(8);
           });
@@ -1631,27 +1631,27 @@ describe("Ext.util.Collection", function () {
 
         it("should respect the root property", function () {
           collection = new Ext.util.Collection({
-            rootProperty: "root",
+            rootProperty: "root"
           });
           collection.add(
             {
               id: 1,
               root: {
-                name: "A",
-              },
+                name: "A"
+              }
             },
             {
               id: 2,
               root: {
-                name: "B",
-              },
+                name: "B"
+              }
             },
             {
               id: 3,
               root: {
-                name: "C",
-              },
-            },
+                name: "C"
+              }
+            }
           );
           var index = collection.findIndex("name", "B");
           expect(index).toBe(1);
@@ -1697,7 +1697,7 @@ describe("Ext.util.Collection", function () {
                   "second",
                   null,
                   null,
-                  false,
+                  false
                 );
                 expect(index).toBe(1);
                 index = collection.findIndex(
@@ -1705,7 +1705,7 @@ describe("Ext.util.Collection", function () {
                   "secon",
                   null,
                   null,
-                  false,
+                  false
                 );
                 expect(index).toBe(1);
                 index = collection.findIndex(
@@ -1713,7 +1713,7 @@ describe("Ext.util.Collection", function () {
                   "econd",
                   null,
                   null,
-                  false,
+                  false
                 );
                 expect(index).toBe(-1);
               });
@@ -1733,7 +1733,7 @@ describe("Ext.util.Collection", function () {
                   "con",
                   null,
                   false,
-                  false,
+                  false
                 );
                 expect(index).toBe(1);
               });
@@ -1752,7 +1752,7 @@ describe("Ext.util.Collection", function () {
                   null,
                   null,
                   null,
-                  false,
+                  false
                 );
                 expect(index).toBe(-1);
               });
@@ -1788,19 +1788,19 @@ describe("Ext.util.Collection", function () {
       collection = new Ext.util.Collection({
         keyFn: function (item) {
           return item.name;
-        },
+        }
       });
 
       collection.add([
         { id: 1, name: "Ed", code: "C", modifier: 10 },
         { id: 2, name: "Abe", code: "A", modifier: 100 },
-        { id: 3, name: "Edward", code: "B", modifier: 5 },
+        { id: 3, name: "Edward", code: "B", modifier: 5 }
       ]);
 
       filter = new Ext.util.Filter({
         filterFn: function (item) {
           return item.name.charAt(0) === "E";
-        },
+        }
       });
     });
 
@@ -1817,7 +1817,7 @@ describe("Ext.util.Collection", function () {
             return o.id;
           },
           mc1 = new Ext.util.Collection({
-            keyFn: fn,
+            keyFn: fn
           });
 
         var mc2 = mc1.createFiltered("name", "Ed");
@@ -1830,7 +1830,7 @@ describe("Ext.util.Collection", function () {
             return o.id;
           },
           mc1 = new Ext.util.Collection({
-            keyFn: fn,
+            keyFn: fn
           });
 
         var mc2 = mc1.createFiltered(function () {
@@ -1857,21 +1857,21 @@ describe("Ext.util.Collection", function () {
 
       it("should respect the root property", function () {
         collection = new Ext.util.Collection({
-          rootProperty: "root",
+          rootProperty: "root"
         });
         collection.add(
           {
             id: 1,
             root: {
-              name: "A",
-            },
+              name: "A"
+            }
           },
           {
             id: 2,
             root: {
-              name: "B",
-            },
-          },
+              name: "B"
+            }
+          }
         );
         filtered = collection.createFiltered("name", "A");
         expect(filtered.getCount()).toBe(1);
@@ -1887,27 +1887,27 @@ describe("Ext.util.Collection", function () {
 
       it("should respect the root property", function () {
         collection = new Ext.util.Collection({
-          rootProperty: "root",
+          rootProperty: "root"
         });
         collection.add(
           {
             id: 1,
             root: {
-              name: "A",
-            },
+              name: "A"
+            }
           },
           {
             id: 2,
             root: {
-              name: "B",
-            },
-          },
+              name: "B"
+            }
+          }
         );
         filtered = collection.createFiltered(
           new Ext.util.Filter({
             property: "name",
-            value: "A",
-          }),
+            value: "A"
+          })
         );
         expect(filtered.getCount()).toBe(1);
       });
@@ -1920,27 +1920,27 @@ describe("Ext.util.Collection", function () {
 
         it("should respect the root property", function () {
           collection = new Ext.util.Collection({
-            rootProperty: "root",
+            rootProperty: "root"
           });
           collection.add(
             {
               id: 1,
               root: {
-                name: "A",
-              },
+                name: "A"
+              }
             },
             {
               id: 2,
               root: {
-                name: "B",
-              },
-            },
+                name: "B"
+              }
+            }
           );
           filtered = collection.createFiltered([
             new Ext.util.Filter({
               property: "name",
-              value: "A",
-            }),
+              value: "A"
+            })
           ]);
           expect(filtered.getCount()).toBe(1);
         });
@@ -1972,7 +1972,7 @@ describe("Ext.util.Collection", function () {
         item6,
         item7,
         item8,
-        item9,
+        item9
       );
     });
 
@@ -2132,8 +2132,8 @@ describe("Ext.util.Collection", function () {
           listeners: {
             refresh: function () {
               ++refreshes;
-            },
-          },
+            }
+          }
         });
 
         expect(collection.filtered).toBe(true);
@@ -2151,7 +2151,7 @@ describe("Ext.util.Collection", function () {
           item6,
           item7,
           item8,
-          item9,
+          item9
         );
 
         expect(refreshes).toBe(0);
@@ -2180,8 +2180,8 @@ describe("Ext.util.Collection", function () {
           listeners: {
             refresh: function () {
               ++refreshes;
-            },
-          },
+            }
+          }
         });
 
         expect(collection.filtered).toBe(true);
@@ -2199,7 +2199,7 @@ describe("Ext.util.Collection", function () {
           item6,
           item7,
           item8,
-          item9,
+          item9
         );
         collection.add(item0, item10);
 
@@ -2242,8 +2242,8 @@ describe("Ext.util.Collection", function () {
           listeners: {
             refresh: function () {
               ++refreshes;
-            },
-          },
+            }
+          }
         });
 
         expect(collection.filtered).toBe(true);
@@ -2261,7 +2261,7 @@ describe("Ext.util.Collection", function () {
           item6,
           item7,
           item8,
-          item9,
+          item9
         );
         collection.add(item0, item10);
 
@@ -2318,7 +2318,7 @@ describe("Ext.util.Collection", function () {
         collection.getFilters().add({
           filterFn: function (item) {
             return Ext.String.startsWith(item.name, "a");
-          },
+          }
         });
         expect(count).toBe(2);
       });
@@ -2341,7 +2341,7 @@ describe("Ext.util.Collection", function () {
     function groupBy(property, direction) {
       collection.setGrouper({
         property: property || "group",
-        direction: direction,
+        direction: direction
       });
     }
 
@@ -2352,14 +2352,14 @@ describe("Ext.util.Collection", function () {
     function sortBy(property, direction) {
       collection.getSorters().add({
         property: property || "sortKey",
-        direction: direction,
+        direction: direction
       });
     }
 
     function filterBy(property, value) {
       collection.getFilters().add({
         property: property || "isFilter",
-        value: Ext.isDefined(value) ? value : true,
+        value: Ext.isDefined(value) ? value : true
       });
     }
 
@@ -2373,7 +2373,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 3,
           groupOrder: 3,
           isFilter: false,
-          age: 10,
+          age: 10
         }),
         (item1 = {
           id: 1,
@@ -2382,7 +2382,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 1,
           groupOrder: 3,
           isFilter: true,
-          age: 30,
+          age: 30
         }),
         (item2 = {
           id: 2,
@@ -2391,7 +2391,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 2,
           groupOrder: 3,
           isFilter: false,
-          age: 20,
+          age: 20
         }),
         (item3 = {
           id: 3,
@@ -2400,7 +2400,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 2,
           groupOrder: 1,
           isFilter: true,
-          age: 60,
+          age: 60
         }),
         (item4 = {
           id: 4,
@@ -2409,7 +2409,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 3,
           groupOrder: 1,
           isFilter: false,
-          age: 50,
+          age: 50
         }),
         (item5 = {
           id: 5,
@@ -2418,7 +2418,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 1,
           groupOrder: 1,
           isFilter: true,
-          age: 40,
+          age: 40
         }),
         (item6 = {
           id: 6,
@@ -2427,7 +2427,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 1,
           groupOrder: 4,
           isFilter: false,
-          age: 80,
+          age: 80
         }),
         (item7 = {
           id: 7,
@@ -2436,7 +2436,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 2,
           groupOrder: 4,
           isFilter: true,
-          age: 70,
+          age: 70
         }),
         (item8 = {
           id: 8,
@@ -2445,7 +2445,7 @@ describe("Ext.util.Collection", function () {
           sortKey: 3,
           groupOrder: 4,
           isFilter: false,
-          age: 90,
+          age: 90
         }),
         (item9 = {
           id: 9,
@@ -2454,8 +2454,8 @@ describe("Ext.util.Collection", function () {
           sortKey: 1,
           groupOrder: 2,
           isFilter: true,
-          age: 100,
-        }),
+          age: 100
+        })
       );
     });
 
@@ -2516,7 +2516,7 @@ describe("Ext.util.Collection", function () {
           groupBy();
           var o = {
               id: "new",
-              group: "D",
+              group: "D"
             },
             d;
 
@@ -2531,7 +2531,7 @@ describe("Ext.util.Collection", function () {
           expect(collection.getGroups().get("E")).toBeUndefined();
           var o = {
               id: "new",
-              group: "E",
+              group: "E"
             },
             e;
 
@@ -2545,11 +2545,11 @@ describe("Ext.util.Collection", function () {
           groupBy();
           var new1 = {
               id: "new1",
-              group: "D",
+              group: "D"
             },
             new2 = {
               id: "new2",
-              group: "C",
+              group: "C"
             };
 
           collection.add([new1, new2]);
@@ -2736,7 +2736,7 @@ describe("Ext.util.Collection", function () {
             item8,
             item0,
             item5,
-            item7,
+            item7
           );
           groupBy("group");
           expectGroupOrder("A", "B", "C", "D");
@@ -2754,7 +2754,7 @@ describe("Ext.util.Collection", function () {
             item8,
             item0,
             item5,
-            item7,
+            item7
           );
           groupBy("group", "DESC");
           expectGroupOrder("D", "C", "B", "A");
@@ -2772,7 +2772,7 @@ describe("Ext.util.Collection", function () {
             item8,
             item0,
             item5,
-            item7,
+            item7
           );
           groupBy("group");
           groupBy("group", "DESC");
@@ -2795,7 +2795,7 @@ describe("Ext.util.Collection", function () {
         it("should sort based on the sortProperty", function () {
           collection.setGrouper({
             property: "group",
-            sortProperty: "groupOrder",
+            sortProperty: "groupOrder"
           });
           expectGroupOrder(["B", "D", "A", "C"]);
         });
@@ -2811,7 +2811,7 @@ describe("Ext.util.Collection", function () {
               }
               // The order reversal is intentional here
               return a < b ? 1 : -1;
-            },
+            }
           });
           expectGroupOrder(["C", "A", "D", "B"]);
         });
@@ -2847,16 +2847,16 @@ describe("Ext.util.Collection", function () {
           collection.add(
             {
               id: 1,
-              name: "Abe",
+              name: "Abe"
             },
             {
               id: 2,
-              name: "Tommy",
-            },
+              name: "Tommy"
+            }
           );
           var nige = {
             id: 3,
-            name: "Nige",
+            name: "Nige"
           };
           groupBy("name");
           collection.add(nige);
@@ -2878,7 +2878,7 @@ describe("Ext.util.Collection", function () {
             item6,
             item7,
             item8,
-            item9,
+            item9
           ]);
         });
 
@@ -2916,7 +2916,7 @@ describe("Ext.util.Collection", function () {
             item7,
             item0,
             item4,
-            item8,
+            item8
           ]);
         });
       });
@@ -2990,7 +2990,7 @@ describe("Ext.util.Collection", function () {
         collection.getFilters().add({
           filterFn: function (o) {
             return o.name === "Item0";
-          },
+          }
         });
 
         var groups = collection.getGroups();
@@ -3008,13 +3008,13 @@ describe("Ext.util.Collection", function () {
           {
             filterFn: function (o) {
               return Ext.Array.indexOf(["Item0", "Item9"], o.name) > -1;
-            },
+            }
           },
           {
             filterFn: function (o) {
               return o.name === "Item0";
-            },
-          },
+            }
+          }
         );
 
         var groups = collection.getGroups();
@@ -3038,7 +3038,7 @@ describe("Ext.util.Collection", function () {
             A: item0,
             B: item3,
             C: item6,
-            D: item9,
+            D: item9
           });
         });
 
@@ -3054,7 +3054,7 @@ describe("Ext.util.Collection", function () {
             A: item2,
             B: item5,
             C: item8,
-            D: item9,
+            D: item9
           });
         });
 
@@ -3070,7 +3070,7 @@ describe("Ext.util.Collection", function () {
             A: 20,
             B: 50,
             C: 80,
-            D: 100,
+            D: 100
           });
         });
       });
@@ -3082,7 +3082,7 @@ describe("Ext.util.Collection", function () {
             A: [10, 30],
             B: [40, 60],
             C: [70, 90],
-            D: [100, 100],
+            D: [100, 100]
           });
         });
       });
@@ -3094,7 +3094,7 @@ describe("Ext.util.Collection", function () {
             A: 3,
             B: 3,
             C: 3,
-            D: 1,
+            D: 1
           });
         });
       });
@@ -3106,7 +3106,7 @@ describe("Ext.util.Collection", function () {
             A: [item0, item1],
             B: [item5, item3],
             C: [item7, item8],
-            D: [item9, item9],
+            D: [item9, item9]
           });
         });
       });
@@ -3118,7 +3118,7 @@ describe("Ext.util.Collection", function () {
             A: 30,
             B: 60,
             C: 90,
-            D: 100,
+            D: 100
           });
         });
       });
@@ -3130,7 +3130,7 @@ describe("Ext.util.Collection", function () {
             A: item1,
             B: item3,
             C: item8,
-            D: item9,
+            D: item9
           });
         });
       });
@@ -3142,7 +3142,7 @@ describe("Ext.util.Collection", function () {
             A: 10,
             B: 40,
             C: 70,
-            D: 100,
+            D: 100
           });
         });
       });
@@ -3154,7 +3154,7 @@ describe("Ext.util.Collection", function () {
             A: item0,
             B: item5,
             C: item7,
-            D: item9,
+            D: item9
           });
         });
       });
@@ -3166,7 +3166,7 @@ describe("Ext.util.Collection", function () {
             A: 60,
             B: 150,
             C: 240,
-            D: 100,
+            D: 100
           });
         });
       });
@@ -3191,7 +3191,7 @@ describe("Ext.util.Collection", function () {
             A: 120,
             B: 300,
             C: 480,
-            D: 200,
+            D: 200
           });
         });
 
@@ -3207,7 +3207,7 @@ describe("Ext.util.Collection", function () {
       it("should not destroy the sorters collection when removing a group", function () {
         var sorters = collection.getSorters();
         sorters.add({
-          property: "sortKey",
+          property: "sortKey"
         });
         groupBy();
         collection.remove(item9);
@@ -3217,7 +3217,7 @@ describe("Ext.util.Collection", function () {
       it("should not destroy the sorters collection when clearing grouping", function () {
         var sorters = collection.getSorters();
         sorters.add({
-          property: "sortKey",
+          property: "sortKey"
         });
         groupBy();
         clearGroup();
@@ -3227,7 +3227,7 @@ describe("Ext.util.Collection", function () {
       it("should clear endupdate listeners on the sorters as groups are removed", function () {
         var sorters = collection.getSorters();
         sorters.add({
-          property: "sortKey",
+          property: "sortKey"
         });
         groupBy();
         var count = sorters.events.endupdate.listeners.length;
@@ -3238,7 +3238,7 @@ describe("Ext.util.Collection", function () {
       it("should clear endupdate listeners on the sorters when groups are cleared", function () {
         var sorters = collection.getSorters();
         sorters.add({
-          property: "sortKey",
+          property: "sortKey"
         });
         var count = sorters.events.endupdate.listeners.length;
         groupBy();
@@ -3256,7 +3256,7 @@ describe("Ext.util.Collection", function () {
         name: "Edward",
         code: "B",
         modifier: 5,
-        firstInitial: "E",
+        firstInitial: "E"
       };
 
     function addItems(c) {
@@ -3267,7 +3267,7 @@ describe("Ext.util.Collection", function () {
       collection = new Ext.util.Collection({
         keyFn: function (item) {
           return item.name;
-        },
+        }
       });
 
       addItems(collection);
@@ -3281,7 +3281,7 @@ describe("Ext.util.Collection", function () {
         name: "Nige",
         code: "D",
         modifier: 75,
-        firstInitial: "N",
+        firstInitial: "N"
       });
       expect(collection.items[0].code).toBe("A");
       expect(collection.items[1].code).toBe("B");
@@ -3306,7 +3306,7 @@ describe("Ext.util.Collection", function () {
         name: "Nige",
         code: "D",
         modifier: 75,
-        firstInitial: "N",
+        firstInitial: "N"
       });
       expect(collection.items[0].code).toBe("D");
       expect(collection.items[1].code).toBe("A");
@@ -3335,8 +3335,8 @@ describe("Ext.util.Collection", function () {
         new Ext.util.Sorter({
           sorterFn: function (a, b) {
             return a.id * a.modifier - b.id * b.modifier;
-          },
-        }),
+          }
+        })
       );
 
       expect(collection.items[0].code).toBe("C");
@@ -3350,8 +3350,8 @@ describe("Ext.util.Collection", function () {
           direction: "DESC",
           sorterFn: function (a, b) {
             return a.id * a.modifier - b.id * b.modifier;
-          },
-        }),
+          }
+        })
       );
 
       expect(collection.items[2].code).toBe("C");
@@ -3363,7 +3363,7 @@ describe("Ext.util.Collection", function () {
       var calls = 0;
 
       collection = new Ext.util.Collection({
-        sorters: "name",
+        sorters: "name"
       });
 
       expect(collection.sorted).toBe(true);
@@ -3394,7 +3394,7 @@ describe("Ext.util.Collection", function () {
         sorts = 0;
 
       collection = new Ext.util.Collection({
-        sorters: "name",
+        sorters: "name"
       });
 
       expect(collection.sorted).toBe(true);
@@ -3405,7 +3405,7 @@ describe("Ext.util.Collection", function () {
         },
         sort: function () {
           ++sorts;
-        },
+        }
       });
 
       addItems(collection);
@@ -3416,7 +3416,7 @@ describe("Ext.util.Collection", function () {
       collection.add([
         { id: 10, name: "Nige" },
         { id: 20, name: "Evan" },
-        { id: 30, name: "Don" },
+        { id: 30, name: "Don" }
       ]);
 
       expect(adds.length).toBe(3);
@@ -3714,7 +3714,7 @@ describe("Ext.util.Collection", function () {
 
     it("should be able to remove a sorter instance", function () {
       var sorter = new Ext.util.Sorter({
-        property: "name",
+        property: "name"
       });
       var sorters = collection.getSorters();
       sorters.add(sorter);
@@ -3726,15 +3726,15 @@ describe("Ext.util.Collection", function () {
   describe("rootProperty", function () {
     var Ed = {
         id: 1,
-        data: { name: "Ed", code: "C", modifier: 10, firstInitial: "E" },
+        data: { name: "Ed", code: "C", modifier: 10, firstInitial: "E" }
       },
       Abe = {
         id: 2,
-        data: { name: "Abe", code: "A", modifier: 100, firstInitial: "A" },
+        data: { name: "Abe", code: "A", modifier: 100, firstInitial: "A" }
       },
       Edward = {
         id: 3,
-        data: { name: "Edward", code: "B", modifier: 5, firstInitial: "E" },
+        data: { name: "Edward", code: "B", modifier: 5, firstInitial: "E" }
       };
 
     function addItems(c) {
@@ -3747,9 +3747,9 @@ describe("Ext.util.Collection", function () {
           rootProperty: "data",
           extraKeys: {
             byName: {
-              property: "name",
-            },
-          },
+              property: "name"
+            }
+          }
         });
 
         addItems(collection);
@@ -3770,7 +3770,7 @@ describe("Ext.util.Collection", function () {
       it("should use the rootProperty", function () {
         collection = new Ext.util.Collection({
           rootProperty: "data",
-          sorters: "name",
+          sorters: "name"
         });
 
         addItems(collection);
@@ -3785,7 +3785,7 @@ describe("Ext.util.Collection", function () {
     describe("with dynamic sorters", function () {
       it("should use the rootProperty", function () {
         collection = new Ext.util.Collection({
-          rootProperty: "data",
+          rootProperty: "data"
         });
 
         addItems(collection);
@@ -3803,7 +3803,7 @@ describe("Ext.util.Collection", function () {
       it("should use the rootProperty", function () {
         collection = new Ext.util.Collection({
           rootProperty: "data",
-          filters: { property: "name", value: "E" },
+          filters: { property: "name", value: "E" }
         });
 
         addItems(collection);
@@ -3818,7 +3818,7 @@ describe("Ext.util.Collection", function () {
     describe("with dynamic filters", function () {
       it("should use the rootProperty", function () {
         collection = new Ext.util.Collection({
-          rootProperty: "data",
+          rootProperty: "data"
         });
 
         addItems(collection);
@@ -3837,7 +3837,7 @@ describe("Ext.util.Collection", function () {
         collection = new Ext.util.Collection({
           rootProperty: "data",
           filters: { property: "name", value: "E" },
-          sorters: "name",
+          sorters: "name"
         });
 
         addItems(collection);
@@ -3852,7 +3852,7 @@ describe("Ext.util.Collection", function () {
     describe("with dynamic filters and sorters", function () {
       it("should use the rootProperty", function () {
         collection = new Ext.util.Collection({
-          rootProperty: "data",
+          rootProperty: "data"
         });
 
         addItems(collection);
@@ -3899,9 +3899,9 @@ describe("Ext.util.Collection", function () {
           byUid: "uid",
           byFoo: {
             property: "foo",
-            unique: false,
-          },
-        },
+            unique: false
+          }
+        }
       });
 
       collection.add(
@@ -3915,7 +3915,7 @@ describe("Ext.util.Collection", function () {
         item7,
         item8,
         item9,
-        item10,
+        item10
       );
     });
 
@@ -4316,7 +4316,7 @@ describe("Ext.util.Collection", function () {
 
       beforeEach(function () {
         collection = new Ext.util.Collection({
-          rootProperty: "data",
+          rootProperty: "data"
         });
         collection.add(item0, item1, item2, item3);
       });
@@ -4438,7 +4438,7 @@ describe("Ext.util.Collection", function () {
       refresh: 0,
       remove: 0,
       sort: 0,
-      updatekey: 0,
+      updatekey: 0
     };
     var eventArgs, eventNames, argList;
     var Don, Evan, Nige, Phil, Kevin;
@@ -4482,7 +4482,7 @@ describe("Ext.util.Collection", function () {
     describe("unsorted and unfiltered", function () {
       beforeEach(function () {
         collection = new Ext.util.Collection({
-          listeners: resetEvents(),
+          listeners: resetEvents()
         });
 
         collection.add(Don, Evan, Nige);
@@ -4495,7 +4495,7 @@ describe("Ext.util.Collection", function () {
         collection.itemChanged(Don);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,itemchange,endupdate",
+          "beginupdate,beforeitemchange,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4525,7 +4525,7 @@ describe("Ext.util.Collection", function () {
         collection.itemChanged(Don, null, oldKey);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,updatekey,itemchange,endupdate",
+          "beginupdate,beforeitemchange,updatekey,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4551,7 +4551,7 @@ describe("Ext.util.Collection", function () {
       beforeEach(function () {
         collection = new Ext.util.Collection({
           listeners: resetEvents(),
-          sorters: "name",
+          sorters: "name"
         });
 
         collection.add(Don, Nige, Evan, Phil, Kevin);
@@ -4566,7 +4566,7 @@ describe("Ext.util.Collection", function () {
         collection.itemChanged(Don);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1];
@@ -4595,7 +4595,7 @@ describe("Ext.util.Collection", function () {
         collection.itemChanged(Don, null, oldKey);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,updatekey,itemchange,endupdate",
+          "beginupdate,beforeitemchange,updatekey,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4625,12 +4625,12 @@ describe("Ext.util.Collection", function () {
           add: function (coll, adds) {
             insertionPoint = adds.at;
           },
-          single: true,
+          single: true
         });
         collection.itemChanged(Don);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4664,12 +4664,12 @@ describe("Ext.util.Collection", function () {
           add: function (coll, adds) {
             insertionPoint = adds.at;
           },
-          single: true,
+          single: true
         });
         collection.itemChanged(Don);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4703,12 +4703,12 @@ describe("Ext.util.Collection", function () {
           add: function (coll, adds) {
             insertionPoint = adds.at;
           },
-          single: true,
+          single: true
         });
         collection.itemChanged(Evan);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4742,12 +4742,12 @@ describe("Ext.util.Collection", function () {
           add: function (coll, adds) {
             insertionPoint = adds.at;
           },
-          single: true,
+          single: true
         });
         collection.itemChanged(Phil);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,remove,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4786,7 +4786,7 @@ describe("Ext.util.Collection", function () {
       beforeEach(function () {
         collection = new Ext.util.Collection({
           listeners: resetEvents(),
-          filters: { property: "foo", value: 50, operator: "<=" },
+          filters: { property: "foo", value: 50, operator: "<=" }
         });
 
         collection.add(Don, Nige, Evan);
@@ -4807,7 +4807,7 @@ describe("Ext.util.Collection", function () {
         expect(collection.items[0]).toBe(Nige);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,remove,filtereditemchange,endupdate",
+          "beginupdate,beforeitemchange,remove,filtereditemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4838,7 +4838,7 @@ describe("Ext.util.Collection", function () {
         expect(collection.items[2]).toBe(Evan);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4871,7 +4871,7 @@ describe("Ext.util.Collection", function () {
         collection = new Ext.util.Collection({
           listeners: resetEvents(),
           filters: { property: "foo", value: 50, operator: "<=" },
-          sorters: { property: "name", direction: "DESC" },
+          sorters: { property: "name", direction: "DESC" }
         });
 
         collection.add(Don, Nige, Evan);
@@ -4892,7 +4892,7 @@ describe("Ext.util.Collection", function () {
         //expect(collection.items[1]).toBe(Don);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,remove,filtereditemchange,endupdate",
+          "beginupdate,beforeitemchange,remove,filtereditemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4923,7 +4923,7 @@ describe("Ext.util.Collection", function () {
         expect(collection.items[2]).toBe(Don);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4955,7 +4955,7 @@ describe("Ext.util.Collection", function () {
         expect(collection.items[2]).toBe(Don);
 
         expect(eventNames.join(",")).toBe(
-          "beginupdate,beforeitemchange,add,itemchange,endupdate",
+          "beginupdate,beforeitemchange,add,itemchange,endupdate"
         );
 
         var beforeitemchange = eventArgs[1][1],
@@ -4984,7 +4984,7 @@ describe("Ext.util.Collection", function () {
 
         source.add(Don);
         collection = new Ext.util.Collection({
-          source: source,
+          source: source
         });
         collection.onCollectionItemChange = spy;
 
@@ -5004,7 +5004,7 @@ describe("Ext.util.Collection", function () {
         collection.add([
           { id: 1, amount: 10, name: "Ed" },
           { id: 2, amount: 20, name: "Abe" },
-          { id: 3, amount: 20, name: "Ed" },
+          { id: 3, amount: 20, name: "Ed" }
         ]);
       });
 
@@ -5022,7 +5022,7 @@ describe("Ext.util.Collection", function () {
         collection.add([
           { id: 1, data: { amount: 10, name: "Ed" } },
           { id: 2, data: { amount: 20, name: "Abe" } },
-          { id: 3, data: { amount: 20, name: "Ed" } },
+          { id: 3, data: { amount: 20, name: "Ed" } }
         ]);
       });
 
@@ -5039,7 +5039,7 @@ describe("Ext.util.Collection", function () {
       var mc1 = new Ext.util.Collection({
           keyFn: function (object) {
             return object;
-          },
+          }
         }),
         mc2 = new Ext.util.Collection();
 
@@ -5060,13 +5060,13 @@ describe("Ext.util.Collection", function () {
         { id: 1, text: "foo" },
         { id: 2, text: "bar" },
         { id: 1, text: "bletch" },
-        { id: 2, text: "zarg" },
+        { id: 2, text: "zarg" }
       );
 
       expect(log).toEqual([
         "beginupdate",
         'add ["bletch","zarg"] at 0 w/keys [1,2]',
-        "endupdate",
+        "endupdate"
       ]);
 
       expect(mc1.getCount()).toBe(2);
@@ -5080,12 +5080,12 @@ describe("Ext.util.Collection", function () {
       var Item = Ext.define(null, {
         isItem: true,
         config: {
-          id: null,
+          id: null
         },
 
         constructor: function (config) {
           this.initConfig(config);
-        },
+        }
       });
       var calls = 0;
       var decoded = 0;
@@ -5098,7 +5098,7 @@ describe("Ext.util.Collection", function () {
             item = new Item(item);
           }
           return item;
-        },
+        }
       });
 
       mc.add({ id: 42 }, new Item({ id: "abc" }));

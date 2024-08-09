@@ -40,7 +40,7 @@ Ext.define("Ext.device.Geolocation", {
   requires: [
     "Ext.device.Communicator",
     "Ext.device.geolocation.Cordova",
-    "Ext.device.geolocation.Simulator",
+    "Ext.device.geolocation.Simulator"
   ],
 
   constructor: function () {
@@ -52,5 +52,5 @@ Ext.define("Ext.device.Geolocation", {
     }
 
     return Ext.create("Ext.device.geolocation.Simulator");
-  },
+  }
 });

@@ -31,5 +31,5 @@ Ext.define("Ext.device.connection.Cordova", {
   getType: function () {
     this.syncOnline();
     return this._type;
-  },
+  }
 });

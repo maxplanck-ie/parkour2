@@ -10,7 +10,7 @@ describe("Ext.layout.container.Table", function () {
           xtype: "panel",
           layout: {
             type: "table",
-            columns: 1,
+            columns: 1
           },
           items: [
             {
@@ -18,10 +18,10 @@ describe("Ext.layout.container.Table", function () {
               itemId: "item",
               xtype: "panel",
               title: "Lots of Spanning",
-              html: '<div style="width: 100px;"></div>',
-            },
-          ],
-        },
+              html: '<div style="width: 100px;"></div>'
+            }
+          ]
+        }
       });
       // Tolerate 100-104 range due to browser diffs
       expect(ct.down("#item").getWidth()).toBeGreaterThan(99);

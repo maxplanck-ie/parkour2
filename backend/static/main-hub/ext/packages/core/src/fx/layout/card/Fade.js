@@ -11,12 +11,12 @@ Ext.define("Ext.fx.layout.card.Fade", {
 
     inAnimation: {
       type: "fade",
-      easing: "ease-out",
+      easing: "ease-out"
     },
     outAnimation: {
       type: "fade",
       easing: "ease-out",
-      out: true,
-    },
-  },
+      out: true
+    }
+  }
 });

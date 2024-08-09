@@ -76,7 +76,7 @@ Ext.define(
             };
           }
         });
-      },
+      }
     },
 
     constructor: function (elements, /* private */ skipValidation) {
@@ -446,12 +446,12 @@ Ext.define(
       // TOUCH-4761: ensure Element#destroy() gets called and not Base#destroy()
       return this.invoke("destroy", arguments);
       this.callParent();
-    },
+    }
   },
   function (CompositeElementLite) {
     var prototype = CompositeElementLite.prototype;
 
     CompositeElementLite.importElementMethods();
     prototype.on = prototype.addListener;
-  },
+  }
 );

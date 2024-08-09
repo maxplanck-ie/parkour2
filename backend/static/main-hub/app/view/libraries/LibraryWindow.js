@@ -3,7 +3,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
 
   requires: [
     "MainHub.view.libraries.LibraryWindowController",
-    "Ext.ux.FileGridField",
+    "Ext.ux.FileGridField"
   ],
 
   controller: "libraries-librarywindow",
@@ -27,10 +27,10 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
           layout: {
             type: "vbox",
             align: "center",
-            pack: "center",
+            pack: "center"
           },
           defaults: {
-            border: 0,
+            border: 0
           },
           items: [
             {
@@ -40,27 +40,27 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
               defaults: {
                 margin: 10,
                 width: 100,
-                height: 40,
+                height: 40
               },
               items: [
                 {
                   id: "libraryCardBtn",
                   itemId: "libraryCardBtn",
-                  text: "Library",
+                  text: "Library"
                 },
                 {
                   id: "sampleCardBtn",
                   itemId: "sampleCardBtn",
-                  text: "Sample",
-                },
-              ],
+                  text: "Sample"
+                }
+              ]
             },
             {
               id: "cardHelpText",
               width: 350,
-              html: '<p style="text-align:center">Choose <strong>Library</strong> if samples for sequencing are completely prepared by user.<br><br>Choose <strong>Sample</strong> if libraries are prepared by facility.</p>',
-            },
-          ],
+              html: '<p style="text-align:center">Choose <strong>Library</strong> if samples for sequencing are completely prepared by user.<br><br>Choose <strong>Sample</strong> if libraries are prepared by facility.</p>'
+            }
+          ]
         },
         {
           xtype: "container",
@@ -78,10 +78,10 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                 textAlign: "center",
                 fontWeight: "bold",
                 fontSize: "50px",
-                color: "#757575",
+                color: "#757575"
               },
               height: 70,
-              hidden: true,
+              hidden: true
             },
             {
               xtype: "form",
@@ -95,7 +95,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                 allowBlank: false,
                 labelWidth: 220,
                 labelStyle: "padding: 5px 0 0 0",
-                anchor: "100%",
+                anchor: "100%"
               },
 
               items: [
@@ -106,7 +106,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Name <sup><strong><span class="field-tooltip" tooltip-text="Name must be unique for assigned project. Field must contain only A-Za-z0-9 as well as - and _">[?]</span></strong></sup>',
                   emptyText: "Name",
                   regex: new RegExp("^[A-Za-z0-9_-]+$"),
-                  regexText: "Only A-Za-z0-9 as well as _ and - are allowed",
+                  regexText: "Only A-Za-z0-9 as well as _ and - are allowed"
                 },
                 {
                   xtype: "combobox",
@@ -120,12 +120,12 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Protocol for Library Preparation <sup><strong><span class="field-tooltip" tooltip-text="Select library construction protocol from predefined list or select other and specify in the comments field (below)">[?]</span></strong></sup>',
                   emptyText: "Protocol for Library Preparation",
                   store: "libraryProtocolsStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "container",
                   id: "libraryProtocolInfo",
-                  margin: "0 0 15px 15px",
+                  margin: "0 0 15px 15px"
                 },
                 {
                   xtype: "combobox",
@@ -140,14 +140,14 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Library Type",
                   store: "libraryTypesStore",
                   forceSelection: true,
-                  disabled: true,
+                  disabled: true
                 },
                 {
                   xtype: "numberfield",
                   name: "concentration",
                   fieldLabel: "Concentration (ng/µl)",
                   emptyText: "Concentration (ng/µl)",
-                  minValue: 0,
+                  minValue: 0
                 },
                 {
                   xtype: "numberfield",
@@ -156,7 +156,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Mean Fragment Size (bp) <sup><strong><span class="field-tooltip" tooltip-text="Specify mean fragments size of library, upload Bioanalyzer or Fragmentanalyzer files">[?]</span></strong></sup>',
                   emptyText: "Mean Fragment Size (bp)",
                   minValue: 0,
-                  allowDecimals: false,
+                  allowDecimals: false
                 },
                 {
                   xtype: "combobox",
@@ -170,7 +170,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Index Type <sup><strong><span class="field-tooltip" tooltip-text="Select from list with predefined options or select other and specify in the comments field (below)">[?]</span></strong></sup>',
                   emptyText: "Index Type",
                   store: "IndexTypes",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "combobox",
@@ -189,11 +189,11 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     fields: [
                       {
                         name: "num",
-                        type: "int",
-                      },
+                        type: "int"
+                      }
                     ],
-                    data: [],
-                  }),
+                    data: []
+                  })
                 },
                 {
                   xtype: "combobox",
@@ -203,7 +203,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     "Ext.XTemplate",
                     '<tpl for=".">',
                     "{index}",
-                    "</tpl>",
+                    "</tpl>"
                   ),
                   valueField: "index",
                   name: "index_i7",
@@ -213,12 +213,12 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Index 1 (I7) <sup><strong><span class="field-tooltip" tooltip-text="Select from predefined list; make sure the displayed index is the sequence used for barcoding. Or enter sequence of index used for barcoding (typically 6 nucleotides)">[?]</span></strong></sup>',
                   emptyText: "Index 1 (I7)",
                   regex: new RegExp(
-                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$",
+                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
                   ),
                   regexText:
                     "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
                   store: "indexI7Store",
-                  disabled: true,
+                  disabled: true
                 },
                 {
                   xtype: "combobox",
@@ -228,7 +228,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     "Ext.XTemplate",
                     '<tpl for=".">',
                     "{index}",
-                    "</tpl>",
+                    "</tpl>"
                   ),
                   valueField: "index",
                   name: "index_i5",
@@ -238,12 +238,12 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Index 2 (I5) <sup><strong><span class="field-tooltip" tooltip-text="Select from predefined list; make sure the displayed index is the sequence used for barcoding. Or enter sequence of index used for barcoding (typically 6 nucleotides)">[?]</span></strong></sup>',
                   emptyText: "Index 2 (I5)",
                   regex: new RegExp(
-                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$",
+                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
                   ),
                   regexText:
                     "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
                   store: "indexI5Store",
-                  disabled: true,
+                  disabled: true
                 },
                 {
                   xtype: "combobox",
@@ -256,7 +256,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Read Length <sup><strong><span class="field-tooltip" tooltip-text="Select from list with predefined options or select other and specify in the comments field (below)">[?]</span></strong></sup>',
                   emptyText: "Read Length",
                   store: "readLengthsStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "numberfield",
@@ -264,7 +264,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   fieldLabel: "Sequencing Depth (M)",
                   emptyText: "Sequencing Depth (M)",
                   minValue: 1,
-                  allowDecimals: false,
+                  allowDecimals: false
                 },
                 {
                   xtype: "numberfield",
@@ -273,7 +273,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Number of amplification cycles <sup><strong><span class="field-tooltip" tooltip-text="Number of PCR cycles done for library amplification">[?]</span></strong></sup>',
                   emptyText: "Number of amplification cycles",
                   allowDecimals: false,
-                  minValue: 0,
+                  minValue: 0
                 },
                 {
                   xtype: "fieldcontainer",
@@ -292,15 +292,15 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                       inputValue: true,
                       id: "equalRepresentationRadio1",
                       checked: true,
-                      margin: "0 15px 0 0",
+                      margin: "0 15px 0 0"
                     },
                     {
                       boxLabel: "No",
                       name: "equal_representation_nucleotides",
                       inputValue: false,
-                      id: "equalRepresentationRadio2",
-                    },
-                  ],
+                      id: "equalRepresentationRadio2"
+                    }
+                  ]
                 },
                 {
                   xtype: "numberfield",
@@ -309,7 +309,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'qPCR Result (nM) <sup><strong><span class="field-tooltip" tooltip-text="Use this field if qPCR was done for library quantification">[?]</span></strong></sup>',
                   emptyText: "qPCR Result (nM)",
                   allowBlank: true,
-                  minValue: 1,
+                  minValue: 1
                 },
                 {
                   xtype: "combobox",
@@ -321,7 +321,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   fieldLabel: "Concentration Determined by",
                   emptyText: "Concentration Determined by",
                   store: "concentrationMethodsStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "combobox",
@@ -334,7 +334,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Organism <sup><strong><span class="field-tooltip" tooltip-text="Select from list with predefined options or select other and specify in the comments field (below)">[?]</span></strong></sup>',
                   emptyText: "Organism",
                   store: "organismsStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "textarea",
@@ -342,11 +342,11 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   fieldLabel: "Comments",
                   emptyText: "Comments",
                   allowBlank: true,
-                  height: 150,
-                },
-              ],
-            },
-          ],
+                  height: 150
+                }
+              ]
+            }
+          ]
         },
         {
           xtype: "container", // Sample card
@@ -364,10 +364,10 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                 textAlign: "center",
                 fontWeight: "bold",
                 fontSize: "50px",
-                color: "#757575",
+                color: "#757575"
               },
               height: 70,
-              hidden: true,
+              hidden: true
             },
             {
               xtype: "form",
@@ -381,7 +381,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                 allowBlank: false,
                 labelWidth: 220,
                 labelStyle: "padding: 5px 0 0 0",
-                anchor: "100%",
+                anchor: "100%"
               },
 
               items: [
@@ -392,7 +392,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Name <sup><strong><span class="field-tooltip" tooltip-text="Name must be unique for assigned project. Field must contain only A-Za-z0-9 as well as - and _">[?]</span></strong></sup>',
                   emptyText: "Name",
                   regex: new RegExp("^[A-Za-z0-9_-]+$"),
-                  regexText: "Only A-Za-z0-9 as well as _ and - are allowed",
+                  regexText: "Only A-Za-z0-9 as well as _ and - are allowed"
                 },
                 {
                   xtype: "combobox",
@@ -403,10 +403,10 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   valueField: "id",
                   name: "nucleic_acid_type",
                   fieldLabel:
-                    'Nucleic Acid Type <sup><strong><span class="field-tooltip" tooltip-text="Select nucleic acid type of your sample or select other and specify in the comments field (below)">[?]</span></strong></sup>',
-                  emptyText: "Nucleic Acid Type",
+                    'Input Type <sup><strong><span class="field-tooltip" tooltip-text="Select Input Type of your sample or select other and specify in the comments field (below)">[?]</span></strong></sup>',
+                  emptyText: "Input Type",
                   store: "nucleicAcidTypesStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "combobox",
@@ -421,12 +421,12 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Protocol for Library Preparation",
                   store: "libraryProtocolsStore",
                   forceSelection: true,
-                  disabled: true,
+                  disabled: true
                 },
                 {
                   xtype: "container",
                   id: "sampleProtocolInfo",
-                  margin: "0 0 15px 15px",
+                  margin: "0 0 15px 15px"
                 },
                 {
                   xtype: "combobox",
@@ -441,14 +441,14 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Library Type",
                   store: "libraryTypesStore",
                   forceSelection: true,
-                  disabled: true,
+                  disabled: true
                 },
                 {
                   xtype: "numberfield",
                   name: "concentration",
                   fieldLabel: "Concentration (ng/µl)",
                   emptyText: "Concentration (ng/µl)",
-                  minValue: 0,
+                  minValue: 0
                 },
                 {
                   xtype: "combobox",
@@ -459,7 +459,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   displayField: "name",
                   displayTpl: Ext.create(
                     "Ext.XTemplate",
-                    '<tpl for=".">{value}</tpl>',
+                    '<tpl for=".">{value}</tpl>'
                   ),
                   name: "rna_quality",
                   fieldLabel:
@@ -468,7 +468,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   store: "rnaQualityStore",
                   regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
                   regexText: "Only values between 1 and 10 are allowed.",
-                  disabled: true,
+                  disabled: true
                 },
                 {
                   xtype: "combobox",
@@ -481,7 +481,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Read Length <sup><strong><span class="field-tooltip" tooltip-text="Select from list with predefined options or select other and specify in the comments field (below)">[?]</span></strong></sup>',
                   emptyText: "Read Length",
                   store: "readLengthsStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "numberfield",
@@ -489,7 +489,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   fieldLabel: "Sequencing Depth (M)",
                   emptyText: "Sequencing Depth (M)",
                   minValue: 1,
-                  allowDecimals: false,
+                  allowDecimals: false
                 },
                 {
                   xtype: "numberfield",
@@ -499,7 +499,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Sample amplification (cycles)",
                   allowDecimals: false,
                   minValue: 0,
-                  allowBlank: true,
+                  allowBlank: true
                 },
                 {
                   xtype: "fieldcontainer",
@@ -515,15 +515,15 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                       inputValue: true,
                       id: "equalRepresentationRadio3",
                       checked: true,
-                      margin: "0 15px 0 0",
+                      margin: "0 15px 0 0"
                     },
                     {
                       boxLabel: "No",
                       name: "equal_representation_nucleotides",
                       inputValue: false,
-                      id: "equalRepresentationRadio4",
-                    },
-                  ],
+                      id: "equalRepresentationRadio4"
+                    }
+                  ]
                 },
                 {
                   xtype: "combobox",
@@ -535,7 +535,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   fieldLabel: "Concentration Determined by",
                   emptyText: "Concentration Determined by",
                   store: "concentrationMethodsStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "combobox",
@@ -548,7 +548,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Organism <sup><strong><span class="field-tooltip" tooltip-text="Select from list with predefined options or select other and specify in the comments field (below)">[?]</span></strong></sup>',
                   emptyText: "Organism",
                   store: "organismsStore",
-                  forceSelection: true,
+                  forceSelection: true
                 },
                 {
                   xtype: "textarea",
@@ -556,14 +556,14 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   fieldLabel: "Comments",
                   emptyText: "Comments",
                   allowBlank: true,
-                  height: 150,
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
+                  height: 150
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   dockedItems: [
@@ -578,7 +578,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
           id: "saveAndAddWndBtn",
           text: "Save and Add another",
           iconCls: "fa fa-floppy-o fa-lg",
-          hidden: true,
+          hidden: true
         },
         {
           xtype: "button",
@@ -586,10 +586,10 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
           id: "addWndBtn",
           text: "Save and Close",
           iconCls: "fa fa-floppy-o fa-lg",
-          hidden: true,
-        },
+          hidden: true
+        }
       ],
-      hidden: true,
-    },
-  ],
+      hidden: true
+    }
+  ]
 });

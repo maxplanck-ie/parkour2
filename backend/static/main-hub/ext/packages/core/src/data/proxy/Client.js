@@ -21,8 +21,8 @@ Ext.define("Ext.data.proxy.Client", {
   clear: function () {
     //<debug>
     Ext.raise(
-      "The Ext.data.proxy.Client subclass that you are using has not defined a 'clear' function. See src/data/ClientProxy.js for details.",
+      "The Ext.data.proxy.Client subclass that you are using has not defined a 'clear' function. See src/data/ClientProxy.js for details."
     );
     //</debug>
-  },
+  }
 });

@@ -6,8 +6,8 @@ Ext.define("Ext.theme.blackberry.Messagebox", {
     buttonToolbar: {
       defaults: {
         flex: 1,
-        ui: "action",
-      },
-    },
-  },
+        ui: "action"
+      }
+    }
+  }
 });

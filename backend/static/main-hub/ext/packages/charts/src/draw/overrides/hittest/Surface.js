@@ -49,5 +49,5 @@ Ext.define("Ext.draw.overrides.hittest.Surface", {
   hitTestEvent: function (event, options) {
     var xy = this.getEventXY(event);
     return this.hitTest(xy, options);
-  },
+  }
 });

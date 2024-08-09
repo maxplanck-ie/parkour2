@@ -94,20 +94,20 @@ Ext.define("Ext.chart.series.Bar3D", {
           y: 0,
           width: 0,
           height: 0,
-          depth: 0,
-        },
-      },
+          depth: 0
+        }
+      }
     },
     highlightCfg: {
-      opacity: 0.8,
-    },
+      opacity: 0.8
+    }
   },
 
   updateXAxis: function (xAxis, oldXAxis) {
     //<debug>
     if (xAxis.type !== "category3d") {
       Ext.raise(
-        "'bar3d' series should be used with a 'category3d' axis. Please refer to the 'bar3d' series docs.",
+        "'bar3d' series should be used with a 'category3d' axis. Please refer to the 'bar3d' series docs."
       );
     }
     //</debug>
@@ -172,7 +172,7 @@ Ext.define("Ext.chart.series.Bar3D", {
               record: store.getData().items[index],
               // Handle the case where we're stacked but a single segment
               field: typeof yField === "string" ? yField : yField[i],
-              sprite: sprite,
+              sprite: sprite
             };
             return item;
           }
@@ -180,5 +180,5 @@ Ext.define("Ext.chart.series.Bar3D", {
       }
       return null;
     }
-  },
+  }
 });

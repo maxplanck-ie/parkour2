@@ -16,11 +16,11 @@ describe("Ext.form.Panel", function () {
 
     beforeEach(function () {
       field = Ext.create("Ext.field.Text", {
-        name: "test",
+        name: "test"
       });
 
       create({
-        items: [field],
+        items: [field]
       });
     });
 
@@ -42,13 +42,13 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "textfield",
             name: "one",
-            value: "test1",
-          },
-        ],
+            value: "test1"
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        one: "test1",
+        one: "test1"
       });
     });
 
@@ -58,19 +58,19 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "textfield",
             name: "one",
-            value: "test1",
+            value: "test1"
           },
           {
             xtype: "textfield",
             name: "two",
-            value: "test2",
-          },
-        ],
+            value: "test2"
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
         one: "test1",
-        two: "test2",
+        two: "test2"
       });
     });
 
@@ -80,18 +80,18 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "textfield",
             name: "one[]",
-            value: "test1",
+            value: "test1"
           },
           {
             xtype: "textfield",
             name: "one[]",
-            value: "test2",
-          },
-        ],
+            value: "test2"
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        "one[]": ["test1", "test2"],
+        "one[]": ["test1", "test2"]
       });
     });
 
@@ -101,18 +101,18 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "textfield",
             name: "one",
-            value: "test1",
+            value: "test1"
           },
           {
             xtype: "textfield",
             name: "one",
-            value: "test2",
-          },
-        ],
+            value: "test2"
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        one: ["test1", "test2"],
+        one: ["test1", "test2"]
       });
     });
 
@@ -122,18 +122,18 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "checkboxfield",
             name: "one",
-            checked: true,
+            checked: true
           },
           {
             xtype: "checkboxfield",
-            name: "two",
-          },
-        ],
+            name: "two"
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
         one: true,
-        two: null,
+        two: null
       });
     });
 
@@ -144,19 +144,19 @@ describe("Ext.form.Panel", function () {
             xtype: "checkboxfield",
             name: "one",
             value: "blue",
-            checked: true,
+            checked: true
           },
           {
             xtype: "checkboxfield",
             name: "one",
             value: "red",
-            checked: true,
-          },
-        ],
+            checked: true
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        one: ["blue", "red"],
+        one: ["blue", "red"]
       });
     });
 
@@ -166,24 +166,24 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "radiofield",
             name: "color",
-            value: "red",
+            value: "red"
           },
           {
             xtype: "radiofield",
             name: "color",
             checked: true,
-            value: "green",
+            value: "green"
           },
           {
             xtype: "radiofield",
             name: "color",
-            value: "blue",
-          },
-        ],
+            value: "blue"
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        color: "green",
+        color: "green"
       });
     });
 
@@ -193,19 +193,19 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "radiofield",
             name: "color",
-            value: 1,
+            value: 1
           },
           {
             xtype: "radiofield",
             name: "color",
             checked: true,
-            value: 0,
-          },
-        ],
+            value: 0
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        color: 0,
+        color: 0
       });
     });
 
@@ -216,18 +216,18 @@ describe("Ext.form.Panel", function () {
             xtype: "radiofield",
             name: "color",
             value: 1,
-            checked: true,
+            checked: true
           },
           {
             xtype: "radiofield",
             name: "color",
-            value: 0,
-          },
-        ],
+            value: 0
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        color: 1,
+        color: 1
       });
     });
 
@@ -239,18 +239,18 @@ describe("Ext.form.Panel", function () {
               xtype: "textfield",
               name: "one",
               disabled: true,
-              value: "test1",
+              value: "test1"
             },
             {
               xtype: "textfield",
               name: "two",
-              value: "test2",
-            },
-          ],
+              value: "test2"
+            }
+          ]
         });
 
         expect(panel.getValues(true)).toEqual({
-          two: "test2",
+          two: "test2"
         });
       });
 
@@ -261,24 +261,24 @@ describe("Ext.form.Panel", function () {
               xtype: "textfield",
               name: "one",
               disabled: true,
-              value: "test1",
+              value: "test1"
             },
             {
               xtype: "textfield",
               name: "two",
-              value: "test2",
+              value: "test2"
             },
             {
               xtype: "textfield",
               name: "three",
-              value: "test3",
-            },
-          ],
+              value: "test3"
+            }
+          ]
         });
 
         expect(panel.getValues(true)).toEqual({
           two: "test2",
-          three: "test3",
+          three: "test3"
         });
       });
     });
@@ -290,17 +290,17 @@ describe("Ext.form.Panel", function () {
         items: [
           {
             xtype: "textfield",
-            name: "one",
-          },
-        ],
+            name: "one"
+          }
+        ]
       });
 
       panel.setValues({
-        one: "test1",
+        one: "test1"
       });
 
       expect(panel.getValues()).toEqual({
-        one: "test1",
+        one: "test1"
       });
     });
 
@@ -309,23 +309,23 @@ describe("Ext.form.Panel", function () {
         items: [
           {
             xtype: "textfield",
-            name: "one",
+            name: "one"
           },
           {
             xtype: "textfield",
-            name: "two",
-          },
-        ],
+            name: "two"
+          }
+        ]
       });
 
       panel.setValues({
         one: "test1",
-        two: "test2",
+        two: "test2"
       });
 
       expect(panel.getValues()).toEqual({
         one: "test1",
-        two: "test2",
+        two: "test2"
       });
     });
 
@@ -334,21 +334,21 @@ describe("Ext.form.Panel", function () {
         items: [
           {
             xtype: "textfield",
-            name: "one[]",
+            name: "one[]"
           },
           {
             xtype: "textfield",
-            name: "one[]",
-          },
-        ],
+            name: "one[]"
+          }
+        ]
       });
 
       panel.setValues({
-        "one[]": ["test1", "test2"],
+        "one[]": ["test1", "test2"]
       });
 
       expect(panel.getValues()).toEqual({
-        "one[]": ["test1", "test2"],
+        "one[]": ["test1", "test2"]
       });
     });
 
@@ -357,21 +357,21 @@ describe("Ext.form.Panel", function () {
         items: [
           {
             xtype: "textfield",
-            name: "one[]",
+            name: "one[]"
           },
           {
             xtype: "textfield",
-            name: "one[]",
-          },
-        ],
+            name: "one[]"
+          }
+        ]
       });
 
       panel.setValues({
-        "one[]": ["test1"],
+        "one[]": ["test1"]
       });
 
       expect(panel.getValues()).toEqual({
-        "one[]": ["test1", ""],
+        "one[]": ["test1", ""]
       });
     });
 
@@ -380,22 +380,22 @@ describe("Ext.form.Panel", function () {
         items: [
           {
             xtype: "checkboxfield",
-            name: "one",
+            name: "one"
           },
           {
             xtype: "checkboxfield",
-            name: "two",
-          },
-        ],
+            name: "two"
+          }
+        ]
       });
 
       panel.setValues({
-        one: true,
+        one: true
       });
 
       expect(panel.getValues()).toEqual({
         one: true,
-        two: null,
+        two: null
       });
     });
 
@@ -404,17 +404,17 @@ describe("Ext.form.Panel", function () {
         items: [
           {
             xtype: "checkboxfield",
-            name: "one",
-          },
-        ],
+            name: "one"
+          }
+        ]
       });
 
       panel.setValues({
-        one: true,
+        one: true
       });
 
       expect(panel.getValues()).toEqual({
-        one: true,
+        one: true
       });
     });
 
@@ -424,21 +424,21 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "checkboxfield",
             name: "one",
-            checked: true,
-          },
-        ],
+            checked: true
+          }
+        ]
       });
 
       expect(panel.getValues()).toEqual({
-        one: true,
+        one: true
       });
 
       panel.setValues({
-        one: false,
+        one: false
       });
 
       expect(panel.getValues()).toEqual({
-        one: null,
+        one: null
       });
     });
 
@@ -449,23 +449,23 @@ describe("Ext.form.Panel", function () {
             xtype: "checkboxfield",
             name: "one",
             value: "blue",
-            checked: true,
+            checked: true
           },
           {
             xtype: "checkboxfield",
             name: "one",
             value: "red",
-            checked: true,
-          },
-        ],
+            checked: true
+          }
+        ]
       });
 
       panel.setValues({
-        one: ["blue", "red"],
+        one: ["blue", "red"]
       });
 
       expect(panel.getValues()).toEqual({
-        one: ["blue", "red"],
+        one: ["blue", "red"]
       });
     });
   });
@@ -478,48 +478,48 @@ describe("Ext.form.Panel", function () {
         methodCfg = Ext.apply(
           {
             name: "load",
-            len: 0,
+            len: 0
           },
-          methodCfg,
+          methodCfg
         );
 
         loadSpy.directCfg = loadSpy.$directCfg = {
           action: "TestDirect",
-          method: new Ext.direct.RemotingMethod(methodCfg),
+          method: new Ext.direct.RemotingMethod(methodCfg)
         };
 
         window.TestDirect = {
-          load: loadSpy,
+          load: loadSpy
         };
 
         panelCfg = Ext.apply(
           {
             api: {
-              load: loadSpy,
+              load: loadSpy
             },
 
             items: [
               {
                 xtype: "checkboxfield",
-                name: "checkbox",
+                name: "checkbox"
               },
               {
                 xtype: "radiofield",
                 name: "radio",
-                value: "one",
+                value: "one"
               },
               {
                 xtype: "radiofield",
                 name: "radio",
-                value: "two",
+                value: "two"
               },
               {
                 xtype: "textfield",
-                name: "text",
-              },
-            ],
+                name: "text"
+              }
+            ]
           },
-          panelCfg,
+          panelCfg
         );
 
         create(panelCfg);
@@ -537,8 +537,8 @@ describe("Ext.form.Panel", function () {
       it("should not resolve load fn before first load attempt", function () {
         createPanel(null, {
           api: {
-            load: "TestDirect.load",
-          },
+            load: "TestDirect.load"
+          }
         });
 
         expect(panel.getApi().load).toBe("TestDirect.load");
@@ -547,8 +547,8 @@ describe("Ext.form.Panel", function () {
       it("should throw an exception if load fn cannot be resolved", function () {
         createPanel(null, {
           api: {
-            load: "bumble.zingbong",
-          },
+            load: "bumble.zingbong"
+          }
         });
 
         var ex =
@@ -561,7 +561,7 @@ describe("Ext.form.Panel", function () {
 
       it("should throw an exception if load fn is not defined", function () {
         createPanel(null, {
-          api: {},
+          api: {}
         });
 
         var ex = "Cannot find Ext Direct API method for load action";
@@ -574,8 +574,8 @@ describe("Ext.form.Panel", function () {
       it("should resolve load fn by name", function () {
         createPanel(null, {
           api: {
-            load: "TestDirect.load",
-          },
+            load: "TestDirect.load"
+          }
         });
 
         panel.load();
@@ -587,8 +587,8 @@ describe("Ext.form.Panel", function () {
         createPanel(null, {
           api: {
             prefix: "TestDirect",
-            load: "load",
-          },
+            load: "load"
+          }
         });
 
         panel.load();
@@ -610,8 +610,8 @@ describe("Ext.form.Panel", function () {
             result: {
               checkbox: true,
               radio: "two",
-              text: "blerg",
-            },
+              text: "blerg"
+            }
           });
 
           createPanel();
@@ -636,7 +636,7 @@ describe("Ext.form.Panel", function () {
         createPanel({
           len: undefined,
           params: [],
-          strict: false,
+          strict: false
         });
 
         panel.load({ params: { foo: "bar", blerg: "throbbe" } });
@@ -645,7 +645,7 @@ describe("Ext.form.Panel", function () {
 
         expect(args[0]).toEqual({
           foo: "bar",
-          blerg: "throbbe",
+          blerg: "throbbe"
         });
 
         expect(typeof args[1]).toBe("function");
@@ -653,7 +653,7 @@ describe("Ext.form.Panel", function () {
 
       it("should pass the params as single argument when paramsAsHash is true", function () {
         createPanel({
-          len: 1,
+          len: 1
         });
 
         panel.load({ params: { zumbo: "gurgle", fred: "zingbong" } });
@@ -662,7 +662,7 @@ describe("Ext.form.Panel", function () {
 
         expect(args[0]).toEqual({
           zumbo: "gurgle",
-          fred: "zingbong",
+          fred: "zingbong"
         });
 
         expect(typeof args[1]).toBe("function");
@@ -671,19 +671,19 @@ describe("Ext.form.Panel", function () {
       it("should pass the params as ordered arguments with paramOrder", function () {
         createPanel(
           {
-            len: 3,
+            len: 3
           },
           {
-            paramOrder: ["plugh", "ditto", "mymse"],
-          },
+            paramOrder: ["plugh", "ditto", "mymse"]
+          }
         );
 
         panel.load({
           params: {
             plugh: "gonzo",
             ditto: 42,
-            mymse: true,
-          },
+            mymse: true
+          }
         });
 
         var args = loadSpy.mostRecentCall.args;
@@ -708,42 +708,42 @@ describe("Ext.form.Panel", function () {
           method: new Ext.direct.RemotingMethod({
             name: "submit",
             params: [],
-            strict: false,
-          }),
+            strict: false
+          })
         };
 
         window.TestDirect = {
-          submit: submitSpy,
+          submit: submitSpy
         };
 
         panelCfg = Ext.apply(
           {
             api: {
-              submit: submitSpy,
+              submit: submitSpy
             },
 
             items: [
               {
                 xtype: "checkboxfield",
-                name: "checkbox",
+                name: "checkbox"
               },
               {
                 xtype: "radiofield",
                 name: "radio",
-                value: "one",
+                value: "one"
               },
               {
                 xtype: "radiofield",
                 name: "radio",
-                value: "two",
+                value: "two"
               },
               {
                 xtype: "textfield",
-                name: "text",
-              },
-            ],
+                name: "text"
+              }
+            ]
           },
-          panelCfg,
+          panelCfg
         );
 
         create(panelCfg);
@@ -758,8 +758,8 @@ describe("Ext.form.Panel", function () {
         it("should not resolve function before first submit", function () {
           makePanel({
             api: {
-              submit: "TestDirect.submit",
-            },
+              submit: "TestDirect.submit"
+            }
           });
 
           expect(panel.getApi().submit).toBe("TestDirect.submit");
@@ -768,8 +768,8 @@ describe("Ext.form.Panel", function () {
         it("should throw an exception if function cannot be resolved", function () {
           makePanel({
             api: {
-              submit: "foo.blerg",
-            },
+              submit: "foo.blerg"
+            }
           });
 
           var ex =
@@ -782,7 +782,7 @@ describe("Ext.form.Panel", function () {
 
         it("should throw an exception when function is not defined", function () {
           makePanel({
-            api: {},
+            api: {}
           });
 
           var ex = "Cannot find Ext Direct API method for submit action";
@@ -795,8 +795,8 @@ describe("Ext.form.Panel", function () {
         it("should resolve function by name at first submit", function () {
           makePanel({
             api: {
-              submit: "TestDirect.submit",
-            },
+              submit: "TestDirect.submit"
+            }
           });
 
           panel.submit();
@@ -808,8 +808,8 @@ describe("Ext.form.Panel", function () {
           makePanel({
             api: {
               prefix: "TestDirect",
-              submit: "submit",
-            },
+              submit: "submit"
+            }
           });
 
           panel.submit();
@@ -835,8 +835,8 @@ describe("Ext.form.Panel", function () {
         it("should pass params to submit fn", function () {
           panel.submit({
             params: {
-              throbbe: "zingbong",
-            },
+              throbbe: "zingbong"
+            }
           });
 
           var form = submitSpy.mostRecentCall.args[0];
@@ -857,38 +857,38 @@ describe("Ext.form.Panel", function () {
           {
             xtype: "textfield",
             name: "name",
-            value: "John Doe",
+            value: "John Doe"
           },
           {
             xtype: "textareafield",
             name: "bio",
-            value: "lorem ipsum",
+            value: "lorem ipsum"
           },
           {
             xtype: "checkboxfield",
             name: "favcolor",
             value: "blue",
-            checked: true,
+            checked: true
           },
           {
             xtype: "checkboxfield",
             name: "favcolor",
             value: "red",
-            checked: true,
+            checked: true
           },
           {
             xtype: "radiofield",
             name: "married",
             value: 1,
-            checked: true,
+            checked: true
           },
           {
             xtype: "radiofield",
             name: "married",
             value: 0,
-            checked: false,
-          },
-        ],
+            checked: false
+          }
+        ]
       });
     });
 
@@ -897,7 +897,7 @@ describe("Ext.form.Panel", function () {
         name: "Jane Doe",
         bio: "Bio information",
         favcolor: "red",
-        married: 0,
+        married: 0
       };
 
       panel.setValues(vals);
@@ -910,7 +910,7 @@ describe("Ext.form.Panel", function () {
         name: "John Doe",
         bio: "lorem ipsum",
         favcolor: ["blue", "red"],
-        married: 1,
+        married: 1
       });
     });
   });

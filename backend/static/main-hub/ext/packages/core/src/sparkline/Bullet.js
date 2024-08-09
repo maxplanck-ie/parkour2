@@ -36,7 +36,7 @@ Ext.define("Ext.sparkline.Bullet", {
     /**
      * @cfg {Number} [base] Set this to a number to change the base start number.
      */
-    base: null,
+    base: null
   },
 
   tipTpl: [
@@ -52,8 +52,8 @@ Ext.define("Ext.sparkline.Bullet", {
         if (v === "t") {
           return "Target";
         }
-      },
-    },
+      }
+    }
   ],
 
   // Ensure values is an array of normalized values
@@ -107,7 +107,7 @@ Ext.define("Ext.sparkline.Bullet", {
     return {
       fieldkey: region.substr(0, 1),
       value: this.values[region.substr(1)],
-      region: region,
+      region: region
     };
   },
 
@@ -140,7 +140,7 @@ Ext.define("Ext.sparkline.Bullet", {
   renderRange: function (region, highlight) {
     var rangeval = this.values[region],
       rangewidth = Math.round(
-        this.getWidth() * ((rangeval - this.min) / this.range),
+        this.getWidth() * ((rangeval - this.min) / this.range)
       ),
       color = this.getRangeColors()[region - 2];
     if (highlight) {
@@ -152,14 +152,14 @@ Ext.define("Ext.sparkline.Bullet", {
       rangewidth - 1,
       this.getHeight() - 1,
       color,
-      color,
+      color
     );
   },
 
   renderPerformance: function (highlight) {
     var perfval = this.values[1],
       perfwidth = Math.round(
-        this.getWidth() * ((perfval - this.min) / this.range),
+        this.getWidth() * ((perfval - this.min) / this.range)
       ),
       color = this.getPerformanceColor();
     if (highlight) {
@@ -171,7 +171,7 @@ Ext.define("Ext.sparkline.Bullet", {
       perfwidth - 1,
       Math.round(this.getHeight() * 0.4) - 1,
       color,
-      color,
+      color
     );
   },
 
@@ -180,7 +180,7 @@ Ext.define("Ext.sparkline.Bullet", {
       targetWidth = this.getTargetWidth(),
       x = Math.round(
         this.getWidth() * ((targetval - this.min) / this.range) -
-          targetWidth / 2,
+          targetWidth / 2
       ),
       targettop = Math.round(this.getHeight() * 0.1),
       targetheight = this.getHeight() - targettop * 2,
@@ -195,7 +195,7 @@ Ext.define("Ext.sparkline.Bullet", {
       targetWidth - 1,
       targetheight - 1,
       color,
-      color,
+      color
     );
   },
 
@@ -237,6 +237,6 @@ Ext.define("Ext.sparkline.Bullet", {
   privates: {
     isValidRegion: function (region, values) {
       return true;
-    },
-  },
+    }
+  }
 });

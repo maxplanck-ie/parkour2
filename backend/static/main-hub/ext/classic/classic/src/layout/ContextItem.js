@@ -169,7 +169,7 @@ Ext.define(
           ownerCtContext &&
             ownerCtContext.widthModel.pairsByHeightOrdinal[
               ownerCtContext.heightModel.ordinal
-            ],
+            ]
         );
 
         // NOTE: The initial determination of sizeModel is valid (thankfully) and is
@@ -316,7 +316,7 @@ Ext.define(
           ownerCtContext &&
             ownerCtContext.widthModel.pairsByHeightOrdinal[
               ownerCtContext.heightModel.ordinal
-            ],
+            ]
         );
 
         if (firstTime) {
@@ -636,7 +636,7 @@ Ext.define(
         triggers = context.triggers[inDom ? "dom" : "data"];
         (triggers[layout.id] || (triggers[layout.id] = [])).push({
           item: this,
-          prop: propName,
+          prop: propName
         });
 
         if (me.props[propName] !== undefined) {
@@ -665,14 +665,14 @@ Ext.define(
       "border-top-width",
       "border-right-width",
       "border-bottom-width",
-      "border-left-width",
+      "border-left-width"
     ],
     marginNames: ["margin-top", "margin-right", "margin-bottom", "margin-left"],
     paddingNames: [
       "padding-top",
       "padding-right",
       "padding-bottom",
-      "padding-left",
+      "padding-left"
     ],
     trblNames: ["top", "right", "bottom", "left"],
 
@@ -704,7 +704,7 @@ Ext.define(
         info.height = info.top + info.bottom;
 
         return info;
-      },
+      }
     },
 
     checkCache: function (entry) {
@@ -872,9 +872,9 @@ Ext.define(
           {
             from: {},
             to: {},
-            duration: duration || Ext.fx.Anim.prototype.duration,
+            duration: duration || Ext.fx.Anim.prototype.duration
           },
-          targetAnim,
+          targetAnim
         );
 
         for (
@@ -929,7 +929,7 @@ Ext.define(
               if (target.hasListeners.afterlayoutanimation) {
                 target.fireEvent("afterlayoutanimation", target);
               }
-            },
+            }
           });
         }
         // If no values were changed that could mean that the component
@@ -1030,7 +1030,7 @@ Ext.define(
               bottom: framing.bottom + border.bottom,
               left: framing.left + border.left,
               width: framing.width + border.width,
-              height: framing.height + border.height,
+              height: framing.height + border.height
             }
           : border;
       }
@@ -1371,7 +1371,7 @@ Ext.define(
         ownerCtContext &&
           ownerCtContext.widthModel.pairsByHeightOrdinal[
             ownerCtContext.heightModel.ordinal
-          ],
+          ]
       );
 
       me.widthModel = sizeModel.width;
@@ -1670,7 +1670,7 @@ Ext.define(
           frameInfo = me.getFrameInfo();
           frameBody[me.el.vertical ? "setWidth" : "setHeight"](
             height - frameInfo.height,
-            dirty,
+            dirty
           );
         }
       }
@@ -1747,7 +1747,7 @@ Ext.define(
 
     translateProps: {
       x: "left",
-      y: "top",
+      y: "top"
     },
 
     undo: function (deep) {
@@ -1955,7 +1955,7 @@ Ext.define(
           this.id + "." + propName + (inDom ? ":dom" : "")
         ] = {
           item: this,
-          name: propName,
+          name: propName
         };
       },
 
@@ -2009,7 +2009,7 @@ Ext.define(
         var child = this.callParent(arguments);
         if (child && child !== this && child.parent !== this) {
           Ext.raise({
-            msg: "Got element from wrong component",
+            msg: "Got element from wrong component"
           });
         }
         return child;
@@ -2035,7 +2035,7 @@ Ext.define(
             ", size=",
             me.consumersWidth,
             "/",
-            me.consumersHeight,
+            me.consumersHeight
           );
         }
 
@@ -2049,7 +2049,7 @@ Ext.define(
           }
         } else {
           Ext.raise({
-            msg: "Cannot invalidate an element contextItem",
+            msg: "Cannot invalidate an element contextItem"
           });
         }
         return this.callParent(arguments);
@@ -2074,7 +2074,7 @@ Ext.define(
               " set by ",
               setByProps[propName],
               " and ",
-              setBy,
+              setBy
             );
           }
         }
@@ -2106,8 +2106,8 @@ Ext.define(
         }
 
         return this.callParent(arguments);
-      },
-    }, // End Diagnostics
+      }
+    } // End Diagnostics
     //-------------------------------------------------------------------------
   },
   function () {
@@ -2164,7 +2164,7 @@ Ext.define(
 
       "line-height": isDom,
       display: isDom,
-      clear: isDom,
+      clear: isDom
     };
-  },
+  }
 );

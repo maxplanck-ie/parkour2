@@ -4,5 +4,5 @@ Ext.define("Ext.field.CheckboxInput", {
   type: "checkbox",
   classCls: Ext.baseCSSPrefix + "checkboxinput",
   cls: Ext.baseCSSPrefix + "font-icon",
-  useMask: true,
+  useMask: true
 });

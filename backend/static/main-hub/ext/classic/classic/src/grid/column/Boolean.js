@@ -92,5 +92,5 @@ Ext.define("Ext.grid.column.Boolean", {
   updater: function (cell, value) {
     Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
       Ext.grid.column.Boolean.prototype.defaultRenderer.call(this, value);
-  },
+  }
 });

@@ -51,7 +51,7 @@ Ext.define("Ext.ux.colorpick.ColorPreview", {
     "Ext.XTemplate",
     Ext.isIE && Ext.ieVersion < 10
       ? "filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#{hexAlpha}{hex}', endColorstr='#{hexAlpha}{hex}');" /* IE6-9 */
-      : "background: {rgba};",
+      : "background: {rgba};"
   ),
 
   applyBgStyle: function (color) {
@@ -70,5 +70,5 @@ Ext.define("Ext.ux.colorpick.ColorPreview", {
     bgStyle = this.bgStyleTpl.apply({ hex: hex, hexAlpha: alpha, rgba: rgba });
 
     el.applyStyles(bgStyle);
-  },
+  }
 });

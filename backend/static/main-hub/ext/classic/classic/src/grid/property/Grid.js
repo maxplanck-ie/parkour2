@@ -35,7 +35,7 @@ Ext.define("Ext.grid.property.Grid", {
     "Ext.form.field.Date",
     "Ext.form.field.Text",
     "Ext.form.field.Number",
-    "Ext.form.field.ComboBox",
+    "Ext.form.field.ComboBox"
   ],
 
   /**
@@ -268,10 +268,10 @@ Ext.define("Ext.grid.property.Grid", {
           return this.self.prototype.startEdit.call(
             this,
             record,
-            me.valueColumn,
+            me.valueColumn
           );
-        },
-      }),
+        }
+      })
     );
 
     me.selModel = {
@@ -281,7 +281,7 @@ Ext.define("Ext.grid.property.Grid", {
         position.column = me.valueColumn;
         position.colIdx = me.valueColumn.getVisibleIndex();
         return this.self.prototype.onCellSelect.call(this, position);
-      },
+      }
     };
 
     me.sourceConfig = Ext.apply({}, me.sourceConfig);
@@ -311,28 +311,28 @@ Ext.define("Ext.grid.property.Grid", {
     me.editors = {
       date: new Ext.grid.CellEditor({
         field: new Ext.form.field.Date({
-          selectOnFocus: selectOnFocus,
-        }),
+          selectOnFocus: selectOnFocus
+        })
       }),
       string: new Ext.grid.CellEditor({
         field: new Ext.form.field.Text({
-          selectOnFocus: selectOnFocus,
-        }),
+          selectOnFocus: selectOnFocus
+        })
       }),
       number: new Ext.grid.CellEditor({
         field: new Ext.form.field.Number({
-          selectOnFocus: selectOnFocus,
-        }),
+          selectOnFocus: selectOnFocus
+        })
       }),
       boolean: new Ext.grid.CellEditor({
         field: new Ext.form.field.ComboBox({
           editable: false,
           store: [
             [true, me.headerCt.trueText],
-            [false, me.headerCt.falseText],
-          ],
-        }),
-      }),
+            [false, me.headerCt.falseText]
+          ]
+        })
+      })
     };
 
     // Track changes to the data so we can fire our events.
@@ -390,14 +390,14 @@ Ext.define("Ext.grid.property.Grid", {
 
     if (!o) {
       o = sourceCfg[fieldName] = {
-        __copied: true,
+        __copied: true
       };
     } else if (!o.__copied) {
       o = Ext.apply(
         {
-          __copied: true,
+          __copied: true
         },
-        o,
+        o
       );
       sourceCfg[fieldName] = o;
     }
@@ -419,7 +419,7 @@ Ext.define("Ext.grid.property.Grid", {
       if (Ext.global.console && Ext.global.console.warn) {
         Ext.global.console.warn(
           this.$className,
-          'customRenderers, customEditors & propertyNames have been consolidated into a new config, see "sourceConfig". These configurations will be deprecated.',
+          'customRenderers, customEditors & propertyNames have been consolidated into a new config, see "sourceConfig". These configurations will be deprecated.'
         );
       }
     }
@@ -456,7 +456,7 @@ Ext.define("Ext.grid.property.Grid", {
           me.source,
           record.getId(),
           v,
-          oldValue,
+          oldValue
         ) !== false
       ) {
         if (me.source) {
@@ -488,7 +488,7 @@ Ext.define("Ext.grid.property.Grid", {
       e,
       preventWrap,
       verifierFn,
-      scope,
+      scope
     );
 
     // We are only allowed to navigate to the value column.
@@ -529,7 +529,7 @@ Ext.define("Ext.grid.property.Grid", {
         editor = me.setConfigProp(
           propName,
           "editor",
-          new Ext.grid.CellEditor({ field: editor }),
+          new Ext.grid.CellEditor({ field: editor })
         );
       }
     } else if (type) {
@@ -664,7 +664,7 @@ Ext.define("Ext.grid.property.Grid", {
    */
   removeProperty: function (prop) {
     this.propStore.remove(prop);
-  },
+  }
 
   /**
    * @cfg {Object} store

@@ -215,7 +215,7 @@ Ext.define("Ext.grid.Panel", {
   alternateClassName: [
     "Ext.list.ListView",
     "Ext.ListView",
-    "Ext.grid.GridPanel",
+    "Ext.grid.GridPanel"
   ],
 
   viewType: "tableview",
@@ -226,7 +226,7 @@ Ext.define("Ext.grid.Panel", {
   /**
    * @cfg {Boolean} rowLines False to remove row line styling
    */
-  rowLines: true,
+  rowLines: true
 
   // Columns config is required in Grid
   /**

@@ -11,9 +11,9 @@ Ext.define("Ext.override.sparkline.Base", {
         trackMouse: true,
         showDelay: 0,
         dismissDelay: 0,
-        hideDelay: 400,
+        hideDelay: 400
       });
-    },
+    }
   },
 
   onMouseMove: function (e) {
@@ -31,6 +31,6 @@ Ext.define("Ext.override.sparkline.Base", {
 
     showTip: function () {
       this.tooltip.forceTargetOver(this.currentEvent, this.element);
-    },
-  },
+    }
+  }
 });

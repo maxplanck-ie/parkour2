@@ -72,8 +72,8 @@ Ext.define("Ext.ActionSheet", {
      * @cfg
      * @inheritdoc
      */
-    defaultType: "button",
+    defaultType: "button"
   },
 
-  layout: "vbox",
+  layout: "vbox"
 });

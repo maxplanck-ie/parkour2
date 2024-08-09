@@ -6,8 +6,8 @@
 Ext.Loader.setConfig({
   enabled: true,
   paths: {
-    "Ext.ux": "static/main-hub/ext/packages/ux/classic/src/",
-  },
+    "Ext.ux": "static/main-hub/ext/packages/ux/classic/src/"
+  }
 });
 
 // Ext.util.Format.decimalSeparator = ',';
@@ -69,7 +69,7 @@ Ext.define("MainHub.Application", {
     "metadataexporter.Samples",
     "metadataexporter.StudyTypes",
     "metadataexporter.LibrarySources",
-    "metadataexporter.LibrarySelections",
+    "metadataexporter.LibrarySelections"
   ],
 
   requires: ["Ext.ux.ToastMessage"],
@@ -86,9 +86,9 @@ Ext.define("MainHub.Application", {
         if (choice === "yes") {
           window.location.reload();
         }
-      },
+      }
     );
-  },
+  }
 });
 
 Ext.define("MainHub.Utilities", {
@@ -109,7 +109,7 @@ Ext.define("MainHub.Utilities", {
     }
 
     return dataIndex;
-  },
+  }
 });
 
 Ext.define("MainHub.grid.SearchInputMixin", {
@@ -134,7 +134,7 @@ Ext.define("MainHub.grid.SearchInputMixin", {
       });
       return res;
     });
-  },
+  }
 });
 
 Ext.define("MainHub.grid.CheckboxesAndSearchInputMixin", {
@@ -169,7 +169,7 @@ Ext.define("MainHub.grid.CheckboxesAndSearchInputMixin", {
           res = res || showSamples;
         }
         return res;
-      },
+      }
     });
 
     var searchFilter = Ext.util.Filter({
@@ -190,10 +190,10 @@ Ext.define("MainHub.grid.CheckboxesAndSearchInputMixin", {
           res = true;
         }
         return res;
-      },
+      }
     });
 
     store.clearFilter();
     store.filter([showFilter, searchFilter]);
-  },
+  }
 });

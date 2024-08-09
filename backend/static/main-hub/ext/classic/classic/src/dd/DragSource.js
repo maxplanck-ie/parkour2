@@ -59,7 +59,7 @@ Ext.define("Ext.dd.DragSource", {
     if (!this.proxy) {
       this.proxy = new Ext.dd.StatusProxy({
         id: this.el.id + "-drag-status-proxy",
-        animRepair: this.animRepair,
+        animRepair: this.animRepair
       });
     }
     this.callParent([
@@ -69,8 +69,8 @@ Ext.define("Ext.dd.DragSource", {
         dragElId: this.proxy.id,
         resizeFrame: false,
         isTarget: false,
-        scroll: this.scroll === true,
-      },
+        scroll: this.scroll === true
+      }
     ]);
 
     this.dragging = false;
@@ -450,5 +450,5 @@ Ext.define("Ext.dd.DragSource", {
     Ext.destroy(this.proxy);
 
     this.callParent();
-  },
+  }
 });

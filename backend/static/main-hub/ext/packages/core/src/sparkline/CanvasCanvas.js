@@ -33,7 +33,7 @@ Ext.define("Ext.sparkline.CanvasCanvas", {
             radius * ratio,
             startAngle,
             endAngle,
-            counterclockwise,
+            counterclockwise
           );
         },
         clearRect: function (x, y, width, height) {
@@ -42,9 +42,9 @@ Ext.define("Ext.sparkline.CanvasCanvas", {
             x = this.canvas.width - x - width;
           }
           this.$clearRect(x * ratio, y * ratio, width * ratio, height * ratio);
-        },
+        }
       };
-    })(),
+    })()
   },
 
   setWidth: function (width) {
@@ -131,7 +131,7 @@ Ext.define("Ext.sparkline.CanvasCanvas", {
     radius,
     lineColor,
     fillColor,
-    lineWidth,
+    lineWidth
   ) {
     var context = this._getContext(lineColor, fillColor, lineWidth);
 
@@ -160,7 +160,7 @@ Ext.define("Ext.sparkline.CanvasCanvas", {
     startAngle,
     endAngle,
     lineColor,
-    fillColor,
+    fillColor
   ) {
     var context = this._getContext(lineColor, fillColor);
 
@@ -192,10 +192,10 @@ Ext.define("Ext.sparkline.CanvasCanvas", {
         [x + width, y],
         [x + width, y + height],
         [x, y + height],
-        [x, y],
+        [x, y]
       ],
       lineColor,
-      fillColor,
+      fillColor
     );
   },
 
@@ -297,5 +297,5 @@ Ext.define("Ext.sparkline.CanvasCanvas", {
       this.shapes = {};
       this.shapeseq = [];
     }
-  },
+  }
 });

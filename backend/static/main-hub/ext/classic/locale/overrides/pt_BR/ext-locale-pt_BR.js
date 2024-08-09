@@ -24,7 +24,7 @@ Ext.onReady(function () {
       "Setembro",
       "Outubro",
       "Novembro",
-      "Dezembro",
+      "Dezembro"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -43,7 +43,7 @@ Ext.onReady(function () {
       Set: 8,
       Out: 9,
       Nov: 10,
-      Dez: 11,
+      Dez: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -59,7 +59,7 @@ Ext.onReady(function () {
       "Quarta",
       "Quinta",
       "Sexta",
-      "Sábado",
+      "Sábado"
     ];
   }
 
@@ -69,7 +69,7 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "R$",
       // Brazilian Real
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
     Ext.util.Format.brMoney = Ext.util.Format.currency;
   }

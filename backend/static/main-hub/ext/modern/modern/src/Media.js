@@ -121,7 +121,7 @@ Ext.define("Ext.Media", {
      * Whether or not the media is muted. This will also set the volume to zero.
      * @accessor
      */
-    muted: false,
+    muted: false
   },
 
   constructor: function () {
@@ -137,7 +137,7 @@ Ext.define("Ext.Media", {
       scope: me,
 
       show: me.onActivate,
-      hide: me.onDeactivate,
+      hide: me.onDeactivate
     });
 
     me.addMediaListener({
@@ -146,7 +146,7 @@ Ext.define("Ext.Media", {
       pause: "onPause",
       ended: "onEnd",
       volumechange: "onVolumeChange",
-      timeupdate: "onTimeUpdate",
+      timeupdate: "onTimeUpdate"
     });
   },
 
@@ -351,5 +351,5 @@ Ext.define("Ext.Media", {
     });
 
     me.callParent();
-  },
+  }
 });

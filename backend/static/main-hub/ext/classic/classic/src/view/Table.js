@@ -22,7 +22,7 @@ Ext.define("Ext.view.Table", {
     "Ext.view.NodeCache",
     "Ext.util.DelayedTask",
     "Ext.util.MixedCollection",
-    "Ext.scroll.TableScroller",
+    "Ext.scroll.TableScroller"
   ],
 
   // View is now queryable by virtue of having managed widgets either in widget columns
@@ -37,8 +37,8 @@ Ext.define("Ext.view.Table", {
 
   config: {
     selectionModel: {
-      type: "rowmodel",
-    },
+      type: "rowmodel"
+    }
   },
 
   inheritableStatics: {
@@ -57,7 +57,7 @@ Ext.define("Ext.view.Table", {
       "select",
       "beforedeselect",
       "beforeselect",
-      "selectionchange",
+      "selectionchange"
     ],
     // These events are relayed from both views because they are fired independently.
     /**
@@ -156,8 +156,8 @@ Ext.define("Ext.view.Table", {
       "uievent",
       "groupcollapse",
       "groupexpand",
-      "scroll",
-    ],
+      "scroll"
+    ]
   },
 
   scrollable: true,
@@ -191,7 +191,7 @@ Ext.define("Ext.view.Table", {
   dirtyCls: Ext.baseCSSPrefix + "grid-dirty-cell",
   rowClsRe: new RegExp(
     "(?:^|\\s*)" + Ext.baseCSSPrefix + "grid-item-alt(?:\\s+|$)",
-    "g",
+    "g"
   ),
   cellRe: new RegExp(Ext.baseCSSPrefix + "grid-cell-([^\\s]+)(?:\\s|$)", ""),
   positionBody: true,
@@ -321,8 +321,8 @@ Ext.define("Ext.view.Table", {
     "%}",
     {
       definitions: "var view, tableCls, columns, i, len, column;",
-      priority: 0,
-    },
+      priority: 0
+    }
   ],
 
   outerRowTpl: [
@@ -339,8 +339,8 @@ Ext.define("Ext.view.Table", {
     "%}",
     "</table>",
     {
-      priority: 9999,
-    },
+      priority: 9999
+    }
   ],
 
   rowTpl: [
@@ -357,8 +357,8 @@ Ext.define("Ext.view.Table", {
     "</tpl>",
     "</tr>",
     {
-      priority: 0,
-    },
+      priority: 0
+    }
   ],
 
   cellTpl: [
@@ -377,8 +377,8 @@ Ext.define("Ext.view.Table", {
     "{cellInnerAttr:attributes}>{value}</div>",
     "</td>",
     {
-      priority: 0,
-    },
+      priority: 0
+    }
   ],
 
   /**
@@ -395,12 +395,12 @@ Ext.define("Ext.view.Table", {
   // They are allocated here on the prototype, and cleared/re-used to avoid GC churn during repeated rendering.
   rowValues: {
     itemClasses: [],
-    rowClasses: [],
+    rowClasses: []
   },
   cellValues: {
     classes: [
-      Ext.baseCSSPrefix + "grid-cell " + Ext.baseCSSPrefix + "grid-td", // for styles shared between cell and rowwrap
-    ],
+      Ext.baseCSSPrefix + "grid-cell " + Ext.baseCSSPrefix + "grid-td" // for styles shared between cell and rowwrap
+    ]
   },
 
   /**
@@ -731,7 +731,7 @@ Ext.define("Ext.view.Table", {
       } else {
         if (typeof selModel === "string") {
           selModel = {
-            type: selModel,
+            type: selModel
           };
         }
         // Copy obsolete selType property to type property now that selection models are Factoryable
@@ -751,10 +751,10 @@ Ext.define("Ext.view.Table", {
           Ext.apply(
             {
               allowDeselect: grid.allowDeselect,
-              locked: disableSelection,
+              locked: disableSelection
             },
-            selModel,
-          ),
+            selModel
+          )
         );
       }
     }
@@ -769,7 +769,7 @@ Ext.define("Ext.view.Table", {
       oldSelModel.un({
         scope: me,
         lastselectedchanged: me.updateBindSelection,
-        selectionchange: me.updateBindSelection,
+        selectionchange: me.updateBindSelection
       });
       Ext.destroy(me.selModelRelayer);
     }
@@ -779,12 +779,12 @@ Ext.define("Ext.view.Table", {
       "beforedeselect",
       "select",
       "deselect",
-      "focuschange",
+      "focuschange"
     ]);
     selModel.on({
       scope: me,
       lastselectedchanged: me.updateBindSelection,
-      selectionchange: me.updateBindSelection,
+      selectionchange: me.updateBindSelection
     });
     me.selModel = selModel;
   },
@@ -906,7 +906,7 @@ Ext.define("Ext.view.Table", {
         } else {
           tr.insertBefore(
             tr.childNodes[fromIdx],
-            tr.childNodes[destinationCellIdx] || null,
+            tr.childNodes[destinationCellIdx] || null
           );
         }
       }
@@ -922,7 +922,7 @@ Ext.define("Ext.view.Table", {
    */
   addElListener: function (eventName, fn, scope) {
     this.mon(this, eventName, fn, scope, {
-      element: "el",
+      element: "el"
     });
   },
 
@@ -1095,7 +1095,7 @@ Ext.define("Ext.view.Table", {
     else {
       newTpl = new Ext.XTemplate(
         "{%this.nextTpl.applyOut(values, out, parent);%}",
-        newTpl,
+        newTpl
       );
     }
 
@@ -1306,7 +1306,7 @@ Ext.define("Ext.view.Table", {
     // Newly added rows must be untabbable by default
     Ext.fly(div).saveTabbableState({
       skipSelf: true,
-      includeHidden: true,
+      includeHidden: true
     });
 
     div = Ext.fly(div).down(me.getNodeContainerSelector(), true);
@@ -1322,7 +1322,7 @@ Ext.define("Ext.view.Table", {
 
     return {
       fragment: result,
-      children: Ext.Array.toArray(result.childNodes),
+      children: Ext.Array.toArray(result.childNodes)
     };
   },
 
@@ -1401,7 +1401,7 @@ Ext.define("Ext.view.Table", {
       Ext.resumeLayouts(
         !lockingPartner ||
           !lockingPartner.grid.isVisible() ||
-          lockingPartner.all.getCount() === me.all.getCount(),
+          lockingPartner.all.getCount() === me.all.getCount()
       );
 
       // Restore focus to the previous position in case layout cycles scrolled the view back up.
@@ -1480,7 +1480,7 @@ Ext.define("Ext.view.Table", {
   statics: {
     getBoundView: function (node) {
       return Ext.getCmp(node.getAttribute("data-boundView"));
-    },
+    }
   },
 
   getRecord: function (node) {
@@ -1498,7 +1498,7 @@ Ext.define("Ext.view.Table", {
     // before the refresh, then the "data-recordIndex" will be stale.
     if (node) {
       return this.dataSource.getByInternalId(
-        node.getAttribute("data-recordId"),
+        node.getAttribute("data-recordId")
       );
     }
   },
@@ -1585,7 +1585,7 @@ Ext.define("Ext.view.Table", {
         Ext.baseCSSPrefix,
         "grid-cell-",
         columns[i].getItemId(),
-        '" style="width:' + width + 'px">',
+        '" style="width:' + width + 'px">'
       );
     }
     out.push("</colgroup>");
@@ -1688,7 +1688,7 @@ Ext.define("Ext.view.Table", {
     recordIndex,
     rowIndex,
     columnIndex,
-    out,
+    out
   ) {
     var me = this,
       fullIndex,
@@ -1740,7 +1740,7 @@ Ext.define("Ext.view.Table", {
         recordIndex,
         fullIndex,
         me.dataSource,
-        me,
+        me
       );
       if (cellValues.css) {
         // This warning attribute is used by the compat layer
@@ -2194,7 +2194,7 @@ Ext.define("Ext.view.Table", {
       else if (focusTarget === me.tabGuardEl) {
         focusPosition = new Ext.grid.CellContext(me).setPosition(
           me.all.endIndex,
-          me.getVisibleColumnManager().getColumns().length - 1,
+          me.getVisibleColumnManager().getColumns().length - 1
         );
         focusTarget = null;
       }
@@ -2206,7 +2206,7 @@ Ext.define("Ext.view.Table", {
           // We are entering navigable mode, so we have a focusPosition but no focusTarget
           focusPosition = new Ext.grid.CellContext(me).setPosition(
             me.getRecord(focusTarget),
-            me.getHeaderByCell(cell),
+            me.getHeaderByCell(cell)
           );
           focusTarget = null;
         }
@@ -2223,7 +2223,7 @@ Ext.define("Ext.view.Table", {
           // We are entering actionable mode, so we have a focusPosition and a focusTarget
           focusPosition = new Ext.grid.CellContext(me).setPosition(
             me.getRecord(focusTarget),
-            me.getHeaderByCell(cell),
+            me.getHeaderByCell(cell)
           );
         }
       }
@@ -2358,7 +2358,7 @@ Ext.define("Ext.view.Table", {
     if (delay) {
       focusTask.delay(Ext.isNumber(delay) ? delay : 10, me.focusRow, me, [
         row,
-        false,
+        false
       ]);
       return;
     }
@@ -2404,7 +2404,7 @@ Ext.define("Ext.view.Table", {
     if (delay) {
       focusTask.delay(Ext.isNumber(delay) ? delay : 10, me.focusCell, me, [
         position,
-        false,
+        false
       ]);
       return;
     }
@@ -2472,7 +2472,7 @@ Ext.define("Ext.view.Table", {
 
     return {
       target: focusTarget,
-      position: position,
+      position: position
     };
   },
 
@@ -2485,7 +2485,7 @@ Ext.define("Ext.view.Table", {
         me.lockingPartner.grid.isVisible() &&
         !me.lockingPartner.grid.collapsed
           ? me.lockingPartner
-          : me,
+          : me
       ).setPosition(0, 0),
       targetCell,
       scroller;
@@ -2508,7 +2508,7 @@ Ext.define("Ext.view.Table", {
       else if (fromComponent.isTableView) {
         focusPosition = new Ext.grid.CellContext(me).setPosition(
           fromComponent.lastFocused.record,
-          0,
+          0
         );
       }
     }
@@ -2523,7 +2523,7 @@ Ext.define("Ext.view.Table", {
         (scroller && !scroller.isInView(focusPosition.getRow()).y)
       ) {
         focusPosition.setRow(
-          store.getAt(Math.min(focusPosition.rowIdx, store.getCount() - 1)),
+          store.getAt(Math.min(focusPosition.rowIdx, store.getCount() - 1))
         );
       }
     }
@@ -2533,12 +2533,12 @@ Ext.define("Ext.view.Table", {
 
       // Find the first focusable cell.
       targetCell = me.ownerGrid.view.el.down(
-        me.getCellSelector() + '[tabIndex="-1"]',
+        me.getCellSelector() + '[tabIndex="-1"]'
       );
       if (targetCell) {
         focusPosition.setPosition(
           me.getRecord(targetCell),
-          me.getHeaderByCell(targetCell),
+          me.getHeaderByCell(targetCell)
         );
       }
       // All visible columns are cellFocusable: false
@@ -2654,7 +2654,7 @@ Ext.define("Ext.view.Table", {
     operation,
     changedFieldNames,
     info,
-    allColumns,
+    allColumns
   ) {
     operation = operation || Ext.data.Model.EDIT;
     var me = this,
@@ -2702,7 +2702,7 @@ Ext.define("Ext.view.Table", {
         // Update it from a new rendering.
         if (record.isCollapsedPlaceholder) {
           Ext.fly(oldItemDom).syncContent(
-            me.createRowElement(record, me.indexOfRow(record)),
+            me.createRowElement(record, me.indexOfRow(record))
           );
           return;
         }
@@ -2735,7 +2735,7 @@ Ext.define("Ext.view.Table", {
                   if (column.dirtyTextElementId) {
                     cell.setAttribute(
                       "aria-describedby",
-                      column.dirtyTextElementId,
+                      column.dirtyTextElementId
                     );
                   }
                 } else {
@@ -2750,7 +2750,7 @@ Ext.define("Ext.view.Table", {
               cellUpdateFlag = me.shouldUpdateCell(
                 record,
                 column,
-                changedFieldNames,
+                changedFieldNames
               );
 
               if (cellUpdateFlag) {
@@ -2774,7 +2774,7 @@ Ext.define("Ext.view.Table", {
           record,
           recordIndex,
           oldItemDom,
-          columnsToUpdate,
+          columnsToUpdate
         );
 
         // If there's no data row (some other rowTpl has been used; eg group header)
@@ -2791,7 +2791,7 @@ Ext.define("Ext.view.Table", {
           newItemDom = me.createRowElement(
             record,
             me.indexOfRow(record),
-            columnsToUpdate,
+            columnsToUpdate
           );
           if (Ext.fly(oldItemDom, "_internal").hasCls(overItemCls)) {
             Ext.fly(newItemDom).addCls(overItemCls);
@@ -2825,7 +2825,7 @@ Ext.define("Ext.view.Table", {
             me.updateColumns(
               oldDataRow,
               Ext.fly(newItemDom).down(me.rowSelector, true),
-              columnsToUpdate,
+              columnsToUpdate
             );
           }
 
@@ -2838,7 +2838,7 @@ Ext.define("Ext.view.Table", {
                 rowTpl.syncContent(
                   oldItemDom,
                   newItemDom,
-                  changedFieldNames ? columnsToUpdate : null,
+                  changedFieldNames ? columnsToUpdate : null
                 ) === false
               ) {
                 break;
@@ -2869,7 +2869,7 @@ Ext.define("Ext.view.Table", {
                 if (column.dirtyTextElementId) {
                   cell.setAttribute(
                     "aria-describedby",
-                    column.dirtyTextElementId,
+                    column.dirtyTextElementId
                   );
                 }
               } else {
@@ -2889,7 +2889,7 @@ Ext.define("Ext.view.Table", {
                 [cell, value, record, me, me.dataSource],
                 0,
                 column,
-                ownerCt,
+                ownerCt
               );
             } else {
               if (column.renderer) {
@@ -2899,7 +2899,7 @@ Ext.define("Ext.view.Table", {
                   [value, null, record, 0, 0, me.dataSource, me],
                   0,
                   column,
-                  ownerCt,
+                  ownerCt
                 );
               }
 
@@ -2927,7 +2927,7 @@ Ext.define("Ext.view.Table", {
                 me.self.prototype.changedCells = [];
                 me.prototype.clearChangedTask = new Ext.util.DelayedTask(
                   me.clearChangedCells,
-                  me.prototype,
+                  me.prototype
                 );
                 me.clearChangedTask.delay(me.unhighlightDelay);
               }
@@ -2936,7 +2936,7 @@ Ext.define("Ext.view.Table", {
               me.changedCells.push({
                 cell: cell,
                 cls: me.highlightClass,
-                expires: Ext.Date.now() + 1000,
+                expires: Ext.Date.now() + 1000
               });
             }
           }
@@ -3167,7 +3167,7 @@ Ext.define("Ext.view.Table", {
         rowIndex,
         column ? me.getVisibleColumnManager().getHeaderIndex(column) : -1,
         record,
-        column,
+        column
       );
       eventPosition.cellElement = cell;
 
@@ -3180,7 +3180,7 @@ Ext.define("Ext.view.Table", {
         cellIndex,
         e,
         record,
-        row,
+        row
       );
 
       // If the event has been stopped by a handler, tell the selModel (if it is interested) and return early.
@@ -3217,7 +3217,7 @@ Ext.define("Ext.view.Table", {
               record,
               row,
               rowIndex,
-              e,
+              e
             ) === false ||
             me.fireEvent(
               "beforecell" + type,
@@ -3227,7 +3227,7 @@ Ext.define("Ext.view.Table", {
               record,
               row,
               rowIndex,
-              e,
+              e
             ) === false ||
             me["onCell" + map[type]](
               cell,
@@ -3235,7 +3235,7 @@ Ext.define("Ext.view.Table", {
               record,
               row,
               rowIndex,
-              e,
+              e
             ) === false ||
             me.fireEvent(
               "cell" + type,
@@ -3245,7 +3245,7 @@ Ext.define("Ext.view.Table", {
               record,
               row,
               rowIndex,
-              e,
+              e
             ) === false
           )
         );
@@ -3300,7 +3300,7 @@ Ext.define("Ext.view.Table", {
             "before" + prefix + type,
             me,
             featureTarget,
-            e,
+            e
           );
           args = feature.getFireEventArgs(prefix + type, me, featureTarget, e);
 
@@ -3403,7 +3403,7 @@ Ext.define("Ext.view.Table", {
     // ensure we get the correct measurement.
     header.textEl.setStyle({
       "text-overflow": "clip",
-      display: "table-cell",
+      display: "table-cell"
     });
 
     // Allow for padding round text of header
@@ -3412,7 +3412,7 @@ Ext.define("Ext.view.Table", {
     // revert to using text-overflow defined by the stylesheet
     header.textEl.setStyle({
       "text-overflow": "",
-      display: "",
+      display: ""
     });
 
     for (; i < ln; i++) {
@@ -3883,13 +3883,13 @@ Ext.define("Ext.view.Table", {
           refocusRow = Math.min(focusPosition.rowIdx, me.all.getCount() - 1);
           refocusCol = Math.min(
             focusPosition.colIdx,
-            me.getVisibleColumnManager().getColumns().length - 1,
+            me.getVisibleColumnManager().getColumns().length - 1
           );
           focusPosition = new Ext.grid.CellContext(me).setPosition(
             store.contains(focusPosition.record)
               ? focusPosition.record
               : refocusRow,
-            refocusCol,
+            refocusCol
           );
 
           if (actionableMode) {
@@ -4072,7 +4072,7 @@ Ext.define("Ext.view.Table", {
             (me.actionPosition && me.actionPosition.record) ||
             me.getRecord(activeEl);
           column = me.getHeaderByCell(
-            activeEl.findParent(me.getCellSelector()),
+            activeEl.findParent(me.getCellSelector())
           );
 
           cell = position && position.getCell();
@@ -4084,7 +4084,7 @@ Ext.define("Ext.view.Table", {
           if (!position || !cell) {
             position = new Ext.grid.CellContext(me).setPosition(
               record || 0,
-              column || 0,
+              column || 0
             );
             cell = position.getCell();
           }
@@ -4118,7 +4118,7 @@ Ext.define("Ext.view.Table", {
         if (me.actionRow) {
           me.actionRow.saveTabbableState({
             skipSelf: true,
-            includeSaved: false,
+            includeSaved: false
           });
         }
 
@@ -4161,7 +4161,7 @@ Ext.define("Ext.view.Table", {
       record = position.record;
 
       position.view.grid.ensureVisible(record, {
-        column: position.column,
+        column: position.column
       });
 
       focusRow = me.all.item(position.rowIdx);
@@ -4172,7 +4172,7 @@ Ext.define("Ext.view.Table", {
         if (prevRow && focusRow !== prevRow) {
           prevRow.saveTabbableState({
             skipSelf: true,
-            includeSaved: false,
+            includeSaved: false
           });
         }
       }
@@ -4338,7 +4338,7 @@ Ext.define("Ext.view.Table", {
           keyEvent,
           prevRow,
           newRow,
-          forward,
+          forward
         ) !== false
       ) {
         // Activate the next row.
@@ -4349,7 +4349,7 @@ Ext.define("Ext.view.Table", {
           newRow,
           direction,
           forward,
-          wrapDone,
+          wrapDone
         );
       } else {
         return false;
@@ -4365,7 +4365,7 @@ Ext.define("Ext.view.Table", {
       focusRow,
       direction,
       forward,
-      wrapDone,
+      wrapDone
     ) {
       var me = this,
         columns = me.getVisibleColumnManager().getColumns(),
@@ -4455,7 +4455,7 @@ Ext.define("Ext.view.Table", {
           if (prevRow && focusRow !== prevRow.dom) {
             prevRow.saveTabbableState({
               skipSelf: true,
-              includeSaved: false,
+              includeSaved: false
             });
           }
         } else {
@@ -4466,7 +4466,7 @@ Ext.define("Ext.view.Table", {
             focusRow,
             me.all.item(position.rowIdx + (forward ? 1 : -1)),
             forward,
-            wrapDone,
+            wrapDone
           );
         }
       }
@@ -4482,12 +4482,12 @@ Ext.define("Ext.view.Table", {
                 row,
                 direction,
                 forward,
-                true,
+                true
               );
             } else {
               me.ownerGrid.setActionableMode(false);
             }
-          },
+          }
         });
       }
       // If we've already wrapped, but not found a focus target, we must exit actionable mode.
@@ -4551,15 +4551,15 @@ Ext.define("Ext.view.Table", {
       } else {
         stretchCfg = {
           cls: "x-scroller-spacer",
-          style: "position:relative",
+          style: "position:relative"
         };
         stretchers = me.stretchers = me.el.appendChild(
           [stretchCfg, stretchCfg],
-          true,
+          true
         );
       }
 
       return stretchers;
-    },
-  },
+    }
+  }
 });

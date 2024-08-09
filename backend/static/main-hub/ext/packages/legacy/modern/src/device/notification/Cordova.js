@@ -31,7 +31,7 @@ Ext.define("Ext.device.notification.Cordova", {
       if (config.callback) {
         config.callback.apply(
           config.scope,
-          buttons ? [buttons[index - 1].toLowerCase()] : [],
+          buttons ? [buttons[index - 1].toLowerCase()] : []
         );
       }
     };
@@ -40,7 +40,7 @@ Ext.define("Ext.device.notification.Cordova", {
       config.message,
       callback,
       config.title,
-      buttons,
+      buttons
     );
   },
 
@@ -49,7 +49,7 @@ Ext.define("Ext.device.notification.Cordova", {
       config.message,
       config.callback,
       config.title,
-      config.buttonName,
+      config.buttonName
     );
   },
 
@@ -73,7 +73,7 @@ Ext.define("Ext.device.notification.Cordova", {
         config.callback.call(
           config.scope,
           buttons ? buttons[result.buttonIndex - 1].toLowerCase() : null,
-          result.input1,
+          result.input1
         );
       }
     };
@@ -82,7 +82,7 @@ Ext.define("Ext.device.notification.Cordova", {
       config.message,
       callback,
       config.title,
-      buttons,
+      buttons
     );
   },
 
@@ -92,5 +92,5 @@ Ext.define("Ext.device.notification.Cordova", {
 
   beep: function (times) {
     navigator.notification.vibrate(times);
-  },
+  }
 });

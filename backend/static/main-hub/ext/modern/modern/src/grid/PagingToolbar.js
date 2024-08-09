@@ -16,7 +16,7 @@ Ext.define("Ext.grid.PagingToolbar", {
      */
     prevButton: {
       xtype: "button",
-      iconCls: Ext.baseCSSPrefix + "pagingtoolbar-prev",
+      iconCls: Ext.baseCSSPrefix + "pagingtoolbar-prev"
     },
 
     /**
@@ -25,7 +25,7 @@ Ext.define("Ext.grid.PagingToolbar", {
      */
     nextButton: {
       xtype: "button",
-      iconCls: Ext.baseCSSPrefix + "pagingtoolbar-next",
+      iconCls: Ext.baseCSSPrefix + "pagingtoolbar-next"
     },
 
     /**
@@ -37,7 +37,7 @@ Ext.define("Ext.grid.PagingToolbar", {
       liveUpdate: true,
       value: 1,
       flex: 1,
-      minValue: 1,
+      minValue: 1
     },
 
     // TODO:
@@ -51,8 +51,8 @@ Ext.define("Ext.grid.PagingToolbar", {
      */
     summaryComponent: {
       xtype: "component",
-      cls: Ext.baseCSSPrefix + "pagingtoolbar-summary",
-    },
+      cls: Ext.baseCSSPrefix + "pagingtoolbar-summary"
+    }
   },
 
   defaultButtonUI: "flat",
@@ -66,7 +66,7 @@ Ext.define("Ext.grid.PagingToolbar", {
       me.getPrevButton(),
       me.getSummaryComponent(),
       me.getSliderField(),
-      me.getNextButton(),
+      me.getNextButton()
     ]);
   },
 
@@ -84,5 +84,5 @@ Ext.define("Ext.grid.PagingToolbar", {
 
   applySummaryComponent: function (summaryComponent, oldSummaryComponent) {
     return Ext.factory(summaryComponent, Ext.Component, oldSummaryComponent);
-  },
+  }
 });

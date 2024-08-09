@@ -54,7 +54,7 @@ Ext.define("Ext.layout.component.Body", {
 
   calculateOwnerHeightFromContentHeight: function (
     ownerContext,
-    contentHeight,
+    contentHeight
   ) {
     var height = this.callParent(arguments);
 
@@ -78,14 +78,14 @@ Ext.define("Ext.layout.component.Body", {
   measureContentWidth: function (ownerContext) {
     return ownerContext.bodyContext.setWidth(
       ownerContext.bodyContext.el.dom.offsetWidth,
-      false,
+      false
     );
   },
 
   measureContentHeight: function (ownerContext) {
     return ownerContext.bodyContext.setHeight(
       ownerContext.bodyContext.el.dom.offsetHeight,
-      false,
+      false
     );
   },
 
@@ -100,7 +100,7 @@ Ext.define("Ext.layout.component.Body", {
     // return the value here, it may get used in a subclass
     return ownerContext.bodyContext.setHeight(
       innerHeight,
-      !ownerContext.heightModel.natural,
+      !ownerContext.heightModel.natural
     );
   },
 
@@ -114,7 +114,7 @@ Ext.define("Ext.layout.component.Body", {
 
     ownerContext.bodyContext.setWidth(
       innerWidth,
-      !ownerContext.widthModel.natural,
+      !ownerContext.widthModel.natural
     );
-  },
+  }
 });

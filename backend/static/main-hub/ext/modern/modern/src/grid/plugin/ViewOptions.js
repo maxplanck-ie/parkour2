@@ -62,7 +62,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
   requires: [
     "Ext.field.Toggle",
     "Ext.dataview.NestedList",
-    "Ext.plugin.SortableList",
+    "Ext.plugin.SortableList"
   ],
 
   config: {
@@ -92,9 +92,9 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
             text: "Done",
             ui: "action",
             align: "right",
-            role: "donebutton",
-          },
-        },
+            role: "donebutton"
+          }
+        }
       ],
       hidden: true,
       hideOnMaskTap: true,
@@ -102,11 +102,11 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
       exit: "right",
       modal: true,
       translatable: {
-        translationMethod: "csstransform",
+        translationMethod: "csstransform"
       },
       right: 0,
       layout: "fit",
-      stretchY: true,
+      stretchY: true
     },
 
     /**
@@ -120,8 +120,8 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
           {
             type: "sortablelist",
             handleSelector:
-              "." + Ext.baseCSSPrefix + "column-options-sortablehandle",
-          },
+              "." + Ext.baseCSSPrefix + "column-options-sortablehandle"
+          }
         ],
         mode: "MULTI",
         infinite: true,
@@ -163,11 +163,11 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
             "column-options-visibleindicator " +
             Ext.baseCSSPrefix +
             'font-icon"></div>',
-          "</div>",
+          "</div>"
         ],
         triggerEvent: null,
         bufferSize: 1,
-        minimumBufferSize: 1,
+        minimumBufferSize: 1
       },
       store: {
         type: "tree",
@@ -180,13 +180,13 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
           "hiddenCls",
           "grouped",
           "groupedCls",
-          "groupable",
+          "groupable"
         ],
         root: {
-          text: "Columns",
-        },
+          text: "Columns"
+        }
       },
-      clearSelectionOnListChange: false,
+      clearSelectionOnListChange: false
     },
 
     /**
@@ -199,7 +199,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
      * The CSS class responsible for displaying the grouping indicator.
      */
     groupIndicatorSelector:
-      "." + Ext.baseCSSPrefix + "column-options-groupindicator",
+      "." + Ext.baseCSSPrefix + "column-options-groupindicator"
   },
 
   /**
@@ -221,7 +221,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
       oldGrid.getHeaderContainer().renderElement.un({
         contextmenu: "onHeaderContextMenu",
         longpress: "onHeaderLongPress",
-        scope: this,
+        scope: this
       });
       oldGrid.un({
         columnadd: "onColumnAdd",
@@ -229,7 +229,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
         columnremove: "onColumnRemove",
         columnhide: "onColumnHide",
         columnshow: "onColumnShow",
-        scope: this,
+        scope: this
       });
     }
 
@@ -237,7 +237,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
       grid.getHeaderContainer().renderElement.on({
         contextmenu: "onHeaderContextMenu",
         longpress: "onHeaderLongPress",
-        scope: this,
+        scope: this
       });
     }
   },
@@ -261,13 +261,13 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
     if (list) {
       list.on({
         listchange: "onListChange",
-        scope: this,
+        scope: this
       });
 
       list.on({
         dragsort: "onColumnReorder",
         delegate: "> list",
-        scope: this,
+        scope: this
       });
 
       this.attachTapListeners();
@@ -309,7 +309,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
     if (!activeList.hasAttachedTapListeners) {
       activeList.onBefore({
         itemtap: "onListItemTap",
-        scope: this,
+        scope: this
       });
       activeList.hasAttachedTapListeners = true;
     }
@@ -374,7 +374,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
 
     if (grouped) {
       store.setGrouper({
-        property: record.get("dataIndex"),
+        property: record.get("dataIndex")
       });
       record.set("grouped", true);
     } else {
@@ -432,7 +432,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
         ),
         groupedCls: me._groupedColumnCls,
         dataIndex: column.getDataIndex(),
-        leaf: true,
+        leaf: true
       },
       idx,
       headerNode;
@@ -447,7 +447,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
           hidden: header.isHidden(),
           hiddenCls: hiddenCls,
           id: header.getId(),
-          text: header.getText(),
+          text: header.getText()
         });
       }
       idx = header.indexOf(column);
@@ -555,7 +555,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
         columnremove: "onColumnRemove",
         columnhide: "onColumnHide",
         columnshow: "onColumnShow",
-        scope: me,
+        scope: me
       });
 
       sheet = me.getSheet();
@@ -564,7 +564,7 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
 
       sheet.down("button[role=donebutton]").on({
         tap: "onDoneButtonTap",
-        scope: me,
+        scope: me
       });
     },
 
@@ -589,6 +589,6 @@ Ext.define("Ext.grid.plugin.ViewOptions", {
           }
           node.set("grouped", dataIndex && grouped);
         });
-    },
-  },
+    }
+  }
 });

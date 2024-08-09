@@ -5,7 +5,7 @@ describe("Ext.data.identifier.Generator", function () {
   afterEach(function () {
     idgen = null;
     Generator.all = {
-      uuid: Generator.all.uuid,
+      uuid: Generator.all.uuid
     };
   });
 
@@ -20,7 +20,7 @@ describe("Ext.data.identifier.Generator", function () {
 
         it("should create a with a config", function () {
           idgen = Ext.Factory.dataIdentifier({
-            type: "sequential",
+            type: "sequential"
           });
           expect(idgen instanceof Sequential);
         });
@@ -46,7 +46,7 @@ describe("Ext.data.identifier.Generator", function () {
 
         it("should create a with a config", function () {
           idgen = Ext.Factory.dataIdentifier({
-            type: "uuid",
+            type: "uuid"
           });
           expect(idgen instanceof Uuid);
         });

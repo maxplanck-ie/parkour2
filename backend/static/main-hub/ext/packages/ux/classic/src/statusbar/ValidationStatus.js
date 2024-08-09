@@ -53,15 +53,15 @@ Ext.define("Ext.ux.statusbar.ValidationStatus", {
     sb.on({
       single: true,
       scope: me,
-      render: me.onStatusbarRender,
+      render: me.onStatusbarRender
     });
     sb.on({
       click: {
         element: "el",
         fn: me.onStatusClick,
         scope: me,
-        buffer: 200,
-      },
+        buffer: 200
+      }
     });
   },
 
@@ -89,11 +89,11 @@ Ext.define("Ext.ux.statusbar.ValidationStatus", {
             // events cause the status message to reset too early
             me.monitor = false;
           }
-        },
+        }
       });
       me.formPanel.on({
         beforedestroy: me.destroy,
-        scope: me,
+        scope: me
       });
       me.basicForm.on("actioncomplete", startMonitor);
       me.basicForm.on("actionfailed", startMonitor);
@@ -150,7 +150,7 @@ Ext.define("Ext.ux.statusbar.ValidationStatus", {
       if (me.statusBar.getText() !== me.showText) {
         me.statusBar.setStatus({
           text: me.showText,
-          iconCls: me.errorIconCls,
+          iconCls: me.errorIconCls
         });
       }
     } else {
@@ -174,7 +174,7 @@ Ext.define("Ext.ux.statusbar.ValidationStatus", {
           err.field.id,
           '"><a href="#">',
           err.msg,
-          "</a></li>",
+          "</a></li>"
         );
       });
       msg.push("</ul>");
@@ -198,9 +198,9 @@ Ext.define("Ext.ux.statusbar.ValidationStatus", {
       msgEl = me.msgEl = Ext.DomHelper.append(
         Ext.getBody(),
         {
-          cls: me.errorListCls,
+          cls: me.errorListCls
         },
-        true,
+        true
       );
       msgEl.hide();
       msgEl.on(
@@ -213,7 +213,7 @@ Ext.define("Ext.ux.statusbar.ValidationStatus", {
           }
         },
         null,
-        { stopEvent: true },
+        { stopEvent: true }
       ); // prevent anchor click navigation
     }
     return msgEl;
@@ -254,5 +254,5 @@ Ext.define("Ext.ux.statusbar.ValidationStatus", {
     } else if (this.errors.getCount() > 0) {
       this.showErrors();
     }
-  },
+  }
 });

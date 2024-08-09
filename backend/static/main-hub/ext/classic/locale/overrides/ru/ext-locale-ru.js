@@ -19,7 +19,7 @@ Ext.onReady(function () {
       "Сентябрь",
       "Октябрь",
       "Ноябрь",
-      "Декабрь",
+      "Декабрь"
     ];
 
     Ext.Date.shortMonthNames = [
@@ -34,7 +34,7 @@ Ext.onReady(function () {
       "Сент",
       "Окт",
       "Нояб",
-      "Дек",
+      "Дек"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -53,7 +53,7 @@ Ext.onReady(function () {
       Сен: 8,
       Окт: 9,
       Ноя: 10,
-      Дек: 11,
+      Дек: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -69,7 +69,7 @@ Ext.onReady(function () {
       "Среда",
       "Четверг",
       "Пятница",
-      "Суббота",
+      "Суббота"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -83,35 +83,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u0440\u0443\u0431",
       // Russian Ruble
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.ru.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.ru.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} выбранных строк",
+  dragText: "{0} выбранных строк"
 });
 
 Ext.define("Ext.locale.ru.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Закрыть эту вкладку",
+  closeText: "Закрыть эту вкладку"
 });
 
 Ext.define("Ext.locale.ru.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Значение в этом поле неверное",
+  invalidText: "Значение в этом поле неверное"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ru.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Загрузка...",
+  loadingText: "Загрузка..."
 });
 
 Ext.define("Ext.locale.ru.picker.Date", {
@@ -126,13 +126,13 @@ Ext.define("Ext.locale.ru.picker.Date", {
   monthYearText: "Выбор месяца (Control+Вверх/Вниз для выбора года)",
   todayTip: "{0} (Пробел)",
   format: "d.m.y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.ru.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Отмена",
+  cancelText: "Отмена"
 });
 
 Ext.define("Ext.locale.ru.toolbar.Paging", {
@@ -145,7 +145,7 @@ Ext.define("Ext.locale.ru.toolbar.Paging", {
   lastText: "Последняя страница",
   refreshText: "Обновить",
   displayMsg: "Отображаются записи с {0} по {1}, всего {2}",
-  emptyMsg: "Нет данных для отображения",
+  emptyMsg: "Нет данных для отображения"
 });
 
 Ext.define("Ext.locale.ru.form.field.Text", {
@@ -154,7 +154,7 @@ Ext.define("Ext.locale.ru.form.field.Text", {
   maxLengthText: "Максимальная длина этого поля {0}",
   blankText: "Это поле обязательно для заполнения",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.ru.form.field.Number", {
@@ -162,7 +162,7 @@ Ext.define("Ext.locale.ru.form.field.Number", {
   minText: "Значение этого поля не может быть меньше {0}",
   maxText: "Значение этого поля не может быть больше {0}",
   nanText: "{0} не является числом",
-  negativeText: "Значение не может быть отрицательным",
+  negativeText: "Значение не может быть отрицательным"
 });
 
 Ext.define("Ext.locale.ru.form.field.Date", {
@@ -174,20 +174,20 @@ Ext.define("Ext.locale.ru.form.field.Date", {
   invalidText:
     "{0} не является правильной датой - дата должна быть указана в формате {1}",
   format: "d.m.y",
-  altFormats: "d.m.y|d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d",
+  altFormats: "d.m.y|d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
 });
 
 Ext.define(
   "Ext.locale.ru.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Загрузка...",
+      loadingText: "Загрузка..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.ru.form.field.VTypes", {
@@ -199,14 +199,14 @@ Ext.define("Ext.locale.ru.form.field.VTypes", {
   alphaText:
     'Это поле должно содержать только латинские буквы и символ подчеркивания "_"',
   alphanumText:
-    'Это поле должно содержать только латинские буквы, цифры и символ подчеркивания "_"',
+    'Это поле должно содержать только латинские буквы, цифры и символ подчеркивания "_"'
 });
 
 Ext.define(
   "Ext.locale.ru.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Пожалуйста, введите адрес:",
+    createLinkText: "Пожалуйста, введите адрес:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -214,81 +214,81 @@ Ext.define(
         bold: {
           title: "Полужирный (Ctrl+B)",
           text: "Применение полужирного начертания к выделенному тексту.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Курсив (Ctrl+I)",
           text: "Применение курсивного начертания к выделенному тексту.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Подчёркнутый (Ctrl+U)",
           text: "Подчёркивание выделенного текста.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Увеличить размер",
           text: "Увеличение размера шрифта.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Уменьшить размер",
           text: "Уменьшение размера шрифта.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Заливка",
           text: "Изменение цвета фона для выделенного текста или абзаца.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Цвет текста",
           text: "Измение цвета текста.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Выровнять текст по левому краю",
           text: "Вырaвнивание текста по левому краю.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "По центру",
           text: "Вырaвнивание текста по центру.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Выровнять текст по правому краю",
           text: "Вырaвнивание текста по правому краю.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Маркеры",
           text: "Начать маркированный список.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Нумерация",
           text: "Начать нумернованный список.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Вставить гиперссылку",
           text: "Создание ссылки из выделенного текста.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Исходный код",
           text: "Переключиться на исходный код.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.ru.form.Basic", {
   override: "Ext.form.Basic",
-  waitTitle: "Пожалуйста, подождите...",
+  waitTitle: "Пожалуйста, подождите..."
 });
 
 Ext.define("Ext.locale.ru.grid.header.Container", {
@@ -297,21 +297,21 @@ Ext.define("Ext.locale.ru.grid.header.Container", {
   sortDescText: "Сортировать по убыванию",
   lockText: "Закрепить столбец",
   unlockText: "Снять закрепление столбца",
-  columnsText: "Столбцы",
+  columnsText: "Столбцы"
 });
 
 Ext.define("Ext.locale.ru.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(Пусто)",
   groupByText: "Группировать по этому полю",
-  showGroupsText: "Отображать по группам",
+  showGroupsText: "Отображать по группам"
 });
 
 Ext.define("Ext.locale.ru.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Название",
   valueText: "Значение",
-  dateFormat: "d.m.Y",
+  dateFormat: "d.m.Y"
 });
 
 Ext.define("Ext.locale.ru.window.MessageBox", {
@@ -320,16 +320,16 @@ Ext.define("Ext.locale.ru.window.MessageBox", {
     ok: "OK",
     cancel: "Отмена",
     yes: "Да",
-    no: "Нет",
-  },
+    no: "Нет"
+  }
 });
 
 Ext.define("Ext.locale.ru.form.field.File", {
   override: "Ext.form.field.File",
-  buttonText: "Обзор...",
+  buttonText: "Обзор..."
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.ru.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

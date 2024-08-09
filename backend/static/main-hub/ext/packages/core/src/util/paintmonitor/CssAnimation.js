@@ -12,5 +12,5 @@ Ext.define("Ext.util.paintmonitor.CssAnimation", {
     if (e.animationName === Ext.baseCSSPrefix + "paint-monitor-helper") {
       this.getCallback().apply(this.getScope(), this.getArgs());
     }
-  },
+  }
 });

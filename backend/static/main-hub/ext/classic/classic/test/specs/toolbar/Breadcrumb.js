@@ -11,10 +11,10 @@ describe("Ext.toolbar.Breadcrumb", function () {
         {
           xtype: "breadcrumb",
           renderTo: Ext.getBody(),
-          store: store,
+          store: store
         },
-        config,
-      ),
+        config
+      )
     );
   }
 
@@ -32,7 +32,7 @@ describe("Ext.toolbar.Breadcrumb", function () {
       el,
       "click",
       el.getX() + el.getWidth() - triggerWidth / 2,
-      el.getY() + el.getHeight() / 2,
+      el.getY() + el.getHeight() / 2
     );
   }
 
@@ -50,7 +50,7 @@ describe("Ext.toolbar.Breadcrumb", function () {
       el,
       "click",
       el.getX() + btnWidth / 2,
-      el.getY() + el.getHeight() / 2,
+      el.getY() + el.getHeight() / 2
     );
   }
 
@@ -120,8 +120,8 @@ describe("Ext.toolbar.Breadcrumb", function () {
           children: [
             { id: "/SSD/bin/cp", text: "cp", leaf: true },
             { id: "/SSD/bin/mv", text: "mv", leaf: true },
-            { id: "/SSD/bin/rm", text: "rm", leaf: true },
-          ],
+            { id: "/SSD/bin/rm", text: "rm", leaf: true }
+          ]
         },
         {
           text: "etc",
@@ -129,8 +129,8 @@ describe("Ext.toolbar.Breadcrumb", function () {
           children: [
             { id: "/SSD/etc/apache2", text: "apache2", leaf: true },
             { id: "/SSD/etc/bashrc", text: "bashrc", leaf: true },
-            { id: "/SSD/etc/hosts", text: "hosts", leaf: true },
-          ],
+            { id: "/SSD/etc/hosts", text: "hosts", leaf: true }
+          ]
         },
         {
           text: "usr",
@@ -142,8 +142,8 @@ describe("Ext.toolbar.Breadcrumb", function () {
               children: [
                 { id: "/SSD/usr/bin/awk", text: "awk", leaf: true },
                 { id: "/SSD/usr/bin/grep", text: "grep", leaf: true },
-                { id: "/SSD/usr/bin/ssh", text: "ssh", leaf: true },
-              ],
+                { id: "/SSD/usr/bin/ssh", text: "ssh", leaf: true }
+              ]
             },
             {
               text: "lib",
@@ -151,15 +151,15 @@ describe("Ext.toolbar.Breadcrumb", function () {
               children: [
                 { id: "/SSD/usr/lib/java", text: "java", leaf: true },
                 { id: "/SSD/usr/lib/python", text: "python", leaf: true },
-                { id: "/SSD/usr/lib/ruby", text: "ruby", leaf: true },
-              ],
-            },
-          ],
-        },
-      ],
+                { id: "/SSD/usr/lib/ruby", text: "ruby", leaf: true }
+              ]
+            }
+          ]
+        }
+      ]
     };
     store = new Ext.data.TreeStore({
-      root: treeData,
+      root: treeData
     });
   });
 
@@ -176,14 +176,14 @@ describe("Ext.toolbar.Breadcrumb", function () {
 
     it("should render with root node initially selected if selection is 'root'", function () {
       createBreadcrumbBar({
-        selection: "root",
+        selection: "root"
       });
       expectSelection("/SSD");
     });
 
     it("should render with no selection if selection is null", function () {
       createBreadcrumbBar({
-        selection: null,
+        selection: null
       });
 
       expect(breadcrumbBar.items.getCount()).toBe(0);
@@ -201,8 +201,8 @@ describe("Ext.toolbar.Breadcrumb", function () {
       createBreadcrumbBar({
         store: {
           type: "tree",
-          root: treeData,
-        },
+          root: treeData
+        }
       });
       expect(breadcrumbBar.getStore().getRoot().get("text")).toBe("SSD");
     });
@@ -211,10 +211,10 @@ describe("Ext.toolbar.Breadcrumb", function () {
       store.destroy();
       store = new Ext.data.TreeStore({
         root: treeData,
-        storeId: "foo",
+        storeId: "foo"
       });
       createBreadcrumbBar({
-        store: "foo",
+        store: "foo"
       });
       expect(breadcrumbBar.getStore()).toBe(store);
     });
@@ -223,14 +223,14 @@ describe("Ext.toolbar.Breadcrumb", function () {
       store.destroy();
       expect(function () {
         createBreadcrumbBar({
-          store: null,
+          store: null
         });
       }).not.toThrow();
     });
 
     it("should be able to set the store later", function () {
       createBreadcrumbBar({
-        store: null,
+        store: null
       });
       breadcrumbBar.setStore(store);
       breadcrumbBar.setSelection(store.getRoot().firstChild.firstChild);
@@ -249,20 +249,20 @@ describe("Ext.toolbar.Breadcrumb", function () {
             {
               text: "Child1",
               id: "/root/c1",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child2",
               id: "/root/c2",
-              leaf: true,
+              leaf: true
             },
             {
               text: "Child3",
               id: "/root/c3",
-              leaf: true,
-            },
-          ],
-        },
+              leaf: true
+            }
+          ]
+        }
       });
       breadcrumbBar.setStore(store);
       oldStore.destroy();
@@ -293,14 +293,14 @@ describe("Ext.toolbar.Breadcrumb", function () {
       it("should select a node from a different branch of the heirarchy", function () {
         breadcrumbBar.setSelection(store.getRoot().firstChild.childNodes[1]);
         breadcrumbBar.setSelection(
-          store.getRoot().childNodes[2].childNodes[1].childNodes[1],
+          store.getRoot().childNodes[2].childNodes[1].childNodes[1]
         );
         expectSelection("/SSD/usr/lib/python");
       });
 
       it("should select a node at a higher level than the selected node but in a different branch of the hierarchy", function () {
         breadcrumbBar.setSelection(
-          store.getRoot().childNodes[2].childNodes[1].childNodes[1],
+          store.getRoot().childNodes[2].childNodes[1].childNodes[1]
         );
         breadcrumbBar.setSelection(store.getRoot().childNodes[1]);
         expectSelection("/SSD/etc");
@@ -492,8 +492,8 @@ describe("Ext.toolbar.Breadcrumb", function () {
       createBreadcrumbBar({
         listeners: {
           selectionchange: selectionchangeSpy,
-          change: changeSpy,
-        },
+          change: changeSpy
+        }
       });
     });
 
@@ -530,7 +530,7 @@ describe("Ext.toolbar.Breadcrumb", function () {
       beforeEach(function () {
         createBreadcrumbBar({
           viewModel: viewModel,
-          reference: "navigation",
+          reference: "navigation"
         });
         viewModel.bind("{navigation.selection}", spy);
         viewModel.notify();
@@ -565,8 +565,8 @@ describe("Ext.toolbar.Breadcrumb", function () {
         createBreadcrumbBar({
           viewModel: viewModel,
           bind: {
-            selection: "{foo}",
-          },
+            selection: "{foo}"
+          }
         });
         viewModel.bind("{foo}", spy);
         viewModel.notify();
@@ -645,12 +645,12 @@ describe("Ext.toolbar.Breadcrumb", function () {
                 {
                   id: "/Root/child/grandchild",
                   text: "grandchild",
-                  leaf: true,
-                },
-              ],
-            },
-          ],
-        },
+                  leaf: true
+                }
+              ]
+            }
+          ]
+        }
       });
     });
 
@@ -682,13 +682,13 @@ describe("Ext.toolbar.Breadcrumb", function () {
           id: "/Root",
           children: [
             { name: "child1", id: "/Root/child1", leaf: true },
-            { name: "child2", id: "/Root/child2", leaf: true },
-          ],
-        },
+            { name: "child2", id: "/Root/child2", leaf: true }
+          ]
+        }
       });
 
       createBreadcrumbBar({
-        displayField: "name",
+        displayField: "name"
       });
     });
 
@@ -707,7 +707,7 @@ describe("Ext.toolbar.Breadcrumb", function () {
   describe("useSplitButtons: false", function () {
     beforeEach(function () {
       createBreadcrumbBar({
-        useSplitButtons: false,
+        useSplitButtons: false
       });
     });
 
@@ -752,17 +752,17 @@ describe("Ext.toolbar.Breadcrumb", function () {
                 {
                   text: "grandchild1",
                   leaf: true,
-                  icon: barIcon,
-                },
-              ],
+                  icon: barIcon
+                }
+              ]
             },
             {
               text: "child2",
               id: "/Root/child2",
-              children: [{ text: "grandchild2", leaf: true }],
-            },
-          ],
-        },
+              children: [{ text: "grandchild2", leaf: true }]
+            }
+          ]
+        }
       });
     });
     describe("null", function () {
@@ -793,7 +793,7 @@ describe("Ext.toolbar.Breadcrumb", function () {
     describe("true", function () {
       beforeEach(function () {
         createBreadcrumbBar({
-          showIcons: true,
+          showIcons: true
         });
       });
 
@@ -812,13 +812,13 @@ describe("Ext.toolbar.Breadcrumb", function () {
         breadcrumbBar.setSelection(node);
 
         expect(breadcrumbBar.items.getAt(0).iconCls).toBe(
-          "x-breadcrumb-icon-folder-default",
+          "x-breadcrumb-icon-folder-default"
         );
         expect(breadcrumbBar.items.getAt(1).iconCls).toBe(
-          "x-breadcrumb-icon-folder-default",
+          "x-breadcrumb-icon-folder-default"
         );
         expect(breadcrumbBar.items.getAt(2).iconCls).toBe(
-          "x-breadcrumb-icon-leaf-default",
+          "x-breadcrumb-icon-leaf-default"
         );
       });
     });
@@ -826,7 +826,7 @@ describe("Ext.toolbar.Breadcrumb", function () {
     describe("false", function () {
       beforeEach(function () {
         createBreadcrumbBar({
-          showIcons: false,
+          showIcons: false
         });
       });
 
@@ -852,11 +852,11 @@ describe("Ext.toolbar.Breadcrumb", function () {
   describe("overflow", function () {
     it("should use scroller overflow", function () {
       createBreadcrumbBar({
-        overflowHandler: "scroller",
+        overflowHandler: "scroller"
       });
       expect(
         breadcrumbBar.layout.overflowHandler instanceof
-          Ext.layout.container.boxOverflow.Scroller,
+          Ext.layout.container.boxOverflow.Scroller
       ).toBe(true);
     });
 
@@ -871,18 +871,18 @@ describe("Ext.toolbar.Breadcrumb", function () {
       for (i = 0; i < 200; ++i) {
         children.push({
           text: "Child " + i,
-          id: "child" + i,
+          id: "child" + i
         });
       }
 
       store = new Ext.data.TreeStore({
         root: {
           text: "Root",
-          children: children,
-        },
+          children: children
+        }
       });
       createBreadcrumbBar({
-        overflowHandler: "scroller",
+        overflowHandler: "scroller"
       });
       item = breadcrumbBar.items.getAt(0);
       item.showMenu();

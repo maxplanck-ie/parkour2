@@ -193,7 +193,7 @@ Ext.define("Ext.field.Text", {
      * @accessor
      */
     component: {
-      xtype: "textinput",
+      xtype: "textinput"
     },
 
     // @cmd-auto-dependency {aliasPrefix: "trigger.", isKeyedObject: true}
@@ -246,8 +246,8 @@ Ext.define("Ext.field.Text", {
      */
     triggers: {
       clear: {
-        type: "clear",
-      },
+        type: "clear"
+      }
     },
 
     bubbleEvents: ["action"],
@@ -258,16 +258,16 @@ Ext.define("Ext.field.Text", {
      * @cfg {'left'/'center'/'right'} [textAlign='left'].
      * The text alignment of this field.
      */
-    textAlign: null,
+    textAlign: null
   },
 
   defaultBindProperty: "value",
   twoWayBindable: {
-    value: 1,
+    value: 1
   },
 
   publishes: {
-    value: 1,
+    value: 1
   },
 
   classCls: Ext.baseCSSPrefix + "textfield",
@@ -289,7 +289,7 @@ Ext.define("Ext.field.Text", {
       blur: "onBlur",
       paste: "onPaste",
       mousedown: "onMouseDown",
-      scope: this,
+      scope: this
     });
 
     // set the originalValue of the textfield, if one exists
@@ -359,7 +359,7 @@ Ext.define("Ext.field.Text", {
     //<debug>
     if (me.getLabelAlign() === "placeholder" && newPlaceHolder !== label) {
       Ext.log.warn(
-        "PlaceHolder should not be set when using \"labelAlign: 'placeholder'\"",
+        "PlaceHolder should not be set when using \"labelAlign: 'placeholder'\""
       );
     }
     //</debug>
@@ -467,19 +467,19 @@ Ext.define("Ext.field.Text", {
 
       if (trigger === true) {
         trigger = {
-          type: name,
+          type: name
         };
       } else if (typeof trigger === "string") {
         trigger = {
-          type: trigger,
+          type: trigger
         };
       }
 
       trigger = Ext.apply(
         {
-          field: me,
+          field: me
         },
-        trigger,
+        trigger
       );
 
       trigger = trigger.xtype ? Ext.create(trigger) : Trigger.create(trigger);
@@ -696,7 +696,7 @@ Ext.define("Ext.field.Text", {
         from: {
           left: 0,
           top: 0,
-          opacity: 1,
+          opacity: 1
         },
         to: animInfo,
         preserveEndState: true,
@@ -704,7 +704,7 @@ Ext.define("Ext.field.Text", {
         easing: "ease-out",
         callback: function () {
           me.setPlaceHolder(me.getLabel());
-        },
+        }
       });
 
       me.lastPlaceholderAnimInfo = animInfo;
@@ -718,11 +718,11 @@ Ext.define("Ext.field.Text", {
         to: {
           left: 0,
           top: 0,
-          opacity: 1,
+          opacity: 1
         },
         easing: "ease-out",
         preserveEndState: true,
-        duration: 250,
+        duration: 250
       });
 
       me.setPlaceHolder(null);
@@ -746,7 +746,7 @@ Ext.define("Ext.field.Text", {
       return {
         left: translateX,
         top: translateY,
-        opacity: 0,
+        opacity: 0
       };
     },
 
@@ -837,6 +837,6 @@ Ext.define("Ext.field.Text", {
       } else {
         this.hideClearTrigger();
       }
-    },
-  },
+    }
+  }
 });

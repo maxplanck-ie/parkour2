@@ -9,7 +9,7 @@ Ext.define("Ext.grid.RowBody", {
   xtype: "rowbody",
 
   config: {
-    widget: null,
+    widget: null
   },
 
   classCls: Ext.baseCSSPrefix + "rowbody",
@@ -17,12 +17,12 @@ Ext.define("Ext.grid.RowBody", {
   template: [
     {
       reference: "spacerElement",
-      cls: Ext.baseCSSPrefix + "spacer-el",
+      cls: Ext.baseCSSPrefix + "spacer-el"
     },
     {
       reference: "contentElement",
-      cls: Ext.baseCSSPrefix + "content-el",
-    },
+      cls: Ext.baseCSSPrefix + "content-el"
+    }
   ],
 
   initialize: function () {
@@ -49,9 +49,9 @@ Ext.define("Ext.grid.RowBody", {
     if (widget) {
       widget = Ext.apply(
         {
-          parent: row,
+          parent: row
         },
-        widget,
+        widget
       );
       widget = Ext.widget(widget);
     }
@@ -83,5 +83,5 @@ Ext.define("Ext.grid.RowBody", {
   doDestroy: function () {
     this.setWidget(null);
     this.callParent();
-  },
+  }
 });

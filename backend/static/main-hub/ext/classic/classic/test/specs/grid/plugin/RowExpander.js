@@ -12,7 +12,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         0.31,
         0.49,
         "9/1 12:00am",
-        "Services",
+        "Services"
       ],
       ["AT&T Inc.", 31.61, -0.48, -1.54, "9/1 12:00am", "Services"],
       ["Boeing Co.", 75.43, 0.53, 0.71, "9/1 12:00am", "Manufacturing"],
@@ -24,7 +24,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         0.51,
         1.28,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       ["Exxon Mobil Corp", 68.1, -0.43, -0.64, "9/1 12:00am", "Manufacturing"],
       [
@@ -33,7 +33,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         -0.08,
         -0.23,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       [
         "General Motors Corporation",
@@ -41,7 +41,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         1.09,
         3.74,
         "9/1 12:00am",
-        "Automotive",
+        "Automotive"
       ],
       ["Hewlett-Packard Co.", 36.53, -0.03, -0.08, "9/1 12:00am", "Computer"],
       ["Honeywell Intl Inc", 38.77, 0.05, 0.13, "9/1 12:00am", "Manufacturing"],
@@ -52,7 +52,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         0.44,
         0.54,
         "9/1 12:00am",
-        "Computer",
+        "Computer"
       ],
       ["Johnson & Johnson", 64.72, 0.06, 0.09, "9/1 12:00am", "Medical"],
       ["JP Morgan & Chase & Co", 45.73, 0.07, 0.15, "9/1 12:00am", "Finance"],
@@ -68,7 +68,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         0.01,
         0.02,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       [
         "United Technologies Corporation",
@@ -76,7 +76,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         0.55,
         0.88,
         "9/1 12:00am",
-        "Computer",
+        "Computer"
       ],
       ["Verizon Communications", 35.57, 0.39, 1.11, "9/1 12:00am", "Services"],
       ["Wal-Mart Stores, Inc.", 45.45, 0.73, 1.63, "9/1 12:00am", "Retail"],
@@ -86,8 +86,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
         0.24,
         0.81,
         "9/1 12:00am",
-        "Services",
-      ],
+        "Services"
+      ]
     ],
     store,
     expander,
@@ -101,7 +101,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
   // add in some dummy descriptions
   for (i = 0; i < dummyData.length; i++) {
     dummyData[i].push(
-      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.<br/><br/>Aliquam commodo ullamcorper erat. Nullam vel justo in neque porttitor laoreet. Aenean lacus dui, consequat eu, adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare sed, luctus eu, massa. Vivamus eget quam. Vivamus tincidunt diam nec urna. Curabitur velit.",
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.<br/><br/>Aliquam commodo ullamcorper erat. Nullam vel justo in neque porttitor laoreet. Aenean lacus dui, consequat eu, adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare sed, luctus eu, massa. Vivamus eget quam. Vivamus tincidunt diam nec urna. Curabitur velit."
     );
   }
 
@@ -133,14 +133,14 @@ describe("Ext.grid.plugin.RowExpander", function () {
             }
 
             return 0;
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
     store = new Ext.data.Store({
       model: "spec.RowExpanderCompany",
       data: dummyData,
-      autoDestroy: true,
+      autoDestroy: true
     });
 
     expander = new Ext.grid.plugin.RowExpander(
@@ -160,12 +160,12 @@ describe("Ext.grid.plugin.RowExpander", function () {
                   Ext.util.Format.usMoney(v) +
                   "</span>"
                 );
-              },
-            },
-          ),
+              }
+            }
+          )
         },
-        rowExpanderCfg || {},
-      ),
+        rowExpanderCfg || {}
+      )
     );
 
     columns = gridCfg.columns || [
@@ -176,8 +176,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
       {
         text: "Last Updated",
         renderer: Ext.util.Format.dateRenderer("m/d/Y"),
-        dataIndex: "lastChange",
-      },
+        dataIndex: "lastChange"
+      }
     ];
 
     grid = new Ext.grid.Panel(
@@ -186,16 +186,16 @@ describe("Ext.grid.plugin.RowExpander", function () {
           store: store,
           columns: columns,
           viewConfig: {
-            forceFit: true,
+            forceFit: true
           },
           width: 600,
           height: 300,
           plugins: expander,
           title: "Expander Rows, Collapse and Force Fit",
-          renderTo: document.body,
+          renderTo: document.body
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     view = grid.getView();
@@ -226,11 +226,11 @@ describe("Ext.grid.plugin.RowExpander", function () {
   it("should not cause an exception if the expander column is not added", function () {
     makeGrid(
       {
-        renderTo: null,
+        renderTo: null
       },
       {
-        addExpander: Ext.emptyFn,
-      },
+        addExpander: Ext.emptyFn
+      }
     );
 
     expect(function () {
@@ -243,7 +243,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
 
     jasmine.fireMouseEvent(
       grid.view.el.query(".x-grid-row-expander")[0],
-      "mousedown",
+      "mousedown"
     );
 
     expect(getRowBodyTr(0).isVisible()).toBe(false);
@@ -256,7 +256,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
 
     jasmine.fireMouseEvent(
       grid.view.el.query(".x-grid-row-expander")[0],
-      "click",
+      "click"
     );
 
     expect(getRowBodyTr(0).isVisible()).toBe(true);
@@ -273,7 +273,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
       enableLocking: true,
       height: 100,
       leadingBufferZone: 1,
-      trailingBufferZone: 1,
+      trailingBufferZone: 1
     });
 
     var yRange = scroller.getSize().y,
@@ -281,7 +281,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
 
     jasmine.fireMouseEvent(
       grid.view.el.query(".x-grid-row-expander")[0],
-      "click",
+      "click"
     );
 
     expect(getRowBodyTr(0).isVisible()).toBe(true);
@@ -303,7 +303,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
 
     jasmine.fireMouseEvent(
       grid.view.el.query(".x-grid-row-expander")[0],
-      "click",
+      "click"
     );
 
     expect(getRowBodyTr(0).isVisible()).toBe(false);
@@ -317,7 +317,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
       var viewBottom, rowBottom;
 
       makeGrid(null, {
-        scrollIntoViewOnExpand: true,
+        scrollIntoViewOnExpand: true
       });
 
       expander.toggleRow(8, store.getAt(8));
@@ -334,7 +334,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
           tallTpl = new Ext.XTemplate(
             "<p><b>Company:</b> {company}</p>",
             "<p><b>Change:</b> {change}</p><br>",
-            "<p><b>Summary:</b> {desc}</p>",
+            "<p><b>Summary:</b> {desc}</p>"
           );
 
         makeGrid(
@@ -344,21 +344,21 @@ describe("Ext.grid.plugin.RowExpander", function () {
                 text: "Company",
                 width: 200,
                 dataIndex: "company",
-                locked: true,
+                locked: true
               },
               {
                 text: "Price",
                 renderer: Ext.util.Format.usMoney,
-                dataIndex: "price",
+                dataIndex: "price"
               },
-              { text: "Change", dataIndex: "change" },
-            ],
+              { text: "Change", dataIndex: "change" }
+            ]
           },
           {
             scrollIntoViewOnExpand: true,
             rowBodyTpl: tall ? tallTpl : smallTpl,
-            lockedTpl: tall ? smallTpl : tallTpl,
-          },
+            lockedTpl: tall ? smallTpl : tallTpl
+          }
         );
       }
 
@@ -408,16 +408,16 @@ describe("Ext.grid.plugin.RowExpander", function () {
             {
               text: "Price",
               renderer: Ext.util.Format.usMoney,
-              dataIndex: "price",
+              dataIndex: "price"
             },
             { text: "Change", dataIndex: "change" },
             { text: "% Change", dataIndex: "pctChange" },
             {
               text: "Last Updated",
               renderer: Ext.util.Format.dateRenderer("m/d/Y"),
-              dataIndex: "lastChange",
-            },
-          ],
+              dataIndex: "lastChange"
+            }
+          ]
         },
         {
           rowBodyTpl: new Ext.XTemplate(
@@ -434,18 +434,18 @@ describe("Ext.grid.plugin.RowExpander", function () {
                   Ext.util.Format.usMoney(v) +
                   "</span>"
                 );
-              },
-            },
+              }
+            }
           ),
-          lockedTpl: new Ext.XTemplate("{industry}"),
-        },
+          lockedTpl: new Ext.XTemplate("{industry}")
+        }
       );
     });
 
     it("should not expand in response to mousedown", function () {
       jasmine.fireMouseEvent(
         grid.lockedGrid.view.el.query(".x-grid-row-expander")[0],
-        "mousedown",
+        "mousedown"
       );
 
       expect(getRowBodyTr(0, true).isVisible()).toBe(false);
@@ -454,13 +454,13 @@ describe("Ext.grid.plugin.RowExpander", function () {
     it("should expand on click", function () {
       jasmine.fireMouseEvent(
         grid.lockedGrid.view.el.query(".x-grid-row-expander")[0],
-        "click",
+        "click"
       );
 
       expect(getRowBodyTr(0, true).isVisible()).toBe(true);
 
       expect(grid.lockedGrid.view.body.getHeight()).toBe(
-        grid.normalGrid.view.body.getHeight(),
+        grid.normalGrid.view.body.getHeight()
       );
     });
 
@@ -471,7 +471,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
       // click to collapse
       jasmine.fireMouseEvent(
         grid.lockedGrid.view.el.query(".x-grid-row-expander")[0],
-        "click",
+        "click"
       );
 
       // The rowbody row of item 0 should not be visible
@@ -482,13 +482,13 @@ describe("Ext.grid.plugin.RowExpander", function () {
       expect(
         grid.lockedGrid.view.all
           .item(0)
-          .down("." + Ext.baseCSSPrefix + "grid-rowbody", true).firstChild.data,
+          .down("." + Ext.baseCSSPrefix + "grid-rowbody", true).firstChild.data
       ).toBe(grid.store.getAt(0).get("industry"));
 
       // Check thetwo rows (one on each side) are synched in height
       // The lockedTpl specifies that it be the industry field.
       expect(grid.lockedGrid.view.all.item(0).getHeight()).toBe(
-        grid.normalGrid.view.all.item(0).getHeight(),
+        grid.normalGrid.view.all.item(0).getHeight()
       );
     });
   });
@@ -498,8 +498,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
       makeGrid({
         selModel: {
           selType: "checkboxmodel",
-          injectCheckbox: 0,
-        },
+          injectCheckbox: 0
+        }
       });
 
       expect(grid.getColumnManager().getColumns()[1].xtype).toBe("checkcolumn");
@@ -509,8 +509,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
       makeGrid({
         selModel: {
           selType: "checkboxmodel",
-          injectCheckbox: 2,
-        },
+          injectCheckbox: 2
+        }
       });
       expect(grid.getColumnManager().getColumns()[2].xtype).toBe("checkcolumn");
     });
@@ -519,8 +519,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
       makeGrid({
         selModel: {
           selType: "checkboxmodel",
-          injectCheckbox: "first",
-        },
+          injectCheckbox: "first"
+        }
       });
 
       expect(grid.getColumnManager().getColumns()[1].xtype).toBe("checkcolumn");
@@ -530,8 +530,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
       makeGrid({
         selModel: {
           selType: "checkboxmodel",
-          injectCheckbox: "last",
-        },
+          injectCheckbox: "last"
+        }
       });
 
       expect(grid.getColumnManager().getColumns()[6].xtype).toBe("checkcolumn");
@@ -561,8 +561,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
             { text: "Price", dataIndex: "price", locked: true },
             { text: "Change", dataIndex: "change" },
             { text: "% Change", dataIndex: "pctChange" },
-            { text: "Last Updated", dataIndex: "lastChange" },
-          ],
+            { text: "Last Updated", dataIndex: "lastChange" }
+          ]
         });
 
         var lockedNode = grid.view.getNode(store.getAt(1)),
@@ -582,8 +582,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
             { text: "Price", dataIndex: "price", locked: true },
             { text: "Change", dataIndex: "change" },
             { text: "% Change", dataIndex: "pctChange" },
-            { text: "Last Updated", dataIndex: "lastChange" },
-          ],
+            { text: "Last Updated", dataIndex: "lastChange" }
+          ]
         });
 
         // Get the expander elements to click on
@@ -603,7 +603,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
 
         // Locked side's item 0 should have synced height
         expect(normalView.all.item(0, true).offsetHeight).toBe(
-          item0ExpandedHeight,
+          item0ExpandedHeight
         );
 
         normalView.setScrollY(1000);
@@ -617,7 +617,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
         runs(function () {
           // We scrolled the normal view, and the locked view should have had its newly rendered row 0 height synced
           expect(lockedView.all.item(0, true).offsetHeight).toBe(
-            item0ExpandedHeight,
+            item0ExpandedHeight
           );
         });
       });
@@ -646,15 +646,15 @@ describe("Ext.grid.plugin.RowExpander", function () {
                 rowBodyTpl: new Ext.XTemplate(
                   "<p><b>Company:</b> {company}</p>",
                   "<p><b>Change:</b> {change:this.formatChange}</p><br>",
-                  "<p><b>Summary:</b> {desc}</p>",
-                ),
-              },
-            ],
+                  "<p><b>Summary:</b> {desc}</p>"
+                )
+              }
+            ]
           });
 
           this.callParent(arguments);
-        },
-      },
+        }
+      }
     });
 
     expect(grid.view.features.length).toBe(1);
@@ -667,8 +667,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
         { text: "Price", dataIndex: "price" },
         { text: "Change", dataIndex: "change" },
         { text: "% Change", dataIndex: "pctChange" },
-        { text: "Last Updated", dataIndex: "lastChange" },
-      ],
+        { text: "Last Updated", dataIndex: "lastChange" }
+      ]
     });
 
     // Grid columns + row expander column = 5.
@@ -676,8 +676,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
     expect(
       parseInt(
         grid.body.down(".x-grid-cell-rowbody", true).getAttribute("colspan"),
-        10,
-      ),
+        10
+      )
     ).toBe(5);
   });
 
@@ -685,7 +685,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
     makeGrid({
       leadingBufferZone: 2,
       trailingBufferZone: 2,
-      height: 100,
+      height: 100
     });
 
     expect(bufferedRenderer).toBeDefined();
@@ -714,7 +714,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
     describe("no initial locked columns", function () {
       beforeEach(function () {
         makeGrid({
-          enableLocking: true,
+          enableLocking: true
         });
       });
 
@@ -742,8 +742,8 @@ describe("Ext.grid.plugin.RowExpander", function () {
             { text: "Price", dataIndex: "price" },
             { text: "Change", dataIndex: "change" },
             { text: "% Change", dataIndex: "pctChange" },
-            { text: "Last Updated", dataIndex: "lastChange" },
-          ],
+            { text: "Last Updated", dataIndex: "lastChange" }
+          ]
         });
       });
 
@@ -772,18 +772,18 @@ describe("Ext.grid.plugin.RowExpander", function () {
         width: 500,
         height: 300,
         viewConfig: {
-          enableTextSelection: true,
+          enableTextSelection: true
         },
         columns: [
           {
             text: "Foo",
             dataIndex: "foo",
-            flex: 1,
-          },
+            flex: 1
+          }
         ],
         plugins: {
           ptype: "rowexpander",
-          rowBodyTpl: "{bar}",
+          rowBodyTpl: "{bar}"
         },
         store: {
           fields: ["foo"],
@@ -795,17 +795,17 @@ describe("Ext.grid.plugin.RowExpander", function () {
                 "<p>Curabitur ac pulvinar turpis. Nullam sit amet ipsum leo. Maecenas augue arcu, bibendum at venenatis ut, tempus at justo. Ut ornare leo accumsan massa venenatis accumsan. Nam consequat posuere mauris, vel placerat lorem elementum non. Sed nec turpis a diam pretium facilisis. Integer ornare luctus augue, a aliquam ante gravida quis. Praesent eget mi eu turpis sagittis viverra. Nam at posuere nisi. Praesent maximus libero ac facilisis laoreet. Proin varius dui sed erat elementum varius. Pellentesque sapien tellus, maximus vel porta a, congue ut dolor. Proin molestie dignissim nisl nec efficitur.</p>",
                 "<p>Ut luctus aliquet sapien, vel sollicitudin neque iaculis et. Vestibulum in viverra nibh. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec nisl ipsum, congue aliquam interdum et, blandit non odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque a lacus id odio mattis efficitur ac et metus. Maecenas ut varius magna, nec rutrum nisl. Curabitur ut faucibus sapien.</p>",
                 "<p>Duis euismod, enim sit amet lacinia semper, magna felis luctus magna, non auctor orci ante quis tortor. Etiam ut massa vitae justo viverra semper sit amet rutrum justo. Aliquam quis quam nulla. Sed aliquam lacus at est tempor, vel condimentum odio facilisis. Ut aliquam consequat dolor. Mauris non aliquet metus. Curabitur tempor massa non fringilla interdum. Sed nec efficitur purus. Praesent sagittis lacinia ex, vel mattis mauris congue sed. Donec vulputate erat in erat feugiat fringilla. Duis vel imperdiet enim, vitae aliquam tortor. Vestibulum nunc mi, gravida at enim nec, eleifend rutrum ligula. Donec efficitur iaculis ullamcorper.</p>",
-                "<p>Sed in augue ac risus commodo ultricies et id dolor. Aliquam sed mauris ullamcorper, dignissim nibh luctus, viverra lacus. Phasellus vitae rutrum elit, et vehicula turpis. Morbi eget tortor sit amet tortor tempor mollis. Morbi facilisis massa neque, non imperdiet quam tristique id. Quisque lectus nulla, lobortis in dolor vitae, gravida malesuada ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
-              ],
-            },
-          ],
-        },
+                "<p>Sed in augue ac risus commodo ultricies et id dolor. Aliquam sed mauris ullamcorper, dignissim nibh luctus, viverra lacus. Phasellus vitae rutrum elit, et vehicula turpis. Morbi eget tortor sit amet tortor tempor mollis. Morbi facilisis massa neque, non imperdiet quam tristique id. Quisque lectus nulla, lobortis in dolor vitae, gravida malesuada ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+              ]
+            }
+          ]
+        }
       });
 
       // Expand the expander
       jasmine.fireMouseEvent(
         grid.view.el.query(".x-grid-row-expander")[0],
-        "click",
+        "click"
       );
 
       grid.view.scrollTo(0, 100);
@@ -815,7 +815,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
       waitsForEvent(
         grid.getView().getScrollable(),
         "scrollend",
-        "Grid scrollend",
+        "Grid scrollend"
       );
 
       runs(function () {
@@ -826,7 +826,7 @@ describe("Ext.grid.plugin.RowExpander", function () {
             .item(0)
             .down(Ext.grid.feature.RowBody.prototype.innerSelector),
           "mousedown",
-          100,
+          100
         );
       });
 

@@ -10,5 +10,5 @@ Ext.define("Ext.device.splashscreen.Cordova", {
 
   hide: function () {
     navigator.splashscreen.hide();
-  },
+  }
 });

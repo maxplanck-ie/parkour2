@@ -145,7 +145,7 @@ Ext.define(
         flush(); // make sure that last pesky summary goes...
 
         return summary;
-      },
+      }
     };
-  })(),
+  })()
 );

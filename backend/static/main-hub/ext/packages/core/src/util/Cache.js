@@ -66,7 +66,7 @@
       id: (me.seed = 0),
       //</debug>
       key: null,
-      value: null,
+      value: null
     };
 
     me.map = {};
@@ -170,7 +170,7 @@
           id: ++me.seed,
           //</debug>
           key: key,
-          value: me.miss.apply(me, arguments),
+          value: me.miss.apply(me, arguments)
         };
 
         me.linkEntry(entry);
@@ -232,7 +232,7 @@
       if (evicted) {
         this.evict(entry.key, entry.value);
       }
-    },
+    }
   };
 
   prototype.destroy = prototype.clear;

@@ -39,7 +39,7 @@ Ext.define("Ext.device.Notification", {
   requires: [
     "Ext.device.Communicator",
     "Ext.device.notification.Cordova",
-    "Ext.device.notification.Simulator",
+    "Ext.device.notification.Simulator"
   ],
 
   constructor: function () {
@@ -52,5 +52,5 @@ Ext.define("Ext.device.Notification", {
     }
 
     return Ext.create("Ext.device.notification.Simulator");
-  },
+  }
 });

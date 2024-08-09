@@ -74,7 +74,7 @@ Ext.define("Ext.chart.axis.layout.Discrete", {
       context,
       Math.max(0, attr.min),
       Math.min(attr.max, data.length - 1),
-      1,
+      1
     );
     if (out) {
       me.trimByRange(context, out, viewMin, viewMax);
@@ -104,7 +104,7 @@ Ext.define("Ext.chart.axis.layout.Discrete", {
       },
       get: function (currentStep) {
         return this.from + this.step * currentStep;
-      },
+      }
     };
   },
 
@@ -144,5 +144,5 @@ Ext.define("Ext.chart.axis.layout.Discrete", {
   getCoordFor: function (value, field, idx, items) {
     this.labels.push(value);
     return this.labels.length - 1;
-  },
+  }
 });

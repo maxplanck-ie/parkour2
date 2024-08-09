@@ -77,7 +77,7 @@ Ext.define("Ext.ux.DataTip", function (DataTip) {
     extend: "Ext.tip.ToolTip",
 
     mixins: {
-      plugin: "Ext.plugin.Abstract",
+      plugin: "Ext.plugin.Abstract"
     },
 
     alias: "plugin.datatip",
@@ -121,9 +121,9 @@ Ext.define("Ext.ux.DataTip", function (DataTip) {
       } else {
         host.onRender = Ext.Function.createSequence(
           host.onRender,
-          onHostRender,
+          onHostRender
         );
       }
-    },
+    }
   };
 });

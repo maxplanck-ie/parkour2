@@ -41,5 +41,5 @@ Ext.define("Ext.layout.Fit", {
   onItemInnerStateChange: function (item, isInner) {
     this.callParent(arguments);
     item.setLayoutSizeFlags(isInner ? this.container.getSizeFlags() : 0);
-  },
+  }
 });

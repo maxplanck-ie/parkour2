@@ -4,15 +4,15 @@ Ext.define("MainHub.model.invoicing.BillingPeriod", {
   fields: [
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "value",
-      type: "auto",
+      type: "auto"
     },
     {
       name: "report_url",
-      type: "string",
-    },
-  ],
+      type: "string"
+    }
+  ]
 });

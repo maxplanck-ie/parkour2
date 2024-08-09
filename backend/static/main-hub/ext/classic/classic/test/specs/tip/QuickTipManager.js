@@ -16,7 +16,7 @@ describe("Ext.tip.QuickTipManager", function () {
       Ext.tip.QuickTipManager.init();
       expect(Ext.tip.QuickTipManager.getQuickTip()).toBeDefined();
       expect(
-        Ext.tip.QuickTipManager.getQuickTip() instanceof Ext.tip.QuickTip,
+        Ext.tip.QuickTipManager.getQuickTip() instanceof Ext.tip.QuickTip
       ).toBeTruthy();
     });
 

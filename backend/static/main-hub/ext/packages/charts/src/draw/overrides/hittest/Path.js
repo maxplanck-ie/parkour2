@@ -9,7 +9,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
   // An arbitrary point outside the path used for hit testing with ray casting method.
   rayOrigin: {
     x: -10000,
-    y: -10000,
+    y: -10000
   },
 
   /**
@@ -47,7 +47,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 origin.x,
                 origin.y,
                 x,
-                y,
+                y
               )
             ) {
               count += 1;
@@ -67,7 +67,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
               origin.x,
               origin.y,
               x,
-              y,
+              y
             )
           ) {
             count += 1;
@@ -89,7 +89,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
             origin.x,
             origin.y,
             x,
-            y,
+            y
           ).length;
           lastX = params[j + 4];
           lastY = params[j + 5];
@@ -106,7 +106,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 origin.x,
                 origin.y,
                 x,
-                y,
+                y
               )
             ) {
               count += 1;
@@ -172,7 +172,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
               params[j + 3],
               params[j + 5],
               x,
-              y,
+              y
             )
           ) {
             return true;
@@ -241,7 +241,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                   x1,
                   y1,
                   x2,
-                  y2,
+                  y2
                 );
                 if (points) {
                   intersections.push(points);
@@ -260,7 +260,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                   firstX,
                   firstY,
                   lastX,
-                  lastY,
+                  lastY
                 );
                 intersections.push.apply(intersections, points);
                 break;
@@ -281,7 +281,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 x1,
                 y1,
                 x2,
-                y2,
+                y2
               );
               if (points) {
                 intersections.push(points);
@@ -300,7 +300,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 lastX,
                 lastY,
                 params[j],
-                params[j + 1],
+                params[j + 1]
               );
               intersections.push.apply(intersections, points);
               break;
@@ -324,7 +324,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 x1,
                 y1,
                 x2,
-                y2,
+                y2
               );
               intersections.push.apply(intersections, points);
               break;
@@ -345,7 +345,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                 y1,
                 y2,
                 y3,
-                y4,
+                y4
               );
               intersections.push.apply(intersections, points);
               break;
@@ -366,7 +366,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                   x1,
                   y1,
                   x2,
-                  y2,
+                  y2
                 );
                 if (points) {
                   intersections.push(points);
@@ -385,7 +385,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
                   firstX,
                   firstY,
                   lastX,
-                  lastY,
+                  lastY
                 );
                 intersections.push.apply(intersections, points);
                 break;
@@ -420,7 +420,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
               firstX,
               firstY,
               lastX,
-              lastY,
+              lastY
             );
             intersections.push.apply(intersections, points);
           }
@@ -434,7 +434,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
             lastX,
             lastY,
             params[j],
-            params[j + 1],
+            params[j + 1]
           );
           intersections.push.apply(intersections, points);
           lastX = params[j];
@@ -451,7 +451,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
             params[j + 2],
             params[j + 3],
             params[j + 4],
-            params[j + 5],
+            params[j + 5]
           );
           intersections.push.apply(intersections, points);
           lastX = params[j + 4];
@@ -465,7 +465,7 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
               firstX,
               firstY,
               lastX,
-              lastY,
+              lastY
             );
             intersections.push.apply(intersections, points);
           }
@@ -473,5 +473,5 @@ Ext.define("Ext.draw.overrides.hittest.Path", {
       }
     }
     return intersections;
-  },
+  }
 });

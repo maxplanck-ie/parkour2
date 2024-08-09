@@ -6,7 +6,7 @@ Ext.define("Ext.device.filesystem.Abstract", {
     fileSystemType: 1,
     fileSystemSize: 0,
     readerType: "text",
-    stringEncoding: "UTF8",
+    stringEncoding: "UTF8"
   },
 
   requestFileSystem: function (config) {
@@ -16,9 +16,9 @@ Ext.define("Ext.device.filesystem.Abstract", {
       type: defaultConfig.fileSystemType,
       size: defaultConfig.fileSystemSize,
       success: Ext.emptyFn,
-      failure: Ext.emptyFn,
+      failure: Ext.emptyFn
     });
 
     return config;
-  },
+  }
 });

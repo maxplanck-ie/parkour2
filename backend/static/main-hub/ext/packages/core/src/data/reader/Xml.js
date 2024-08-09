@@ -166,7 +166,7 @@ Ext.define("Ext.data.reader.Xml", {
      *         <n:baz>baz</n:baz>
      *     </foo>
      */
-    namespace: "",
+    namespace: ""
   },
 
   /**
@@ -321,8 +321,8 @@ Ext.define("Ext.data.reader.Xml", {
          * Copy of {@link #rawData}.
          * @deprecated 5.1.1 Removed in Ext JS 5.0. Use {@link #rawData} instead.
          */
-        xmlData: null,
-      },
-    },
-  },
+        xmlData: null
+      }
+    }
+  }
 });

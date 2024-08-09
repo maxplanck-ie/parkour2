@@ -77,8 +77,8 @@ Ext.define("Ext.chart.CartesianChart", {
       top: 0,
       left: 0,
       right: 0,
-      bottom: 0,
-    },
+      bottom: 0
+    }
   },
 
   applyInnerPadding: function (padding, oldPadding) {
@@ -174,7 +174,7 @@ Ext.define("Ext.chart.CartesianChart", {
             0,
             height - (shrinkBox.bottom + thickness),
             width,
-            thickness,
+            thickness
           ]);
           break;
         case "left":
@@ -185,7 +185,7 @@ Ext.define("Ext.chart.CartesianChart", {
             width - (shrinkBox.right + thickness),
             0,
             thickness,
-            height,
+            height
           ]);
           break;
       }
@@ -260,7 +260,7 @@ Ext.define("Ext.chart.CartesianChart", {
             -1,
             0,
             innerPadding.left + innerWidth,
-            innerPadding.top + innerHeight,
+            innerPadding.top + innerHeight
           );
         } else {
           surface.matrix.set(
@@ -269,7 +269,7 @@ Ext.define("Ext.chart.CartesianChart", {
             1,
             0,
             innerPadding.left,
-            innerPadding.top + innerHeight,
+            innerPadding.top + innerHeight
           );
         }
       } else {
@@ -279,7 +279,7 @@ Ext.define("Ext.chart.CartesianChart", {
           0,
           -1,
           innerPadding.left,
-          innerPadding.top + innerHeight,
+          innerPadding.top + innerHeight
         );
       }
       surface.matrix.inverse(surface.inverseMatrix);
@@ -347,7 +347,7 @@ Ext.define("Ext.chart.CartesianChart", {
           axis.floatingAtCoord = value + inner.left + inner.right;
         }
         value = axisSurface.roundPixel(
-          0.01 * value * (isHorizontal ? height : width),
+          0.01 * value * (isHorizontal ? height : width)
         );
       }
       switch (axis.getPosition()) {
@@ -413,7 +413,7 @@ Ext.define("Ext.chart.CartesianChart", {
         xRange = axisX.getRange();
         xRange = [
           xRange[0] + (xRange[1] - xRange[0]) * visibleRange[0],
-          xRange[0] + (xRange[1] - xRange[0]) * visibleRange[1],
+          xRange[0] + (xRange[1] - xRange[0]) * visibleRange[1]
         ];
       } else {
         xRange = series.getXRange();
@@ -424,7 +424,7 @@ Ext.define("Ext.chart.CartesianChart", {
         yRange = axisY.getRange();
         yRange = [
           yRange[0] + (yRange[1] - yRange[0]) * visibleRange[0],
-          yRange[0] + (yRange[1] - yRange[0]) * visibleRange[1],
+          yRange[0] + (yRange[1] - yRange[0]) * visibleRange[1]
         ];
       } else {
         yRange = series.getYRange();
@@ -437,7 +437,7 @@ Ext.define("Ext.chart.CartesianChart", {
         visibleMaxY: yRange[1],
         innerWidth: innerWidth,
         innerHeight: innerHeight,
-        flipXY: flipXY,
+        flipXY: flipXY
       };
 
       sprites = series.getSprites();
@@ -479,7 +479,7 @@ Ext.define("Ext.chart.CartesianChart", {
         dataMin: range[0],
         dataMax: range[1],
         visibleMin: visibleRange[0],
-        visibleMax: visibleRange[1],
+        visibleMax: visibleRange[1]
       };
       if (isSide) {
         attr.length = innerHeight;
@@ -501,5 +501,5 @@ Ext.define("Ext.chart.CartesianChart", {
   renderFrame: function () {
     this.refloatAxes();
     this.callParent();
-  },
+  }
 });

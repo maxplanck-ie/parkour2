@@ -22,7 +22,7 @@ Ext.define("Ext.list.Tree", {
       click: "onClick",
       mouseenter: "onMouseEnter",
       mouseleave: "onMouseLeave",
-      mouseover: "onMouseOver",
+      mouseover: "onMouseOver"
     },
     children: [
       {
@@ -30,16 +30,16 @@ Ext.define("Ext.list.Tree", {
         cls: Ext.baseCSSPrefix + "treelist-toolstrip",
         listeners: {
           click: "onToolStripClick",
-          mouseover: "onToolStripMouseOver",
-        },
-      },
-    ],
+          mouseover: "onToolStripMouseOver"
+        }
+      }
+    ]
   },
 
   cachedConfig: {
     animation: {
       duration: 500,
-      easing: "ease",
+      easing: "ease"
     },
 
     expanderFirst: true,
@@ -49,7 +49,7 @@ Ext.define("Ext.list.Tree", {
      * `true` to expand only on the click of the expander element. Setting this to
      * `false` will allow expansion on click of any part of the element.
      */
-    expanderOnly: true,
+    expanderOnly: true
   },
 
   config: {
@@ -63,7 +63,7 @@ Ext.define("Ext.list.Tree", {
      * ultimately derives from the `{@link Ext.list.AbstractTreeItem}` base class.
      */
     defaults: {
-      xtype: "treelistitem",
+      xtype: "treelistitem"
     },
 
     highlightPath: null,
@@ -101,15 +101,15 @@ Ext.define("Ext.list.Tree", {
      */
     store: null,
 
-    ui: null,
+    ui: null
   },
 
   twoWayBindable: {
-    selection: 1,
+    selection: 1
   },
 
   publishes: {
-    selection: 1,
+    selection: 1
   },
 
   defaultBindProperty: "store",
@@ -130,7 +130,7 @@ Ext.define("Ext.list.Tree", {
       me.el.on({
         resize: me.onElResize,
         buffer: 300,
-        scope: me,
+        scope: me
       });
     }
   },
@@ -253,7 +253,7 @@ Ext.define("Ext.list.Tree", {
         nodeinsert: "onNodeInsert",
         noderemove: "onNodeRemove",
         rootchange: "onRootChange",
-        update: "onNodeUpdate",
+        update: "onNodeUpdate"
       });
 
       root = store.getRoot();
@@ -349,9 +349,9 @@ Ext.define("Ext.list.Tree", {
         parentItem: parent.isRootListItem ? null : parent,
         owner: this,
         node: node,
-        indent: this.getIndent(),
+        indent: this.getIndent()
       },
-      this.getDefaults(),
+      this.getDefaults()
     );
   },
 
@@ -413,7 +413,7 @@ Ext.define("Ext.list.Tree", {
       me.rootItem = item = new Ext.list.RootTreeItem({
         indent: me.getIndent(),
         node: root,
-        owner: me,
+        owner: me
       });
 
       me.element.appendChild(item.element);
@@ -461,7 +461,7 @@ Ext.define("Ext.list.Tree", {
         me.floaterMouseListeners = (item.floater || item).el.monitorMouseLeave(
           300,
           me.checkForMouseLeave,
-          me,
+          me
         );
       } else {
         Ext.on("mousedown", "checkForOutsideClick", me);
@@ -742,7 +742,7 @@ Ext.define("Ext.list.Tree", {
           me.iconSize ||
           (me.iconSize = parseInt(
             me.element.getStyle("background-position"),
-            10,
+            10
           ));
 
       me.setIconSize(size);
@@ -761,7 +761,7 @@ Ext.define("Ext.list.Tree", {
           floater.element.un({
             scope: me,
             mouseleave: "checkForMouseLeave",
-            mouseover: "onMouseOver",
+            mouseover: "onMouseOver"
           });
         } else {
           Ext.un("mousedown", "checkForOutsideClick", me);
@@ -781,6 +781,6 @@ Ext.define("Ext.list.Tree", {
       if (rootItem) {
         rootItem.setIndent(value);
       }
-    },
-  },
+    }
+  }
 });

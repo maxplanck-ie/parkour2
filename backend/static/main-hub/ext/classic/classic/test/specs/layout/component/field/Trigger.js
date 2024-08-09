@@ -11,37 +11,37 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
       it("should have the same size as a text field with a single trigger", function () {
         text = new Ext.form.field.Text({
           renderTo: Ext.getBody(),
-          shrinkWrap: 3,
+          shrinkWrap: 3
         });
         trigger = new Ext.form.field.Trigger({
           renderTo: Ext.getBody(),
-          shrinkWrap: 3,
+          shrinkWrap: 3
         });
         width = text.getWidth();
 
         expect(trigger.getWidth()).toBe(width);
         expect(trigger.inputEl.getWidth()).toBe(
-          width - trigger.getTriggerWidth(),
+          width - trigger.getTriggerWidth()
         );
       });
 
       it("should have the same size as a text field with a 3 triggers", function () {
         text = new Ext.form.field.Text({
           renderTo: Ext.getBody(),
-          shrinkWrap: 3,
+          shrinkWrap: 3
         });
         trigger = new Ext.form.field.Trigger({
           renderTo: Ext.getBody(),
           shrinkWrap: 3,
           trigger1Cls: "foo",
           trigger2Cls: "bar",
-          trigger3Cls: "baz",
+          trigger3Cls: "baz"
         });
         width = text.getWidth();
 
         expect(trigger.getWidth()).toBe(width);
         expect(trigger.inputEl.getWidth()).toBe(
-          width - trigger.getTriggerWidth(),
+          width - trigger.getTriggerWidth()
         );
       });
 
@@ -49,11 +49,11 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
         trigger = new Ext.form.field.Trigger({
           renderTo: Ext.getBody(),
           shrinkWrap: 3,
-          inputWidth: 200,
+          inputWidth: 200
         });
         expect(trigger.getWidth()).toBe(200);
         expect(trigger.inputEl.getWidth()).toBe(
-          200 - trigger.getTriggerWidth(),
+          200 - trigger.getTriggerWidth()
         );
       });
     });
@@ -65,13 +65,13 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
             renderTo: Ext.getBody(),
             shrinkWrap: 3,
             labelWidth: 150,
-            fieldLabel: "A label",
+            fieldLabel: "A label"
           });
           trigger = new Ext.form.field.Trigger({
             renderTo: Ext.getBody(),
             shrinkWrap: 3,
             labelWidth: 150,
-            fieldLabel: "A label",
+            fieldLabel: "A label"
           });
           width = text.getWidth();
 
@@ -80,7 +80,7 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
             width -
               trigger.getTriggerWidth() -
               trigger.labelWidth -
-              trigger.labelPad,
+              trigger.labelPad
           );
         });
 
@@ -89,13 +89,13 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
             renderTo: Ext.getBody(),
             shrinkWrap: 3,
             labelPad: 20,
-            fieldLabel: "A label",
+            fieldLabel: "A label"
           });
           trigger = new Ext.form.field.Trigger({
             renderTo: Ext.getBody(),
             shrinkWrap: 3,
             labelPad: 20,
-            fieldLabel: "A label",
+            fieldLabel: "A label"
           });
           width = text.getWidth();
 
@@ -104,7 +104,7 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
             width -
               trigger.getTriggerWidth() -
               trigger.labelWidth -
-              trigger.labelPad,
+              trigger.labelPad
           );
         });
       });
@@ -116,20 +116,20 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
             shrinkWrap: 3,
             labelWidth: 150,
             fieldLabel: "A label",
-            labelAlign: "top",
+            labelAlign: "top"
           });
           trigger = new Ext.form.field.Trigger({
             renderTo: Ext.getBody(),
             shrinkWrap: 3,
             labelWidth: 150,
             fieldLabel: "A label",
-            labelAlign: "top",
+            labelAlign: "top"
           });
           width = text.getWidth();
 
           expect(trigger.getWidth()).toBe(width);
           expect(trigger.inputEl.getWidth()).toBe(
-            width - trigger.getTriggerWidth(),
+            width - trigger.getTriggerWidth()
           );
         });
 
@@ -139,20 +139,20 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
             shrinkWrap: 3,
             labelPad: 20,
             fieldLabel: "A label",
-            labelAlign: "top",
+            labelAlign: "top"
           });
           trigger = new Ext.form.field.Trigger({
             renderTo: Ext.getBody(),
             shrinkWrap: 3,
             labelPad: 20,
             fieldLabel: "A label",
-            labelAlign: "top",
+            labelAlign: "top"
           });
           width = text.getWidth();
 
           expect(trigger.getWidth()).toBe(width);
           expect(trigger.inputEl.getWidth()).toBe(
-            width - trigger.getTriggerWidth(),
+            width - trigger.getTriggerWidth()
           );
         });
       });
@@ -164,12 +164,12 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
       beforeEach(function () {
         text = new Ext.form.field.Text({
           renderTo: Ext.getBody(),
-          height: 200,
+          height: 200
         });
 
         trigger = new Ext.form.field.Trigger({
           renderTo: Ext.getBody(),
-          height: 200,
+          height: 200
         });
 
         height = text.getHeight();
@@ -186,13 +186,13 @@ xdescribe("Ext.layout.component.field.Trigger", function () {
       beforeEach(function () {
         text = new Ext.form.field.Text({
           renderTo: Ext.getBody(),
-          width: 300,
+          width: 300
         });
 
         trigger = new Ext.form.field.Trigger({
           renderTo: Ext.getBody(),
           hideTrigger: true,
-          width: 300,
+          width: 300
         });
 
         width = text.getWidth();

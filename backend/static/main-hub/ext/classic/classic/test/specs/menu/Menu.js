@@ -57,7 +57,7 @@ describe("Ext.menu.Menu", function () {
   describe("defaultType", function () {
     it("should be menuitem", function () {
       makeMenu({
-        items: [{}, {}],
+        items: [{}, {}]
       });
       expect(menu.items.getAt(0).$className).toBe("Ext.menu.Item");
       expect(menu.items.getAt(1).$className).toBe("Ext.menu.Item");
@@ -67,13 +67,13 @@ describe("Ext.menu.Menu", function () {
       makeMenu({
         items: [
           {
-            checked: true,
+            checked: true
           },
           {
             xtype: "menuitem",
-            checked: false,
-          },
-        ],
+            checked: false
+          }
+        ]
       });
       expect(menu.items.getAt(0).$className).toBe("Ext.menu.CheckItem");
       expect(menu.items.getAt(1).$className).toBe("Ext.menu.Item");
@@ -82,7 +82,7 @@ describe("Ext.menu.Menu", function () {
     it("should allow a custom default", function () {
       makeMenu({
         defaultType: "menucheckitem",
-        items: [{}, {}, { checked: true }],
+        items: [{}, {}, { checked: true }]
       });
       expect(menu.items.getAt(0).$className).toBe("Ext.menu.CheckItem");
       expect(menu.items.getAt(1).$className).toBe("Ext.menu.CheckItem");
@@ -97,12 +97,12 @@ describe("Ext.menu.Menu", function () {
 
         items: [
           {
-            text: "Hello",
+            text: "Hello"
           },
           {
-            text: "World",
-          },
-        ],
+            text: "World"
+          }
+        ]
       });
 
       menu.show();
@@ -131,11 +131,11 @@ describe("Ext.menu.Menu", function () {
             reference: "menu",
             items: [
               {
-                reference: "item",
-              },
-            ],
-          },
-        },
+                reference: "item"
+              }
+            ]
+          }
+        }
       });
 
       menu = ct.items.getAt(0).getMenu();
@@ -154,9 +154,9 @@ describe("Ext.menu.Menu", function () {
         reference: "menu",
         items: [
           {
-            reference: "item",
-          },
-        ],
+            reference: "item"
+          }
+        ]
       });
 
       var ct = new Ext.container.Container({
@@ -165,8 +165,8 @@ describe("Ext.menu.Menu", function () {
         items: {
           xtype: "button",
           text: "Foo",
-          menu: menu,
-        },
+          menu: menu
+        }
       });
 
       expect(ct.lookupReference("menu")).toBe(menu);
@@ -181,8 +181,8 @@ describe("Ext.menu.Menu", function () {
       it("should hide a single menu", function () {
         makeMenu({
           items: {
-            text: "Foo",
-          },
+            text: "Foo"
+          }
         });
         menu.show();
         expect(menu.isVisible()).toBe(true);
@@ -218,10 +218,10 @@ describe("Ext.menu.Menu", function () {
             text: "Foo",
             menu: {
               items: {
-                text: "Bar",
-              },
-            },
-          },
+                text: "Bar"
+              }
+            }
+          }
         });
 
         menu.show();
@@ -275,28 +275,28 @@ describe("Ext.menu.Menu", function () {
               menu: {
                 items: [
                   {
-                    text: "sub-Menu Item 1",
+                    text: "sub-Menu Item 1"
                   },
                   {
-                    text: "sub-Menu Item 2",
-                  },
-                ],
-              },
+                    text: "sub-Menu Item 2"
+                  }
+                ]
+              }
             },
             {
               text: "Menu Item 2",
               menu: {
                 items: [
                   {
-                    text: "sub-Menu Item 1",
+                    text: "sub-Menu Item 1"
                   },
                   {
-                    text: "sub-Menu Item 2",
-                  },
-                ],
-              },
-            },
-          ],
+                    text: "sub-Menu Item 2"
+                  }
+                ]
+              }
+            }
+          ]
         });
         menu.show();
 
@@ -326,9 +326,9 @@ describe("Ext.menu.Menu", function () {
         makeMenu({
           items: [
             {
-              xtype: "datefield",
-            },
-          ],
+              xtype: "datefield"
+            }
+          ]
         });
 
         menu.show();
@@ -353,15 +353,15 @@ describe("Ext.menu.Menu", function () {
         makeMenu({
           items: [
             {
-              text: "Foo",
-            },
-          ],
+              text: "Foo"
+            }
+          ]
         });
 
         var b = new Ext.button.Button({
           renderTo: Ext.getBody(),
           text: "Foo",
-          menu: menu,
+          menu: menu
         });
 
         b.showMenu();
@@ -373,9 +373,9 @@ describe("Ext.menu.Menu", function () {
             items: [
               {
                 text: "Child",
-                menuExpandDelay: 0,
-              },
-            ],
+                menuExpandDelay: 0
+              }
+            ]
           }),
           item;
 
@@ -401,14 +401,14 @@ describe("Ext.menu.Menu", function () {
           menuClickBuffer: 0,
           items: [
             {
-              text: "Foo",
-            },
-          ],
+              text: "Foo"
+            }
+          ]
         });
 
         var b = new Ext.button.Button({
           renderTo: Ext.getBody(),
-          text: "Foo",
+          text: "Foo"
         });
 
         var other = new Ext.menu.Menu({
@@ -416,9 +416,9 @@ describe("Ext.menu.Menu", function () {
               {
                 text: "Child",
                 menuExpandDelay: 0,
-                menu: menu,
-              },
-            ],
+                menu: menu
+              }
+            ]
           }),
           item;
 
@@ -485,12 +485,12 @@ describe("Ext.menu.Menu", function () {
             menu: {
               items: [
                 {
-                  text: "Bar",
-                },
-              ],
-            },
-          },
-        ],
+                  text: "Bar"
+                }
+              ]
+            }
+          }
+        ]
       });
 
       var item = menu.items.getAt(0),
@@ -516,13 +516,13 @@ describe("Ext.menu.Menu", function () {
               menu: {
                 items: [
                   {
-                    text: "Foo",
-                  },
-                ],
-              },
-            },
-          ],
-        },
+                    text: "Foo"
+                  }
+                ]
+              }
+            }
+          ]
+        }
       });
 
       menu.show();
@@ -540,15 +540,15 @@ describe("Ext.menu.Menu", function () {
   describe("hiding when doing an action outside the menu", function () {
     it("should hide the menu", function () {
       var field = new Ext.form.field.Text({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       makeMenu({
         items: [
           {
-            text: "Foo",
-          },
-        ],
+            text: "Foo"
+          }
+        ]
       });
       menu.show();
       doElementMousedown(field.inputEl);
@@ -558,7 +558,7 @@ describe("Ext.menu.Menu", function () {
 
     it("should hide the menu even if the event propagation is stopped", function () {
       var el = Ext.getBody().createChild({
-        tag: "input",
+        tag: "input"
       });
 
       el.on("mousedown", function (e) {
@@ -568,9 +568,9 @@ describe("Ext.menu.Menu", function () {
       makeMenu({
         items: [
           {
-            text: "Foo",
-          },
-        ],
+            text: "Foo"
+          }
+        ]
       });
       menu.show();
       doElementMousedown(el);
@@ -580,7 +580,7 @@ describe("Ext.menu.Menu", function () {
 
     it("should hide all menus", function () {
       var field = new Ext.form.field.Text({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       var m1 = makeMenu({ allowOtherMenus: true, items: [{ text: "Foo" }] }),
@@ -601,7 +601,7 @@ describe("Ext.menu.Menu", function () {
 
     beforeEach(function () {
       ctn = new Ext.container.Container({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -637,7 +637,7 @@ describe("Ext.menu.Menu", function () {
   describe("not floating", function () {
     it("should set constrain false", function () {
       makeMenu({
-        floating: false,
+        floating: false
       });
       expect(menu.constrain).toBe(false);
     });
@@ -648,9 +648,9 @@ describe("Ext.menu.Menu", function () {
         floating: false,
         items: [
           {
-            text: "Menu Item 1",
-          },
-        ],
+            text: "Menu Item 1"
+          }
+        ]
       });
 
       menu.items.items[0].focus();
@@ -677,19 +677,19 @@ describe("Ext.menu.Menu", function () {
         items: [
           {
             text: "Short",
-            id: "popup-menu-short-item",
+            id: "popup-menu-short-item"
           },
           {
             text: "Shrink wrap to my width, and stretch mysibling!",
             id: "popup-menu-long-item",
-            style: "width:268px",
-          },
-        ],
+            style: "width:268px"
+          }
+        ]
       });
       menu.showAt(0, 0);
 
       expect(menu.body.child(".x-menu-icon-separator").getHeight()).toEqual(
-        menu.body.getHeight(),
+        menu.body.getHeight()
       );
     });
 
@@ -699,63 +699,63 @@ describe("Ext.menu.Menu", function () {
         items: [
           {
             text: "Short",
-            id: "popup-menu-short-item",
+            id: "popup-menu-short-item"
           },
           {
             text: "Shrink wrap to my width, and stretch mysibling!",
             id: "popup-menu-long-item",
-            style: "width:268px",
-          },
-        ],
+            style: "width:268px"
+          }
+        ]
       });
       menu.showAt(0, 0);
 
       expect(menu).toHaveLayout({
         el: {
-          xywh: "0 0 274 62",
+          xywh: "0 0 274 62"
         },
         body: {
-          xywh: "0 0 274 62",
+          xywh: "0 0 274 62"
         },
         iconSepEl: {
-          xywh: "0 0 2 60",
+          xywh: "0 0 2 60"
         },
         items: {
           "popup-menu-short-item": {
             el: {
-              xywh: "3 3 268 28",
+              xywh: "3 3 268 28"
             },
             arrowEl: {
-              xywh: "62 22 1 1",
+              xywh: "62 22 1 1"
             },
             textEl: {
-              xywh: "36 12 26 13",
+              xywh: "36 12 26 13"
             },
             iconEl: {
-              xywh: "7 8 16 16",
+              xywh: "7 8 16 16"
             },
             itemEl: {
-              xywh: "4 4 266 26",
-            },
+              xywh: "4 4 266 26"
+            }
           },
           "popup-menu-long-item": {
             el: {
-              xywh: "3 31 268 28",
+              xywh: "3 31 268 28"
             },
             arrowEl: {
-              xywh: "267 50 1 1",
+              xywh: "267 50 1 1"
             },
             textEl: {
-              xywh: "36 40 231 13",
+              xywh: "36 40 231 13"
             },
             iconEl: {
-              xywh: "7 36 16 16",
+              xywh: "7 36 16 16"
             },
             itemEl: {
-              xywh: "4 32 266 26",
-            },
-          },
-        },
+              xywh: "4 32 266 26"
+            }
+          }
+        }
       });
     });
   });
@@ -770,9 +770,9 @@ describe("Ext.menu.Menu", function () {
             width: 200,
             items: [
               {
-                text: "foo",
-              },
-            ],
+                text: "foo"
+              }
+            ]
           });
         });
 
@@ -784,7 +784,7 @@ describe("Ext.menu.Menu", function () {
         it("should not constrain itself to the button", function () {
           button = new Ext.button.Button({
             menu: menu,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           button.showMenu();
@@ -833,9 +833,9 @@ describe("Ext.menu.Menu", function () {
         items: [
           {
             text: "item with href",
-            href: "#blah",
-          },
-        ],
+            href: "#blah"
+          }
+        ]
       });
 
       jasmine.fireMouseEvent(menu.items.getAt(0).itemEl.dom, "click");
@@ -856,9 +856,9 @@ describe("Ext.menu.Menu", function () {
         floating: false,
         items: [
           {
-            text: "item with no href",
-          },
-        ],
+            text: "item with no href"
+          }
+        ]
       });
 
       doItemClick(menu.items.getAt(0));
@@ -906,7 +906,7 @@ describe("Ext.menu.Menu", function () {
       beforeEach(function () {
         makeMenu({
           floating: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -958,15 +958,15 @@ describe("Ext.menu.Menu", function () {
         menu: makeMenu({
           itemId: "topMenu",
           defaults: {
-            hideOnClick: false,
+            hideOnClick: false
           },
 
           items: [
             {
-              text: "item 1",
+              text: "item 1"
             },
             {
-              text: "item 2",
+              text: "item 2"
             },
             {
               text: "submenu 1",
@@ -974,10 +974,10 @@ describe("Ext.menu.Menu", function () {
                 itemId: "submenu1",
                 items: [
                   {
-                    text: "item 1",
+                    text: "item 1"
                   },
                   {
-                    text: "item 2",
+                    text: "item 2"
                   },
                   {
                     text: "submenu 2",
@@ -985,24 +985,24 @@ describe("Ext.menu.Menu", function () {
                       itemId: "submenu2",
                       items: [
                         {
-                          text: "item 1",
+                          text: "item 1"
                         },
                         {
-                          text: "should be enough",
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        }),
+                          text: "should be enough"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        })
       });
 
       bar = new Ext.button.Button({
         renderTo: Ext.getBody(),
-        text: "bar",
+        text: "bar"
       });
 
       pressKey(foo, "down");
@@ -1012,7 +1012,7 @@ describe("Ext.menu.Menu", function () {
           return menu.isVisible() && menu.items.items[0].hasFocus;
         },
         "menu to show and gain focus",
-        1000,
+        1000
       );
     });
 
@@ -1032,13 +1032,13 @@ describe("Ext.menu.Menu", function () {
 
       runs(function () {
         expect(menu.getInherited().topmostFocusEvent.relatedTarget).toBe(
-          foo.el.dom,
+          foo.el.dom
         );
         expect(
-          menu.down("#submenu1").getInherited().topmostFocusEvent.relatedTarget,
+          menu.down("#submenu1").getInherited().topmostFocusEvent.relatedTarget
         ).toBe(foo.el.dom);
         expect(
-          menu.down("#submenu2").getInherited().topmostFocusEvent.relatedTarget,
+          menu.down("#submenu2").getInherited().topmostFocusEvent.relatedTarget
         ).toBe(foo.el.dom);
       });
     });
@@ -1161,7 +1161,7 @@ describe("Ext.menu.Menu", function () {
         items: [
           {
             xtype: "button",
-            text: "A Button",
+            text: "A Button"
           },
           (button = new Ext.button.Button({
             xtype: "button",
@@ -1182,25 +1182,25 @@ describe("Ext.menu.Menu", function () {
                         // It should still receive focus
                         (menu3Item = new Ext.menu.Item({
                           text: "Third level menu",
-                          disabled: true,
+                          disabled: true
                         })),
                         (menu3Item1 = new Ext.menu.Item({
                           text: "Third level second item",
                           handler: function () {
                             clicked = true;
-                          },
-                        })),
-                      ],
-                    })),
-                  })),
-                })),
-              })),
-            })),
+                          }
+                        }))
+                      ]
+                    }))
+                  }))
+                }))
+              }))
+            }))
           })),
           (secondButton = new Ext.button.Button({
-            text: "Bar",
-          })),
-        ],
+            text: "Bar"
+          }))
+        ]
       });
 
       testContainer.show();
@@ -1396,20 +1396,20 @@ describe("Ext.menu.Menu", function () {
       makeMenu({
         items: [
           {
-            text: "item",
+            text: "item"
           },
           {
             text: "submenu",
             menu: [
               {
-                text: "subitem 1",
+                text: "subitem 1"
               },
               {
-                text: "subitem 2",
-              },
-            ],
-          },
-        ],
+                text: "subitem 2"
+              }
+            ]
+          }
+        ]
       });
 
       item = menu.down("[text=item]");
@@ -1521,7 +1521,7 @@ describe("Ext.menu.Menu", function () {
         runs(function () {
           leftSpy = spyOn(
             submenu.menu,
-            "onFocusableContainerLeftKey",
+            "onFocusableContainerLeftKey"
           ).andCallThrough();
 
           submenu.activated = true;
@@ -1550,7 +1550,7 @@ describe("Ext.menu.Menu", function () {
         var event = new Ext.event.Event({
           type: "keydown",
           charCode: 65, // char 'A'
-          target: menu.el.dom,
+          target: menu.el.dom
         });
         menu.onShortcutKey(65, event);
       }).not.toThrow();
@@ -1560,7 +1560,7 @@ describe("Ext.menu.Menu", function () {
   describe("document scrolling", function () {
     it("should not hide when the document scrolls", function () {
       var stretcher = Ext.getBody().createChild({
-        style: "position:absolute;height:1px;width:1px;top:10000px",
+        style: "position:absolute;height:1px;width:1px;top:10000px"
       });
 
       makeMenu();
@@ -1581,17 +1581,17 @@ describe("Ext.menu.Menu", function () {
     beforeEach(function () {
       makeMenu({
         defaults: {
-          iconCls: "x-fa fa-truck",
+          iconCls: "x-fa fa-truck"
         },
         items: [
           {
-            text: "Item 1",
+            text: "Item 1"
           },
           "-",
           {
-            text: "Item 2",
-          },
-        ],
+            text: "Item 2"
+          }
+        ]
       });
     });
 
@@ -1621,7 +1621,7 @@ describe("Ext.menu.Menu", function () {
           { text: "Menu Item 1" },
           { text: "Menu Item 2" },
           { text: "Menu Item 3" },
-          { text: "Menu Item 4" },
+          { text: "Menu Item 4" }
         ];
       }
 
@@ -1636,13 +1636,13 @@ describe("Ext.menu.Menu", function () {
             xtype: "menu",
             floating: false,
             title: "Menu 1 Title (Throws Exception)",
-            items: getSampleMenuItems(),
+            items: getSampleMenuItems()
           },
           {
             xtype: "menu",
             floating: false,
             title: "Menu 2 Title (Throws Exception)",
-            items: getSampleMenuItems(),
+            items: getSampleMenuItems()
           },
           {
             xtype: "panel",
@@ -1652,11 +1652,11 @@ describe("Ext.menu.Menu", function () {
               {
                 xtype: "menu",
                 floating: false,
-                items: getSampleMenuItems(),
-              },
-            ],
-          },
-        ],
+                items: getSampleMenuItems()
+              }
+            ]
+          }
+        ]
       });
 
       window.onerror = onErrorSpy.andCallFake(function () {

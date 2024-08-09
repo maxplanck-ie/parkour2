@@ -4,30 +4,30 @@ describe("grid-aria", function () {
       fields: ["field1", "field2", "field3", "field4", "field5"],
       data: [
         ["foo", "bar", "baz", "qux", "fred"],
-        ["frob", "throbbe", "bonzo", "mymse", "xyzzy"],
-      ],
+        ["frob", "throbbe", "bonzo", "mymse", "xyzzy"]
+      ]
     },
     stdColumns = [
       {
         dataIndex: "field1",
-        text: "field 1",
+        text: "field 1"
       },
       {
         dataIndex: "field2",
-        text: "field 2",
+        text: "field 2"
       },
       {
         dataIndex: "field3",
-        text: "field 3",
+        text: "field 3"
       },
       {
         dataIndex: "field4",
-        text: "field 4",
+        text: "field 4"
       },
       {
         dataIndex: "field5",
-        text: "field 5",
-      },
+        text: "field 5"
+      }
     ],
     grid,
     synchronousLoad = true,
@@ -48,9 +48,9 @@ describe("grid-aria", function () {
         height: 300,
 
         store: stdStore,
-        columns: stdColumns,
+        columns: stdColumns
       },
-      cfg,
+      cfg
     );
 
     grid = new Ext.grid.Panel(cfg);
@@ -204,15 +204,15 @@ describe("grid-aria", function () {
               columns: [
                 {
                   dataIndex: "field1",
-                  text: "column 1",
+                  text: "column 1"
                 },
                 {
                   dataIndex: "field2",
-                  text: "column 2",
-                },
-              ],
-            },
-          ],
+                  text: "column 2"
+                }
+              ]
+            }
+          ]
         });
       });
 
@@ -238,11 +238,11 @@ describe("grid-aria", function () {
               columns: [
                 {
                   dataIndex: "field1",
-                  text: "<span><b>column 1</b></span>",
-                },
-              ],
-            },
-          ],
+                  text: "<span><b>column 1</b></span>"
+                }
+              ]
+            }
+          ]
         });
       });
 
@@ -263,14 +263,14 @@ describe("grid-aria", function () {
           {
             dataIndex: "field1",
             text: "sortable 1",
-            sortable: true,
+            sortable: true
           },
           {
             dataIndex: "field2",
             text: "sortable 2",
-            sortable: true,
-          },
-        ],
+            sortable: true
+          }
+        ]
       });
 
       col1 = grid.getColumns()[0];
@@ -314,7 +314,7 @@ describe("grid-aria", function () {
 
     it("should be false with cellediting plugin", function () {
       makeGrid({
-        plugins: [{ ptype: "cellediting" }],
+        plugins: [{ ptype: "cellediting" }]
       });
 
       expect(grid).toHaveAttr("aria-readonly", "false");
@@ -322,7 +322,7 @@ describe("grid-aria", function () {
 
     it("should be false with rowediting plugin", function () {
       makeGrid({
-        plugins: [{ ptype: "rowediting" }],
+        plugins: [{ ptype: "rowediting" }]
       });
 
       expect(grid).toHaveAttr("aria-readonly", "false");
@@ -330,7 +330,7 @@ describe("grid-aria", function () {
 
     it("should have aria-readonly on the column headers", function () {
       makeGrid({
-        plugins: [{ ptype: "cellediting" }],
+        plugins: [{ ptype: "cellediting" }]
       });
 
       var col = grid.getColumns()[0];
@@ -349,8 +349,8 @@ describe("grid-aria", function () {
     it("should be true with SIMPLE", function () {
       makeGrid({
         selModel: {
-          mode: "SIMPLE",
-        },
+          mode: "SIMPLE"
+        }
       });
 
       expect(grid).toHaveAttr("aria-multiselectable", "true");
@@ -359,8 +359,8 @@ describe("grid-aria", function () {
     it("should be true with MULTI", function () {
       makeGrid({
         selModel: {
-          mode: "MULTI",
-        },
+          mode: "MULTI"
+        }
       });
 
       expect(grid).toHaveAttr("aria-multiselectable", "true");
@@ -374,8 +374,8 @@ describe("grid-aria", function () {
       makeGrid({
         selModel: {
           type: "spreadsheet",
-          mode: "MULTI",
-        },
+          mode: "MULTI"
+        }
       });
 
       selModel = grid.getSelectionModel();

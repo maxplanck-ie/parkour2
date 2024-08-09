@@ -253,20 +253,20 @@ Ext.define("Ext.Editor", {
     var me = this,
       field = (me.field = Ext.ComponentManager.create(
         me.field || {},
-        "textfield",
+        "textfield"
       ));
 
     field.msgTarget = field.msgTarget || "qtip";
     me.mon(field, {
       scope: me,
-      specialkey: me.onSpecialKey,
+      specialkey: me.onSpecialKey
     });
 
     if (field.grow) {
       me.mon(field, "autosize", me.onFieldAutosize, me, { delay: 1 });
     }
     me.floating = {
-      constrain: me.constrain,
+      constrain: me.constrain
     };
     me.items = field;
 
@@ -299,7 +299,7 @@ Ext.define("Ext.Editor", {
       if (me.swallowKeys) {
         inputEl.swallowEvent([
           "keypress", // *** Opera
-          "keydown", // *** all other browsers
+          "keydown" // *** all other browsers
         ]);
       }
     }
@@ -325,7 +325,7 @@ Ext.define("Ext.Editor", {
       task.delay(
         me.specialKeyDelay,
         complete ? me.completeEdit : me.cancelEdit,
-        me,
+        me
       );
       //<debug>
       // Makes unit testing easier
@@ -352,7 +352,7 @@ Ext.define("Ext.Editor", {
   startEdit: function (
     el,
     value,
-    /* private: false means don't focus*/ doFocus,
+    /* private: false means don't focus*/ doFocus
   ) {
     var me = this,
       field = me.field,
@@ -366,7 +366,7 @@ Ext.define("Ext.Editor", {
 
     if (me.useBoundValue && !Ext.isDefined(value)) {
       value = Ext.String.trim(
-        dom.textContent || dom.innerText || dom.innerHTML,
+        dom.textContent || dom.innerText || dom.innerHTML
       );
     }
 
@@ -561,5 +561,5 @@ Ext.define("Ext.Editor", {
     Ext.destroy(me.field);
 
     me.callParent();
-  },
+  }
 });

@@ -30,7 +30,7 @@ describe("Ext.data.field.Number", function () {
       describe("with allowNull: true", function () {
         beforeEach(function () {
           make({
-            allowNull: true,
+            allowNull: true
           });
         });
 
@@ -50,7 +50,7 @@ describe("Ext.data.field.Number", function () {
       describe("without allowNull: false", function () {
         beforeEach(function () {
           make({
-            allowNull: false,
+            allowNull: false
           });
         });
 
@@ -73,7 +73,7 @@ describe("Ext.data.field.Number", function () {
         describe("with allowNull: true", function () {
           beforeEach(function () {
             make({
-              allowNull: true,
+              allowNull: true
             });
           });
 
@@ -85,7 +85,7 @@ describe("Ext.data.field.Number", function () {
         describe("with allowNull: false", function () {
           beforeEach(function () {
             make({
-              allowNull: false,
+              allowNull: false
             });
           });
 
@@ -115,7 +115,7 @@ describe("Ext.data.field.Number", function () {
       it("should accept a custom stripRe", function () {
         // \u20ac = Euro symbol
         make({
-          stripRe: /\u20ac/,
+          stripRe: /\u20ac/
         });
         expect(c("\u20ac200.65")).toBe(200.65);
       });

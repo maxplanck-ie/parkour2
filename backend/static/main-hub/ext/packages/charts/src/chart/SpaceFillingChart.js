@@ -62,5 +62,5 @@ Ext.define("Ext.chart.SpaceFillingChart", {
 
     me.renderFrame();
     me.callParent();
-  },
+  }
 });

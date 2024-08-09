@@ -8,7 +8,7 @@
 Ext.define(
   "MainHub.overrides.Date",
   {
-    requires: "Ext.Date",
+    requires: "Ext.Date"
   },
   function () {
     Ext.Date.diffPrecise = function (dMin, dMax, unitCaptions) {
@@ -26,7 +26,7 @@ Ext.define(
         minutes: "minutes",
         second: "second",
         seconds: "seconds",
-        delimiter: " ",
+        delimiter: " "
       };
 
       if (unitCaptions) {
@@ -67,7 +67,7 @@ Ext.define(
 
       if (dDiff < 0) {
         var daysInLastFullMonth = Ext.Date.getDaysInMonth(
-          Ext.Date.subtract(dMax, Ext.Date.MONTH, 1),
+          Ext.Date.subtract(dMax, Ext.Date.MONTH, 1)
         );
         if (daysInLastFullMonth < dMin.getDate()) {
           // 31/01 -> 2/03
@@ -120,9 +120,9 @@ Ext.define(
         days: dDiff,
         hours: hourDiff,
         minutes: minDiff,
-        seconds: secDiff,
+        seconds: secDiff
       });
       return retObj;
     };
-  },
+  }
 );

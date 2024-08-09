@@ -79,5 +79,5 @@ Ext.define("Ext.fx.target.Element", {
     } else {
       element.setStyle(attr, value);
     }
-  },
+  }
 });

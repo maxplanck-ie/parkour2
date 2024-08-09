@@ -61,10 +61,10 @@ Ext.define("Ext.draw.sprite.Sector", {
         /**
          * @cfg {Number} [margin=0] The margin of the sprite from the center of pie.
          */
-        margin: "number",
+        margin: "number"
       },
       aliases: {
-        rho: "endRho",
+        rho: "endRho"
       },
       triggers: {
         centerX: "path,bbox",
@@ -73,7 +73,7 @@ Ext.define("Ext.draw.sprite.Sector", {
         endAngle: "path,bbox",
         startRho: "path,bbox",
         endRho: "path,bbox",
-        margin: "path,bbox",
+        margin: "path,bbox"
       },
       defaults: {
         centerX: 0,
@@ -83,9 +83,9 @@ Ext.define("Ext.draw.sprite.Sector", {
         startRho: 0,
         endRho: 150,
         margin: 0,
-        path: "M 0,0",
-      },
-    },
+        path: "M 0,0"
+      }
+    }
   },
 
   getMidAngle: function () {
@@ -108,17 +108,17 @@ Ext.define("Ext.draw.sprite.Sector", {
     }
     path.moveTo(
       centerX + startRho * Math.cos(startAngle),
-      centerY + startRho * Math.sin(startAngle),
+      centerY + startRho * Math.sin(startAngle)
     );
     path.lineTo(
       centerX + endRho * Math.cos(startAngle),
-      centerY + endRho * Math.sin(startAngle),
+      centerY + endRho * Math.sin(startAngle)
     );
     path.arc(centerX, centerY, endRho, startAngle, endAngle, false);
     path.lineTo(
       centerX + startRho * Math.cos(endAngle),
-      centerY + startRho * Math.sin(endAngle),
+      centerY + startRho * Math.sin(endAngle)
     );
     path.arc(centerX, centerY, startRho, endAngle, startAngle, true);
-  },
+  }
 });

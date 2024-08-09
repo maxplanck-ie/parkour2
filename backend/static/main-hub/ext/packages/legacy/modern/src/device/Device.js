@@ -74,7 +74,7 @@ Ext.define("Ext.device.Device", {
   requires: [
     "Ext.device.Communicator",
     "Ext.device.device.Cordova",
-    "Ext.device.device.Simulator",
+    "Ext.device.device.Simulator"
   ],
 
   constructor: function () {
@@ -86,5 +86,5 @@ Ext.define("Ext.device.Device", {
     }
 
     return Ext.create("Ext.device.device.Simulator");
-  },
+  }
 });

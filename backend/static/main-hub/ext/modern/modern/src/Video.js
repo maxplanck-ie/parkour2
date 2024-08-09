@@ -63,7 +63,7 @@ Ext.define("Ext.Video", {
      * @cfg {Boolean} controls
      * Determines if native controls should be shown for this video player.
      */
-    controls: true,
+    controls: true
   },
 
   template: [
@@ -73,13 +73,13 @@ Ext.define("Ext.Video", {
        * @private
        */
       reference: "ghost",
-      classList: [Ext.baseCSSPrefix + "video-ghost"],
+      classList: [Ext.baseCSSPrefix + "video-ghost"]
     },
     {
       tag: "video",
       reference: "media",
-      classList: [Ext.baseCSSPrefix + "media"],
-    },
+      classList: [Ext.baseCSSPrefix + "media"]
+    }
   ],
 
   initialize: function () {
@@ -91,12 +91,12 @@ Ext.define("Ext.Video", {
 
     me.ghost.on({
       tap: "onGhostTap",
-      scope: me,
+      scope: me
     });
 
     me.media.on({
       pause: "onPause",
-      scope: me,
+      scope: me
     });
 
     if (Ext.os.is.Android4 || Ext.os.is.iPad) {
@@ -124,8 +124,8 @@ Ext.define("Ext.Video", {
       media.appendChild(
         Ext.Element.create({
           tag: "source",
-          src: newUrl[i],
-        }),
+          src: newUrl[i]
+        })
       );
     }
 
@@ -194,5 +194,5 @@ Ext.define("Ext.Video", {
     if (ghost) {
       ghost.setStyle("background-image", "url(" + newUrl + ")");
     }
-  },
+  }
 });

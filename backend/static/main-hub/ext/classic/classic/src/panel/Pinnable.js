@@ -22,8 +22,8 @@ Ext.define("Ext.panel.Pinnable", {
         type: pinned ? "unpin" : "pin",
         callback: "togglePin",
         scope: me,
-        tooltip: pinned ? me.pinnedTip : me.unpinnedTip,
-      })),
+        tooltip: pinned ? me.pinnedTip : me.unpinnedTip
+      }))
     );
   },
 
@@ -54,5 +54,5 @@ Ext.define("Ext.panel.Pinnable", {
 
     tool.setTooltip(pinned ? me.pinnedTip : me.unpinnedTip);
     tool.setType(pinned ? "unpin" : "pin");
-  },
+  }
 });

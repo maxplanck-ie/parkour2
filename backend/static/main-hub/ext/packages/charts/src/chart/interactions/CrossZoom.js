@@ -157,10 +157,10 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
       dragstart: "onGestureStart",
       drag: "onGesture",
       dragend: "onGestureEnd",
-      dblclick: "onDoubleTap",
+      dblclick: "onDoubleTap"
     },
 
-    undoButton: {},
+    undoButton: {}
   },
 
   stopAnimationBeforeSync: false,
@@ -180,7 +180,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
         top: {},
         right: {},
         bottom: {},
-        left: {},
+        left: {}
       };
     } else if (Ext.isArray(axesConfig)) {
       // array of axis names - translate to full object form
@@ -218,10 +218,10 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
             disabled: true,
             handler: function () {
               me.undoZoom();
-            },
+            }
           },
-          button,
-        ),
+          button
+        )
       );
     }
   },
@@ -271,7 +271,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
         y: y,
         width: 0,
         height: 0,
-        zIndex: 10000,
+        zIndex: 10000
       });
       me.setSeriesOpacity(0.8);
       return false;
@@ -308,7 +308,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
       }
       me.selectionRect.setAttributes({
         width: x - me.startX,
-        height: y - me.startY,
+        height: y - me.startY
       });
       if (Math.abs(me.startX - x) < 11 || Math.abs(me.startY - y) < 11) {
         me.selectionRect.setAttributes({ globalAlpha: 0.5 });
@@ -357,14 +357,14 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
           Math.min(me.startX, x) / rectWidth,
           1 - Math.max(me.startY, y) / rectHeight,
           Math.max(me.startX, x) / rectWidth,
-          1 - Math.min(me.startY, y) / rectHeight,
+          1 - Math.min(me.startY, y) / rectHeight
         ]);
 
         me.selectionRect.setAttributes({
           x: Math.min(me.startX, x),
           y: Math.min(me.startY, y),
           width: Math.abs(me.startX - x),
-          height: Math.abs(me.startY - y),
+          height: Math.abs(me.startY - y)
         });
 
         me.selectionRect.setAnimation(chart.getAnimation() || { duration: 0 });
@@ -373,7 +373,7 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
           x: 0,
           y: 0,
           width: rectWidth,
-          height: rectHeight,
+          height: rectHeight
         });
 
         me.zoomAnimationInProgress = true;
@@ -429,12 +429,12 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
         if (!isSide) {
           axis.setVisibleRange([
             (oldRange[1] - oldRange[0]) * rect[0] + oldRange[0],
-            (oldRange[1] - oldRange[0]) * rect[2] + oldRange[0],
+            (oldRange[1] - oldRange[0]) * rect[2] + oldRange[0]
           ]);
         } else {
           axis.setVisibleRange([
             (oldRange[1] - oldRange[0]) * rect[1] + oldRange[0],
-            (oldRange[1] - oldRange[0]) * rect[3] + oldRange[0],
+            (oldRange[1] - oldRange[0]) * rect[3] + oldRange[0]
           ]);
         }
       }
@@ -466,5 +466,5 @@ Ext.define("Ext.chart.interactions.CrossZoom", {
   destroy: function () {
     this.setUndoButton(null);
     this.callParent();
-  },
+  }
 });

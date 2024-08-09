@@ -4,7 +4,7 @@ describe("Ext.grid.column.Template", function () {
   function getCell(rowIdx, colIdx) {
     return grid.getView().getCellInclusive({
       row: rowIdx,
-      column: colIdx,
+      column: colIdx
     });
   }
 
@@ -18,9 +18,9 @@ describe("Ext.grid.column.Template", function () {
       model: spec.TestModel,
       data: [
         {
-          field: value,
-        },
-      ],
+          field: value
+        }
+      ]
     });
 
     grid = new Ext.grid.Panel({
@@ -31,13 +31,13 @@ describe("Ext.grid.column.Template", function () {
           tpl: "Hello {field}",
           text: "Col",
           dataIndex: "field",
-          flex: 1,
-        },
+          flex: 1
+        }
       ],
       width: 400,
       height: 100,
       border: false,
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
     colRef = grid.getColumnManager().getColumns();
   }
@@ -48,9 +48,9 @@ describe("Ext.grid.column.Template", function () {
       fields: [
         {
           name: "field",
-          defaultValue: undefined,
-        },
-      ],
+          defaultValue: undefined
+        }
+      ]
     });
   });
 

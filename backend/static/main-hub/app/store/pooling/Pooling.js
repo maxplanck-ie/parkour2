@@ -18,13 +18,13 @@ Ext.define("MainHub.store.pooling.Pooling", {
     noCache: false, // to remove param "_dc",
     api: {
       read: "api/pooling/",
-      update: "api/pooling/edit/",
+      update: "api/pooling/edit/"
     },
     reader: {
       type: "json",
       rootProperty: "data",
       successProperty: "success",
-      messageProperty: "message",
+      messageProperty: "message"
     },
     writer: {
       type: "json",
@@ -42,18 +42,18 @@ Ext.define("MainHub.store.pooling.Pooling", {
               return Ext.Object.merge(
                 {
                   pk: record.get("pk"),
-                  record_type: record.get("record_type"),
+                  record_type: record.get("record_type")
                 },
-                record.getChanges(),
+                record.getChanges()
               );
             }
           });
 
           return newData;
         },
-        scope: this,
-      },
-    },
+        scope: this
+      }
+    }
   },
 
   listeners: {
@@ -62,10 +62,10 @@ Ext.define("MainHub.store.pooling.Pooling", {
         // Remove 'Click to collapse' tooltip
         $(".x-grid-group-title").attr("data-qtip", "");
       }
-    },
+    }
   },
 
   getId: function () {
     return "Pooling";
-  },
+  }
 });

@@ -1,7 +1,7 @@
 Ext.define("MainHub.overrides.list.RootTreeItem", {
   override: "Ext.list.RootTreeItem",
   config: {
-    floated: null,
+    floated: null
   },
   // Implement a setter.
   // There *is* no "floated" config in Classic.
@@ -86,13 +86,13 @@ Ext.define("MainHub.overrides.list.RootTreeItem", {
           element: "el",
           click: function (e) {
             return owner.onClick(e);
-          },
-        },
+          }
+        }
       });
       floater.add(me);
       floater.show();
       floater.el.alignTo(toolElement, "tr?");
       return floater;
-    },
-  },
+    }
+  }
 });

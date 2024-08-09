@@ -28,7 +28,7 @@ Ext.define("Ext.view.BoundListKeyNav", {
       me.keyNav.map.addBinding({
         key: Ext.event.Event.ESC,
         fn: me.onKeyEsc,
-        scope: me,
+        scope: me
       });
     }
 
@@ -39,7 +39,7 @@ Ext.define("Ext.view.BoundListKeyNav", {
 
     if (!field.rendered) {
       field.on("render", Ext.Function.bind(me.initKeyNav, me, [view], 0), me, {
-        single: true,
+        single: true
       });
       return;
     }
@@ -64,12 +64,12 @@ Ext.define("Ext.view.BoundListKeyNav", {
         ctrl: true,
         // Need a separate function because we don't want the key
         // events passed on to selectAll (causes event suppression).
-        handler: me.onSelectAllKeyPress,
+        handler: me.onSelectAllKeyPress
       },
       // This object has to get its key processing in first.
       // Specifically, before any Editor's key hyandling.
       priority: 1001,
-      scope: me,
+      scope: me
     });
   },
 
@@ -182,7 +182,7 @@ Ext.define("Ext.view.BoundListKeyNav", {
     // does not completeEdit, but we also need to still fire the specialkey event for ENTER,
     // so lets add fromBoundList to eOpts, and this will be handled by CellEditor#onSpecialKey.
     field.fireEvent("specialkey", field, e, {
-      fromBoundList: true,
+      fromBoundList: true
     });
     return false;
   },
@@ -243,7 +243,7 @@ Ext.define("Ext.view.BoundListKeyNav", {
           // jump to the next one.
           if (!boundList.store.data.contains(highlightedRec)) {
             me.setPosition(
-              Math.min(highlightedPosition, boundList.store.getCount() - 1),
+              Math.min(highlightedPosition, boundList.store.getCount() - 1)
             );
           }
         }
@@ -254,5 +254,5 @@ Ext.define("Ext.view.BoundListKeyNav", {
   destroy: function () {
     this.fieldKeyNav = Ext.destroy(this.fieldKeyNav);
     this.callParent();
-  },
+  }
 });

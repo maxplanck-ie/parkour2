@@ -8,7 +8,7 @@ Ext.define("Ext.ux.data.PagingMemoryProxy", {
 
   constructor: function () {
     Ext.log.warn(
-      "Ext.ux.data.PagingMemoryProxy functionality has been merged into Ext.data.proxy.Memory by using the enablePaging flag.",
+      "Ext.ux.data.PagingMemoryProxy functionality has been merged into Ext.data.proxy.Memory by using the enablePaging flag."
     );
     this.callParent(arguments);
   },
@@ -47,7 +47,7 @@ Ext.define("Ext.ux.data.PagingMemoryProxy", {
             records.push(record);
           }
         },
-        this,
+        this
       );
 
       result.records = records;
@@ -78,13 +78,13 @@ Ext.define("Ext.ux.data.PagingMemoryProxy", {
     if (operation.start !== undefined && operation.limit !== undefined) {
       result.records = result.records.slice(
         operation.start,
-        operation.start + operation.limit,
+        operation.start + operation.limit
       );
       result.count = result.records.length;
     }
 
     Ext.apply(operation, {
-      resultSet: result,
+      resultSet: result
     });
 
     operation.setCompleted();
@@ -93,5 +93,5 @@ Ext.define("Ext.ux.data.PagingMemoryProxy", {
     Ext.Function.defer(function () {
       Ext.callback(callback, scope, [operation]);
     }, 10);
-  },
+  }
 });

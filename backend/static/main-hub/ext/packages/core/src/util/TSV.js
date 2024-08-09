@@ -11,5 +11,5 @@ Ext.define("Ext.util.TSV", {
 
   singleton: true,
 
-  delimiter: "\t",
+  delimiter: "\t"
 });

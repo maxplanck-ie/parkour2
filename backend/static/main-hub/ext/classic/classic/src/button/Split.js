@@ -85,7 +85,7 @@ Ext.define("Ext.button.Split", {
         "Using both menu and arrowHandler config options in Split buttons " +
           "leads to confusing user experience and conflicts with accessibility " +
           "best practices. See WAI-ARIA 1.0 Authoring guide: " +
-          "http://www.w3.org/TR/wai-aria-practices/#menubutton",
+          "http://www.w3.org/TR/wai-aria-practices/#menubutton"
       );
     }
 
@@ -132,7 +132,7 @@ Ext.define("Ext.button.Split", {
       el.on({
         scope: me,
         focus: me.onMainElFocus,
-        blur: me.onMainElBlur,
+        blur: me.onMainElBlur
       });
     }
 
@@ -145,7 +145,7 @@ Ext.define("Ext.button.Split", {
       el.on({
         scope: me,
         focus: me.onArrowElFocus,
-        blur: me.onArrowElBlur,
+        blur: me.onArrowElBlur
       });
     }
   },
@@ -308,6 +308,6 @@ Ext.define("Ext.button.Split", {
 
       arrowEl.dom.removeAttribute("tabIndex");
       arrowEl.setVisible(false);
-    },
-  },
+    }
+  }
 });

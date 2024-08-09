@@ -61,7 +61,7 @@ describe("Ext.dom.GarbageCollector", function () {
       expect(id in Ext.cache).toBe(true);
 
       el.destroy();
-    },
+    }
   );
 
   it("should return the ids of collected elements", function () {

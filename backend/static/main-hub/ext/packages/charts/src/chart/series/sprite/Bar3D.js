@@ -29,7 +29,7 @@ Ext.define("Ext.chart.series.sprite.Bar3D", {
          * An attribute used to control how flat the bar gradient looks.
          * A value of 0 essentially means no gradient (flat color).
          */
-        colorSpread: "number",
+        colorSpread: "number"
       },
 
       defaults: {
@@ -37,11 +37,11 @@ Ext.define("Ext.chart.series.sprite.Bar3D", {
         saturationFactor: 1,
         brightnessFactor: 1,
         colorSpread: 1,
-        transformFillStroke: true,
+        transformFillStroke: true
       },
 
       triggers: {
-        groupCount: "panzoom",
+        groupCount: "panzoom"
       },
 
       updaters: {
@@ -67,13 +67,13 @@ Ext.define("Ext.chart.series.sprite.Bar3D", {
           attr.scalingCenterX = 0;
           attr.scalingCenterY = 0;
           me.applyTransformations(true);
-        },
-      },
-    },
+        }
+      }
+    }
   },
 
   config: {
-    showStroke: false,
+    showStroke: false
   },
 
   depth: 0,
@@ -110,5 +110,5 @@ Ext.define("Ext.chart.series.sprite.Bar3D", {
       Ext.apply(itemCfg, changes);
     }
     me.putMarker("items", itemCfg, index, !renderer);
-  },
+  }
 });

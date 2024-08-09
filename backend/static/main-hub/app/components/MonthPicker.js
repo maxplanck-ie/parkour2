@@ -19,5 +19,5 @@ Ext.define("MainHub.components.MonthPicker", {
         dp.showMonthPicker(false);
       });
     });
-  },
+  }
 });

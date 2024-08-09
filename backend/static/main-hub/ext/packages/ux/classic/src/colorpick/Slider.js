@@ -27,7 +27,7 @@ Ext.define("Ext.ux.colorpick.Slider", {
     element: "el",
     mousedown: "onMouseDown",
     mouseup: "onMouseUp",
-    dragstart: "onDragStart",
+    dragstart: "onDragStart"
   },
 
   // Container for the drag handle; needed since the slider
@@ -50,8 +50,8 @@ Ext.define("Ext.ux.colorpick.Slider", {
       height: 1,
       draggable: true,
       html:
-        '<div class="' + Ext.baseCSSPrefix + 'colorpicker-draghandle"></div>',
-    },
+        '<div class="' + Ext.baseCSSPrefix + 'colorpicker-draghandle"></div>'
+    }
   },
 
   // <debug>
@@ -67,5 +67,5 @@ Ext.define("Ext.ux.colorpick.Slider", {
 
   getDragContainer: function () {
     return this.lookupReference("dragHandleContainer");
-  },
+  }
 });

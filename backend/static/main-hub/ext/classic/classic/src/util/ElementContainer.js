@@ -204,8 +204,8 @@ Ext.define("Ext.util.ElementContainer", {
         }
 
         return childEls;
-      },
-    },
+      }
+    }
   },
 
   destroy: function () {
@@ -264,7 +264,7 @@ Ext.define("Ext.util.ElementContainer", {
       if (childEls) {
         delete proto.childEls;
         targetClass.getConfigurator().add({
-          childEls: childEls,
+          childEls: childEls
         });
       }
     },
@@ -326,6 +326,6 @@ Ext.define("Ext.util.ElementContainer", {
 
         me[childName] = value || null;
       }
-    },
-  },
+    }
+  }
 });

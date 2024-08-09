@@ -10,16 +10,16 @@ describe("Ext.selection.CellModel", function () {
     return grid.getView().getCellInclusive(
       {
         row: rowIdx,
-        column: cellIdx,
+        column: cellIdx
       },
-      true,
+      true
     );
   }
 
   function makeGrid(columns, cfg, selModelCfg) {
     Ext.define("spec.CellModel", {
       extend: "Ext.data.Model",
-      fields: ["field1", "field2", "field3"],
+      fields: ["field1", "field2", "field3"]
     });
 
     selModel = new Ext.selection.CellModel(selModelCfg || {});
@@ -32,7 +32,7 @@ describe("Ext.selection.CellModel", function () {
       for (i = 1; i <= 5; ++i) {
         defaultCols.push({
           name: "F" + i,
-          dataIndex: "field" + i,
+          dataIndex: "field" + i
         });
       }
     }
@@ -43,13 +43,13 @@ describe("Ext.selection.CellModel", function () {
         field2: i + "." + 2,
         field3: i + "." + 3,
         field4: i + "." + 4,
-        field5: i + "." + 5,
+        field5: i + "." + 5
       });
     }
 
     store = new Ext.data.Store({
       model: spec.CellModel,
-      data: data,
+      data: data
     });
 
     grid = new Ext.grid.Panel(
@@ -60,10 +60,10 @@ describe("Ext.selection.CellModel", function () {
           selModel: selModel,
           width: 1000,
           height: 500,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     view = grid.getView();
     selModel = grid.getSelectionModel();
@@ -93,11 +93,11 @@ describe("Ext.selection.CellModel", function () {
     describe("deselectOnContainerClick: false", function () {
       it("should not deselect when clicking the container", function () {
         makeGrid(null, null, {
-          deselectOnContainerClick: false,
+          deselectOnContainerClick: false
         });
         selModel.selectByPosition({
           row: 0,
-          column: 0,
+          column: 0
         });
         jasmine.fireMouseEvent(view.getEl(), "click", 800, 200);
         var pos = selModel.getPosition();
@@ -109,11 +109,11 @@ describe("Ext.selection.CellModel", function () {
     describe("deselectOnContainerClick: true", function () {
       it("should deselect when clicking the container", function () {
         makeGrid(null, null, {
-          deselectOnContainerClick: true,
+          deselectOnContainerClick: true
         });
         selModel.selectByPosition({
           row: 0,
-          column: 0,
+          column: 0
         });
         jasmine.fireMouseEvent(view.getEl(), "click", 800, 200);
         expect(selModel.getPosition()).toBeNull();
@@ -125,15 +125,15 @@ describe("Ext.selection.CellModel", function () {
     it("should take a hidden column into account on click", function () {
       makeGrid([
         {
-          dataIndex: "field1",
+          dataIndex: "field1"
         },
         {
           dataIndex: "field2",
-          hidden: true,
+          hidden: true
         },
         {
-          dataIndex: "field3",
-        },
+          dataIndex: "field3"
+        }
       ]);
       triggerCellMouseEvent("click", 0, 2);
       var pos = selModel.getPosition();
@@ -147,7 +147,7 @@ describe("Ext.selection.CellModel", function () {
       makeGrid();
       selModel.selectByPosition({
         row: 1,
-        column: 0,
+        column: 0
       });
       store.removeAll();
       expect(selModel.getPosition()).toBeNull();
@@ -159,7 +159,7 @@ describe("Ext.selection.CellModel", function () {
 
       selModel.selectByPosition({
         column: 1,
-        row: 8,
+        row: 8
       });
       store.removeAt(0);
       store.removeAt(0);
@@ -177,7 +177,7 @@ describe("Ext.selection.CellModel", function () {
 
       selModel.selectByPosition({
         column: 2,
-        row: 1,
+        row: 1
       });
       store.insert(0, {});
       store.insert(0, {});
@@ -195,7 +195,7 @@ describe("Ext.selection.CellModel", function () {
 
       selModel.selectByPosition({
         column: 2,
-        row: 0,
+        row: 0
       });
 
       // Move record 0 to be record 9
@@ -216,8 +216,8 @@ describe("Ext.selection.CellModel", function () {
     grid.getStore().sort([
       {
         property: "name",
-        direction: "DESC",
-      },
+        direction: "DESC"
+      }
     ]);
 
     var col = grid.getColumnManager().getHeaderAtIndex(0);
@@ -253,9 +253,9 @@ describe("Ext.selection.CellModel", function () {
         viewConfig: {
           plugins: {
             ptype: "gridviewdragdrop",
-            dragText: "Drag and drop to reorganize",
-          },
-        },
+            dragText: "Drag and drop to reorganize"
+          }
+        }
       });
       var plugin = grid.view.findPlugin("gridviewdragdrop");
 
@@ -274,7 +274,7 @@ describe("Ext.selection.CellModel", function () {
         // The proxy should contain the configured dragText
         proxyInner = plugin.dragZone.proxy.el.down(
           "." + Ext.baseCSSPrefix + "grid-dd-wrap",
-          true,
+          true
         );
         expect(proxyInner).not.toBeFalsy();
 
@@ -313,7 +313,7 @@ describe("Ext.selection.CellModel", function () {
       beforeEach(function () {
         makeGrid(null, {
           reference: "userList",
-          viewModel: viewModel,
+          viewModel: viewModel
         });
         viewModel.bind("{userList.selection}", spy);
         viewModel.notify();
@@ -362,8 +362,8 @@ describe("Ext.selection.CellModel", function () {
         makeGrid(null, {
           viewModel: viewModel,
           bind: {
-            selection: "{foo}",
-          },
+            selection: "{foo}"
+          }
         });
         viewModel.bind("{foo}", spy);
         viewModel.notify();

@@ -17,6 +17,6 @@ Ext.define("MainHub.store.libraries.RNAQuality", {
     { value: 8, name: "8" },
     { value: 9, name: "9" },
     { value: 10, name: "10" },
-    { value: 11, name: "Determined by Facility" },
-  ],
+    { value: 11, name: "Determined by Facility" }
+  ]
 });

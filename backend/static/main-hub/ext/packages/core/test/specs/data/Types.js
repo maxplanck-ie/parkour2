@@ -9,7 +9,7 @@ describe("Ext.data.Types", function () {
       },
       getDateReadFormat: function () {
         return scope ? scope.dateReadFormat : null;
-      },
+      }
     });
     return type.convert.call(cfg, value);
   };
@@ -80,18 +80,18 @@ describe("Ext.data.Types", function () {
       it("should set to null with allowNull and an undefined value", function () {
         expect(
           conv(type, {
-            allowNull: true,
+            allowNull: true
           }),
-          undefined,
+          undefined
         ).toBeNull();
       });
 
       it("should set to null with allowNull and a null value", function () {
         expect(
           conv(type, {
-            allowNull: true,
+            allowNull: true
           }),
-          undefined,
+          undefined
         ).toBeNull();
       });
     });
@@ -355,10 +355,10 @@ describe("Ext.data.Types", function () {
             conv(
               type,
               {
-                allowNull: true,
+                allowNull: true
               },
-              undefined,
-            ),
+              undefined
+            )
           ).toBeNull();
         });
 
@@ -367,10 +367,10 @@ describe("Ext.data.Types", function () {
             conv(
               type,
               {
-                allowNull: true,
+                allowNull: true
               },
-              null,
-            ),
+              null
+            )
           ).toBeNull();
         });
 
@@ -379,10 +379,10 @@ describe("Ext.data.Types", function () {
             conv(
               type,
               {
-                allowNull: true,
+                allowNull: true
               },
-              "",
-            ),
+              ""
+            )
           ).toBeNull();
         });
       });
@@ -430,7 +430,7 @@ describe("Ext.data.Types", function () {
             d = new Date(n * 1000);
 
           expect(conv(type, { dateFormat: "timestamp" }, n).getTime()).toEqual(
-            d.getTime(),
+            d.getTime()
           );
         });
 
@@ -438,7 +438,7 @@ describe("Ext.data.Types", function () {
           var n = 11111111110000,
             d = new Date(n);
           expect(conv(type, { dateFormat: "time" }, n).getTime()).toEqual(
-            d.getTime(),
+            d.getTime()
           );
         });
 
@@ -448,7 +448,7 @@ describe("Ext.data.Types", function () {
             d = Ext.Date.parse(val, format);
 
           expect(conv(type, { dateFormat: format }, val).getTime()).toEqual(
-            d.getTime(),
+            d.getTime()
           );
         });
         //~  TODO: parse method disappear ?

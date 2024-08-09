@@ -18,7 +18,7 @@ describe("Ext.util.TSV", function () {
       var date = new Date(1262382332004),
         result = TSV.encode([
           [hostile, "Normal String", date],
-          [Math.PI, 1, false],
+          [Math.PI, 1, false]
         ]);
 
       // Test all valid types:
@@ -28,7 +28,7 @@ describe("Ext.util.TSV", function () {
         hostileEnc +
           "\tNormal String\t2010-01-01T21:45:32.004Z" +
           TSV.lineBreak +
-          "3.141592653589793\t1\tfalse",
+          "3.141592653589793\t1\tfalse"
       );
     });
 
@@ -83,12 +83,12 @@ describe("Ext.util.TSV", function () {
         hostileEnc +
           "\tNormal String\t2010-01-01T21:45:32.004Z" +
           TSV.lineBreak +
-          "3.141592653589793\t1\tfalse",
+          "3.141592653589793\t1\tfalse"
       );
 
       expect(result).toEqual([
         [hostile, "Normal String", "2010-01-01T21:45:32.004Z"],
-        ["3.141592653589793", "1", "false"],
+        ["3.141592653589793", "1", "false"]
       ]);
     });
 
@@ -117,14 +117,14 @@ describe("Ext.util.TSV", function () {
       expect(TSV.decode(test1)).toEqual([
         ["John", "Doe", "42"],
         ["Jane", "Henry", "31"],
-        ["", "", ""],
+        ["", "", ""]
       ]);
 
       // one row of data, one empty row, another row of data with \n end variant
       expect(TSV.decode(test2)).toEqual([
         ["John", "Doe", "42"],
         ["", "", ""],
-        ["Jane", "Henry", "31"],
+        ["Jane", "Henry", "31"]
       ]);
 
       // just one row of data with \r end variant

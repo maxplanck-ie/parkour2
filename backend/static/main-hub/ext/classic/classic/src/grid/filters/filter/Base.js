@@ -5,7 +5,7 @@ Ext.define("Ext.grid.filters.filter.Base", {
   mixins: ["Ext.mixin.Factoryable"],
 
   factoryConfig: {
-    type: "grid.filter",
+    type: "grid.filter"
   },
 
   $configPrefixed: false,
@@ -25,7 +25,7 @@ Ext.define("Ext.grid.filters.filter.Base", {
     itemDefaults: null,
 
     menuDefaults: {
-      xtype: "menu",
+      xtype: "menu"
     },
 
     /**
@@ -42,7 +42,7 @@ Ext.define("Ext.grid.filters.filter.Base", {
      * mutate it, or return a completely new representation.
      * @since 6.2.0
      */
-    serializer: null,
+    serializer: null
   },
 
   /**
@@ -120,7 +120,7 @@ Ext.define("Ext.grid.filters.filter.Base", {
 
     column = me.column;
     me.columnListeners = column.on("destroy", me.destroy, me, {
-      destroyable: true,
+      destroyable: true
     });
     me.dataIndex = me.dataIndex || column.dataIndex;
 
@@ -352,5 +352,5 @@ Ext.define("Ext.grid.filters.filter.Base", {
 
   updateStoreFilter: function () {
     this.getGridStore().getFilters().notify("endupdate");
-  },
+  }
 });

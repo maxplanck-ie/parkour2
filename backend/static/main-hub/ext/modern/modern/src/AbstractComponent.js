@@ -3,5 +3,5 @@
  * @private
  */
 Ext.define("Ext.AbstractComponent", {
-  extend: "Ext.Widget",
+  extend: "Ext.Widget"
 });

@@ -6,12 +6,12 @@ describe(
     beforeEach(function () {
       el = Ext.getBody().createChild({
         id: "ExtElementHelper",
-        children: [{ id: "child1" }, { id: "child2" }, { id: "child3" }],
+        children: [{ id: "child1" }, { id: "child2" }, { id: "child3" }]
       });
 
       span = Ext.getBody().createChild({
         id: "ExtElementSpanHelper",
-        tag: "span",
+        tag: "span"
       });
 
       child1 = Ext.get("child1");
@@ -113,7 +113,7 @@ describe(
 
             child1.insertSibling(
               [{ id: "sibling1" }, { id: "sibling2" }],
-              "after",
+              "after"
             );
 
             nodes = Ext.getDom(el).childNodes;
@@ -128,7 +128,7 @@ describe(
 
             child1.insertSibling(
               [{ id: "sibling1" }, { id: "sibling2" }],
-              "before",
+              "before"
             );
 
             nodes = Ext.getDom(el).childNodes;
@@ -171,9 +171,9 @@ describe(
 
             child1.insertSibling(
               {
-                id: "sibling1",
+                id: "sibling1"
               },
-              "after",
+              "after"
             );
 
             nodes = Ext.getDom(el).childNodes;
@@ -188,9 +188,9 @@ describe(
 
             child1.insertSibling(
               {
-                id: "sibling1",
+                id: "sibling1"
               },
-              "before",
+              "before"
             );
 
             nodes = Ext.getDom(el).childNodes;
@@ -206,10 +206,10 @@ describe(
 
               dom = child1.insertSibling(
                 {
-                  id: "sibling1",
+                  id: "sibling1"
                 },
                 "before",
-                true,
+                true
               );
 
               nodes = Ext.getDom(el).childNodes;
@@ -249,7 +249,7 @@ describe(
       it("should replace this element with the passed Ext.Element", function () {
         var newNode = el.insertSibling({
           tag: "div",
-          cls: "newNode",
+          cls: "newNode"
         });
 
         child1.replaceWith(newNode);
@@ -260,7 +260,7 @@ describe(
       it("should replace this element with the passed dom element", function () {
         var newNode = el.insertSibling({
           tag: "div",
-          cls: "newNode",
+          cls: "newNode"
         });
 
         child1.replaceWith(newNode.dom);
@@ -272,7 +272,7 @@ describe(
         var newNode = el.insertSibling({
           tag: "div",
           cls: "newNode",
-          id: "replaceWithId",
+          id: "replaceWithId"
         });
 
         child1.replaceWith("replaceWithId");
@@ -318,7 +318,7 @@ describe(
         var parent = Ext.getDom(child1).parentNode;
 
         var wrap = child1.wrap({
-          cls: "wrapper",
+          cls: "wrapper"
         });
 
         expect(Ext.getDom(child1).parentNode.parentNode).toEqual(parent);
@@ -328,7 +328,7 @@ describe(
 
       it("return the el", function () {
         var node = child1.wrap({
-          cls: "wrapper",
+          cls: "wrapper"
         });
 
         expect(Ext.isElement(node)).toBeFalsy();
@@ -338,9 +338,9 @@ describe(
       it("return the dom", function () {
         var node = child1.wrap(
           {
-            cls: "wrapper",
+            cls: "wrapper"
           },
-          true,
+          true
         );
 
         expect(Ext.isElement(node)).toBeTruthy();
@@ -402,5 +402,5 @@ describe(
       });
     });
   },
-  "/src/dom/Element.insertion.js",
+  "/src/dom/Element.insertion.js"
 );

@@ -89,7 +89,7 @@ Ext.define("Ext.data.amf.XmlEncoder", {
         uid += Ext.Number.randomInt(0, 15).toString(16).toUpperCase();
       }
       return uid;
-    },
+    }
   },
 
   /**
@@ -222,7 +222,7 @@ Ext.define("Ext.data.amf.XmlEncoder", {
     //<debug>
     if (typeof num !== "number" && !(num instanceof Number)) {
       Ext.log.warn(
-        "Encoder: writeNumber argument is not numeric. Can't coerce.",
+        "Encoder: writeNumber argument is not numeric. Can't coerce."
       );
     }
     // </debug>
@@ -421,7 +421,7 @@ Ext.define("Ext.data.amf.XmlEncoder", {
         //<debug>
         if (!Ext.isNumber(array[i])) {
           Ext.raise(
-            "Byte array contains a non-number: " + array[i] + " in index: " + i,
+            "Byte array contains a non-number: " + array[i] + " in index: " + i
           );
         }
         if (array[i] < 0 || array[i] > 255) {
@@ -497,7 +497,7 @@ Ext.define("Ext.data.amf.XmlEncoder", {
         "AMFX Encoder: Unknown item type " +
           t +
           " can't be written to stream: " +
-          item,
+          item
       );
       //</debug>
     }
@@ -587,5 +587,5 @@ Ext.define("Ext.data.amf.XmlEncoder", {
    */
   write: function (str) {
     this.body += str;
-  },
+  }
 });

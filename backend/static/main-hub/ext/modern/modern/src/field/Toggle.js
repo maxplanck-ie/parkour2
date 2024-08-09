@@ -57,7 +57,7 @@ Ext.define("Ext.field.Toggle", {
 
   config: {
     component: {
-      xtype: "toggleslider",
+      xtype: "toggleslider"
     },
 
     /**
@@ -79,7 +79,7 @@ Ext.define("Ext.field.Toggle", {
      * @cfg {Boolean} value
      * @accessor
      */
-    value: false,
+    value: false
   },
 
   classCls: Ext.baseCSSPrefix + "togglefield",
@@ -129,7 +129,7 @@ Ext.define("Ext.field.Toggle", {
   updateActiveLabel: function (newActiveLabel, oldActiveLabel) {
     this.getComponent().element.dom.setAttribute(
       "data-activelabel",
-      newActiveLabel,
+      newActiveLabel
     );
   },
   /**
@@ -138,7 +138,7 @@ Ext.define("Ext.field.Toggle", {
   updateInactiveLabel: function (newInactiveLabel, oldInactiveLabel) {
     this.getComponent().element.dom.setAttribute(
       "data-inactivelabel",
-      newInactiveLabel,
+      newInactiveLabel
     );
   },
 
@@ -172,5 +172,5 @@ Ext.define("Ext.field.Toggle", {
     // We call setValue directly so the change event can be fired
     this.setValue(!this.getValue());
     return this;
-  },
+  }
 });

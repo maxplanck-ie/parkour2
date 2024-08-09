@@ -13,6 +13,6 @@ exports.init = function (runtime) {
 
       var joined = value1 ? value1 + "/" + value2 : value2;
       return new Fashion.Text(joined, "");
-    },
+    }
   });
 };

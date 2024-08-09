@@ -6,5 +6,5 @@ Ext.define("Ext.device.communicator.Android", {
 
   doSend: function (args) {
     return window.Sencha.action(JSON.stringify(args));
-  },
+  }
 });

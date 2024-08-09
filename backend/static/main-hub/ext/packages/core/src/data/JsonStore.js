@@ -38,7 +38,7 @@ Ext.define("Ext.data.JsonStore", {
   requires: [
     "Ext.data.proxy.Ajax",
     "Ext.data.reader.Json",
-    "Ext.data.writer.Json",
+    "Ext.data.writer.Json"
   ],
 
   constructor: function (config) {
@@ -47,11 +47,11 @@ Ext.define("Ext.data.JsonStore", {
         proxy: {
           type: "ajax",
           reader: "json",
-          writer: "json",
-        },
+          writer: "json"
+        }
       },
-      config,
+      config
     );
     this.callParent([config]);
-  },
+  }
 });

@@ -6,9 +6,9 @@ describe("Ext.panel.Tool", function () {
   function makeTool(cfg) {
     cfg = Ext.apply(
       {
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      cfg,
+      cfg
     );
 
     tool = new Ext.panel.Tool(cfg);
@@ -26,7 +26,7 @@ describe("Ext.panel.Tool", function () {
     describe("rendered with no tooltip", function () {
       beforeEach(function () {
         makeTool({
-          type: "collapse",
+          type: "collapse"
         });
       });
 
@@ -81,7 +81,7 @@ describe("Ext.panel.Tool", function () {
       beforeEach(function () {
         makeTool({
           type: "expand",
-          tooltip: "frob",
+          tooltip: "frob"
         });
       });
 
@@ -107,7 +107,7 @@ describe("Ext.panel.Tool", function () {
       ownerCt = {
         getInherited: function () {
           return {};
-        },
+        }
       };
 
       makeTool({
@@ -116,9 +116,9 @@ describe("Ext.panel.Tool", function () {
         handler: handlerSpy,
         scope: scope,
         listeners: {
-          click: clickSpy,
+          click: clickSpy
         },
-        renderTo: undefined,
+        renderTo: undefined
       });
 
       spyOn(tool, "onClick").andCallThrough();
@@ -372,7 +372,7 @@ describe("Ext.panel.Tool", function () {
       beforeEach(function () {
         makeTool({
           type: "expand",
-          renderTo: null,
+          renderTo: null
         });
       });
 
@@ -410,7 +410,7 @@ describe("Ext.panel.Tool", function () {
     describe("after render", function () {
       beforeEach(function () {
         makeTool({
-          type: "expand",
+          type: "expand"
         });
         // Must start with type's class
         expect(tool.toolEl).toHaveCls("x-tool-expand");
@@ -445,7 +445,7 @@ describe("Ext.panel.Tool", function () {
       beforeEach(function () {
         makeTool({
           iconCls: "foo-icon-cls",
-          renderTo: null,
+          renderTo: null
         });
       });
 
@@ -485,7 +485,7 @@ describe("Ext.panel.Tool", function () {
     describe("after render", function () {
       beforeEach(function () {
         makeTool({
-          iconCls: "foo-icon-cls",
+          iconCls: "foo-icon-cls"
         });
 
         // Must start with iconCls
@@ -524,7 +524,7 @@ describe("Ext.panel.Tool", function () {
       beforeEach(function () {
         makeTool({
           glyph: "x48@FontAwesome",
-          renderTo: null,
+          renderTo: null
         });
       });
 
@@ -565,7 +565,7 @@ describe("Ext.panel.Tool", function () {
     describe("after render", function () {
       beforeEach(function () {
         makeTool({
-          glyph: "x48@FontAwesome",
+          glyph: "x48@FontAwesome"
         });
         // Hex 48 is "H". Must switch to using that with no background image
         expect(tool.toolEl.getStyle("font-family")).toBe("FontAwesome");

@@ -95,7 +95,7 @@ Ext.define("Ext.chart.axis.Time", {
   type: "time",
   requires: [
     "Ext.chart.axis.layout.Continuous",
-    "Ext.chart.axis.segmenter.Time",
+    "Ext.chart.axis.segmenter.Time"
   ],
   config: {
     /**
@@ -133,7 +133,7 @@ Ext.define("Ext.chart.axis.Time", {
 
     segmenter: "time",
 
-    aggregator: "time",
+    aggregator: "time"
   },
 
   updateDateFormat: function (format) {
@@ -174,5 +174,5 @@ Ext.define("Ext.chart.axis.Time", {
       value = new Date(value);
     }
     return +value;
-  },
+  }
 });

@@ -37,21 +37,21 @@ Ext.define("Ext.data.DirectStore", {
       var proxy = {
         type: "direct",
         reader: {
-          type: "json",
-        },
+          type: "json"
+        }
       };
       Ext.copyTo(
         proxy,
         config,
-        "paramOrder,paramsAsHash,directFn,api,simpleSortMode,extraParams",
+        "paramOrder,paramsAsHash,directFn,api,simpleSortMode,extraParams"
       );
       Ext.copyTo(
         proxy.reader,
         config,
-        "totalProperty,root,rootProperty,idProperty",
+        "totalProperty,root,rootProperty,idProperty"
       );
       config.proxy = proxy;
     }
     this.callParent([config]);
-  },
+  }
 });

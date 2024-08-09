@@ -10,7 +10,7 @@ Ext.define("Ext.device.push.Cordova", {
      * @private
      * A collection of callback methods that can be globally called by the Cordova PushPlugin
      */
-    callbacks: {},
+    callbacks: {}
   },
 
   setPushConfig: function (config) {
@@ -24,7 +24,7 @@ Ext.define("Ext.device.push.Cordova", {
       sound: config.callbacks.type === Ext.device.Push.SOUND ? "true" : "false",
       alert: config.callbacks.type === Ext.device.Push.ALERT ? "true" : "false",
       ecb: "Ext.device.push.Cordova.callbacks." + methodName,
-      senderID: config.senderID,
+      senderID: config.senderID
     };
   },
 
@@ -39,7 +39,7 @@ Ext.define("Ext.device.push.Cordova", {
     plugin.register(
       config.callbacks.success,
       config.callbacks.failure,
-      pushConfig,
+      pushConfig
     );
-  },
+  }
 });

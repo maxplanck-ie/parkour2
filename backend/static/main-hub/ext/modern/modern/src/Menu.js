@@ -114,12 +114,12 @@ Ext.define("Ext.Menu", {
    * @hide
    */
   translatable: {
-    translationMethod: null,
+    translationMethod: null
   },
 
   layout: {
     type: "vbox",
-    align: "stretch",
+    align: "stretch"
   },
 
   floated: true,
@@ -166,5 +166,5 @@ Ext.define("Ext.Menu", {
 
   onMaskTap: function () {
     Ext.Viewport.hideMenu(this.$side);
-  },
+  }
 });

@@ -90,7 +90,7 @@ Ext.define("Ext.dataview.IndexBar", {
       "W",
       "X",
       "Y",
-      "Z",
+      "Z"
     ],
 
     /**
@@ -99,7 +99,7 @@ Ext.define("Ext.dataview.IndexBar", {
      * E.g: useful to add a "#" prefix before numbers.
      * @accessor
      */
-    listPrefix: null,
+    listPrefix: null
   },
 
   cachedConfig: {
@@ -107,7 +107,7 @@ Ext.define("Ext.dataview.IndexBar", {
      * @private
      * The parent list that created this index bar
      */
-    parentList: null, // this is a cachedConfig so that it is available from updateUi
+    parentList: null // this is a cachedConfig so that it is available from updateUi
   },
 
   classCls: Ext.baseCSSPrefix + "indexbar",
@@ -124,7 +124,7 @@ Ext.define("Ext.dataview.IndexBar", {
      * Layout direction, can be either 'vertical' or 'horizontal'
      * @accessor
      */
-    direction: "vertical",
+    direction: "vertical"
   },
 
   updateDirection: function (direction) {
@@ -159,7 +159,7 @@ Ext.define("Ext.dataview.IndexBar", {
     return {
       reference: "wrapper",
       classList: ["x-center", "x-indexbar-wrapper"],
-      children: [this.callParent()],
+      children: [this.callParent()]
     };
   },
 
@@ -173,7 +173,7 @@ Ext.define("Ext.dataview.IndexBar", {
       for (i = 0; i < ln; i++) {
         this.innerElement.createChild({
           cls: "x-indexbar-item",
-          html: letters[i],
+          html: letters[i]
         });
       }
     }
@@ -183,9 +183,9 @@ Ext.define("Ext.dataview.IndexBar", {
     if (listPrefix && listPrefix.length) {
       this.innerElement.createChild(
         {
-          html: listPrefix,
+          html: listPrefix
         },
-        0,
+        0
       );
     }
   },
@@ -227,7 +227,7 @@ Ext.define("Ext.dataview.IndexBar", {
       touchstart: "onTouchStart",
       drag: "onDrag",
       dragEnd: "onDragEnd",
-      scope: me,
+      scope: me
     });
 
     me.innerElement.addClsOnClick(this.pressedCls);
@@ -283,6 +283,6 @@ Ext.define("Ext.dataview.IndexBar", {
   },
 
   privates: {
-    onVerticalDrag: Ext.privateFn,
-  },
+    onVerticalDrag: Ext.privateFn
+  }
 });

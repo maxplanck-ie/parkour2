@@ -18,7 +18,7 @@ Ext.onReady(function () {
       "September",
       "Oktober",
       "November",
-      "Desember",
+      "Desember"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -37,7 +37,7 @@ Ext.onReady(function () {
       Sep: 8,
       Okt: 9,
       Nov: 10,
-      Des: 11,
+      Des: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -53,7 +53,7 @@ Ext.onReady(function () {
       "Onsdag",
       "Torsdag",
       "Fredag",
-      "Laurdag",
+      "Laurdag"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -67,35 +67,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "kr",
       // Norwegian Krone
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.no_NN.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.no_NN.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} markert(e) rad(er)",
+  dragText: "{0} markert(e) rad(er)"
 });
 
 Ext.define("Ext.locale.no_NN.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Lukk denne fana",
+  closeText: "Lukk denne fana"
 });
 
 Ext.define("Ext.locale.no_NN.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Verdien i dette feltet er ugyldig",
+  invalidText: "Verdien i dette feltet er ugyldig"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.no_NN.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Lastar...",
+  loadingText: "Lastar..."
 });
 
 Ext.define("Ext.locale.no_NN.picker.Date", {
@@ -110,13 +110,13 @@ Ext.define("Ext.locale.no_NN.picker.Date", {
   monthYearText: "Velj ein månad (Control+Pil Opp/Ned for å skifte år)",
   todayTip: "{0} (Mellomrom)",
   format: "d.m.y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.no_NN.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Avbryt",
+  cancelText: "Avbryt"
 });
 
 Ext.define("Ext.locale.no_NN.toolbar.Paging", {
@@ -129,7 +129,7 @@ Ext.define("Ext.locale.no_NN.toolbar.Paging", {
   lastText: "Siste sida",
   refreshText: "Oppdater",
   displayMsg: "Viser {0} - {1} av {2}",
-  emptyMsg: "Ingen data å vise",
+  emptyMsg: "Ingen data å vise"
 });
 
 Ext.define("Ext.locale.no_NN.form.field.Text", {
@@ -138,14 +138,14 @@ Ext.define("Ext.locale.no_NN.form.field.Text", {
   maxLengthText: "Den største lengda for dette feltet er {0}",
   blankText: "Dette feltet er påkravd",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.no_NN.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Den minste verdien for dette feltet er {0}",
   maxText: "Den største verdien for dette feltet er {0}",
-  nanText: "{0} er ikkje eit gyldig nummer",
+  nanText: "{0} er ikkje eit gyldig nummer"
 });
 
 Ext.define("Ext.locale.no_NN.form.field.Date", {
@@ -156,20 +156,20 @@ Ext.define("Ext.locale.no_NN.form.field.Date", {
   maxText: "Datoen i dette feltet må vere før {0}",
   invalidText: "{0} er ikkje ein gyldig dato - han må vere på formatet {1}",
   format: "d.m.y",
-  altFormats: "d.m.Y|d/m/y|d/m/Y|d-m-y|d-m-Y|d.m|d/m|d-m|dm|dmy|dmY|Y-m-d|d",
+  altFormats: "d.m.Y|d/m/y|d/m/Y|d-m-y|d-m-Y|d.m|d/m|d-m|dm|dmy|dmY|Y-m-d|d"
 });
 
 Ext.define(
   "Ext.locale.no_NN.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Lastar...",
+      loadingText: "Lastar..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.no_NN.form.field.VTypes", {
@@ -180,14 +180,14 @@ Ext.define("Ext.locale.no_NN.form.field.VTypes", {
     'Dette feltet skal vere ein link (URL) på formatet "http:/' +
     '/www.domene.no"',
   alphaText: "Dette feltet skal berre innehalde bokstavar og _",
-  alphanumText: "Dette feltet skal berre innehalde bokstavar, tal og _",
+  alphanumText: "Dette feltet skal berre innehalde bokstavar, tal og _"
 });
 
 Ext.define(
   "Ext.locale.no_NN.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Ver venleg og skriv inn URL for lenken:",
+    createLinkText: "Ver venleg og skriv inn URL for lenken:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -195,76 +195,76 @@ Ext.define(
         bold: {
           title: "Feit (Ctrl+B)",
           text: "Gjer den valde teksten feit.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Kursiv (Ctrl+I)",
           text: "Gjer den valde teksten kursiv.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Understrek (Ctrl+U)",
           text: "Understrek den valde teksten.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Forstørr tekst",
           text: "Gjer fontstorleik større.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Forminsk tekst",
           text: "Gjer fontstorleik mindre.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Tekst markeringsfarge",
           text: "Endre bakgrunnsfarge til den valde teksten.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Font farge",
           text: "Endre farge på den valde teksten.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Venstrejuster tekst",
           text: "Venstrejuster teksten.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Sentrer tekst",
           text: "Sentrer teksten.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Høgrejuster tekst",
           text: "Høgrejuster teksten.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Punktliste",
           text: "Start ei punktliste.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Nummerert liste",
           text: "Start ei nummerert liste.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Lenke",
           text: "Gjer den valde teksten til ei lenke.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Rediger kjelde",
           text: "Bytt til kjelderedigeringsvising.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.no_NN.grid.header.Container", {
@@ -273,21 +273,21 @@ Ext.define("Ext.locale.no_NN.grid.header.Container", {
   sortDescText: "Sorter fallande",
   lockText: "Lås kolonne",
   unlockText: "Lås opp kolonne",
-  columnsText: "Kolonner",
+  columnsText: "Kolonner"
 });
 
 Ext.define("Ext.locale.no_NN.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(Ingen)",
   groupByText: "Grupper etter dette feltet",
-  showGroupsText: "Vis i grupper",
+  showGroupsText: "Vis i grupper"
 });
 
 Ext.define("Ext.locale.no_NN.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Namn",
   valueText: "Verdi",
-  dateFormat: "d.m.Y",
+  dateFormat: "d.m.Y"
 });
 
 Ext.define("Ext.locale.no_NN.window.MessageBox", {
@@ -296,11 +296,11 @@ Ext.define("Ext.locale.no_NN.window.MessageBox", {
     ok: "OK",
     cancel: "Avbryt",
     yes: "Ja",
-    no: "Nei",
-  },
+    no: "Nei"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.no_NN.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

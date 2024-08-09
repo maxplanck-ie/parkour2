@@ -65,7 +65,7 @@ describe("Ext.data.validator.Presence", function () {
   describe("messages", function () {
     it("should accept a custom message", function () {
       v = new Ext.data.validator.Presence({
-        message: "Foo",
+        message: "Foo"
       });
       expect(v.validate(undefined)).toBe("Foo");
     });

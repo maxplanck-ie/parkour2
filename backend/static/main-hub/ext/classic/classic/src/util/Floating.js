@@ -137,7 +137,7 @@ Ext.define("Ext.util.Floating", {
      *
      * This may be set to a *negative* number to prioritize a component to the *bottom* of the z-index stack.
      */
-    alwaysOnTop: false,
+    alwaysOnTop: false
   },
 
   preventDefaultAlign: false,
@@ -145,7 +145,7 @@ Ext.define("Ext.util.Floating", {
   _visModeMap: {
     visibility: 1,
     display: 2,
-    offsets: 3,
+    offsets: 3
   },
 
   constructor: function () {
@@ -157,7 +157,7 @@ Ext.define("Ext.util.Floating", {
 
     if (shadow) {
       shadowConfig = {
-        mode: shadow === true ? "sides" : shadow,
+        mode: shadow === true ? "sides" : shadow
       };
       shadowOffset = me.shadowOffset;
       if (shadowOffset) {
@@ -171,9 +171,9 @@ Ext.define("Ext.util.Floating", {
     if (me.shim || Ext.useShims) {
       el.enableShim(
         {
-          fixed: me.fixed,
+          fixed: me.fixed
         },
-        false,
+        false
       );
     }
 
@@ -184,7 +184,7 @@ Ext.define("Ext.util.Floating", {
     me.el.on({
       mousedown: me.onMouseDown,
       scope: me,
-      capture: true,
+      capture: true
     });
 
     // Register with the configured ownerCt.
@@ -229,7 +229,7 @@ Ext.define("Ext.util.Floating", {
       position,
       offsets,
       animate,
-      monitorScroll !== false,
+      monitorScroll !== false
     );
 
     // Work out the vector to maintain our relative position as the alignTarget element moves
@@ -262,10 +262,10 @@ Ext.define("Ext.util.Floating", {
       listeners = {
         resize: {
           fn: me.alignOnResize,
-          buffer: 100,
+          buffer: 100
         },
         scope: me,
-        destroyable: true,
+        destroyable: true
       };
 
       // If we are supposed to align on scroll aligned, then add global scroll listener
@@ -301,7 +301,7 @@ Ext.define("Ext.util.Floating", {
         show: syncHidden,
         expand: syncHidden,
         added: syncHidden,
-        scope: me,
+        scope: me
       });
       me.hasHierarchyEventListeners = true;
     }
@@ -626,7 +626,7 @@ Ext.define("Ext.util.Floating", {
         me._lastAlignToPos,
         me._lastAlignToOffsets,
         false,
-        !me.fixed,
+        !me.fixed
       );
     }
     me.needsCenter = false;
@@ -736,7 +736,7 @@ Ext.define("Ext.util.Floating", {
           anchorXY = alignEl.getXY();
           myXY = [
             anchorXY[0] + me.alignVector[0],
-            anchorXY[1] + me.alignVector[1],
+            anchorXY[1] + me.alignVector[1]
           ];
           me.setXY(myXY);
 
@@ -777,6 +777,6 @@ Ext.define("Ext.util.Floating", {
       } else {
         me.clearClip();
       }
-    },
-  },
+    }
+  }
 });

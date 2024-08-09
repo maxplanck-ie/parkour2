@@ -52,7 +52,7 @@ Ext.define(
       showAnimation: {
         type: "popIn",
         duration: 250,
-        easing: "ease-out",
+        easing: "ease-out"
       },
 
       /**
@@ -62,7 +62,7 @@ Ext.define(
       hideAnimation: {
         type: "popOut",
         duration: 250,
-        easing: "ease-out",
+        easing: "ease-out"
       },
 
       /**
@@ -106,8 +106,8 @@ Ext.define(
        */
       layout: {
         type: "vbox",
-        pack: "center",
-      },
+        pack: "center"
+      }
     },
 
     initialize: function () {
@@ -115,7 +115,7 @@ Ext.define(
       Ext.getDoc().on({
         scope: this,
         tap: "onDocumentTap",
-        capture: true,
+        capture: true
       });
     },
 
@@ -125,7 +125,7 @@ Ext.define(
     applyMessage: function (value) {
       var config = {
         html: value,
-        cls: this.getBaseCls() + "-text",
+        cls: this.getBaseCls() + "-text"
       };
 
       return Ext.factory(config, Ext.Component, this._message);
@@ -199,12 +199,12 @@ Ext.define(
               hiddenchange: function () {
                 me.startTimer();
               },
-              single: true,
+              single: true
             });
             messageContainer.show(msgAnimation);
           },
           scope: me,
-          single: true,
+          single: true
         });
 
         messageContainer.hide(msgAnimation);
@@ -252,7 +252,7 @@ Ext.define(
       if (this._timeoutID !== null) {
         this.hide();
       }
-    },
+    }
   },
   function (Toast) {
     var _queue = [];
@@ -281,7 +281,7 @@ Ext.define(
       if (Ext.isString(message)) {
         config = {
           message: message,
-          timeout: timeout,
+          timeout: timeout
         };
       }
 
@@ -303,5 +303,5 @@ Ext.define(
 
       return toast;
     };
-  },
+  }
 );

@@ -325,7 +325,7 @@ Ext.define("Ext.grid.plugin.RowEditing", {
 
     Ext.apply(context, {
       newValues: newValues,
-      originalValues: originalValues,
+      originalValues: originalValues
     });
   },
 
@@ -356,7 +356,7 @@ Ext.define("Ext.grid.plugin.RowEditing", {
         hidden: true,
         view: view,
         // keep a reference..
-        editingPlugin: me,
+        editingPlugin: me
       },
       item;
 
@@ -390,10 +390,10 @@ Ext.define("Ext.grid.plugin.RowEditing", {
           scope: me,
           columnresize: me.onColumnResize,
           columnhide: me.onColumnHide,
-          columnshow: me.onColumnShow,
+          columnshow: me.onColumnShow
         });
       },
-      single: true,
+      single: true
     });
   },
 
@@ -545,5 +545,5 @@ Ext.define("Ext.grid.plugin.RowEditing", {
     }
 
     return field;
-  },
+  }
 });

@@ -45,9 +45,9 @@ Ext.define("Ext.chart.axis.segmenter.Numeric", {
         // When passed estStepSize is less than 1, its order of magnitude
         // is equal to -number_of_leading_zeros in the estStepSize.
         fixes: -order, // Number of fractional digits.
-        scale: scale,
+        scale: scale
       },
-      step: estStepSize,
+      step: estStepSize
     };
   },
 
@@ -78,9 +78,9 @@ Ext.define("Ext.chart.axis.segmenter.Numeric", {
         fixes: stepZeros + (estStepSize % scale === 0 ? 0 : 1),
         // Swap scale & step, if the estStepSize < 1,
         // or 'diff' method will give us rounding errors.
-        scale: estStepSize < 1 ? estStepSize : 1,
+        scale: estStepSize < 1 ? estStepSize : 1
       },
-      step: estStepSize < 1 ? 1 : estStepSize,
+      step: estStepSize < 1 ? 1 : estStepSize
     };
   },
 
@@ -97,5 +97,5 @@ Ext.define("Ext.chart.axis.segmenter.Numeric", {
     if (remainder !== 0) {
       range[1] = max - remainder + (max > 0 ? increment : 0);
     }
-  },
+  }
 });

@@ -8,7 +8,7 @@ Ext.define("validator.IndexI7", {
       (record.get("index_reads") > 0 && value !== "") ||
       "Must be present"
     );
-  },
+  }
 });
 
 Ext.define("validator.IndexI5", {
@@ -21,7 +21,7 @@ Ext.define("validator.IndexI5", {
       (record.get("index_reads") > 1 && value !== "") ||
       "Must be present"
     );
-  },
+  }
 });
 
 Ext.define("MainHub.model.libraries.BatchAdd.Library", {
@@ -31,33 +31,34 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
     {
       type: "int",
       name: "mean_fragment_size",
+      defaultValue: null
     },
     {
       type: "int",
       name: "index_type",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "int",
       name: "index_reads",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "string",
-      name: "index_i7",
+      name: "index_i7"
     },
     {
       type: "string",
-      name: "index_i5",
+      name: "index_i5"
     },
     {
       type: "int",
       name: "qpcr_result",
       allowNull: true,
-      defaultValue: null,
-    },
+      defaultValue: null
+    }
   ],
 
   validators: {
@@ -65,6 +66,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
     index_type: "presence",
     index_reads: "presence",
     index_i7: "indexI7",
-    index_i5: "indexI5",
-  },
+    index_i5: "indexI5"
+  }
 });

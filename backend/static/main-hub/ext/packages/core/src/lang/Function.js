@@ -191,7 +191,7 @@ Ext.Function = (function () {
             scope,
             args ? args.concat(a) : a,
             delay,
-            caller,
+            caller
           );
         };
       },
@@ -541,7 +541,7 @@ Ext.Function = (function () {
 
         if (!animFrameId) {
           animFrameId = requestAnimFrame(
-            Ext.elevateFunction ? fireElevatedHandlers : fireHandlers,
+            Ext.elevateFunction ? fireElevatedHandlers : fireHandlers
           );
         }
         return id;
@@ -799,7 +799,7 @@ Ext.Function = (function () {
 
           return memo[key];
         };
-      },
+      }
     }; // ExtFunction
 
   /**
@@ -843,7 +843,7 @@ Ext.Function = (function () {
             }
           },
           0,
-          true,
+          true
         );
       }),
     /**

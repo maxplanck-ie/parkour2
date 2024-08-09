@@ -8,5 +8,5 @@ Ext.define("Ext.locale.sv_SE.toolbar.Paging", {
   lastText: "Sista sidan",
   refreshText: "Uppdatera",
   displayMsg: "Visar {0} - {1} av {2}",
-  emptyMsg: "Det finns ingen data att visa",
+  emptyMsg: "Det finns ingen data att visa"
 });

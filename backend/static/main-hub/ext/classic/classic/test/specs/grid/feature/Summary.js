@@ -31,23 +31,23 @@ describe("Ext.grid.feature.Summary", function () {
           {
             student: "Student 1",
             subject: "Math",
-            mark: 84,
+            mark: 84
           },
           {
             student: "Student 1",
             subject: "Science",
-            mark: 72,
+            mark: 72
           },
           {
             student: "Student 2",
             subject: "Math",
-            mark: 96,
+            mark: 96
           },
           {
             student: "Student 2",
             subject: "Science",
-            mark: 68,
-          },
+            mark: 68
+          }
         ];
 
         var storeData = configuredData || data;
@@ -60,23 +60,23 @@ describe("Ext.grid.feature.Summary", function () {
                 "subject",
                 {
                   name: "mark",
-                  type: "int",
-                },
+                  type: "int"
+                }
               ],
               data: storeData,
-              autoDestroy: true,
+              autoDestroy: true
             },
-            storeCfg,
-          ),
+            storeCfg
+          )
         );
 
         summary = new Ext.grid.feature.Summary(
           Ext.apply(
             {
-              ftype: "summary",
+              ftype: "summary"
             },
-            summaryCfg,
-          ),
+            summaryCfg
+          )
         );
 
         gridCfg = gridCfg || {};
@@ -104,24 +104,24 @@ describe("Ext.grid.feature.Summary", function () {
                     return Ext.String.format(
                       "{0} student{1}",
                       value,
-                      value !== 1 ? "s" : "",
+                      value !== 1 ? "s" : ""
                     );
-                  },
+                  }
                 },
                 {
                   itemId: "markColumn",
                   dataIndex: "mark",
                   text: "Mark",
                   summaryType: "average",
-                  hidden: hideMarkColumn,
-                },
+                  hidden: hideMarkColumn
+                }
               ],
               width: 600,
               height: 300,
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             },
-            gridCfg,
-          ),
+            gridCfg
+          )
         );
 
         view = grid.view;
@@ -193,7 +193,7 @@ describe("Ext.grid.feature.Summary", function () {
           var cls = "utley";
 
           createGrid(null, {
-            summaryRowCls: cls,
+            summaryRowCls: cls
           });
 
           if (withLocking) {
@@ -268,12 +268,12 @@ describe("Ext.grid.feature.Summary", function () {
           expect(params[1]).toEqual(
             withLocking
               ? {
-                  studentColumn: 4,
+                  studentColumn: 4
                 }
               : {
                   studentColumn: 4,
-                  markColumn: 80,
-                },
+                  markColumn: 80
+                }
           );
           expect(params[2]).toBe("student");
           expect(params[3].tdCls).toBeDefined();
@@ -291,15 +291,15 @@ describe("Ext.grid.feature.Summary", function () {
                 summaryType: "count",
                 summaryRenderer: function (value, summaryData, field) {
                   return "Lily Rupert Utley Molly Pete";
-                },
+                }
               },
               {
                 itemId: "markColumn",
                 dataIndex: "mark",
                 text: "Mark",
-                summaryType: "average",
-              },
-            ],
+                summaryType: "average"
+              }
+            ]
           });
 
           var rec = store.getAt(0);
@@ -307,17 +307,17 @@ describe("Ext.grid.feature.Summary", function () {
           if (withLocking) {
             expect(getSummary(lockedView).firstChild.offsetWidth).toBe(
               lockedView.getCell(rec, grid.down("#studentColumn")).dom
-                .offsetWidth,
+                .offsetWidth
             );
             expect(getSummary(normalView).firstChild.offsetWidth).toBe(
-              normalView.getCell(rec, grid.down("#markColumn")).dom.offsetWidth,
+              normalView.getCell(rec, grid.down("#markColumn")).dom.offsetWidth
             );
           } else {
             expect(getSummary().firstChild.offsetWidth).toBe(
-              view.getCell(rec, grid.down("#studentColumn")).dom.offsetWidth,
+              view.getCell(rec, grid.down("#studentColumn")).dom.offsetWidth
             );
             expect(getSummary().lastChild.offsetWidth).toBe(
-              view.getCell(rec, grid.down("#markColumn")).dom.offsetWidth,
+              view.getCell(rec, grid.down("#markColumn")).dom.offsetWidth
             );
           }
         });
@@ -332,14 +332,14 @@ describe("Ext.grid.feature.Summary", function () {
                 dataIndex: "mark",
                 locked: withLocking,
                 text: "Mark",
-                summaryType: "average",
+                summaryType: "average"
               },
               {
                 dataIndex: "mark",
                 text: "Mark",
-                summaryType: "average",
-              },
-            ],
+                summaryType: "average"
+              }
+            ]
           });
 
           expect(getSummaryContent()).toBe("8080");
@@ -350,12 +350,12 @@ describe("Ext.grid.feature.Summary", function () {
       describe("dock", function () {
         it("should dock top under the headers", function () {
           createGrid(null, {
-            dock: "top",
+            dock: "top"
           });
           if (withLocking) {
             expect(lockedGrid.getDockedItems()[1]).toBe(summary.summaryBar);
             expect(normalGrid.getDockedItems()[1]).toBe(
-              normalGrid.features[0].summaryBar,
+              normalGrid.features[0].summaryBar
             );
           } else {
             expect(grid.getDockedItems()[1]).toBe(summary.summaryBar);
@@ -365,7 +365,7 @@ describe("Ext.grid.feature.Summary", function () {
         it("should dock at the bottom under the headers", function () {
           var item;
           createGrid(null, {
-            dock: "bottom",
+            dock: "bottom"
           });
 
           if (withLocking) {
@@ -415,7 +415,7 @@ describe("Ext.grid.feature.Summary", function () {
 
           it("should not render the summary rows if configured with showSummaryRow: false", function () {
             createGrid(null, {
-              showSummaryRow: false,
+              showSummaryRow: false
             });
             expectVisible(false);
           });
@@ -429,7 +429,7 @@ describe("Ext.grid.feature.Summary", function () {
 
           it("should show summary rows when toggling on", function () {
             createGrid(null, {
-              showSummaryRow: false,
+              showSummaryRow: false
             });
             expectVisible(false);
             toggle();
@@ -474,7 +474,7 @@ describe("Ext.grid.feature.Summary", function () {
         describe("with docking", function () {
           it("should show the summary row by default", function () {
             createGrid(null, {
-              dock: "top",
+              dock: "top"
             });
             expect(summary.getSummaryBar().isVisible()).toBe(true);
           });
@@ -482,14 +482,14 @@ describe("Ext.grid.feature.Summary", function () {
           it("should not render the summary rows if configured with showSummaryRow: false", function () {
             createGrid(null, {
               dock: "top",
-              showSummaryRow: false,
+              showSummaryRow: false
             });
             expect(summary.getSummaryBar().isVisible()).toBe(false);
           });
 
           it("should not show summary rows when toggling off", function () {
             createGrid(null, {
-              dock: "top",
+              dock: "top"
             });
             expect(summary.getSummaryBar().isVisible()).toBe(true);
             toggle();
@@ -499,7 +499,7 @@ describe("Ext.grid.feature.Summary", function () {
           it("should show summary rows when toggling on", function () {
             createGrid(null, {
               dock: "top",
-              showSummaryRow: false,
+              showSummaryRow: false
             });
             expect(summary.getSummaryBar().isVisible()).toBe(false);
             toggle();
@@ -508,7 +508,7 @@ describe("Ext.grid.feature.Summary", function () {
 
           it("should leave the summary visible when explicitly passing visible: true", function () {
             createGrid(null, {
-              dock: "top",
+              dock: "top"
             });
             toggle(true);
             expect(summary.getSummaryBar().isVisible()).toBe(true);
@@ -516,7 +516,7 @@ describe("Ext.grid.feature.Summary", function () {
 
           it("should leave the summary off when explicitly passed visible: false", function () {
             createGrid(null, {
-              dock: "top",
+              dock: "top"
             });
             toggle();
             toggle(false);
@@ -527,7 +527,7 @@ describe("Ext.grid.feature.Summary", function () {
             var cellSelector, cell, content;
 
             createGrid(null, {
-              dock: "top",
+              dock: "top"
             });
             // Off
             toggle();
@@ -563,71 +563,71 @@ describe("Ext.grid.feature.Summary", function () {
                   dataIndex: "priceInc",
                   summaryType: "sum",
                   formatter: 'number("0.00")',
-                  summaryFormatter: 'number("0.00")',
+                  summaryFormatter: 'number("0.00")'
                 },
                 {
                   text: "Name",
                   dataIndex: "text",
-                  summaryType: "none",
+                  summaryType: "none"
                 },
                 {
                   text: "Price ex",
                   dataIndex: "priceEx",
-                  summaryType: "sum",
-                },
-              ],
+                  summaryType: "sum"
+                }
+              ]
             },
             null,
             {
               fields: [
                 {
                   name: "text",
-                  type: "string",
+                  type: "string"
                 },
                 {
                   name: "priceEx",
-                  type: "float",
+                  type: "float"
                 },
                 {
                   name: "vat",
-                  type: "float",
+                  type: "float"
                 },
                 {
                   name: "priceInc",
                   calculate: function (data) {
                     return data.priceEx * data.vat;
                   },
-                  type: "float",
-                },
+                  type: "float"
+                }
               ],
               data: [
                 {
                   text: "Foo",
                   priceEx: 100,
-                  vat: 1.1,
+                  vat: 1.1
                 },
                 {
                   text: "Bar",
                   priceEx: 200,
-                  vat: 1.25,
+                  vat: 1.25
                 },
                 {
                   text: "Gah",
                   priceEx: 150,
-                  vat: 1.25,
+                  vat: 1.25
                 },
                 {
                   text: "Meh",
                   priceEx: 99,
-                  vat: 1.3,
+                  vat: 1.3
                 },
                 {
                   text: "Muh",
                   priceEx: 80,
-                  vat: 1.4,
-                },
-              ],
-            },
+                  vat: 1.4
+                }
+              ]
+            }
           );
 
           expect(getSummaryContent()).toBe("788.20629");
@@ -638,7 +638,7 @@ describe("Ext.grid.feature.Summary", function () {
         function completeWithData(data) {
           Ext.Ajax.mockComplete({
             status: 200,
-            responseText: Ext.JSON.encode(data),
+            responseText: Ext.JSON.encode(data)
           });
         }
 
@@ -648,7 +648,7 @@ describe("Ext.grid.feature.Summary", function () {
           createGrid(
             null,
             {
-              remoteRoot: "summaryData",
+              remoteRoot: "summaryData"
             },
             {
               remoteSort: true,
@@ -657,12 +657,12 @@ describe("Ext.grid.feature.Summary", function () {
                 url: "data.json",
                 reader: {
                   type: "json",
-                  rootProperty: "data",
-                },
+                  rootProperty: "data"
+                }
               },
               grouper: { property: "student" },
-              data: null,
-            },
+              data: null
+            }
           );
 
           store.load();
@@ -672,9 +672,9 @@ describe("Ext.grid.feature.Summary", function () {
             data: data,
             summaryData: {
               mark: 42,
-              student: 15,
+              student: 15
             },
-            total: 4,
+            total: 4
           });
         });
 
@@ -704,7 +704,7 @@ describe("Ext.grid.feature.Summary", function () {
               content = extractContent(summary.summaryBar, lockedView);
               content += extractContent(
                 normalGrid.features[0].summaryBar,
-                normalView,
+                normalView
               );
             } else {
               content = extractContent(summary.summaryBar);
@@ -724,7 +724,7 @@ describe("Ext.grid.feature.Summary", function () {
             bar.el.query(theView.innerSelector),
             function (node) {
               content += node.textContent || node.innerText || "";
-            },
+            }
           );
           return content.replace(/\s/g, "");
         }
@@ -770,11 +770,11 @@ describe("Ext.grid.feature.Summary", function () {
                 beforeEach(function () {
                   createGrid(
                     {
-                      renderTo: null,
+                      renderTo: null
                     },
                     {
-                      dock: withDocking ? "top" : null,
-                    },
+                      dock: withDocking ? "top" : null
+                    }
                   );
                 });
 
@@ -789,7 +789,7 @@ describe("Ext.grid.feature.Summary", function () {
                     store.add({
                       student: "Student 5",
                       subject: "Math",
-                      mark: 10,
+                      mark: 10
                     });
                   }).not.toThrow();
                 });
@@ -811,16 +811,16 @@ describe("Ext.grid.feature.Summary", function () {
                     store.loadData([
                       {
                         student: "Foo",
-                        mark: 75,
+                        mark: 75
                       },
                       {
                         student: "Bar",
-                        mark: 25,
-                      },
+                        mark: 25
+                      }
                     ]);
                   }).not.toThrow();
                 });
-              },
+              }
             );
           }
           beforeRenderSuite(false);
@@ -834,7 +834,7 @@ describe("Ext.grid.feature.Summary", function () {
               function () {
                 beforeEach(function () {
                   createGrid(null, {
-                    dock: withDocking ? "top" : null,
+                    dock: withDocking ? "top" : null
                   });
                 });
 
@@ -848,7 +848,7 @@ describe("Ext.grid.feature.Summary", function () {
                   store.add({
                     student: "Student 5",
                     subject: "Math",
-                    mark: 10,
+                    mark: 10
                   });
                   expectContent(withDocking, "5students66");
                   expectPosition(withDocking, 4);
@@ -870,17 +870,17 @@ describe("Ext.grid.feature.Summary", function () {
                   store.loadData([
                     {
                       student: "Foo",
-                      mark: 75,
+                      mark: 75
                     },
                     {
                       student: "Bar",
-                      mark: 25,
-                    },
+                      mark: 25
+                    }
                   ]);
                   expectContent(withDocking, "2students50");
                   expectPosition(withDocking, 1);
                 });
-              },
+              }
             );
           }
           makeOriginalStoreSuite(false);
@@ -894,7 +894,7 @@ describe("Ext.grid.feature.Summary", function () {
               function () {
                 beforeEach(function () {
                   createGrid(null, {
-                    dock: withDocking ? "top" : null,
+                    dock: withDocking ? "top" : null
                   });
                   var oldStore = store;
                   store = new Ext.data.Store({
@@ -903,20 +903,20 @@ describe("Ext.grid.feature.Summary", function () {
                       "subject",
                       {
                         name: "mark",
-                        type: "int",
-                      },
+                        type: "int"
+                      }
                     ],
                     data: [
                       {
                         student: "Student 1",
-                        mark: 30,
+                        mark: 30
                       },
                       {
                         student: "Student 2",
-                        mark: 50,
-                      },
+                        mark: 50
+                      }
                     ],
-                    autoDestroy: true,
+                    autoDestroy: true
                   });
                   grid.reconfigure(store);
                   oldStore.destroy();
@@ -931,7 +931,7 @@ describe("Ext.grid.feature.Summary", function () {
                 it("should react to an add", function () {
                   store.add({
                     student: "Student 3",
-                    mark: 10,
+                    mark: 10
                   });
                   expectContent(withDocking, "3students30");
                   expectPosition(withDocking, 2);
@@ -953,17 +953,17 @@ describe("Ext.grid.feature.Summary", function () {
                   store.loadData([
                     {
                       student: "Foo",
-                      mark: 75,
+                      mark: 75
                     },
                     {
                       student: "Bar",
-                      mark: 25,
-                    },
+                      mark: 25
+                    }
                   ]);
                   expectContent(withDocking, "2students50");
                   expectPosition(withDocking, 1);
                 });
-              },
+              }
             );
           }
           makeReconfigureSuite(false);
@@ -981,17 +981,17 @@ describe("Ext.grid.feature.Summary", function () {
               id: i,
               student: "Student " + i,
               subject: i % 2 === 0 ? "Math" : "Science",
-              mark: i % 100,
+              mark: i % 100
             });
           }
 
           createGrid(
             {
-              bufferedRenderer: true,
+              bufferedRenderer: true
             },
             null,
             null,
-            data,
+            data
           );
 
           var theView = withLocking ? lockedView : view,
@@ -1019,7 +1019,7 @@ describe("Ext.grid.feature.Summary", function () {
               // 15 seconds should be enough even for IE8
             },
             "downward scrolling to complete",
-            15000,
+            15000
           );
 
           runs(function () {
@@ -1033,12 +1033,12 @@ describe("Ext.grid.feature.Summary", function () {
           it("should be able to provide the correct value when using grouping", function () {
             createGrid(
               {
-                features: [{ ftype: "grouping" }],
+                features: [{ ftype: "grouping" }]
               },
               null,
               {
-                groupField: "subject",
-              },
+                groupField: "subject"
+              }
             );
             expect(getSummaryContent()).toBe("4students80");
           });

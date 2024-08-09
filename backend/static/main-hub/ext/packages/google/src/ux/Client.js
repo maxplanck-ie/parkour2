@@ -10,20 +10,20 @@ Ext.define("Ext.google.ux.Client", {
   mixins: ["Ext.mixin.Mashup"],
 
   requiredScripts: [
-    "//apis.google.com/js/client.js?onload=_ext_google_ux_client_initialize_",
+    "//apis.google.com/js/client.js?onload=_ext_google_ux_client_initialize_"
   ],
 
   statics: {
     getApiVersion: function (api) {
       var library = this.libraries[api];
       return library && library.state == 2 ? library.version : null;
-    },
+    }
   },
 
   mixinConfig: {
     extended: function (baseClass, derivedClass, classBody) {
       this.load(classBody.googleApis);
-    },
+    }
   },
 
   onClassMixedIn: function (cls) {
@@ -80,7 +80,7 @@ Ext.define("Ext.google.ux.Client", {
           } else if (library.version !== version) {
             Ext.log.error(
               'Google API: failed to load version "' + version + '" of the',
-              '"' + api + '" API: "' + library.version + '" already loaded.',
+              '"' + api + '" API: "' + library.version + '" already loaded.'
             );
           }
         });
@@ -124,9 +124,9 @@ Ext.define("Ext.google.ux.Client", {
       initialize: function () {
         this.initialized = true;
         this.refresh();
-      },
-    },
-  },
+      }
+    }
+  }
 });
 
 // See https://developers.google.com/api-client-library/javascript/features/authentication

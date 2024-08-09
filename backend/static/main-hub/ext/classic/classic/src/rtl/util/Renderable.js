@@ -32,7 +32,7 @@ Ext.define("Ext.rtl.util.Renderable", {
     "</tr>",
     "</tpl>",
     "</table>",
-    "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+    "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
   ],
 
   beforeRender: function () {
@@ -75,6 +75,6 @@ Ext.define("Ext.rtl.util.Renderable", {
       }
 
       return data;
-    },
-  },
+    }
+  }
 });

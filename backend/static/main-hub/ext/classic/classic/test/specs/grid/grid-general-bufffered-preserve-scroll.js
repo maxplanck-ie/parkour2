@@ -64,19 +64,19 @@ describe("grid-general-buffered-preserve-scroll", function () {
           "username",
           {
             name: "replycount",
-            type: "int",
+            type: "int"
           },
           {
             name: "lastpost",
             mapping: "lastpost",
             type: "date",
-            dateFormat: "timestamp",
+            dateFormat: "timestamp"
           },
           "lastposter",
           "excerpt",
-          "threadid",
+          "threadid"
         ],
-        idProperty: "threadid",
+        idProperty: "threadid"
       });
 
     function getData(start, limit) {
@@ -87,7 +87,7 @@ describe("grid-general-buffered-preserve-scroll", function () {
       for (i = start; i < end; ++i) {
         recs.push({
           threadid: i,
-          title: "Title" + i,
+          title: "Title" + i
         });
       }
       return recs;
@@ -109,8 +109,8 @@ describe("grid-general-buffered-preserve-scroll", function () {
           status: 200,
           responseText: Ext.encode({
             total: total || 5000,
-            data: data,
-          }),
+            data: data
+          })
         });
 
         requests = Ext.Ajax.mockGetAllRequests();
@@ -137,10 +137,10 @@ describe("grid-general-buffered-preserve-scroll", function () {
               status: 200,
               responseText: Ext.encode({
                 total: total || 5000,
-                data: data,
-              }),
+                data: data
+              })
             },
-            request.id,
+            request.id
           );
         }
       }
@@ -159,9 +159,9 @@ describe("grid-general-buffered-preserve-scroll", function () {
           url: "fakeUrl",
           reader: {
             type: "json",
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
       store.loadPage(1);
       satisfyRequests();
@@ -171,8 +171,8 @@ describe("grid-general-buffered-preserve-scroll", function () {
         columns: [
           {
             text: "Title",
-            dataIndex: "title",
-          },
+            dataIndex: "title"
+          }
         ],
         store: store,
         width: 600,
@@ -184,13 +184,13 @@ describe("grid-general-buffered-preserve-scroll", function () {
           listeners: {
             scroll: function () {
               scrollEventCount++;
-            },
-          },
+            }
+          }
         },
         renderTo: document.body,
         selModel: {
-          pruneRemoved: false,
-        },
+          pruneRemoved: false
+        }
       });
       view = grid.getView();
       bufferedRenderer = view.bufferedRenderer;
@@ -236,7 +236,7 @@ describe("grid-general-buffered-preserve-scroll", function () {
           }
         },
         "Page one to have been purged from the PageCache",
-        20000,
+        20000
       );
 
       runs(function () {
@@ -249,14 +249,14 @@ describe("grid-general-buffered-preserve-scroll", function () {
           return scrollEventCount === 1;
         },
         "A scroll event to fire",
-        20000,
+        20000
       );
       runs(function () {
         satisfyRequests();
 
         // First record still selected
         expect(
-          view.all.item(0).hasCls(Ext.baseCSSPrefix + "grid-item-selected"),
+          view.all.item(0).hasCls(Ext.baseCSSPrefix + "grid-item-selected")
         ).toBe(true);
       });
     });
@@ -343,7 +343,7 @@ describe("grid-general-buffered-preserve-scroll", function () {
         focus: true,
         callback: function () {
           scrollDone = true;
-        },
+        }
       });
 
       waitsFor(function () {
@@ -358,7 +358,7 @@ describe("grid-general-buffered-preserve-scroll", function () {
           refresh: function () {
             refreshed = true;
           },
-          single: true,
+          single: true
         });
         store.reload();
       });

@@ -7,5 +7,5 @@ Ext.define("Ext.drag.proxy.Original", {
 
   getElement: function (info) {
     return info.source.getElement();
-  },
+  }
 });

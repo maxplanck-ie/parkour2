@@ -19,7 +19,7 @@ Ext.define("Ext.data.request.Form", {
       options.form,
       requestOptions.url,
       requestOptions.data,
-      options,
+      options
     );
 
     return me;
@@ -91,14 +91,14 @@ Ext.define("Ext.data.request.Form", {
         method: form.method,
         encoding: form.encoding,
         enctype: form.enctype,
-        action: form.action,
+        action: form.action
       },
       addField = function (name, value) {
         hiddenItem = document.createElement("input");
         Ext.fly(hiddenItem).set({
           type: "hidden",
           value: value,
-          name: name,
+          name: name
         });
         form.appendChild(hiddenItem);
         hiddens.push(hiddenItem);
@@ -122,7 +122,7 @@ Ext.define("Ext.data.request.Form", {
       name: id,
       cls: Ext.baseCSSPrefix + "hidden-display",
       src: Ext.SSL_SECURE_URL,
-      tabIndex: -1,
+      tabIndex: -1
     });
 
     document.body.appendChild(frameDom);
@@ -137,7 +137,7 @@ Ext.define("Ext.data.request.Form", {
       method: "POST",
       enctype: encoding,
       encoding: encoding,
-      action: url || buf.action,
+      action: url || buf.action
     });
 
     // add dynamic params
@@ -165,7 +165,7 @@ Ext.define("Ext.data.request.Form", {
       load: this.onComplete,
       scope: this,
       // Opera introduces multiple 'load' events, so account for extras as well
-      single: !Ext.isOpera,
+      single: !Ext.isOpera
     });
 
     form.submit();
@@ -238,7 +238,7 @@ Ext.define("Ext.data.request.Form", {
         me.result = response = {
           responseText: "",
           responseXML: null,
-          request: me,
+          request: me
         };
 
         // Opera will fire an extraneous load event on about:blank
@@ -282,7 +282,7 @@ Ext.define("Ext.data.request.Form", {
           response.status = 200;
         } else {
           Ext.raise(
-            "Could not acquire a suitable connection for the file upload service.",
+            "Could not acquire a suitable connection for the file upload service."
           );
         }
       } catch (e) {
@@ -309,7 +309,7 @@ Ext.define("Ext.data.request.Form", {
       success ? "requestcomplete" : "requestexception",
       owner,
       response,
-      options,
+      options
     );
 
     Ext.callback(callback, options.scope, [response, options]);
@@ -326,5 +326,5 @@ Ext.define("Ext.data.request.Form", {
   destroy: function () {
     this.cleanup();
     this.callParent();
-  },
+  }
 });

@@ -28,7 +28,7 @@ describe("Ext.Template", function () {
       spyOn(Ext.Template.prototype, "compile").andCallThrough();
 
       tpl = new Ext.Template("Hello {foo}", {
-        compiled: true,
+        compiled: true
       });
       // must call the new tpl for it bother compiling it
       var s = tpl.apply({ foo: 42 });
@@ -74,10 +74,10 @@ describe("Ext.Template", function () {
 
         it("should apply an objects after the first argument to the template", function () {
           var o1 = {
-              a: function () {},
+              a: function () {}
             },
             o2 = {
-              b: function () {},
+              b: function () {}
             };
 
           var tpl = new Ext.Template(["foo", "bar", o1, o2]);
@@ -102,7 +102,7 @@ describe("Ext.Template", function () {
     beforeEach(function () {
       rootEl = Ext.fly(document.body).createChild({
         cls: "foo",
-        children: [{ cls: "bar" }],
+        children: [{ cls: "bar" }]
       });
       childEl = rootEl.first();
 
@@ -112,7 +112,7 @@ describe("Ext.Template", function () {
       complexTpl = new Ext.Template([
         '<div name="{id}">',
         '<span class="{cls}">{name} {value:ellipsis(10)}</span>',
-        "</div>",
+        "</div>"
       ]);
       appliedObject = { id: "myid", cls: "myclass", name: "foo", value: "bar" };
       spyOn(Ext, "getDom").andCallThrough();
@@ -161,7 +161,7 @@ describe("Ext.Template", function () {
 
         it("should apply the supplied value to the template", function () {
           expect(complexTplEl.dom).hasHTML(
-            '<span class="myclass">foo bar</span>',
+            '<span class="myclass">foo bar</span>'
           );
         });
 
@@ -175,7 +175,7 @@ describe("Ext.Template", function () {
       describe("with a simple template", function () {
         it("should apply the supplied value and return an HTML fragments", function () {
           expect(simpleTpl.apply(appliedArr)).toEqual(
-            '<div class="template">Hello world.</div>',
+            '<div class="template">Hello world.</div>'
           );
         });
       });
@@ -183,7 +183,7 @@ describe("Ext.Template", function () {
       describe("with a complex template", function () {
         it("should apply the supplied value and return an HTML fragments", function () {
           expect(complexTpl.apply(appliedObject)).toEqual(
-            '<div name="myid"><span class="myclass">foo bar</span></div>',
+            '<div name="myid"><span class="myclass">foo bar</span></div>'
           );
         });
       });
@@ -227,7 +227,7 @@ describe("Ext.Template", function () {
 
         it("should apply the supplied value to the template", function () {
           expect(complexTplEl.dom).hasHTML(
-            '<span class="myclass">foo bar</span>',
+            '<span class="myclass">foo bar</span>'
           );
         });
 
@@ -275,7 +275,7 @@ describe("Ext.Template", function () {
 
         it("should apply the supplied value to the template", function () {
           expect(complexTplEl.dom).hasHTML(
-            '<span class="myclass">foo bar</span>',
+            '<span class="myclass">foo bar</span>'
           );
         });
 
@@ -323,7 +323,7 @@ describe("Ext.Template", function () {
 
         it("should apply the supplied value to the template", function () {
           expect(complexTplEl.dom).hasHTML(
-            '<span class="myclass">foo bar</span>',
+            '<span class="myclass">foo bar</span>'
           );
         });
 
@@ -373,7 +373,7 @@ describe("Ext.Template", function () {
 
         it("should apply the supplied value to the template", function () {
           expect(complexTplEl.dom).hasHTML(
-            '<span class="myclass">foo bar</span>',
+            '<span class="myclass">foo bar</span>'
           );
         });
 
@@ -404,7 +404,7 @@ describe("Ext.Template", function () {
           expect(innerHTML).toEqual("<tr><td>text</td></tr>");
         } else {
           expect(innerHTML.toLowerCase().replace(/\s/g, "")).toEqual(
-            "<tbody><tr><td>text</td></tr></tbody>",
+            "<tbody><tr><td>text</td></tr></tbody>"
           );
         }
       });
@@ -417,7 +417,7 @@ describe("Ext.Template", function () {
         simpleTpl.set(tplString);
 
         expect(simpleTpl.apply(["world"])).toEqual(
-          '<div class="template">Good bye world.</div>',
+          '<div class="template">Good bye world.</div>'
         );
       });
 
@@ -542,15 +542,15 @@ describe("Ext.Template", function () {
                 xtype: "button",
                 reference: "btn",
                 listeners: {
-                  click: "promote",
+                  click: "promote"
                 },
                 bind: {
-                  text: "Promote {user.name:this.fmt}",
-                },
-              },
-            ],
-          },
-        ],
+                  text: "Promote {user.name:this.fmt}"
+                }
+              }
+            ]
+          }
+        ]
       };
 
       tpl = new Ext.Template("{a:this.increment(7)}", { increment: memberFn });
@@ -580,7 +580,7 @@ describe("Ext.Template", function () {
     beforeEach(function () {
       elWithHtml = Ext.fly(document.body).createChild({
         tag: "div",
-        html: "FOO {0}.",
+        html: "FOO {0}."
       });
       elWithValue = Ext.fly(document.body).createChild({ tag: "input" });
       elWithValue.dom.value = "BAR {0}.";
@@ -609,8 +609,8 @@ describe("Ext.Template", function () {
       it("should use Ext.util.Format formatting functions by default", function () {
         expect(
           new Ext.Template('Value: {0:number("0.00")}', {
-            compiled: compiled,
-          }).apply([3.257]),
+            compiled: compiled
+          }).apply([3.257])
         ).toBe("Value: 3.26");
       });
       it('should use member formatting functions when prepended with "this."', function () {
@@ -620,26 +620,26 @@ describe("Ext.Template", function () {
             bold: function (v) {
               return "<b>" + v + "</b>";
             },
-            compiled: compiled,
-          },
+            compiled: compiled
+          }
         ];
         expect(new Ext.Template(tpl).apply(["Warning message"])).toBe(
-          "Warning: <b>Warning message</b>",
+          "Warning: <b>Warning message</b>"
         );
       });
       it('should not see "{margin:0} as a token', function () {
         expect(
           new Ext.Template("p{margin:0}body{direction:{0}}", {
-            compiled: compiled,
-          }).apply(["rtl"]),
+            compiled: compiled
+          }).apply(["rtl"])
         ).toBe("p{margin:0}body{direction:rtl}");
       });
       it('should not see "{1:someText} as a token', function () {
         expect(
           new Ext.Template("{0}{1:sometext}{1}", { compiled: compiled }).apply([
             "foo",
-            "bar",
-          ]),
+            "bar"
+          ])
         ).toBe("foo{1:sometext}bar");
       });
     });
@@ -648,8 +648,8 @@ describe("Ext.Template", function () {
       it("should use Ext.util.Format formatting functions by default", function () {
         expect(
           new Ext.Template('Value: {prop0:number("0.00")}', {
-            compiled: compiled,
-          }).apply({ prop0: 3.257 }),
+            compiled: compiled
+          }).apply({ prop0: 3.257 })
         ).toBe("Value: 3.26");
       });
       it('should use member formatting functions when prepended with "this."', function () {
@@ -659,25 +659,25 @@ describe("Ext.Template", function () {
             bold: function (v) {
               return "<b>" + v + "</b>";
             },
-            compiled: compiled,
-          },
+            compiled: compiled
+          }
         ];
         expect(new Ext.Template(tpl).apply({ prop0: "Warning message" })).toBe(
-          "Warning: <b>Warning message</b>",
+          "Warning: <b>Warning message</b>"
         );
       });
       it('should not see "{margin:0} as a token', function () {
         expect(
           new Ext.Template("p{margin:0}body{direction:{prop0}}", {
-            compiled: compiled,
-          }).apply({ prop0: "rtl" }),
+            compiled: compiled
+          }).apply({ prop0: "rtl" })
         ).toBe("p{margin:0}body{direction:rtl}");
       });
       it('should not see "{1:someText} as a token', function () {
         expect(
           new Ext.Template("{prop0}{1:sometext}{prop1}", {
-            compiled: compiled,
-          }).apply({ prop0: "foo", prop1: "bar" }),
+            compiled: compiled
+          }).apply({ prop0: "foo", prop1: "bar" })
         ).toBe("foo{1:sometext}bar");
       });
     });

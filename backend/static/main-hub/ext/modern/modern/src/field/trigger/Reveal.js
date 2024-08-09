@@ -10,5 +10,5 @@ Ext.define("Ext.field.trigger.Reveal", {
   weight: -1000,
   hidden: true,
   handler: "onRevealTap",
-  scope: "this",
+  scope: "this"
 });

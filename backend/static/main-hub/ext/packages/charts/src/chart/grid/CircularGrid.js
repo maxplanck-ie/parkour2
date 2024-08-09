@@ -12,8 +12,8 @@ Ext.define("Ext.chart.grid.CircularGrid", {
     def: {
       defaults: {
         r: 1,
-        strokeStyle: "#DDD",
-      },
-    },
-  },
+        strokeStyle: "#DDD"
+      }
+    }
+  }
 });

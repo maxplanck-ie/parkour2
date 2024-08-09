@@ -10,5 +10,5 @@ Ext.define("Ext.theme.triton.selection.CheckboxModel", {
     if (Ext.isIE8) {
       header.getView().ownerGrid.el.syncRepaint();
     }
-  },
+  }
 });

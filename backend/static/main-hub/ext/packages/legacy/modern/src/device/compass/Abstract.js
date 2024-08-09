@@ -6,14 +6,14 @@ Ext.define("Ext.device.compass.Abstract", {
     /**
      * @cfg {Number} frequency The default frequency to get the current heading when using {@link Ext.device.Compass#watchHeading}.
      */
-    frequency: 100,
+    frequency: 100
   },
 
   getHeadingAvailable: function (config) {
     // <debug>
     if (!config.callback) {
       Ext.Logger.warn(
-        "You need to specify a `callback` function for #getHeadingAvailable",
+        "You need to specify a `callback` function for #getHeadingAvailable"
       );
     }
     // </debug>
@@ -25,7 +25,7 @@ Ext.define("Ext.device.compass.Abstract", {
     // <debug>
     if (!config.success) {
       Ext.Logger.warn(
-        "You need to specify a `success` function for #getCurrentHeading",
+        "You need to specify a `success` function for #getCurrentHeading"
       );
     }
     // </debug>
@@ -37,13 +37,13 @@ Ext.define("Ext.device.compass.Abstract", {
     var defaultConfig = Ext.device.compass.Abstract.prototype.config;
 
     config = Ext.applyIf(config, {
-      frequency: defaultConfig.frequency,
+      frequency: defaultConfig.frequency
     });
 
     // <debug>
     if (!config.callback) {
       Ext.Logger.warn(
-        "You need to specify a `callback` function for #watchHeading",
+        "You need to specify a `callback` function for #watchHeading"
       );
     }
     // </debug>
@@ -51,5 +51,5 @@ Ext.define("Ext.device.compass.Abstract", {
     return config;
   },
 
-  clearWatch: Ext.emptyFn,
+  clearWatch: Ext.emptyFn
 });

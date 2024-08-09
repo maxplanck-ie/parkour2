@@ -30,10 +30,10 @@ describe("Ext.layout.container.Border", function () {
           items: items,
           layout: "border",
           renderTo: Ext.getBody(),
-          width: 200,
+          width: 200
         },
-        cfg,
-      ),
+        cfg
+      )
     );
 
     return ct;
@@ -86,7 +86,7 @@ describe("Ext.layout.container.Border", function () {
         renderTo: Ext.getBody(),
         layout: "fit",
         width: 100,
-        height: 100,
+        height: 100
       });
     });
 
@@ -106,21 +106,21 @@ describe("Ext.layout.container.Border", function () {
         items: [
           (c = new Ext.Component({
             region: "north",
-            height: 50,
+            height: 50
           })),
           {
             region: "west",
-            width: 50,
+            width: 50
           },
           {
             region: "south",
-            height: 50,
+            height: 50
           },
           {
             region: "east",
-            width: 50,
-          },
-        ],
+            width: 50
+          }
+        ]
       });
 
       ct.remove(c, false);
@@ -142,21 +142,21 @@ describe("Ext.layout.container.Border", function () {
         items: [
           {
             region: "north",
-            height: 50,
+            height: 50
           },
           (c = new Ext.Component({
             region: "west",
-            width: 50,
+            width: 50
           })),
           {
             region: "south",
-            height: 50,
+            height: 50
           },
           {
             region: "east",
-            width: 50,
-          },
-        ],
+            width: 50
+          }
+        ]
       });
 
       ct.remove(c, false);
@@ -178,21 +178,21 @@ describe("Ext.layout.container.Border", function () {
         items: [
           {
             region: "north",
-            height: 50,
+            height: 50
           },
           {
             region: "west",
-            width: 50,
+            width: 50
           },
           (c = new Ext.Component({
             region: "south",
-            height: 50,
+            height: 50
           })),
           {
             region: "east",
-            width: 50,
-          },
-        ],
+            width: 50
+          }
+        ]
       });
 
       ct.remove(c, false);
@@ -214,21 +214,21 @@ describe("Ext.layout.container.Border", function () {
         items: [
           {
             region: "north",
-            height: 50,
+            height: 50
           },
           {
             region: "west",
-            width: 50,
+            width: 50
           },
           {
             region: "south",
-            height: 50,
+            height: 50
           },
           (c = new Ext.Component({
             region: "east",
-            width: 50,
-          })),
-        ],
+            width: 50
+          }))
+        ]
       });
 
       ct.remove(c, false);
@@ -246,8 +246,8 @@ describe("Ext.layout.container.Border", function () {
         width: 100,
         height: 100,
         items: {
-          region: "center",
-        },
+          region: "center"
+        }
       });
 
       // When adding the item to the collapsed panel, it won't render
@@ -263,7 +263,7 @@ describe("Ext.layout.container.Border", function () {
     var createWithCenter = function (items, cfg) {
       items = items.concat({
         xtype: "component",
-        region: "center",
+        region: "center"
       });
       createBorderLayout(items, cfg);
     };
@@ -273,7 +273,7 @@ describe("Ext.layout.container.Border", function () {
         var north = new Ext.Component({
           region: "north",
           height: 50,
-          split: true,
+          split: true
         });
         createWithCenter([north]);
         expect(north.nextSibling().isXType("splitter")).toBe(true);
@@ -284,7 +284,7 @@ describe("Ext.layout.container.Border", function () {
           region: "west",
           height: 50,
           collapsible: true,
-          collapseMode: "mini",
+          collapseMode: "mini"
         });
         createWithCenter([west]);
         expect(west.nextSibling().isXType("splitter")).toBe(true);
@@ -299,8 +299,8 @@ describe("Ext.layout.container.Border", function () {
             width: 50,
             split: {
               collapseOnDblClick: false,
-              id: "foosplitter",
-            },
+              id: "foosplitter"
+            }
           });
 
           createWithCenter([east]);
@@ -331,7 +331,7 @@ describe("Ext.layout.container.Border", function () {
         var north = new Ext.Component({
           region: "north",
           height: 50,
-          split: true,
+          split: true
         });
         createWithCenter([north]);
         ct.remove(north);
@@ -345,7 +345,7 @@ describe("Ext.layout.container.Border", function () {
           var north = new Ext.Component({
             region: "north",
             height: 50,
-            split: true,
+            split: true
           });
           createWithCenter([north]);
           expect(north.nextSibling().isVisible()).toBe(true);
@@ -356,7 +356,7 @@ describe("Ext.layout.container.Border", function () {
             region: "north",
             hidden: true,
             height: 50,
-            split: true,
+            split: true
           });
           createWithCenter([north]);
           expect(north.nextSibling().isVisible()).toBe(false);
@@ -367,7 +367,7 @@ describe("Ext.layout.container.Border", function () {
             region: "north",
             height: 50,
             split: true,
-            collapsed: true,
+            collapsed: true
           });
           createWithCenter([north]);
           expect(north.nextSibling().isVisible()).toBe(true);
@@ -379,7 +379,7 @@ describe("Ext.layout.container.Border", function () {
           var north = new Ext.Component({
             region: "north",
             height: 50,
-            split: true,
+            split: true
           });
           createWithCenter([north]);
           north.hide();
@@ -391,7 +391,7 @@ describe("Ext.layout.container.Border", function () {
             region: "north",
             height: 50,
             split: true,
-            hidden: true,
+            hidden: true
           });
           createWithCenter([north]);
           north.show();
@@ -403,12 +403,12 @@ describe("Ext.layout.container.Border", function () {
         var north = new Ext.Component({
           region: "north",
           height: 50,
-          split: true,
+          split: true
         });
         var south = new Ext.Component({
           region: "south",
           height: 50,
-          split: true,
+          split: true
         });
         createWithCenter([north, south]);
         north.hide();
@@ -447,11 +447,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "west",
-            width: 30,
+            width: 30
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -481,11 +481,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "east",
-            width: 30,
+            width: 30
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var east = ct.down("[region=east]");
@@ -516,11 +516,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             height: 30,
-            region: "north",
+            region: "north"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -551,11 +551,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             height: 30,
-            region: "south",
+            region: "south"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var south = ct.down("[region=south]");
@@ -587,23 +587,23 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             height: 60,
-            region: "south",
+            region: "south"
           },
           {
             region: "west",
-            width: 20,
+            width: 20
           },
           {
             height: 50,
-            region: "north",
+            region: "north"
           },
           {
-            region: "center",
+            region: "center"
           },
           {
             region: "east",
-            width: 80,
-          },
+            width: 80
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -655,26 +655,26 @@ describe("Ext.layout.container.Border", function () {
           {
             height: 60,
             region: "south",
-            weight: -100,
+            weight: -100
           },
           {
             region: "west",
             width: 20,
-            weight: 100,
+            weight: 100
           },
           {
             height: 50,
             region: "north",
-            weight: -100,
+            weight: -100
           },
           {
-            region: "center",
+            region: "center"
           },
           {
             region: "east",
             width: 80,
-            weight: 100,
-          },
+            weight: 100
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -724,11 +724,11 @@ describe("Ext.layout.container.Border", function () {
           {
             margin: "10 20 30 40",
             region: "west",
-            width: 30,
+            width: 30
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -758,8 +758,8 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "west",
-            width: 40,
-          },
+            width: 40
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -785,11 +785,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "west",
-            width: "25%",
+            width: "25%"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -819,11 +819,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "east",
-            width: "40%",
+            width: "40%"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var east = ct.down("[region=east]");
@@ -854,11 +854,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "north",
-            height: "10%",
+            height: "10%"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -889,11 +889,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "south",
-            height: "85%",
+            height: "85%"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var south = ct.down("[region=south]");
@@ -925,23 +925,23 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             height: "39%",
-            region: "south",
+            region: "south"
           },
           {
             region: "west",
-            width: "18%",
+            width: "18%"
           },
           {
             height: "12%",
-            region: "north",
+            region: "north"
           },
           {
-            region: "center",
+            region: "center"
           },
           {
             region: "east",
-            width: "11%",
-          },
+            width: "11%"
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -994,26 +994,26 @@ describe("Ext.layout.container.Border", function () {
           {
             height: "39%",
             region: "south",
-            weight: 10,
+            weight: 10
           },
           {
             region: "west",
             weight: 20,
-            width: "18%",
+            width: "18%"
           },
           {
             height: "12%",
             region: "south",
-            weight: 100,
+            weight: 100
           },
           {
-            region: "center",
+            region: "center"
           },
           {
             region: "east",
             weight: 20,
-            width: "11%",
-          },
+            width: "11%"
+          }
         ]);
 
         var south1 = ct.down("[region=south][weight=100]");
@@ -1064,11 +1064,11 @@ describe("Ext.layout.container.Border", function () {
           {
             flex: 0.25,
             minWidth: 10, // min-width shouldn't affect the width as it's greater than 10 anyway
-            region: "west",
+            region: "west"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -1098,11 +1098,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             flex: 3,
-            region: "east",
+            region: "east"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var east = ct.down("[region=east]");
@@ -1133,11 +1133,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             flex: 9,
-            region: "north",
+            region: "north"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -1168,11 +1168,11 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             flex: 0.6,
-            region: "south",
+            region: "south"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var south = ct.down("[region=south]");
@@ -1204,23 +1204,23 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             flex: 2,
-            region: "south",
+            region: "south"
           },
           {
             flex: 0.25,
-            region: "west",
+            region: "west"
           },
           {
             flex: 1,
-            region: "north",
+            region: "north"
           },
           {
-            region: "center",
+            region: "center"
           },
           {
             flex: 0.75,
-            region: "east",
-          },
+            region: "east"
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -1270,17 +1270,17 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             flex: 1,
-            region: "north",
+            region: "north"
           },
           {
             flex: 2,
             region: "west",
-            weight: 50,
+            weight: 50
           },
           {
             flex: 3,
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -1323,12 +1323,12 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             margin: "10 20 30 40",
-            region: "center",
+            region: "center"
           },
           {
             flex: 3,
-            region: "south",
-          },
+            region: "south"
+          }
         ]);
 
         var south = ct.down("[region=south]");
@@ -1362,12 +1362,12 @@ describe("Ext.layout.container.Border", function () {
           {
             flex: 1,
             margin: "10 20 30 40",
-            region: "east",
+            region: "east"
           },
           {
             margin: "10 20 30 40",
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var east = ct.down("[region=east]");
@@ -1406,17 +1406,17 @@ describe("Ext.layout.container.Border", function () {
           {
             flex: 2,
             region: "east",
-            margin: "10 19 30 10",
+            margin: "10 19 30 10"
           },
           {
             margin: "4 10 15 20",
-            region: "center",
+            region: "center"
           },
           {
             flex: 3,
             region: "north",
-            margin: "20 10 5 12",
-          },
+            margin: "20 10 5 12"
+          }
         ]);
 
         var east = ct.down("[region=east]");
@@ -1452,11 +1452,11 @@ describe("Ext.layout.container.Border", function () {
           {
             flex: 0.25,
             minWidth: 90,
-            region: "west",
+            region: "west"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -1490,11 +1490,11 @@ describe("Ext.layout.container.Border", function () {
             flex: 1,
             margin: "0 50 0 0",
             minWidth: 120,
-            region: "west",
+            region: "west"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -1531,19 +1531,19 @@ describe("Ext.layout.container.Border", function () {
             xtype: "container",
             layout: {
               align: "stretch",
-              type: "hbox", // simulate fit using hbox as it supports margin properly
+              type: "hbox" // simulate fit using hbox as it supports margin properly
             },
             items: [
               {
                 margin: "10 10 10 10",
                 width: 30,
-                xtype: "component",
-              },
-            ],
+                xtype: "component"
+              }
+            ]
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -1584,19 +1584,19 @@ describe("Ext.layout.container.Border", function () {
             xtype: "container",
             layout: {
               align: "stretch",
-              type: "hbox", // simulate fit using hbox as it supports margin properly
+              type: "hbox" // simulate fit using hbox as it supports margin properly
             },
             items: [
               {
                 margin: "20 30 40 50",
                 width: 100,
-                xtype: "component",
-              },
-            ],
+                xtype: "component"
+              }
+            ]
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var east = ct.down("[region=east]");
@@ -1639,19 +1639,19 @@ describe("Ext.layout.container.Border", function () {
             xtype: "container",
             layout: {
               align: "stretch",
-              type: "vbox", // simulate fit using vbox as it supports margin properly
+              type: "vbox" // simulate fit using vbox as it supports margin properly
             },
             items: [
               {
                 margin: "10 20 30 40",
                 height: 30,
-                xtype: "component",
-              },
-            ],
+                xtype: "component"
+              }
+            ]
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var north = ct.down("[region=north]");
@@ -1694,19 +1694,19 @@ describe("Ext.layout.container.Border", function () {
             xtype: "container",
             layout: {
               align: "stretch",
-              type: "vbox", // simulate fit using vbox as it supports margin properly
+              type: "vbox" // simulate fit using vbox as it supports margin properly
             },
             items: [
               {
                 margin: "10 20 30 40",
                 height: 30,
-                xtype: "component",
-              },
-            ],
+                xtype: "component"
+              }
+            ]
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var south = ct.down("[region=south]");
@@ -1755,34 +1755,34 @@ describe("Ext.layout.container.Border", function () {
             xtype: "container",
             layout: {
               align: "stretch",
-              type: "vbox",
+              type: "vbox"
             },
             items: [
               {
                 flex: 2,
                 itemId: "cmp1",
                 margin: "15 15 15 15",
-                xtype: "component",
+                xtype: "component"
               },
               {
                 flex: 1,
                 itemId: "cmp2",
                 margin: "20 20 20 20",
                 width: 50,
-                xtype: "component",
+                xtype: "component"
               },
               {
                 flex: 1,
                 itemId: "cmp3",
                 margin: "5 5 5 5",
                 width: 60,
-                xtype: "component",
-              },
-            ],
+                xtype: "component"
+              }
+            ]
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -1843,34 +1843,34 @@ describe("Ext.layout.container.Border", function () {
             xtype: "container",
             layout: {
               align: "stretchmax",
-              type: "vbox",
+              type: "vbox"
             },
             items: [
               {
                 flex: 2,
                 itemId: "cmp1",
                 margin: "15 15 15 15", // w=30 h=30
-                xtype: "component",
+                xtype: "component"
               },
               {
                 flex: 1,
                 itemId: "cmp2",
                 margin: "20 20 20 20", // w=40 h=40
                 width: 50,
-                xtype: "component",
+                xtype: "component"
               },
               {
                 flex: 1,
                 itemId: "cmp3",
                 margin: "5 5 5 5",
                 width: 60,
-                xtype: "component",
-              },
-            ],
+                xtype: "component"
+              }
+            ]
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         expect(ct).toHaveLayout({
@@ -1881,13 +1881,13 @@ describe("Ext.layout.container.Border", function () {
               items: {
                 cmp1: { el: { xywh: "15 15 60 60" } },
                 cmp2: { el: { xywh: "20 110 50 30" } },
-                cmp3: { el: { xywh: "5 165 80 30" } },
-              },
+                cmp3: { el: { xywh: "5 165 80 30" } }
+              }
             },
             "[region=center]": {
-              el: { xywh: "90 0 110 200" },
-            },
-          },
+              el: { xywh: "90 0 110 200" }
+            }
+          }
         });
       });
     });
@@ -1906,15 +1906,15 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "west",
-            width: 80,
+            width: 80
           },
           {
             flex: 3,
-            region: "east",
+            region: "east"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -1951,15 +1951,15 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "west",
-            width: 80,
+            width: 80
           },
           {
             region: "east",
-            width: "45%",
+            width: "45%"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -1996,15 +1996,15 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "west",
-            width: "40%",
+            width: "40%"
           },
           {
             flex: 3,
-            region: "east",
+            region: "east"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -2042,15 +2042,15 @@ describe("Ext.layout.container.Border", function () {
           {
             maxWidth: 50,
             region: "west",
-            width: "40%",
+            width: "40%"
           },
           {
             flex: 2,
-            region: "east",
+            region: "east"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -2087,17 +2087,17 @@ describe("Ext.layout.container.Border", function () {
           {
             flex: 8, // ignored
             region: "west",
-            width: "10%",
+            width: "10%"
           },
           {
             flex: 2,
             height: 100, // ignored
             region: "east",
-            width: 100, // ignored
+            width: 100 // ignored
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -2127,7 +2127,7 @@ describe("Ext.layout.container.Border", function () {
       var fired = false;
       createBorderLayout([
         {
-          region: "center",
+          region: "center"
         },
         {
           xtype: "panel",
@@ -2137,9 +2137,9 @@ describe("Ext.layout.container.Border", function () {
           listeners: {
             collapse: function () {
               fired = true;
-            },
-          },
-        },
+            }
+          }
+        }
       ]);
       expect(fired).toBe(false);
     });
@@ -2159,11 +2159,11 @@ describe("Ext.layout.container.Border", function () {
             region: "west",
             xtype: "panel",
             collapsible: true,
-            floatable: true, // We want to test floating
+            floatable: true // We want to test floating
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]),
         floated = false;
 
@@ -2229,11 +2229,11 @@ describe("Ext.layout.container.Border", function () {
             region: "west",
             xtype: "panel",
             collapsible: true,
-            floatable: true, // We want to test floating
+            floatable: true // We want to test floating
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]),
         floated = false,
         expanded = false,
@@ -2320,11 +2320,11 @@ describe("Ext.layout.container.Border", function () {
           collapsed: true,
           width: "20%", // irrelevant
           region: "east",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var eastPh = ct.down("[region=east][placeholderFor]");
@@ -2357,11 +2357,11 @@ describe("Ext.layout.container.Border", function () {
           collapsed: true,
           height: 73, // irrelevant
           region: "north",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var northPh = ct.down("[region=north][placeholderFor]");
@@ -2394,11 +2394,11 @@ describe("Ext.layout.container.Border", function () {
           collapsed: true,
           flex: 2, // irrelevant
           region: "south",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var southPh = ct.down("[region=south][placeholderFor]");
@@ -2430,17 +2430,17 @@ describe("Ext.layout.container.Border", function () {
           collapsed: true,
           height: 50, // irrelevant
           region: "north",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
           collapsed: true,
           flex: 2, // irrelevant
           region: "west",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var northPh = ct.down("[region=north][placeholderFor]");
@@ -2483,18 +2483,18 @@ describe("Ext.layout.container.Border", function () {
             collapsed: true,
             height: 50, // irrelevant
             region: "north",
-            xtype: "panel",
+            xtype: "panel"
           },
           {
             collapsed: true,
             flex: 2, // irrelevant
             region: "west",
             weight: 30,
-            xtype: "panel",
+            xtype: "panel"
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var northPh = ct.down("[region=north][placeholderFor]");
@@ -2515,7 +2515,7 @@ describe("Ext.layout.container.Border", function () {
         expect(center.getHeight()).toBe(200 - HORIZONTAL_PLACEHOLDER_HEIGHT);
         expect(getLeft(ct, center)).toBe(VERTICAL_PLACEHOLDER_WIDTH);
         expect(getTop(ct, center)).toBe(HORIZONTAL_PLACEHOLDER_HEIGHT);
-      },
+      }
     );
 
     todoIt("should support 4 collapsed regions", function () {
@@ -2535,29 +2535,29 @@ describe("Ext.layout.container.Border", function () {
           collapsed: true,
           height: 50, // irrelevant
           region: "north",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
           collapsed: true,
           flex: 2, // irrelevant
           region: "west",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
+          region: "center"
         },
         {
           collapsed: true,
           height: "50%", // irrelevant
           region: "south",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
           collapsed: true,
           width: 78, // irrelevant
           region: "east",
-          xtype: "panel",
-        },
+          xtype: "panel"
+        }
       ]);
 
       var northPh = ct.down("[region=north][placeholderFor]");
@@ -2609,12 +2609,12 @@ describe("Ext.layout.container.Border", function () {
           placeholder: Ext.widget({
             width: 70,
             vertical: true,
-            xtype: "toolbar",
-          }),
+            xtype: "toolbar"
+          })
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=east][placeholderFor]");
@@ -2648,12 +2648,12 @@ describe("Ext.layout.container.Border", function () {
           xtype: "panel",
           placeholder: Ext.widget({
             flex: 0.25,
-            xtype: "toolbar",
-          }),
+            xtype: "toolbar"
+          })
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=west][placeholderFor]");
@@ -2692,12 +2692,12 @@ describe("Ext.layout.container.Border", function () {
           placeholder: Ext.widget({
             height: "75%",
             vertical: true, // TODO: required?
-            xtype: "toolbar",
-          }),
+            xtype: "toolbar"
+          })
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=south][placeholderFor]");
@@ -2735,26 +2735,26 @@ describe("Ext.layout.container.Border", function () {
             xtype: "container",
             layout: {
               align: "stretchmax",
-              type: "hbox",
+              type: "hbox"
             },
             items: [
               {
                 height: 85,
                 itemId: "cmp1",
                 width: 90,
-                xtype: "component",
+                xtype: "component"
               },
               {
                 flex: 1,
                 itemId: "cmp2",
-                xtype: "component",
-              },
-            ],
-          }),
+                xtype: "component"
+              }
+            ]
+          })
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var cmp1 = ct.down("#cmp1");
@@ -2790,11 +2790,11 @@ describe("Ext.layout.container.Border", function () {
           flex: 2, // irrelevant
           region: "east",
           title: "Original Title",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=east][placeholderFor]");
@@ -2818,11 +2818,11 @@ describe("Ext.layout.container.Border", function () {
           flex: 2, // irrelevant
           region: "east",
           title: "Original Title",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var east = ct.down("panel[region=east]");
@@ -2853,12 +2853,12 @@ describe("Ext.layout.container.Border", function () {
           xtype: "panel",
           placeholder: Ext.widget({
             width: 70,
-            xtype: "component",
-          }),
+            xtype: "component"
+          })
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=east][placeholderFor]");
@@ -2882,11 +2882,11 @@ describe("Ext.layout.container.Border", function () {
           iconCls: "firstCls",
           region: "east",
           title: "Title",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=east][placeholderFor]");
@@ -2911,11 +2911,11 @@ describe("Ext.layout.container.Border", function () {
           iconCls: "firstCls",
           region: "east",
           title: "Original Title",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var east = ct.down("panel[region=east]");
@@ -2947,12 +2947,12 @@ describe("Ext.layout.container.Border", function () {
           xtype: "panel",
           placeholder: Ext.widget({
             width: 70,
-            xtype: "component",
-          }),
+            xtype: "component"
+          })
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=east][placeholderFor]");
@@ -2974,11 +2974,11 @@ describe("Ext.layout.container.Border", function () {
           flex: 2, // irrelevant
           region: "east",
           title: "Title",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=east][placeholderFor]");
@@ -2998,11 +2998,11 @@ describe("Ext.layout.container.Border", function () {
           flex: 2, // irrelevant
           region: "east",
           title: "Original Title",
-          xtype: "panel",
+          xtype: "panel"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var east = ct.down("panel[region=east]");
@@ -3030,12 +3030,12 @@ describe("Ext.layout.container.Border", function () {
           xtype: "panel",
           placeholder: Ext.widget({
             width: 70,
-            xtype: "component",
-          }),
+            xtype: "component"
+          })
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var placeholder = ct.down("[region=east][placeholderFor]");
@@ -3056,7 +3056,7 @@ describe("Ext.layout.container.Border", function () {
 
         ct.add({
           flex: 1.5,
-          region: "west",
+          region: "west"
         });
 
         var west = ct.down("[region=west]");
@@ -3072,7 +3072,7 @@ describe("Ext.layout.container.Border", function () {
 
         ct.add({
           flex: 1.5, // irrelevant
-          region: "center",
+          region: "center"
         });
 
         var center = ct.down("[region=center]");
@@ -3099,15 +3099,15 @@ describe("Ext.layout.container.Border", function () {
         ct.add(
           {
             height: 70,
-            region: "north",
+            region: "north"
           },
           {
-            region: "center",
+            region: "center"
           },
           {
             flex: 3,
-            region: "east",
-          },
+            region: "east"
+          }
         );
 
         var east = ct.down("[region=east]");
@@ -3135,7 +3135,7 @@ describe("Ext.layout.container.Border", function () {
 
         ct.add({
           flex: 1.5,
-          region: "west",
+          region: "west"
         });
 
         var west = ct.down("[region=west]");
@@ -3157,18 +3157,18 @@ describe("Ext.layout.container.Border", function () {
         var ct = createBorderLayout([
           {
             region: "west",
-            width: 30,
+            width: 30
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         ct.add({
           collapsed: true,
           height: 70,
           region: "south",
-          xtype: "panel",
+          xtype: "panel"
         });
 
         var west = ct.down("[region=west]");
@@ -3200,11 +3200,11 @@ describe("Ext.layout.container.Border", function () {
             width: 30,
             collapsible: true,
             collapsed: false,
-            animCollapse: false,
+            animCollapse: false
           },
           {
-            region: "center",
-          },
+            region: "center"
+          }
         ]);
 
         var west = ct.down("[region=west]");
@@ -3240,16 +3240,16 @@ describe("Ext.layout.container.Border", function () {
         {
           region: "west",
           split: true,
-          width: "10%",
+          width: "10%"
         },
         {
-          region: "center",
+          region: "center"
         },
         {
           region: "east",
           split: true,
-          width: "50%",
-        },
+          width: "50%"
+        }
       ]);
 
       var west = ct.down("[region=west][split]");
@@ -3306,11 +3306,11 @@ describe("Ext.layout.container.Border", function () {
               {
                 itemId: "inner",
                 region: "center",
-                xtype: "component",
-              },
-            ],
-          },
-        ],
+                xtype: "component"
+              }
+            ]
+          }
+        ]
       });
 
       var docked = ct.down("#docked");
@@ -3358,18 +3358,18 @@ describe("Ext.layout.container.Border", function () {
           anchor: "-10",
           layout: "border",
           height: 25,
-          x: 10,
+          x: 10
         },
         items: [
           {
             itemId: "border1",
-            y: 10,
+            y: 10
           },
           {
             itemId: "border2",
-            y: 45,
-          },
-        ],
+            y: 45
+          }
+        ]
       });
 
       var border1 = ct.down("#border1");
@@ -3402,13 +3402,13 @@ describe("Ext.layout.container.Border", function () {
         north: { x: 0, y: 0 },
         east: { x: 200, y: 100 },
         south: { x: 0, y: 200 },
-        west: { x: 0, y: 100 },
+        west: { x: 0, y: 100 }
       },
       floatOffsets = {
         north: { x: 0, y: 27 },
         east: { x: -27, y: 0 },
         south: { x: 0, y: -27 },
-        west: { x: 27, y: 0 },
+        west: { x: 27, y: 0 }
       },
       northCollapsedPositions = Ext.clone(positions),
       panel,
@@ -3430,7 +3430,7 @@ describe("Ext.layout.container.Border", function () {
             title: "north",
             collapsible: true,
             height: 100,
-            animCollapse: 30,
+            animCollapse: 30
           },
           {
             id: "east",
@@ -3438,7 +3438,7 @@ describe("Ext.layout.container.Border", function () {
             title: "east",
             collapsible: true,
             width: 100,
-            animCollapse: 30,
+            animCollapse: 30
           },
           {
             id: "south",
@@ -3446,7 +3446,7 @@ describe("Ext.layout.container.Border", function () {
             title: "south",
             collapsible: true,
             height: 100,
-            animCollapse: 30,
+            animCollapse: 30
           },
           {
             id: "west",
@@ -3454,20 +3454,20 @@ describe("Ext.layout.container.Border", function () {
             title: "west",
             collapsible: true,
             width: 100,
-            animCollapse: 30,
+            animCollapse: 30
           },
           {
             id: "center",
-            region: "center",
-          },
-        ],
+            region: "center"
+          }
+        ]
       });
       regions = {
         north: Ext.getCmp("north"),
         east: Ext.getCmp("east"),
         south: Ext.getCmp("south"),
         west: Ext.getCmp("west"),
-        center: Ext.getCmp("center"),
+        center: Ext.getCmp("center")
       };
     });
 
@@ -3498,7 +3498,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
@@ -3583,7 +3583,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
@@ -3671,17 +3671,17 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
           expect(panel2.el.isVisible()).toBe(true);
           pos2 = panel2.getPosition(true);
           expect(pos2[0]).toBeApprox(
-            pos[panel2.id].x + floatOffsets[panel2.id].x,
+            pos[panel2.id].x + floatOffsets[panel2.id].x
           );
           expect(pos2[1]).toBeApprox(
-            pos[panel2.id].y + floatOffsets[panel2.id].y,
+            pos[panel2.id].y + floatOffsets[panel2.id].y
           );
           expect(center.getWidth()).toBeApprox(centerWidth);
           expect(center.getHeight()).toBeApprox(centerHeight);
@@ -3771,7 +3771,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
@@ -3856,7 +3856,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
@@ -3945,7 +3945,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
@@ -4037,7 +4037,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
@@ -4047,10 +4047,10 @@ describe("Ext.layout.container.Border", function () {
           expect(pos1[0]).toBeApprox(pos[panel1.id].x);
           expect(pos1[1]).toBeApprox(pos[panel1.id].y);
           expect(pos2[0]).toBeApprox(
-            pos[panel2.id].x + floatOffsets[panel2.id].x,
+            pos[panel2.id].x + floatOffsets[panel2.id].x
           );
           expect(pos2[1]).toBeApprox(
-            pos[panel2.id].y + floatOffsets[panel2.id].y,
+            pos[panel2.id].y + floatOffsets[panel2.id].y
           );
           expect(center.getWidth()).toBeApprox(centerWidth);
           expect(center.getHeight()).toBeApprox(centerHeight);
@@ -4143,7 +4143,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
@@ -4230,17 +4230,17 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
           expect(panel2.el.isVisible()).toBe(false);
           pos1 = panel1.getPosition(true);
           expect(pos1[0]).toBeApprox(
-            positions[panel1.id].x + floatOffsets[panel1.id].x,
+            positions[panel1.id].x + floatOffsets[panel1.id].x
           );
           expect(pos1[1]).toBeApprox(
-            positions[panel1.id].y + floatOffsets[panel1.id].y,
+            positions[panel1.id].y + floatOffsets[panel1.id].y
           );
           expect(center.getWidth()).toBeApprox(centerWidth);
           expect(center.getHeight()).toBeApprox(centerHeight);
@@ -4323,17 +4323,17 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
           expect(panel2.el.isVisible()).toBe(true);
           pos1 = panel1.getPosition(true);
           expect(pos1[0]).toBeApprox(
-            pos[panel1.id].x + floatOffsets[panel1.id].x,
+            pos[panel1.id].x + floatOffsets[panel1.id].x
           );
           expect(pos1[1]).toBeApprox(
-            pos[panel1.id].y + floatOffsets[panel1.id].y,
+            pos[panel1.id].y + floatOffsets[panel1.id].y
           );
           expect(center.getWidth()).toBeApprox(centerWidth);
           expect(center.getHeight()).toBeApprox(centerHeight);
@@ -4420,7 +4420,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
@@ -4428,16 +4428,16 @@ describe("Ext.layout.container.Border", function () {
           pos1 = panel1.getPosition(true);
           pos2 = panel2.getPosition(true);
           expect(pos1[0]).toBeApprox(
-            pos[panel1.id].x + floatOffsets[panel1.id].x,
+            pos[panel1.id].x + floatOffsets[panel1.id].x
           );
           expect(pos1[1]).toBeApprox(
-            pos[panel1.id].y + floatOffsets[panel1.id].y,
+            pos[panel1.id].y + floatOffsets[panel1.id].y
           );
           expect(pos2[0]).toBeApprox(
-            pos[panel2.id].x + floatOffsets[panel2.id].x,
+            pos[panel2.id].x + floatOffsets[panel2.id].x
           );
           expect(pos2[1]).toBeApprox(
-            pos[panel2.id].y + floatOffsets[panel2.id].y,
+            pos[panel2.id].y + floatOffsets[panel2.id].y
           );
           expect(center.getWidth()).toBeApprox(centerWidth);
           expect(center.getHeight()).toBeApprox(centerHeight);
@@ -4530,17 +4530,17 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(true);
           expect(panel2.el.isVisible()).toBe(false);
           pos1 = panel1.getPosition(true);
           expect(pos1[0]).toBeApprox(
-            pos[panel1.id].x + floatOffsets[panel1.id].x,
+            pos[panel1.id].x + floatOffsets[panel1.id].x
           );
           expect(pos1[1]).toBeApprox(
-            pos[panel1.id].y + floatOffsets[panel1.id].y,
+            pos[panel1.id].y + floatOffsets[panel1.id].y
           );
           expect(center.getWidth()).toBeApprox(centerWidth);
           expect(center.getHeight()).toBeApprox(centerHeight);
@@ -4630,7 +4630,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
@@ -4726,7 +4726,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
@@ -4825,17 +4825,17 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
           expect(panel2.el.isVisible()).toBe(true);
           pos2 = panel2.getPosition(true);
           expect(pos2[0]).toBeApprox(
-            pos[panel2.id].x + floatOffsets[panel2.id].x,
+            pos[panel2.id].x + floatOffsets[panel2.id].x
           );
           expect(pos2[1]).toBeApprox(
-            pos[panel2.id].y + floatOffsets[panel2.id].y,
+            pos[panel2.id].y + floatOffsets[panel2.id].y
           );
           expect(center.getWidth()).toBeApprox(centerWidth);
           expect(center.getHeight()).toBeApprox(centerHeight);
@@ -4930,7 +4930,7 @@ describe("Ext.layout.container.Border", function () {
             return anim === 2;
           },
           "animation never completed",
-          500,
+          500
         );
         runs(function () {
           expect(panel1.el.isVisible()).toBe(false);
@@ -5019,10 +5019,10 @@ describe("Ext.layout.container.Border", function () {
           // fractional pixel values.  This shouldn't be needed once
           // EXTJSIV-6954 is fixed.
           expect(Math.round(parseFloat(panel.el.getStyle("left")))).toBeApprox(
-            positions[panel.id].x,
+            positions[panel.id].x
           );
           expect(Math.round(parseFloat(panel.el.getStyle("top")))).toBeApprox(
-            positions[panel.id].y,
+            positions[panel.id].y
           );
           expect(center.getWidth()).toBeApprox(100);
           expect(center.getHeight()).toBeApprox(100);
@@ -5107,15 +5107,15 @@ describe("Ext.layout.container.Border", function () {
               layout: "fit",
               items: {
                 xtype: "component",
-                itemId: "comp",
-              },
+                itemId: "comp"
+              }
             },
-            regionCfg,
+            regionCfg
           ),
           {
-            region: "center",
-          },
-        ],
+            region: "center"
+          }
+        ]
       });
       region = ct.down("#" + regionName);
       comp = ct.down("#comp");
@@ -5127,7 +5127,7 @@ describe("Ext.layout.container.Border", function () {
 
         beforeEach(function () {
           makeWithRegion("north", {
-            height: regionHeight,
+            height: regionHeight
           });
         });
 
@@ -5165,7 +5165,7 @@ describe("Ext.layout.container.Border", function () {
 
         beforeEach(function () {
           makeWithRegion("south", {
-            height: regionHeight,
+            height: regionHeight
           });
         });
 
@@ -5203,7 +5203,7 @@ describe("Ext.layout.container.Border", function () {
 
         beforeEach(function () {
           makeWithRegion("west", {
-            width: regionWidth,
+            width: regionWidth
           });
         });
 
@@ -5241,7 +5241,7 @@ describe("Ext.layout.container.Border", function () {
 
         beforeEach(function () {
           makeWithRegion("east", {
-            width: regionWidth,
+            width: regionWidth
           });
         });
 
@@ -5279,7 +5279,7 @@ describe("Ext.layout.container.Border", function () {
       describe("north", function () {
         beforeEach(function () {
           makeWithRegion("north", {
-            height: 100,
+            height: 100
           });
         });
 
@@ -5326,7 +5326,7 @@ describe("Ext.layout.container.Border", function () {
       describe("south", function () {
         beforeEach(function () {
           makeWithRegion("south", {
-            height: 100,
+            height: 100
           });
         });
 
@@ -5373,7 +5373,7 @@ describe("Ext.layout.container.Border", function () {
       describe("west", function () {
         beforeEach(function () {
           makeWithRegion("west", {
-            width: 100,
+            width: 100
           });
         });
 
@@ -5420,7 +5420,7 @@ describe("Ext.layout.container.Border", function () {
       describe("east", function () {
         beforeEach(function () {
           makeWithRegion("east", {
-            width: 100,
+            width: 100
           });
         });
 
@@ -5471,11 +5471,11 @@ describe("Ext.layout.container.Border", function () {
       createBorderLayout([
         {
           region: "north",
-          title: "North",
+          title: "North"
         },
         {
-          region: "center",
-        },
+          region: "center"
+        }
       ]);
 
       var added = ct.add({
@@ -5485,7 +5485,7 @@ describe("Ext.layout.container.Border", function () {
         collapsible: true,
         collapsed: true,
         height: 100,
-        animCollapse: false,
+        animCollapse: false
       });
       added.expand();
       expect(added.getHeight()).toBe(100);
@@ -5519,8 +5519,8 @@ describe("Ext.layout.container.Border", function () {
               animCollapse: animate,
               listeners: {
                 collapse: collapseSpy,
-                expand: expandSpy,
-              },
+                expand: expandSpy
+              }
             },
             {
               xtype: "panel",
@@ -5528,10 +5528,10 @@ describe("Ext.layout.container.Border", function () {
               items: [
                 {
                   xtype: "button",
-                  text: "bar",
-                },
-              ],
-            },
+                  text: "bar"
+                }
+              ]
+            }
           ]);
 
           panel = ct.down("panel[testRegion]");

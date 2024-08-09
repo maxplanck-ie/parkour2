@@ -106,6 +106,6 @@ Ext.define("Ext.app.bind.LinkStub", {
         // whatever value we might need first.
         this.scheduler.sortItem(binding);
       }
-    },
-  },
+    }
+  }
 });

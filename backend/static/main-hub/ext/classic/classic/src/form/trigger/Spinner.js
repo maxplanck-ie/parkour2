@@ -71,7 +71,7 @@ Ext.define("Ext.form.trigger.Spinner", {
       downDisabledCls: me.downEnabled ? "" : me.spinnerDownCls + "-disabled",
       spinnerCls: me.spinnerCls,
       spinnerUpCls: me.spinnerUpCls,
-      spinnerDownCls: me.spinnerDownCls,
+      spinnerDownCls: me.spinnerDownCls
     };
   },
 
@@ -121,7 +121,7 @@ Ext.define("Ext.form.trigger.Spinner", {
    */
   setUpEnabled: function (enabled) {
     this.upEl[enabled ? "removeCls" : "addCls"](
-      this.spinnerUpCls + "-disabled",
+      this.spinnerUpCls + "-disabled"
     );
   },
 
@@ -130,7 +130,7 @@ Ext.define("Ext.form.trigger.Spinner", {
    */
   setDownEnabled: function (enabled) {
     this.downEl[enabled ? "removeCls" : "addCls"](
-      this.spinnerDownCls + "-disabled",
+      this.spinnerDownCls + "-disabled"
     );
-  },
+  }
 });

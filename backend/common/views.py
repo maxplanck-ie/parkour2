@@ -138,6 +138,14 @@ def protected_media(request, *args, **kwargs):
 
     if request.user.is_staff:
         allow_download = True
+    elif request.user.is_pi:
+        # Master/ PI accounts should be able to access attachments
+        allow_download = (
+            request.user.pi
+            == Request.objects.filter(
+                Q(deep_seq_request=url_path) | Q(files__file=url_path), archived=False
+            )[0].user.pi
+        )
     else:
         allow_download = Request.objects.filter(
             Q(deep_seq_request=url_path) | Q(files__file=url_path),
@@ -160,9 +168,9 @@ def protected_media(request, *args, **kwargs):
         # Set file name
         file_name = basename(url_path)
         # Needed for file names that include special, non ascii, characters
-        response[
-            "Content-Disposition"
-        ] = f"attachment; filename*=utf-8''{quote(file_name)}"
+        response["Content-Disposition"] = (
+            f"attachment; filename*=utf-8''{quote(file_name)}"
+        )
 
         return response
 
@@ -281,3 +289,24 @@ class DutyViewSet(viewsets.ModelViewSet):
     #         )
     #     duty_instance.delete()
     #     return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)
+
+
+@login_required
+def user_details(request):
+    user = request.user
+    data = {
+        "DEBUG": settings.DEBUG,
+        "USER": json.dumps(
+            {
+                "id": user.pk,
+                "name": user.full_name,
+                "is_staff": user.is_staff,
+                "paperless_approval": user.paperless_approval,
+            }
+        ),
+    }
+    return JsonResponse(data)
+
+
+def danke(request):
+    return render(request, "danke.html")

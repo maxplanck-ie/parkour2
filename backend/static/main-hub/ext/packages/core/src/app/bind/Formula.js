@@ -160,7 +160,7 @@ Ext.define("Ext.app.bind.Formula", {
 
       if (!cache) {
         cache = this.formulaCache = new Ext.util.LruCache({
-          maxSize: 20,
+          maxSize: 20
         });
       }
 
@@ -172,7 +172,7 @@ Ext.define("Ext.app.bind.Formula", {
         cache.add(name, parser);
       }
       return parser;
-    },
+    }
   },
 
   isFormula: true,
@@ -307,7 +307,7 @@ Ext.define("Ext.app.bind.Formula", {
   parseFormula: function (formula) {
     var str = formula.toString(),
       expressions = {
-        $literal: true,
+        $literal: true
       },
       match,
       getterProp,
@@ -374,6 +374,6 @@ Ext.define("Ext.app.bind.Formula", {
 
       // Schedulable#sort === emptyFn
       //me.callParent();
-    },
-  },
+    }
+  }
 });

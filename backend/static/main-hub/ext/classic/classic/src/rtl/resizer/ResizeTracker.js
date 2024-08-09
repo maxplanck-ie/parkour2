@@ -9,10 +9,10 @@ Ext.define("Ext.rtl.resizer.ResizeTracker", {
     northeast: "northwest",
     southeast: "southwest",
     southwest: "southeast",
-    northwest: "northeast",
+    northwest: "northeast"
   },
 
   convertRegionName: function (name) {
     return Ext.rootInheritedState.rtl ? this._rtlRegionNames[name] : name;
-  },
+  }
 });

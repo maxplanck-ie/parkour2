@@ -66,7 +66,7 @@ Ext.define("Ext.tip.QuickTip", {
     anchor: "anchor",
     showDelay: "qshowDelay",
     hideAction: "hideAction",
-    anchorTarget: "anchorTarget",
+    anchorTarget: "anchorTarget"
   },
 
   isQuickTip: true,
@@ -274,7 +274,7 @@ Ext.define("Ext.tip.QuickTip", {
         align: currentTarget.getAttribute(ns + cfg.align),
         showDelay: currentTarget.getAttribute(ns + cfg.showDelay),
         hideAction: currentTarget.getAttribute(ns + cfg.hideAction),
-        alignTarget: currentTarget.getAttribute(ns + cfg.anchorTarget),
+        alignTarget: currentTarget.getAttribute(ns + cfg.anchorTarget)
       };
 
       // If we were not configured with an anchor, allow it to be set by the target's properties
@@ -464,5 +464,5 @@ Ext.define("Ext.tip.QuickTip", {
   hide: function () {
     this.activeTarget = null;
     this.callParent();
-  },
+  }
 });

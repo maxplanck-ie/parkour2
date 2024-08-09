@@ -43,7 +43,7 @@ Ext.define("Ext.data.NodeStore", {
      * @cfg {Boolean} folderSort
      * Set to `true` to automatically prepend a leaf sorter.
      */
-    folderSort: false,
+    folderSort: false
   },
 
   implicitModel: "Ext.data.TreeModel",
@@ -61,7 +61,7 @@ Ext.define("Ext.data.NodeStore", {
     data.setTrackGroups(false);
     if (folderSort) {
       data.setGrouper({
-        groupFn: this.folderSortFn,
+        groupFn: this.folderSortFn
       });
     } else {
       data.setGrouper(null);
@@ -97,7 +97,7 @@ Ext.define("Ext.data.NodeStore", {
         me,
         record,
         Ext.data.Model.COMMIT,
-        modifiedFieldNames,
+        modifiedFieldNames
       );
     }
   },
@@ -151,7 +151,7 @@ Ext.define("Ext.data.NodeStore", {
         append: "onNodeAppend",
         insert: "onNodeInsert",
         remove: "onNodeRemove",
-        scope: me,
+        scope: me
       });
       oldNode.unjoin(me);
     }
@@ -161,7 +161,7 @@ Ext.define("Ext.data.NodeStore", {
         scope: me,
         append: "onNodeAppend",
         insert: "onNodeInsert",
-        remove: "onNodeRemove",
+        remove: "onNodeRemove"
       });
 
       node.join(me);
@@ -266,6 +266,6 @@ Ext.define("Ext.data.NodeStore", {
       }
 
       return added;
-    },
-  },
+    }
+  }
 });

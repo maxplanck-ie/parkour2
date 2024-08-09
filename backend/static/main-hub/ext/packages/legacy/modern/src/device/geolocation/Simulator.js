@@ -21,8 +21,8 @@ Ext.define("Ext.device.geolocation.Simulator", {
           if (config.failure) {
             config.failure.call(config.scope || this);
           }
-        },
-      },
+        }
+      }
     });
 
     this.geolocation = Ext.create("Ext.util.Geolocation", config);
@@ -46,8 +46,8 @@ Ext.define("Ext.device.geolocation.Simulator", {
           if (config.failure) {
             config.failure.call(config.scope || this);
           }
-        },
-      },
+        }
+      }
     });
 
     this.geolocation = Ext.create("Ext.util.Geolocation", config);
@@ -61,5 +61,5 @@ Ext.define("Ext.device.geolocation.Simulator", {
     }
 
     this.geolocation = null;
-  },
+  }
 });

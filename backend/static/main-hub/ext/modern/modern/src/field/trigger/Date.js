@@ -7,5 +7,5 @@ Ext.define("Ext.field.trigger.Date", {
   alias: "trigger.date",
   classCls: Ext.baseCSSPrefix + "datetrigger",
   handler: "onExpandTap",
-  scope: "this",
+  scope: "this"
 });

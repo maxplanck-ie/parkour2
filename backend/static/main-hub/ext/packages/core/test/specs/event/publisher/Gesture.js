@@ -4,7 +4,7 @@ describe("Ext.event.publisher.Gesture", function () {
 
   beforeEach(function () {
     targetEl = Ext.getBody().createChild({
-      id: "target",
+      id: "target"
     });
   });
 
@@ -62,7 +62,7 @@ describe("Ext.event.publisher.Gesture", function () {
           helper.touchEnd(Ext.supports.TouchEvents ? targetEl : document.body, {
             id: 1,
             x: 15,
-            y: 15,
+            y: 15
           });
         });
 
@@ -71,7 +71,7 @@ describe("Ext.event.publisher.Gesture", function () {
         runs(function () {
           expectCollected(true);
         });
-      },
+      }
     );
   });
 
@@ -155,7 +155,7 @@ describe("Ext.event.publisher.Gesture", function () {
 
     beforeEach(function () {
       childEl = targetEl.createChild({
-        id: "child",
+        id: "child"
       });
     });
 
@@ -174,7 +174,7 @@ describe("Ext.event.publisher.Gesture", function () {
           drag: handler,
           touchmove: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -208,7 +208,7 @@ describe("Ext.event.publisher.Gesture", function () {
         "child-dragend",
 
         "target-touchend",
-        "target-dragend",
+        "target-dragend"
       ]);
     });
 
@@ -230,7 +230,7 @@ describe("Ext.event.publisher.Gesture", function () {
           touchmove: handler,
           swipestart: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -266,7 +266,7 @@ describe("Ext.event.publisher.Gesture", function () {
 
         "target-touchend",
         "target-dragend",
-        "target-swipe",
+        "target-swipe"
       ]);
     });
 
@@ -288,7 +288,7 @@ describe("Ext.event.publisher.Gesture", function () {
           touchmove: handler,
           swipestart: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -324,7 +324,7 @@ describe("Ext.event.publisher.Gesture", function () {
 
         "target-touchend",
         "target-dragend",
-        "target-swipe",
+        "target-swipe"
       ]);
     });
   });
@@ -334,7 +334,7 @@ describe("Ext.event.publisher.Gesture", function () {
 
     beforeEach(function () {
       childEl = targetEl.createChild({
-        id: "child",
+        id: "child"
       });
     });
 
@@ -357,7 +357,7 @@ describe("Ext.event.publisher.Gesture", function () {
           touchmove: handler,
           swipestart: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -395,7 +395,7 @@ describe("Ext.event.publisher.Gesture", function () {
 
         "target-touchend",
         "target-dragend",
-        "target-swipe",
+        "target-swipe"
       ]);
     });
 
@@ -419,7 +419,7 @@ describe("Ext.event.publisher.Gesture", function () {
           touchmove: handler,
           swipestart: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -456,7 +456,7 @@ describe("Ext.event.publisher.Gesture", function () {
         "child-dragend",
 
         "target-touchend",
-        "target-dragend",
+        "target-dragend"
       ]);
     });
 
@@ -480,7 +480,7 @@ describe("Ext.event.publisher.Gesture", function () {
           touchmove: handler,
           swipestart: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -518,7 +518,7 @@ describe("Ext.event.publisher.Gesture", function () {
         "child-swipe",
 
         "target-touchend",
-        "target-swipe",
+        "target-swipe"
       ]);
     });
 
@@ -542,7 +542,7 @@ describe("Ext.event.publisher.Gesture", function () {
           touchmove: handler,
           swipestart: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -567,7 +567,7 @@ describe("Ext.event.publisher.Gesture", function () {
         "target-touchmove",
 
         "child-touchend",
-        "target-touchend",
+        "target-touchend"
       ]);
     });
 
@@ -592,7 +592,7 @@ describe("Ext.event.publisher.Gesture", function () {
           touchmove: handler,
           swipestart: handler,
           dragstart: handler,
-          touchstart: handler,
+          touchstart: handler
         };
 
       targetEl.on(listeners);
@@ -632,7 +632,7 @@ describe("Ext.event.publisher.Gesture", function () {
 
         "child-touchend",
 
-        "target-touchend",
+        "target-touchend"
       ]);
     });
   });

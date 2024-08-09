@@ -22,7 +22,7 @@ Ext.define("Ext.fx.animation.Wipe", {
      * @cfg {Boolean} out True if you want to make this animation wipe out, instead of slide in.
      * @accessor
      */
-    out: false,
+    out: false
   },
 
   refresh: function () {
@@ -121,5 +121,5 @@ Ext.define("Ext.fx.animation.Wipe", {
     to.set("mask-position-y", maskToY);
 
     // me.setEasing(out ? 'ease-in' : 'ease-out');
-  },
+  }
 });

@@ -4,6 +4,6 @@ Ext.define("Ext.theme.cupertino.dataview.NestedList", {
   config: {
     itemHeight: 43,
     useTitleAsBackText: true,
-    updateTitleText: false,
-  },
+    updateTitleText: false
+  }
 });

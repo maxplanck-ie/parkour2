@@ -66,23 +66,23 @@ describe("grid-general-window", function () {
             data: [
               [1, "Lorem"],
               [2, "Ipsum"],
-              [3, "Dolor"],
+              [3, "Dolor"]
             ],
-            fields: ["row", "lorem"],
+            fields: ["row", "lorem"]
           }),
           columns: [
             {
               text: "Row",
               dataIndex: "row",
               locked: true,
-              width: 50,
+              width: 50
             },
             {
               text: "Lorem",
-              dataIndex: "lorem",
-            },
-          ],
-        },
+              dataIndex: "lorem"
+            }
+          ]
+        }
       });
       win.show();
       grid = win.child("grid");
@@ -100,7 +100,7 @@ describe("grid-general-window", function () {
         jasmine.fireKeyEvent(
           cell00.getCell(true),
           "keydown",
-          Ext.event.Event.ESC,
+          Ext.event.Event.ESC
         );
 
         // ESC should have bubbled to the window and destroyed it

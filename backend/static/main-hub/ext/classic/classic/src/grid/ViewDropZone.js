@@ -56,5 +56,5 @@ Ext.define("Ext.grid.ViewDropZone", {
 
     // Focus the first dropped node.
     view.getNavigationModel().setPosition(data.records[0]);
-  },
+  }
 });

@@ -24,7 +24,7 @@ Ext.define("Ext.dd.DDProxy", {
      * The default drag frame div id
      * @static
      */
-    dragElId: "ygddfdiv",
+    dragElId: "ygddfdiv"
   },
 
   /**
@@ -132,7 +132,7 @@ Ext.define("Ext.dd.DDProxy", {
     if (me.centerFrame) {
       me.setDelta(
         Math.round(parseInt(s.width, 10) / 2),
-        Math.round(parseInt(s.height, 10) / 2),
+        Math.round(parseInt(s.height, 10) / 2)
       );
     }
 
@@ -201,5 +201,5 @@ Ext.define("Ext.dd.DDProxy", {
 
   toString: function () {
     return "DDProxy " + this.id;
-  },
+  }
 });

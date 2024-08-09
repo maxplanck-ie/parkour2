@@ -38,7 +38,7 @@ Ext.define("Ext.util.Fly", {
 
       instance.reset.apply(instance, arguments);
       return instance;
-    },
+    }
   },
 
   /**
@@ -68,5 +68,5 @@ Ext.define("Ext.util.Fly", {
    * @chainable
    * @return {Ext.util.Fly} this
    */
-  reset: Ext.emptyFn,
+  reset: Ext.emptyFn
 });

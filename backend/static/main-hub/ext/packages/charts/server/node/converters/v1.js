@@ -2,14 +2,14 @@ var validator = require("../validator.js");
 
 var CONTENT_TYPES = {
   "image/jpeg": "jpeg",
-  "image/png": "png",
+  "image/png": "png"
 };
 
 var VALID_POST_DATA = {
   svg: "string",
   type: "string",
   width: "string",
-  height: "string",
+  height: "string"
 };
 
 function verifyImageData(data) {
@@ -41,5 +41,5 @@ function convert(config) {
 }
 
 module.exports = {
-  convert: convert,
+  convert: convert
 };

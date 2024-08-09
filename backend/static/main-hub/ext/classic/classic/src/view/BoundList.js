@@ -8,7 +8,7 @@ Ext.define("Ext.view.BoundList", {
   requires: [
     "Ext.view.BoundListKeyNav",
     "Ext.layout.component.BoundList",
-    "Ext.toolbar.Paging",
+    "Ext.toolbar.Paging"
   ],
 
   mixins: ["Ext.mixin.Queryable"],
@@ -72,8 +72,8 @@ Ext.define("Ext.view.BoundList", {
     "}",
     "%}",
     {
-      disableFormats: true,
-    },
+      disableFormats: true
+    }
   ],
 
   /**
@@ -169,7 +169,7 @@ Ext.define("Ext.view.BoundList", {
         '">' +
         me.getInnerTpl(me.displayField) +
         "</li>",
-      "</tpl>",
+      "</tpl>"
     );
   },
 
@@ -206,7 +206,7 @@ Ext.define("Ext.view.BoundList", {
       store: me.dataSource,
       border: false,
       ownerCt: me,
-      ownerLayout: me.getComponentLayout(),
+      ownerLayout: me.getComponentLayout()
     });
   },
 
@@ -436,6 +436,6 @@ Ext.define("Ext.view.BoundList", {
       if (toolbar) {
         toolbar.finishRender();
       }
-    },
-  },
+    }
+  }
 });

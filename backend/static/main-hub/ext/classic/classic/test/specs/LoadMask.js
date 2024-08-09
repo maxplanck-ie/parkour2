@@ -12,10 +12,10 @@ describe("Ext.LoadMask", function () {
         {
           width: 100,
           height: 100,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        targetCfg,
-      ),
+        targetCfg
+      )
     );
   }
 
@@ -42,7 +42,7 @@ describe("Ext.LoadMask", function () {
 
       it("should accept a custom message", function () {
         createMask({
-          msg: "Foo",
+          msg: "Foo"
         }).show();
         expect(mask.msgTextEl.dom.innerHTML).toEqual("Foo");
       });
@@ -56,7 +56,7 @@ describe("Ext.LoadMask", function () {
 
       it("should accept a custom class", function () {
         createMask({
-          msgCls: "foo",
+          msgCls: "foo"
         }).show();
         expect(mask.msgEl.hasCls("foo")).toBe(true);
       });
@@ -70,7 +70,7 @@ describe("Ext.LoadMask", function () {
 
       it("should accept a custom class", function () {
         createMask({
-          msgWrapCls: "foo",
+          msgWrapCls: "foo"
         }).show();
         expect(mask.msgWrapEl.hasCls("foo")).toBe(true);
       });
@@ -80,7 +80,7 @@ describe("Ext.LoadMask", function () {
         spyOn(Ext.log, "warn");
 
         createMask({
-          maskCls: "foo",
+          maskCls: "foo"
         }).show();
 
         expect(mask.msgWrapEl.hasCls("foo")).toBe(true);
@@ -92,7 +92,7 @@ describe("Ext.LoadMask", function () {
 
         createMask({
           maskCls: "foo",
-          msgWrapCls: "bar",
+          msgWrapCls: "bar"
         }).show();
 
         expect(mask.msgWrapEl.hasCls("bar")).toBe(true);
@@ -108,14 +108,14 @@ describe("Ext.LoadMask", function () {
 
       it("should respect the useMsg: false", function () {
         createMask({
-          useMsg: false,
+          useMsg: false
         }).show();
         expect(mask.msgWrapEl.isVisible()).toBe(false);
       });
 
       it("should should still show the mask even when useMsg: false", function () {
         createMask({
-          useMsg: false,
+          useMsg: false
         }).show();
         expect(mask.el.isVisible()).toBe(true);
       });
@@ -132,15 +132,15 @@ describe("Ext.LoadMask", function () {
       it("should size to the targetEl when useTargetEl: true", function () {
         createMask(
           {
-            useTargetEl: true,
+            useTargetEl: true
           },
           {
             xtype: "panel",
             width: 100,
             height: 100,
             renderTo: Ext.getBody(),
-            title: "Title",
-          },
+            title: "Title"
+          }
         ).show();
 
         var size = mask.el.getSize(),
@@ -156,12 +156,12 @@ describe("Ext.LoadMask", function () {
     describe("with floating", function () {
       it("should have a higher z-index than the floater when used directly on a floater", function () {
         createMask(null, {
-          floating: true,
+          floating: true
         });
         target.show();
         mask.show();
         expect(mask.getEl().getZIndex()).toBeGreaterThan(
-          target.getEl().getZIndex(),
+          target.getEl().getZIndex()
         );
       });
 
@@ -171,15 +171,15 @@ describe("Ext.LoadMask", function () {
           width: 100,
           height: 100,
           items: {
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
         ct.show();
         target = ct.items.first();
         createMask();
         mask.show();
         expect(mask.getEl().getZIndex()).toBeGreaterThan(
-          ct.getEl().getZIndex(),
+          ct.getEl().getZIndex()
         );
         ct.destroy();
       });
@@ -199,19 +199,19 @@ describe("Ext.LoadMask", function () {
                   xtype: "container",
                   items: {
                     xtype: "component",
-                    itemId: "foo",
-                  },
-                },
-              },
-            },
-          },
+                    itemId: "foo"
+                  }
+                }
+              }
+            }
+          }
         });
         ct.show();
         target = ct.down("#foo");
         createMask();
         mask.show();
         expect(mask.getEl().getZIndex()).toBeGreaterThan(
-          ct.getEl().getZIndex(),
+          ct.getEl().getZIndex()
         );
         ct.destroy();
       });
@@ -227,7 +227,7 @@ describe("Ext.LoadMask", function () {
             width: 100,
             height: 100,
             x: 100,
-            y: 100,
+            y: 100
           });
           target.show();
         });
@@ -266,15 +266,15 @@ describe("Ext.LoadMask", function () {
         it("should update the mask size to the targetEl when the component resizes", function () {
           createMask(
             {
-              useTargetEl: true,
+              useTargetEl: true
             },
             {
               xtype: "panel",
               renderTo: Ext.getBody(),
               width: 100,
               height: 100,
-              title: "Title",
-            },
+              title: "Title"
+            }
           ).show();
           target.setSize(150, 200);
 
@@ -291,7 +291,7 @@ describe("Ext.LoadMask", function () {
           createMask(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           }).show();
           target.hide();
           expect(mask.isVisible()).toBe(false);
@@ -301,7 +301,7 @@ describe("Ext.LoadMask", function () {
           createMask(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           }).show();
           target.hide();
           target.show();
@@ -312,7 +312,7 @@ describe("Ext.LoadMask", function () {
           createMask(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           }).show();
           target.hide();
           mask.hide();
@@ -336,20 +336,20 @@ describe("Ext.LoadMask", function () {
                 asynchronousLoad: false,
                 proxy: {
                   type: "ajax",
-                  url: "foo",
-                },
+                  url: "foo"
+                }
               },
               loadMask: true,
               columns: [
                 {
                   text: "Columns one",
-                  width: 200,
+                  width: 200
                 },
                 {
                   text: "Column two",
-                  flex: 1,
-                },
-              ],
+                  flex: 1
+                }
+              ]
             });
 
           store = panel.store;
@@ -385,7 +385,7 @@ describe("Ext.LoadMask", function () {
             animCollapse: false,
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
         });
 
@@ -426,9 +426,9 @@ describe("Ext.LoadMask", function () {
             items: [
               {
                 xtype: "button",
-                text: "foo",
-              },
-            ],
+                text: "foo"
+              }
+            ]
           });
 
           createMask();
@@ -454,31 +454,31 @@ describe("Ext.LoadMask", function () {
             store: {
               proxy: {
                 type: "ajax",
-                url: "foo",
-              },
+                url: "foo"
+              }
             },
             loadMask: true,
             columns: [
               {
                 text: "Columns one",
                 width: 200,
-                locked: true,
+                locked: true
               },
               {
                 text: "Column two",
-                flex: 1,
-              },
-            ],
+                flex: 1
+              }
+            ]
           });
           panelStore = panel.store;
 
           jasmine.fireMouseEvent(
             panel.getVisibleColumnManager().getColumns()[0].el,
-            "mouseover",
+            "mouseover"
           );
           jasmine.fireMouseEvent(
             panel.getVisibleColumnManager().getColumns()[0].triggerEl,
-            "click",
+            "click"
           );
           menu = panel.down("menu");
           menuItem = menu.child(":first");
@@ -545,7 +545,7 @@ describe("Ext.LoadMask", function () {
           it("should not restore focus if mask el is not focused", function () {
             barBtn = new Ext.button.Button({
               renderTo: Ext.getBody(),
-              text: "bar",
+              text: "bar"
             });
 
             runs(function () {
@@ -574,7 +574,7 @@ describe("Ext.LoadMask", function () {
           target = new Ext.Component({
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
 
           ct2 = new Ext.panel.Panel({
@@ -582,7 +582,7 @@ describe("Ext.LoadMask", function () {
             title: "Title2",
             collapsible: true,
             layout: "fit",
-            items: target,
+            items: target
           });
 
           ct1 = new Ext.panel.Panel({
@@ -596,7 +596,7 @@ describe("Ext.LoadMask", function () {
             layout: "fit",
             items: ct2,
             x: floating ? 100 : undefined,
-            y: floating ? 100 : undefined,
+            y: floating ? 100 : undefined
           });
           ct1.show();
         };
@@ -636,7 +636,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct1.setSize(250, 300);
@@ -654,7 +654,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct1.hide();
@@ -665,7 +665,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct2.hide();
@@ -676,7 +676,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct1.hide();
@@ -688,7 +688,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct2.hide();
@@ -700,7 +700,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct1.hide();
@@ -713,7 +713,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct2.hide();
@@ -728,7 +728,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct1.collapse();
@@ -739,7 +739,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct2.collapse();
@@ -750,7 +750,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct1.collapse();
@@ -762,7 +762,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct2.collapse();
@@ -774,7 +774,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct1.collapse();
@@ -787,7 +787,7 @@ describe("Ext.LoadMask", function () {
           makeCt(null, {
             getMaskTarget: function () {
               return null;
-            },
+            }
           });
           createMask().show();
           ct2.collapse();
@@ -808,7 +808,7 @@ describe("Ext.LoadMask", function () {
 
     it("should have a shim if configured with shim: true", function () {
       createMask({
-        shim: true,
+        shim: true
       }).show();
 
       expect(mask.el.shim instanceof Ext.dom.Shim).toBe(true);
@@ -828,7 +828,7 @@ describe("Ext.LoadMask", function () {
 
     it("should hide the shim when the loadmask is hidden", function () {
       createMask({
-        shim: true,
+        shim: true
       }).show();
 
       mask.hide();
@@ -838,7 +838,7 @@ describe("Ext.LoadMask", function () {
 
     it("should show the shim when the loadmask is shown", function () {
       createMask({
-        shim: true,
+        shim: true
       }).show();
 
       mask.hide();
@@ -866,7 +866,7 @@ describe("Ext.LoadMask", function () {
 
     it("should allow shim to be disabled after first show", function () {
       createMask({
-        shim: true,
+        shim: true
       }).show();
 
       expect(mask.el.shim instanceof Ext.dom.Shim).toBe(true);

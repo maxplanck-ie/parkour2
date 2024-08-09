@@ -10,27 +10,27 @@ Ext.define("Ext.fx.layout.card.Reveal", {
     inAnimation: {
       easing: "ease-out",
       from: {
-        opacity: 0.99,
+        opacity: 0.99
       },
       to: {
-        opacity: 1,
-      },
+        opacity: 1
+      }
     },
     outAnimation: {
       before: {
-        "z-index": 100,
+        "z-index": 100
       },
       after: {
-        "z-index": 0,
+        "z-index": 0
       },
       type: "slide",
       easing: "ease-out",
-      out: true,
-    },
+      out: true
+    }
   },
 
   updateReverse: function (reverse) {
     this.getInAnimation().setReverse(reverse);
     this.getOutAnimation().setReverse(reverse);
-  },
+  }
 });

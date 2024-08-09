@@ -1,9 +1,79 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
 ??.??.??
-=======
+========
 
-- WIP
+Breaking changes:
+
+- Temporarily dropped CI tests for Python 3.12, which were [broken via Numpy dependency](https://https://numpy.org/doc/stable//release/1.26.0-notes.html)). We're using Python 3.11 since Parkour2 version 0.3.9 anyway. We'll catch-up to Python 3.12 once the situation stabilizes and other projects are successful sailing through this difficulty... For now, our `requirements.txt` environment is unable to resolve under 3.12
+
+Non-breaking changes:
+
+- Fixed a bug that made flowcells on the last day of the month not to be listed under Load FCs or Invoicing. Now, we are only blind over the last minute of the last day of the month.
+- New retrieve_samplesheet API endpoint under flowcells. By default, it gets you the XLSX samplesheet containing all lanes of a flowcell. For example, `<URL>/api/flowcells/retrieve_samplesheet/?flowcell_id=...`
+- ...
+
+24.07.24
+========
+
+- Index Generator was adjusted to work coherently with Samples that were coming back after 'Destroy Pool' (indexes are fixed, as Libraries.)
+- Fix crash (FPDFUnicodeEncodingException) when user tries downloading the Request signature form with non-UTF8 characters in the Description.
+- Dev deployments now have an integrated tool available for generating, saving, and running SQL queries: [SQL Explorer](https://www.sqlexplorer.io)  (use: `make enable-explorer` to activate, and then navigate to `<URL>/explorer`.)
+- Updated all of our Python package dependencies.
+
+24.06.28
+========
+
+- 'Destroy Pool' option when right-clicked on pools, in the 'Pooling' submodule. (#109)
+- New search bar component in the 'Libraries & Samples' submodule, which searches either by pressing enter or clicking the search button. (#110)
+- Logout method changed from GET to POST to make it compatible with Django v5.0. (#111)
+- Fixed: "Bad Request" notification after adding Libraries or Samples while creating any request and the description is kept empty. (#112)
+- Option to select OS under "File Paths" to modify the file paths according to the selection. (#113)
+- Feature to add paths from the user's end, via "User Paths" in File Path right-click option. (#117)
+
+24.05.10
+========
+
+- Example XLSX file for import index plate pairs is columwise now.
+- Description is no longer required for adding libraries and samples in the 'New Request' window. (#106)
+- Added (*) to the Description label in 'New Request' window. (#106)
+- Set the default value to 1 to create empty records in 'Add Libraries' window. (#106)
+- Changed the color of link 'Max page on Intranet' from Golden to White in 'Add Libraries' window. (#106)
+- In 'Add Libraries' window, fixed the 'Sequencing Depth' validation error popping up while editing. (#106)
+- In 'Add Libraries' window, fixed the 'Size (bp)' column always has a default value of 0 whenever an empty record is created. (#106)
+- In 'Add Libraries' window, renamed 'size (bp)' to 'Size (bp)'. (#106)
+- Changed the naming format of Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' in front. (#105)
+- New Benchtop Protocol File in 'Pooling' with the introduction of 'Smear Analysis' (#107)
+
+24.03.27
+========
+
+- Renamed 'Nucleic Acid Type' to 'Input Type', to accomodate the latest type addition ('Cells').
+- In 'Invoicing', Download Report, Upload Reports, and View Uploaded Reports buttons are functional again. (#101)
+- Standardized date parameter format to "YYYY-MM" in 'Invoicing' and 'Load Flowcells' submodule. (#101)
+- While downloading, renamed the Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' respectively. (#102)
+- BugFix: Fixed various costs in 'Invoicing' appear as 0. (#103)
+
+24.03.15
+========
+
+- Added date-range picker in 'Invoicing' submodule. (#99)
+- Fix to PI accounts being unable to access all corresponding media files.
+- Allow lengthier indeces' name or prefixes.
+- BugFix: "Delivered" status has now a green-colored circle at 'Libraries & Samples' app submodule. (#100)
+- Rephrased text in email sent after Electronic Approval.
+- Added Seq. Length and Depth to Electronic Approval. Old PDF was not updated (yet) because of reasons.
+
+24.02.20
+========
+
+- Added date-range picker in 'Load Flowcells' submodule. (#96)
+- Added a library protocol filter, and added pool into search functionality, for 'Libraries & Samples' staff UI. (#95)
+- Fixed a misconfiguration with Django that interfered with the URL shared to PIs for Paperless/ Electronic Approval of sequencing requests. (`7a85900`)
+- new URL: `/api_user_details` (not really an api endpoint), gives some basic user data to upcoming frontend (VueJS).
+- new URL: `/danke` (users are redirected after seq. request approval)
+- new nucleic acid and library protocol types for single cell sequencing.
+- `put-old-migras` and `sweep` rules are more robust now.
 
 24.01.31
 ========
@@ -20,7 +90,7 @@ Non-breaking changes:
 - Upgraded Python dependencies.
 - Hidden Print button from Usage charts, since it was redirecting to a different site. (#90)
 - Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
-- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
+- Added a 'Solicit approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
 - Playwright tests for the new frontend, Vue.js for Duties. (#86)
 - Added new option "Short + Long" to the Platform field for Duties. (#89)
 - Minor cosmetic changes, and a new search bar for Libraries and Samples. (#87)
@@ -31,7 +101,7 @@ Non-breaking changes:
 
 - Updated all dependencies.
 - Subfolders were re-arranged. Basically, the old frontend (ExtJS), its tests (playwright), and the Django Project (`./parkour_app`) are now under `./backend`. Meanwhile, there's a new frontend under development, using ViteJS; and it's under `./frontend` subfolder. Also, there's a new Dockerfile, and container, for it.
-- A new column (`Pool Paths`) was added tot he 'Libraries and Samples' section of the app, to easily find where each sample (or lib) was loaded.
+- A new column (`Pool Paths`) was added to the 'Libraries and Samples' section of the app, to easily find where each sample (or lib) was loaded.
 - Staff users will find a new calendar icon that takes them to 'Duties', our first module using the new VueJS framework. Over there, we'll be keeping track of our rotations as to who is responsible of what (e.g. X person from Bioinformatics Facility is in charge of processing the short-read sequence data for ~3 months).
 
 

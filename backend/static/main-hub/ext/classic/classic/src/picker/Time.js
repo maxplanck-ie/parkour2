@@ -29,7 +29,7 @@ Ext.define(
        * @hide
        * This class creates its own store based upon time range and increment configuration.
        */
-      store: true,
+      store: true
     },
 
     statics: {
@@ -48,22 +48,22 @@ Ext.define(
           max = dateUtil.add(
             clearTime(new Date(initDate[0], initDate[1], initDate[2])),
             "mi",
-            24 * 60 - 1,
+            24 * 60 - 1
           );
 
         while (min <= max) {
           times.push({
             disp: dateUtil.dateFormat(min, format),
-            date: min,
+            date: min
           });
           min = dateUtil.add(min, "mi", increment);
         }
 
         return new Ext.data.Store({
           model: Ext.picker.Time.prototype.modelType,
-          data: times,
+          data: times
         });
-      },
+      }
     },
 
     /**
@@ -129,7 +129,7 @@ Ext.define(
       me.absMax = dateUtil.add(
         clearTime(new Date(initDate[0], initDate[1], initDate[2])),
         "mi",
-        24 * 60 - 1,
+        24 * 60 - 1
       );
 
       // Updates the range filter's filterFn according to our configured min and max
@@ -198,16 +198,16 @@ Ext.define(
         filterFn: function (record) {
           var date = record.get("date");
           return date >= min && date <= max;
-        },
+        }
       });
       filters.add(filter);
       filters.endUpdate();
-    },
+    }
   },
   function () {
     this.prototype.modelType = Ext.define(null, {
       extend: "Ext.data.Model",
-      fields: ["disp", "date"],
+      fields: ["disp", "date"]
     });
-  },
+  }
 );

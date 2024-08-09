@@ -32,7 +32,7 @@ exports.init = function (runtime) {
         // Chrome tends to size things down to even numbers, so here we round up.
         value = new Fashion.Numeric(
           Math.ceil((value / divisor) * multiplier) / multiplier,
-          unit,
+          unit
         );
       }
 
@@ -43,6 +43,6 @@ exports.init = function (runtime) {
       value = Fashion.Numeric.unbox(value);
 
       return new Fashion.Numeric((value / browserFontSize) * 100, "%");
-    },
+    }
   });
 };

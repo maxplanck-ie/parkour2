@@ -3,7 +3,7 @@
 describe("Ext.grid.filters.filter.List", function () {
   var Model = Ext.define(null, {
       extend: "Ext.data.Model",
-      fields: ["id", "text"],
+      fields: ["id", "text"]
     }),
     grid,
     store,
@@ -27,10 +27,10 @@ describe("Ext.grid.filters.filter.List", function () {
         {
           model: Model,
           remoteFilter: false,
-          data: getData(),
+          data: getData()
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     grid = new Ext.grid.Panel(
@@ -39,7 +39,7 @@ describe("Ext.grid.filters.filter.List", function () {
           store: store,
           columns: [
             {
-              dataIndex: "id",
+              dataIndex: "id"
             },
             {
               dataIndex: "text",
@@ -47,23 +47,23 @@ describe("Ext.grid.filters.filter.List", function () {
               filter: Ext.apply(
                 {
                   type: "list",
-                  updateBuffer: 0,
+                  updateBuffer: 0
                 },
-                listCfg,
-              ),
-            },
+                listCfg
+              )
+            }
           ],
           plugins: [
             {
-              ptype: "gridfilters",
-            },
+              ptype: "gridfilters"
+            }
           ],
           height: 200,
           width: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     synchronousLoad = true;
     if (store.hasPendingLoad()) {
@@ -89,7 +89,7 @@ describe("Ext.grid.filters.filter.List", function () {
   function completeRequest(data) {
     Ext.Ajax.mockComplete({
       status: 200,
-      responseText: Ext.encode(data),
+      responseText: Ext.encode(data)
     });
   }
 
@@ -103,7 +103,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
       data.push({
         id: "t" + ii,
-        text: "Item " + ii,
+        text: "Item " + ii
       });
     }
 
@@ -117,9 +117,9 @@ describe("Ext.grid.filters.filter.List", function () {
     filterItem.activated = true;
     filterItem.expandMenu(
       {
-        type: "click",
+        type: "click"
       },
-      0,
+      0
     );
   }
 
@@ -158,7 +158,7 @@ describe("Ext.grid.filters.filter.List", function () {
       var value = ["t1", "t3"];
 
       createGrid({
-        value: value,
+        value: value
       });
 
       expect(listFilter.filter.getValue()).toEqual(value);
@@ -175,13 +175,13 @@ describe("Ext.grid.filters.filter.List", function () {
           stores: {
             quux: {
               fields: ["id", "text"],
-              data: getData(),
-            },
-          },
+              data: getData()
+            }
+          }
         },
         bind: {
-          store: "{quux}",
-        },
+          store: "{quux}"
+        }
       };
 
       return Ext.apply(gridCfg, cfg);
@@ -195,7 +195,7 @@ describe("Ext.grid.filters.filter.List", function () {
         refresh: "onDataChanged",
         remove: "onDataChanged",
         update: "onDataChanged",
-        "extjs-18225": Ext.emptyFn,
+        "extjs-18225": Ext.emptyFn
       };
     });
 
@@ -216,7 +216,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
           it("should not bind when not configured with a value even when explicitly configured as active", function () {
             createGrid({
-              active: true,
+              active: true
             });
 
             expect(listFilter.gridStoreListeners).toBeUndefined();
@@ -224,7 +224,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
           it("should not bind when configured as inactive (no value)", function () {
             createGrid({
-              active: false,
+              active: false
             });
 
             expect(listFilter.gridStoreListeners).toBeUndefined();
@@ -233,7 +233,7 @@ describe("Ext.grid.filters.filter.List", function () {
           it("should not bind when configured as inactive (with a value)", function () {
             createGrid({
               active: false,
-              value: "foo",
+              value: "foo"
             });
 
             expect(listFilter.gridStoreListeners).toBeUndefined();
@@ -250,15 +250,15 @@ describe("Ext.grid.filters.filter.List", function () {
                   createGrid(
                     {
                       active: active,
-                      value: value,
+                      value: value
                     },
                     null,
-                    getGridCfg(),
+                    getGridCfg()
                   );
 
                   grid.getViewModel().notify();
                   expect(listFilter.gridStoreListeners).toBeDefined();
-                },
+                }
               );
             }
 
@@ -270,7 +270,7 @@ describe("Ext.grid.filters.filter.List", function () {
         describe("should bind", function () {
           it("should bind when configured with a value", function () {
             createGrid({
-              value: "quux",
+              value: "quux"
             });
 
             expect(listFilter.gridStoreListeners).toBeDefined();
@@ -279,10 +279,10 @@ describe("Ext.grid.filters.filter.List", function () {
           it("should bind when late-binding the grid store", function () {
             createGrid(
               {
-                value: "baz",
+                value: "baz"
               },
               null,
-              getGridCfg(),
+              getGridCfg()
             );
             grid.getViewModel().notify();
             expect(listFilter.gridStoreListeners).toBeDefined();
@@ -309,7 +309,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
             it("should not have bound the listeners to the empty store", function () {
               expect(
-                Ext.StoreMgr.get("ext-empty-store").events["extjs-18225"],
+                Ext.StoreMgr.get("ext-empty-store").events["extjs-18225"]
               ).toBeUndefined();
             });
 
@@ -336,7 +336,7 @@ describe("Ext.grid.filters.filter.List", function () {
         var id = "hot-dog";
 
         createGrid({
-          idField: id,
+          idField: id
         });
 
         expect(listFilter.idField).toBe(id);
@@ -353,7 +353,7 @@ describe("Ext.grid.filters.filter.List", function () {
         var label = "veggieburger";
 
         createGrid({
-          labelField: label,
+          labelField: label
         });
 
         expect(listFilter.labelField).toBe(label);
@@ -375,7 +375,7 @@ describe("Ext.grid.filters.filter.List", function () {
         var dataIndex = "gryphon";
 
         createGrid({
-          dataIndex: dataIndex,
+          dataIndex: dataIndex
         });
 
         expect(listFilter.dataIndex).toBe(dataIndex);
@@ -388,16 +388,16 @@ describe("Ext.grid.filters.filter.List", function () {
         beforeEach(function () {
           createGrid(
             {
-              dataIndex: "type",
+              dataIndex: "type"
             },
             {
               data: [
                 { id: 101, type: "t101" },
                 { id: 102, type: "t102" },
                 { id: 103, type: "t103" },
-                { id: 104, type: "t104" },
-              ],
-            },
+                { id: 104, type: "t104" }
+              ]
+            }
           );
 
           showMenu();
@@ -428,7 +428,7 @@ describe("Ext.grid.filters.filter.List", function () {
         var labelIndex = "Worcester County";
 
         createGrid({
-          labelIndex: labelIndex,
+          labelIndex: labelIndex
         });
 
         expect(listFilter.labelIndex).toBe(labelIndex);
@@ -441,16 +441,16 @@ describe("Ext.grid.filters.filter.List", function () {
           createGrid(
             {
               dataIndex: "foo",
-              labelIndex: "name",
+              labelIndex: "name"
             },
             {
               data: [
                 { foo: 101, name: "Item 101" },
                 { foo: 102, name: "Item 102" },
                 { foo: 103, name: "Item 103" },
-                { foo: 104, name: "Item 104" },
-              ],
-            },
+                { foo: 104, name: "Item 104" }
+              ]
+            }
           );
 
           showMenu();
@@ -479,7 +479,7 @@ describe("Ext.grid.filters.filter.List", function () {
       describe("empty array", function () {
         beforeEach(function () {
           createGrid({
-            value: [],
+            value: []
           });
         });
 
@@ -517,7 +517,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
           createGrid({
             active: false,
-            value: [],
+            value: []
           });
 
           expect(store.data.filtered).toBe(false);
@@ -527,7 +527,7 @@ describe("Ext.grid.filters.filter.List", function () {
       describe("non-empty array", function () {
         beforeEach(function () {
           createGrid({
-            value: ["Item 1", "Item 3"],
+            value: ["Item 1", "Item 3"]
           });
         });
 
@@ -570,7 +570,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
           createGrid({
             active: false,
-            value: ["Item 1", "Item 3"],
+            value: ["Item 1", "Item 3"]
           });
 
           expect(store.data.filtered).toBe(false);
@@ -584,7 +584,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
         it("should use the array element as the menu text", function () {
           createGrid({
-            options: opt,
+            options: opt
           });
           showMenu();
           var menu = getMenu();
@@ -596,7 +596,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
         it("should use the array element as the filter value", function () {
           createGrid({
-            options: opt,
+            options: opt
           });
           clickItem(1);
           var filter = store.getFilters().first();
@@ -610,11 +610,11 @@ describe("Ext.grid.filters.filter.List", function () {
         var opt = [
           ["foo", "Foo"],
           ["bar", "Bar"],
-          ["baz", "Baz"],
+          ["baz", "Baz"]
         ];
         it("should use the element at index 1 as the menu text", function () {
           createGrid({
-            options: opt,
+            options: opt
           });
           showMenu();
           var menu = getMenu();
@@ -626,7 +626,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
         it("should use the element at index 0 as the filter value", function () {
           createGrid({
-            options: opt,
+            options: opt
           });
           clickItem(1);
           var filter = store.getFilters().first();
@@ -640,13 +640,13 @@ describe("Ext.grid.filters.filter.List", function () {
         var opt = [
           { id: "foo", text: "Foo" },
           { id: "bar", text: "Bar" },
-          { id: "baz", text: "Baz" },
+          { id: "baz", text: "Baz" }
         ];
         it("should use the item with the labelField as the menu text", function () {
           createGrid({
             options: opt,
             idField: "id",
-            labelField: "text",
+            labelField: "text"
           });
           showMenu();
           var menu = getMenu();
@@ -660,7 +660,7 @@ describe("Ext.grid.filters.filter.List", function () {
           createGrid({
             options: opt,
             idField: "id",
-            labelField: "text",
+            labelField: "text"
           });
           clickItem(1);
           var filter = store.getFilters().first();
@@ -683,13 +683,13 @@ describe("Ext.grid.filters.filter.List", function () {
             data: [
               {
                 id: "t1",
-                text: "Type 1",
+                text: "Type 1"
               },
               {
                 id: "t2",
-                text: "Type 2",
-              },
-            ],
+                text: "Type 2"
+              }
+            ]
           });
         }
 
@@ -699,7 +699,7 @@ describe("Ext.grid.filters.filter.List", function () {
           spyOn(options, "load");
 
           createGrid({
-            store: options,
+            store: options
           });
           showMenu();
           expect(options.load).not.toHaveBeenCalled();
@@ -708,7 +708,7 @@ describe("Ext.grid.filters.filter.List", function () {
         it("should use the field with the labelField as the menu text", function () {
           options = makeStore();
           createGrid({
-            store: options,
+            store: options
           });
           showMenu();
           var menu = getMenu();
@@ -720,7 +720,7 @@ describe("Ext.grid.filters.filter.List", function () {
         it("should use the field with the idField as the filter value", function () {
           options = makeStore();
           createGrid({
-            store: options,
+            store: options
           });
           clickItem(0);
           var filter = store.getFilters().first();
@@ -738,11 +738,11 @@ describe("Ext.grid.filters.filter.List", function () {
                 model: Model,
                 proxy: {
                   type: "ajax",
-                  url: "foo",
-                },
+                  url: "foo"
+                }
               },
-              cfg,
-            ),
+              cfg
+            )
           );
         }
 
@@ -752,7 +752,7 @@ describe("Ext.grid.filters.filter.List", function () {
           spyOn(options, "load");
 
           createGrid({
-            store: options,
+            store: options
           });
           expect(options.load).not.toHaveBeenCalled();
         });
@@ -761,7 +761,7 @@ describe("Ext.grid.filters.filter.List", function () {
           it("should show a loading placeholder on show", function () {
             options = makeStore();
             createGrid({
-              store: options,
+              store: options
             });
             showMenu();
             var menu = getMenu();
@@ -772,19 +772,19 @@ describe("Ext.grid.filters.filter.List", function () {
           it("should remove the placeholder when the store loads", function () {
             options = makeStore();
             createGrid({
-              store: options,
+              store: options
             });
             showMenu();
             var menu = getMenu();
             completeRequest([
               {
                 id: "t1",
-                text: "Type 1",
+                text: "Type 1"
               },
               {
                 id: "t2",
-                text: "Type 2",
-              },
+                text: "Type 2"
+              }
             ]);
             waitsFor(function () {
               return menu.items.getCount() === 2;
@@ -805,7 +805,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
               createGrid({
                 store: options,
-                loadOnShow: true,
+                loadOnShow: true
               });
               showMenu();
               expect(options.load).toHaveBeenCalled();
@@ -813,12 +813,12 @@ describe("Ext.grid.filters.filter.List", function () {
 
             it("should not load if the store has a pending autoLoad", function () {
               options = makeStore({
-                autoLoad: true,
+                autoLoad: true
               });
               spyOn(options, "load");
               createGrid({
                 store: options,
-                loadOnShow: true,
+                loadOnShow: true
               });
               showMenu();
               expect(options.load).not.toHaveBeenCalled();
@@ -832,7 +832,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
               createGrid({
                 store: options,
-                loadOnShow: true,
+                loadOnShow: true
               });
               showMenu();
               expect(options.load).not.toHaveBeenCalled();
@@ -843,14 +843,14 @@ describe("Ext.grid.filters.filter.List", function () {
 
               createGrid({
                 store: options,
-                loadOnShow: true,
+                loadOnShow: true
               });
               showMenu();
               completeRequest([
                 {
                   id: "t1",
-                  text: "Type 1",
-                },
+                  text: "Type 1"
+                }
               ]);
               getMenu().hide();
               spyOn(options, "load");
@@ -866,7 +866,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
               createGrid({
                 store: options,
-                loadOnShow: false,
+                loadOnShow: false
               });
               showMenu();
               expect(options.load).not.toHaveBeenCalled();
@@ -880,22 +880,22 @@ describe("Ext.grid.filters.filter.List", function () {
             createGrid({
               store: options,
               idField: "id",
-              labelField: "text",
+              labelField: "text"
             });
             showMenu();
             completeRequest([
               {
                 id: "t1",
-                text: "Type 1",
+                text: "Type 1"
               },
               {
                 id: "t2",
-                text: "Type 2",
+                text: "Type 2"
               },
               {
                 id: "t3",
-                text: "Type 3",
-              },
+                text: "Type 3"
+              }
             ]);
             var menu = getMenu();
             waitsFor(function () {
@@ -913,22 +913,22 @@ describe("Ext.grid.filters.filter.List", function () {
             createGrid({
               store: options,
               idField: "id",
-              labelField: "text",
+              labelField: "text"
             });
             showMenu();
             completeRequest([
               {
                 id: "t1",
-                text: "Type 1",
+                text: "Type 1"
               },
               {
                 id: "t2",
-                text: "Type 2",
+                text: "Type 2"
               },
               {
                 id: "t3",
-                text: "Type 3",
-              },
+                text: "Type 3"
+              }
             ]);
             var menu = getMenu();
             waitsFor(function () {
@@ -950,7 +950,7 @@ describe("Ext.grid.filters.filter.List", function () {
             var load = options.hasListeners.load || 0;
 
             createGrid({
-              store: options,
+              store: options
             });
             grid.destroy();
             expect(options.hasListeners.load || 0).toBe(load);
@@ -961,7 +961,7 @@ describe("Ext.grid.filters.filter.List", function () {
             var load = options.hasListeners.load || 0;
 
             createGrid({
-              store: options,
+              store: options
             });
             showMenu();
             grid.destroy();
@@ -974,7 +974,7 @@ describe("Ext.grid.filters.filter.List", function () {
             var load = options.hasListeners.load || 0;
 
             createGrid({
-              store: options,
+              store: options
             });
             showMenu();
             completeRequest([]);
@@ -992,16 +992,16 @@ describe("Ext.grid.filters.filter.List", function () {
           id: "Foo",
           data: [
             {
-              text: "A",
+              text: "A"
             },
             {
-              text: "B",
-            },
-          ],
+              text: "B"
+            }
+          ]
         });
         createGrid({
           store: "Foo",
-          labelField: "text",
+          labelField: "text"
         });
         showMenu();
         var menu = getMenu();
@@ -1017,14 +1017,14 @@ describe("Ext.grid.filters.filter.List", function () {
             model: Model,
             data: [
               {
-                text: "A",
+                text: "A"
               },
               {
-                text: "B",
-              },
-            ],
+                text: "B"
+              }
+            ]
           },
-          labelField: "text",
+          labelField: "text"
         });
         showMenu();
         var menu = getMenu();
@@ -1039,7 +1039,7 @@ describe("Ext.grid.filters.filter.List", function () {
         describe(rendered ? "when rendered" : "before rendering", function () {
           function makeDestroyGrid(cfg) {
             createGrid(cfg, null, {
-              renderTo: rendered ? Ext.getBody() : null,
+              renderTo: rendered ? Ext.getBody() : null
             });
           }
           describe("with autoDestroy: true", function () {
@@ -1050,16 +1050,16 @@ describe("Ext.grid.filters.filter.List", function () {
                 id: "Foo",
                 data: [
                   {
-                    text: "A",
+                    text: "A"
                   },
                   {
-                    text: "B",
-                  },
-                ],
+                    text: "B"
+                  }
+                ]
               });
               makeDestroyGrid({
                 store: "Foo",
-                labelField: "text",
+                labelField: "text"
               });
               if (rendered) {
                 showMenu();
@@ -1075,15 +1075,15 @@ describe("Ext.grid.filters.filter.List", function () {
                 autoDestroy: true,
                 data: [
                   {
-                    text: "A",
+                    text: "A"
                   },
                   {
-                    text: "B",
-                  },
-                ],
+                    text: "B"
+                  }
+                ]
               });
               makeDestroyGrid({
-                store: options,
+                store: options
               });
               if (rendered) {
                 showMenu();
@@ -1101,13 +1101,13 @@ describe("Ext.grid.filters.filter.List", function () {
                   id: "x",
                   data: [
                     {
-                      text: "A",
+                      text: "A"
                     },
                     {
-                      text: "B",
-                    },
-                  ],
-                },
+                      text: "B"
+                    }
+                  ]
+                }
               });
               if (rendered) {
                 showMenu();
@@ -1126,16 +1126,16 @@ describe("Ext.grid.filters.filter.List", function () {
                 id: "Foo",
                 data: [
                   {
-                    text: "A",
+                    text: "A"
                   },
                   {
-                    text: "B",
-                  },
-                ],
+                    text: "B"
+                  }
+                ]
               });
               makeDestroyGrid({
                 store: "Foo",
-                labelField: "text",
+                labelField: "text"
               });
               if (rendered) {
                 showMenu();
@@ -1152,16 +1152,16 @@ describe("Ext.grid.filters.filter.List", function () {
                 autoDestroy: false,
                 data: [
                   {
-                    text: "A",
+                    text: "A"
                   },
                   {
-                    text: "B",
-                  },
-                ],
+                    text: "B"
+                  }
+                ]
               });
               makeDestroyGrid({
                 store: options,
-                labelField: "text",
+                labelField: "text"
               });
               if (rendered) {
                 showMenu();
@@ -1180,14 +1180,14 @@ describe("Ext.grid.filters.filter.List", function () {
                   autoDestroy: false,
                   data: [
                     {
-                      text: "A",
+                      text: "A"
                     },
                     {
-                      text: "B",
-                    },
-                  ],
+                      text: "B"
+                    }
+                  ]
                 },
-                labelField: "text",
+                labelField: "text"
               });
               if (rendered) {
                 showMenu();
@@ -1213,31 +1213,31 @@ describe("Ext.grid.filters.filter.List", function () {
             {
               data: [
                 {
-                  text: "t1",
+                  text: "t1"
                 },
                 {
-                  text: "t1",
+                  text: "t1"
                 },
                 {
-                  text: "t1",
+                  text: "t1"
                 },
                 {
-                  text: "t2",
+                  text: "t2"
                 },
                 {
-                  text: "t2",
+                  text: "t2"
                 },
                 {
-                  text: "t3",
+                  text: "t3"
                 },
                 {
-                  text: null,
+                  text: null
                 },
                 {
-                  text: "t4",
-                },
-              ],
-            },
+                  text: "t4"
+                }
+              ]
+            }
           );
         });
 
@@ -1291,29 +1291,29 @@ describe("Ext.grid.filters.filter.List", function () {
         beforeEach(function () {
           loadData = [
             {
-              text: "t1",
+              text: "t1"
             },
             {
-              text: "t1",
+              text: "t1"
             },
             {
-              text: "t1",
+              text: "t1"
             },
             {
-              text: "t2",
+              text: "t2"
             },
             {
-              text: "t2",
+              text: "t2"
             },
             {
-              text: "t3",
+              text: "t3"
             },
             {
-              text: null,
+              text: null
             },
             {
-              text: "t4",
-            },
+              text: "t4"
+            }
           ];
 
           createGrid(
@@ -1322,9 +1322,9 @@ describe("Ext.grid.filters.filter.List", function () {
               data: null,
               proxy: {
                 type: "ajax",
-                url: "fake",
-              },
-            },
+                url: "fake"
+              }
+            }
           );
         });
 
@@ -1388,7 +1388,7 @@ describe("Ext.grid.filters.filter.List", function () {
             beforeEach(function () {
               createGrid({
                 active: true,
-                value: ["Item 2", "Item 3"],
+                value: ["Item 2", "Item 3"]
               });
             });
 
@@ -1422,7 +1422,7 @@ describe("Ext.grid.filters.filter.List", function () {
             it("should create a store filter with the values in the value config", function () {
               expect(listFilter.filter.getValue()).toEqual([
                 "Item 2",
-                "Item 3",
+                "Item 3"
               ]);
             });
 
@@ -1453,7 +1453,7 @@ describe("Ext.grid.filters.filter.List", function () {
             beforeEach(function () {
               createGrid({
                 active: true,
-                value: [],
+                value: []
               });
             });
 
@@ -1503,7 +1503,7 @@ describe("Ext.grid.filters.filter.List", function () {
           describe("without a value", function () {
             beforeEach(function () {
               createGrid({
-                active: true,
+                active: true
               });
             });
 
@@ -1554,7 +1554,7 @@ describe("Ext.grid.filters.filter.List", function () {
         describe("when no item defaults", function () {
           beforeEach(function () {
             createGrid({
-              active: false,
+              active: false
             });
           });
 
@@ -1614,16 +1614,16 @@ describe("Ext.grid.filters.filter.List", function () {
           createGrid(
             {
               dataIndex: "type",
-              labelIndex: "name",
+              labelIndex: "name"
             },
             {
               data: [
                 { id: 101, name: "Item 101", type: "t101" },
                 { id: 102, name: "Item 102", type: "t102" },
                 { id: 103, name: "Item 103", type: "t103" },
-                { id: 104, name: "Item 104", type: "t104" },
-              ],
-            },
+                { id: 104, name: "Item 104", type: "t104" }
+              ]
+            }
           );
 
           showMenu();
@@ -1648,7 +1648,7 @@ describe("Ext.grid.filters.filter.List", function () {
             { id: 103, name: "Item 103", type: "t103" },
             { id: 104, name: "Item 104", type: "t104" },
             { id: 105, name: "Item 105", type: "t105" },
-            { id: 106, name: "Item 106", type: "t106" },
+            { id: 106, name: "Item 106", type: "t106" }
           ]);
 
           expect(items.length).toBe(6);
@@ -1662,7 +1662,7 @@ describe("Ext.grid.filters.filter.List", function () {
           store.add({
             id: 105,
             name: "Item 105",
-            type: "t105",
+            type: "t105"
           });
 
           expect(items.length).toBe(5);
@@ -1686,7 +1686,7 @@ describe("Ext.grid.filters.filter.List", function () {
           store.add({
             id: 105,
             name: "Item 105",
-            type: "t104",
+            type: "t104"
           });
 
           expect(items.length).toBe(4);
@@ -1703,7 +1703,7 @@ describe("Ext.grid.filters.filter.List", function () {
     describe("with options", function () {
       it("should not react to store changes", function () {
         createGrid({
-          options: ["Foo", "Item 1", "Item 2"],
+          options: ["Foo", "Item 1", "Item 2"]
         });
 
         showMenu();
@@ -1756,18 +1756,18 @@ describe("Ext.grid.filters.filter.List", function () {
                 dataIndex: "id",
                 itemId: "filterCol1",
                 filter: {
-                  type: "list",
-                },
+                  type: "list"
+                }
               },
               {
                 dataIndex: "text",
                 itemId: "filterCol",
                 filter: {
                   type: "list",
-                  updateBuffer: 0,
-                },
-              },
-            ],
+                  updateBuffer: 0
+                }
+              }
+            ]
           });
           var spy = jasmine.createSpy();
           grid.view.on("refresh", spy);
@@ -1815,28 +1815,28 @@ describe("Ext.grid.filters.filter.List", function () {
     var responseData = [
         {
           id: "t1",
-          text: "Item 1",
+          text: "Item 1"
         },
         {
           id: "t2",
-          text: "Item 2",
+          text: "Item 2"
         },
         {
           id: "t3",
-          text: "Item 3",
+          text: "Item 3"
         },
         {
           id: "t4",
-          text: "Item 4",
+          text: "Item 4"
         },
         {
           id: "t5",
-          text: "Item 5",
+          text: "Item 5"
         },
         {
           id: "t6",
-          text: "Item 6",
-        },
+          text: "Item 6"
+        }
       ],
       total = responseData.length,
       options,
@@ -1855,15 +1855,15 @@ describe("Ext.grid.filters.filter.List", function () {
               createGrid(
                 {
                   active: state,
-                  value: ["Item 1", "Item 4"],
+                  value: ["Item 1", "Item 4"]
                 },
                 {
                   data: null,
                   proxy: {
                     type: "ajax",
-                    url: "fakeUrl",
-                  },
-                },
+                    url: "fakeUrl"
+                  }
+                }
               );
 
               store.load();
@@ -1908,15 +1908,15 @@ describe("Ext.grid.filters.filter.List", function () {
               createGrid(
                 {
                   active: state,
-                  value: [],
+                  value: []
                 },
                 {
                   data: null,
                   proxy: {
                     type: "ajax",
-                    url: "fakeUrl",
-                  },
-                },
+                    url: "fakeUrl"
+                  }
+                }
               );
 
               store.load();
@@ -1961,15 +1961,15 @@ describe("Ext.grid.filters.filter.List", function () {
             beforeEach(function () {
               createGrid(
                 {
-                  active: state,
+                  active: state
                 },
                 {
                   data: null,
                   proxy: {
                     type: "ajax",
-                    url: "fakeUrl",
-                  },
-                },
+                    url: "fakeUrl"
+                  }
+                }
               );
 
               store.load();
@@ -2014,16 +2014,16 @@ describe("Ext.grid.filters.filter.List", function () {
             it("should reload the store once when a list item is checked", function () {
               createGrid(
                 {
-                  active: state,
+                  active: state
                 },
                 {
                   remoteFilter: true,
                   data: null,
                   proxy: {
                     type: "ajax",
-                    url: "fakeUrl",
-                  },
-                },
+                    url: "fakeUrl"
+                  }
+                }
               );
 
               store.load();
@@ -2059,11 +2059,11 @@ describe("Ext.grid.filters.filter.List", function () {
                 ["t1", "Item 1"],
                 ["t2", "Item 2"],
                 ["t3", "Item 3"],
-                ["t4", "Item 4"],
-              ],
+                ["t4", "Item 4"]
+              ]
             },
-            cfg,
-          ),
+            cfg
+          )
         );
       }
 
@@ -2084,7 +2084,7 @@ describe("Ext.grid.filters.filter.List", function () {
                 dataIndex: "id",
                 // ...and which field should display the menu item label.
                 labelIndex: "text",
-                value: ["t3", "t4"],
+                value: ["t3", "t4"]
               });
 
               store.load();
@@ -2130,7 +2130,7 @@ describe("Ext.grid.filters.filter.List", function () {
               createGrid({
                 active: state,
                 store: options,
-                value: [],
+                value: []
               });
 
               store.load();
@@ -2175,7 +2175,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
               createGrid({
                 active: state,
-                store: options,
+                store: options
               });
 
               store.load();
@@ -2232,17 +2232,17 @@ describe("Ext.grid.filters.filter.List", function () {
             function () {
               createGrid(
                 {
-                  value: value,
+                  value: value
                 },
                 {
-                  remoteFilter: remoteFilter,
-                },
+                  remoteFilter: remoteFilter
+                }
               );
 
               expect(function () {
                 showMenu();
               }).not.toThrow();
-            },
+            }
           );
         }
 
@@ -2272,14 +2272,14 @@ describe("Ext.grid.filters.filter.List", function () {
           function () {
             createGrid({
               active: state,
-              value: ["Item 1", "Item 4"],
+              value: ["Item 1", "Item 4"]
             });
 
             len = store.getFilters().getCount();
             showMenu();
 
             expect(len).toBe(store.getFilters().getCount());
-          },
+          }
         );
       }
 
@@ -2290,7 +2290,7 @@ describe("Ext.grid.filters.filter.List", function () {
     describe("the list store", function () {
       beforeEach(function () {
         createGrid({
-          value: ["Item 2", "Item 3"],
+          value: ["Item 2", "Item 3"]
         });
 
         clickItem(1);
@@ -2302,7 +2302,7 @@ describe("Ext.grid.filters.filter.List", function () {
 
       it("should create a list store with the same number of records as there are unique elements in the grid store", function () {
         expect(listFilter.store.data.length).toEqual(
-          store.collect("text", true, true).length,
+          store.collect("text", true, true).length
         );
       });
     });
@@ -2314,7 +2314,7 @@ describe("Ext.grid.filters.filter.List", function () {
     function makeUI() {
       createGrid(null, null, {
         stateful: true,
-        stateId: "pozzuoli",
+        stateId: "pozzuoli"
       });
 
       showMenu();
@@ -2362,9 +2362,9 @@ describe("Ext.grid.filters.filter.List", function () {
             dataIndex: "text",
             filter: {
               type: "list",
-              value: "foo",
-            },
-          },
+              value: "foo"
+            }
+          }
         ]);
       }).not.toThrow();
     });

@@ -21,7 +21,7 @@ Ext.define("Ext.chart.axis.segmenter.Time", {
      *         step: 1
      *     }
      */
-    step: null,
+    step: null
   },
 
   renderer: function (value, context) {
@@ -80,7 +80,7 @@ Ext.define("Ext.chart.axis.segmenter.Time", {
     [Ext.Date.HOUR, 1, 6, 12],
     [Ext.Date.MINUTE, 1, 5, 15, 30],
     [Ext.Date.SECOND, 1, 5, 15, 30],
-    [Ext.Date.MILLI, 1, 2, 5, 10, 20, 50, 100, 200, 500],
+    [Ext.Date.MILLI, 1, 2, 5, 10, 20, 50, 100, 200, 500]
   ],
 
   preferredStep: function (min, estStepSize) {
@@ -105,7 +105,7 @@ Ext.define("Ext.chart.axis.segmenter.Time", {
           if (diff <= units[i][j]) {
             result = {
               unit: unit,
-              step: units[i][j],
+              step: units[i][j]
             };
             break;
           }
@@ -114,7 +114,7 @@ Ext.define("Ext.chart.axis.segmenter.Time", {
           i--;
           result = {
             unit: units[i][0],
-            step: 1,
+            step: 1
           };
         }
         break;
@@ -124,5 +124,5 @@ Ext.define("Ext.chart.axis.segmenter.Time", {
       result = { unit: Ext.Date.DAY, step: 1 }; // Default step is one Day.
     }
     return result;
-  },
+  }
 });

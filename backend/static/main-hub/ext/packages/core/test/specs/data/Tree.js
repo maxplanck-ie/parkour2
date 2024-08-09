@@ -7,8 +7,8 @@ xdescribe("Ext.data.Tree", function () {
       extend: "Ext.data.TreeModel",
       fields: [{ name: "text", type: "string" }],
       proxy: {
-        type: "memory",
-      },
+        type: "memory"
+      }
     });
     Ext.data.NodeInterface.decorate(spec.Node);
     node = new spec.Node({ id: 42 });
@@ -96,22 +96,22 @@ xdescribe("Ext.data.Tree", function () {
           extend: "Ext.data.TreeModel",
           idgen: {
             type: "sequential",
-            seed: 1000,
+            seed: 1000
           },
           fields: [
             {
               name: "id",
               type: "integer",
               required: true,
-              label: "Id",
+              label: "Id"
             },
             {
               name: "text",
               type: "string",
               required: true,
-              label: "Text",
-            },
-          ],
+              label: "Text"
+            }
+          ]
         });
       });
 

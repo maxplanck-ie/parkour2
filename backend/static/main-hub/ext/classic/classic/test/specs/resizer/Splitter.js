@@ -12,15 +12,15 @@ describe("Ext.resizer.Splitter", function () {
       items: [
         {
           html: "foo",
-          flex: 1,
+          flex: 1
         },
         splitter,
         {
           html: "bar",
-          flex: 1,
-        },
+          flex: 1
+        }
       ],
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
   }
 
@@ -37,7 +37,7 @@ describe("Ext.resizer.Splitter", function () {
         makeContainer();
 
         expect(splitter.tracker instanceof Ext.resizer.SplitterTracker).toBe(
-          true,
+          true
         );
       });
 
@@ -45,12 +45,12 @@ describe("Ext.resizer.Splitter", function () {
         makeContainer({
           tracker: {
             xclass: "Ext.resizer.BorderSplitter",
-            foo: "baz",
-          },
+            foo: "baz"
+          }
         });
 
         expect(splitter.tracker instanceof Ext.resizer.BorderSplitter).toBe(
-          true,
+          true
         );
         expect(splitter.tracker.foo).toBe("baz");
       });
@@ -68,21 +68,21 @@ describe("Ext.resizer.Splitter", function () {
               xtype: "container",
               itemId: "foo",
               html: "foo",
-              flex: 1,
+              flex: 1
             },
             Ext.apply(
               {
-                xtype: "splitter",
+                xtype: "splitter"
               },
-              splitterCfg,
+              splitterCfg
             ),
             {
               xtype: "panel",
               itemId: "bar",
               collapsible: true,
-              html: "bar",
-            },
-          ],
+              html: "bar"
+            }
+          ]
         });
 
         splitter = c.down("splitter");
@@ -114,8 +114,8 @@ describe("Ext.resizer.Splitter", function () {
       iframe = new Ext.Component({
         autoEl: {
           tag: "iframe",
-          src: "about:blank",
-        },
+          src: "about:blank"
+        }
       });
       c = new Ext.panel.Panel({
         width: 400,
@@ -128,10 +128,10 @@ describe("Ext.resizer.Splitter", function () {
             width: 200,
             region: "west",
             split: true,
-            collapsible: true,
+            collapsible: true
           },
-          iframe,
-        ],
+          iframe
+        ]
       });
       splitter = c.down("splitter");
     });
@@ -154,7 +154,7 @@ describe("Ext.resizer.Splitter", function () {
     it("should not mask iframes when clicking on the splitter collapseEl", function () {
       jasmine.fireMouseEvent(
         splitter.el.query("[data-ref=collapseEl]")[0],
-        "click",
+        "click"
       );
       expect(c.down("panel").collapsed).toBe("left");
       expect(Ext.fly(iframe.el.dom.parentNode).isMasked()).toBe(false);

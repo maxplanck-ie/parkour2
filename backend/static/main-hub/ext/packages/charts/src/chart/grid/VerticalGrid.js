@@ -14,7 +14,7 @@ Ext.define("Ext.chart.grid.VerticalGrid", {
         x: "number",
         y: "number",
         width: "number",
-        height: "number",
+        height: "number"
       },
 
       defaults: {
@@ -22,9 +22,9 @@ Ext.define("Ext.chart.grid.VerticalGrid", {
         y: 0,
         width: 1,
         height: 1,
-        strokeStyle: "#DDD",
-      },
-    },
+        strokeStyle: "#DDD"
+      }
+    }
   },
 
   render: function (surface, ctx, rect) {
@@ -37,7 +37,7 @@ Ext.define("Ext.chart.grid.VerticalGrid", {
       x - halfLineWidth,
       rect[1] - surface.matrix.getDY(),
       attr.width,
-      rect[3],
+      rect[3]
     );
     ctx.fill();
 
@@ -45,5 +45,5 @@ Ext.define("Ext.chart.grid.VerticalGrid", {
     ctx.moveTo(x - halfLineWidth, rect[1] - surface.matrix.getDY());
     ctx.lineTo(x - halfLineWidth, rect[1] + rect[3] - surface.matrix.getDY());
     ctx.stroke();
-  },
+  }
 });

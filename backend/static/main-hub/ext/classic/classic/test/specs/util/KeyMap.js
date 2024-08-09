@@ -13,12 +13,12 @@ describe("Ext.util.KeyMap", function () {
       C: 67,
       X: 88,
       Y: 89,
-      Z: 90,
+      Z: 90
     };
 
   beforeEach(function () {
     el = Ext.getBody().createChild({
-      id: "test-keyMap-el",
+      id: "test-keyMap-el"
     });
 
     createMap = function (config, eventName) {
@@ -49,7 +49,7 @@ describe("Ext.util.KeyMap", function () {
         map = new Ext.util.KeyMap("test-keyMap-el");
         map.addBinding({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -59,7 +59,7 @@ describe("Ext.util.KeyMap", function () {
         map = new Ext.util.KeyMap(el);
         map.addBinding({
           key: KEYS.X,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.X);
         expect(defaultFn).toHaveBeenCalled();
@@ -69,7 +69,7 @@ describe("Ext.util.KeyMap", function () {
         map = new Ext.util.KeyMap(Ext.get(el));
         map.addBinding({
           key: KEYS.Z,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.Z);
         expect(defaultFn).toHaveBeenCalled();
@@ -79,7 +79,7 @@ describe("Ext.util.KeyMap", function () {
     it("should pass the config to addBinding", function () {
       createMap({
         key: KEYS.Z,
-        handler: defaultFn,
+        handler: defaultFn
       });
       fireKey(KEYS.Z);
       expect(defaultFn).toHaveBeenCalled();
@@ -88,7 +88,7 @@ describe("Ext.util.KeyMap", function () {
     it("should default the eventName to keydown", function () {
       createMap({
         key: KEYS.C,
-        handler: defaultFn,
+        handler: defaultFn
       });
       fireKey(KEYS.C, "keydown");
       expect(defaultFn).toHaveBeenCalled();
@@ -98,9 +98,9 @@ describe("Ext.util.KeyMap", function () {
       createMap(
         {
           key: KEYS.B,
-          handler: defaultFn,
+          handler: defaultFn
         },
-        "keyup",
+        "keyup"
       );
       fireKey(KEYS.B, "keyup");
       expect(defaultFn).toHaveBeenCalled();
@@ -113,7 +113,7 @@ describe("Ext.util.KeyMap", function () {
         createMap();
         map.addBinding({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe("Ext.util.KeyMap", function () {
         createMap();
         map.addBinding({
           key: [KEYS.A, KEYS.Z],
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         fireKey(KEYS.Z);
@@ -135,7 +135,7 @@ describe("Ext.util.KeyMap", function () {
         createMap();
         map.addBinding({
           key: "b",
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.B);
         expect(defaultFn).toHaveBeenCalled();
@@ -145,7 +145,7 @@ describe("Ext.util.KeyMap", function () {
         createMap();
         map.addBinding({
           key: "xyz",
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.X);
         fireKey(KEYS.Y);
@@ -158,7 +158,7 @@ describe("Ext.util.KeyMap", function () {
         createMap();
         map.addBinding({
           key: ["c", "y"],
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.C);
         fireKey(KEYS.Y);
@@ -173,12 +173,12 @@ describe("Ext.util.KeyMap", function () {
         map.addBinding([
           {
             key: KEYS.A,
-            handler: defaultFn,
+            handler: defaultFn
           },
           {
             key: "b",
-            handler: defaultFn,
-          },
+            handler: defaultFn
+          }
         ]);
         fireKey(KEYS.A);
         fireKey(KEYS.B);
@@ -191,12 +191,12 @@ describe("Ext.util.KeyMap", function () {
         map.addBinding([
           {
             key: KEYS.A,
-            handler: defaultFn,
+            handler: defaultFn
           },
           {
             key: KEYS.A,
-            handler: defaultFn,
-          },
+            handler: defaultFn
+          }
         ]);
         fireKey(KEYS.A);
         expect(defaultFn.callCount).toEqual(2);
@@ -207,11 +207,11 @@ describe("Ext.util.KeyMap", function () {
       createMap();
       map.addBinding({
         key: KEYS.A,
-        handler: defaultFn,
+        handler: defaultFn
       });
       map.addBinding({
         key: KEYS.B,
-        handler: defaultFn,
+        handler: defaultFn
       });
       fireKey(KEYS.A);
       fireKey(KEYS.B);
@@ -234,7 +234,7 @@ describe("Ext.util.KeyMap", function () {
         createOverride();
         createMap({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -244,7 +244,7 @@ describe("Ext.util.KeyMap", function () {
         createOverride(true);
         createMap({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -255,7 +255,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.B,
           handler: defaultFn,
-          alt: false,
+          alt: false
         });
         fireKey(KEYS.B);
         expect(defaultFn).toHaveBeenCalled();
@@ -266,7 +266,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.C,
           handler: defaultFn,
-          alt: true,
+          alt: true
         });
         fireKey(KEYS.C);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -277,7 +277,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.X,
           handler: defaultFn,
-          alt: false,
+          alt: false
         });
         fireKey(KEYS.X);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -288,7 +288,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.X,
           handler: defaultFn,
-          alt: true,
+          alt: true
         });
         fireKey(KEYS.X);
         expect(defaultFn).toHaveBeenCalled();
@@ -300,7 +300,7 @@ describe("Ext.util.KeyMap", function () {
         createOverride();
         createMap({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -310,7 +310,7 @@ describe("Ext.util.KeyMap", function () {
         createOverride(false, true);
         createMap({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -321,7 +321,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.A,
           handler: defaultFn,
-          ctrl: false,
+          ctrl: false
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -332,7 +332,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.C,
           handler: defaultFn,
-          ctrl: true,
+          ctrl: true
         });
         fireKey(KEYS.C);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -343,7 +343,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.X,
           handler: defaultFn,
-          ctrl: false,
+          ctrl: false
         });
         fireKey(KEYS.X);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -354,7 +354,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.X,
           handler: defaultFn,
-          ctrl: true,
+          ctrl: true
         });
         fireKey(KEYS.X);
         expect(defaultFn).toHaveBeenCalled();
@@ -366,7 +366,7 @@ describe("Ext.util.KeyMap", function () {
         createOverride();
         createMap({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -376,7 +376,7 @@ describe("Ext.util.KeyMap", function () {
         createOverride(false, false, true);
         createMap({
           key: KEYS.A,
-          handler: defaultFn,
+          handler: defaultFn
         });
         fireKey(KEYS.A);
         expect(defaultFn).toHaveBeenCalled();
@@ -387,7 +387,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.B,
           handler: defaultFn,
-          shift: false,
+          shift: false
         });
         fireKey(KEYS.B);
         expect(defaultFn).toHaveBeenCalled();
@@ -398,7 +398,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.C,
           handler: defaultFn,
-          shift: true,
+          shift: true
         });
         fireKey(KEYS.C);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -409,7 +409,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.X,
           handler: defaultFn,
-          shift: false,
+          shift: false
         });
         fireKey(KEYS.X);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -420,7 +420,7 @@ describe("Ext.util.KeyMap", function () {
         createMap({
           key: KEYS.X,
           handler: defaultFn,
-          shift: true,
+          shift: true
         });
         fireKey(KEYS.X);
         expect(defaultFn).toHaveBeenCalled();
@@ -435,7 +435,7 @@ describe("Ext.util.KeyMap", function () {
           key: KEYS.Y,
           handler: defaultFn,
           alt: true,
-          ctrl: true,
+          ctrl: true
         });
         fireKey(KEYS.Y);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -448,7 +448,7 @@ describe("Ext.util.KeyMap", function () {
           handler: defaultFn,
           alt: true,
           ctrl: true,
-          shift: true,
+          shift: true
         });
         fireKey(KEYS.Y);
         expect(defaultFn).not.toHaveBeenCalled();
@@ -460,7 +460,7 @@ describe("Ext.util.KeyMap", function () {
           key: KEYS.Z,
           handler: defaultFn,
           alt: true,
-          shift: true,
+          shift: true
         });
         fireKey(KEYS.Z);
         expect(defaultFn).toHaveBeenCalled();
@@ -477,7 +477,7 @@ describe("Ext.util.KeyMap", function () {
           key: KEYS.A,
           handler: function () {
             actual = this;
-          },
+          }
         });
         fireKey(KEYS.A);
         expect(actual).toEqual(map);
@@ -492,7 +492,7 @@ describe("Ext.util.KeyMap", function () {
           scope: scope,
           handler: function () {
             actual = this;
-          },
+          }
         });
         fireKey(KEYS.Y);
         expect(actual).toBe(scope);
@@ -510,15 +510,15 @@ describe("Ext.util.KeyMap", function () {
             scope: scope1,
             handler: function () {
               actual1 = this;
-            },
+            }
           },
           {
             key: KEYS.X,
             scope: scope2,
             handler: function () {
               actual2 = this;
-            },
-          },
+            }
+          }
         ]);
 
         fireKey(KEYS.B);
@@ -537,7 +537,7 @@ describe("Ext.util.KeyMap", function () {
         handler: function (key, event) {
           realKey = key;
           realEvent = event;
-        },
+        }
       });
       fireKey(KEYS.Z);
 
@@ -552,7 +552,7 @@ describe("Ext.util.KeyMap", function () {
     it("should be enabled by default", function () {
       createMap({
         key: KEYS.B,
-        fn: defaultFn,
+        fn: defaultFn
       });
       fireKey(KEYS.B);
       expect(defaultFn).toHaveBeenCalled();
@@ -561,7 +561,7 @@ describe("Ext.util.KeyMap", function () {
     it("should not fire any events when disabled", function () {
       createMap({
         key: KEYS.C,
-        fn: defaultFn,
+        fn: defaultFn
       });
       map.disable();
       fireKey(KEYS.C);
@@ -571,7 +571,7 @@ describe("Ext.util.KeyMap", function () {
     it("should fire events after being disabled/enabled", function () {
       createMap({
         key: KEYS.Z,
-        fn: defaultFn,
+        fn: defaultFn
       });
       map.disable();
       fireKey(KEYS.Z);
@@ -592,12 +592,12 @@ describe("Ext.util.KeyMap", function () {
       createMap([
         {
           key: [KEYS.A, KEYS.A],
-          fn: spy001,
+          fn: spy001
         },
         {
           key: KEYS.A,
-          fn: spy002,
-        },
+          fn: spy002
+        }
       ]);
     });
 
@@ -639,23 +639,23 @@ describe("Ext.util.KeyMap", function () {
       var bindings = [
         {
           key: "A",
-          handler: Ext.emptyFn,
+          handler: Ext.emptyFn
         },
         {
           key: "A",
           ctrl: true,
-          handler: Ext.emptyFn,
+          handler: Ext.emptyFn
         },
         {
           key: "A",
           shift: true,
-          handler: Ext.emptyFn,
+          handler: Ext.emptyFn
         },
         {
           key: "A",
           alt: true,
-          handler: Ext.emptyFn,
-        },
+          handler: Ext.emptyFn
+        }
       ];
 
       createMap(bindings);
@@ -682,7 +682,7 @@ describe("Ext.util.KeyMap", function () {
   describe("destroying", function () {
     it("should unbind any events on the element", function () {
       createMap({
-        key: KEYS.A,
+        key: KEYS.A
       });
       map.destroy();
       fireKey(KEYS.A);
@@ -700,11 +700,11 @@ describe("Ext.util.KeyMap", function () {
      */
     xit("should remove the element if removeEl is specified", function () {
       createMap({
-        key: KEYS.A,
+        key: KEYS.A
       });
       map.destroy(true);
       expect(
-        jasmine.util.argsToArray(Ext.getBody().dom.childNodes),
+        jasmine.util.argsToArray(Ext.getBody().dom.childNodes)
       ).not.toContain(el);
     });
   });

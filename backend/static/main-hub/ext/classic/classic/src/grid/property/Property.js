@@ -29,11 +29,11 @@ Ext.define("Ext.grid.property.Property", {
   fields: [
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
-      name: "value",
-    },
+      name: "value"
+    }
   ],
   idProperty: "name",
 
@@ -41,9 +41,9 @@ Ext.define("Ext.grid.property.Property", {
     if (!Ext.isObject(data)) {
       data = {
         name: data,
-        value: value,
+        value: value
       };
     }
     this.callParent([data]);
-  },
+  }
 });

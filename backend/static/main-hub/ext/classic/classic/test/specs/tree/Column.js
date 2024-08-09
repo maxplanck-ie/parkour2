@@ -9,10 +9,10 @@ describe("Ext.tree.Column", function () {
       store: {
         autoDestroy: true,
         root: {
-          text: "Foo",
-        },
+          text: "Foo"
+        }
       },
-      columns: columns,
+      columns: columns
     });
     colRef = tree.getColumnManager().getColumns();
   }
@@ -32,14 +32,14 @@ describe("Ext.tree.Column", function () {
       initComponent: function () {
         this.scope = o;
         this.callParent();
-      },
+      }
     });
 
     makeTree([
       {
         xtype: "spectreecolumn",
-        renderer: spy,
-      },
+        renderer: spy
+      }
     ]);
 
     expect(spy.callCount).toBe(1);

@@ -140,7 +140,7 @@ Ext.define("Ext.flash.Component", {
     // <debug>
     if (!("swfobject" in window)) {
       Ext.raise(
-        "The SWFObject library is not loaded. Ext.flash.Component requires SWFObject version 2.2 or later: http://code.google.com/p/swfobject/",
+        "The SWFObject library is not loaded. Ext.flash.Component requires SWFObject version 2.2 or later: http://code.google.com/p/swfobject/"
       );
     }
     if (!this.url) {
@@ -155,7 +155,7 @@ Ext.define("Ext.flash.Component", {
     this.callParent();
 
     Ext.applyIf(this.renderData, {
-      swfId: this.getSwfId(),
+      swfId: this.getSwfId()
     });
   },
 
@@ -170,16 +170,16 @@ Ext.define("Ext.flash.Component", {
       {
         allowScriptAccess: "always",
         bgcolor: me.backgroundColor,
-        wmode: me.wmode,
+        wmode: me.wmode
       },
-      flashParams,
+      flashParams
     );
 
     flashVars = Ext.apply(
       {
-        allowedDomain: document.location.hostname,
+        allowedDomain: document.location.hostname
       },
-      flashVars,
+      flashVars
     );
 
     new swfobject.embedSWF( // jshint ignore:line
@@ -192,7 +192,7 @@ Ext.define("Ext.flash.Component", {
       flashVars,
       flashParams,
       me.flashAttributes,
-      me.swfCallback.bind(me),
+      me.swfCallback.bind(me)
     );
   },
 
@@ -249,6 +249,6 @@ Ext.define("Ext.flash.Component", {
      */
     EXPRESS_INSTALL_URL:
       "http:/" +
-      "/swfobject.googlecode.com/svn/trunk/swfobject/expressInstall.swf",
-  },
+      "/swfobject.googlecode.com/svn/trunk/swfobject/expressInstall.swf"
+  }
 });

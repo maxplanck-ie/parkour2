@@ -12,7 +12,7 @@ Ext.define("Ext.ux.form.MultiSelect", {
   requires: [
     "Ext.panel.Panel",
     "Ext.view.BoundList",
-    "Ext.layout.container.Fit",
+    "Ext.layout.container.Fit"
   ],
 
   uses: ["Ext.view.DragZone", "Ext.view.DropZone"],
@@ -160,17 +160,17 @@ Ext.define("Ext.ux.form.MultiSelect", {
           disabled: me.disabled,
           tabIndex: 0,
           navigationModel: {
-            type: "default",
-          },
+            type: "default"
+          }
         },
-        me.listConfig,
-      ),
+        me.listConfig
+      )
     );
 
     me.boundList.getNavigationModel().addKeyBindings({
       pageUp: me.onKeyPageUp,
       pageDown: me.onKeyPageDown,
-      scope: me,
+      scope: me
     });
 
     me.boundList
@@ -196,7 +196,7 @@ Ext.define("Ext.ux.form.MultiSelect", {
       layout: "anchor",
       title: me.title,
       tbar: me.tbar,
-      items: me.boundList,
+      items: me.boundList
     };
   },
 
@@ -258,7 +258,7 @@ Ext.define("Ext.ux.form.MultiSelect", {
       me.dragZone = Ext.create("Ext.view.DragZone", {
         view: me.boundList,
         ddGroup: me.dragGroup,
-        dragText: me.dragText,
+        dragText: me.dragText
       });
     }
     if (me.droppable || me.dropGroup) {
@@ -281,7 +281,7 @@ Ext.define("Ext.ux.form.MultiSelect", {
           store.insert(index, records);
           view.getSelectionModel().select(records);
           me.fireEvent("drop", me, records);
-        },
+        }
       });
     }
 
@@ -290,7 +290,7 @@ Ext.define("Ext.ux.form.MultiSelect", {
     if (panel && boundList) {
       boundList.ariaEl.dom.setAttribute(
         "aria-labelledby",
-        panel.header.id + "-title-textEl",
+        panel.header.id + "-title-textEl"
       );
     }
   },
@@ -471,7 +471,7 @@ Ext.define("Ext.ux.form.MultiSelect", {
     if (!store.getCount()) {
       store.on({
         load: Ext.Function.bind(me.setValue, me, [value]),
-        single: true,
+        single: true
       });
       return;
     }
@@ -575,5 +575,5 @@ Ext.define("Ext.ux.form.MultiSelect", {
     if (boundList) {
       boundList.setDisplayField(me.displayField);
     }
-  },
+  }
 });

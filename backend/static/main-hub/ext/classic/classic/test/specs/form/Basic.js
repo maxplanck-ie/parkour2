@@ -8,7 +8,7 @@ describe("Ext.form.Basic", function () {
     var c;
     if (!config.isComponent) {
       Ext.apply(config, {
-        isEqual: Ext.form.field.Base.prototype.isEqualAsString,
+        isEqual: Ext.form.field.Base.prototype.isEqualAsString
       });
       c = new Ext.form.field.Base(config);
     } else {
@@ -32,7 +32,7 @@ describe("Ext.form.Basic", function () {
           mockActionCtorSpy.apply(this, arguments);
         }
       },
-      run: Ext.emptyFn,
+      run: Ext.emptyFn
     });
 
     container = new Ext.container.Container({});
@@ -133,7 +133,7 @@ describe("Ext.form.Basic", function () {
         name: "two",
         isValid: function () {
           return false;
-        },
+        }
       });
       expect(basicForm.isValid()).toBeFalsy();
     });
@@ -170,9 +170,9 @@ describe("Ext.form.Basic", function () {
         getData: function () {
           return {
             one: "value 1",
-            two: "value 2",
+            two: "value 2"
           };
-        },
+        }
       };
       basicForm.loadRecord(record);
       basicForm.reset();
@@ -184,9 +184,9 @@ describe("Ext.form.Basic", function () {
         getData: function () {
           return {
             one: "value 1",
-            two: "value 2",
+            two: "value 2"
           };
-        },
+        }
       };
       basicForm.loadRecord(record);
       basicForm.reset(true);
@@ -216,7 +216,7 @@ describe("Ext.form.Basic", function () {
     it("should exclude items with the excludeForm property on the field", function () {
       addField({
         name: "foo",
-        excludeForm: true,
+        excludeForm: true
       });
 
       expect(basicForm.findField("foo")).toBeNull();
@@ -232,7 +232,7 @@ describe("Ext.form.Basic", function () {
       spyOn(two, "markInvalid");
       basicForm.markInvalid({
         one: "error one",
-        two: "error two",
+        two: "error two"
       });
       expect(one.markInvalid).toHaveBeenCalledWith("error one");
       expect(two.markInvalid).toHaveBeenCalledWith("error two");
@@ -245,7 +245,7 @@ describe("Ext.form.Basic", function () {
       spyOn(two, "markInvalid");
       basicForm.markInvalid([
         { id: "one", msg: "error one" },
-        { id: "two", msg: "error two" },
+        { id: "two", msg: "error two" }
       ]);
       expect(one.markInvalid).toHaveBeenCalledWith("error one");
       expect(two.markInvalid).toHaveBeenCalledWith("error two");
@@ -294,7 +294,7 @@ describe("Ext.form.Basic", function () {
       spyOn(two, "setValue");
       basicForm.setValues({
         one: "value 1",
-        two: "value 2",
+        two: "value 2"
       });
       expect(one.setValue).toHaveBeenCalledWith("value 1");
       expect(two.setValue).toHaveBeenCalledWith("value 2");
@@ -307,7 +307,7 @@ describe("Ext.form.Basic", function () {
       spyOn(two, "setValue");
       basicForm.setValues([
         { id: "one", value: "value 1" },
-        { id: "two", value: "value 2" },
+        { id: "two", value: "value 2" }
       ]);
       expect(one.setValue).toHaveBeenCalledWith("value 1");
       expect(two.setValue).toHaveBeenCalledWith("value 2");
@@ -316,7 +316,7 @@ describe("Ext.form.Basic", function () {
     it("should not set the fields' originalValue property by default", function () {
       var one = addField({ name: "one", value: "orig value" });
       basicForm.setValues({
-        one: "new value",
+        one: "new value"
       });
       expect(one.originalValue).toEqual("orig value");
     });
@@ -325,7 +325,7 @@ describe("Ext.form.Basic", function () {
       var one = addField({ name: "one", value: "orig value" });
       basicForm.trackResetOnLoad = true;
       basicForm.setValues({
-        one: "new value",
+        one: "new value"
       });
       expect(one.originalValue).toEqual("new value");
     });
@@ -352,7 +352,7 @@ describe("Ext.form.Basic", function () {
 
             me.updateLayout();
             return value;
-          },
+          }
         });
         data[key] = key;
       }
@@ -395,13 +395,13 @@ describe("Ext.form.Basic", function () {
         name: "two",
         getRawValue: function () {
           return ["value 3", "value 4"];
-        },
+        }
       });
 
       vals = basicForm.getValues();
       expect(vals).toEqual({
         one: "value 1",
-        two: ["value 2", "value 3", "value 4"],
+        two: ["value 2", "value 3", "value 4"]
       });
     });
 
@@ -425,7 +425,7 @@ describe("Ext.form.Basic", function () {
         name: "one",
         value: "value 1",
         dirty: true,
-        emptyText: "empty 1",
+        emptyText: "empty 1"
       });
       addField({ name: "two", value: "", dirty: false, emptyText: "empty 2" });
       vals = basicForm.getValues(false, false, true);
@@ -445,7 +445,7 @@ describe("Ext.form.Basic", function () {
         value: "value 1",
         getSubmitData: function () {
           return null;
-        },
+        }
       });
       addField({ name: "two", value: "value 2" });
       vals = basicForm.getValues();
@@ -457,7 +457,7 @@ describe("Ext.form.Basic", function () {
       addField({ name: "two", value: "value 2" });
       container.add({
         xtype: "filefield",
-        name: "three",
+        name: "three"
       });
       vals = basicForm.getValues();
       expect(vals).toEqual({ one: "value 1", two: "value 2" });
@@ -503,7 +503,7 @@ describe("Ext.form.Basic", function () {
       spyOn(basicForm, "beforeAction");
       basicForm.doAction("mock");
       expect(basicForm.beforeAction).toHaveBeenCalledWith(
-        currentActionInstance,
+        currentActionInstance
       );
     });
 
@@ -666,13 +666,13 @@ describe("Ext.form.Basic", function () {
           name: "one",
           isValid: function () {
             return false;
-          },
+          }
         }),
         field2 = addField({
           name: "two",
           isValid: function () {
             return false;
-          },
+          }
         });
       basicForm.checkValidity();
       basicForm.on("validitychange", spy);
@@ -711,7 +711,7 @@ describe("Ext.form.Basic", function () {
 
       it("should checkValidity when removing a container that contains a field", function () {
         var myCt = container.add({
-          xtype: "container",
+          xtype: "container"
         });
         addField({ name: "one" }, myCt);
         container.remove(0);
@@ -736,7 +736,7 @@ describe("Ext.form.Basic", function () {
         // Modify the task to point to the spy
         basicForm.checkDirtyTask = new Ext.util.DelayedTask(
           basicForm.checkDirty,
-          basicForm,
+          basicForm
         );
         var field = addField({ name: "one" });
         field.fireEvent("dirtychange", field, false);
@@ -765,13 +765,13 @@ describe("Ext.form.Basic", function () {
           name: "one",
           isDirty: function () {
             return true;
-          },
+          }
         }),
         field2 = addField({
           name: "two",
           isDirty: function () {
             return true;
-          },
+          }
         });
       basicForm.checkDirty();
       basicForm.on("dirtychange", spy);
@@ -789,13 +789,13 @@ describe("Ext.form.Basic", function () {
           name: "one",
           isValid: function () {
             return true;
-          },
+          }
         }),
         field2 = addField({
           name: "two",
           isValid: function () {
             return true;
-          },
+          }
         }),
         button = new Ext.Button({ formBind: true });
       basicForm.checkValidity();
@@ -815,13 +815,13 @@ describe("Ext.form.Basic", function () {
           name: "one",
           isValid: function () {
             return false;
-          },
+          }
         }),
         field2 = addField({
           name: "two",
           isValid: function () {
             return true;
-          },
+          }
         }),
         button = new Ext.Button({ formBind: true, disabled: true });
       basicForm.checkValidity();
@@ -841,7 +841,7 @@ describe("Ext.form.Basic", function () {
           name: "one",
           isValid: function () {
             return false;
-          },
+          }
         }),
         field2 = addField({ name: "two" }),
         button = new Ext.Button({ formBind: true });
@@ -859,13 +859,13 @@ describe("Ext.form.Basic", function () {
           name: "one",
           isValid: function () {
             return true;
-          },
+          }
         }),
         field2 = addField({
           name: "two",
           isValid: function () {
             return true;
-          },
+          }
         }),
         button = new Ext.Button({ formBind: true, disabled: true });
       basicForm.checkValidity();
@@ -885,12 +885,12 @@ describe("Ext.form.Basic", function () {
           name: "one",
           isValid: function () {
             return true;
-          },
+          }
         }),
         field2 = container.add({
           xtype: "textfield",
           name: "two",
-          allowBlank: false,
+          allowBlank: false
         }),
         button = new Ext.Button({ formBind: true });
 
@@ -911,12 +911,12 @@ describe("Ext.form.Basic", function () {
     it("should call setValues with the record's data", function () {
       var data = {
           one: "value 1",
-          two: "value 2",
+          two: "value 2"
         },
         record = {
           getData: function () {
             return data;
-          },
+          }
         };
       spyOn(basicForm, "setValues");
       basicForm.loadRecord(record);
@@ -926,12 +926,12 @@ describe("Ext.form.Basic", function () {
     it("should keep a reference to the record on the form", function () {
       var data = {
           one: "value 1",
-          two: "value 2",
+          two: "value 2"
         },
         record = {
           getData: function () {
             return data;
-          },
+          }
         };
       basicForm.loadRecord(record);
       expect(basicForm.getRecord()).toBe(record);
@@ -947,8 +947,8 @@ describe("Ext.form.Basic", function () {
           "one",
           { type: "int", name: "two" },
           { type: "date", name: "three" },
-          { name: "four" },
-        ],
+          { name: "four" }
+        ]
       });
       model = new BasicFormTestModel();
     });
@@ -964,22 +964,22 @@ describe("Ext.form.Basic", function () {
       addField(new Ext.form.field.Number({ name: "two", value: 2 }));
       addField(new Ext.form.field.Date({ name: "three", value: date }));
       addField(
-        new Ext.form.field.Checkbox({ name: "four", inputValue: "red" }),
+        new Ext.form.field.Checkbox({ name: "four", inputValue: "red" })
       );
       addField(
         new Ext.form.field.Checkbox({
           name: "four",
           checked: true,
           inputValue: "blue",
-          uncheckedValue: "no-blue",
-        }),
+          uncheckedValue: "no-blue"
+        })
       );
       addField(
         new Ext.form.field.Checkbox({
           name: "four",
           inputValue: "green",
-          uncheckedValue: "no-green",
-        }),
+          uncheckedValue: "no-green"
+        })
       );
 
       basicForm.updateRecord(model);
@@ -1024,19 +1024,19 @@ describe("Ext.form.Basic", function () {
           xtype: "checkboxfield",
           inputValue: "red",
           name: "foo",
-          checked: true,
+          checked: true
         },
         {
           xtype: "checkboxfield",
           inputValue: "blue",
-          name: "foo",
+          name: "foo"
         },
         {
           xtype: "checkboxfield",
           inputValue: "green",
           name: "foo",
-          uncheckedValue: "off",
-        },
+          uncheckedValue: "off"
+        }
       ]);
       // is checked, should be the value
       expect(chks[0].getModelData().foo).toBe("red");
@@ -1046,7 +1046,7 @@ describe("Ext.form.Basic", function () {
       expect(chks[2].getModelData().foo).toBe("off");
       // only the first two should be included
       expect(
-        basicForm.getValues(undefined, undefined, undefined, true).foo.length,
+        basicForm.getValues(undefined, undefined, undefined, true).foo.length
       ).toEqual(2);
     });
   });
@@ -1057,27 +1057,27 @@ describe("Ext.form.Basic", function () {
         {
           xtype: "radiofield",
           inputValue: "1",
-          name: "foo",
+          name: "foo"
         },
         {
           xtype: "radiofield",
           inputValue: "2",
-          name: "foo",
+          name: "foo"
         },
         {
           xtype: "radiofield",
           inputValue: "3",
-          name: "foo",
+          name: "foo"
         },
         {
           xtype: "radiofield",
           inputValue: "4",
-          name: "foo",
-        },
+          name: "foo"
+        }
       ]);
       container.items.getAt(2).setValue(true);
       expect(
-        basicForm.getValues(undefined, undefined, undefined, true).foo,
+        basicForm.getValues(undefined, undefined, undefined, true).foo
       ).toBe("3");
     });
 
@@ -1086,28 +1086,28 @@ describe("Ext.form.Basic", function () {
         {
           xtype: "radiofield",
           inputValue: "1",
-          name: "foo",
+          name: "foo"
         },
         {
           xtype: "radiofield",
           inputValue: "2",
-          name: "foo",
+          name: "foo"
         },
         {
           xtype: "radiofield",
           inputValue: "3",
-          name: "foo",
+          name: "foo"
         },
         {
           xtype: "radiofield",
           inputValue: "4",
-          name: "foo",
-        },
+          name: "foo"
+        }
       ]);
       container.items.getAt(2).setValue(true);
       container.items.getAt(2).setValue(false);
       expect(
-        basicForm.getValues(undefined, undefined, undefined, true).foo,
+        basicForm.getValues(undefined, undefined, undefined, true).foo
       ).toBeNull();
     });
   });

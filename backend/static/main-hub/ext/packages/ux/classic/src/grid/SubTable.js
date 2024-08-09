@@ -13,7 +13,7 @@ Ext.define("Ext.ux.grid.SubTable", {
     "{%",
     "this.owner.renderTable(out, values);",
     "%}",
-    "</table>",
+    "</table>"
   ],
 
   init: function (grid) {
@@ -32,9 +32,9 @@ Ext.define("Ext.ux.grid.SubTable", {
         // their rendering smarts, but don't want to treat them as real components
         columnCfg = Ext.apply(
           {
-            preventRegister: true,
+            preventRegister: true
           },
-          columns[i],
+          columns[i]
         );
         columnCfg.xtype = columnCfg.xtype || "gridcolumn";
         me.columns.push(Ext.widget(columnCfg));
@@ -78,7 +78,7 @@ Ext.define("Ext.ux.grid.SubTable", {
       out.push(
         '<th class="' + Ext.baseCSSPrefix + 'grid-subtable-header">',
         columns[j].text,
-        "</th>",
+        "</th>"
       );
     }
     out.push("</thead><tbody>");
@@ -98,7 +98,7 @@ Ext.define("Ext.ux.grid.SubTable", {
         out.push(
           '><div class="' + Ext.baseCSSPrefix + 'grid-cell-inner">',
           value,
-          "</div></td>",
+          "</div></td>"
         );
       }
       out.push("</tr>");
@@ -116,5 +116,5 @@ Ext.define("Ext.ux.grid.SubTable", {
 
   getAssociatedRecords: function (record) {
     return record[this.association]().getRange();
-  },
+  }
 });

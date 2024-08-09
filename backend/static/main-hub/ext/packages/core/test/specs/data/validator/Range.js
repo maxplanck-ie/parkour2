@@ -4,7 +4,7 @@ describe("Ext.data.validator.Range", function () {
   function validate(value, min, max) {
     v = new Ext.data.validator.Range({
       min: min,
-      max: max,
+      max: max
     });
     return v.validate(value);
   }
@@ -41,7 +41,7 @@ describe("Ext.data.validator.Range", function () {
       it("should not validate if the value is greater than the maximum", function () {
         var max = 10;
         expect(validate(20, undefined, max)).toBe(
-          f(v.getMaxOnlyMessage(), max),
+          f(v.getMaxOnlyMessage(), max)
         );
       });
     });
@@ -105,7 +105,7 @@ describe("Ext.data.validator.Range", function () {
   describe("messages", function () {
     it("should accept a custom empty message", function () {
       v = new Ext.data.validator.Range({
-        emptyMessage: "Foo",
+        emptyMessage: "Foo"
       });
       expect(v.validate(undefined)).toBe("Foo");
     });
@@ -113,7 +113,7 @@ describe("Ext.data.validator.Range", function () {
     it("should accept a custom min message", function () {
       v = new Ext.data.validator.Range({
         minOnlyMessage: "Foo{0}",
-        min: 1,
+        min: 1
       });
       expect(v.validate(0)).toBe("Foo1");
     });
@@ -121,7 +121,7 @@ describe("Ext.data.validator.Range", function () {
     it("should accept a custom max message", function () {
       v = new Ext.data.validator.Range({
         maxOnlyMessage: "Foo{0}",
-        max: 3,
+        max: 3
       });
       expect(v.validate(10)).toBe("Foo3");
     });
@@ -130,7 +130,7 @@ describe("Ext.data.validator.Range", function () {
       v = new Ext.data.validator.Range({
         bothMessage: "Foo{0}{1}",
         min: 5,
-        max: 7,
+        max: 7
       });
       expect(v.validate(3)).toBe("Foo57");
     });
@@ -140,7 +140,7 @@ describe("Ext.data.validator.Range", function () {
     var make = function (min, max) {
       v = new Ext.data.validator.Range({
         min: min,
-        max: max,
+        max: max
       });
     };
 

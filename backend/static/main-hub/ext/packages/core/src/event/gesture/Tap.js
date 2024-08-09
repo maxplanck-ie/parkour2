@@ -16,7 +16,7 @@ Ext.define(
        * The maximimum distance in pixels a touchstart event can travel and still be considered a tap event.
        */
 
-      moveDistance: 8,
+      moveDistance: 8
     },
 
     onTouchStart: function (e) {
@@ -37,7 +37,7 @@ Ext.define(
         scale = Ext.Element.getViewportScale(),
         // account for scale so that move distance is actual screen pixels, not page pixels
         distance = Math.round(
-          Math.abs(point.getDistanceTo(me.startPoint) * scale),
+          Math.abs(point.getDistanceTo(me.startPoint) * scale)
         );
 
       if (distance >= me.getMoveDistance()) {
@@ -47,7 +47,7 @@ Ext.define(
 
     onTouchEnd: function (e) {
       this.fire("tap", e, {
-        touch: e.changedTouches[0],
+        touch: e.changedTouches[0]
       });
 
       return this.callParent([e]);
@@ -58,19 +58,19 @@ Ext.define(
         "tapcancel",
         e,
         {
-          touch: e.changedTouches[0],
+          touch: e.changedTouches[0]
         },
-        true,
+        true
       );
     },
 
     reset: function () {
       this.startPoint = null;
       return this.callParent();
-    },
+    }
   },
   function (Tap) {
     var gestures = Ext.manifest.gestures;
     Tap.instance = new Tap(gestures && gestures.tap);
-  },
+  }
 );

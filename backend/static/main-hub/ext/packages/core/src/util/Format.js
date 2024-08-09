@@ -280,7 +280,7 @@ Ext.define("Ext.util.Format", function () {
           negativeSign,
           v,
           currencySpacer,
-          currencySign || me.currencySign,
+          currencySign || me.currencySign
         );
       } else {
         return Ext.String.format(
@@ -288,7 +288,7 @@ Ext.define("Ext.util.Format", function () {
           negativeSign,
           currencySign || me.currencySign,
           currencySpacer,
-          v,
+          v
         );
       }
     },
@@ -619,7 +619,7 @@ Ext.define("Ext.util.Format", function () {
           ) {
             me.I18NFormatCleanRe = new RegExp(
               "[^\\d\\" + decimalSeparator + "#]",
-              "g",
+              "g"
             );
             me.lastDecimalSeparator = decimalSeparator;
           }
@@ -641,7 +641,7 @@ Ext.define("Ext.util.Format", function () {
             sourceMethod: "number",
             value: v,
             formatString: formatString,
-            msg: "Invalid number format, should have no more than 1 decimal",
+            msg: "Invalid number format, should have no more than 1 decimal"
           });
           //</debug>
         } else if (splitFormat.length === 2) {
@@ -675,7 +675,7 @@ Ext.define("Ext.util.Format", function () {
           "absVal=Math.abs(v);",
           "fnum=Ext.Number.toFixed(absVal, " + precision + ");",
           trimPart,
-          ";",
+          ";"
         ];
 
         if (hasComma) {
@@ -738,7 +738,7 @@ Ext.define("Ext.util.Format", function () {
 
         formatFn = me.formatFns[originalFormatString] = Ext.functionFactory(
           "Ext",
-          code.join(""),
+          code.join("")
         )(Ext);
       }
       return formatFn(v);
@@ -786,7 +786,7 @@ Ext.define("Ext.util.Format", function () {
               name === "style"
                 ? Ext.DomHelper.generateStyles(attributes[name], null, true)
                 : Ext.htmlEncode(attributes[name]),
-              '" ',
+              '" '
             );
           }
         }
@@ -925,7 +925,7 @@ Ext.define("Ext.util.Format", function () {
           top: box,
           right: box,
           bottom: box,
-          left: box,
+          left: box
         };
       }
 
@@ -945,7 +945,7 @@ Ext.define("Ext.util.Format", function () {
         top: parseInt(parts[0], 10) || 0,
         right: parseInt(parts[1], 10) || 0,
         bottom: parseInt(parts[2], 10) || 0,
-        left: parseInt(parts[3], 10) || 0,
+        left: parseInt(parts[3], 10) || 0
       };
     },
 
@@ -992,6 +992,6 @@ Ext.define("Ext.util.Format", function () {
         parts = (value || "").split(re);
 
       return parts[index || 0] || "";
-    },
+    }
   };
 });

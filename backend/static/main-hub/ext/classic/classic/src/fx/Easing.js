@@ -120,7 +120,7 @@ Ext.define(
           }
         }
         return l;
-      },
+      }
     };
   },
   function (me) {
@@ -137,7 +137,7 @@ Ext.define(
       "elastic-out": proto.elasticOut,
       "bounce-in": proto.bounceIn,
       "bounce-out": proto.bounceOut,
-      "ease-in-out": proto.easeInOut,
+      "ease-in-out": proto.easeInOut
     });
-  },
+  }
 );

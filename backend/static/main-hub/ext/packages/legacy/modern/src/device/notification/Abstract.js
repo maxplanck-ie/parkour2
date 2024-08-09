@@ -110,5 +110,5 @@ Ext.define("Ext.device.notification.Abstract", {
    */
   vibrate: Ext.emptyFn,
 
-  beep: Ext.emptyFn,
+  beep: Ext.emptyFn
 });

@@ -5,15 +5,15 @@ Ext.onReady(function () {
       if (!(/^http:.*/.test(options.url) || /^https:.*/.test(options.url))) {
         if (typeof options.headers == "undefined") {
           options.headers = {
-            "X-CSRFToken": Ext.util.Cookies.get("csrftoken"),
+            "X-CSRFToken": Ext.util.Cookies.get("csrftoken")
           };
         } else {
           $.extend(options.headers, {
-            "X-CSRFToken": Ext.util.Cookies.get("csrftoken"),
+            "X-CSRFToken": Ext.util.Cookies.get("csrftoken")
           });
         }
       }
     },
-    this,
+    this
   );
 });

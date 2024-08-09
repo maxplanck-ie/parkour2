@@ -165,12 +165,12 @@ Ext.define("Ext.util.Base64", {
         c2 = utftext.charCodeAt(i + 1);
         c3 = utftext.charCodeAt(i + 2);
         string += String.fromCharCode(
-          ((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63),
+          ((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63)
         );
         i += 3;
       }
     }
 
     return string;
-  },
+  }
 });

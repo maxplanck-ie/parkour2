@@ -78,7 +78,7 @@ Ext.define("Ext.grid.filters.filter.Date", {
     fields: {
       lt: { text: "Before" },
       gt: { text: "After" },
-      eq: { text: "On" },
+      eq: { text: "On" }
     },
     //</locale>
 
@@ -88,7 +88,7 @@ Ext.define("Ext.grid.filters.filter.Date", {
      */
     pickerDefaults: {
       xtype: "datepicker",
-      border: 0,
+      border: 0
     },
 
     updateBuffer: 0,
@@ -98,7 +98,7 @@ Ext.define("Ext.grid.filters.filter.Date", {
      * The date format to return when using getValue.
      * Defaults to {@link Ext.Date#defaultFormat}.
      */
-    dateFormat: undefined,
+    dateFormat: undefined
   },
 
   itemDefaults: {
@@ -107,8 +107,8 @@ Ext.define("Ext.grid.filters.filter.Date", {
     width: 125,
     menu: {
       layout: "auto",
-      plain: true,
-    },
+      plain: true
+    }
   },
 
   /**
@@ -135,7 +135,7 @@ Ext.define("Ext.grid.filters.filter.Date", {
     var me = this,
       listeners = {
         scope: me,
-        checkchange: me.onCheckChange,
+        checkchange: me.onCheckChange
       },
       menuItems = me.menuItems,
       fields,
@@ -160,10 +160,10 @@ Ext.define("Ext.grid.filters.filter.Date", {
         format: me.dateFormat,
         listeners: {
           scope: me,
-          select: me.onMenuSelect,
-        },
+          select: me.onMenuSelect
+        }
       },
-      me.getPickerDefaults(),
+      me.getPickerDefaults()
     );
 
     me.fields = {};
@@ -177,11 +177,11 @@ Ext.define("Ext.grid.filters.filter.Date", {
             hideOnClick: false,
             pickerCfg: Ext.apply(
               {
-                itemId: key,
+                itemId: key
               },
-              pickerCfg,
-            ),
-          },
+              pickerCfg
+            )
+          }
         };
 
         if (itemDefaults) {
@@ -319,5 +319,5 @@ Ext.define("Ext.grid.filters.filter.Date", {
     me.setValue(v);
 
     picker.up("menu").hide();
-  },
+  }
 });

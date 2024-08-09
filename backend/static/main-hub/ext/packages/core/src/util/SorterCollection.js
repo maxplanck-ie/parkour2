@@ -38,7 +38,7 @@ Ext.define("Ext.util.SorterCollection", {
      * The scope to execute the {@link #applySorterOptionsFn}
      * @private
      */
-    sorterOptionsScope: null,
+    sorterOptionsScope: null
   },
 
   constructor: function (config) {
@@ -76,8 +76,8 @@ Ext.define("Ext.util.SorterCollection", {
           sorters = [
             {
               property: property,
-              direction: direction || options.getDefaultSortDirection(),
-            },
+              direction: direction || options.getDefaultSortDirection()
+            }
           ];
         } else {
           sorters = [sorter];
@@ -86,8 +86,8 @@ Ext.define("Ext.util.SorterCollection", {
         sorters = [
           {
             sorterFn: property,
-            direction: direction || options.getDefaultSortDirection(),
-          },
+            direction: direction || options.getDefaultSortDirection()
+          }
         ];
       } else {
         //<debug>
@@ -106,7 +106,7 @@ Ext.define("Ext.util.SorterCollection", {
         Ext.raise(
           'Sort mode should be "multi", "append", "prepend" or "replace", not "' +
             mode +
-            '"',
+            '"'
         );
       }
       //</debug>
@@ -189,7 +189,7 @@ Ext.define("Ext.util.SorterCollection", {
     append: { append: 1 },
     multi: { multi: 1 },
     prepend: { prepend: 1 },
-    replace: { replace: 1 },
+    replace: { replace: 1 }
   },
 
   decodeSorter: function (sorter, xclass) {
@@ -208,7 +208,7 @@ Ext.define("Ext.util.SorterCollection", {
     } else {
       sorterConfig = {
         direction: options.getDefaultSortDirection(),
-        root: root,
+        root: root
       };
       type = typeof sorter;
 
@@ -319,5 +319,5 @@ Ext.define("Ext.util.SorterCollection", {
     // that is not really useful to sort the sorters themselves, but we do have the
     // default options for Sortables baked in, so we'll do.
     return this.$sortable || this;
-  },
+  }
 });

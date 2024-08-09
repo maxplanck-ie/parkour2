@@ -56,7 +56,7 @@ Ext.define("Ext.tab.Bar", {
      * is disabled, users will have to use arrow keys to focus a tab, and then press
      * Space key to activate it.
      */
-    activateOnFocus: true,
+    activateOnFocus: true
   },
 
   /**
@@ -112,14 +112,14 @@ Ext.define("Ext.tab.Bar", {
 
   _reverseDockNames: {
     left: "right",
-    right: "left",
+    right: "left"
   },
 
   _layoutAlign: {
     top: "end",
     right: "begin",
     bottom: "begin",
-    left: "end",
+    left: "end"
   },
 
   /**
@@ -149,13 +149,13 @@ Ext.define("Ext.tab.Bar", {
       align:
         initialAlign ||
         (me.getTabStretchMax() ? "stretchmax" : me._layoutAlign[me.dock]),
-      overflowHandler: initialOverflowHandler || "scroller",
+      overflowHandler: initialOverflowHandler || "scroller"
     });
 
     me.on({
       click: me.onClick,
       element: "el",
-      scope: me,
+      scope: me
     });
   },
 
@@ -207,7 +207,7 @@ Ext.define("Ext.tab.Bar", {
       baseBodyCls: me._baseBodyCls,
       bodyTargetCls: me.bodyTargetCls,
       stripCls: me._stripCls,
-      dock: me.dock,
+      dock: me.dock
     });
   },
 
@@ -277,7 +277,7 @@ Ext.define("Ext.tab.Bar", {
     if (Ext.isIE8 && me.vertical) {
       me.el.on({
         mousemove: me.onMouseMove,
-        scope: me,
+        scope: me
       });
     }
 
@@ -300,7 +300,7 @@ Ext.define("Ext.tab.Bar", {
         destroyable: true,
         glyphchange: fn,
         iconchange: fn,
-        textchange: fn,
+        textchange: fn
       });
     }
     this.callParent([tab, pos]);
@@ -455,7 +455,7 @@ Ext.define("Ext.tab.Bar", {
         tabY,
         tabX + tabWidth,
         tabY + tabHeight,
-        tabX,
+        tabX
       );
       if (tabRegion.contains(point)) {
         closeEl = tab.closeEl;
@@ -482,7 +482,7 @@ Ext.define("Ext.tab.Bar", {
             tabHeight,
             closeWidth,
             closeHeight,
-            direction,
+            direction
           );
           closeX = closeXY[0];
           closeY = closeXY[1];
@@ -491,7 +491,7 @@ Ext.define("Ext.tab.Bar", {
             closeY,
             closeX + closeWidth,
             closeY + closeHeight,
-            closeX,
+            closeX
           );
 
           close = closeRegion.contains(point);
@@ -502,7 +502,7 @@ Ext.define("Ext.tab.Bar", {
 
     return {
       tab: tab,
-      close: close,
+      close: close
     };
   },
 
@@ -517,7 +517,7 @@ Ext.define("Ext.tab.Bar", {
     tabHeight,
     closeWidth,
     closeHeight,
-    direction,
+    direction
   ) {
     var closeXY = closeEl.getXY(),
       closeX,
@@ -817,6 +817,6 @@ Ext.define("Ext.tab.Bar", {
       if (me.activateOnFocus && nextChild && nextChild.isTab) {
         me.doActivateTab(nextChild);
       }
-    },
-  },
+    }
+  }
 });

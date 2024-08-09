@@ -137,7 +137,7 @@ Ext.define(
        * @accessor
        * @evented
        */
-      activeItem: 0,
+      activeItem: 0
     },
 
     config: {
@@ -284,7 +284,7 @@ Ext.define(
        * @accessor
        * @cmd-auto-dependency {defaultType: "Ext.Mask"}
        */
-      masked: null,
+      masked: null
     },
 
     /**
@@ -342,9 +342,9 @@ Ext.define(
         children: [
           {
             reference: "innerElement",
-            className: "x-inner",
-          },
-        ],
+            className: "x-inner"
+          }
+        ]
       };
     },
 
@@ -509,7 +509,7 @@ Ext.define(
         innerstatechange: "onItemInnerStateChange",
         floatedchange: "onItemFloatedChange",
         scope: me,
-        delegate: "> component",
+        delegate: "> component"
       });
 
       return me.onItemAdd.apply(me, arguments);
@@ -532,7 +532,7 @@ Ext.define(
             oldLayout.$className +
             " / " +
             (Ext.isString(newLayout) ? newLayout : JSON.stringify(newLayout)) +
-            ")",
+            ")"
         );
       }
     },
@@ -549,9 +549,9 @@ Ext.define(
               this._layout || "default",
               Ext.layout.Default,
               null,
-              "layout",
-            ),
-          ),
+              "layout"
+            )
+          )
         );
         layout.setContainer(this);
       }
@@ -562,7 +562,7 @@ Ext.define(
     updateDefaultType: function (defaultType) {
       // Cache the direct reference to the default item class here for performance
       this.defaultItemClass = Ext.ClassManager.getByAlias(
-        "widget." + defaultType,
+        "widget." + defaultType
       );
 
       //<debug>
@@ -570,7 +570,7 @@ Ext.define(
         Ext.Logger.error(
           "Invalid defaultType of: '" +
             defaultType +
-            "', must be a valid component xtype",
+            "', must be a valid component xtype"
         );
       }
       //</debug>
@@ -603,7 +603,7 @@ Ext.define(
           "Invalid item given: " +
             item +
             ", must be either the config object to factory a new item, " +
-            "or an existing component instance",
+            "or an existing component instance"
         );
       }
       //</debug>
@@ -781,7 +781,7 @@ Ext.define(
             scope: me,
             single: true,
             order: "after",
-            args: [component, index, destroy],
+            args: [component, index, destroy]
           });
 
           me.doResetActiveItem(innerItems.indexOf(component));
@@ -1009,7 +1009,7 @@ Ext.define(
       //<debug>
       if (typeof index != "number") {
         Ext.Logger.error(
-          "Invalid index of '" + index + "', must be a valid number",
+          "Invalid index of '" + index + "', must be a valid number"
         );
       }
       //</debug>
@@ -1144,7 +1144,7 @@ Ext.define(
           [this, item, true],
           "onItemAdd",
           layout,
-          { args: [item, index] },
+          { args: [item, index] }
         );
       } else {
         layout.onItemAdd(item, index);
@@ -1176,7 +1176,7 @@ Ext.define(
           [this, item, false],
           "onItemRemove",
           layout,
-          { args: [item, index, destroying] },
+          { args: [item, index, destroying] }
         );
       } else {
         layout.onItemRemove(item, index, destroying);
@@ -1285,7 +1285,7 @@ Ext.define(
           item = me.child(activeItem);
 
           activeItem = {
-            xtype: activeItem,
+            xtype: activeItem
           };
         }
 
@@ -1339,7 +1339,7 @@ Ext.define(
             }
             animation.destroy();
           },
-          this,
+          this
         );
       }
       return this.setActiveItem(activeItem);
@@ -1355,7 +1355,7 @@ Ext.define(
           "deactivate",
           oldActiveItem,
           this,
-          newActiveItem,
+          newActiveItem
         );
       }
 
@@ -1536,10 +1536,10 @@ Ext.define(
         }
 
         me.callParent();
-      },
-    },
+      }
+    }
   },
   function () {
     this.prototype.defaultItemClass = this;
-  },
+  }
 );

@@ -18,7 +18,7 @@ Ext.define("MainHub.view.flowcell.PoolInfoWindow", {
       border: 0,
       viewConfig: {
         loadMask: false,
-        stripeRows: false,
+        stripeRows: false
       },
       sortableColumns: false,
       enableColumnMove: false,
@@ -27,12 +27,12 @@ Ext.define("MainHub.view.flowcell.PoolInfoWindow", {
 
       columns: {
         defaults: {
-          flex: 1,
+          flex: 1
         },
         items: [
           {
             text: "Library",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Barcode",
@@ -40,7 +40,7 @@ Ext.define("MainHub.view.flowcell.PoolInfoWindow", {
             resizable: false,
             renderer: function (value, meta, record) {
               return record.getBarcode();
-            },
+            }
           },
           {
             text: "Library Protocol",
@@ -48,17 +48,17 @@ Ext.define("MainHub.view.flowcell.PoolInfoWindow", {
             renderer: function (value, meta) {
               meta.tdAttr = Ext.String.format('data-qtip="{0}"', value);
               return value;
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
 
       features: [
         {
           ftype: "grouping",
-          groupHeaderTpl: "<strong>Request: {name}</strong>",
-        },
-      ],
-    },
-  ],
+          groupHeaderTpl: "<strong>Request: {name}</strong>"
+        }
+      ]
+    }
+  ]
 });

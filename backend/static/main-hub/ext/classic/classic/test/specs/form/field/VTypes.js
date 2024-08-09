@@ -108,7 +108,7 @@ describe("Ext.form.field.VTypes", function () {
     describe("local-part of email address", function () {
       it("should allow for alpha characters", function () {
         expect(VTYPES.email("abcdefghijklmnopqrstuvwxyz@extjs.com")).toEqual(
-          true,
+          true
         );
       });
 
@@ -122,7 +122,7 @@ describe("Ext.form.field.VTypes", function () {
 
       it("should allow for a mix of alphanumeric and special chars", function () {
         expect(VTYPES.email('"baba_o\'reilly.1.-who4?"@extjs.com')).toEqual(
-          true,
+          true
         );
       });
 
@@ -175,10 +175,10 @@ describe("Ext.form.field.VTypes", function () {
 
       it("should allow for repeated special characters mixed within the body", function () {
         expect(VTYPES.email("!d####e$v%%e&l'''o*p+e////r@extjs.com")).toEqual(
-          true,
+          true
         );
         expect(VTYPES.email("?d^^^^e_v`e{l|||||||o}}}p~er@extjs.com")).toEqual(
-          true,
+          true
         );
       });
 

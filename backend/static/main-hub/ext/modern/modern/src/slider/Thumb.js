@@ -21,8 +21,8 @@ Ext.define("Ext.slider.Thumb", {
       translatable: {
         // use cssposition instead of csstransform so that themes can use transform
         // scale to style the pressed state of the thumb (material)
-        translationMethod: "cssposition",
-      },
+        translationMethod: "cssposition"
+      }
     },
 
     touchAction: { panX: false },
@@ -43,7 +43,7 @@ Ext.define("Ext.slider.Thumb", {
      * A CSS class for styling the track fill element.  Assumes {@link #fillTrack} has
      * been set to `true`, otherwise the fill element will be invisible.
      */
-    fillCls: null,
+    fillCls: null
   },
 
   // Strange issue where the thumbs translation value is not being set when it is not visible. Happens when the thumb
@@ -52,10 +52,10 @@ Ext.define("Ext.slider.Thumb", {
     ie10: {
       draggable: {
         translatable: {
-          translationMethod: "csstransform",
-        },
-      },
-    },
+          translationMethod: "csstransform"
+        }
+      }
+    }
   },
 
   template: [
@@ -63,9 +63,9 @@ Ext.define("Ext.slider.Thumb", {
       reference: "iconElement",
       classList: [
         Ext.baseCSSPrefix + "icon-el",
-        Ext.baseCSSPrefix + "font-icon",
-      ],
-    },
+        Ext.baseCSSPrefix + "font-icon"
+      ]
+    }
   ],
 
   elementWidth: 0,
@@ -80,7 +80,7 @@ Ext.define("Ext.slider.Thumb", {
     // the slider is at least as high as the largest thumb.
     // This has to be created early so the ui updater can access it
     this.sizerElement = Ext.Element.create({
-      cls: this.sizerCls,
+      cls: this.sizerCls
     });
 
     this.callParent([config]);
@@ -100,13 +100,13 @@ Ext.define("Ext.slider.Thumb", {
       dragstart: "onDragStart",
       drag: "onDrag",
       dragend: "onDragEnd",
-      scope: me,
+      scope: me
     });
 
     draggable.getTranslatable().on({
       animationstart: "onAnimationStart",
       animationend: "onAnimationEnd",
-      scope: me,
+      scope: me
     });
 
     element.on("resize", "onElementResize", me);
@@ -114,7 +114,7 @@ Ext.define("Ext.slider.Thumb", {
     element.addClsOnClick(me.pressingCls, me.shouldAddPressingCls, me);
 
     fillElement = me.fillElement = Ext.Element.create({
-      cls: me.fillCls,
+      cls: me.fillCls
     });
 
     fillElement.setVisibilityMode(1); // VISIBILITY
@@ -131,7 +131,7 @@ Ext.define("Ext.slider.Thumb", {
       fillElement.show();
       fillElement.setStyle(
         "background-color",
-        typeof fillTrack === "string" ? fillTrack : "",
+        typeof fillTrack === "string" ? fillTrack : ""
       );
     }
   },
@@ -219,5 +219,5 @@ Ext.define("Ext.slider.Thumb", {
   destroy: function () {
     Ext.destroyMembers(this, "fillElement", "sizerElement");
     this.callParent();
-  },
+  }
 });

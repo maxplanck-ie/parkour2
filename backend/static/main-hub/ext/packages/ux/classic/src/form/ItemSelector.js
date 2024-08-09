@@ -36,12 +36,12 @@ Ext.define("Ext.ux.form.ItemSelector", {
     add: "Add to Selected",
     remove: "Remove from Selected",
     down: "Move Down",
-    bottom: "Move to Bottom",
+    bottom: "Move to Bottom"
   },
 
   layout: {
     type: "hbox",
-    align: "stretch",
+    align: "stretch"
   },
 
   ariaRole: "group",
@@ -80,7 +80,7 @@ Ext.define("Ext.ux.form.ItemSelector", {
       title: title,
       store: {
         model: me.store.model,
-        data: [],
+        data: []
       },
       displayField: me.displayField,
       valueField: me.valueField,
@@ -89,9 +89,9 @@ Ext.define("Ext.ux.form.ItemSelector", {
         boundList: {
           scope: me,
           itemdblclick: me.onItemDblClick,
-          drop: me.syncValue,
-        },
-      },
+          drop: me.syncValue
+        }
+      }
     });
   },
 
@@ -109,11 +109,11 @@ Ext.define("Ext.ux.form.ItemSelector", {
         padding: 0,
         layout: {
           type: "vbox",
-          pack: "center",
+          pack: "center"
         },
-        items: me.createButtons(),
+        items: me.createButtons()
       },
-      me.toField,
+      me.toField
     ];
   },
 
@@ -133,7 +133,7 @@ Ext.define("Ext.ux.form.ItemSelector", {
           iconCls: Ext.baseCSSPrefix + "form-itemselector-" + name,
           navBtn: true,
           scope: me,
-          margin: "4 0 0 0",
+          margin: "4 0 0 0"
         });
       });
     }
@@ -163,7 +163,7 @@ Ext.define("Ext.ux.form.ItemSelector", {
           return 1;
         }
         return 0;
-      },
+      }
     );
   },
 
@@ -290,7 +290,7 @@ Ext.define("Ext.ux.form.ItemSelector", {
     var me = this;
     me.mixins.field.setValue.call(
       me,
-      me.setupValue(me.toField.store.getRange()),
+      me.setupValue(me.toField.store.getRange())
     );
   },
 
@@ -310,7 +310,7 @@ Ext.define("Ext.ux.form.ItemSelector", {
     if (!me.fromStorePopulated) {
       me.fromField.store.on({
         load: Ext.Function.bind(me.setValue, me, [value]),
-        single: true,
+        single: true
       });
       return;
     }
@@ -417,5 +417,5 @@ Ext.define("Ext.ux.form.ItemSelector", {
   doDestroy: function () {
     this.bindStore(null);
     this.callParent();
-  },
+  }
 });

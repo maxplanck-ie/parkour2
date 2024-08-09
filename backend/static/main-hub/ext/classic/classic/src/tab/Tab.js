@@ -40,7 +40,7 @@ Ext.define("Ext.tab.Tab", {
      * The tab's position.  Users should not typically need to set this, as it is
      * configured automatically by the tab bar
      */
-    tabPosition: "top",
+    tabPosition: "top"
   },
 
   /**
@@ -106,7 +106,7 @@ Ext.define("Ext.tab.Tab", {
 
   keyMap: {
     scope: "this",
-    DELETE: "onDeleteKey",
+    DELETE: "onDeleteKey"
   },
 
   _btnWrapCls: Ext.baseCSSPrefix + "tab-wrap",
@@ -126,7 +126,7 @@ Ext.define("Ext.tab.Tab", {
 
   _rotateClasses: {
     1: Ext.baseCSSPrefix + "tab-rotate-right",
-    2: Ext.baseCSSPrefix + "tab-rotate-left",
+    2: Ext.baseCSSPrefix + "tab-rotate-left"
   },
 
   // a mapping of the "ui" positions.  When "rotation" is anything other than 0, a ui
@@ -136,33 +136,33 @@ Ext.define("Ext.tab.Tab", {
       default: "top",
       0: "top",
       1: "left",
-      2: "right",
+      2: "right"
     },
     right: {
       default: "top",
       0: "right",
       1: "top",
-      2: "bottom",
+      2: "bottom"
     },
     bottom: {
       default: "bottom",
       0: "bottom",
       1: "right",
-      2: "left",
+      2: "left"
     },
     left: {
       default: "top",
       0: "left",
       1: "bottom",
-      2: "top",
-    },
+      2: "top"
+    }
   },
 
   _defaultRotations: {
     top: 0,
     right: 1,
     bottom: 0,
-    left: 2,
+    left: 2
   },
 
   initComponent: function () {
@@ -184,7 +184,7 @@ Ext.define("Ext.tab.Tab", {
           me.title +
           " tab (" +
           me.id +
-          ") to closable: false.",
+          ") to closable: false."
       );
     }
     //</debug>
@@ -388,9 +388,9 @@ Ext.define("Ext.tab.Tab", {
             tag: "span",
             id: me.id + "-closeEl",
             cls: me.baseCls + "-close-btn",
-            html: me.closeText,
+            html: me.closeText
           },
-          "after",
+          "after"
         );
       }
       closeEl.addClsOnOver(me.closeElOverCls);
@@ -570,6 +570,6 @@ Ext.define("Ext.tab.Tab", {
     wrapPrimaryEl: function (dom) {
       // Tabs don't need the hacks in Ext.dom.ButtonElement
       Ext.Button.superclass.wrapPrimaryEl.call(this, dom);
-    },
-  },
+    }
+  }
 });

@@ -3,11 +3,11 @@ describe("Ext.direct.Transaction", function () {
 
   beforeEach(function () {
     provider = {
-      queueTransaction: jasmine.createSpy("provider.queueTransaction"),
+      queueTransaction: jasmine.createSpy("provider.queueTransaction")
     };
 
     transaction = new Ext.direct.Transaction({
-      provider: provider,
+      provider: provider
     });
   });
 

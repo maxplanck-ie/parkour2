@@ -119,7 +119,7 @@ Ext.define("Ext.TaskQueue", {
       while (this.readQueue.length || this.writeQueue.length) {
         this.run();
       }
-    },
-  },
+    }
+  }
   //</debug>
 });

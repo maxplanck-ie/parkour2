@@ -132,7 +132,7 @@ Ext.define("Ext.util.Event", function () {
               observable,
               eventName,
               options.delegated !== false,
-              options.capture,
+              options.capture
             );
         }
 
@@ -147,7 +147,7 @@ Ext.define("Ext.util.Event", function () {
             ename: (options && options.managedName) || me.name,
             fn: fn,
             scope: scope,
-            options: options,
+            options: options
           });
         }
 
@@ -168,7 +168,7 @@ Ext.define("Ext.util.Event", function () {
           manager: manager,
           namedScope: namedScope,
           defaultScope: namedScope ? scope || me.observable : undefined,
-          lateBound: typeof fn === "string",
+          lateBound: typeof fn === "string"
         },
         handler = fn,
         wrapped = false,
@@ -330,7 +330,7 @@ Ext.define("Ext.util.Event", function () {
                 observable,
                 eventName,
                 options.delegated !== false,
-                options.capture,
+                options.capture
               );
           }
         }
@@ -454,7 +454,7 @@ Ext.define("Ext.util.Event", function () {
                 // prepending the currentTarget.id to the delegate selector
                 // allows us to match selectors such as "> div"
                 delegateEl = e.getTarget(
-                  "#" + e.currentTarget.id + " " + delegate,
+                  "#" + e.currentTarget.id + " " + delegate
                 );
                 if (delegateEl) {
                   args[1] = delegateEl;
@@ -517,7 +517,7 @@ Ext.define("Ext.util.Event", function () {
                   (fireScope.$className || "object") +
                   " instance with id: " +
                   (fireScope.id || "unknown"),
-                instance: fireScope,
+                instance: fireScope
               });
             }
             //</debug>
@@ -586,7 +586,7 @@ Ext.define("Ext.util.Event", function () {
           // use an arbitrary object as the scope just skip this part, and just
           // use the given scope object to resolve the method.
           scope = (listener.caller || observable).resolveListenerScope(
-            listener.defaultScope,
+            listener.defaultScope
           );
         }
         //<debug>
@@ -595,7 +595,7 @@ Ext.define("Ext.util.Event", function () {
             'Unable to dynamically resolve scope for "' +
               listener.ev.name +
               '" listener on ' +
-              this.observable.id,
+              this.observable.id
           );
         }
 
@@ -604,7 +604,7 @@ Ext.define("Ext.util.Event", function () {
             'No method named "' +
               fn +
               '" on ' +
-              (scope.$className || "scope object."),
+              (scope.$className || "scope object.")
           );
         }
         //</debug>
@@ -614,7 +614,7 @@ Ext.define("Ext.util.Event", function () {
         // If handler is a function reference and scope:'controller' was requested
         // we'll do our best to look up a controller.
         scope = (listener.caller || observable).resolveListenerScope(
-          listener.defaultScope,
+          listener.defaultScope
         );
         //<debug>
         if (!scope) {
@@ -622,7 +622,7 @@ Ext.define("Ext.util.Event", function () {
             'Unable to dynamically resolve scope for "' +
               listener.ev.name +
               '" listener on ' +
-              this.observable.id,
+              this.observable.id
           );
         }
         //</debug>
@@ -643,7 +643,7 @@ Ext.define("Ext.util.Event", function () {
           'Unable to dynamically resolve method "' +
             name +
             '" on ' +
-            this.observable.$className,
+            this.observable.$className
         );
       }
       //</debug>
@@ -757,6 +757,6 @@ Ext.define("Ext.util.Event", function () {
 
         return handler.apply(scope, arguments);
       };
-    },
+    }
   };
 });

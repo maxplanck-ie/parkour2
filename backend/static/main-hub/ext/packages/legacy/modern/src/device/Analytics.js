@@ -18,5 +18,5 @@ Ext.define("Ext.device.Analytics", {
     } else {
       return Ext.create("Ext.device.analytics.Abstract");
     }
-  },
+  }
 });

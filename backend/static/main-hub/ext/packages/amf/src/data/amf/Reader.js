@@ -56,5 +56,5 @@ Ext.define("Ext.data.amf.Reader", {
     }
 
     return resultSet;
-  },
+  }
 });

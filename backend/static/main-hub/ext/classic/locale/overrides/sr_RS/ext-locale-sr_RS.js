@@ -18,7 +18,7 @@ Ext.onReady(function () {
       "Септембар",
       "Октобар",
       "Новембар",
-      "Децембар",
+      "Децембар"
     ];
 
     Ext.Date.dayNames = [
@@ -28,7 +28,7 @@ Ext.onReady(function () {
       "Среда",
       "Четвртак",
       "Петак",
-      "Субота",
+      "Субота"
     ];
   }
 
@@ -38,35 +38,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u0414\u0438\u043d\u002e",
       // Serbian Dinar
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.sr_RS.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.sr_RS.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} изабраних редова",
+  dragText: "{0} изабраних редова"
 });
 
 Ext.define("Ext.locale.sr_RS.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Затвори ову »картицу«",
+  closeText: "Затвори ову »картицу«"
 });
 
 Ext.define("Ext.locale.sr_RS.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Унешена вредност није правилна",
+  invalidText: "Унешена вредност није правилна"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sr_RS.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Учитавам...",
+  loadingText: "Учитавам..."
 });
 
 Ext.define("Ext.locale.sr_RS.picker.Date", {
@@ -81,7 +81,7 @@ Ext.define("Ext.locale.sr_RS.picker.Date", {
   monthYearText: "Изаберите месец (Control+Горе/Доле за избор године)",
   todayTip: "{0} (Размакница)",
   format: "d.m.y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.sr_RS.toolbar.Paging", {
@@ -94,7 +94,7 @@ Ext.define("Ext.locale.sr_RS.toolbar.Paging", {
   lastText: "Последња страна",
   refreshText: "Освежи",
   displayMsg: "Приказана {0} - {1} од {2}",
-  emptyMsg: "Немам шта приказати",
+  emptyMsg: "Немам шта приказати"
 });
 
 Ext.define("Ext.locale.sr_RS.form.field.Text", {
@@ -103,14 +103,14 @@ Ext.define("Ext.locale.sr_RS.form.field.Text", {
   maxLengthText: "Максимална дужина овог поља је {0}",
   blankText: "Поље је обавезно",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.sr_RS.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Минимална вредност у пољу је {0}",
   maxText: "Максимална вредност у пољу је {0}",
-  nanText: "{0} није правилан број",
+  nanText: "{0} није правилан број"
 });
 
 Ext.define("Ext.locale.sr_RS.form.field.Date", {
@@ -120,20 +120,20 @@ Ext.define("Ext.locale.sr_RS.form.field.Date", {
   minText: "Датум у овом пољу мора бити након {0}",
   maxText: "Датум у овом пољу мора бити пре {0}",
   invalidText: "{0} није правилан датум - захтевани облик је {1}",
-  format: "d.m.y",
+  format: "d.m.y"
 });
 
 Ext.define(
   "Ext.locale.sr_RS.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Учитавам...",
+      loadingText: "Учитавам..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.sr_RS.form.field.VTypes", {
@@ -144,7 +144,7 @@ Ext.define("Ext.locale.sr_RS.form.field.VTypes", {
     'Ово поље прихвата URL адресу искључиво у облику "http:/' +
     '/www.domen.com"',
   alphaText: "Ово поље може садржати искључиво слова и знак _",
-  alphanumText: "Ово поље може садржати само слова, бројеве и знак _",
+  alphanumText: "Ово поље може садржати само слова, бројеве и знак _"
 });
 
 Ext.define("Ext.locale.sr_RS.grid.header.Container", {
@@ -153,14 +153,14 @@ Ext.define("Ext.locale.sr_RS.grid.header.Container", {
   sortDescText: "Опадајући редослед",
   lockText: "Закључај колону",
   unlockText: "Откључај колону",
-  columnsText: "Колоне",
+  columnsText: "Колоне"
 });
 
 Ext.define("Ext.locale.sr_RS.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Назив",
   valueText: "Вредност",
-  dateFormat: "d.m.Y",
+  dateFormat: "d.m.Y"
 });
 
 Ext.define("Ext.locale.sr_RS.window.MessageBox", {
@@ -169,11 +169,11 @@ Ext.define("Ext.locale.sr_RS.window.MessageBox", {
     ok: "У реду",
     cancel: "Одустани",
     yes: "Да",
-    no: "Не",
-  },
+    no: "Не"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.sr_RS.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

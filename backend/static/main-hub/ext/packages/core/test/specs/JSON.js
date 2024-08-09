@@ -126,8 +126,8 @@ describe("Ext.JSON", function () {
         expect(
           encode({
             foo: "bar",
-            bar: undefined,
-          }),
+            bar: undefined
+          })
         ).toEqual('{"foo":"bar"}');
       });
 
@@ -135,8 +135,8 @@ describe("Ext.JSON", function () {
         expect(
           encode({
             foo: "bar",
-            bar: null,
-          }),
+            bar: null
+          })
         ).toEqual('{"foo":"bar","bar":null}');
       });
 
@@ -144,8 +144,8 @@ describe("Ext.JSON", function () {
         expect(
           encode({
             foo: "bar",
-            bar: Ext.emptyFn,
-          }),
+            bar: Ext.emptyFn
+          })
         ).toEqual('{"foo":"bar"}');
       });
 
@@ -156,8 +156,8 @@ describe("Ext.JSON", function () {
       it("should handle encoding unknown child objects", function () {
         expect(
           encode({
-            prop: document.body,
-          }),
+            prop: document.body
+          })
         ).toBe('{"prop":undefined}');
       });
     });
@@ -185,11 +185,11 @@ describe("Ext.JSON", function () {
             arr: [1, Ext.emptyFn, undefined, 2, [1, 2, 3], { a: 1, b: null }],
             foo: "bar",
             woo: {
-              chu: "a\tb",
-            },
-          }),
+              chu: "a\tb"
+            }
+          })
         ).toEqual(
-          '{"arr":[1,null,null,2,[1,2,3],{"a":1,"b":null}],"foo":"bar","woo":{"chu":"a\\tb"}}',
+          '{"arr":[1,null,null,2,[1,2,3],{"a":1,"b":null}],"foo":"bar","woo":{"chu":"a\\tb"}}'
         );
       });
     });
@@ -199,14 +199,14 @@ describe("Ext.JSON", function () {
     it("should decode data", function () {
       expect(
         Ext.decode(
-          '{"arr":[1,null,null,2,[1,2,3],{"a":1,"b":null}],"foo":"bar","woo":{"chu":"a\\tb"}}',
-        ),
+          '{"arr":[1,null,null,2,[1,2,3],{"a":1,"b":null}],"foo":"bar","woo":{"chu":"a\\tb"}}'
+        )
       ).toEqual({
         arr: [1, null, null, 2, [1, 2, 3], { a: 1, b: null }],
         foo: "bar",
         woo: {
-          chu: "a\tb",
-        },
+          chu: "a\tb"
+        }
       });
     });
 
@@ -219,7 +219,7 @@ describe("Ext.JSON", function () {
     describe("with safe param", function () {
       it("should decode valid data", function () {
         expect(Ext.decode('{"foo":"bar"}', true)).toEqual({
-          foo: "bar",
+          foo: "bar"
         });
       });
 
@@ -248,13 +248,13 @@ describe("Ext.JSON", function () {
                 6,
                 7,
                 {
-                  complex: true,
-                },
-              ],
-            },
-          },
-        },
-      },
+                  complex: true
+                }
+              ]
+            }
+          }
+        }
+      }
     };
 
     expect(Ext.JSON.decode(Ext.JSON.encode(object))).toEqual(object);

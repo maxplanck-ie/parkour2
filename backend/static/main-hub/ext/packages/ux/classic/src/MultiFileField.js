@@ -28,5 +28,5 @@ Ext.define("Ext.ux.MultiFileField", {
     Ext.form.field.File.superclass.setValue.call(this, value);
 
     delete this.duringFileSelect;
-  },
+  }
 });

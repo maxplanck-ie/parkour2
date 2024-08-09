@@ -16,7 +16,7 @@ describe("Ext.data.operation.Destroy", function () {
       var proxy = new Ext.data.proxy.Proxy();
       spyOn(proxy, "erase").andReturn(new Ext.data.Request());
       makeOperation({
-        proxy: proxy,
+        proxy: proxy
       });
       op.execute();
       expect(proxy.erase).toHaveBeenCalledWith(op);
@@ -29,14 +29,14 @@ describe("Ext.data.operation.Destroy", function () {
     beforeEach(function () {
       User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["id", "name"],
+        fields: ["id", "name"]
       });
 
       rec1 = new User();
       rec2 = new User();
 
       makeOperation({
-        records: [rec1, rec2],
+        records: [rec1, rec2]
       });
 
       spyOn(rec1, "setErased");
@@ -51,10 +51,10 @@ describe("Ext.data.operation.Destroy", function () {
     it("should erase all records if successful", function () {
       op.process(
         new Ext.data.ResultSet({
-          success: true,
+          success: true
         }),
         new Ext.data.Request(),
-        {},
+        {}
       );
 
       expect(rec1.setErased).toHaveBeenCalled();
@@ -64,10 +64,10 @@ describe("Ext.data.operation.Destroy", function () {
     it("should not erase records if not successful", function () {
       op.process(
         new Ext.data.ResultSet({
-          success: false,
+          success: false
         }),
         new Ext.data.Request(),
-        {},
+        {}
       );
 
       expect(rec1.setErased).not.toHaveBeenCalled();

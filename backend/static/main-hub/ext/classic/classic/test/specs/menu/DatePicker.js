@@ -6,9 +6,9 @@ describe("Ext.menu.DatePicker", function () {
   function makeMenu(cfg) {
     cfg = Ext.apply(
       {
-        floating: true,
+        floating: true
       },
-      cfg,
+      cfg
     );
 
     menu = new Ext.menu.DatePicker(cfg);
@@ -28,10 +28,10 @@ describe("Ext.menu.DatePicker", function () {
     beforeEach(function () {
       makeMenu({
         pickerCfg: {
-          foo: "bar",
+          foo: "bar"
         },
 
-        blerg: "throbbe",
+        blerg: "throbbe"
       });
     });
 
@@ -47,7 +47,7 @@ describe("Ext.menu.DatePicker", function () {
   describe("no pickerCfg", function () {
     it("should apply config", function () {
       makeMenu({
-        frobbe: "gurgle",
+        frobbe: "gurgle"
       });
 
       expect(menu.picker.frobbe).toBe("gurgle");
@@ -63,15 +63,15 @@ describe("Ext.menu.DatePicker", function () {
         text: "foo",
         menu: [
           {
-            text: "no submenu",
+            text: "no submenu"
           },
           {
             text: "date",
             menu: {
-              xtype: "datemenu",
-            },
-          },
-        ],
+              xtype: "datemenu"
+            }
+          }
+        ]
       });
 
       button.showMenu();
@@ -104,7 +104,7 @@ describe("Ext.menu.DatePicker", function () {
           return !menu.isVisible();
         },
         "Date menu to hide",
-        1000,
+        1000
       );
 
       runs(function () {

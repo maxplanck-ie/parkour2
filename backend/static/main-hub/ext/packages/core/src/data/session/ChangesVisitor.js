@@ -67,7 +67,7 @@ Ext.define("Ext.data.session.ChangesVisitor", {
       // for the prop (set already). Otherwise we just want to encode the id.
       if (!(options = writerOptions.drop)) {
         writerOptions.drop = options = {
-          all: record.getProxy().getWriter().getWriteAllFields(),
+          all: record.getProxy().getWriter().getWriteAllFields()
         };
       }
       if (!options.all) {
@@ -133,5 +133,5 @@ Ext.define("Ext.data.session.ChangesVisitor", {
     bucket = bucket[id1] || (bucket[id1] = []);
 
     bucket.push(id2);
-  },
+  }
 });

@@ -7,13 +7,13 @@ describe("Ext.chart.series.Pie", function () {
           getClockwise: function () {
             return true;
           },
-          rotationOffset: proto.rotationOffset,
+          rotationOffset: proto.rotationOffset
         },
         context2 = {
           getClockwise: function () {
             return true;
           },
-          rotationOffset: context1.rotationOffset + 0.123,
+          rotationOffset: context1.rotationOffset + 0.123
         };
 
       var result = betweenAngle.call(context1, -0.5, 0, 0);

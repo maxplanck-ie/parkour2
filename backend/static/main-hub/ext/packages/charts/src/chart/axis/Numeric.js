@@ -81,17 +81,17 @@ Ext.define("Ext.chart.axis.Numeric", {
   type: "numeric",
   alias: [
     "axis.numeric",
-    "axis.radial", // legacy charts compatibility
+    "axis.radial" // legacy charts compatibility
   ],
   requires: [
     "Ext.chart.axis.layout.Continuous",
-    "Ext.chart.axis.segmenter.Numeric",
+    "Ext.chart.axis.segmenter.Numeric"
   ],
   config: {
     layout: "continuous",
 
     segmenter: "numeric",
 
-    aggregator: "double",
-  },
+    aggregator: "double"
+  }
 });

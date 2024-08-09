@@ -114,7 +114,7 @@ Ext.define("Ext.grid.filters.Filters", {
     boolean: "boolean",
     int: "number",
     date: "date",
-    number: "number",
+    number: "number"
   },
 
   /**
@@ -168,13 +168,13 @@ Ext.define("Ext.grid.filters.Filters", {
       destroyable: true,
       scope: me,
       add: me.onAdd,
-      menucreate: me.onMenuCreate,
+      menucreate: me.onMenuCreate
     });
 
     me.gridListeners = grid.on({
       destroyable: true,
       scope: me,
-      reconfigure: me.onReconfigure,
+      reconfigure: me.onReconfigure
     });
 
     me.bindStore(store);
@@ -227,7 +227,7 @@ Ext.define("Ext.grid.filters.Filters", {
       filter = {
         column: column,
         grid: me.grid,
-        owner: me,
+        owner: me
       },
       field,
       model,
@@ -272,7 +272,7 @@ Ext.define("Ext.grid.filters.Filters", {
   onMenuCreate: function (headerCt, menu) {
     menu.on({
       beforeshow: this.onMenuBeforeShow,
-      scope: this,
+      scope: this
     });
   },
 
@@ -337,8 +337,8 @@ Ext.define("Ext.grid.filters.Filters", {
       text: me.menuFilterText,
       listeners: {
         scope: me,
-        checkchange: me.onCheckChange,
-      },
+        checkchange: me.onCheckChange
+      }
     });
 
     return (me.filterMenuItem[parentTableId] = item);
@@ -633,6 +633,6 @@ Ext.define("Ext.grid.filters.Filters", {
           filters.endUpdate();
         }
       }
-    },
-  },
+    }
+  }
 });

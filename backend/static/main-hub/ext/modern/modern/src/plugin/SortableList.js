@@ -44,7 +44,7 @@ Ext.define("Ext.plugin.SortableList", {
 
   config: {
     list: null,
-    handleSelector: "." + Ext.baseCSSPrefix + "list-sortablehandle",
+    handleSelector: "." + Ext.baseCSSPrefix + "list-sortablehandle"
   },
 
   init: function (list) {
@@ -59,7 +59,7 @@ Ext.define("Ext.plugin.SortableList", {
         list.on({
           initialize: "attachListeners",
           scope: this,
-          single: true,
+          single: true
         });
       }
     }
@@ -73,7 +73,7 @@ Ext.define("Ext.plugin.SortableList", {
 
     scrollerElement.onBefore({
       dragstart: "onScrollerDragStart",
-      scope: this,
+      scope: this
     });
   },
 
@@ -94,7 +94,7 @@ Ext.define("Ext.plugin.SortableList", {
     this.scrollerElement.on({
       drag: "onDrag",
       dragend: "onDragEnd",
-      scope: this,
+      scope: this
     });
 
     this.positionMap = list.getItemMap();
@@ -143,7 +143,7 @@ Ext.define("Ext.plugin.SortableList", {
     dragRow.translate(0, this.dragRowPosition);
 
     targetIndex = positionMap.findIndex(
-      this.dragRowPosition + this.dragRowHeight / 2,
+      this.dragRowPosition + this.dragRowHeight / 2
     );
     targetItem = list.getItemAt(targetIndex);
 
@@ -200,7 +200,7 @@ Ext.define("Ext.plugin.SortableList", {
     me.scrollerElement.un({
       drag: "onDrag",
       dragend: "onDragEnd",
-      scope: me,
+      scope: me
     });
 
     me.animating = true;
@@ -222,9 +222,9 @@ Ext.define("Ext.plugin.SortableList", {
         me.animating = false;
       },
       me,
-      { single: true },
+      { single: true }
     );
 
     row.translate(0, position, { duration: 100 });
-  },
+  }
 });

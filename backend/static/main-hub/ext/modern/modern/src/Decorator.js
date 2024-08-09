@@ -50,8 +50,8 @@ Ext.define("Ext.Decorator", {
      * @cmd-auto-dependency { aliasPrefix: 'widget.', typeProperty: 'xtype' }
      */
     component: {
-      xtype: "component",
-    },
+      xtype: "component"
+    }
   },
 
   statics: {
@@ -68,7 +68,7 @@ Ext.define("Ext.Decorator", {
         var component = this.getComponent();
         return component[name].call(component);
       };
-    },
+    }
   },
 
   onClassExtended: function (Class, members) {
@@ -129,7 +129,7 @@ Ext.define("Ext.Decorator", {
           [me, oldComponent, false],
           me.doUnsetComponent,
           me,
-          false,
+          false
         );
       } else {
         me.doUnsetComponent(oldComponent);
@@ -143,7 +143,7 @@ Ext.define("Ext.Decorator", {
           [me, newComponent, true],
           me.doSetComponent,
           me,
-          false,
+          false
         );
       } else {
         me.doSetComponent(newComponent);
@@ -208,5 +208,5 @@ Ext.define("Ext.Decorator", {
   doDestroy: function () {
     Ext.destroy(this.getComponent());
     this.callParent();
-  },
+  }
 });

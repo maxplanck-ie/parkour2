@@ -93,7 +93,7 @@ Ext.define("Ext.data.soap.Proxy", {
       '<?xml version="1.0" encoding="utf-8" ?>',
       '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">',
       "{[values.bodyTpl.apply(values)]}",
-      "</soap:Envelope>",
+      "</soap:Envelope>"
     ],
 
     /**
@@ -124,7 +124,7 @@ Ext.define("Ext.data.soap.Proxy", {
       "<{$}>{.}</{$}>",
       "</tpl>",
       "</{operation}>",
-      "</soap:Body>",
+      "</soap:Body>"
     ],
 
     /**
@@ -175,7 +175,7 @@ Ext.define("Ext.data.soap.Proxy", {
       "</{[recordName]}>",
       "</tpl>",
       "</{operation}>",
-      "</soap:Body>",
+      "</soap:Body>"
     ],
 
     /**
@@ -183,7 +183,7 @@ Ext.define("Ext.data.soap.Proxy", {
      * namespace URI used by {@link #createBodyTpl}, {@link #readBodyTpl}, {@link #updateBodyTpl},
      * and {@link #destroyBodyTpl} as the "xmlns" attribute for the operation element.
      */
-    targetNamespace: "",
+    targetNamespace: ""
   },
 
   applyEnvelopeTpl: function (tpl) {
@@ -229,14 +229,14 @@ Ext.define("Ext.data.soap.Proxy", {
       soapOperation = me.getApi()[action],
       params = Ext.applyIf(
         operation.getParams() || {},
-        me.getExtraParams() || {},
+        me.getExtraParams() || {}
       ),
       xmlData = me.getEnvelopeTpl().apply({
         operation: soapOperation,
         targetNamespace: me.getTargetNamespace(),
         params: params,
         records: operation.getRecords(),
-        bodyTpl: me.getBodyTpl(action),
+        bodyTpl: me.getBodyTpl(action)
       }),
       request = new Ext.data.Request({
         url: me.getUrl() + "?" + me.getOperationParam() + "=" + soapOperation,
@@ -246,13 +246,13 @@ Ext.define("Ext.data.soap.Proxy", {
         xmlData: xmlData,
         headers: Ext.apply(
           {
-            SOAPAction: me.getSoapAction()[action],
+            SOAPAction: me.getSoapAction()[action]
           },
-          me.getHeaders(),
+          me.getHeaders()
         ),
         timeout: me.getTimeout(),
         scope: me,
-        disableCaching: false, // explicitly set it to false, ServerProxy handles caching
+        disableCaching: false // explicitly set it to false, ServerProxy handles caching
       });
 
     request.setCallback(me.createRequestCallback(request, operation));
@@ -263,5 +263,5 @@ Ext.define("Ext.data.soap.Proxy", {
     action = Ext.String.capitalize(action);
     var tpl = this["get" + action + "BodyTpl"]();
     return tpl || this.getWriteBodyTpl();
-  },
+  }
 });

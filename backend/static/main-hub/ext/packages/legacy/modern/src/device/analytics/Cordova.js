@@ -14,7 +14,7 @@ Ext.define("Ext.device.analytics.Cordova", {
       config.action,
       config.label,
       config.value,
-      config.nonInteraction,
+      config.nonInteraction
     );
   },
 
@@ -24,5 +24,5 @@ Ext.define("Ext.device.analytics.Cordova", {
     }
 
     window.plugins.googleAnalyticsPlugin.trackPageview(page);
-  },
+  }
 });

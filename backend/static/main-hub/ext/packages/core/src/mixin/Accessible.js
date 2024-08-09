@@ -8,7 +8,7 @@ Ext.define("Ext.mixin.Accessible", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "accessible",
+    id: "accessible"
   },
 
   /**
@@ -45,8 +45,8 @@ Ext.define("Ext.mixin.Accessible", {
      */
     ariaAttributes: {
       $value: null,
-      lazy: true,
-    },
+      lazy: true
+    }
   },
 
   /**
@@ -108,6 +108,6 @@ Ext.define("Ext.mixin.Accessible", {
       }
 
       return ids.length ? ids.join(" ") : null;
-    },
-  },
+    }
+  }
 });

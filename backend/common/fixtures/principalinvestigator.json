@@ -5,6 +5,7 @@
     "fields": {
       "name": "Akhtar",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -14,6 +15,7 @@
     "fields": {
       "name": "Boehm",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -23,6 +25,7 @@
     "fields": {
       "name": "Grosschedl",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -32,6 +35,7 @@
     "fields": {
       "name": "Manke",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -41,6 +45,7 @@
     "fields": {
       "name": "Iovino",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -50,6 +55,7 @@
     "fields": {
       "name": "Jenuwein",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -59,6 +65,7 @@
     "fields": {
       "name": "Kemler",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -68,6 +75,7 @@
     "fields": {
       "name": "Laemmermann",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -77,6 +85,7 @@
     "fields": {
       "name": "PearceEd",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -86,6 +95,7 @@
     "fields": {
       "name": "Pearce",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -95,6 +105,7 @@
     "fields": {
       "name": "Pichler",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -104,6 +115,7 @@
     "fields": {
       "name": "Pospisilik",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -113,6 +125,7 @@
     "fields": {
       "name": "Rambold",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -122,6 +135,7 @@
     "fields": {
       "name": "Reth",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -131,6 +145,7 @@
     "fields": {
       "name": "Sawarkar",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -140,6 +155,7 @@
     "fields": {
       "name": "Trompouki",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -149,6 +165,7 @@
     "fields": {
       "name": "A01_Jenuwein",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -158,6 +175,7 @@
     "fields": {
       "name": "A02_Akhtar",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -167,6 +185,7 @@
     "fields": {
       "name": "A03_Vogel",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -176,6 +195,7 @@
     "fields": {
       "name": "A04_Jung",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -185,6 +205,7 @@
     "fields": {
       "name": "B01_Schuele",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -194,6 +215,7 @@
     "fields": {
       "name": "B02_Pahl",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -203,6 +225,7 @@
     "fields": {
       "name": "B03_Hein",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -212,6 +235,7 @@
     "fields": {
       "name": "B05_Huber",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -221,6 +245,7 @@
     "fields": {
       "name": "C02_Prinz",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -230,6 +255,7 @@
     "fields": {
       "name": "C03_Lassmann",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -239,6 +265,7 @@
     "fields": {
       "name": "C04_Luebbert",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -248,6 +275,7 @@
     "fields": {
       "name": "C05_Flotho",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -257,6 +285,7 @@
     "fields": {
       "name": "Z01_Backofen",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -266,6 +295,7 @@
     "fields": {
       "name": "Z01_Manke",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -275,6 +305,7 @@
     "fields": {
       "name": "Z02_Breit",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -284,6 +315,7 @@
     "fields": {
       "name": "Z02_Einsle",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -293,6 +325,7 @@
     "fields": {
       "name": "Z02_Hunte",
       "organization": 3,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -302,6 +335,7 @@
     "fields": {
       "name": "DeepSeq",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   },
@@ -311,6 +345,7 @@
     "fields": {
       "name": "Cabezas-Wallscheid",
       "organization": 2,
+      "email": "Unset",
       "archived": false
     }
   }

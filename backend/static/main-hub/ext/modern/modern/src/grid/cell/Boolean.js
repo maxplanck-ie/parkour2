@@ -26,7 +26,7 @@ Ext.define("Ext.grid.cell.Boolean", {
      * @cfg {String} undefinedText
      * The string to display when the column value is `undefined`.
      */
-    undefinedText: "",
+    undefinedText: ""
   },
 
   updateColumn: function (column, oldColumn) {
@@ -82,5 +82,5 @@ Ext.define("Ext.grid.cell.Boolean", {
     }
 
     me.setRawValue(value);
-  },
+  }
 });

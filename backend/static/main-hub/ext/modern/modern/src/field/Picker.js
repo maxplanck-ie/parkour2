@@ -20,7 +20,7 @@ Ext.define("Ext.field.Picker", {
      */
     component: {
       readOnly: true,
-      useMask: true,
+      useMask: true
     },
 
     /**
@@ -61,9 +61,9 @@ Ext.define("Ext.field.Picker", {
 
     triggers: {
       expand: {
-        type: "expand",
-      },
-    },
+        type: "expand"
+      }
+    }
   },
 
   classCls: Ext.baseCSSPrefix + "pickerfield",
@@ -79,7 +79,7 @@ Ext.define("Ext.field.Picker", {
 
     component.on({
       scope: me,
-      masktap: "onMaskTap",
+      masktap: "onMaskTap"
     });
 
     component.doMaskTap = Ext.emptyFn;
@@ -156,9 +156,9 @@ Ext.define("Ext.field.Picker", {
 
     me.tabletPicker = me.phonePicker = Ext.destroy(
       me.tabletPicker,
-      me.phonePicker,
+      me.phonePicker
     );
 
     me.callParent();
-  },
+  }
 });

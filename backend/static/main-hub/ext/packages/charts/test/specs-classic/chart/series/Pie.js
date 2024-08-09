@@ -17,27 +17,27 @@ describe("Ext.chart.series.Pie.classic", function () {
             angleField: "data1",
             label: {
               field: "name",
-              display: "none",
-            },
+              display: "none"
+            }
           },
           store: {
             fields: ["name", "data1"],
             data: [
               {
                 name: "metric one",
-                data1: 200,
+                data1: 200
               },
               {
                 name: "metric two",
-                data1: 100,
-              },
-            ],
+                data1: 100
+              }
+            ]
           },
           listeners: {
             redraw: function () {
               redrawCount++;
-            },
-          },
+            }
+          }
         });
       });
       waitsFor(function () {
@@ -51,7 +51,7 @@ describe("Ext.chart.series.Pie.classic", function () {
         expect(labels.attr.hidden).toBe(true);
 
         series.setLabel({
-          display: "inside",
+          display: "inside"
         });
         expect(labels.instances[0].display).toBe("inside");
         expect(labels.instances[1].display).toBe("inside");

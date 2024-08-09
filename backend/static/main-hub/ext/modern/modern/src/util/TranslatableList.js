@@ -5,7 +5,7 @@ Ext.define("Ext.util.TranslatableList", {
   extend: "Ext.util.translatable.Abstract",
 
   config: {
-    items: [],
+    items: []
   },
 
   applyItems: function (items) {
@@ -29,5 +29,5 @@ Ext.define("Ext.util.TranslatableList", {
         item.translate(0, translateY);
       }
     }
-  },
+  }
 });

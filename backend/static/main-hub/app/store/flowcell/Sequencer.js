@@ -17,9 +17,9 @@ Ext.define("MainHub.store.flowcell.Sequencer", {
     reader: {
       type: "json",
       rootProperty: "data",
-      successProperty: "success",
-    },
+      successProperty: "success"
+    }
   },
 
-  autoLoad: true,
+  autoLoad: true
 });

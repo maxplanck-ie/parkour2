@@ -7,11 +7,11 @@ describe("Ext.draw.sprite.Composite", function () {
 
       composite.add({
         type: "text",
-        text: "hello",
+        text: "hello"
       });
 
       composite.add({
-        type: "rect",
+        type: "rect"
       });
 
       var sprites = composite.sprites,

@@ -266,7 +266,7 @@ Ext.define(
           radios = Ext.form.RadioManager.getWithValue(
             name,
             cbValue,
-            formId,
+            formId
           ).items;
           len = radios.length;
 
@@ -299,7 +299,7 @@ Ext.define(
       if (ariaDom) {
         ariaDom.setAttribute("aria-invalid", false);
       }
-    },
+    }
   },
   function () {
     // Firefox has a nasty bug, or a misfeature, with tabbing over radio buttons
@@ -350,8 +350,8 @@ Ext.define(
               radios[i].enableTabbing();
             }
           }
-        },
+        }
       });
     }
-  },
+  }
 );

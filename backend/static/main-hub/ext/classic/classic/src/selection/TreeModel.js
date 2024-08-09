@@ -70,7 +70,7 @@ Ext.define("Ext.selection.TreeModel", {
         e.type === "click" &&
         e.getTarget(
           view.expanderSelector ||
-            (view.lockingPartner && view.lockingPartner.expanderSelector),
+            (view.lockingPartner && view.lockingPartner.expanderSelector)
         );
 
     return veto || this.callParent([e]);
@@ -93,6 +93,6 @@ Ext.define("Ext.selection.TreeModel", {
           this.gatherSelected(child, toDeselect);
         }
       }
-    },
-  },
+    }
+  }
 });

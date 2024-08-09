@@ -10,7 +10,7 @@ Ext.define("Ext.fx.Animation", {
     "Ext.fx.animation.FadeOut",
     "Ext.fx.animation.Flip",
     "Ext.fx.animation.Pop",
-    "Ext.fx.animation.PopOut",
+    "Ext.fx.animation.PopOut"
   ],
 
   /**
@@ -47,5 +47,5 @@ Ext.define("Ext.fx.Animation", {
     }
 
     return Ext.factory(config, defaultClass);
-  },
+  }
 });

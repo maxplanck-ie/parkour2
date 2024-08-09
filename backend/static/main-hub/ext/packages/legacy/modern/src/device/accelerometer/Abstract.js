@@ -6,14 +6,14 @@ Ext.define("Ext.device.accelerometer.Abstract", {
     /**
      * @cfg {Number} frequency The default frequency to get the current acceleration when using {@link Ext.device.Accelerometer#watchAcceleration}.
      */
-    frequency: 10000,
+    frequency: 10000
   },
 
   getCurrentAcceleration: function (config) {
     // <debug>
     if (!config.success) {
       Ext.Logger.warn(
-        "You need to specify a `success` function for #getCurrentAcceleration",
+        "You need to specify a `success` function for #getCurrentAcceleration"
       );
     }
     // </debug>
@@ -25,13 +25,13 @@ Ext.define("Ext.device.accelerometer.Abstract", {
     var defaultConfig = Ext.device.accelerometer.Abstract.prototype.config;
 
     config = Ext.applyIf(config, {
-      frequency: defaultConfig.frequency,
+      frequency: defaultConfig.frequency
     });
 
     // <debug>
     if (!config.callback) {
       Ext.Logger.warn(
-        "You need to specify a `callback` function for #watchAcceleration",
+        "You need to specify a `callback` function for #watchAcceleration"
       );
     }
     // </debug>
@@ -39,5 +39,5 @@ Ext.define("Ext.device.accelerometer.Abstract", {
     return config;
   },
 
-  clearWatch: Ext.emptyFn,
+  clearWatch: Ext.emptyFn
 });

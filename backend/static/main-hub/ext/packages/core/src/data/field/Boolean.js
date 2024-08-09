@@ -25,5 +25,5 @@ Ext.define("Ext.data.field.Boolean", {
 
   getType: function () {
     return "bool";
-  },
+  }
 });

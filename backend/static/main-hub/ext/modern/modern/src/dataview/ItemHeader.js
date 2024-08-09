@@ -15,7 +15,7 @@ Ext.define("Ext.dataview.ItemHeader", {
     /**
      * @private
      */
-    list: null,
+    list: null
   },
 
   html: "&nbsp;",
@@ -34,7 +34,7 @@ Ext.define("Ext.dataview.ItemHeader", {
         updateVisibleCount: "refreshWidth",
         refresh: "refreshWidth",
         resize: "refreshWidth",
-        scope: me,
+        scope: me
       });
       me.refreshWidth();
     }
@@ -43,6 +43,6 @@ Ext.define("Ext.dataview.ItemHeader", {
   privates: {
     refreshWidth: function () {
       this.setWidth(this.getList().scrollElement.dom.clientWidth);
-    },
-  },
+    }
+  }
 });

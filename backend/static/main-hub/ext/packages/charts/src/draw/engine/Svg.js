@@ -13,14 +13,14 @@ Ext.define("Ext.draw.engine.Svg", {
     /**
      * Nothing needs to be done in high precision mode.
      */
-    highPrecision: false,
+    highPrecision: false
   },
 
   getElementConfig: function () {
     return {
       reference: "element",
       style: {
-        position: "absolute",
+        position: "absolute"
       },
       children: [
         {
@@ -28,7 +28,7 @@ Ext.define("Ext.draw.engine.Svg", {
           style: {
             width: "100%",
             height: "100%",
-            position: "relative",
+            position: "relative"
           },
           children: [
             {
@@ -37,11 +37,11 @@ Ext.define("Ext.draw.engine.Svg", {
               namespace: "http://www.w3.org/2000/svg",
               width: "100%",
               height: "100%",
-              version: 1.1,
-            },
-          ],
-        },
-      ],
+              version: 1.1
+            }
+          ]
+        }
+      ]
     };
   },
 
@@ -238,7 +238,7 @@ Ext.define("Ext.draw.engine.Svg", {
 
     return {
       data: "data:image/svg+xml;utf8," + encodeURIComponent(svg),
-      type: "svg",
+      type: "svg"
     };
   },
 
@@ -299,5 +299,5 @@ Ext.define("Ext.draw.engine.Svg", {
       sprite.element = null;
     }
     this.callParent(arguments);
-  },
+  }
 });

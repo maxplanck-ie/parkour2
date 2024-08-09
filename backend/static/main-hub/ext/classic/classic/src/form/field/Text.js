@@ -109,7 +109,7 @@ Ext.define("Ext.form.field.Text", {
   requires: [
     "Ext.form.field.VTypes",
     "Ext.form.trigger.Trigger",
-    "Ext.util.TextMetrics",
+    "Ext.util.TextMetrics"
   ],
   alternateClassName: ["Ext.form.TextField", "Ext.form.Text"],
 
@@ -170,7 +170,7 @@ Ext.define("Ext.form.field.Text", {
      *         }
      *     });
      */
-    triggers: undefined,
+    triggers: undefined
   },
 
   renderConfig: {
@@ -179,7 +179,7 @@ Ext.define("Ext.form.field.Text", {
      * false to prevent the user from typing text directly into the field; the field can
      * only have its value set programmatically or via an action invoked by a trigger.
      */
-    editable: true,
+    editable: true
   },
 
   /**
@@ -469,7 +469,7 @@ Ext.define("Ext.form.field.Text", {
     },
     translate: false,
     single: true,
-    preventDefault: true,
+    preventDefault: true
   },
 
   childEls: [
@@ -487,7 +487,7 @@ Ext.define("Ext.form.field.Text", {
      */
     "inputWrap",
 
-    "placeholderLabel",
+    "placeholderLabel"
   ],
 
   preSubTpl: [
@@ -499,7 +499,7 @@ Ext.define("Ext.form.field.Text", {
     "</tpl>",
     ' class="{triggerWrapCls} {triggerWrapCls}-{ui}">',
     '<div id={cmpId}-inputWrap data-ref="inputWrap"',
-    ' role="presentation" class="{inputWrapCls} {inputWrapCls}-{ui}">',
+    ' role="presentation" class="{inputWrapCls} {inputWrapCls}-{ui}">'
   ],
 
   postSubTpl: [
@@ -508,7 +508,7 @@ Ext.define("Ext.form.field.Text", {
     "</tpl>",
     "</div>", // end inputWrap
     '<tpl for="triggers">{[values.renderTrigger(parent)]}</tpl>',
-    "</div>", // end triggerWrap
+    "</div>" // end triggerWrap
   ],
 
   /**
@@ -552,7 +552,7 @@ Ext.define("Ext.form.field.Text", {
     //<debug>
     if (me.size) {
       Ext.log.warn(
-        'Ext.form.field.Text "size" config was deprecated in Ext 5.0. Please specify a "width" or use a layout instead.',
+        'Ext.form.field.Text "size" config was deprecated in Ext 5.0. Please specify a "width" or use a layout instead.'
       );
     }
     //</debug>
@@ -603,7 +603,7 @@ Ext.define("Ext.form.field.Text", {
         scope: me,
         keyup: me.onKeyUp,
         keydown: me.onKeyDown,
-        keypress: me.onKeyPress,
+        keypress: me.onKeyPress
       });
     }
   },
@@ -661,7 +661,7 @@ Ext.define("Ext.form.field.Text", {
       fieldCls:
         me.fieldCls +
         (me.allowBlank ? "" : " " + me.requiredCls) +
-        (isEmpty ? " " + me.emptyUICls : ""),
+        (isEmpty ? " " + me.emptyUICls : "")
     });
 
     inputElAttr = data.inputElAriaAttributes;
@@ -755,7 +755,7 @@ Ext.define("Ext.form.field.Text", {
     if ((me.triggerCls && !triggers) || me.trigger1Cls) {
       Ext.log.warn(
         "Ext.form.field.Text: 'triggerCls' and 'trigger<n>Cls'" +
-          " are deprecated.  Use 'triggers' instead.",
+          " are deprecated.  Use 'triggers' instead."
       );
     }
     //</debug>
@@ -777,7 +777,7 @@ Ext.define("Ext.form.field.Text", {
           extraCls: Ext.baseCSSPrefix + "trigger-index-" + i,
           handler: "onTrigger" + i + "Click",
           compat4Mode: true,
-          scope: me,
+          scope: me
         };
       }
     }
@@ -1309,7 +1309,7 @@ Ext.define("Ext.form.field.Text", {
       triggerWidth = 0;
 
       value = Ext.util.Format.htmlEncode(
-        me.getGrowWidth() || (me.hasFocus ? "" : me.emptyText) || "",
+        me.getGrowWidth() || (me.hasFocus ? "" : me.emptyText) || ""
       );
       value += me.growAppend;
 
@@ -1352,7 +1352,7 @@ Ext.define("Ext.form.field.Text", {
      */
     getTdType: function () {
       return "textfield";
-    },
+    }
   },
 
   deprecated: {
@@ -1376,8 +1376,8 @@ Ext.define("Ext.form.field.Text", {
           }
 
           return width;
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });

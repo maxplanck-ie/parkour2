@@ -227,7 +227,7 @@ Ext.define(
       "Ext.ComponentManager",
       "Ext.ComponentQuery",
       "Ext.XTemplate",
-      "Ext.scroll.Scroller",
+      "Ext.scroll.Scroller"
     ],
 
     /**
@@ -304,7 +304,7 @@ Ext.define(
        * `true` to automatically style the HTML inside the content target of this component (body for panels).
        * @accessor
        */
-      styleHtmlContent: null,
+      styleHtmlContent: null
     },
 
     eventedConfig: {
@@ -448,7 +448,7 @@ Ext.define(
        * @accessor
        * @evented
        */
-      disabled: null,
+      disabled: null
     },
 
     config: {
@@ -611,7 +611,7 @@ Ext.define(
        * mask and the Container when the mask is tapped on.
        * @accessor
        */
-      hideOnMaskTap: null,
+      hideOnMaskTap: null
     },
 
     /**
@@ -762,14 +762,14 @@ Ext.define(
       top: true,
       right: true,
       bottom: true,
-      left: true,
+      left: true
     },
 
     innerElement: null,
 
     element: {
       reference: "element",
-      classList: [Ext.baseCSSPrefix + "unsized"],
+      classList: [Ext.baseCSSPrefix + "unsized"]
     },
 
     classCls: Ext.baseCSSPrefix + "component",
@@ -803,28 +803,28 @@ Ext.define(
     _scrollableCfg: {
       x: {
         x: true,
-        y: false,
+        y: false
       },
       y: {
         x: false,
-        y: true,
+        y: true
       },
       horizontal: {
         x: true,
-        y: false,
+        y: false
       },
       vertical: {
         x: false,
-        y: true,
+        y: true
       },
       both: {
         x: true,
-        y: true,
+        y: true
       },
       true: {
         x: true,
-        y: true,
-      },
+        y: true
+      }
     },
 
     statics: {
@@ -842,7 +842,7 @@ Ext.define(
        */
       fromElement: function (el, limit, selector) {
         return Ext.ComponentManager.fromElement(el, limit, selector);
-      },
+      }
     },
 
     initialConfig: null,
@@ -920,7 +920,7 @@ Ext.define(
         parentBox = parent.getConstrainRegion();
         xy = [
           (parentBox.getWidth() - me.el.getWidth()) / 2,
-          (parentBox.getHeight() - me.el.getHeight()) / 2,
+          (parentBox.getHeight() - me.el.getHeight()) / 2
         ];
 
         me.setX(xy[0]);
@@ -953,7 +953,7 @@ Ext.define(
         // Get the .x-floated elements, or .x-float-wrap elements which wrap floateds which have children.
         floatedEls = Ext.supports.Selectors2
           ? parentWrap.query(
-              ":scope>" + me.floatedSelector + ",:scope>." + me.floatWrapCls,
+              ":scope>" + me.floatedSelector + ",:scope>." + me.floatWrapCls
             )
           : Ext.getBody().query(
               "#" +
@@ -963,7 +963,7 @@ Ext.define(
                 ",#" +
                 parentWrap.id +
                 ">." +
-                me.floatWrapCls,
+                me.floatWrapCls
             );
 
         for (i = 0, len = floatedEls.length; i < len; i++) {
@@ -1081,7 +1081,7 @@ Ext.define(
         listeners.push({
           fn: fn,
           scope: scope,
-          args: args,
+          args: args
         });
       }
     },
@@ -1111,7 +1111,7 @@ Ext.define(
           //<debug>
           if (!scrollableCfg) {
             Ext.raise(
-              "'" + scrollable + "'is not a valid value for 'scrollable'",
+              "'" + scrollable + "'is not a valid value for 'scrollable'"
             );
           }
           //</debug>
@@ -1361,8 +1361,8 @@ Ext.define(
         bodyEl = me.link(
           "bodyElement",
           me.innerElement.wrap({
-            cls: Ext.baseCSSPrefix + "body",
-          }),
+            cls: Ext.baseCSSPrefix + "body"
+          })
         );
 
         bodyEl.toggleCls(me.widthedCls, me.widthed);
@@ -1512,11 +1512,11 @@ Ext.define(
 
         el.toggleCls(
           Ext.baseCSSPrefix + "has-width",
-          hasWidth && !stretched && !hasHeight,
+          hasWidth && !stretched && !hasHeight
         );
         el.toggleCls(
           Ext.baseCSSPrefix + "has-height",
-          hasHeight && !stretched && !hasWidth,
+          hasHeight && !stretched && !hasWidth
         );
 
         el.toggleCls(widthedCls, hasWidth);
@@ -1612,7 +1612,7 @@ Ext.define(
             me.centerResizeListener = me.floatParentNode.on({
               resize: me.center,
               scope: me,
-              destroyable: true,
+              destroyable: true
             });
           }
         } else {
@@ -1651,7 +1651,7 @@ Ext.define(
             docked.position +
             "', must be either 'top', 'right', 'bottom', " +
             "'left' or `null` (for no docking)",
-          this,
+          this
         );
         return;
       }
@@ -1824,7 +1824,7 @@ Ext.define(
         !innerHtmlElement.dom.parentNode
       ) {
         this.innerHtmlElement = innerHtmlElement = Ext.Element.create({
-          cls: Ext.baseCSSPrefix + "innerhtml",
+          cls: Ext.baseCSSPrefix + "innerhtml"
         });
 
         if (this.getStyleHtmlContent()) {
@@ -1916,7 +1916,7 @@ Ext.define(
           animationend: function () {
             me.hide(animation);
           },
-          single: true,
+          single: true
         });
         return me;
       }
@@ -1933,7 +1933,7 @@ Ext.define(
             beforehiddenchange: "animateFn",
             scope: this,
             single: true,
-            args: [animation],
+            args: [animation]
           });
         }
         me.setHidden(true);
@@ -1981,7 +1981,7 @@ Ext.define(
             me.show(animation);
           },
           scope: me,
-          single: true,
+          single: true
         });
         return me;
       }
@@ -2002,7 +2002,7 @@ Ext.define(
             beforehiddenchange: "animateFn",
             scope: me,
             single: true,
-            args: [animation],
+            args: [animation]
           });
         }
 
@@ -2073,7 +2073,7 @@ Ext.define(
         animation.on({
           animationstart: me.onAnimationStart,
           scope: me,
-          single: true,
+          single: true
         });
 
         if (!Ext.isEmpty(newState)) {
@@ -2292,10 +2292,10 @@ Ext.define(
             hide: "onShowByErased",
             destroy: "onShowByErased",
             single: true,
-            scope: me,
+            scope: me
           });
           viewport.on("resize", "onViewportResize", me, {
-            args: [component, alignment, options],
+            args: [component, alignment, options]
           });
         }
 
@@ -2337,7 +2337,7 @@ Ext.define(
       if (tooltip) {
         if (typeof tooltip === "string") {
           tooltip = {
-            html: tooltip,
+            html: tooltip
           };
         } else {
           tooltip = Ext.apply({}, tooltip);
@@ -2395,7 +2395,7 @@ Ext.define(
       currentModal = Ext.factory(
         modal,
         Ext["Mask"],
-        typeof currentModal === "boolean" ? null : currentModal,
+        typeof currentModal === "boolean" ? null : currentModal
       );
 
       if (currentModal) {
@@ -2454,12 +2454,12 @@ Ext.define(
     applyHideAnimation: function (config) {
       if (config === true) {
         config = {
-          type: "fadeOut",
+          type: "fadeOut"
         };
       }
       if (Ext.isString(config)) {
         config = {
-          type: config,
+          type: config
         };
       }
 
@@ -2469,12 +2469,12 @@ Ext.define(
     applyShowAnimation: function (config) {
       if (config === true) {
         config = {
-          type: "fadeIn",
+          type: "fadeIn"
         };
       }
       if (Ext.isString(config)) {
         config = {
-          type: config,
+          type: config
         };
       }
 
@@ -2515,7 +2515,7 @@ Ext.define(
         // animations should also be destroyed
         me.getShowAnimation(),
         // destroy of the hide animation calls the 'updateHidden'
-        me.getHideAnimation(),
+        me.getHideAnimation()
       );
 
       me.setPlugins(null);
@@ -2532,7 +2532,7 @@ Ext.define(
         options,
         order,
         caller,
-        manager,
+        manager
       ) {
         if (name == "painted" || name == "resize") {
           this.element.doAddListener(name, fn, scope || this, options, order);
@@ -2547,7 +2547,7 @@ Ext.define(
         }
 
         this.callParent([name, fn, scope]);
-      },
+      }
     },
 
     deprecated: {
@@ -2558,18 +2558,18 @@ Ext.define(
            * @inheritdoc Ext.Component#resetPositioned
            * @deprecated 6.2 Use {@link #resetPositioned} instead.
            */
-          resetFloating: "resetPositioned",
-        },
-      },
-    },
+          resetFloating: "resetPositioned"
+        }
+      }
+    }
   },
   function () {
     //<debug>
     if (!document.querySelector("meta[name=viewport]")) {
       Ext.log.warn(
-        'Ext JS requires a viewport meta tag in order to function correctly on mobile devices.  Please add the following tag to the <head> of your html page: \n <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">',
+        'Ext JS requires a viewport meta tag in order to function correctly on mobile devices.  Please add the following tag to the <head> of your html page: \n <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">'
       );
     }
     //</debug>
-  },
+  }
 );

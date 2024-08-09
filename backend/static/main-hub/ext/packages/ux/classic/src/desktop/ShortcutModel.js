@@ -15,13 +15,13 @@ Ext.define("Ext.ux.desktop.ShortcutModel", {
   fields: [
     {
       name: "name",
-      convert: Ext.String.createVarName,
+      convert: Ext.String.createVarName
     },
     {
-      name: "iconCls",
+      name: "iconCls"
     },
     {
-      name: "module",
-    },
-  ],
+      name: "module"
+    }
+  ]
 });

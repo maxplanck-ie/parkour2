@@ -3,6 +3,6 @@ Ext.define("Ext.theme.material.form.FieldContainer", {
 
   config: {
     fieldSeparators: false,
-    inputBorders: true,
-  },
+    inputBorders: true
+  }
 });

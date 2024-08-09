@@ -49,7 +49,7 @@ Ext.define("Ext.field.Hidden", {
      */
     component: {
       xtype: "input",
-      type: "hidden",
+      type: "hidden"
     },
 
     /**
@@ -62,8 +62,8 @@ Ext.define("Ext.field.Hidden", {
      * @cfg {Number} tabIndex
      * @hide
      */
-    tabIndex: -1,
+    tabIndex: -1
   },
 
-  classCls: Ext.baseCSSPrefix + "hiddenfield",
+  classCls: Ext.baseCSSPrefix + "hiddenfield"
 });

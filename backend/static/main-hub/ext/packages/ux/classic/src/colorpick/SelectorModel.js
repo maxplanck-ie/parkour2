@@ -15,7 +15,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
       h: 0, // hue,
       s: 1, // saturation
       v: 1, // value
-      a: 1, // alpha (opacity)
+      a: 1 // alpha (opacity)
     },
     previousColor: {
       r: 0, // red
@@ -24,8 +24,8 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
       h: 0, // hue,
       s: 1, // saturation
       v: 1, // value
-      a: 1, // alpha (opacity)
-    },
+      a: 1 // alpha (opacity)
+    }
   },
 
   formulas: {
@@ -44,7 +44,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
       set: function (hex) {
         var rgb = Ext.ux.colorpick.ColorUtils.hex2rgb(hex);
         this.changeRGB(rgb);
-      },
+      }
     },
 
     // "R" in "RGB"
@@ -55,7 +55,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
 
       set: function (r) {
         this.changeRGB({ r: r });
-      },
+      }
     },
 
     // "G" in "RGB"
@@ -66,7 +66,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
 
       set: function (g) {
         this.changeRGB({ g: g });
-      },
+      }
     },
 
     // "B" in "RGB"
@@ -77,7 +77,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
 
       set: function (b) {
         this.changeRGB({ b: b });
-      },
+      }
     },
 
     // "H" in HSV
@@ -88,7 +88,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
 
       set: function (hue) {
         this.changeHSV({ h: hue / 360 });
-      },
+      }
     },
 
     // "S" in HSV
@@ -99,7 +99,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
 
       set: function (saturation) {
         this.changeHSV({ s: saturation / 100 });
-      },
+      }
     },
 
     // "V" in HSV
@@ -111,7 +111,7 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
 
       set: function (value) {
         this.changeHSV({ v: value / 100 });
-      },
+      }
     },
 
     alpha: {
@@ -125,13 +125,13 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
           "selectedColor",
           Ext.applyIf(
             {
-              a: alpha / 100,
+              a: alpha / 100
             },
-            this.data.selectedColor,
-          ),
+            this.data.selectedColor
+          )
         );
-      },
-    },
+      }
+    }
   }, // formulas
 
   changeHSV: function (hsv) {
@@ -156,5 +156,5 @@ Ext.define("Ext.ux.colorpick.SelectorModel", {
     rgb.v = hsv.v;
 
     this.set("selectedColor", rgb);
-  },
+  }
 });

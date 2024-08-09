@@ -6,7 +6,7 @@ Ext.define("Ext.device.storage.Abstract", {
     databaseName: "Sencha",
     databaseVersion: "1.0",
     databaseDisplayName: "Sencha Database",
-    databaseSize: 5 * 1024 * 1024,
+    databaseSize: 5 * 1024 * 1024
   },
 
   openDatabase: function (config) {
@@ -16,7 +16,7 @@ Ext.define("Ext.device.storage.Abstract", {
       name: defaultConfig.databaseName,
       version: defaultConfig.databaseVersion,
       displayName: defaultConfig.databaseDisplayName,
-      size: defaultConfig.databaseSize,
+      size: defaultConfig.databaseSize
     });
 
     return config;
@@ -27,5 +27,5 @@ Ext.define("Ext.device.storage.Abstract", {
   getItem: Ext.emptyFn,
   setItem: Ext.emptyFn,
   removeItem: Ext.emptyFn,
-  clear: Ext.emptyFn,
+  clear: Ext.emptyFn
 });

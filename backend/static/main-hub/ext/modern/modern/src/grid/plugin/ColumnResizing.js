@@ -16,7 +16,7 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
      * When true the whole column will resize in real-time as the user drags. When false only the header will resize
      * until the interaction is done.
      */
-    realtime: false,
+    realtime: false
   },
 
   hasResizingCls: Ext.baseCSSPrefix + "has-columnresizing",
@@ -41,7 +41,7 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
       headerContainer.renderElement.un({
         touchstart: "onContainerTouchStart",
         scope: this,
-        priority: 100,
+        priority: 100
       });
       oldGrid.removeCls(cls);
     }
@@ -50,7 +50,7 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
       headerContainer = grid.getHeaderContainer();
       headerContainer.renderElement.on({
         touchstart: "onContainerTouchStart",
-        scope: this,
+        scope: this
       });
       grid.addCls(cls);
     }
@@ -79,7 +79,7 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
           me._resizeMarker.show();
           me._resizeMarker.setLeft(
             column.el.getOffsetsTo(me._resizeMarkerParent)[0] +
-              me._startColumnWidth,
+              me._startColumnWidth
           );
         } else {
           column.setWidth(me._startColumnWidth);
@@ -88,7 +88,7 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
           touchEnd: "onTouchEnd",
           touchMove: "onTouchMove",
           scope: me,
-          destroyable: true,
+          destroyable: true
         });
       }
     } else if (e.multitouch && me._resizeColumn) {
@@ -110,12 +110,12 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
       if (column) {
         this.currentColumnWidth = Math.max(
           Math.ceil(this._startColumnWidth + resizeAmount),
-          this._minColumnWidth,
+          this._minColumnWidth
         );
         if (this._maxColumnWidth) {
           this.currentColumnWidth = Math.min(
             this.currentColumnWidth,
-            this._maxColumnWidth,
+            this._maxColumnWidth
           );
         }
 
@@ -125,7 +125,7 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
         } else {
           this._resizeMarker.setLeft(
             column.el.getOffsetsTo(this._resizeMarkerParent)[0] +
-              this.currentColumnWidth,
+              this.currentColumnWidth
           );
         }
 
@@ -157,5 +157,5 @@ Ext.define("Ext.grid.plugin.ColumnResizing", {
       column.renderElement.removeCls(me.resizingCls);
       me._resizeColumn = null;
     }
-  },
+  }
 });

@@ -340,11 +340,11 @@ Ext.define(
     init: function (view) {
       Ext.applyIf(view, {
         copy: this.copy,
-        allowCopy: this.allowCopy,
+        allowCopy: this.allowCopy
       });
 
       view.on("render", this.onViewRender, this, {
-        single: true,
+        single: true
       });
     },
 
@@ -374,10 +374,10 @@ Ext.define(
               displayField: me.displayField,
               repairHighlightColor: me.nodeHighlightColor,
               repairHighlight: me.nodeHighlightOnRepair,
-              scrollEl: scrollEl,
+              scrollEl: scrollEl
             },
-            me.dragZone,
-          ),
+            me.dragZone
+          )
         );
       }
 
@@ -394,16 +394,16 @@ Ext.define(
               dropHighlightColor: me.nodeHighlightColor,
               dropHighlight: me.nodeHighlightOnDrop,
               sortOnDrop: me.sortOnDrop,
-              containerScroll: me.containerScroll,
+              containerScroll: me.containerScroll
             },
-            me.dropZone,
-          ),
+            me.dropZone
+          )
         );
       }
-    },
+    }
   },
   function () {
     var proto = this.prototype;
     proto.nodeHighlightOnDrop = proto.nodeHighlightOnRepair = Ext.enableFx;
-  },
+  }
 );

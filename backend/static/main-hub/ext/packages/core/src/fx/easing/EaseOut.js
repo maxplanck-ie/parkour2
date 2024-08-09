@@ -8,7 +8,7 @@ Ext.define("Ext.fx.easing.EaseOut", {
 
   config: {
     exponent: 4,
-    duration: 1500,
+    duration: 1500
   },
 
   getValue: function () {
@@ -28,5 +28,5 @@ Ext.define("Ext.fx.easing.EaseOut", {
     }
 
     return currentValue;
-  },
+  }
 });

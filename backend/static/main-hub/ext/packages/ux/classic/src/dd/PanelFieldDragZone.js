@@ -49,7 +49,7 @@ Ext.define("Ext.ux.dd.PanelFieldDragZone", {
       // Get the data we are dragging: the Field
       // create a ddel for the drag proxy to display
       field = Ext.getCmp(
-        targetLabel.up("." + Ext.form.Labelable.prototype.formItemCls).id,
+        targetLabel.up("." + Ext.form.Labelable.prototype.formItemCls).id
       );
       // Temporary prevent marking the field as invalid, since it causes changes
       // to the underlying dom element which can cause problems in IE
@@ -67,7 +67,7 @@ Ext.define("Ext.ux.dd.PanelFieldDragZone", {
 
         return {
           field: field,
-          ddel: dragEl,
+          ddel: dragEl
         };
       }
 
@@ -79,5 +79,5 @@ Ext.define("Ext.ux.dd.PanelFieldDragZone", {
   getRepairXY: function () {
     // The coordinates to slide the drag proxy back to on failed drop.
     return this.dragData.field.getEl().getXY();
-  },
+  }
 });

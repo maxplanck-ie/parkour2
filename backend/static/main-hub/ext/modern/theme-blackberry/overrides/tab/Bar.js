@@ -3,7 +3,7 @@ Ext.define("Ext.theme.blackberry.tab.Bar", {
 
   config: {
     defaults: {
-      flex: 1,
-    },
-  },
+      flex: 1
+    }
+  }
 });

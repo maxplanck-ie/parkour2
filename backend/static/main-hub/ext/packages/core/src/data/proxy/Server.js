@@ -145,7 +145,7 @@ Ext.define("Ext.data.proxy.Server", {
       create: undefined,
       read: undefined,
       update: undefined,
-      destroy: undefined,
+      destroy: undefined
     },
 
     /**
@@ -153,7 +153,7 @@ Ext.define("Ext.data.proxy.Server", {
      * Extra parameters that will be included on every request. Individual requests with params of the same name
      * will override these params when they are in conflict.
      */
-    extraParams: {},
+    extraParams: {}
   },
 
   /**
@@ -235,7 +235,7 @@ Ext.define("Ext.data.proxy.Server", {
 
       // this is needed by JsonSimlet in order to properly construct responses for
       // requests from this proxy
-      proxy: me,
+      proxy: me
     });
 
     request.setUrl(me.buildUrl(request));
@@ -286,7 +286,7 @@ Ext.define("Ext.data.proxy.Server", {
       } else {
         resultSet = reader.read(me.extractResponseData(response), {
           // If we're doing an update, we want to construct the models ourselves.
-          recordCreator: operation.getRecordCreator(),
+          recordCreator: operation.getRecordCreator()
         });
       }
 
@@ -328,7 +328,7 @@ Ext.define("Ext.data.proxy.Server", {
     operation.setException({
       status: response.status,
       statusText: response.statusText,
-      response: response,
+      response: response
     });
   },
 
@@ -486,7 +486,7 @@ Ext.define("Ext.data.proxy.Server", {
     //<debug>
     if (!url) {
       Ext.raise(
-        "You are using a ServerProxy but have not supplied it with a url.",
+        "You are using a ServerProxy but have not supplied it with a url."
       );
     }
     //</debug>
@@ -494,7 +494,7 @@ Ext.define("Ext.data.proxy.Server", {
     if (me.getNoCache()) {
       url = Ext.urlAppend(
         url,
-        Ext.String.format("{0}={1}", me.getCacheString(), Ext.Date.now()),
+        Ext.String.format("{0}={1}", me.getCacheString(), Ext.Date.now())
       );
     }
 
@@ -531,7 +531,7 @@ Ext.define("Ext.data.proxy.Server", {
   doRequest: function (operation) {
     //<debug>
     Ext.raise(
-      "The doRequest function has not been implemented on your Ext.data.proxy.Server subclass. See src/data/ServerProxy.js for details",
+      "The doRequest function has not been implemented on your Ext.data.proxy.Server subclass. See src/data/ServerProxy.js for details"
     );
     //</debug>
   },
@@ -558,5 +558,5 @@ Ext.define("Ext.data.proxy.Server", {
 
     me.destroying = false;
     me.destroyed = true;
-  },
+  }
 });

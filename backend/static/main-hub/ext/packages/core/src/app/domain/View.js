@@ -27,5 +27,5 @@ Ext.define("Ext.app.domain.View", {
   destroy: function () {
     this.controller = null;
     this.callParent();
-  },
+  }
 });

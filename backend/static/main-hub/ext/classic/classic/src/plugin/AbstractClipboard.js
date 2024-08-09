@@ -82,9 +82,9 @@ Ext.define("Ext.plugin.AbstractClipboard", {
     formats: {
       text: {
         get: "getTextData",
-        put: "putTextData",
-      },
-    },
+        put: "putTextData"
+      }
+    }
   },
 
   config: {
@@ -114,7 +114,7 @@ Ext.define("Ext.plugin.AbstractClipboard", {
      * format is used. Based on the type of derived class, other formats may be
      * possible.
      */
-    system: "text",
+    system: "text"
   },
 
   destroy: function () {
@@ -152,7 +152,7 @@ Ext.define("Ext.plugin.AbstractClipboard", {
           me.finishInit(comp);
         },
         destroyable: true,
-        single: true,
+        single: true
       });
     }
   },
@@ -199,7 +199,7 @@ Ext.define("Ext.plugin.AbstractClipboard", {
 
       data: null,
 
-      textArea: null,
+      textArea: null
     },
 
     applyMemory: function (value) {
@@ -296,21 +296,21 @@ Ext.define("Ext.plugin.AbstractClipboard", {
             ctrl: true,
             key: "x",
             fn: me.onCut,
-            scope: me,
+            scope: me
           },
           {
             ctrl: true,
             key: "c",
             fn: me.onCopy,
-            scope: me,
+            scope: me
           },
           {
             ctrl: true,
             key: "v",
             fn: me.onPaste,
-            scope: me,
-          },
-        ],
+            scope: me
+          }
+        ]
       });
 
       ++me.shared.counter;
@@ -318,7 +318,7 @@ Ext.define("Ext.plugin.AbstractClipboard", {
       me.destroyListener = comp.on({
         destroyable: true,
         destroy: "destroy",
-        scope: me,
+        scope: me
       });
     },
 
@@ -380,8 +380,8 @@ Ext.define("Ext.plugin.AbstractClipboard", {
             position: "absolute",
             top: "-1000px",
             width: "1px",
-            height: "1px",
-          },
+            height: "1px"
+          }
         });
 
         // We don't want this element to fire focus events ever
@@ -465,7 +465,7 @@ Ext.define("Ext.plugin.AbstractClipboard", {
             area.value = "";
           },
           100,
-          me,
+          me
         );
       }
     },
@@ -539,6 +539,6 @@ Ext.define("Ext.plugin.AbstractClipboard", {
       this.allFormats = null;
     },
 
-    validateAction: Ext.privateFn,
-  },
+    validateAction: Ext.privateFn
+  }
 });

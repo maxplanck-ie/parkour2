@@ -48,7 +48,7 @@
 
   $.extend(DataTable.ext.classes, {
     sWrapper: "dataTables_wrapper dt-foundation",
-    sProcessing: "dataTables_processing panel callout",
+    sProcessing: "dataTables_processing panel callout"
   });
 
   /* Set the defaults for DataTables initialisation */
@@ -57,7 +57,7 @@
       "<'row'<'small-6 columns'l><'small-6 columns'f>r>" +
       "t" +
       "<'row'<'small-6 columns'i><'small-6 columns'p>>",
-    renderer: "foundation",
+    renderer: "foundation"
   });
 
   /* Page button renderer */
@@ -67,7 +67,7 @@
     idx,
     buttons,
     page,
-    pages,
+    pages
   ) {
     var api = new DataTable.Api(settings);
     var classes = settings.oClasses;
@@ -152,12 +152,12 @@
               id:
                 idx === 0 && typeof button === "string"
                   ? settings.sTableId + "_" + button
-                  : null,
+                  : null
             })
               .append(
                 tag
                   ? $("<" + tag + "/>", { href: "#" }).html(btnDisplay)
-                  : btnDisplay,
+                  : btnDisplay
               )
               .appendTo(container);
 
@@ -169,7 +169,7 @@
 
     attach(
       $(host).empty().html('<ul class="pagination"/>').children("ul"),
-      buttons,
+      buttons
     );
   };
 

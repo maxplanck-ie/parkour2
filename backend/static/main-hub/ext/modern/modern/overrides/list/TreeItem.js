@@ -56,25 +56,25 @@ Ext.define("Ext.overrides.list.TreeItem", {
             Ext.baseCSSPrefix +
             "treelist-floater",
           style: {
-            width: "200px",
-          },
+            width: "200px"
+          }
         });
         me.floatWrap.alignTo(toolElement, "tl-tr");
         me.floatWrap.on({
           click: ownerTree.onClick,
           mouseover: ownerTree.onMouseOver,
-          scope: ownerTree,
+          scope: ownerTree
         });
       } else {
         // Reinsert this el back into the tree
         me.getOwner().rootItem.el.dom.insertBefore(
           me.el.dom,
-          me.nextElementSibling,
+          me.nextElementSibling
         );
         me.floatWrap.destroy();
         me.floatWrap = null;
       }
       toolElement.toggleCls(me.floatedToolCls, floated);
-    },
-  },
+    }
+  }
 });

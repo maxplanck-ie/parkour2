@@ -28,7 +28,7 @@ Ext.define("Ext.theme.neptune.layout.component.Dock", {
     Ext.baseCSSPrefix + "noborder-tr", // 1100 = 12
     Ext.baseCSSPrefix + "noborder-trl", // 1101 = 13
     Ext.baseCSSPrefix + "noborder-trb", // 1110 = 14
-    Ext.baseCSSPrefix + "noborder-trbl", // 1111 = 15
+    Ext.baseCSSPrefix + "noborder-trbl" // 1111 = 15
   ],
 
   /**
@@ -39,7 +39,7 @@ Ext.define("Ext.theme.neptune.layout.component.Dock", {
     top: 8,
     right: 4,
     bottom: 2,
-    left: 1,
+    left: 1
   },
 
   handleItemBorders: function () {
@@ -292,5 +292,5 @@ Ext.define("Ext.theme.neptune.layout.component.Dock", {
     }
 
     me.callParent([item]);
-  },
+  }
 });

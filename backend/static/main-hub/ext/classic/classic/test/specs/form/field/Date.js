@@ -3,7 +3,7 @@ describe("Ext.form.field.Date", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
 
@@ -22,7 +22,7 @@ describe("Ext.form.field.Date", function () {
       config = config || {};
       Ext.applyIf(config, {
         name: "test",
-        width: 100,
+        width: 100
       });
       component = new Ext.form.field.Date(config);
     };
@@ -67,7 +67,7 @@ describe("Ext.form.field.Date", function () {
 
     beforeEach(function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -163,7 +163,7 @@ describe("Ext.form.field.Date", function () {
       beforeEach(function () {
         btn = new Ext.button.Button({
           renderTo: Ext.getBody(),
-          text: "foo",
+          text: "foo"
         });
       });
 
@@ -238,7 +238,7 @@ describe("Ext.form.field.Date", function () {
         maxText: "The date in this field must be equal to or before {0}",
         invalidText: "{0} is not a valid date - it must be in the format {1}",
         triggerCls: "x-form-date-trigger",
-        showToday: true,
+        showToday: true
       },
       undefConfigs = ["minValue", "maxValue", "disabledDays", "disabledDates"];
 
@@ -265,13 +265,13 @@ describe("Ext.form.field.Date", function () {
 
     beforeEach(function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
     it("should give the trigger a class of 'x-form-date-trigger'", function () {
       expect(component.getTrigger("picker").el).toHaveCls(
-        "x-form-date-trigger",
+        "x-form-date-trigger"
       );
     });
 
@@ -288,7 +288,7 @@ describe("Ext.form.field.Date", function () {
 
       expect(component).toHaveAttr(
         "aria-owns",
-        id + "-inputEl " + id + "-picker-eventEl",
+        id + "-inputEl " + id + "-picker-eventEl"
       );
     });
   });
@@ -312,7 +312,7 @@ describe("Ext.form.field.Date", function () {
       it("should parse a value according to the format 1", function () {
         makeComponent({
           format: "Y/m/d",
-          value: "2008/05/06",
+          value: "2008/05/06"
         });
 
         expect(component.getValue()).toEqual(new Date(2008, 4, 6));
@@ -321,7 +321,7 @@ describe("Ext.form.field.Date", function () {
       it("should parse a value according to the format 2", function () {
         makeComponent({
           format: "d/m/Y",
-          value: "03/03/1986",
+          value: "03/03/1986"
         });
 
         expect(component.getValue()).toEqual(new Date(1986, 2, 3));
@@ -337,7 +337,7 @@ describe("Ext.form.field.Date", function () {
 
       it("should accept a string value", function () {
         makeComponent({
-          format: "Y/m/d",
+          format: "Y/m/d"
         });
         component.setValue("2006/01/01");
         expect(component.getValue()).toEqual(new Date(2006, 0, 1));
@@ -351,7 +351,7 @@ describe("Ext.form.field.Date", function () {
 
       it("should set null if an invalid date string is passed", function () {
         makeComponent({
-          format: "Y/m/d",
+          format: "Y/m/d"
         });
         component.setValue("03.03.2000");
         expect(component.getValue()).toBeNull();
@@ -370,7 +370,7 @@ describe("Ext.form.field.Date", function () {
         date = Ext.Date.clearTime(date);
 
         makeComponent({
-          format: "m/d/y",
+          format: "m/d/y"
         });
         component.setRawValue("01/01/99");
         expect(component.getValue()).toEqual(date);
@@ -385,7 +385,7 @@ describe("Ext.form.field.Date", function () {
     beforeEach(function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        value: "01/11/2011",
+        value: "01/11/2011"
       });
     });
 
@@ -420,7 +420,7 @@ describe("Ext.form.field.Date", function () {
     beforeEach(function () {
       makeComponent({
         value: "01/11/2011",
-        anchor: "100%",
+        anchor: "100%"
       });
       window = new Ext.window.Window({
         height: 100,
@@ -428,7 +428,7 @@ describe("Ext.form.field.Date", function () {
         title: "DateField test",
         layout: "anchor",
         items: component,
-        autoShow: true,
+        autoShow: true
       });
     });
     afterEach(function () {
@@ -438,7 +438,7 @@ describe("Ext.form.field.Date", function () {
     it("should not constrain the picker inside the window", function () {
       clickTrigger();
       expect(component.picker.getY()).toEqual(
-        component.getY() + component.getHeight(),
+        component.getY() + component.getHeight()
       );
     });
   });
@@ -475,7 +475,7 @@ describe("Ext.form.field.Date", function () {
   describe("submit value", function () {
     it("should use the format as the default", function () {
       makeComponent({
-        value: new Date(2010, 0, 15),
+        value: new Date(2010, 0, 15)
       });
       expect(component.getSubmitValue()).toBe("01/15/2010");
     });
@@ -483,7 +483,7 @@ describe("Ext.form.field.Date", function () {
     it("should give precedence to submitFormat", function () {
       makeComponent({
         value: new Date(2010, 0, 15),
-        submitFormat: "Y-m-d",
+        submitFormat: "Y-m-d"
       });
       expect(component.getSubmitValue()).toBe("2010-01-15");
     });
@@ -491,7 +491,7 @@ describe("Ext.form.field.Date", function () {
     it("should return null if the value isn't a valid date", function () {
       makeComponent({
         value: "wontparse",
-        submitFormat: "Y-m-d",
+        submitFormat: "Y-m-d"
       });
       expect(component.getSubmitValue()).toBe("");
     });
@@ -501,7 +501,7 @@ describe("Ext.form.field.Date", function () {
     it("should use the format as the default", function () {
       makeComponent({
         name: "myname",
-        value: new Date(2010, 0, 15),
+        value: new Date(2010, 0, 15)
       });
       var modelData = component.getModelData();
       expect(modelData.myname).toBeTruthy();
@@ -514,7 +514,7 @@ describe("Ext.form.field.Date", function () {
       makeComponent({
         name: "myname",
         value: "wontparse",
-        submitFormat: "Y-m-d",
+        submitFormat: "Y-m-d"
       });
       expect(component.getModelData()).toEqual({ myname: null });
     });
@@ -524,14 +524,14 @@ describe("Ext.form.field.Date", function () {
     describe("allowBlank", function () {
       it("should have no errors with allowBlank true", function () {
         makeComponent({
-          allowBlank: true,
+          allowBlank: true
         });
         expect(component.getErrors()).toEqual([]);
       });
 
       it("should have an error with allowBlank false and no value", function () {
         makeComponent({
-          allowBlank: false,
+          allowBlank: false
         });
         expect(component.getErrors()).toContain(component.blankText);
       });
@@ -541,7 +541,7 @@ describe("Ext.form.field.Date", function () {
       it("should have no error if the date is valid according to the format", function () {
         makeComponent({
           format: "Y/m/d",
-          value: "2000/01/01",
+          value: "2000/01/01"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -549,13 +549,13 @@ describe("Ext.form.field.Date", function () {
       it("should have an error if the date is not in a required format", function () {
         makeComponent({
           format: "Y/m/d",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         var val = "2004.05.01",
           errStr = Ext.String.format(
             component.invalidText,
             val,
-            component.format,
+            component.format
           );
 
         component.inputEl.dom.value = val;
@@ -566,7 +566,7 @@ describe("Ext.form.field.Date", function () {
     describe("minValue", function () {
       it("should have no errors if a min value is not specified", function () {
         makeComponent({
-          value: new Date(1500, 0, 1), // way in the past
+          value: new Date(1500, 0, 1) // way in the past
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -575,7 +575,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2006/07/22",
-          minValue: "2004/07/09",
+          minValue: "2004/07/09"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -587,7 +587,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2004/07/22",
-          minValue: val,
+          minValue: val
         });
         errStr = Ext.String.format(component.minText, val);
         expect(component.getErrors()).toContain(errStr);
@@ -600,7 +600,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2008/07/22",
-          minValue: "2006/07/09",
+          minValue: "2006/07/09"
         });
         errStr = Ext.String.format(component.minText, val);
         expect(component.getErrors()).toEqual([]);
@@ -613,7 +613,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2008/05/01",
-          minValue: "2008/05/01",
+          minValue: "2008/05/01"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -622,7 +622,7 @@ describe("Ext.form.field.Date", function () {
     describe("maxValue", function () {
       it("should have no errors if a max value is not specified", function () {
         makeComponent({
-          value: new Date(3000, 0, 1), // way in the future
+          value: new Date(3000, 0, 1) // way in the future
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -631,7 +631,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2006/07/22",
-          maxValue: "2008/07/09",
+          maxValue: "2008/07/09"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -643,7 +643,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2008/07/22",
-          maxValue: val,
+          maxValue: val
         });
         errStr = Ext.String.format(component.maxText, val);
         expect(component.getErrors()).toContain(errStr);
@@ -656,7 +656,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2008/07/22",
-          maxValue: "2009/07/09",
+          maxValue: "2009/07/09"
         });
         errStr = Ext.String.format(component.maxText, val);
         expect(component.getErrors()).toEqual([]);
@@ -669,7 +669,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2008/05/01",
-          maxValue: "2008/05/01",
+          maxValue: "2008/05/01"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -679,7 +679,7 @@ describe("Ext.form.field.Date", function () {
       it("should throw no error if disabledDays is not defined", function () {
         makeComponent({
           format: "Y/m/d",
-          value: "2008/06/06",
+          value: "2008/06/06"
         });
 
         expect(component.getErrors()).toEqual([]);
@@ -689,7 +689,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2010/11/05", //Friday
-          disabledDays: [0, 6], //Sun, Sat
+          disabledDays: [0, 6] //Sun, Sat
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -698,7 +698,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2010/11/05", //Friday
-          disabledDays: [1, 5], //Mon, Fri
+          disabledDays: [1, 5] //Mon, Fri
         });
         expect(component.getErrors()).toContain(component.disabledDaysText);
       });
@@ -712,7 +712,7 @@ describe("Ext.form.field.Date", function () {
 
         it("should call the date picker's setDisabledDays method", function () {
           makeComponent({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           clickTrigger(); //inits the picker
           spyOn(component.picker, "setDisabledDays");
@@ -726,7 +726,7 @@ describe("Ext.form.field.Date", function () {
       it("should not throw an error if there's no regex", function () {
         makeComponent({
           format: "Y/m/d",
-          value: new Date(),
+          value: new Date()
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -735,7 +735,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2006/04/17",
-          disabledDates: ["2006/04/2"],
+          disabledDates: ["2006/04/2"]
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -744,7 +744,7 @@ describe("Ext.form.field.Date", function () {
         makeComponent({
           format: "Y/m/d",
           value: "2006/04/17",
-          disabledDates: ["2006/04/1"],
+          disabledDates: ["2006/04/1"]
         });
         expect(component.getErrors()).toContain(component.disabledDatesText);
       });
@@ -752,7 +752,7 @@ describe("Ext.form.field.Date", function () {
       describe("setDisabledDates method", function () {
         it("should set the disabledDates property", function () {
           makeComponent({
-            format: "Y/m/d",
+            format: "Y/m/d"
           });
           component.setDisabledDates(["1978/02/04"]);
           expect(component.disabledDates).toEqual(["1978/02/04"]);
@@ -762,19 +762,19 @@ describe("Ext.form.field.Date", function () {
           makeComponent();
           component.setDisabledDates(["1978/02/04"]);
           expect(component.disabledDatesRE + "").toEqual(
-            new RegExp("(?:1978/02/04)") + "",
+            new RegExp("(?:1978/02/04)") + ""
           ); //comparing regexp objects is tricky across browsers
         });
 
         it("should call the date picker's setDisabledDates method", function () {
           makeComponent({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           clickTrigger(); //inits the picker
           spyOn(component.picker, "setDisabledDates");
           component.setDisabledDates(["1978/02/04"]);
           expect(component.picker.setDisabledDates).toHaveBeenCalledWith(
-            component.disabledDatesRE,
+            component.disabledDatesRE
           );
         });
       });
@@ -785,7 +785,7 @@ describe("Ext.form.field.Date", function () {
     it("should allow 1999", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        format: "m-d-y",
+        format: "m-d-y"
       });
       component.setValue(new Date(1999, 1, 1));
       expect(component.getValue()).toEqual(new Date(1999, 1, 1));
@@ -793,7 +793,7 @@ describe("Ext.form.field.Date", function () {
     it("should allow 2099", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        format: "m-d-y",
+        format: "m-d-y"
       });
       component.setValue(new Date(2099, 1, 1));
       expect(component.getValue()).toEqual(new Date(2099, 1, 1));
@@ -801,7 +801,7 @@ describe("Ext.form.field.Date", function () {
     it("should not break on blur", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        format: "m-d-y",
+        format: "m-d-y"
       });
       component.setValue(new Date(2099, 1, 1));
       jasmine.focusAndWait(component);
@@ -816,7 +816,7 @@ describe("Ext.form.field.Date", function () {
 
       makeComponent({
         renderTo: Ext.getBody(),
-        format: "m-d-y",
+        format: "m-d-y"
       });
 
       component.setValue(new Date(2016, 5, 1));
@@ -849,7 +849,7 @@ describe("Ext.form.field.Date", function () {
       rawString = Ext.Date.format(newDate, "m/d/Y");
 
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -875,7 +875,7 @@ describe("Ext.form.field.Date", function () {
         format: "Y-m-d",
         rawToValue: function () {
           rawToValueCount++;
-        },
+        }
       });
 
       component.setValue("2010-04-15");
@@ -901,7 +901,7 @@ describe("Ext.form.field.Date", function () {
     it("should not blank the textfield for an invalid date", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        format: "Y-m-d",
+        format: "Y-m-d"
       });
       component.inputEl.dom.value = "foo";
       jasmine.focusAndWait(component);

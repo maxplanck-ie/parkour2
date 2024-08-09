@@ -48,8 +48,8 @@ Ext.define("Ext.tip.Manager", {
       anchorToTarget: false,
       anchor: false,
       closeAction: "hide",
-      quickShowInterval: 0,
-    },
+      quickShowInterval: 0
+    }
   },
 
   /**
@@ -71,7 +71,7 @@ Ext.define("Ext.tip.Manager", {
     tip.on({
       beforeshow: "onBeforeShow",
       hovertarget: "onHoverTarget",
-      scope: me,
+      scope: me
     });
 
     me.globalListeners = Ext.on({
@@ -79,7 +79,7 @@ Ext.define("Ext.tip.Manager", {
       destroyable: true,
       dragstart: "dragDisable",
       dragend: "dragEnable",
-      dragcancel: "dragEnable",
+      dragcancel: "dragEnable"
     });
   },
 
@@ -122,9 +122,9 @@ Ext.define("Ext.tip.Manager", {
       {
         id: "ext-global-tooltip",
         delegate: me.delegateQuickTip.bind(me),
-        target: Ext.getBody(),
+        target: Ext.getBody()
       },
-      config,
+      config
     );
   },
 
@@ -156,61 +156,61 @@ Ext.define("Ext.tip.Manager", {
       return {
         html: {
           prop: "data-qtip",
-          parse: fn,
+          parse: fn
         },
         width: {
           prop: "data-qwidth",
-          parse: numFn,
+          parse: numFn
         },
         minWidth: {
           prop: "data-qminWidth",
-          parse: fn,
+          parse: fn
         },
         maxWidth: {
           prop: "data-qmaxWidth",
-          parse: fn,
+          parse: fn
         },
         title: {
           prop: "data-qtitle",
-          parse: fn,
+          parse: fn
         },
         autoHide: {
           prop: "data-qautoHide",
-          parse: boolFn,
+          parse: boolFn
         },
         cls: {
           prop: "data-qcls",
-          parse: fn,
+          parse: fn
         },
         align: {
           prop: "data-qalign",
-          parse: fn,
+          parse: fn
         },
         anchor: {
           prop: "data-anchor",
-          parse: fn,
+          parse: fn
         },
         showDelay: {
           prop: "data-qshowDelay",
-          parse: numFn,
+          parse: numFn
         },
         hideDelay: {
           prop: "data-qhideDelay",
-          parse: numFn,
+          parse: numFn
         },
         dismissDelay: {
           prop: "data-qdismissDelay",
-          parse: numFn,
+          parse: numFn
         },
         trackMouse: {
           prop: "data-qtrackMouse",
-          parse: boolFn,
+          parse: boolFn
         },
         anchorToTarget: {
           prop: "data-qanchorToTarget",
-          parse: boolFn,
+          parse: boolFn
         },
-        closable: true,
+        closable: true
       };
     })(),
 
@@ -288,7 +288,7 @@ Ext.define("Ext.tip.Manager", {
             }
           } else {
             ret = data = {
-              html: text,
+              html: text
             };
 
             for (name in propertyMap) {
@@ -340,7 +340,7 @@ Ext.define("Ext.tip.Manager", {
       "anchor",
       "anchorToTarget",
       "align",
-      "trackMouse",
+      "trackMouse"
     ],
 
     onHoverTarget: function (tip, currentTarget) {
@@ -354,6 +354,6 @@ Ext.define("Ext.tip.Manager", {
         }, this);
         tip.setConfig(cfg);
       }
-    },
-  },
+    }
+  }
 });

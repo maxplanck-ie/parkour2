@@ -21,20 +21,20 @@ Ext.define("Ext.util.sizemonitor.OverflowChange", {
           className: "expand",
           children: [
             {
-              reference: "expandHelper",
-            },
-          ],
+              reference: "expandHelper"
+            }
+          ]
         },
         {
           reference: "shrinkMonitor",
           className: "shrink",
           children: [
             {
-              reference: "shrinkHelper",
-            },
-          ],
-        },
-      ],
+              reference: "shrinkHelper"
+            }
+          ]
+        }
+      ]
     };
   },
 
@@ -44,12 +44,12 @@ Ext.define("Ext.util.sizemonitor.OverflowChange", {
     this.expandMonitor[method](
       Ext.browser.is.Firefox ? "underflow" : "overflowchanged",
       this.onExpand,
-      true,
+      true
     );
     this.shrinkMonitor[method](
       Ext.browser.is.Firefox ? "overflow" : "overflowchanged",
       this.onShrink,
-      true,
+      true
     );
   },
 
@@ -101,5 +101,5 @@ Ext.define("Ext.util.sizemonitor.OverflowChange", {
     this.onExpand = this.onShrink = null;
 
     this.callParent();
-  },
+  }
 });

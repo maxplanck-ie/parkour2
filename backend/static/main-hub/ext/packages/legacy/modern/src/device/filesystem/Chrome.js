@@ -56,9 +56,9 @@ Ext.define("Ext.device.filesystem.Chrome", {
               config.type,
               grantedBytes,
               successCallback,
-              config.failure,
+              config.failure
             );
-          },
+          }
         );
       } else {
         window.webkitStorageInfo.requestQuota(
@@ -69,9 +69,9 @@ Ext.define("Ext.device.filesystem.Chrome", {
               config.type,
               grantedBytes,
               successCallback,
-              config.failure,
+              config.failure
             );
-          },
+          }
         );
       }
     } else {
@@ -79,8 +79,8 @@ Ext.define("Ext.device.filesystem.Chrome", {
         config.type,
         config.size,
         successCallback,
-        config.failure,
+        config.failure
       );
     }
-  },
+  }
 });

@@ -22,11 +22,11 @@ describe("Ext.window.Toast", function () {
           autoClose: false,
           listeners: {
             show: showSpy,
-            destroy: destroySpy,
-          },
+            destroy: destroySpy
+          }
         },
-        config,
-      ),
+        config
+      )
     );
 
     return toast;
@@ -48,7 +48,7 @@ describe("Ext.window.Toast", function () {
       describe("closable is not defined", function () {
         beforeEach(function () {
           makeToast({
-            autoClose: true,
+            autoClose: true
           });
         });
 
@@ -67,7 +67,7 @@ describe("Ext.window.Toast", function () {
         beforeEach(function () {
           makeToast({
             closable: true,
-            autoClose: true,
+            autoClose: true
           });
         });
 
@@ -90,7 +90,7 @@ describe("Ext.window.Toast", function () {
         align: "tl",
         html: "foo",
         animate: false,
-        closeOnMouseDown: true,
+        closeOnMouseDown: true
       });
     });
 
@@ -109,7 +109,7 @@ describe("Ext.window.Toast", function () {
     beforeEach(function () {
       makeToast({
         align: "tl",
-        animate: false,
+        animate: false
       });
     });
 
@@ -157,13 +157,13 @@ describe("Ext.window.Toast", function () {
         items: [
           {
             xtype: "textfield",
-            id: "field1",
+            id: "field1"
           },
           {
             xtype: "textfield",
-            id: "field2",
-          },
-        ],
+            id: "field2"
+          }
+        ]
       });
 
       field1 = win.down("#field1");
@@ -212,9 +212,9 @@ describe("Ext.window.Toast", function () {
         items: [
           {
             xtype: "textfield",
-            id: "field3",
-          },
-        ],
+            id: "field3"
+          }
+        ]
       }).show();
 
       field3 = win2.down("#field3");

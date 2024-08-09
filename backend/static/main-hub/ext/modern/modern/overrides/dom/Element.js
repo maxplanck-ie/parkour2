@@ -52,7 +52,7 @@ Ext.define("Ext.overrides.dom.Element", {
     top = typeof y === "number" ? y - xy[1] + top : undefined;
     return {
       x: left,
-      y: top,
+      y: top
     };
-  },
+  }
 });

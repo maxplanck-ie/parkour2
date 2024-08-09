@@ -28,13 +28,13 @@
  */
 Ext.define("Ext.chart.theme.Base", {
   mixins: {
-    factoryable: "Ext.mixin.Factoryable",
+    factoryable: "Ext.mixin.Factoryable"
   },
 
   requires: ["Ext.draw.Color"],
 
   factoryConfig: {
-    type: "chart.theme",
+    type: "chart.theme"
   },
 
   isTheme: true,
@@ -95,8 +95,8 @@ Ext.define("Ext.chart.theme.Base", {
      */
     chart: {
       defaults: {
-        background: "white",
-      },
+        background: "white"
+      }
     },
 
     /**
@@ -131,31 +131,31 @@ Ext.define("Ext.chart.theme.Base", {
           fontSize: "default",
           fontFamily: "default",
           fontWeight: "default",
-          fillStyle: "black",
+          fillStyle: "black"
         },
         title: {
           fillStyle: "black",
           fontSize: "default*1.23",
           fontFamily: "default",
-          fontWeight: "default",
+          fontWeight: "default"
         },
         style: {
-          strokeStyle: "black",
+          strokeStyle: "black"
         },
         grid: {
-          strokeStyle: "rgb(221, 221, 221)",
-        },
+          strokeStyle: "rgb(221, 221, 221)"
+        }
       },
       top: {
         style: {
-          textPadding: 5,
-        },
+          textPadding: 5
+        }
       },
       bottom: {
         style: {
-          textPadding: 5,
-        },
-      },
+          textPadding: 5
+        }
+      }
     },
 
     /**
@@ -194,10 +194,10 @@ Ext.define("Ext.chart.theme.Base", {
           fontWeight: "default",
           fontSize: "default*1.077",
           textBaseline: "middle",
-          textAlign: "center",
+          textAlign: "center"
         },
-        labelOverflowPadding: 5,
-      },
+        labelOverflowPadding: 5
+      }
     },
 
     /**
@@ -221,8 +221,8 @@ Ext.define("Ext.chart.theme.Base", {
         fontSize: "default",
         fontWeight: "default",
         fontFamily: "default",
-        fillStyle: "black",
-      },
+        fillStyle: "black"
+      }
     },
 
     /**
@@ -238,15 +238,15 @@ Ext.define("Ext.chart.theme.Base", {
         fontSize: 14,
         fontWeight: "default",
         fontFamily: "default",
-        fillStyle: "black",
+        fillStyle: "black"
       },
       border: {
         lineWidth: 1,
         radius: 4,
         fillStyle: "none",
-        strokeStyle: "gray",
+        strokeStyle: "gray"
       },
-      background: "white",
+      background: "white"
     },
 
     /**
@@ -262,7 +262,7 @@ Ext.define("Ext.chart.theme.Base", {
     seriesThemes: undefined,
 
     markerThemes: {
-      type: ["circle", "cross", "plus", "square", "triangle", "diamond"],
+      type: ["circle", "cross", "plus", "square", "triangle", "diamond"]
     },
 
     /**
@@ -275,7 +275,7 @@ Ext.define("Ext.chart.theme.Base", {
      * @deprecated Use the {@link Ext.chart.AbstractChart#background} config instead.
      * @since 5.0.1
      */
-    background: null,
+    background: null
   },
 
   colorDefaults: [
@@ -287,7 +287,7 @@ Ext.define("Ext.chart.theme.Base", {
     "#a61187",
     "#24ad9a",
     "#7c7474",
-    "#a66111",
+    "#a66111"
   ],
 
   constructor: function (config) {
@@ -306,7 +306,7 @@ Ext.define("Ext.chart.theme.Base", {
     },
     "-": function (v1, v2) {
       return v1 - v2;
-    },
+    }
   },
 
   resolveDefaults: function () {
@@ -327,7 +327,7 @@ Ext.define("Ext.chart.theme.Base", {
           fontWeight: div.getStyle("fontWeight"),
           fontSize: parseFloat(div.getStyle("fontSize")),
           fontVariant: div.getStyle("fontVariant"),
-          fontStyle: div.getStyle("fontStyle"),
+          fontStyle: div.getStyle("fontStyle")
         };
         div.destroy();
       }
@@ -400,7 +400,7 @@ Ext.define("Ext.chart.theme.Base", {
         midColor.toString(),
         midColor.createLighter(0.12).toString(),
         midColor.createLighter(0.24).toString(),
-        midColor.createLighter(0.31).toString(),
+        midColor.createLighter(0.31).toString()
       ]);
     }
     return baseColor;
@@ -414,7 +414,7 @@ Ext.define("Ext.chart.theme.Base", {
     if (useGradients) {
       this.updateGradients({
         type: "linear",
-        degrees: 90,
+        degrees: 90
       });
     }
   },
@@ -445,13 +445,13 @@ Ext.define("Ext.chart.theme.Base", {
             stops: [
               {
                 offset: 1,
-                color: midColor.toString(),
+                color: midColor.toString()
               },
               {
                 offset: 0,
-                color: color.toString(),
-              },
-            ],
+                color: color.toString()
+              }
+            ]
           });
           items.push(gradient);
         }
@@ -474,12 +474,12 @@ Ext.define("Ext.chart.theme.Base", {
         fillStyle: Ext.Array.clone(colors),
         strokeStyle: Ext.Array.map(colors, function (value) {
           var color = Ext.util.Color.fromString(
-            value.stops ? value.stops[0].color : value,
+            value.stops ? value.stops[0].color : value
           );
           return color.createDarker(0.15).toString();
-        }),
+        })
       };
     }
     return newSeriesThemes;
-  },
+  }
 });

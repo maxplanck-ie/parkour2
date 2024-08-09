@@ -72,7 +72,7 @@ Ext.define("Ext.carousel.Carousel", {
     "Ext.fx.easing.EaseOut",
     "Ext.carousel.Item",
     "Ext.carousel.Indicator",
-    "Ext.util.TranslatableGroup",
+    "Ext.util.TranslatableGroup"
   ],
 
   config: {
@@ -101,8 +101,8 @@ Ext.define("Ext.carousel.Carousel", {
     animation: {
       duration: 250,
       easing: {
-        type: "ease-out",
-      },
+        type: "ease-out"
+      }
     },
 
     /**
@@ -129,7 +129,7 @@ Ext.define("Ext.carousel.Carousel", {
 
     bufferSize: 1,
 
-    itemLength: null,
+    itemLength: null
   },
 
   itemLength: 0,
@@ -152,7 +152,7 @@ Ext.define("Ext.carousel.Carousel", {
     // This pevents the touchstart from being captured
     // by the platform for scrolling.
     panX: false,
-    panY: false,
+    panY: false
   },
 
   beforeInitialize: function () {
@@ -163,7 +163,7 @@ Ext.define("Ext.carousel.Carousel", {
       dragstart: "onDragStart",
       drag: "onDrag",
       dragend: "onDragEnd",
-      scope: me,
+      scope: me
     });
 
     me.carouselItems = [];
@@ -489,7 +489,7 @@ Ext.define("Ext.carousel.Carousel", {
     if (Ext.isNumber(this.itemOffset)) {
       this.getTranslatable().translateAxis(
         this.currentAxis,
-        offset + this.itemOffset,
+        offset + this.itemOffset
       );
     }
 
@@ -513,7 +513,7 @@ Ext.define("Ext.carousel.Carousel", {
     this.getTranslatable().translateAxis(
       this.currentAxis,
       offset + this.itemOffset,
-      this.getAnimation(),
+      this.getAnimation()
     );
 
     return this;
@@ -550,7 +550,7 @@ Ext.define("Ext.carousel.Carousel", {
       itemLength = this.getItemLength(),
       translatableItemLength = {
         x: 0,
-        y: 0,
+        y: 0
       },
       itemOffset,
       containerSize;
@@ -813,7 +813,7 @@ Ext.define("Ext.carousel.Carousel", {
       indicator.on({
         next: "next",
         previous: "previous",
-        scope: this,
+        scope: this
       });
     }
   },
@@ -827,5 +827,5 @@ Ext.define("Ext.carousel.Carousel", {
     Ext.destroy(carouselItems, me.getIndicator(), me.translatable);
 
     me.callParent();
-  },
+  }
 });

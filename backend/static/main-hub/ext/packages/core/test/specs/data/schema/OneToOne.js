@@ -19,17 +19,17 @@ describe("Ext.data.schema.OneToOne", function () {
           unique: true,
           reference: Ext.apply(
             {
-              type: "Address",
+              type: "Address"
             },
-            refCfg,
-          ),
-        },
+            refCfg
+          )
+        }
       ],
 
       constructor: function () {
         userCalled = true;
         this.callParent(arguments);
-      },
+      }
     });
     userRole = Address.associations.user;
     addressRole = User.associations.address;
@@ -43,7 +43,7 @@ describe("Ext.data.schema.OneToOne", function () {
   function complete(data, status) {
     Ext.Ajax.mockComplete({
       status: status || 200,
-      responseText: Ext.JSON.encode(data),
+      responseText: Ext.JSON.encode(data)
     });
   }
 
@@ -60,7 +60,7 @@ describe("Ext.data.schema.OneToOne", function () {
       constructor: function () {
         addressCalled = true;
         this.callParent(arguments);
-      },
+      }
     });
   });
 
@@ -84,7 +84,7 @@ describe("Ext.data.schema.OneToOne", function () {
     it("should have a reference back to the association for each role", function () {
       defineUser();
       expect(Address.associations.user.association).toBe(
-        User.associations.address.association,
+        User.associations.address.association
       );
       expect(Address.associations.user.association.isOneToOne).toBe(true);
     });
@@ -165,14 +165,14 @@ describe("Ext.data.schema.OneToOne", function () {
   describe("configuring", function () {
     it("should set an association name", function () {
       defineUser({
-        association: "CustomName",
+        association: "CustomName"
       });
       expect(assoc.name).toBe("CustomName");
     });
 
     it("should set the owner based on the child param", function () {
       defineUser({
-        child: true,
+        child: true
       });
       expect(assoc.owner).toBe(userRole);
       expect(userRole.owner).toBe(true);
@@ -181,7 +181,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
     it("should set the owner based on the parent param", function () {
       defineUser({
-        parent: true,
+        parent: true
       });
       expect(assoc.owner).toBe(addressRole);
       expect(addressRole.owner).toBe(true);
@@ -190,7 +190,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
     it("should be able to set a custom role", function () {
       defineUser({
-        role: "foo",
+        role: "foo"
       });
       addressRole = User.associations.foo;
       assoc = addressRole.association;
@@ -201,7 +201,7 @@ describe("Ext.data.schema.OneToOne", function () {
     describe("inverse", function () {
       it("should set with a string", function () {
         defineUser({
-          inverse: "foo",
+          inverse: "foo"
         });
         expect(assoc.name).toBe("AddressFoo");
         userRole = Address.associations.foo;
@@ -211,8 +211,8 @@ describe("Ext.data.schema.OneToOne", function () {
       it("should set with an object", function () {
         defineUser({
           inverse: {
-            role: "foo",
-          },
+            role: "foo"
+          }
         });
         expect(assoc.name).toBe("AddressFoo");
         userRole = Address.associations.foo;
@@ -243,14 +243,14 @@ describe("Ext.data.schema.OneToOne", function () {
 
     it("should allow a custom getter name on the key holder", function () {
       defineUser({
-        getterName: "getCoolUser",
+        getterName: "getCoolUser"
       });
       expectFn(User, "getCoolUser");
     });
 
     it("should allow a custom setter name on the key holder", function () {
       defineUser({
-        setterName: "setCoolUser",
+        setterName: "setCoolUser"
       });
       expectFn(User, "setCoolUser");
     });
@@ -258,8 +258,8 @@ describe("Ext.data.schema.OneToOne", function () {
     it("should allow a custom getter name on the inverse", function () {
       defineUser({
         inverse: {
-          getterName: "getCoolAddress",
-        },
+          getterName: "getCoolAddress"
+        }
       });
       expectFn(Address, "getCoolAddress");
     });
@@ -274,17 +274,17 @@ describe("Ext.data.schema.OneToOne", function () {
             name: "useralAddressId",
             reference: {
               type: "Address",
-              role: "useralAddress",
-            },
+              role: "useralAddress"
+            }
           },
           {
             name: "homeAddressId",
             reference: {
               type: "Address",
-              role: "homeAddress",
-            },
-          },
-        ],
+              role: "homeAddress"
+            }
+          }
+        ]
       });
 
       expectFn(spec.OtherUser, "getUseralAddress");
@@ -302,7 +302,7 @@ describe("Ext.data.schema.OneToOne", function () {
       beforeEach(function () {
         defineUser();
         SubUser = Ext.define("spec.SubUser", {
-          extend: "spec.User",
+          extend: "spec.User"
         });
       });
 
@@ -330,7 +330,7 @@ describe("Ext.data.schema.OneToOne", function () {
       beforeEach(function () {
         defineUser();
         SubAddress = Ext.define("spec.SubAddress", {
-          extend: "spec.Address",
+          extend: "spec.Address"
         });
       });
 
@@ -350,8 +350,8 @@ describe("Ext.data.schema.OneToOne", function () {
       complete({
         id: 1,
         address: {
-          id: 101,
-        },
+          id: 101
+        }
       });
       expect(user.get("address")).toBeUndefined();
       expect(user.getAddress().getId()).toBe(101);
@@ -362,8 +362,8 @@ describe("Ext.data.schema.OneToOne", function () {
       complete({
         id: 101,
         user: {
-          id: 1,
-        },
+          id: 1
+        }
       });
       expect(address.get("user")).toBeUndefined();
       expect(address.getUser().getId()).toBe(1);
@@ -376,8 +376,8 @@ describe("Ext.data.schema.OneToOne", function () {
           complete({
             id: 1,
             address: {
-              id: 101,
-            },
+              id: 101
+            }
           });
           expect(user.getAddress().getId()).toBe(101);
           expect(user.get("addressId")).toBe(101);
@@ -400,15 +400,15 @@ describe("Ext.data.schema.OneToOne", function () {
         it("should favour an existing reference", function () {
           var user = session.createRecord("User", {
             id: 1,
-            addressId: 201,
+            addressId: 201
           });
 
           user.load();
           complete({
             id: 1,
             address: {
-              id: 101,
-            },
+              id: 101
+            }
           });
 
           var address101 = session.peekRecord("Address", 101);
@@ -425,8 +425,8 @@ describe("Ext.data.schema.OneToOne", function () {
           complete({
             id: 1,
             address: {
-              id: 101,
-            },
+              id: 101
+            }
           });
           expect(user.getAddress().getId()).toBe(101);
           expect(user.get("addressId")).toBe(101);
@@ -440,8 +440,8 @@ describe("Ext.data.schema.OneToOne", function () {
             // Essentially the same as favour an existing reference, just at load time
             addressId: 201,
             address: {
-              id: 101,
-            },
+              id: 101
+            }
           });
 
           expect(user.getAddress().getId()).toBe(201);
@@ -482,9 +482,9 @@ describe("Ext.data.schema.OneToOne", function () {
         it("should update the foreign key", function () {
           var user = new User(
             {
-              id: 1,
+              id: 1
             },
-            session,
+            session
           );
 
           address.setUser(user);
@@ -527,9 +527,9 @@ describe("Ext.data.schema.OneToOne", function () {
             beforeEach(function () {
               user = new User(
                 {
-                  id: 4,
+                  id: 4
                 },
-                session,
+                session
               );
             });
             describe("without an instance", function () {
@@ -550,12 +550,12 @@ describe("Ext.data.schema.OneToOne", function () {
                     expect(spy).toHaveBeenCalled();
                     spy.reset();
                     user.getAddress({
-                      success: spy,
+                      success: spy
                     });
                     expect(spy).toHaveBeenCalled();
                     spy.reset();
                     user.getAddress({
-                      callback: spy,
+                      callback: spy
                     });
                     expect(spy).toHaveBeenCalled();
                   });
@@ -577,7 +577,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                   it("should accept an options object with success and default the scope to the model", function () {
                     user.getAddress({
-                      success: spy,
+                      success: spy
                     });
                     var call = spy.mostRecentCall;
                     expect(call.args[0]).toBe(address);
@@ -591,7 +591,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                     user.getAddress({
                       scope: o,
-                      success: spy,
+                      success: spy
                     });
                     call = spy.mostRecentCall;
                     expect(call.object).toBe(o);
@@ -599,7 +599,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                   it("should accept an options object with callback and default the scope to the model", function () {
                     user.getAddress({
-                      callback: spy,
+                      callback: spy
                     });
                     var call = spy.mostRecentCall;
                     expect(call.args[0]).toBe(address);
@@ -614,7 +614,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                     user.getAddress({
                       scope: o,
-                      callback: spy,
+                      callback: spy
                     });
                     call = spy.mostRecentCall;
                     expect(call.object).toBe(o);
@@ -630,7 +630,7 @@ describe("Ext.data.schema.OneToOne", function () {
                 if (withSession) {
                   it("should create an instance in the session", function () {
                     expect(user.getAddress()).toBe(
-                      session.getRecord("Address", 17, false),
+                      session.getRecord("Address", 17, false)
                     );
                   });
 
@@ -643,9 +643,9 @@ describe("Ext.data.schema.OneToOne", function () {
                     address = session.getRecord(
                       "Address",
                       {
-                        id: 17,
+                        id: 17
                       },
-                      false,
+                      false
                     );
                     user.getAddress();
                     expect(address.isLoading()).toBe(false);
@@ -683,7 +683,7 @@ describe("Ext.data.schema.OneToOne", function () {
                     user.getAddress();
                     user.getAddress({
                       success: spy,
-                      callback: spy,
+                      callback: spy
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -692,7 +692,7 @@ describe("Ext.data.schema.OneToOne", function () {
                     user.getAddress();
                     user.getAddress({
                       success: spy,
-                      callback: spy,
+                      callback: spy
                     });
                     complete({});
                     expect(spy.callCount).toBe(2);
@@ -703,13 +703,13 @@ describe("Ext.data.schema.OneToOne", function () {
                   it("should not trigger any callbacks until the load completes", function () {
                     user.getAddress(spy);
                     user.getAddress({
-                      success: spy,
+                      success: spy
                     });
                     user.getAddress({
-                      failure: spy,
+                      failure: spy
                     });
                     user.getAddress({
-                      callback: spy,
+                      callback: spy
                     });
                     expect(spy).not.toHaveBeenCalled();
                   });
@@ -734,7 +734,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                     it("should accept an options object with success and default the scope to the model", function () {
                       address = user.getAddress({
-                        success: spy,
+                        success: spy
                       });
                       complete({});
                       var call = spy.mostRecentCall;
@@ -749,7 +749,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                       user.getAddress({
                         scope: o,
-                        success: spy,
+                        success: spy
                       });
                       complete({});
                       call = spy.mostRecentCall;
@@ -758,7 +758,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                     it("should accept an options object with callback and default the scope to the model", function () {
                       address = user.getAddress({
-                        callback: spy,
+                        callback: spy
                       });
                       complete({});
                       var call = spy.mostRecentCall;
@@ -774,7 +774,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                       user.getAddress({
                         scope: o,
-                        callback: spy,
+                        callback: spy
                       });
                       complete({});
                       call = spy.mostRecentCall;
@@ -802,7 +802,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                     it("should accept an options object with failure and default the scope to the model", function () {
                       address = user.getAddress({
-                        failure: spy,
+                        failure: spy
                       });
                       complete(null, 500);
                       var call = spy.mostRecentCall;
@@ -817,7 +817,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                       user.getAddress({
                         scope: o,
-                        failure: spy,
+                        failure: spy
                       });
                       complete(null, 500);
                       call = spy.mostRecentCall;
@@ -826,7 +826,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                     it("should accept an options object with callback and default the scope to the model", function () {
                       address = user.getAddress({
-                        callback: spy,
+                        callback: spy
                       });
                       complete(null, 500);
                       var call = spy.mostRecentCall;
@@ -842,7 +842,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                       user.getAddress({
                         scope: o,
-                        callback: spy,
+                        callback: spy
                       });
                       complete(null, 500);
                       call = spy.mostRecentCall;
@@ -857,9 +857,9 @@ describe("Ext.data.schema.OneToOne", function () {
               beforeEach(function () {
                 address = new Address(
                   {
-                    id: 2,
+                    id: 2
                   },
-                  session,
+                  session
                 );
 
                 user.setAddress(address);
@@ -878,14 +878,14 @@ describe("Ext.data.schema.OneToOne", function () {
               it("should attempt to reload if called with options.reload", function () {
                 spy = spyOn(Address.getProxy(), "read").andReturn();
                 user.getAddress({
-                  reload: true,
+                  reload: true
                 });
                 expect(spy).toHaveBeenCalled();
               });
 
               it("should reload the same record when called with reload", function () {
                 var result = user.getAddress({
-                  reload: true,
+                  reload: true
                 });
                 expect(result).toBe(address);
               });
@@ -896,12 +896,12 @@ describe("Ext.data.schema.OneToOne", function () {
                   expect(spy).toHaveBeenCalled();
                   spy.reset();
                   user.getAddress({
-                    success: spy,
+                    success: spy
                   });
                   expect(spy).toHaveBeenCalled();
                   spy.reset();
                   user.getAddress({
-                    callback: spy,
+                    callback: spy
                   });
                   expect(spy).toHaveBeenCalled();
                 });
@@ -923,7 +923,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                 it("should accept an options object with success and default the scope to the model", function () {
                   user.getAddress({
-                    success: spy,
+                    success: spy
                   });
                   var call = spy.mostRecentCall;
                   expect(call.args[0]).toBe(address);
@@ -937,7 +937,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                   user.getAddress({
                     scope: o,
-                    success: spy,
+                    success: spy
                   });
                   call = spy.mostRecentCall;
                   expect(call.object).toBe(o);
@@ -945,7 +945,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                 it("should accept an options object with callback and default the scope to the model", function () {
                   user.getAddress({
-                    callback: spy,
+                    callback: spy
                   });
                   var call = spy.mostRecentCall;
                   expect(call.args[0]).toBe(address);
@@ -960,7 +960,7 @@ describe("Ext.data.schema.OneToOne", function () {
 
                   user.getAddress({
                     scope: o,
-                    callback: spy,
+                    callback: spy
                   });
                   call = spy.mostRecentCall;
                   expect(call.object).toBe(o);
@@ -973,9 +973,9 @@ describe("Ext.data.schema.OneToOne", function () {
             beforeEach(function () {
               user = new User(
                 {
-                  id: 7,
+                  id: 7
                 },
-                session,
+                session
               );
             });
 
@@ -985,9 +985,9 @@ describe("Ext.data.schema.OneToOne", function () {
               beforeEach(function () {
                 address = new Address(
                   {
-                    id: 3,
+                    id: 3
                   },
-                  session,
+                  session
                 );
               });
 
@@ -1037,10 +1037,10 @@ describe("Ext.data.schema.OneToOne", function () {
                   user.setAddress(
                     new Address(
                       {
-                        id: 1000,
+                        id: 1000
                       },
-                      session,
-                    ),
+                      session
+                    )
                   );
                   user.setAddress(address);
                 });
@@ -1112,10 +1112,10 @@ describe("Ext.data.schema.OneToOne", function () {
                   user.setAddress(
                     new Address(
                       {
-                        id: 1000,
+                        id: 1000
                       },
-                      session,
-                    ),
+                      session
+                    )
                   );
                 });
 
@@ -1147,13 +1147,13 @@ describe("Ext.data.schema.OneToOne", function () {
                 joiner = {
                   afterEdit: function () {
                     fn();
-                  },
+                  }
                 };
                 address = new Address(
                   {
-                    id: 101,
+                    id: 101
                   },
-                  session,
+                  session
                 );
               });
 
@@ -1218,7 +1218,7 @@ describe("Ext.data.schema.OneToOne", function () {
                     user.setAddress(16, {
                       success: successSpy,
                       callback: callbackSpy,
-                      failure: failureSpy,
+                      failure: failureSpy
                     });
                     complete({});
                     expect(failureSpy).not.toHaveBeenCalled();
@@ -1233,7 +1233,7 @@ describe("Ext.data.schema.OneToOne", function () {
                     user.setAddress(16, {
                       scope: scope,
                       success: successSpy,
-                      callback: callbackSpy,
+                      callback: callbackSpy
                     });
                     complete({});
                     expect(successSpy.mostRecentCall.object).toBe(scope);
@@ -1246,7 +1246,7 @@ describe("Ext.data.schema.OneToOne", function () {
                     user.setAddress(16, {
                       success: successSpy,
                       callback: callbackSpy,
-                      failure: failureSpy,
+                      failure: failureSpy
                     });
                     complete(null, 500);
                     expect(successSpy).not.toHaveBeenCalled();
@@ -1261,7 +1261,7 @@ describe("Ext.data.schema.OneToOne", function () {
                     user.setAddress(16, {
                       scope: scope,
                       failure: failureSpy,
-                      callback: callbackSpy,
+                      callback: callbackSpy
                     });
                     complete(null, 500);
                     expect(failureSpy.mostRecentCall.object).toBe(scope);
@@ -1278,9 +1278,9 @@ describe("Ext.data.schema.OneToOne", function () {
             beforeEach(function () {
               user = new User(
                 {
-                  id: 7,
+                  id: 7
                 },
-                session,
+                session
               );
             });
 
@@ -1292,9 +1292,9 @@ describe("Ext.data.schema.OneToOne", function () {
             it("should clear the reference when setting to null", function () {
               address = new Address(
                 {
-                  id: 3,
+                  id: 3
                 },
-                session,
+                session
               );
               user.setAddress(address);
 
@@ -1306,9 +1306,9 @@ describe("Ext.data.schema.OneToOne", function () {
             it("should change the reference for the key", function () {
               address = new Address(
                 {
-                  id: 3,
+                  id: 3
                 },
-                session,
+                session
               );
               user.setAddress(address);
 
@@ -1320,17 +1320,17 @@ describe("Ext.data.schema.OneToOne", function () {
               it("should set the new reference if it exists in the session", function () {
                 address = new Address(
                   {
-                    id: 3,
+                    id: 3
                   },
-                  session,
+                  session
                 );
                 user.setAddress(address);
 
                 var other = new Address(
                   {
-                    id: 10,
+                    id: 10
                   },
-                  session,
+                  session
                 );
                 user.set("addressId", 10);
                 var addressName = User.associations.address.getInstanceName();
@@ -1359,9 +1359,9 @@ describe("Ext.data.schema.OneToOne", function () {
           {
             id: 1,
             address: {
-              id: 101,
-            },
-          },
+              id: 101
+            }
+          }
         ];
       });
 
@@ -1376,7 +1376,7 @@ describe("Ext.data.schema.OneToOne", function () {
       function makeUser(id, addressId) {
         var data = {
           id: id,
-          addressId: addressId,
+          addressId: addressId
         };
 
         // Session will be null if withSession is false
@@ -1387,9 +1387,9 @@ describe("Ext.data.schema.OneToOne", function () {
         // Session will be null if withSession = false
         address = new Address(
           {
-            id: id,
+            id: id
           },
-          session,
+          session
         );
       }
 
@@ -1397,7 +1397,7 @@ describe("Ext.data.schema.OneToOne", function () {
         var store = new Ext.data.Store({
           model: User,
           // Session will be null if withSession = false
-          session: session,
+          session: session
         });
         store.loadRawData(data || storeData);
         return store;
@@ -1465,7 +1465,7 @@ describe("Ext.data.schema.OneToOne", function () {
               beforeEach(function () {
                 defineUser({
                   type: null,
-                  child: "Address",
+                  child: "Address"
                 });
                 store = makeStore();
                 user = store.first();
@@ -1511,9 +1511,9 @@ describe("Ext.data.schema.OneToOne", function () {
                 it("should drop the child when setting a new record", function () {
                   var other = new Address(
                     {
-                      id: 2,
+                      id: 2
                     },
-                    session,
+                    session
                   );
                   user.setAddress(other);
                   Ext.data.Model.schema.processKeyChecks(true);
@@ -1532,23 +1532,23 @@ describe("Ext.data.schema.OneToOne", function () {
                     user = new User(
                       {
                         id: 1001,
-                        addressId: 5001,
+                        addressId: 5001
                       },
-                      session,
+                      session
                     );
 
                     var address1 = new Address(
                       {
-                        id: 5001,
+                        id: 5001
                       },
-                      session,
+                      session
                     );
 
                     var address2 = new Address(
                       {
-                        id: 5002,
+                        id: 5002
                       },
-                      session,
+                      session
                     );
 
                     user.drop();
@@ -1568,9 +1568,9 @@ describe("Ext.data.schema.OneToOne", function () {
                 it("should not drop the child if it has been reassigned", function () {
                   var otherUser = new User(
                     {
-                      id: 5,
+                      id: 5
                     },
-                    session,
+                    session
                   );
                   user.setAddress(null);
                   otherUser.setAddress(address);

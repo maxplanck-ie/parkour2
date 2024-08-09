@@ -4,7 +4,7 @@
 Ext.define("Ext.device.Communicator", {
   requires: [
     "Ext.device.communicator.Default",
-    "Ext.device.communicator.Android",
+    "Ext.device.communicator.Android"
   ],
 
   singleton: true,
@@ -15,5 +15,5 @@ Ext.define("Ext.device.Communicator", {
     }
 
     return new Ext.device.communicator.Default();
-  },
+  }
 });

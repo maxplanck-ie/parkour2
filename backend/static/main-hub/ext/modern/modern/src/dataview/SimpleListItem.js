@@ -16,11 +16,11 @@ Ext.define("Ext.dataview.SimpleListItem", {
   config: {
     disclosure: {
       xtype: "listitemdisclosure",
-      hidden: true,
+      hidden: true
     },
 
     header: {
-      xtype: "itemheader",
+      xtype: "itemheader"
     },
 
     /**
@@ -33,7 +33,7 @@ Ext.define("Ext.dataview.SimpleListItem", {
      * @cfg {Ext.data.Model} record The model instance of this ListTplItem. It is controlled by the List.
      * @accessor
      */
-    record: null,
+    record: null
   },
 
   classCls: Ext.baseCSSPrefix + "listitem",
@@ -50,9 +50,9 @@ Ext.define("Ext.dataview.SimpleListItem", {
         // as the "body" component created by ListItem so it can share styling.
         // it is named "innerElement" so that it will automatically be the container
         // of the "x-innerhtml" element
-        cls: Ext.baseCSSPrefix + "listitem-body",
-      },
-    ],
+        cls: Ext.baseCSSPrefix + "listitem-body"
+      }
+    ]
   },
 
   initialize: function () {
@@ -138,7 +138,7 @@ Ext.define("Ext.dataview.SimpleListItem", {
         dataview.prepareData(
           record.getData(true),
           dataview.getStore().indexOf(record),
-          record,
+          record
         ),
       disclosure = this.getDisclosure();
 
@@ -158,5 +158,5 @@ Ext.define("Ext.dataview.SimpleListItem", {
   doDestroy: function () {
     Ext.destroy(this.getHeader(), this.getDisclosure());
     this.callParent();
-  },
+  }
 });

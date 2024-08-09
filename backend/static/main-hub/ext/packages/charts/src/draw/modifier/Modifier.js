@@ -9,7 +9,7 @@
  */
 Ext.define("Ext.draw.modifier.Modifier", {
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
   config: {
     /**
@@ -27,7 +27,7 @@ Ext.define("Ext.draw.modifier.Modifier", {
     /**
      * @cfg {Ext.draw.sprite.Sprite} sprite The sprite to which the modifier belongs.
      */
-    sprite: null,
+    sprite: null
   },
 
   constructor: function (config) {
@@ -91,5 +91,5 @@ Ext.define("Ext.draw.modifier.Modifier", {
       }
       return changes;
     }
-  },
+  }
 });

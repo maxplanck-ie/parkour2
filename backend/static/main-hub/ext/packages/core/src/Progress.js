@@ -57,7 +57,7 @@ Ext.define("Ext.Progress", {
      * @cfg {Boolean} [animate=false]
      * Specify as `true` to have this progress bar animate to new extent when updated.
      */
-    animate: false,
+    animate: false
   },
 
   cachedConfig: {
@@ -69,21 +69,21 @@ Ext.define("Ext.Progress", {
 
     textCls: Ext.baseCSSPrefix + "progress-text",
 
-    cls: null,
+    cls: null
   },
 
   template: [
     {
-      reference: "backgroundEl",
+      reference: "backgroundEl"
     },
     {
       reference: "barEl",
       children: [
         {
-          reference: "textEl",
-        },
-      ],
-    },
+          reference: "textEl"
+        }
+      ]
+    }
   ],
 
   defaultBindProperty: "value",
@@ -138,8 +138,8 @@ Ext.define("Ext.Progress", {
       me.setText(
         textTpl.apply({
           value: value,
-          percent: Math.round(value * 100),
-        }),
+          percent: Math.round(value * 100)
+        })
       );
     }
     if (me.getAnimate()) {
@@ -148,14 +148,14 @@ Ext.define("Ext.Progress", {
         Ext.apply(
           {
             from: {
-              width: oldValue * 100 + "%",
+              width: oldValue * 100 + "%"
             },
             to: {
-              width: value * 100 + "%",
-            },
+              width: value * 100 + "%"
+            }
           },
-          me.animate,
-        ),
+          me.animate
+        )
       );
     } else {
       barEl.setStyle("width", value * 100 + "%");
@@ -165,5 +165,5 @@ Ext.define("Ext.Progress", {
   updateText: function (text) {
     this.backgroundEl.setHtml(text);
     this.textEl.setHtml(text);
-  },
+  }
 });

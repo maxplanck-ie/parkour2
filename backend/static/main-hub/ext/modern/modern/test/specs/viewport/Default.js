@@ -14,7 +14,7 @@ describe("Ext.viewport.Default", function () {
 
     waitUntil: function (condition, onSatisfied) {
       onSatisfied.call(this);
-    },
+    }
   });
 
   beforeEach(function () {
@@ -191,7 +191,7 @@ describe("Ext.viewport.Default", function () {
           viewport,
           newOrientation,
           100,
-          200,
+          200
         );
       });
     });

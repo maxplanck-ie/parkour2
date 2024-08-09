@@ -25,7 +25,7 @@ describe("Ext.draw.sprite.Sprite", function () {
           scalingX: sx,
           scalingY: sy,
           translationX: tx,
-          translationY: ty,
+          translationY: ty
         });
 
         var referenceMatrix = [
@@ -40,7 +40,7 @@ describe("Ext.draw.sprite.Sprite", function () {
           sin * (centerX * (1 - sx) - centerX) +
             cos * (centerY * (1 - sy) - centerY) +
             centerY +
-            ty,
+            ty
         ];
 
         rect.applyTransformations(true);
@@ -78,7 +78,7 @@ describe("Ext.draw.sprite.Sprite", function () {
           rotationCenterX: rotationCenterX,
           rotationCenterY: rotationCenterY,
           scalingCenterX: scalingCenterX,
-          scalingCenterY: scalingCenterY,
+          scalingCenterY: scalingCenterY
         });
 
         var referenceMatrix = [
@@ -93,7 +93,7 @@ describe("Ext.draw.sprite.Sprite", function () {
           sin * (scalingCenterX * (1 - sx) - rotationCenterX) +
             cos * (scalingCenterY * (1 - sy) - rotationCenterY) +
             rotationCenterY +
-            ty,
+            ty
         ];
 
         rect.applyTransformations(true);
@@ -125,7 +125,7 @@ describe("Ext.draw.sprite.Sprite", function () {
       var drawContainer = new Ext.draw.Container({
         renderTo: Ext.getBody(),
         width: 200,
-        height: 200,
+        height: 200
       });
       var surface = drawContainer.getSurface();
       expect(surface.getDirty()).toBe(false);
@@ -200,7 +200,7 @@ describe("Ext.draw.sprite.Sprite", function () {
       sprite.attr.matrix.rotate(Math.PI / 4);
 
       expect(elements).toEqual([
-        1.76776695, 1.76776695, -5.30330086, 5.30330086, 3, 4,
+        1.76776695, 1.76776695, -5.30330086, 5.30330086, 3, 4
       ]);
     });
     it("should return the sprite itself", function () {
@@ -224,14 +224,14 @@ describe("Ext.draw.sprite.Sprite", function () {
       scalingX: 2,
       scalingY: 3,
       translationX: 50,
-      translationY: 50,
+      translationY: 50
     };
 
     it("should mark the sprite and its parent as dirty", function () {
       var drawContainer = new Ext.draw.Container({
         renderTo: Ext.getBody(),
         width: 200,
-        height: 200,
+        height: 200
       });
       var surface = drawContainer.getSurface();
       expect(surface.getDirty()).toBe(false);
@@ -256,7 +256,7 @@ describe("Ext.draw.sprite.Sprite", function () {
 
       expect(sprite.attr.matrix.elements).toEqual(identityMatrixElements);
       expect(sprite.attr.inverseMatrix.elements).toEqual(
-        identityMatrixElements,
+        identityMatrixElements
       );
 
       sprite.destroy();
@@ -375,7 +375,7 @@ describe("Ext.draw.sprite.Sprite", function () {
 
     beforeEach(function () {
       container = new Ext.draw.Container({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       surface = new Ext.draw.Surface();
       sprite = new Ext.draw.sprite.Rect({
@@ -384,7 +384,7 @@ describe("Ext.draw.sprite.Sprite", function () {
         fillOpacity: 1,
         strokeOpacity: 1,
         fillStyle: "red",
-        strokeStyle: "red",
+        strokeStyle: "red"
       });
       surface.add(sprite);
       container.add(surface);
@@ -401,7 +401,7 @@ describe("Ext.draw.sprite.Sprite", function () {
       expect(sprite.isVisible()).toBe(false);
 
       var instancing = new Ext.draw.sprite.Instancing({
-        template: sprite,
+        template: sprite
       });
       surface.add(instancing);
       expect(sprite.isVisible()).toBe(true);
@@ -411,7 +411,7 @@ describe("Ext.draw.sprite.Sprite", function () {
 
     it("should return false if the sprite belongs to a parent that doesn't belong to a surface", function () {
       var instancing = new Ext.draw.sprite.Instancing({
-        template: sprite,
+        template: sprite
       });
       expect(sprite.isVisible()).toBe(false);
     });
@@ -423,54 +423,54 @@ describe("Ext.draw.sprite.Sprite", function () {
 
     it("should return false in case the sprite has no fillStyle and strokeStyle, true otherwise", function () {
       sprite.setAttributes({
-        fillStyle: none,
+        fillStyle: none
       });
       expect(sprite.isVisible()).toBe(true);
 
       sprite.setAttributes({
-        fillStyle: rgba_none,
+        fillStyle: rgba_none
       });
       expect(sprite.isVisible()).toBe(true);
 
       sprite.setAttributes({
         fillStyle: "red",
-        strokeStyle: none,
+        strokeStyle: none
       });
       expect(sprite.isVisible()).toBe(true);
 
       sprite.setAttributes({
-        strokeStyle: rgba_none,
+        strokeStyle: rgba_none
       });
       expect(sprite.isVisible()).toBe(true);
 
       sprite.setAttributes({
         fillStyle: none,
-        strokeStyle: none,
+        strokeStyle: none
       });
       expect(sprite.isVisible()).toBe(false);
 
       sprite.setAttributes({
         fillStyle: none,
-        strokeStyle: rgba_none,
+        strokeStyle: rgba_none
       });
       expect(sprite.isVisible()).toBe(false);
 
       sprite.setAttributes({
         fillStyle: rgba_none,
-        strokeStyle: none,
+        strokeStyle: none
       });
       expect(sprite.isVisible()).toBe(false);
 
       sprite.setAttributes({
         fillStyle: rgba_none,
-        strokeStyle: rgba_none,
+        strokeStyle: rgba_none
       });
       expect(sprite.isVisible()).toBe(false);
     });
 
     it("should return false if the globalAlpha attribute is zero", function () {
       sprite.setAttributes({
-        globalAlpha: 0,
+        globalAlpha: 0
       });
       expect(sprite.isVisible()).toBe(false);
     });
@@ -478,19 +478,19 @@ describe("Ext.draw.sprite.Sprite", function () {
     it("should return false if both fill and stroke are completely transparent, true otherwise", function () {
       sprite.setAttributes({
         fillOpacity: 0,
-        strokeOpacity: 0,
+        strokeOpacity: 0
       });
       expect(sprite.isVisible()).toBe(false);
 
       sprite.setAttributes({
         fillOpacity: 0,
-        strokeOpacity: 0.01,
+        strokeOpacity: 0.01
       });
       expect(sprite.isVisible()).toBe(true);
 
       sprite.setAttributes({
         fillOpacity: 0.01,
-        strokeOpacity: 0,
+        strokeOpacity: 0
       });
       expect(sprite.isVisible()).toBe(true);
     });
@@ -501,7 +501,7 @@ describe("Ext.draw.sprite.Sprite", function () {
 
     beforeEach(function () {
       container = new Ext.draw.Container({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       surface = new Ext.draw.Surface();
       sprite = new Ext.draw.sprite.Circle({
@@ -513,7 +513,7 @@ describe("Ext.draw.sprite.Sprite", function () {
         strokeStyle: "red",
         r: 100,
         cx: 100,
-        cy: 100,
+        cy: 100
       });
       surface.add(sprite);
       container.add(surface);
@@ -531,10 +531,10 @@ describe("Ext.draw.sprite.Sprite", function () {
         // Even though, (10,10) is not inside the circle, it's inside it's bounding box.
         var result = Ext.draw.sprite.Sprite.prototype.hitTest.call(
           sprite,
-          [10, 10],
+          [10, 10]
         );
         expect(result && result.sprite).toBe(sprite);
-      },
+      }
     );
 
     it("should return null, if the sprite's bounding box is hit, but the sprite is not visible", function () {
@@ -544,7 +544,7 @@ describe("Ext.draw.sprite.Sprite", function () {
       };
       var result = Ext.draw.sprite.Sprite.prototype.hitTest.call(
         sprite,
-        [10, 10],
+        [10, 10]
       );
       expect(result).toBe(null);
       sprite.isVisible = originalMethod;
@@ -553,7 +553,7 @@ describe("Ext.draw.sprite.Sprite", function () {
     it("should return null, if the sprite is visible, but it's bounding box is not hit", function () {
       var result = Ext.draw.sprite.Sprite.prototype.hitTest.call(
         sprite,
-        [210, 210],
+        [210, 210]
       );
       expect(result).toBe(null);
     });
@@ -574,11 +574,11 @@ describe("Ext.draw.sprite.Sprite", function () {
         duration: 2000,
         easing: "bounceOut",
         customEasings: {
-          x: "linear",
+          x: "linear"
         },
         customDurations: {
-          y: 1000,
-        },
+          y: 1000
+        }
       };
 
       sprite.setAnimation(config);

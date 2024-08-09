@@ -78,7 +78,7 @@
         tfootHeight: 0,
         theadHeight: 0,
         windowHeight: $(window).height(),
-        visible: true,
+        visible: true
       },
       headerMode: null,
       footerMode: null,
@@ -86,9 +86,9 @@
       namespace: ".dtfc" + _instCounter++,
       scrollLeft: {
         header: -1,
-        footer: -1,
+        footer: -1
       },
-      enable: true,
+      enable: true
     };
 
     this.dom = {
@@ -99,13 +99,13 @@
       header: {
         host: null,
         floating: null,
-        placeholder: null,
+        placeholder: null
       },
       footer: {
         host: null,
         floating: null,
-        placeholder: null,
-      },
+        placeholder: null
+      }
     };
 
     this.dom.header.host = this.dom.thead.parent();
@@ -223,7 +223,7 @@
         "column-reorder.dt.dtfc column-visibility.dt.dtfc draw.dt.dtfc column-sizing.dt.dtfc",
         function () {
           that.update();
-        },
+        }
       );
 
       dt.on("destroy.dtfc", function () {
@@ -306,7 +306,7 @@
         $(name, to).each(function (i) {
           $(this).css({
             width: toWidths[i],
-            minWidth: toWidths[i],
+            minWidth: toWidths[i]
           });
         });
       };
@@ -336,7 +336,7 @@
       ) {
         $("th, td", el).css({
           width: "",
-          minWidth: "",
+          minWidth: ""
         });
       } else if (el && item === "header") {
         $("th, td", el).css("min-width", "");
@@ -555,7 +555,7 @@
 
         this._horizontal("footer", windowLeft);
       }
-    },
+    }
   });
 
   /**
@@ -574,7 +574,7 @@
     header: true,
     footer: false,
     headerOffset: 0,
-    footerOffset: 0,
+    footerOffset: 0
   };
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

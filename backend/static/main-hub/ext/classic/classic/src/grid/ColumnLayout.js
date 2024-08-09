@@ -93,7 +93,7 @@ Ext.define("Ext.grid.ColumnLayout", {
     if (item !== before && prevOwner) {
       prevOwner.remove(item, {
         destroy: false,
-        detach: false,
+        detach: false
       });
 
       // If the removal caused destruction of the before, this was
@@ -167,8 +167,8 @@ Ext.define("Ext.grid.ColumnLayout", {
           ownerContext.invalidate({
             state: {
               reflexed: true,
-              scrollbarAdjustment: me.getScrollbarAdjustment(ownerContext),
-            },
+              scrollbarAdjustment: me.getScrollbarAdjustment(ownerContext)
+            }
           });
           return;
         }
@@ -230,8 +230,8 @@ Ext.define("Ext.grid.ColumnLayout", {
                 // put onto the new state. If not, it will reset back to
                 // undefined and we'll have to begin again (which is the
                 // correct thing to do in that case).
-                scrollbarAdjustment: 0,
-              },
+                scrollbarAdjustment: 0
+              }
             });
           }
         }
@@ -373,7 +373,7 @@ Ext.define("Ext.grid.ColumnLayout", {
         got: got,
         gotAll: got === needed,
         gotWidth: gotWidth,
-        gotHeight: gotHeight,
+        gotHeight: gotHeight
       };
     }
 
@@ -392,5 +392,5 @@ Ext.define("Ext.grid.ColumnLayout", {
     }
 
     return me.callParent([ownerContext, adjustment]);
-  },
+  }
 });

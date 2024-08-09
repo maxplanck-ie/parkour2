@@ -11,7 +11,7 @@ Ext.define("Ext.panel.Bar", {
 
   _verticalSides: {
     left: 1,
-    right: 1,
+    right: 1
   },
 
   initComponent: function () {
@@ -25,14 +25,14 @@ Ext.define("Ext.panel.Bar", {
         ? {
             type: "vbox",
             align: "middle",
-            alignRoundingMethod: "ceil",
+            alignRoundingMethod: "ceil"
           }
         : {
             type: "hbox",
             align: "middle",
-            alignRoundingMethod: "floor",
+            alignRoundingMethod: "floor"
           },
-      me.layout,
+      me.layout
     );
 
     this.callParent();
@@ -85,7 +85,7 @@ Ext.define("Ext.panel.Bar", {
     clearOrientation: function () {
       this.removeClsWithUI([
         this.vertical ? "vertical" : "horizontal",
-        this.getDockName(),
+        this.getDockName()
       ]);
     },
 
@@ -101,6 +101,6 @@ Ext.define("Ext.panel.Bar", {
           : me.vertical);
 
       me.addClsWithUI([vertical ? "vertical" : "horizontal", me.getDockName()]);
-    },
-  },
+    }
+  }
 });

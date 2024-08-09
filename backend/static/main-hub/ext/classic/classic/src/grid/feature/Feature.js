@@ -177,5 +177,5 @@ Ext.define("Ext.grid.feature.Feature", {
    */
   disable: function () {
     this.disabled = true;
-  },
+  }
 });

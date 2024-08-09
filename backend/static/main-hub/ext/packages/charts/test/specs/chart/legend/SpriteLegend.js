@@ -12,7 +12,7 @@ describe("Ext.chart.legend.SpriteLegend", function () {
         { month: "Sep" },
         { month: "Oct" },
         { month: "Nov" },
-        { month: "Dec" },
+        { month: "Dec" }
       ],
       i = 0,
       j = 0,
@@ -43,7 +43,7 @@ describe("Ext.chart.legend.SpriteLegend", function () {
           adjustByMajorUnit: true,
           grid: true,
           fields: ["data1"],
-          minimum: 0,
+          minimum: 0
         },
         {
           type: "category",
@@ -52,10 +52,10 @@ describe("Ext.chart.legend.SpriteLegend", function () {
           fields: ["month"],
           label: {
             rotate: {
-              degrees: -45,
-            },
-          },
-        },
+              degrees: -45
+            }
+          }
+        }
       ],
       series: [
         {
@@ -65,13 +65,13 @@ describe("Ext.chart.legend.SpriteLegend", function () {
           yField: ["data1", "data2"],
           stacked: true,
           style: {
-            opacity: 0.8,
+            opacity: 0.8
           },
           highlight: {
-            fillStyle: "yellow",
-          },
-        },
-      ],
+            fillStyle: "yellow"
+          }
+        }
+      ]
     };
 
     var store, chart;
@@ -79,7 +79,7 @@ describe("Ext.chart.legend.SpriteLegend", function () {
     beforeEach(function () {
       store = new Ext.data.Store({
         fields: ["month", "data1", "data2"],
-        data: storeData,
+        data: storeData
       });
     });
 
@@ -100,16 +100,16 @@ describe("Ext.chart.legend.SpriteLegend", function () {
                 fontSize: 15,
                 fontWeight: "bold",
                 fontFamily: "Tahoma",
-                fillStyle: "#ff0000",
+                fillStyle: "#ff0000"
               },
               border: {
                 lineWidth: 2,
                 radius: 5,
                 fillStyle: "#ffff00",
-                strokeStyle: "#ff0000",
-              },
-            },
-          },
+                strokeStyle: "#ff0000"
+              }
+            }
+          }
         });
 
         var config = Ext.merge(
@@ -118,10 +118,10 @@ describe("Ext.chart.legend.SpriteLegend", function () {
             store: store,
             legend: {
               type: "sprite",
-              docked: "top",
-            },
+              docked: "top"
+            }
           },
-          chartConfig,
+          chartConfig
         );
 
         chart = new Ext.chart.CartesianChart(config);
@@ -143,7 +143,7 @@ describe("Ext.chart.legend.SpriteLegend", function () {
           expect(label.attr.fontFamily).toBe("Tahoma");
           expect(label.attr.fillStyle).toBe("#ff0000");
         }
-      },
+      }
     );
 
     it("should should use the style from the user config, if it was provided", function () {
@@ -157,17 +157,17 @@ describe("Ext.chart.legend.SpriteLegend", function () {
               fontSize: 15,
               fontWeight: "bold",
               fontFamily: "Tahoma",
-              fillStyle: "#ff0000",
+              fillStyle: "#ff0000"
             },
             border: {
               lineWidth: 2,
               radius: 5,
               fillStyle: "#ffff00",
-              strokeStyle: "#ff0000",
-            },
-          },
+              strokeStyle: "#ff0000"
+            }
+          }
         },
-        chartConfig,
+        chartConfig
       );
 
       chart = new Ext.chart.CartesianChart(config);
@@ -200,7 +200,7 @@ describe("Ext.chart.legend.SpriteLegend", function () {
     beforeEach(function () {
       store = new Ext.data.Store({
         fields: ["month", "data1", "data2", "data3", "data4"],
-        data: storeData,
+        data: storeData
       });
       chart = new Ext.chart.CartesianChart({
         width: 400,
@@ -210,7 +210,7 @@ describe("Ext.chart.legend.SpriteLegend", function () {
         store: store,
         legend: {
           type: "sprite",
-          docked: "top",
+          docked: "top"
         },
         axes: [
           {
@@ -219,7 +219,7 @@ describe("Ext.chart.legend.SpriteLegend", function () {
             adjustByMajorUnit: true,
             grid: true,
             fields: ["data1"],
-            minimum: 0,
+            minimum: 0
           },
           {
             type: "category",
@@ -228,10 +228,10 @@ describe("Ext.chart.legend.SpriteLegend", function () {
             fields: ["month"],
             label: {
               rotate: {
-                degrees: -45,
-              },
-            },
-          },
+                degrees: -45
+              }
+            }
+          }
         ],
         series: [
           {
@@ -241,13 +241,13 @@ describe("Ext.chart.legend.SpriteLegend", function () {
             yField: ["data1", "data2", "data3", "data4"],
             stacked: true,
             style: {
-              opacity: 0.8,
+              opacity: 0.8
             },
             highlight: {
-              fillStyle: "yellow",
-            },
-          },
-        ],
+              fillStyle: "yellow"
+            }
+          }
+        ]
       });
     });
 

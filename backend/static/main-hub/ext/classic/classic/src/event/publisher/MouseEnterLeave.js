@@ -7,12 +7,12 @@ Ext.define(
   "Ext.event.publisher.MouseEnterLeave",
   {
     extend: "Ext.event.publisher.Dom",
-    type: "mouseEnterLeave",
+    type: "mouseEnterLeave"
   },
   function (MouseEnterLeave) {
     var eventMap = {
       mouseover: "mouseenter",
-      mouseout: "mouseleave",
+      mouseout: "mouseleave"
     };
 
     if (!Ext.supports.MouseEnterLeave) {
@@ -40,7 +40,7 @@ Ext.define(
             if (el) {
               type = eventMap[e.type];
               e = e.chain({
-                type: type,
+                type: type
               });
               if (el.hasListeners[type]) {
                 event = el.events[type];
@@ -58,10 +58,10 @@ Ext.define(
               }
             }
           }
-        },
+        }
       });
     }
 
     MouseEnterLeave.instance = new MouseEnterLeave();
-  },
+  }
 );

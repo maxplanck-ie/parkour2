@@ -62,5 +62,5 @@ Ext.define("Ext.data.proxy.LocalStorage", {
 
   getStorageObject: function () {
     return window.localStorage;
-  },
+  }
 });

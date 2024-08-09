@@ -69,7 +69,7 @@ Ext.define(
       [/^(m)an$/i, "$1en"],
       [/(.*)(child)(ren)?$/i, "$1$2ren"],
       [/s$/i, "s"],
-      [/$/, "s"],
+      [/$/, "s"]
     ],
 
     /**
@@ -103,12 +103,12 @@ Ext.define(
       [/(^analy)ses$/i, "$1sis"],
       [
         /((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i,
-        "$1$2sis",
+        "$1$2sis"
       ],
       [/([ti])a$/i, "$1um"],
       [/(n)ews$/i, "$1ews"],
       [/(p)eople$/i, "$1erson"],
-      [/s$/i, ""],
+      [/s$/i, ""]
     ],
 
     /**
@@ -129,7 +129,7 @@ Ext.define(
       "mud",
       "offspring",
       "deer",
-      "means",
+      "means"
     ],
 
     /**
@@ -265,7 +265,7 @@ Ext.define(
             return number + "th";
         }
       }
-    },
+    }
   },
   function () {
     //aside from the rules above, there are a number of words that have irregular pluralization so we add them here
@@ -300,7 +300,7 @@ Ext.define(
         formula: "formulae",
         nebula: "nebulae",
         vertebra: "vertebrae",
-        vita: "vitae",
+        vita: "vitae"
       },
       singular;
 
@@ -310,5 +310,5 @@ Ext.define(
         this.singular(irregulars[singular], singular);
       }
     }
-  },
+  }
 );

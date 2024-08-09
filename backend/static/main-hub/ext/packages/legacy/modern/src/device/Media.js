@@ -14,5 +14,5 @@ Ext.define("Ext.device.Media", {
     }
 
     return Ext.create("Ext.device.media.Abstract");
-  },
+  }
 });

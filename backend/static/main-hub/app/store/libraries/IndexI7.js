@@ -17,7 +17,7 @@ Ext.define("MainHub.store.libraries.IndexI7", {
     reader: {
       type: "json",
       rootProperty: "data",
-      successProperty: "success",
-    },
-  },
+      successProperty: "success"
+    }
+  }
 });

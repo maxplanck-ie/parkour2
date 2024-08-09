@@ -23,7 +23,7 @@ Ext.define(
           value = parseFloat(value);
         } else if (!!(m = dateRegex.test(value))) {
           value = new Date(
-            Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]),
+            Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6])
           );
         }
       }
@@ -109,7 +109,7 @@ Ext.define(
           method: method,
           params: this.parseQueryString(url),
           url: url,
-          xhr: xhr,
+          xhr: xhr
         };
       },
 
@@ -124,7 +124,7 @@ Ext.define(
           xhr = new Ext.ux.ajax.SimXhr({
             mgr: this.manager,
             simlet: this,
-            options: options,
+            options: options
           });
           xhr.open(method, url, async);
         }
@@ -148,7 +148,7 @@ Ext.define(
             if ((pair = parts[i].split("="))[0]) {
               key = decodeURIComponent(pair.shift());
               value = parseParamValue(
-                pair.length > 1 ? pair.join("=") : pair[0],
+                pair.length > 1 ? pair.join("=") : pair[0]
               );
 
               if (!(key in ret)) {
@@ -183,7 +183,7 @@ Ext.define(
           url = Ext.urlAppend(url, Ext.Object.toQueryString(params));
         }
         return this.manager.openRequest(method, url);
-      },
+      }
     };
-  })(),
+  })()
 );

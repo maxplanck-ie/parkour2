@@ -33,14 +33,14 @@ Ext.define("Ext.ux.SlidingPager", {
         return Ext.String.format(
           "Page <b>{0}</b> of <b>{1}</b>",
           thumb.value,
-          thumb.slider.maxValue,
+          thumb.slider.maxValue
         );
       },
       listeners: {
         changecomplete: function (s, v) {
           pbar.store.loadPage(v);
-        },
-      },
+        }
+      }
     });
 
     pbar.insert(idx + 1, slider);
@@ -49,7 +49,7 @@ Ext.define("Ext.ux.SlidingPager", {
       change: function (pb, data) {
         slider.setMaxValue(data.pageCount);
         slider.setValue(data.currentPage);
-      },
+      }
     });
-  },
+  }
 });

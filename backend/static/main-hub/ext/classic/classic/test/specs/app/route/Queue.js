@@ -6,22 +6,22 @@ describe("Ext.app.route.Queue", function () {
 
   beforeEach(function () {
     controller = new Ext.app.Controller({
-      handleFooBar: function () {},
+      handleFooBar: function () {}
     });
     queue = new Ext.app.route.Queue({
-      token: token,
+      token: token
     });
     routes = [
       new Ext.app.route.Route({
         url: "foo/bar",
         controller: controller,
-        action: "handleFooBar",
+        action: "handleFooBar"
       }),
       new Ext.app.route.Route({
         url: "foo/bar",
         controller: controller,
-        action: "handleFooBar",
-      }),
+        action: "handleFooBar"
+      })
     ];
   });
 

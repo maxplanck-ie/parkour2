@@ -3,7 +3,7 @@ describe("Ext.mixin.Identifiable", function () {
 
   beforeEach(function () {
     TestClass = new Ext.Class({
-      mixins: [Ext.mixin.Identifiable],
+      mixins: [Ext.mixin.Identifiable]
     });
   });
 

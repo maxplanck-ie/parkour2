@@ -204,11 +204,11 @@ Ext.define("Ext.util.ClickRepeater", {
             Ext.Date.getElapsed(this.mousedownTime),
             400,
             -390,
-            12000,
+            12000
           )
         : this.interval,
       this,
-      [e],
+      [e]
     );
   },
 
@@ -250,5 +250,5 @@ Ext.define("Ext.util.ClickRepeater", {
       this.el.removeCls(this.pressedCls);
     }
     this.fireEvent("mouseup", this, e);
-  },
+  }
 });

@@ -71,7 +71,7 @@ Ext.define(
             //<debug>
             Ext.Logger.error(
               "Timeout waiting for window.innerHeight to change",
-              this,
+              this
             );
             //</debug>
             height = stretchHeights[orientation] = this.getWindowHeight();
@@ -79,7 +79,7 @@ Ext.define(
             this.fireMaximizeEvent();
           },
           50,
-          1000,
+          1000
         );
       }
     },
@@ -114,7 +114,7 @@ Ext.define(
 
     scrollToTop: function () {
       window.scrollTo(0, 0);
-    },
+    }
   },
   function () {
     if (!Ext.os.is.iOS) {
@@ -130,7 +130,7 @@ Ext.define(
           stretchHeights[this.LANDSCAPE] = 268;
 
           return this.callOverridden(arguments);
-        },
+        }
       });
     }
 
@@ -149,7 +149,7 @@ Ext.define(
           ) {
             e.preventDefault();
           }
-        },
+        }
       });
     }
 
@@ -157,7 +157,7 @@ Ext.define(
       this.override({
         isFullscreen: function () {
           return true;
-        },
+        }
       });
     }
 
@@ -209,7 +209,7 @@ Ext.define(
           setViewportSizeToAbsolute: function () {
             this.setWidth(this.getWindowWidth());
             this.setHeight(this.getWindowHeight());
-          },
+          }
         });
       }
 
@@ -226,7 +226,7 @@ Ext.define(
                   window.scrollTo(0, window.scrollY);
                 }
               },
-              false,
+              false
             );
           },
 
@@ -241,9 +241,9 @@ Ext.define(
             if (window.scrollY !== 0) {
               window.scrollTo(0, 0);
             }
-          },
+          }
         });
       }
     }
-  },
+  }
 );

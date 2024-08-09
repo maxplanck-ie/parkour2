@@ -33,7 +33,7 @@ Ext.define("Ext.util.Grouper", {
      * to be sorted on something other then the group string returned by the `groupFn`.
      * This serves the same role as `property` on a normal `Ext.util.Sorter`.
      */
-    sortProperty: null,
+    sortProperty: null
   },
 
   constructor: function (config) {
@@ -109,5 +109,5 @@ Ext.define("Ext.util.Grouper", {
     if (!this.getGroupFn()) {
       this.setGroupFn(this.standardGroupFn);
     }
-  },
+  }
 });

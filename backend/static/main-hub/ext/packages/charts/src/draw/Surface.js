@@ -69,7 +69,7 @@ Ext.define("Ext.draw.Surface", {
     "Ext.draw.gradient.*",
     "Ext.draw.sprite.AttributeDefinition",
     "Ext.draw.Matrix",
-    "Ext.draw.Draw",
+    "Ext.draw.Draw"
   ],
 
   uses: ["Ext.draw.engine.Canvas"],
@@ -98,10 +98,10 @@ Ext.define("Ext.draw.Surface", {
             return Ext.Array.sort(list, function (a, b) {
               return a.attr.zIndex - b.attr.zIndex;
             });
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
 
   cls: Ext.baseCSSPrefix + "surface",
@@ -138,7 +138,7 @@ Ext.define("Ext.draw.Surface", {
      * Setting this config to 'true' will get text alignment and its position
      * within a surface mirrored.
      */
-    flipRtlText: false,
+    flipRtlText: false
   },
 
   isSurface: true,
@@ -244,7 +244,7 @@ Ext.define("Ext.draw.Surface", {
         rect.x || rect.left,
         rect.y || rect.top,
         rect.width || rect.right - rect.left,
-        rect.height || rect.bottom - rect.top,
+        rect.height || rect.bottom - rect.top
       ];
     }
   },
@@ -266,7 +266,7 @@ Ext.define("Ext.draw.Surface", {
         x: 0,
         y: 0,
         width: Math.ceil(r - Math.floor(l)),
-        height: Math.ceil(b - Math.floor(t)),
+        height: Math.ceil(b - Math.floor(t))
       });
     }
     me.setDirty(true);
@@ -547,7 +547,7 @@ Ext.define("Ext.draw.Surface", {
       x: left,
       y: top,
       width: right - left,
-      height: bottom - top,
+      height: bottom - top
     };
   },
 
@@ -733,5 +733,5 @@ Ext.define("Ext.draw.Surface", {
     }
 
     me.callParent();
-  },
+  }
 });

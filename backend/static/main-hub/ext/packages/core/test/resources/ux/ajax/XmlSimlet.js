@@ -20,7 +20,7 @@ Ext.define("Ext.ux.ajax.XmlSimlet", {
     "</tpl>",
     "    </{parent.record}>\n",
     "</tpl>",
-    "</{root}>",
+    "</{root}>"
   ],
 
   doGet: function (ctx) {
@@ -34,7 +34,7 @@ Ext.define("Ext.ux.ajax.XmlSimlet", {
         reader: reader,
         fields: reader && reader.model && reader.model.getFields(),
         root: reader && reader.root,
-        record: reader && reader.record,
+        record: reader && reader.record
       },
       tpl,
       xml,
@@ -64,5 +64,5 @@ Ext.define("Ext.ux.ajax.XmlSimlet", {
     ret.responseText = xml;
     ret.responseXML = doc;
     return ret;
-  },
+  }
 });

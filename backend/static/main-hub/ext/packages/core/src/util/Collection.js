@@ -57,13 +57,13 @@ Ext.define(
       "Ext.util.CollectionKey",
       "Ext.util.Filter",
       "Ext.util.Sorter",
-      "Ext.util.Grouper",
+      "Ext.util.Grouper"
     ],
 
     uses: [
       "Ext.util.SorterCollection",
       "Ext.util.FilterCollection",
-      "Ext.util.GroupCollection",
+      "Ext.util.GroupCollection"
     ],
 
     /**
@@ -288,7 +288,7 @@ Ext.define(
        * `true` to track individual groups in a Ext.util.GroupCollection
        * @private
        */
-      trackGroups: true,
+      trackGroups: true
     },
 
     /**
@@ -879,7 +879,7 @@ Ext.define(
           begin,
           end,
           property,
-          me.getRootProperty(),
+          me.getRootProperty()
         );
       }
 
@@ -936,7 +936,7 @@ Ext.define(
             operation,
             null,
             null,
-            scope,
+            scope
           );
         } else {
           result = group[operation](property);
@@ -1148,7 +1148,7 @@ Ext.define(
       value,
       anyMatch,
       caseSensitive,
-      exactMatch,
+      exactMatch
     ) {
       var me = this,
         ret = new me.self(me.initialConfig),
@@ -1173,8 +1173,8 @@ Ext.define(
               root: root,
               anyMatch: anyMatch,
               caseSensitive: caseSensitive,
-              exactMatch: exactMatch,
-            }),
+              exactMatch: exactMatch
+            })
           ];
         } else if (property instanceof Ext.util.Filter) {
           filters = [property];
@@ -1331,7 +1331,7 @@ Ext.define(
           value,
           startsWith,
           endsWith,
-          ignoreCase,
+          ignoreCase
         ),
         root = this.getRootProperty();
 
@@ -1340,7 +1340,7 @@ Ext.define(
           return item && regex.test((root ? item[root] : item)[property]);
         },
         null,
-        start,
+        start
       );
     },
 
@@ -1399,7 +1399,7 @@ Ext.define(
       start,
       startsWith,
       endsWith,
-      ignoreCase,
+      ignoreCase
     ) {
       var item = this.find(
         property,
@@ -1407,7 +1407,7 @@ Ext.define(
         start,
         startsWith,
         endsWith,
-        ignoreCase,
+        ignoreCase
       );
 
       return item ? this.indexOf(item) : -1;
@@ -1556,7 +1556,7 @@ Ext.define(
             begin +
             "," +
             end +
-            "]",
+            "]"
         );
       }
       //</debug>
@@ -1794,7 +1794,7 @@ Ext.define(
           oldIndex: index,
           newIndex: newIndex,
           wasFiltered: wasFiltered,
-          meta: meta,
+          meta: meta
         };
 
         if (keyChanged) {
@@ -1854,7 +1854,7 @@ Ext.define(
         // Child collections of this collection will not care about filtereditemchange because the record is not in them.
         // Stores however will still need to know because the record *is* in them, just filtered.
         me.notify(itemFiltered ? "filtereditemchange" : "itemchange", [
-          details,
+          details
         ]);
 
         me.endUpdate();
@@ -1908,7 +1908,7 @@ Ext.define(
         range = Num.clipIndices(
           length,
           [index, count === undefined ? 1 : count],
-          Num.Clip.COUNT,
+          Num.Clip.COUNT
         ),
         n = range[0],
         removeCount = range[1] - n,
@@ -1980,7 +1980,7 @@ Ext.define(
         range = Num.clipIndices(
           length,
           [index, isRemoveCount ? toRemove : 0],
-          Num.Clip.COUNT,
+          Num.Clip.COUNT
         ),
         begin = range[0],
         end = range[1],
@@ -2108,7 +2108,7 @@ Ext.define(
           //next: null,  // only set by spliceMerge
           //replaced: null,  // must fill this in later
           items: addItems,
-          keys: newKeys,
+          keys: newKeys
         };
       }
 
@@ -2167,8 +2167,8 @@ Ext.define(
                 keys: (keys = []),
                 map: removeMap,
                 next: chunk,
-                replacement: adds,
-              }),
+                replacement: adds
+              })
             );
 
             // Point "replaced" at the last chunk
@@ -2273,7 +2273,7 @@ Ext.define(
                 adds.items[0],
                 items,
                 me.getSortFn(),
-                index,
+                index
               );
             }
           }
@@ -2349,7 +2349,7 @@ Ext.define(
         //<debug>
         Ext.log.error(
           this.$className + ": Unhandled Exception: ",
-          e.description || e.message,
+          e.description || e.message
         );
         //</debug>
         throw e;
@@ -2401,8 +2401,8 @@ Ext.define(
             {
               item: item,
               newKey: newKey,
-              oldKey: oldKey,
-            },
+              oldKey: oldKey
+            }
           ]);
 
           me.updating--;
@@ -2421,7 +2421,7 @@ Ext.define(
                 newKey +
                 '" for item with oldKey "' +
                 oldKey +
-                '"',
+                '"'
             );
           }
 
@@ -2434,7 +2434,7 @@ Ext.define(
                 oldKey +
                 '" for item with newKey "' +
                 newKey +
-                '"',
+                '"'
             );
           }
         }
@@ -2597,7 +2597,7 @@ Ext.define(
         details.item,
         details.modified,
         details.oldKey,
-        details.meta,
+        details.meta
       );
     },
 
@@ -2955,7 +2955,7 @@ Ext.define(
           begin,
           end,
           property,
-          root,
+          root
         );
         return b[1];
       },
@@ -2967,7 +2967,7 @@ Ext.define(
           begin,
           end,
           property,
-          root,
+          root
         );
         return b[1];
       },
@@ -2979,7 +2979,7 @@ Ext.define(
           begin,
           end,
           property,
-          root,
+          root
         );
         return b[0];
       },
@@ -2991,7 +2991,7 @@ Ext.define(
           begin,
           end,
           property,
-          root,
+          root
         );
         return b[0];
       },
@@ -3004,7 +3004,7 @@ Ext.define(
         }
 
         return sum;
-      },
+      }
     },
 
     _eventToMethodMap: {
@@ -3020,7 +3020,7 @@ Ext.define(
       sort: "onCollectionSort",
       filter: "onCollectionFilter",
       filteradd: "onCollectionFilterAdd",
-      updatekey: "onCollectionUpdateKey",
+      updatekey: "onCollectionUpdateKey"
     },
 
     /**
@@ -3082,7 +3082,7 @@ Ext.define(
         value = extraKeys[name];
         if (!value.isCollectionKey) {
           config = {
-            collection: me,
+            collection: me
           };
 
           if (Ext.isString(value)) {
@@ -3325,7 +3325,7 @@ Ext.define(
         source = new Ext.util.Collection({
           keyFn: me.getKey,
           extraKeys: newKeys,
-          rootProperty: me.getRootProperty(),
+          rootProperty: me.getRootProperty()
         });
 
         if (me.length) {
@@ -3375,7 +3375,7 @@ Ext.define(
         newFilters.on({
           endupdate: "onEndUpdateFilters",
           scope: me,
-          priority: me.$endUpdatePriority,
+          priority: me.$endUpdatePriority
         });
         newFilters.$filterable = me;
       }
@@ -3622,7 +3622,7 @@ Ext.define(
         if (me.getTrackGroups()) {
           if (!groups) {
             groups = new Ext.util.GroupCollection({
-              itemRoot: me.getRootProperty(),
+              itemRoot: me.getRootProperty()
             });
             groups.$groupable = me;
             me.setGroups(groups);
@@ -3662,7 +3662,7 @@ Ext.define(
         newSorters.on({
           endupdate: "onEndUpdateSorters",
           scope: me,
-          priority: me.$endUpdatePriority,
+          priority: me.$endUpdatePriority
         });
         newSorters.$sortable = me;
       }
@@ -3773,7 +3773,7 @@ Ext.define(
           adds[count++] = {
             at: items.length,
             itemAt: items[items.length - 1],
-            items: (addItems = []),
+            items: (addItems = [])
           };
           if (count > 1) {
             adds[count - 2].next = adds[count - 1];
@@ -3794,7 +3794,7 @@ Ext.define(
         adds[count++] = {
           at: items.length,
           itemAt: items[items.length - 1],
-          items: (addItems = [newItem]),
+          items: (addItems = [newItem])
         };
         if (count > 1) {
           adds[count - 2].next = adds[count - 1];
@@ -3880,7 +3880,7 @@ Ext.define(
           this.onCollectionRefresh(newSource);
         }
       }
-    },
+    }
   },
   function () {
     var prototype = this.prototype;
@@ -3909,5 +3909,5 @@ Ext.define(
         return this.aggregateByGroup(property, name);
       };
     });
-  },
+  }
 );

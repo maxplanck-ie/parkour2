@@ -26,5 +26,5 @@ Ext.define("Ext.layout.container.ColumnSplitter", {
     var tracker = this.callParent();
     tracker.xclass = this.trackerClass;
     return tracker;
-  },
+  }
 });

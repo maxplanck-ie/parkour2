@@ -269,5 +269,5 @@ Ext.define("Ext.dd.DropZone", {
    */
   triggerCacheRefresh: function () {
     Ext.dd.DDM.refreshCache(this.groups);
-  },
+  }
 });

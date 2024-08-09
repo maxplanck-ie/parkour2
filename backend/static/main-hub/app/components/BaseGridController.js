@@ -22,8 +22,8 @@ Ext.define("MainHub.components.BaseGridController", {
         handler: function () {
           var dataIndex = self._getDataIndex(e, gridView);
           self.applyToAll(gridView, record, dataIndex);
-        },
-      },
+        }
+      }
     ];
 
     if (customConfig && customConfig.qualityCheckMenuOptions) {
@@ -39,8 +39,8 @@ Ext.define("MainHub.components.BaseGridController", {
             html: "Quality Check",
             margin: "10px 5px 5px 5px",
             style: {
-              color: "#000",
-            },
+              color: "#000"
+            }
           },
           {
             xtype: "container",
@@ -48,16 +48,16 @@ Ext.define("MainHub.components.BaseGridController", {
             layout: {
               type: "hbox",
               pack: "center",
-              align: "middle",
+              align: "middle"
             },
             defaults: {
               xtype: "button",
               scale: "medium",
-              margin: "5px 10px 10px",
+              margin: "5px 10px 10px"
             },
-            items: [],
-          },
-        ],
+            items: []
+          }
+        ]
       };
 
       if (qcMenuOptions.indexOf("passed") !== -1) {
@@ -68,7 +68,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSingle(record, "passed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -80,7 +80,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSingle(record, "completed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -92,7 +92,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSingle(record, "compromised");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -104,7 +104,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSingle(record, "failed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -115,7 +115,7 @@ Ext.define("MainHub.components.BaseGridController", {
     e.stopEvent();
     Ext.create("Ext.menu.Menu", {
       plain: true,
-      items: menuItems,
+      items: menuItems
     }).showAt(e.getXY());
   },
 
@@ -130,15 +130,15 @@ Ext.define("MainHub.components.BaseGridController", {
         margin: "5px 5px 0 5px",
         handler: function () {
           self.selectUnselectAll(grid, parseInt(groupId), true);
-        },
+        }
       },
       {
         text: "Unselect All",
         margin: 5,
         handler: function () {
           self.selectUnselectAll(grid, parseInt(groupId), false);
-        },
-      },
+        }
+      }
     ];
 
     if (customConfig && customConfig.qualityCheckMenuOptions) {
@@ -157,8 +157,8 @@ Ext.define("MainHub.components.BaseGridController", {
             html: "Quality Check: Selected",
             margin: "10px 5px 5px 5px",
             style: {
-              color: "#000",
-            },
+              color: "#000"
+            }
           },
           {
             xtype: "container",
@@ -166,16 +166,16 @@ Ext.define("MainHub.components.BaseGridController", {
             layout: {
               type: "hbox",
               pack: "center",
-              align: "middle",
+              align: "middle"
             },
             defaults: {
               xtype: "button",
               scale: "medium",
-              margin: "5px 10px 10px",
+              margin: "5px 10px 10px"
             },
-            items: [],
-          },
-        ],
+            items: []
+          }
+        ]
       };
 
       if (qcMenuOptions.indexOf("passed") !== -1) {
@@ -186,7 +186,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "passed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -198,7 +198,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "completed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -210,7 +210,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "compromised");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -222,7 +222,7 @@ Ext.define("MainHub.components.BaseGridController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "failed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -233,7 +233,7 @@ Ext.define("MainHub.components.BaseGridController", {
     e.stopEvent();
     Ext.create("Ext.menu.Menu", {
       plain: true,
-      items: menuItems,
+      items: menuItems
     }).showAt(e.getXY());
   },
 
@@ -252,7 +252,7 @@ Ext.define("MainHub.components.BaseGridController", {
         if (obj.message && obj.message !== "") {
           new Noty({ text: obj.message, type: "warning" }).show();
         } else {
-          new Noty({ text: "The changes have been saved." }).show();
+          new Noty({ text: "Changes have been saved successfully." }).show();
         }
       },
 
@@ -270,7 +270,7 @@ Ext.define("MainHub.components.BaseGridController", {
         }
 
         new Noty({ text: error, type: "error" }).show();
-      },
+      }
     });
   },
 
@@ -358,7 +358,7 @@ Ext.define("MainHub.components.BaseGridController", {
   _showEditableColumnsMessage: function (gridView, allowedColumns) {
     var columns = this._findColumnsByDataIndex(
       gridView.getGridColumns(),
-      allowedColumns,
+      allowedColumns
     );
     var columnNames = Ext.Array.pluck(columns, "text")
       .map(function (name) {
@@ -372,7 +372,7 @@ Ext.define("MainHub.components.BaseGridController", {
 
     var message = Ext.String.format(
       "Only the following columns are editable:<br/><ul>{0}</ul>",
-      columnNames,
+      columnNames
     );
 
     new Noty({ text: message, type: "warning" }).show();
@@ -390,5 +390,5 @@ Ext.define("MainHub.components.BaseGridController", {
     });
 
     return result;
-  },
+  }
 });

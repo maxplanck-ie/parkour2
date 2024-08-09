@@ -17,7 +17,7 @@ describe("Ext.layout.container.VBox", function () {
           renderTo: Ext.getBody(),
           layout: "vbox",
           width: 100,
-          height: 100,
+          height: 100
         });
 
         counter++;
@@ -48,7 +48,7 @@ describe("Ext.layout.container.VBox", function () {
   describe("removing items", function () {
     it("should clear the top on an item when removing and using in another container", function () {
       c = new Ext.Component({
-        height: 50,
+        height: 50
       });
 
       ct = new Ext.container.Container({
@@ -58,17 +58,17 @@ describe("Ext.layout.container.VBox", function () {
         height: 100,
         items: [
           {
-            height: 50,
+            height: 50
           },
-          c,
-        ],
+          c
+        ]
       });
 
       var other = new Ext.container.Container({
         renderTo: Ext.getBody(),
         layout: "fit",
         width: 100,
-        height: 100,
+        height: 100
       });
 
       ct.remove(c, false);
@@ -92,7 +92,7 @@ describe("Ext.layout.container.VBox", function () {
         collapsed: true,
         layout: "vbox",
         width: 100,
-        height: 100,
+        height: 100
       });
 
       // When adding the item to the collapsed panel, it won't render
@@ -108,7 +108,7 @@ describe("Ext.layout.container.VBox", function () {
     beforeEach(function () {
       makeCt = function (pad) {
         c = new Ext.Component({
-          flex: 1,
+          flex: 1
         });
         ct = new Ext.container.Container({
           renderTo: Ext.getBody(),
@@ -117,9 +117,9 @@ describe("Ext.layout.container.VBox", function () {
           layout: {
             type: "vbox",
             align: "stretch",
-            padding: pad,
+            padding: pad
           },
-          items: c,
+          items: c
         });
       };
     });
@@ -152,14 +152,14 @@ describe("Ext.layout.container.VBox", function () {
           padding: 100, // innerCt stretches *inside* this.
           layout: {
             type: "vbox",
-            align: "stretch",
+            align: "stretch"
           },
           defaults: {
             xtype: "component",
             height: 50,
-            margin: childMargins,
+            margin: childMargins
           },
-          items: [{}, {}],
+          items: [{}, {}]
         });
       };
     });
@@ -188,13 +188,13 @@ describe("Ext.layout.container.VBox", function () {
       defaultType: "component",
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       defaults: {
         flex: 1,
-        margin: 5,
+        margin: 5
       },
-      items: [{}, {}],
+      items: [{}, {}]
     });
 
     expect(ct.items.first().getY()).toBe(5);
@@ -216,19 +216,19 @@ describe("Ext.layout.container.VBox", function () {
           height: 600,
           layout: {
             type: "vbox",
-            pack: pack,
+            pack: pack
           },
           items: [
             {
-              height: 30,
+              height: 30
             },
             {
-              height: 40,
+              height: 40
             },
             {
-              height: 20,
-            },
-          ],
+              height: 20
+            }
+          ]
         });
       };
 
@@ -278,9 +278,9 @@ describe("Ext.layout.container.VBox", function () {
           layout: {
             type: "vbox",
             align: align,
-            constrainAlign: !!options.constrainAlign,
+            constrainAlign: !!options.constrainAlign
           },
-          items: items,
+          items: items
         });
       };
 
@@ -309,11 +309,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should keep items at the left when using align: left", function () {
         makeCt("left", [
           {
-            html: "a",
+            html: "a"
           },
           {
-            html: "b",
-          },
+            html: "b"
+          }
         ]);
         expect(getX(0)).toBe(0);
         expect(getX(1)).toBe(0);
@@ -322,11 +322,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should align items in the middle when using align: center", function () {
         makeCt("center", [
           {
-            width: 100,
+            width: 100
           },
           {
-            width: 300,
-          },
+            width: 300
+          }
         ]);
         expect(getX(0)).toBe(250);
         expect(getX(1)).toBe(150);
@@ -335,11 +335,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should keep items to the right when using align: right", function () {
         makeCt("right", [
           {
-            html: "a",
+            html: "a"
           },
           {
-            html: "b",
-          },
+            html: "b"
+          }
         ]);
         expect(getX(0)).toBe(600 - getWidth(0));
         expect(getX(1)).toBe(600 - getWidth(1));
@@ -361,12 +361,12 @@ describe("Ext.layout.container.VBox", function () {
             "left",
             [
               {
-                html: makeLongString("A", 100),
-              },
+                html: makeLongString("A", 100)
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
           expect(getWidth(0)).toBe(600);
           expect(getX(0)).toBe(0);
@@ -377,12 +377,12 @@ describe("Ext.layout.container.VBox", function () {
             "center",
             [
               {
-                html: makeLongString("A", 100),
-              },
+                html: makeLongString("A", 100)
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
           expect(getWidth(0)).toBe(600);
           expect(getX(0)).toBe(0);
@@ -393,12 +393,12 @@ describe("Ext.layout.container.VBox", function () {
             "center",
             [
               {
-                html: makeLongString("A", 100),
-              },
+                html: makeLongString("A", 100)
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
           expect(getWidth(0)).toBe(600);
           expect(getX(0)).toBe(0);
@@ -410,12 +410,12 @@ describe("Ext.layout.container.VBox", function () {
             [
               {
                 html: "A",
-                width: 1000,
-              },
+                width: 1000
+              }
             ],
             {
-              constrainAlign: false,
-            },
+              constrainAlign: false
+            }
           );
           expect(getWidth(0)).toBe(1000);
         });
@@ -425,15 +425,15 @@ describe("Ext.layout.container.VBox", function () {
             "left",
             [
               {
-                html: makeLongString("A", 100),
+                html: makeLongString("A", 100)
               },
               {
-                html: "B",
-              },
+                html: "B"
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
 
           expect(getY(0)).toBe(0);
@@ -446,20 +446,20 @@ describe("Ext.layout.container.VBox", function () {
       it("should stretch all items to the size of the largest when using align: stretchmax", function () {
         makeCt("stretchmax", [
           {
-            html: "foo",
+            html: "foo"
           },
           {
-            html: "foo bar baz",
+            html: "foo bar baz"
           },
           {
-            html: "foo",
-          },
+            html: "foo"
+          }
         ]);
 
         c = new Ext.Component({
           renderTo: Ext.getBody(),
           html: "foo bar baz",
-          floating: true,
+          floating: true
         });
 
         var expected = c.getWidth();
@@ -473,20 +473,20 @@ describe("Ext.layout.container.VBox", function () {
       it("should always use a stretchmax over a fixed width", function () {
         makeCt("stretchmax", [
           {
-            width: 30,
+            width: 30
           },
           {
-            html: "foo bar baz blah long text",
+            html: "foo bar baz blah long text"
           },
           {
-            html: "foo",
-          },
+            html: "foo"
+          }
         ]);
 
         c = new Ext.Component({
           renderTo: Ext.getBody(),
           html: "foo bar baz blah long text",
-          floating: true,
+          floating: true
         });
 
         var expected = c.getWidth();
@@ -501,11 +501,11 @@ describe("Ext.layout.container.VBox", function () {
         it("should stretch an item with a minWidth", function () {
           makeCt("stretchmax", [
             {
-              width: 30,
+              width: 30
             },
             {
-              minWidth: 5,
-            },
+              minWidth: 5
+            }
           ]);
           expect(getWidth(0)).toBe(30);
           expect(getWidth(1)).toBe(30);
@@ -514,11 +514,11 @@ describe("Ext.layout.container.VBox", function () {
         it("should stretch to the item with the largest minWidth", function () {
           makeCt("stretchmax", [
             {
-              minWidth: 30,
+              minWidth: 30
             },
             {
-              minWidth: 50,
-            },
+              minWidth: 50
+            }
           ]);
           expect(getWidth(0)).toBe(50);
           expect(getWidth(1)).toBe(50);
@@ -534,12 +534,12 @@ describe("Ext.layout.container.VBox", function () {
                 minWidth: 1000,
                 shrinkWrap: true,
                 shrinkWrapDock: true,
-                html: "Content...",
-              },
+                html: "Content..."
+              }
             ],
             {
-              autoScroll: true,
-            },
+              autoScroll: true
+            }
           );
           expect(getWidth(0)).toBe(1000);
         });
@@ -548,11 +548,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should respect a maxWidth", function () {
         makeCt("stretchmax", [
           {
-            width: 30,
+            width: 30
           },
           {
-            maxWidth: 20,
-          },
+            maxWidth: 20
+          }
         ]);
         expect(getWidth(0)).toBe(30);
         expect(getWidth(1)).toBe(20);
@@ -578,9 +578,9 @@ describe("Ext.layout.container.VBox", function () {
           defaultType: "component",
           layout: {
             type: "vbox",
-            align: "stretch",
+            align: "stretch"
           },
-          items: items,
+          items: items
         });
       };
 
@@ -596,7 +596,7 @@ describe("Ext.layout.container.VBox", function () {
     describe("flex only", function () {
       it("should stretch a single flex item to the height of the container", function () {
         makeCt({
-          flex: 1,
+          flex: 1
         });
         expect(getHeight(0)).toBe(600);
       });
@@ -604,14 +604,14 @@ describe("Ext.layout.container.VBox", function () {
       it("should stretch 3 equally flexed items equally", function () {
         makeCt([
           {
-            flex: 1,
+            flex: 1
           },
           {
-            flex: 1,
+            flex: 1
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getHeight(0)).toBe(200);
         expect(getHeight(1)).toBe(200);
@@ -621,11 +621,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should flex 2 items according to ratio", function () {
         makeCt([
           {
-            flex: 3,
+            flex: 3
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getHeight(0)).toBe(450);
         expect(getHeight(1)).toBe(150);
@@ -634,17 +634,17 @@ describe("Ext.layout.container.VBox", function () {
       it("should flex 4 items according to ratio", function () {
         makeCt([
           {
-            flex: 3,
+            flex: 3
           },
           {
-            flex: 1,
+            flex: 1
           },
           {
-            flex: 3,
+            flex: 3
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getHeight(0)).toBe(225);
         expect(getHeight(1)).toBe(75);
@@ -655,11 +655,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should use flex as a ratio", function () {
         makeCt([
           {
-            flex: 5000000,
+            flex: 5000000
           },
           {
-            flex: 1000000,
-          },
+            flex: 1000000
+          }
         ]);
         expect(getHeight(0)).toBe(500);
         expect(getHeight(1)).toBe(100);
@@ -669,7 +669,7 @@ describe("Ext.layout.container.VBox", function () {
     describe("fixed height only", function () {
       it("should set the height of a single item", function () {
         makeCt({
-          height: 200,
+          height: 200
         });
         expect(getHeight(0)).toBe(200);
       });
@@ -677,11 +677,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should set the height of multiple items", function () {
         makeCt([
           {
-            height: 500,
+            height: 500
           },
           {
-            height: 50,
-          },
+            height: 50
+          }
         ]);
         expect(getHeight(0)).toBe(500);
         expect(getHeight(1)).toBe(50);
@@ -689,7 +689,7 @@ describe("Ext.layout.container.VBox", function () {
 
       it("should allow a single item to exceed the container height", function () {
         makeCt({
-          height: 900,
+          height: 900
         });
         expect(getHeight(0)).toBe(900);
       });
@@ -697,11 +697,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should allow multiple items to exceed the container height", function () {
         makeCt([
           {
-            height: 400,
+            height: 400
           },
           {
-            height: 400,
-          },
+            height: 400
+          }
         ]);
         expect(getHeight(0)).toBe(400);
         expect(getHeight(1)).toBe(400);
@@ -712,11 +712,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should be able to use %age height", function () {
         makeCt([
           {
-            height: "50%",
+            height: "50%"
           },
           {
-            height: "50%",
-          },
+            height: "50%"
+          }
         ]);
         expect(getHeight(0)).toBe(300);
         expect(getHeight(1)).toBe(300);
@@ -725,14 +725,14 @@ describe("Ext.layout.container.VBox", function () {
       it("should work with fixed height", function () {
         makeCt([
           {
-            height: 100,
+            height: 100
           },
           {
-            height: "20%",
+            height: "20%"
           },
           {
-            height: 380,
-          },
+            height: 380
+          }
         ]);
         expect(getHeight(0)).toBe(100);
         expect(getHeight(1)).toBe(120);
@@ -742,14 +742,14 @@ describe("Ext.layout.container.VBox", function () {
       it("should work with flex", function () {
         makeCt([
           {
-            flex: 2,
+            flex: 2
           },
           {
-            height: "40%",
+            height: "40%"
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getHeight(0)).toBe(240);
         expect(getHeight(1)).toBe(240);
@@ -761,11 +761,11 @@ describe("Ext.layout.container.VBox", function () {
       it("should give any remaining space to a single flexed item", function () {
         makeCt([
           {
-            height: 200,
+            height: 200
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getHeight(0)).toBe(200);
         expect(getHeight(1)).toBe(400);
@@ -774,14 +774,14 @@ describe("Ext.layout.container.VBox", function () {
       it("should flex a single item with 2 fixed", function () {
         makeCt([
           {
-            height: 100,
+            height: 100
           },
           {
-            flex: 1,
+            flex: 1
           },
           {
-            height: 300,
-          },
+            height: 300
+          }
         ]);
         expect(getHeight(0)).toBe(100);
         expect(getHeight(1)).toBe(200);
@@ -791,14 +791,14 @@ describe("Ext.layout.container.VBox", function () {
       it("should flex 2 items with 1 fixed", function () {
         makeCt([
           {
-            flex: 2,
+            flex: 2
           },
           {
-            height: 300,
+            height: 300
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getHeight(0)).toBe(200);
         expect(getHeight(1)).toBe(300);
@@ -809,11 +809,11 @@ describe("Ext.layout.container.VBox", function () {
         makeCt([
           {
             flex: 1,
-            height: 200,
+            height: 200
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
 
         expect(getHeight(0)).toBe(300);
@@ -826,11 +826,11 @@ describe("Ext.layout.container.VBox", function () {
         makeCt([
           {
             flex: 1,
-            style: "line-height:0",
+            style: "line-height:0"
           },
           {
-            height: 700,
-          },
+            height: 700
+          }
         ]);
         expect(getHeight(0)).toBe(0);
         expect(getHeight(1)).toBe(700);
@@ -840,11 +840,11 @@ describe("Ext.layout.container.VBox", function () {
         makeCt([
           {
             flex: 1,
-            minHeight: 50,
+            minHeight: 50
           },
           {
-            height: 700,
-          },
+            height: 700
+          }
         ]);
         expect(getHeight(0)).toBe(50);
         expect(getHeight(1)).toBe(700);
@@ -854,11 +854,11 @@ describe("Ext.layout.container.VBox", function () {
         makeCt([
           {
             flex: 1,
-            maxHeight: 100,
+            maxHeight: 100
           },
           {
-            height: 300,
-          },
+            height: 300
+          }
         ]);
         expect(getHeight(0)).toBe(100);
         expect(getHeight(1)).toBe(300);
@@ -867,10 +867,10 @@ describe("Ext.layout.container.VBox", function () {
       it("should update flex values based on min constraint", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            minHeight: 500,
+            minHeight: 500
           }),
           c2 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
         makeCt([c1, c2]);
         expect(c1.getHeight()).toBe(500);
@@ -880,14 +880,14 @@ describe("Ext.layout.container.VBox", function () {
       it("should handle multiple min constraints", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            minHeight: 250,
+            minHeight: 250
           }),
           c2 = new Ext.Component({
             flex: 1,
-            minHeight: 250,
+            minHeight: 250
           }),
           c3 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
 
         makeCt([c1, c2, c3]);
@@ -899,10 +899,10 @@ describe("Ext.layout.container.VBox", function () {
       it("should update flex values based on max constraint", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            maxHeight: 100,
+            maxHeight: 100
           }),
           c2 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
         makeCt([c1, c2]);
         expect(c1.getHeight()).toBe(100);
@@ -912,14 +912,14 @@ describe("Ext.layout.container.VBox", function () {
       it("should update flex values based on multiple max constraints", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            maxHeight: 100,
+            maxHeight: 100
           }),
           c2 = new Ext.Component({
             flex: 1,
-            maxHeight: 100,
+            maxHeight: 100
           }),
           c3 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
         makeCt([c1, c2, c3]);
         expect(c1.getHeight()).toBe(100);
@@ -930,15 +930,15 @@ describe("Ext.layout.container.VBox", function () {
       it("should give precedence to min constraints over flex when the min is the same", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            minHeight: 200,
+            minHeight: 200
           }),
           c2 = new Ext.Component({
             flex: 3,
-            minHeight: 200,
+            minHeight: 200
           }),
           c3 = new Ext.Component({
             flex: 1,
-            minHeight: 200,
+            minHeight: 200
           });
         makeCt([c1, c2, c3]);
         expect(c1.getHeight()).toBe(200);
@@ -949,15 +949,15 @@ describe("Ext.layout.container.VBox", function () {
       it("should give precedence to max constraints over flex when the max is the same", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            maxHeight: 100,
+            maxHeight: 100
           }),
           c2 = new Ext.Component({
             flex: 3,
-            maxHeight: 100,
+            maxHeight: 100
           }),
           c3 = new Ext.Component({
             flex: 1,
-            maxHeight: 100,
+            maxHeight: 100
           });
         makeCt([c1, c2, c3]);
         expect(c1.getHeight()).toBe(100);
@@ -973,11 +973,11 @@ describe("Ext.layout.container.VBox", function () {
           makeCt([
             {
               height: "10%",
-              minHeight: 250,
+              minHeight: 250
             },
             {
-              flex: 1,
-            },
+              flex: 1
+            }
           ]);
           expect(getHeight(0)).toBe(250);
           expect(getHeight(1)).toBe(350);
@@ -992,11 +992,11 @@ describe("Ext.layout.container.VBox", function () {
           makeCt([
             {
               height: "90%",
-              maxHeight: 100,
+              maxHeight: 100
             },
             {
-              flex: 1,
-            },
+              flex: 1
+            }
           ]);
           expect(getHeight(0)).toBe(100);
           expect(getHeight(1)).toBe(500);
@@ -1015,7 +1015,7 @@ describe("Ext.layout.container.VBox", function () {
         xtype: "component",
         autoEl: "span",
         html: "Some informative title",
-        renderTo: document.body,
+        renderTo: document.body
       }),
       twidth = txtEl.el.getWidth(),
       // the target width for the spec below will be the measured width here
@@ -1033,7 +1033,7 @@ describe("Ext.layout.container.VBox", function () {
       height: 200,
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       items: {
         id: "l1",
@@ -1041,26 +1041,26 @@ describe("Ext.layout.container.VBox", function () {
         style: "background-color:red",
         layout: {
           type: "vbox",
-          align: "center",
+          align: "center"
         },
         items: {
           id: "l2",
           style: "background-color:blue;color:white",
           xtype: "component",
           html: "Some informative title",
-          height: 20,
-        },
-      },
+          height: 20
+        }
+      }
     });
 
     expect(ct).toHaveLayout({
       el: {
-        xywh: "0 0 300 200",
+        xywh: "0 0 300 200"
       },
       items: {
         l1: {
           el: {
-            xywh: "0 0 300 20",
+            xywh: "0 0 300 20"
           },
           items: {
             l2: {
@@ -1068,12 +1068,12 @@ describe("Ext.layout.container.VBox", function () {
                 x: x,
                 y: y,
                 w: [w - 1, w + 1],
-                h: [h - 1, h + 1],
-              },
-            },
-          },
-        },
-      },
+                h: [h - 1, h + 1]
+              }
+            }
+          }
+        }
+      }
     });
   });
 
@@ -1101,17 +1101,17 @@ describe("Ext.layout.container.VBox", function () {
               width: 500,
               style: "background-color:red",
               html: "child 1 content asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf",
-              margin: "0 3 0 0",
+              margin: "0 3 0 0"
             },
             {
               itemId: "cmp2",
               style: "background-color:blue",
               html: "child 2 content",
-              margin: "0 0 0 2",
-            },
-          ],
-        },
-      ],
+              margin: "0 0 0 2"
+            }
+          ]
+        }
+      ]
     });
 
     var ct1 = ct.child("#ct1"),
@@ -1127,12 +1127,12 @@ describe("Ext.layout.container.VBox", function () {
     // ct1 should contain a scrollbar as well as the two stacked up Components.
     // So the container which contains those two should be cmp1Height + cmp2Height + <scrollbarHeight> high
     expect(ct1.el.getHeight()).toEqual(
-      cmp1Height + cmp2Height + Ext.getScrollbarSize().height,
+      cmp1Height + cmp2Height + Ext.getScrollbarSize().height
     );
 
     // ct just has border:1px solid black, so should be 2px higher
     expect(ct.el.getHeight()).toEqual(
-      cmp1Height + cmp2Height + Ext.getScrollbarSize().height + 2,
+      cmp1Height + cmp2Height + Ext.getScrollbarSize().height + 2
     );
   });
 
@@ -1148,15 +1148,15 @@ describe("Ext.layout.container.VBox", function () {
         {
           dock: "top",
           xtype: "component",
-          html: "X",
-        },
+          html: "X"
+        }
       ],
       items: [
         {
           xtype: "component",
-          html: '<div style="width: 50px;"></div>',
-        },
-      ],
+          html: '<div style="width: 50px;"></div>'
+        }
+      ]
     });
     expect(ct.getWidth()).toBe(50);
     expect(ct.getHeight()).toBe(150);
@@ -1182,19 +1182,19 @@ describe("Ext.layout.container.VBox", function () {
             renderTo: Ext.getBody(),
             layout: Ext.apply(
               {
-                type: "vbox",
+                type: "vbox"
               },
-              layoutOptions,
-            ),
+              layoutOptions
+            )
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
     function makeShrinkWrapItem(h, w) {
       return {
-        html: makeShrinkWrapHtml(h, w),
+        html: makeShrinkWrapHtml(h, w)
       };
     }
 
@@ -1204,7 +1204,7 @@ describe("Ext.layout.container.VBox", function () {
       return Ext.String.format(
         '<div style="height: {0}px; width: {1}px;"></div>',
         h,
-        w,
+        w
       );
     }
 
@@ -1218,7 +1218,7 @@ describe("Ext.layout.container.VBox", function () {
         dom,
         el.getStyle("overflow-y"),
         dom.scrollHeight,
-        dom.clientHeight,
+        dom.clientHeight
       );
       expectScrollDimension(
         horizontal,
@@ -1226,7 +1226,7 @@ describe("Ext.layout.container.VBox", function () {
         dom,
         el.getStyle("overflow-x"),
         dom.scrollWidth,
-        dom.clientWidth,
+        dom.clientWidth
       );
     }
 
@@ -1236,7 +1236,7 @@ describe("Ext.layout.container.VBox", function () {
       dom,
       style,
       scrollSize,
-      clientSize,
+      clientSize
     ) {
       if (value !== undefined) {
         if (value) {
@@ -1315,7 +1315,7 @@ describe("Ext.layout.container.VBox", function () {
       Ext.getScrollbarSize = function () {
         return {
           width: scrollSize,
-          height: scrollSize,
+          height: scrollSize
         };
       };
     });
@@ -1333,12 +1333,12 @@ describe("Ext.layout.container.VBox", function () {
             defaultType: "component",
             items: [
               {
-                height: 400,
+                height: 400
               },
               {
-                height: 400,
-              },
-            ],
+                height: 400
+              }
+            ]
           });
           expectInnerCtHeight(defaultSize);
         });
@@ -1351,16 +1351,16 @@ describe("Ext.layout.container.VBox", function () {
             height: defaultSize,
             defaultType: "component",
             scrollable: {
-              x: false,
+              x: false
             },
             items: [
               {
-                height: 400,
+                height: 400
               },
               {
-                height: 400,
-              },
-            ],
+                height: 400
+              }
+            ]
           });
           expectInnerCtHeight(800);
         });
@@ -1375,9 +1375,9 @@ describe("Ext.layout.container.VBox", function () {
             height: defaultSize,
             defaultType: "component",
             items: items,
-            scrollable: scrollable !== undefined ? scrollable : true,
+            scrollable: scrollable !== undefined ? scrollable : true
           },
-          layoutOptions,
+          layoutOptions
         );
       }
 
@@ -1386,15 +1386,15 @@ describe("Ext.layout.container.VBox", function () {
           makeFixedCt(
             [
               {
-                height: 400,
+                height: 400
               },
               {
-                height: 400,
-              },
+                height: 400
+              }
             ],
             {
-              y: false,
-            },
+              y: false
+            }
           );
           expectScroll(false, false);
           expectInnerCtHeight(800);
@@ -1405,11 +1405,11 @@ describe("Ext.layout.container.VBox", function () {
             it("should not show a scrollbar when the total height does not overflow", function () {
               makeFixedCt([
                 {
-                  height: 100,
+                  height: 100
                 },
                 {
-                  height: 100,
-                },
+                  height: 100
+                }
               ]);
               expectScroll(false, false);
               expectHeights([100, 100]);
@@ -1419,11 +1419,11 @@ describe("Ext.layout.container.VBox", function () {
             it("should show a scrollbar when the total height overflows", function () {
               makeFixedCt([
                 {
-                  height: 400,
+                  height: 400
                 },
                 {
-                  height: 400,
-                },
+                  height: 400
+                }
               ]);
               expectScroll(true, false);
               expectHeights([400, 400]);
@@ -1435,11 +1435,11 @@ describe("Ext.layout.container.VBox", function () {
             it("should not show a scrollbar when using only flex", function () {
               makeFixedCt([
                 {
-                  flex: 1,
+                  flex: 1
                 },
                 {
-                  flex: 2,
-                },
+                  flex: 2
+                }
               ]);
               expectScroll(false, false);
               expectHeights([200, 400]);
@@ -1450,18 +1450,18 @@ describe("Ext.layout.container.VBox", function () {
               it("should not show a scrollbar when the minHeight does not cause an overflow", function () {
                 makeFixedCt([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     flex: 1,
-                    minHeight: 300,
+                    minHeight: 300
                   },
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, false);
                 expectHeights([100, 300, 100, 100]);
@@ -1472,12 +1472,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     flex: 1,
-                    minHeight: 400,
+                    minHeight: 400
                   },
                   {
                     flex: 1,
-                    minHeight: 400,
-                  },
+                    minHeight: 400
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([400, 400]);
@@ -1506,12 +1506,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     minHeight: 200,
-                    html: makeShrinkWrapHtml(100),
+                    html: makeShrinkWrapHtml(100)
                   },
                   {
                     minHeight: 300,
-                    html: makeShrinkWrapHtml(50),
-                  },
+                    html: makeShrinkWrapHtml(50)
+                  }
                 ]);
                 expectScroll(false, false);
                 expectHeights([200, 300]);
@@ -1522,12 +1522,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     minHeight: 400,
-                    html: makeShrinkWrapHtml(100),
+                    html: makeShrinkWrapHtml(100)
                   },
                   {
                     minHeight: 500,
-                    html: makeShrinkWrapHtml(50),
-                  },
+                    html: makeShrinkWrapHtml(50)
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([400, 500]);
@@ -1540,11 +1540,11 @@ describe("Ext.layout.container.VBox", function () {
             it("should not show a scrollbar when the configured height does not overflow", function () {
               makeFixedCt([
                 {
-                  height: 300,
+                  height: 300
                 },
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(false, false);
               expectHeights([300, 300]);
@@ -1554,11 +1554,11 @@ describe("Ext.layout.container.VBox", function () {
             it("should show a scrollbar when the configured height overflows", function () {
               makeFixedCt([
                 {
-                  height: 700,
+                  height: 700
                 },
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(true, false);
               expectHeights([700, 0]);
@@ -1569,12 +1569,12 @@ describe("Ext.layout.container.VBox", function () {
               it("should not show a scrollbar when the minHeight does not cause an overflow", function () {
                 makeFixedCt([
                   {
-                    height: 300,
+                    height: 300
                   },
                   {
                     flex: 1,
-                    minHeight: 200,
-                  },
+                    minHeight: 200
+                  }
                 ]);
                 expectScroll(false, false);
                 expectHeights([300, 300]);
@@ -1584,12 +1584,12 @@ describe("Ext.layout.container.VBox", function () {
               it("should show a scrollbar when the minHeight causes an overflow", function () {
                 makeFixedCt([
                   {
-                    height: 300,
+                    height: 300
                   },
                   {
                     flex: 1,
-                    minHeight: 500,
-                  },
+                    minHeight: 500
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 500]);
@@ -1602,9 +1602,9 @@ describe("Ext.layout.container.VBox", function () {
             it("should not show a scrollbar when the total height does not overflow", function () {
               makeFixedCt([
                 {
-                  height: 300,
+                  height: 300
                 },
-                makeShrinkWrapItem(200),
+                makeShrinkWrapItem(200)
               ]);
               expectScroll(false, false);
               expectHeights([300, 200]);
@@ -1614,9 +1614,9 @@ describe("Ext.layout.container.VBox", function () {
             it("should show a scrollbar when the total height overflows", function () {
               makeFixedCt([
                 {
-                  height: 400,
+                  height: 400
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(true, false);
               expectHeights([400, 400]);
@@ -1627,12 +1627,12 @@ describe("Ext.layout.container.VBox", function () {
               it("should not show a scrollbar when the minHeight does not cause an overflow", function () {
                 makeFixedCt([
                   {
-                    height: 300,
+                    height: 300
                   },
                   {
                     html: makeShrinkWrapHtml(100),
-                    minHeight: 200,
-                  },
+                    minHeight: 200
+                  }
                 ]);
                 expectScroll(false, false);
                 expectHeights([300, 200]);
@@ -1642,12 +1642,12 @@ describe("Ext.layout.container.VBox", function () {
               it("should show a scrollbar when the minHeight causes an overflow", function () {
                 makeFixedCt([
                   {
-                    height: 300,
+                    height: 300
                   },
                   {
                     html: makeShrinkWrapHtml(200),
-                    minHeight: 500,
-                  },
+                    minHeight: 500
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 500]);
@@ -1661,8 +1661,8 @@ describe("Ext.layout.container.VBox", function () {
               makeFixedCt([
                 makeShrinkWrapItem(500),
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(false, false);
               expectHeights([500, 100]);
@@ -1673,8 +1673,8 @@ describe("Ext.layout.container.VBox", function () {
               makeFixedCt([
                 makeShrinkWrapItem(700),
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(true, false);
               expectHeights([700, 0]);
@@ -1686,12 +1686,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(100),
-                    minHeight: 200,
+                    minHeight: 200
                   },
                   {
                     flex: 1,
-                    minHeight: 300,
-                  },
+                    minHeight: 300
+                  }
                 ]);
                 expectScroll(false, false);
                 expectHeights([200, 400]);
@@ -1702,12 +1702,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(100),
-                    minHeight: 350,
+                    minHeight: 350
                   },
                   {
                     flex: 1,
-                    minHeight: 350,
-                  },
+                    minHeight: 350
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([350, 350]);
@@ -1726,11 +1726,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 100,
-                    width: big,
+                    width: big
                   },
                   {
-                    height: 100,
-                  },
+                    height: 100
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([100, 100]);
@@ -1741,11 +1741,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 400,
-                    width: big,
+                    width: big
                   },
                   {
-                    height: 400,
-                  },
+                    height: 400
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([400, 400]);
@@ -1759,11 +1759,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     flex: 1,
-                    width: big,
+                    width: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([290, 290]);
@@ -1776,11 +1776,11 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       flex: 1,
                       minHeight: 400,
-                      width: big,
+                      width: big
                     },
                     {
-                      flex: 1,
-                    },
+                      flex: 1
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([400, 180]);
@@ -1792,12 +1792,12 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       flex: 1,
                       minHeight: 350,
-                      width: big,
+                      width: big
                     },
                     {
                       flex: 1,
-                      minHeight: 350,
-                    },
+                      minHeight: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([350, 350]);
@@ -1811,11 +1811,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(200),
-                    width: big,
+                    width: big
                   },
                   {
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([200, 300]);
@@ -1826,11 +1826,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(400),
-                    width: big,
+                    width: big
                   },
                   {
-                    html: makeShrinkWrapHtml(400),
-                  },
+                    html: makeShrinkWrapHtml(400)
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([400, 400]);
@@ -1843,12 +1843,12 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       html: makeShrinkWrapHtml(100),
                       minHeight: 200,
-                      width: big,
+                      width: big
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minHeight: 300,
-                    },
+                      minHeight: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 300]);
@@ -1860,12 +1860,12 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       html: makeShrinkWrapHtml(100),
                       minHeight: 350,
-                      width: big,
+                      width: big
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minHeight: 350,
-                    },
+                      minHeight: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([350, 350]);
@@ -1879,11 +1879,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 150,
-                    width: big,
+                    width: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([150, 430]);
@@ -1894,11 +1894,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 800,
-                    width: big,
+                    width: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([800, 0]);
@@ -1910,12 +1910,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      width: big,
+                      width: big
                     },
                     {
                       flex: 1,
-                      minHeight: 200,
-                    },
+                      minHeight: 200
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 380]);
@@ -1926,12 +1926,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      width: big,
+                      width: big
                     },
                     {
                       flex: 1,
-                      minHeight: 500,
-                    },
+                      minHeight: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([200, 500]);
@@ -1945,9 +1945,9 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 150,
-                    width: big,
+                    width: big
                   },
-                  makeShrinkWrapItem(300),
+                  makeShrinkWrapItem(300)
                 ]);
                 expectScroll(false, true);
                 expectHeights([150, 300]);
@@ -1958,9 +1958,9 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 350,
-                    width: big,
+                    width: big
                   },
-                  makeShrinkWrapItem(350),
+                  makeShrinkWrapItem(350)
                 ]);
                 expectScroll(true, true);
                 expectHeights([350, 350]);
@@ -1972,12 +1972,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      width: big,
+                      width: big
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minHeight: 300,
-                    },
+                      minHeight: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 300]);
@@ -1988,12 +1988,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      width: big,
+                      width: big
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minHeight: 550,
-                    },
+                      minHeight: 550
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([200, 550]);
@@ -2007,11 +2007,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(300),
-                    width: big,
+                    width: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([300, 280]);
@@ -2022,11 +2022,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapItem(700),
-                    width: big,
+                    width: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([700, 0]);
@@ -2038,12 +2038,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(200),
-                      width: big,
+                      width: big
                     },
                     {
                       flex: 1,
-                      minHeight: 300,
-                    },
+                      minHeight: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 380]);
@@ -2054,12 +2054,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(400),
-                      width: big,
+                      width: big
                     },
                     {
                       flex: 1,
-                      minHeight: 500,
-                    },
+                      minHeight: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([400, 500]);
@@ -2075,11 +2075,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 100,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    height: 100,
-                  },
+                    height: 100
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([100, 100]);
@@ -2090,11 +2090,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 400,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    height: 400,
-                  },
+                    height: 400
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([400, 400]);
@@ -2108,11 +2108,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     flex: 1,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([290, 290]);
@@ -2125,11 +2125,11 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       flex: 1,
                       minHeight: 400,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
-                      flex: 1,
-                    },
+                      flex: 1
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([400, 180]);
@@ -2141,12 +2141,12 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       flex: 1,
                       minHeight: 350,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       flex: 1,
-                      minHeight: 350,
-                    },
+                      minHeight: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([350, 350]);
@@ -2159,11 +2159,11 @@ describe("Ext.layout.container.VBox", function () {
               it("should account for the horizontal scrollbar when there is no overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(200, big),
+                    html: makeShrinkWrapHtml(200, big)
                   },
                   {
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([200, 300]);
@@ -2173,11 +2173,11 @@ describe("Ext.layout.container.VBox", function () {
               it("should account for the horizontal scrollbar when there is overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(400, big),
+                    html: makeShrinkWrapHtml(400, big)
                   },
                   {
-                    html: makeShrinkWrapHtml(400),
-                  },
+                    html: makeShrinkWrapHtml(400)
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([400, 400]);
@@ -2189,12 +2189,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(100, big),
-                      minHeight: 200,
+                      minHeight: 200
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minHeight: 300,
-                    },
+                      minHeight: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 300]);
@@ -2205,12 +2205,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(100, big),
-                      minHeight: 350,
+                      minHeight: 350
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minHeight: 350,
-                    },
+                      minHeight: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([350, 350]);
@@ -2224,11 +2224,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 150,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([150, 430]);
@@ -2239,11 +2239,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 800,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([800, 0]);
@@ -2255,12 +2255,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       flex: 1,
-                      minHeight: 200,
-                    },
+                      minHeight: 200
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 380]);
@@ -2271,12 +2271,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       flex: 1,
-                      minHeight: 500,
-                    },
+                      minHeight: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([200, 500]);
@@ -2290,9 +2290,9 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 150,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
-                  makeShrinkWrapItem(300),
+                  makeShrinkWrapItem(300)
                 ]);
                 expectScroll(false, true);
                 expectHeights([150, 300]);
@@ -2303,9 +2303,9 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 350,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
-                  makeShrinkWrapItem(350),
+                  makeShrinkWrapItem(350)
                 ]);
                 expectScroll(true, true);
                 expectHeights([350, 350]);
@@ -2317,12 +2317,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minHeight: 300,
-                    },
+                      minHeight: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 300]);
@@ -2333,12 +2333,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       height: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minHeight: 550,
-                    },
+                      minHeight: 550
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([200, 550]);
@@ -2351,11 +2351,11 @@ describe("Ext.layout.container.VBox", function () {
               it("should account for the horizontal scrollbar when there is no overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(300, big),
+                    html: makeShrinkWrapHtml(300, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([300, 280]);
@@ -2365,11 +2365,11 @@ describe("Ext.layout.container.VBox", function () {
               it("should account for the horizontal scrollbar when there is overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapItem(700, big),
+                    html: makeShrinkWrapItem(700, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([700, 0]);
@@ -2380,12 +2380,12 @@ describe("Ext.layout.container.VBox", function () {
                 it("should account for the horizontal scrollbar when the minHeight does not cause overflow", function () {
                   makeFixedCt([
                     {
-                      html: makeShrinkWrapHtml(200, big),
+                      html: makeShrinkWrapHtml(200, big)
                     },
                     {
                       flex: 1,
-                      minHeight: 300,
-                    },
+                      minHeight: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectHeights([200, 380]);
@@ -2395,12 +2395,12 @@ describe("Ext.layout.container.VBox", function () {
                 it("should account for the horizontal scrollbar when the minHeight causes an overflow", function () {
                   makeFixedCt([
                     {
-                      html: makeShrinkWrapHtml(400, big),
+                      html: makeShrinkWrapHtml(400, big)
                     },
                     {
                       flex: 1,
-                      minHeight: 500,
-                    },
+                      minHeight: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([400, 500]);
@@ -2418,11 +2418,11 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 295,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    height: 295,
-                  },
+                    height: 295
+                  }
                 ]);
                 expectScroll(scrollTakesSize, true);
                 expectHeights([295, 295]);
@@ -2434,9 +2434,9 @@ describe("Ext.layout.container.VBox", function () {
               it("should account for the horizontal scrollbar", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(295, big),
+                    html: makeShrinkWrapHtml(295, big)
                   },
-                  makeShrinkWrapItem(295),
+                  makeShrinkWrapItem(295)
                 ]);
                 expectScroll(scrollTakesSize, true);
                 expectHeights([295, 295]);
@@ -2448,11 +2448,11 @@ describe("Ext.layout.container.VBox", function () {
               it("should account for the horizontal scrollbar", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(295, big),
+                    html: makeShrinkWrapHtml(295, big)
                   },
                   {
-                    height: 295,
-                  },
+                    height: 295
+                  }
                 ]);
                 expectScroll(scrollTakesSize, true);
                 expectHeights([295, 295]);
@@ -2469,15 +2469,15 @@ describe("Ext.layout.container.VBox", function () {
             [
               {
                 height: 100,
-                width: 900,
+                width: 900
               },
               {
-                height: 100,
-              },
+                height: 100
+              }
             ],
             {
-              x: false,
-            },
+              x: false
+            }
           );
           expectScroll(false, false);
         });
@@ -2488,12 +2488,12 @@ describe("Ext.layout.container.VBox", function () {
               makeFixedCt([
                 {
                   height: 100,
-                  width: 300,
+                  width: 300
                 },
                 {
                   height: 100,
-                  width: 400,
-                },
+                  width: 400
+                }
               ]);
               expectScroll(false, false);
               expectWidths([300, 400]);
@@ -2504,12 +2504,12 @@ describe("Ext.layout.container.VBox", function () {
               makeFixedCt([
                 {
                   height: 100,
-                  width: 700,
+                  width: 700
                 },
                 {
                   height: 200,
-                  width: 800,
-                },
+                  width: 800
+                }
               ]);
               expectScroll(false, true);
               expectWidths([700, 800]);
@@ -2522,14 +2522,14 @@ describe("Ext.layout.container.VBox", function () {
               makeFixedCt(
                 [
                   {
-                    height: 100,
+                    height: 100
                   },
                   {
-                    height: 100,
-                  },
+                    height: 100
+                  }
                 ],
                 true,
-                { align: "stretch" },
+                { align: "stretch" }
               );
               expectScroll(false, false);
               expectWidths([600, 600]);
@@ -2542,14 +2542,14 @@ describe("Ext.layout.container.VBox", function () {
                   [
                     {
                       height: 100,
-                      minWidth: 400,
+                      minWidth: 400
                     },
                     {
-                      height: 100,
-                    },
+                      height: 100
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(false, false);
                 expectWidths([600, 600]);
@@ -2561,14 +2561,14 @@ describe("Ext.layout.container.VBox", function () {
                   [
                     {
                       height: 100,
-                      minWidth: 800,
+                      minWidth: 800
                     },
                     {
-                      height: 100,
-                    },
+                      height: 100
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(false, true);
                 expectWidths([800, 600]);
@@ -2581,7 +2581,7 @@ describe("Ext.layout.container.VBox", function () {
             it("should not show a scrollbar when the largest width does not overflow", function () {
               makeFixedCt([
                 makeShrinkWrapItem(10, 300),
-                makeShrinkWrapItem(10, 200),
+                makeShrinkWrapItem(10, 200)
               ]);
               expectScroll(false, false);
               expectWidths([300, 200]);
@@ -2591,7 +2591,7 @@ describe("Ext.layout.container.VBox", function () {
             it("should show a scrollbar when the largest width overflows", function () {
               makeFixedCt([
                 makeShrinkWrapItem(10, 500),
-                makeShrinkWrapItem(10, 750),
+                makeShrinkWrapItem(10, 750)
               ]);
               expectScroll(false, true);
               expectWidths([500, 750]);
@@ -2604,13 +2604,13 @@ describe("Ext.layout.container.VBox", function () {
                   {
                     height: 100,
                     minWidth: 400,
-                    html: makeShrinkWrapHtml(10, 10),
+                    html: makeShrinkWrapHtml(10, 10)
                   },
                   {
                     height: 100,
                     minWidth: 500,
-                    html: makeShrinkWrapHtml(10, 10),
-                  },
+                    html: makeShrinkWrapHtml(10, 10)
+                  }
                 ]);
                 expectScroll(false, false);
                 expectWidths([400, 500]);
@@ -2622,13 +2622,13 @@ describe("Ext.layout.container.VBox", function () {
                   {
                     height: 100,
                     minWidth: 650,
-                    html: makeShrinkWrapHtml(10, 50),
+                    html: makeShrinkWrapHtml(10, 50)
                   },
                   {
                     height: 100,
                     minWidth: 750,
-                    html: makeShrinkWrapHtml(10, 50),
-                  },
+                    html: makeShrinkWrapHtml(10, 50)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([650, 750]);
@@ -2645,12 +2645,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 400,
-                    width: 300,
+                    width: 300
                   },
                   {
                     height: 400,
-                    width: 400,
-                  },
+                    width: 400
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 400]);
@@ -2661,12 +2661,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 400,
-                    width: 700,
+                    width: 700
                   },
                   {
                     height: 400,
-                    width: 800,
-                  },
+                    width: 800
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([700, 800]);
@@ -2679,14 +2679,14 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt(
                   [
                     {
-                      height: 400,
+                      height: 400
                     },
                     {
-                      height: 400,
-                    },
+                      height: 400
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(true, false);
                 expectWidths([580, 580]);
@@ -2699,14 +2699,14 @@ describe("Ext.layout.container.VBox", function () {
                     [
                       {
                         height: 400,
-                        minWidth: 400,
+                        minWidth: 400
                       },
                       {
-                        height: 400,
-                      },
+                        height: 400
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, false);
                   expectWidths([580, 580]);
@@ -2718,14 +2718,14 @@ describe("Ext.layout.container.VBox", function () {
                     [
                       {
                         height: 400,
-                        minWidth: 800,
+                        minWidth: 800
                       },
                       {
-                        height: 400,
-                      },
+                        height: 400
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, true);
                   expectWidths([800, 580]);
@@ -2739,12 +2739,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 400,
-                    html: makeShrinkWrapHtml(10, 300),
+                    html: makeShrinkWrapHtml(10, 300)
                   },
                   {
                     height: 400,
-                    html: makeShrinkWrapHtml(10, 200),
-                  },
+                    html: makeShrinkWrapHtml(10, 200)
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 200]);
@@ -2755,12 +2755,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     height: 400,
-                    html: makeShrinkWrapHtml(10, 500),
+                    html: makeShrinkWrapHtml(10, 500)
                   },
                   {
                     height: 400,
-                    html: makeShrinkWrapHtml(10, 750),
-                  },
+                    html: makeShrinkWrapHtml(10, 750)
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([500, 750]);
@@ -2773,13 +2773,13 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       height: 400,
                       minWidth: 400,
-                      html: makeShrinkWrapHtml(10, 10),
+                      html: makeShrinkWrapHtml(10, 10)
                     },
                     {
                       height: 400,
                       minWidth: 500,
-                      html: makeShrinkWrapHtml(10, 10),
-                    },
+                      html: makeShrinkWrapHtml(10, 10)
+                    }
                   ]);
                   expectScroll(true, false);
                   expectWidths([400, 500]);
@@ -2791,13 +2791,13 @@ describe("Ext.layout.container.VBox", function () {
                     {
                       height: 400,
                       minWidth: 650,
-                      html: makeShrinkWrapHtml(10, 50),
+                      html: makeShrinkWrapHtml(10, 50)
                     },
                     {
                       height: 400,
                       minWidth: 750,
-                      html: makeShrinkWrapHtml(10, 50),
-                    },
+                      html: makeShrinkWrapHtml(10, 50)
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([650, 750]);
@@ -2813,12 +2813,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(400),
-                    width: 300,
+                    width: 300
                   },
                   {
                     html: makeShrinkWrapHtml(400),
-                    width: 400,
-                  },
+                    width: 400
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 400]);
@@ -2829,12 +2829,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(400),
-                    width: 700,
+                    width: 700
                   },
                   {
                     html: makeShrinkWrapHtml(400),
-                    width: 800,
-                  },
+                    width: 800
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([700, 800]);
@@ -2847,14 +2847,14 @@ describe("Ext.layout.container.VBox", function () {
                 makeFixedCt(
                   [
                     {
-                      html: makeShrinkWrapHtml(400),
+                      html: makeShrinkWrapHtml(400)
                     },
                     {
-                      html: makeShrinkWrapHtml(400),
-                    },
+                      html: makeShrinkWrapHtml(400)
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(true, false);
                 expectWidths([580, 580]);
@@ -2867,14 +2867,14 @@ describe("Ext.layout.container.VBox", function () {
                     [
                       {
                         html: makeShrinkWrapHtml(400),
-                        minWidth: 400,
+                        minWidth: 400
                       },
                       {
-                        html: makeShrinkWrapHtml(400),
-                      },
+                        html: makeShrinkWrapHtml(400)
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, false);
                   expectWidths([580, 580]);
@@ -2886,14 +2886,14 @@ describe("Ext.layout.container.VBox", function () {
                     [
                       {
                         html: makeShrinkWrapHtml(400),
-                        minWidth: 800,
+                        minWidth: 800
                       },
                       {
-                        html: makeShrinkWrapHtml(400),
-                      },
+                        html: makeShrinkWrapHtml(400)
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, true);
                   expectWidths([800, 580]);
@@ -2906,7 +2906,7 @@ describe("Ext.layout.container.VBox", function () {
               it("should not show a scrollbar when the largest width does not overflow", function () {
                 makeFixedCt([
                   makeShrinkWrapItem(400, 300),
-                  makeShrinkWrapItem(400, 200),
+                  makeShrinkWrapItem(400, 200)
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 200]);
@@ -2916,7 +2916,7 @@ describe("Ext.layout.container.VBox", function () {
               it("should show a scrollbar when the largest width overflows", function () {
                 makeFixedCt([
                   makeShrinkWrapItem(400, 500),
-                  makeShrinkWrapItem(400, 750),
+                  makeShrinkWrapItem(400, 750)
                 ]);
                 expectScroll(true, true);
                 expectWidths([500, 750]);
@@ -2928,12 +2928,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       minWidth: 400,
-                      html: makeShrinkWrapHtml(400, 10),
+                      html: makeShrinkWrapHtml(400, 10)
                     },
                     {
                       minWidth: 500,
-                      html: makeShrinkWrapHtml(400, 10),
-                    },
+                      html: makeShrinkWrapHtml(400, 10)
+                    }
                   ]);
                   expectScroll(true, false);
                   expectWidths([400, 500]);
@@ -2944,12 +2944,12 @@ describe("Ext.layout.container.VBox", function () {
                   makeFixedCt([
                     {
                       minWidth: 650,
-                      html: makeShrinkWrapHtml(400, 50),
+                      html: makeShrinkWrapHtml(400, 50)
                     },
                     {
                       minWidth: 750,
-                      html: makeShrinkWrapHtml(400, 50),
-                    },
+                      html: makeShrinkWrapHtml(400, 50)
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([650, 750]);
@@ -2971,9 +2971,9 @@ describe("Ext.layout.container.VBox", function () {
             height: defaultSize,
             defaultType: "component",
             items: items,
-            scrollable: scrollable !== undefined ? scrollable : true,
+            scrollable: scrollable !== undefined ? scrollable : true
           },
-          layoutOptions,
+          layoutOptions
         );
       }
 
@@ -2985,12 +2985,12 @@ describe("Ext.layout.container.VBox", function () {
             makeShrinkWrapCt([
               {
                 height: 100,
-                width: 400,
+                width: 400
               },
               {
                 height: 100,
-                width: 500,
-              },
+                width: 500
+              }
             ]);
             expectScroll(false, false);
             expectWidths([400, 500]);
@@ -3003,12 +3003,12 @@ describe("Ext.layout.container.VBox", function () {
             makeShrinkWrapCt([
               {
                 height: 100,
-                html: makeShrinkWrapHtml(10, 250),
+                html: makeShrinkWrapHtml(10, 250)
               },
               {
                 height: 100,
-                html: makeShrinkWrapHtml(10, 300),
-              },
+                html: makeShrinkWrapHtml(10, 300)
+              }
             ]);
             expectScroll(false, false);
             expectWidths([250, 300]);
@@ -3021,13 +3021,13 @@ describe("Ext.layout.container.VBox", function () {
                 {
                   height: 100,
                   html: makeShrinkWrapHtml(10, 150),
-                  minWidth: 300,
+                  minWidth: 300
                 },
                 {
                   height: 100,
                   html: makeShrinkWrapHtml(10, 100),
-                  minWidth: 350,
-                },
+                  minWidth: 350
+                }
               ]);
               expectScroll(false, false);
               expectWidths([300, 350]);
@@ -3042,15 +3042,15 @@ describe("Ext.layout.container.VBox", function () {
               [
                 {
                   height: 100,
-                  html: makeShrinkWrapHtml(10, 200),
+                  html: makeShrinkWrapHtml(10, 200)
                 },
                 {
                   height: 100,
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ],
               true,
-              { align: "stretch" },
+              { align: "stretch" }
             );
             expectScroll(false, false);
             expectWidths([300, 300]);
@@ -3063,15 +3063,15 @@ describe("Ext.layout.container.VBox", function () {
                 [
                   {
                     height: 100,
-                    minWidth: 400,
+                    minWidth: 400
                   },
                   {
                     height: 100,
-                    minWidth: 550,
-                  },
+                    minWidth: 550
+                  }
                 ],
                 true,
-                { align: "stretch" },
+                { align: "stretch" }
               );
               expectScroll(false, false);
               expectWidths([550, 550]);
@@ -3090,11 +3090,11 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   height: big,
-                  width: 400,
+                  width: 400
                 },
                 {
-                  width: 500,
-                },
+                  width: 500
+                }
               ]);
               expectScroll(true, false);
               expectWidths([400, 500]);
@@ -3107,11 +3107,11 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   height: big,
-                  html: makeShrinkWrapHtml(10, 250),
+                  html: makeShrinkWrapHtml(10, 250)
                 },
                 {
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ]);
               expectScroll(true, false);
               expectWidths([250, 300]);
@@ -3124,12 +3124,12 @@ describe("Ext.layout.container.VBox", function () {
                   {
                     height: big,
                     html: makeShrinkWrapHtml(10, 150),
-                    minWidth: 300,
+                    minWidth: 300
                   },
                   {
                     html: makeShrinkWrapHtml(10, 100),
-                    minWidth: 350,
-                  },
+                    minWidth: 350
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 350]);
@@ -3143,12 +3143,12 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   height: big,
-                  html: makeShrinkWrapHtml(10, 200),
+                  html: makeShrinkWrapHtml(10, 200)
                 },
                 {
                   height: 100,
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ]);
               expectScroll(true, false);
               expectWidths([200, 300]);
@@ -3160,12 +3160,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeShrinkWrapCt([
                   {
                     height: big,
-                    minWidth: 400,
+                    minWidth: 400
                   },
                   {
                     height: 100,
-                    minWidth: 550,
-                  },
+                    minWidth: 550
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([400, 550]);
@@ -3180,11 +3180,11 @@ describe("Ext.layout.container.VBox", function () {
             it("should account for the scrollbar in the total width", function () {
               makeShrinkWrapCt([
                 {
-                  html: makeShrinkWrapHtml(big, 400),
+                  html: makeShrinkWrapHtml(big, 400)
                 },
                 {
-                  html: makeShrinkWrapHtml(10, 500),
-                },
+                  html: makeShrinkWrapHtml(10, 500)
+                }
               ]);
               expectScroll(true, false);
               expectWidths([400, 500]);
@@ -3196,11 +3196,11 @@ describe("Ext.layout.container.VBox", function () {
             it("should account for the scrollbar in the total width", function () {
               makeShrinkWrapCt([
                 {
-                  html: makeShrinkWrapHtml(big, 250),
+                  html: makeShrinkWrapHtml(big, 250)
                 },
                 {
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ]);
               expectScroll(true, false);
               expectWidths([250, 300]);
@@ -3212,12 +3212,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeShrinkWrapCt([
                   {
                     html: makeShrinkWrapHtml(big, 150),
-                    minWidth: 300,
+                    minWidth: 300
                   },
                   {
                     html: makeShrinkWrapHtml(10, 100),
-                    minWidth: 350,
-                  },
+                    minWidth: 350
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 350]);
@@ -3231,15 +3231,15 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt(
                 [
                   {
-                    html: makeShrinkWrapHtml(big, 200),
+                    html: makeShrinkWrapHtml(big, 200)
                   },
                   {
                     height: 100,
-                    html: makeShrinkWrapHtml(10, 300),
-                  },
+                    html: makeShrinkWrapHtml(10, 300)
+                  }
                 ],
                 true,
-                { align: "stretch" },
+                { align: "stretch" }
               );
               expectScroll(true, false);
               expectWidths([300, 300]);
@@ -3252,14 +3252,14 @@ describe("Ext.layout.container.VBox", function () {
                   [
                     {
                       html: makeShrinkWrapHtml(big, 10),
-                      minWidth: 400,
+                      minWidth: 400
                     },
                     {
-                      minWidth: 550,
-                    },
+                      minWidth: 550
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(true, false);
                 expectWidths([550, 550]);
@@ -3280,9 +3280,9 @@ describe("Ext.layout.container.VBox", function () {
             width: defaultSize,
             defaultType: "component",
             items: items,
-            scrollable: scrollable !== undefined ? scrollable : true,
+            scrollable: scrollable !== undefined ? scrollable : true
           },
-          layoutOptions,
+          layoutOptions
         );
       }
 
@@ -3295,11 +3295,11 @@ describe("Ext.layout.container.VBox", function () {
           it("should publish the total height", function () {
             makeShrinkWrapCt([
               {
-                height: 400,
+                height: 400
               },
               {
-                height: 400,
-              },
+                height: 400
+              }
             ]);
             expectScroll(false, false);
             expectHeights([400, 400]);
@@ -3311,7 +3311,7 @@ describe("Ext.layout.container.VBox", function () {
           it("should publish the total height", function () {
             makeShrinkWrapCt([
               makeShrinkWrapItem(400),
-              makeShrinkWrapItem(400),
+              makeShrinkWrapItem(400)
             ]);
             expectScroll(false, false);
             expectHeights([400, 400]);
@@ -3323,12 +3323,12 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   minHeight: 350,
-                  html: makeShrinkWrapHtml(200),
+                  html: makeShrinkWrapHtml(200)
                 },
                 {
                   minHeight: 400,
-                  html: makeShrinkWrapHtml(300),
-                },
+                  html: makeShrinkWrapHtml(300)
+                }
               ]);
               expectScroll(false, false);
               expectHeights([350, 400]);
@@ -3341,9 +3341,9 @@ describe("Ext.layout.container.VBox", function () {
           it("should publish the total height", function () {
             makeShrinkWrapCt([
               {
-                height: 400,
+                height: 400
               },
-              makeShrinkWrapItem(400),
+              makeShrinkWrapItem(400)
             ]);
             expectScroll(false, false);
             expectHeights([400, 400]);
@@ -3354,12 +3354,12 @@ describe("Ext.layout.container.VBox", function () {
             it("should publish the total height", function () {
               makeShrinkWrapCt([
                 {
-                  height: 350,
+                  height: 350
                 },
                 {
                   minHeight: 400,
-                  html: makeShrinkWrapHtml(300),
-                },
+                  html: makeShrinkWrapHtml(300)
+                }
               ]);
               expectScroll(false, false);
               expectHeights([350, 400]);
@@ -3378,11 +3378,11 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   height: 400,
-                  width: big,
+                  width: big
                 },
                 {
-                  height: 400,
-                },
+                  height: 400
+                }
               ]);
               expectScroll(false, true);
               expectHeights([400, 400]);
@@ -3395,9 +3395,9 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   html: makeShrinkWrapHtml(400),
-                  width: big,
+                  width: big
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectHeights([400, 400]);
@@ -3410,12 +3410,12 @@ describe("Ext.layout.container.VBox", function () {
                   {
                     minHeight: 350,
                     html: makeShrinkWrapHtml(200),
-                    width: big,
+                    width: big
                   },
                   {
                     minHeight: 400,
-                    html: makeShrinkWrapHtml(100),
-                  },
+                    html: makeShrinkWrapHtml(100)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([350, 400]);
@@ -3429,9 +3429,9 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   height: 400,
-                  width: big,
+                  width: big
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectHeights([400, 400]);
@@ -3443,12 +3443,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeShrinkWrapCt([
                   {
                     height: 350,
-                    width: big,
+                    width: big
                   },
                   {
                     minHeight: 400,
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([350, 400]);
@@ -3464,11 +3464,11 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   height: 400,
-                  html: makeShrinkWrapHtml(10, big),
+                  html: makeShrinkWrapHtml(10, big)
                 },
                 {
-                  height: 400,
-                },
+                  height: 400
+                }
               ]);
               expectScroll(false, true);
               expectHeights([400, 400]);
@@ -3480,9 +3480,9 @@ describe("Ext.layout.container.VBox", function () {
             it("should account for the scrollbar in the total height", function () {
               makeShrinkWrapCt([
                 {
-                  html: makeShrinkWrapHtml(400, big),
+                  html: makeShrinkWrapHtml(400, big)
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectHeights([400, 400]);
@@ -3494,12 +3494,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeShrinkWrapCt([
                   {
                     minHeight: 350,
-                    html: makeShrinkWrapHtml(200, big),
+                    html: makeShrinkWrapHtml(200, big)
                   },
                   {
                     minHeight: 400,
-                    html: makeShrinkWrapHtml(100),
-                  },
+                    html: makeShrinkWrapHtml(100)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([350, 400]);
@@ -3513,9 +3513,9 @@ describe("Ext.layout.container.VBox", function () {
               makeShrinkWrapCt([
                 {
                   height: 400,
-                  html: makeShrinkWrapHtml(10, big),
+                  html: makeShrinkWrapHtml(10, big)
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectHeights([400, 400]);
@@ -3527,12 +3527,12 @@ describe("Ext.layout.container.VBox", function () {
                 makeShrinkWrapCt([
                   {
                     height: 350,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
                     minHeight: 400,
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([350, 400]);
@@ -3563,13 +3563,13 @@ describe("Ext.layout.container.VBox", function () {
           items: [
             {
               height: 300,
-              width: 500,
+              width: 500
             },
             {
               height: 300,
-              width: 500,
-            },
-          ],
+              width: 500
+            }
+          ]
         });
         var scrollable = ct.getScrollable();
         scrollable.on("scrollend", endSpy);
@@ -3588,7 +3588,7 @@ describe("Ext.layout.container.VBox", function () {
           var pos = scrollable.getPosition();
           expect(pos).toEqual({
             x: 30,
-            y: 50,
+            y: 50
           });
         });
       });
@@ -3600,18 +3600,18 @@ describe("Ext.layout.container.VBox", function () {
           width: 400,
           scrollable: {
             y: false,
-            x: false,
+            x: false
           },
           items: [
             {
               height: 300,
-              width: 500,
+              width: 500
             },
             {
               height: 300,
-              width: 500,
-            },
-          ],
+              width: 500
+            }
+          ]
         });
         var scrollable = ct.getScrollable();
         scrollable.on("scrollend", endSpy);
@@ -3630,7 +3630,7 @@ describe("Ext.layout.container.VBox", function () {
           var pos = scrollable.getPosition();
           expect(pos).toEqual({
             x: 30,
-            y: 50,
+            y: 50
           });
         });
       });
@@ -3651,20 +3651,20 @@ describe("Ext.layout.container.VBox", function () {
             scrollbarSize = Ext.getScrollbarSize(),
             component = {
               xtype: "component",
-              style: "margin: 3px; background-color: green;",
+              style: "margin: 3px; background-color: green;"
             },
             childCt = {
               xtype: options.childXtype,
               autoScroll: true,
               layout: "vbox",
-              items: [component],
+              items: [component]
             },
             parentCt = {
               xtype: options.parentXtype,
               floating: true,
               shadow: false,
               layout: options.parentLayout,
-              items: [childCt],
+              items: [childCt]
             };
 
           component[overflowDim] = 500;
@@ -3701,56 +3701,56 @@ describe("Ext.layout.container.VBox", function () {
             expect(ct.getWidth()).toBe(100);
           });
         });
-      },
+      }
     );
   }
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "container",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "container",
-    parentLayout: "vbox",
+    parentLayout: "vbox"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "container",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "container",
-    parentLayout: "vbox",
+    parentLayout: "vbox"
   });
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "panel",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "panel",
-    parentLayout: "vbox",
+    parentLayout: "vbox"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "panel",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "panel",
-    parentLayout: "vbox",
+    parentLayout: "vbox"
   });
 
   describe("misc overflow", function () {
@@ -3760,7 +3760,7 @@ describe("Ext.layout.container.VBox", function () {
           autoScroll: true,
           layout: {
             align: "stretch",
-            type: "vbox",
+            type: "vbox"
           },
           renderTo: Ext.getBody(),
           width: 600,
@@ -3769,13 +3769,13 @@ describe("Ext.layout.container.VBox", function () {
             {
               xtype: "component",
               height: 200,
-              html: "Item",
+              html: "Item"
             },
             {
               xtype: "component",
-              html: "Component",
-            },
-          ],
+              html: "Component"
+            }
+          ]
         });
       }).not.toThrow();
     });

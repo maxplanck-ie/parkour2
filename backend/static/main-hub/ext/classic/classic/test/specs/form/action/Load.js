@@ -102,28 +102,28 @@ describe("Ext.form.action.Load", function () {
     it("should concatenate the Action's 'params' config (as an Object) with the BasicForm's 'baseParams' config", function () {
       createAction({
         params: { one: "1", two: "2" },
-        form: { baseParams: { three: "3", four: "4" } },
+        form: { baseParams: { three: "3", four: "4" } }
       });
       action.run();
       expect(ajaxRequestCfg.params).toEqual({
         one: "1",
         two: "2",
         three: "3",
-        four: "4",
+        four: "4"
       });
     });
 
     it("should concatenate the Action's 'params' config (as a String) with the BasicForm's 'baseParams' config", function () {
       createAction({
         params: "one=1&two=2",
-        form: { baseParams: { three: "3", four: "4" } },
+        form: { baseParams: { three: "3", four: "4" } }
       });
       action.run();
       expect(ajaxRequestCfg.params).toEqual({
         one: "1",
         two: "2",
         three: "3",
-        four: "4",
+        four: "4"
       });
     });
 
@@ -159,10 +159,10 @@ describe("Ext.form.action.Load", function () {
       createAction({
         form: Ext.apply(
           {
-            afterAction: jasmine.createSpy("afterAction"),
+            afterAction: jasmine.createSpy("afterAction")
           },
-          form,
-        ),
+          form
+        )
       });
       action.run();
     }
@@ -171,7 +171,7 @@ describe("Ext.form.action.Load", function () {
       run();
 
       expect(action.failureType).toEqual(
-        Ext.form.action.Action.CONNECT_FAILURE,
+        Ext.form.action.Action.CONNECT_FAILURE
       );
     });
 
@@ -209,10 +209,10 @@ describe("Ext.form.action.Load", function () {
       createAction({
         form: Ext.apply(
           {
-            afterAction: jasmine.createSpy("afterAction"),
+            afterAction: jasmine.createSpy("afterAction")
           },
-          form,
-        ),
+          form
+        )
       });
       action.run();
     }
@@ -266,10 +266,10 @@ describe("Ext.form.action.Load", function () {
             reader: reader,
             clearInvalid: jasmine.createSpy(),
             setValues: jasmine.createSpy(),
-            afterAction: jasmine.createSpy("afterAction"),
+            afterAction: jasmine.createSpy("afterAction")
           },
-          form,
-        ),
+          form
+        )
       });
       action.run();
     }
@@ -292,7 +292,7 @@ describe("Ext.form.action.Load", function () {
     it("should parse the responseText as JSON", function () {
       run({ responseText: '{"success":true,"data":{"from":"responseText"}}' });
       expect(action.form.setValues).toHaveBeenCalledWith({
-        from: "responseText",
+        from: "responseText"
       });
     });
 
@@ -301,8 +301,8 @@ describe("Ext.form.action.Load", function () {
       run(response, {
         read: jasmine.createSpy().andReturn({
           success: true,
-          records: [{ data: { from: "reader" } }],
-        }),
+          records: [{ data: { from: "reader" } }]
+        })
       });
       expect(action.form.reader.read).toHaveBeenCalledWith(response);
       expect(action.form.setValues).toHaveBeenCalledWith({ from: "reader" });
@@ -312,7 +312,7 @@ describe("Ext.form.action.Load", function () {
       run(
         { responseText: '{"success":true,"data":{"from":"responseText"}}' },
         undefined,
-        { destroying: true },
+        { destroying: true }
       );
 
       expect(action.form.afterAction).not.toHaveBeenCalled();
@@ -322,7 +322,7 @@ describe("Ext.form.action.Load", function () {
       run(
         { responseText: '{"success":true,"data":{"from":"responseText"}}' },
         undefined,
-        { destroyed: true },
+        { destroyed: true }
       );
 
       expect(action.form.afterAction).not.toHaveBeenCalled();

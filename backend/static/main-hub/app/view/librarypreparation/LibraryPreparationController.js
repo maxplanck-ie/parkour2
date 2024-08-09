@@ -7,28 +7,28 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       "#library-preparation-grid": {
         resize: "resize",
         itemcontextmenu: "showMenu",
         groupcontextmenu: "showGroupMenu",
         boxready: "addToolbarButtons",
-        edit: "editRecord",
+        edit: "editRecord"
       },
       "#search-field": {
-        change: "changeFilter",
+        change: "changeFilter"
       },
       "#download-benchtop-protocol-button": {
-        click: "downloadBenchtopProtocol",
+        click: "downloadBenchtopProtocol"
       },
       "#cancel-button": {
-        click: "cancel",
+        click: "cancel"
       },
       "#save-button": {
-        click: "save",
-      },
-    },
+        click: "save"
+      }
+    }
   },
 
   addToolbarButtons: function (grid) {
@@ -36,7 +36,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
       type: "button",
       itemId: "download-benchtop-protocol-button",
       text: "Download Benchtop Protocol",
-      iconCls: "fa fa-file-excel-o fa-lg",
+      iconCls: "fa fa-file-excel-o fa-lg"
     });
   },
 
@@ -54,9 +54,14 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
     ) {
       var nM = this._calculateNM(
         values.concentration_library,
-        values.mean_fragment_size,
+        values.mean_fragment_size
       );
       record.set("nM", nM);
+    }
+
+    // Set Smear Analysis
+    if (values.hasOwnProperty("smear_analysis")) {
+      record.set("smear_analysis", values.smear_analysis);
     }
 
     // Send the changes to the server
@@ -78,7 +83,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
       "concentration_sample",
       "comments_facility",
       "comments",
-      "qpcr_result",
+      "qpcr_result"
     ];
     var nMFormulaDataIndices = ["concentration_library", "mean_fragment_size"];
 
@@ -97,7 +102,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
             if (concentrationLibrary && meanFragmentSize) {
               var nM = self._calculateNM(
                 concentrationLibrary,
-                meanFragmentSize,
+                meanFragmentSize
               );
               item.set("nM", nM);
             }
@@ -126,7 +131,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
     if (ids.length === 0) {
       new Noty({
         text: "You did not select any samples.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -134,7 +139,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
     var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
     form.submit({
       url: "api/library_preparation/download_benchtop_protocol/",
-      params: { ids: Ext.JSON.encode(ids) },
+      params: { ids: Ext.JSON.encode(ids) }
     });
   },
 
@@ -143,5 +148,5 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
       (parseFloat(concentration) / (parseFloat(meanFragmentSize) * 650)) *
       1000000
     ).toFixed(2);
-  },
+  }
 });

@@ -10,6 +10,6 @@ Ext.define("Ext.fx.animation.PopOut", {
     // @hide
     out: true,
 
-    before: {},
-  },
+    before: {}
+  }
 });

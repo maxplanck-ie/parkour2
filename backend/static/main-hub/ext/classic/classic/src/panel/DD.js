@@ -100,5 +100,5 @@ Ext.define("Ext.panel.DD", {
         me.afterInvalidDrop(e, id);
       }
     }
-  },
+  }
 });

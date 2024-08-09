@@ -111,7 +111,7 @@ Ext.define("Ext.dataview.element.Container", {
       mouseover: "onItemMouseOver",
       mouseout: "onItemMouseOut",
       delegate: "> div",
-      scope: this,
+      scope: this
     });
   },
 
@@ -131,7 +131,7 @@ Ext.define("Ext.dataview.element.Container", {
     Ext.get(target).on({
       touchmove: "onItemTouchMove",
       scope: me,
-      single: true,
+      single: true
     });
 
     me.fireEvent("itemtouchstart", me, Ext.get(target), index, e);
@@ -144,7 +144,7 @@ Ext.define("Ext.dataview.element.Container", {
 
     Ext.get(target).un({
       touchmove: "onItemTouchMove",
-      scope: me,
+      scope: me
     });
 
     me.fireEvent("itemtouchend", me, Ext.get(target), index, e);
@@ -235,7 +235,7 @@ Ext.define("Ext.dataview.element.Container", {
       wrapElement;
 
     wrapElement = Ext.Element.create(
-      this.getItemElementConfig(index, data, store),
+      this.getItemElementConfig(index, data, store)
     );
 
     if (!ln || index == ln) {
@@ -256,7 +256,7 @@ Ext.define("Ext.dataview.element.Container", {
 
     return {
       cls: cls,
-      html: this.renderItemTpl(index, data, store),
+      html: this.renderItemTpl(index, data, store)
     };
   },
 
@@ -358,5 +358,5 @@ Ext.define("Ext.dataview.element.Container", {
       Ext.get(elements[i]).destroy();
     }
     this.callParent();
-  },
+  }
 });

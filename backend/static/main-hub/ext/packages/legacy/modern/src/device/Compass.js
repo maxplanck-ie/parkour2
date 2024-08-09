@@ -44,5 +44,5 @@ Ext.define("Ext.device.Compass", {
     }
 
     return Ext.create("Ext.device.compass.Simulator");
-  },
+  }
 });

@@ -3,7 +3,7 @@ describe("Ext.chart.AbstractChart.classic", function () {
 
   var Model = Ext.define(null, {
     extend: "Ext.data.Model",
-    fields: ["label", "value"],
+    fields: ["label", "value"]
   });
 
   function makeStore(rows) {
@@ -13,13 +13,13 @@ describe("Ext.chart.AbstractChart.classic", function () {
     for (i = 1; i <= rows; ++i) {
       data.push({
         label: "Item" + i,
-        value: i,
+        value: i
       });
     }
 
     store = new Ext.data.Store({
       model: Model,
-      data: data,
+      data: data
     });
   }
 
@@ -36,8 +36,8 @@ describe("Ext.chart.AbstractChart.classic", function () {
         store: store,
         series: {
           type: "pie",
-          angleField: "value",
-        },
+          angleField: "value"
+        }
       });
 
       expect(chart.getInteractions().length).toEqual(0);
@@ -58,13 +58,13 @@ describe("Ext.chart.AbstractChart.classic", function () {
         renderTo: document.body,
         series: {
           type: "pie",
-          angleField: "value",
+          angleField: "value"
         },
         listeners: {
           afterLayout: function () {
             bodySize = this.body.getSize();
-          },
-        },
+          }
+        }
       }).destroy();
 
       expect(bodySize).toBeDefined();

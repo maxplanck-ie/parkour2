@@ -49,5 +49,5 @@ Ext.define("Ext.device.Push", {
     }
 
     return Ext.create("Ext.device.push.Abstract");
-  },
+  }
 });

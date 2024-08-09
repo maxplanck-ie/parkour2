@@ -35,12 +35,12 @@ describe("Ext.grid.filters.filter.Date", function () {
             { name: "phil", dob: Ext.Date.parse("1992-12-10T10:30:01", "c") },
             { name: "don", dob: Ext.Date.parse("1992-12-09T09:30:01", "c") },
             { name: "alex", dob: Ext.Date.parse("1992-12-08T08:30:01", "c") },
-            { name: "ben", dob: Ext.Date.parse("1992-12-08T07:30:01", "c") },
+            { name: "ben", dob: Ext.Date.parse("1992-12-08T07:30:01", "c") }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     grid = new Ext.grid.Panel(
@@ -56,19 +56,19 @@ describe("Ext.grid.filters.filter.Date", function () {
               filter: Ext.apply(
                 {
                   type: "date",
-                  updateBuffer: 0,
+                  updateBuffer: 0
                 },
-                listCfg,
-              ),
-            },
+                listCfg
+              )
+            }
           ],
           plugins: "gridfilters",
           height: 200,
           width: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     plugin = grid.filters;
@@ -83,7 +83,7 @@ describe("Ext.grid.filters.filter.Date", function () {
     datepicker.setValue(new Date(val));
     jasmine.fireMouseEvent(
       datepicker.eventEl.down(".x-datepicker-selected div").dom,
-      "click",
+      "click"
     );
   }
 
@@ -183,7 +183,7 @@ describe("Ext.grid.filters.filter.Date", function () {
       columnFilter.setValue({ eq: parse("26/09/2009", "d/m/Y") });
 
       expect(columnFilter.filter.eq.getValue()).toEqual(
-        parse("26/09/2009", "d/m/Y"),
+        parse("26/09/2009", "d/m/Y")
       );
     });
   });
@@ -195,19 +195,19 @@ describe("Ext.grid.filters.filter.Date", function () {
       columnFilter.createMenu();
       var d = new Date(2010, 0, 1);
       columnFilter.setValue({
-        lt: d,
+        lt: d
       });
       expect(store.getFilters().first().serialize().value).toBe("2010/01/01");
     });
 
     it("should only compare the date part when using the before filter", function () {
       createGrid(null, null, {
-        remoteFilter: false,
+        remoteFilter: false
       });
       columnFilter.createMenu();
       var d = new Date(1992, 11, 9);
       columnFilter.setValue({
-        lt: d,
+        lt: d
       });
       expect(store.getCount()).toBe(2);
       expect(store.getAt(0).get("name")).toBe("alex");
@@ -216,12 +216,12 @@ describe("Ext.grid.filters.filter.Date", function () {
 
     it("should only compare the date part when using the after filter", function () {
       createGrid(null, null, {
-        remoteFilter: false,
+        remoteFilter: false
       });
       columnFilter.createMenu();
       var d = new Date(1992, 11, 9);
       columnFilter.setValue({
-        gt: d,
+        gt: d
       });
       expect(store.getCount()).toBe(3);
       expect(store.getAt(0).get("name")).toBe("evan");
@@ -231,12 +231,12 @@ describe("Ext.grid.filters.filter.Date", function () {
 
     it("should only compare the date part when using the on filter", function () {
       createGrid(null, null, {
-        remoteFilter: false,
+        remoteFilter: false
       });
       columnFilter.createMenu();
       var d = new Date(1992, 11, 9);
       columnFilter.setValue({
-        eq: d,
+        eq: d
       });
       expect(store.getCount()).toBe(1);
       expect(store.getAt(0).get("name")).toBe("don");
@@ -290,9 +290,9 @@ describe("Ext.grid.filters.filter.Date", function () {
           type: "date",
           dataIndex: "dob",
           value: {
-            eq: new Date(),
-          },
-        }),
+            eq: new Date()
+          }
+        })
       );
 
       store.clearFilter();
@@ -305,8 +305,8 @@ describe("Ext.grid.filters.filter.Date", function () {
       tearDown();
       createGrid({
         value: {
-          eq: Ext.Date.parse("1992-12-12T12:30:01", "c"),
-        },
+          eq: Ext.Date.parse("1992-12-12T12:30:01", "c")
+        }
       });
 
       showMenu();
@@ -317,13 +317,13 @@ describe("Ext.grid.filters.filter.Date", function () {
           id: "x-gridfilter-dob-eq",
           property: "dob",
           operator: "eq",
-          value: Ext.Date.parse("1972-12-12T12:30:01", "c"),
-        }),
+          value: Ext.Date.parse("1972-12-12T12:30:01", "c")
+        })
       );
 
       expect(grid.store.getFilters().length).toBe(1);
       expect(grid.store.getFilters().getAt(0).getValue()).toEqual(
-        Ext.Date.parse("1972-12-12T12:30:01", "c"),
+        Ext.Date.parse("1972-12-12T12:30:01", "c")
       );
     });
   });
@@ -337,7 +337,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(function () {
           plugin.addFilter({
             type: "string",
-            value: "ben germane",
+            value: "ben germane"
           });
         }).not.toThrow();
       });
@@ -351,8 +351,8 @@ describe("Ext.grid.filters.filter.Date", function () {
 
         createGrid({
           value: {
-            eq: date,
-          },
+            eq: date
+          }
         });
 
         basePrefix = columnFilter.getBaseIdPrefix() + "-eq";
@@ -369,8 +369,8 @@ describe("Ext.grid.filters.filter.Date", function () {
           type: "date",
           dataIndex: "dob",
           value: {
-            eq: date2,
-          },
+            eq: date2
+          }
         });
 
         filter = filters.getAt(0);
@@ -391,15 +391,15 @@ describe("Ext.grid.filters.filter.Date", function () {
           createGrid({
             active: state,
             value: {
-              eq: new Date(),
-            },
+              eq: new Date()
+            }
           });
 
           spyOn(columnFilter, "addStoreFilter");
 
           showMenu();
           expect(columnFilter.addStoreFilter).not.toHaveBeenCalled();
-        },
+        }
       );
     }
 
@@ -413,7 +413,7 @@ describe("Ext.grid.filters.filter.Date", function () {
       showMenu();
 
       columnFilter.setValue({
-        lt: new Date(),
+        lt: new Date()
       });
 
       expect(rootMenuItem.checked).toBe(true);
@@ -444,10 +444,10 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(before.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(2);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-gt",
+          columnFilter.getBaseIdPrefix() + "-gt"
         );
         expect(filters.getAt(1).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-lt",
+          columnFilter.getBaseIdPrefix() + "-lt"
         );
       }
 
@@ -465,7 +465,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(on.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(1);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-eq",
+          columnFilter.getBaseIdPrefix() + "-eq"
         );
       }
 
@@ -481,7 +481,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(after.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(1);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-gt",
+          columnFilter.getBaseIdPrefix() + "-gt"
         );
       });
 
@@ -500,7 +500,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(before.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(1);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-lt",
+          columnFilter.getBaseIdPrefix() + "-lt"
         );
       });
 
@@ -523,10 +523,10 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(before.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(2);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-lt",
+          columnFilter.getBaseIdPrefix() + "-lt"
         );
         expect(filters.getAt(1).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-gt",
+          columnFilter.getBaseIdPrefix() + "-gt"
         );
       }
 
@@ -544,7 +544,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(on.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(1);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-eq",
+          columnFilter.getBaseIdPrefix() + "-eq"
         );
       }
 
@@ -560,7 +560,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(before.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(1);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-lt",
+          columnFilter.getBaseIdPrefix() + "-lt"
         );
       });
 
@@ -579,7 +579,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(after.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(1);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-gt",
+          columnFilter.getBaseIdPrefix() + "-gt"
         );
       });
 
@@ -609,8 +609,7 @@ describe("Ext.grid.filters.filter.Date", function () {
           expect(on.up("menuitem").checked).toBe(false);
           expect(filters.length).toBe(1);
           expect(filters.getAt(0).getId()).toBe(
-            columnFilter.getBaseIdPrefix() +
-              (which === "After" ? "-gt" : "-lt"),
+            columnFilter.getBaseIdPrefix() + (which === "After" ? "-gt" : "-lt")
           );
         });
       }
@@ -633,7 +632,7 @@ describe("Ext.grid.filters.filter.Date", function () {
           expect(on.up("menuitem").checked).toBe(true);
           expect(filters.length).toBe(1);
           expect(filters.getAt(0).getId()).toBe(
-            columnFilter.getBaseIdPrefix() + "-eq",
+            columnFilter.getBaseIdPrefix() + "-eq"
           );
         });
       }
@@ -654,7 +653,7 @@ describe("Ext.grid.filters.filter.Date", function () {
         expect(on.up("menuitem").checked).toBe(true);
         expect(filters.length).toBe(1);
         expect(filters.getAt(0).getId()).toBe(
-          columnFilter.getBaseIdPrefix() + "-eq",
+          columnFilter.getBaseIdPrefix() + "-eq"
         );
       });
 
@@ -679,7 +678,7 @@ describe("Ext.grid.filters.filter.Date", function () {
 
         it("should " + maybe + " check the Filters menu item", function () {
           createGrid({
-            active: active,
+            active: active
           });
 
           showMenu();
@@ -692,31 +691,31 @@ describe("Ext.grid.filters.filter.Date", function () {
             active: active,
             value: {
               lt: Ext.Date.parse("1992-12-12T12:30:01", "c"),
-              gt: Ext.Date.parse("1992-12-08T07:30:01", "c"),
-            },
+              gt: Ext.Date.parse("1992-12-08T07:30:01", "c")
+            }
           });
 
           showPicker("Before");
 
           expect(
-            (headerNode.textContent || headerNode.innerText).replace(/\s/g, ""),
+            (headerNode.textContent || headerNode.innerText).replace(/\s/g, "")
           ).toBe("December1992");
           expect(
             (selectedNode.textContent || selectedNode.innerText).replace(
               /\s/g,
-              "",
-            ),
+              ""
+            )
           ).toBe("12");
 
           showPicker("After");
           expect(
-            (headerNode.textContent || headerNode.innerText).replace(/\s/g, ""),
+            (headerNode.textContent || headerNode.innerText).replace(/\s/g, "")
           ).toBe("December1992");
           expect(
             (selectedNode.textContent || selectedNode.innerText).replace(
               /\s/g,
-              "",
-            ),
+              ""
+            )
           ).toBe("8");
         });
 
@@ -724,20 +723,20 @@ describe("Ext.grid.filters.filter.Date", function () {
           createGrid({
             active: active,
             value: {
-              eq: Ext.Date.parse("1972-01-22T12:30:01", "c"),
-            },
+              eq: Ext.Date.parse("1972-01-22T12:30:01", "c")
+            }
           });
 
           showPicker("On");
 
           expect(
-            (headerNode.textContent || headerNode.innerText).replace(/\s/g, ""),
+            (headerNode.textContent || headerNode.innerText).replace(/\s/g, "")
           ).toBe("January1972");
           expect(
             (selectedNode.textContent || selectedNode.innerText).replace(
               /\s/g,
-              "",
-            ),
+              ""
+            )
           ).toBe("22");
         });
 
@@ -747,20 +746,20 @@ describe("Ext.grid.filters.filter.Date", function () {
 
             createGrid(
               {
-                active: active,
+                active: active
               },
               {
                 listeners: {
                   filterchange: function () {
                     ++called;
-                  },
-                },
-              },
+                  }
+                }
+              }
             );
 
             showPicker("On");
             columnFilter.setValue({
-              eq: Ext.Date.parse("1972-01-22T12:30:01", "c"),
+              eq: Ext.Date.parse("1972-01-22T12:30:01", "c")
             });
 
             expect(called).toBe(1);

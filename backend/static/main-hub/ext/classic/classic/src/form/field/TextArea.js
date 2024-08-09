@@ -62,8 +62,8 @@ Ext.define("Ext.form.field.TextArea", {
     '<tpl if="value">{[Ext.util.Format.htmlEncode(values.value)]}</tpl>',
     "</textarea>",
     {
-      disableFormats: true,
-    },
+      disableFormats: true
+    }
   ],
 
   /**
@@ -107,7 +107,7 @@ Ext.define("Ext.form.field.TextArea", {
   extraFieldBodyCls: Ext.baseCSSPrefix + "form-textarea-body",
 
   ariaAttributes: {
-    "aria-multiline": true,
+    "aria-multiline": true
   },
 
   //<debug>
@@ -115,13 +115,13 @@ Ext.define("Ext.form.field.TextArea", {
     this.callParent([config]);
     if (this.cols) {
       Ext.log.warn(
-        'Ext.form.field.TextArea "cols" config was removed in Ext 5.0. Please specify a "width" or use a layout instead.',
+        'Ext.form.field.TextArea "cols" config was removed in Ext 5.0. Please specify a "width" or use a layout instead.'
       );
     }
 
     if (this.rows) {
       Ext.log.warn(
-        'Ext.form.field.TextArea "rows" config was removed in Ext 5.0. Please specify a "height" or use a layout instead.',
+        'Ext.form.field.TextArea "rows" config was removed in Ext 5.0. Please specify a "height" or use a layout instead.'
       );
     }
   },
@@ -292,5 +292,5 @@ Ext.define("Ext.form.field.TextArea", {
     }
 
     this.callParent();
-  },
+  }
 });

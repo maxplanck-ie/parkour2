@@ -49,7 +49,7 @@ Ext.define("Ext.menu.Menu", {
     "Ext.menu.CheckItem",
     "Ext.menu.Item",
     "Ext.menu.Manager",
-    "Ext.menu.Separator",
+    "Ext.menu.Separator"
   ],
 
   mixins: ["Ext.util.FocusableContainer"],
@@ -236,7 +236,7 @@ Ext.define("Ext.menu.Menu", {
   layout: {
     type: "vbox",
     align: "stretchmax",
-    overflowHandler: "Scroller",
+    overflowHandler: "Scroller"
   },
 
   initComponent: function () {
@@ -248,7 +248,7 @@ Ext.define("Ext.menu.Menu", {
         element: "el",
         click: me.onClick,
         mouseover: me.onMouseOver,
-        scope: me,
+        scope: me
       };
 
     if (Ext.supports.Touch) {
@@ -257,7 +257,7 @@ Ext.define("Ext.menu.Menu", {
     me.on(listeners);
     me.on({
       beforeshow: me.onBeforeShow,
-      scope: me,
+      scope: me
     });
 
     // Menu classes
@@ -269,7 +269,7 @@ Ext.define("Ext.menu.Menu", {
     // Menu body classes
     bodyCls.push(
       Ext.baseCSSPrefix + "menu-body",
-      Ext.dom.Element.unselectableCls,
+      Ext.dom.Element.unselectableCls
     );
     me.bodyCls = bodyCls.join(" ");
 
@@ -289,7 +289,7 @@ Ext.define("Ext.menu.Menu", {
     // Configure items prior to render with special classes to align
     // non MenuItem child components with their MenuItem siblings.
     Ext.override(me.getLayout(), {
-      configureItem: me.configureItem,
+      configureItem: me.configureItem
     });
 
     me.itemOverTask = new Ext.util.DelayedTask(me.handleItemOver, me);
@@ -355,7 +355,7 @@ Ext.define("Ext.menu.Menu", {
         {
           key: Ext.event.Event.ESC,
           handler: me.onEscapeKey,
-          scope: me,
+          scope: me
         },
         // Handle character shortcuts
         {
@@ -364,8 +364,8 @@ Ext.define("Ext.menu.Menu", {
           scope: me,
           shift: false,
           ctrl: false,
-          alt: false,
-        },
+          alt: false
+        }
       ]);
     } else {
       // Even when FocusableContainer key event processing is disabled,
@@ -373,7 +373,7 @@ Ext.define("Ext.menu.Menu", {
       me.escapeKeyNav = new Ext.util.KeyNav(me.el, {
         eventName: "keydown",
         scope: me,
-        esc: me.onEscapeKey,
+        esc: me.onEscapeKey
       });
     }
 
@@ -384,7 +384,7 @@ Ext.define("Ext.menu.Menu", {
       me.iconSepEl = me.body.insertFirst({
         role: "presentation",
         cls: iconSeparatorCls + " " + iconSeparatorCls + "-" + me.ui,
-        html: "&#160;",
+        html: "&#160;"
       });
     }
 
@@ -400,14 +400,14 @@ Ext.define("Ext.menu.Menu", {
       me.el.on({
         scope: me,
         click: me.preventClick,
-        translate: false,
+        translate: false
       });
     }
 
     me.mouseMonitor = me.el.monitorMouseLeave(
       me.mouseLeaveDelay,
       me.onMouseLeave,
-      me,
+      me
     );
   },
 
@@ -558,7 +558,7 @@ Ext.define("Ext.menu.Menu", {
           canActivate: false,
           hideOnClick: false,
           plain: true,
-          text: cmp,
+          text: cmp
         });
   },
 
@@ -922,6 +922,6 @@ Ext.define("Ext.menu.Menu", {
       delete me.hierarchicallyHidden;
       me.onInheritedAdd(comp, instanced);
       me.containerOnAdded(comp, instanced);
-    },
-  },
+    }
+  }
 });

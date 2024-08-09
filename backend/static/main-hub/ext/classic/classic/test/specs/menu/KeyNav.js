@@ -12,7 +12,7 @@ describe("Ext.menu.KeyNav", function () {
           renderTo: Ext.getBody(),
           items: [
             {
-              text: "Menu One",
+              text: "Menu One"
             },
             {
               text: "Menu Two",
@@ -21,27 +21,27 @@ describe("Ext.menu.KeyNav", function () {
               menu: {
                 items: [
                   {
-                    text: "Next Level",
+                    text: "Next Level"
                   },
                   {
-                    text: "Next Level",
+                    text: "Next Level"
                   },
                   {
-                    text: "Next Level",
-                  },
-                ],
-              },
+                    text: "Next Level"
+                  }
+                ]
+              }
             },
             {
-              text: "Menu Three",
+              text: "Menu Three"
             },
             {
-              text: "Menu Four",
-            },
-          ],
+              text: "Menu Four"
+            }
+          ]
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -67,12 +67,12 @@ describe("Ext.menu.KeyNav", function () {
           items: [
             {
               text: "menu item one",
-              href: "#ledzep",
+              href: "#ledzep"
             },
             {
-              text: "menu item two",
-            },
-          ],
+              text: "menu item two"
+            }
+          ]
         });
 
         menuItem = menu.items.first();
@@ -84,7 +84,7 @@ describe("Ext.menu.KeyNav", function () {
             return location.hash === "#ledzep";
           },
           "timed out waiting for hash to change",
-          1000,
+          1000
         );
 
         runs(function () {
@@ -103,13 +103,13 @@ describe("Ext.menu.KeyNav", function () {
               listeners: {
                 click: function (cmp, e) {
                   e.preventDefault();
-                },
-              },
+                }
+              }
             },
             {
-              text: "menu item two",
-            },
-          ],
+              text: "menu item two"
+            }
+          ]
         });
 
         menuItem = menu.items.first();
@@ -121,7 +121,7 @@ describe("Ext.menu.KeyNav", function () {
             return location.hash === hashValue;
           },
           "timed out waiting for hash to change",
-          1000,
+          1000
         );
 
         runs(function () {

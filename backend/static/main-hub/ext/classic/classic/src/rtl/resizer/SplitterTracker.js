@@ -37,5 +37,5 @@ Ext.define("Ext.rtl.resizer.SplitterTracker", {
       offset[0] = -offset[0];
     }
     return offset;
-  },
+  }
 });

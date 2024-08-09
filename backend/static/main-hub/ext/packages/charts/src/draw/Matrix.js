@@ -131,7 +131,7 @@ Ext.define(
         x0p,
         y0p,
         x1p,
-        y1p,
+        y1p
       ) {
         var dx = x1 - x0,
           dy = y1 - y0,
@@ -216,7 +216,7 @@ Ext.define(
           return mat;
         }
         return new this(mat);
-      },
+      }
     },
 
     /**
@@ -448,7 +448,7 @@ Ext.define(
           -sin,
           cos,
           rcx - cos * rcx + rcy * sin,
-          rcy - cos * rcy - rcx * sin,
+          rcy - cos * rcy - rcx * sin
         );
       } else {
         return me.append(
@@ -457,7 +457,7 @@ Ext.define(
           -sin,
           cos,
           rcx - cos * rcx + rcy * sin,
-          rcy - cos * rcy - rcx * sin,
+          rcy - cos * rcy - rcx * sin
         );
       }
     },
@@ -652,7 +652,7 @@ Ext.define(
       }
       return [
         x * elements[0] + y * elements[2] + elements[4],
-        x * elements[1] + y * elements[3] + elements[5],
+        x * elements[1] + y * elements[3] + elements[5]
       ];
     },
 
@@ -685,7 +685,7 @@ Ext.define(
         h0 -= radius;
         scales = [
           Math.sqrt(elements[0] * elements[0] + elements[2] * elements[2]),
-          Math.sqrt(elements[1] * elements[1] + elements[3] * elements[3]),
+          Math.sqrt(elements[1] * elements[1] + elements[3] * elements[3])
         ];
         w =
           Math.abs(w0 * xx) + Math.abs(h0 * yx) + Math.abs(scales[0] * radius);
@@ -793,7 +793,7 @@ Ext.define(
         elements[4],
         elements[1],
         elements[3],
-        elements[5],
+        elements[5]
       ];
     },
 
@@ -818,7 +818,7 @@ Ext.define(
         me.get(1, 0),
         me.get(1, 1),
         me.get(2, 0),
-        me.get(2, 1),
+        me.get(2, 1)
       ].join(",");
     },
 
@@ -934,14 +934,14 @@ Ext.define(
         yy = el[3],
         out = {
           translateX: el[4],
-          translateY: el[5],
+          translateY: el[5]
         };
       out.rotate = out.rotation = Math.atan2(xy, xx);
       out.scaleX = xx / Math.cos(out.rotate);
       out.scaleY = (yy / xx) * out.scaleX;
 
       return out;
-    },
+    }
   },
   function () {
     function registerName(properties, name, i) {
@@ -951,7 +951,7 @@ Ext.define(
         },
         set: function (val) {
           this.elements[i] = val;
-        },
+        }
       };
     }
 
@@ -981,5 +981,5 @@ Ext.define(
      * @return {Ext.draw.Matrix} this
      */
     this.prototype.multiply = this.prototype.appendMatrix;
-  },
+  }
 );

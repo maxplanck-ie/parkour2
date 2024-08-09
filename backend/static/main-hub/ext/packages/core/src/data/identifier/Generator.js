@@ -142,7 +142,7 @@ Ext.define(
     alias: "data.identifier.default", // this is used by Factoryable
 
     factoryConfig: {
-      defaultType: "sequential", // this is not a suitable type to create
+      defaultType: "sequential" // this is not a suitable type to create
     },
 
     /**
@@ -156,7 +156,7 @@ Ext.define(
        * @cfg {String} id
        * The id for this generator.
        */
-      id: null,
+      id: null
     },
 
     /**
@@ -203,9 +203,9 @@ Ext.define(
          * @private
          * @static
          */
-        all: {},
-      },
-    },
+        all: {}
+      }
+    }
   },
   function () {
     var Generator = this,
@@ -227,5 +227,5 @@ Ext.define(
 
       return existing || factory(config);
     };
-  },
+  }
 );

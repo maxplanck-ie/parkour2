@@ -82,12 +82,12 @@ jasmine.bindOriginal_ = function (base, name) {
 jasmine.setTimeout = jasmine.bindOriginal_(jasmine.getGlobal(), "setTimeout");
 jasmine.clearTimeout = jasmine.bindOriginal_(
   jasmine.getGlobal(),
-  "clearTimeout",
+  "clearTimeout"
 );
 jasmine.setInterval = jasmine.bindOriginal_(jasmine.getGlobal(), "setInterval");
 jasmine.clearInterval = jasmine.bindOriginal_(
   jasmine.getGlobal(),
-  "clearInterval",
+  "clearInterval"
 );
 
 jasmine.MessageResult = function (values) {
@@ -448,7 +448,7 @@ jasmine.isSpy = function (putativeSpy) {
 jasmine.createSpyObj = function (baseName, methodNames) {
   if (!jasmine.isArray_(methodNames) || methodNames.length === 0) {
     throw new Error(
-      "createSpyObj requires a non-empty array of method names to create spies for",
+      "createSpyObj requires a non-empty array of method names to create spies for"
     );
   }
   var obj = {};
@@ -566,7 +566,7 @@ var waitsFor = function (
   latchFunction,
   optional_timeoutMessage,
   optional_timeout,
-  optional_timeout_increment,
+  optional_timeout_increment
 ) {
   jasmine
     .getEnv()
@@ -712,7 +712,7 @@ jasmine.createSpy = function (name) {
       object: this,
       scope: this,
       args: args,
-      result: result,
+      result: result
     });
 
     return result;
@@ -799,14 +799,14 @@ jasmine.showDebugPrompt = function (callback) {
         "border-radius: 5px;",
         "border:1px solid #777;",
         "text-align:center;",
-        "box-shadow: 5px 5px 5px #888;",
-      ].join(""),
+        "box-shadow: 5px 5px 5px #888;"
+      ].join("")
     );
 
     div.innerHTML = [
       "<p>Open the developer tools to debug and press ok.</p>",
       '<button id="sencha-debug-button">OK</button>',
-      "<p></p>",
+      "<p></p>"
     ].join("");
 
     document.body.appendChild(div);
@@ -1076,7 +1076,7 @@ jasmine.Env.prototype.describe = function (description, specDefinitions) {
     this,
     description,
     specDefinitions,
-    this.currentSuite,
+    this.currentSuite
   );
 
   var parentSuite = this.currentSuite;
@@ -1128,7 +1128,7 @@ jasmine.Env.prototype.afterEach = function (afterEachFunction) {
 
 jasmine.Env.prototype.xdescribe = function (desc, specDefinitions) {
   return {
-    execute: function () {},
+    execute: function () {}
   };
 };
 
@@ -1147,7 +1147,7 @@ jasmine.Env.prototype.it = function (description, func) {
 jasmine.Env.prototype.xit = function (desc, func) {
   return {
     id: this.nextSpecId(),
-    runs: function () {},
+    runs: function () {}
   };
 };
 
@@ -1155,7 +1155,7 @@ jasmine.Env.prototype.compareRegExps_ = function (
   a,
   b,
   mismatchKeys,
-  mismatchValues,
+  mismatchValues
 ) {
   if (a.source != b.source)
     mismatchValues.push(
@@ -1163,35 +1163,35 @@ jasmine.Env.prototype.compareRegExps_ = function (
         b.source +
         "/ is not equal to the pattern /" +
         a.source +
-        "/",
+        "/"
     );
 
   if (a.ignoreCase != b.ignoreCase)
     mismatchValues.push(
       "expected modifier i was" +
         (b.ignoreCase ? " " : " not ") +
-        "set and does not equal the origin modifier",
+        "set and does not equal the origin modifier"
     );
 
   if (a.global != b.global)
     mismatchValues.push(
       "expected modifier g was" +
         (b.global ? " " : " not ") +
-        "set and does not equal the origin modifier",
+        "set and does not equal the origin modifier"
     );
 
   if (a.multiline != b.multiline)
     mismatchValues.push(
       "expected modifier m was" +
         (b.multiline ? " " : " not ") +
-        "set and does not equal the origin modifier",
+        "set and does not equal the origin modifier"
     );
 
   if (a.sticky != b.sticky)
     mismatchValues.push(
       "expected modifier y was" +
         (b.sticky ? " " : " not ") +
-        "set and does not equal the origin modifier",
+        "set and does not equal the origin modifier"
     );
 
   return mismatchValues.length === 0;
@@ -1201,7 +1201,7 @@ jasmine.Env.prototype.compareObjects_ = function (
   a,
   b,
   mismatchKeys,
-  mismatchValues,
+  mismatchValues
 ) {
   if (
     a.__Jasmine_been_here_before__ === b &&
@@ -1220,14 +1220,14 @@ jasmine.Env.prototype.compareObjects_ = function (
   for (var property in b) {
     if (!hasKey(a, property) && hasKey(b, property)) {
       mismatchKeys.push(
-        "expected has key '" + property + "', but missing from actual.",
+        "expected has key '" + property + "', but missing from actual."
       );
     }
   }
   for (property in a) {
     if (!hasKey(b, property) && hasKey(a, property)) {
       mismatchKeys.push(
-        "expected missing key '" + property + "', but present in actual.",
+        "expected missing key '" + property + "', but present in actual."
       );
     }
   }
@@ -1245,7 +1245,7 @@ jasmine.Env.prototype.compareObjects_ = function (
           (a[property]
             ? jasmine.util.htmlEscape(a[property].toString())
             : a[property]) +
-          "' in actual.",
+          "' in actual."
       );
     }
   }
@@ -1434,7 +1434,7 @@ jasmine.Env.prototype.specFor = function (object, specForFn) {
 
 jasmine.Env.prototype.xspecFor = function (
   object,
-  specForFn,
+  specForFn
 ) {}; /** No-op base class for Jasmine reporters.
  *
  * @constructor
@@ -1549,7 +1549,7 @@ jasmine.JsApiReporter.prototype.summarize_ = function (suiteOrSpec) {
     id: suiteOrSpec.id,
     name: suiteOrSpec.description,
     type: isSuite ? "suite" : "spec",
-    children: [],
+    children: []
   };
 
   if (isSuite) {
@@ -1581,7 +1581,7 @@ jasmine.JsApiReporter.prototype.reportSuiteResults = function (suite) {};
 jasmine.JsApiReporter.prototype.reportSpecResults = function (spec) {
   this.results_[spec.id] = {
     messages: spec.results().getItems(),
-    result: spec.results().failedCount > 0 ? "failed" : "passed",
+    result: spec.results().failedCount > 0 ? "failed" : "passed"
   };
 };
 
@@ -1614,14 +1614,14 @@ jasmine.JsApiReporter.prototype.summarizeResult_ = function (result) {
         stack:
           resultMessage.passed && !resultMessage.passed()
             ? resultMessage.trace.stack
-            : jasmine.undefined,
-      },
+            : jasmine.undefined
+      }
     });
   }
 
   return {
     result: result.result,
-    messages: summaryMessages,
+    messages: summaryMessages
   };
 };
 
@@ -1642,7 +1642,7 @@ jasmine.Matchers = function (env, actual, spec, opt_isNot) {
 // todo: @deprecated as of Jasmine 0.11, remove soon [xw]
 jasmine.Matchers.pp = function (str) {
   throw new Error(
-    "jasmine.Matchers.pp() is no longer supported, please use jasmine.pp() instead!",
+    "jasmine.Matchers.pp() is no longer supported, please use jasmine.pp() instead!"
   );
 };
 
@@ -1650,10 +1650,10 @@ jasmine.Matchers.pp = function (str) {
 jasmine.Matchers.prototype.report = function (
   result,
   failing_message,
-  details,
+  details
 ) {
   throw new Error(
-    "As of jasmine 0.11, custom matchers must be implemented differently -- please see jasmine docs",
+    "As of jasmine 0.11, custom matchers must be implemented differently -- please see jasmine docs"
   );
 };
 
@@ -1663,7 +1663,7 @@ jasmine.Matchers.wrapInto_ = function (prototype, matchersClass) {
     var orig = prototype[methodName];
     matchersClass.prototype[methodName] = jasmine.Matchers.matcherFn_(
       methodName,
-      orig,
+      orig
     );
   }
 };
@@ -1709,7 +1709,7 @@ jasmine.Matchers.matcherFn_ = function (matcherName, matcherFunction) {
       passed: result,
       expected: matcherArgs.length > 1 ? matcherArgs : matcherArgs[0],
       actual: this.actual,
-      message: message,
+      message: message
     });
     this.spec.addMatcherResult(expectationResult);
     return jasmine.undefined;
@@ -1822,7 +1822,7 @@ jasmine.Matchers.prototype.toBeFalsy = function () {
 jasmine.Matchers.prototype.toHaveBeenCalled = function () {
   if (arguments.length > 0) {
     throw new Error(
-      "toHaveBeenCalled does not take arguments, use toHaveBeenCalledWith",
+      "toHaveBeenCalled does not take arguments, use toHaveBeenCalledWith"
     );
   }
 
@@ -1833,7 +1833,7 @@ jasmine.Matchers.prototype.toHaveBeenCalled = function () {
   this.message = function () {
     return [
       "Expected spy " + this.actual.identity + " to have been called.",
-      "Expected spy " + this.actual.identity + " not to have been called.",
+      "Expected spy " + this.actual.identity + " not to have been called."
     ];
   };
 
@@ -1861,7 +1861,7 @@ jasmine.Matchers.prototype.wasNotCalled = function () {
   this.message = function () {
     return [
       "Expected spy " + this.actual.identity + " to not have been called.",
-      "Expected spy " + this.actual.identity + " to have been called.",
+      "Expected spy " + this.actual.identity + " to have been called."
     ];
   };
 
@@ -1927,7 +1927,7 @@ jasmine.Matchers.prototype.wasNotCalledWith = function () {
         " but it was",
       "Expected spy to have been called with " +
         jasmine.pp(expectedArgs) +
-        " but it was",
+        " but it was"
     ];
   };
 
@@ -1996,7 +1996,7 @@ jasmine.Matchers.prototype.toThrow = function (expected) {
       expected === jasmine.undefined ||
       this.env.equals_(
         exception.message || exception,
-        expected.message || expected,
+        expected.message || expected
       );
   }
 
@@ -2008,14 +2008,14 @@ jasmine.Matchers.prototype.toThrow = function (expected) {
       (expected === jasmine.undefined ||
         !this.env.equals_(
           exception.message || exception,
-          expected.message || expected,
+          expected.message || expected
         ))
     ) {
       return [
         "Expected function " + not + "to throw",
         expected ? expected.message || expected : "an exception",
         ", but it threw",
-        exception.message || exception,
+        exception.message || exception
       ].join(" ");
     } else {
       return "Expected function to throw an exception.";
@@ -2060,7 +2060,7 @@ jasmine.Matchers.ObjectContaining = function (sample) {
 jasmine.Matchers.ObjectContaining.prototype.jasmineMatches = function (
   other,
   mismatchKeys,
-  mismatchValues,
+  mismatchValues
 ) {
   mismatchKeys = mismatchKeys || [];
   mismatchValues = mismatchValues || [];
@@ -2074,14 +2074,14 @@ jasmine.Matchers.ObjectContaining.prototype.jasmineMatches = function (
   for (var property in this.sample) {
     if (!hasKey(other, property) && hasKey(this.sample, property)) {
       mismatchKeys.push(
-        "expected has key '" + property + "', but missing from actual.",
+        "expected has key '" + property + "', but missing from actual."
       );
     } else if (
       !env.equals_(
         this.sample[property],
         other[property],
         mismatchKeys,
-        mismatchValues,
+        mismatchValues
       )
     ) {
       mismatchValues.push(
@@ -2095,7 +2095,7 @@ jasmine.Matchers.ObjectContaining.prototype.jasmineMatches = function (
           (this.sample[property]
             ? jasmine.util.htmlEscape(this.sample[property].toString())
             : this.sample[property]) +
-          "' in actual.",
+          "' in actual."
       );
     }
   }
@@ -2132,8 +2132,8 @@ jasmine.Matchers.prototype.toThrow = function (expected) {
       },
       warn: function (s) {
         return s;
-      },
-    },
+      }
+    }
   };
 
   // This is to allow setting breakpoints for console messages
@@ -2151,7 +2151,7 @@ jasmine.Matchers.prototype.toThrow = function (expected) {
       expected === jasmine.undefined ||
       this.env.contains_(
         exception.message || exception,
-        expected.message || expected,
+        expected.message || expected
       );
   }
 
@@ -2165,14 +2165,14 @@ jasmine.Matchers.prototype.toThrow = function (expected) {
       (expected === jasmine.undefined ||
         !this.env.contains_(
           exception.message || exception,
-          expected.message || expected,
+          expected.message || expected
         ))
     ) {
       return [
         "Expected function " + not + "to throw",
         expected ? expected.message || expected : " an exception",
         ", but it threw",
-        exception.message || exception,
+        exception.message || exception
       ].join(" ");
     } else {
       return "Expected function to throw an exception.";
@@ -2204,8 +2204,8 @@ jasmine.Matchers.prototype.toRaiseExtError = function (expected) {
       },
       warn: function (s) {
         return s;
-      },
-    },
+      }
+    }
   };
 
   // This is to allow setting breakpoints for console messages
@@ -2241,7 +2241,7 @@ jasmine.Matchers.prototype.toRaiseExtError = function (expected) {
         "Expected function " + not + "to throw",
         expected ? expected.message || expected : " an exception",
         ", but it threw",
-        extError.toString(),
+        extError.toString()
       ].join(" ");
     } else {
       return "Expected function to throw an exception.";
@@ -2267,7 +2267,7 @@ jasmine.Matchers.prototype.hasHTML = function (expected) {
       return match1.toLowerCase().replace(/=\w+/g, function (match2) {
         return '="' + match2.split("=")[1] + '"';
       });
-    },
+    }
   );
 
   me.message = function () {
@@ -2276,7 +2276,7 @@ jasmine.Matchers.prototype.hasHTML = function (expected) {
         expected +
         " but was " +
         normalizedHTML,
-      "Expected dom element innerHTML to not be " + expected + ".",
+      "Expected dom element innerHTML to not be " + expected + "."
     ];
   };
 
@@ -2347,7 +2347,7 @@ jasmine.Matchers.prototype.toBePositionedAt = function (x, y) {
       },
       cls: function (el) {
         return el.dom.className;
-      },
+      }
     },
     browsers = [
       "IE6",
@@ -2368,7 +2368,7 @@ jasmine.Matchers.prototype.toBePositionedAt = function (x, y) {
       "Safari3",
       "Safari4",
       "Safari5",
-      "Safari",
+      "Safari"
     ],
     blen = browsers.length,
     b,
@@ -2436,7 +2436,7 @@ jasmine.Matchers.prototype.toBePositionedAt = function (x, y) {
             if (Ext.isArray(expected)) {
               if (actual < expected[0] || actual > expected[1]) {
                 expect(pfx + "=" + actual).toBe(
-                  "in [" + expected[0] + "," + expected[1] + "]",
+                  "in [" + expected[0] + "," + expected[1] + "]"
                 );
               }
             } else if (actual != expected) {
@@ -2560,7 +2560,7 @@ jasmine.MultiReporter.prototype.addReporter = function (reporter) {
     "reportSuiteResults",
     "reportSpecStarting",
     "reportSpecResults",
-    "log",
+    "log"
   ];
   for (var i = 0; i < functionNames.length; i++) {
     var functionName = functionNames[i];
@@ -2698,7 +2698,7 @@ jasmine.PrettyPrinter.prototype.format = function (value) {
       this.emitScalar(
         "<circular reference: " +
           (jasmine.isArray_(value) ? "Array" : "Object") +
-          ">",
+          ">"
       );
     } else if (jasmine.isArray_(value) || typeof value == "object") {
       value.__Jasmine_been_here_before__ = true;
@@ -2725,7 +2725,7 @@ jasmine.PrettyPrinter.prototype.iterateObject = function (obj, fn) {
       obj.__lookupGetter__
         ? obj.__lookupGetter__(property) !== jasmine.undefined &&
             obj.__lookupGetter__(property) !== null
-        : false,
+        : false
     );
   }
 };
@@ -2823,7 +2823,7 @@ jasmine.StringPrettyPrinter.prototype.append = function (value) {
           }
         }
         this.emitScalar(
-          className + "#" + (value.id || (value.getId && value.getId())),
+          className + "#" + (value.id || (value.getId && value.getId()))
         );
         return;
       }
@@ -3304,7 +3304,7 @@ jasmine.Spec.prototype.waitsFor = function (
   latchFunction,
   optional_timeoutMessage,
   optional_timeout,
-  optional_timeout_increment,
+  optional_timeout_increment
 ) {
   var latchFunction_ = null;
   var optional_timeoutMessage_ = null;
@@ -3341,7 +3341,7 @@ jasmine.Spec.prototype.waitsFor = function (
     latchFunction_,
     optional_timeoutMessage_,
     optional_timeout_increment_,
-    this,
+    this
   );
   this.addToQueue(waitsForFunc);
   return this;
@@ -3351,7 +3351,7 @@ jasmine.Spec.prototype.fail = function (e) {
   var expectationResult = new jasmine.ExpectationResult({
     passed: false,
     message: e ? jasmine.util.formatException(e) : "Exception",
-    trace: { stack: e.stack },
+    trace: { stack: e.stack }
   });
   this.results_.addResult(expectationResult);
 };
@@ -3432,7 +3432,7 @@ jasmine.Spec.prototype.addBeforesAndAftersToQueue = function () {
   for (i = 0; i < this.afterCallbacks.length; i++) {
     this.queue.add(
       new jasmine.Block(this.env, this.afterCallbacks[i], this),
-      true,
+      true
     );
   }
   for (suite = this.suite; suite; suite = suite.parentSuite) {
@@ -3452,7 +3452,7 @@ jasmine.Spec.prototype.explodes = function () {
 jasmine.Spec.prototype.spyOn = function (
   obj,
   methodName,
-  ignoreMethodDoesntExist,
+  ignoreMethodDoesntExist
 ) {
   if (obj == jasmine.undefined) {
     throw "spyOn could not find an object to spy upon for " + methodName + "()";
@@ -3553,7 +3553,7 @@ jasmine.Spec.prototype.removeAllSpies = function () {
       Ext.log({
         dump: leaks,
         level: "error",
-        msg: "COMPONENTS EXIST BEFORE TEST SUITE START",
+        msg: "COMPONENTS EXIST BEFORE TEST SUITE START"
       });
     }
 
@@ -3587,7 +3587,7 @@ jasmine.Spec.prototype.removeAllSpies = function () {
   proto.fail = function (e) {
     var expectationResult = new jasmine.ExpectationResult({
       passed: false,
-      message: e ? jasmine.util.formatException(e) : "Exception",
+      message: e ? jasmine.util.formatException(e) : "Exception"
     });
     // Modification start
     if (e instanceof Error) {
@@ -3664,12 +3664,12 @@ jasmine.Spec.prototype.removeAllSpies = function () {
       Ext.log({
         dump: badNodes,
         level: "error",
-        msg: "CLEAN UP YOUR DOM LEAKS IN SPEC: " + this.getFullName(),
+        msg: "CLEAN UP YOUR DOM LEAKS IN SPEC: " + this.getFullName()
       });
 
       this.fail(
         "document.body contains childNodes after spec execution --> " +
-          this.getFullName(),
+          this.getFullName()
       );
     }
   };
@@ -3703,11 +3703,11 @@ jasmine.Spec.prototype.removeAllSpies = function () {
       Ext.log({
         dump: leaks,
         level: "error",
-        msg: "CLEAN UP YOUR COMPONENT LEAKS IN SPEC: " + this.getFullName(),
+        msg: "CLEAN UP YOUR COMPONENT LEAKS IN SPEC: " + this.getFullName()
       });
 
       this.fail(
-        "Ext.ComponentMgr reports undestroyed components after spec execution",
+        "Ext.ComponentMgr reports undestroyed components after spec execution"
       );
     }
   };
@@ -3765,7 +3765,7 @@ jasmine.Spec.prototype.removeAllSpies = function () {
 
     if (ids.length) {
       this.fail(
-        "Orphan Ext.dom.Element(s) detected: '" + ids.join("', '") + "'",
+        "Orphan Ext.dom.Element(s) detected: '" + ids.join("', '") + "'"
       );
     }
   };
@@ -3890,7 +3890,7 @@ function waitsForSpy(spy, timeoutMessage, timeout) {
       return !!spy.callCount;
     },
     timeoutMessage,
-    timeout,
+    timeout
   );
 }
 
@@ -3999,7 +3999,7 @@ jasmine.Suite.prototype.execute = function (onComplete) {
     this.fileName = jasmine.getCurrentScript();
     this.id = jasmine.hashString(
       this.getFullName(),
-      parentSuite ? parentSuite.id : 0,
+      parentSuite ? parentSuite.id : 0
     );
   };
 
@@ -4190,7 +4190,7 @@ jasmine.WaitsForBlock = function (
   latchFunction,
   message,
   timeout_increment,
-  spec,
+  spec
 ) {
   this.timeout = timeout || env.defaultTimeoutInterval;
   this.latchFunction = latchFunction;
@@ -4207,7 +4207,7 @@ jasmine.WaitsForBlock.TIMEOUT_INCREMENT = 10;
 jasmine.WaitsForBlock.prototype.execute = function (onComplete) {
   if (jasmine.VERBOSE) {
     this.env.reporter.log(
-      ">> Jasmine waiting for " + (this.message || "something to happen"),
+      ">> Jasmine waiting for " + (this.message || "something to happen")
     );
   }
   var latchFunctionResult;
@@ -4215,7 +4215,7 @@ jasmine.WaitsForBlock.prototype.execute = function (onComplete) {
     latchFunctionResult = this.latchFunction.call(
       this.spec,
       this.timeout,
-      this.totalTimeSpentWaitingForLatch,
+      this.totalTimeSpentWaitingForLatch
     );
   } catch (e) {
     this.spec.fail(e);
@@ -4233,7 +4233,7 @@ jasmine.WaitsForBlock.prototype.execute = function (onComplete) {
       (this.message || "something to happen");
     this.spec.fail({
       name: "timeout",
-      message: message,
+      message: message
     });
 
     this.abort = true;
@@ -4289,7 +4289,7 @@ jasmine.FakeTimer.prototype.tick = function (millis) {
 
 jasmine.FakeTimer.prototype.runFunctionsWithinRange = function (
   oldMillis,
-  nowMillis,
+  nowMillis
 ) {
   var scheduledFunc;
   var funcsToRun = [];
@@ -4319,7 +4319,7 @@ jasmine.FakeTimer.prototype.runFunctionsWithinRange = function (
             funcToRun.timeoutKey,
             funcToRun.funcToCall,
             funcToRun.millis,
-            true,
+            true
           );
         }
       } catch (e) {}
@@ -4332,14 +4332,14 @@ jasmine.FakeTimer.prototype.scheduleFunction = function (
   timeoutKey,
   funcToCall,
   millis,
-  recurring,
+  recurring
 ) {
   this.scheduledFunctions[timeoutKey] = {
     runAtMillis: this.nowMillis + millis,
     funcToCall: funcToCall,
     recurring: recurring,
     timeoutKey: timeoutKey,
-    millis: millis,
+    millis: millis
   };
 };
 
@@ -4362,7 +4362,7 @@ jasmine.Clock = {
   runFunctionsWithinRange: function (oldMillis, nowMillis) {
     jasmine.Clock.defaultFakeTimer.runFunctionsWithinRange(
       oldMillis,
-      nowMillis,
+      nowMillis
     );
   },
 
@@ -4371,7 +4371,7 @@ jasmine.Clock = {
       timeoutKey,
       funcToCall,
       millis,
-      recurring,
+      recurring
     );
   },
 
@@ -4397,13 +4397,13 @@ jasmine.Clock = {
     setTimeout: jasmine.getGlobal().setTimeout,
     clearTimeout: jasmine.getGlobal().clearTimeout,
     setInterval: jasmine.getGlobal().setInterval,
-    clearInterval: jasmine.getGlobal().clearInterval,
+    clearInterval: jasmine.getGlobal().clearInterval
   },
 
   assertInstalled: function () {
     if (!jasmine.Clock.isInstalled()) {
       throw new Error(
-        "Mock clock is not installed, use jasmine.Clock.useMock()",
+        "Mock clock is not installed, use jasmine.Clock.useMock()"
       );
     }
   },
@@ -4412,7 +4412,7 @@ jasmine.Clock = {
     return jasmine.Clock.installed == jasmine.Clock.defaultFakeTimer;
   },
 
-  installed: null,
+  installed: null
 };
 jasmine.Clock.installed = jasmine.Clock.real;
 
@@ -4456,7 +4456,7 @@ jasmine.mouseToPointerMap = {
   mouseover: "pointerover",
   mouseout: "pointerout",
   mouseenter: "pointerenter",
-  mouseleave: "pointerleave",
+  mouseleave: "pointerleave"
 };
 
 jasmine.pointerEventsMap =
@@ -4470,7 +4470,7 @@ jasmine.pointerEventsMap =
         pointerout: "MSPointerOut",
         // IE10 does not have pointer events for enter/leave
         pointerenter: "mouseenter",
-        pointerleave: "mouseleave",
+        pointerleave: "mouseleave"
       }
     : {};
 
@@ -4485,7 +4485,7 @@ jasmine.fireMouseEvent = function (
   button,
   shiftKey,
   ctrlKey,
-  altKey,
+  altKey
 ) {
   var e, doc, docEl, body, ret, pointerEventType;
 
@@ -4516,7 +4516,7 @@ jasmine.fireMouseEvent = function (
       button: button || 1,
       shiftKey: !!shiftKey,
       ctrlKey: !!ctrlKey,
-      altKey: !!altKey,
+      altKey: !!altKey
     });
     if (type === "click") {
       target.fireEvent("onmousedown", e);
@@ -4530,7 +4530,7 @@ jasmine.fireMouseEvent = function (
         button,
         shiftKey,
         ctrlKey,
-        altKey,
+        altKey
       );
       target.fireEvent("onmousedown", e);
       target.fireEvent("onmouseup", e);
@@ -4557,7 +4557,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
         jasmine.doFireMouseEvent(
           target,
@@ -4567,7 +4567,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
         jasmine.firePointerEvent(
           target,
@@ -4578,7 +4578,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
         jasmine.doFireMouseEvent(
           target,
@@ -4588,7 +4588,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
       } else if (type === "dblclick") {
         // click (which triggers its own (pointerdown/mousdown/pointerup/mouseup
@@ -4602,7 +4602,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
         jasmine.firePointerEvent(
           target,
@@ -4613,7 +4613,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
         jasmine.doFireMouseEvent(
           target,
@@ -4623,7 +4623,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
         jasmine.firePointerEvent(
           target,
@@ -4634,7 +4634,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
         jasmine.doFireMouseEvent(
           target,
@@ -4644,7 +4644,7 @@ jasmine.fireMouseEvent = function (
           button,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
       } else {
         // plain old mouse event (mousedown, mousemove, etc.) - fire the corresponding
@@ -4664,7 +4664,7 @@ jasmine.fireMouseEvent = function (
         button,
         shiftKey,
         ctrlKey,
-        altKey,
+        altKey
       );
       jasmine.fireMouseEvent(
         target,
@@ -4674,7 +4674,7 @@ jasmine.fireMouseEvent = function (
         button,
         shiftKey,
         ctrlKey,
-        altKey,
+        altKey
       );
     } else if (type === "dblclick") {
       // click (which includes its own mousedown/mouseup sequence) followed by a second
@@ -4687,7 +4687,7 @@ jasmine.fireMouseEvent = function (
         button,
         shiftKey,
         ctrlKey,
-        altKey,
+        altKey
       );
       jasmine.fireMouseEvent(
         target,
@@ -4697,7 +4697,7 @@ jasmine.fireMouseEvent = function (
         button,
         shiftKey,
         ctrlKey,
-        altKey,
+        altKey
       );
       jasmine.fireMouseEvent(
         target,
@@ -4707,7 +4707,7 @@ jasmine.fireMouseEvent = function (
         button,
         shiftKey,
         ctrlKey,
-        altKey,
+        altKey
       );
     }
 
@@ -4719,7 +4719,7 @@ jasmine.fireMouseEvent = function (
       button,
       shiftKey,
       ctrlKey,
-      altKey,
+      altKey
     );
   }
 
@@ -4734,7 +4734,7 @@ jasmine.doFireMouseEvent = function (
   button,
   shiftKey,
   ctrlKey,
-  altKey,
+  altKey
 ) {
   var doc = target.ownerDocument || document,
     e = doc.createEvent("MouseEvents");
@@ -4754,7 +4754,7 @@ jasmine.doFireMouseEvent = function (
     !!shiftKey,
     false,
     button || 0,
-    null,
+    null
   );
   return target.dispatchEvent(e);
 };
@@ -4781,7 +4781,7 @@ jasmine.firePointerEvent = function (
   button,
   shiftKey,
   ctrlKey,
-  altKey,
+  altKey
 ) {
   var doc = document,
     e = doc.createEvent("MouseEvents"),
@@ -4809,7 +4809,7 @@ jasmine.firePointerEvent = function (
     !!shiftKey, // shiftKey
     false, // metaKey
     button || 0, // button
-    null, // relatedTarget
+    null // relatedTarget
   );
   e.pointerId = pointerId || 1;
   e.pointerType = "mouse";
@@ -4838,8 +4838,8 @@ jasmine.createTouchList = function (touchList, target) {
         touchCfg.pageX,
         touchCfg.pageY,
         touchCfg.screenX || touchCfg.pageX, // use pageX/Y as the default for screenXY
-        touchCfg.screenY || touchCfg.pageY,
-      ),
+        touchCfg.screenY || touchCfg.pageY
+      )
     );
   }
 
@@ -4869,7 +4869,7 @@ jasmine.fireTouchEvent = function (
   type,
   touches,
   changedTouches,
-  targetTouches,
+  targetTouches
 ) {
   var doc = document,
     // Couldn't figure out how to set touches, changedTouches targetTouches on a "real"
@@ -4879,7 +4879,7 @@ jasmine.fireTouchEvent = function (
     // work either so the best we can do is just make a CustomEvent and fake it.
     e = new CustomEvent(type, {
       bubbles: true,
-      cancelable: true,
+      cancelable: true
     }),
     target = Ext.getDom(target),
     dispatched;
@@ -4893,12 +4893,12 @@ jasmine.fireTouchEvent = function (
     touches: jasmine.createTouchList(touches, target),
     changedTouches: jasmine.createTouchList(
       changedTouches ? changedTouches : touches,
-      target,
+      target
     ),
     targetTouches: jasmine.createTouchList(
       targetTouches ? targetTouches : touches,
-      target,
-    ),
+      target
+    )
   });
 
   dispatched = target.dispatchEvent(e);
@@ -4925,7 +4925,7 @@ jasmine.fireKeyEvent = function (target, type, key, shiftKey, ctrlKey, altKey) {
       keyCode: key,
       shiftKey: !!shiftKey,
       ctrlKey: !!ctrlKey,
-      altKey: !!altKey,
+      altKey: !!altKey
     });
     return target.fireEvent("on" + type, e);
   } else {
@@ -4935,7 +4935,7 @@ jasmine.fireKeyEvent = function (target, type, key, shiftKey, ctrlKey, altKey) {
       keyCode: key,
       shiftKey: !!shiftKey,
       ctrlKey: !!ctrlKey,
-      altKey: !!altKey,
+      altKey: !!altKey
     });
     return target.dispatchEvent(e);
   }
@@ -5062,7 +5062,7 @@ jasmine.simulateArrowKey =
         keyCode,
         shiftKey,
         ctrlKey,
-        altKey,
+        altKey
       );
 
       // IE8 blows up with "unspecified error" :(
@@ -5073,7 +5073,7 @@ jasmine.simulateArrowKey =
           keyCode,
           shiftKey,
           ctrlKey,
-          altKey,
+          altKey
         );
       }
     };
@@ -5096,7 +5096,7 @@ jasmine.waitForFocus = jasmine.waitsForFocus = function (cmp, desc, timeout) {
       return document.activeElement === dom;
     },
     desc,
-    timeout,
+    timeout
   );
 };
 
@@ -5118,7 +5118,7 @@ jasmine.waitForBlur = jasmine.waitsForBlur = function (cmp, desc, timeout) {
       return document.activeElement !== dom;
     },
     desc,
-    timeout,
+    timeout
   );
 };
 
@@ -5287,7 +5287,7 @@ jasmine.fireKeyEvent = function(target, type, key, options) {
 */
 var fakeScope = {
   id: "fakeScope",
-  fakeScope: true,
+  fakeScope: true
 };
 /**
  * Class to act as a bridge between the MockAjax class and Ext.data.Request
@@ -5375,7 +5375,7 @@ var MockAjaxManager = {
     Ext.data.request.Ajax.prototype.getXhrInstance =
       MockAjaxManager.getXhrInstance;
     MockAjaxManager.getXhrInstance = null;
-  },
+  }
 };
 
 /**
@@ -5407,7 +5407,7 @@ MockAjax.prototype.syncDefaults = {
   status: 200,
   statusText: "",
   responseXML: null,
-  responseHeaders: { "Content-type": "application/json" },
+  responseHeaders: { "Content-type": "application/json" }
 };
 
 MockAjax.prototype.readyChange = function () {
@@ -5506,7 +5506,7 @@ MockAjax.prototype.complete = function (response) {
   this.statusText = response.statusText;
   this.responseXML = response.responseXML || this.xmlDOM(response.responseText);
   this.responseHeaders = response.responseHeaders || {
-    "Content-type": response.contentType || "application/json",
+    "Content-type": response.contentType || "application/json"
   };
   this.readyState = 4;
   this.readyChange();

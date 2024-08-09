@@ -48,7 +48,7 @@ Ext.define(
     requestFileSystem: function (config) {
       if (!config.success) {
         Ext.Logger.error(
-          "Ext.device.filesystem#requestFileSystem: You must specify a `success` callback.",
+          "Ext.device.filesystem#requestFileSystem: You must specify a `success` callback."
         );
         return null;
       }
@@ -63,9 +63,9 @@ Ext.define(
         config.type,
         config.size,
         successCallback,
-        config.failure || Ext.emptyFn,
+        config.failure || Ext.emptyFn
       );
-    },
+    }
   },
   function () {
     /**
@@ -82,7 +82,7 @@ Ext.define(
           this.root = Ext.create(
             "Ext.device.filesystem.DirectoryEntry",
             "/",
-            this,
+            this
           );
         },
 
@@ -94,7 +94,7 @@ Ext.define(
          */
         getRoot: function () {
           return this.root;
-        },
+        }
       },
       function () {
         /**
@@ -207,7 +207,7 @@ Ext.define(
           moveTo: function (config) {
             if (config.parent == null) {
               Ext.Logger.error(
-                "Ext.device.filesystem.Entry#moveTo: You must specify a new `parent` of the entry.",
+                "Ext.device.filesystem.Entry#moveTo: You must specify a new `parent` of the entry."
               );
               return null;
             }
@@ -231,16 +231,16 @@ Ext.define(
                               ? Ext.create(
                                   "Ext.device.filesystem.DirectoryEntry",
                                   entry.fullPath,
-                                  me.fileSystem,
+                                  me.fileSystem
                                 )
                               : Ext.create(
                                   "Ext.device.filesystem.FileEntry",
                                   entry.fullPath,
-                                  me.fileSystem,
-                                ),
+                                  me.fileSystem
+                                )
                           );
                         },
-                        config.failure,
+                        config.failure
                       );
                     } else {
                       sourceEntry.moveTo(
@@ -253,23 +253,23 @@ Ext.define(
                               ? Ext.create(
                                   "Ext.device.filesystem.DirectoryEntry",
                                   entry.fullPath,
-                                  me.fileSystem,
+                                  me.fileSystem
                                 )
                               : Ext.create(
                                   "Ext.device.filesystem.FileEntry",
                                   entry.fullPath,
-                                  me.fileSystem,
-                                ),
+                                  me.fileSystem
+                                )
                           );
                         },
-                        config.failure,
+                        config.failure
                       );
                     }
                   },
-                  failure: config.failure,
+                  failure: config.failure
                 });
               },
-              failure: config.failure,
+              failure: config.failure
             });
           },
 
@@ -279,8 +279,8 @@ Ext.define(
           copyTo: function (config) {
             this.moveTo(
               Ext.apply(config, {
-                copy: true,
-              }),
+                copy: true
+              })
             );
           },
 
@@ -314,7 +314,7 @@ Ext.define(
                   entry.remove(config.success, config.failure);
                 }
               },
-              failure: config.failure,
+              failure: config.failure
             });
           },
 
@@ -342,7 +342,7 @@ Ext.define(
           getParent: function (config) {
             if (!config.success) {
               Ext.Logger.error(
-                "Ext.device.filesystem.Entry#getParent: You must specify a `success` callback.",
+                "Ext.device.filesystem.Entry#getParent: You must specify a `success` callback."
               );
               return null;
             }
@@ -358,19 +358,19 @@ Ext.define(
                       ? Ext.create(
                           "Ext.device.filesystem.DirectoryEntry",
                           parentEntry.fullPath,
-                          me.fileSystem,
+                          me.fileSystem
                         )
                       : Ext.create(
                           "Ext.device.filesystem.FileEntry",
                           parentEntry.fullPath,
-                          me.fileSystem,
-                        ),
+                          me.fileSystem
+                        )
                   );
                 }, config.failure);
               },
-              failure: config.failure,
+              failure: config.failure
             });
-          },
+          }
         });
 
         /**
@@ -425,7 +425,7 @@ Ext.define(
                     folders.shift(),
                     config.options,
                     recursiveCreation,
-                    config.failure,
+                    config.failure
                   );
                 } else {
                   callback(dirEntry);
@@ -440,7 +440,7 @@ Ext.define(
                 function (directory) {
                   config.success.call(config.scope || me, directory);
                 },
-                config.failure,
+                config.failure
               );
             }
           },
@@ -469,7 +469,7 @@ Ext.define(
           readEntries: function (config) {
             if (!config.success) {
               Ext.Logger.error(
-                "Ext.device.filesystem.DirectoryEntry#readEntries: You must specify a `success` callback.",
+                "Ext.device.filesystem.DirectoryEntry#readEntries: You must specify a `success` callback."
               );
               return null;
             }
@@ -490,12 +490,12 @@ Ext.define(
                         ? Ext.create(
                             "Ext.device.filesystem.DirectoryEntry",
                             entryInfo.fullPath,
-                            me.fileSystem,
+                            me.fileSystem
                           )
                         : Ext.create(
                             "Ext.device.filesystem.FileEntry",
                             entryInfo.fullPath,
-                            me.fileSystem,
+                            me.fileSystem
                           );
                     }
                     config.success.call(config.scope || this, entries);
@@ -504,10 +504,10 @@ Ext.define(
                     if (config.failure) {
                       config.failure.call(config.scope || this, error);
                     }
-                  },
+                  }
                 );
               },
-              failure: config.failure,
+              failure: config.failure
             });
           },
 
@@ -547,7 +547,7 @@ Ext.define(
           getFile: function (config) {
             if (config.path == null) {
               Ext.Logger.error(
-                "Ext.device.filesystem.DirectoryEntry#getFile: You must specify a `path` of the file.",
+                "Ext.device.filesystem.DirectoryEntry#getFile: You must specify a `path` of the file."
               );
               return null;
             }
@@ -557,14 +557,14 @@ Ext.define(
             var fileEntry = Ext.create(
               "Ext.device.filesystem.FileEntry",
               fullPath,
-              this.fileSystem,
+              this.fileSystem
             );
             fileEntry.getEntry({
               success: function () {
                 config.success.call(config.scope || me, fileEntry);
               },
               options: config.options || {},
-              failure: config.failure,
+              failure: config.failure
             });
           },
 
@@ -575,7 +575,7 @@ Ext.define(
           getDirectory: function (config) {
             if (config.path == null) {
               Ext.Logger.error(
-                "Ext.device.filesystem.DirectoryEntry#getFile: You must specify a `path` of the file.",
+                "Ext.device.filesystem.DirectoryEntry#getFile: You must specify a `path` of the file."
               );
               return null;
             }
@@ -585,14 +585,14 @@ Ext.define(
             var directoryEntry = Ext.create(
               "Ext.device.filesystem.DirectoryEntry",
               fullPath,
-              this.fileSystem,
+              this.fileSystem
             );
             directoryEntry.getEntry({
               success: function () {
                 config.success.call(config.scope || me, directoryEntry);
               },
               options: config.options || {},
-              failure: config.failure,
+              failure: config.failure
             });
           },
 
@@ -603,10 +603,10 @@ Ext.define(
           removeRecursively: function (config) {
             this.remove(
               Ext.apply(config, {
-                recursively: true,
-              }),
+                recursively: true
+              })
             );
-          },
+          }
         });
 
         /**
@@ -673,7 +673,7 @@ Ext.define(
                     var dirEntry = Ext.create(
                       "Ext.device.filesystem.DirectoryEntry",
                       folders.join("/"),
-                      me.fileSystem,
+                      me.fileSystem
                     );
                     dirEntry.getEntry({
                       options: config.options,
@@ -681,7 +681,7 @@ Ext.define(
                         originalConfig.recursive = true;
                         me.getEntry(originalConfig);
                       },
-                      failure: config.failure,
+                      failure: config.failure
                     });
                   } else {
                     if (config.failure) {
@@ -704,22 +704,22 @@ Ext.define(
                       me.length = file.size;
                       originalConfig.success.call(
                         config.scope || me,
-                        fileEntry,
+                        fileEntry
                       );
                     },
                     function (error) {
                       failure.call(config.scope || me, error);
-                    },
+                    }
                   );
                 },
                 function (error) {
                   failure.call(config.scope || me, error);
-                },
+                }
               );
             } else {
               config.failure({
                 code: -1,
-                message: "FileSystem not Initialized",
+                message: "FileSystem not Initialized"
               });
             }
           },
@@ -758,7 +758,7 @@ Ext.define(
           seek: function (config) {
             if (config.offset == null) {
               Ext.Logger.error(
-                "Ext.device.filesystem.FileEntry#seek: You must specify an `offset` in the file.",
+                "Ext.device.filesystem.FileEntry#seek: You must specify an `offset` in the file."
               );
               return null;
             }
@@ -823,7 +823,7 @@ Ext.define(
                         if (config.failure) {
                           config.failure.call(config.scope || me, {
                             code: -2,
-                            message: "File missing slice functionality",
+                            message: "File missing slice functionality"
                           });
                         }
                         return;
@@ -834,7 +834,7 @@ Ext.define(
                     reader.onloadend = function (evt) {
                       config.success.call(
                         config.scope || me,
-                        evt.target.result,
+                        evt.target.result
                       );
                     };
 
@@ -866,12 +866,12 @@ Ext.define(
                   },
                   function (error) {
                     config.failure.call(config.scope || me, error);
-                  },
+                  }
                 );
               },
               failure: function (error) {
                 config.failure.call(config.scope || me, error);
-              },
+              }
             });
           },
 
@@ -912,7 +912,7 @@ Ext.define(
           write: function (config) {
             if (config.data == null) {
               Ext.Logger.error(
-                "Ext.device.filesystem.FileEntry#write: You must specify `data` to write into the file.",
+                "Ext.device.filesystem.FileEntry#write: You must specify `data` to write into the file."
               );
               return null;
             }
@@ -946,12 +946,12 @@ Ext.define(
                   },
                   function (error) {
                     config.failure.call(config.scope || me, error);
-                  },
+                  }
                 );
               },
               failure: function (error) {
                 config.failure.call(config.scope || me, error);
-              },
+              }
             });
           },
 
@@ -984,7 +984,7 @@ Ext.define(
           truncate: function (config) {
             if (config.size == null) {
               Ext.Logger.error(
-                "Ext.device.filesystem.FileEntry#write: You must specify a `size` of the file.",
+                "Ext.device.filesystem.FileEntry#write: You must specify a `size` of the file."
               );
               return null;
             }
@@ -1000,16 +1000,16 @@ Ext.define(
                   },
                   function (error) {
                     config.failure.call(config.scope || me, error);
-                  },
+                  }
                 );
               },
               failure: function (error) {
                 config.failure.call(config.scope || me, error);
-              },
+              }
             });
-          },
+          }
         });
-      },
+      }
     );
-  },
+  }
 );

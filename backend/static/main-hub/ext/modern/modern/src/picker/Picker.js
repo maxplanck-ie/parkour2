@@ -86,7 +86,7 @@ Ext.define("Ext.picker.Picker", {
     "Ext.picker.Slot",
     "Ext.TitleBar",
     "Ext.data.Model",
-    "Ext.util.InputBlocker",
+    "Ext.util.InputBlocker"
   ],
 
   isPicker: true,
@@ -181,7 +181,7 @@ Ext.define("Ext.picker.Picker", {
      */
     layout: {
       type: "hbox",
-      align: "stretch",
+      align: "stretch"
     },
 
     /**
@@ -257,8 +257,8 @@ Ext.define("Ext.picker.Picker", {
      * @accessor
      */
     toolbar: {
-      xtype: "titlebar",
-    },
+      xtype: "titlebar"
+    }
   },
 
   floated: true,
@@ -270,17 +270,17 @@ Ext.define("Ext.picker.Picker", {
 
     //insert the mask, and the picker bar
     this.mask = innerElement.insertFirst({
-      cls: clsPrefix + "picker-mask",
+      cls: clsPrefix + "picker-mask"
     });
 
     this.bar = this.mask.createChild({
-      cls: clsPrefix + "picker-bar",
+      cls: clsPrefix + "picker-bar"
     });
 
     me.on({
       scope: this,
       delegate: "pickerslot",
-      slotpick: "onSlotPick",
+      slotpick: "onSlotPick"
     });
   },
 
@@ -293,7 +293,7 @@ Ext.define("Ext.picker.Picker", {
     }
 
     Ext.applyIf(config, {
-      docked: this.getToolbarPosition(),
+      docked: this.getToolbarPosition()
     });
 
     return Ext.factory(config, "Ext.TitleBar", this.getToolbar());
@@ -325,14 +325,14 @@ Ext.define("Ext.picker.Picker", {
 
       if (typeof config == "string") {
         config = {
-          text: config,
+          text: config
         };
       }
 
       Ext.applyIf(config, {
         ui: "action",
         align: "right",
-        text: "Done",
+        text: "Done"
       });
     }
 
@@ -363,13 +363,13 @@ Ext.define("Ext.picker.Picker", {
 
       if (typeof config == "string") {
         config = {
-          text: config,
+          text: config
         };
       }
 
       Ext.applyIf(config, {
         align: "left",
-        text: "Cancel",
+        text: "Cancel"
       });
     }
 
@@ -590,5 +590,5 @@ Ext.define("Ext.picker.Picker", {
     me.mask = me.bar = Ext.destroy(me.mask, me.bar);
 
     me.callParent();
-  },
+  }
 });

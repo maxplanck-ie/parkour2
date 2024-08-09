@@ -5,7 +5,7 @@
  */
 Ext.define("Ext.util.TapRepeater", {
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
 
   /**
@@ -37,7 +37,7 @@ Ext.define("Ext.util.TapRepeater", {
     preventDefault: true,
     stopDefault: false,
     timer: 0,
-    pressCls: null,
+    pressCls: null
   },
 
   /**
@@ -55,7 +55,7 @@ Ext.define("Ext.util.TapRepeater", {
         me[configName] = config[configName];
         Ext.Logger.warn(
           'Applied config as instance property: "' + configName + '"',
-          me,
+          me
         );
       }
     }
@@ -68,7 +68,7 @@ Ext.define("Ext.util.TapRepeater", {
       touchstart: "onTouchStart",
       touchend: "onTouchEnd",
       tap: "eventOptions",
-      scope: this,
+      scope: this
     };
     if (oldEl) {
       oldEl.un(eventCfg);
@@ -129,12 +129,12 @@ Ext.define("Ext.util.TapRepeater", {
               Ext.Date.getElapsed(me.tapStartTime),
               400,
               -390,
-              12000,
+              12000
             )
           : me.getInterval(),
         me,
-        [e],
-      ),
+        [e]
+      )
     );
   },
 
@@ -154,5 +154,5 @@ Ext.define("Ext.util.TapRepeater", {
     clearTimeout(me.getTimer());
     me.getEl().removeCls(me.getPressCls());
     me.fireEvent("touchend", me, e);
-  },
+  }
 });

@@ -48,16 +48,16 @@ Ext.define("Ext.dataview.element.List", {
       children: [
         {
           cls: me.labelClsShortCache,
-          html: me.renderItemTpl(index, data),
-        },
-      ],
+          html: me.renderItemTpl(index, data)
+        }
+      ]
     };
 
     if (dataview.getIcon()) {
       iconSrc = data.iconSrc;
       config.children.push({
         cls: me.iconClsShortCache,
-        style: "background-image: " + iconSrc ? 'url("' + newSrc + '")' : "",
+        style: "background-image: " + iconSrc ? 'url("' + newSrc + '")' : ""
       });
     }
 
@@ -68,7 +68,7 @@ Ext.define("Ext.dataview.element.List", {
           " " +
           (data[dataview.getDisclosureProperty()] === false
             ? me.hiddenDisplayCache
-            : ""),
+            : "")
       });
     }
     return config;
@@ -93,7 +93,7 @@ Ext.define("Ext.dataview.element.List", {
     if (hasDisclosureProperty) {
       disclosureEl = extItem.down(me.disclosureClsCache);
       disclosureEl[data[disclosureProperty] === false ? "addCls" : "removeCls"](
-        me.hiddenDisplayCache,
+        me.hiddenDisplayCache
       );
     }
 
@@ -136,8 +136,8 @@ Ext.define("Ext.dataview.element.List", {
       item.insertFirst(
         Ext.Element.create({
           cls: this.headerClsShortCache,
-          html: html,
-        }),
+          html: html
+        })
       );
     }
     item.addCls(this.headerItemClsShortCache);
@@ -146,5 +146,5 @@ Ext.define("Ext.dataview.element.List", {
   doDestroy: function () {
     this.doRemoveHeaders();
     this.callParent();
-  },
+  }
 });

@@ -78,5 +78,5 @@ Ext.define("Ext.ux.colorpick.SliderController", {
     var dragHandle = this.getDragHandle();
 
     dragHandle.dd.dragEnded = true; // work around DragTracker bug
-  },
+  }
 });

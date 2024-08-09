@@ -6,12 +6,12 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
   config: {
     control: {
       "#": {
-        boxready: "boxready",
+        boxready: "boxready"
       },
       "#send-email-button": {
-        click: "send",
-      },
-    },
+        click: "send"
+      }
+    }
   },
 
   boxready: function (wnd) {
@@ -26,7 +26,7 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
     if (!form.isValid()) {
       new Noty({
         text: "All fields must be filled in.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -34,7 +34,7 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
     form.submit({
       url: Ext.String.format(
         "api/requests/{0}/send_email/",
-        wnd.record.get("pk"),
+        wnd.record.get("pk")
       ),
       params: form.getFieldValues(),
       success: function (f, action) {
@@ -47,7 +47,7 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
           : action.response.statusText;
         new Noty({ text: error, type: "error" }).show();
         console.error(action);
-      },
+      }
     });
-  },
+  }
 });

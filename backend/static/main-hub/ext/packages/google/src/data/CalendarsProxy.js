@@ -51,7 +51,7 @@ Ext.define("Ext.google.data.CalendarsProxy", {
     return {
       items: me.sanitizeItems(items),
       success: data.success,
-      error: data.error,
+      error: data.error
     };
   },
 
@@ -85,9 +85,9 @@ Ext.define("Ext.google.data.CalendarsProxy", {
           autoSync: true,
           proxy: {
             type: "google-events",
-            resourceTypes: "events",
-          },
-        },
+            resourceTypes: "events"
+          }
+        }
       };
 
       Ext.Object.each(data, function (key, value) {
@@ -122,6 +122,6 @@ Ext.define("Ext.google.data.CalendarsProxy", {
     buildUpdateApiRequests: function (request) {
       var data = this.toApiCalendar(request.getJsonData());
       return gapi.client.calendar.calendarList.patch(data);
-    },
-  },
+    }
+  }
 });

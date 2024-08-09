@@ -11,8 +11,8 @@ Ext.define("Ext.util.TranslatableGroup", {
 
     itemLength: {
       x: 0,
-      y: 0,
-    },
+      y: 0
+    }
   },
 
   applyItems: function (items) {
@@ -51,5 +51,5 @@ Ext.define("Ext.util.TranslatableGroup", {
         item.translate(translateX, translateY);
       }
     }
-  },
+  }
 });

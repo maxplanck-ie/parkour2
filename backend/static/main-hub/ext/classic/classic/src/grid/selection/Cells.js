@@ -193,7 +193,7 @@ Ext.define("Ext.grid.selection.Cells", {
 
       rowStart = Math.max(
         Math.min(range[0][1], lastRange[0][1]),
-        rows.startIndex,
+        rows.startIndex
       );
       rowEnd = Math.min(Math.max(range[1][1], lastRange[1][1]), rows.endIndex);
 
@@ -235,7 +235,7 @@ Ext.define("Ext.grid.selection.Cells", {
       } else {
         me.startCell = me.startCell.setPosition(
           me.getFirstRowIndex(),
-          me.getFirstColumnIndex(),
+          me.getFirstColumnIndex()
         );
         me.setRangeEnd(extensionVector.end);
         me.view.getNavigationModel().setPosition(extensionVector.end);
@@ -255,7 +255,7 @@ Ext.define("Ext.grid.selection.Cells", {
     getRange: function () {
       return [
         [this.getFirstColumnIndex(), this.getFirstRowIndex()],
-        [this.getLastColumnIndex(), this.getLastRowIndex()],
+        [this.getLastColumnIndex(), this.getLastRowIndex()]
       ];
     },
 
@@ -291,8 +291,8 @@ Ext.define("Ext.grid.selection.Cells", {
       me.setRangeEnd(
         new Ext.grid.CellContext(view).setPosition(
           view.dataSource.getCount() - 1,
-          view.getVisibleColumnManager().getColumns().length - 1,
-        ),
+          view.getVisibleColumnManager().getColumns().length - 1
+        )
       );
     },
 
@@ -354,16 +354,16 @@ Ext.define("Ext.grid.selection.Cells", {
             me,
             new Ext.grid.CellContext(me.view).setPosition(
               me.getFirstRowIndex(),
-              me.getFirstColumnIndex(),
+              me.getFirstColumnIndex()
             ),
             new Ext.grid.CellContext(me.view).setPosition(
               me.getLastRowIndex(),
-              me.getLastColumnIndex(),
-            ),
+              me.getLastColumnIndex()
+            )
           );
       } else {
         me.view.getSelectionModel().onSelectionFinish(me);
       }
-    },
-  },
+    }
+  }
 });

@@ -6,7 +6,7 @@ Ext.define("Ext.util.Group", {
   extend: "Ext.util.Collection",
 
   config: {
-    groupKey: null,
+    groupKey: null
   },
 
   // Group collections must have a higher priority than normal collections.  This ensures
@@ -15,5 +15,5 @@ Ext.define("Ext.util.Group", {
   // as sort/datachanged, the groups have already been sorted and filtered.
   $endUpdatePriority: 2001,
 
-  manageSorters: false,
+  manageSorters: false
 });

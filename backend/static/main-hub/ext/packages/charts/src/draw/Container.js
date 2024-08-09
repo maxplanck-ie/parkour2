@@ -44,7 +44,7 @@ Ext.define(
       "Ext.draw.Surface",
       "Ext.draw.engine.Svg",
       "Ext.draw.engine.Canvas",
-      "Ext.draw.gradient.GradientDefinition",
+      "Ext.draw.gradient.GradientDefinition"
     ],
     /**
      * @cfg {String} [engine="Ext.draw.engine.Canvas"]
@@ -200,8 +200,8 @@ Ext.define(
         panX: false,
         panY: false,
         pinchZoom: false,
-        doubleTapZoom: false,
-      },
+        doubleTapZoom: false
+      }
     },
 
     /**
@@ -228,13 +228,13 @@ Ext.define(
       height: Ext.isNumber,
       scale: Ext.isNumber,
       pdf: Ext.isObject,
-      jpeg: Ext.isObject,
+      jpeg: Ext.isObject
     },
 
     initAnimator: function () {
       this.frameCallbackId = Ext.draw.Animator.addFrameCallback(
         "renderFrame",
-        this,
+        this
       );
     },
 
@@ -342,7 +342,7 @@ Ext.define(
       if (!instantly) {
         me.resizeTimerId = Ext.defer(me.handleResize, me.resizeDelay, me, [
           size,
-          true,
+          true
         ]);
         return;
       } else {
@@ -463,7 +463,7 @@ Ext.define(
         // so we need to render SVG the usual way.
         image = {
           data: surface.toSVG(size, surfaces),
-          type: "svg-markup",
+          type: "svg-markup"
         };
       } else {
         image = surface.flatten(size, surfaces);
@@ -477,7 +477,7 @@ Ext.define(
         if (format === "stream") {
           image.data = image.data.replace(
             /^data:image\/[^;]+/,
-            "data:application/octet-stream",
+            "data:application/octet-stream"
           );
           return image;
         }
@@ -575,9 +575,9 @@ Ext.define(
       config = Ext.apply(
         {
           version: 2,
-          data: me.getImage().data,
+          data: me.getImage().data
         },
-        config,
+        config
       );
 
       for (name in config) {
@@ -590,8 +590,8 @@ Ext.define(
                 type: "hidden",
                 name: name,
                 value: Ext.String.htmlEncode(
-                  Ext.isObject(value) ? Ext.JSON.encode(value) : value,
-                ),
+                  Ext.isObject(value) ? Ext.JSON.encode(value) : value
+                )
               });
             }
             //<debug>
@@ -600,7 +600,7 @@ Ext.define(
                 'Invalid value for image download option "' +
                   name +
                   '": ' +
-                  value,
+                  value
               );
             }
             //</debug>
@@ -624,16 +624,16 @@ Ext.define(
                 tag: "form",
                 method: "POST",
                 action: config.url || me.defaultDownloadServerUrl,
-                children: inputs,
+                children: inputs
               },
               {
                 tag: "script",
                 type: "text/javascript",
-                children: 'document.getElementsByTagName("form")[0].submit();',
-              },
-            ],
-          },
-        ],
+                children: 'document.getElementsByTagName("form")[0].submit();'
+              }
+            ]
+          }
+        ]
       });
 
       window.open("", "ImageDownload_" + Date.now()).document.write(markup);
@@ -663,7 +663,7 @@ Ext.define(
       me.resizeTimerId = 0;
 
       me.callParent();
-    },
+    }
   },
   function () {
     if (location.search.match("svg")) {
@@ -678,5 +678,5 @@ Ext.define(
       // http://code.google.com/p/android/issues/detail?id=37529
       Ext.draw.Container.prototype.engine = "Ext.draw.engine.Svg";
     }
-  },
+  }
 );

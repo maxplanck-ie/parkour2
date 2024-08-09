@@ -71,7 +71,7 @@ Ext.define("Ext.chart.interactions.Rotate", {
       rotateend: "onRotate",
       dragstart: "onGestureStart",
       drag: "onGesture",
-      dragend: "onGestureEnd",
+      dragend: "onGestureEnd"
     },
 
     /**
@@ -79,7 +79,7 @@ Ext.define("Ext.chart.interactions.Rotate", {
      * Saves the current rotation of the series. Accepts negative values and values > 360 ( / 180 * Math.PI)
      * @private
      */
-    rotation: 0,
+    rotation: 0
   },
 
   oldRotations: null,
@@ -201,5 +201,5 @@ Ext.define("Ext.chart.interactions.Rotate", {
     }
   },
 
-  onRotate: function (e) {},
+  onRotate: function (e) {}
 });

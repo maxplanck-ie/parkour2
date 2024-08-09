@@ -6,7 +6,7 @@ describe(
     beforeEach(function () {
       testEl = Ext.getBody().createChild({
         id: "ExtElementHelper",
-        style: "position:absolute;",
+        style: "position:absolute;"
       });
     });
 
@@ -112,7 +112,7 @@ describe(
             function () {
               dom.style.cssText = "border:5px solid";
               expect(el.getStyle("border-" + side + "-width")).toBe("5px");
-            },
+            }
           );
           it(
             "must report 0px for border-" +
@@ -124,7 +124,7 @@ describe(
               dom.style.cssText =
                 "border:5px solid; border-" + side + "-style:none";
               expect(el.getStyle("border-" + side + "-width")).toBe("0px");
-            },
+            }
           );
         });
       });
@@ -159,11 +159,11 @@ describe(
         it("should set the font family", function () {
           el.setStyle("font-family", "Courier");
           expect(
-            el.getStyle("font-family").toLowerCase().indexOf("courier"),
+            el.getStyle("font-family").toLowerCase().indexOf("courier")
           ).toBeGreaterThan(-1);
         });
       });
     });
   },
-  "/src/dom/Element.style.js",
+  "/src/dom/Element.style.js"
 );

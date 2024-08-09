@@ -61,7 +61,7 @@ Ext.define("Ext.grid.property.HeaderContainer", {
             itemId: grid.nameField,
             menuDisabled: true,
             tdCls: me.nameColumnCls,
-            innerCls: me.nameColumnInnerCls,
+            innerCls: me.nameColumnInnerCls
           },
           {
             header: me.valueText,
@@ -73,10 +73,10 @@ Ext.define("Ext.grid.property.HeaderContainer", {
             fixed: true,
             dataIndex: grid.valueField,
             itemId: grid.valueField,
-            menuDisabled: true,
-          },
-        ],
-      },
+            menuDisabled: true
+          }
+        ]
+      }
     ]);
 
     // PropertyGrid needs to know which column is the editable "value" column.
@@ -135,5 +135,5 @@ Ext.define("Ext.grid.property.HeaderContainer", {
    */
   getPropertyName: function (name) {
     return this.grid.getConfigProp(name, "displayName", name);
-  },
+  }
 });

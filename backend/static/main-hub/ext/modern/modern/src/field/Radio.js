@@ -50,8 +50,8 @@ Ext.define("Ext.field.Radio", {
      * @inheritdoc
      */
     component: {
-      xtype: "radioinput",
-    },
+      xtype: "radioinput"
+    }
   },
 
   classCls: Ext.baseCSSPrefix + "radiofield",
@@ -157,5 +157,5 @@ Ext.define("Ext.field.Radio", {
         field.setChecked(false);
       }
     }
-  },
+  }
 });

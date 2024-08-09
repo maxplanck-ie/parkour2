@@ -41,7 +41,7 @@ Ext.define("Ext.app.EventDomain", {
      * An object map containing `Ext.app.EventDomain` instances keyed by the value
      * of their `type` property.
      */
-    instances: {},
+    instances: {}
   },
 
   /**
@@ -253,7 +253,7 @@ Ext.define("Ext.app.EventDomain", {
             tree[controllerId] ||
             (tree[controllerId] = {
               controller: controller,
-              list: [],
+              list: []
             });
 
           // Push our listener in our bus
@@ -381,5 +381,5 @@ Ext.define("Ext.app.EventDomain", {
   destroy: function () {
     this.monitoredClasses = this.bus = null;
     this.callParent();
-  },
+  }
 });

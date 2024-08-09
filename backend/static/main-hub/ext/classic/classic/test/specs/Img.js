@@ -12,10 +12,10 @@ describe("Ext.Img", function () {
       Ext.apply(
         {
           renderTo: Ext.getBody(),
-          alt: "Image",
+          alt: "Image"
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -42,7 +42,7 @@ describe("Ext.Img", function () {
     describe("initial configuration", function () {
       it("should set a numeric glyph & use the default font family", function () {
         makeImage({
-          glyph: 1234,
+          glyph: 1234
         });
         expectGlyph(1234);
         expectFontFamily("FooFont");
@@ -50,7 +50,7 @@ describe("Ext.Img", function () {
 
       it("should accept a string glyph & use the default font family", function () {
         makeImage({
-          glyph: "2345",
+          glyph: "2345"
         });
         expectGlyph(2345);
         expectFontFamily("FooFont");
@@ -58,7 +58,7 @@ describe("Ext.Img", function () {
 
       it("should accept a string glyph with the font family", function () {
         makeImage({
-          glyph: "3456@BarFont",
+          glyph: "3456@BarFont"
         });
         expectGlyph(3456);
         expectFontFamily("BarFont");
@@ -67,7 +67,7 @@ describe("Ext.Img", function () {
       it("should not override other font styles", function () {
         makeImage({
           glyph: "1234@BarFont",
-          style: "font-size: 40px;",
+          style: "font-size: 40px;"
         });
         expectGlyph(1234);
         expectFontFamily("BarFont");
@@ -76,7 +76,7 @@ describe("Ext.Img", function () {
 
       it("should have img role", function () {
         makeImage({
-          glyph: "1234",
+          glyph: "1234"
         });
 
         expect(img).toHaveAttr("role", "img");
@@ -88,7 +88,7 @@ describe("Ext.Img", function () {
         it("should be able to overwrite a glyph", function () {
           makeImage({
             renderTo: null,
-            glyph: "4321",
+            glyph: "4321"
           });
           img.setGlyph(1234);
           img.render(Ext.getBody());
@@ -99,7 +99,7 @@ describe("Ext.Img", function () {
         it("should be able to overwrite a glyph with a font family", function () {
           makeImage({
             renderTo: null,
-            glyph: "4321@BarFont",
+            glyph: "4321@BarFont"
           });
           img.setGlyph("1234@BazFont");
           img.render(Ext.getBody());
@@ -111,7 +111,7 @@ describe("Ext.Img", function () {
           makeImage({
             renderTo: null,
             glyph: "4321",
-            style: "font-size: 32px;",
+            style: "font-size: 32px;"
           });
           img.setGlyph("1234@BarFont");
           img.render(Ext.getBody());
@@ -124,7 +124,7 @@ describe("Ext.Img", function () {
       describe("after render", function () {
         it("should be able to overwrite a glyph", function () {
           makeImage({
-            glyph: "4321",
+            glyph: "4321"
           });
           img.setGlyph(1234);
           expectGlyph(1234);
@@ -133,7 +133,7 @@ describe("Ext.Img", function () {
 
         it("should be able to overwrite a glyph with a font family", function () {
           makeImage({
-            glyph: "4321@BarFont",
+            glyph: "4321@BarFont"
           });
           img.setGlyph("1234@BazFont");
           expectGlyph(1234);
@@ -142,7 +142,7 @@ describe("Ext.Img", function () {
 
         it("should use the default font if initially configured with a font and a new one is not provided", function () {
           makeImage({
-            glyph: "4321@BarFont",
+            glyph: "4321@BarFont"
           });
           img.setGlyph("1234");
           expectGlyph(1234);
@@ -152,7 +152,7 @@ describe("Ext.Img", function () {
         it("should not overwrite other font styles", function () {
           makeImage({
             glyph: "4321",
-            style: "font-size: 32px;",
+            style: "font-size: 32px;"
           });
           img.setGlyph("1234@BarFont");
           expectGlyph(1234);
@@ -234,7 +234,7 @@ describe("Ext.Img", function () {
         it("should be created with configured values", function () {
           makeBaseImage({
             title: "Testing Initial",
-            alt: "Testing Alt",
+            alt: "Testing Alt"
           });
 
           expect(img.getTitle()).toBe("Testing Initial");
@@ -244,7 +244,7 @@ describe("Ext.Img", function () {
         it("should be able to clear configured values", function () {
           makeBaseImage({
             title: "Testing Initial",
-            alt: "Testing Alt",
+            alt: "Testing Alt"
           });
 
           img.setTitle();
@@ -269,7 +269,7 @@ describe("Ext.Img", function () {
           spyOn(Ext.log, "warn");
 
           img = new Ext.Img({
-            renderTo: document.body,
+            renderTo: document.body
           });
           expect(img.el.dom.alt).toBe("");
         });
@@ -279,7 +279,7 @@ describe("Ext.Img", function () {
           spyOn(Ext.log, "warn");
 
           img = new Ext.Img({
-            renderTo: document.body,
+            renderTo: document.body
           });
           img.setAlt("Test Alt");
           expect(img.getAlt()).toBe("Test Alt");
@@ -314,7 +314,7 @@ describe("Ext.Img", function () {
         it("should be created with configured values", function () {
           makeImage({
             title: "Testing Initial",
-            alt: "Testing Alt",
+            alt: "Testing Alt"
           });
 
           expect(img.el.dom.title).toBe("Testing Initial");
@@ -325,7 +325,7 @@ describe("Ext.Img", function () {
         it("should be able to clear configured values", function () {
           makeImage({
             title: "Testing Initial",
-            alt: "Testing Alt",
+            alt: "Testing Alt"
           });
 
           img.setTitle();

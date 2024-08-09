@@ -55,10 +55,10 @@ Ext.define("Ext.ux.GroupTabPanel", {
 
     me.layout = {
       type: "hbox",
-      align: "stretch",
+      align: "stretch"
     };
     me.defaults = {
-      border: false,
+      border: false
     };
 
     me.items = [
@@ -74,12 +74,12 @@ Ext.define("Ext.ux.GroupTabPanel", {
         border: false,
         plugins: [
           {
-            ptype: "grouptabrenderer",
-          },
+            ptype: "grouptabrenderer"
+          }
         ],
         viewConfig: {
           overItemCls: "",
-          getRowClass: me.getRowClass,
+          getRowClass: me.getRowClass
         },
         columns: [
           {
@@ -109,9 +109,9 @@ Ext.define("Ext.ux.GroupTabPanel", {
               cell.tdCls = "x-grouptab" + cls;
 
               return value;
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       {
         xtype: "container",
@@ -119,8 +119,8 @@ Ext.define("Ext.ux.GroupTabPanel", {
         layout: "card",
         activeItem: me.mainItem,
         baseCls: Ext.baseCSSPrefix + "grouptabcontainer",
-        items: me.cards,
-      },
+        items: me.cards
+      }
     ];
 
     me.callParent(arguments);
@@ -130,7 +130,7 @@ Ext.define("Ext.ux.GroupTabPanel", {
       me.down("treepanel").getSelectionModel(),
       "select",
       me.onNodeSelect,
-      me,
+      me
     );
   },
 
@@ -203,7 +203,7 @@ Ext.define("Ext.ux.GroupTabPanel", {
       me.activeTab = newTab;
       if (me.rendered) {
         me.down(
-          "container[baseCls=" + Ext.baseCSSPrefix + "grouptabcontainer" + "]",
+          "container[baseCls=" + Ext.baseCSSPrefix + "grouptabcontainer" + "]"
         )
           .getLayout()
           .setActiveItem(newTab);
@@ -249,7 +249,7 @@ Ext.define("Ext.ux.GroupTabPanel", {
       groups = me.prepareItems(me.items),
       data = {
         text: ".",
-        children: [],
+        children: []
       },
       cards = (me.cards = []);
     me.activeGroup = me.activeGroup || 0;
@@ -258,7 +258,7 @@ Ext.define("Ext.ux.GroupTabPanel", {
       var leafItems = groupItem.items.items,
         rootItem = leafItems[groupItem.mainItem] || leafItems[0],
         groupRoot = {
-          children: [],
+          children: []
         };
 
       // Create the root node of the group
@@ -287,7 +287,7 @@ Ext.define("Ext.ux.GroupTabPanel", {
             text: leafItem.title,
             iconCls: leafItem.iconCls,
             activeGroup: groupRoot.activeGroup,
-            activeTab: false,
+            activeTab: false
           };
           groupRoot.children.push(child);
         }
@@ -304,12 +304,12 @@ Ext.define("Ext.ux.GroupTabPanel", {
     return Ext.create("Ext.data.TreeStore", {
       fields: ["id", "text", "activeGroup", "activeTab"],
       root: {
-        expanded: true,
+        expanded: true
       },
       proxy: {
         type: "memory",
-        data: data,
-      },
+        data: data
+      }
     });
   },
 
@@ -327,5 +327,5 @@ Ext.define("Ext.ux.GroupTabPanel", {
    */
   getActiveGroup: function () {
     return this.activeGroup;
-  },
+  }
 });

@@ -29,7 +29,7 @@ Ext.define("Ext.layout.component.field.FieldContainer", {
 
   calculateOwnerHeightFromContentHeight: function (
     ownerContext,
-    contentHeight,
+    contentHeight
   ) {
     var h = this.callParent([ownerContext, contentHeight]);
     return h + this.getHeightAdjustment();
@@ -95,6 +95,6 @@ Ext.define("Ext.layout.component.field.FieldContainer", {
       }
 
       return w + owner.bodyEl.getPadding("lr");
-    },
-  },
+    }
+  }
 });

@@ -4,8 +4,8 @@ Ext.define("Ext.theme.mountainview.MessageBox", {
   config: {
     buttonToolbar: {
       defaults: {
-        flex: 1,
-      },
-    },
-  },
+        flex: 1
+      }
+    }
+  }
 });

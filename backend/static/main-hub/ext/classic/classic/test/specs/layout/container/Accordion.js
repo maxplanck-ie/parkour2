@@ -9,14 +9,14 @@ describe("Ext.layout.container.Accordion", function () {
           type: "accordion",
           animate: false,
           multi: multi,
-          fill: fill === false ? false : true,
+          fill: fill === false ? false : true
         },
         items: [
           {
-            title: "Child Panel",
-          },
+            title: "Child Panel"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       child = panel.items.getAt(0);
     }
@@ -60,9 +60,9 @@ describe("Ext.layout.container.Accordion", function () {
           layout: {
             type: "accordion",
             animate: false,
-            multi: isMulti,
+            multi: isMulti
           },
-          items: items,
+          items: items
         });
       };
 
@@ -84,11 +84,11 @@ describe("Ext.layout.container.Accordion", function () {
       it("should collapse a dynamic item by default", function () {
         makeCt([
           {
-            title: "Default",
-          },
+            title: "Default"
+          }
         ]);
         var c = new Ext.panel.Panel({
-          title: "Dynamic",
+          title: "Dynamic"
         });
         ct.add(c);
         expectCollapsed(1);
@@ -97,11 +97,11 @@ describe("Ext.layout.container.Accordion", function () {
       it("should be able to expand items that were added dynamically", function () {
         makeCt([
           {
-            title: "Default",
-          },
+            title: "Default"
+          }
         ]);
         var c = new Ext.panel.Panel({
-          title: "Dynamic",
+          title: "Dynamic"
         });
         ct.add(c);
         c.expand();
@@ -112,14 +112,14 @@ describe("Ext.layout.container.Accordion", function () {
       it("should not expand other items when adding", function () {
         makeCt([
           {
-            title: "Expanded",
+            title: "Expanded"
           },
           {
-            title: "Static - Collapsed",
-          },
+            title: "Static - Collapsed"
+          }
         ]);
         ct.add({
-          title: "Dynamic",
+          title: "Dynamic"
         });
         expectExpanded(0);
         expectCollapsed(1);
@@ -132,13 +132,13 @@ describe("Ext.layout.container.Accordion", function () {
         makeCt(
           [
             {
-              title: "Default",
-            },
+              title: "Default"
+            }
           ],
-          true,
+          true
         );
         var c = new Ext.panel.Panel({
-          title: "Dynamic",
+          title: "Dynamic"
         });
         ct.add(c);
         expectExpanded(1);
@@ -148,14 +148,14 @@ describe("Ext.layout.container.Accordion", function () {
         makeCt(
           [
             {
-              title: "Default",
-            },
+              title: "Default"
+            }
           ],
-          true,
+          true
         );
         var c = new Ext.panel.Panel({
           title: "Dynamic",
-          collapsed: true,
+          collapsed: true
         });
         ct.add(c);
         expectCollapsed(1);
@@ -165,14 +165,14 @@ describe("Ext.layout.container.Accordion", function () {
         makeCt(
           [
             {
-              title: "Default",
-            },
+              title: "Default"
+            }
           ],
-          true,
+          true
         );
         var c = new Ext.panel.Panel({
           title: "Dynamic",
-          collapsed: true,
+          collapsed: true
         });
         ct.add(c);
         c.expand();
@@ -184,14 +184,14 @@ describe("Ext.layout.container.Accordion", function () {
         makeCt(
           [
             {
-              title: "Default",
-            },
+              title: "Default"
+            }
           ],
-          true,
+          true
         );
         var c = new Ext.panel.Panel({
           title: "Dynamic",
-          collapsed: true,
+          collapsed: true
         });
         ct.add(c);
         c.expand();
@@ -215,9 +215,9 @@ describe("Ext.layout.container.Accordion", function () {
             type: "accordion",
             animate: false,
             multi: multi,
-            fill: fill === false ? false : true,
+            fill: fill === false ? false : true
           },
-          items: items,
+          items: items
         });
       };
 
@@ -243,17 +243,17 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
-                title: "P3",
-              },
+                title: "P3"
+              }
             ],
             false,
-            fill,
+            fill
           );
           expectExpanded(0);
         });
@@ -262,18 +262,18 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
                 title: "P2",
-                collapsed: false,
+                collapsed: false
               },
               {
-                title: "P3",
-              },
+                title: "P3"
+              }
             ],
             false,
-            fill,
+            fill
           );
           expectExpanded(1);
         });
@@ -282,18 +282,18 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
                 title: "P2",
-                collapsed: false,
+                collapsed: false
               },
               {
-                title: "P3",
-              },
+                title: "P3"
+              }
             ],
             false,
-            fill,
+            fill
           );
           expectExpanded(1);
           expectCollapsed(2);
@@ -303,17 +303,17 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
-                title: "P3",
-              },
+                title: "P3"
+              }
             ],
             false,
-            fill,
+            fill
           );
           ct.items.first().collapse();
           expectCollapsed(0);
@@ -324,18 +324,18 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
                 title: "P3",
-                collapsed: false,
-              },
+                collapsed: false
+              }
             ],
             false,
-            fill,
+            fill
           );
           ct.items.last().collapse();
           expectCollapsed(2);
@@ -346,17 +346,17 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
-                title: "P3",
-              },
+                title: "P3"
+              }
             ],
             false,
-            fill,
+            fill
           );
           ct.items.last().expand();
           expectCollapsed(0);
@@ -369,17 +369,17 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
-                title: "P3",
-              },
+                title: "P3"
+              }
             ],
             true,
-            fill,
+            fill
           );
           expectExpanded(0);
           expectExpanded(1);
@@ -391,18 +391,18 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "P1",
-                collapsed: true,
+                collapsed: true
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
                 title: "P3",
-                collapsed: true,
-              },
+                collapsed: true
+              }
             ],
             true,
-            fill,
+            fill
           );
           expectExpanded(1);
         });
@@ -411,17 +411,17 @@ describe("Ext.layout.container.Accordion", function () {
           makeCt(
             [
               {
-                title: "P1",
+                title: "P1"
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
-                title: "P3",
-              },
+                title: "P3"
+              }
             ],
             true,
-            fill,
+            fill
           );
           ct.items.getAt(1).collapse();
           expectExpanded(0);
@@ -434,18 +434,18 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "P1",
-                collapsed: true,
+                collapsed: true
               },
               {
-                title: "P2",
+                title: "P2"
               },
               {
                 title: "P3",
-                collapsed: true,
-              },
+                collapsed: true
+              }
             ],
             true,
-            fill,
+            fill
           );
           ct.items.first().expand();
           expectExpanded(0);
@@ -476,9 +476,9 @@ describe("Ext.layout.container.Accordion", function () {
           height: 400,
           layout: {
             type: "accordion",
-            animate: false,
+            animate: false
           },
-          items: items,
+          items: items
         });
       };
 
@@ -505,16 +505,16 @@ describe("Ext.layout.container.Accordion", function () {
     it("should retain the same state when hidden", function () {
       makeCt([
         {
-          title: "P1",
+          title: "P1"
         },
         {
           title: "P2",
-          collapsed: true,
+          collapsed: true
         },
         {
           title: "P3",
-          collapsed: true,
-        },
+          collapsed: true
+        }
       ]);
       ct.items.first().hide();
       expectExpanded(0);
@@ -528,16 +528,16 @@ describe("Ext.layout.container.Accordion", function () {
         {
           title: "P1",
           collapsed: true,
-          hidden: true,
+          hidden: true
         },
         {
           title: "P2",
-          collapsed: true,
+          collapsed: true
         },
         {
           title: "P3",
-          hidden: true,
-        },
+          hidden: true
+        }
       ]);
       ct.items.getAt(1).show();
       expectCollapsed(1);
@@ -558,10 +558,10 @@ describe("Ext.layout.container.Accordion", function () {
           type: "accordion",
           animate: false,
           multi: multi,
-          fill: fill === false ? false : true,
+          fill: fill === false ? false : true
         },
         items: items,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     }
 
@@ -577,11 +577,11 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
-              },
+                html: "I1"
+              }
             ],
             false,
-            true,
+            true
           );
           expect(ct.items.first().getHeight()).toBe(h);
         });
@@ -591,15 +591,15 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
+                html: "I1"
               },
               {
                 title: "Item 2",
-                html: "I2",
-              },
+                html: "I2"
+              }
             ],
             false,
-            true,
+            true
           );
           var left = ct.items.last().getHeight();
           expect(ct.items.first().getHeight()).toBe(h - left);
@@ -612,11 +612,11 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
-              },
+                html: "I1"
+              }
             ],
             true,
-            true,
+            true
           );
           expect(ct.items.first().getHeight()).toBe(h);
         });
@@ -626,15 +626,15 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
+                html: "I1"
               },
               {
                 title: "Item 2",
-                html: "I2",
-              },
+                html: "I2"
+              }
             ],
             true,
-            true,
+            true
           );
           var left = ct.items.last().getHeight();
           expect(ct.items.first().getHeight()).toBe(h - left);
@@ -646,16 +646,16 @@ describe("Ext.layout.container.Accordion", function () {
               {
                 title: "Item 1",
                 html: "I1",
-                collapsed: false,
+                collapsed: false
               },
               {
                 title: "Item 2",
                 html: "I2",
-                collapsed: false,
-              },
+                collapsed: false
+              }
             ],
             true,
-            true,
+            true
           );
           expect(ct.items.first().getHeight()).toBe(h / 2);
           expect(ct.items.last().getHeight()).toBe(h / 2);
@@ -670,11 +670,11 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
-              },
+                html: "I1"
+              }
             ],
             false,
-            false,
+            false
           );
           // We don't know the exact height, but it should be smaller
           expect(ct.items.first().getHeight()).toBeLessThan(100);
@@ -685,15 +685,15 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
+                html: "I1"
               },
               {
                 title: "Item 2",
-                html: "I2",
-              },
+                html: "I2"
+              }
             ],
             false,
-            false,
+            false
           );
           // We don't know the exact height, but it should be smaller
           expect(ct.items.first().getHeight()).toBeLessThan(100);
@@ -707,11 +707,11 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
-              },
+                html: "I1"
+              }
             ],
             true,
-            false,
+            false
           );
           // We don't know the exact height, but it should be smaller
           expect(ct.items.first().getHeight()).toBeLessThan(100);
@@ -722,15 +722,15 @@ describe("Ext.layout.container.Accordion", function () {
             [
               {
                 title: "Item 1",
-                html: "I1",
+                html: "I1"
               },
               {
                 title: "Item 2",
-                html: "I2",
-              },
+                html: "I2"
+              }
             ],
             true,
-            false,
+            false
           );
           // We don't know the exact height, but it should be smaller
           expect(ct.items.first().getHeight()).toBeLessThan(100);
@@ -743,16 +743,16 @@ describe("Ext.layout.container.Accordion", function () {
               {
                 title: "Item 1",
                 html: "I1",
-                collapsed: false,
+                collapsed: false
               },
               {
                 title: "Item 2",
                 html: "I2",
-                collapsed: false,
-              },
+                collapsed: false
+              }
             ],
             true,
-            false,
+            false
           );
           expect(ct.items.first().getHeight()).toBeLessThan(100);
           expect(ct.items.last().getHeight()).toBeLessThan(100);
@@ -766,11 +766,11 @@ describe("Ext.layout.container.Accordion", function () {
       panel,
       tools = [
         {
-          type: "print",
+          type: "print"
         },
         {
-          type: "refresh",
-        },
+          type: "refresh"
+        }
       ];
     beforeEach(function () {
       makePanel = function (items, collapseFirst) {
@@ -780,10 +780,10 @@ describe("Ext.layout.container.Accordion", function () {
           layout: {
             type: "accordion",
             animate: false,
-            collapseFirst: collapseFirst,
+            collapseFirst: collapseFirst
           },
           items: items,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       };
     });
@@ -798,13 +798,13 @@ describe("Ext.layout.container.Accordion", function () {
         {
           collapseFirst: true,
           title: "A",
-          tools: tools,
+          tools: tools
         },
         {
           collapseFirst: false,
           title: "B",
-          tools: tools,
-        },
+          tools: tools
+        }
       ]);
       var p1 = panel.items.first(),
         p2 = panel.items.last();
@@ -823,14 +823,14 @@ describe("Ext.layout.container.Accordion", function () {
         [
           {
             title: "A",
-            tools: tools,
+            tools: tools
           },
           {
             title: "B",
-            tools: tools,
-          },
+            tools: tools
+          }
         ],
-        false,
+        false
       );
 
       var p1 = panel.items.first(),
@@ -850,14 +850,14 @@ describe("Ext.layout.container.Accordion", function () {
         [
           {
             title: "A",
-            tools: tools,
+            tools: tools
           },
           {
             title: "B",
-            tools: tools,
-          },
+            tools: tools
+          }
         ],
-        true,
+        true
       );
 
       var p1 = panel.items.first(),
@@ -884,10 +884,10 @@ describe("Ext.layout.container.Accordion", function () {
           layout: {
             type: "accordion",
             animate: false,
-            activeOnTop: true,
+            activeOnTop: true
           },
           items: items,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       };
     });
@@ -899,14 +899,14 @@ describe("Ext.layout.container.Accordion", function () {
 
     it("should move initial active item to the top", function () {
       var c1 = new Ext.panel.Panel({
-          title: "A",
+          title: "A"
         }),
         c2 = new Ext.panel.Panel({
-          title: "B",
+          title: "B"
         }),
         c3 = new Ext.panel.Panel({
           title: "C",
-          collapsed: false,
+          collapsed: false
         });
 
       makePanel([c1, c2, c3]);
@@ -915,13 +915,13 @@ describe("Ext.layout.container.Accordion", function () {
 
     it("should move the item to the top when expanded", function () {
       var c1 = new Ext.panel.Panel({
-          title: "A",
+          title: "A"
         }),
         c2 = new Ext.panel.Panel({
-          title: "B",
+          title: "B"
         }),
         c3 = new Ext.panel.Panel({
-          title: "C",
+          title: "C"
         });
 
       makePanel([c1, c2, c3]);
@@ -931,13 +931,13 @@ describe("Ext.layout.container.Accordion", function () {
 
     it("should move the active item to the top when a new item is inserted above it", function () {
       var c1 = new Ext.panel.Panel({
-          title: "A",
+          title: "A"
         }),
         c2 = new Ext.panel.Panel({
-          title: "B",
+          title: "B"
         }),
         c3 = new Ext.panel.Panel({
-          title: "C",
+          title: "C"
         }),
         newItem;
 
@@ -955,19 +955,19 @@ describe("Ext.layout.container.Accordion", function () {
         height: 200,
         layout: {
           type: "accordion",
-          animate: false,
+          animate: false
         },
         items: [
           {
-            title: "A",
+            title: "A"
           },
           {
-            title: "B",
+            title: "B"
           },
           {
-            title: "C",
-          },
-        ],
+            title: "C"
+          }
+        ]
       });
       ct.remove(0);
       expect(ct.items.first().collapsed).toBe(false);
@@ -981,19 +981,19 @@ describe("Ext.layout.container.Accordion", function () {
         height: 200,
         layout: {
           type: "accordion",
-          animate: false,
+          animate: false
         },
         items: [
           {
-            title: "A",
+            title: "A"
           },
           {
-            title: "B",
+            title: "B"
           },
           {
-            title: "C",
-          },
-        ],
+            title: "C"
+          }
+        ]
       });
 
       ct.items.each(function (item) {
@@ -1012,19 +1012,19 @@ describe("Ext.layout.container.Accordion", function () {
       var p = new Ext.panel.Panel({
         layout: {
           type: "accordion",
-          animate: false,
+          animate: false
         },
         items: [
           {
-            title: "P1",
+            title: "P1"
           },
           {
-            title: "P2",
+            title: "P2"
           },
           {
-            title: "P3",
-          },
-        ],
+            title: "P3"
+          }
+        ]
       });
 
       var outer = new Ext.panel.Panel({
@@ -1032,7 +1032,7 @@ describe("Ext.layout.container.Accordion", function () {
         height: 200,
         layout: "fit",
         renderTo: Ext.getBody(),
-        items: p,
+        items: p
       });
 
       p.getComponent(1).expand();
@@ -1056,12 +1056,12 @@ describe("Ext.layout.container.Accordion", function () {
             height: 200,
 
             style: {
-              border: "1px solid red",
+              border: "1px solid red"
             },
 
             layout: {
               type: "accordion",
-              animate: !!animate,
+              animate: !!animate
             },
             items: [
               {
@@ -1070,21 +1070,21 @@ describe("Ext.layout.container.Accordion", function () {
                 animCollapse: animate,
                 tools: [
                   {
-                    type: "pin",
-                  },
+                    type: "pin"
+                  }
                 ],
                 listeners: {
                   collapse: collapseSpy,
-                  expand: expandSpy,
-                },
+                  expand: expandSpy
+                }
               },
               {
                 title: "bar",
                 collapsible: true,
                 animCollapse: animate,
-                closable: true,
-              },
-            ],
+                closable: true
+              }
+            ]
           });
 
           foo = ct.down("[title=foo]");
@@ -1129,7 +1129,7 @@ describe("Ext.layout.container.Accordion", function () {
             it("should have aria-multiselectable", function () {
               expect(ct.layout.innerCt).toHaveAttr(
                 "aria-multiselectable",
-                "true",
+                "true"
               );
             });
           });
@@ -1153,7 +1153,7 @@ describe("Ext.layout.container.Accordion", function () {
               it("should have aria-expanded", function () {
                 expect(foo.header.titleCmp).toHaveAttr(
                   "aria-expanded",
-                  !foo.collapsed + "",
+                  !foo.collapsed + ""
                 );
               });
             });
@@ -1191,7 +1191,7 @@ describe("Ext.layout.container.Accordion", function () {
             it("should be aria-labelledby the header title", function () {
               expect(foo.body).toHaveAttr(
                 "aria-labelledby",
-                foo.header.titleCmp.id,
+                foo.header.titleCmp.id
               );
             });
 
@@ -1223,7 +1223,7 @@ describe("Ext.layout.container.Accordion", function () {
               it("should have aria-expanded", function () {
                 expect(bar.header.titleCmp).toHaveAttr(
                   "aria-expanded",
-                  !bar.collapsed + "",
+                  !bar.collapsed + ""
                 );
               });
             });
@@ -1265,7 +1265,7 @@ describe("Ext.layout.container.Accordion", function () {
             it("should be aria-labelledby the header title", function () {
               expect(bar.body).toHaveAttr(
                 "aria-labelledby",
-                bar.header.titleCmp.id,
+                bar.header.titleCmp.id
               );
             });
 
@@ -1316,7 +1316,7 @@ describe("Ext.layout.container.Accordion", function () {
 
           beforeInput = new Ext.form.field.Text({
             renderTo: Ext.getBody(),
-            fieldLabel: "before",
+            fieldLabel: "before"
           });
 
           ct = new Ext.container.Container({
@@ -1325,12 +1325,12 @@ describe("Ext.layout.container.Accordion", function () {
             height: 150,
 
             style: {
-              border: "1px solid red",
+              border: "1px solid red"
             },
 
             layout: {
               type: "accordion",
-              animate: animate,
+              animate: animate
             },
             items: [
               {
@@ -1339,19 +1339,19 @@ describe("Ext.layout.container.Accordion", function () {
                 animCollapse: animate,
                 tools: [
                   {
-                    type: "pin",
-                  },
+                    type: "pin"
+                  }
                 ],
                 listeners: {
                   collapse: collapseSpy,
-                  expand: expandSpy,
+                  expand: expandSpy
                 },
                 items: [
                   {
                     xtype: "textfield",
-                    fieldLabel: "foo inner",
-                  },
-                ],
+                    fieldLabel: "foo inner"
+                  }
+                ]
               },
               {
                 title: "bar",
@@ -1361,16 +1361,16 @@ describe("Ext.layout.container.Accordion", function () {
                 items: [
                   {
                     xtype: "textfield",
-                    fieldLabel: "bar inner",
-                  },
-                ],
-              },
-            ],
+                    fieldLabel: "bar inner"
+                  }
+                ]
+              }
+            ]
           });
 
           afterInput = new Ext.form.field.Text({
             renderTo: Ext.getBody(),
-            fieldLabel: "after",
+            fieldLabel: "after"
           });
 
           foo = ct.down("[title=foo]");

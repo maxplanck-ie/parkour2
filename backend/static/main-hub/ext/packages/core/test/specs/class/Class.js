@@ -17,7 +17,7 @@ describe("Ext.Class", function () {
 
     mixinClass1 = Ext.define(null, {
       config: {
-        mixinConfig: "mixinConfig",
+        mixinConfig: "mixinConfig"
       },
 
       constructor: function (config) {
@@ -30,7 +30,7 @@ describe("Ext.Class", function () {
 
       mixinMethod1: function () {
         this.mixinMethodCalled = true;
-      },
+      }
     });
 
     mixinClass2 = Ext.define(null, {
@@ -44,21 +44,21 @@ describe("Ext.Class", function () {
 
       mixinMethod2: function () {
         this.mixinMethodCalled = true;
-      },
+      }
     });
 
     parentClass = Ext.define(null, {
       mixins: {
-        mixin1: mixinClass1,
+        mixin1: mixinClass1
       },
       config: {
         name: "parentClass",
         isCool: false,
         members: {
           abe: "Abraham Elias",
-          ed: "Ed Spencer",
+          ed: "Ed Spencer"
         },
-        hobbies: ["football", "bowling"],
+        hobbies: ["football", "bowling"]
       },
       constructor: function (config) {
         this.initConfig(config);
@@ -72,24 +72,24 @@ describe("Ext.Class", function () {
 
       parentMethod: function () {
         this.parentMethodCalled = true;
-      },
+      }
     });
 
     subClass = Ext.define(null, {
       extend: parentClass,
       mixins: {
         mixin1: mixinClass1,
-        mixin2: mixinClass2,
+        mixin2: mixinClass2
       },
       config: {
         name: "subClass",
         isCool: true,
         members: {
           jacky: "Jacky Nguyen",
-          tommy: "Tommy Maintz",
+          tommy: "Tommy Maintz"
         },
         hobbies: ["sleeping", "eating", "movies"],
-        isSpecial: true,
+        isSpecial: true
       },
       constructor: function (config) {
         this.initConfig(config);
@@ -102,7 +102,7 @@ describe("Ext.Class", function () {
       },
       myOwnMethod: function () {
         this.myOwnMethodCalled = true;
-      },
+      }
     });
   });
 
@@ -116,7 +116,7 @@ describe("Ext.Class", function () {
       Ext.define("spec.Base", {
         aProp: 1,
 
-        aFn: fn,
+        aFn: fn
       });
     });
 
@@ -132,14 +132,14 @@ describe("Ext.Class", function () {
     describe("extending from a parent", function () {
       it("class reference", function () {
         cls = Ext.define(null, {
-          extend: spec.Base,
+          extend: spec.Base
         });
         expect(new cls() instanceof spec.Base).toBe(true);
       });
 
       it("class string", function () {
         cls = Ext.define(null, {
-          extend: "spec.Base",
+          extend: "spec.Base"
         });
         expect(new cls() instanceof spec.Base).toBe(true);
       });
@@ -148,7 +148,7 @@ describe("Ext.Class", function () {
     it("should have superclass reference", function () {
       var parentPrototype = spec.Base.prototype;
       cls = Ext.define(null, {
-        extend: spec.Base,
+        extend: spec.Base
       });
 
       expect(cls.superclass).toBe(parentPrototype);
@@ -157,14 +157,14 @@ describe("Ext.Class", function () {
 
     it("should copy properties from the parent", function () {
       cls = Ext.define(null, {
-        extend: spec.Base,
+        extend: spec.Base
       });
       expect(cls.prototype.aProp).toBe(1);
     });
 
     it("should copy functions from the parent", function () {
       cls = Ext.define(null, {
-        extend: spec.Base,
+        extend: spec.Base
       });
       expect(cls.prototype.aFn).toBe(fn);
     });
@@ -179,8 +179,8 @@ describe("Ext.Class", function () {
       it("should create getter if not exists", function () {
         cls = Ext.define(null, {
           config: {
-            someName: "someValue",
-          },
+            someName: "someValue"
+          }
         });
         expect(cls.prototype.getSomeName).toBeDefined();
       });
@@ -189,8 +189,8 @@ describe("Ext.Class", function () {
         var cls = Ext.define(null, {
           getSomeName: fn,
           config: {
-            someName: "someValue",
-          },
+            someName: "someValue"
+          }
         });
         expect(cls.prototype.getSomeName).toBe(fn);
       });
@@ -198,8 +198,8 @@ describe("Ext.Class", function () {
       it("should create setter if not exists", function () {
         cls = Ext.define(null, {
           config: {
-            someName: "someValue",
-          },
+            someName: "someValue"
+          }
         });
         expect(cls.prototype.setSomeName).toBeDefined();
       });
@@ -208,8 +208,8 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           setSomeName: fn,
           config: {
-            someName: "someValue",
-          },
+            someName: "someValue"
+          }
         });
         expect(cls.prototype.setSomeName).toBe(fn);
       });
@@ -217,12 +217,12 @@ describe("Ext.Class", function () {
       it("should allow a custom getter to call the generated getter", function () {
         cls = Ext.define(null, {
           config: {
-            someName: "foo",
+            someName: "foo"
           },
           constructor: defaultInitConfig,
           getSomeName: function () {
             return this.callParent().toUpperCase();
-          },
+          }
         });
 
         o = new cls();
@@ -232,13 +232,13 @@ describe("Ext.Class", function () {
       it("should allow a custom setter to call the generated setter", function () {
         cls = Ext.define(null, {
           config: {
-            someName: "foo",
+            someName: "foo"
           },
           constructor: defaultInitConfig,
           setSomeName: function (someName) {
             someName = someName.toUpperCase();
             return this.callParent([someName]);
-          },
+          }
         });
 
         o = new cls();
@@ -249,7 +249,7 @@ describe("Ext.Class", function () {
         var called = false;
         cls = Ext.define(null, {
           config: {
-            foo: 1,
+            foo: 1
           },
           constructor: defaultInitConfig,
           applyFoo: function (foo) {
@@ -258,7 +258,7 @@ describe("Ext.Class", function () {
               return foo;
             }
             return undefined;
-          },
+          }
         });
 
         o = new cls();
@@ -270,12 +270,12 @@ describe("Ext.Class", function () {
         var count = 0;
         cls = Ext.define(null, {
           config: {
-            foo: 1,
+            foo: 1
           },
           constructor: defaultInitConfig,
           updateFoo: function () {
             ++count;
-          },
+          }
         });
 
         o = new cls();
@@ -287,12 +287,12 @@ describe("Ext.Class", function () {
         var count = 0;
         cls = Ext.define(null, {
           config: {
-            foo: 1,
+            foo: 1
           },
           constructor: defaultInitConfig,
           updateFoo: function () {
             ++count;
-          },
+          }
         });
 
         o = new cls();
@@ -303,12 +303,12 @@ describe("Ext.Class", function () {
       it("should allow defining a config named 'configurator'", function () {
         cls = Ext.define(null, {
           config: {
-            configurator: 1,
+            configurator: 1
           },
           constructor: defaultInitConfig,
           applyConfigurator: function (v) {
             return v + 1;
-          },
+          }
         });
 
         o = new cls();
@@ -324,7 +324,7 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             config: {
               foo: 1,
-              bar: 2,
+              bar: 2
             },
             constructor: defaultInitConfig,
             updateFoo: function () {
@@ -342,7 +342,7 @@ describe("Ext.Class", function () {
             },
             updateBar: function () {
               ++updateCount;
-            },
+            }
           });
         });
 
@@ -357,7 +357,7 @@ describe("Ext.Class", function () {
           applyCount = updateCount = 0;
           o = new cls({
             foo: 10,
-            bar: 20,
+            bar: 20
           });
           expect(applyCount).toBe(1);
           expect(updateCount).toBe(1);
@@ -370,12 +370,12 @@ describe("Ext.Class", function () {
             it("should not initialize the config", function () {
               cls = Ext.define(null, {
                 config: {
-                  foo: null,
+                  foo: null
                 },
                 constructor: function (config) {
                   spyOn(this, "setFoo");
                   this.initConfig(config);
-                },
+                }
               });
               o = new cls();
               expect(o.setFoo).not.toHaveBeenCalled();
@@ -385,12 +385,12 @@ describe("Ext.Class", function () {
               var called = false;
               cls = Ext.define(null, {
                 config: {
-                  foo: null,
+                  foo: null
                 },
                 constructor: defaultInitConfig,
                 setFoo: function () {
                   called = true;
-                },
+                }
               });
               o = new cls();
               expect(called).toBe(false);
@@ -400,12 +400,12 @@ describe("Ext.Class", function () {
               var called = false;
               cls = Ext.define(null, {
                 config: {
-                  foo: null,
+                  foo: null
                 },
                 constructor: defaultInitConfig,
                 applyFoo: function () {
                   called = true;
-                },
+                }
               });
               o = new cls();
               expect(called).toBe(false);
@@ -415,12 +415,12 @@ describe("Ext.Class", function () {
               var called = false;
               cls = Ext.define(null, {
                 config: {
-                  foo: null,
+                  foo: null
                 },
                 constructor: defaultInitConfig,
                 updateFoo: function () {
                   called = true;
-                },
+                }
               });
               o = new cls();
               expect(called).toBe(false);
@@ -431,12 +431,12 @@ describe("Ext.Class", function () {
             it("should not call the setter", function () {
               cls = Ext.define(null, {
                 config: {
-                  foo: 1,
+                  foo: 1
                 },
                 constructor: function (config) {
                   spyOn(this, "setFoo");
                   this.initConfig(config);
-                },
+                }
               });
               o = new cls();
               expect(o.setFoo).not.toHaveBeenCalled();
@@ -445,13 +445,13 @@ describe("Ext.Class", function () {
             it("should call the setter if there is a custom setter", function () {
               cls = Ext.define(null, {
                 config: {
-                  foo: 1,
+                  foo: 1
                 },
                 constructor: function (config) {
                   spyOn(this, "setFoo");
                   this.initConfig(config);
                 },
-                setFoo: function () {},
+                setFoo: function () {}
               });
               o = new cls();
               expect(o.setFoo).toHaveBeenCalled();
@@ -460,7 +460,7 @@ describe("Ext.Class", function () {
             it("should call the setter if there is an applier", function () {
               cls = Ext.define(null, {
                 config: {
-                  foo: 1,
+                  foo: 1
                 },
                 constructor: function (config) {
                   spyOn(this, "setFoo");
@@ -468,7 +468,7 @@ describe("Ext.Class", function () {
                 },
                 applyFoo: function (foo) {
                   return foo;
-                },
+                }
               });
               o = new cls();
               expect(o.setFoo).toHaveBeenCalled();
@@ -477,13 +477,13 @@ describe("Ext.Class", function () {
             it("should call the setter if there is an updater", function () {
               cls = Ext.define(null, {
                 config: {
-                  foo: 1,
+                  foo: 1
                 },
                 constructor: function (config) {
                   spyOn(this, "setFoo");
                   this.initConfig(config);
                 },
-                setFoo: function () {},
+                setFoo: function () {}
               });
               o = new cls();
               expect(o.setFoo).toHaveBeenCalled();
@@ -492,12 +492,12 @@ describe("Ext.Class", function () {
             it("should call the setter if the value is an object", function () {
               cls = Ext.define(null, {
                 config: {
-                  foo: {},
+                  foo: {}
                 },
                 constructor: function (config) {
                   spyOn(this, "setFoo");
                   this.initConfig(config);
-                },
+                }
               });
               o = new cls();
               expect(o.setFoo).toHaveBeenCalled();
@@ -511,17 +511,17 @@ describe("Ext.Class", function () {
             cls = Ext.define(null, {
               config: {
                 first: undefined,
-                second: undefined,
+                second: undefined
               },
               constructor: defaultInitConfig,
               updateFirst: function () {
                 secondVal = this.getSecond();
-              },
+              }
             });
 
             new cls({
               first: 1,
-              second: 2,
+              second: 2
             });
             expect(secondVal).toBe(2);
           });
@@ -530,18 +530,18 @@ describe("Ext.Class", function () {
             var secondVal;
             cls = Ext.define(null, {
               config: {
-                first: undefined,
+                first: undefined
               },
               constructor: defaultInitConfig,
               $configStrict: false,
               applyFirst: function () {
                 secondVal = this.second;
-              },
+              }
             });
 
             new cls({
               first: 1,
-              second: 2,
+              second: 2
             });
             expect(secondVal).toBe(2);
           });
@@ -554,9 +554,9 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           config: {
             foo: 1,
-            bar: 2,
+            bar: 2
           },
-          constructor: defaultInitConfig,
+          constructor: defaultInitConfig
         });
       });
 
@@ -569,7 +569,7 @@ describe("Ext.Class", function () {
             config: {
               b: "bbb",
               c: "ccc",
-              a: "aaa",
+              a: "aaa"
             },
 
             constructor: defaultInitConfig,
@@ -584,7 +584,7 @@ describe("Ext.Class", function () {
             applyC: function (value) {
               this.getB();
               order.push("c=" + value);
-            },
+            }
           });
         }
 
@@ -610,7 +610,7 @@ describe("Ext.Class", function () {
           o.setConfig({
             a: 1,
             c: 3, // IMPORTANT - not in dependency order!
-            b: 2,
+            b: 2
           });
 
           expect(order).toEqual(["a=1", "b=2", "c=3"]);
@@ -627,7 +627,7 @@ describe("Ext.Class", function () {
           o = new cls();
           expect(o.getConfig()).toEqual({
             foo: 1,
-            bar: 2,
+            bar: 2
           });
         });
 
@@ -646,15 +646,15 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   lazy: true,
-                  $value: 120,
-                },
-              },
+                  $value: 120
+                }
+              }
             });
           });
 
           it("should not call the getter if the initGetter has not yet been called", function () {
             o = new cls({
-              foo: 1,
+              foo: 1
             });
             spyOn(o, "getFoo");
             o.getConfig("foo", true);
@@ -663,7 +663,7 @@ describe("Ext.Class", function () {
 
           it("should return the pending value configured on the instance", function () {
             o = new cls({
-              foo: 1,
+              foo: 1
             });
             expect(o.getConfig("foo", true)).toBe(1);
           });
@@ -686,7 +686,7 @@ describe("Ext.Class", function () {
           o = new cls();
           o.setConfig({
             foo: 6,
-            bar: 8,
+            bar: 8
           });
           expect(o.getFoo()).toBe(6);
           expect(o.getBar()).toBe(8);
@@ -696,13 +696,13 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             constructor: defaultInitConfig,
-            setBaz: jasmine.createSpy(),
+            setBaz: jasmine.createSpy()
           });
 
           o = new cls();
 
           o.setConfig({
-            baz: 100,
+            baz: 100
           });
 
           expect(o.setBaz).toHaveBeenCalledWith(100);
@@ -711,13 +711,13 @@ describe("Ext.Class", function () {
         it("should set non-config properties on the instance when the strict option is false and $configStrict is false", function () {
           cls = Ext.define(null, {
             $configStrict: false,
-            constructor: defaultInitConfig,
+            constructor: defaultInitConfig
           });
 
           o = new cls();
 
           o.setConfig("baz", 100, {
-            strict: false,
+            strict: false
           });
 
           expect(o.baz).toBe(100);
@@ -748,10 +748,10 @@ describe("Ext.Class", function () {
           abe: "Abraham Elias",
           ed: "Ed Spencer",
           jacky: "Jacky Nguyen",
-          tommy: "Tommy Maintz",
+          tommy: "Tommy Maintz"
         },
         hobbies: ["sleeping", "eating", "movies"],
-        isSpecial: true,
+        isSpecial: true
       });
     });
 
@@ -767,8 +767,8 @@ describe("Ext.Class", function () {
         name: "newName",
         isCool: false,
         members: {
-          aaron: "Aaron Conran",
-        },
+          aaron: "Aaron Conran"
+        }
       });
 
       expect(obj.getName()).toBe("newName");
@@ -781,8 +781,8 @@ describe("Ext.Class", function () {
         name: "newName",
         isCool: false,
         members: {
-          aaron: "Aaron Conran",
-        },
+          aaron: "Aaron Conran"
+        }
       });
 
       var obj2 = new subClass();
@@ -804,15 +804,15 @@ describe("Ext.Class", function () {
       cls = Ext.define(null, {
         constructor: defaultInitConfig,
         config: {
-          foo: null,
-        },
+          foo: null
+        }
       });
 
       var el = document.createElement("div");
       var o = new cls({
         foo: {
-          bar: el,
-        },
+          bar: el
+        }
       });
       expect(o.getFoo().bar).toBe(el);
     });
@@ -833,8 +833,8 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           constructor: defaultInitConfig,
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
         expect(new cls().getFoo()).toBe("bar");
       });
@@ -843,8 +843,8 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           constructor: defaultInitConfig,
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
         o = new cls();
         o.setFoo("baz");
@@ -856,15 +856,15 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           constructor: defaultInitConfig,
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
 
         sub = Ext.define(null, {
           extend: cls,
           config: {
-            foo: "baz",
-          },
+            foo: "baz"
+          }
         });
         expect(new sub().getFoo()).toBe("baz");
       });
@@ -873,15 +873,15 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           constructor: defaultInitConfig,
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
 
         sub = Ext.define(null, {
           extend: cls,
           config: {
-            herp: "derp",
-          },
+            herp: "derp"
+          }
         });
         expect(new sub().getFoo()).toBe("bar");
       });
@@ -892,13 +892,13 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           constructor: defaultInitConfig,
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
 
         sub = Ext.define(null, {
           extend: cls,
-          foo: "baz",
+          foo: "baz"
         });
 
         expect(new sub().getFoo()).toBe("baz");
@@ -908,13 +908,13 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           constructor: defaultInitConfig,
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
 
         sub = Ext.define(null, {
           extend: cls,
-          foo: "baz",
+          foo: "baz"
         });
         expect(sub.prototype.foo).toBeUndefined();
       });
@@ -924,8 +924,8 @@ describe("Ext.Class", function () {
           constructor: defaultInitConfig,
           foo: "baz",
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
         expect(new cls().getFoo()).toBe("bar");
       });
@@ -934,13 +934,13 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           constructor: defaultInitConfig,
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
 
         sub = Ext.define(null, {
           extend: cls,
-          foo: "baz",
+          foo: "baz"
         });
         expect(new sub().getFoo()).toBe("baz");
       });
@@ -950,13 +950,13 @@ describe("Ext.Class", function () {
           constructor: defaultInitConfig,
           foo: "baz",
           config: {
-            foo: "bar",
-          },
+            foo: "bar"
+          }
         });
 
         sub = Ext.define(null, {
           extend: cls,
-          foo: "bleh",
+          foo: "bleh"
         });
         expect(new sub().getFoo()).toBe("bleh");
       });
@@ -968,13 +968,13 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
-            constructor: defaultInitConfig,
+            constructor: defaultInitConfig
           });
 
           o = new cls({
-            baz: 1,
+            baz: 1
           });
           expect(o.baz).toBe(1);
         });
@@ -983,15 +983,15 @@ describe("Ext.Class", function () {
           Ext.define("spec.MyClass", {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: function () {},
+            baz: function () {}
           });
 
           expect(function () {
             o = new spec.MyClass({
-              baz: 1,
+              baz: 1
             });
           }).toThrow("Cannot override method baz on spec.MyClass instance.");
 
@@ -1002,14 +1002,14 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: function () {},
+            baz: function () {}
           });
 
           o = new cls({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1019,13 +1019,13 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
-            constructor: defaultInitConfig,
+            constructor: defaultInitConfig
           });
 
           o = new cls({
-            baz: 1,
+            baz: 1
           });
           expect(o.baz).toBe(1);
         });
@@ -1034,17 +1034,17 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
-            constructor: defaultInitConfig,
+            constructor: defaultInitConfig
           });
           sub = Ext.define(null, {
             extend: sub,
-            $configStrict: true,
+            $configStrict: true
           });
 
           o = new sub({
-            baz: 1,
+            baz: 1
           });
           expect(o.baz).not.toBeDefined();
         });
@@ -1053,14 +1053,14 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.emptyFn,
+            baz: Ext.emptyFn
           });
 
           o = new cls({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1070,14 +1070,14 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.identityFn,
+            baz: Ext.identityFn
           });
 
           o = new cls({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1087,14 +1087,14 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.emptyFn,
+            baz: Ext.emptyFn
           });
 
           o = new cls({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1104,14 +1104,14 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.identityFn,
+            baz: Ext.identityFn
           });
 
           o = new cls({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1125,21 +1125,21 @@ describe("Ext.Class", function () {
           Ext.define("spec.MyClass", {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
-            constructor: defaultInitConfig,
+            constructor: defaultInitConfig
           });
 
           o = new spec.MyClass();
 
           o.setConfig({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
 
           expect(Ext.log.warn).toHaveBeenCalledWith(
-            'No such config "baz" for class spec.MyClass',
+            'No such config "baz" for class spec.MyClass'
           );
 
           Ext.undefine("spec.MyClass");
@@ -1151,15 +1151,15 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
-            constructor: defaultInitConfig,
+            constructor: defaultInitConfig
           });
 
           o = new cls();
 
           o.setConfig({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1171,17 +1171,17 @@ describe("Ext.Class", function () {
           Ext.define("spec.MyClass", {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: function () {},
+            baz: function () {}
           });
 
           o = new spec.MyClass();
 
           expect(function () {
             o.setConfig({
-              baz: 1,
+              baz: 1
             });
           }).toThrow("Cannot override method baz on spec.MyClass instance.");
 
@@ -1194,16 +1194,16 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: function () {},
+            baz: function () {}
           });
 
           o = new cls();
 
           o.setConfig({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1217,22 +1217,22 @@ describe("Ext.Class", function () {
           Ext.define("spec.MyClass", {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.emptyFn,
+            baz: Ext.emptyFn
           });
 
           o = new spec.MyClass();
 
           o.setConfig({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
 
           expect(Ext.log.warn).toHaveBeenCalledWith(
-            'No such config "baz" for class spec.MyClass',
+            'No such config "baz" for class spec.MyClass'
           );
 
           Ext.undefine("spec.MyClass");
@@ -1244,22 +1244,22 @@ describe("Ext.Class", function () {
           Ext.define("spec.MyClass", {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.identityFn,
+            baz: Ext.identityFn
           });
 
           o = new spec.MyClass();
 
           o.setConfig({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
 
           expect(Ext.log.warn).toHaveBeenCalledWith(
-            'No such config "baz" for class spec.MyClass',
+            'No such config "baz" for class spec.MyClass'
           );
 
           Ext.undefine("spec.MyClass");
@@ -1271,16 +1271,16 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.emptyFn,
+            baz: Ext.emptyFn
           });
 
           o = new cls();
 
           o.setConfig({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1294,16 +1294,16 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: false,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.identityFn,
+            baz: Ext.identityFn
           });
 
           o = new cls();
 
           o.setConfig({
-            baz: 1,
+            baz: 1
           });
 
           expect(o.baz).toBe(1);
@@ -1317,16 +1317,16 @@ describe("Ext.Class", function () {
           cls = Ext.define(null, {
             $configStrict: true,
             config: {
-              foo: "bar",
+              foo: "bar"
             },
             constructor: defaultInitConfig,
-            baz: Ext.emptyFn,
+            baz: Ext.emptyFn
           });
 
           o = new cls();
 
           o.setConfig({
-            type: 1,
+            type: 1
           });
 
           expect(o.type).toBe(1);
@@ -1341,9 +1341,9 @@ describe("Ext.Class", function () {
         cls = Ext.define(null, {
           $configPrefixed: !!prefix,
           config: {
-            foo: defaultValue || "bar",
+            foo: defaultValue || "bar"
           },
-          constructor: defaultInitConfig,
+          constructor: defaultInitConfig
         });
       };
 
@@ -1363,7 +1363,7 @@ describe("Ext.Class", function () {
         defineCls(false, {});
         sub = Ext.define(null, {
           extend: cls,
-          $configPrefixed: true,
+          $configPrefixed: true
         });
 
         var o1 = new cls(),
@@ -1385,14 +1385,14 @@ describe("Ext.Class", function () {
             config: {
               foo: {
                 lazy: true,
-                $value: 42,
-              },
-            },
+                $value: 42
+              }
+            }
           });
 
           var Cls = Ext.define(null, {
             mixins: {
-              mix: Mix,
+              mix: Mix
             },
             constructor: function (config) {
               this.initConfig(config);
@@ -1400,7 +1400,7 @@ describe("Ext.Class", function () {
             applyFoo: function (newValue, oldValue) {
               ++calls;
               return newValue;
-            },
+            }
           });
 
           o = new Cls();
@@ -1419,20 +1419,20 @@ describe("Ext.Class", function () {
             config: {
               foo: {
                 lazy: false,
-                $value: 1,
-              },
-            },
+                $value: 1
+              }
+            }
           });
 
           var Cls = Ext.define(null, {
             mixins: {
-              mix: Mix,
+              mix: Mix
             },
             config: {
               foo: {
                 lazy: true,
-                $value: 2,
-              },
+                $value: 2
+              }
             },
             constructor: function (config) {
               this.initConfig(config);
@@ -1440,7 +1440,7 @@ describe("Ext.Class", function () {
             applyFoo: function (newValue, oldValue) {
               ++calls;
               return newValue;
-            },
+            }
           });
 
           o = new Cls();
@@ -1460,9 +1460,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
             expect(cls.prototype.foo).not.toBeDefined();
           });
@@ -1472,9 +1472,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
             new cls();
             expect(cls.prototype.foo).not.toBeDefined();
@@ -1484,8 +1484,8 @@ describe("Ext.Class", function () {
             cls = Ext.define(null, {
               constructor: defaultInitConfig,
               cachedConfig: {
-                foo: "bar",
-              },
+                foo: "bar"
+              }
             });
             o = new cls();
             expect(cls.prototype._foo).toBe("bar");
@@ -1500,7 +1500,7 @@ describe("Ext.Class", function () {
               cachedConfig: {
                 foo: 21,
                 bar: 1,
-                baz: 3,
+                baz: 3
               },
               applyFoo: function (foo) {
                 ++calls;
@@ -1513,7 +1513,7 @@ describe("Ext.Class", function () {
               applyBaz: function (baz) {
                 ++calls;
                 return baz * this.getFoo(); // backward dependency
-              },
+              }
             });
 
             o = new cls();
@@ -1541,9 +1541,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
             o = new cls();
             expect(cls.prototype._foo).toBe("bar");
@@ -1560,14 +1560,14 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
+                  $value: "bar"
+                }
               },
               applyFoo: function (foo) {
                 ++count;
                 o.foo = foo;
                 return o;
-              },
+              }
             });
             var a = new cls(),
               b = new cls(),
@@ -1587,12 +1587,12 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
+                  $value: "bar"
+                }
               },
               updateFoo: function (foo) {
                 ++count;
-              },
+              }
             });
             var a = new cls(),
               b = new cls(),
@@ -1607,13 +1607,13 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
 
             o = new cls({
-              foo: "baz",
+              foo: "baz"
             });
             expect(cls.prototype._foo).toBe("bar");
             expect(o.getFoo()).toBe("baz");
@@ -1625,9 +1625,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
 
             o = new cls();
@@ -1644,13 +1644,13 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
 
             sub = Ext.define(null, {
-              extend: cls,
+              extend: cls
             });
 
             o = new sub();
@@ -1664,9 +1664,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
 
             sub = Ext.define(null, {
@@ -1674,9 +1674,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "baz",
-                },
-              },
+                  $value: "baz"
+                }
+              }
             });
 
             o = new sub();
@@ -1693,8 +1693,8 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
+                  $value: "bar"
+                }
               },
 
               applyFoo: function (foo) {
@@ -1704,11 +1704,11 @@ describe("Ext.Class", function () {
                   ++subCount;
                 }
                 return foo;
-              },
+              }
             });
 
             sub = Ext.define(null, {
-              extend: cls,
+              extend: cls
             });
 
             new cls();
@@ -1731,23 +1731,23 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
-                },
-              },
+                  $value: "bar"
+                }
+              }
             });
 
             sub = Ext.define(null, {
               config: {
-                foo: "baz",
-              },
+                foo: "baz"
+              }
             });
           });
 
           it("should not allow an initially uncached config to be declared as cached", function () {
             cls = Ext.define(null, {
               config: {
-                foo: 1,
-              },
+                foo: 1
+              }
             });
 
             spyOn(Ext, "log");
@@ -1758,9 +1758,9 @@ describe("Ext.Class", function () {
                 config: {
                   foo: {
                     cached: true,
-                    $value: 2,
-                  },
-                },
+                    $value: 2
+                  }
+                }
               });
             }).toThrow();
           });
@@ -1771,19 +1771,19 @@ describe("Ext.Class", function () {
                 config: {
                   foo: {
                     cached: true,
-                    $value: 1,
-                  },
+                    $value: 1
+                  }
                 },
-                constructor: defaultInitConfig,
+                constructor: defaultInitConfig
               });
               sub = Ext.define(null, {
                 extend: cls,
                 config: {
                   foo: {
                     cached: true,
-                    $value: null,
-                  },
-                },
+                    $value: null
+                  }
+                }
               });
 
               new cls();
@@ -1797,19 +1797,19 @@ describe("Ext.Class", function () {
                 config: {
                   foo: {
                     cached: true,
-                    $value: null,
-                  },
+                    $value: null
+                  }
                 },
-                constructor: defaultInitConfig,
+                constructor: defaultInitConfig
               });
               sub = Ext.define(null, {
                 extend: cls,
                 config: {
                   foo: {
                     cached: true,
-                    $value: 1,
-                  },
-                },
+                    $value: 1
+                  }
+                }
               });
 
               new cls();
@@ -1823,10 +1823,10 @@ describe("Ext.Class", function () {
                 config: {
                   foo: {
                     cached: true,
-                    $value: 1,
-                  },
+                    $value: 1
+                  }
                 },
-                constructor: defaultInitConfig,
+                constructor: defaultInitConfig
               });
 
               var B = Ext.define(null, {
@@ -1834,9 +1834,9 @@ describe("Ext.Class", function () {
                 config: {
                   foo: {
                     cached: true,
-                    $value: null,
-                  },
-                },
+                    $value: null
+                  }
+                }
               });
 
               var C = Ext.define(null, {
@@ -1844,9 +1844,9 @@ describe("Ext.Class", function () {
                 config: {
                   foo: {
                     cached: true,
-                    $value: 2,
-                  },
-                },
+                    $value: 2
+                  }
+                }
               });
 
               new A();
@@ -1866,14 +1866,14 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   cached: true,
-                  $value: "bar",
+                  $value: "bar"
                 },
-                bar: "text",
-              },
+                bar: "text"
+              }
             });
             var cfg = cls.getConfigurator();
             expect(cfg.cachedConfigs).toEqual({
-              foo: true,
+              foo: true
             });
           });
         });
@@ -1884,8 +1884,8 @@ describe("Ext.Class", function () {
           return {
             foo: {
               lazy: true,
-              $value: value,
-            },
+              $value: value
+            }
           };
         }
 
@@ -1896,7 +1896,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             new Cls();
@@ -1909,11 +1909,11 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             new Cls({
-              foo: 100,
+              foo: 100
             });
             expect(spy).not.toHaveBeenCalled();
           });
@@ -1924,7 +1924,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              updateFoo: spy,
+              updateFoo: spy
             });
 
             new Cls();
@@ -1937,11 +1937,11 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              updateFoo: spy,
+              updateFoo: spy
             });
 
             new Cls({
-              foo: 100,
+              foo: 100
             });
             expect(spy).not.toHaveBeenCalled();
           });
@@ -1953,14 +1953,14 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: Ext.apply(
                 {
-                  bar: 0,
+                  bar: 0
                 },
-                makeLazy(1),
+                makeLazy(1)
               ),
 
               applyBar: function () {
                 return this.getFoo() + 100;
-              },
+              }
             });
 
             o = new Cls();
@@ -1973,15 +1973,15 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: Ext.apply(
                 {
-                  bar: 0,
+                  bar: 0
                 },
-                makeLazy(1),
+                makeLazy(1)
               ),
 
               applyFoo: spy,
               applyBar: function () {
                 return this.getFoo() + 100;
-              },
+              }
             });
 
             o = new Cls();
@@ -1996,15 +1996,15 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: Ext.apply(
                 {
-                  bar: 0,
+                  bar: 0
                 },
-                makeLazy(1),
+                makeLazy(1)
               ),
 
               updateFoo: spy,
               applyBar: function () {
                 return this.getFoo() + 100;
-              },
+              }
             });
 
             o = new Cls();
@@ -2019,7 +2019,7 @@ describe("Ext.Class", function () {
             it("should have primitives defined on the instance", function () {
               var Cls = Ext.define(null, {
                 constructor: defaultInitConfig,
-                config: makeLazy(1),
+                config: makeLazy(1)
               });
               var o = new Cls();
               expect(o._foo).toBe(1);
@@ -2028,7 +2028,7 @@ describe("Ext.Class", function () {
             it("should not have objects on the instance", function () {
               var Cls = Ext.define(null, {
                 constructor: defaultInitConfig,
-                config: makeLazy({}),
+                config: makeLazy({})
               });
               var o = new Cls();
               expect(o._foo).not.toBeDefined();
@@ -2039,10 +2039,10 @@ describe("Ext.Class", function () {
             it("should not set the value on the underlying property", function () {
               var Cls = Ext.define(null, {
                 constructor: defaultInitConfig,
-                config: makeLazy({}),
+                config: makeLazy({})
               });
               var o = new Cls({
-                foo: {},
+                foo: {}
               });
               expect(o._foo).not.toBeDefined();
             });
@@ -2055,7 +2055,7 @@ describe("Ext.Class", function () {
               setFoo: function () {
                 this.callParent(arguments);
                 return this;
-              },
+              }
             });
             var o = new Cls();
             expect(o._foo).not.toBeDefined();
@@ -2065,7 +2065,7 @@ describe("Ext.Class", function () {
             var Cls = Ext.define(null, {
               constructor: defaultInitConfig,
               config: makeLazy(1),
-              applyFoo: Ext.identityFn,
+              applyFoo: Ext.identityFn
             });
             var o = new Cls();
             expect(o._foo).not.toBeDefined();
@@ -2075,7 +2075,7 @@ describe("Ext.Class", function () {
             var Cls = Ext.define(null, {
               constructor: defaultInitConfig,
               config: makeLazy(1),
-              updateFoo: Ext.emptyFn,
+              updateFoo: Ext.emptyFn
             });
             var o = new Cls();
             expect(o._foo).not.toBeDefined();
@@ -2086,7 +2086,7 @@ describe("Ext.Class", function () {
             var Cls = Ext.define(null, {
               constructor: defaultInitConfig,
               config: makeLazy(1),
-              getFoo: spy,
+              getFoo: spy
             });
             var o = new Cls();
             o.setFoo(2);
@@ -2101,7 +2101,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             o = new Cls({});
@@ -2115,7 +2115,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             o = new Cls({});
@@ -2131,7 +2131,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              updateFoo: spy,
+              updateFoo: spy
             });
 
             o = new Cls({});
@@ -2145,7 +2145,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              updateFoo: spy,
+              updateFoo: spy
             });
 
             o = new Cls({});
@@ -2162,20 +2162,20 @@ describe("Ext.Class", function () {
                 foo: {
                   lazy: true,
                   $value: {
-                    z: 1,
-                  },
-                },
-              },
+                    z: 1
+                  }
+                }
+              }
             });
 
             o = new Cls({
               foo: {
-                y: 2,
-              },
+                y: 2
+              }
             });
             expect(o.getFoo()).toEqual({
               y: 2,
-              z: 1,
+              z: 1
             });
           });
         });
@@ -2187,11 +2187,11 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             var B = Ext.define(null, {
-              extend: A,
+              extend: A
             });
             o = new B();
             expect(spy).not.toHaveBeenCalled();
@@ -2207,14 +2207,14 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             var B = Ext.define(null, {
               extend: A,
               config: {
-                foo: 9876,
-              },
+                foo: 9876
+              }
             });
             o = new B();
             expect(spy).not.toHaveBeenCalled();
@@ -2227,7 +2227,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             var B = Ext.define(null, {
@@ -2235,9 +2235,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   lazy: false,
-                  $value: 1,
-                },
-              },
+                  $value: 1
+                }
+              }
             });
 
             o = new B();
@@ -2249,15 +2249,15 @@ describe("Ext.Class", function () {
             var A = Ext.define(null, {
               constructor: defaultInitConfig,
               config: {
-                foo: 1,
+                foo: 1
               },
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             var B = Ext.define(null, {
               extend: A,
-              config: makeLazy(1),
+              config: makeLazy(1)
             });
 
             o = new B();
@@ -2272,7 +2272,7 @@ describe("Ext.Class", function () {
               constructor: defaultInitConfig,
               config: makeLazy(1),
 
-              applyFoo: spy,
+              applyFoo: spy
             });
 
             var B = Ext.define(null, {
@@ -2280,9 +2280,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   lazy: false,
-                  $value: 2,
-                },
-              },
+                  $value: 2
+                }
+              }
             });
 
             o = new A();
@@ -2310,17 +2310,17 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: spy,
-                  $value: aVal,
-                },
-              },
+                  $value: aVal
+                }
+              }
             });
 
             if (!onlyA) {
               B = Ext.define(null, {
                 extend: A,
                 config: {
-                  foo: bVal,
-                },
+                  foo: bVal
+                }
               });
             }
           }
@@ -2330,8 +2330,8 @@ describe("Ext.Class", function () {
             // Mixins require a name to work...
             B = Ext.define("spec.B", {
               config: {
-                foo: bVal,
-              },
+                foo: bVal
+              }
             });
 
             A = Ext.define(null, {
@@ -2340,9 +2340,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: spy,
-                  $value: aVal,
-                },
-              },
+                  $value: aVal
+                }
+              }
             });
           }
 
@@ -2364,7 +2364,7 @@ describe("Ext.Class", function () {
               1,
               new Date(),
               {},
-              [],
+              []
             ];
             describe("for subclasses", function () {
               it("should call the merge function for all value combinations", function () {
@@ -2428,12 +2428,12 @@ describe("Ext.Class", function () {
 
             it("should set the returned value", function () {
               spy = jasmine.createSpy().andReturn({
-                merged: "ok!",
+                merged: "ok!"
               });
               defineInherit({}, {});
               o = new B();
               expect(o.getFoo()).toEqual({
-                merged: "ok!",
+                merged: "ok!"
               });
             });
           });
@@ -2447,13 +2447,13 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: spy,
-                  $value: classVal,
-                },
-              },
+                  $value: classVal
+                }
+              }
             });
 
             o = new A({
-              foo: instanceVal,
+              foo: instanceVal
             });
           }
 
@@ -2471,7 +2471,7 @@ describe("Ext.Class", function () {
                 1,
                 new Date(),
                 {},
-                [],
+                []
               ];
               Ext.Array.forEach(possible, function (clsValue) {
                 Ext.Array.forEach(possible, function (instanceValue) {
@@ -2489,18 +2489,18 @@ describe("Ext.Class", function () {
 
               defineAndInstance(
                 {
-                  foo: 1,
+                  foo: 1
                 },
                 {
-                  bar: 1,
-                },
+                  bar: 1
+                }
               );
               args = spy.mostRecentCall.args;
               expect(args[0]).toEqual({
-                bar: 1,
+                bar: 1
               });
               expect(args[1]).toEqual({
-                foo: 1,
+                foo: 1
               });
             });
 
@@ -2511,11 +2511,11 @@ describe("Ext.Class", function () {
 
             it("should set the returned value", function () {
               spy = jasmine.createSpy().andReturn({
-                merged: "ok!",
+                merged: "ok!"
               });
               defineAndInstance({}, {});
               expect(o.getFoo()).toEqual({
-                merged: "ok!",
+                merged: "ok!"
               });
             });
           });
@@ -2528,21 +2528,21 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: spy,
-                  $value: null,
-                },
-              },
+                  $value: null
+                }
+              }
             });
 
             B = Ext.define(null, {
               extend: A,
               config: {
-                foo: {},
-              },
+                foo: {}
+              }
             });
 
             spy.reset();
             o = new B({
-              foo: {},
+              foo: {}
             });
             expect(spy).toHaveBeenCalled();
           });
@@ -2551,8 +2551,8 @@ describe("Ext.Class", function () {
             A = Ext.define(null, {
               constructor: defaultInitConfig,
               config: {
-                foo: 1,
-              },
+                foo: 1
+              }
             });
 
             B = Ext.define(null, {
@@ -2560,14 +2560,14 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: spy,
-                  $value: {},
-                },
-              },
+                  $value: {}
+                }
+              }
             });
 
             spy.reset();
             o = new B({
-              foo: {},
+              foo: {}
             });
             expect(spy).toHaveBeenCalled();
           });
@@ -2581,9 +2581,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: superSpy,
-                  $value: {},
-                },
-              },
+                  $value: {}
+                }
+              }
             });
 
             B = Ext.define(null, {
@@ -2591,15 +2591,15 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: spy,
-                  $value: {},
-                },
-              },
+                  $value: {}
+                }
+              }
             });
 
             superSpy.reset();
             spy.reset();
             o = new B({
-              foo: {},
+              foo: {}
             });
             expect(superSpy).not.toHaveBeenCalled();
             expect(spy).toHaveBeenCalled();
@@ -2613,9 +2613,9 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: superSpy,
-                  $value: {},
-                },
-              },
+                  $value: {}
+                }
+              }
             });
 
             B = Ext.define(null, {
@@ -2623,15 +2623,15 @@ describe("Ext.Class", function () {
               config: {
                 foo: {
                   merge: spy,
-                  $value: {},
-                },
-              },
+                  $value: {}
+                }
+              }
             });
 
             superSpy.reset();
             spy.reset();
             o = new A({
-              foo: {},
+              foo: {}
             });
             expect(superSpy).toHaveBeenCalled();
             expect(spy).not.toHaveBeenCalled();
@@ -2649,8 +2649,8 @@ describe("Ext.Class", function () {
       cls = Ext.define(null, {
         statics: {
           someName: "someValue",
-          someMethod: fn,
-        },
+          someMethod: fn
+        }
       });
       expect(cls.someName).toBe("someValue");
       expect(cls.someMethod).toBe(fn);
@@ -2660,12 +2660,12 @@ describe("Ext.Class", function () {
       cls = Ext.define(null, {
         statics: {
           someName: "someValue",
-          someMethod: fn,
-        },
+          someMethod: fn
+        }
       });
 
       sub = Ext.define(null, {
-        extend: sub,
+        extend: sub
       });
       expect(sub.someName).not.toBeDefined();
       expect(sub.someMethod).not.toBeDefined();
@@ -2681,11 +2681,11 @@ describe("Ext.Class", function () {
       cls = Ext.define(null, {
         inheritableStatics: {
           someName: "someValue",
-          someMethod: fn,
-        },
+          someMethod: fn
+        }
       });
       sub = Ext.define(null, {
-        extend: cls,
+        extend: cls
       });
 
       expect(sub.someName).toBe("someValue");
@@ -2697,12 +2697,12 @@ describe("Ext.Class", function () {
         inheritableStatics: {
           foo: function () {
             return 1;
-          },
-        },
+          }
+        }
       });
 
       var sub1 = Ext.define(null, {
-        extend: cls,
+        extend: cls
       });
 
       var sub2 = Ext.define(null, {
@@ -2713,8 +2713,8 @@ describe("Ext.Class", function () {
           },
           bar: function () {
             return 100;
-          },
-        },
+          }
+        }
       });
 
       expect(cls.foo()).toBe(1);
@@ -2732,8 +2732,8 @@ describe("Ext.Class", function () {
         inheritableStatics: {
           foo: function () {
             return 100;
-          },
-        },
+          }
+        }
       });
 
       Ext.define(null, {
@@ -2744,8 +2744,8 @@ describe("Ext.Class", function () {
           },
           bar: function () {
             return 2;
-          },
-        },
+          }
+        }
       });
 
       expect(cls.foo()).toBe(101);
@@ -2756,15 +2756,15 @@ describe("Ext.Class", function () {
       cls = Ext.define(null, {
         inheritableStatics: {
           someName: "someValue",
-          someMethod: fn,
-        },
+          someMethod: fn
+        }
       });
       sub = Ext.define(null, {
         extend: cls,
         statics: {
           someName: "someOtherValue",
-          someMethod: function () {},
-        },
+          someMethod: function () {}
+        }
       });
 
       expect(sub.someName).toBe("someOtherValue");
@@ -2778,8 +2778,8 @@ describe("Ext.Class", function () {
         inheritableStatics: {
           doIt: function () {
             data.push("super");
-          },
-        },
+          }
+        }
       });
 
       sub = Ext.define(null, {
@@ -2788,8 +2788,8 @@ describe("Ext.Class", function () {
           doIt: function () {
             this.callParent();
             data.push("sub");
-          },
-        },
+          }
+        }
       });
 
       sub.doIt();
@@ -2803,8 +2803,8 @@ describe("Ext.Class", function () {
           inheritableStatics: {
             foo: function () {
               return val;
-            },
-          },
+            }
+          }
         });
       }
 
@@ -2823,8 +2823,8 @@ describe("Ext.Class", function () {
           inheritableStatics: {
             bar: function () {
               return 100;
-            },
-          },
+            }
+          }
         });
 
         var sub1 = makeSubCls(1),
@@ -2847,8 +2847,8 @@ describe("Ext.Class", function () {
           inheritableStatics: {
             foo: function () {
               return "mixinfoo";
-            },
-          },
+            }
+          }
         });
       });
 
@@ -2859,13 +2859,13 @@ describe("Ext.Class", function () {
       it("should merge when they exist on both", function () {
         cls = Ext.define(null, {
           mixins: {
-            mix: mixin,
+            mix: mixin
           },
           inheritableStatics: {
             bar: function () {
               return "clsbar";
-            },
-          },
+            }
+          }
         });
 
         expect(cls.foo()).toBe("mixinfoo");
@@ -2875,13 +2875,13 @@ describe("Ext.Class", function () {
       it("should favour the class statics", function () {
         cls = Ext.define(null, {
           mixins: {
-            mix: mixin,
+            mix: mixin
           },
           inheritableStatics: {
             foo: function () {
               return "clsfoo";
-            },
-          },
+            }
+          }
         });
 
         expect(cls.foo()).toBe("clsfoo");
@@ -2890,8 +2890,8 @@ describe("Ext.Class", function () {
       it("should add if the class has no statics", function () {
         cls = Ext.define(null, {
           mixins: {
-            mix: mixin,
-          },
+            mix: mixin
+          }
         });
 
         expect(cls.foo()).toBe("mixinfoo");
@@ -2900,12 +2900,12 @@ describe("Ext.Class", function () {
       it("should be able to inherit for subclasses of classes with mixins", function () {
         cls = Ext.define(null, {
           mixins: {
-            mix: mixin,
-          },
+            mix: mixin
+          }
         });
 
         sub = Ext.define(null, {
-          extend: cls,
+          extend: cls
         });
 
         expect(sub.foo()).toBe("mixinfoo");
@@ -2914,17 +2914,17 @@ describe("Ext.Class", function () {
       it("should be able to inherit for subclasses of classes with mixins where the superclass has inheritableStatics", function () {
         cls = Ext.define(null, {
           mixins: {
-            mix: mixin,
+            mix: mixin
           },
           inheritableStatics: {
             bar: function () {
               return "clsbar";
-            },
-          },
+            }
+          }
         });
 
         sub = Ext.define(null, {
-          extend: cls,
+          extend: cls
         });
 
         expect(sub.foo()).toBe("mixinfoo");
@@ -2934,8 +2934,8 @@ describe("Ext.Class", function () {
       it("should be able to callParent to a mixed in static", function () {
         cls = Ext.define(null, {
           mixins: {
-            mix: mixin,
-          },
+            mix: mixin
+          }
         });
 
         sub = Ext.define(null, {
@@ -2943,8 +2943,8 @@ describe("Ext.Class", function () {
           inheritableStatics: {
             foo: function () {
               return this.callParent() + "sub";
-            },
-          },
+            }
+          }
         });
 
         expect(sub.foo()).toBe("mixinfoosub");
@@ -2959,7 +2959,7 @@ describe("Ext.Class", function () {
       subClass.addStatics({
         staticMethod: function () {
           called = true;
-        },
+        }
       });
 
       expect(subClass.staticMethod).toBeDefined();
@@ -2971,7 +2971,7 @@ describe("Ext.Class", function () {
     it("multiple with object map argument", function () {
       subClass.addStatics({
         staticProperty: "something",
-        staticMethod: function () {},
+        staticMethod: function () {}
       });
 
       expect(subClass.staticProperty).toBe("something");
@@ -2986,7 +2986,7 @@ describe("Ext.Class", function () {
           this.isOverridden = true;
 
           this.callOverridden(arguments);
-        },
+        }
       });
 
       var obj = new subClass();
@@ -3000,14 +3000,14 @@ describe("Ext.Class", function () {
       cls = Ext.define(null, {
         constructor: defaultInitConfig,
         config: {
-          foo: 1,
-        },
+          foo: 1
+        }
       });
 
       cls.override({
         config: {
-          foo: 2,
-        },
+          foo: 2
+        }
       });
 
       expect(new cls().getFoo()).toBe(2);
@@ -3017,14 +3017,14 @@ describe("Ext.Class", function () {
       cls = Ext.define(null, {
         constructor: defaultInitConfig,
         config: {
-          foo: 1,
-        },
+          foo: 1
+        }
       });
 
       cls.override({
         config: {
-          bar: 2,
-        },
+          bar: 2
+        }
       });
 
       expect(new cls().getBar()).toBe(2);
@@ -3041,8 +3041,8 @@ describe("Ext.Class", function () {
         bar: function () {},
 
         privates: {
-          foo: function () {},
-        },
+          foo: function () {}
+        }
       });
     });
 
@@ -3053,8 +3053,8 @@ describe("Ext.Class", function () {
             extend: Base,
 
             privates: {
-              foo: function () {},
-            },
+              foo: function () {}
+            }
           });
         }).not.toThrow();
       });
@@ -3065,8 +3065,8 @@ describe("Ext.Class", function () {
             extend: Base,
 
             privates: {
-              bar: function () {},
-            },
+              bar: function () {}
+            }
           });
         }).not.toThrow();
       });
@@ -3076,7 +3076,7 @@ describe("Ext.Class", function () {
           Ext.define(null, {
             extend: Base,
 
-            foo: function () {},
+            foo: function () {}
           });
         }).toThrow();
       });
@@ -3089,8 +3089,8 @@ describe("Ext.Class", function () {
             privates: {
               privacy: "user",
 
-              foo: function () {},
-            },
+              foo: function () {}
+            }
           });
         }).toThrow();
       });
@@ -3100,7 +3100,7 @@ describe("Ext.Class", function () {
       it("should throw when overriding a private method", function () {
         expect(function () {
           Base.override({
-            foo: function () {},
+            foo: function () {}
           });
         }).toThrow();
       });
@@ -3109,8 +3109,8 @@ describe("Ext.Class", function () {
         expect(function () {
           Base.override({
             privates: {
-              bar: function () {},
-            },
+              bar: function () {}
+            }
           });
         }).not.toThrow();
       });
@@ -3119,8 +3119,8 @@ describe("Ext.Class", function () {
         expect(function () {
           Base.override({
             privates: {
-              foo: function () {},
-            },
+              foo: function () {}
+            }
           });
         }).not.toThrow();
       });
@@ -3131,8 +3131,8 @@ describe("Ext.Class", function () {
             privates: {
               privacy: "user",
 
-              foo: function () {},
-            },
+              foo: function () {}
+            }
           });
         }).toThrow();
       });
@@ -3156,9 +3156,9 @@ describe("Ext.Class", function () {
 
           foo: function (x) {
             return this.callParent([x * 2]);
-          },
+          }
         },
-        onCreated,
+        onCreated
       );
 
       // this override comes before its target:
@@ -3169,16 +3169,16 @@ describe("Ext.Class", function () {
 
           foo: function (x) {
             return this.callParent([x * 2]);
-          },
+          }
         },
-        onCreated,
+        onCreated
       );
 
       Ext.define("Foo.Singleton", {
         singleton: true,
         foo: function (x) {
           return x;
-        },
+        }
       });
 
       Ext.define("Foo.SomeBase", {
@@ -3192,8 +3192,8 @@ describe("Ext.Class", function () {
           },
           staticMethod: function (x) {
             return "A" + x;
-          },
-        },
+          }
+        }
       });
 
       Ext.define("Foo.SomeClass", {
@@ -3220,8 +3220,8 @@ describe("Ext.Class", function () {
 
           staticMethod: function (x) {
             return "B" + this.callParent(arguments);
-          },
-        },
+          }
+        }
       });
 
       // this override comes after its target:
@@ -3256,10 +3256,10 @@ describe("Ext.Class", function () {
             },
             staticMethod: function (x) {
               return "Z" + this.callParent([x * 2]) + "!";
-            },
-          },
+            }
+          }
         },
-        onCreated,
+        onCreated
       );
 
       obj = Ext.create("Foo.SomeClass");
@@ -3272,11 +3272,11 @@ describe("Ext.Class", function () {
           "Foo.Singleton",
           "Foo.SomeClassOverride",
           "Foo.SomeBase",
-          "Foo.SomeClass",
+          "Foo.SomeClass"
         ],
         function (className) {
           Ext.undefine(className);
-        },
+        }
       );
 
       Ext.undefine("Foo");
@@ -3338,16 +3338,16 @@ describe("Ext.Class", function () {
     it("should not overwrite a config if it exists on the class", function () {
       var Mix = Ext.define("spec.Mixin", {
         config: {
-          foo: 1,
-        },
+          foo: 1
+        }
       });
 
       var Cls = Ext.define(null, {
         constructor: defaultInitConfig,
         mixins: [Mix],
         config: {
-          foo: 2,
-        },
+          foo: 2
+        }
       });
       o = new Cls();
       expect(o.getFoo()).toBe(2);
@@ -3368,7 +3368,7 @@ describe("Ext.Class", function () {
         mixinConfig: {
           extended: function (base, derived, body) {
             extendLog.push(derived.$className + " extends " + base.$className);
-          },
+          }
         },
 
         foo: function (s) {
@@ -3376,7 +3376,7 @@ describe("Ext.Class", function () {
         },
         doBar: function (s) {
           fooResult += "M1.bar" + s;
-        },
+        }
       });
       Ext.define("Foo.M2", {
         extend: "Foo.M1",
@@ -3387,14 +3387,14 @@ describe("Ext.Class", function () {
               // These cannot call parent for now.
               fooResult += "M2.foo" + s;
             },
-            bar: "doBar",
-          },
+            bar: "doBar"
+          }
         },
         doBar: function (s) {
           // This flavor will work since this is a normal class method
           this.callParent(arguments);
           fooResult += "M2.bar" + s;
-        },
+        }
       });
       Ext.define("Foo.A", {
         foo: function (s) {
@@ -3402,7 +3402,7 @@ describe("Ext.Class", function () {
         },
         bar: function (s) {
           fooResult += "A.bar" + s;
-        },
+        }
       });
       Ext.define("Foo.B", {
         extend: "Foo.A",
@@ -3413,12 +3413,12 @@ describe("Ext.Class", function () {
         bar: function (s) {
           this.callParent(arguments);
           fooResult += "B.bar" + s;
-        },
+        }
       });
       Ext.define("Foo.C", {
         extend: "Foo.A",
         mixins: {
-          m2: "Foo.M2",
+          m2: "Foo.M2"
         },
         foo: function (s) {
           this.callParent(arguments);
@@ -3428,12 +3428,12 @@ describe("Ext.Class", function () {
         bar: function (s) {
           this.callParent(arguments);
           fooResult += "C.bar" + s;
-        },
+        }
       });
       Ext.define("Foo.D", {
         extend: "Foo.B",
         mixins: {
-          m2: "Foo.M2",
+          m2: "Foo.M2"
         },
         foo: function (s) {
           this.callParent(arguments);
@@ -3444,7 +3444,7 @@ describe("Ext.Class", function () {
           this.callParent(arguments);
           fooResult += "D.bar" + s;
           return 42;
-        },
+        }
       });
       Ext.define("Foo.E", {
         extend: "Foo.C",
@@ -3455,7 +3455,7 @@ describe("Ext.Class", function () {
         bar: function (s) {
           this.callParent(arguments);
           fooResult += "B.bar" + s;
-        },
+        }
       });
     });
 
@@ -3532,11 +3532,11 @@ describe("Ext.Class", function () {
           "spec.Extend",
           {
             extend: "Ext.Base",
-            foo: fn,
+            foo: fn
           },
           function () {
             val = this.prototype.foo;
-          },
+          }
         );
         expect(val).toBe(fn);
       });
@@ -3549,11 +3549,11 @@ describe("Ext.Class", function () {
           "spec.Extend",
           {
             extend: "Ext.Base",
-            foo: fn,
+            foo: fn
           },
           function (Cls) {
             val = Cls.prototype.foo;
-          },
+          }
         );
         expect(val).toBe(fn);
       });
@@ -3574,11 +3574,11 @@ describe("Ext.Class", function () {
         Ext.define(
           "spec.Override",
           {
-            override: "spec.Base",
+            override: "spec.Base"
           },
           function () {
             val = this;
-          },
+          }
         );
         expect(val).toBe(base);
       });
@@ -3589,11 +3589,11 @@ describe("Ext.Class", function () {
         Ext.define(
           "spec.Override",
           {
-            override: "spec.Base",
+            override: "spec.Base"
           },
           function (Cls) {
             val = Cls;
-          },
+          }
         );
         expect(val).toBe(base);
       });
@@ -3611,7 +3611,7 @@ describe("Ext.Class", function () {
       realPlatformTags = Ext.platformTags;
       Ext.platformTags = {
         desktop: true,
-        chrome: true,
+        chrome: true
       };
 
       Base = Ext.define(null, {
@@ -3620,19 +3620,19 @@ describe("Ext.Class", function () {
         },
 
         config: {
-          foo: "abc",
+          foo: "abc"
         },
 
         updateFoo: function (value) {
           log.push("updateFoo: " + value);
-        },
+        }
       });
 
       Derived = Ext.define(null, {
         extend: Base,
 
         config: {
-          bar: "xyz",
+          bar: "xyz"
         },
 
         jaz: 13,
@@ -3649,19 +3649,19 @@ describe("Ext.Class", function () {
 
         platformConfig: {
           "chrome && desktop": {
-            bar: "aaa",
+            bar: "aaa"
           },
           desktop: {
             foo: "ABC",
             bar: "XYZ",
-            jaz: 427,
+            jaz: 427
           },
           "!desktop": {
             foo: "DEF",
             bar: "UVW",
-            jaz: 42,
-          },
-        },
+            jaz: 42
+          }
+        }
       });
     });
 
@@ -3674,7 +3674,7 @@ describe("Ext.Class", function () {
 
       beforeEach(function () {
         instance = new Derived({
-          herp: "derp",
+          herp: "derp"
         });
       });
 
@@ -3706,7 +3706,7 @@ describe("Ext.Class", function () {
         expect(log).toEqual([
           "updateFoo: ABC",
           "updateBar: aaa",
-          "updateJaz: 10",
+          "updateJaz: 10"
         ]);
       });
     }); // derivation
@@ -3718,15 +3718,15 @@ describe("Ext.Class", function () {
         instance = new Derived({
           platformConfig: {
             "chrome && desktop": {
-              bar: "bbb",
+              bar: "bbb"
             },
             desktop: {
-              foo: 321,
+              foo: 321
             },
             "!desktop": {
-              jaz: 123,
-            },
-          },
+              jaz: 123
+            }
+          }
         });
       });
 
@@ -3754,7 +3754,7 @@ describe("Ext.Class", function () {
         expect(log).toEqual([
           "updateFoo: 321",
           "updateBar: bbb",
-          "updateJaz: 10",
+          "updateJaz: 10"
         ]);
       });
     }); // instances
@@ -3789,11 +3789,11 @@ describe("Ext.Class", function () {
             renamed: "newName",
 
             removed: {
-              message: "This config was replaced by pixie dust",
-            },
-          },
-        },
-      },
+              message: "This config was replaced by pixie dust"
+            }
+          }
+        }
+      }
     });
 
     it("should warn about dead configs", function () {

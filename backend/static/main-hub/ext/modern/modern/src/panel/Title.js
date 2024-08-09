@@ -58,7 +58,7 @@ Ext.define("Ext.panel.Title", {
      * @inheritdoc Ext.panel.Header#cfg-iconCls
      * @accessor
      */
-    iconCls: null,
+    iconCls: null
   },
 
   weight: -10,
@@ -76,26 +76,26 @@ Ext.define("Ext.panel.Title", {
           Ext.baseCSSPrefix +
           "panel-title-icon " +
           Ext.baseCSSPrefix +
-          "panel-title-icon-left",
+          "panel-title-icon-left"
       },
       {
         reference: "textElement",
-        cls: Ext.baseCSSPrefix + "panel-title-text",
-      },
-    ],
+        cls: Ext.baseCSSPrefix + "panel-title-text"
+      }
+    ]
   },
 
   _textAlignClasses: {
     left: Ext.baseCSSPrefix + "panel-title-align-left",
     center: Ext.baseCSSPrefix + "panel-title-align-center",
-    right: Ext.baseCSSPrefix + "panel-title-align-right",
+    right: Ext.baseCSSPrefix + "panel-title-align-right"
   },
 
   _iconAlignClasses: {
     top: Ext.baseCSSPrefix + "panel-title-icon-top",
     right: Ext.baseCSSPrefix + "panel-title-icon-right",
     bottom: Ext.baseCSSPrefix + "panel-title-icon-bottom",
-    left: Ext.baseCSSPrefix + "panel-title-icon-left",
+    left: Ext.baseCSSPrefix + "panel-title-icon-left"
   },
 
   baseCls: Ext.baseCSSPrefix + "panel-title",
@@ -217,6 +217,6 @@ Ext.define("Ext.panel.Title", {
 
     _syncIconVisibility: function () {
       this.iconElement.setDisplayed(this._hasIcon());
-    },
-  },
+    }
+  }
 });

@@ -195,7 +195,7 @@ Ext.define(
     // Begin with no previous adjustments
     lastOverflowAdjust: {
       width: 0,
-      height: 0,
+      height: 0
     },
 
     outerCtCls: Ext.baseCSSPrefix + "autocontainer-outerCt",
@@ -225,7 +225,7 @@ Ext.define(
       'class="{innerCtCls}">',
       "{%this.renderBody(out,values)%}",
       "</div>",
-      "</div>",
+      "</div>"
     ],
 
     beginLayout: function (ownerContext) {
@@ -467,11 +467,11 @@ Ext.define(
             state: {
               overflowAdjust: {
                 width: width,
-                height: height,
+                height: height
               },
               overflowState: scrollbars,
-              secondPass: true,
-            },
+              secondPass: true
+            }
           });
         }
       }
@@ -665,7 +665,7 @@ Ext.define(
         if (owner.scrollable || me.reserveScrollbar) {
           me.lastOverflowAdjust = {
             width: scrollbarWidth,
-            height: 0,
+            height: 0
           };
         }
       }
@@ -796,7 +796,7 @@ Ext.define(
         if (needsOuterHeight) {
           ownerContext.outerCtContext.setProp(
             "height",
-            height + padding.height,
+            height + padding.height
           );
           me.hasOuterCtPxHeight = true;
         }
@@ -816,7 +816,7 @@ Ext.define(
 
     getContentTarget: function () {
       return this.innerCt;
-    },
+    }
   },
   function (Cls) {
     var v = Ext.chromeVersion;
@@ -825,5 +825,5 @@ Ext.define(
     // versions to test on so it's not possible to say. However due to the auto update nature it's
     // highly unlikely anyone is running this range anyway.
     Cls.prototype.chromeCellMeasureBug = Ext.isChrome && v >= 26 && v <= 34;
-  },
+  }
 );

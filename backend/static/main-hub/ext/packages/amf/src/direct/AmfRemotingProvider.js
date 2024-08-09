@@ -96,7 +96,7 @@ Ext.define("Ext.direct.AmfRemotingProvider", {
     "Ext.data.amf.Encoder",
     "Ext.data.amf.Packet",
     "Ext.data.amf.RemotingMessage",
-    "Ext.direct.ExceptionEvent",
+    "Ext.direct.ExceptionEvent"
   ],
 
   /* End Definitions */
@@ -267,7 +267,7 @@ TestAction.multiply(
         me.configureRequest(
           action,
           method,
-          Array.prototype.slice.call(arguments, 0),
+          Array.prototype.slice.call(arguments, 0)
         );
       };
     } else {
@@ -277,7 +277,7 @@ TestAction.multiply(
     }
     handler.directCfg = {
       action: action,
-      method: method,
+      method: method
     };
     return handler;
   },
@@ -333,12 +333,12 @@ TestAction.multiply(
         Ext.callback(callback[funcName], callback.scope, [
           result,
           event,
-          success,
+          success
         ]);
         Ext.callback(callback.callback, callback.scope, [
           result,
           event,
-          success,
+          success
         ]);
       }
     }
@@ -380,7 +380,7 @@ TestAction.multiply(
             transaction: transaction,
             code: Ext.direct.Manager.exceptions.TRANSPORT,
             message: "Unable to connect to the server.",
-            xhr: response,
+            xhr: response
           });
           me.fireEvent("data", me, event);
           if (transaction) {
@@ -427,7 +427,7 @@ TestAction.multiply(
       callback:
         scope && Ext.isFunction(callback)
           ? Ext.Function.bind(callback, scope)
-          : callback,
+          : callback
     });
 
     if (me.fireEvent("beforecall", me, transaction, method) !== false) {
@@ -448,7 +448,7 @@ TestAction.multiply(
       return {
         targetUri: transaction.action + "." + transaction.method,
         responseUri: "/" + transaction.id,
-        body: transaction.data || [],
+        body: transaction.data || []
       };
     } else {
       return new Ext.data.amf.RemotingMessage({
@@ -457,12 +457,12 @@ TestAction.multiply(
         destination: transaction.action,
         headers: {
           DSEndpoint: this.endpoint,
-          DSId: this.DSId || "nil", // if unknown yet, use "nil"
+          DSId: this.DSId || "nil" // if unknown yet, use "nil"
         },
         messageId: Ext.data.amf.XmlEncoder.generateFlexUID(transaction.id), // encode as first 4 bytes of UID
         operation: transaction.method,
         timestamp: 0,
-        timeToLive: 0,
+        timeToLive: 0
       });
     }
     /*
@@ -488,7 +488,7 @@ TestAction.multiply(
         callback: me.onData,
         scope: me,
         transaction: data,
-        timeout: me.timeout,
+        timeout: me.timeout
       },
       callData,
       i = 0,
@@ -503,7 +503,7 @@ TestAction.multiply(
       //<debug>
       if (!me.binary) {
         Ext.raise(
-          "Mutltiple messages in the same call are not supported in AMFX",
+          "Mutltiple messages in the same call are not supported in AMFX"
         );
       }
       //</debug>
@@ -680,7 +680,7 @@ TestAction.multiply(
         data: e,
         xhr: response,
         code: Ext.direct.Manager.exceptions.PARSE,
-        message: "Error parsing AMF response: \n\n " + data,
+        message: "Error parsing AMF response: \n\n " + data
       });
       return [event];
     }
@@ -714,7 +714,7 @@ TestAction.multiply(
       statusIndex = 2;
     } else {
       tid = Ext.data.amf.XmlDecoder.decodeTidFromFlexUID(
-        response.message.correlationId,
+        response.message.correlationId
       );
       statusIndex = 1;
     }
@@ -723,14 +723,14 @@ TestAction.multiply(
       // The call failed
       data = {
         tid: tid,
-        data: me.binary ? response.body : response.message,
+        data: me.binary ? response.body : response.message
       };
       event = Ext.create("direct.exception", data);
     } else if (status[statusIndex] == "onResult") {
       // Call succeeded
       data = {
         tid: tid,
-        data: me.binary ? response.body : response.message.body,
+        data: me.binary ? response.body : response.message.body
       };
       event = Ext.create("direct.rpc", data);
     } else {
@@ -740,5 +740,5 @@ TestAction.multiply(
     }
 
     return event;
-  },
+  }
 });

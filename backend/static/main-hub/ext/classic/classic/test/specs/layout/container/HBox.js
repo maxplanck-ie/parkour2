@@ -17,7 +17,7 @@ describe("Ext.layout.container.HBox", function () {
           renderTo: Ext.getBody(),
           layout: "hbox",
           width: 100,
-          height: 100,
+          height: 100
         });
 
         counter++;
@@ -48,7 +48,7 @@ describe("Ext.layout.container.HBox", function () {
   describe("removing items", function () {
     it("should clear the left on an item when removing and using in another container", function () {
       c = new Ext.Component({
-        width: 50,
+        width: 50
       });
 
       ct = new Ext.container.Container({
@@ -58,17 +58,17 @@ describe("Ext.layout.container.HBox", function () {
         height: 100,
         items: [
           {
-            width: 50,
+            width: 50
           },
-          c,
-        ],
+          c
+        ]
       });
 
       var other = new Ext.container.Container({
         renderTo: Ext.getBody(),
         layout: "fit",
         width: 100,
-        height: 100,
+        height: 100
       });
 
       ct.remove(c, false);
@@ -92,7 +92,7 @@ describe("Ext.layout.container.HBox", function () {
         collapsed: true,
         layout: "hbox",
         width: 100,
-        height: 100,
+        height: 100
       });
 
       // When adding the item to the collapsed panel, it won't render
@@ -116,24 +116,24 @@ describe("Ext.layout.container.HBox", function () {
           {
             xtype: "component",
             width: "20%",
-            height: 100,
+            height: 100
           },
           {
             xtype: "component",
             width: 30,
-            height: "75%",
+            height: "75%"
           },
           {
             xtype: "component",
             flex: 1,
-            height: "100%",
+            height: "100%"
           },
           {
             xtype: "component",
             flex: 2,
-            html: '<div style="height:50px"></div>',
-          },
-        ],
+            html: '<div style="height:50px"></div>'
+          }
+        ]
       });
 
       expect(ct).toHaveLayout({
@@ -142,8 +142,8 @@ describe("Ext.layout.container.HBox", function () {
           0: { el: { xywh: "0 0 60 100" } },
           1: { el: { xywh: "60 0 30 150" } },
           2: { el: { xywh: "90 0 70 200" } },
-          3: { el: { xywh: "160 0 140 50" } },
-        },
+          3: { el: { xywh: "160 0 140 50" } }
+        }
       });
     });
   });
@@ -152,7 +152,7 @@ describe("Ext.layout.container.HBox", function () {
     var childConfig = {
       xtype: "component",
       style: "border: 1px solid blue;",
-      html: "child 1 content",
+      html: "child 1 content"
     };
 
     it("should handle auto width of nested boxes", function () {
@@ -174,7 +174,7 @@ describe("Ext.layout.container.HBox", function () {
             xtype: "container",
             layout: {
               type: "hbox",
-              align: "stretchmax",
+              align: "stretchmax"
             },
             style: "border: 1px solid yellow",
             items: [
@@ -187,25 +187,25 @@ describe("Ext.layout.container.HBox", function () {
                 items: [
                   Ext.apply(
                     {
-                      itemId: "child1",
+                      itemId: "child1"
                     },
-                    childConfig,
+                    childConfig
                   ),
                   {
                     xtype: "component",
                     itemId: "column1Child2Id",
                     style: "border: 1px solid green;",
-                    html: "child 2 content",
-                  },
-                ],
+                    html: "child 2 content"
+                  }
+                ]
               },
               {
                 flex: 1,
-                style: "border: 1px solid blue;",
-              },
-            ],
-          },
-        ],
+                style: "border: 1px solid blue;"
+              }
+            ]
+          }
+        ]
       });
 
       // make sure we get the same height for the nested version:
@@ -217,7 +217,7 @@ describe("Ext.layout.container.HBox", function () {
   describe("padding", function () {
     function makeCt(pad) {
       c = new Ext.Component({
-        flex: 1,
+        flex: 1
       });
       ct = new Ext.container.Container({
         renderTo: Ext.getBody(),
@@ -226,9 +226,9 @@ describe("Ext.layout.container.HBox", function () {
         layout: {
           type: "hbox",
           align: "stretch",
-          padding: pad,
+          padding: pad
         },
-        items: c,
+        items: c
       });
     }
 
@@ -259,13 +259,13 @@ describe("Ext.layout.container.HBox", function () {
       defaultType: "component",
       layout: {
         type: "hbox",
-        align: "stretch",
+        align: "stretch"
       },
       defaults: {
         flex: 1,
-        margin: 5,
+        margin: 5
       },
-      items: [{}, {}],
+      items: [{}, {}]
     });
 
     expect(ct.items.first().getY()).toBe(5);
@@ -284,19 +284,19 @@ describe("Ext.layout.container.HBox", function () {
         height: 600,
         layout: {
           type: "hbox",
-          pack: pack,
+          pack: pack
         },
         items: [
           {
-            width: 30,
+            width: 30
           },
           {
-            width: 40,
+            width: 40
           },
           {
-            width: 20,
-          },
-        ],
+            width: 20
+          }
+        ]
       });
     }
 
@@ -341,9 +341,9 @@ describe("Ext.layout.container.HBox", function () {
           layout: {
             type: "hbox",
             align: align,
-            constrainAlign: !!options.constrainAlign,
+            constrainAlign: !!options.constrainAlign
           },
-          items: items,
+          items: items
         });
       };
 
@@ -372,11 +372,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should keep items at the top when using align: top", function () {
         makeCt("top", [
           {
-            html: "a",
+            html: "a"
           },
           {
-            html: "b",
-          },
+            html: "b"
+          }
         ]);
         expect(getY(0)).toBe(0);
         expect(getY(1)).toBe(0);
@@ -385,11 +385,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should align items in the middle when using align: middle", function () {
         makeCt("middle", [
           {
-            height: 100,
+            height: 100
           },
           {
-            height: 300,
-          },
+            height: 300
+          }
         ]);
         expect(getY(0)).toBe(250);
         expect(getY(1)).toBe(150);
@@ -398,11 +398,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should keep items to the bottom when using align: bottom", function () {
         makeCt("bottom", [
           {
-            html: "a",
+            html: "a"
           },
           {
-            html: "b",
-          },
+            html: "b"
+          }
         ]);
         expect(getY(0)).toBe(600 - getHeight(0));
         expect(getY(1)).toBe(600 - getHeight(1));
@@ -424,12 +424,12 @@ describe("Ext.layout.container.HBox", function () {
             "top",
             [
               {
-                html: makeLongString("A", 100),
-              },
+                html: makeLongString("A", 100)
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
           expect(getHeight(0)).toBe(600);
           expect(getY(0)).toBe(0);
@@ -440,12 +440,12 @@ describe("Ext.layout.container.HBox", function () {
             "middle",
             [
               {
-                html: makeLongString("A", 100),
-              },
+                html: makeLongString("A", 100)
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
           expect(getHeight(0)).toBe(600);
           expect(getY(0)).toBe(0);
@@ -456,12 +456,12 @@ describe("Ext.layout.container.HBox", function () {
             "bottom",
             [
               {
-                html: makeLongString("A", 100),
-              },
+                html: makeLongString("A", 100)
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
           expect(getHeight(0)).toBe(600);
           expect(getY(0)).toBe(0);
@@ -473,12 +473,12 @@ describe("Ext.layout.container.HBox", function () {
             [
               {
                 html: "A",
-                height: 1000,
-              },
+                height: 1000
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
           expect(getHeight(0)).toBe(1000);
         });
@@ -488,15 +488,15 @@ describe("Ext.layout.container.HBox", function () {
             "top",
             [
               {
-                html: makeLongString("A", 100),
+                html: makeLongString("A", 100)
               },
               {
-                html: "B",
-              },
+                html: "B"
+              }
             ],
             {
-              constrainAlign: true,
-            },
+              constrainAlign: true
+            }
           );
 
           expect(getX(0)).toBe(0);
@@ -509,24 +509,24 @@ describe("Ext.layout.container.HBox", function () {
       it("should stretch all items to the size of the largest when using align: stretchmax", function () {
         c = new Ext.Component({
           renderTo: Ext.getBody(),
-          html: "a<br />b<br />c",
+          html: "a<br />b<br />c"
         });
 
         var expected = c.getHeight({
-          floating: true,
+          floating: true
         });
         c.destroy();
 
         makeCt("stretchmax", [
           {
-            html: "a<br />b",
+            html: "a<br />b"
           },
           {
-            html: "a<br />b<br />c",
+            html: "a<br />b<br />c"
           },
           {
-            html: "a<br />b",
-          },
+            html: "a<br />b"
+          }
         ]);
 
         expect(getHeight(0)).toBe(expected);
@@ -537,20 +537,20 @@ describe("Ext.layout.container.HBox", function () {
       it("should always use a stretchmax over a fixed height", function () {
         makeCt("stretchmax", [
           {
-            height: 30,
+            height: 30
           },
           {
-            html: "a<br />b<br />c",
+            html: "a<br />b<br />c"
           },
           {
-            html: "a<br />b",
-          },
+            html: "a<br />b"
+          }
         ]);
 
         c = new Ext.Component({
           renderTo: Ext.getBody(),
           html: "a<br />b<br />c",
-          floating: true,
+          floating: true
         });
 
         var expected = c.getHeight();
@@ -565,11 +565,11 @@ describe("Ext.layout.container.HBox", function () {
         it("should stretch an item with a minHeight", function () {
           makeCt("stretchmax", [
             {
-              height: 30,
+              height: 30
             },
             {
-              minHeight: 5,
-            },
+              minHeight: 5
+            }
           ]);
           expect(getHeight(0)).toBe(30);
           expect(getHeight(1)).toBe(30);
@@ -578,11 +578,11 @@ describe("Ext.layout.container.HBox", function () {
         it("should stretch to the item with the largest minHeight", function () {
           makeCt("stretchmax", [
             {
-              minHeight: 30,
+              minHeight: 30
             },
             {
-              minHeight: 50,
-            },
+              minHeight: 50
+            }
           ]);
           expect(getHeight(0)).toBe(50);
           expect(getHeight(1)).toBe(50);
@@ -598,12 +598,12 @@ describe("Ext.layout.container.HBox", function () {
                 minHeight: 1000,
                 shrinkWrap: true,
                 shrinkWrapDock: true,
-                html: "Content...",
-              },
+                html: "Content..."
+              }
             ],
             {
-              autoScroll: true,
-            },
+              autoScroll: true
+            }
           );
           expect(getHeight(0)).toBe(1000);
         });
@@ -612,11 +612,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should respect a maxHeight", function () {
         makeCt("stretchmax", [
           {
-            height: 30,
+            height: 30
           },
           {
-            maxHeight: 20,
-          },
+            maxHeight: 20
+          }
         ]);
         expect(getHeight(0)).toBe(30);
         expect(getHeight(1)).toBe(20);
@@ -639,9 +639,9 @@ describe("Ext.layout.container.HBox", function () {
         defaultType: "component",
         layout: {
           type: "hbox",
-          align: "stretch",
+          align: "stretch"
         },
-        items: items,
+        items: items
       });
     }
 
@@ -652,7 +652,7 @@ describe("Ext.layout.container.HBox", function () {
     describe("flex only", function () {
       it("should stretch a single flex item to the width of the container", function () {
         makeCt({
-          flex: 1,
+          flex: 1
         });
         expect(getWidth(0)).toBe(600);
       });
@@ -660,14 +660,14 @@ describe("Ext.layout.container.HBox", function () {
       it("should stretch 3 equally flexed items equally", function () {
         makeCt([
           {
-            flex: 1,
+            flex: 1
           },
           {
-            flex: 1,
+            flex: 1
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getWidth(0)).toBe(200);
         expect(getWidth(1)).toBe(200);
@@ -677,11 +677,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should flex 2 items according to ratio", function () {
         makeCt([
           {
-            flex: 3,
+            flex: 3
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getWidth(0)).toBe(450);
         expect(getWidth(1)).toBe(150);
@@ -690,17 +690,17 @@ describe("Ext.layout.container.HBox", function () {
       it("should flex 4 items according to ratio", function () {
         makeCt([
           {
-            flex: 3,
+            flex: 3
           },
           {
-            flex: 1,
+            flex: 1
           },
           {
-            flex: 3,
+            flex: 3
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getWidth(0)).toBe(225);
         expect(getWidth(1)).toBe(75);
@@ -711,11 +711,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should use flex as a ratio", function () {
         makeCt([
           {
-            flex: 5000000,
+            flex: 5000000
           },
           {
-            flex: 1000000,
-          },
+            flex: 1000000
+          }
         ]);
         expect(getWidth(0)).toBe(500);
         expect(getWidth(1)).toBe(100);
@@ -725,7 +725,7 @@ describe("Ext.layout.container.HBox", function () {
     describe("fixed width only", function () {
       it("should set the width of a single item", function () {
         makeCt({
-          width: 200,
+          width: 200
         });
         expect(getWidth(0)).toBe(200);
       });
@@ -733,11 +733,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should set the width of multiple items", function () {
         makeCt([
           {
-            width: 500,
+            width: 500
           },
           {
-            width: 50,
-          },
+            width: 50
+          }
         ]);
         expect(getWidth(0)).toBe(500);
         expect(getWidth(1)).toBe(50);
@@ -745,7 +745,7 @@ describe("Ext.layout.container.HBox", function () {
 
       it("should allow a single item to exceed the container width", function () {
         makeCt({
-          width: 900,
+          width: 900
         });
         expect(getWidth(0)).toBe(900);
       });
@@ -753,11 +753,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should allow multiple items to exceed the container width", function () {
         makeCt([
           {
-            width: 400,
+            width: 400
           },
           {
-            width: 400,
-          },
+            width: 400
+          }
         ]);
         expect(getWidth(0)).toBe(400);
         expect(getWidth(1)).toBe(400);
@@ -768,11 +768,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should be able to use %age width", function () {
         makeCt([
           {
-            width: "50%",
+            width: "50%"
           },
           {
-            width: "50%",
-          },
+            width: "50%"
+          }
         ]);
         expect(getWidth(0)).toBe(300);
         expect(getWidth(1)).toBe(300);
@@ -781,14 +781,14 @@ describe("Ext.layout.container.HBox", function () {
       it("should work with fixed width", function () {
         makeCt([
           {
-            width: "20%",
+            width: "20%"
           },
           {
-            width: 380,
+            width: 380
           },
           {
-            width: 100,
-          },
+            width: 100
+          }
         ]);
         expect(getWidth(0)).toBe(120);
         expect(getWidth(1)).toBe(380);
@@ -798,14 +798,14 @@ describe("Ext.layout.container.HBox", function () {
       it("should work with flex", function () {
         makeCt([
           {
-            flex: 2,
+            flex: 2
           },
           {
-            width: "50%",
+            width: "50%"
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getWidth(0)).toBe(200);
         expect(getWidth(1)).toBe(300);
@@ -817,11 +817,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should give any remaining space to a single flexed item", function () {
         makeCt([
           {
-            width: 200,
+            width: 200
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getWidth(0)).toBe(200);
         expect(getWidth(1)).toBe(400);
@@ -830,14 +830,14 @@ describe("Ext.layout.container.HBox", function () {
       it("should flex a single item with 2 fixed", function () {
         makeCt([
           {
-            width: 100,
+            width: 100
           },
           {
-            flex: 1,
+            flex: 1
           },
           {
-            width: 300,
-          },
+            width: 300
+          }
         ]);
         expect(getWidth(0)).toBe(100);
         expect(getWidth(1)).toBe(200);
@@ -847,14 +847,14 @@ describe("Ext.layout.container.HBox", function () {
       it("should flex 2 items with 1 fixed", function () {
         makeCt([
           {
-            flex: 2,
+            flex: 2
           },
           {
-            width: 300,
+            width: 300
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
         expect(getWidth(0)).toBe(200);
         expect(getWidth(1)).toBe(300);
@@ -865,11 +865,11 @@ describe("Ext.layout.container.HBox", function () {
         makeCt([
           {
             flex: 1,
-            width: 200,
+            width: 200
           },
           {
-            flex: 1,
-          },
+            flex: 1
+          }
         ]);
 
         expect(getWidth(0)).toBe(300);
@@ -881,11 +881,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should assign a 0 width if there is no more flex width", function () {
         makeCt([
           {
-            flex: 1,
+            flex: 1
           },
           {
-            width: 700,
-          },
+            width: 700
+          }
         ]);
         expect(getWidth(0)).toBe(0);
         expect(getWidth(1)).toBe(700);
@@ -895,11 +895,11 @@ describe("Ext.layout.container.HBox", function () {
         makeCt([
           {
             flex: 1,
-            minWidth: 50,
+            minWidth: 50
           },
           {
-            width: 700,
-          },
+            width: 700
+          }
         ]);
         expect(getWidth(0)).toBe(50);
         expect(getWidth(1)).toBe(700);
@@ -909,11 +909,11 @@ describe("Ext.layout.container.HBox", function () {
         makeCt([
           {
             flex: 1,
-            maxWidth: 100,
+            maxWidth: 100
           },
           {
-            width: 300,
-          },
+            width: 300
+          }
         ]);
         expect(getWidth(0)).toBe(100);
         expect(getWidth(1)).toBe(300);
@@ -922,10 +922,10 @@ describe("Ext.layout.container.HBox", function () {
       it("should update flex values based on min constraint", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            minWidth: 500,
+            minWidth: 500
           }),
           c2 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
         makeCt([c1, c2]);
         expect(c1.getWidth()).toBe(500);
@@ -935,14 +935,14 @@ describe("Ext.layout.container.HBox", function () {
       it("should handle multiple min constraints", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            minWidth: 250,
+            minWidth: 250
           }),
           c2 = new Ext.Component({
             flex: 1,
-            minWidth: 250,
+            minWidth: 250
           }),
           c3 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
 
         makeCt([c1, c2, c3]);
@@ -954,10 +954,10 @@ describe("Ext.layout.container.HBox", function () {
       it("should update flex values based on max constraint", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            maxWidth: 100,
+            maxWidth: 100
           }),
           c2 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
         makeCt([c1, c2]);
         expect(c1.getWidth()).toBe(100);
@@ -967,14 +967,14 @@ describe("Ext.layout.container.HBox", function () {
       it("should update flex values based on multiple max constraints", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            maxWidth: 100,
+            maxWidth: 100
           }),
           c2 = new Ext.Component({
             flex: 1,
-            maxWidth: 100,
+            maxWidth: 100
           }),
           c3 = new Ext.Component({
-            flex: 1,
+            flex: 1
           });
         makeCt([c1, c2, c3]);
         expect(c1.getWidth()).toBe(100);
@@ -985,15 +985,15 @@ describe("Ext.layout.container.HBox", function () {
       it("should give precedence to min constraints over flex when the min is the same", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            minWidth: 200,
+            minWidth: 200
           }),
           c2 = new Ext.Component({
             flex: 3,
-            minWidth: 200,
+            minWidth: 200
           }),
           c3 = new Ext.Component({
             flex: 1,
-            minWidth: 200,
+            minWidth: 200
           });
         makeCt([c1, c2, c3]);
         expect(c1.getWidth()).toBe(200);
@@ -1004,15 +1004,15 @@ describe("Ext.layout.container.HBox", function () {
       it("should give precedence to max constraints over flex when the max is the same", function () {
         var c1 = new Ext.Component({
             flex: 1,
-            maxWidth: 100,
+            maxWidth: 100
           }),
           c2 = new Ext.Component({
             flex: 3,
-            maxWidth: 100,
+            maxWidth: 100
           }),
           c3 = new Ext.Component({
             flex: 1,
-            maxWidth: 100,
+            maxWidth: 100
           });
         makeCt([c1, c2, c3]);
         expect(c1.getWidth()).toBe(100);
@@ -1025,11 +1025,11 @@ describe("Ext.layout.container.HBox", function () {
           makeCt([
             {
               width: "10%",
-              minWidth: 400,
+              minWidth: 400
             },
             {
-              flex: 1,
-            },
+              flex: 1
+            }
           ]);
           expect(getWidth(0)).toBe(400);
           expect(getWidth(1)).toBe(200);
@@ -1039,11 +1039,11 @@ describe("Ext.layout.container.HBox", function () {
           makeCt([
             {
               width: "70%",
-              maxWidth: 200,
+              maxWidth: 200
             },
             {
-              flex: 1,
-            },
+              flex: 1
+            }
           ]);
           expect(getWidth(0)).toBe(200);
           expect(getWidth(1)).toBe(400);
@@ -1066,15 +1066,15 @@ describe("Ext.layout.container.HBox", function () {
         style: "font: 50px monospace", // 30px character width
         layout: {
           type: "hbox",
-          align: "stretch",
+          align: "stretch"
         },
-        items: items,
+        items: items
       });
       var c = new Ext.Component({
         style: "font: 50px monospace",
         floating: true,
         html: testHtml,
-        autoShow: true,
+        autoShow: true
       });
       measure = c.getWidth();
       c.destroy();
@@ -1088,7 +1088,7 @@ describe("Ext.layout.container.HBox", function () {
       it("should shrink wrap a single flex item", function () {
         makeCt({
           flex: 1,
-          html: testHtml, // make sure we can shrinkwrap without wrapping the text
+          html: testHtml // make sure we can shrinkwrap without wrapping the text
         });
         expect(getWidth(0)).toBe(measure);
         expect(ct.getWidth()).toBe(measure);
@@ -1098,16 +1098,16 @@ describe("Ext.layout.container.HBox", function () {
         makeCt([
           {
             flex: 1,
-            html: testHtml, // shrink wrap without wrapping the text
+            html: testHtml // shrink wrap without wrapping the text
           },
           {
             flex: 1,
-            html: testHtml, // shrink wrap without wrapping the text
+            html: testHtml // shrink wrap without wrapping the text
           },
           {
             flex: 2,
-            html: testHtml, // shrink wrap without wrapping the text
-          },
+            html: testHtml // shrink wrap without wrapping the text
+          }
         ]);
         expect(getWidth(0)).toBe(measure);
         expect(getWidth(1)).toBe(measure);
@@ -1119,7 +1119,7 @@ describe("Ext.layout.container.HBox", function () {
     describe("fixed width only", function () {
       it("should set the width of a single item", function () {
         makeCt({
-          width: 200,
+          width: 200
         });
         expect(getWidth(0)).toBe(200);
         expect(ct.getWidth()).toBe(200);
@@ -1128,11 +1128,11 @@ describe("Ext.layout.container.HBox", function () {
       it("should shrink wrap multiple items", function () {
         makeCt([
           {
-            width: 500,
+            width: 500
           },
           {
-            width: 50,
-          },
+            width: 50
+          }
         ]);
         expect(getWidth(0)).toBe(500);
         expect(getWidth(1)).toBe(50);
@@ -1145,14 +1145,14 @@ describe("Ext.layout.container.HBox", function () {
         makeCt([
           {
             flex: 1,
-            html: testHtml, // shrink wrap without wrapping the text
+            html: testHtml // shrink wrap without wrapping the text
           },
           {
-            html: testHtml, // shrink wrap without wrapping the text
+            html: testHtml // shrink wrap without wrapping the text
           },
           {
-            width: 200,
-          },
+            width: 200
+          }
         ]);
         expect(getWidth(0)).toBe(measure);
         expect(getWidth(1)).toBe(measure);
@@ -1174,15 +1174,15 @@ describe("Ext.layout.container.HBox", function () {
         {
           dock: "left",
           xtype: "component",
-          html: "X",
-        },
+          html: "X"
+        }
       ],
       items: [
         {
           xtype: "component",
-          html: '<div style="height: 50px;"></div>',
-        },
-      ],
+          html: '<div style="height: 50px;"></div>'
+        }
+      ]
     });
     expect(ct.getWidth()).toBe(150);
     expect(ct.getHeight()).toBe(50);
@@ -1208,19 +1208,19 @@ describe("Ext.layout.container.HBox", function () {
             renderTo: Ext.getBody(),
             layout: Ext.apply(
               {
-                type: "hbox",
+                type: "hbox"
               },
-              layoutOptions,
-            ),
+              layoutOptions
+            )
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
     function makeShrinkWrapItem(w, h) {
       return {
-        html: makeShrinkWrapHtml(w, h),
+        html: makeShrinkWrapHtml(w, h)
       };
     }
 
@@ -1230,7 +1230,7 @@ describe("Ext.layout.container.HBox", function () {
       return Ext.String.format(
         '<div style="width: {0}px; height: {1}px;"></div>',
         w,
-        h,
+        h
       );
     }
 
@@ -1244,7 +1244,7 @@ describe("Ext.layout.container.HBox", function () {
         dom,
         el.getStyle("overflow-x"),
         dom.scrollWidth,
-        dom.clientWidth,
+        dom.clientWidth
       );
       expectScrollDimension(
         vertical,
@@ -1252,7 +1252,7 @@ describe("Ext.layout.container.HBox", function () {
         dom,
         el.getStyle("overflow-y"),
         dom.scrollHeight,
-        dom.clientHeight,
+        dom.clientHeight
       );
     }
 
@@ -1262,7 +1262,7 @@ describe("Ext.layout.container.HBox", function () {
       dom,
       style,
       scrollSize,
-      clientSize,
+      clientSize
     ) {
       if (value !== undefined) {
         if (value) {
@@ -1341,7 +1341,7 @@ describe("Ext.layout.container.HBox", function () {
       Ext.getScrollbarSize = function () {
         return {
           width: scrollSize,
-          height: scrollSize,
+          height: scrollSize
         };
       };
     });
@@ -1359,12 +1359,12 @@ describe("Ext.layout.container.HBox", function () {
             defaultType: "component",
             items: [
               {
-                width: 400,
+                width: 400
               },
               {
-                width: 400,
-              },
-            ],
+                width: 400
+              }
+            ]
           });
           expectInnerCtWidth(defaultSize);
         });
@@ -1377,16 +1377,16 @@ describe("Ext.layout.container.HBox", function () {
             height: defaultSize,
             defaultType: "component",
             scrollable: {
-              x: false,
+              x: false
             },
             items: [
               {
-                width: 400,
+                width: 400
               },
               {
-                width: 400,
-              },
-            ],
+                width: 400
+              }
+            ]
           });
           expectInnerCtWidth(800);
         });
@@ -1401,9 +1401,9 @@ describe("Ext.layout.container.HBox", function () {
             height: defaultSize,
             defaultType: "component",
             items: items,
-            scrollable: scrollable !== undefined ? scrollable : true,
+            scrollable: scrollable !== undefined ? scrollable : true
           },
-          layoutOptions,
+          layoutOptions
         );
       }
 
@@ -1412,15 +1412,15 @@ describe("Ext.layout.container.HBox", function () {
           makeFixedCt(
             [
               {
-                width: 400,
+                width: 400
               },
               {
-                width: 400,
-              },
+                width: 400
+              }
             ],
             {
-              x: false,
-            },
+              x: false
+            }
           );
           expectScroll(false, false);
           expectInnerCtWidth(800);
@@ -1431,11 +1431,11 @@ describe("Ext.layout.container.HBox", function () {
             it("should not show a scrollbar when the total width does not overflow", function () {
               makeFixedCt([
                 {
-                  width: 100,
+                  width: 100
                 },
                 {
-                  width: 100,
-                },
+                  width: 100
+                }
               ]);
               expectScroll(false, false);
               expectWidths([100, 100]);
@@ -1445,11 +1445,11 @@ describe("Ext.layout.container.HBox", function () {
             it("should show a scrollbar when the total width overflows", function () {
               makeFixedCt([
                 {
-                  width: 400,
+                  width: 400
                 },
                 {
-                  width: 400,
-                },
+                  width: 400
+                }
               ]);
               expectScroll(true, false);
               expectWidths([400, 400]);
@@ -1461,11 +1461,11 @@ describe("Ext.layout.container.HBox", function () {
             it("should not show a scrollbar when using only flex", function () {
               makeFixedCt([
                 {
-                  flex: 1,
+                  flex: 1
                 },
                 {
-                  flex: 2,
-                },
+                  flex: 2
+                }
               ]);
               expectScroll(false, false);
               expectWidths([200, 400]);
@@ -1476,18 +1476,18 @@ describe("Ext.layout.container.HBox", function () {
               it("should not show a scrollbar when the minWidth does not cause an overflow", function () {
                 makeFixedCt([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     flex: 1,
-                    minWidth: 300,
+                    minWidth: 300
                   },
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, false);
                 expectWidths([100, 300, 100, 100]);
@@ -1498,12 +1498,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     flex: 1,
-                    minWidth: 400,
+                    minWidth: 400
                   },
                   {
                     flex: 1,
-                    minWidth: 400,
-                  },
+                    minWidth: 400
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([400, 400]);
@@ -1532,12 +1532,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     minWidth: 200,
-                    html: makeShrinkWrapHtml(100),
+                    html: makeShrinkWrapHtml(100)
                   },
                   {
                     minWidth: 300,
-                    html: makeShrinkWrapHtml(50),
-                  },
+                    html: makeShrinkWrapHtml(50)
+                  }
                 ]);
                 expectScroll(false, false);
                 expectWidths([200, 300]);
@@ -1548,12 +1548,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     minWidth: 400,
-                    html: makeShrinkWrapHtml(100),
+                    html: makeShrinkWrapHtml(100)
                   },
                   {
                     minWidth: 500,
-                    html: makeShrinkWrapHtml(50),
-                  },
+                    html: makeShrinkWrapHtml(50)
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([400, 500]);
@@ -1566,11 +1566,11 @@ describe("Ext.layout.container.HBox", function () {
             it("should not show a scrollbar when the configured width does not overflow", function () {
               makeFixedCt([
                 {
-                  width: 300,
+                  width: 300
                 },
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(false, false);
               expectWidths([300, 300]);
@@ -1580,11 +1580,11 @@ describe("Ext.layout.container.HBox", function () {
             it("should show a scrollbar when the configured width overflows", function () {
               makeFixedCt([
                 {
-                  width: 700,
+                  width: 700
                 },
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(true, false);
               expectWidths([700, 0]);
@@ -1595,12 +1595,12 @@ describe("Ext.layout.container.HBox", function () {
               it("should not show a scrollbar when the minWidth does not cause an overflow", function () {
                 makeFixedCt([
                   {
-                    width: 300,
+                    width: 300
                   },
                   {
                     flex: 1,
-                    minWidth: 200,
-                  },
+                    minWidth: 200
+                  }
                 ]);
                 expectScroll(false, false);
                 expectWidths([300, 300]);
@@ -1610,12 +1610,12 @@ describe("Ext.layout.container.HBox", function () {
               it("should show a scrollbar when the minWidth causes an overflow", function () {
                 makeFixedCt([
                   {
-                    width: 300,
+                    width: 300
                   },
                   {
                     flex: 1,
-                    minWidth: 500,
-                  },
+                    minWidth: 500
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 500]);
@@ -1628,9 +1628,9 @@ describe("Ext.layout.container.HBox", function () {
             it("should not show a scrollbar when the total width does not overflow", function () {
               makeFixedCt([
                 {
-                  width: 300,
+                  width: 300
                 },
-                makeShrinkWrapItem(200),
+                makeShrinkWrapItem(200)
               ]);
               expectScroll(false, false);
               expectWidths([300, 200]);
@@ -1640,9 +1640,9 @@ describe("Ext.layout.container.HBox", function () {
             it("should show a scrollbar when the total width overflows", function () {
               makeFixedCt([
                 {
-                  width: 400,
+                  width: 400
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(true, false);
               expectWidths([400, 400]);
@@ -1653,12 +1653,12 @@ describe("Ext.layout.container.HBox", function () {
               it("should not show a scrollbar when the minWidth does not cause an overflow", function () {
                 makeFixedCt([
                   {
-                    width: 300,
+                    width: 300
                   },
                   {
                     html: makeShrinkWrapHtml(100),
-                    minWidth: 200,
-                  },
+                    minWidth: 200
+                  }
                 ]);
                 expectScroll(false, false);
                 expectWidths([300, 200]);
@@ -1668,12 +1668,12 @@ describe("Ext.layout.container.HBox", function () {
               it("should show a scrollbar when the minWidth causes an overflow", function () {
                 makeFixedCt([
                   {
-                    width: 300,
+                    width: 300
                   },
                   {
                     html: makeShrinkWrapHtml(200),
-                    minWidth: 500,
-                  },
+                    minWidth: 500
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([300, 500]);
@@ -1687,8 +1687,8 @@ describe("Ext.layout.container.HBox", function () {
               makeFixedCt([
                 makeShrinkWrapItem(500),
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(false, false);
               expectWidths([500, 100]);
@@ -1699,8 +1699,8 @@ describe("Ext.layout.container.HBox", function () {
               makeFixedCt([
                 makeShrinkWrapItem(700),
                 {
-                  flex: 1,
-                },
+                  flex: 1
+                }
               ]);
               expectScroll(true, false);
               expectWidths([700, 0]);
@@ -1712,12 +1712,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(100),
-                    minWidth: 200,
+                    minWidth: 200
                   },
                   {
                     flex: 1,
-                    minWidth: 300,
-                  },
+                    minWidth: 300
+                  }
                 ]);
                 expectScroll(false, false);
                 expectWidths([200, 400]);
@@ -1728,12 +1728,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(100),
-                    minWidth: 350,
+                    minWidth: 350
                   },
                   {
                     flex: 1,
-                    minWidth: 350,
-                  },
+                    minWidth: 350
+                  }
                 ]);
                 expectScroll(true, false);
                 expectWidths([350, 350]);
@@ -1752,11 +1752,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 100,
-                    height: big,
+                    height: big
                   },
                   {
-                    width: 100,
-                  },
+                    width: 100
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([100, 100]);
@@ -1767,11 +1767,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 400,
-                    height: big,
+                    height: big
                   },
                   {
-                    width: 400,
-                  },
+                    width: 400
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([400, 400]);
@@ -1785,11 +1785,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     flex: 1,
-                    height: big,
+                    height: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([290, 290]);
@@ -1802,11 +1802,11 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       flex: 1,
                       minWidth: 400,
-                      height: big,
+                      height: big
                     },
                     {
-                      flex: 1,
-                    },
+                      flex: 1
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([400, 180]);
@@ -1818,12 +1818,12 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       flex: 1,
                       minWidth: 350,
-                      height: big,
+                      height: big
                     },
                     {
                       flex: 1,
-                      minWidth: 350,
-                    },
+                      minWidth: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([350, 350]);
@@ -1837,11 +1837,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(200),
-                    height: big,
+                    height: big
                   },
                   {
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([200, 300]);
@@ -1852,11 +1852,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(400),
-                    height: big,
+                    height: big
                   },
                   {
-                    html: makeShrinkWrapHtml(400),
-                  },
+                    html: makeShrinkWrapHtml(400)
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([400, 400]);
@@ -1869,12 +1869,12 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       html: makeShrinkWrapHtml(100),
                       minWidth: 200,
-                      height: big,
+                      height: big
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minWidth: 300,
-                    },
+                      minWidth: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 300]);
@@ -1886,12 +1886,12 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       html: makeShrinkWrapHtml(100),
                       minWidth: 350,
-                      height: big,
+                      height: big
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minWidth: 350,
-                    },
+                      minWidth: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([350, 350]);
@@ -1905,11 +1905,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 150,
-                    height: big,
+                    height: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([150, 430]);
@@ -1920,11 +1920,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 800,
-                    height: big,
+                    height: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([800, 0]);
@@ -1936,12 +1936,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      height: big,
+                      height: big
                     },
                     {
                       flex: 1,
-                      minWidth: 200,
-                    },
+                      minWidth: 200
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 380]);
@@ -1952,12 +1952,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      height: big,
+                      height: big
                     },
                     {
                       flex: 1,
-                      minWidth: 500,
-                    },
+                      minWidth: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([200, 500]);
@@ -1971,9 +1971,9 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 150,
-                    height: big,
+                    height: big
                   },
-                  makeShrinkWrapItem(300),
+                  makeShrinkWrapItem(300)
                 ]);
                 expectScroll(false, true);
                 expectWidths([150, 300]);
@@ -1984,9 +1984,9 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 350,
-                    height: big,
+                    height: big
                   },
-                  makeShrinkWrapItem(350),
+                  makeShrinkWrapItem(350)
                 ]);
                 expectScroll(true, true);
                 expectWidths([350, 350]);
@@ -1998,12 +1998,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      height: big,
+                      height: big
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minWidth: 300,
-                    },
+                      minWidth: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 300]);
@@ -2014,12 +2014,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      height: big,
+                      height: big
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minWidth: 550,
-                    },
+                      minWidth: 550
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([200, 550]);
@@ -2033,11 +2033,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(300),
-                    height: big,
+                    height: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([300, 280]);
@@ -2048,11 +2048,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapItem(700),
-                    height: big,
+                    height: big
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([700, 0]);
@@ -2064,12 +2064,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(200),
-                      height: big,
+                      height: big
                     },
                     {
                       flex: 1,
-                      minWidth: 300,
-                    },
+                      minWidth: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 380]);
@@ -2080,12 +2080,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(400),
-                      height: big,
+                      height: big
                     },
                     {
                       flex: 1,
-                      minWidth: 500,
-                    },
+                      minWidth: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([400, 500]);
@@ -2101,11 +2101,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 100,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    width: 100,
-                  },
+                    width: 100
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([100, 100]);
@@ -2116,11 +2116,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 400,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    width: 400,
-                  },
+                    width: 400
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([400, 400]);
@@ -2134,11 +2134,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     flex: 1,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([290, 290]);
@@ -2151,11 +2151,11 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       flex: 1,
                       minWidth: 400,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
-                      flex: 1,
-                    },
+                      flex: 1
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([400, 180]);
@@ -2167,12 +2167,12 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       flex: 1,
                       minWidth: 350,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       flex: 1,
-                      minWidth: 350,
-                    },
+                      minWidth: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([350, 350]);
@@ -2185,11 +2185,11 @@ describe("Ext.layout.container.HBox", function () {
               it("should account for the vertical scrollbar when there is no overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(200, big),
+                    html: makeShrinkWrapHtml(200, big)
                   },
                   {
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([200, 300]);
@@ -2199,11 +2199,11 @@ describe("Ext.layout.container.HBox", function () {
               it("should account for the vertical scrollbar when there is overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(400, big),
+                    html: makeShrinkWrapHtml(400, big)
                   },
                   {
-                    html: makeShrinkWrapHtml(400),
-                  },
+                    html: makeShrinkWrapHtml(400)
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([400, 400]);
@@ -2215,12 +2215,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(100, big),
-                      minWidth: 200,
+                      minWidth: 200
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minWidth: 300,
-                    },
+                      minWidth: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 300]);
@@ -2231,12 +2231,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       html: makeShrinkWrapHtml(100, big),
-                      minWidth: 350,
+                      minWidth: 350
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minWidth: 350,
-                    },
+                      minWidth: 350
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([350, 350]);
@@ -2250,11 +2250,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 150,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([150, 430]);
@@ -2265,11 +2265,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 800,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([800, 0]);
@@ -2281,12 +2281,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       flex: 1,
-                      minWidth: 200,
-                    },
+                      minWidth: 200
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 380]);
@@ -2297,12 +2297,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       flex: 1,
-                      minWidth: 500,
-                    },
+                      minWidth: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([200, 500]);
@@ -2316,9 +2316,9 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 150,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
-                  makeShrinkWrapItem(300),
+                  makeShrinkWrapItem(300)
                 ]);
                 expectScroll(false, true);
                 expectWidths([150, 300]);
@@ -2329,9 +2329,9 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 350,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
-                  makeShrinkWrapItem(350),
+                  makeShrinkWrapItem(350)
                 ]);
                 expectScroll(true, true);
                 expectWidths([350, 350]);
@@ -2343,12 +2343,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       html: makeShrinkWrapHtml(100),
-                      minWidth: 300,
-                    },
+                      minWidth: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 300]);
@@ -2359,12 +2359,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       width: 200,
-                      html: makeShrinkWrapHtml(10, big),
+                      html: makeShrinkWrapHtml(10, big)
                     },
                     {
                       html: makeShrinkWrapHtml(200),
-                      minWidth: 550,
-                    },
+                      minWidth: 550
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([200, 550]);
@@ -2377,11 +2377,11 @@ describe("Ext.layout.container.HBox", function () {
               it("should account for the vertical scrollbar when there is no overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(300, big),
+                    html: makeShrinkWrapHtml(300, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([300, 280]);
@@ -2391,11 +2391,11 @@ describe("Ext.layout.container.HBox", function () {
               it("should account for the vertical scrollbar when there is overflow", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapItem(700, big),
+                    html: makeShrinkWrapItem(700, big)
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 expectScroll(true, true);
                 expectWidths([700, 0]);
@@ -2406,12 +2406,12 @@ describe("Ext.layout.container.HBox", function () {
                 it("should account for the vertical scrollbar when the minWidth does not cause overflow", function () {
                   makeFixedCt([
                     {
-                      html: makeShrinkWrapHtml(200, big),
+                      html: makeShrinkWrapHtml(200, big)
                     },
                     {
                       flex: 1,
-                      minWidth: 300,
-                    },
+                      minWidth: 300
+                    }
                   ]);
                   expectScroll(false, true);
                   expectWidths([200, 380]);
@@ -2421,12 +2421,12 @@ describe("Ext.layout.container.HBox", function () {
                 it("should account for the vertical scrollbar when the minWidth causes an overflow", function () {
                   makeFixedCt([
                     {
-                      html: makeShrinkWrapHtml(400, big),
+                      html: makeShrinkWrapHtml(400, big)
                     },
                     {
                       flex: 1,
-                      minWidth: 500,
-                    },
+                      minWidth: 500
+                    }
                   ]);
                   expectScroll(true, true);
                   expectWidths([400, 500]);
@@ -2444,11 +2444,11 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 295,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
-                    width: 295,
-                  },
+                    width: 295
+                  }
                 ]);
                 expectScroll(scrollTakesSize, true);
                 expectWidths([295, 295]);
@@ -2460,9 +2460,9 @@ describe("Ext.layout.container.HBox", function () {
               it("should account for the vertical scrollbar", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(295, big),
+                    html: makeShrinkWrapHtml(295, big)
                   },
-                  makeShrinkWrapItem(295),
+                  makeShrinkWrapItem(295)
                 ]);
                 expectScroll(scrollTakesSize, true);
                 expectWidths([295, 295]);
@@ -2474,11 +2474,11 @@ describe("Ext.layout.container.HBox", function () {
               it("should account for the vertical scrollbar", function () {
                 makeFixedCt([
                   {
-                    html: makeShrinkWrapHtml(295, big),
+                    html: makeShrinkWrapHtml(295, big)
                   },
                   {
-                    width: 295,
-                  },
+                    width: 295
+                  }
                 ]);
                 expectScroll(scrollTakesSize, true);
                 expectWidths([295, 295]);
@@ -2495,15 +2495,15 @@ describe("Ext.layout.container.HBox", function () {
             [
               {
                 width: 100,
-                height: 900,
+                height: 900
               },
               {
-                width: 100,
-              },
+                width: 100
+              }
             ],
             {
-              y: false,
-            },
+              y: false
+            }
           );
           expectScroll(false, false);
         });
@@ -2514,12 +2514,12 @@ describe("Ext.layout.container.HBox", function () {
               makeFixedCt([
                 {
                   width: 100,
-                  height: 300,
+                  height: 300
                 },
                 {
                   width: 100,
-                  height: 400,
-                },
+                  height: 400
+                }
               ]);
               expectScroll(false, false);
               expectHeights([300, 400]);
@@ -2530,12 +2530,12 @@ describe("Ext.layout.container.HBox", function () {
               makeFixedCt([
                 {
                   width: 100,
-                  height: 700,
+                  height: 700
                 },
                 {
                   width: 200,
-                  height: 800,
-                },
+                  height: 800
+                }
               ]);
               expectScroll(false, true);
               expectHeights([700, 800]);
@@ -2548,14 +2548,14 @@ describe("Ext.layout.container.HBox", function () {
               makeFixedCt(
                 [
                   {
-                    width: 100,
+                    width: 100
                   },
                   {
-                    width: 100,
-                  },
+                    width: 100
+                  }
                 ],
                 true,
-                { align: "stretch" },
+                { align: "stretch" }
               );
               expectScroll(false, false);
               expectHeights([600, 600]);
@@ -2568,14 +2568,14 @@ describe("Ext.layout.container.HBox", function () {
                   [
                     {
                       width: 100,
-                      minHeight: 400,
+                      minHeight: 400
                     },
                     {
-                      width: 100,
-                    },
+                      width: 100
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(false, false);
                 expectHeights([600, 600]);
@@ -2587,14 +2587,14 @@ describe("Ext.layout.container.HBox", function () {
                   [
                     {
                       width: 100,
-                      minHeight: 800,
+                      minHeight: 800
                     },
                     {
-                      width: 100,
-                    },
+                      width: 100
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(false, true);
                 expectHeights([800, 600]);
@@ -2607,7 +2607,7 @@ describe("Ext.layout.container.HBox", function () {
             it("should not show a scrollbar when the largest height does not overflow", function () {
               makeFixedCt([
                 makeShrinkWrapItem(10, 300),
-                makeShrinkWrapItem(10, 200),
+                makeShrinkWrapItem(10, 200)
               ]);
               expectScroll(false, false);
               expectHeights([300, 200]);
@@ -2617,7 +2617,7 @@ describe("Ext.layout.container.HBox", function () {
             it("should show a scrollbar when the largest height overflows", function () {
               makeFixedCt([
                 makeShrinkWrapItem(10, 500),
-                makeShrinkWrapItem(10, 750),
+                makeShrinkWrapItem(10, 750)
               ]);
               expectScroll(false, true);
               expectHeights([500, 750]);
@@ -2630,13 +2630,13 @@ describe("Ext.layout.container.HBox", function () {
                   {
                     width: 100,
                     minHeight: 400,
-                    html: makeShrinkWrapHtml(10, 10),
+                    html: makeShrinkWrapHtml(10, 10)
                   },
                   {
                     width: 100,
                     minHeight: 500,
-                    html: makeShrinkWrapHtml(10, 10),
-                  },
+                    html: makeShrinkWrapHtml(10, 10)
+                  }
                 ]);
                 expectScroll(false, false);
                 expectHeights([400, 500]);
@@ -2648,13 +2648,13 @@ describe("Ext.layout.container.HBox", function () {
                   {
                     width: 100,
                     minHeight: 650,
-                    html: makeShrinkWrapHtml(10, 50),
+                    html: makeShrinkWrapHtml(10, 50)
                   },
                   {
                     width: 100,
                     minHeight: 750,
-                    html: makeShrinkWrapHtml(10, 50),
-                  },
+                    html: makeShrinkWrapHtml(10, 50)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectHeights([650, 750]);
@@ -2671,12 +2671,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 400,
-                    height: 300,
+                    height: 300
                   },
                   {
                     width: 400,
-                    height: 400,
-                  },
+                    height: 400
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 400]);
@@ -2687,12 +2687,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 400,
-                    height: 700,
+                    height: 700
                   },
                   {
                     width: 400,
-                    height: 800,
-                  },
+                    height: 800
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([700, 800]);
@@ -2705,14 +2705,14 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt(
                   [
                     {
-                      width: 400,
+                      width: 400
                     },
                     {
-                      width: 400,
-                    },
+                      width: 400
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(true, false);
                 expectHeights([580, 580]);
@@ -2725,14 +2725,14 @@ describe("Ext.layout.container.HBox", function () {
                     [
                       {
                         width: 400,
-                        minHeight: 400,
+                        minHeight: 400
                       },
                       {
-                        width: 400,
-                      },
+                        width: 400
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, false);
                   expectHeights([580, 580]);
@@ -2744,14 +2744,14 @@ describe("Ext.layout.container.HBox", function () {
                     [
                       {
                         width: 400,
-                        minHeight: 800,
+                        minHeight: 800
                       },
                       {
-                        width: 400,
-                      },
+                        width: 400
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, true);
                   expectHeights([800, 580]);
@@ -2765,12 +2765,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 400,
-                    html: makeShrinkWrapHtml(10, 300),
+                    html: makeShrinkWrapHtml(10, 300)
                   },
                   {
                     width: 400,
-                    html: makeShrinkWrapHtml(10, 200),
-                  },
+                    html: makeShrinkWrapHtml(10, 200)
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 200]);
@@ -2781,12 +2781,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     width: 400,
-                    html: makeShrinkWrapHtml(10, 500),
+                    html: makeShrinkWrapHtml(10, 500)
                   },
                   {
                     width: 400,
-                    html: makeShrinkWrapHtml(10, 750),
-                  },
+                    html: makeShrinkWrapHtml(10, 750)
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([500, 750]);
@@ -2799,13 +2799,13 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       width: 400,
                       minHeight: 400,
-                      html: makeShrinkWrapHtml(10, 10),
+                      html: makeShrinkWrapHtml(10, 10)
                     },
                     {
                       width: 400,
                       minHeight: 500,
-                      html: makeShrinkWrapHtml(10, 10),
-                    },
+                      html: makeShrinkWrapHtml(10, 10)
+                    }
                   ]);
                   expectScroll(true, false);
                   expectHeights([400, 500]);
@@ -2817,13 +2817,13 @@ describe("Ext.layout.container.HBox", function () {
                     {
                       width: 400,
                       minHeight: 650,
-                      html: makeShrinkWrapHtml(10, 50),
+                      html: makeShrinkWrapHtml(10, 50)
                     },
                     {
                       width: 400,
                       minHeight: 750,
-                      html: makeShrinkWrapHtml(10, 50),
-                    },
+                      html: makeShrinkWrapHtml(10, 50)
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([650, 750]);
@@ -2839,12 +2839,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(400),
-                    height: 300,
+                    height: 300
                   },
                   {
                     html: makeShrinkWrapHtml(400),
-                    height: 400,
-                  },
+                    height: 400
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 400]);
@@ -2855,12 +2855,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt([
                   {
                     html: makeShrinkWrapHtml(400),
-                    height: 700,
+                    height: 700
                   },
                   {
                     html: makeShrinkWrapHtml(400),
-                    height: 800,
-                  },
+                    height: 800
+                  }
                 ]);
                 expectScroll(true, true);
                 expectHeights([700, 800]);
@@ -2873,14 +2873,14 @@ describe("Ext.layout.container.HBox", function () {
                 makeFixedCt(
                   [
                     {
-                      html: makeShrinkWrapHtml(400),
+                      html: makeShrinkWrapHtml(400)
                     },
                     {
-                      html: makeShrinkWrapHtml(400),
-                    },
+                      html: makeShrinkWrapHtml(400)
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(true, false);
                 expectHeights([580, 580]);
@@ -2893,14 +2893,14 @@ describe("Ext.layout.container.HBox", function () {
                     [
                       {
                         html: makeShrinkWrapHtml(400),
-                        minHeight: 400,
+                        minHeight: 400
                       },
                       {
-                        html: makeShrinkWrapHtml(400),
-                      },
+                        html: makeShrinkWrapHtml(400)
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, false);
                   expectHeights([580, 580]);
@@ -2912,14 +2912,14 @@ describe("Ext.layout.container.HBox", function () {
                     [
                       {
                         html: makeShrinkWrapHtml(400),
-                        minHeight: 800,
+                        minHeight: 800
                       },
                       {
-                        html: makeShrinkWrapHtml(400),
-                      },
+                        html: makeShrinkWrapHtml(400)
+                      }
                     ],
                     true,
-                    { align: "stretch" },
+                    { align: "stretch" }
                   );
                   expectScroll(true, true);
                   expectHeights([800, 580]);
@@ -2932,7 +2932,7 @@ describe("Ext.layout.container.HBox", function () {
               it("should not show a scrollbar when the largest height does not overflow", function () {
                 makeFixedCt([
                   makeShrinkWrapItem(400, 300),
-                  makeShrinkWrapItem(400, 200),
+                  makeShrinkWrapItem(400, 200)
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 200]);
@@ -2942,7 +2942,7 @@ describe("Ext.layout.container.HBox", function () {
               it("should show a scrollbar when the largest height overflows", function () {
                 makeFixedCt([
                   makeShrinkWrapItem(400, 500),
-                  makeShrinkWrapItem(400, 750),
+                  makeShrinkWrapItem(400, 750)
                 ]);
                 expectScroll(true, true);
                 expectHeights([500, 750]);
@@ -2954,12 +2954,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       minHeight: 400,
-                      html: makeShrinkWrapHtml(400, 10),
+                      html: makeShrinkWrapHtml(400, 10)
                     },
                     {
                       minHeight: 500,
-                      html: makeShrinkWrapHtml(400, 10),
-                    },
+                      html: makeShrinkWrapHtml(400, 10)
+                    }
                   ]);
                   expectScroll(true, false);
                   expectHeights([400, 500]);
@@ -2970,12 +2970,12 @@ describe("Ext.layout.container.HBox", function () {
                   makeFixedCt([
                     {
                       minHeight: 650,
-                      html: makeShrinkWrapHtml(400, 50),
+                      html: makeShrinkWrapHtml(400, 50)
                     },
                     {
                       minHeight: 750,
-                      html: makeShrinkWrapHtml(400, 50),
-                    },
+                      html: makeShrinkWrapHtml(400, 50)
+                    }
                   ]);
                   expectScroll(true, true);
                   expectHeights([650, 750]);
@@ -2997,9 +2997,9 @@ describe("Ext.layout.container.HBox", function () {
             width: defaultSize,
             defaultType: "component",
             items: items,
-            scrollable: scrollable !== undefined ? scrollable : true,
+            scrollable: scrollable !== undefined ? scrollable : true
           },
-          layoutOptions,
+          layoutOptions
         );
       }
 
@@ -3011,12 +3011,12 @@ describe("Ext.layout.container.HBox", function () {
             makeShrinkWrapCt([
               {
                 width: 100,
-                height: 400,
+                height: 400
               },
               {
                 width: 100,
-                height: 500,
-              },
+                height: 500
+              }
             ]);
             expectScroll(false, false);
             expectHeights([400, 500]);
@@ -3029,12 +3029,12 @@ describe("Ext.layout.container.HBox", function () {
             makeShrinkWrapCt([
               {
                 width: 100,
-                html: makeShrinkWrapHtml(10, 250),
+                html: makeShrinkWrapHtml(10, 250)
               },
               {
                 width: 100,
-                html: makeShrinkWrapHtml(10, 300),
-              },
+                html: makeShrinkWrapHtml(10, 300)
+              }
             ]);
             expectScroll(false, false);
             expectHeights([250, 300]);
@@ -3047,13 +3047,13 @@ describe("Ext.layout.container.HBox", function () {
                 {
                   width: 100,
                   html: makeShrinkWrapHtml(10, 150),
-                  minHeight: 300,
+                  minHeight: 300
                 },
                 {
                   width: 100,
                   html: makeShrinkWrapHtml(10, 100),
-                  minHeight: 350,
-                },
+                  minHeight: 350
+                }
               ]);
               expectScroll(false, false);
               expectHeights([300, 350]);
@@ -3068,15 +3068,15 @@ describe("Ext.layout.container.HBox", function () {
               [
                 {
                   width: 100,
-                  html: makeShrinkWrapHtml(10, 200),
+                  html: makeShrinkWrapHtml(10, 200)
                 },
                 {
                   width: 100,
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ],
               true,
-              { align: "stretch" },
+              { align: "stretch" }
             );
             expectScroll(false, false);
             expectHeights([300, 300]);
@@ -3089,15 +3089,15 @@ describe("Ext.layout.container.HBox", function () {
                 [
                   {
                     width: 100,
-                    minHeight: 400,
+                    minHeight: 400
                   },
                   {
                     width: 100,
-                    minHeight: 550,
-                  },
+                    minHeight: 550
+                  }
                 ],
                 true,
-                { align: "stretch" },
+                { align: "stretch" }
               );
               expectScroll(false, false);
               expectHeights([550, 550]);
@@ -3116,11 +3116,11 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   width: big,
-                  height: 400,
+                  height: 400
                 },
                 {
-                  height: 500,
-                },
+                  height: 500
+                }
               ]);
               expectScroll(true, false);
               expectHeights([400, 500]);
@@ -3133,11 +3133,11 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   width: big,
-                  html: makeShrinkWrapHtml(10, 250),
+                  html: makeShrinkWrapHtml(10, 250)
                 },
                 {
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ]);
               expectScroll(true, false);
               expectHeights([250, 300]);
@@ -3150,12 +3150,12 @@ describe("Ext.layout.container.HBox", function () {
                   {
                     width: big,
                     html: makeShrinkWrapHtml(10, 150),
-                    minHeight: 300,
+                    minHeight: 300
                   },
                   {
                     html: makeShrinkWrapHtml(10, 100),
-                    minHeight: 350,
-                  },
+                    minHeight: 350
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 350]);
@@ -3169,12 +3169,12 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   width: big,
-                  html: makeShrinkWrapHtml(10, 200),
+                  html: makeShrinkWrapHtml(10, 200)
                 },
                 {
                   width: 100,
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ]);
               expectScroll(true, false);
               expectHeights([200, 300]);
@@ -3186,12 +3186,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeShrinkWrapCt([
                   {
                     width: big,
-                    minHeight: 400,
+                    minHeight: 400
                   },
                   {
                     width: 100,
-                    minHeight: 550,
-                  },
+                    minHeight: 550
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([400, 550]);
@@ -3206,11 +3206,11 @@ describe("Ext.layout.container.HBox", function () {
             it("should account for the scrollbar in the total height", function () {
               makeShrinkWrapCt([
                 {
-                  html: makeShrinkWrapHtml(big, 400),
+                  html: makeShrinkWrapHtml(big, 400)
                 },
                 {
-                  html: makeShrinkWrapHtml(10, 500),
-                },
+                  html: makeShrinkWrapHtml(10, 500)
+                }
               ]);
               expectScroll(true, false);
               expectHeights([400, 500]);
@@ -3222,11 +3222,11 @@ describe("Ext.layout.container.HBox", function () {
             it("should account for the scrollbar in the total height", function () {
               makeShrinkWrapCt([
                 {
-                  html: makeShrinkWrapHtml(big, 250),
+                  html: makeShrinkWrapHtml(big, 250)
                 },
                 {
-                  html: makeShrinkWrapHtml(10, 300),
-                },
+                  html: makeShrinkWrapHtml(10, 300)
+                }
               ]);
               expectScroll(true, false);
               expectHeights([250, 300]);
@@ -3238,12 +3238,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeShrinkWrapCt([
                   {
                     html: makeShrinkWrapHtml(big, 150),
-                    minHeight: 300,
+                    minHeight: 300
                   },
                   {
                     html: makeShrinkWrapHtml(10, 100),
-                    minHeight: 350,
-                  },
+                    minHeight: 350
+                  }
                 ]);
                 expectScroll(true, false);
                 expectHeights([300, 350]);
@@ -3257,15 +3257,15 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt(
                 [
                   {
-                    html: makeShrinkWrapHtml(big, 200),
+                    html: makeShrinkWrapHtml(big, 200)
                   },
                   {
                     width: 100,
-                    html: makeShrinkWrapHtml(10, 300),
-                  },
+                    html: makeShrinkWrapHtml(10, 300)
+                  }
                 ],
                 true,
-                { align: "stretch" },
+                { align: "stretch" }
               );
               expectScroll(true, false);
               expectHeights([300, 300]);
@@ -3278,14 +3278,14 @@ describe("Ext.layout.container.HBox", function () {
                   [
                     {
                       html: makeShrinkWrapHtml(big, 10),
-                      minHeight: 400,
+                      minHeight: 400
                     },
                     {
-                      minHeight: 550,
-                    },
+                      minHeight: 550
+                    }
                   ],
                   true,
-                  { align: "stretch" },
+                  { align: "stretch" }
                 );
                 expectScroll(true, false);
                 expectHeights([550, 550]);
@@ -3306,9 +3306,9 @@ describe("Ext.layout.container.HBox", function () {
             height: defaultSize,
             defaultType: "component",
             items: items,
-            scrollable: scrollable !== undefined ? scrollable : true,
+            scrollable: scrollable !== undefined ? scrollable : true
           },
-          layoutOptions,
+          layoutOptions
         );
       }
 
@@ -3321,11 +3321,11 @@ describe("Ext.layout.container.HBox", function () {
           it("should publish the total width", function () {
             makeShrinkWrapCt([
               {
-                width: 400,
+                width: 400
               },
               {
-                width: 400,
-              },
+                width: 400
+              }
             ]);
             expectScroll(false, false);
             expectWidths([400, 400]);
@@ -3337,7 +3337,7 @@ describe("Ext.layout.container.HBox", function () {
           it("should publish the total width", function () {
             makeShrinkWrapCt([
               makeShrinkWrapItem(400),
-              makeShrinkWrapItem(400),
+              makeShrinkWrapItem(400)
             ]);
             expectScroll(false, false);
             expectWidths([400, 400]);
@@ -3349,12 +3349,12 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   minWidth: 350,
-                  html: makeShrinkWrapHtml(200),
+                  html: makeShrinkWrapHtml(200)
                 },
                 {
                   minWidth: 400,
-                  html: makeShrinkWrapHtml(300),
-                },
+                  html: makeShrinkWrapHtml(300)
+                }
               ]);
               expectScroll(false, false);
               expectWidths([350, 400]);
@@ -3367,9 +3367,9 @@ describe("Ext.layout.container.HBox", function () {
           it("should publish the total width", function () {
             makeShrinkWrapCt([
               {
-                width: 400,
+                width: 400
               },
-              makeShrinkWrapItem(400),
+              makeShrinkWrapItem(400)
             ]);
             expectScroll(false, false);
             expectWidths([400, 400]);
@@ -3380,12 +3380,12 @@ describe("Ext.layout.container.HBox", function () {
             it("should publish the total width", function () {
               makeShrinkWrapCt([
                 {
-                  width: 350,
+                  width: 350
                 },
                 {
                   minWidth: 400,
-                  html: makeShrinkWrapHtml(300),
-                },
+                  html: makeShrinkWrapHtml(300)
+                }
               ]);
               expectScroll(false, false);
               expectWidths([350, 400]);
@@ -3404,11 +3404,11 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   width: 400,
-                  height: big,
+                  height: big
                 },
                 {
-                  width: 400,
-                },
+                  width: 400
+                }
               ]);
               expectScroll(false, true);
               expectWidths([400, 400]);
@@ -3421,9 +3421,9 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   html: makeShrinkWrapHtml(400),
-                  height: big,
+                  height: big
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectWidths([400, 400]);
@@ -3436,12 +3436,12 @@ describe("Ext.layout.container.HBox", function () {
                   {
                     minWidth: 350,
                     html: makeShrinkWrapHtml(200),
-                    height: big,
+                    height: big
                   },
                   {
                     minWidth: 400,
-                    html: makeShrinkWrapHtml(100),
-                  },
+                    html: makeShrinkWrapHtml(100)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([350, 400]);
@@ -3455,9 +3455,9 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   width: 400,
-                  height: big,
+                  height: big
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectWidths([400, 400]);
@@ -3469,12 +3469,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeShrinkWrapCt([
                   {
                     width: 350,
-                    height: big,
+                    height: big
                   },
                   {
                     minWidth: 400,
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([350, 400]);
@@ -3490,11 +3490,11 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   width: 400,
-                  html: makeShrinkWrapHtml(10, big),
+                  html: makeShrinkWrapHtml(10, big)
                 },
                 {
-                  width: 400,
-                },
+                  width: 400
+                }
               ]);
               expectScroll(false, true);
               expectWidths([400, 400]);
@@ -3506,9 +3506,9 @@ describe("Ext.layout.container.HBox", function () {
             it("should account for the scrollbar in the total width", function () {
               makeShrinkWrapCt([
                 {
-                  html: makeShrinkWrapHtml(400, big),
+                  html: makeShrinkWrapHtml(400, big)
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectWidths([400, 400]);
@@ -3520,12 +3520,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeShrinkWrapCt([
                   {
                     minWidth: 350,
-                    html: makeShrinkWrapHtml(200, big),
+                    html: makeShrinkWrapHtml(200, big)
                   },
                   {
                     minWidth: 400,
-                    html: makeShrinkWrapHtml(100),
-                  },
+                    html: makeShrinkWrapHtml(100)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([350, 400]);
@@ -3539,9 +3539,9 @@ describe("Ext.layout.container.HBox", function () {
               makeShrinkWrapCt([
                 {
                   width: 400,
-                  html: makeShrinkWrapHtml(10, big),
+                  html: makeShrinkWrapHtml(10, big)
                 },
-                makeShrinkWrapItem(400),
+                makeShrinkWrapItem(400)
               ]);
               expectScroll(false, true);
               expectWidths([400, 400]);
@@ -3553,12 +3553,12 @@ describe("Ext.layout.container.HBox", function () {
                 makeShrinkWrapCt([
                   {
                     width: 350,
-                    html: makeShrinkWrapHtml(10, big),
+                    html: makeShrinkWrapHtml(10, big)
                   },
                   {
                     minWidth: 400,
-                    html: makeShrinkWrapHtml(300),
-                  },
+                    html: makeShrinkWrapHtml(300)
+                  }
                 ]);
                 expectScroll(false, true);
                 expectWidths([350, 400]);
@@ -3589,13 +3589,13 @@ describe("Ext.layout.container.HBox", function () {
           items: [
             {
               width: 300,
-              height: 500,
+              height: 500
             },
             {
               width: 300,
-              height: 500,
-            },
-          ],
+              height: 500
+            }
+          ]
         });
         var scrollable = ct.getScrollable();
         scrollable.on("scrollend", endSpy);
@@ -3614,7 +3614,7 @@ describe("Ext.layout.container.HBox", function () {
           var pos = scrollable.getPosition();
           expect(pos).toEqual({
             x: 50,
-            y: 30,
+            y: 30
           });
         });
       });
@@ -3626,18 +3626,18 @@ describe("Ext.layout.container.HBox", function () {
           height: 400,
           scrollable: {
             x: false,
-            y: false,
+            y: false
           },
           items: [
             {
               width: 300,
-              height: 500,
+              height: 500
             },
             {
               width: 300,
-              height: 500,
-            },
-          ],
+              height: 500
+            }
+          ]
         });
         var scrollable = ct.getScrollable();
         scrollable.on("scrollend", endSpy);
@@ -3656,7 +3656,7 @@ describe("Ext.layout.container.HBox", function () {
           var pos = scrollable.getPosition();
           expect(pos).toEqual({
             x: 50,
-            y: 30,
+            y: 30
           });
         });
       });
@@ -3677,20 +3677,20 @@ describe("Ext.layout.container.HBox", function () {
             scrollbarSize = Ext.getScrollbarSize(),
             component = {
               xtype: "component",
-              style: "margin: 3px; background-color: green;",
+              style: "margin: 3px; background-color: green;"
             },
             childCt = {
               xtype: options.childXtype,
               autoScroll: true,
               layout: "hbox",
-              items: [component],
+              items: [component]
             },
             parentCt = {
               xtype: options.parentXtype,
               floating: true,
               shadow: false,
               layout: options.parentLayout,
-              items: [childCt],
+              items: [childCt]
             };
 
           component[overflowDim] = 500;
@@ -3727,56 +3727,56 @@ describe("Ext.layout.container.HBox", function () {
             expect(ct.getWidth()).toBe(100);
           });
         });
-      },
+      }
     );
   }
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "container",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "container",
-    parentLayout: "hbox",
+    parentLayout: "hbox"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "container",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "container",
-    parentLayout: "hbox",
+    parentLayout: "hbox"
   });
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "panel",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "container",
     childXtype: "panel",
-    parentLayout: "hbox",
+    parentLayout: "hbox"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "panel",
-    parentLayout: "auto",
+    parentLayout: "auto"
   });
 
   createOverflowSuite({
     parentXtype: "panel",
     childXtype: "panel",
-    parentLayout: "hbox",
+    parentLayout: "hbox"
   });
 
   describe("misc overflow", function () {
@@ -3786,7 +3786,7 @@ describe("Ext.layout.container.HBox", function () {
           autoScroll: true,
           layout: {
             align: "stretch",
-            type: "hbox",
+            type: "hbox"
           },
           renderTo: Ext.getBody(),
           height: 600,
@@ -3795,13 +3795,13 @@ describe("Ext.layout.container.HBox", function () {
             {
               xtype: "component",
               width: 200,
-              html: "Item",
+              html: "Item"
             },
             {
               xtype: "component",
-              html: "Component",
-            },
-          ],
+              html: "Component"
+            }
+          ]
         });
       }).not.toThrow();
     });
@@ -3819,7 +3819,7 @@ describe("Ext.layout.container.HBox", function () {
         style: "border: 1px solid black",
         layout: {
           type: "hbox",
-          align: "stretchmax",
+          align: "stretchmax"
         },
         items: [
           {
@@ -3833,13 +3833,13 @@ describe("Ext.layout.container.HBox", function () {
               {
                 width: 500,
                 height: 15,
-                id: "top-box-500px-left",
-              },
-            ],
+                id: "top-box-500px-left"
+              }
+            ]
           },
           {
             xtype: "splitter",
-            id: "parallel-overflow-test-splitter",
+            id: "parallel-overflow-test-splitter"
           },
           {
             id: "overflowX-vbox-container-right",
@@ -3852,47 +3852,47 @@ describe("Ext.layout.container.HBox", function () {
               {
                 width: 500,
                 height: 15,
-                id: "top-box-500px-right",
-              },
-            ],
-          },
-        ],
+                id: "top-box-500px-right"
+              }
+            ]
+          }
+        ]
       });
       expect(ct).toHaveLayout({
         el: {
-          xywh: "0 0 200 " + (15 + Ext.getScrollbarSize().height + 2),
+          xywh: "0 0 200 " + (15 + Ext.getScrollbarSize().height + 2)
         },
         items: {
           "overflowX-vbox-container-left": {
             el: {
-              xywh: "1 1 97 " + (15 + Ext.getScrollbarSize().height),
+              xywh: "1 1 97 " + (15 + Ext.getScrollbarSize().height)
             },
             items: {
               "top-box-500px-left": {
                 el: {
-                  xywh: "0 0 500 15",
-                },
-              },
-            },
+                  xywh: "0 0 500 15"
+                }
+              }
+            }
           },
           "parallel-overflow-test-splitter": {
             el: {
-              xywh: "98 1 5 " + (15 + Ext.getScrollbarSize().height),
-            },
+              xywh: "98 1 5 " + (15 + Ext.getScrollbarSize().height)
+            }
           },
           "overflowX-vbox-container-right": {
             el: {
-              xywh: "103 1 96 " + (15 + Ext.getScrollbarSize().height),
+              xywh: "103 1 96 " + (15 + Ext.getScrollbarSize().height)
             },
             items: {
               "top-box-500px-right": {
                 el: {
-                  xywh: "0 0 500 15",
-                },
-              },
-            },
-          },
-        },
+                  xywh: "0 0 500 15"
+                }
+              }
+            }
+          }
+        }
       });
     });
   });
@@ -3913,9 +3913,9 @@ describe("Ext.layout.container.HBox", function () {
                 {
                   xtype: "component",
                   height: 100,
-                  html: "scroll down and toggle the fieldset",
-                },
-              ],
+                  html: "scroll down and toggle the fieldset"
+                }
+              ]
             },
             {
               id: "myFieldset",
@@ -3926,11 +3926,11 @@ describe("Ext.layout.container.HBox", function () {
                 {
                   xtype: "component",
                   width: 100,
-                  height: 20,
-                },
-              ],
-            },
-          ],
+                  height: 20
+                }
+              ]
+            }
+          ]
         }),
         fieldset = Ext.getCmp("myFieldset"),
         panelBody = panel.body.dom,
@@ -3949,7 +3949,7 @@ describe("Ext.layout.container.HBox", function () {
       panelBody.scrollTop = 9999;
       fieldset.collapse();
       expect(panelBody.scrollTop).toBe(
-        expectedScrollTopWhenFieldsetIsCollapsed,
+        expectedScrollTopWhenFieldsetIsCollapsed
       );
       panel.destroy();
     });

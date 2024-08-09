@@ -15,5 +15,5 @@ Ext.define("Ext.device.Storage", {
     }
 
     return Ext.create("Ext.device.storage.Simulator");
-  },
+  }
 });

@@ -30,6 +30,6 @@ Ext.define("Ext.theme.triton.menu.Item", {
       if (checkEl) {
         checkEl.syncRepaint();
       }
-    },
-  },
+    }
+  }
 });

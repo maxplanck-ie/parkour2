@@ -15,7 +15,7 @@ Ext.define("Ext.button.Manager", {
     if (!me.initialized) {
       Ext.getDoc().on({
         mouseup: me.onDocumentMouseUp,
-        scope: me,
+        scope: me
       });
       me.initialized = true;
     }
@@ -105,5 +105,5 @@ Ext.define("Ext.button.Manager", {
       }
     }
     return null;
-  },
+  }
 });

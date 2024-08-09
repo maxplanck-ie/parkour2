@@ -62,7 +62,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
          * An attribute used to control how flat the bar gradient looks.
          * A value of 0 essentially means no gradient (flat color).
          */
-        colorSpread: "number",
+        colorSpread: "number"
       },
       triggers: {
         x: "bbox",
@@ -70,7 +70,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
         width: "bbox",
         height: "bbox",
         depth: "bbox",
-        orientation: "bbox",
+        orientation: "bbox"
       },
       defaults: {
         x: 0,
@@ -83,9 +83,9 @@ Ext.define("Ext.chart.series.sprite.Box", {
         saturationFactor: 1,
         brightnessFactor: 1,
         colorSpread: 1,
-        lineJoin: "bevel",
-      },
-    },
+        lineJoin: "bevel"
+      }
+    }
   },
 
   constructor: function (config) {
@@ -129,7 +129,7 @@ Ext.define("Ext.chart.series.sprite.Box", {
       isTransparent = attr.globalAlpha < 1,
       fillStyle = attr.fillStyle,
       color = Ext.util.Color.create(
-        fillStyle.isGradient ? fillStyle.getStops()[0].color : fillStyle,
+        fillStyle.isGradient ? fillStyle.getStops()[0].color : fillStyle
       ),
       saturationFactor = attr.saturationFactor,
       brightnessFactor = attr.brightnessFactor,
@@ -162,9 +162,9 @@ Ext.define("Ext.chart.series.sprite.Box", {
           Ext.Number.constrain(
             (0.5 + colorSpread * 0.1) * brightnessFactor,
             0,
-            1,
-          ),
-        ),
+            1
+          )
+        )
       },
       {
         offset: 1,
@@ -174,10 +174,10 @@ Ext.define("Ext.chart.series.sprite.Box", {
           Ext.Number.constrain(
             (0.5 - colorSpread * 0.11) * brightnessFactor,
             0,
-            1,
-          ),
-        ),
-      },
+            1
+          )
+        )
+      }
     ]);
 
     me.rightGradient.setDegrees(isHorizontal ? 45 : 90);
@@ -190,9 +190,9 @@ Ext.define("Ext.chart.series.sprite.Box", {
           Ext.Number.constrain(
             (0.5 - colorSpread * 0.14) * brightnessFactor,
             0,
-            1,
-          ),
-        ),
+            1
+          )
+        )
       },
       {
         offset: 1,
@@ -201,15 +201,15 @@ Ext.define("Ext.chart.series.sprite.Box", {
           Ext.Number.constrain(
             hsv[1] * (1.0 + colorSpread * 0.4) * saturationFactor,
             0,
-            1,
+            1
           ),
           Ext.Number.constrain(
             (0.5 - colorSpread * 0.32) * brightnessFactor,
             0,
-            1,
-          ),
-        ),
-      },
+            1
+          )
+        )
+      }
     ]);
 
     if (isHorizontal) {
@@ -226,14 +226,14 @@ Ext.define("Ext.chart.series.sprite.Box", {
           Ext.Number.constrain(
             hsv[1] * (1.0 - colorSpread * 0.1) * saturationFactor,
             0,
-            1,
+            1
           ),
           Ext.Number.constrain(
             (0.5 + colorSpread * 0.1) * brightnessFactor,
             0,
-            1,
-          ),
-        ),
+            1
+          )
+        )
       },
       {
         offset: 1,
@@ -242,15 +242,15 @@ Ext.define("Ext.chart.series.sprite.Box", {
           Ext.Number.constrain(
             hsv[1] * (1.0 + colorSpread * 0.1) * saturationFactor,
             0,
-            1,
+            1
           ),
           Ext.Number.constrain(
             (0.5 - colorSpread * 0.23) * brightnessFactor,
             0,
-            1,
-          ),
-        ),
-      },
+            1
+          )
+        )
+      }
     ]);
 
     if (isTransparent || isNegative) {
@@ -358,5 +358,5 @@ Ext.define("Ext.chart.series.sprite.Box", {
     ctx.fillStyle = me.frontGradient.generateGradient(ctx, bbox);
 
     ctx.fillStroke(attr);
-  },
+  }
 });

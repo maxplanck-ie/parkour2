@@ -114,5 +114,5 @@ Ext.define("Ext.layout.container.Form", {
 
   getRenderTarget: function () {
     return this.formWrap;
-  },
+  }
 });

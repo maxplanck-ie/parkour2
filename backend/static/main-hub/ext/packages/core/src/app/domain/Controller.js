@@ -36,5 +36,5 @@ Ext.define("Ext.app.domain.Controller", {
       result = Ext.Array.indexOf(alias, this.prefix + selector) > -1;
     }
     return result;
-  },
+  }
 });

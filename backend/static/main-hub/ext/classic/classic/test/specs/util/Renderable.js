@@ -17,20 +17,20 @@ describe("Ext.util.Renderable", function () {
 
       CSS.createStyleSheet(
         ".style-proxy { font-family: " + framing + " }",
-        "renderable-test-stylesheet",
+        "renderable-test-stylesheet"
       );
 
       Ext.supports.CSS3BorderRadius = false;
 
       styleEl = Ext.getBody().createChild({
-        cls: "style-proxy",
+        cls: "style-proxy"
       });
 
       comp = new Ext.Component({
         frame: true,
         getStyleProxy: function () {
           return styleEl;
-        },
+        }
       });
       comp.getFrameInfo();
 
@@ -102,14 +102,14 @@ describe("Ext.util.Renderable", function () {
           cn: [
             {
               tag: "li",
-              html: '<a href="http://www.sencha.com">Sencha</a>',
+              html: '<a href="http://www.sencha.com">Sencha</a>'
             },
             {
               tag: "li",
-              html: '<a href="http://www.google.com">Google</a>',
-            },
-          ],
-        },
+              html: '<a href="http://www.google.com">Google</a>'
+            }
+          ]
+        }
       });
 
       viewport = new Ext.container.Viewport({
@@ -119,16 +119,16 @@ describe("Ext.util.Renderable", function () {
             region: "north",
             ariaRole: "foo",
             xtype: "component",
-            el: "existing-element",
+            el: "existing-element"
           },
           {
             xtype: "panel",
             ariaRole: "bar",
             id: "test-panel",
             region: "center",
-            html: "test",
-          },
-        ],
+            html: "test"
+          }
+        ]
       });
 
       // Compare to known, correct DOM structure without possibly variable
@@ -160,7 +160,7 @@ describe("Ext.util.Renderable", function () {
               "</DIV>",
               "</DIV>",
               "</DIV>",
-              "</DIV>",
+              "</DIV>"
             ]
           : [
               '<div id="existing-element">',
@@ -181,7 +181,7 @@ describe("Ext.util.Renderable", function () {
               "</div>",
               "</div>",
               "</div>",
-              "</div>",
+              "</div>"
             ]
       ).join("");
 
@@ -210,7 +210,7 @@ describe("Ext.util.Renderable", function () {
           maskOnDisable: false,
 
           style: {
-            "background-color": "green",
+            "background-color": "green"
           },
 
           // Note no childEls by default
@@ -218,10 +218,10 @@ describe("Ext.util.Renderable", function () {
             '<div id="{id}-wrapEl" data-ref="wrapEl" {ariaAttributes:attributes}>',
             '<div id="{id}-labelEl" data-ref="labelEl" class="label"></div>',
             '<div id="{id}-descEl" data-ref="descEl" class="desc"></div>',
-            "</div>",
-          ],
+            "</div>"
+          ]
         },
-        config,
+        config
       );
 
       c = new Ext.Component(config);
@@ -256,7 +256,7 @@ describe("Ext.util.Renderable", function () {
       it("should resolve ariaEl after rendering", function () {
         makeCmp({
           childEls: ["wrapEl"],
-          ariaEl: "wrapEl",
+          ariaEl: "wrapEl"
         });
 
         expect(ariaEl).toBe(c.wrapEl);
@@ -368,7 +368,7 @@ describe("Ext.util.Renderable", function () {
                     "aria-disabled",
                     "aria-label",
                     "aria-expanded",
-                    "aria-blerg",
+                    "aria-blerg"
                   ],
                   i,
                   len,
@@ -392,11 +392,11 @@ describe("Ext.util.Renderable", function () {
                     ariaLabel: "foo",
                     region: "north",
                     ariaAttributes: {
-                      "aria-foo": "bar",
+                      "aria-foo": "bar"
                     },
                     ariaRenderAttributes: {
-                      "aria-blerg": "qux",
-                    },
+                      "aria-blerg": "qux"
+                    }
                   });
                 });
 
@@ -431,14 +431,14 @@ describe("Ext.util.Renderable", function () {
                   "aria-hidden": "false",
                   "aria-disabled": "false",
                   "aria-label": "sploosh!",
-                  "aria-expanded": "true",
+                  "aria-expanded": "true"
                 };
 
               beforeEach(function () {
                 makeC({
                   ariaRole: "throbbe",
                   ariaLabel: "sploosh!",
-                  collapsible: true,
+                  collapsible: true
                 });
               });
 
@@ -463,7 +463,7 @@ describe("Ext.util.Renderable", function () {
                   "aria-label": "frogg",
                   "aria-expanded": "true",
                   "aria-baz": "qux",
-                  "aria-fred": "frob",
+                  "aria-fred": "frob"
                 };
 
               beforeEach(function () {
@@ -472,11 +472,11 @@ describe("Ext.util.Renderable", function () {
                   ariaRole: "foo",
                   ariaLabel: "frogg",
                   ariaAttributes: {
-                    "aria-baz": "qux",
+                    "aria-baz": "qux"
                   },
                   ariaRenderAttributes: {
-                    "aria-fred": "frob",
-                  },
+                    "aria-fred": "frob"
+                  }
                 });
               });
 
@@ -497,7 +497,7 @@ describe("Ext.util.Renderable", function () {
               beforeEach(function () {
                 makeC({
                   ariaRole: "hidden-test",
-                  hidden: true,
+                  hidden: true
                 });
               });
 
@@ -508,7 +508,7 @@ describe("Ext.util.Renderable", function () {
               beforeEach(function () {
                 makeC({
                   ariaRole: "disabled-test",
-                  disabled: true,
+                  disabled: true
                 });
               });
 
@@ -520,7 +520,7 @@ describe("Ext.util.Renderable", function () {
                 makeC({
                   ariaRole: "expanded-test",
                   collapsible: true,
-                  collapsed: true,
+                  collapsed: true
                 });
               });
 
@@ -532,7 +532,7 @@ describe("Ext.util.Renderable", function () {
                 makeC({
                   ariaRole: "expanded-test",
                   collapsible: true,
-                  collapsed: false,
+                  collapsed: false
                 });
               });
 
@@ -543,13 +543,13 @@ describe("Ext.util.Renderable", function () {
       }
 
       makeAttrSuite("on main el", {
-        childEls: ["wrapEl"],
+        childEls: ["wrapEl"]
       });
 
       makeAttrSuite("on child el", {
         ariaUsesMainElement: false,
         ariaEl: "wrapEl",
-        childEls: ["wrapEl"],
+        childEls: ["wrapEl"]
       });
     });
   });

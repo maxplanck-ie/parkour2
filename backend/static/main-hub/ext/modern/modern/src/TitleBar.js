@@ -137,7 +137,7 @@ Ext.define("Ext.TitleBar", {
      */
     layout: {
       type: "hbox",
-      align: "center",
+      align: "center"
     },
 
     /**
@@ -155,7 +155,7 @@ Ext.define("Ext.TitleBar", {
      * @cfg {String} maxButtonWidth The maximum width of the button by percentage
      * @accessor
      */
-    maxButtonWidth: "40%",
+    maxButtonWidth: "40%"
   },
 
   border: false,
@@ -174,7 +174,7 @@ Ext.define("Ext.TitleBar", {
 
     this.on({
       painted: "refreshTitlePosition",
-      single: true,
+      single: true
     });
   },
 
@@ -191,12 +191,12 @@ Ext.define("Ext.TitleBar", {
       cls: Ext.baseCSSPrefix + "titlebar-left",
       layout: {
         type: "hbox",
-        align: "center",
+        align: "center"
       },
       listeners: {
         resize: "refreshTitlePosition",
-        scope: me,
-      },
+        scope: me
+      }
     });
 
     me.spacer = me.add({
@@ -206,8 +206,8 @@ Ext.define("Ext.TitleBar", {
       flex: 1,
       listeners: {
         resize: "refreshTitlePosition",
-        scope: me,
-      },
+        scope: me
+      }
     });
 
     me.rightBox = me.add({
@@ -216,12 +216,12 @@ Ext.define("Ext.TitleBar", {
       cls: Ext.baseCSSPrefix + "titlebar-right",
       layout: {
         type: "hbox",
-        align: "center",
+        align: "center"
       },
       listeners: {
         resize: "refreshTitlePosition",
-        scope: me,
-      },
+        scope: me
+      }
     });
 
     switch (titleAlign) {
@@ -229,7 +229,7 @@ Ext.define("Ext.TitleBar", {
         me.titleComponent = me.leftBox.add({
           xtype: "title",
           cls: Ext.baseCSSPrefix + "title-align-left",
-          hidden: defaults.hidden,
+          hidden: defaults.hidden
         });
         me.refreshTitlePosition = Ext.emptyFn;
         break;
@@ -237,7 +237,7 @@ Ext.define("Ext.TitleBar", {
         me.titleComponent = me.rightBox.add({
           xtype: "title",
           cls: Ext.baseCSSPrefix + "title-align-right",
-          hidden: defaults.hidden,
+          hidden: defaults.hidden
         });
         me.refreshTitlePosition = Ext.emptyFn;
         break;
@@ -245,7 +245,7 @@ Ext.define("Ext.TitleBar", {
         me.titleComponent = me.add({
           xtype: "title",
           hidden: defaults.hidden,
-          centered: true,
+          centered: true
         });
         break;
     }
@@ -311,7 +311,7 @@ Ext.define("Ext.TitleBar", {
       maxButtonWidth = parseInt(maxButtonWidth.replace("%", ""), 10);
     }
     maxButtonWidth = Math.round(
-      (this.element.getWidth() / 100) * maxButtonWidth,
+      (this.element.getWidth() / 100) * maxButtonWidth
     );
 
     return maxButtonWidth;
@@ -391,5 +391,5 @@ Ext.define("Ext.TitleBar", {
     if (this.isPainted()) {
       this.refreshTitlePosition();
     }
-  },
+  }
 });

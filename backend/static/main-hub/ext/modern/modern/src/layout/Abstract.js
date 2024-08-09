@@ -53,5 +53,5 @@ Ext.define("Ext.layout.Abstract", {
 
   onItemDockedChange: Ext.emptyFn,
 
-  onItemInnerStateChange: Ext.emptyFn,
+  onItemInnerStateChange: Ext.emptyFn
 });

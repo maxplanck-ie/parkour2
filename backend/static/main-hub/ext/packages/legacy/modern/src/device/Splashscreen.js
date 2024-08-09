@@ -14,7 +14,7 @@ Ext.define("Ext.device.Splashscreen", {
 
   requires: [
     "Ext.device.splashscreen.Cordova",
-    "Ext.device.splashscreen.Simulator",
+    "Ext.device.splashscreen.Simulator"
   ],
 
   constructor: function () {
@@ -26,5 +26,5 @@ Ext.define("Ext.device.Splashscreen", {
     }
 
     return Ext.create("Ext.device.splashscreen.Simulator");
-  },
+  }
 });

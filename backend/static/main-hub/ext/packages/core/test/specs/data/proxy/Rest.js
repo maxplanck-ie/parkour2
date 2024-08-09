@@ -20,7 +20,7 @@ describe("Ext.data.proxy.Rest", function () {
         create: "POST",
         read: "GET",
         update: "PUT",
-        destroy: "DELETE",
+        destroy: "DELETE"
       };
 
       expect(proxy.getActionMethods()).toEqual(actionMethods);
@@ -37,8 +37,8 @@ describe("Ext.data.proxy.Rest", function () {
     function createProxy(config) {
       return new Ext.data.proxy.Rest(
         Ext.apply({}, config, {
-          url: "/users",
-        }),
+          url: "/users"
+        })
       );
     }
 
@@ -49,30 +49,30 @@ describe("Ext.data.proxy.Rest", function () {
     beforeEach(function () {
       var User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["id", "name", "email"],
+        fields: ["id", "name", "email"]
       });
 
       record1 = new User({
         id: 2,
         name: "Ed Spencer",
-        email: "ed@sencha.com",
+        email: "ed@sencha.com"
       });
 
       collectionOperation = new Ext.data.operation.Read({
-        records: [],
+        records: []
       });
 
       singleOperation = new Ext.data.operation.Read({
-        records: [record1],
+        records: [record1]
       });
 
       collectionRequest = new Ext.data.Request({
         operation: collectionOperation,
-        action: collectionOperation.getAction(),
+        action: collectionOperation.getAction()
       });
 
       singleRequest = new Ext.data.Request({
-        operation: singleOperation,
+        operation: singleOperation
       });
     });
 
@@ -87,7 +87,7 @@ describe("Ext.data.proxy.Rest", function () {
 
         collectionRequest = new Ext.data.Request({
           operation: collectionOperation,
-          action: collectionOperation.getAction(),
+          action: collectionOperation.getAction()
         });
 
         proxy = createProxy({ appendId: false });
@@ -126,7 +126,7 @@ describe("Ext.data.proxy.Rest", function () {
       it("should url encode the id", function () {
         record1.set("id", "Foo & Bar");
         expect(stripCache(proxy.buildUrl(singleRequest))).toBe(
-          "/users/Foo%20%26%20Bar",
+          "/users/Foo%20%26%20Bar"
         );
       });
 
@@ -166,7 +166,7 @@ describe("Ext.data.proxy.Rest", function () {
       beforeEach(function () {
         proxy = createProxy({
           appendId: false,
-          format: undefined,
+          format: undefined
         });
       });
 
@@ -183,19 +183,19 @@ describe("Ext.data.proxy.Rest", function () {
       beforeEach(function () {
         proxy = createProxy({
           appendId: true,
-          format: "json",
+          format: "json"
         });
       });
 
       it("should append the format to a single Operation", function () {
         expect(stripCache(proxy.buildUrl(collectionRequest))).toEqual(
-          "/users.json",
+          "/users.json"
         );
       });
 
       it("should append the format to a collection Operation", function () {
         expect(stripCache(proxy.buildUrl(singleRequest))).toEqual(
-          "/users/2.json",
+          "/users/2.json"
         );
       });
     });
@@ -203,8 +203,8 @@ describe("Ext.data.proxy.Rest", function () {
     it("should respect the api configuration", function () {
       proxy = createProxy({
         api: {
-          read: "/users1",
-        },
+          read: "/users1"
+        }
       });
       expect(stripCache(proxy.buildUrl(collectionRequest))).toEqual("/users1");
     });

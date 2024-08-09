@@ -22,9 +22,9 @@ describe("Ext.form.FieldContainer", function () {
         items: [
           {
             xtype: "textfield",
-            allowBlank: false,
-          },
-        ],
+            allowBlank: false
+          }
+        ]
       });
       component.on("fieldvaliditychange", function () {
         called = true;
@@ -39,9 +39,9 @@ describe("Ext.form.FieldContainer", function () {
         items: [
           {
             xtype: "textfield",
-            allowBlank: false,
-          },
-        ],
+            allowBlank: false
+          }
+        ]
       });
       component.on("fielderrorchange", function () {
         called = true;
@@ -58,9 +58,9 @@ describe("Ext.form.FieldContainer", function () {
         items: [
           {
             xtype: "textfield",
-            fieldLabel: "SomeLabel",
-          },
-        ],
+            fieldLabel: "SomeLabel"
+          }
+        ]
       });
       expect(component.items.first().labelEl.isVisible()).toBe(true);
     });
@@ -74,12 +74,12 @@ describe("Ext.form.FieldContainer", function () {
         items: [
           {
             xtype: "textfield",
-            fieldLabel: "SomeLabel",
-          },
-        ],
+            fieldLabel: "SomeLabel"
+          }
+        ]
       });
       expect(component.containerEl.hasCls(component.layout.targetCls)).toBe(
-        true,
+        true
       );
     });
   });
@@ -89,7 +89,7 @@ describe("Ext.form.FieldContainer", function () {
       makeComponent({
         defaultType: "textfield",
         combineLabels: true,
-        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }],
+        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }]
       });
       expect(component.getFieldLabel()).toEqual("One, Two");
     });
@@ -99,7 +99,7 @@ describe("Ext.form.FieldContainer", function () {
         defaultType: "textfield",
         combineLabels: true,
         labelConnector: " - ",
-        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }],
+        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }]
       });
       expect(component.getFieldLabel()).toEqual("One - Two");
     });
@@ -108,7 +108,7 @@ describe("Ext.form.FieldContainer", function () {
       makeComponent({
         defaultType: "textfield",
         combineLabels: true,
-        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }],
+        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }]
       });
       component.add({ fieldLabel: "Three" });
       expect(component.getFieldLabel()).toEqual("One, Two, Three");
@@ -121,8 +121,8 @@ describe("Ext.form.FieldContainer", function () {
         items: [
           { fieldLabel: "One" },
           { fieldLabel: "Two" },
-          { fieldLabel: "Three" },
-        ],
+          { fieldLabel: "Three" }
+        ]
       });
       component.remove(component.items.getAt(1));
       expect(component.getFieldLabel()).toEqual("One, Three");
@@ -133,7 +133,7 @@ describe("Ext.form.FieldContainer", function () {
         defaultType: "textfield",
         combineLabels: true,
         fieldLabel: "Main Label",
-        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }],
+        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }]
       });
       expect(component.getFieldLabel()).toEqual("Main Label");
     });
@@ -142,7 +142,7 @@ describe("Ext.form.FieldContainer", function () {
       makeComponent({
         defaultType: "textfield",
         combineLabels: false,
-        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }],
+        items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }]
       });
       expect(component.getFieldLabel()).toEqual("");
     });
@@ -155,7 +155,7 @@ describe("Ext.form.FieldContainer", function () {
           renderTo: Ext.getBody(),
           combineErrors: true,
           defaultType: "textfield",
-          items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }],
+          items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }]
         });
       });
       waits(20);
@@ -172,8 +172,8 @@ describe("Ext.form.FieldContainer", function () {
           defaultType: "textfield",
           items: [
             { fieldLabel: "One", allowBlank: false },
-            { fieldLabel: "Two", allowBlank: false },
-          ],
+            { fieldLabel: "Two", allowBlank: false }
+          ]
         });
         component.items.getAt(0).validate();
         component.items.getAt(1).validate();
@@ -183,7 +183,7 @@ describe("Ext.form.FieldContainer", function () {
       }, "population of errorEl");
       runs(function () {
         expect(component.getActiveError()).toEqual(
-          '<ul><li>One: This field is required</li><li class="last">Two: This field is required</li></ul>',
+          '<ul><li>One: This field is required</li><li class="last">Two: This field is required</li></ul>'
         );
       });
     });
@@ -196,8 +196,8 @@ describe("Ext.form.FieldContainer", function () {
           defaultType: "textfield",
           items: [
             { fieldLabel: "One", allowBlank: false },
-            { fieldLabel: "Two", allowBlank: false },
-          ],
+            { fieldLabel: "Two", allowBlank: false }
+          ]
         });
         component.items.getAt(0).validate();
         component.items.getAt(1).validate();
@@ -220,7 +220,7 @@ describe("Ext.form.FieldContainer", function () {
           renderTo: Ext.getBody(),
           combineErrors: true,
           defaultType: "textfield",
-          items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }],
+          items: [{ fieldLabel: "One" }, { fieldLabel: "Two" }]
         });
         component.items.getAt(0).validate();
         component.items.getAt(1).validate();

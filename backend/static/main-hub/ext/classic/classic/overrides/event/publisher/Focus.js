@@ -24,5 +24,5 @@ Ext.define(null, {
     }
 
     this.callParent([e]);
-  },
+  }
 });

@@ -16,8 +16,8 @@ Ext.define("Ext.ux.GroupTabRenderer", {
     "%}",
     "</div>",
     {
-      priority: 5,
-    },
+      priority: 5
+    }
   ),
 
   rowTpl: new Ext.XTemplate(
@@ -42,8 +42,8 @@ Ext.define("Ext.ux.GroupTabRenderer", {
     "</tpl>",
     "</div>",
     {
-      priority: 5,
-    },
+      priority: 5
+    }
   ),
 
   cellTpl: new Ext.XTemplate(
@@ -58,8 +58,8 @@ Ext.define("Ext.ux.GroupTabRenderer", {
     '<div class="x-grouptabs-corner x-grouptabs-corner-bottom-left"></div>',
     "</div>",
     {
-      priority: 5,
-    },
+      priority: 5
+    }
   ),
 
   selectors: {
@@ -80,7 +80,7 @@ Ext.define("Ext.ux.GroupTabRenderer", {
 
     getCellSelector: function (header) {
       return header ? header.getCellSelector() : this.cellSelector;
-    },
+    }
   },
 
   init: function (grid) {
@@ -90,5 +90,5 @@ Ext.define("Ext.ux.GroupTabRenderer", {
     view.addRowTpl(me.rowTpl);
     view.addCellTpl(me.cellTpl);
     Ext.apply(view, me.selectors);
-  },
+  }
 });

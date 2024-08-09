@@ -44,7 +44,7 @@ Ext.define("Ext.plugin.MouseEnter", {
     //<debug>
     if (!this.delegate) {
       Ext.raise(
-        "mouseenter plugin must be configured with a delegate selector",
+        "mouseenter plugin must be configured with a delegate selector"
       );
     }
     if (!this.handler) {
@@ -55,7 +55,7 @@ Ext.define("Ext.plugin.MouseEnter", {
       listeners = {
         mouseover: me.onMouseOver,
         scope: me,
-        destroyable: true,
+        destroyable: true
       };
 
     if (me.leaveHandler) {
@@ -94,5 +94,5 @@ Ext.define("Ext.plugin.MouseEnter", {
   destroy: function () {
     this.callParent();
     Ext.destroy(this.mouseListener);
-  },
+  }
 });

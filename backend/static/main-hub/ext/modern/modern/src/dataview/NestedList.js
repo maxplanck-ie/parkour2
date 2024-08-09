@@ -90,7 +90,7 @@ Ext.define("Ext.dataview.NestedList", {
     "Ext.XTemplate",
     "Ext.data.StoreManager",
     "Ext.data.TreeStore",
-    "Ext.data.NodeStore",
+    "Ext.data.NodeStore"
   ],
 
   config: {
@@ -180,7 +180,7 @@ Ext.define("Ext.dataview.NestedList", {
       docked: "top",
       xtype: "titlebar",
       ui: "light",
-      inline: true,
+      inline: true
     },
 
     /**
@@ -199,8 +199,8 @@ Ext.define("Ext.dataview.NestedList", {
       animation: {
         type: "slide",
         duration: 250,
-        direction: "left",
-      },
+        direction: "left"
+      }
     },
 
     /**
@@ -258,7 +258,7 @@ Ext.define("Ext.dataview.NestedList", {
      * @cfg {Object} backButton The configuration for the back button used in the nested list.
      */
     backButton: {
-      hidden: true,
+      hidden: true
     },
 
     /**
@@ -301,7 +301,7 @@ Ext.define("Ext.dataview.NestedList", {
 
     ui: null,
 
-    clearSelectionOnListChange: true,
+    clearSelectionOnListChange: true
   },
 
   /**
@@ -452,7 +452,7 @@ Ext.define("Ext.dataview.NestedList", {
       newContainer.on(
         "beforeactiveitemchange",
         "onBeforeDetailContainerChange",
-        this,
+        this
       );
       newContainer.on("activeitemchange", "onDetailContainerChange", this);
     }
@@ -491,28 +491,28 @@ Ext.define("Ext.dataview.NestedList", {
   onBeforeSelect: function () {
     this.fireEvent.apply(
       this,
-      [].concat("beforeselect", this, Array.prototype.slice.call(arguments)),
+      [].concat("beforeselect", this, Array.prototype.slice.call(arguments))
     );
   },
 
   onContainerTap: function () {
     this.fireEvent.apply(
       this,
-      [].concat("containertap", this, Array.prototype.slice.call(arguments)),
+      [].concat("containertap", this, Array.prototype.slice.call(arguments))
     );
   },
 
   onSelectionChange: function () {
     this.fireEvent.apply(
       this,
-      [].concat("selectionchange", this, Array.prototype.slice.call(arguments)),
+      [].concat("selectionchange", this, Array.prototype.slice.call(arguments))
     );
   },
 
   onItemDoubleTap: function () {
     this.fireEvent.apply(
       this,
-      [].concat("itemdoubletap", this, Array.prototype.slice.call(arguments)),
+      [].concat("itemdoubletap", this, Array.prototype.slice.call(arguments))
     );
   },
 
@@ -523,7 +523,7 @@ Ext.define("Ext.dataview.NestedList", {
     if (loadingText) {
       this.setMasked({
         xtype: "loadmask",
-        message: loadingText,
+        message: loadingText
       });
 
       //disable scrolling while it is masked
@@ -534,7 +534,7 @@ Ext.define("Ext.dataview.NestedList", {
 
     this.fireEvent.apply(
       this,
-      [].concat("beforeload", this, Array.prototype.slice.call(arguments)),
+      [].concat("beforeload", this, Array.prototype.slice.call(arguments))
     );
   },
 
@@ -542,7 +542,7 @@ Ext.define("Ext.dataview.NestedList", {
     this.setMasked(false);
     this.fireEvent.apply(
       this,
-      [].concat("load", this, Array.prototype.slice.call(arguments)),
+      [].concat("load", this, Array.prototype.slice.call(arguments))
     );
 
     if (store.indexOf(this.getLastNode()) === -1) {
@@ -563,7 +563,7 @@ Ext.define("Ext.dataview.NestedList", {
     this.fireAction(
       "back",
       [this, node, lastActiveList, detailCardActive],
-      "doBack",
+      "doBack"
     );
   },
 
@@ -587,8 +587,8 @@ Ext.define("Ext.dataview.NestedList", {
     if (!this.getStore()) {
       this.setStore(
         new Ext.data.TreeStore({
-          root: data,
-        }),
+          root: data
+        })
       );
     }
   },
@@ -618,7 +618,7 @@ Ext.define("Ext.dataview.NestedList", {
   storeListeners: {
     rootchange: "onStoreRootChange",
     load: "onStoreLoad",
-    beforeload: "onStoreBeforeLoad",
+    beforeload: "onStoreBeforeLoad"
   },
 
   updateStore: function (newStore, oldStore) {
@@ -648,7 +648,7 @@ Ext.define("Ext.dataview.NestedList", {
     return Ext.factory(
       detailCard,
       Ext.Component,
-      detailCard === null ? oldDetailCard : undefined,
+      detailCard === null ? oldDetailCard : undefined
     );
   },
 
@@ -680,7 +680,7 @@ Ext.define("Ext.dataview.NestedList", {
       Ext.apply(config, {
         docked: "top",
         xtype: "titlebar",
-        ui: "light",
+        ui: "light"
       });
 
       var containerConfig =
@@ -692,10 +692,10 @@ Ext.define("Ext.dataview.NestedList", {
             xtype: "toolbar",
             docked: "bottom",
             hidden: true,
-            ui: "dark",
+            ui: "dark"
           },
-          containerConfig,
-        ),
+          containerConfig
+        )
       );
     }
 
@@ -956,7 +956,7 @@ Ext.define("Ext.dataview.NestedList", {
         node: node,
         rootVisible: false,
         model: me.getStore().getModel(),
-        proxy: "memory",
+        proxy: "memory"
       });
 
     node.expand();
@@ -979,22 +979,22 @@ Ext.define("Ext.dataview.NestedList", {
             itemtap: "onItemTap",
             beforeselectionchange: "onBeforeSelect",
             containertap: "onContainerTap",
-            scope: me,
+            scope: me
           },
           {
             selectionchange: "onSelectionChange",
             itemtouchstart: "onItemInteraction",
             itemtap: "onItemInteraction",
             order: "before",
-            scope: me,
-          },
+            scope: me
+          }
         ],
         itemTpl:
           '<span<tpl if="leaf == true"> class="x-list-item-leaf"</tpl>>' +
           me.getItemTextTpl(node) +
-          "</span>",
+          "</span>"
       },
-      me.getListConfig(),
+      me.getListConfig()
     );
   },
   privates: {
@@ -1009,6 +1009,6 @@ Ext.define("Ext.dataview.NestedList", {
       if (toolbar) {
         toolbar.setTitle(newTitle);
       }
-    },
-  },
+    }
+  }
 });

@@ -4,118 +4,122 @@ Ext.define("MainHub.model.librarypreparation.LibraryPreparation", {
   fields: [
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "is_converted",
-      type: "bool",
+      type: "bool"
     },
     {
       name: "barcode",
-      type: "string",
+      type: "string"
     },
     {
       name: "create_time",
-      type: "date",
+      type: "date"
     },
     {
       name: "request_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "pool_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "selected",
       type: "bool",
-      defaultValue: false,
+      defaultValue: false
     },
     {
       name: "comments_facility",
-      type: "string",
+      type: "string"
     },
     {
       name: "comments",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_protocol",
-      type: "int",
+      type: "int"
     },
     {
       name: "library_protocol_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "concentration_sample",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "starting_amount",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "spike_in_description",
-      type: "string",
+      type: "string"
     },
     {
       name: "spike_in_volume",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "coordinate",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i7_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i5_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "pcr_cycles",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "concentration_library",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "mean_fragment_size",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "nM",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "qpcr_result",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "dilution_factor",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "quality_check",
       type: "string",
-      allowNull: true,
+      allowNull: true
     },
-  ],
+    {
+      name: "smear_analysis",
+      type: "float"
+    }
+  ]
 });

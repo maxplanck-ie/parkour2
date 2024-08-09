@@ -23,9 +23,9 @@ describe("Ext.view.AbstractView", function () {
         y: 10,
         store: store,
         itemTpl: "{field}",
-        itemSelector: "div",
+        itemSelector: "div"
       },
-      cfg,
+      cfg
     );
 
     return (view = new Ext.view.AbstractView(cfg));
@@ -36,7 +36,7 @@ describe("Ext.view.AbstractView", function () {
     Ext.data.ProxyStore.prototype.load = loadStore;
 
     store = new Ext.data.Store({
-      fields: ["field"],
+      fields: ["field"]
     });
   });
 
@@ -57,7 +57,7 @@ describe("Ext.view.AbstractView", function () {
       view = new Ext.view.AbstractView({
         tpl: null,
         store: store,
-        itemSelector: null,
+        itemSelector: null
       });
 
       expect(view.getSelectionModel().mode).toEqual("SINGLE");
@@ -70,7 +70,7 @@ describe("Ext.view.AbstractView", function () {
         tpl: null,
         store: store,
         itemSelector: null,
-        singleSelect: true,
+        singleSelect: true
       });
 
       expect(view.getSelectionModel().mode).toEqual("SINGLE");
@@ -83,7 +83,7 @@ describe("Ext.view.AbstractView", function () {
         tpl: null,
         store: store,
         itemSelector: null,
-        simpleSelect: true,
+        simpleSelect: true
       });
 
       expect(view.getSelectionModel().mode).toEqual("SIMPLE");
@@ -96,7 +96,7 @@ describe("Ext.view.AbstractView", function () {
         tpl: null,
         store: store,
         itemSelector: null,
-        multiSelect: true,
+        multiSelect: true
       });
 
       expect(view.getSelectionModel().mode).toEqual("MULTI");
@@ -114,7 +114,7 @@ describe("Ext.view.AbstractView", function () {
         contextRun,
         function () {
           layoutCount++;
-        },
+        }
       );
 
       v = new Ext.view.AbstractView({
@@ -123,9 +123,9 @@ describe("Ext.view.AbstractView", function () {
         store: {
           type: "array",
           fields: ["field"],
-          data: [["datum"]],
+          data: [["datum"]]
         },
-        renderTo: document.body,
+        renderTo: document.body
       });
 
       // Wait. There MUST NOT be a further, deferred layout call!
@@ -148,25 +148,25 @@ describe("Ext.view.AbstractView", function () {
         store: store,
         renderTo: Ext.getBody(),
         listeners: {
-          itemadd: itemAddSpy,
-        },
+          itemadd: itemAddSpy
+        }
       });
       newRec = store.add({
-        field: "a",
+        field: "a"
       })[0];
       expect(itemAddSpy.callCount).toBe(1);
       expect(Ext.Array.slice(itemAddSpy.mostRecentCall.args, 0, 4)).toEqual([
         [newRec],
         store.getCount() - 1,
         [view.getNode(newRec)],
-        view,
+        view
       ]);
     });
 
     it("should fire itemremove when removing an item from the view", function () {
       var itemRemoveSpy = jasmine.createSpy(),
         newRec = store.add({
-          field: "a",
+          field: "a"
         })[0],
         item0;
 
@@ -175,8 +175,8 @@ describe("Ext.view.AbstractView", function () {
         store: store,
         renderTo: Ext.getBody(),
         listeners: {
-          itemremove: itemRemoveSpy,
-        },
+          itemremove: itemRemoveSpy
+        }
       });
       item0 = view.getNode(0);
       store.removeAt(0);
@@ -185,7 +185,7 @@ describe("Ext.view.AbstractView", function () {
         [],
         0,
         [item0],
-        view,
+        view
       ]);
     });
 
@@ -199,11 +199,11 @@ describe("Ext.view.AbstractView", function () {
         listeners: {
           focuschange: function () {
             focuschangeFired = true;
-          },
-        },
+          }
+        }
       });
       store.add({
-        field: "a",
+        field: "a"
       });
 
       expect(focuschangeFired).toBe(false);
@@ -251,7 +251,7 @@ describe("Ext.view.AbstractView", function () {
       beforeEach(function () {
         makeView({
           tpl: '<tpl for="."><div>{field}</div></tpl>',
-          itemTpl: null,
+          itemTpl: null
         });
 
         store.add({ field: "foo" });

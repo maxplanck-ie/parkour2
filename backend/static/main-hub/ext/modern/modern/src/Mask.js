@@ -56,7 +56,7 @@ Ext.define("Ext.Mask", {
      * @cfg
      * @hide
      */
-    bottom: 0,
+    bottom: 0
   },
 
   /**
@@ -91,5 +91,5 @@ Ext.define("Ext.Mask", {
 
   updateTransparent: function (transparent) {
     this.toggleCls(this.getBaseCls() + "-transparent", transparent);
-  },
+  }
 });

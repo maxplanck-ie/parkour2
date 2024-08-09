@@ -19,7 +19,7 @@ Ext.define("Ext.draw.modifier.Highlight", {
     /**
      * @cfg {Object} highlightStyle The style attributes of the highlight modifier.
      */
-    highlightStyle: null,
+    highlightStyle: null
   },
 
   preFx: true,
@@ -52,7 +52,7 @@ Ext.define("Ext.draw.modifier.Highlight", {
     if (sprite) {
       if (this.getHighlightStyle()) {
         this._highlightStyle = sprite.self.def.normalize(
-          this.getHighlightStyle(),
+          this.getHighlightStyle()
         );
       }
       this.setHighlightStyle(sprite.config.highlight);
@@ -63,11 +63,11 @@ Ext.define("Ext.draw.modifier.Highlight", {
     // TODO: even those without the highlight modifier.
     sprite.self.def.setConfig({
       defaults: {
-        highlighted: false,
+        highlighted: false
       },
       processors: {
-        highlighted: "bool",
-      },
+        highlighted: "bool"
+      }
     });
     this.setSprite(sprite);
   },
@@ -210,5 +210,5 @@ Ext.define("Ext.draw.modifier.Highlight", {
   popUp: function (attr, changes) {
     changes = this.filterChanges(attr, changes);
     Ext.draw.modifier.Modifier.prototype.popUp.call(this, attr, changes);
-  },
+  }
 });

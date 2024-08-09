@@ -12,12 +12,12 @@ Ext.define("MainHub.view.usage.Records", {
       itemId: "empty-text",
       html: '<h2 style="color:#999;text-align:center;margin-top:150px">No Data</h2>',
       border: 0,
-      hidden: true,
+      hidden: true
     },
     {
       xtype: "parkourpolar",
       store: "UsageRecords",
-      hidden: false,
-    },
-  ],
+      hidden: false
+    }
+  ]
 });
