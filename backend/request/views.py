@@ -13,6 +13,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.db.models import Prefetch
 from django.http import (
@@ -22,7 +23,7 @@ from django.http import (
     HttpResponseRedirect,
     JsonResponse,
 )
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import dateformat, timezone
@@ -1082,10 +1083,10 @@ class RequestViewSet(viewsets.ModelViewSet):
 def export_request(request):
     if request.method == "POST":
         primary_key = request.POST["project-id"]
-        file_format = request.POST["file-format"]
+        file_format = "CSV"  # request.POST["file-format"]
         req = get_object_or_404(Request, id=primary_key)
-        if req.user != request.user:
-            raise PermissionDenied("You do not have permission to export this request.")
+        if not request.user.is_staff and req.user != request.user:
+            raise PermissionDenied()
         dataset = Dataset()
         dataset.headers = (
             # The following are not submitted by user...
