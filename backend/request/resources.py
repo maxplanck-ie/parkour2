@@ -48,17 +48,8 @@ class SamplesResource(resources.ModelResource):
         )
 
 
-from django.utils.crypto import get_random_string
-from import_export import fields, resources
-from import_export.widgets import ManyToManyWidget
-
-from .models import Library, Request, Sample
-
 # TODO: use BarcodeCounter instead of get_random_string, drop the import
 # TODO: what about other fields from Libraries or Samples? like status
-# TODO: this version imported each row as a new request...
-
-
 class RequestResource(resources.ModelResource):
     libraries = fields.Field(
         column_name="libraries",
