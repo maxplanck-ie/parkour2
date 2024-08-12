@@ -1194,11 +1194,13 @@ def export_request(request):
     return render(request, "export.html")
 
 
+# TODO: frontend should implement parsing context, so that we can skip raise runtimeerror
+# import from another file formats, JSON? XLSX?
 @login_required
 def import_request(request):
     if request.method == "POST":
-        file_format = "CSV"  # request.POST["file-format"]
-        request_resource = RequestResource()
+        file_format = "CSV"
+        request_resource = RequestResource(user=request.user)
         dataset = Dataset()
         new_requests = request.FILES["importData"]
 
@@ -1206,17 +1208,15 @@ def import_request(request):
             imported_data = dataset.load(
                 new_requests.read().decode("utf-8"), format="csv"
             )
-            raise RuntimeError("hi")
+
             result = request_resource.import_data(dataset, dry_run=True)
 
-        # elif file_format == "JSON":
-        #     imported_data = dataset.load(
-        #         new_requests.read().decode("utf-8"), format="json"
-        #     )
-        #     result = request_resource.import_data(dataset, dry_run=True)
-
-        if not result.has_errors():
-            request_resource.import_data(dataset, dry_run=False)
+            if not result.has_errors():
+                request_resource.import_data(dataset, dry_run=False)
+                return render(request, "import.html", {"success": True})
+            else:
+                raise RecursionError(result.row_errors())
+                return render(request, "import.html", {"errors": result.row_errors()})
 
     return render(request, "import.html")
 
