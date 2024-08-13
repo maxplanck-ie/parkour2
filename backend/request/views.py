@@ -1083,7 +1083,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 def export_request(request):
     if request.method == "POST":
         primary_key = request.POST["project-id"]
-        file_format = "CSV"  # request.POST["file-format"]
+        file_format = request.POST["file-format"]
         req = get_object_or_404(Request, id=primary_key)
         if not request.user.is_staff and req.user != request.user:
             raise PermissionDenied()
@@ -1173,7 +1173,8 @@ def export_request(request):
             )
             return response
 
-        # elif file_format == "JSON":
+        elif file_format == "JSON":
+            raise RuntimeError("Not implemented yet.")
         #     response = HttpResponse(dataset.json, content_type="application/json")
         #     response["Content-Disposition"] = (
         #         'attachment; filename="exported_project_"'
@@ -1199,24 +1200,60 @@ def export_request(request):
 @login_required
 def import_request(request):
     if request.method == "POST":
-        file_format = "CSV"
+        file_format = request.POST["file-format"]
         request_resource = RequestResource(user=request.user)
         dataset = Dataset()
         new_requests = request.FILES["importData"]
-
-        if file_format == "CSV":
-            imported_data = dataset.load(
-                new_requests.read().decode("utf-8"), format="csv"
+        if new_requests.size > 5 * 1024 * 1024:  # 5 MB limit
+            return render(
+                request, "import.html", {"errors": "File size exceeds 5 MB limit"}
             )
 
-            result = request_resource.import_data(dataset, dry_run=True)
+        if file_format == "CSV":
+            try:
+                imported_data = dataset.load(
+                    new_requests.read().decode("utf-8"), format="csv"
+                )
 
-            if not result.has_errors():
-                request_resource.import_data(dataset, dry_run=False)
-                return render(request, "import.html", {"success": True})
-            else:
-                raise RecursionError(result.row_errors())
-                return render(request, "import.html", {"errors": result.row_errors()})
+                result = request_resource.import_data(dataset, dry_run=True)
+
+                if not result.has_errors():
+                    result = request_resource.import_data(dataset, dry_run=False)
+                    return render(request, "import.html", {"success": True})
+                else:
+                    if (
+                        hasattr(request_resource, "request_instance")
+                        and request_resource.request_instance
+                    ):
+                        request_resource.request_instance.delete()
+                    return render(
+                        request, "import.html", {"errors": result.row_errors()}
+                    )
+
+            except Exception as e:
+                return render(
+                    request, "import.html", {"errors": f"Error loading CSV: {str(e)}"}
+                )
+
+        elif file_format == "JSON":
+            try:
+                imported_data = dataset.load(
+                    new_requests.read().decode("utf-8"), format="json"
+                )
+                result = request_resource.import_data(dataset, dry_run=True)
+                if not result.has_errors():
+                    result = request_resource.import_data(dataset, dry_run=False)
+                    return render(request, "import.html", {"success": True})
+                else:
+                    return render(
+                        request, "import.html", {"errors": result.row_errors()}
+                    )
+            except Exception as e:
+                return render(
+                    request,
+                    "import.html",
+                    {"errors": f"Error processing JSON: {str(e)}"},
+                )
 
     return render(request, "import.html")
 

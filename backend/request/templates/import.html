@@ -1,28 +1,29 @@
-<br />
 {% extends "base.html" %}
-<p>{% block content %}</p>
+{% block content %}
     <h3>Import Sequencing Request</h3>
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+        Import successful!
+    </div>
+    {% endif %}
+    {% if errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ errors }}
+    </div>
+    {% endif %}
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <br />
-        <input type="file" name="importData">
-        <p>
-            <!--
-                Select format of file.
-            </p>
-        <p>
-            <select name="file-format" class="form-control my-3">
-                <option selected>Choose format...</option>
-                <option>CSV</option>
-                <option>JSON</option>
+        <div class="mb-3">
+            <input type="file" name="importData" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="file-format" class="form-label">Fileformat:</label>
+            <select name="file-format" id="file-format" class="form-select" required>
+                <option value="CSV" selected>CSV</option>
+                <option value="JSON">JSON</option>
             </select>
-        -->
-            <br />
-            <button class="btn btn-primary" type="submit">Import</button>
-            <br />
-        </p>
+        </div>
+        <button class="btn btn-primary" type="submit">Import</button>
     </form>
-    <a href="{% url 'index' %}">Go back.</a>
-    <br />
+    <a href="{% url 'index' %}" class="mt-3 d-inline-block">Go back</a>
 {% endblock content %}
-<br />

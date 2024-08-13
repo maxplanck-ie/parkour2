@@ -328,6 +328,7 @@ env-setup-dev:
 			pre-commit \
 			pip-tools \
 			pip-compile-multi
+			# aider-chat[help] --extra-index-url https://download.pytorch.org/whl/cpu
 	deactivate
 
 open-pr:
@@ -434,5 +435,9 @@ disable-explorer:
 	@sed -i -e \
 		's%^\(\s*\)\("explorer",\)%\1# \2%' \
 		backend/wui/settings/dev.py
+
+# aider:
+# 	@export OPENROUTER_API_KEY=$$(grep OPENROUTER_API_KEY misc/parkour.env.ignore | cut -d'=' -f2)
+# 	@cd backend/ && aider --subtree-only --model openrouter/google/gemma-2-9b-it:free
 
 # Remember: (docker compose run == docker exec) != docker run
