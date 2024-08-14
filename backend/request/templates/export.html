@@ -1,7 +1,16 @@
-<br />
 {% extends "base.html" %}
 <p>{% block content %}</p>
     <h3>Export Sequencing Request</h3>
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+        Export successful!
+    </div>
+    {% endif %}
+    {% if errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ errors }}
+    </div>
+    {% endif %}
     <p>Use the obtained file as a template for swiftly submitting your next sequencing request.</p>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -20,14 +29,10 @@
         <p>
             <select name="file-format" class="form-control my-3">
                 <option selected>CSV</option>
-                <option>JSON</option>
+                <option disabled>JSON</option>
             </select>
-            <br />
             <button class="btn btn-primary" type="submit">Export</button>
-            <br />
         </form>
     </p>
     <a href="{% url 'index' %}">Go back.</a>
-    <br />
 {% endblock content %}
-<br />

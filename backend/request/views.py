@@ -1,7 +1,9 @@
+import csv
 import itertools
 import json
 import logging
 import os
+from io import StringIO
 from unicodedata import normalize
 from urllib.parse import urlencode
 
@@ -15,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
+from django.db import transaction
 from django.db.models import Prefetch
 from django.http import (
     Http404,
@@ -43,7 +46,7 @@ from rest_framework.response import Response
 from tablib import Dataset
 
 from .models import FileRequest, Request
-from .resources import LibrariesResource, RequestResource, SamplesResource
+from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
 User = get_user_model()
@@ -1174,86 +1177,73 @@ def export_request(request):
             return response
 
         elif file_format == "JSON":
-            raise RuntimeError("Not implemented yet.")
-        #     response = HttpResponse(dataset.json, content_type="application/json")
-        #     response["Content-Disposition"] = (
-        #         'attachment; filename="exported_project_"'
-        #         + str(primary_key)
-        #         + '".json"'
-        #     )
-        #     return response
+            return render(
+                request, "export.html", {"errors": "JSON import not implemented yet"}
+            )
 
-        # elif file_format == "XLS (Excel)":
-        #     response = HttpResponse(
-        #         dataset.xls, content_type="application/vnd.ms-excel"
-        #     )
-        #     response["Content-Disposition"] = (
-        #         'attachment; filename="exported_project_"' + str(primary_key) + '".xls"'
-        #     )
-        #     return response
+        else:
+            raise ValueError(f"Invalid file_format: {file_format}")
 
     return render(request, "export.html")
 
 
-# TODO: frontend should implement parsing context, so that we can skip raise runtimeerror
-# import from another file formats, JSON? XLSX?
+# TODO: what about other fields from Libraries or Samples? like status, BarcodeCounter, ...
 @login_required
 def import_request(request):
     if request.method == "POST":
         file_format = request.POST["file-format"]
-        request_resource = RequestResource(user=request.user)
-        dataset = Dataset()
-        new_requests = request.FILES["importData"]
-        if new_requests.size > 5 * 1024 * 1024:  # 5 MB limit
+        new_file = request.FILES["importData"]
+
+        if new_file.size > 5 * 1024 * 1024:  # 5 MB limit
             return render(
                 request, "import.html", {"errors": "File size exceeds 5 MB limit"}
             )
 
         if file_format == "CSV":
             try:
-                imported_data = dataset.load(
-                    new_requests.read().decode("utf-8"), format="csv"
-                )
+                with transaction.atomic():
+                    new_request = Request.objects.create(user=request.user)
+                    csv_file = StringIO(new_file.read().decode("utf-8"))
+                    csv_reader = csv.DictReader(csv_file)
 
-                result = request_resource.import_data(dataset, dry_run=True)
+                    samples = []
+                    libraries = []
 
-                if not result.has_errors():
-                    result = request_resource.import_data(dataset, dry_run=False)
-                    return render(request, "import.html", {"success": True})
-                else:
-                    if (
-                        hasattr(request_resource, "request_instance")
-                        and request_resource.request_instance
-                    ):
-                        request_resource.request_instance.delete()
-                    return render(
-                        request, "import.html", {"errors": result.row_errors()}
-                    )
+                    for row in csv_reader:
+                        record_type = row.get("record_type", "").upper()
 
-            except Exception as e:
-                return render(
-                    request, "import.html", {"errors": f"Error loading CSV: {str(e)}"}
-                )
+                        if record_type == "S":
+                            sample = Sample.objects.create(
+                                name=row.get("name"),
+                                # Add other Sample-specific fields here
+                            )
+                            samples.append(sample)
+                        elif record_type == "L":
+                            library = Library.objects.create(
+                                name=row.get("name"),
+                                # Add other Library-specific fields here
+                            )
+                            libraries.append(library)
+                        else:
+                            raise ValueError(f"Invalid record_type: {record_type}")
 
-        elif file_format == "JSON":
-            try:
-                imported_data = dataset.load(
-                    new_requests.read().decode("utf-8"), format="json"
-                )
-                result = request_resource.import_data(dataset, dry_run=True)
-                if not result.has_errors():
-                    result = request_resource.import_data(dataset, dry_run=False)
-                    return render(request, "import.html", {"success": True})
-                else:
-                    return render(
-                        request, "import.html", {"errors": result.row_errors()}
-                    )
+                    # Add the samples and libraries to the request
+                    new_request.samples.add(*samples)
+                    new_request.libraries.add(*libraries)
+
+                return render(request, "import.html", {"success": True})
+
             except Exception as e:
                 return render(
                     request,
                     "import.html",
-                    {"errors": f"Error processing JSON: {str(e)}"},
+                    {"errors": f"Error processing CSV: {str(e)}"},
                 )
+
+        elif file_format == "JSON":
+            return render(
+                request, "import.html", {"errors": "JSON import not implemented yet"}
+            )
 
     return render(request, "import.html")
 
