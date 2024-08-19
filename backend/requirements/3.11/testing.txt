@@ -14,7 +14,7 @@ greenlet==3.0.3
     # via playwright
 iniconfig==2.0.0
     # via pytest
-playwright==1.45.1
+playwright==1.46.0
     # via pytest-playwright
 pluggy==1.5.0
     # via pytest
