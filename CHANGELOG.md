@@ -3,7 +3,11 @@
 ??.??.??
 ========
 
-- TODO: `<URL>/export_request/` and `<URL>/import_request/` both have a simple UI that needs to be integrated into the new Vue dashboard.
+- TODO: `<URL>/export_request/` and `<URL>/import_request/` both have a simple UI
+- ...
+
+24.08.20
+========
 
 Breaking changes:
 
@@ -13,7 +17,7 @@ Non-breaking changes:
 
 - Fixed a bug that made flowcells on the last day of the month not to be listed under Load FCs or Invoicing. Now, we are only blind over the last minute of the last day of the month.
 - New retrieve_samplesheet API endpoint under flowcells. By default, it gets you the XLSX samplesheet containing all lanes of a flowcell. For example, `<URL>/api/flowcells/retrieve_samplesheet/?flowcell_id=...`
-- ...
+- Dropped pip cache (experimental Dockerfile syntax) to avoid obscure error messages. We are dealing with these (and other pkg caches) by using a cronjob that runs the build in the VMs.
 
 24.07.24
 ========
