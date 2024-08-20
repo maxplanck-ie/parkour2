@@ -3,6 +3,11 @@
 ??.??.??
 ========
 
+- ...
+
+24.08.20
+========
+
 Breaking changes:
 
 - Temporarily dropped CI tests for Python 3.12, which were [broken via Numpy dependency](https://https://numpy.org/doc/stable//release/1.26.0-notes.html)). We're using Python 3.11 since Parkour2 version 0.3.9 anyway. We'll catch-up to Python 3.12 once the situation stabilizes and other projects are successful sailing through this difficulty... For now, our `requirements.txt` environment is unable to resolve under 3.12
@@ -11,7 +16,7 @@ Non-breaking changes:
 
 - Fixed a bug that made flowcells on the last day of the month not to be listed under Load FCs or Invoicing. Now, we are only blind over the last minute of the last day of the month.
 - New retrieve_samplesheet API endpoint under flowcells. By default, it gets you the XLSX samplesheet containing all lanes of a flowcell. For example, `<URL>/api/flowcells/retrieve_samplesheet/?flowcell_id=...`
-- ...
+- Dropped pip cache (experimental Dockerfile syntax) to avoid obscure error messages. We are dealing with these (and other pkg caches) by using a cronjob that runs the build in the VMs.
 
 24.07.24
 ========
