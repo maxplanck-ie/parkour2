@@ -54,7 +54,7 @@ class Sample(GenericLibrarySample):
         blank=True,
     )
 
-    rna_quality = models.FloatField(
+    measured_unit = models.FloatField(
         "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
     )
 

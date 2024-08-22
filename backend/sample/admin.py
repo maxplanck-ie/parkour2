@@ -56,7 +56,7 @@ class SampleAdmin(admin.ModelAdmin):
     list_filter = (
         ("library_protocol", RelatedDropdownFilter),
         ("library_type", RelatedDropdownFilter),
-        ("nucleic_acid_type", RelatedDropdownFilter),
+        ("input_type", RelatedDropdownFilter),
         ("organism", RelatedDropdownFilter),
         ("read_length", RelatedDropdownFilter),
         ("index_type", RelatedDropdownFilter),
@@ -82,9 +82,9 @@ class SampleAdmin(admin.ModelAdmin):
                 "fields": (
                     "library_protocol",
                     "library_type",
-                    "nucleic_acid_type",
+                    "input_type",
                     "measuring_unit",
-                    "rna_quality",
+                    "measured_value",
                     "concentration",
                     "volume",
                     "read_length",

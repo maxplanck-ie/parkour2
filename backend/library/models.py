@@ -20,7 +20,7 @@ class Library(GenericLibrarySample):
         blank=True,
     )
 
-    mean_fragment_size = models.FloatField(
+    measured_value = models.FloatField(
         "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
     )
 

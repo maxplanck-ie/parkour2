@@ -58,7 +58,7 @@ class LibraryAdmin(admin.ModelAdmin):
                     "library_protocol",
                     "library_type",
                     "measuring_unit",
-                    "mean_fragment_size",
+                    "measured_value",
                     "concentration",
                     "volume",
                     "read_length",
