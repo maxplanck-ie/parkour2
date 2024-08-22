@@ -54,7 +54,7 @@ class Sample(GenericLibrarySample):
         blank=True,
     )
 
-    measured_unit = models.FloatField(
+    measured_value = models.FloatField(
         "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
     )
 
