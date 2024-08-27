@@ -19,7 +19,7 @@ jobs:
       - name: Stale PRs and Issues
         uses: actions/stale@v9.0.0
         with:
-          exempt-all-assigne: true
+          exempt-all-assignees: true
           days-before-pr-stale: 3
           days-before-pr-close: 2
           days-before-issue-stale: 120
