@@ -29,7 +29,7 @@ class Sample(GenericLibrarySample):
     MEASURING_UNIT_CHOICES = [
         ("bp (DNA)", "bp", "DNA"),
         ("nt (RNA)", "nt", "RNA"),
-        ("RNQ (RNA (total))", "RQN", "RNA (total)"),
+        ("RQN (RNA (total))", "RQN", "RNA (total)"),
         ("M (Cells)", "M", "Cells"),
         ("Measure for Me", "-", "Measure"),
     ]

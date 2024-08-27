@@ -305,7 +305,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var libraryProtocolEditor = Ext.getCmp("libraryProtocolEditor");
     var libraryProtocolsStore = Ext.getStore("libraryProtocolsStore");
     var libraryTypeEditor = Ext.getCmp("libraryTypeEditor");
-    var rnaQualityEditor = Ext.getCmp("rnaQualityEditor");
+    var measuredValueEditor = Ext.getCmp("measuredValueEditor");
     var record = context.record;
 
     // Toggle Library Type
@@ -369,9 +369,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         record.get("nucleic_acid_type")
       );
       if (nat && nat.get("type") === "RNA") {
-        rnaQualityEditor.enable();
+        measuredValueEditor.enable();
       } else {
-        rnaQualityEditor.disable();
+        measuredValueEditor.disable();
       }
     }
   },
@@ -406,7 +406,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       record.set({ index_i7: "", index_i5: "" });
     }
 
-    // Reset RNA Quality if Input Type has changed
+    // Reset Measured Value if Input Type has changed
     var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
       "id",
       record.get("nucleic_acid_type")
@@ -414,9 +414,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     if (
       nat !== null &&
       nat.get("type") === "DNA" &&
-      record.get("rna_quality") > 0
+      record.get("measured_value") > 0
     ) {
-      record.set("rna_quality", null);
+      record.set("measured_value", null);
     }
 
     record.commit();
@@ -483,7 +483,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var libraryProtocolEditor = Ext.getCmp("libraryProtocolEditor");
     var libraryProtocolsStore = Ext.getStore("libraryProtocolsStore");
     var libraryTypeEditor = Ext.getCmp("libraryTypeEditor");
-    var rnaQualityEditor = Ext.getCmp("rnaQualityEditor");
+    var measuredValueEditor = Ext.getCmp("measuredValueEditor");
 
     libraryTypeEditor.setValue(null);
     libraryTypeEditor.disable();
@@ -492,10 +492,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     libraryProtocolEditor.enable();
 
     if (record.get("type") === "RNA") {
-      rnaQualityEditor.enable();
+      measuredValueEditor.enable();
     } else {
-      rnaQualityEditor.setValue(null);
-      rnaQualityEditor.disable();
+      measuredValueEditor.setValue(null);
+      measuredValueEditor.disable();
     }
   },
 
@@ -522,10 +522,34 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
+        text: "Measuring Unit",
+        dataIndex: "measuring_unit",
+        tooltip: "Measuring Unit",
+        width: 120,
+        editor: {
+          xtype: "combobox",
+          queryMode: "local",
+          valueField: "value",
+          displayField: "name",
+          store: {
+            fields: ["value", "name"],
+            data: [
+              { value: "bp", name: "bp (DNA)" },
+              { value: "-", name: "Measure for Me" }
+            ]
+          },
+          forceSelection: true,
+          listConfig: {
+            minWidth: 200
+          }
+        },
+        renderer: this.comboboxErrorRenderer
+      },
+      {
         text: "Measured Value",
-        dataIndex: "mean_fragment_size",
+        dataIndex: "measured_value",
         tooltip: "Measured Value",
-        width: 100,
+        width: 120,
         editor: {
           xtype: "numberfield",
           minValue: 0
@@ -553,7 +577,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       {
         text: "# of Index Reads",
         dataIndex: "index_reads",
-        tooltip: "Index Type",
+        tooltip: "Number of Index Reads",
         width: 130,
         editor: {
           xtype: "combobox",
@@ -607,7 +631,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           store: "indexI7Store",
           regex: new RegExp("^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"),
           regexText:
-            "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+            "Only A, T, C, and G (uppercase) are allowed. Index length must be 6, 8, 10, 12, or 24.",
           matchFieldWidth: false
         },
         renderer: this.errorRenderer
@@ -633,7 +657,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           store: "indexI5Store",
           regex: new RegExp("^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"),
           regexText:
-            "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+            "Only A, T, C, and G (uppercase) are allowed. Index length must be 6, 8, 10, 12, or 24.",
           matchFieldWidth: false
         },
         renderer: this.errorRenderer
@@ -648,7 +672,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "library_protocol",
       "library_type",
       "measuring_unit",
-      "mean_fragment_size",
+      "measured_value",
       "concentration",
       "volume",
       "read_length",
@@ -672,11 +696,39 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
+        text: "Measuring Unit",
+        dataIndex: "measuring_unit",
+        tooltip: "Measuring Unit",
+        width: 120,
+        editor: {
+          xtype: "combobox",
+          queryMode: "local",
+          valueField: "value",
+          displayField: "name",
+          store: {
+            fields: ["value", "name"],
+            data: [
+              { value: "bp", name: "bp (DNA)" },
+              { value: "nt", name: "nt (RNA)" },
+              { value: "RQN", name: "RQN (RNA (total))" },
+              { value: "M", name: "M (Cells)" },
+              { value: "-", name: "Measure for Me" }
+            ]
+          },
+          forceSelection: true,
+          listConfig: {
+            minWidth: 200
+          }
+        },
+        renderer: this.comboboxErrorRenderer
+      },
+      {
         text: "Measured Value",
         dataIndex: "measured_value",
         tooltip: "Measured Value",
-        width: 100,
+        width: 120,
         editor: {
+          id: "measuredValueEditor",
           xtype: "numberfield",
           minValue: 0
         },
@@ -704,7 +756,28 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         text: "GMO",
         dataIndex: "gmo",
         tooltip: "GMO",
-        width: 85,
+        width: 90,
+        editor: {
+          xtype: "combobox",
+          queryMode: "local",
+          valueField: "value",
+          displayField: "name",
+          store: {
+            fields: ["id", "name"],
+            data: [
+              { value: true, name: "Yes" },
+              { value: false, name: "No" }
+            ]
+          },
+          forceSelection: true
+        },
+        renderer: this.comboboxErrorRenderer
+      },
+      {
+        text: "Biosafety Level",
+        dataIndex: "biosafety_level",
+        tooltip: "Biosafety Level",
+        width: 120,
         editor: {
           xtype: "combobox",
           queryMode: "local",
@@ -713,8 +786,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           store: {
             fields: ["id", "name"],
             data: [
-              { id: true, name: "Yes" },
-              { id: false, name: "No" }
+              { id: "BSL1", name: "BSL1" },
+              { id: "BSL2", name: "BSL2" }
             ]
           },
           forceSelection: true
@@ -732,7 +805,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "library_type",
       "nucleic_acid_type",
       "measuring_unit",
-      "rna_quality",
+      "measured_value",
       "concentration",
       "volume",
       "read_length",
@@ -801,7 +874,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
                 "<strong>Explanation</strong>: {explanation}<br/>" +
                 "<strong>Input Requirements</strong>: {inputRequirements}<br/>" +
                 "<strong>Typical Application</strong>: {typicalApplication}<br/>" +
-                "<strong>Comments</strong>: {comments}" +
                 '">{name}</span>'
               );
             }
@@ -827,23 +899,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         renderer: this.comboboxErrorRenderer
       },
       {
-        text: "Measuring Unit",
-        dataIndex: "measuring_unit",
-        tooltip: "Measuring Unit",
-        width: 200,
-        editor: {
-          xtype: "combobox",
-          id: "measuringUnitEditor",
-          itemId: "measuringUnitEditor",
-          queryMode: "local",
-          displayField: "name",
-          valueField: "id",
-          store: "libraryTypesStore",
-          forceSelection: true
-        },
-        renderer: this.comboboxErrorRenderer
-      },
-      {
         text: "ng/μl",
         dataIndex: "concentration",
         tooltip: "Concentration",
@@ -851,6 +906,17 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         editor: {
           xtype: "numberfield",
           minValue: 0
+        },
+        renderer: this.errorRenderer
+      },
+      {
+        text: "Volume",
+        dataIndex: "volume",
+        tooltip: "Volume",
+        width: 90,
+        editor: {
+          xtype: "numberfield",
+          minValue: 10
         },
         renderer: this.errorRenderer
       },
@@ -874,7 +940,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         text: "Depth (M)",
         dataIndex: "sequencing_depth",
         tooltip: "Sequencing Depth",
-        width: 85,
+        width: 90,
         editor: {
           xtype: "numberfield",
           minValue: 0,
@@ -886,14 +952,17 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         text: "Organism",
         dataIndex: "organism",
         tooltip: "Organism",
-        width: 200,
+        width: 120,
         editor: {
           xtype: "combobox",
           queryMode: "local",
           valueField: "id",
           displayField: "name",
           store: "organismsStore",
-          forceSelection: true
+          forceSelection: true,
+          listConfig: {
+            minWidth: 200
+          }
         },
         renderer: this.comboboxErrorRenderer
       }
@@ -1119,7 +1188,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       }
     }
 
-    if (dataIndex === "rna_quality" && value === 11) {
+    if (dataIndex === "measured_value" && value === 11) {
       return "Determined by Facility";
     }
 
