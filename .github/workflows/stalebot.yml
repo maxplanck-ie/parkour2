@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Stale PRs and Issues
         uses: actions/stale@v9.0.0
-        inputs:
+        with:
           exempt-all-assigne: true
           days-before-pr-stale: 3
           days-before-pr-close: 2
