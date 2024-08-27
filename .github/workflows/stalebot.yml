@@ -1,5 +1,9 @@
 name: Stalebot
 
+permissions:
+  issues: write
+  pull-requests: write
+
 on:
   workflow_dispatch:
   schedule:
@@ -10,13 +14,9 @@ jobs:
   stalebot:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - name: Close Stale Issues
+      - name: Stale PRs and Issues
         uses: actions/stale@v9.0.0
         inputs:
           exempt-all-assigne: true
