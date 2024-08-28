@@ -70,6 +70,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
 ]
 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",

@@ -1,0 +1,11 @@
+{
+    "openrouter/google/gemma-2-9b-it:free": {
+        "max_tokens": 4096,
+        "max_input_tokens": 32000,
+        "max_output_tokens": 2048,
+        "input_cost_per_token": 0.0,
+        "output_cost_per_token": 0.0,
+        "provider": "openai",
+        "mode": "chat"
+    }
+}

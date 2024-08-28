@@ -1,0 +1,8 @@
+staticfiles/
+static/
+media/
+extra/
+logs/
+coverage_html_report/
+frontend_testing_suite/
+requirements/

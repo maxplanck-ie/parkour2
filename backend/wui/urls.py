@@ -18,6 +18,7 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/usage/", include("usage.urls")),
     path("", include("common.urls")),
+    path("", include("request.urls")),
     path("", include("report.urls")),
     path("openapi/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(

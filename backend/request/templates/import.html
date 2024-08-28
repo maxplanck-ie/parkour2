@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Import Sequencing Request</h3>
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+        Import successful!
+    </div>
+    {% endif %}
+    {% if errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ errors }}
+    </div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="file" name="importData" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="file-format" class="form-label">Fileformat:</label>
+            <select name="file-format" id="file-format" class="form-select" required>
+                <option selected>CSV</option>
+                <option disabled>JSON</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Import</button>
+    </form>
+    <a href="{% url 'index' %}" class="mt-3 d-inline-block">Go back</a>
+{% endblock content %}

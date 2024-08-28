@@ -1,7 +1,9 @@
+import csv
 import itertools
 import json
 import logging
 import os
+from io import StringIO
 from unicodedata import normalize
 from urllib.parse import urlencode
 
@@ -11,8 +13,11 @@ from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagi
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
+from django.db import transaction
 from django.db.models import Prefetch
 from django.http import (
     Http404,
@@ -21,6 +26,7 @@ from django.http import (
     HttpResponseRedirect,
     JsonResponse,
 )
+from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import dateformat, timezone
@@ -37,8 +43,10 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
+from tablib import Dataset
 
 from .models import FileRequest, Request
+from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
 User = get_user_model()
@@ -309,12 +317,12 @@ class RequestViewSet(viewsets.ModelViewSet):
                 return False
 
         if override:
-            print("Override is true")
+            # print("Override is true")
             instance.update(sequenced=True)
             return Response({"success": True})
 
         else:
-            print("Override is false")
+            # print("Override is false")
             # print(instance.statuses)
             # check if all libraries/samples related to this requested have been sequenced
             statuses = [status for x in instance for status in x.statuses]
@@ -322,11 +330,11 @@ class RequestViewSet(viewsets.ModelViewSet):
             complete = all([checkifcomplete(x) for x in statuses])
 
             if complete:
-                print("all statuses are complete")
+                # print("all statuses are complete")
                 instance.update(sequenced=True)
                 return Response({"success": True})
             elif not complete:
-                print("there are incomplete statuses")
+                # print("there are incomplete statuses")
                 return Response({"noncomplete": True})
             else:
                 return Response({"error": "error"})
@@ -1072,6 +1080,172 @@ class RequestViewSet(viewsets.ModelViewSet):
         else:
             post_data = json.loads(request.data.get("data", "{}"))
         return post_data
+
+
+@login_required
+def export_request(request):
+    if request.method == "POST":
+        primary_key = request.POST["project-id"]
+        file_format = request.POST["file-format"]
+        req = get_object_or_404(Request, id=primary_key)
+        if not request.user.is_staff and req.user != request.user:
+            raise PermissionDenied()
+        dataset = Dataset()
+        dataset.headers = (
+            # The following are not submitted by user...
+            # id barcode create_time update_time status concentration concentration_method
+            # equal_representation_nucleotides comments is_pooled amplification_cycles
+            # dilution_factor concentration_facility concentration_method_facility archived
+            # sample_volume_facility amount_facility size_distribution_facility comments_facility
+            ##libraries-exclusively:
+            # qpcr_result qpcr_result_facility
+            ##sample-exclusively:
+            # is_converted
+            "id",
+            "name",
+            "barcode",
+            "nucleic_acid_type",  # samples
+            "library_protocol",
+            "library_type",
+            "concentration",
+            "mean_fragment_size",  # libraries
+            "index_type",  # libraries
+            "index_reads",  # libraries
+            "index_i7",  # libraries
+            "index_i5",  # libraries
+            "rna_quality",  # samples
+            "read_length",
+            "sequencing_depth",
+            "organism",
+            "comments",
+        )
+        records = req.records
+        for r in records:
+            r_type = r.__class__.__name__
+            if r_type == "Sample":
+                dataset.append(
+                    (
+                        "_",  # id
+                        r.name,
+                        "_",  # barcode
+                        r.nucleic_acid_type,
+                        r.library_protocol,
+                        r.library_type,
+                        r.concentration,
+                        "_",  # mean_fragment_size
+                        "_",  # index_type
+                        "_",  # index_reads
+                        "_",  # index_i7
+                        "_",  # index_i5
+                        r.rna_quality,
+                        r.read_length,
+                        r.sequencing_depth,
+                        r.organism,
+                        r.comments,
+                    )
+                )
+            elif r_type == "Library":
+                dataset.append(
+                    (
+                        "_",  # id
+                        r.name,
+                        "_",  # barcode
+                        "_",  # nucleic_acid_type
+                        r.library_protocol,
+                        r.library_type,
+                        r.concentration,
+                        r.mean_fragment_size,
+                        r.index_type,
+                        r.index_reads,
+                        r.index_i7,
+                        r.index_i5,
+                        "_",  # rna_quality
+                        r.read_length,
+                        r.sequencing_depth,
+                        r.organism,
+                        r.comments,
+                    )
+                )
+            else:
+                raise RuntimeError(f"What's {r.barcode} with {r_type}?!")
+
+        if file_format == "CSV":
+            response = HttpResponse(dataset.csv, content_type="text/csv")
+            response["Content-Disposition"] = (
+                'attachment; filename="exported_project_' + str(primary_key) + '.csv"'
+            )
+            return response
+
+        elif file_format == "JSON":
+            return render(
+                request, "export.html", {"errors": "JSON import not implemented yet"}
+            )
+
+        else:
+            raise ValueError(f"Invalid file_format: {file_format}")
+
+    return render(request, "export.html")
+
+
+# TODO: what about other fields from Libraries or Samples? like status, BarcodeCounter, ...
+@login_required
+def import_request(request):
+    if request.method == "POST":
+        file_format = request.POST["file-format"]
+        new_file = request.FILES["importData"]
+
+        if new_file.size > 5 * 1024 * 1024:  # 5 MB limit
+            return render(
+                request, "import.html", {"errors": "File size exceeds 5 MB limit"}
+            )
+
+        if file_format == "CSV":
+            try:
+                with transaction.atomic():
+                    new_request = Request.objects.create(user=request.user)
+                    csv_file = StringIO(new_file.read().decode("utf-8"))
+                    csv_reader = csv.DictReader(csv_file)
+
+                    samples = []
+                    libraries = []
+
+                    for row in csv_reader:
+                        record_type = row.get("record_type", "").upper()
+
+                        if record_type == "S":
+                            sample = Sample.objects.create(
+                                name=row.get("name"),
+                                # Add other Sample-specific fields here
+                            )
+                            samples.append(sample)
+                        elif record_type == "L":
+                            library = Library.objects.create(
+                                name=row.get("name"),
+                                # Add other Library-specific fields here
+                            )
+                            libraries.append(library)
+                        else:
+                            raise ValueError(f"Invalid record_type: {record_type}")
+
+                    # Add the samples and libraries to the request
+                    new_request.samples.add(*samples)
+                    new_request.libraries.add(*libraries)
+
+                return render(request, "import.html", {"success": True})
+
+            except Exception as e:
+                return render(
+                    request,
+                    "import.html",
+                    {"errors": f"Error processing CSV: {str(e)}"},
+                )
+
+        elif file_format == "JSON":
+            return render(
+                request, "import.html", {"errors": "JSON import not implemented yet"}
+            )
+
+    return render(request, "import.html")
 
 
 class ApproveViewSet(viewsets.ModelViewSet):

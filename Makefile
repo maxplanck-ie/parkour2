@@ -33,6 +33,7 @@ deploy-network:
 deploy-containers:
 	@docker compose build
 	@docker compose up -d
+	@git checkout docker-compose.yml
 
 deploy-ready: apply-migrations collect-static
 
@@ -168,6 +169,7 @@ load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 		--dbname=postgres --username=postgres tmp_parkour-postgres.dump \
 		1> /tmp/pg_log_out.txt 2> /tmp/pg_log_err.txt" || \
 			docker exec parkour2-postgres cat /tmp/pg_log_err.txt
+	@$(MAKE) clean
 
 load-postgres-plain:
 	@test -e ./this.sql && \
@@ -308,7 +310,16 @@ compile:
 	# else
 	# 	exit 1
 	# fi
-	@pip-compile-multi --allow-unsafe -d backend/requirements/
+	@awk '/python-version:/ { \
+		match($$0, /\[(.*)\]/, a); \
+		split(a[1], versions, ","); \
+		for (i in versions) { \
+			gsub(/^[ '\'']+|[ '\'']+$$/, "", versions[i]); \
+			print versions[i]; \
+		} \
+	}' .github/workflows/django.yml | \
+		xargs -I{} pip-compile-multi --allow-unsafe --backtracking --autoresolve \
+			-d backend/requirements/{}/
 
 ncu:
 	# @npm install -g npm-check-updates
@@ -322,9 +333,11 @@ env-setup-dev:
 		source ./env_dev/bin/activate && \
 		env python3 -m pip install --upgrade pip && \
 		pip install \
+			djlint \
 			pre-commit \
 			pip-tools \
 			pip-compile-multi
+			# aider-chat[help] --extra-index-url https://download.pytorch.org/whl/cpu
 	deactivate
 
 open-pr:
@@ -431,5 +444,9 @@ disable-explorer:
 	@sed -i -e \
 		's%^\(\s*\)\("explorer",\)%\1# \2%' \
 		backend/wui/settings/dev.py
+
+# aider:
+# 	@export OPENROUTER_API_KEY=$$(grep OPENROUTER_API_KEY misc/parkour.env.ignore | cut -d'=' -f2)
+# 	@cd backend/ && aider --subtree-only --model openrouter/google/gemma-2-9b-it:free
 
 # Remember: (docker compose run == docker exec) != docker run

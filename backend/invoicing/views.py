@@ -349,7 +349,7 @@ class LibraryPreparationCostsViewSet(
     queryset = LibraryPreparationCosts.objects.filter(
         archived=False, library_protocol__archived=False
     )
-    print(queryset.query)
+    # print(queryset.query)
 
     serializer_class = LibraryPreparationCostsSerializer
 
