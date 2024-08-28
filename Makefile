@@ -310,7 +310,16 @@ compile:
 	# else
 	# 	exit 1
 	# fi
-	@pip-compile-multi --allow-unsafe -d backend/requirements/
+	@awk '/python-version:/ { \
+		match($$0, /\[(.*)\]/, a); \
+		split(a[1], versions, ","); \
+		for (i in versions) { \
+			gsub(/^[ '\'']+|[ '\'']+$$/, "", versions[i]); \
+			print versions[i]; \
+		} \
+	}' .github/workflows/django.yml | \
+		xargs -I{} pip-compile-multi --allow-unsafe --backtracking --autoresolve \
+			-d backend/requirements/{}/
 
 ncu:
 	# @npm install -g npm-check-updates
