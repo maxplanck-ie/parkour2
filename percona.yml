@@ -1,0 +1,34 @@
+services:
+
+  parkour2-pmm-client:
+    image: percona/pmm-client:latest
+    container_name: parkour2-pmm-client
+    restart: always
+    volumes:
+      - percona_client_data:/srv
+    environment:
+    - PMM_AGENT_SERVER_ADDRESS=parkour2-pmm-server:80
+    - PMM_AGENT_SERVER_USERNAME=admin
+    - PMM_AGENT_SERVER_PASSWORD=admin
+    - PMM_AGENT_SERVER_INSECURE_TLS=1
+    - PMM_AGENT_SETUP=1
+    - PMM_AGENT_CONFIG_FILE=config/pmm-agent.yaml
+
+  parkour2-pmm-server:
+    image: percona/pmm-server:latest
+    container_name: parkour2-pmm-server
+    restart: always
+    volumes:
+      - percona_server_data:/srv
+    ports:
+      - 8443:80
+
+
+volumes:
+  percona_client_data: {}
+  percona_server_data: {}
+
+
+networks:
+  parkour2_default:
+    external: true
