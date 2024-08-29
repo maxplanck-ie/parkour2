@@ -9,7 +9,7 @@ endif
 
 stamp := $(shell date +%Y%m%d_%H%M%S)_$(shell git log --oneline -1 | cut -d' ' -f1)
 
-deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to localhost:9980 with initial and required data loaded!
+deploy: check-rootdir set-prod deploy-webapp deploy-caddy collect-static load-fixtures  ## Deploy to localhost:9980 with initial and required data loaded!
 
 help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -25,9 +25,7 @@ set-prod:
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
-deploy-django: deploy-containers
-
-deploy-containers:
+deploy-webapp:
 	@docker compose build
 	@docker compose --project-name=parkour2 up -d
 	@git checkout docker-compose.yml
@@ -102,14 +100,14 @@ clearpy:  ## Removes some files, created by 'prod' deployment and owned by root.
 	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 
-prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod deploy-webapp deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-prod-ci: down set-prod deploy-django collect-static apply-migrations clean
+prod-ci: down set-prod deploy-webapp collect-static apply-migrations clean
 	@docker exec parkour2-django python manage.py check
 
-dev-easy: down set-dev deploy-django deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
+dev-easy: down set-dev deploy-webapp deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
 
-dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev deploy-webapp deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev: hardreset-caddyfile
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
@@ -219,7 +217,7 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-djtest: down set-testing deploy-django clean  ## Re-deploy and run Backend tests
+djtest: down set-testing deploy-webapp clean  ## Re-deploy and run Backend tests
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing:
@@ -228,12 +226,12 @@ set-testing:
 set-playwright:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_playwright#' docker-compose.yml
 
-# pytest: down set-testing deploy-django
+# pytest: down set-testing deploy-webapp
 # 	@docker compose exec parkour2-django pytest -n auto
 
-playwright: down set-playwright deploy-django deploy-caddy collect-static load-fixtures e2e  ## Re-deploy and run Frontend tests
+playwright: down set-playwright deploy-webapp deploy-caddy collect-static load-fixtures e2e  ## Re-deploy and run Frontend tests
 
-playwright-migras: down set-playwright deploy-django deploy-caddy collect-static load-fixtures-migras e2e
+playwright-migras: down set-playwright deploy-webapp deploy-caddy collect-static load-fixtures-migras e2e
 
 e2e:
 	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
@@ -243,10 +241,10 @@ create-admin:
 		"DJANGO_SUPERUSER_PASSWORD=testing.password DJANGO_SUPERUSER_EMAIL=test.user@test.com \
 			python manage.py createsuperuser --no-input"
 
-coverage-xml: down set-testing deploy-django
+coverage-xml: down set-testing deploy-webapp
 	@docker compose exec parkour2-django pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=xml
 
-coverage-html: down set-testing deploy-django
+coverage-html: down set-testing deploy-webapp
 	@docker compose exec parkour2-django coverage erase
 	@docker compose exec parkour2-django coverage run -m pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=html
 
