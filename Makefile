@@ -65,7 +65,7 @@ check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
 
 stop:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f percona.yml -f pgadmin.yml stop
+	@docker compose -f docker-compose.yml -f caddy.yml -f misc/nginx.yml -f rsnapshot.yml -f percona.yml -f pgadmin.yml stop
 
 rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
@@ -74,7 +74,7 @@ rm-volumes:
 down: clean  ## Turn off running instance (persisting media & staticfiles' volumes)
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7 }') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f percona.yml -f pgadmin.yml down
+	@docker compose -f docker-compose.yml -f caddy.yml -f misc/nginx.yml -f rsnapshot.yml -f percona.yml -f pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 	@docker network rm -f parkour2
 
@@ -131,7 +131,7 @@ deploy-caddy:
 deploy-nginx:
 	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
 		{ echo "ERROR: TLS certificates not found!"; exit 1; }
-	@docker compose -f nginx.yml up -d
+	@docker compose -f misc/nginx.yml up -d
 
 deploy-pgadmin:
 	@docker compose -f pgadmin.yml up -d
