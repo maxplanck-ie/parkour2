@@ -1,5 +1,3 @@
-version: "3.5"
-
 services:
   parkour2-convert-backup:
     container_name: parkour2-convert-backup

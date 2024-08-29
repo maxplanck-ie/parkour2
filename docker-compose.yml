@@ -1,5 +1,3 @@
-version: "3.5"
-
 services:
   parkour2-vite:
     container_name: parkour2-vite

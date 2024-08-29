@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   parkour2-nginx:
     container_name: parkour2-nginx
