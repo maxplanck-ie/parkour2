@@ -13,6 +13,3 @@ services:
       timeout: 2s
       retries: 10
 
-networks:
-  parkour2:
-    external: true
