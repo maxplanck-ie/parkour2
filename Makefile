@@ -25,14 +25,11 @@ set-prod:
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
-deploy-django: deploy-network deploy-containers
-
-deploy-network:
-	@docker network create parkour2
+deploy-django: deploy-containers
 
 deploy-containers:
 	@docker compose build
-	@docker compose up -d
+	@docker compose --project-name=parkour2 up -d
 	@git checkout docker-compose.yml
 
 deploy-ready: apply-migrations collect-static
