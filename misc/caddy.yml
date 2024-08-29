@@ -1,4 +1,5 @@
 services:
+
   parkour2-caddy:
     image: caddy:latest
     container_name: parkour2-caddy
@@ -7,13 +8,14 @@ services:
       - "9980:9980"
       - "9981:9981"
     volumes:
-      - ./misc/Caddyfile:/etc/caddy/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
       - parkour2_media:/parkour2/media
       - parkour2_staticfiles:/parkour2/static
-      # ./misc/cert.pem:/etc/ssl/cert.pem:ro
-      # ./misc/key.pem:/etc/ssl/key.pem:ro
+      # ./cert.pem:/etc/ssl/cert.pem:ro
+      # ./key.pem:/etc/ssl/key.pem:ro
+
 
 volumes:
   caddy_data:
@@ -22,6 +24,7 @@ volumes:
     external: true
   parkour2_staticfiles:
     external: true
+
 
 networks:
   parkour2_default:

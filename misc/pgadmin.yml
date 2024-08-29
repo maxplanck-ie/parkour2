@@ -1,4 +1,5 @@
 services:
+
   parkour2-pgadmin:
     image: dpage/pgadmin4:latest
     container_name: parkour2-pgadmin
@@ -12,8 +13,10 @@ services:
       PGADMIN_DEFAULT_PASSWORD: "08865bf89605c9cb414f843ae"
       PGADMIN_LISTEN_PORT: "8080"
 
+
 volumes:
   pgadmin_data: {}
+
 
 networks:
   parkour2_default:
