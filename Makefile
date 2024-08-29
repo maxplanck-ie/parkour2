@@ -126,15 +126,15 @@ hardreset-envfile:
 	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
 deploy-caddy:
-	@docker compose -f caddy.yml up -d
+	@docker compose -f misc/caddy.yml --project-name=parkour2 up -d
 
 deploy-nginx:
 	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
 		{ echo "ERROR: TLS certificates not found!"; exit 1; }
-	@docker compose -f misc/nginx.yml up -d
+	@docker compose -f misc/nginx.yml --project-name=parkour2 up -d
 
 deploy-pgadmin:
-	@docker compose -f pgadmin.yml up -d
+	@docker compose -f misc/pgadmin.yml --project-name=parkour2 up -d
 	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
 	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-pgadmin-nginx || :
 	@[[ $${CONTAINERS[*]} =~ caddy ]] && $(MAKE) add-pgadmin-caddy || :
@@ -144,7 +144,7 @@ add-pgadmin-nginx:
 	@docker exec parkour2-nginx nginx -s reload
 
 convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink too)
-	@docker compose -f convert-backup.yml up -d && sleep 1m && \
+	@docker compose -f misc/convert-backup.yml --project-name=parkour2 up -d && sleep 1m && \
 		echo "Warning: If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f tmp_parkour_dump" && \
@@ -214,7 +214,7 @@ import-pgdb:
 # 	@echo gh release create --generate-notes
 
 deploy-rsnapshot:
-	@docker compose -f rsnapshot.yml up -d && \
+	@docker compose -f misc/rsnapshot.yml --project-name=parkour2 up -d && \
 		sleep 1m && \
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
