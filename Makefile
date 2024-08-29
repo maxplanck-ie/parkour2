@@ -65,7 +65,7 @@ check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
 
 stop:
-	@docker compose -f docker-compose.yml -f caddy.yml -f misc/nginx.yml -f rsnapshot.yml -f percona.yml -f pgadmin.yml stop
+	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml -f misc/percona.yml -f misc/pgadmin.yml stop
 
 rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
@@ -74,7 +74,7 @@ rm-volumes:
 down: clean  ## Turn off running instance (persisting media & staticfiles' volumes)
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7 }') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
-	@docker compose -f docker-compose.yml -f caddy.yml -f misc/nginx.yml -f rsnapshot.yml -f percona.yml -f pgadmin.yml down
+	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml -f misc/percona.yml -f misc/pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 	@docker network rm -f parkour2
 
@@ -149,7 +149,7 @@ convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink
 		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f tmp_parkour_dump" && \
 		docker cp parkour2-convert-backup:/tmp_parkour_dump misc/db_$(stamp).sqldump
-		docker compose -f convert-backup.yml down
+		docker compose -f misc/convert-backup.yml down
 	@ln -sf db_$(stamp).sqldump misc/latest.sqldump
 
 load-media:  ## Copy all media files into running instance
@@ -457,7 +457,7 @@ percona:
 	@docker exec -it parkour2-postgres bash -c "echo 'pg_stat_statements.track = all' >> /var/lib/postgresql/data/postgresql.conf"
 	@docker exec -it parkour2-postgres psql -U postgres -c "SELECT pg_reload_conf();"
 	@docker exec -it parkour2-postgres psql -U postgres -c "CREATE EXTENSION IF NOT EXISTS pg_stat_monitor CASCADE;"
-	@docker compose -f percona.yml up
+	@docker compose -f misc/percona.yml up
 
 # aider:
 # 	@export OPENROUTER_API_KEY=$$(grep OPENROUTER_API_KEY misc/parkour.env.ignore | cut -d'=' -f2)
