@@ -63,7 +63,7 @@ check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
 
 stop:
-	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml -f misc/percona.yml -f misc/pgadmin.yml stop
+	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml stop
 
 rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
@@ -72,7 +72,7 @@ rm-volumes:
 down: clean  ## Turn off running instance (persisting media & staticfiles' volumes)
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7 }') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
-	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml -f misc/percona.yml -f misc/pgadmin.yml down
+	@docker compose -f docker-compose.yml -f misc/caddy.yml -f misc/nginx.yml -f misc/rsnapshot.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 	@docker network rm -f parkour2
 
@@ -114,9 +114,6 @@ set-dev: hardreset-caddyfile
 	# @sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
-add-pgadmin-caddy: hardreset-caddyfile
-	@echo -e "\nhttp://*:9981 {\n\thandle {\n\t\treverse_proxy parkour2-pgadmin:8080\n\t}\n\tlog\n}" >> misc/Caddyfile
-
 hardreset-caddyfile:
 	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue-assets/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
@@ -130,16 +127,6 @@ deploy-nginx:
 	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
 		{ echo "ERROR: TLS certificates not found!"; exit 1; }
 	@docker compose -f misc/nginx.yml --project-name=parkour2 up -d
-
-deploy-pgadmin:
-	@docker compose -f misc/pgadmin.yml --project-name=parkour2 up -d
-	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
-	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-pgadmin-nginx || :
-	@[[ $${CONTAINERS[*]} =~ caddy ]] && $(MAKE) add-pgadmin-caddy || :
-
-add-pgadmin-nginx:
-	@docker cp misc/nginx-pgadmin.conf parkour2-nginx:/etc/nginx/conf.d/
-	@docker exec parkour2-nginx nginx -s reload
 
 convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink too)
 	@docker compose -f misc/convert-backup.yml --project-name=parkour2 up -d && sleep 1m && \
