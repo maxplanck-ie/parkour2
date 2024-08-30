@@ -440,23 +440,6 @@ disable-explorer:
 		's%^\(\s*\)\("explorer",\)%\1# \2%' \
 		backend/wui/settings/dev.py
 
-percona:
-	@docker exec -it parkour2-postgres bash -c \
-		"apt update \
-		&& apt install -y curl gcc pkg-config openssl libssl-dev \
-		&& curl https://sh.rustup.rs -sSf > script \
-		&& chmod +x script && ./script -y \
-		&& source ~/.cargo/env \
-		&& cargo install pg-trunk \
-		&& trunk install pg_stat_monitor"
-	@docker exec -it parkour2-postgres sed -i -e "s%#\(shared_preload_libraries\) = ''%\1 = 'pg_stat_monitor'%" /var/lib/postgresql/data/postgresql.conf
-	@docker exec -it parkour2-postgres sed -i -e "s%#\(track_activity_query_size\) = 1024%\1 = 2048%" /var/lib/postgresql/data/postgresql.conf
-	@docker exec -it parkour2-postgres sed -i -e "s%#\(track_io_timing\) = off%\1 = on%" /var/lib/postgresql/data/postgresql.conf
-	@docker exec -it parkour2-postgres bash -c "echo 'pg_stat_statements.track = all' >> /var/lib/postgresql/data/postgresql.conf"
-	@docker exec -it parkour2-postgres psql -U postgres -c "SELECT pg_reload_conf();"
-	@docker exec -it parkour2-postgres psql -U postgres -c "CREATE EXTENSION IF NOT EXISTS pg_stat_monitor CASCADE;"
-	@docker compose -f misc/percona.yml up
-
 # aider:
 # 	@export OPENROUTER_API_KEY=$$(grep OPENROUTER_API_KEY misc/parkour.env.ignore | cut -d'=' -f2)
 # 	@cd backend/ && aider --subtree-only --model openrouter/google/gemma-2-9b-it:free
