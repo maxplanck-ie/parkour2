@@ -559,13 +559,13 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           itemId: "measuringUnitEditor",
           xtype: "combobox",
           queryMode: "local",
-          valueField: "value",
+          valueField: "id",
           displayField: "name",
           store: {
-            fields: ["value", "name"],
+            fields: ["id", "name"],
             data: [
-              { value: "bp", name: "bp (DNA)" },
-              { value: "-", name: "Measure for Me" }
+              { id: "bp", name: "bp (DNA)" },
+              { id: "-", name: "Measure for Me" }
             ]
           },
           forceSelection: true,
@@ -737,16 +737,16 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           itemId: "measuringUnitEditor",
           xtype: "combobox",
           queryMode: "local",
-          valueField: "value",
+          valueField: "id",
           displayField: "name",
           store: {
-            fields: ["value", "name"],
+            fields: ["id", "name"],
             data: [
-              { value: "bp", name: "bp (DNA)" },
-              { value: "nt", name: "nt (RNA)" },
-              { value: "RQN", name: "RQN (RNA (total))" },
-              { value: "M", name: "M (Cells)" },
-              { value: "-", name: "Measure for Me" }
+              { id: "bp", name: "bp (DNA)" },
+              { id: "nt", name: "nt (RNA)" },
+              { id: "RQN", name: "RQN (RNA (total))" },
+              { id: "M", name: "M (Cells)" },
+              { id: "-", name: "Measure for Me" }
             ]
           },
           forceSelection: true,
@@ -821,8 +821,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           store: {
             fields: ["id", "name"],
             data: [
-              { id: "BSL1", name: "BSL1" },
-              { id: "BSL2", name: "BSL2" }
+              { id: "bsl1", name: "BSL1" },
+              { id: "bsl2", name: "BSL2" }
             ]
           },
           forceSelection: true
@@ -1240,10 +1240,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       meta.tdAttr = 'data-qtip="' + record.get("errors")[dataIndex] + '"';
     }
 
-    if (dataIndex === "gmo"  || dataIndex === "measuring_unit") {
+    if (dataIndex === "gmo") {
       var item = store.findRecord("value", value, 0, false, false, true);
       return item ? item.get("name") : "";
-  }
+    }
 
     store.clearFilter();
 
