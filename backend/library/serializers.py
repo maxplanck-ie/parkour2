@@ -28,7 +28,8 @@ class LibrarySerializer(LibrarySampleBaseSerializer):
             "index_reads",
             "index_i7",
             "index_i5",
-            "mean_fragment_size",
+            "measuring_unit",
+            "measured_value",
             "qpcr_result",
         )
 

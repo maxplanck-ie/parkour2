@@ -30,11 +30,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
   fields: [
     {
       type: "int",
-      name: "mean_fragment_size",
-      defaultValue: null
-    },
-    {
-      type: "int",
       name: "index_type",
       allowNull: true,
       defaultValue: null
@@ -62,7 +57,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
   ],
 
   validators: {
-    mean_fragment_size: "greaterthanzero",
     index_type: "presence",
     index_reads: "presence",
     index_i7: "indexI7",

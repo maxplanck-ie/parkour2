@@ -144,6 +144,7 @@ class LibrarySampleBaseSerializer(ModelSerializer):
             "library_protocol_name",
             "library_type",
             "library_type_name",
+            "volume",
             "organism",
             "equal_representation_nucleotides",
             "concentration",
@@ -151,7 +152,6 @@ class LibrarySampleBaseSerializer(ModelSerializer):
             "read_length",
             "read_length_name",
             "sequencing_depth",
-            "comments",
             "amplification_cycles",
             "organism_name",
         )

@@ -42,6 +42,16 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       name: "name"
     },
     {
+      name: "measuring_unit",
+      type: "string",
+    },
+    {
+      name: "measured_value",
+      type: "float",
+      allowNull: true,
+      defaultValue: null,
+    },
+    {
       type: "int",
       name: "library_protocol",
       allowNull: true,
@@ -57,6 +67,11 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       type: "float",
       name: "sequencing_depth",
       defaultValue: null
+    },
+    {
+      name: "volume",
+      type: "float",
+      defaultValue: null,
     },
     {
       type: "float",
@@ -91,10 +106,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       defaultValue: null
     },
     {
-      type: "string",
-      name: "comments"
-    },
-    {
       type: "bool",
       name: "invalid",
       defaultValue: false
@@ -116,9 +127,11 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
         dataIndex: "name"
       }
     ],
+    measuring_unit: "presence",
     library_protocol: "presence",
     library_type: "presence",
     concentration: "presence",
+    volume: "greaterthanten",
     read_length: "presence",
     sequencing_depth: "greaterthanten",
     // amplification_cycles: 'presence',

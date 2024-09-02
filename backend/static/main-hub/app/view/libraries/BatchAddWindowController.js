@@ -22,6 +22,12 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "#create-empty-records-button": {
         click: "createEmptyRecords"
       },
+      "#save-button": {
+        click: "save"
+      },
+      "#download-sample-form": {
+        click: "downloadSampleForm"
+      },
 
       // Libraries only
       "#indexTypeEditor": {
@@ -39,13 +45,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         select: "selectLibraryProtocol"
       },
 
-      "#save-button": {
-        click: "save"
+      // Both Libraries and Samples
+      "#measuringUnitEditor": {
+        select: "selectMeasuringUnit"
       },
-
-      "#download-sample-form": {
-        click: "downloadSampleForm"
-      }
     }
   },
 
@@ -272,20 +275,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             });
           }
 
-          // RNA Quality should be applied only when Input Type is RNA
-          else if (dataIndex === "rna_quality") {
-            var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
-              "id",
-              item.get("nucleic_acid_type")
-            );
-
-            if (nat && nat.get("type") === "RNA") {
-              item.set(dataIndex, record.get(dataIndex));
-            }
-          } else {
-            item.set(dataIndex, record.get(dataIndex));
-          }
-
           item.commit();
         }
       });
@@ -305,6 +294,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var libraryProtocolEditor = Ext.getCmp("libraryProtocolEditor");
     var libraryProtocolsStore = Ext.getStore("libraryProtocolsStore");
     var libraryTypeEditor = Ext.getCmp("libraryTypeEditor");
+    var measuringUnitEditor = Ext.getCmp("measuringUnitEditor");
     var measuredValueEditor = Ext.getCmp("measuredValueEditor");
     var record = context.record;
 
@@ -344,6 +334,22 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         indexI7Editor.disable();
         indexI5Editor.disable();
       }
+
+    // Reset Measured Value if Measuring Unit is changed
+    if (!measuringUnitEditor.getValue()) {
+      measuredValueEditor.setValue(null);
+      measuredValueEditor.disable();
+      record.set("measured_value", null);
+    } else {
+      if (measuringUnitEditor.getValue() === "-") {
+        measuredValueEditor.setValue(null);
+        measuredValueEditor.disable();
+        record.set("measured_value", -1);
+      } else {
+        measuredValueEditor.setValue(null);
+        measuredValueEditor.enable();
+      }
+    }
     }
 
     // Samples
@@ -363,17 +369,22 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         }
       }
 
-      // Toggle RNA Quality
-      var nat = nucleicAcidTypesStore.findRecord(
-        "id",
-        record.get("nucleic_acid_type")
-      );
-      if (nat && nat.get("type") === "RNA") {
-        measuredValueEditor.enable();
-      } else {
+    // Reset Measured Value if Measuring Unit is changed
+    if (!measuringUnitEditor.getValue()) {
+      measuredValueEditor.setValue(null);
+      measuredValueEditor.disable();
+      record.set("measured_value", null);
+    } else {
+      if (measuringUnitEditor.getValue() === "-") {
+        measuredValueEditor.setValue(null);
         measuredValueEditor.disable();
+        record.set("measured_value", -1);
+      } else {
+        measuredValueEditor.setValue(null);
+        measuredValueEditor.enable();
       }
     }
+  }
   },
 
   editRecord: function (editor, context) {
@@ -406,17 +417,22 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       record.set({ index_i7: "", index_i5: "" });
     }
 
-    // Reset Measured Value if Input Type has changed
-    var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
-      "id",
-      record.get("nucleic_acid_type")
-    );
-    if (
-      nat !== null &&
-      nat.get("type") === "DNA" &&
-      record.get("measured_value") > 0
-    ) {
+    // Reset Measured Value if Measuring Unit is empty
+    var measuringUnitEditor = Ext.getCmp("measuringUnitEditor");
+    var measuredValueEditor = Ext.getCmp("measuredValueEditor");
+    if (!measuringUnitEditor.getValue()) {
+      measuredValueEditor.setValue(null);
+      measuredValueEditor.disable();
       record.set("measured_value", null);
+    } else {
+      if (measuringUnitEditor.getValue() === "-") {
+        measuredValueEditor.setValue(null);
+        measuredValueEditor.disable();
+        record.set("measured_value", -1);
+      } else {
+        measuredValueEditor.setValue(null);
+        measuredValueEditor.enable();
+      }
     }
 
     record.commit();
@@ -483,19 +499,31 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var libraryProtocolEditor = Ext.getCmp("libraryProtocolEditor");
     var libraryProtocolsStore = Ext.getStore("libraryProtocolsStore");
     var libraryTypeEditor = Ext.getCmp("libraryTypeEditor");
-    var measuredValueEditor = Ext.getCmp("measuredValueEditor");
 
     libraryTypeEditor.setValue(null);
     libraryTypeEditor.disable();
 
     this.filterLibraryProtocols(libraryProtocolsStore, record.get("type"));
     libraryProtocolEditor.enable();
+  },
 
-    if (record.get("type") === "RNA") {
-      measuredValueEditor.enable();
-    } else {
+  selectMeasuringUnit: function (fld, record) {
+    // Reset Measured Value if Measuring Unit is changed
+    var measuringUnitEditor = Ext.getCmp("measuringUnitEditor");
+    var measuredValueEditor = Ext.getCmp("measuredValueEditor");
+    if (!measuringUnitEditor.getValue()) {
       measuredValueEditor.setValue(null);
       measuredValueEditor.disable();
+      record.set("measured_value", null);
+    } else {
+      if (measuringUnitEditor.getValue() === "-") {
+        measuredValueEditor.setValue(null);
+        measuredValueEditor.disable();
+        record.set("measured_value", -1);
+      } else {
+        measuredValueEditor.setValue(null);
+        measuredValueEditor.enable();
+      }
     }
   },
 
@@ -527,6 +555,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         tooltip: "Measuring Unit",
         width: 120,
         editor: {
+          id: "measuringUnitEditor",
+          itemId: "measuringUnitEditor",
           xtype: "combobox",
           queryMode: "local",
           valueField: "value",
@@ -551,6 +581,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         tooltip: "Measured Value",
         width: 120,
         editor: {
+          id: "measuredValueEditor",
+          itemId: "measuredValueEditor",
           xtype: "numberfield",
           minValue: 0
         },
@@ -701,6 +733,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         tooltip: "Measuring Unit",
         width: 120,
         editor: {
+          id: "measuringUnitEditor",
+          itemId: "measuringUnitEditor",
           xtype: "combobox",
           queryMode: "local",
           valueField: "value",
@@ -729,6 +763,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 120,
         editor: {
           id: "measuredValueEditor",
+          itemId: "measuredValueEditor",
           xtype: "numberfield",
           minValue: 0
         },
@@ -755,7 +790,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       {
         text: "GMO",
         dataIndex: "gmo",
-        tooltip: "GMO",
+        tooltip: "Genetically Modified Organism",
         width: 90,
         editor: {
           xtype: "combobox",
@@ -801,9 +836,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "numberer",
       "name",
       "barcode",
+      "nucleic_acid_type",
       "library_protocol",
       "library_type",
-      "nucleic_acid_type",
       "measuring_unit",
       "measured_value",
       "concentration",
@@ -916,7 +951,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 90,
         editor: {
           xtype: "numberfield",
-          minValue: 10
+          minValue: 0,
+          step: 10
         },
         renderer: this.errorRenderer
       },
@@ -1188,8 +1224,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       }
     }
 
-    if (dataIndex === "measured_value" && value === 11) {
-      return "Determined by Facility";
+    if (dataIndex === "measured_value" && value === -1) {
+      return "";
     }
 
     return value;
@@ -1204,10 +1240,14 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       meta.tdAttr = 'data-qtip="' + record.get("errors")[dataIndex] + '"';
     }
 
+    if (dataIndex === "gmo"  || dataIndex === "measuring_unit") {
+      var item = store.findRecord("value", value, 0, false, false, true);
+      return item ? item.get("name") : "";
+  }
+
     store.clearFilter();
 
     var item = store.findRecord("id", value, 0, false, false, true);
-
     return item ? item.get("name") : "";
   },
 
