@@ -48,7 +48,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       // Both Libraries and Samples
       "#measuringUnitEditor": {
         select: "selectMeasuringUnit"
-      },
+      }
     }
   },
 
@@ -335,21 +335,21 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         indexI5Editor.disable();
       }
 
-    // Reset Measured Value if Measuring Unit is changed
-    if (!measuringUnitEditor.getValue()) {
-      measuredValueEditor.setValue(null);
-      measuredValueEditor.disable();
-      record.set("measured_value", null);
-    } else {
-      if (measuringUnitEditor.getValue() === "-") {
+      // Reset Measured Value if Measuring Unit is changed
+      if (!measuringUnitEditor.getValue()) {
         measuredValueEditor.setValue(null);
         measuredValueEditor.disable();
-        record.set("measured_value", -1);
+        record.set("measured_value", null);
       } else {
-        measuredValueEditor.setValue(null);
-        measuredValueEditor.enable();
+        if (measuringUnitEditor.getValue() === "-") {
+          measuredValueEditor.setValue(null);
+          measuredValueEditor.disable();
+          record.set("measured_value", -1);
+        } else {
+          measuredValueEditor.setValue(null);
+          measuredValueEditor.enable();
+        }
       }
-    }
     }
 
     // Samples
@@ -369,22 +369,22 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         }
       }
 
-    // Reset Measured Value if Measuring Unit is changed
-    if (!measuringUnitEditor.getValue()) {
-      measuredValueEditor.setValue(null);
-      measuredValueEditor.disable();
-      record.set("measured_value", null);
-    } else {
-      if (measuringUnitEditor.getValue() === "-") {
+      // Reset Measured Value if Measuring Unit is changed
+      if (!measuringUnitEditor.getValue()) {
         measuredValueEditor.setValue(null);
         measuredValueEditor.disable();
-        record.set("measured_value", -1);
+        record.set("measured_value", null);
       } else {
-        measuredValueEditor.setValue(null);
-        measuredValueEditor.enable();
+        if (measuringUnitEditor.getValue() === "-") {
+          measuredValueEditor.setValue(null);
+          measuredValueEditor.disable();
+          record.set("measured_value", -1);
+        } else {
+          measuredValueEditor.setValue(null);
+          measuredValueEditor.enable();
+        }
       }
     }
-  }
   },
 
   editRecord: function (editor, context) {

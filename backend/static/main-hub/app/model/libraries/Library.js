@@ -6,138 +6,138 @@ Ext.define("MainHub.model.libraries.Library", {
   fields: [
     {
       name: "request_id",
-      type: "int",
+      type: "int"
     },
     {
       name: "request_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "create_time",
-      type: "date",
+      type: "date"
     },
     {
       name: "library_protocol",
-      type: "int",
+      type: "int"
     },
     {
       name: "library_protocol_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_type",
-      type: "int",
+      type: "int"
     },
     {
       name: "library_type_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "amplification_cycles",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "organism",
-      type: "int",
+      type: "int"
     },
     {
       name: "organism_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_type",
-      type: "int",
+      type: "int"
     },
     {
       name: "index_type_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_reads",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "index_i7",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i5",
-      type: "string",
+      type: "string"
     },
     {
       name: "equal_representation_nucleotides",
       type: "bool",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "concentration",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "concentration_method",
-      type: "int",
+      type: "int"
     },
     {
       name: "concentration_method_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "measuring_unit",
-      type: "string",
+      type: "string"
     },
     {
       name: "measured_value",
       type: "float",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       name: "qpcr_result",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "read_length",
-      type: "int",
+      type: "int"
     },
     {
       name: "read_length_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "sequencing_depth",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "nucleic_acid_type_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "nucleic_acid_type",
-      type: "int",
+      type: "int"
     },
     {
       name: "volume",
       type: "float",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       name: "pool",
       type: "string",
-      defaultValue: "",
+      defaultValue: ""
     },
     {
       name: "biosafety_level",
-      type: "string",
+      type: "string"
     },
     {
       name: "gmo",
-      type: "bool",
-    },
-  ],
+      type: "bool"
+    }
+  ]
 });

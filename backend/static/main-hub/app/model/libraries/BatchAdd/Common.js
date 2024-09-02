@@ -43,13 +43,13 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     },
     {
       name: "measuring_unit",
-      type: "string",
+      type: "string"
     },
     {
       name: "measured_value",
       type: "float",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "int",
@@ -71,7 +71,7 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     {
       name: "volume",
       type: "float",
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "float",

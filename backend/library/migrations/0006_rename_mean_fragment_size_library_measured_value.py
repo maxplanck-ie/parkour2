@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0005_library_measuring_unit_library_volume_and_more'),
+        ("library", "0005_library_measuring_unit_library_volume_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='library',
-            old_name='mean_fragment_size',
-            new_name='measured_value',
+            model_name="library",
+            old_name="mean_fragment_size",
+            new_name="measured_value",
         ),
     ]

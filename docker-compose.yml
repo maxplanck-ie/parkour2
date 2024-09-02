@@ -29,7 +29,7 @@ services:
     hostname: parkour2-django
     build:
       dockerfile: ./backend.Dockerfile
-      target: pk2_dev
+      target: pk2_base
     env_file:
       - ./misc/parkour.env
     restart: always

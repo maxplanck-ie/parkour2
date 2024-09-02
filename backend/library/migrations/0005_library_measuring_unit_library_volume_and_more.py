@@ -7,23 +7,39 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0004_archived_feature'),
+        ("library", "0004_archived_feature"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='library',
-            name='measuring_unit',
-            field=models.CharField(blank=True, choices=[('bp', 'bp (DNA)'), ('-', 'Measure for Me')], max_length=50, null=True, verbose_name='Measuring Unit'),
+            model_name="library",
+            name="measuring_unit",
+            field=models.CharField(
+                blank=True,
+                choices=[("bp", "bp (DNA)"), ("-", "Measure for Me")],
+                max_length=50,
+                null=True,
+                verbose_name="Measuring Unit",
+            ),
         ),
         migrations.AddField(
-            model_name='library',
-            name='volume',
-            field=models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(10)], verbose_name='Volume'),
+            model_name="library",
+            name="volume",
+            field=models.FloatField(
+                blank=True,
+                null=True,
+                validators=[django.core.validators.MinValueValidator(10)],
+                verbose_name="Volume",
+            ),
         ),
         migrations.AlterField(
-            model_name='library',
-            name='mean_fragment_size',
-            field=models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(-1)], verbose_name='Measured Value'),
+            model_name="library",
+            name="mean_fragment_size",
+            field=models.FloatField(
+                blank=True,
+                null=True,
+                validators=[django.core.validators.MinValueValidator(-1)],
+                verbose_name="Measured Value",
+            ),
         ),
     ]

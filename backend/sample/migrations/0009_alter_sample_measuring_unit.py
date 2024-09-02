@@ -6,13 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0008_rename_rna_quality_sample_measured_value'),
+        ("sample", "0008_rename_rna_quality_sample_measured_value"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sample',
-            name='measuring_unit',
-            field=models.CharField(blank=True, choices=[('bp', 'bp (DNA)'), ('nt', 'nt (RNA)'), ('RQN', 'RQN (RNA (total))'), ('M', 'M (Cells)'), ('-', 'Measure for Me')], max_length=50, null=True, verbose_name='Measuring Unit'),
+            model_name="sample",
+            name="measuring_unit",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("bp", "bp (DNA)"),
+                    ("nt", "nt (RNA)"),
+                    ("RQN", "RQN (RNA (total))"),
+                    ("M", "M (Cells)"),
+                    ("-", "Measure for Me"),
+                ],
+                max_length=50,
+                null=True,
+                verbose_name="Measuring Unit",
+            ),
         ),
     ]

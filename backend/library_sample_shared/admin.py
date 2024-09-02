@@ -46,6 +46,7 @@ class OrganismAdmin(admin.ModelAdmin):
     def mark_as_non_archived(self, request, queryset):
         queryset.update(archived=False)
 
+
 @admin.register(ConcentrationMethod)
 class ConcentrationMethodAdmin(admin.ModelAdmin):
     pass

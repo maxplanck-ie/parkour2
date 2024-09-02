@@ -10,12 +10,12 @@ Ext.define("MainHub.model.libraries.BatchAdd.Sample", {
     },
     {
       name: "biosafety_level",
-      type: "string",
+      type: "string"
     },
     {
       name: "gmo",
-      type: "bool",
-    },
+      type: "bool"
+    }
   ],
 
   validators: {
