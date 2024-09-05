@@ -81,25 +81,25 @@ jobs:
 
             Run of `npm-check-updates` to update all node dependencies.
 
-  pre-commit:
-    if: github.repository == 'maxplanck-ie/parkour2'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+  # pre-commit:
+  #   if: github.repository == 'maxplanck-ie/parkour2'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
       
-      - uses: actions/setup-python@v4
+  #     - uses: actions/setup-python@v4
       
-      - uses: browniebroke/pre-commit-autoupdate-action@main
+  #     - uses: browniebroke/pre-commit-autoupdate-action@main
       
-      - uses: peter-evans/create-pull-request@v3
-        with:
-          branch: update/pre-commit
-          title: Update pre-commit repos
-          body: Update all pre-commit repos.
-          delete-branch: true
-          labels: |
-            Dependencies
-          commit-message: |
-            Update pre-commit repos.
+  #     - uses: peter-evans/create-pull-request@v3
+  #       with:
+  #         branch: update/pre-commit
+  #         title: Update pre-commit repos
+  #         body: Update all pre-commit repos.
+  #         delete-branch: true
+  #         labels: |
+  #           Dependencies
+  #         commit-message: |
+  #           Update pre-commit repos.
 
-            Run of `pre-commit-autoupdate` to update all repos.
+  #           Run of `pre-commit-autoupdate` to update all repos.
