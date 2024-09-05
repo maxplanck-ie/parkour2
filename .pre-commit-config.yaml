@@ -4,7 +4,7 @@ ci:
   autofix_prs: true
   autoupdate_branch: "develop"
   autoupdate_commit_msg: "pre-commit.ci autoupdate"
-  autoupdate_schedule: quarterly
+  autoupdate_schedule: monthly
   skip: []
   submodules: false
 
