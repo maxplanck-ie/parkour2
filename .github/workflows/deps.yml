@@ -7,7 +7,7 @@ on:
     - cron: "30 5 * * 1"
 
 jobs:
-  pip_compile_multi:
+  python:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     strategy:
