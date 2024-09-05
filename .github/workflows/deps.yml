@@ -1,4 +1,4 @@
-name: Upgrade
+name: Update
 
 on:
   workflow_dispatch:
@@ -26,31 +26,80 @@ jobs:
           cache-dependency-path: backend/requirements/${{ matrix.python-version }}/testing.txt
           python-version: ${{ matrix.python-version }}
       
-      - name: Compile dependencies
+      - name: Backend Update
         run: |
           mkdir -p backend/requirements/${{ matrix.python-version }}
           ls backend/requirements/*.in | cut -d'/' -f3 | rev | cut -d. -f2 | rev | xargs -I{} ln -sf ../{}.in backend/requirements/${{ matrix.python-version }}/{}.in
-          python -m pip install --upgrade pip
+          python -m pip install --update pip
           pip install pip-tools pip-compile-multi
           pip-compile-multi -d backend/requirements/${{ matrix.python-version }} --backtracking --autoresolve --allow-unsafe
       
-      - name: Install dependencies
+      - name: Test installation
         run: pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: create-pull-request/pip-compile-multi
-          title: Update python dependencies.
-          body: Update all python dependencies.
+          branch: update/backend
+          title: Update python dependencies
+          body: Update all backend dependencies.
           delete-branch: true
           labels: |
             Dependencies
           commit-message: |
             Update python dependencies.
 
-            Run of `pip-compile-multi` to upgrade all python dependencies.
+            Run of `pip-compile-multi` to update all python dependencies.
 
+  vuejs:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-# Frontend (VueJS)
-# TODO: see Makefile rule: ncu.
+      - name: Frontend Update
+        uses: actions/setup-node@v4
+        with:
+          # node-version: '20'
+          node-version-file: 'frontend/package.json'
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+      - run: npm install -g npm-check-updates
+      - run: cd frontend && ncu -u
+      
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: update/frontend
+          title: Update node dependencies
+          body: Update all frontend dependencies.
+          delete-branch: true
+          labels: |
+            Dependencies
+          commit-message: |
+            Update node dependencies.
+
+            Run of `npm-check-updates` to update all node dependencies.
+
+  pre-commit:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v4
+      
+      - uses: browniebroke/pre-commit-autoupdate-action@main
+      
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          branch: update/pre-commit
+          title: Update pre-commit repos
+          body: Update all pre-commit repos.
+          delete-branch: true
+          labels: |
+            Dependencies
+          commit-message: |
+            Update pre-commit repos.
+
+            Run of `pre-commit-autoupdate` to update all repos.
