@@ -16,24 +16,24 @@ appdirs==1.4.4
     # via django-migration-linter
 asttokens==2.4.1
     # via stack-data
-boto3==1.35.0
+boto3==1.35.14
     # via -r backend/requirements/3.11/dev.in
-botocore==1.35.0
+botocore==1.35.14
     # via
     #   boto3
     #   s3transfer
-certifi==2024.7.4
+certifi==2024.8.30
     # via
     #   httpcore
     #   httpx
     #   requests
-cffi==1.17.0
+cffi==1.17.1
     # via cryptography
 charset-normalizer==3.3.2
     # via requests
-contourpy==1.2.1
+contourpy==1.3.0
     # via matplotlib
-cryptography==43.0.0
+cryptography==43.0.1
     # via
     #   django-cryptography-django5
     #   django-sql-explorer
@@ -57,24 +57,24 @@ django-migration-linter==5.1.0
     # via -r backend/requirements/3.11/dev.in
 django-schema-viewer==0.4.1
     # via -r backend/requirements/3.11/dev.in
-django-sql-explorer==5.1.1
+django-sql-explorer==5.2
     # via -r backend/requirements/3.11/dev.in
-executing==2.0.1
+executing==2.1.0
     # via stack-data
 h11==0.14.0
     # via httpcore
 httpcore==1.0.5
     # via httpx
-httpx==0.27.0
+httpx==0.27.2
     # via openai
-idna==3.7
+idna==3.8
     # via
     #   anyio
     #   httpx
     #   requests
 ipdb==0.13.13
     # via -r backend/requirements/3.11/dev.in
-ipython==8.26.0
+ipython==8.27.0
     # via ipdb
 jedi==0.19.1
     # via ipython
@@ -84,7 +84,7 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-kiwisolver==1.4.5
+kiwisolver==1.4.7
     # via matplotlib
 markdown-it-py==3.0.0
     # via rich
@@ -96,7 +96,7 @@ matplotlib-inline==0.1.7
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-openai==1.41.0
+openai==1.44.0
     # via -r backend/requirements/3.11/dev.in
 parso==0.8.4
     # via jedi
@@ -110,15 +110,15 @@ pure-eval==0.2.3
     # via stack-data
 pycparser==2.22
     # via cffi
-pydantic==2.8.2
+pydantic==2.9.0
     # via openai
-pydantic-core==2.20.1
+pydantic-core==2.23.2
     # via pydantic
 pygments==2.18.0
     # via
     #   ipython
     #   rich
-pyparsing==3.1.2
+pyparsing==3.1.4
     # via matplotlib
 pywatchman==2.0.0
     # via -r backend/requirements/3.11/dev.in
@@ -128,7 +128,7 @@ requests==2.32.3
     # via
     #   django-sql-explorer
     #   tiktoken
-rich==13.7.1
+rich==13.8.0
     # via -r backend/requirements/3.11/dev.in
 s3transfer==0.10.2
     # via boto3
@@ -137,7 +137,7 @@ sniffio==1.3.1
     #   anyio
     #   httpx
     #   openai
-sql-metadata==2.12.0
+sql-metadata==2.13.0
     # via -r backend/requirements/3.11/dev.in
 stack-data==0.6.3
     # via ipython
@@ -157,7 +157,7 @@ urllib3==2.2.2
     #   requests
 wcwidth==0.2.13
     # via prompt-toolkit
-werkzeug==3.0.3
+werkzeug==3.0.4
     # via -r backend/requirements/3.11/dev.in
 xlsxwriter==3.2.0
     # via -r backend/requirements/3.11/dev.in
