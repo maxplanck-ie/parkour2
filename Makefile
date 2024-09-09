@@ -414,6 +414,7 @@ enable-explorer:
 		's%# \("explorer",\)%\1%' \
 		backend/wui/settings/dev.py
 	@$(MAKE) schema collect-static
+	@docker exec parkour2-django python manage.py create_sample_queries
 
 disable-ollama:
 	@docker container stop ollama

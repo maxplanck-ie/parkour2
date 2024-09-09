@@ -6,7 +6,7 @@ from django.db import connection
 
 
 class Command(BaseCommand):
-    help = "Creates ReadOnly role and user in DB for django-sql-explorer (only works in dev deployments!)"
+    help = "Creates ReadOnly role and user in DB for django-sql-explorer."
 
     def handle(self, *args, **options):
         assert settings.DEBUG
