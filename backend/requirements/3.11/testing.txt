@@ -31,9 +31,9 @@ pytest-base-url==2.1.0
     # via pytest-playwright
 pytest-cov==5.0.0
     # via -r backend/requirements/3.11/testing.in
-pytest-django==4.8.0
+pytest-django==4.9.0
     # via -r backend/requirements/3.11/testing.in
-pytest-playwright==0.5.1
+pytest-playwright==0.5.2
     # via -r backend/requirements/3.11/testing.in
 pytest-xdist==3.6.1
     # via -r backend/requirements/3.11/testing.in
