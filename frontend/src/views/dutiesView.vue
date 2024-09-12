@@ -348,7 +348,6 @@ export default {
       }
     },
     async saveDuty() {
-      this.gridOptions.api.showLoadingOverlay();
       let newDuty = toRaw(this.newDuty);
       if (
         !newDuty.main_name ||
@@ -361,7 +360,6 @@ export default {
           "Please check all the necessary fields: \n 1. Facility \n 2. Responsible Person \n 3. Backup Person \n 4. Start Date \n 5. Platform",
           "error"
         );
-        this.gridOptions.api.hideOverlay();
       } else {
         await axiosRef
           .post(urlStringStart + "/api/duties/", newDuty)
@@ -383,8 +381,7 @@ export default {
           .catch((error) => {
             this.getFilteredDuties(true, this.selectedFilter);
             handleError(error);
-          })
-          .finally();
+          });
       }
     },
     async getDuties(refresh = false, additionalUrl = "") {
@@ -445,9 +442,8 @@ export default {
         }
         this.dutiesListBackup = fetchedRows;
       } catch (error) {
-        () => handleError(error);
+        handleError(error);
       } finally {
-        () => this.gridOptions.api.hideOverlay();
       }
     },
     getFilteredDuties(refresh = false, selectedFilter) {
@@ -544,8 +540,7 @@ export default {
           .catch((error) => {
             this.getFilteredDuties(true, this.selectedFilter);
             handleError(error);
-          })
-          .finally();
+          });
         this.updateGridDataObject();
       }
     },
@@ -600,8 +595,7 @@ export default {
           this.getFilteredDuties(true, this.selectedFilter);
           this.setColumns(userList);
         })
-        .catch((error) => handleError(error))
-        .finally(() => this.gridOptions.api.hideOverlay());
+        .catch((error) => handleError(error));
     },
     setColumns(userList) {
       this.columnsList = [
