@@ -6,18 +6,20 @@
 - TODO: `<URL>/export_request/` and `<URL>/import_request/` both have a simple UI
 - ...
 
+
 24.08.20
 ========
 
 Breaking changes:
 
-- Temporarily dropped CI tests for Python 3.12, which were [broken via Numpy dependency](https://https://numpy.org/doc/stable//release/1.26.0-notes.html)). We're using Python 3.11 since Parkour2 version 0.3.9 anyway. We'll catch-up to Python 3.12 once the situation stabilizes and other projects are successful sailing through this difficulty... For now, our `requirements.txt` environment is unable to resolve under 3.12
+- Temporarily dropped CI tests for Python 3.12, which were [broken via Numpy dependency](https://numpy.org/doc/stable//release/1.26.0-notes.html)). We're using Python 3.11 since Parkour2 version 0.3.9 anyway. We'll catch-up to Python 3.12 once the situation stabilizes and other projects are successful sailing through this difficulty... For now, our `requirements.txt` environment is unable to resolve under 3.12
 
 Non-breaking changes:
 
 - Fixed a bug that made flowcells on the last day of the month not to be listed under Load FCs or Invoicing. Now, we are only blind over the last minute of the last day of the month.
 - New retrieve_samplesheet API endpoint under flowcells. By default, it gets you the XLSX samplesheet containing all lanes of a flowcell. For example, `<URL>/api/flowcells/retrieve_samplesheet/?flowcell_id=...`
 - Dropped pip cache (experimental Dockerfile syntax) to avoid obscure error messages. We are dealing with these (and other pkg caches) by using a cronjob that runs the build in the VMs.
+
 
 24.07.24
 ========
@@ -26,6 +28,7 @@ Non-breaking changes:
 - Fix crash (FPDFUnicodeEncodingException) when user tries downloading the Request signature form with non-UTF8 characters in the Description.
 - Dev deployments now have an integrated tool available for generating, saving, and running SQL queries: [SQL Explorer](https://www.sqlexplorer.io)  (use: `make enable-explorer` to activate, and then navigate to `<URL>/explorer`.)
 - Updated all of our Python package dependencies.
+
 
 24.06.28
 ========
@@ -36,6 +39,7 @@ Non-breaking changes:
 - Fixed: "Bad Request" notification after adding Libraries or Samples while creating any request and the description is kept empty. (#112)
 - Option to select OS under "File Paths" to modify the file paths according to the selection. (#113)
 - Feature to add paths from the user's end, via "User Paths" in File Path right-click option. (#117)
+
 
 24.05.10
 ========
@@ -51,6 +55,7 @@ Non-breaking changes:
 - Changed the naming format of Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' in front. (#105)
 - New Benchtop Protocol File in 'Pooling' with the introduction of 'Smear Analysis' (#107)
 
+
 24.03.27
 ========
 
@@ -59,6 +64,7 @@ Non-breaking changes:
 - Standardized date parameter format to "YYYY-MM" in 'Invoicing' and 'Load Flowcells' submodule. (#101)
 - While downloading, renamed the Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' respectively. (#102)
 - BugFix: Fixed various costs in 'Invoicing' appear as 0. (#103)
+
 
 24.03.15
 ========
@@ -70,6 +76,7 @@ Non-breaking changes:
 - Rephrased text in email sent after Electronic Approval.
 - Added Seq. Length and Depth to Electronic Approval. Old PDF was not updated (yet) because of reasons.
 
+
 24.02.20
 ========
 
@@ -80,6 +87,7 @@ Non-breaking changes:
 - new URL: `/danke` (users are redirected after seq. request approval)
 - new nucleic acid and library protocol types for single cell sequencing.
 - `put-old-migras` and `sweep` rules are more robust now.
+
 
 24.01.31
 ========
@@ -138,6 +146,7 @@ Non-breaking changes:
 - The `<URL>/api/samples/<id>` doesn't fail anymore if no `pk` was given.
 - Added an EmailField to PrincipalInvestigator. This field is going to be used in the 'paperless approval' feature (see next release.)
 - Added new endpoint, `<URL>/api/requests/<id>/get_poolpaths/`, returns a dictionary with records' barcode as keys and pool names as values, to easily find where each sample (or lib) was loaded.
+
 
 23.09.20
 ========
@@ -208,6 +217,7 @@ Non-breaking changes:
 ## Changes
 
 - Submission of sample and libraries updated, we are hardcoding values for columns that are now hidden in frontend (e.g. concentration_method and RQN). Like always, custom parameters and its values can be passed in the free-text form inside Description or using file attachments to each request.
+
 
 0.3.9
 =====

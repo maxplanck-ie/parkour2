@@ -1,4 +1,4 @@
-ARG PyVersion=3.11
+ARG PyVersion=3.11  # to be repeated after FROM, docker syntax is at fault.
 FROM python:${PyVersion}-bullseye AS pk2_base
 
 ENV \
@@ -27,7 +27,7 @@ WORKDIR /usr/src/app
 COPY ./backend .
 EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
-ARG PyVersion=3.11
+ARG PyVersion=3.11  # yeah, repeated. docker syntax is at fault.
 RUN pip install -r requirements/${PyVersion}/base.txt
 CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
