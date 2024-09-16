@@ -17,7 +17,7 @@ diff-match-patch==20230430
     # via django-import-export
 dj-database-url==2.2.0
     # via -r backend/requirements/3.10/base.in
-django==4.2.15
+django==4.2.16
     # via
     #   -r backend/requirements/3.10/base.in
     #   dj-database-url
@@ -81,7 +81,7 @@ python-dateutil==2.9.0.post0
     #   pandas
 python-docx==1.1.2
     # via -r backend/requirements/3.10/base.in
-pytz==2024.1
+pytz==2024.2
     # via pandas
 pyyaml==6.0.2
     # via drf-spectacular
