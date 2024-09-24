@@ -24,18 +24,17 @@ class Library(GenericLibrarySample):
         "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
     )
 
-    qpcr_result = models.FloatField(
+    archived = models.BooleanField("Archived", default=False)
+
+    removed_qpcr_result = models.FloatField(
         "qPCR Result", null=True, blank=True
     )  # This field is not in use
 
-    # Quality Control
-    qpcr_result_facility = models.FloatField(
+    removed_qpcr_result_facility = models.FloatField(
         "qPCR Result (facility)",
         null=True,
         blank=True,
-    )
-
-    archived = models.BooleanField("Archived", default=False)
+    )  # This field is not in use
 
     class Meta:
         verbose_name = "Library"

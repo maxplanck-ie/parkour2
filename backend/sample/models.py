@@ -60,14 +60,6 @@ class Sample(GenericLibrarySample):
 
     is_converted = models.BooleanField("Converted", default=False)
 
-    # Quality Control
-    rna_quality_facility = models.FloatField(
-        "RNA Quality (facility)",
-        validators=[MinValueValidator(0.0), MaxValueValidator(11.0)],
-        null=True,
-        blank=True,
-    )
-
     biosafety_level = models.CharField(
         "Biosafety Level",
         max_length=50,
@@ -81,6 +73,26 @@ class Sample(GenericLibrarySample):
     gmo = models.BooleanField("Genetically Modified Organism", null=True, blank=True)
 
     archived = models.BooleanField("Archived", default=False)
+
+    # Facility
+
+    measuring_unit_facility = models.CharField(
+        "Measuring Unit (facility)",
+        max_length=50,
+        choices=[
+            (unit, display_name)
+            for display_name, unit, input_type in MEASURING_UNIT_CHOICES
+        ],
+        null=True,
+        blank=True,
+    )
+
+    measured_value_facility = models.FloatField(
+        "Measured Value (facility)",
+        validators=[MinValueValidator(-1)],
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = "Sample"

@@ -353,27 +353,6 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    concentration_method = models.ForeignKey(
-        ConcentrationMethod,
-        verbose_name="Concentration Method",
-        on_delete=models.SET(get_removed_concentrationmethod),
-    )  # This field is not in use
-
-    amplification_cycles = models.PositiveIntegerField(
-        "Amplification cycles",
-        null=True,
-        blank=True,
-    )  # This field is not in use
-
-    equal_representation_nucleotides = models.BooleanField(
-        "Equal Representation of Nucleotides",
-        default=True,
-    )  # This field is not in use
-
-    comments = models.TextField(
-        "Comments", null=True, blank=True
-    )  # This field is not in use
-
     @property
     def index_i7_id(self):
         indices = self.index_type.indices_i7.all() if self.index_type else []
@@ -400,15 +379,6 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    concentration_method_facility = models.ForeignKey(
-        ConcentrationMethod,
-        related_name="+",
-        verbose_name="Concentration Method",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-    )
-
     sample_volume_facility = models.PositiveIntegerField(
         "Sample Volume",
         null=True,
@@ -428,11 +398,41 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    comments_facility = models.TextField(
+    removed_concentration_method = models.ForeignKey(
+        ConcentrationMethod,
+        verbose_name="Concentration Method",
+        on_delete=models.SET(get_removed_concentrationmethod),
+    )  # This field is not in use
+
+    removed_amplification_cycles = models.PositiveIntegerField(
+        "Amplification cycles",
+        null=True,
+        blank=True,
+    )  # This field is not in use
+
+    removed_equal_representation_nucleotides = models.BooleanField(
+        "Equal Representation of Nucleotides",
+        default=True,
+    )  # This field is not in use
+
+    removed_comments = models.TextField(
+        "Comments", null=True, blank=True
+    )  # This field is not in use
+
+    removed_concentration_method_facility = models.ForeignKey(
+        ConcentrationMethod,
+        related_name="+",
+        verbose_name="Concentration Method",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )  # This field is not in use
+
+    removed_comments_facility = models.TextField(
         "Comments",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     class Meta:
         abstract = True
