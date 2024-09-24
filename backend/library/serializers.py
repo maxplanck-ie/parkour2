@@ -30,7 +30,6 @@ class LibrarySerializer(LibrarySampleBaseSerializer):
             "index_i5",
             "measuring_unit",
             "measured_value",
-            "qpcr_result",
         )
 
     def get_record_type(self, obj):
