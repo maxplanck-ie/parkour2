@@ -69,7 +69,7 @@ openpyxl==3.1.5
     # via -r backend/requirements/3.10/base.in
 packaging==24.1
     # via gunicorn
-pandas==2.2.2
+pandas==2.2.3
     # via -r backend/requirements/3.10/base.in
 pillow==10.4.0
     # via fpdf2
