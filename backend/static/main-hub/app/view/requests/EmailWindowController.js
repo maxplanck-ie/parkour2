@@ -31,6 +31,9 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
       return;
     }
 
+    btn.setDisabled(true);
+    btn.setText("Sending...");
+
     form.submit({
       url: Ext.String.format(
         "api/requests/{0}/send_email/",
@@ -47,6 +50,8 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
           : action.response.statusText;
         new Noty({ text: error, type: "error" }).show();
         console.error(action);
+        btn.setDisabled(false);
+        btn.setText("Send");
       }
     });
   }

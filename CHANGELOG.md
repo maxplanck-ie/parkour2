@@ -4,6 +4,7 @@
 ========
 
 - TODO: `<URL>/export_request/` and `<URL>/import_request/` both have a simple UI
+- E-mail communications: grayed-out "send" button after 1 click, to avoid spamming inboxes.
 - Fixtures: save_initial_data management cmd will use built-in json formatter instead of `jq`.
 - ...
 
