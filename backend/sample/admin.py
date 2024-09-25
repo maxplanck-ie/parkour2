@@ -102,14 +102,13 @@ class SampleAdmin(admin.ModelAdmin):
             "Determined by Facility",
             {
                 "fields": (
+                    "measuring_unit_facility",
+                    "measured_value_facility",
                     "dilution_factor",
                     "concentration_facility",
-                    "concentration_method_facility",
                     "sample_volume_facility",
                     "amount_facility",
                     "size_distribution_facility",
-                    "rna_quality_facility",
-                    "comments_facility",
                 ),
             },
         ),

@@ -77,12 +77,9 @@ class LibraryAdmin(admin.ModelAdmin):
                 "fields": (
                     "dilution_factor",
                     "concentration_facility",
-                    "concentration_method_facility",
                     "sample_volume_facility",
                     "amount_facility",
                     "size_distribution_facility",
-                    "qpcr_result_facility",
-                    "comments_facility",
                 ),
             },
         ),

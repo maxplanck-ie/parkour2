@@ -33,11 +33,6 @@ Ext.define("MainHub.model.libraries.Library", {
       type: "string"
     },
     {
-      name: "amplification_cycles",
-      type: "int",
-      allowNull: true
-    },
-    {
       name: "organism",
       type: "int"
     },
@@ -67,22 +62,9 @@ Ext.define("MainHub.model.libraries.Library", {
       type: "string"
     },
     {
-      name: "equal_representation_nucleotides",
-      type: "bool",
-      allowNull: true
-    },
-    {
       name: "concentration",
       type: "float",
       allowNull: true
-    },
-    {
-      name: "concentration_method",
-      type: "int"
-    },
-    {
-      name: "concentration_method_name",
-      type: "string"
     },
     {
       name: "measuring_unit",
@@ -93,11 +75,6 @@ Ext.define("MainHub.model.libraries.Library", {
       type: "float",
       allowNull: true,
       defaultValue: null
-    },
-    {
-      name: "qpcr_result",
-      type: "float",
-      allowNull: true
     },
     {
       name: "read_length",

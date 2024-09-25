@@ -51,11 +51,11 @@ class LibraryPreparation(DateTimeMixin):
         blank=True,
     )
 
-    qpcr_result = models.FloatField(
+    removed_qpcr_result = models.FloatField(
         "qPCR Result",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     comments = models.TextField(
         "Comments",

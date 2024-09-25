@@ -80,21 +80,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     },
     {
       type: "int",
-      name: "concentration_method",
-      allowNull: true,
-      defaultValue: null
-    },
-    {
-      type: "int",
-      name: "amplification_cycles",
-      defaultValue: null
-    },
-    {
-      type: "bool",
-      name: "equal_representation_nucleotides"
-    },
-    {
-      type: "int",
       name: "read_length",
       allowNull: true,
       defaultValue: null
@@ -134,8 +119,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     volume: "greaterthanten",
     read_length: "presence",
     sequencing_depth: "greaterthanten",
-    // amplification_cycles: 'presence',
-    // concentration_method: 'presence',
     organism: "presence"
   }
 });

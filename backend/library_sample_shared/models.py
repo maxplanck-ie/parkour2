@@ -412,7 +412,8 @@ class GenericLibrarySample(DateTimeMixin):
 
     removed_equal_representation_nucleotides = models.BooleanField(
         "Equal Representation of Nucleotides",
-        default=True,
+        blank=True,
+        default=False,
     )  # This field is not in use
 
     removed_comments = models.TextField(

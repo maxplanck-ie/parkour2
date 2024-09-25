@@ -1176,13 +1176,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
   validateRecord: function (record, url) {
     var grid = Ext.getCmp("batch-add-grid");
     var store = grid.getStore();
-
-    // Passing default values to the API for the removed variables which are still required in the request object
-    record.data.amplification_cycles = 0;
-    record.data.concentration_method = 4;
-    record.data.equal_representation_nucleotides = false;
-    if (url == "api/libraries/") record.data.qpcr_result = 0;
-
     var validation = record.getValidation(true).data;
     var invalid = false;
     var errors = {};

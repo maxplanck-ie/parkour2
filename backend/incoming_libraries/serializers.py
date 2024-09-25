@@ -49,15 +49,12 @@ class BaseSerializer(ModelSerializer):
             "record_type",
             "library_protocol",
             "concentration",
-            "concentration_method",
             "dilution_factor",
             "concentration_facility",
-            "concentration_method_facility",
             "sample_volume_facility",
             "amount_facility",
             "quality_check",
             "size_distribution_facility",
-            "comments_facility",
             "sequencing_depth",
             "library_protocol_name",
         )
@@ -66,7 +63,6 @@ class BaseSerializer(ModelSerializer):
             "barcode": {"required": False},
             "library_protocol": {"required": False},
             "concentration": {"required": False},
-            "concentration_method": {"required": False},
             "sequencing_depth": {"required": False},
         }
 
@@ -81,15 +77,14 @@ class LibrarySerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = Library
         fields = BaseSerializer.Meta.fields + (
-            "qpcr_result",
-            "qpcr_result_facility",
-            "mean_fragment_size",
+            "measuring_unit",
+            "measured_value"
         )
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,
             **{
-                "qpcr_result": {"required": False},
-                "mean_fragment_size": {"required": False},
+                "measuring_unit": {"required": False},
+                "measured_value": {"required": False},
             },
         }
 
@@ -102,14 +97,17 @@ class SampleSerializer(BaseSerializer):
         fields = BaseSerializer.Meta.fields + (
             "nucleic_acid_type",
             "nucleic_acid_type_name",
-            "rna_quality",
-            "rna_quality_facility",
+            "measuring_unit",
+            "measured_value"
+            "measuring_unit_facility",
+            "measured_value_facility"
         )
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,
             **{
                 "nucleic_acid_type": {"required": False},
-                "rna_quality": {"required": False},
+                "measuring_unit": {"required": False},
+                "measured_value": {"required": False},
             },
         }
 

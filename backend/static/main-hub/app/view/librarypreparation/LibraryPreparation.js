@@ -187,16 +187,6 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
             }
           },
           {
-            text: "qPCR (nM)",
-            tooltip: "qPCR Result (nM)",
-            dataIndex: "qpcr_result",
-            width: 100,
-            editor: {
-              xtype: "numberfield",
-              minValue: 0
-            }
-          },
-          {
             text: "bp",
             tooltip: "Mean Fragment Size (bp)",
             dataIndex: "mean_fragment_size",

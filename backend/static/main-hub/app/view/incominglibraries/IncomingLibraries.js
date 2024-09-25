@@ -142,28 +142,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             width: 70
           },
           {
-            text: "F/S",
-            tooltip: "Concentration Determined by (user)",
-            dataIndex: "concentration_method",
-            tdCls: "userEntry",
-            width: 50,
-            renderer: function (value, meta) {
-              var store = Ext.getStore("concentrationMethodsStore");
-              var record = store.findRecord("id", value);
-              meta.tdAttr = 'data-qtip="' + record.get("name") + '"';
-              return record ? record.getShortName() : "";
-            },
-            hidden: true
-          },
-          {
-            text: "qPCR (nM)",
-            tooltip: "qPCR Result (user)",
-            dataIndex: "qpcr_result",
-            tdCls: "userEntry",
-            width: 85,
-            hidden: true
-          },
-          {
             text: "bp",
             tooltip: "Mean Fragment Size (user)",
             dataIndex: "mean_fragment_size",
@@ -228,46 +206,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               xtype: "numberfield",
               minValue: 0
             }
-          },
-          {
-            text: "F/S",
-            tooltip: "Concentration Determined by (facility)",
-            dataIndex: "concentration_method_facility",
-            tdCls: "facilityEntry",
-            width: 80,
-            editor: {
-              xtype: "combobox",
-              queryMode: "local",
-              displayField: "name",
-              valueField: "id",
-              store: "concentrationMethodsStore",
-              matchFieldWidth: false,
-              forceSelection: true
-            },
-            renderer: function (value, meta) {
-              var store = Ext.getStore("concentrationMethodsStore");
-              var record = store.findRecord("id", value);
-
-              if (record) {
-                meta.tdAttr = 'data-qtip="' + record.get("name") + '"';
-              }
-
-              return record ? record.getShortName() : "";
-            },
-            hidden: true
-          },
-          {
-            text: "qPCR (nM)",
-            tooltip: "qPCR Result (facility)",
-            dataIndex: "qpcr_result_facility",
-            tdCls: "facilityEntry",
-            width: 85,
-            editor: {
-              xtype: "numberfield",
-              id: "qPCRResultEditor",
-              minValue: 0
-            },
-            hidden: true
           },
           {
             text: "bp",
