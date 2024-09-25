@@ -401,6 +401,8 @@ class GenericLibrarySample(DateTimeMixin):
     removed_concentration_method = models.ForeignKey(
         ConcentrationMethod,
         verbose_name="Concentration Method",
+        null=True,
+        blank=True,
         on_delete=models.SET(get_removed_concentrationmethod),
     )  # This field is not in use
 

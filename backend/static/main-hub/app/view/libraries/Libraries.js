@@ -438,6 +438,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
             }
           },
           {
+            text: "GMO",
+            tooltip: "Genetically Modified Organism",
+            dataIndex: "gmo",
+            renderer: "gridCellTooltipRenderer"
+          },
+          {
             text: "Date",
             dataIndex: "create_time",
             renderer: Ext.util.Format.dateRenderer("d.m.Y")
@@ -466,28 +472,49 @@ Ext.define("MainHub.view.libraries.Libraries", {
             dataIndex: "concentration"
           },
           {
-            text: "RQN",
-            tooltip: "RNA Quality",
-            dataIndex: "rna_quality",
-            width: 55,
-            renderer: function (value) {
-              return value === 11 ? "Determined by Facility" : value;
-            }
+            text: "Measuring Unit",
+            tooltip: "Measuring Unit",
+            dataIndex: "measuring_unit",
+            renderer: "gridCellTooltipRenderer"
           },
           {
-            text: "bp",
-            tooltip: "Mean Fragment Size",
-            dataIndex: "mean_fragment_size"
+            text: "Measured Value",
+            tooltip: "Measured Value",
+            dataIndex: "measured_value",
+            renderer: "gridCellTooltipRenderer"
+          },
+          {
+            text: "Starting Amount",
+            tooltip: "Starting Amount",
+            dataIndex: "amount_facility",
+            renderer: "gridCellTooltipRenderer"
+          },          {
+            text: "PCR Cycles",
+            tooltip: "PCR Cycles",
+            dataIndex: "pcr_cycles",
+            renderer: "gridCellTooltipRenderer"
+          },          {
+            text: "ng/μl (Output)",
+            tooltip: "ng/μl (Output)",
+            dataIndex: "concentration_facility",
+            renderer: "gridCellTooltipRenderer"
+          },
+          {
+            text: "Measuring Unit (Output)",
+            tooltip: "Measuring Unit (Output)",
+            dataIndex: "measuring_unit_facility",
+            renderer: "gridCellTooltipRenderer"
+          },
+          {
+            text: "Measured Value (Output)",
+            tooltip: "Measured Value (Output)",
+            dataIndex: "measured_value_facility",
+            renderer: "gridCellTooltipRenderer"
           },
           {
             text: "Index Type",
             dataIndex: "index_type_name",
             renderer: "gridCellTooltipRenderer"
-          },
-          {
-            text: "Index Reads",
-            tooltip: "# of Index Reads",
-            dataIndex: "index_reads"
           },
           {
             text: "I7",
@@ -508,11 +535,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
             text: "Depth (M)",
             tooltip: "Sequencing Depth",
             dataIndex: "sequencing_depth"
-          },
-          {
-            text: "Organism",
-            dataIndex: "organism_name",
-            width: 150
           },
         ]
       }
