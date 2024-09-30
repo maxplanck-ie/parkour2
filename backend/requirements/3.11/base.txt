@@ -47,7 +47,7 @@ drf-spectacular==0.27.2
     # via -r backend/requirements/3.11/base.in
 et-xmlfile==1.1.0
     # via openpyxl
-fonttools==4.53.1
+fonttools==4.54.1
     # via fpdf2
 fpdf2==2.7.9
     # via -r backend/requirements/3.11/base.in
@@ -69,7 +69,7 @@ openpyxl==3.1.5
     # via -r backend/requirements/3.11/base.in
 packaging==24.1
     # via gunicorn
-pandas==2.2.2
+pandas==2.2.3
     # via -r backend/requirements/3.11/base.in
 pillow==10.4.0
     # via fpdf2
@@ -81,7 +81,7 @@ python-dateutil==2.9.0.post0
     #   pandas
 python-docx==1.1.2
     # via -r backend/requirements/3.11/base.in
-pytz==2024.1
+pytz==2024.2
     # via pandas
 pyyaml==6.0.2
     # via drf-spectacular
@@ -105,7 +105,7 @@ typing-extensions==4.12.2
     # via
     #   dj-database-url
     #   python-docx
-tzdata==2024.1
+tzdata==2024.2
     # via pandas
 uritemplate==4.1.1
     # via drf-spectacular

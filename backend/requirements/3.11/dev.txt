@@ -8,7 +8,7 @@
 -r base.txt
 annotated-types==0.7.0
     # via pydantic
-anyio==4.4.0
+anyio==4.6.0
     # via
     #   httpx
     #   openai
@@ -16,9 +16,9 @@ appdirs==1.4.4
     # via django-migration-linter
 asttokens==2.4.1
     # via stack-data
-boto3==1.35.14
+boto3==1.35.29
     # via -r backend/requirements/3.11/dev.in
-botocore==1.35.14
+botocore==1.35.29
     # via
     #   boto3
     #   s3transfer
@@ -57,7 +57,7 @@ django-migration-linter==5.1.0
     # via -r backend/requirements/3.11/dev.in
 django-schema-viewer==0.4.1
     # via -r backend/requirements/3.11/dev.in
-django-sql-explorer==5.2
+django-sql-explorer==5.3
     # via -r backend/requirements/3.11/dev.in
 executing==2.1.0
     # via stack-data
@@ -67,7 +67,7 @@ httpcore==1.0.5
     # via httpx
 httpx==0.27.2
     # via openai
-idna==3.8
+idna==3.10
     # via
     #   anyio
     #   httpx
@@ -96,13 +96,13 @@ matplotlib-inline==0.1.7
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-openai==1.44.0
+openai==1.50.2
     # via -r backend/requirements/3.11/dev.in
 parso==0.8.4
     # via jedi
 pexpect==4.9.0
     # via ipython
-prompt-toolkit==3.0.47
+prompt-toolkit==3.0.48
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
@@ -110,9 +110,9 @@ pure-eval==0.2.3
     # via stack-data
 pycparser==2.22
     # via cffi
-pydantic==2.9.0
+pydantic==2.9.2
     # via openai
-pydantic-core==2.23.2
+pydantic-core==2.23.4
     # via pydantic
 pygments==2.18.0
     # via
@@ -122,13 +122,13 @@ pyparsing==3.1.4
     # via matplotlib
 pywatchman==2.0.0
     # via -r backend/requirements/3.11/dev.in
-regex==2024.7.24
+regex==2024.9.11
     # via tiktoken
 requests==2.32.3
     # via
     #   django-sql-explorer
     #   tiktoken
-rich==13.8.0
+rich==13.8.1
     # via -r backend/requirements/3.11/dev.in
 s3transfer==0.10.2
     # via boto3
@@ -151,7 +151,7 @@ traitlets==5.14.3
     # via
     #   ipython
     #   matplotlib-inline
-urllib3==2.2.2
+urllib3==2.2.3
     # via
     #   botocore
     #   requests
