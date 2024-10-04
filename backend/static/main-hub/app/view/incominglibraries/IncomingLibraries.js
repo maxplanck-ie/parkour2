@@ -13,6 +13,15 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
   anchor: "100% -1",
   layout: "fit",
 
+  initComponent: function () {
+    this.callParent(arguments);
+    var style = document.createElement("style");
+    style.type = "text/css";
+    style.innerHTML =
+      ".x-grid-cell-selected { color: #404040 !important; background-color: #ffefbb !important; }";
+    document.getElementsByTagName("head")[0].appendChild(style);
+  },
+
   items: [
     {
       xtype: "basegrid",
@@ -68,7 +77,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             menuDisabled: true,
             hideable: false,
             tdCls: "no-dirty userEntry",
-            // locked: true,
             width: 35
           },
           {
@@ -76,7 +84,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             dataIndex: "name",
             minWidth: 250,
             hideable: false,
-            // locked: true,
             flex: 1,
             tdCls: "userEntry",
             renderer: function (value, meta) {
@@ -292,7 +299,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               store: "rnaQualityStore",
               regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
               regexText: "Only values between 1 and 10 are allowed."
-              // matchFieldWidth: false,
             },
             renderer: function (value) {
               return value === 11 ? "Determined by Facility" : value;
@@ -325,10 +331,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             '<span data-qtip="Samples submitted" style="margin-right:5px">',
             '<input type="checkbox" class="group-checkbox" {children:this.getChecked}>',
             "</span>",
-            // '<div data-qtip="{children:this.getTooltip}" class="incoming-libraries-group-header">',
             "<strong>Request: {children:this.getName}</strong> ",
             "(#: {rows.length}, Total Depth: {children:this.getTotalDepth} M)",
-            // '</div>',
             {
               getName: function (children) {
                 return children[0].get("request_name");
@@ -346,15 +350,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                   ? "checked"
                   : "";
               }
-              // getTooltip: function (children) {
-              //   var totalDepth = Ext.Array.sum(Ext.Array.pluck(Ext.Array.pluck(
-              //     children, 'data'), 'sequencing_depth'));
-
-              //   return Ext.String.format(
-              //     '<strong># of Libraries/Samples:</strong> {0}<br/>' +
-              //     '<strong>Total Sequencing Depth:</strong> {1}',
-              //     children.length, totalDepth);
-              // }
             }
           ]
         }
