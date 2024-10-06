@@ -18,7 +18,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
     var style = document.createElement("style");
     style.type = "text/css";
     style.innerHTML =
-      ".x-grid-cell-selected { color: #404040 !important; background-color: #ffefbb !important; }";
+      "td.userEntry.x-grid-cell-selected { color: #404040 !important; background-color: #ffefbb !important; }";
     document.getElementsByTagName("head")[0].appendChild(style);
   },
 
