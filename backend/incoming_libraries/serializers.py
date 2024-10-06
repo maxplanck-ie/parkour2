@@ -76,10 +76,7 @@ class BaseSerializer(ModelSerializer):
 class LibrarySerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = Library
-        fields = BaseSerializer.Meta.fields + (
-            "measuring_unit",
-            "measured_value"
-        )
+        fields = BaseSerializer.Meta.fields + ("measuring_unit", "measured_value")
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,
             **{
@@ -98,9 +95,8 @@ class SampleSerializer(BaseSerializer):
             "nucleic_acid_type",
             "nucleic_acid_type_name",
             "measuring_unit",
-            "measured_value"
-            "measuring_unit_facility",
-            "measured_value_facility"
+            "measured_value" "measuring_unit_facility",
+            "measured_value_facility",
         )
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,

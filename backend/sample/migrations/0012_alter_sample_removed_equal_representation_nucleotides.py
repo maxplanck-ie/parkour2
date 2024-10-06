@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0011_alter_sample_measured_value_facility'),
+        ("sample", "0011_alter_sample_measured_value_facility"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sample',
-            name='removed_equal_representation_nucleotides',
-            field=models.BooleanField(blank=True, default=False, verbose_name='Equal Representation of Nucleotides'),
+            model_name="sample",
+            name="removed_equal_representation_nucleotides",
+            field=models.BooleanField(
+                blank=True,
+                default=False,
+                verbose_name="Equal Representation of Nucleotides",
+            ),
         ),
     ]

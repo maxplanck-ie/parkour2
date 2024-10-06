@@ -7,48 +7,60 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0009_alter_sample_measuring_unit'),
+        ("sample", "0009_alter_sample_measuring_unit"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='sample',
-            old_name='amplification_cycles',
-            new_name='removed_amplification_cycles',
+            model_name="sample",
+            old_name="amplification_cycles",
+            new_name="removed_amplification_cycles",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='comments',
-            new_name='removed_comments',
+            model_name="sample",
+            old_name="comments",
+            new_name="removed_comments",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='comments_facility',
-            new_name='removed_comments_facility',
+            model_name="sample",
+            old_name="comments_facility",
+            new_name="removed_comments_facility",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='concentration_method',
-            new_name='removed_concentration_method',
+            model_name="sample",
+            old_name="concentration_method",
+            new_name="removed_concentration_method",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='concentration_method_facility',
-            new_name='removed_concentration_method_facility',
+            model_name="sample",
+            old_name="concentration_method_facility",
+            new_name="removed_concentration_method_facility",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='equal_representation_nucleotides',
-            new_name='removed_equal_representation_nucleotides',
+            model_name="sample",
+            old_name="equal_representation_nucleotides",
+            new_name="removed_equal_representation_nucleotides",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='rna_quality_facility',
-            new_name='measured_value_facility',
+            model_name="sample",
+            old_name="rna_quality_facility",
+            new_name="measured_value_facility",
         ),
         migrations.AddField(
-            model_name='sample',
-            name='measuring_unit_facility',
-            field=models.CharField(blank=True, choices=[('bp', 'bp (DNA)'), ('nt', 'nt (RNA)'), ('RQN', 'RQN (RNA (total))'), ('M', 'M (Cells)'), ('-', 'Measure for Me')], max_length=50, null=True, verbose_name='Measuring Unit (facility)'),
+            model_name="sample",
+            name="measuring_unit_facility",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("bp", "bp (DNA)"),
+                    ("nt", "nt (RNA)"),
+                    ("RQN", "RQN (RNA (total))"),
+                    ("M", "M (Cells)"),
+                    ("-", "Measure for Me"),
+                ],
+                max_length=50,
+                null=True,
+                verbose_name="Measuring Unit (facility)",
+            ),
         ),
     ]

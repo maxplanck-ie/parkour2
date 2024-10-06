@@ -278,7 +278,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Organism",
                   store: "organismsStore",
                   forceSelection: true
-                },
+                }
               ]
             }
           ]
@@ -438,7 +438,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Organism",
                   store: "organismsStore",
                   forceSelection: true
-                },
+                }
               ]
             }
           ]

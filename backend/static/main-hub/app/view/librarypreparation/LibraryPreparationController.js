@@ -82,7 +82,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
       "nM",
       "concentration_sample",
       "comments_facility",
-      "comments",
+      "comments"
     ];
     var nMFormulaDataIndices = ["concentration_library", "mean_fragment_size"];
 

@@ -488,12 +488,14 @@ Ext.define("MainHub.view.libraries.Libraries", {
             tooltip: "Starting Amount",
             dataIndex: "amount_facility",
             renderer: "gridCellTooltipRenderer"
-          },          {
+          },
+          {
             text: "PCR Cycles",
             tooltip: "PCR Cycles",
             dataIndex: "pcr_cycles",
             renderer: "gridCellTooltipRenderer"
-          },          {
+          },
+          {
             text: "ng/μl (Output)",
             tooltip: "ng/μl (Output)",
             dataIndex: "concentration_facility",
@@ -535,7 +537,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             text: "Depth (M)",
             tooltip: "Sequencing Depth",
             dataIndex: "sequencing_depth"
-          },
+          }
         ]
       }
     }

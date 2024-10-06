@@ -47,7 +47,7 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
     {
       type: "string",
       name: "index_i5"
-    },
+    }
   ],
 
   validators: {

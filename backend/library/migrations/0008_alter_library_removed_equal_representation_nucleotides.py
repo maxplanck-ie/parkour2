@@ -6,13 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0007_rename_amplification_cycles_library_removed_amplification_cycles_and_more'),
+        (
+            "library",
+            "0007_rename_amplification_cycles_library_removed_amplification_cycles_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='library',
-            name='removed_equal_representation_nucleotides',
-            field=models.BooleanField(blank=True, default=False, verbose_name='Equal Representation of Nucleotides'),
+            model_name="library",
+            name="removed_equal_representation_nucleotides",
+            field=models.BooleanField(
+                blank=True,
+                default=False,
+                verbose_name="Equal Representation of Nucleotides",
+            ),
         ),
     ]

@@ -7,13 +7,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0010_rename_amplification_cycles_sample_removed_amplification_cycles_and_more'),
+        (
+            "sample",
+            "0010_rename_amplification_cycles_sample_removed_amplification_cycles_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sample',
-            name='measured_value_facility',
-            field=models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(-1)], verbose_name='Measured Value (facility)'),
+            model_name="sample",
+            name="measured_value_facility",
+            field=models.FloatField(
+                blank=True,
+                null=True,
+                validators=[django.core.validators.MinValueValidator(-1)],
+                verbose_name="Measured Value (facility)",
+            ),
         ),
     ]

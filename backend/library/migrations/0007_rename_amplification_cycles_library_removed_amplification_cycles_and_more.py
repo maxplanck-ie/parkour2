@@ -6,48 +6,48 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0006_rename_mean_fragment_size_library_measured_value'),
+        ("library", "0006_rename_mean_fragment_size_library_measured_value"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='library',
-            old_name='amplification_cycles',
-            new_name='removed_amplification_cycles',
+            model_name="library",
+            old_name="amplification_cycles",
+            new_name="removed_amplification_cycles",
         ),
         migrations.RenameField(
-            model_name='library',
-            old_name='comments',
-            new_name='removed_comments',
+            model_name="library",
+            old_name="comments",
+            new_name="removed_comments",
         ),
         migrations.RenameField(
-            model_name='library',
-            old_name='comments_facility',
-            new_name='removed_comments_facility',
+            model_name="library",
+            old_name="comments_facility",
+            new_name="removed_comments_facility",
         ),
         migrations.RenameField(
-            model_name='library',
-            old_name='concentration_method',
-            new_name='removed_concentration_method',
+            model_name="library",
+            old_name="concentration_method",
+            new_name="removed_concentration_method",
         ),
         migrations.RenameField(
-            model_name='library',
-            old_name='concentration_method_facility',
-            new_name='removed_concentration_method_facility',
+            model_name="library",
+            old_name="concentration_method_facility",
+            new_name="removed_concentration_method_facility",
         ),
         migrations.RenameField(
-            model_name='library',
-            old_name='equal_representation_nucleotides',
-            new_name='removed_equal_representation_nucleotides',
+            model_name="library",
+            old_name="equal_representation_nucleotides",
+            new_name="removed_equal_representation_nucleotides",
         ),
         migrations.RenameField(
-            model_name='library',
-            old_name='qpcr_result',
-            new_name='removed_qpcr_result',
+            model_name="library",
+            old_name="qpcr_result",
+            new_name="removed_qpcr_result",
         ),
         migrations.RenameField(
-            model_name='library',
-            old_name='qpcr_result_facility',
-            new_name='removed_qpcr_result_facility',
+            model_name="library",
+            old_name="qpcr_result_facility",
+            new_name="removed_qpcr_result_facility",
         ),
     ]
