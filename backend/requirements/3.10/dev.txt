@@ -16,9 +16,9 @@ appdirs==1.4.4
     # via django-migration-linter
 asttokens==2.4.1
     # via stack-data
-boto3==1.35.24
+boto3==1.35.34
     # via -r backend/requirements/3.10/dev.in
-botocore==1.35.24
+botocore==1.35.34
     # via
     #   boto3
     #   s3transfer
@@ -57,7 +57,7 @@ django-migration-linter==5.1.0
     # via -r backend/requirements/3.10/dev.in
 django-schema-viewer==0.4.1
     # via -r backend/requirements/3.10/dev.in
-django-sql-explorer==5.2
+django-sql-explorer==5.3
     # via -r backend/requirements/3.10/dev.in
 exceptiongroup==1.2.2
     # via
@@ -67,7 +67,7 @@ executing==2.1.0
     # via stack-data
 h11==0.14.0
     # via httpcore
-httpcore==1.0.5
+httpcore==1.0.6
     # via httpx
 httpx==0.27.2
     # via openai
@@ -78,7 +78,7 @@ idna==3.10
     #   requests
 ipdb==0.13.13
     # via -r backend/requirements/3.10/dev.in
-ipython==8.27.0
+ipython==8.28.0
     # via ipdb
 jedi==0.19.1
     # via ipython
@@ -100,13 +100,13 @@ matplotlib-inline==0.1.7
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-openai==1.47.0
+openai==1.51.0
     # via -r backend/requirements/3.10/dev.in
 parso==0.8.4
     # via jedi
 pexpect==4.9.0
     # via ipython
-prompt-toolkit==3.0.47
+prompt-toolkit==3.0.48
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
@@ -132,7 +132,7 @@ requests==2.32.3
     # via
     #   django-sql-explorer
     #   tiktoken
-rich==13.8.1
+rich==13.9.2
     # via -r backend/requirements/3.10/dev.in
 s3transfer==0.10.2
     # via boto3
@@ -145,11 +145,11 @@ sql-metadata==2.13.0
     # via -r backend/requirements/3.10/dev.in
 stack-data==0.6.3
     # via ipython
-tiktoken==0.7.0
+tiktoken==0.8.0
     # via -r backend/requirements/3.10/dev.in
 toml==0.10.2
     # via django-migration-linter
-tomli==2.0.1
+tomli==2.0.2
     # via ipdb
 tqdm==4.66.5
     # via openai
