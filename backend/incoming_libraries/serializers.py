@@ -95,7 +95,8 @@ class SampleSerializer(BaseSerializer):
             "nucleic_acid_type",
             "nucleic_acid_type_name",
             "measuring_unit",
-            "measured_value" "measuring_unit_facility",
+            "measured_value",
+            "measuring_unit_facility",
             "measured_value_facility",
         )
         extra_kwargs = {
