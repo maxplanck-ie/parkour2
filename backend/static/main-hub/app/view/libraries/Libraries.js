@@ -441,7 +441,13 @@ Ext.define("MainHub.view.libraries.Libraries", {
             text: "GMO",
             tooltip: "Genetically Modified Organism",
             dataIndex: "gmo",
-            renderer: "gridCellTooltipRenderer"
+            renderer: function (value, meta, record) {
+              if (record.get("leaf")) {
+                return value ? "Yes" : "No";
+              } else {
+                return "";
+              }
+            }
           },
           {
             text: "Date",
@@ -472,16 +478,21 @@ Ext.define("MainHub.view.libraries.Libraries", {
             dataIndex: "concentration"
           },
           {
-            text: "Measuring Unit",
-            tooltip: "Measuring Unit",
-            dataIndex: "measuring_unit",
-            renderer: "gridCellTooltipRenderer"
-          },
-          {
-            text: "Measured Value",
-            tooltip: "Measured Value",
-            dataIndex: "measured_value",
-            renderer: "gridCellTooltipRenderer"
+            text: "Measurement",
+            tooltip: "Measured value along with its unit",
+            renderer: function (value, meta, record) {
+              var measuringUnit = record.get("measuring_unit");
+              var measuredValue = record.get("measured_value");
+
+              if (measuringUnit === "-") {
+                return "Requires Measurement";
+              } else
+                return Ext.String.format(
+                  "{0}{1}",
+                  measuredValue,
+                  measuringUnit
+                );
+            }
           },
           {
             text: "Starting Amount",
@@ -502,16 +513,21 @@ Ext.define("MainHub.view.libraries.Libraries", {
             renderer: "gridCellTooltipRenderer"
           },
           {
-            text: "Measuring Unit (Output)",
-            tooltip: "Measuring Unit (Output)",
-            dataIndex: "measuring_unit_facility",
-            renderer: "gridCellTooltipRenderer"
-          },
-          {
-            text: "Measured Value (Output)",
-            tooltip: "Measured Value (Output)",
-            dataIndex: "measured_value_facility",
-            renderer: "gridCellTooltipRenderer"
+            text: "Measurement (Output)",
+            tooltip: "Measured value along with its unit",
+            renderer: function (value, meta, record) {
+              var measuringUnit = record.get("measuring_unit_facility");
+              var measuredValue = record.get("measured_value_facility");
+
+              if (measuringUnit === "-") {
+                return "Requires Measurement";
+              } else
+                return Ext.String.format(
+                  "{0}{1}",
+                  measuredValue,
+                  measuringUnit
+                );
+            }
           },
           {
             text: "Index Type",

@@ -115,7 +115,9 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
   },
 
   gridCellTooltipRenderer: function (value, meta) {
-    meta.tdAttr = 'data-qtip="' + value + '"';
+    if (value) {
+      meta.tdAttr = 'data-qtip="' + value + '"';
+    } else meta.tdAttr = "data-qtip=Empty";
     return value;
   }
 });
