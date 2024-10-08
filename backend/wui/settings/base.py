@@ -112,12 +112,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:////usr/src/db.sqlite")
 
-DATABASES = {
-    "default": dj_database_url.config(
+db_dict = dj_database_url.config(
         default=dj_database_url.parse(DATABASE_URL),
         conn_max_age=600,
         conn_health_checks=True,
-    ),
+    )
+
+# db_dict['OPTIONS'] = { "server_side_binding": True }
+
+DATABASES = {
+    "default": db_dict,
 }
 
 # Password validation
