@@ -1,7 +1,5 @@
 ARG PyVersion=3.11  # to be repeated after FROM, docker syntax is at fault.
 FROM python:${PyVersion}-bullseye AS pk2_base
-ARG PyVersion=3.11
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
 ENV \
     DEBIAN_FRONTEND=noninteractive \
@@ -23,25 +21,16 @@ RUN apt-get update --fix-missing \
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 WORKDIR /usr/src/app
-
-# Warm-up cache with this docker layer
-RUN uv venv --python ${PyVersion} \
-    && uv pip install gunicorn psycopg2-binary django~=4.2
-
-# Install app source code
-# First, bring dependencies specification. Second, bring source code without invalidating the docker layer ;)
-COPY ./backend/requirements requirements
-RUN uv pip install -r requirements/${PyVersion}/base.txt
 COPY ./backend .
-
 EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
-
+ARG PyVersion=3.11  # yeah, repeated. docker syntax is at fault.
+RUN pip install -r requirements/${PyVersion}/base.txt
 CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_base AS pk2_prod
-RUN uv pip install -r requirements/${PyVersion}/prod.txt
+RUN pip install -r requirements/${PyVersion}/prod.txt
 
 # ----------------------
 FROM pk2_base AS pk2_dev
@@ -53,13 +42,13 @@ ENV DJANGO_SETTINGS_MODULE=wui.settings.dev \
     PYTHONBREAKPOINT=ipdb.set_trace \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
-RUN uv pip install -r requirements/${PyVersion}/dev.txt
+RUN pip install -r requirements/${PyVersion}/dev.txt
 CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_dev AS pk2_testing
 ENV DJANGO_SETTINGS_MODULE=wui.settings.testing
-RUN uv pip install -r requirements/${PyVersion}/testing.txt
+RUN pip install -r requirements/${PyVersion}/testing.txt
 
 # ----------------------
 FROM pk2_testing AS pk2_playwright
