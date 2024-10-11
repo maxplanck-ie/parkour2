@@ -263,7 +263,7 @@ reload-nginx:
 models:
 	@docker exec parkour2-django sh -c "apt update && \
 		apt install -y pdfposter graphviz libgraphviz-dev pkg-config && \
-		pip install pydot && \
+		uv pip install --system pydot && \
 		python manage.py graph_models -n --pydot -g -a -o /tmp_parkour.dot && \
 		sed -i -e 's/\(fontsize\)=[0-9]\+/\1=20/' /tmp_parkour.dot && \
 		dot -T pdf -o /tmp_parkour.pdf /tmp_parkour.dot"
@@ -288,7 +288,7 @@ compile:
 	# 	{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
 	# @if [[ :$PATH: == *:"env_dev":* ]] ; then
 	# 	source ./env_dev/bin/activate && echo "venv activated!"
-	# 	pip install --upgrade pip wheel setuptools pip-compile-multi
+	# 	uv pip install --system --upgrade pip wheel setuptools pip-compile-multi
 	# else
 	# 	exit 1
 	# fi
@@ -314,13 +314,9 @@ env-setup-dev:
 	@env python3 -m venv env_dev && \
 		source ./env_dev/bin/activate && \
 		env python3 -m pip install --upgrade pip && \
-		pip install \
-			djlint \
-			pre-commit \
-			pip-tools \
-			pip-compile-multi
-			# aider-chat[help] --extra-index-url https://download.pytorch.org/whl/cpu
-	deactivate
+		pip install djlint pre-commit uv
+	@deactivate
+	# @pip install aider-chat[help] --extra-index-url https://download.pytorch.org/whl/cpu
 
 open-pr:
 	@git pull && git push && git pull origin develop
