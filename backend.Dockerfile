@@ -25,7 +25,7 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 WORKDIR /usr/src/app
 
 # Warm-up cache with this docker layer
-RUN uv pip install --system gunicorn psycopg2-binary django~=4.2
+RUN uv pip install --system gunicorn psycopg2 django~=4.2
 
 # Install app source code
 # First, bring dependencies specification. Second, bring source code without invalidating the docker layer ;)

@@ -9,7 +9,7 @@ django-extensions
 django-import-export
 django-linear-migrations
 gunicorn
-psycopg2-binary
+psycopg2
 dj-database-url
 xlwt
 fpdf2
