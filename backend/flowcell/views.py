@@ -117,13 +117,13 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
             .prefetch_related("read_length", "index_type")
-            .only("read_length", "index_type", "equal_representation_nucleotides")
+            .only("read_length", "index_type")
         )
 
         samples_qs = (
             Sample.objects.filter(~Q(status=-1))
             .prefetch_related("read_length", "index_type")
-            .only("read_length", "index_type", "equal_representation_nucleotides")
+            .only("read_length", "index_type")
         )
 
         lanes_qs = (

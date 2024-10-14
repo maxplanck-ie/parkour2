@@ -82,8 +82,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
       "nM",
       "concentration_sample",
       "comments_facility",
-      "comments",
-      "qpcr_result"
+      "comments"
     ];
     var nMFormulaDataIndices = ["concentration_library", "mean_fragment_size"];
 

@@ -117,7 +117,9 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   gridCellTooltipRenderer: function (value, meta) {
-    meta.tdAttr = Ext.String.format('data-qtip="{0}"', value);
+    if (value) {
+      meta.tdAttr = 'data-qtip="' + value + '"';
+    } else meta.tdAttr = "data-qtip=Empty";
     return value;
   },
 

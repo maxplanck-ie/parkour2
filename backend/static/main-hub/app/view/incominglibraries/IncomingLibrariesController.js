@@ -96,13 +96,11 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
     var allowedColumns = [
       "dilution_factor",
       "concentration_facility",
-      "concentration_method_facility",
       "sample_volume_facility",
       "amount_facility",
       "size_distribution_facility",
-      "comments_facility",
-      "qpcr_result_facility",
-      "rna_quality_facility"
+      "measuring_unit_facility",
+      "measured_value_facility"
     ];
     var ngFormulaDataIndices = [
       "dilution_factor",
