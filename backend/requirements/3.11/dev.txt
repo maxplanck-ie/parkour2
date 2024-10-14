@@ -8,7 +8,7 @@
 -r base.txt
 annotated-types==0.7.0
     # via pydantic
-anyio==4.6.0
+anyio==4.6.2
     # via
     #   httpx
     #   openai
@@ -16,9 +16,9 @@ appdirs==1.4.4
     # via django-migration-linter
 asttokens==2.4.1
     # via stack-data
-boto3==1.35.29
+boto3==1.35.39
     # via -r backend/requirements/3.11/dev.in
-botocore==1.35.29
+botocore==1.35.39
     # via
     #   boto3
     #   s3transfer
@@ -29,7 +29,7 @@ certifi==2024.8.30
     #   requests
 cffi==1.17.1
     # via cryptography
-charset-normalizer==3.3.2
+charset-normalizer==3.4.0
     # via requests
 contourpy==1.3.0
     # via matplotlib
@@ -47,7 +47,7 @@ distro==1.9.0
     # via openai
 django-appconf==1.0.6
     # via django-cryptography-django5
-django-cors-headers==4.4.0
+django-cors-headers==4.5.0
     # via -r backend/requirements/3.11/dev.in
 django-cryptography-django5==2.2
     # via django-sql-explorer
@@ -63,7 +63,7 @@ executing==2.1.0
     # via stack-data
 h11==0.14.0
     # via httpcore
-httpcore==1.0.5
+httpcore==1.0.6
     # via httpx
 httpx==0.27.2
     # via openai
@@ -74,11 +74,11 @@ idna==3.10
     #   requests
 ipdb==0.13.13
     # via -r backend/requirements/3.11/dev.in
-ipython==8.27.0
+ipython==8.28.0
     # via ipdb
 jedi==0.19.1
     # via ipython
-jiter==0.5.0
+jiter==0.6.1
     # via openai
 jmespath==1.0.1
     # via
@@ -88,7 +88,7 @@ kiwisolver==1.4.7
     # via matplotlib
 markdown-it-py==3.0.0
     # via rich
-markupsafe==2.1.5
+markupsafe==3.0.1
     # via werkzeug
 matplotlib==3.9.2
     # via -r backend/requirements/3.11/dev.in
@@ -96,7 +96,7 @@ matplotlib-inline==0.1.7
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-openai==1.50.2
+openai==1.51.2
     # via -r backend/requirements/3.11/dev.in
 parso==0.8.4
     # via jedi
@@ -118,7 +118,7 @@ pygments==2.18.0
     # via
     #   ipython
     #   rich
-pyparsing==3.1.4
+pyparsing==3.2.0
     # via matplotlib
 pywatchman==2.0.0
     # via -r backend/requirements/3.11/dev.in
@@ -128,9 +128,9 @@ requests==2.32.3
     # via
     #   django-sql-explorer
     #   tiktoken
-rich==13.8.1
+rich==13.9.2
     # via -r backend/requirements/3.11/dev.in
-s3transfer==0.10.2
+s3transfer==0.10.3
     # via boto3
 sniffio==1.3.1
     # via
@@ -141,7 +141,7 @@ sql-metadata==2.13.0
     # via -r backend/requirements/3.11/dev.in
 stack-data==0.6.3
     # via ipython
-tiktoken==0.7.0
+tiktoken==0.8.0
     # via -r backend/requirements/3.11/dev.in
 toml==0.10.2
     # via django-migration-linter
