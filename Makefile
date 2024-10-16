@@ -311,12 +311,18 @@ get-pin:
 	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2 | uniq
 
 env-setup-dev:
-	@env python3 -m venv env_dev && \
-		source ./env_dev/bin/activate && \
-		env python3 -m pip install --upgrade pip && \
-		pip install djlint pre-commit uv
-	@deactivate
-	# @pip install aider-chat[help] --extra-index-url https://download.pytorch.org/whl/cpu
+	@echo "First, install uv: https://docs.astral.sh/uv/getting-started/installation/"
+	@echo "$ uv python install 3.12"
+	@echo "$ echo ruff black djlint | xargs -n1 uv tool install --python 3.12"
+	@echo "$ uv tool install --python 3.12 pre-commit --with pre-commit-uv"
+
+env-setup-dev-old:
+	# @env python3 -m venv env_dev && \
+	# 	source ./env_dev/bin/activate && \
+	# 	env python3 -m pip install --upgrade pip && \
+	# 	pip install djlint pre-commit uv \
+	# 	aider-chat[help] --extra-index-url https://download.pytorch.org/whl/cpu
+	# @deactivate
 
 open-pr:
 	@git pull && git push && git pull origin develop
