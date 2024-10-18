@@ -1,10 +1,10 @@
 Name,Nuc.Type,Protocol,Library Type,ng/µl,RQN,Length,Depth (M),Organims,Comments
-Sample_1,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,495.96,10,2x150,30,Mouse (GRCm38 / mm10),Please sent results of initial QC via Email
-Sample_2,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,422.36,10,2x150,30,Mouse (GRCm38 / mm10),
-Sample_3,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,308.40,10,2x150,30,Mouse (GRCm38 / mm10),
-Sample_4,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,521.61,9.8,2x150,30,Mouse (GRCm38 / mm10),
-Sample_5,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,7.02,10,2x150,30,Mouse (GRCm38 / mm10),
-Sample_6,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,12.85,10,2x150,30,Mouse (GRCm38 / mm10),
-Sample_7,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,14.15,10,2x150,30,Mouse (GRCm38 / mm10),
-Sample_8,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,3.70,7.6,2x150,30,Mouse (GRCm38 / mm10),
-Sample_9,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,174.30,10,2x150,30,Mouse (GRCm38 / mm10),
+Sample_1,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,495.96,10,2x150,30,M. musculus (GRCm38 / mm10),Please sent results of initial QC via Email
+Sample_2,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,422.36,10,2x150,30,M. musculus (GRCm38 / mm10),
+Sample_3,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,308.40,10,2x150,30,M. musculus (GRCm38 / mm10),
+Sample_4,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,521.61,9.8,2x150,30,M. musculus (GRCm38 / mm10),
+Sample_5,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,7.02,10,2x150,30,M. musculus (GRCm38 / mm10),
+Sample_6,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,12.85,10,2x150,30,M. musculus (GRCm38 / mm10),
+Sample_7,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,14.15,10,2x150,30,M. musculus (GRCm38 / mm10),
+Sample_8,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,3.70,7.6,2x150,30,M. musculus (GRCm38 / mm10),
+Sample_9,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,174.30,10,2x150,30,M. musculus (GRCm38 / mm10),
