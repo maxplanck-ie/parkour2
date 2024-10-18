@@ -14,6 +14,7 @@
 - Fixtures: save_initial_data management cmd will use built-in json formatter instead of `jq`.
 - Updated clipboard functionality at Incoming submodule.
 - Updated organisms names on both production database and fixtures.
+- Updated dependencies.
 
 
 24.08.20
