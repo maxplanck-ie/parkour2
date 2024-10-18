@@ -301,7 +301,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 24,
     "fields": {
-      "name": "IDT for Illumina – TruSeq DNA/RNA UD Indexes, 20022370-71",
+      "name": "IDT for Illumina \u2013 TruSeq DNA/RNA UD Indexes, 20022370-71",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -361,7 +361,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 26,
     "fields": {
-      "name": "IDT® for Illumina DNA/RNA UD Indexes Set A_20027213/20040553",
+      "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set A_20027213/20040553",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -391,7 +391,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 28,
     "fields": {
-      "name": "IDT® for Illumina DNA/RNA UD Indexes Set B_20027214/20040554",
+      "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set B_20027214/20040554",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -453,7 +453,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 30,
     "fields": {
-      "name": "NEBNext® Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 2 E6442",
+      "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 2 E6442",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -504,7 +504,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 32,
     "fields": {
-      "name": "IDT® for Illumina DNA/RNA UD Indexes Set C_20042666/2004555",
+      "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set C_20042666/2004555",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -536,7 +536,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 33,
     "fields": {
-      "name": "IDT® for Illumina DNA/RNA UD Indexes Set D_20742667/20040556",
+      "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set D_20742667/20040556",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -582,7 +582,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 35,
     "fields": {
-      "name": "Accel-NGS® 2S Plus DNA Library Kit",
+      "name": "Accel-NGS\u00ae 2S Plus DNA Library Kit",
       "is_dual": false,
       "index_length": "8",
       "format": "single",
@@ -803,7 +803,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 50,
     "fields": {
-      "name": "NEBNext® Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 3 E6444",
+      "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 3 E6444",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -835,7 +835,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 51,
     "fields": {
-      "name": "NEBNext® Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 4 E6446",
+      "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 4 E6446",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -867,7 +867,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 52,
     "fields": {
-      "name": "NEBNext® Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 5 E6448",
+      "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 5 E6448",
       "is_dual": true,
       "index_length": "8",
       "format": "plate",
@@ -899,7 +899,7 @@
     "model": "library_sample_shared.indextype",
     "pk": 53,
     "fields": {
-      "name": "NEBNext® Multiplex Oligos for Illumina® (Dual Index Primers Set 2) E7780S",
+      "name": "NEBNext\u00ae Multiplex Oligos for Illumina\u00ae (Dual Index Primers Set 2) E7780S",
       "is_dual": true,
       "index_length": "8",
       "format": "single",
