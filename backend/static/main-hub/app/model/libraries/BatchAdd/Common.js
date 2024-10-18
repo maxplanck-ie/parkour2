@@ -42,6 +42,16 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       name: "name"
     },
     {
+      name: "measuring_unit",
+      type: "string"
+    },
+    {
+      name: "measured_value",
+      type: "float",
+      allowNull: true,
+      defaultValue: null
+    },
+    {
       type: "int",
       name: "library_protocol",
       allowNull: true,
@@ -59,24 +69,14 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       defaultValue: null
     },
     {
+      name: "volume",
+      type: "float",
+      defaultValue: null
+    },
+    {
       type: "float",
       name: "concentration",
       defaultValue: null
-    },
-    {
-      type: "int",
-      name: "concentration_method",
-      allowNull: true,
-      defaultValue: null
-    },
-    {
-      type: "int",
-      name: "amplification_cycles",
-      defaultValue: null
-    },
-    {
-      type: "bool",
-      name: "equal_representation_nucleotides"
     },
     {
       type: "int",
@@ -89,10 +89,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       name: "organism",
       allowNull: true,
       defaultValue: null
-    },
-    {
-      type: "string",
-      name: "comments"
     },
     {
       type: "bool",
@@ -116,13 +112,13 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
         dataIndex: "name"
       }
     ],
+    measuring_unit: "presence",
     library_protocol: "presence",
     library_type: "presence",
     concentration: "presence",
+    volume: "greaterthanten",
     read_length: "presence",
     sequencing_depth: "greaterthanten",
-    // amplification_cycles: 'presence',
-    // concentration_method: 'presence',
     organism: "presence"
   }
 });

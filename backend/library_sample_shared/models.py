@@ -312,15 +312,8 @@ class GenericLibrarySample(DateTimeMixin):
 
     concentration = models.FloatField("Concentration")
 
-    concentration_method = models.ForeignKey(
-        ConcentrationMethod,
-        verbose_name="Concentration Method",
-        on_delete=models.SET(get_removed_concentrationmethod),
-    )
-
-    equal_representation_nucleotides = models.BooleanField(
-        "Equal Representation of Nucleotides",
-        default=True,
+    volume = models.FloatField(
+        "Volume", validators=[MinValueValidator(10)], null=True, blank=True
     )
 
     read_length = models.ForeignKey(
@@ -331,8 +324,6 @@ class GenericLibrarySample(DateTimeMixin):
     )
 
     sequencing_depth = models.FloatField("Sequencing Depth")
-
-    comments = models.TextField("Comments", null=True, blank=True)
 
     is_pooled = models.BooleanField("Pooled", default=False)
 
@@ -358,12 +349,6 @@ class GenericLibrarySample(DateTimeMixin):
     index_i5 = models.CharField(
         "Index I5",
         max_length=24,
-        null=True,
-        blank=True,
-    )
-
-    amplification_cycles = models.PositiveIntegerField(
-        "Amplification cycles",
         null=True,
         blank=True,
     )
@@ -394,15 +379,6 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    concentration_method_facility = models.ForeignKey(
-        ConcentrationMethod,
-        related_name="+",
-        verbose_name="Concentration Method",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-    )
-
     sample_volume_facility = models.PositiveIntegerField(
         "Sample Volume",
         null=True,
@@ -422,11 +398,44 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    comments_facility = models.TextField(
+    removed_concentration_method = models.ForeignKey(
+        ConcentrationMethod,
+        verbose_name="Concentration Method",
+        null=True,
+        blank=True,
+        on_delete=models.SET(get_removed_concentrationmethod),
+    )  # This field is not in use
+
+    removed_amplification_cycles = models.PositiveIntegerField(
+        "Amplification cycles",
+        null=True,
+        blank=True,
+    )  # This field is not in use
+
+    removed_equal_representation_nucleotides = models.BooleanField(
+        "Equal Representation of Nucleotides",
+        blank=True,
+        default=False,
+    )  # This field is not in use
+
+    removed_comments = models.TextField(
+        "Comments", null=True, blank=True
+    )  # This field is not in use
+
+    removed_concentration_method_facility = models.ForeignKey(
+        ConcentrationMethod,
+        related_name="+",
+        verbose_name="Concentration Method",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )  # This field is not in use
+
+    removed_comments_facility = models.TextField(
         "Comments",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     class Meta:
         abstract = True
@@ -442,6 +451,12 @@ class GenericLibrarySample(DateTimeMixin):
 
         self.barcode = barcode
         self.save(update_fields=["barcode"])
+
+    def get_measuring_unit_details(self):
+        for display_name, unit, input_type in self.MEASURING_UNIT_CHOICES:
+            if display_name == self.measuring_unit:
+                return display_name, unit, input_type
+        return None, None, None
 
     def save(self, *args, **kwargs):
         created = self.pk is None

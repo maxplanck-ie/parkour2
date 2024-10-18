@@ -28,11 +28,9 @@ class IncomingLibrariesViewSet(LibrarySampleMultiEditMixin, viewsets.ViewSet):
         """Get the list of all incoming libraries and samples."""
         libraries_qs = Library.objects.select_related(
             "library_protocol",
-            "concentration_method",
         ).filter(status=1)
         samples_qs = Sample.objects.select_related(
             "library_protocol",
-            "concentration_method",
             "nucleic_acid_type",
         ).filter(status=1)
 

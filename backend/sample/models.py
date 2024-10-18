@@ -18,39 +18,81 @@ class NucleicAcidType(models.Model):
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
-        verbose_name = "Nucleic Acid Type"
-        verbose_name_plural = "Nucleic Acid Types"
+        verbose_name = "Input Type"
+        verbose_name_plural = "Input Types"
 
     def __str__(self):
         return self.name
 
 
 class Sample(GenericLibrarySample):
+    MEASURING_UNIT_CHOICES = [
+        ("bp (DNA)", "bp", "DNA"),
+        ("nt (RNA)", "nt", "RNA"),
+        ("RQN (RNA (total))", "RQN", "RNA (total)"),
+        ("M (Cells)", "M", "Cells"),
+        ("Measure for Me", "-", "Measure"),
+    ]
+
+    BIOSAFETY_LEVEL_CHOICES = [("BSL1", "bsl1"), ("BSL2", "bsl2")]
+
     nucleic_acid_type = models.ForeignKey(
         NucleicAcidType,
-        verbose_name="Nucleic Acid Type",
+        verbose_name="Input Type",
         on_delete=models.SET_NULL,
         null=True,
     )
 
-    rna_quality = models.FloatField(
-        "RNA Quality",
-        validators=[MinValueValidator(0.0), MaxValueValidator(11.0)],
+    measuring_unit = models.CharField(
+        "Measuring Unit",
+        max_length=50,
+        choices=[
+            (unit, display_name)
+            for display_name, unit, input_type in MEASURING_UNIT_CHOICES
+        ],
         null=True,
         blank=True,
+    )
+
+    measured_value = models.FloatField(
+        "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
     )
 
     is_converted = models.BooleanField("Converted", default=False)
 
-    # Quality Control
-    rna_quality_facility = models.FloatField(
-        "RNA Quality (facility)",
-        validators=[MinValueValidator(0.0), MaxValueValidator(11.0)],
+    biosafety_level = models.CharField(
+        "Biosafety Level",
+        max_length=50,
+        choices=[
+            (biosafety_level, display_name)
+            for display_name, biosafety_level in BIOSAFETY_LEVEL_CHOICES
+        ],
+        null=True,
+    )
+
+    gmo = models.BooleanField("Genetically Modified Organism", null=True, blank=True)
+
+    archived = models.BooleanField("Archived", default=False)
+
+    # Facility
+
+    measuring_unit_facility = models.CharField(
+        "Measuring Unit (facility)",
+        max_length=50,
+        choices=[
+            (unit, display_name)
+            for display_name, unit, input_type in MEASURING_UNIT_CHOICES
+        ],
         null=True,
         blank=True,
     )
 
-    archived = models.BooleanField("Archived", default=False)
+    measured_value_facility = models.FloatField(
+        "Measured Value (facility)",
+        validators=[MinValueValidator(-1)],
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = "Sample"
