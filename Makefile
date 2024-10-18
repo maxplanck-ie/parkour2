@@ -393,7 +393,7 @@ dev-ez: dev-easy db-migras
 db-migras: put-old-migras db put-new-migras  ## Useful after 'git checkout <tag> && tar-old-migras && git switch -'
 
 put-new-migras:
-	@git restore -W backend/**/migrations/
+	@git checkout -- backend/**/migrations/
 	@$(MAKE) migrate
 
 load-fixtures-migras: put-old-migras apply-migrations
