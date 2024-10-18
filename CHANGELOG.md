@@ -4,9 +4,16 @@
 ========
 
 - TODO: `<URL>/export_request/` and `<URL>/import_request/` both have a simple UI
+- ...
+
+
+24.10.18
+========
+
 - E-mail communications: grayed-out "send" button after 1 click, to avoid spamming inboxes.
 - Fixtures: save_initial_data management cmd will use built-in json formatter instead of `jq`.
-- ...
+- Updated clipboard functionality at Incoming submodule.
+- Updated organisms names on both production database and fixtures.
 
 
 24.08.20
