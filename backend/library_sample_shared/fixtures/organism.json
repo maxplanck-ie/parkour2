@@ -33,7 +33,7 @@
     "model": "library_sample_shared.organism",
     "pk": 4,
     "fields": {
-      "name": "drosophila",
+      "name": "D. melanogaster (dm6)",
       "scientific_name": "Drosophila melanogaster",
       "taxon_id": 7227,
       "archived": false
@@ -43,7 +43,7 @@
     "model": "library_sample_shared.organism",
     "pk": 5,
     "fields": {
-      "name": "zebrafish",
+      "name": "D. rerio (GRCz11)",
       "scientific_name": "Danio rerio",
       "taxon_id": 7955,
       "archived": false
@@ -53,7 +53,7 @@
     "model": "library_sample_shared.organism",
     "pk": 6,
     "fields": {
-      "name": "medaka",
+      "name": "O. melastigma",
       "scientific_name": "Oryzias melastigma",
       "taxon_id": 30732,
       "archived": false
@@ -63,7 +63,7 @@
     "model": "library_sample_shared.organism",
     "pk": 7,
     "fields": {
-      "name": "lamprey",
+      "name": "P. marinus",
       "scientific_name": "Petromyzon marinus",
       "taxon_id": 7757,
       "archived": false
@@ -73,7 +73,7 @@
     "model": "library_sample_shared.organism",
     "pk": 8,
     "fields": {
-      "name": "A. gambiae",
+      "name": "A. gambiae (AgamP4)",
       "scientific_name": "Anopheles gambiae",
       "taxon_id": 7165,
       "archived": false
@@ -83,7 +83,7 @@
     "model": "library_sample_shared.organism",
     "pk": 9,
     "fields": {
-      "name": "Caenorhabditis_elegans",
+      "name": "C. elegans (WS285)",
       "scientific_name": "Caenorhabditis elegans",
       "taxon_id": 6239,
       "archived": false
@@ -93,7 +93,7 @@
     "model": "library_sample_shared.organism",
     "pk": 10,
     "fields": {
-      "name": "Human (GRCh37 / hg19)",
+      "name": "H. sapiens (GRCh37 / hg19)",
       "scientific_name": "Homo sapiens",
       "taxon_id": null,
       "archived": false
@@ -103,7 +103,7 @@
     "model": "library_sample_shared.organism",
     "pk": 11,
     "fields": {
-      "name": "Human (GRCh38)",
+      "name": "H. sapiens (GRCh38)",
       "scientific_name": "Homo sapiens",
       "taxon_id": null,
       "archived": false
@@ -113,7 +113,7 @@
     "model": "library_sample_shared.organism",
     "pk": 12,
     "fields": {
-      "name": "Mouse (GRCm38 / mm10)",
+      "name": "M. musculus (GRCm38 / mm10)",
       "scientific_name": "Mus musculus",
       "taxon_id": null,
       "archived": false
@@ -123,7 +123,7 @@
     "model": "library_sample_shared.organism",
     "pk": 13,
     "fields": {
-      "name": "Mouse (GRCm39)",
+      "name": "M. musculus (GRCm39)",
       "scientific_name": "Mus musculus",
       "taxon_id": null,
       "archived": false
