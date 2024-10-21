@@ -6,7 +6,7 @@
 #    pip-compile-multi
 #
 -r dev.txt
-coverage[toml]==7.6.3
+coverage[toml]==7.6.4
     # via pytest-cov
 execnet==2.1.1
     # via pytest-xdist
