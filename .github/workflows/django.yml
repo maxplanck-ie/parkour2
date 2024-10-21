@@ -64,7 +64,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Set up UV for py ${{ matrix.python-version }}
-        uses: yezz123/setup-uv@v4
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "backend/requirements/**/*.txt"
       
       - name: Install dependencies
         env:
