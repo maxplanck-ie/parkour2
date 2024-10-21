@@ -24,16 +24,19 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Set up UV for py ${{ matrix.python-version }}
-        uses: yezz123/setup-uv@v4
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "backend/requirements/**/*.txt"
 
       - name: Backend Update
         run: |
           export this=backend/requirements/${{ matrix.python-version }}
-          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
+          uv pip compile --no-progress --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/base.in -o ${this}/base.txt
-          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
+          uv pip compile --no-progress --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/dev.in -c ${this}/base.txt -o ${this}/dev.txt
-          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
+          uv pip compile --no-progress --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/testing.in -c ${this}/dev.txt -o ${this}/testing.txt
       
       - name: Test installation
