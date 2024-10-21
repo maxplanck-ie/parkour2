@@ -67,12 +67,13 @@ jobs:
           cache: "pip"
           cache-dependency-path: backend/requirements/${{ matrix.python-version }}/testing.txt
           python-version: ${{ matrix.python-version }}
+
+      - name: Set up UV for py ${{ matrix.python-version }}
+        uses: yezz123/setup-uv@v4
       
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          test -z ${SETUPTOOLS_USE_DISTUTILS+x} && unset SETUPTOOLS_USE_DISTUTILS || :
-          pip install -r backend/requirements/${{ matrix.python-version }}/prod.txt
+          uv pip install --system -r backend/requirements/${{ matrix.python-version }}/prod.txt
 
 
       - name: Verify migrations
@@ -99,6 +100,6 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
+          uv pip install --system -r backend/requirements/${{ matrix.python-version }}/testing.txt
           python backend/manage.py test backend --parallel
 
