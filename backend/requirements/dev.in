@@ -1,5 +1,3 @@
--r base.in
-
 django-debug-toolbar
 ipdb
 # bpython  ## can't use w/ playwright ATM. greenlet is in conflict...

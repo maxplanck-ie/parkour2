@@ -284,24 +284,25 @@ precomitupd:
 	@pre-commit autoupdate
 
 compile:
-	# @test -d ./env_dev || \
-	# 	{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
-	# @if [[ :$PATH: == *:"env_dev":* ]] ; then
-	# 	source ./env_dev/bin/activate && echo "venv activated!"
-	# 	uv pip install --system --upgrade pip wheel setuptools pip-compile-multi
-	# else
-	# 	exit 1
-	# fi
-	@awk '/python-version:/ { \
+	@PY_VERSIONS=$$(awk '/python-version:/ { \
 		match($$0, /\[(.*)\]/, a); \
 		split(a[1], versions, ","); \
 		for (i in versions) { \
 			gsub(/^[ '\'']+|[ '\'']+$$/, "", versions[i]); \
 			print versions[i]; \
 		} \
-	}' .github/workflows/django.yml | \
-		xargs -I{} pip-compile-multi --allow-unsafe --backtracking --autoresolve \
-			-d backend/requirements/{}/
+	}' .github/workflows/django.yml); \
+	for version in $$PY_VERSIONS; do \
+		this=backend/requirements/$$version; \
+		uv pip compile --no-progress --no-cache --universal --python-version $$version \
+			backend/requirements/base.in -o $$this/base.txt; \
+		uv pip compile --no-progress --no-cache --universal --python-version $$version \
+			backend/requirements/prod.in -c $$this/base.txt -o $$this/prod.txt; \
+		uv pip compile --no-progress --no-cache --universal --python-version $$version \
+			backend/requirements/dev.in -c $$this/base.txt -o $$this/dev.txt; \
+		uv pip compile --no-progress --no-cache --universal --python-version $$version \
+			backend/requirements/testing.in -c $$this/dev.txt -o $$this/testing.txt; \
+	done
 
 ncu:
 	# @npm install -g npm-check-updates
@@ -315,14 +316,6 @@ env-setup-dev:
 	@echo "$ uv python install 3.12"
 	@echo "$ echo ruff black djlint | xargs -n1 uv tool install --python 3.12"
 	@echo "$ uv tool install --python 3.12 pre-commit --with pre-commit-uv"
-
-env-setup-dev-old:
-	# @env python3 -m venv env_dev && \
-	# 	source ./env_dev/bin/activate && \
-	# 	env python3 -m pip install --upgrade pip && \
-	# 	pip install djlint pre-commit uv \
-	# 	aider-chat[help] --extra-index-url https://download.pytorch.org/whl/cpu
-	# @deactivate
 
 open-pr:
 	@git pull && git push && git pull origin develop

@@ -21,20 +21,25 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          cache: "pip"
-          cache-dependency-path: backend/requirements/${{ matrix.python-version }}/testing.txt
           python-version: ${{ matrix.python-version }}
-      
+
+      - name: Set up UV for py ${{ matrix.python-version }}
+        uses: yezz123/setup-uv@v4
+
       - name: Backend Update
         run: |
-          mkdir -p backend/requirements/${{ matrix.python-version }}
-          ls backend/requirements/*.in | cut -d'/' -f3 | rev | cut -d. -f2 | rev | xargs -I{} ln -sf ../{}.in backend/requirements/${{ matrix.python-version }}/{}.in
-          python -m pip install --upgrade pip
-          pip install pip-tools pip-compile-multi
-          pip-compile-multi -d backend/requirements/${{ matrix.python-version }} --backtracking --autoresolve --allow-unsafe
+          export this=backend/requirements/${{ matrix.python-version }}
+          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
+            backend/requirements/base.in -o ${this}/base.txt
+          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
+            backend/requirements/prod.in -c ${this}/base.txt -o ${this}/prod.txt
+          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
+            backend/requirements/dev.in -c ${this}/base.txt -o ${this}/dev.txt
+          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
+            backend/requirements/testing.in -c ${this}/dev.txt -o ${this}/testing.txt
       
       - name: Test installation
-        run: pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
+        run: uv pip install --system -r backend/requirements/${{ matrix.python-version }}/testing.txt
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
@@ -48,7 +53,7 @@ jobs:
           commit-message: |
             Update python dependencies.
 
-            Run of `pip-compile-multi` to update all python dependencies.
+            Run of `uv pip compile` to update all python dependencies.
 
   vuejs:
     if: github.repository == 'maxplanck-ie/parkour2'
