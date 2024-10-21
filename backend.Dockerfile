@@ -11,7 +11,9 @@ ENV \
     LC_TIME=en_DK.UTF-8 \
     TZ="Europe/Berlin" \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_ROOT_USER_ACTION=ignore
+    PIP_ROOT_USER_ACTION=ignore \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
 
 RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
@@ -25,12 +27,14 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 WORKDIR /usr/src/app
 
 # Warm-up cache with this docker layer
-RUN uv pip install --system gunicorn psycopg2 django~=4.2
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --system gunicorn psycopg2 django~=4.2
 
 # Install app source code
 # First, bring dependencies specification. Second, bring source code without invalidating the docker layer ;)
 COPY ./backend/requirements requirements
-RUN uv pip install --system -r requirements/${PyVersion}/base.txt
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --system -r requirements/${PyVersion}/base.txt
 COPY ./backend .
 
 EXPOSE 8000
@@ -52,13 +56,15 @@ ENV DJANGO_SETTINGS_MODULE=wui.settings.dev \
     PYTHONBREAKPOINT=ipdb.set_trace \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
-RUN uv pip install --system -r requirements/${PyVersion}/dev.txt
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --system -r requirements/${PyVersion}/dev.txt
 CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_dev AS pk2_testing
 ENV DJANGO_SETTINGS_MODULE=wui.settings.testing
-RUN uv pip install --system -r requirements/${PyVersion}/testing.txt
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --system -r requirements/${PyVersion}/testing.txt
 
 # ----------------------
 FROM pk2_testing AS pk2_playwright
