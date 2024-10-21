@@ -38,7 +38,8 @@ jobs:
             backend/requirements/dev.in -c ${this}/base.txt -o ${this}/dev.txt
           uv pip compile --no-progress --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/testing.in -c ${this}/dev.txt -o ${this}/testing.txt
-      
+        env:
+          UV_SYSTEM_PYTHON: 1
       - name: Test installation
         run: uv pip install --system -r backend/requirements/${{ matrix.python-version }}/testing.txt
 

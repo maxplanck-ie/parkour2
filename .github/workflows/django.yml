@@ -68,8 +68,9 @@ jobs:
       
       - name: Install dependencies
         run: |
-          uv pip install --system -r backend/requirements/${{ matrix.python-version }}/base.txt
-
+          uv pip install -r backend/requirements/${{ matrix.python-version }}/base.txt
+        env:
+          UV_SYSTEM_PYTHON: 1
 
       - name: Verify migrations
         env:
@@ -95,6 +96,7 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          uv pip install --system -r backend/requirements/${{ matrix.python-version }}/testing.txt
+          uv pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
           python backend/manage.py test backend --parallel
-
+        env:
+          UV_SYSTEM_PYTHON: 1

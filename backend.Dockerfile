@@ -13,7 +13,8 @@ ENV \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_ROOT_USER_ACTION=ignore \
     UV_COMPILE_BYTECODE=1 \
-    UV_LINK_MODE=copy
+    UV_LINK_MODE=copy \
+    UV_SYSTEM_PYTHON=1
 
 RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
@@ -28,13 +29,13 @@ WORKDIR /usr/src/app
 
 # Warm-up cache with this docker layer
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system gunicorn psycopg2 django~=4.2
+    uv pip install gunicorn psycopg2 django~=4.2
 
 # Install app source code
 # First, bring dependencies specification. Second, bring source code without invalidating the docker layer ;)
 COPY ./backend/requirements requirements
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system -r requirements/${PyVersion}/base.txt
+    uv pip install -r requirements/${PyVersion}/base.txt
 COPY ./backend .
 
 EXPOSE 8000
@@ -53,14 +54,14 @@ ENV DJANGO_SETTINGS_MODULE=wui.settings.dev \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system -r requirements/${PyVersion}/dev.txt
+    uv pip install -r requirements/${PyVersion}/dev.txt
 CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_dev AS pk2_testing
 ENV DJANGO_SETTINGS_MODULE=wui.settings.testing
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system -r requirements/${PyVersion}/testing.txt
+    uv pip install -r requirements/${PyVersion}/testing.txt
 
 # ----------------------
 FROM pk2_testing AS pk2_playwright
