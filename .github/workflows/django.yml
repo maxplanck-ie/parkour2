@@ -68,7 +68,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          uv pip install --system -r backend/requirements/${{ matrix.python-version }}/prod.txt
+          uv pip install --system -r backend/requirements/${{ matrix.python-version }}/base.txt
 
 
       - name: Verify migrations

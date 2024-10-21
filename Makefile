@@ -21,7 +21,7 @@ check-rootdir:
 		exit 1; }
 
 set-prod:
-	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_prod#' docker-compose.yml
+	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
@@ -296,8 +296,6 @@ compile:
 		this=backend/requirements/$$version; \
 		uv pip compile --no-progress --no-cache --universal --python-version $$version \
 			backend/requirements/base.in -o $$this/base.txt; \
-		uv pip compile --no-progress --no-cache --universal --python-version $$version \
-			backend/requirements/prod.in -c $$this/base.txt -o $$this/prod.txt; \
 		uv pip compile --no-progress --no-cache --universal --python-version $$version \
 			backend/requirements/dev.in -c $$this/base.txt -o $$this/dev.txt; \
 		uv pip compile --no-progress --no-cache --universal --python-version $$version \

@@ -32,8 +32,6 @@ jobs:
           uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/base.in -o ${this}/base.txt
           uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
-            backend/requirements/prod.in -c ${this}/base.txt -o ${this}/prod.txt
-          uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/dev.in -c ${this}/base.txt -o ${this}/dev.txt
           uv pip compile --no-progress --no-cache --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/testing.in -c ${this}/dev.txt -o ${this}/testing.txt

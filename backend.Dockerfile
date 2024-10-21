@@ -43,10 +43,6 @@ ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
 CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
 # ----------------------
-FROM pk2_base AS pk2_prod
-RUN uv pip install --system -r requirements/${PyVersion}/prod.txt
-
-# ----------------------
 FROM pk2_base AS pk2_dev
 RUN echo "from functools import partial\nimport rich\nhelp = partial(rich.inspect, help=True, methods=True)" \
     > /root/.pythonrc
