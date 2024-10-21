@@ -67,10 +67,10 @@ jobs:
         uses: yezz123/setup-uv@v4
       
       - name: Install dependencies
-        run: |
-          uv pip install -r backend/requirements/${{ matrix.python-version }}/base.txt
         env:
           UV_SYSTEM_PYTHON: 1
+        run: |
+          uv pip install -r backend/requirements/${{ matrix.python-version }}/base.txt
 
       - name: Verify migrations
         env:
@@ -95,8 +95,7 @@ jobs:
           DJANGO_SETTINGS_MODULE: wui.settings.testing
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          UV_SYSTEM_PYTHON: 1
         run: |
           uv pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
           python backend/manage.py test backend --parallel
-        env:
-          UV_SYSTEM_PYTHON: 1
