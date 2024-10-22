@@ -4,6 +4,7 @@
 ========
 
 - TODO: `<URL>/export_request/` and `<URL>/import_request/` both have a simple UI
+- We have switched over to `uv` everywhere (Makefile, Docker, CI) instead of plain `pip-tools`.
 - ...
 
 
