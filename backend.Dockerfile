@@ -27,21 +27,17 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 WORKDIR /usr/src/app
 
-# Warm-up cache with this docker layer
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install gunicorn psycopg2 django~=4.2
-
-# Install app source code
-# First, bring dependencies specification. Second, bring source code without invalidating the docker layer ;)
+## First, bring dependencies specification and install them
 COPY ./backend/requirements requirements
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install -r requirements/${PyVersion}/base.txt
+## Second, bring source code, without invalidating the docker layer ;)
 COPY ./backend .
 
 EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
-
-CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
+CMD ["gunicorn", "wui.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
+     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
 # ----------------------
 FROM pk2_base AS pk2_dev
