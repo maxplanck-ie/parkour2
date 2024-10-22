@@ -88,7 +88,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
             minWidth: 135
           },
           {
-            text: "Library Type",
+            text: "Analysis Type",
             dataIndex: "library_type",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },

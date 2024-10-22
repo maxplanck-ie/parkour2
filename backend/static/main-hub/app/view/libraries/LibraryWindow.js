@@ -136,8 +136,8 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   valueField: "id",
                   name: "library_type",
                   fieldLabel:
-                    'Library Type <sup><strong><span class="field-tooltip" tooltip-text="Library Type is automatically filled based on library construction protocol, if needed select other and specify in the comments field (below)">[?]</span></strong></sup>',
-                  emptyText: "Library Type",
+                    'Analysis Type <sup><strong><span class="field-tooltip" tooltip-text="Analysis Type is automatically filled based on library construction protocol, if needed select other and specify in the comments field (below)">[?]</span></strong></sup>',
+                  emptyText: "Analysis Type",
                   store: "libraryTypesStore",
                   forceSelection: true,
                   disabled: true
@@ -438,7 +438,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   name: "library_type",
                   fieldLabel:
                     'Library Type <sup><strong><span class="field-tooltip" tooltip-text="Library Type is automatically filled based on library construction protocol, if needed select other and specify in the comments field (below)">[?]</span></strong></sup>',
-                  emptyText: "Library Type",
+                  emptyText: "Analysis Type",
                   store: "libraryTypesStore",
                   forceSelection: true,
                   disabled: true

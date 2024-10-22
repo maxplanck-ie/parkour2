@@ -7,7 +7,7 @@ Ext.define("MainHub.view.usage.LibraryTypes", {
     "MainHub.view.usage.ChartCartesianBase"
   ],
 
-  title: "Library Types",
+  title: "Analysis Types",
 
   layout: {
     type: "vbox",

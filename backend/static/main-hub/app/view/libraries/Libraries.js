@@ -455,8 +455,8 @@ Ext.define("MainHub.view.libraries.Libraries", {
             renderer: "gridCellTooltipRenderer"
           },
           {
-            text: "Lib. Type",
-            tooltip: "Library Type",
+            text: "Analysis Type",
+            tooltip: "Analysis Type",
             dataIndex: "library_type_name",
             renderer: "gridCellTooltipRenderer"
           },

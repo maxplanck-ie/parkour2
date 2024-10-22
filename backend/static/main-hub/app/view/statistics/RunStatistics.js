@@ -63,7 +63,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
             filter: { type: "list" }
           },
           {
-            text: "Library Type",
+            text: "Analysis Type",
             dataIndex: "library_type",
             filter: { type: "list" }
           },

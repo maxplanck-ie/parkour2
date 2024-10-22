@@ -1,4 +1,4 @@
-Name,Nuc.Type,Protocol,Library Type,ng/µl,RQN,Length,Depth (M),Organims,Comments
+Name,Nuc.Type,Protocol,Analysis Type,ng/µl,RQN,Length,Depth (M),Organims,Comments
 Sample_1,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,495.96,10,2x150,30,M. musculus (GRCm38 / mm10),Please sent results of initial QC via Email
 Sample_2,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,422.36,10,2x150,30,M. musculus (GRCm38 / mm10),
 Sample_3,RNA (total),"Illumina Stranded mRNA Prep, Ligation",stranded mRNA-Seq,308.40,10,2x150,30,M. musculus (GRCm38 / mm10),
