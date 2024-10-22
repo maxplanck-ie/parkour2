@@ -1,3 +1,4 @@
+backend/**/fixtures/*.json
 backend/static/js
 backend/static/main-hub/resources
 backend/static/main-hub/build
