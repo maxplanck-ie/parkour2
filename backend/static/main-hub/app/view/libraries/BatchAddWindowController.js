@@ -818,9 +818,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         renderer: this.comboboxErrorRenderer
       },
       {
-        text: "Library Type",
+        text: "Analysis Type",
         dataIndex: "library_type",
-        tooltip: "Library Type",
+        tooltip: "Analysis Type",
         width: 200,
         editor: {
           xtype: "combobox",

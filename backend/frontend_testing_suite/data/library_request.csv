@@ -1,4 +1,4 @@
-Name,Protocol,Library Type,ng/µl,size (bp),Index Type,# of Index Reads,Index I7,Index I5,Length,Depth (M),Organims,Comments
+Name,Protocol,Analysis Type,ng/µl,size (bp),Index Type,# of Index Reads,Index I7,Index I5,Length,Depth (M),Organims,Comments
 Library_1,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,7.80,8,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TTACCGAC,CGTATTCG,2x150,30,M. musculus (GRCm39),Please sent results of initial QC via Email
 Library_2,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,3.80,6,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TCGTCTGA,TCAAGGAC,2x150,30,M. musculus (GRCm39),
 Library_3,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,0.23,2,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TTCCAGGT,AAGCACTG,2x150,30,M. musculus (GRCm39),
