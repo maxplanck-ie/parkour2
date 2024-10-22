@@ -1,4 +1,6 @@
 import { useToast } from "vue-toastification";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const toast = useToast();
 
@@ -52,4 +54,14 @@ export function urlStringStartsWith() {
   } else {
     return urlString[0];
   }
+}
+
+export function createAxiosObject() {
+  return axios.create({
+    withCredentials: true,
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
+  });
 }
