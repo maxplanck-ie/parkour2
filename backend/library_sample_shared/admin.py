@@ -339,7 +339,7 @@ class IndexPairAdmin(admin.ModelAdmin):
             if error:
                 messages.error(request, error)
             else:
-                messages.success(request, "The import has been succesful.")
+                messages.success(request, "The import has been successful.")
 
             return HttpResponseRedirect(".")
 
