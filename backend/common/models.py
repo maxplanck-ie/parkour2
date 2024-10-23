@@ -3,6 +3,7 @@ from datetime import datetime
 from authtools.models import AbstractEmailUser
 from django.conf import settings
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 def get_deleted_org():
@@ -179,6 +180,8 @@ class Duty(models.Model):
         blank=True,
     )
     archived = models.BooleanField("Archived", default=False)
+
+    history = HistoricalRecords()
 
     class Meta:
         db_table = "duty"

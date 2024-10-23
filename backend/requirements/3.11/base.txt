@@ -20,6 +20,7 @@ django==4.2.16
     #   django-extensions
     #   django-import-export
     #   django-linear-migrations
+    #   django-simple-history
     #   djangorestframework
     #   drf-spectacular
 django-admin-list-filter-dropdown==1.0.3
@@ -33,6 +34,8 @@ django-import-export==4.1.1
 django-linear-migrations==2.15.0
     # via -r backend/requirements/base.in
 django-monthfield==0.1.4
+    # via -r backend/requirements/base.in
+django-simple-history==3.7.0
     # via -r backend/requirements/base.in
 djangorestframework==3.15.2
     # via

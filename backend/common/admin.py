@@ -1,6 +1,7 @@
 from authtools.admin import NamedUserAdmin
 from authtools.forms import UserCreationForm
 from common.models import CostUnit, Duty, Organization, PrincipalInvestigator
+from simple_history.admin import SimpleHistoryAdmin
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -299,7 +300,7 @@ class UserAdmin(NamedUserAdmin):
 
 
 @admin.register(Duty)
-class DutyAdmin(admin.ModelAdmin):
+class DutyAdmin(SimpleHistoryAdmin):
     list_display = (
         "main_name",
         "backup_name",

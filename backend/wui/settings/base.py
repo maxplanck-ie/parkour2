@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "stats",
     "metadata_exporter",
     "drf_spectacular",
+    "simple_history",
 ]
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
@@ -81,6 +82,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "extra.middleware.ErrorMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "wui.urls"

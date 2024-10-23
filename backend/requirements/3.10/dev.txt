@@ -80,6 +80,7 @@ django==4.2.16
     #   django-linear-migrations
     #   django-migration-linter
     #   django-schema-viewer
+    #   django-simple-history
     #   django-sql-explorer
     #   djangorestframework
     #   drf-spectacular
@@ -119,6 +120,10 @@ django-monthfield==0.1.4
     #   -r backend/requirements/base.in
 django-schema-viewer==0.4.1
     # via -r backend/requirements/dev.in
+django-simple-history==3.7.0
+    # via
+    #   -c backend/requirements/3.10/base.txt
+    #   -r backend/requirements/base.in
 django-sql-explorer==5.3
     # via -r backend/requirements/dev.in
 djangorestframework==3.15.2

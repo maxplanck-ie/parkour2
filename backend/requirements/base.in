@@ -21,3 +21,4 @@ openpyxl
 python-docx
 python-dateutil
 tblib
+django-simple-history
