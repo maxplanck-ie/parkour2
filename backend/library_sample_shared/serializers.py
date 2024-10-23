@@ -127,7 +127,6 @@ class LibrarySampleBaseSerializer(ModelSerializer):
     request_name = SerializerMethodField()
     library_protocol_name = SerializerMethodField()
     library_type_name = SerializerMethodField()
-    concentration_method_name = SerializerMethodField()
     read_length_name = SerializerMethodField()
     organism_name = SerializerMethodField()
 
@@ -144,16 +143,13 @@ class LibrarySampleBaseSerializer(ModelSerializer):
             "library_protocol_name",
             "library_type",
             "library_type_name",
+            "volume",
             "organism",
-            "equal_representation_nucleotides",
-            "concentration",
-            "concentration_method",
             "read_length",
             "read_length_name",
             "sequencing_depth",
-            "comments",
-            "amplification_cycles",
             "organism_name",
+            "comments",
         )
         extra_kwargs = {"barcode": {"required": False}}
 
@@ -168,9 +164,6 @@ class LibrarySampleBaseSerializer(ModelSerializer):
 
     def get_library_type_name(self, obj):
         return obj.library_type.name
-
-    def get_concentration_method_name(self, obj):
-        return obj.concentration_method.name
 
     def get_read_length_name(self, obj):
         return obj.read_length.name

@@ -48,11 +48,9 @@ class BaseSerializer(ModelSerializer):
             "barcode",
             "record_type",
             "library_protocol",
-            "concentration",
-            "concentration_method",
+            "measuring_unit",
+            "measured_value", 
             "dilution_factor",
-            "concentration_facility",
-            "concentration_method_facility",
             "sample_volume_facility",
             "amount_facility",
             "quality_check",
@@ -60,14 +58,18 @@ class BaseSerializer(ModelSerializer):
             "comments_facility",
             "sequencing_depth",
             "library_protocol_name",
+            "measuring_unit_facility",
+            "measured_value_facility",
         )
         extra_kwargs = {
             "name": {"required": False},
             "barcode": {"required": False},
             "library_protocol": {"required": False},
-            "concentration": {"required": False},
-            "concentration_method": {"required": False},
             "sequencing_depth": {"required": False},
+            "measuring_unit": {"required": False},
+            "measured_value": {"required": False},
+            "measuring_unit_facility": {"required": False},
+            "measured_value_facility": {"required": False},
         }
 
     def get_record_type(self, obj):
@@ -80,15 +82,11 @@ class BaseSerializer(ModelSerializer):
 class LibrarySerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = Library
-        fields = BaseSerializer.Meta.fields + (
-            "qpcr_result",
-            "qpcr_result_facility",
-            "mean_fragment_size",
-        )
+        fields = BaseSerializer.Meta.fields + ("mean_fragment_size",)
+
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,
             **{
-                "qpcr_result": {"required": False},
                 "mean_fragment_size": {"required": False},
             },
         }
