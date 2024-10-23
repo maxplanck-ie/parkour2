@@ -34,19 +34,14 @@ Ext.define("MainHub.model.incominglibraries.IncomingLibraries", {
       allowNull: true
     },
     {
-      name: "qpcr_result_facility",
-      type: "float",
-      allowNull: true
+      name: "measuring_unit_facility",
+      type: "string"
     },
     {
-      name: "rna_quality_facility",
+      name: "measured_value_facility",
       type: "float",
       allowNull: true,
       defaultValue: null
-    },
-    {
-      name: "comments_facility",
-      type: "string"
     },
     {
       name: "samples_submitted",

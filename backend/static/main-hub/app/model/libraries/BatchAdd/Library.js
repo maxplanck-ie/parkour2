@@ -52,12 +52,6 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
     {
       type: "string",
       name: "index_i5"
-    },
-    {
-      type: "int",
-      name: "qpcr_result",
-      allowNull: true,
-      defaultValue: null
     }
   ],
 
