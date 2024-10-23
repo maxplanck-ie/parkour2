@@ -45,9 +45,7 @@ class Command(BaseCommand):
             subprocess.run(
                 """
             python manage.py dumpdata {} | tail -1 |
-            python -m json.tool""".format(
-                    app_label + "." + model
-                ),
+            python -m json.tool""".format(app_label + "." + model),
                 stdout=f,
                 shell=True,
                 check=True,

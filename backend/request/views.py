@@ -179,9 +179,7 @@ class Report(FPDF, HTMLMixin):
                 <tbody>{}</tbody>
             </table>
         </font>
-        """.format(
-            thead, tbody
-        )
+        """.format(thead, tbody)
         html = html.replace("\n", "")
 
         return html

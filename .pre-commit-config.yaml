@@ -41,17 +41,11 @@ repos:
         types: [python]
       - id: check-merge-conflict
         types: [python]
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.0
     hooks:
-      - id: isort
-        args: [--profile, "black"]
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.8.0
-    hooks:
-      - id: black
-        language_version: python3
-        entry: black --target-version=py311 # 3.11
+      - id: ruff-format
+        args: [--target-version, "py311"] # 3.11
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.17.0
     hooks:
