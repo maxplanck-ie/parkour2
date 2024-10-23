@@ -31,7 +31,7 @@ Parkour is a Laboratory Information Management System (LIMS) software package
 for sample processing and quality management of high-throughput sequencing
 (HTS) experiments. It was designed to coordinate laboratory work by clearly
 structuring tasks and facilitate high-quality sample preparation. For further
-details, plase check [the research article](https://academic.oup.com/bioinformatics/article/35/8/1422/5102872#393914685) from 2019.
+details, please check [the research article](https://academic.oup.com/bioinformatics/article/35/8/1422/5102872#393914685) from 2019.
 
 <div align="center">
     <img alt="Parkour" src="https://github.com/maxplanck-ie/parkour2/blob/develop/misc/readme.png">

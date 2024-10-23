@@ -223,7 +223,7 @@ class IndexPairAdmin(admin.ModelAdmin):
                         "The file could not be imported because it contains more than one sheet."
                     )
 
-                # Load firt sheet
+                # Load first sheet
                 sheet = wb.worksheets[0]
 
                 # Get rows

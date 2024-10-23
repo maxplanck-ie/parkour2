@@ -67,3 +67,8 @@ repos:
       - id: prettier
         args: [--trailing-comma, none, --no-error-on-unmatched-pattern]
         types_or: [json, css, javascript, vue]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args: [--skip, "backend/static/*,backend/**/tests.py,backend/**/fixtures/*.json,misc/demo-dump.json", --write-changes]
