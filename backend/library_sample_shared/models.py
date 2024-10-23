@@ -397,12 +397,6 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    removed_concentration_facility = models.FloatField(
-        "Concentration",
-        null=True,
-        blank=True,
-    )  # This field is not in use
-
     removed_concentration_method_facility = models.ForeignKey(
         ConcentrationMethod,
         related_name="+",
