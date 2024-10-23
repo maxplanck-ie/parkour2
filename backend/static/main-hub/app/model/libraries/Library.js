@@ -33,11 +33,6 @@ Ext.define("MainHub.model.libraries.Library", {
       type: "string"
     },
     {
-      name: "amplification_cycles",
-      type: "int",
-      allowNull: true
-    },
-    {
       name: "organism",
       type: "int"
     },
@@ -67,32 +62,19 @@ Ext.define("MainHub.model.libraries.Library", {
       type: "string"
     },
     {
-      name: "equal_representation_nucleotides",
-      type: "bool",
-      allowNull: true
-    },
-    {
-      name: "concentration",
-      type: "float",
-      allowNull: true
-    },
-    {
-      name: "concentration_method",
-      type: "int"
-    },
-    {
-      name: "concentration_method_name",
-      type: "string"
-    },
-    {
       name: "mean_fragment_size",
       type: "int",
       allowNull: true
     },
     {
-      name: "qpcr_result",
+      name: "measuring_unit",
+      type: "string"
+    },
+    {
+      name: "measured_value",
       type: "float",
-      allowNull: true
+      allowNull: true,
+      defaultValue: null
     },
     {
       name: "read_length",
@@ -120,6 +102,12 @@ Ext.define("MainHub.model.libraries.Library", {
       type: "int"
     },
     {
+      name: "volume",
+      type: "float",
+      allowNull: true,
+      defaultValue: null
+    },
+    {
       name: "rna_quality",
       type: "float",
       allowNull: true,
@@ -129,6 +117,14 @@ Ext.define("MainHub.model.libraries.Library", {
       name: "pool",
       type: "string",
       defaultValue: ""
+    },
+    {
+      name: "biosafety_level",
+      type: "string"
+    },
+    {
+      name: "gmo",
+      type: "bool"
     }
   ]
 });

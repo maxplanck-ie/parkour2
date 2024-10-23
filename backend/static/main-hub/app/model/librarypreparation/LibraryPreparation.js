@@ -103,11 +103,6 @@ Ext.define("MainHub.model.librarypreparation.LibraryPreparation", {
       allowNull: true
     },
     {
-      name: "qpcr_result",
-      type: "float",
-      allowNull: true
-    },
-    {
       name: "dilution_factor",
       type: "int",
       allowNull: true
