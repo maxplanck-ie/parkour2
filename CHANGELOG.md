@@ -70,7 +70,7 @@ Non-breaking changes:
 24.03.27
 ========
 
-- Renamed 'Nucleic Acid Type' to 'Input Type', to accomodate the latest type addition ('Cells').
+- Renamed 'Nucleic Acid Type' to 'Input Type', to accommodate the latest type addition ('Cells').
 - In 'Invoicing', Download Report, Upload Reports, and View Uploaded Reports buttons are functional again. (#101)
 - Standardized date parameter format to "YYYY-MM" in 'Invoicing' and 'Load Flowcells' submodule. (#101)
 - While downloading, renamed the Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' respectively. (#102)
@@ -148,7 +148,7 @@ Non-breaking changes:
 - New dependency added, navigate to `<URL>/schema-viewer` to enjoy it (installed on dev settings only). Remember: use `models` rule if you'd like to have these in static print-friendly PDF docs.
 - Added a new Django management command: list_templates
 - Added `filepaths` JSONField to Request model. We'd like to track the location of, for example, delivered FASTQ files and QC reports.
-- Deprecated and removed bpython. shell_plus now uses ipython. This was to avoid runtime errors while compiling the requirements.txt files, given that greenlet dependecy would be pinned under contradicted version numbers (testing.txt has playwright that asks for greenlet v2, meanwhile bpython in dev.txt asked for v3..)
+- Deprecated and removed bpython. shell_plus now uses ipython. This was to avoid runtime errors while compiling the requirements.txt files, given that greenlet dependency would be pinned under contradicted version numbers (testing.txt has playwright that asks for greenlet v2, meanwhile bpython in dev.txt asked for v3..)
 - Email address displayed next to User (its string representation) now skips the email host if it's the same as in EMAIL_HOST settings (parkour.env) and instead displays `<user>@~`.
 - Added Phone next to email address for User display (if available).
 - Added 'archival' feature to CostUnit(s).
@@ -170,7 +170,7 @@ Non-breaking changes:
 - Renamed `parkour_app/migrations` to `parkour_app/extras` to avoid confusion with actual migrations. Renamed the corresponding `test.py` in there to `test_migrations.py` accordingly.
 - Added user email to mailed traceback when Django encounters any errors. This way we can contact users if they were experiencing a bug.
 - Added database from parkour-demo in JSON format under `misc/` subfolder. Integrated all `**/fixtures/*.json` into it.
-- Updated fixtures with parkour-demo database, usefult to overwrite or further customize such entries.
+- Updated fixtures with parkour-demo database, useful to overwrite or further customize such entries.
 - Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
 - Added `tblib` as a base dependency to have proper traceback when running tests in parallel.
 - Improvement: sweep rule won't remove current symlink targets anymore.
@@ -191,7 +191,7 @@ Non-breaking changes:
 
 ## Important News
 
-- We abandoned semantic versioning, from now on we will use dates. This is displayed on the `login.html`, righ above where users input their credentials.
+- We abandoned semantic versioning, from now on we will use dates. This is displayed on the `login.html`, right above where users input their credentials.
 
 - `parkour.env.sample` has a new environmental variable (`CSRF_TRUSTED_ORIGINS`) that requires manual intervention/ copy to your deployments configuration. This way we are prepared for upcoming Django 4.2
 
@@ -211,7 +211,7 @@ Non-breaking changes:
 
 - **new rules: coverage-html coverage-xml**, run pytest with code coverage report(s).
 - **new rule: playwright**, to run end-to-end tests (frontend), for now 2 test were implemented.
-- The old test rule is now renamed as **djtest**, and it only runs the django unittests (functinal + integration).
+- The old test rule is now renamed as **djtest**, and it only runs the django unittests (functional + integration).
 - added django-linear-migrations extension, to ease up fixing merge conflicts if we were to change models on different git branches.
 - added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
 - Removed old debugging strategy of attaching term to docker container to work with PDB. It was too clunky, and we've been using werkzeug traceback interpreter anywayz.
