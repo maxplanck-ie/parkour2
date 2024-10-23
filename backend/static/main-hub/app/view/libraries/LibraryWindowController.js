@@ -552,4 +552,3 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
     });
   }
 });
-  

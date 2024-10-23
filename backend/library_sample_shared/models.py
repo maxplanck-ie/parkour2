@@ -438,7 +438,6 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-
     class Meta:
         abstract = True
 

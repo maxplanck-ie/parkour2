@@ -558,7 +558,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           minValue: 0
         },
         renderer: this.errorRenderer,
-        width: 100,
+        width: 100
       },
       {
         text: "Measuring Unit",
@@ -575,7 +575,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           store: {
             fields: ["id", "name"],
             data: [
-              { id: "ng/µl", name:  "ng/µl (Concentration)" },
+              { id: "ng/µl", name: "ng/µl (Concentration)" },
               { id: "-", name: "Unknown" }
             ]
           },
@@ -735,7 +735,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "index_reads",
       "index_i7",
       "index_i5",
-      "organism",
+      "organism"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -764,7 +764,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           store: {
             fields: ["id", "name"],
             data: [
-              { id: "ng/µl", name:  "ng/µl (Concentration)" },
+              { id: "ng/µl", name: "ng/µl (Concentration)" },
               { id: "M", name: "M (Cells)" },
               { id: "-", name: "Unknown" }
             ]
@@ -877,7 +877,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "sequencing_depth",
       "organism",
       "biosafety_level",
-      "gmo",
+      "gmo"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -1021,7 +1021,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           }
         },
         renderer: this.comboboxErrorRenderer
-      },
+      }
     ];
 
     if (mode === "edit") {

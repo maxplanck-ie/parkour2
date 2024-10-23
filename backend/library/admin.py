@@ -68,7 +68,7 @@ class LibraryAdmin(admin.ModelAdmin):
                     "index_i7",
                     "index_i5",
                     "organism",
-                    "comments"
+                    "comments",
                 ),
             },
         ),
