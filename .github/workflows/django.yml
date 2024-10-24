@@ -5,7 +5,7 @@ on:
     inputs:
       debug_enabled:
         type: boolean
-        description: 'Debug enabled (ssh -i <path-to-key> <tmate-connection-string>)'
+        description: 'Debug enabled (~/.ssh/id_rsa)'
         required: false
         default: false
   push:
