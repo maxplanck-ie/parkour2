@@ -294,6 +294,7 @@ compile:
 	}' .github/workflows/django.yml); \
 	for version in $$PY_VERSIONS; do \
 		this=backend/requirements/$$version; \
+		mkdir -p $$this; \
 		uv pip compile --no-progress --universal --python-version $$version \
 			backend/requirements/base.in -o $$this/base.txt; \
 		uv pip compile --no-progress --universal --python-version $$version \

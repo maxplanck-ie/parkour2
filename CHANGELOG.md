@@ -3,6 +3,7 @@
 ??.??.??
 ========
 
+- Reintroduced CI jobs for Python 3.12, and we have also added support for Python 3.13.
 - We have switched over to `uv` everywhere (Makefile, Docker, CI) instead of plain `pip-tools`.
 - Replaced `isort` and `black` with `ruff` (CI).
 - Added history tracking to the `Duty` model.

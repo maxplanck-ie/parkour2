@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ['3.10', 3.11]
+        python-version: ['3.10', 3.11, 3.12, 3.13]
     
     steps:
       - uses: actions/checkout@v4
@@ -32,6 +32,7 @@ jobs:
       - name: Backend Update
         run: |
           export this=backend/requirements/${{ matrix.python-version }}
+          mkdir -p $this
           uv pip compile --no-progress --universal --python-version ${{ matrix.python-version }} \
             backend/requirements/base.in -o ${this}/base.txt
           uv pip compile --no-progress --universal --python-version ${{ matrix.python-version }} \
