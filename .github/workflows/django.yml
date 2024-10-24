@@ -39,6 +39,8 @@ jobs:
           make create-admin
 
   build-and-test:
+    env:
+      UV_SYSTEM_PYTHON: 1
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     strategy:
@@ -64,8 +66,8 @@ jobs:
 
       - name: Setup debug session
         uses: mxschmitt/action-tmate@v3
-        #if: ${{ failure() }}
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        timeout-minutes: 5
         with:
           detached: true
           limit-access-to-actor: true
@@ -73,8 +75,6 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          cache: "pip"
-          cache-dependency-path: backend/requirements/${{ matrix.python-version }}/testing.txt
           python-version: ${{ matrix.python-version }}
 
       - name: Set up UV for py ${{ matrix.python-version }}
@@ -84,8 +84,6 @@ jobs:
           cache-dependency-glob: "backend/requirements/${{ matrix.python-version }}/*.txt"
       
       - name: Install dependencies
-        env:
-          UV_SYSTEM_PYTHON: 1
         run: |
           uv pip install setuptools wheel  ## ModuleNotFoundError Py312 lacks pkg_resources
           uv pip install -r backend/requirements/${{ matrix.python-version }}/base.txt
@@ -113,7 +111,6 @@ jobs:
           DJANGO_SETTINGS_MODULE: wui.settings.testing
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          UV_SYSTEM_PYTHON: 1
         run: |
           uv pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
           python backend/manage.py test backend --parallel
