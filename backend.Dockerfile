@@ -1,6 +1,6 @@
-ARG PyVersion=3.11  # to be repeated after FROM, docker syntax is at fault.
+ARG PyVersion=3.12  # to be repeated after FROM, docker syntax is at fault.
 FROM python:${PyVersion}-bullseye AS pk2_base
-ARG PyVersion=3.11
+ARG PyVersion=3.12
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
 ENV \
@@ -27,6 +27,9 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 WORKDIR /usr/src/app
 
+## Pre-heat the cache
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install setuptools wheel psycopg2 gunicorn django~=4.2
 ## First, bring dependencies specification and install them
 COPY ./backend/requirements requirements
 RUN --mount=type=cache,target=/root/.cache/uv \

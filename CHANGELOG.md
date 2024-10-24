@@ -3,7 +3,7 @@
 ??.??.??
 ========
 
-- Reintroduced CI jobs for Python 3.12, and we have also added support for Python 3.13.
+- We're now running on Python 3.12 (its CI jobs were reintroduced), and we have also added support for Python 3.13.
 - We have switched over to `uv` everywhere (Makefile, Docker, CI) instead of plain `pip-tools`.
 - Replaced `isort` and `black` with `ruff` (CI).
 - Added history tracking to the `Duty` model.
@@ -15,7 +15,7 @@
 ========
 
 - E-mail communications: grayed-out "send" button after 1 click, to avoid spamming inboxes.
-- Fixtures: save_initial_data management cmd will use built-in json formatter instead of `jq`.
+- Fixtures: `save_initial_data` management command will now be using the built-in json formatter instead of `jq`.
 - Updated clipboard functionality at Incoming submodule.
 - Updated organisms names on both production database and fixtures.
 - Updated dependencies.

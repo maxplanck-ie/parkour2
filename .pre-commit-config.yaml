@@ -45,17 +45,17 @@ repos:
     rev: v0.7.0
     hooks:
       - id: ruff-format
-        args: [--target-version, py311] # 3.11
+        args: [--target-version, py312] # 3.12
   # - repo: https://github.com/dosisod/refurb
   #   rev: v2.0.0
   #   hooks:
   #     - id: refurb
-  #       args: [--python-version, "3.11", --sort, error]  #, --format, gitub
+  #       args: [--python-version, "3.12", --sort, error]  #, --format, gitub
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.17.0
     hooks:
       - id: pyupgrade
-        args: [--py311-plus] # 3.11
+        args: [--py312-plus] # 3.12
   - repo: https://github.com/adamchainz/django-upgrade
     rev: 1.21.0
     hooks:
