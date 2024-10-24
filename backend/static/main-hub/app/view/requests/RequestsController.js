@@ -122,15 +122,15 @@ Ext.define("MainHub.view.requests.RequestsController", {
           }
         },
         "-",
-        {
-          text: "Metadata Exporter",
-          disabled: !record.get("completed"),
-          handler: function () {
-            Ext.create("MainHub.view.metadataexporter.MetadataExporter", {
-              request: record
-            });
-          }
-        },
+        // {
+        //   text: "Metadata Exporter",
+        //   disabled: !record.get("completed"),
+        //   handler: function () {
+        //     Ext.create("MainHub.view.metadataexporter.MetadataExporter", {
+        //       request: record
+        //     });
+        //   }
+        // },
         {
           text: "View File Paths",
           hidden: !USER.is_staff,
