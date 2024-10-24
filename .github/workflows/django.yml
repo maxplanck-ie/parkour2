@@ -67,7 +67,7 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
-          cache-dependency-glob: "backend/requirements/**/*.txt"
+          cache-dependency-glob: "backend/requirements/${{ matrix.python-version }}/*.txt"
       
       - name: Install dependencies
         env:
