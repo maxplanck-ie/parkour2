@@ -7,6 +7,7 @@
 - We have switched over to `uv` everywhere (Makefile, Docker, CI) instead of plain `pip-tools`.
 - Replaced `isort` and `black` with `ruff` (CI).
 - Added history tracking to the `Duty` model.
+- Added a 'Get Flowcell' context menu for staff users to find where each sample is being sequenced.
 - Fixed a bunch of typos.
 - ...
 
