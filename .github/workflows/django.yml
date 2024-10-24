@@ -73,6 +73,7 @@ jobs:
         env:
           UV_SYSTEM_PYTHON: 1
         run: |
+          uv pip install setuptools wheel  ## ModuleNotFoundError Py312 lacks pkg_resources
           uv pip install -r backend/requirements/${{ matrix.python-version }}/base.txt
 
       - name: Verify migrations
