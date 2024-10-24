@@ -2,6 +2,12 @@ name: Backend
 
 on:
   workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Debug enabled (ssh -i <path-to-key> <tmate-connection-string>)'
+        required: false
+        default: false
   push:
     branches: ['develop']
   pull_request:
@@ -55,7 +61,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Setup debug session
+        uses: mxschmitt/action-tmate@v3
+        #if: ${{ failure() }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        with:
+          detached: true
+          limit-access-to-actor: true
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
