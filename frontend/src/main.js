@@ -16,11 +16,10 @@ import {
   faColumns,
   faFileExcel,
   faLayerGroup,
-  faCaretDown
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
-  faCalendarDays
+  faCalendarDays,
 } from "@fortawesome/free-regular-svg-icons";
 
 const app = createApp(vueApp);
@@ -33,8 +32,7 @@ library.add(
   faFilter,
   faColumns,
   faFileExcel,
-  faLayerGroup,
-  faCaretDown
+  faLayerGroup
 );
 
 app.use(router);
