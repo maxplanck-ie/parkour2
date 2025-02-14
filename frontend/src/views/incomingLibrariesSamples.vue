@@ -1500,7 +1500,9 @@ export default {
 
 <!--
 paste error window
+timestamp to check aged columns storage
 
+export column width
 make the component modular
 show hover tooltips with use of a library
 -->
