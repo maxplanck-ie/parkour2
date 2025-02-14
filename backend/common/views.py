@@ -68,7 +68,7 @@ def get_navigation_tree(request):
             {
                 "text": "Incoming Libraries/Samples",
                 "iconCls": "x-fa fa-arrow-down",
-                "viewType": "incoming-libraries",
+                "viewType": "incoming-libraries-vue",
                 "leaf": True,
             },
             {

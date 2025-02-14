@@ -57,7 +57,6 @@ class LaneSerializer(ModelSerializer):
     read_length_name = SerializerMethodField()
     index_i7_show = SerializerMethodField()
     index_i5_show = SerializerMethodField()
-    equal_representation = SerializerMethodField()
     quality_check = CharField(required=False)
     request = SerializerMethodField()
     protocol = SerializerMethodField()
@@ -73,7 +72,6 @@ class LaneSerializer(ModelSerializer):
             "read_length_name",
             "index_i7_show",
             "index_i5_show",
-            "equal_representation",
             "loading_concentration",
             "phix",
             "quality_check",
@@ -170,13 +168,6 @@ class LaneSerializer(ModelSerializer):
         else:
             return ""
         # return None
-
-    def get_equal_representation(self, obj):
-        records = list(
-            itertools.chain(obj.pool.libraries.all(), obj.pool.samples.all())
-        )
-        ern = [x.equal_representation_nucleotides for x in records].count(True)
-        return len(records) == ern
 
 
 class FlowcellListSerializer(ModelSerializer):

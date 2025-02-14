@@ -9,6 +9,7 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.requests.Requests",
     "MainHub.view.libraries.Libraries",
     "MainHub.view.incominglibraries.IncomingLibraries",
+    "MainHub.view.incominglibrariesvue.IncomingLibrariesVue",
     "MainHub.view.indexgenerator.IndexGenerator",
     "MainHub.view.librarypreparation.LibraryPreparation",
     "MainHub.view.pooling.Pooling",

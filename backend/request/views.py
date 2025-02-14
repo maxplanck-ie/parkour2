@@ -1090,15 +1090,6 @@ def export_request(request):
             raise PermissionDenied()
         dataset = Dataset()
         dataset.headers = (
-            # The following are not submitted by user...
-            # id barcode create_time update_time status concentration concentration_method
-            # equal_representation_nucleotides comments is_pooled amplification_cycles
-            # dilution_factor concentration_facility concentration_method_facility archived
-            # sample_volume_facility amount_facility size_distribution_facility comments_facility
-            ##libraries-exclusively:
-            # qpcr_result qpcr_result_facility
-            ##sample-exclusively:
-            # is_converted
             "id",
             "name",
             "barcode",

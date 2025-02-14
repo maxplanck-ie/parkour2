@@ -7,31 +7,31 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
   config: {
     control: {
       "#": {
-        activate: "activateView"
+        activate: "activateView",
       },
       "#incoming-libraries-grid": {
         resize: "resize",
         itemcontextmenu: "showMenu",
         groupcontextmenu: "showGroupMenu",
         beforeedit: "toggleEditors",
-        edit: "editRecord"
+        edit: "editRecord",
       },
       "#search-field": {
-        change: "changeFilter"
+        change: "changeFilter",
       },
       "#show-libraries-checkbox": {
-        change: "changeFilter"
+        change: "changeFilter",
       },
       "#show-samples-checkbox": {
-        change: "changeFilter"
+        change: "changeFilter",
       },
       "#cancel-button": {
-        click: "cancel"
+        click: "cancel",
       },
       "#save-button": {
-        click: "save"
-      }
-    }
+        click: "save",
+      },
+    },
   },
 
   toggleEditors: function (editor, context) {
@@ -95,19 +95,18 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
     var store = gridView.grid.getStore();
     var allowedColumns = [
       "dilution_factor",
-      "concentration_facility",
-      "concentration_method_facility",
+      "measuring_unit_facility",
+      "measured_value_facility",
       "sample_volume_facility",
       "amount_facility",
       "size_distribution_facility",
       "comments_facility",
-      "qpcr_result_facility",
-      "rna_quality_facility"
+      "rna_quality_facility",
     ];
     var ngFormulaDataIndices = [
       "dilution_factor",
       "concentration_facility",
-      "sample_volume_facility"
+      "sample_volume_facility",
     ];
 
     if (
@@ -153,5 +152,5 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
       parseFloat(concentration) *
       parseFloat(sampleVolume)
     );
-  }
+  },
 });

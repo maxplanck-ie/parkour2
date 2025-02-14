@@ -144,13 +144,6 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                 },
                 {
                   xtype: "numberfield",
-                  name: "concentration",
-                  fieldLabel: "Concentration (ng/µl)",
-                  emptyText: "Concentration (ng/µl)",
-                  minValue: 0
-                },
-                {
-                  xtype: "numberfield",
                   name: "mean_fragment_size",
                   fieldLabel:
                     'Mean Fragment Size (bp) <sup><strong><span class="field-tooltip" tooltip-text="Specify mean fragments size of library, upload Bioanalyzer or Fragmentanalyzer files">[?]</span></strong></sup>',
@@ -265,63 +258,6 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Sequencing Depth (M)",
                   minValue: 1,
                   allowDecimals: false
-                },
-                {
-                  xtype: "numberfield",
-                  name: "amplification_cycles",
-                  fieldLabel:
-                    'Number of amplification cycles <sup><strong><span class="field-tooltip" tooltip-text="Number of PCR cycles done for library amplification">[?]</span></strong></sup>',
-                  emptyText: "Number of amplification cycles",
-                  allowDecimals: false,
-                  minValue: 0
-                },
-                {
-                  xtype: "fieldcontainer",
-                  id: "equalRepresentation",
-                  fieldLabel:
-                    'Equal Representation of Nucleotides <sup><strong><span class="field-tooltip" tooltip-text="For best sequencing quality all 4 nucleotides should be at each position of the insert (up- and downstream of sequencing adaptors) represented at an equal frequency.<br><br>This is true i.e. for applications like ChIP-Seq, RNA-Seq and WGS (<strong>select Yes</strong>).<br><br>In case your insert has an uneven representation of nucleotides (Amplicon-Seq, internal usage of barcodes) <strong>select No</strong> and specify in the comments field (below).">[?]</span></strong></sup>',
-                  defaultType: "radiofield",
-                  defaults: {
-                    // flex: 1
-                  },
-                  layout: "hbox",
-                  items: [
-                    {
-                      boxLabel: "Yes",
-                      name: "equal_representation_nucleotides",
-                      inputValue: true,
-                      id: "equalRepresentationRadio1",
-                      checked: true,
-                      margin: "0 15px 0 0"
-                    },
-                    {
-                      boxLabel: "No",
-                      name: "equal_representation_nucleotides",
-                      inputValue: false,
-                      id: "equalRepresentationRadio2"
-                    }
-                  ]
-                },
-                {
-                  xtype: "numberfield",
-                  name: "qpcr_result",
-                  fieldLabel:
-                    'qPCR Result (nM) <sup><strong><span class="field-tooltip" tooltip-text="Use this field if qPCR was done for library quantification">[?]</span></strong></sup>',
-                  emptyText: "qPCR Result (nM)",
-                  allowBlank: true,
-                  minValue: 1
-                },
-                {
-                  xtype: "combobox",
-                  id: "concentrationMethodField",
-                  queryMode: "local",
-                  displayField: "name",
-                  valueField: "id",
-                  name: "concentration_method",
-                  fieldLabel: "Concentration Determined by",
-                  emptyText: "Concentration Determined by",
-                  store: "concentrationMethodsStore",
-                  forceSelection: true
                 },
                 {
                   xtype: "combobox",
@@ -444,13 +380,6 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   disabled: true
                 },
                 {
-                  xtype: "numberfield",
-                  name: "concentration",
-                  fieldLabel: "Concentration (ng/µl)",
-                  emptyText: "Concentration (ng/µl)",
-                  minValue: 0
-                },
-                {
                   xtype: "combobox",
                   id: "rnaQualityField",
                   itemId: "rnaQualityField",
@@ -490,52 +419,6 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   emptyText: "Sequencing Depth (M)",
                   minValue: 1,
                   allowDecimals: false
-                },
-                {
-                  xtype: "numberfield",
-                  name: "amplification_cycles",
-                  fieldLabel:
-                    'Sample amplification (cycles) <sup><strong><span class="field-tooltip" tooltip-text="If sample has been already amplified, indicate the number of cycles">[?]</span></strong></sup>',
-                  emptyText: "Sample amplification (cycles)",
-                  allowDecimals: false,
-                  minValue: 0,
-                  allowBlank: true
-                },
-                {
-                  xtype: "fieldcontainer",
-                  id: "equalRepresentationSample",
-                  fieldLabel:
-                    'Equal Representation of Nucleotides <sup><strong><span class="field-tooltip" tooltip-text="For best sequencing quality all 4 nucleotides should be at each position of the insert (up- and downstream of sequencing adaptors) represented at an equal frequency.<br><br>This is true i.e. for applications like ChIP-Seq, RNA-Seq and WGS (<strong>select Yes</strong>).<br><br>In case your insert has an uneven representation of nucleotides (Amplicon-Seq, internal usage of barcodes) <strong>select No</strong> and specify in the comments field (below).">[?]</span></strong></sup>',
-                  defaultType: "radiofield",
-                  layout: "hbox",
-                  items: [
-                    {
-                      boxLabel: "Yes",
-                      name: "equal_representation_nucleotides",
-                      inputValue: true,
-                      id: "equalRepresentationRadio3",
-                      checked: true,
-                      margin: "0 15px 0 0"
-                    },
-                    {
-                      boxLabel: "No",
-                      name: "equal_representation_nucleotides",
-                      inputValue: false,
-                      id: "equalRepresentationRadio4"
-                    }
-                  ]
-                },
-                {
-                  xtype: "combobox",
-                  id: "concentrationSampleMethodField",
-                  queryMode: "local",
-                  displayField: "name",
-                  valueField: "id",
-                  name: "concentration_method",
-                  fieldLabel: "Concentration Determined by",
-                  emptyText: "Concentration Determined by",
-                  store: "concentrationMethodsStore",
-                  forceSelection: true
                 },
                 {
                   xtype: "combobox",
