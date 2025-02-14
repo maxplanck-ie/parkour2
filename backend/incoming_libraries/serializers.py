@@ -62,6 +62,7 @@ class BaseSerializer(ModelSerializer):
             "library_protocol_name",
             "measuring_unit_facility",
             "measured_value_facility",
+
         )
         extra_kwargs = {
             "name": {"required": False},

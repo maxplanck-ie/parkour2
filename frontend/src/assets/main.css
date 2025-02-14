@@ -137,7 +137,7 @@ input[type="checkbox"]:checked {
 }
 
 input[type="checkbox"]:checked::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 1px;
   left: 4px;
@@ -255,10 +255,6 @@ input[type="checkbox"]:checked::after {
 
 .popup-button:hover {
   background-color: #005b59;
-}
-
-.popup-button:focus {
-  outline: 2px solid #333333;
 }
 
 .header {
