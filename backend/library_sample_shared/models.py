@@ -181,6 +181,8 @@ class IndexPair(models.Model):
         "Numeric Coordinate", validators=[MinValueValidator(1)]
     )
 
+    history = HistoricalRecords(inherit=True)
+
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
