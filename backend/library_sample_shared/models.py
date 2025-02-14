@@ -316,17 +316,26 @@ class GenericLibrarySample(DateTimeMixin):
         Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
     )
 
-    concentration = models.FloatField("Concentration")
-
-    concentration_method = models.ForeignKey(
-        ConcentrationMethod,
-        verbose_name="Concentration Method",
-        on_delete=models.SET(get_removed_concentrationmethod),
+    measured_value = models.FloatField(
+        "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
     )
 
-    equal_representation_nucleotides = models.BooleanField(
+    removed_concentration_method = models.ForeignKey(
+        ConcentrationMethod,
+        verbose_name="Concentration Method",
+        null=True,
+        blank=True,
+        on_delete=models.SET(get_removed_concentrationmethod),
+    )  # This field is not in use
+
+    removed_equal_representation_nucleotides = models.BooleanField(
         "Equal Representation of Nucleotides",
-        default=True,
+        blank=True,
+        default=False,
+    )  # This field is not in use
+
+    volume = models.FloatField(
+        "Volume", validators=[MinValueValidator(10)], null=True, blank=True
     )
 
     read_length = models.ForeignKey(
@@ -368,11 +377,11 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    amplification_cycles = models.PositiveIntegerField(
+    removed_amplification_cycles = models.PositiveIntegerField(
         "Amplification cycles",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     @property
     def index_i7_id(self):
@@ -394,20 +403,14 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    concentration_facility = models.FloatField(
-        "Concentration",
-        null=True,
-        blank=True,
-    )
-
-    concentration_method_facility = models.ForeignKey(
+    removed_concentration_method_facility = models.ForeignKey(
         ConcentrationMethod,
         related_name="+",
         verbose_name="Concentration Method",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-    )
+    )  # This field is not in use
 
     sample_volume_facility = models.PositiveIntegerField(
         "Sample Volume",
@@ -421,15 +424,21 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    size_distribution_facility = models.CharField(
+    size_distribution_facility = models.FloatField(
         "Size Distribution",
-        max_length=200,
         null=True,
         blank=True,
     )
 
     comments_facility = models.TextField(
         "Comments",
+        null=True,
+        blank=True,
+    )
+
+    measured_value_facility = models.FloatField(
+        "Measured Value (facility)",
+        validators=[MinValueValidator(-1)],
         null=True,
         blank=True,
     )
@@ -448,6 +457,12 @@ class GenericLibrarySample(DateTimeMixin):
 
         self.barcode = barcode
         self.save(update_fields=["barcode"])
+
+    def get_measuring_unit_details(self):
+        for display_name, unit, input_type in self.MEASURING_UNIT_CHOICES:
+            if display_name == self.measuring_unit:
+                return display_name, unit, input_type
+        return None, None, None
 
     def save(self, *args, **kwargs):
         created = self.pk is None

@@ -147,12 +147,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             dataIndex: "concentration_method",
             tdCls: "userEntry",
             width: 50,
-            renderer: function (value, meta) {
-              var store = Ext.getStore("concentrationMethodsStore");
-              var record = store.findRecord("id", value);
-              meta.tdAttr = 'data-qtip="' + record.get("name") + '"';
-              return record ? record.getShortName() : "";
-            },
             hidden: true
           },
           {

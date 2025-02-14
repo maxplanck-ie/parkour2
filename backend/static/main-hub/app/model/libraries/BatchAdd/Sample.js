@@ -33,11 +33,19 @@ Ext.define("MainHub.model.libraries.BatchAdd.Sample", {
       name: "rna_quality",
       allowNull: true,
       defaultValue: null
+    },
+    {
+      name: "biosafety_level",
+      type: "string"
+    },
+    {
+      name: "gmo",
+      type: "bool"
     }
   ],
 
   validators: {
     nucleic_acid_type: "presence",
-    rna_quality: "rnaquality"
+    // rna_quality: "rnaquality"
   }
 });

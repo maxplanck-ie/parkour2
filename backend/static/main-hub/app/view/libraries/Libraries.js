@@ -438,6 +438,18 @@ Ext.define("MainHub.view.libraries.Libraries", {
             }
           },
           {
+            text: "GMO",
+            tooltip: "Genetically Modified Organism",
+            dataIndex: "gmo",
+            renderer: function (value, meta, record) {
+              if (record.get("leaf")) {
+                return value ? "Yes" : "No";
+              } else {
+                return "";
+              }
+            }
+          },
+          {
             text: "Date",
             dataIndex: "create_time",
             renderer: Ext.util.Format.dateRenderer("d.m.Y")
@@ -461,33 +473,66 @@ Ext.define("MainHub.view.libraries.Libraries", {
             renderer: "gridCellTooltipRenderer"
           },
           {
-            text: "ng/μl",
-            tooltip: "Concentration",
-            dataIndex: "concentration"
-          },
-          {
-            text: "RQN",
-            tooltip: "RNA Quality",
-            dataIndex: "rna_quality",
-            width: 55,
-            renderer: function (value) {
-              return value === 11 ? "Determined by Facility" : value;
-            }
-          },
-          {
             text: "bp",
             tooltip: "Mean Fragment Size",
             dataIndex: "mean_fragment_size"
           },
           {
-            text: "Index Type",
-            dataIndex: "index_type_name",
+            text: "Measurement",
+            tooltip: "Measured value along with its unit",
+            renderer: function (value, meta, record) {
+              var measuringUnit = record.get("measuring_unit");
+              var measuredValue = record.get("measured_value");
+
+              if (measuringUnit === "-") {
+                return "Requires Measurement";
+              } else
+                return Ext.String.format(
+                  "{0}{1}",
+                  measuredValue,
+                  measuringUnit
+                );
+            }
+          },
+          {
+            text: "Starting Amount",
+            tooltip: "Starting Amount",
+            dataIndex: "amount_facility",
             renderer: "gridCellTooltipRenderer"
           },
           {
-            text: "Index Reads",
-            tooltip: "# of Index Reads",
-            dataIndex: "index_reads"
+            text: "PCR Cycles",
+            tooltip: "PCR Cycles",
+            dataIndex: "pcr_cycles",
+            renderer: "gridCellTooltipRenderer"
+          },
+          {
+            text: "ng/μl (Output)",
+            tooltip: "ng/μl (Output)",
+            dataIndex: "concentration_facility",
+            renderer: "gridCellTooltipRenderer"
+          },
+          {
+            text: "Measurement (Output)",
+            tooltip: "Measured value along with its unit",
+            renderer: function (value, meta, record) {
+              var measuringUnit = record.get("measuring_unit_facility");
+              var measuredValue = record.get("measured_value_facility");
+
+              if (measuringUnit === "-") {
+                return "Requires Measurement";
+              } else
+                return Ext.String.format(
+                  "{0}{1}",
+                  measuredValue,
+                  measuringUnit
+                );
+            }
+          },
+          {
+            text: "Index Type",
+            dataIndex: "index_type_name",
+            renderer: "gridCellTooltipRenderer"
           },
           {
             text: "I7",
@@ -508,53 +553,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
             text: "Depth (M)",
             tooltip: "Sequencing Depth",
             dataIndex: "sequencing_depth"
-          },
-          // {
-          //   text: 'Amplification',
-          //   tooltip: 'Amplification Cycles',
-          //   dataIndex: 'amplification_cycles'
-          // },
-          // {
-          //   text: 'Equal nucl.',
-          //   tooltip: 'Equal Representation of Nucleotides',
-          //   dataIndex: 'equal_representation_nucleotides',
-          //   width: 90,
-          //   renderer: function (value, meta) {
-          //     if (meta.record.get('leaf')) {
-          //       return value ? 'Yes' : 'No';
-          //     }
-          //   }
-          // },
-          // {
-          //   text: 'qPCR (nM)',
-          //   tooltip: 'qPCR Result',
-          //   dataIndex: 'qpcr_result'
-          // },
-          // {
-          //   text: 'F/S',
-          //   tooltip: 'Concentration Determined by',
-          //   dataIndex: 'concentration_method',
-          //   width: 50,
-          //   renderer: function (value, meta) {
-          //     if (meta.record.get('leaf')) {
-          //       var store = Ext.getStore('concentrationMethodsStore');
-          //       var record = store.findRecord('id', value);
-          //       var name = record.get('name');
-          //       meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);
-          //       return name.charAt(0);
-          //     }
-          //   }
-          // },
-          {
-            text: "Organism",
-            dataIndex: "organism_name",
-            width: 150
-          },
-          {
-            text: "Comments",
-            dataIndex: "comments",
-            renderer: "gridCellTooltipRenderer",
-            width: 150
           }
         ]
       }

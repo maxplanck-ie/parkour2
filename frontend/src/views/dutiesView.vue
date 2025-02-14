@@ -1,104 +1,134 @@
 <template>
-  <div class="header">
-    <font-awesome-icon
-      style="font-size: 28px"
-      icon="fa-solid fa-chalkboard-user"
-      size="xl"
-    />
-    <span
-      class="text-large"
-      style="font-size: 20px; font-weight: bold; margin-left: 5px"
-    >
-      Manage Duties</span
-    >
-  </div>
-  <div
-    class="parent-container"
-    style="
-      padding: 15px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    "
-  >
-    <div class="table-container" style="flex: 1; margin-bottom: 20px">
-      <div style="margin: 15px; border: 1px solid #006c66">
+  <div class="parent-container">
+    <div class="header">
+      <div class="header-logo" style="display: inline; margin-right: 10px">
+        <svg
+          style="display: block"
+          fill="none"
+          width="42px"
+          height="42px"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <g>
+            <path
+              opacity="0.3"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 16.3106 20.4627 18.6515 18.5549 19.8557L18.2395 18.878C17.9043 17.6699 17.2931 16.8681 16.262 16.3834C15.2532 15.9092 13.8644 15.75 12 15.75C10.134 15.75 8.74481 15.922 7.73554 16.4097C6.70593 16.9073 6.09582 17.7207 5.7608 18.927L5.45019 19.8589C3.53829 18.6556 3 16.3144 3 12ZM8.75 10C8.75 8.20507 10.2051 6.75 12 6.75C13.7949 6.75 15.25 8.20507 15.25 10C15.25 11.7949 13.7949 13.25 12 13.25C10.2051 13.25 8.75 11.7949 8.75 10Z"
+              fill="#333333"
+            />
+            <path
+              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
+              stroke="white"
+              stroke-width="1.5"
+            />
+            <path
+              d="M15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z"
+              stroke="white"
+              stroke-width="1.5"
+            />
+            <path
+              d="M6 19C6.63819 16.6928 8.27998 16 12 16C15.72 16 17.3618 16.6425 18 18.9497"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </g>
+        </svg>
+      </div>
+      <div class="header-title" style="display: inline">Manage Duties</div>
+    </div>
+    <div style="width: 100%; display: flex; flex-direction: row">
+      <div class="table-container" style="width: 100%">
         <div
           style="
-            padding: 7px 15px;
-            height: 42px;
-            background: #ecebe5;
-            display: flex;
-            align-items: center;
+            margin-right: 12px;
+            border: 1px solid black;
+            border-radius: 4px;
           "
         >
           <div
             style="
+              padding: 7px 15px;
+              height: 70px;
+              background: #ecebe5;
               display: flex;
+              border-radius: 4px;
               align-items: center;
-              flex-grow: 1;
-              overflow: hidden;
-              white-space: nowrap;
             "
           >
             <div
               style="
-                background: rgb(105, 105, 105);
-                width: 28px;
-                height: 28px;
-                text-align: center;
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+                overflow: hidden;
+                white-space: nowrap;
               "
             >
-              <font-awesome-icon
-                icon="fa-solid fa-magnifying-glass"
-                style="color: white; margin-top: 6px"
-              ></font-awesome-icon>
+              <div
+                style="
+                  background: grey;
+                  width: 35px;
+                  height: 35px;
+                  text-align: center;
+                  border-top-left-radius: 4px;
+                  border-bottom-left-radius: 4px;
+                "
+              >
+                <font-awesome-icon
+                  icon="fa-solid fa-magnifying-glass"
+                  style="color: white; margin-top: 10px"
+                ></font-awesome-icon>
+              </div>
+              <input
+                id="search-bar"
+                style="outline: none; width: 450px; font-size: 14px"
+                class="styled-box"
+                type="text"
+                placeholder="Search..."
+                @input="searchDuties"
+              />
             </div>
-            <input
-              id="search-bar"
-              style="outline: none"
-              class="styled-box"
-              type="text"
-              placeholder="Search..."
-              @input="searchDuties"
-            />
-          </div>
 
-          <div style="display: flex; align-items: center; margin-left: 10px">
-            <div
-              style="
-                background: rgb(105, 105, 105);
-                width: 28px;
-                height: 28px;
-                text-align: center;
-              "
-            >
-              <font-awesome-icon
-                icon="fa-regular fa-calendar-days"
-                style="color: white; margin-top: 6px"
-              ></font-awesome-icon>
+            <div style="display: flex; align-items: center; margin-left: 10px">
+              <div
+                style="
+                  background: grey;
+                  width: 35px;
+                  height: 35px;
+                  text-align: center;
+                  border-top-left-radius: 4px;
+                  border-bottom-left-radius: 4px;
+                "
+              >
+                <font-awesome-icon
+                  icon="fa-regular fa-calendar-days"
+                  style="color: white; margin-top: 10px"
+                ></font-awesome-icon>
+              </div>
+              <select
+                id="period-filter"
+                class="styled-box"
+                style="width: 200px; font-size: 14px"
+                v-model="selectedFilter"
+              >
+                <option value="all">All</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="upcoming">Upcoming</option>
+                <option value="past-1-month">Past 1 Month</option>
+                <option value="past-3-months">Past 3 Months</option>
+                <option value="past-6-months">Past 6 Months</option>
+                <option value="past-1-year">Past 1 Year</option>
+              </select>
             </div>
-            <select
-              id="period-filter"
-              class="styled-box"
-              style="flex-shrink: 0"
-              v-model="selectedFilter"
-            >
-              <option value="all">All</option>
-              <option value="ongoing">Ongoing</option>
-              <option value="upcoming">Upcoming</option>
-              <option value="past-1-month">Past 1 Month</option>
-              <option value="past-3-months">Past 3 Months</option>
-              <option value="past-6-months">Past 6 Months</option>
-              <option value="past-1-year">Past 1 Year</option>
-            </select>
           </div>
-        </div>
-        <div style="padding: 15px">
           <ag-grid-vue
             ref="dutiesGrid"
             class="ag-theme-alpine"
-            style="height: 723px"
+            style="margin: 15px; height: 669px"
             rowSelection="multiple"
             animateRows="true"
             rowDragManaged="true"
@@ -111,156 +141,163 @@
           />
         </div>
       </div>
-    </div>
-    <div
-      class="add-duty-container"
-      style="
-        margin: 13px;
-        background: #ecebe5;
-        width: 100%;
-        max-width: 320px;
-        height: 800px;
-        border: 1px solid #006c66;
-      "
-    >
       <div
+        class="add-duty-container"
         style="
-          background: #006c66;
-          padding: 10px;
-          color: white;
-          margin-bottom: 8px;
-          height: 42px;
+          background: #ecebe5;
+          width: 100%;
+          height: 771px;
+          max-width: 20%;
+          border: 1px solid #006c66;
+          border-radius: 4px;
         "
       >
-        <font-awesome-icon icon="fa-regular fa-calendar-plus" />
-        <span class="text-medium" style="margin-left: 4px">Add Duty</span>
-      </div>
-      <div style="padding-top: 6px">
-        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-          Facility:
-        </div>
-        <div style="padding-left: 30px">
-          <select
-            class="dropdown-select"
-            name="facility"
-            id="facility"
-            @change="updateDutyObject"
-          >
-            <option value="">Select</option>
-            <option value="Bioinfo">Bioinfo</option>
-            <option value="DeepSeq">DeepSeq</option>
-          </select>
-        </div>
-      </div>
-      <div style="padding-top: 6px">
-        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-          Responsible Person:
-        </div>
-        <div style="padding-left: 30px">
-          <select
-            class="dropdown-select"
-            name="main_name"
-            id="main_name"
-            disabled="true"
-            @change="updateDutyObject"
-          >
-            <option value="">Select</option>
-            <option v-for="user in userListFiltered" :value="user.id">
-              {{ user.first_name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div style="padding-top: 6px">
-        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-          Backup Person:
-        </div>
-        <div style="padding-left: 30px">
-          <select
-            class="dropdown-select"
-            name="backup_name"
-            id="backup_name"
-            disabled="true"
-            @change="updateDutyObject"
-          >
-            <option value="">Select</option>
-            <option v-for="user in userListFiltered" :value="user.id">
-              {{ user.first_name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div style="padding-top: 6px">
-        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-          Start Date:
-        </div>
-        <div style="padding-left: 30px">
-          <input
-            class="date-selector"
-            type="date"
-            id="start_date"
-            name="start_date"
-            value=""
-            min="2015-01-01"
-            max="2099-12-31"
-            @change="updateDutyObject"
+        <div
+          style="
+            background: #006c66;
+            padding: 10px;
+            color: white;
+            margin-bottom: 8px;
+            height: 42px;
+          "
+        >
+          <font-awesome-icon
+            icon="fa-regular fa-calendar-plus"
+            style="height: 18px; width: 18px"
           />
-        </div>
-      </div>
-      <div style="padding-top: 6px">
-        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-          End Date:
-        </div>
-        <div style="padding-left: 30px">
-          <input
-            class="date-selector"
-            type="date"
-            id="end_date"
-            name="end_date"
-            value=""
-            min="2015-01-01"
-            max="2099-12-31"
-            @change="updateDutyObject"
-          />
-        </div>
-      </div>
-      <div style="padding-top: 6px">
-        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-          Platform:
-        </div>
-        <div style="padding-left: 30px">
-          <select
-            class="dropdown-select"
-            name="platform"
-            id="platform"
-            @change="updateDutyObject"
+          <span class="text-medium" style="margin-left: 8px; font-size: 16px"
+            >Add Duty</span
           >
-            <option value="">Select</option>
-            <option value="short">Short</option>
-            <option value="long">Long</option>
-            <option value="shortlong">Short + Long</option>
-          </select>
         </div>
+        <div style="padding-top: 6px">
+          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+            Facility:
+          </div>
+          <div style="padding-left: 30px; padding-right: 30px">
+            <select
+              class="dropdown-select"
+              name="facility"
+              id="facility"
+              @change="updateDutyObject"
+            >
+              <option value="">Select</option>
+              <option value="Bioinfo">Bioinfo</option>
+              <option value="DeepSeq">DeepSeq</option>
+            </select>
+          </div>
+        </div>
+        <div style="padding-top: 6px">
+          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+            Responsible Person:
+          </div>
+          <div style="padding-left: 30px; padding-right: 30px">
+            <select
+              class="dropdown-select"
+              name="main_name"
+              id="main_name"
+              disabled="true"
+              @change="updateDutyObject"
+            >
+              <option value="">Select</option>
+              <option v-for="user in userListFiltered" :value="user.id">
+                {{ user.first_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div style="padding-top: 6px">
+          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+            Backup Person:
+          </div>
+          <div style="padding-left: 30px; padding-right: 30px">
+            <select
+              class="dropdown-select"
+              name="backup_name"
+              id="backup_name"
+              disabled="true"
+              @change="updateDutyObject"
+            >
+              <option value="">Select</option>
+              <option v-for="user in userListFiltered" :value="user.id">
+                {{ user.first_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div style="padding-top: 6px">
+          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+            Start Date:
+          </div>
+          <div style="padding-left: 30px; padding-right: 30px">
+            <input
+              class="date-selector"
+              type="date"
+              id="start_date"
+              name="start_date"
+              value=""
+              min="2015-01-01"
+              max="2099-12-31"
+              @change="updateDutyObject"
+            />
+          </div>
+        </div>
+        <div style="padding-top: 6px">
+          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+            End Date:
+          </div>
+          <div style="padding-left: 30px; padding-right: 30px">
+            <input
+              class="date-selector"
+              type="date"
+              id="end_date"
+              name="end_date"
+              value=""
+              min="2015-01-01"
+              max="2099-12-31"
+              @change="updateDutyObject"
+            />
+          </div>
+        </div>
+        <div style="padding-top: 6px">
+          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+            Platform:
+          </div>
+          <div style="padding-left: 30px; padding-right: 30px">
+            <select
+              class="dropdown-select"
+              name="platform"
+              id="platform"
+              @change="updateDutyObject"
+            >
+              <option value="">Select</option>
+              <option value="short">Short</option>
+              <option value="long">Long</option>
+              <option value="shortlong">Short + Long</option>
+            </select>
+          </div>
+        </div>
+        <div style="padding-top: 6px">
+          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+            Comments:
+          </div>
+          <div
+            style="padding-left: 30px; padding-right: 30px; padding-right: 30px"
+          >
+            <textarea
+              class="comment-textarea"
+              id="comment"
+              @input="updateDutyObject"
+            />
+          </div>
+        </div>
+        <button
+          class="text-medium green-button"
+          style="margin: 15px"
+          @click="saveDuty()"
+        >
+          Save
+        </button>
       </div>
-      <div style="padding-top: 6px">
-        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-          Comments:
-        </div>
-        <div style="padding-left: 30px; padding-right: 30px">
-          <textarea
-            class="comment-textarea"
-            id="comment"
-            @input="updateDutyObject"
-          />
-        </div>
-      </div>
-      <button
-        class="text-medium save-button"
-        style="margin: 15px"
-        @click="saveDuty()"
-      >
-        Save
-      </button>
     </div>
   </div>
 </template>
@@ -738,27 +775,30 @@ export default {
 </script>
 
 <style>
-.header {
-  color: white;
-  background: #006c66;
-  padding: 16px 20px;
-  width: 100% !important;
+.parent-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
 
 .styled-box {
-  height: 28px;
+  height: 35px;
   padding: 0px 8px;
-  border: 1px solid rgb(105, 105, 105);
+  border: 1px solid grey;
   background: whitesmoke;
   outline: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .dropdown-select,
 .date-selector {
-  width: 165px;
-  height: 24px;
+  width: 100%;
+  height: 30px;
   background: whitesmoke;
-  max-width: 80%;
+  padding: 4px;
+  font-size: 14px !important;
 }
 
 .comment-textarea {
@@ -771,40 +811,29 @@ export default {
 .date-selector,
 .comment-textarea {
   border: 1px solid grey;
-  border-radius: 5px;
+  border-radius: 4px;
   font-size: 12px;
   outline: none;
-}
-
-.save-button {
-  background: #006c66;
-  border: none;
-  outline: none;
-  color: white;
-  padding: 6px 10px;
-}
-
-.save-button:hover {
-  cursor: pointer;
+  font-size: 14px;
 }
 
 select:disabled {
   background: #dddddd;
 }
 
-@media (max-width: 767px) {
-  .parent-container {
-    flex-direction: column;
+@media (max-width: 1000px) {
+  .add-duty-container {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  #search-bar {
+    width: 200px !important;
   }
 
-  .table-container,
-  .add-duty-container {
-    width: 95% !important;
-    max-width: none !important;
-    margin: 10px !important;
-  }
-  .table-container > div {
-    margin: 0px !important;
+  #period-filter {
+    width: 120px !important;
   }
 }
 </style>

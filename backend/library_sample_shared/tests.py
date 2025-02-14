@@ -66,15 +66,6 @@ class OrganismTest(TestCase):
         self.assertEqual(self.organism.__str__(), self.organism.name)
 
 
-class ConcentrationMethodTest(TestCase):
-    def setUp(self):
-        self.method = ConcentrationMethod(name=get_random_name())
-
-    def test_concentration_method_name(self):
-        self.assertTrue(isinstance(self.method, ConcentrationMethod))
-        self.assertEqual(self.method.__str__(), self.method.name)
-
-
 class ReadLengthTest(TestCase):
     def setUp(self):
         self.read_length = ReadLength(name=get_random_name())
@@ -227,23 +218,6 @@ class TestReadLengths(BaseTestCase):
         read_lengths = [x["name"] for x in data]
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.read_length.name, read_lengths)
-
-
-class TestConcentrationMethods(BaseTestCase):
-    def setUp(self):
-        self.create_user("foo@bar.io", "foo-foo")
-        self.client.login(email="foo@bar.io", password="foo-foo")
-
-        self.concentration_method = ConcentrationMethod(name=self._get_random_name())
-        self.concentration_method.save()
-
-    def test_organisms_list(self):
-        """Ensure get concentration methods behaves correctly."""
-        response = self.client.get(reverse("concentration-method-list"))
-        data = response.json()
-        concentration_methods = [x["name"] for x in data]
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(self.concentration_method.name, concentration_methods)
 
 
 class TestIndexTypes(BaseTestCase):
