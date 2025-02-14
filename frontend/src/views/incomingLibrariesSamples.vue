@@ -1500,7 +1500,6 @@ export default {
 
 <!--
 paste error window
-migrations fix
 
 make the component modular
 show hover tooltips with use of a library
