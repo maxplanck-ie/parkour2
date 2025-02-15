@@ -111,7 +111,7 @@
                 overflow-y: auto;
               ">
               <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
-                <template v-if="column.field !== 'selected'">
+                <template v-if="column.field !== 'selected' || column.field === 'selected' && column.visible == false">
                   <label :style="{
                     backgroundColor: column.columns ? '#33333310' : 'white',
                     cursor: column.columns ? 'default' : 'pointer'
@@ -494,7 +494,7 @@ export default {
         {
           title: "Select",
           field: "selected",
-          visible: true,
+          visible: false,
           headerSort: false,
           headerVertical: true,
           frozen: true,
@@ -1500,7 +1500,6 @@ export default {
 
 <!--
 paste error window
-timestamp to check aged columns storage
 
 export column width
 make the component modular
