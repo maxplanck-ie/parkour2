@@ -196,7 +196,7 @@
         <div class="popup-body">
           <div v-html="popupContents.popupDescription"></div>
           <div v-if="popupContents.popupList && popupContents.popupList.length > 0" class="popup-scrollable-content">
-            <ol>
+            <ol style="padding-left: 25px;">
               <li v-for="item in popupContents.popupList" :key="item">
                 {{ item.barcode + " ➜ " }}
                 <span style="font-weight: bold">{{ item.name }}</span>
