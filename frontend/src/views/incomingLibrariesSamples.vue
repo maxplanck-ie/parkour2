@@ -1499,9 +1499,8 @@ export default {
 </style>
 
 <!--
-paste error window
-
 export column width
+movable paste errors window
 make the component modular
 show hover tooltips with use of a library
 -->
