@@ -1,6 +1,7 @@
 <template>
   <!-- Table Element -->
   <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
     <div class="popup-container" :style="{
