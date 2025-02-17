@@ -1,46 +1,47 @@
 <template>
+  <!-- Table Element -->
   <div id="tabulatorTable" ref="tabulatorTableRef"></div>
   <!-- Errors window -->
-  <!-- <div v-if="showPopupWindow" class="popup-overlay">
-      <div class="popup-container" :style="{
-        height: popupContents.popupHeight + 'px',
-        width: popupContents.popupWidth + 'px'
-      }">
-        <div class="popup-header">
-          <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g>
-              <path opacity="0.3"
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                fill="#323232" />
-              <path
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-              <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-            </g>
-          </svg>
-          <span class="popup-title">{{ popupContents.popupTitle }}</span>
-          <button class="popup-close-button" @click="showPopupWindow = false">
-            &times;
-          </button>
-        </div>
-        <div class="popup-body">
-          <div v-html="popupContents.popupDescription"></div>
-          <div v-if="popupContents.popupList && popupContents.popupList.length > 0" class="popup-scrollable-content">
-            <ol>
-              <li v-for="item in popupContents.popupList" :key="item">
-                {{ item.barcode + " ➜ " }}
-                <span style="font-weight: bold">{{ item.name }}</span>
-              </li>
-            </ol>
-          </div>
-        </div>
-        <div class="popup-footer">
-          <button class="popup-button" @click="showPopupWindow= false">No</button>
+  <div v-if="showErrorsWindow" class="popup-overlay">
+    <div class="popup-container" :style="{
+      height: errorsPopupContents.errorsPopupHeight + 'px',
+      width: errorsPopupContents.errorsPopupWidth + 'px'
+    }">
+      <div class="popup-header">
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <g>
+            <path opacity="0.3"
+              d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
+              fill="#323232" />
+            <path
+              d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
+              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+          </g>
+        </svg>
+        <span class="popup-title">Paste Error</span>
+        <button class="popup-close-button" @click="showErrorsWindow = false">
+          &times;
+        </button>
+      </div>
+      <div class="popup-body">
+        <div> Following errors occured while pasting, please try again after fixing:</div>
+        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
+          <ol style="padding-left: 25px;">
+            <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
+              {{ item.barcode + " ➜ " }}
+              <span style="font-weight: bold">{{ item.message }}</span>
+            </li>
+          </ol>
         </div>
       </div>
-    </div> -->
+      <div class="popup-footer">
+        <button class="popup-button" @click="showErrorsWindow = false">OK</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -86,6 +87,12 @@ export default {
       },
       tableEachGroupsToggleState: [],
       tableColumnWidths: {},
+      showErrorsWindow: false,
+      errorsPopupContents: {
+        errorsList: [],
+        errorsPopupHeight: 220,
+        errorsPopupWidth: 600,
+      },
     };
   },
   watch: {
@@ -146,6 +153,8 @@ export default {
             return output;
           },
           clipboardPasteParser: async (clipboard) => {
+            this.errorsPopupContents.errorsList = [];
+            const errors = [];
             const selectedRanges = this.tabulatorInstance.getRanges();
             if (!selectedRanges?.length) {
               showNotification("Please select a range before pasting.", "warning");
@@ -166,7 +175,6 @@ export default {
             let hasValidationErrors = false;
             let changedRows = new Set();
             let changedCols = new Set();
-            let cellNumber = 0;
 
             if (isSingleCell) {
               const selectedRow = this.tabulatorInstance.getRowFromPosition(rowStart + 1);
@@ -178,7 +186,7 @@ export default {
               if (!tableRow) return;
               if (isSingleCell && tableRow.getData().request_name !== targetRequestName) return;
 
-              cellNumber++;
+              let cellNumber = 0;
               const rowData = tableRow.getData();
               const updatedRow = { ...rowData };
 
@@ -188,10 +196,14 @@ export default {
                 const field = column.getField();
                 const columnDef = column.getDefinition();
                 const cell = tableRow.getCell(field);
+                cellNumber++;
 
                 if (columnDef.editor === false || cell.getElement().classList.contains("disable-editing")) {
                   hasValidationErrors = true;
-                  showNotification(`Cell: ${cellNumber} | Editing is not allowed in this cell.`, "warning");
+                  errors.push({
+                    barcode: rowData.barcode,
+                    message: `Cell ${cellNumber}: Editing is not allowd in this cell.`
+                  });
                   return;
                 }
 
@@ -201,14 +213,28 @@ export default {
                   changedCols.add(colStart + colOffset);
                 } catch (error) {
                   hasValidationErrors = true;
-                  showNotification(`Cell: ${cellNumber} | ${error.message}`, "error");
+                  errors.push({
+                    barcode: rowData.barcode,
+                    message: `Cell ${cellNumber}: ${error.message}`
+                  });
                 }
               });
 
               batchUpdates[rowData.barcode] = updatedRow;
             });
 
-            if (hasValidationErrors) return [];
+            if (hasValidationErrors) {
+              if (errors.length) {
+                this.errorsPopupContents = {
+                  errorsList: errors,
+                  errorsPopupHeight: Math.min(420, 260 + errors.length * 34),
+                  errorsPopupWidth: 600
+                };
+                this.showErrorsWindow = true;
+                return [];
+              }
+              return [];
+            }
 
             const updatedRowsArray = Object.values(batchUpdates);
             if (updatedRowsArray.length) {
@@ -365,8 +391,10 @@ export default {
         });
 
         this.tabulatorInstance.on("clipboardPasted", () => {
-          this.tableOptions.fakeLoadingStart();
-          this.tableOptions.fakeLoadingStop();
+          if (this.errorsPopupContents.errorsList.length == 0) {
+            this.tableOptions.fakeLoadingStart();
+            this.tableOptions.fakeLoadingStop();
+          }
         });
 
         this.tabulatorInstance.on(
