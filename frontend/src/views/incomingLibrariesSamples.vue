@@ -658,7 +658,7 @@ export default {
         {
           title: "Select",
           field: "selected",
-          visible: false,
+          visible: true,
           headerSort: false,
           headerVertical: true,
           frozen: true,
