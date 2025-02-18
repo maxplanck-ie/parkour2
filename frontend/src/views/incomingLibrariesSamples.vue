@@ -589,15 +589,31 @@ export default {
           measured_value:
             element.measured_value === 0 ? 0 : element.measured_value || "",
           input:
-            element.measuring_unit === "concentration"
-              ? `${String(element.measured_value === 0 ? 0 : element.measured_value || "")} ng/µl`
+            element.measuring_value == null && element.measured_element == null
+              ? "-"
+              : element.measuring_unit === "concentration"
+              ? `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )} ng/µl`
               : element.measuring_unit === "m"
-                ? `${String(element.measured_value === 0 ? 0 : element.measured_value || "")} M`
-                : element.measuring_unit !== "-"
-                  ? `${String(element.measured_value === 0 ? 0 : element.measured_value || "")} ${String(
-                      element.measuring_unit || ""
-                    )}`
-                  : `${String(element.measured_value === 0 ? 0 : element.measured_value || "")}`,
+              ? `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )} M`
+              : element.measuring_unit !== "-"
+              ? `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )} ${String(element.measuring_unit || "-")}`
+              : `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )}`,
           volume: element.volume === 0 ? 0 : element.volume || "",
           mean_fragment_size:
             element.mean_fragment_size === 0
@@ -692,14 +708,16 @@ export default {
                               color: white;
                               font-size: 10px;
                               font-weight: bold;
-                              padding: 2px 4px;
+                              padding: 4px;
                               border: 2px solid #333;
                               border-radius: 4px;
                               margin-right: 8px;
                             ">
                             ${type}
                           </span>
-                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${(tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name}</span>
+                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
+              (tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name
+            }</span>
                         </div>
                       `;
           },
@@ -816,8 +834,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -840,8 +858,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -907,8 +925,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -926,17 +944,17 @@ export default {
                 max: 2147483647,
                 step: 1
               },
-              validator: ["min:0", "max:2147483647"],
+              validator: ["integer", "min:0", "max:2147483647"],
               contextMenu: () => this.cellContextMenu(true, true, true),
               formatter: (cell) => {
                 const rawValue = cell.getValue();
-                const value = Number(rawValue);
+                const value = parseInt(rawValue, 10);
                 const finalString =
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -957,8 +975,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -995,8 +1013,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 const rowData = cell.getRow().getData();
                 const cellElement = cell.getElement();
                 if (rowData.type === "L") {
@@ -1035,7 +1053,11 @@ export default {
                     "warning"
                   );
                 }
-                if (rowData.type === "L" || rowData.gmo == false) {
+                if (
+                  rowData.type === "L" ||
+                  rowData.gmo == false ||
+                  rowData.gmo == ""
+                ) {
                   cell.getTable().modules.edit.currentCell = null;
                 }
               },
@@ -1051,7 +1073,11 @@ export default {
                 const finalString = options[value] || value || "Select";
                 const rowData = cell.getRow().getData();
                 const cellElement = cell.getElement();
-                if (rowData.type === "L" || rowData.gmo === false) {
+                if (
+                  rowData.type === "L" ||
+                  rowData.gmo === false ||
+                  rowData.gmo === ""
+                ) {
                   cellElement.classList.add("disable-editing");
                 } else {
                   cellElement.classList.remove("disable-editing");
@@ -1584,17 +1610,33 @@ export default {
 </script>
 
 <style>
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .parent-container {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 10px;
 }
 
+.table-container {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
 .group-action-buttons-container {
   display: none;
-  margin: 0 10px;
-  margin-left: 15px;
+  align-items: center;
+  height: 15px;
+  margin-left: 10px;
   padding: 0 10px;
   border-left: 1px solid grey;
 }
@@ -1604,9 +1646,9 @@ export default {
   border: none;
   cursor: pointer;
   font-size: 16px;
-  padding: 0 5px;
+  padding: 0px;
   height: 24px;
-  width: 24px;
+  width: 22px;
 }
 
 @media (max-width: 1400px) {
@@ -1671,8 +1713,11 @@ export default {
 </style>
 
 <!--
-export column width
-movable paste errors window
-make the component modular
+select all, change columns checkboxes delay
+close errors popup on esc or enter
+resize width of table or collapse/expand side modules should refresh the table width
+set width for columns in export
+make paste errors window movable
+make the component more modular
 show hover tooltips with use of a library
 -->
