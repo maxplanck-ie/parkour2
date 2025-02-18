@@ -13,16 +13,16 @@ const router = createRouter({
         {
           path: "duties",
           name: "Duties",
-          component: dutiesView,
+          component: dutiesView
         },
         {
           path: "incoming_libraries_samples",
           name: "Incoming Libraries/Samples",
-          component: IncomingLibrariesSamples,
-        },
-      ],
-    },
-  ],
+          component: IncomingLibrariesSamples
+        }
+      ]
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {

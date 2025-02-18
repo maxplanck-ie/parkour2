@@ -4,22 +4,48 @@
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div class="popup-container" :style="{
-      height: errorsPopupContents.errorsPopupHeight + 'px',
-      width: errorsPopupContents.errorsPopupWidth + 'px'
-    }">
+    <div
+      class="popup-container"
+      :style="{
+        height: errorsPopupContents.errorsPopupHeight + 'px',
+        width: errorsPopupContents.errorsPopupWidth + 'px'
+      }"
+    >
       <div class="popup-header">
-        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <svg
+          style="display: block"
+          fill="none"
+          width="42px"
+          height="42px"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
           <g>
-            <path opacity="0.3"
+            <path
+              opacity="0.3"
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              fill="#323232" />
+              fill="#323232"
+            />
             <path
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12 8V13"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <path
+              d="M12 16V15.9888"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
           </g>
         </svg>
         <span class="popup-title">Paste Error</span>
@@ -28,10 +54,18 @@
         </button>
       </div>
       <div class="popup-body">
-        <div> Following errors occured while pasting, please try again after fixing:</div>
-        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
-          <ol style="padding-left: 25px;">
-            <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
+        <div>
+          Following errors occurred while pasting, please try again after fixing:
+        </div>
+        <div
+          v-if="errorsPopupContents.errorsList?.length"
+          class="popup-scrollable-content"
+        >
+          <ol style="padding-left: 25px">
+            <li
+              v-for="(item, index) in errorsPopupContents.errorsList"
+              :key="index"
+            >
               {{ item.barcode + " ➜ " }}
               <span style="font-weight: bold">{{ item.message }}</span>
             </li>
@@ -39,7 +73,9 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button class="popup-button" @click="showErrorsWindow = false">OK</button>
+        <button class="popup-button" @click="showErrorsWindow = false">
+          OK
+        </button>
       </div>
     </div>
   </div>
@@ -92,8 +128,8 @@ export default {
       errorsPopupContents: {
         errorsList: [],
         errorsPopupHeight: 220,
-        errorsPopupWidth: 600,
-      },
+        errorsPopupWidth: 600
+      }
     };
   },
   watch: {
@@ -158,18 +194,38 @@ export default {
             const errors = [];
             const selectedRanges = this.tabulatorInstance.getRanges();
             if (!selectedRanges?.length) {
-              showNotification("Please select a range before pasting.", "warning");
+              showNotification(
+                "Please select a range before pasting.",
+                "warning"
+              );
               return [];
             }
 
-            const { top: rowStart, bottom: rowEnd, left: colStart, right: colEnd } = selectedRanges[0]._range;
-            const visibleColumns = this.tabulatorInstance.getColumns().filter(col => col._column.visible);
-            let pastedData = clipboard.split(/\r?\n/).map(row => row.split("\t"));
-            if (pastedData[pastedData.length - 1]?.length === 1 && pastedData[pastedData.length - 1][0] === "")
+            const {
+              top: rowStart,
+              bottom: rowEnd,
+              left: colStart,
+              right: colEnd
+            } = selectedRanges[0]._range;
+            const visibleColumns = this.tabulatorInstance
+              .getColumns()
+              .filter((col) => col._column.visible);
+            let pastedData = clipboard
+              .split(/\r?\n/)
+              .map((row) => row.split("\t"));
+            if (
+              pastedData[pastedData.length - 1]?.length === 1 &&
+              pastedData[pastedData.length - 1][0] === ""
+            )
               pastedData.pop();
 
-            const pastedColumnCount = Math.max(...pastedData.map(row => row.length));
-            const rangeColumns = visibleColumns.slice(colStart, colStart + pastedColumnCount);
+            const pastedColumnCount = Math.max(
+              ...pastedData.map((row) => row.length)
+            );
+            const rangeColumns = visibleColumns.slice(
+              colStart,
+              colStart + pastedColumnCount
+            );
             const batchUpdates = {};
             const isSingleCell = rowStart === rowEnd && colStart === colEnd;
             let targetRequestName = null;
@@ -178,14 +234,22 @@ export default {
             let changedCols = new Set();
 
             if (isSingleCell) {
-              const selectedRow = this.tabulatorInstance.getRowFromPosition(rowStart + 1);
+              const selectedRow = this.tabulatorInstance.getRowFromPosition(
+                rowStart + 1
+              );
               targetRequestName = selectedRow?.getData().request_name;
             }
 
             pastedData.forEach((pastedRow, rowOffset) => {
-              const tableRow = this.tabulatorInstance.getRowFromPosition(rowStart + rowOffset + 1);
+              const tableRow = this.tabulatorInstance.getRowFromPosition(
+                rowStart + rowOffset + 1
+              );
               if (!tableRow) return;
-              if (isSingleCell && tableRow.getData().request_name !== targetRequestName) return;
+              if (
+                isSingleCell &&
+                tableRow.getData().request_name !== targetRequestName
+              )
+                return;
 
               let cellNumber = 0;
               const rowData = tableRow.getData();
@@ -199,7 +263,10 @@ export default {
                 const cell = tableRow.getCell(field);
                 cellNumber++;
 
-                if (columnDef.editor === false || cell.getElement().classList.contains("disable-editing")) {
+                if (
+                  columnDef.editor === false ||
+                  cell.getElement().classList.contains("disable-editing")
+                ) {
                   hasValidationErrors = true;
                   errors.push({
                     barcode: rowData.barcode,
@@ -209,7 +276,11 @@ export default {
                 }
 
                 try {
-                  updatedRow[field] = this.validateCellValue(cellValue, columnDef, rowData);
+                  updatedRow[field] = this.validateCellValue(
+                    cellValue,
+                    columnDef,
+                    rowData
+                  );
                   changedRows.add(rowStart + rowOffset + 1);
                   changedCols.add(colStart + colOffset);
                 } catch (error) {
@@ -242,8 +313,12 @@ export default {
               this.tabulatorInstance.updateData(updatedRowsArray);
 
               if (changedRows.size && changedCols.size) {
-                const startRow = this.tabulatorInstance.getRowFromPosition(Math.min(...changedRows));
-                const endRow = this.tabulatorInstance.getRowFromPosition(Math.max(...changedRows));
+                const startRow = this.tabulatorInstance.getRowFromPosition(
+                  Math.min(...changedRows)
+                );
+                const endRow = this.tabulatorInstance.getRowFromPosition(
+                  Math.max(...changedRows)
+                );
                 const startCol = visibleColumns[Math.min(...changedCols)];
                 const endCol = visibleColumns[Math.max(...changedCols)];
 
@@ -725,7 +800,10 @@ export default {
           if (isNaN(numValue) && value !== "") {
             throw new Error("Invalid numeric format, please check!");
           }
-          if ((min !== undefined && numValue < min) || (max !== undefined && numValue > max)) {
+          if (
+            (min !== undefined && numValue < min) ||
+            (max !== undefined && numValue > max)
+          ) {
             throw new Error(`Value must be between ${min} and ${max}.`);
           }
           return value == "" ? "" : numValue;
@@ -734,8 +812,8 @@ export default {
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                getRow: () => ({ getData: () => rowData })
-              })
+                  getRow: () => ({ getData: () => rowData })
+                })
               : columnDef.editorParams;
           const options =
             editorParamsList?.values?.map((opt) =>
