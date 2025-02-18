@@ -55,7 +55,8 @@
       </div>
       <div class="popup-body">
         <div>
-          Following errors occurred while pasting, please try again after fixing:
+          Following errors occurred while pasting, please try again after
+          fixing:
         </div>
         <div
           v-if="errorsPopupContents.errorsList?.length"
@@ -146,9 +147,6 @@ export default {
   },
   mounted() {
     this.initializeTable();
-  },
-  beforeDestroy() {
-    document.removeEventListener("keydown", this.handleKeyDown);
   },
   methods: {
     initializeTable() {
@@ -448,7 +446,6 @@ export default {
           const field = column.getField();
           const width = column.getWidth();
           this.tableColumnWidths[field] = width;
-          this.refreshTable();
         });
 
         this.tabulatorInstance.on("rangeChanged", (range) => {
@@ -797,6 +794,12 @@ export default {
           const editorParamsNumber = columnDef.editorParams || {};
           const min = editorParamsNumber.min;
           const max = editorParamsNumber.max;
+          if (
+            columnDef.field === "sample_volume_facility" &&
+            !Number.isInteger(numValue)
+          ) {
+            throw new Error("Volume (facility) is a positive integer field.");
+          }
           if (isNaN(numValue) && value !== "") {
             throw new Error("Invalid numeric format, please check!");
           }
@@ -851,13 +854,13 @@ export default {
 
 <style>
 .tabulator {
+  height: 100%;
   font-size: 12px;
   border: 1px solid grey;
   border-radius: 4px !important;
 }
 
 .tabulator-table {
-  height: 544px;
   background-color: #7788992d !important;
   z-index: 10;
 }
@@ -866,21 +869,16 @@ export default {
   border: none !important;
 }
 
-.tabulator-tableholder {
-  overflow-x: scroll !important;
-}
-
 .tabulator-placeholder {
   text-align: center;
   width: 600px !important;
-  height: 544px !important;
   background-color: #7788992d !important;
   white-space: nowrap;
 }
 
 .tabulator-cell {
-  height: 35px !important;
-  line-height: 10px;
+  height: 30px !important;
+  line-height: 6px;
   padding: 0px !important;
   border-bottom: 1px solid grey !important;
   border-right: 1px solid grey !important;
@@ -952,7 +950,7 @@ export default {
 
 .tabulator-row {
   min-height: 0;
-  height: 35px !important;
+  height: 30px !important;
 }
 
 .tabulator-row[role="row"] {
@@ -965,7 +963,7 @@ export default {
 }
 
 .tabulator-row.tabulator-group {
-  margin-top: 5px;
+  margin-top: 3px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -994,6 +992,6 @@ export default {
 }
 
 .checkbox-column:not(.tabulator-col) {
-  padding: 12px 8px !important;
+  padding: 10px 0px !important;
 }
 </style>
