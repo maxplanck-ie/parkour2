@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("library_preparation", "0004_librarypreparation_smear_analysis"),
     ]

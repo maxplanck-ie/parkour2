@@ -15,11 +15,11 @@ import {
   faFilter,
   faColumns,
   faFileExcel,
-  faLayerGroup,
+  faLayerGroup
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
-  faCalendarDays,
+  faCalendarDays
 } from "@fortawesome/free-regular-svg-icons";
 
 const app = createApp(vueApp);
