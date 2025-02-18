@@ -3,8 +3,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 1,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.251Z",
-            "update_time": "2025-04-30T12:59:44.252Z",
+            "create_time": "2025-02-18T13:33:12.754Z",
+            "update_time": "2025-02-18T13:33:12.755Z",
             "sample": 86,
             "starting_amount": null,
             "spike_in_description": null,
@@ -13,7 +13,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -23,8 +23,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 2,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.254Z",
-            "update_time": "2025-04-30T12:59:44.255Z",
+            "create_time": "2025-02-18T13:33:12.757Z",
+            "update_time": "2025-02-18T13:33:12.758Z",
             "sample": 84,
             "starting_amount": null,
             "spike_in_description": null,
@@ -33,7 +33,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -43,8 +43,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 3,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.257Z",
-            "update_time": "2025-04-30T12:59:44.258Z",
+            "create_time": "2025-02-18T13:33:12.762Z",
+            "update_time": "2025-02-18T13:33:12.763Z",
             "sample": 85,
             "starting_amount": null,
             "spike_in_description": null,
@@ -53,7 +53,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -63,8 +63,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 4,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.260Z",
-            "update_time": "2025-04-30T12:59:44.260Z",
+            "create_time": "2025-02-18T13:33:12.767Z",
+            "update_time": "2025-02-18T13:33:12.768Z",
             "sample": 83,
             "starting_amount": null,
             "spike_in_description": null,
@@ -73,7 +73,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -83,8 +83,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 5,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.263Z",
-            "update_time": "2025-04-30T12:59:44.263Z",
+            "create_time": "2025-02-18T13:33:12.770Z",
+            "update_time": "2025-02-18T13:33:12.771Z",
             "sample": 91,
             "starting_amount": null,
             "spike_in_description": null,
@@ -93,7 +93,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -103,8 +103,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 6,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.265Z",
-            "update_time": "2025-04-30T12:59:44.266Z",
+            "create_time": "2025-02-18T13:33:12.773Z",
+            "update_time": "2025-02-18T13:33:12.773Z",
             "sample": 92,
             "starting_amount": null,
             "spike_in_description": null,
@@ -113,7 +113,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -123,8 +123,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 7,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.268Z",
-            "update_time": "2025-04-30T12:59:44.268Z",
+            "create_time": "2025-02-18T13:33:12.775Z",
+            "update_time": "2025-02-18T13:33:12.776Z",
             "sample": 90,
             "starting_amount": null,
             "spike_in_description": null,
@@ -133,7 +133,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -143,8 +143,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 8,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.270Z",
-            "update_time": "2025-04-30T12:59:44.271Z",
+            "create_time": "2025-02-18T13:33:12.778Z",
+            "update_time": "2025-02-18T13:33:12.778Z",
             "sample": 93,
             "starting_amount": null,
             "spike_in_description": null,
@@ -153,7 +153,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -163,8 +163,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 9,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.272Z",
-            "update_time": "2025-04-30T12:59:44.273Z",
+            "create_time": "2025-02-18T13:33:12.780Z",
+            "update_time": "2025-02-18T13:33:12.781Z",
             "sample": 89,
             "starting_amount": null,
             "spike_in_description": null,
@@ -173,7 +173,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -183,8 +183,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 10,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.275Z",
-            "update_time": "2025-04-30T12:59:44.276Z",
+            "create_time": "2025-02-18T13:33:12.782Z",
+            "update_time": "2025-02-18T13:33:12.783Z",
             "sample": 87,
             "starting_amount": null,
             "spike_in_description": null,
@@ -193,7 +193,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -203,8 +203,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 11,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.278Z",
-            "update_time": "2025-04-30T12:59:44.278Z",
+            "create_time": "2025-02-18T13:33:12.784Z",
+            "update_time": "2025-02-18T13:33:12.785Z",
             "sample": 88,
             "starting_amount": null,
             "spike_in_description": null,
@@ -213,7 +213,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -223,8 +223,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 12,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.291Z",
-            "update_time": "2025-04-30T12:59:44.292Z",
+            "create_time": "2025-02-18T13:33:12.796Z",
+            "update_time": "2025-02-18T13:33:12.796Z",
             "sample": 81,
             "starting_amount": null,
             "spike_in_description": null,
@@ -233,7 +233,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -243,8 +243,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 13,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.294Z",
-            "update_time": "2025-04-30T12:59:44.294Z",
+            "create_time": "2025-02-18T13:33:12.798Z",
+            "update_time": "2025-02-18T13:33:12.799Z",
             "sample": 77,
             "starting_amount": null,
             "spike_in_description": null,
@@ -253,7 +253,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -263,8 +263,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 14,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.296Z",
-            "update_time": "2025-04-30T12:59:44.297Z",
+            "create_time": "2025-02-18T13:33:12.800Z",
+            "update_time": "2025-02-18T13:33:12.801Z",
             "sample": 74,
             "starting_amount": null,
             "spike_in_description": null,
@@ -273,7 +273,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -283,8 +283,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 15,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.299Z",
-            "update_time": "2025-04-30T12:59:44.299Z",
+            "create_time": "2025-02-18T13:33:12.802Z",
+            "update_time": "2025-02-18T13:33:12.803Z",
             "sample": 69,
             "starting_amount": null,
             "spike_in_description": null,
@@ -293,7 +293,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -303,8 +303,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 16,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.301Z",
-            "update_time": "2025-04-30T12:59:44.302Z",
+            "create_time": "2025-02-18T13:33:12.804Z",
+            "update_time": "2025-02-18T13:33:12.805Z",
             "sample": 71,
             "starting_amount": null,
             "spike_in_description": null,
@@ -313,7 +313,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -323,8 +323,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 17,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.304Z",
-            "update_time": "2025-04-30T12:59:44.305Z",
+            "create_time": "2025-02-18T13:33:12.806Z",
+            "update_time": "2025-02-18T13:33:12.807Z",
             "sample": 68,
             "starting_amount": null,
             "spike_in_description": null,
@@ -333,7 +333,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -343,8 +343,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 18,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.307Z",
-            "update_time": "2025-04-30T12:59:44.308Z",
+            "create_time": "2025-02-18T13:33:12.808Z",
+            "update_time": "2025-02-18T13:33:12.809Z",
             "sample": 82,
             "starting_amount": null,
             "spike_in_description": null,
@@ -353,7 +353,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -363,8 +363,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 19,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.310Z",
-            "update_time": "2025-04-30T12:59:44.311Z",
+            "create_time": "2025-02-18T13:33:12.810Z",
+            "update_time": "2025-02-18T13:33:12.811Z",
             "sample": 66,
             "starting_amount": null,
             "spike_in_description": null,
@@ -373,7 +373,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -383,8 +383,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 20,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.313Z",
-            "update_time": "2025-04-30T12:59:44.314Z",
+            "create_time": "2025-02-18T13:33:12.812Z",
+            "update_time": "2025-02-18T13:33:12.813Z",
             "sample": 80,
             "starting_amount": null,
             "spike_in_description": null,
@@ -393,7 +393,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -403,8 +403,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 21,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.316Z",
-            "update_time": "2025-04-30T12:59:44.317Z",
+            "create_time": "2025-02-18T13:33:12.815Z",
+            "update_time": "2025-02-18T13:33:12.815Z",
             "sample": 70,
             "starting_amount": null,
             "spike_in_description": null,
@@ -413,7 +413,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -423,8 +423,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 22,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.319Z",
-            "update_time": "2025-04-30T12:59:44.319Z",
+            "create_time": "2025-02-18T13:33:12.817Z",
+            "update_time": "2025-02-18T13:33:12.817Z",
             "sample": 67,
             "starting_amount": null,
             "spike_in_description": null,
@@ -433,7 +433,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -443,8 +443,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 23,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.321Z",
-            "update_time": "2025-04-30T12:59:44.322Z",
+            "create_time": "2025-02-18T13:33:12.819Z",
+            "update_time": "2025-02-18T13:33:12.819Z",
             "sample": 76,
             "starting_amount": null,
             "spike_in_description": null,
@@ -453,7 +453,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -463,8 +463,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 24,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.324Z",
-            "update_time": "2025-04-30T12:59:44.325Z",
+            "create_time": "2025-02-18T13:33:12.821Z",
+            "update_time": "2025-02-18T13:33:12.821Z",
             "sample": 65,
             "starting_amount": null,
             "spike_in_description": null,
@@ -473,7 +473,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -483,8 +483,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 25,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.327Z",
-            "update_time": "2025-04-30T12:59:44.328Z",
+            "create_time": "2025-02-18T13:33:12.823Z",
+            "update_time": "2025-02-18T13:33:12.823Z",
             "sample": 64,
             "starting_amount": null,
             "spike_in_description": null,
@@ -493,7 +493,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -503,8 +503,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 26,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.330Z",
-            "update_time": "2025-04-30T12:59:44.330Z",
+            "create_time": "2025-02-18T13:33:12.825Z",
+            "update_time": "2025-02-18T13:33:12.825Z",
             "sample": 79,
             "starting_amount": null,
             "spike_in_description": null,
@@ -513,7 +513,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -523,8 +523,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 27,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.332Z",
-            "update_time": "2025-04-30T12:59:44.333Z",
+            "create_time": "2025-02-18T13:33:12.827Z",
+            "update_time": "2025-02-18T13:33:12.827Z",
             "sample": 75,
             "starting_amount": null,
             "spike_in_description": null,
@@ -533,7 +533,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -543,8 +543,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 28,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.335Z",
-            "update_time": "2025-04-30T12:59:44.335Z",
+            "create_time": "2025-02-18T13:33:12.829Z",
+            "update_time": "2025-02-18T13:33:12.830Z",
             "sample": 72,
             "starting_amount": null,
             "spike_in_description": null,
@@ -553,7 +553,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -563,8 +563,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 29,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.337Z",
-            "update_time": "2025-04-30T12:59:44.338Z",
+            "create_time": "2025-02-18T13:33:12.831Z",
+            "update_time": "2025-02-18T13:33:12.832Z",
             "sample": 78,
             "starting_amount": null,
             "spike_in_description": null,
@@ -573,7 +573,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -583,8 +583,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 30,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.340Z",
-            "update_time": "2025-04-30T12:59:44.341Z",
+            "create_time": "2025-02-18T13:33:12.833Z",
+            "update_time": "2025-02-18T13:33:12.834Z",
             "sample": 73,
             "starting_amount": null,
             "spike_in_description": null,
@@ -593,7 +593,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -603,8 +603,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 31,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.353Z",
-            "update_time": "2025-04-30T12:59:44.354Z",
+            "create_time": "2025-02-18T13:33:12.844Z",
+            "update_time": "2025-02-18T13:33:12.844Z",
             "sample": 56,
             "starting_amount": null,
             "spike_in_description": null,
@@ -613,7 +613,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -623,8 +623,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 32,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.356Z",
-            "update_time": "2025-04-30T12:59:44.357Z",
+            "create_time": "2025-02-18T13:33:12.846Z",
+            "update_time": "2025-02-18T13:33:12.847Z",
             "sample": 58,
             "starting_amount": null,
             "spike_in_description": null,
@@ -633,7 +633,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -643,8 +643,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 33,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.358Z",
-            "update_time": "2025-04-30T12:59:44.359Z",
+            "create_time": "2025-02-18T13:33:12.849Z",
+            "update_time": "2025-02-18T13:33:12.850Z",
             "sample": 57,
             "starting_amount": null,
             "spike_in_description": null,
@@ -653,7 +653,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -663,8 +663,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 34,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.361Z",
-            "update_time": "2025-04-30T12:59:44.362Z",
+            "create_time": "2025-02-18T13:33:12.854Z",
+            "update_time": "2025-02-18T13:33:12.855Z",
             "sample": 44,
             "starting_amount": null,
             "spike_in_description": null,
@@ -673,7 +673,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -683,8 +683,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 35,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.364Z",
-            "update_time": "2025-04-30T12:59:44.365Z",
+            "create_time": "2025-02-18T13:33:12.859Z",
+            "update_time": "2025-02-18T13:33:12.860Z",
             "sample": 61,
             "starting_amount": null,
             "spike_in_description": null,
@@ -693,7 +693,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -703,8 +703,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 36,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.367Z",
-            "update_time": "2025-04-30T12:59:44.367Z",
+            "create_time": "2025-02-18T13:33:12.861Z",
+            "update_time": "2025-02-18T13:33:12.862Z",
             "sample": 54,
             "starting_amount": null,
             "spike_in_description": null,
@@ -713,7 +713,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -723,8 +723,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 37,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.369Z",
-            "update_time": "2025-04-30T12:59:44.370Z",
+            "create_time": "2025-02-18T13:33:12.864Z",
+            "update_time": "2025-02-18T13:33:12.864Z",
             "sample": 51,
             "starting_amount": null,
             "spike_in_description": null,
@@ -733,7 +733,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -743,8 +743,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 38,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.372Z",
-            "update_time": "2025-04-30T12:59:44.373Z",
+            "create_time": "2025-02-18T13:33:12.866Z",
+            "update_time": "2025-02-18T13:33:12.867Z",
             "sample": 50,
             "starting_amount": null,
             "spike_in_description": null,
@@ -753,7 +753,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -763,8 +763,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 39,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.375Z",
-            "update_time": "2025-04-30T12:59:44.376Z",
+            "create_time": "2025-02-18T13:33:12.870Z",
+            "update_time": "2025-02-18T13:33:12.871Z",
             "sample": 60,
             "starting_amount": null,
             "spike_in_description": null,
@@ -773,7 +773,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -783,8 +783,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 40,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.378Z",
-            "update_time": "2025-04-30T12:59:44.379Z",
+            "create_time": "2025-02-18T13:33:12.873Z",
+            "update_time": "2025-02-18T13:33:12.874Z",
             "sample": 49,
             "starting_amount": null,
             "spike_in_description": null,
@@ -793,7 +793,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -803,8 +803,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 41,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.381Z",
-            "update_time": "2025-04-30T12:59:44.382Z",
+            "create_time": "2025-02-18T13:33:12.876Z",
+            "update_time": "2025-02-18T13:33:12.877Z",
             "sample": 46,
             "starting_amount": null,
             "spike_in_description": null,
@@ -813,7 +813,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -823,8 +823,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 42,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.384Z",
-            "update_time": "2025-04-30T12:59:44.385Z",
+            "create_time": "2025-02-18T13:33:12.879Z",
+            "update_time": "2025-02-18T13:33:12.879Z",
             "sample": 47,
             "starting_amount": null,
             "spike_in_description": null,
@@ -833,7 +833,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -843,8 +843,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 43,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.387Z",
-            "update_time": "2025-04-30T12:59:44.388Z",
+            "create_time": "2025-02-18T13:33:12.881Z",
+            "update_time": "2025-02-18T13:33:12.882Z",
             "sample": 52,
             "starting_amount": null,
             "spike_in_description": null,
@@ -853,7 +853,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -863,8 +863,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 44,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.390Z",
-            "update_time": "2025-04-30T12:59:44.391Z",
+            "create_time": "2025-02-18T13:33:12.883Z",
+            "update_time": "2025-02-18T13:33:12.884Z",
             "sample": 43,
             "starting_amount": null,
             "spike_in_description": null,
@@ -873,7 +873,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -883,8 +883,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 45,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.393Z",
-            "update_time": "2025-04-30T12:59:44.393Z",
+            "create_time": "2025-02-18T13:33:12.885Z",
+            "update_time": "2025-02-18T13:33:12.886Z",
             "sample": 53,
             "starting_amount": null,
             "spike_in_description": null,
@@ -893,7 +893,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -903,8 +903,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 46,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.396Z",
-            "update_time": "2025-04-30T12:59:44.397Z",
+            "create_time": "2025-02-18T13:33:12.888Z",
+            "update_time": "2025-02-18T13:33:12.888Z",
             "sample": 63,
             "starting_amount": null,
             "spike_in_description": null,
@@ -913,7 +913,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -923,8 +923,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 47,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.399Z",
-            "update_time": "2025-04-30T12:59:44.400Z",
+            "create_time": "2025-02-18T13:33:12.890Z",
+            "update_time": "2025-02-18T13:33:12.890Z",
             "sample": 59,
             "starting_amount": null,
             "spike_in_description": null,
@@ -933,7 +933,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -943,8 +943,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 48,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.402Z",
-            "update_time": "2025-04-30T12:59:44.402Z",
+            "create_time": "2025-02-18T13:33:12.892Z",
+            "update_time": "2025-02-18T13:33:12.892Z",
             "sample": 45,
             "starting_amount": null,
             "spike_in_description": null,
@@ -953,7 +953,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -963,8 +963,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 49,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.404Z",
-            "update_time": "2025-04-30T12:59:44.405Z",
+            "create_time": "2025-02-18T13:33:12.894Z",
+            "update_time": "2025-02-18T13:33:12.894Z",
             "sample": 62,
             "starting_amount": null,
             "spike_in_description": null,
@@ -973,7 +973,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -983,8 +983,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 50,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.407Z",
-            "update_time": "2025-04-30T12:59:44.408Z",
+            "create_time": "2025-02-18T13:33:12.896Z",
+            "update_time": "2025-02-18T13:33:12.897Z",
             "sample": 55,
             "starting_amount": null,
             "spike_in_description": null,
@@ -993,7 +993,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1003,8 +1003,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 51,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.410Z",
-            "update_time": "2025-04-30T12:59:44.411Z",
+            "create_time": "2025-02-18T13:33:12.898Z",
+            "update_time": "2025-02-18T13:33:12.899Z",
             "sample": 48,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1013,7 +1013,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1023,8 +1023,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 52,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.486Z",
-            "update_time": "2025-04-30T12:59:44.486Z",
+            "create_time": "2025-02-18T13:33:12.950Z",
+            "update_time": "2025-02-18T13:33:12.950Z",
             "sample": 97,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1033,7 +1033,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1043,8 +1043,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 53,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.488Z",
-            "update_time": "2025-04-30T12:59:44.489Z",
+            "create_time": "2025-02-18T13:33:12.952Z",
+            "update_time": "2025-02-18T13:33:12.952Z",
             "sample": 96,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1053,7 +1053,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1063,8 +1063,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 54,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.491Z",
-            "update_time": "2025-04-30T12:59:44.492Z",
+            "create_time": "2025-02-18T13:33:12.954Z",
+            "update_time": "2025-02-18T13:33:12.954Z",
             "sample": 94,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1073,7 +1073,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1083,8 +1083,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 55,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.494Z",
-            "update_time": "2025-04-30T12:59:44.495Z",
+            "create_time": "2025-02-18T13:33:12.956Z",
+            "update_time": "2025-02-18T13:33:12.956Z",
             "sample": 95,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1093,7 +1093,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1103,8 +1103,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 56,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.507Z",
-            "update_time": "2025-04-30T12:59:44.507Z",
+            "create_time": "2025-02-18T13:33:12.967Z",
+            "update_time": "2025-02-18T13:33:12.968Z",
             "sample": 103,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1113,7 +1113,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1123,8 +1123,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 57,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.509Z",
-            "update_time": "2025-04-30T12:59:44.510Z",
+            "create_time": "2025-02-18T13:33:12.970Z",
+            "update_time": "2025-02-18T13:33:12.971Z",
             "sample": 102,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1133,7 +1133,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1143,8 +1143,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 58,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.513Z",
-            "update_time": "2025-04-30T12:59:44.514Z",
+            "create_time": "2025-02-18T13:33:12.972Z",
+            "update_time": "2025-02-18T13:33:12.973Z",
             "sample": 101,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1153,7 +1153,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1163,8 +1163,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 59,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.516Z",
-            "update_time": "2025-04-30T12:59:44.517Z",
+            "create_time": "2025-02-18T13:33:12.974Z",
+            "update_time": "2025-02-18T13:33:12.975Z",
             "sample": 99,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1173,7 +1173,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1183,8 +1183,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 60,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.519Z",
-            "update_time": "2025-04-30T12:59:44.520Z",
+            "create_time": "2025-02-18T13:33:12.976Z",
+            "update_time": "2025-02-18T13:33:12.977Z",
             "sample": 98,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1193,7 +1193,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1203,8 +1203,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 61,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.532Z",
-            "update_time": "2025-04-30T12:59:44.533Z",
+            "create_time": "2025-02-18T13:33:12.986Z",
+            "update_time": "2025-02-18T13:33:12.986Z",
             "sample": 105,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1213,7 +1213,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1223,8 +1223,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 62,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.535Z",
-            "update_time": "2025-04-30T12:59:44.536Z",
+            "create_time": "2025-02-18T13:33:12.988Z",
+            "update_time": "2025-02-18T13:33:12.988Z",
             "sample": 106,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1233,7 +1233,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1243,8 +1243,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 63,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.538Z",
-            "update_time": "2025-04-30T12:59:44.539Z",
+            "create_time": "2025-02-18T13:33:12.990Z",
+            "update_time": "2025-02-18T13:33:12.990Z",
             "sample": 104,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1253,7 +1253,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1263,8 +1263,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 64,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.541Z",
-            "update_time": "2025-04-30T12:59:44.541Z",
+            "create_time": "2025-02-18T13:33:12.992Z",
+            "update_time": "2025-02-18T13:33:12.992Z",
             "sample": 111,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1273,7 +1273,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1283,8 +1283,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 65,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.544Z",
-            "update_time": "2025-04-30T12:59:44.544Z",
+            "create_time": "2025-02-18T13:33:12.994Z",
+            "update_time": "2025-02-18T13:33:12.994Z",
             "sample": 110,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1293,7 +1293,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1303,8 +1303,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 66,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.547Z",
-            "update_time": "2025-04-30T12:59:44.548Z",
+            "create_time": "2025-02-18T13:33:12.996Z",
+            "update_time": "2025-02-18T13:33:12.996Z",
             "sample": 107,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1313,7 +1313,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1323,8 +1323,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 67,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.550Z",
-            "update_time": "2025-04-30T12:59:44.551Z",
+            "create_time": "2025-02-18T13:33:12.998Z",
+            "update_time": "2025-02-18T13:33:12.998Z",
             "sample": 112,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1333,7 +1333,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1343,8 +1343,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 68,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.553Z",
-            "update_time": "2025-04-30T12:59:44.554Z",
+            "create_time": "2025-02-18T13:33:13.000Z",
+            "update_time": "2025-02-18T13:33:13.000Z",
             "sample": 109,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1353,7 +1353,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1363,8 +1363,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 69,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.556Z",
-            "update_time": "2025-04-30T12:59:44.556Z",
+            "create_time": "2025-02-18T13:33:13.002Z",
+            "update_time": "2025-02-18T13:33:13.002Z",
             "sample": 108,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1373,7 +1373,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1383,8 +1383,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 70,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.571Z",
-            "update_time": "2025-04-30T12:59:44.572Z",
+            "create_time": "2025-02-18T13:33:13.012Z",
+            "update_time": "2025-02-18T13:33:13.013Z",
             "sample": 171,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1393,7 +1393,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1403,8 +1403,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 71,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.574Z",
-            "update_time": "2025-04-30T12:59:44.575Z",
+            "create_time": "2025-02-18T13:33:13.014Z",
+            "update_time": "2025-02-18T13:33:13.015Z",
             "sample": 164,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1413,7 +1413,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1423,8 +1423,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 72,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.577Z",
-            "update_time": "2025-04-30T12:59:44.578Z",
+            "create_time": "2025-02-18T13:33:13.016Z",
+            "update_time": "2025-02-18T13:33:13.017Z",
             "sample": 170,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1433,7 +1433,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1443,8 +1443,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 73,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.580Z",
-            "update_time": "2025-04-30T12:59:44.581Z",
+            "create_time": "2025-02-18T13:33:13.018Z",
+            "update_time": "2025-02-18T13:33:13.019Z",
             "sample": 165,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1453,7 +1453,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1463,8 +1463,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 74,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.583Z",
-            "update_time": "2025-04-30T12:59:44.584Z",
+            "create_time": "2025-02-18T13:33:13.020Z",
+            "update_time": "2025-02-18T13:33:13.021Z",
             "sample": 173,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1473,7 +1473,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1483,8 +1483,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 75,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.586Z",
-            "update_time": "2025-04-30T12:59:44.587Z",
+            "create_time": "2025-02-18T13:33:13.023Z",
+            "update_time": "2025-02-18T13:33:13.023Z",
             "sample": 169,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1493,7 +1493,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1503,8 +1503,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 76,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.589Z",
-            "update_time": "2025-04-30T12:59:44.589Z",
+            "create_time": "2025-02-18T13:33:13.025Z",
+            "update_time": "2025-02-18T13:33:13.025Z",
             "sample": 166,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1513,7 +1513,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1523,8 +1523,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 77,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.591Z",
-            "update_time": "2025-04-30T12:59:44.592Z",
+            "create_time": "2025-02-18T13:33:13.027Z",
+            "update_time": "2025-02-18T13:33:13.027Z",
             "sample": 168,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1533,7 +1533,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1543,8 +1543,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 78,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.594Z",
-            "update_time": "2025-04-30T12:59:44.595Z",
+            "create_time": "2025-02-18T13:33:13.029Z",
+            "update_time": "2025-02-18T13:33:13.029Z",
             "sample": 163,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1553,7 +1553,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1563,8 +1563,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 79,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.598Z",
-            "update_time": "2025-04-30T12:59:44.599Z",
+            "create_time": "2025-02-18T13:33:13.031Z",
+            "update_time": "2025-02-18T13:33:13.031Z",
             "sample": 160,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1573,7 +1573,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1583,8 +1583,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 80,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.601Z",
-            "update_time": "2025-04-30T12:59:44.601Z",
+            "create_time": "2025-02-18T13:33:13.033Z",
+            "update_time": "2025-02-18T13:33:13.033Z",
             "sample": 159,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1593,7 +1593,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1603,8 +1603,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 81,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.603Z",
-            "update_time": "2025-04-30T12:59:44.604Z",
+            "create_time": "2025-02-18T13:33:13.035Z",
+            "update_time": "2025-02-18T13:33:13.035Z",
             "sample": 175,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1613,7 +1613,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1623,8 +1623,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 82,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.606Z",
-            "update_time": "2025-04-30T12:59:44.607Z",
+            "create_time": "2025-02-18T13:33:13.037Z",
+            "update_time": "2025-02-18T13:33:13.037Z",
             "sample": 172,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1633,7 +1633,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1643,8 +1643,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 83,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.609Z",
-            "update_time": "2025-04-30T12:59:44.610Z",
+            "create_time": "2025-02-18T13:33:13.039Z",
+            "update_time": "2025-02-18T13:33:13.039Z",
             "sample": 161,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1653,7 +1653,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1663,8 +1663,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 84,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.612Z",
-            "update_time": "2025-04-30T12:59:44.613Z",
+            "create_time": "2025-02-18T13:33:13.041Z",
+            "update_time": "2025-02-18T13:33:13.041Z",
             "sample": 167,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1673,7 +1673,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1683,8 +1683,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 85,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.615Z",
-            "update_time": "2025-04-30T12:59:44.616Z",
+            "create_time": "2025-02-18T13:33:13.043Z",
+            "update_time": "2025-02-18T13:33:13.043Z",
             "sample": 158,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1693,7 +1693,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1703,8 +1703,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 86,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.618Z",
-            "update_time": "2025-04-30T12:59:44.619Z",
+            "create_time": "2025-02-18T13:33:13.045Z",
+            "update_time": "2025-02-18T13:33:13.045Z",
             "sample": 157,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1713,7 +1713,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1723,8 +1723,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 87,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.621Z",
-            "update_time": "2025-04-30T12:59:44.621Z",
+            "create_time": "2025-02-18T13:33:13.047Z",
+            "update_time": "2025-02-18T13:33:13.047Z",
             "sample": 156,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1733,7 +1733,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1743,8 +1743,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 88,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.623Z",
-            "update_time": "2025-04-30T12:59:44.624Z",
+            "create_time": "2025-02-18T13:33:13.049Z",
+            "update_time": "2025-02-18T13:33:13.049Z",
             "sample": 162,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1753,7 +1753,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1763,8 +1763,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 89,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.626Z",
-            "update_time": "2025-04-30T12:59:44.627Z",
+            "create_time": "2025-02-18T13:33:13.051Z",
+            "update_time": "2025-02-18T13:33:13.051Z",
             "sample": 174,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1773,7 +1773,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1783,8 +1783,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 90,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.660Z",
-            "update_time": "2025-04-30T12:59:44.661Z",
+            "create_time": "2025-02-18T13:33:13.082Z",
+            "update_time": "2025-02-18T13:33:13.083Z",
             "sample": 178,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1793,7 +1793,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1803,8 +1803,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 91,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.664Z",
-            "update_time": "2025-04-30T12:59:44.665Z",
+            "create_time": "2025-02-18T13:33:13.086Z",
+            "update_time": "2025-02-18T13:33:13.086Z",
             "sample": 179,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1813,7 +1813,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1823,8 +1823,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 92,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.667Z",
-            "update_time": "2025-04-30T12:59:44.667Z",
+            "create_time": "2025-02-18T13:33:13.088Z",
+            "update_time": "2025-02-18T13:33:13.089Z",
             "sample": 177,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1833,7 +1833,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
@@ -1843,8 +1843,8 @@
         "model": "library_preparation.librarypreparation",
         "pk": 93,
         "fields": {
-            "create_time": "2025-04-30T12:59:44.669Z",
-            "update_time": "2025-04-30T12:59:44.670Z",
+            "create_time": "2025-02-18T13:33:13.090Z",
+            "update_time": "2025-02-18T13:33:13.091Z",
             "sample": 176,
             "starting_amount": null,
             "spike_in_description": null,
@@ -1853,7 +1853,7 @@
             "concentration_library": null,
             "mean_fragment_size": null,
             "nM": null,
-            "qpcr_result": null,
+            "removed_qpcr_result": null,
             "comments": null,
             "smear_analysis": 100.0,
             "archived": false
