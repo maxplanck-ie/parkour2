@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sample', '0009_alter_sample_measuring_unit_and_more'),
+        ("sample", "0009_alter_sample_measuring_unit_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sample',
-            name='size_distribution_facility',
-            field=models.FloatField(blank=True, null=True, verbose_name='Size Distribution'),
+            model_name="sample",
+            name="size_distribution_facility",
+            field=models.FloatField(
+                blank=True, null=True, verbose_name="Size Distribution"
+            ),
         ),
     ]
