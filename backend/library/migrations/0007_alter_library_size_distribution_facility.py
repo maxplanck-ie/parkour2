@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0006_alter_library_measured_value_and_more'),
+        ("library", "0006_alter_library_measured_value_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='library',
-            name='size_distribution_facility',
-            field=models.FloatField(blank=True, null=True, verbose_name='Size Distribution'),
+            model_name="library",
+            name="size_distribution_facility",
+            field=models.FloatField(
+                blank=True, null=True, verbose_name="Size Distribution"
+            ),
         ),
     ]

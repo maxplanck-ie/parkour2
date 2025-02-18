@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sample', '0010_alter_sample_size_distribution_facility'),
+        ("sample", "0010_alter_sample_size_distribution_facility"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sample',
-            name='gmo_facility',
-            field=models.BooleanField(blank=True, null=True, verbose_name='Genetically Modified Organism (facility)'),
+            model_name="sample",
+            name="gmo_facility",
+            field=models.BooleanField(
+                blank=True,
+                null=True,
+                verbose_name="Genetically Modified Organism (facility)",
+            ),
         ),
     ]
