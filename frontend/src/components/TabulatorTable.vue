@@ -143,10 +143,23 @@ export default {
       if (newColumns !== oldColumns) {
         this.updateTableColumns();
       }
+    },
+    showErrorsWindow(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          const okButton = document.querySelector(".popup-button");
+          okButton.focus();
+        });
+      } else {
+        document.getElementsByClassName("tabulator-range-selected")[0]?.click();
+      }
     }
   },
   mounted() {
     this.initializeTable();
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.handleKeyDown);
   },
   methods: {
     initializeTable() {
@@ -711,6 +724,7 @@ export default {
     handleKeyDown(event) {
       const isDeleteOrBackspace =
         event.key === "Delete" || event.key === "Backspace";
+      const isEscape = event.key === "Escape";
       const isPrintableKey =
         event.key.length === 1 &&
         !event.ctrlKey &&
@@ -722,7 +736,13 @@ export default {
       let isRangeSelected =
         selectedRangesData.length > 0 &&
         (selectedRangesData[0].length > 0 ||
-          Object.keys(selectedRangesData[0][0]).length > 0);
+          (selectedRangesData[0][0] &&
+            Object.keys(selectedRangesData[0][0]).length > 0));
+
+      if (isEscape && this.showErrorsWindow) {
+        this.showErrorsWindow = false;
+        return;
+      }
 
       if (
         document.activeElement &&

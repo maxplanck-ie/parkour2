@@ -257,6 +257,10 @@ input[type="checkbox"]:checked::after {
   background-color: #005b59;
 }
 
+.popup-button:focus {
+  outline: 2px solid #333333;
+}
+
 .header {
   display: flex;
   justify-content: flex-end;
