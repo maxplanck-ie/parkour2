@@ -15,7 +15,8 @@ import {
   faFilter,
   faColumns,
   faFileExcel,
-  faLayerGroup
+  faLayerGroup,
+  faCaretDown
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -32,7 +33,8 @@ library.add(
   faFilter,
   faColumns,
   faFileExcel,
-  faLayerGroup
+  faLayerGroup,
+  faCaretDown
 );
 
 app.use(router);

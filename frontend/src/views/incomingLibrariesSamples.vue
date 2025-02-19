@@ -193,14 +193,14 @@
                       :checked="column.visible"
                       @change="toggleColumnVisibility(column, true)"
                     />
-                    <span
+                    <font-awesome-icon
                       v-if="column.columns"
+                      icon="fa-solid fa-caret-down"
                       style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         border: 2px solid black;
-                        padding: 0;
                         height: 20px;
                         width: 20px;
                         border-radius: 4px;
@@ -208,9 +208,7 @@
                         background-color: orange;
                         color: white;
                       "
-                    >
-                      🔽
-                    </span>
+                    />
                     <span style="font-weight: bold">{{ column.title }}</span>
                   </label>
                   <ul v-if="column.columns" style="padding-left: 15px">
@@ -335,7 +333,9 @@
           </div>
         </div>
         <div class="popup-footer">
-          <button class="popup-button" @click="popupContents.onYes">Yes</button>
+          <button class="popup-button yes-button" @click="popupContents.onYes">
+            Yes
+          </button>
           <button class="popup-button" @click="popupContents.onNo">No</button>
         </div>
       </div>
@@ -525,6 +525,7 @@ export default {
     this.setColumns();
 
     document.addEventListener("click", this.handleOutsideClick);
+    document.addEventListener("keydown", this.handleKeyDown);
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
   },
   updated() {
@@ -532,6 +533,7 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener("click", this.handleOutsideClick);
+    document.removeEventListener("keydown", this.handleKeyDown);
   },
   watch: {
     searchQuery(newValue, oldValue) {
@@ -563,6 +565,16 @@ export default {
     "filters.onlyGmo"(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.tabulatorInstance.filterTableData("onlyGmo", newValue);
+      }
+    },
+    showPopupWindow(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          const yesButton = document.querySelector(".popup-button.yes-button");
+          yesButton.focus();
+        });
+      } else {
+        document.getElementsByClassName("tabulator-range-selected")[0]?.click();
       }
     }
   },
@@ -1232,6 +1244,21 @@ export default {
         this.showSelectColumns = false;
       }
     },
+    handleKeyDown(event) {
+      const isEscape = event.key === "Escape";
+      if (isEscape && this.showPopupWindow) {
+        this.showPopupWindow = false;
+        return;
+      }
+      if (isEscape && this.showAdvancedFilters) {
+        this.showAdvancedFilters = false;
+        return;
+      }
+      if (isEscape && this.showSelectColumns) {
+        this.showSelectColumns = false;
+        return;
+      }
+    },
     fakeLoadingStart() {
       this.fakeLoading = true;
     },
@@ -1263,17 +1290,14 @@ export default {
 
       if (isMainColumn) {
         updatedColumns = this.columnsList.map((col) => {
-          if (col.field === "select") return col;
-          else
-            return {
-              ...col,
-              visible: col === column ? !col.visible : col.visible
-            };
+          return {
+            ...col,
+            visible: col === column ? !col.visible : col.visible
+          };
         });
       } else {
         updatedColumns = this.columnsList.map((col) => {
-          if (col.field === "select") return col;
-          else if (col.columns) {
+          if (col.columns) {
             return {
               ...col,
               columns: col.columns.map((subCol) => ({
@@ -1714,7 +1738,6 @@ body,
 
 <!--
 select all, change columns checkboxes delay
-close errors popup on esc or enter
 resize width of table or collapse/expand side modules should refresh the table width
 set width for columns in export
 make paste errors window movable
