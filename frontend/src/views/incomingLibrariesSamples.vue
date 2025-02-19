@@ -1059,7 +1059,7 @@ export default {
                     "warning"
                   );
                 }
-                if (rowData.gmo === false) {
+                if (rowData.gmo === false || rowData.gmo === "") {
                   showNotification(
                     "GMO is marked as 'NO' for this sample and cannot be edited.",
                     "warning"
