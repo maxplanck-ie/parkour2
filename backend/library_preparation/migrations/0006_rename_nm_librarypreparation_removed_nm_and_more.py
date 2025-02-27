@@ -4,25 +4,27 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library_preparation', '0005_rename_qpcr_result_librarypreparation_removed_qpcr_result'),
+        (
+            "library_preparation",
+            "0005_rename_qpcr_result_librarypreparation_removed_qpcr_result",
+        ),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='librarypreparation',
-            old_name='nM',
-            new_name='removed_nM',
+            model_name="librarypreparation",
+            old_name="nM",
+            new_name="removed_nM",
         ),
         migrations.RenameField(
-            model_name='librarypreparation',
-            old_name='spike_in_description',
-            new_name='removed_spike_in_description',
+            model_name="librarypreparation",
+            old_name="spike_in_description",
+            new_name="removed_spike_in_description",
         ),
         migrations.RenameField(
-            model_name='librarypreparation',
-            old_name='spike_in_volume',
-            new_name='removed_spike_in_volume',
+            model_name="librarypreparation",
+            old_name="spike_in_volume",
+            new_name="removed_spike_in_volume",
         ),
     ]
