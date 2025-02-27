@@ -605,28 +605,28 @@ export default {
             element.measuring_value == null && element.measured_element == null
               ? "-"
               : element.measuring_unit === "concentration"
-              ? `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )} ng/µl`
-              : element.measuring_unit === "m"
-              ? `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )} M`
-              : element.measuring_unit !== "-"
-              ? `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )} ${String(element.measuring_unit || "-")}`
-              : `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )}`,
+                ? `${String(
+                    element.measured_value === 0
+                      ? 0
+                      : element.measured_value || ""
+                  )} ng/µl`
+                : element.measuring_unit === "m"
+                  ? `${String(
+                      element.measured_value === 0
+                        ? 0
+                        : element.measured_value || ""
+                    )} M`
+                  : element.measuring_unit !== "-"
+                    ? `${String(
+                        element.measured_value === 0
+                          ? 0
+                          : element.measured_value || ""
+                      )} ${String(element.measuring_unit || "-")}`
+                    : `${String(
+                        element.measured_value === 0
+                          ? 0
+                          : element.measured_value || ""
+                      )}`,
           volume: element.volume === 0 ? 0 : element.volume || "",
           mean_fragment_size:
             element.mean_fragment_size === 0
@@ -729,8 +729,10 @@ export default {
                             ${type}
                           </span>
                           <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-              (tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name
-            }</span>
+                            (tableGroupsToggleState == 2
+                              ? request_name + " ➜ "
+                              : "") + name
+                          }</span>
                         </div>
                       `;
           },
@@ -847,8 +849,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -871,8 +873,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -938,8 +940,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -966,8 +968,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -988,8 +990,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -1026,8 +1028,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 const rowData = cell.getRow().getData();
                 const cellElement = cell.getElement();
                 if (rowData.type === "L") {
