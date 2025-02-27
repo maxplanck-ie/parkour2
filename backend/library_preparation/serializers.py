@@ -50,7 +50,6 @@ class LibraryPreparationSerializer(ModelSerializer):
     library_protocol = SerializerMethodField()
     library_protocol_name = SerializerMethodField()
     concentration_sample = SerializerMethodField()
-    dilution_factor = SerializerMethodField()
     comments_facility = SerializerMethodField()
     coordinate = SerializerMethodField()
     index_i7_id = SerializerMethodField()
@@ -72,14 +71,9 @@ class LibraryPreparationSerializer(ModelSerializer):
             "concentration_sample",
             "starting_amount",
             "pcr_cycles",
-            "spike_in_description",
-            "spike_in_volume",
-            "dilution_factor",
             "comments",
             "concentration_library",
             "mean_fragment_size",
-            "qpcr_result",
-            "nM",
             "comments_facility",
             "coordinate",
             "index_i7_id",
@@ -134,7 +128,7 @@ class LibraryPreparationSerializer(ModelSerializer):
         return obj.sample.library_protocol.name
 
     def get_concentration_sample(self, obj):
-        return obj.sample.concentration_facility
+        return obj.sample.measured_value_facility
 
     def get_comments_facility(self, obj):
         return obj.sample.comments_facility
