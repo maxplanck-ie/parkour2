@@ -50,7 +50,6 @@ class BaseSerializer(ModelSerializer):
             "library_protocol",
             "measuring_unit",
             "measured_value",
-            "dilution_factor",
             "volume",
             "comments",
             "sample_volume_facility",

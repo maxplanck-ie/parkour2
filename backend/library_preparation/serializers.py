@@ -136,9 +136,6 @@ class LibraryPreparationSerializer(ModelSerializer):
     def get_concentration_sample(self, obj):
         return obj.sample.concentration_facility
 
-    def get_dilution_factor(self, obj):
-        return obj.sample.dilution_factor
-
     def get_comments_facility(self, obj):
         return obj.sample.comments_facility
 

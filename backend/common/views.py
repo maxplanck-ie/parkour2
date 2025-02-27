@@ -80,7 +80,7 @@ def get_navigation_tree(request):
             {
                 "text": "Preparation",
                 "iconCls": "x-fa fa-table",
-                "viewType": "preparation",
+                "viewType": "library-preparation-vue",
                 "leaf": True,
             },
             {
