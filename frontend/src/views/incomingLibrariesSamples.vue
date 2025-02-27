@@ -440,7 +440,7 @@ export default {
               </div>`
     }
   <div>
-    <span style="font-weight: bold; font-size: 14px;">${value}</span>
+    <span style="font-weight: bold; font-size: 12px;">${value}</span>
     <span style="font-weight: normal; font-size: 12px;">
       (#: ${count}, Total Depth: ${totalDepth}M, ${biosafetyLevel})
     </span>
@@ -605,28 +605,28 @@ export default {
             element.measuring_value == null && element.measured_element == null
               ? "-"
               : element.measuring_unit === "concentration"
-                ? `${String(
-                    element.measured_value === 0
-                      ? 0
-                      : element.measured_value || ""
-                  )} ng/µl`
-                : element.measuring_unit === "m"
-                  ? `${String(
-                      element.measured_value === 0
-                        ? 0
-                        : element.measured_value || ""
-                    )} M`
-                  : element.measuring_unit !== "-"
-                    ? `${String(
-                        element.measured_value === 0
-                          ? 0
-                          : element.measured_value || ""
-                      )} ${String(element.measuring_unit || "-")}`
-                    : `${String(
-                        element.measured_value === 0
-                          ? 0
-                          : element.measured_value || ""
-                      )}`,
+              ? `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )} ng/µl`
+              : element.measuring_unit === "m"
+              ? `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )} M`
+              : element.measuring_unit !== "-"
+              ? `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )} ${String(element.measuring_unit || "-")}`
+              : `${String(
+                  element.measured_value === 0
+                    ? 0
+                    : element.measured_value || ""
+                )}`,
           volume: element.volume === 0 ? 0 : element.volume || "",
           mean_fragment_size:
             element.mean_fragment_size === 0
@@ -669,11 +669,10 @@ export default {
 
       let columnList = [
         {
-          title: "Select",
           field: "selected",
           visible: true,
           headerSort: false,
-          headerVertical: true,
+          headerVertical: false,
           frozen: true,
           resizable: false,
           formatter: (cell) => {
@@ -686,7 +685,8 @@ export default {
             return checkbox;
           },
           hozAlign: "center",
-          width: 36,
+          width: 30,
+          minWidth: 30,
           cssClass: "checkbox-column",
           contextMenu: () => this.cellContextMenu(false, false, false),
           cellClick: function (e, cell) {
@@ -729,10 +729,8 @@ export default {
                             ${type}
                           </span>
                           <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-                            (tableGroupsToggleState == 2
-                              ? request_name + " ➜ "
-                              : "") + name
-                          }</span>
+              (tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name
+            }</span>
                         </div>
                       `;
           },
@@ -769,7 +767,7 @@ export default {
               field: "nucleic_acid_type_name",
               minWidth: 80,
               width: "6%",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -787,7 +785,7 @@ export default {
               field: "library_protocol_name",
               minWidth: 80,
               width: "6%",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -804,7 +802,7 @@ export default {
               title: "Comment Library/Input",
               field: "comments",
               minWidth: 100,
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -821,7 +819,7 @@ export default {
               field: "input",
               minWidth: 60,
               width: "4%",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -838,7 +836,7 @@ export default {
               field: "volume",
               minWidth: 60,
               width: "4%",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -849,8 +847,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -862,7 +860,7 @@ export default {
               field: "mean_fragment_size",
               minWidth: 60,
               width: "4%",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -873,8 +871,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -908,7 +906,7 @@ export default {
                 }
                 return { values: options };
               },
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "facility-entry-column",
               contextMenu: () => this.cellContextMenu(true, true, true),
@@ -929,7 +927,7 @@ export default {
               minWidth: 60,
               width: "4%",
               editor: "number",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "facility-entry-column",
               contextMenu: () => this.cellContextMenu(true, true, true),
@@ -940,8 +938,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -951,7 +949,7 @@ export default {
               minWidth: 60,
               width: "4%",
               editor: "number",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "facility-entry-column",
               editorParams: {
@@ -968,8 +966,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -979,7 +977,7 @@ export default {
               minWidth: 60,
               width: "4%",
               editor: "number",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "facility-entry-column",
               contextMenu: () => this.cellContextMenu(true, true, true),
@@ -990,8 +988,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -1000,7 +998,7 @@ export default {
               field: "rna_quality",
               minWidth: 60,
               width: "4%",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               editor: "number",
               editorParams: {
@@ -1028,8 +1026,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 const rowData = cell.getRow().getData();
                 const cellElement = cell.getElement();
                 if (rowData.type === "L") {
@@ -1077,7 +1075,7 @@ export default {
                 }
               },
               headerFilter: false,
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               formatter: (cell) => {
                 const value = cell.getValue();
@@ -1105,7 +1103,7 @@ export default {
               field: "comments_facility",
               minWidth: 100,
               editor: "input",
-              headerVertical: true,
+              headerVertical: false,
               visible: true,
               cssClass: "facility-entry-column no-right-border",
               contextMenu: () => this.cellContextMenu(true, true, true),

@@ -373,8 +373,8 @@ export default {
   <div style="display: flex; justify-content: space-between; align-items: center;">
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
-    <span style="font-weight: bold; font-size: 14px;">Protocol ➜ ${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 2px;">
+    <span style="font-weight: bold; font-size: 12px;">Protocol ➜ ${value}</span>
+    <span style="font-weight: normal; font-size: 12px; margin-left: 8px;">
       (# of libraries: ${count})
     </span>
   </div>
@@ -486,123 +486,6 @@ export default {
           urlStringStart + "/api/library_preparation/"
         );
 
-        // let response = {
-        //   data: [
-        //     {
-        //       pk: 20234,
-        //       name: "COLO205_SMADWT_TGFb_18hr_1",
-        //       barcode: "25L005573",
-        //       type: "L",
-        //       is_converted: true,
-        //       request_name: "3491_Chan_A07_Timmers",
-        //       pool_name: "Pool_2705",
-        //       library_protocol: 43,
-        //       library_protocol_name: "Illumina Stranded mRNA Prep, Ligation",
-        //       concentration_sample: 129.974,
-        //       starting_amount: 200.0,
-        //       pcr_cycles: 12,
-        //       mean_fragment_size: null,
-        //       smear_analysis: 100.0,
-        //       comments: null,
-        //       concentration_library: null,
-        //       comments_facility: null,
-        //       comments_library_sample: "",
-        //       coordinate: "D10",
-        //       index_type: "",
-        //       index_i7_id: "NXTR_i7_0172",
-        //       index_i5_id: "NXTR_i5_0172",
-        //       create_time: "2025-02-24T15:52:00.867845+01:00",
-        //       measuring_unit_facility: "",
-        //       measured_value_facility: "",
-        //       size_distribution_facility: ""
-        //     },
-        //     {
-        //       pk: 20235,
-        //       name: "COLO205_SMADKO_TGFb_18hr_2",
-        //       barcode: "25L005574",
-        //       type: "L",
-        //       is_converted: false,
-        //       request_name: "3492_Chan_B08_Timmers",
-        //       pool_name: "Pool_2706",
-        //       library_protocol: 44,
-        //       library_protocol_name: "NEBNext Ultra II Directional RNA",
-        //       concentration_sample: 110.5,
-        //       starting_amount: 150.0,
-        //       pcr_cycles: 10,
-        //       mean_fragment_size: 350,
-        //       smear_analysis: 98.5,
-        //       comments: "Sample processed successfully",
-        //       concentration_library: 50.2,
-        //       comments_facility: "No issues detected",
-        //       comments_library_sample: "Quality control passed",
-        //       coordinate: "E12",
-        //       index_type: "Dual",
-        //       index_i7_id: "NXTR_i7_0173",
-        //       index_i5_id: "NXTR_i5_0173",
-        //       create_time: "2025-02-24T16:00:00.867845+01:00",
-        //       measuring_unit_facility: "ng/μL",
-        //       measured_value_facility: 52.1,
-        //       size_distribution_facility: 320
-        //     },
-        //     {
-        //       pk: 20236,
-        //       name: "COLO205_Control_TGFb_6hr_3",
-        //       barcode: "25L005575",
-        //       is_converted: true,
-        //       type: "L",
-        //       request_name: "3493_Chan_C09_Timmers",
-        //       pool_name: "Pool_2707",
-        //       library_protocol: 45,
-        //       library_protocol_name: "SMARTer Stranded Total RNA-Seq",
-        //       concentration_sample: 95.3,
-        //       starting_amount: 180.0,
-        //       pcr_cycles: 14,
-        //       mean_fragment_size: 400,
-        //       smear_analysis: 97.2,
-        //       comments: "Low RNA yield",
-        //       concentration_library: 45.8,
-        //       comments_facility: "",
-        //       comments_library_sample: "",
-        //       coordinate: "F06",
-        //       index_type: "Single",
-        //       index_i7_id: "NXTR_i7_0174",
-        //       index_i5_id: "NXTR_i5_0174",
-        //       create_time: "2025-02-24T16:30:00.867845+01:00",
-        //       measuring_unit_facility: "ng/μL",
-        //       measured_value_facility: 48.7,
-        //       size_distribution_facility: 360
-        //     },
-        //     {
-        //       pk: 20237,
-        //       name: "COLO205_SMADKO_TGFb_24hr_4",
-        //       barcode: "25L005576",
-        //       type: "L",
-        //       is_converted: false,
-        //       request_name: "3494_Chan_D10_Timmers",
-        //       pool_name: "Pool_2708",
-        //       library_protocol: 46,
-        //       library_protocol_name: "TruSeq Stranded Total RNA Library Prep",
-        //       concentration_sample: 105.7,
-        //       starting_amount: 175.0,
-        //       pcr_cycles: 11,
-        //       mean_fragment_size: 380,
-        //       smear_analysis: 96.9,
-        //       comments: null,
-        //       concentration_library: 48.3,
-        //       comments_facility: "Potential contamination detected",
-        //       comments_library_sample: "Requires re-evaluation",
-        //       coordinate: "G08",
-        //       index_type: "Dual",
-        //       index_i7_id: "NXTR_i7_0175",
-        //       index_i5_id: "NXTR_i5_0175",
-        //       create_time: "2025-02-24T17:00:00.867845+01:00",
-        //       measuring_unit_facility: "ng/μL",
-        //       measured_value_facility: 50.4,
-        //       size_distribution_facility: 340
-        //     }
-        //   ]
-        // };
-
         let fetchedRows = response.data.map((element) => ({
           pk: element.pk || "",
           name: element.name || "",
@@ -673,11 +556,10 @@ export default {
 
       let columnList = [
         {
-          title: "Select",
           field: "selected",
           visible: true,
           headerSort: false,
-          headerVertical: true,
+          headerVertical: false,
           frozen: true,
           resizable: false,
           formatter: (cell) => {
@@ -690,7 +572,8 @@ export default {
             return checkbox;
           },
           hozAlign: "center",
-          width: 36,
+          width: 30,
+          minWidth: 30,
           cssClass: "checkbox-column",
           contextMenu: () => this.cellContextMenu(false, false, false),
           cellClick: function (e, cell) {
@@ -738,10 +621,10 @@ export default {
                             ${type}
                           </span>
                           <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-                            (tableGroupsToggleState == 2
-                              ? library_protocol_name + " ➜ "
-                              : "") + name
-                          }</span>
+              (tableGroupsToggleState == 2
+                ? library_protocol_name + " ➜ "
+                : "") + name
+            }</span>
                         </div>
                       `;
           }
@@ -771,7 +654,7 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column barcode-column blue-background",
+          cssClass: "details-column blue-background",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -803,7 +686,7 @@ export default {
           title: "Comment Library/Input",
           field: "comments_library_sample",
           minWidth: 150,
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -819,7 +702,7 @@ export default {
           title: "Pool",
           field: "pool_name",
           width: 84,
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -835,7 +718,7 @@ export default {
           title: "Index Type",
           field: "index_type",
           width: 96,
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -851,7 +734,7 @@ export default {
           title: "Index I5 ID",
           field: "index_i5_id",
           width: 105,
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -867,7 +750,7 @@ export default {
           title: "Index I7 ID",
           field: "index_i7_id",
           width: 105,
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -883,7 +766,7 @@ export default {
           title: "Coordinate",
           field: "coordinate",
           width: 50,
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -915,7 +798,7 @@ export default {
             }
             return { values: options };
           },
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -936,7 +819,7 @@ export default {
           minWidth: 60,
           width: "4%",
           editor: "number",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -947,8 +830,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -958,7 +841,7 @@ export default {
           minWidth: 60,
           width: "4%",
           editor: "number",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -969,8 +852,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -980,7 +863,7 @@ export default {
           minWidth: 60,
           width: "4%",
           editor: "number",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -991,8 +874,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1002,7 +885,7 @@ export default {
           minWidth: 60,
           width: "4%",
           editor: "number",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -1013,8 +896,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1024,7 +907,7 @@ export default {
           minWidth: 60,
           width: "4%",
           editor: "number",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -1035,8 +918,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1046,7 +929,7 @@ export default {
           minWidth: 60,
           width: "4%",
           editor: "number",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -1057,8 +940,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1068,7 +951,7 @@ export default {
           minWidth: 60,
           width: "4%",
           editor: "number",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -1079,8 +962,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1089,7 +972,7 @@ export default {
           field: "comments_facility",
           minWidth: 150,
           editor: "input",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, true, true),
@@ -1103,7 +986,7 @@ export default {
           field: "comments",
           minWidth: 150,
           editor: "input",
-          headerVertical: true,
+          headerVertical: false,
           visible: true,
           cssClass: "regular-column no-right-border",
           contextMenu: () => this.cellContextMenu(true, true, true),

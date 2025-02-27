@@ -170,7 +170,10 @@ export default {
       if (this.rowData && this.columnDefs) {
         const options = {
           data: this.rowData,
-          columns: this.columnDefs,
+          columns: this.columnDefs.map((column) => ({
+            ...column,
+            headerTooltip: column.title
+          })),
           layout: "fitColumns",
           columnDefaults: {
             headerSort: true,
@@ -962,17 +965,24 @@ export default {
 }
 
 .tabulator-col {
-  font-size: 13px;
   border-right: 1px solid grey !important;
   border-bottom: 1px solid grey !important;
 }
 
-.tabulator-col-vertical:not(.tabulator-frozen):not(.regular-column) {
+.tabulator-col-group-cols {
+  border: none !important;
   border-top: 1px solid grey !important;
 }
 
-.tabulator-col-group-cols {
-  border: none !important;
+.tabulator-col:not(.tabulator-col-vertical)
+  > .tabulator-col-content
+  > .tabulator-col-title-holder
+  > .tabulator-col-title {
+  padding-right: 12px !important;
+}
+
+.tabulator-col-content {
+  padding: 5px !important;
 }
 
 .tabulator-row {
@@ -1006,8 +1016,10 @@ export default {
   display: flex;
 }
 
-.barcode-column .tabulator-col-title {
-  padding-right: 12px !important;
+.tabulator-header-filter input {
+  height: 24px;
+  font-size: 12px !important;
+  border: 1px solid #33333390 !important;
 }
 
 .no-group-by .tabulator-row-odd:nth-child(1) {
