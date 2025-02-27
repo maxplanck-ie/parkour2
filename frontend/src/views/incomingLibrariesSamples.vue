@@ -12,40 +12,18 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <g>
-            <path
-              opacity="0.3"
+            <path opacity="0.3"
               d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              fill="#333333"
-            />
+              fill="#333333" />
             <path
               d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              stroke="white"
-              stroke-width="1.5"
-            />
-            <path
-              d="M14.5 14.5L9 9"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M10 15H14.6717C14.853 15 15 14.853 15 14.6716V10"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+              stroke="white" stroke-width="1.5" />
+            <path d="M14.5 14.5L9 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M10 15H14.6717C14.853 15 15 14.853 15 14.6716V10" stroke="white" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round" />
           </g>
         </svg>
       </div>
@@ -56,64 +34,42 @@
       <!-- Sticky right section for search, advanced filters, and select columns -->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input
-            ref="searchInput"
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search"
-          />
-          <font-awesome-icon
-            icon="fa-solid fa-magnifying-glass"
-            style="color: darkgrey"
-          />
+          <input ref="searchInput" v-model="searchQuery" type="text" placeholder="Search" />
+          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey" />
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleAdvancedFiltersButton"
-            @click="toggleAdvancedFilters"
-          >
+          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div
-            id="advancedFiltersPopup"
-            v-if="showAdvancedFilters"
-            class="button-popup-container"
-            style="width: 250px; left: -50px"
-          >
+          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
+            style="width: 250px; left: -50px">
             <label>
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                "
-              >
+                ">
                 <input type="checkbox" v-model="filters.showLibraries" />
               </div>
               <div><span style="font-weight: bold">Show</span> Libraries</div>
             </label>
             <label>
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                "
-              >
+                ">
                 <input type="checkbox" v-model="filters.showSamples" />
               </div>
               <div><span style="font-weight: bold">Show</span> Samples</div>
             </label>
             <label>
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                "
-              >
+                ">
                 <input type="checkbox" v-model="filters.onlySamplesSubmitted" />
               </div>
               <div>
@@ -122,13 +78,11 @@
               </div>
             </label>
             <label>
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                "
-              >
+                ">
                 <input type="checkbox" v-model="filters.onlyGmo" />
               </div>
               <div>
@@ -139,64 +93,35 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleSelectColumnsButton"
-            @click="toggleSelectColumns"
-          >
-            <font-awesome-icon
-              icon="fa-solid fa-columns"
-              style="color: white"
-            />
+          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
+            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
             <span> Select Columns </span>
           </button>
-          <div
-            id="selectColumnsPopup"
-            v-if="showSelectColumns"
-            class="button-popup-container"
-            style="
+          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
               left: -50px;
               width: 250px;
               padding-right: 8px;
               padding-top: 10px;
               padding-bottom: 10px;
-            "
-          >
-            <ul
-              style="
+            ">
+            <ul style="
                 padding-left: 0px;
                 padding-right: 10px;
                 max-height: 300px;
                 overflow-y: auto;
-              "
-            >
-              <li
-                v-for="(column, index) in columnsList"
-                :key="index"
-                style="list-style: none"
-              >
-                <template
-                  v-if="
-                    column.field !== 'selected' ||
-                    (column.field === 'selected' && column.visible == false)
-                  "
-                >
-                  <label
-                    :style="{
-                      backgroundColor: column.columns ? '#33333310' : 'white',
-                      cursor: column.columns ? 'default' : 'pointer'
-                    }"
-                  >
-                    <input
-                      v-if="!column.columns"
-                      type="checkbox"
-                      :checked="column.visible"
-                      @change="toggleColumnVisibility(column, true)"
-                    />
-                    <font-awesome-icon
-                      v-if="column.columns"
-                      icon="fa-solid fa-caret-down"
-                      style="
+              ">
+              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
+                <template v-if="
+                  column.field !== 'selected' ||
+                  (column.field === 'selected' && column.visible == false)
+                ">
+                  <label :style="{
+                    backgroundColor: column.columns ? '#33333310' : 'white',
+                    cursor: column.columns ? 'default' : 'pointer'
+                  }">
+                    <input v-if="!column.columns" type="checkbox" :checked="column.visible"
+                      @change="toggleColumnVisibility(column, true)" />
+                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -207,22 +132,14 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      "
-                    />
+                      " />
                     <span style="font-weight: bold">{{ column.title }}</span>
                   </label>
                   <ul v-if="column.columns" style="padding-left: 15px">
-                    <li
-                      v-for="(subColumn, subIndex) in column.columns"
-                      :key="subIndex"
-                      style="list-style: none"
-                    >
+                    <li v-for="(subColumn, subIndex) in column.columns" :key="subIndex" style="list-style: none">
                       <label>
-                        <input
-                          type="checkbox"
-                          :checked="subColumn.visible"
-                          @change="toggleColumnVisibility(subColumn, false)"
-                        />
+                        <input type="checkbox" :checked="subColumn.visible"
+                          @change="toggleColumnVisibility(subColumn, false)" />
                         {{ subColumn.title }}
                       </label>
                     </li>
@@ -234,18 +151,12 @@
         </div>
         <div class="button-popup-wrapper">
           <button class="header-button" @click="toggleGroups">
-            <font-awesome-icon
-              icon="fa-solid fa-layer-group"
-              style="color: white"
-            />
+            <font-awesome-icon icon="fa-solid fa-layer-group" style="color: white" />
             <span> Toggle Views </span>
           </button>
         </div>
         <button class="header-button" @click="exportToExcel">
-          <font-awesome-icon
-            icon="fa-solid fa-file-excel"
-            style="color: white"
-          />
+          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
       </div>
@@ -253,64 +164,33 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <TabulatorTable
-        v-if="!loading"
-        ref="tabulatorTableRef"
-        :rowData="librariesSamplesList"
-        :columnDefs="columnsList"
-        :tableOptions="{
+      <TabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList" :columnDefs="columnsList"
+        groupBy="request_name" :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
           fakeLoadingStart,
           fakeLoadingStop
-        }"
-      />
+        }" />
     </div>
 
     <!-- Popup window -->
     <div v-if="showPopupWindow" class="popup-overlay">
-      <div
-        class="popup-container"
-        :style="{
-          height: popupContents.popupHeight + 'px',
-          width: popupContents.popupWidth + 'px'
-        }"
-      >
+      <div class="popup-container" :style="{
+        height: popupContents.popupHeight + 'px',
+        width: popupContents.popupWidth + 'px'
+      }">
         <div class="popup-header">
-          <svg
-            style="display: block"
-            fill="none"
-            width="42px"
-            height="42px"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
+          <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <g>
-              <path
-                opacity="0.3"
+              <path opacity="0.3"
                 d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                fill="#323232"
-              />
+                fill="#323232" />
               <path
                 d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12 8V13"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <path
-                d="M12 16V15.9888"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
+                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+              <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
             </g>
           </svg>
           <span class="popup-title">{{ popupContents.popupTitle }}</span>
@@ -320,10 +200,7 @@
         </div>
         <div class="popup-body">
           <div v-html="popupContents.popupDescription"></div>
-          <div
-            v-if="popupContents.popupList && popupContents.popupList.length > 0"
-            class="popup-scrollable-content"
-          >
+          <div v-if="popupContents.popupList && popupContents.popupList.length > 0" class="popup-scrollable-content">
             <ol style="padding-left: 25px">
               <li v-for="item in popupContents.popupList" :key="item">
                 {{ item.barcode + " ➜ " }}
@@ -357,7 +234,7 @@ const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
 export default {
-  name: "LibrariesSamples",
+  name: "IncomingLibrariesAndSamples",
   components: {
     TabulatorTable
   },
@@ -397,9 +274,8 @@ export default {
           return `
   <div style="display: flex; justify-content: space-between; align-items: center;">
 <div style="display: flex; justify-content: space-between; align-items: center;">
-    ${
-      samplesSubmitted
-        ? `<div title="Samples Submitted" style="display: flex; align-items: center;">
+    ${samplesSubmitted
+              ? `<div title="Samples Submitted" style="display: flex; align-items: center;">
                 <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path opacity="0.3" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="green"/>
@@ -408,7 +284,7 @@ export default {
                   </g>
                 </svg>
               </div>`
-        : `<div title="Samples not Submitted" style="display: flex; align-items: center;">
+              : `<div title="Samples not Submitted" style="display: flex; align-items: center;">
                 <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#323232"/>
@@ -416,10 +292,9 @@ export default {
                   </g>
                 </svg>
               </div>`
-    }
-    ${
-      gmo
-        ? `<div title="GMO: Yes" style="display: flex; align-items: center;">
+            }
+    ${gmo
+              ? `<div title="GMO: Yes" style="display: flex; align-items: center;">
                 <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path opacity="0.3" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="red"/>
@@ -428,7 +303,7 @@ export default {
                   </g>
                 </svg>
               </div>`
-        : `<div title="GMO: No" style="display: flex; align-items: center;">
+              : `<div title="GMO: No" style="display: flex; align-items: center;">
                 <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path opacity="0.3" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="green"/>
@@ -437,7 +312,7 @@ export default {
                   </g>
                 </svg>
               </div>`
-    }
+            }
   <div>
     <span style="font-weight: bold; font-size: 14px;">${value}</span>
     <span style="font-weight: normal; font-size: 12px;">
@@ -604,28 +479,28 @@ export default {
             element.measuring_value == null && element.measured_element == null
               ? "-"
               : element.measuring_unit === "concentration"
-              ? `${String(
+                ? `${String(
                   element.measured_value === 0
                     ? 0
                     : element.measured_value || ""
                 )} ng/µl`
-              : element.measuring_unit === "m"
-              ? `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )} M`
-              : element.measuring_unit !== "-"
-              ? `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )} ${String(element.measuring_unit || "-")}`
-              : `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )}`,
+                : element.measuring_unit === "m"
+                  ? `${String(
+                    element.measured_value === 0
+                      ? 0
+                      : element.measured_value || ""
+                  )} M`
+                  : element.measuring_unit !== "-"
+                    ? `${String(
+                      element.measured_value === 0
+                        ? 0
+                        : element.measured_value || ""
+                    )} ${String(element.measuring_unit || "-")}`
+                    : `${String(
+                      element.measured_value === 0
+                        ? 0
+                        : element.measured_value || ""
+                    )}`,
           volume: element.volume === 0 ? 0 : element.volume || "",
           mean_fragment_size:
             element.mean_fragment_size === 0
@@ -663,7 +538,7 @@ export default {
     },
     setColumns() {
       const storedColumnState = JSON.parse(
-        localStorage.getItem("columnSettings")
+        localStorage.getItem("incomingLibrariesAndSamplesColumnSettings")
       );
 
       let columnList = [
@@ -678,9 +553,8 @@ export default {
           formatter: (cell) => {
             const row = cell.getRow();
             const rowData = row.getData();
-            const checkbox = `<input type="checkbox" title="Select" style="top:-4px" ${
-              rowData.selected ? "checked" : ""
-            } />`;
+            const checkbox = `<input type="checkbox" title="Select" style="top:-4px" ${rowData.selected ? "checked" : ""
+              } />`;
 
             return checkbox;
           },
@@ -727,9 +601,8 @@ export default {
                             ">
                             ${type}
                           </span>
-                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-              (tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name
-            }</span>
+                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${(tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name
+              }</span>
                         </div>
                       `;
           },
@@ -846,8 +719,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -870,8 +743,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               },
               cellDblClick: function (e, cell) {
@@ -937,8 +810,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -965,8 +838,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -987,8 +860,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -1025,8 +898,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 const rowData = cell.getRow().getData();
                 const cellElement = cell.getElement();
                 if (rowData.type === "L") {
@@ -1309,7 +1182,7 @@ export default {
         });
       }
 
-      localStorage.setItem("columnSettings", JSON.stringify(updatedColumns));
+      localStorage.setItem("incomingLibrariesAndSamplesColumnSettings", JSON.stringify(updatedColumns));
       this.columnsList = updatedColumns;
       this.fakeLoadingStop();
     },
@@ -1364,11 +1237,10 @@ export default {
             ? !groupRows[0].getData().samples_submitted
             : true;
           let popupTitleSS = "Are you sure?";
-          let popupDescriptionSS = `Marking the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">${
-            newSamplesSubmittedState === true
-              ? "Samples Submitted"
-              : "Samples Not Submitted"
-          }</span>, Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionSS = `Marking the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">${newSamplesSubmittedState === true
+            ? "Samples Submitted"
+            : "Samples Not Submitted"
+            }</span>, Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let onYesSS = () => {
             try {
               this.fakeLoadingStart();
@@ -1421,9 +1293,8 @@ export default {
             break;
           }
           let popupTitleQP = `Are you sure?`;
-          let popupDescriptionQP = `Marking the following ${
-            type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQP = `Marking the following ${type === "L" ? "libraries" : "samples"
+            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQP = [...selectedNamesList];
           let onYesQP = () => {
             this.qualityCheckChange(selectedRows, "passed");
@@ -1452,9 +1323,8 @@ export default {
             break;
           }
           let popupTitleQC = `Are you sure?`;
-          let popupDescriptionQC = `Marking the following ${
-            type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Compromised</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQC = `Marking the following ${type === "L" ? "libraries" : "samples"
+            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Compromised</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQC = [...selectedNamesList];
           let onYesQC = () => {
             this.qualityCheckChange(selectedRows, "compromised");
@@ -1483,9 +1353,8 @@ export default {
             break;
           }
           let popupTitleQF = `Are you sure?`;
-          let popupDescriptionQF = `Marking the following ${
-            type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQF = `Marking the following ${type === "L" ? "libraries" : "samples"
+            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQF = [...selectedNamesList];
           let onYesQF = () => {
             this.qualityCheckChange(selectedRows, "failed");
@@ -1603,9 +1472,8 @@ export default {
       }, 300);
     },
     ellipsisContainer(text, boldText) {
-      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${
-        boldText === true ? "bold" : "normal"
-      }">
+      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${boldText === true ? "bold" : "normal"
+        }">
                 ${text}
               </div>`;
     },

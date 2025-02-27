@@ -399,11 +399,11 @@ class GenericLibrarySample(DateTimeMixin):
 
     # Facility
 
-    dilution_factor = models.PositiveIntegerField(
+    removed_dilution_factor = models.PositiveIntegerField(
         "Dilution Factor",
         default=1,
         blank=True,
-    )
+    )  # This field is not in use
 
     removed_concentration_method_facility = models.ForeignKey(
         ConcentrationMethod,
