@@ -29,7 +29,7 @@ django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd
     # via -r backend/requirements/base.in
 django-extensions==3.2.3
     # via -r backend/requirements/base.in
-django-import-export==4.3.6
+django-import-export==4.3.7
     # via -r backend/requirements/base.in
 django-linear-migrations==2.17.0
     # via -r backend/requirements/base.in
