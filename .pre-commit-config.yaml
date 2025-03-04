@@ -42,7 +42,7 @@ repos:
       - id: check-merge-conflict
         types: [python]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.4
+    rev: v0.9.9
     hooks:
       - id: ruff-format
         args: [--target-version, py312] # 3.12
@@ -57,7 +57,7 @@ repos:
       - id: pyupgrade
         args: [--py312-plus] # 3.12
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.22.2
+    rev: 1.23.1
     hooks:
       - id: django-upgrade
         args: [--target-version, "4.2"]
