@@ -22,12 +22,26 @@ class LibraryPreparationListSerializer(ListSerializer):
             obj = object_mapping.get(obj_id, None)
             if obj is not None:
                 if "concentration_sample" in data.keys():
-                    obj.sample.concentration_facility = data["concentration_sample"]
+                    obj.sample.measured_value_facility = data["concentration_sample"]
+
                 if "comments_facility" in data.keys():
                     obj.sample.comments_facility = data["comments_facility"]
-                obj.sample.save(
-                    update_fields=["concentration_facility", "comments_facility"]
-                )
+
+                if "size_distribution_facility" in data.keys():
+                    obj.sample.size_distribution_facility = data["size_distribution_facility"]
+
+                if "measuring_unit_facility" in data.keys():
+                    obj.sample.measuring_unit_facility = data["measuring_unit_facility"]
+
+                if "measured_value_facility" in data.keys():
+                    obj.sample.measured_value_facility = data["measured_value_facility"]
+
+                obj.sample.save(update_fields=[
+                    "comments_facility",
+                    "size_distribution_facility",
+                    "measuring_unit_facility",
+                    "measured_value_facility"
+                ])
 
                 if "quality_check" in data.keys():
                     if data["quality_check"] == "passed":
@@ -52,9 +66,14 @@ class LibraryPreparationSerializer(ModelSerializer):
     concentration_sample = SerializerMethodField()
     comments_facility = SerializerMethodField()
     coordinate = SerializerMethodField()
+    index_type = SerializerMethodField()
     index_i7_id = SerializerMethodField()
     index_i5_id = SerializerMethodField()
     quality_check = CharField(required=False)
+    size_distribution_facility = SerializerMethodField()
+    measuring_unit_facility = SerializerMethodField()
+    measured_value_facility = SerializerMethodField()
+    comments_library_sample = SerializerMethodField()
 
     class Meta:
         model = LibraryPreparation
@@ -68,41 +87,49 @@ class LibraryPreparationSerializer(ModelSerializer):
             "pool_name",
             "library_protocol",
             "library_protocol_name",
-            "concentration_sample",
             "starting_amount",
             "pcr_cycles",
-            "comments",
             "concentration_library",
+            "concentration_sample",
             "mean_fragment_size",
-            "comments_facility",
             "coordinate",
+            "index_type",
             "index_i7_id",
             "index_i5_id",
             "create_time",
             "quality_check",
             "smear_analysis",
+            "size_distribution_facility",
+            "measuring_unit_facility",
+            "measured_value_facility",
+            "comments",
+            "comments_facility",
+            "comments_library_sample",
         )
 
     def to_internal_value(self, data):
         internal_value = super().to_internal_value(data)
 
-        concentration_sample = data.get("concentration_sample", None)
-        comments_facility = data.get("comments_facility", None)
-
-        if concentration_sample:
+        if "concentration_sample" in data:
             try:
-                internal_value.update(
-                    {"concentration_sample": float(concentration_sample)}
-                )
+                internal_value["concentration_sample"] = float(data["concentration_sample"])
             except ValueError:
-                raise ValidationError(
-                    {
-                        "concentration_sample": ["A valid float is required."],
-                    }
-                )
+                raise ValidationError({"concentration_sample": ["A valid float is required."]})
 
-        if comments_facility:
-            internal_value.update({"comments_facility": comments_facility})
+        if "size_distribution_facility" in data:
+            try:
+                internal_value["size_distribution_facility"] = float(data["size_distribution_facility"])
+            except ValueError:
+                raise ValidationError({"size_distribution_facility": ["A valid float is required."]})
+
+        if "measuring_unit_facility" in data:
+            internal_value["measuring_unit_facility"] = data["measuring_unit_facility"]
+
+        if "measured_value_facility" in data:
+            internal_value["measured_value_facility"] = data["measured_value_facility"]
+
+        if "comments_facility" in data:
+            internal_value["comments_facility"] = data["comments_facility"]
 
         return internal_value
 
@@ -130,9 +157,6 @@ class LibraryPreparationSerializer(ModelSerializer):
     def get_concentration_sample(self, obj):
         return obj.sample.measured_value_facility
 
-    def get_comments_facility(self, obj):
-        return obj.sample.comments_facility
-
     def get_coordinate(self, obj):
         coordinates = self.context.get("coordinates", {})
         index_type = obj.sample.index_type.pk if obj.sample.index_type else ""
@@ -143,8 +167,26 @@ class LibraryPreparationSerializer(ModelSerializer):
         )
         return coordinates.get(key, "")
 
+    def get_index_type(self, obj):
+        return  obj.sample.index_type.name if obj.sample.index_type else ""
+
     def get_index_i7_id(self, obj):
         return obj.sample.index_i7_id
 
     def get_index_i5_id(self, obj):
         return obj.sample.index_i5_id
+
+    def get_size_distribution_facility(self, obj):
+        return obj.sample.size_distribution_facility
+
+    def get_measuring_unit_facility(self, obj):
+        return obj.sample.measuring_unit_facility
+    
+    def get_measured_value_facility(self, obj):
+        return obj.sample.measured_value_facility
+
+    def get_comments_library_sample(self, obj):
+        return obj.sample.comments
+    
+    def get_comments_facility(self, obj):
+        return obj.sample.comments_facility

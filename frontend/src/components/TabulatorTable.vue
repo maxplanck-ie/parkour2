@@ -172,7 +172,13 @@ export default {
           data: this.rowData,
           columns: this.columnDefs.map((column) => ({
             ...column,
-            headerTooltip: column.title
+            headerTooltip: column.title,
+            columns: column.columns
+              ? column.columns.map((child) => ({
+                  ...child,
+                  headerTooltip: child.title
+                }))
+              : undefined
           })),
           layout: "fitColumns",
           columnDefaults: {
@@ -412,7 +418,7 @@ export default {
             flatFilters.push(...typesNotIn);
           }
 
-          // this.tabulatorInstance.setFilter(flatFilters);
+          this.tabulatorInstance.setFilter(flatFilters);
 
           const columns = this.tabulatorInstance.getColumns();
           columns.forEach((column) => {
@@ -552,7 +558,7 @@ export default {
       let typesIn = this.tableFiltersState.typesIn;
       let typesNotIn = this.tableFiltersState.typesNotIn;
       switch (operation) {
-        case "search":
+        case "search_incoming_libraries_and_samples":
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
@@ -566,6 +572,27 @@ export default {
                 },
                 {
                   field: "library_protocol_name",
+                  type: "like",
+                  value: keyword
+                },
+                { field: "comments", type: "like", value: keyword },
+                { field: "comments_facility", type: "like", value: keyword }
+              ]
+            ];
+          } else {
+            delete this.tableFiltersState.search;
+          }
+          break;
+
+        case "search_library_preparation":
+          if (keyword !== "") {
+            this.tableFiltersState.search = [
+              [
+                { field: "name", type: "like", value: keyword },
+                { field: "request_name", type: "like", value: keyword },
+                { field: "barcode", type: "like", value: keyword },
+                {
+                  field: "comments_library_sample",
                   type: "like",
                   value: keyword
                 },
@@ -760,26 +787,17 @@ export default {
 
       if (isDeleteOrBackspace) {
         if (!isRangeSelected) return;
-        const clearableFields = [
-          "measuring_unit_facility",
-          "measured_value_facility",
-          "sample_volume_facility",
-          "size_distribution_facility",
-          "rna_quality",
-          "gmo_facility",
-          "comments_facility"
-        ];
         let firstRangeCells = selectedRanges[0]
           ? selectedRanges[0].getCells()
           : [];
         firstRangeCells.forEach((row) => {
           row.forEach((cell) => {
-            let columnField = cell.getField();
+            let isEditable = cell._cell.column.getDefinition().editor;
             let disabledEditing = cell
               .getElement()
               .classList.contains("disable-editing");
 
-            if (clearableFields.includes(columnField) && !disabledEditing) {
+            if (isEditable && !disabledEditing) {
               cell.setValue("");
             }
           });
@@ -1034,7 +1052,8 @@ export default {
   padding: 10px 0px !important;
 }
 
-.blue-background:not(.tabulator-col):not(.tabulator-range-selected) {
-  background-color: #ffe7e7;
+.editable-fields-group > .tabulator-col-content > div > div {
+  font-weight: 600 !important;
+  color: rgb(99, 99, 99) !important;
 }
 </style>
