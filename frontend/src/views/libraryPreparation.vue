@@ -10,59 +10,28 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path
-            opacity="0.3"
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path opacity="0.3"
             d="M14 17.5C14 16.0955 14 15.3933 14.3371 14.8889C14.483 14.6705 14.6705 14.483 14.8889 14.3371C15.3933 14 16.0955 14 17.5 14V14V14C18.9045 14 19.6067 14 20.1111 14.3371C20.3295 14.483 20.517 14.6705 20.6629 14.8889C21 15.3933 21 16.0955 21 17.5V17.5V17.5C21 18.9045 21 19.6067 20.6629 20.1111C20.517 20.3295 20.3295 20.517 20.1111 20.6629C19.6067 21 18.9045 21 17.5 21V21V21C16.0955 21 15.3933 21 14.8889 20.6629C14.6705 20.517 14.483 20.3295 14.3371 20.1111C14 19.6067 14 18.9045 14 17.5V17.5V17.5Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.3"
+            fill="#333333" />
+          <path opacity="0.3"
             d="M3 17.5C3 16.0955 3 15.3933 3.33706 14.8889C3.48298 14.6705 3.67048 14.483 3.88886 14.3371C4.39331 14 5.09554 14 6.5 14V14V14C7.90446 14 8.60669 14 9.11114 14.3371C9.32952 14.483 9.51702 14.6705 9.66294 14.8889C10 15.3933 10 16.0955 10 17.5V17.5V17.5C10 18.9045 10 19.6067 9.66294 20.1111C9.51702 20.3295 9.32952 20.517 9.11114 20.6629C8.60669 21 7.90446 21 6.5 21V21V21C5.09554 21 4.39331 21 3.88886 20.6629C3.67048 20.517 3.48298 20.3295 3.33706 20.1111C3 19.6067 3 18.9045 3 17.5V17.5V17.5Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.3"
+            fill="#333333" />
+          <path opacity="0.3"
             d="M3 6.5C3 5.09554 3 4.39331 3.33706 3.88886C3.48298 3.67048 3.67048 3.48298 3.88886 3.33706C4.39331 3 5.09554 3 6.5 3V3V3C7.90446 3 8.60669 3 9.11114 3.33706C9.32952 3.48298 9.51702 3.67048 9.66294 3.88886C10 4.39331 10 5.09554 10 6.5V6.5V6.5C10 7.90446 10 8.60669 9.66294 9.11114C9.51702 9.32952 9.32952 9.51702 9.11114 9.66294C8.60669 10 7.90446 10 6.5 10V10V10C5.09554 10 4.39331 10 3.88886 9.66294C3.67048 9.51702 3.48298 9.32952 3.33706 9.11114C3 8.60669 3 7.90446 3 6.5V6.5V6.5Z"
-            fill="#333333"
-          />
+            fill="#333333" />
           <path
             d="M14 17.5C14 16.0955 14 15.3933 14.3371 14.8889C14.483 14.6705 14.6705 14.483 14.8889 14.3371C15.3933 14 16.0955 14 17.5 14V14V14C18.9045 14 19.6067 14 20.1111 14.3371C20.3295 14.483 20.517 14.6705 20.6629 14.8889C21 15.3933 21 16.0955 21 17.5V17.5V17.5C21 18.9045 21 19.6067 20.6629 20.1111C20.517 20.3295 20.3295 20.517 20.1111 20.6629C19.6067 21 18.9045 21 17.5 21V21V21C16.0955 21 15.3933 21 14.8889 20.6629C14.6705 20.517 14.483 20.3295 14.3371 20.1111C14 19.6067 14 18.9045 14 17.5V17.5V17.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
+            stroke="white" stroke-width="1.5" />
           <path
             d="M3 17.5C3 16.0955 3 15.3933 3.33706 14.8889C3.48298 14.6705 3.67048 14.483 3.88886 14.3371C4.39331 14 5.09554 14 6.5 14V14V14C7.90446 14 8.60669 14 9.11114 14.3371C9.32952 14.483 9.51702 14.6705 9.66294 14.8889C10 15.3933 10 16.0955 10 17.5V17.5V17.5C10 18.9045 10 19.6067 9.66294 20.1111C9.51702 20.3295 9.32952 20.517 9.11114 20.6629C8.60669 21 7.90446 21 6.5 21V21V21C5.09554 21 4.39331 21 3.88886 20.6629C3.67048 20.517 3.48298 20.3295 3.33706 20.1111C3 19.6067 3 18.9045 3 17.5V17.5V17.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
+            stroke="white" stroke-width="1.5" />
           <path
             d="M3 6.5C3 5.09554 3 4.39331 3.33706 3.88886C3.48298 3.67048 3.67048 3.48298 3.88886 3.33706C4.39331 3 5.09554 3 6.5 3V3V3C7.90446 3 8.60669 3 9.11114 3.33706C9.32952 3.48298 9.51702 3.67048 9.66294 3.88886C10 4.39331 10 5.09554 10 6.5V6.5V6.5C10 7.90446 10 8.60669 9.66294 9.11114C9.51702 9.32952 9.32952 9.51702 9.11114 9.66294C8.60669 10 7.90446 10 6.5 10V10V10C5.09554 10 4.39331 10 3.88886 9.66294C3.67048 9.51702 3.48298 9.32952 3.33706 9.11114C3 8.60669 3 7.90446 3 6.5V6.5V6.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
-          <path
-            d="M14 6.5H21"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M17.5 3V10"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+            stroke="white" stroke-width="1.5" />
+          <path d="M14 6.5H21" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M17.5 3V10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
       <div class="header-title" style="display: inline">
@@ -72,52 +41,32 @@
       <!-- Sticky right section for search, advanced filters, and select columns -->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input
-            ref="searchInput"
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search"
-          />
-          <font-awesome-icon
-            icon="fa-solid fa-magnifying-glass"
-            style="color: darkgrey"
-          />
+          <input ref="searchInput" v-model="searchQuery" type="text" placeholder="Search" />
+          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey" />
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleAdvancedFiltersButton"
-            @click="toggleAdvancedFilters"
-          >
+          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div
-            id="advancedFiltersPopup"
-            v-if="showAdvancedFilters"
-            class="button-popup-container"
-            style="width: 250px; left: -50px"
-          >
+          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
+            style="width: 250px; left: -50px">
             <label>
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                "
-              >
+                ">
                 <input type="checkbox" v-model="filters.showLibraries" />
               </div>
               <div><span style="font-weight: bold">Show</span> Libraries</div>
             </label>
             <label>
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                "
-              >
+                ">
                 <input type="checkbox" v-model="filters.showSamples" />
               </div>
               <div><span style="font-weight: bold">Show</span> Samples</div>
@@ -125,64 +74,35 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleSelectColumnsButton"
-            @click="toggleSelectColumns"
-          >
-            <font-awesome-icon
-              icon="fa-solid fa-columns"
-              style="color: white"
-            />
+          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
+            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
             <span> Select Columns </span>
           </button>
-          <div
-            id="selectColumnsPopup"
-            v-if="showSelectColumns"
-            class="button-popup-container"
-            style="
+          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
               left: -50px;
               width: 250px;
               padding-right: 8px;
               padding-top: 10px;
               padding-bottom: 10px;
-            "
-          >
-            <ul
-              style="
+            ">
+            <ul style="
                 padding-left: 0px;
                 padding-right: 10px;
                 max-height: 300px;
                 overflow-y: auto;
-              "
-            >
-              <li
-                v-for="(column, index) in columnsList"
-                :key="index"
-                style="list-style: none"
-              >
-                <template
-                  v-if="
-                    column.field !== 'selected' ||
-                    (column.field === 'selected' && column.visible == false)
-                  "
-                >
-                  <label
-                    :style="{
-                      backgroundColor: column.columns ? '#33333310' : 'white',
-                      cursor: column.columns ? 'default' : 'pointer'
-                    }"
-                  >
-                    <input
-                      v-if="!column.columns"
-                      type="checkbox"
-                      :checked="column.visible"
-                      @change="toggleColumnVisibility(column, true)"
-                    />
-                    <font-awesome-icon
-                      v-if="column.columns"
-                      icon="fa-solid fa-caret-down"
-                      style="
+              ">
+              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
+                <template v-if="
+                  column.field !== 'selected' ||
+                  (column.field === 'selected' && column.visible == false)
+                ">
+                  <label :style="{
+                    backgroundColor: column.columns ? '#33333310' : 'white',
+                    cursor: column.columns ? 'default' : 'pointer'
+                  }">
+                    <input v-if="!column.columns" type="checkbox" :checked="column.visible"
+                      @change="toggleColumnVisibility(column, true)" />
+                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -193,22 +113,14 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      "
-                    />
+                      " />
                     <span style="font-weight: bold">{{ column.title }}</span>
                   </label>
                   <ul v-if="column.columns" style="padding-left: 15px">
-                    <li
-                      v-for="(subColumn, subIndex) in column.columns"
-                      :key="subIndex"
-                      style="list-style: none"
-                    >
+                    <li v-for="(subColumn, subIndex) in column.columns" :key="subIndex" style="list-style: none">
                       <label>
-                        <input
-                          type="checkbox"
-                          :checked="subColumn.visible"
-                          @change="toggleColumnVisibility(subColumn, false)"
-                        />
+                        <input type="checkbox" :checked="subColumn.visible"
+                          @change="toggleColumnVisibility(subColumn, false)" />
                         {{ subColumn.title }}
                       </label>
                     </li>
@@ -220,18 +132,12 @@
         </div>
         <div class="button-popup-wrapper">
           <button class="header-button" @click="toggleGroups">
-            <font-awesome-icon
-              icon="fa-solid fa-layer-group"
-              style="color: white"
-            />
+            <font-awesome-icon icon="fa-solid fa-layer-group" style="color: white" />
             <span> Toggle Views </span>
           </button>
         </div>
         <button class="header-button" @click="exportToExcel">
-          <font-awesome-icon
-            icon="fa-solid fa-file-excel"
-            style="color: white"
-          />
+          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
       </div>
@@ -239,65 +145,33 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <TabulatorTable
-        v-if="!loading"
-        ref="tabulatorTableRef"
-        :rowData="librariesSamplesList"
-        :columnDefs="columnsList"
-        groupBy="library_protocol_name"
-        :tableOptions="{
+      <TabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList" :columnDefs="columnsList"
+        groupBy="library_protocol_name" :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
           fakeLoadingStart,
           fakeLoadingStop
-        }"
-      />
+        }" />
     </div>
 
     <!-- Popup window -->
     <div v-if="showPopupWindow" class="popup-overlay">
-      <div
-        class="popup-container"
-        :style="{
-          height: popupContents.popupHeight + 'px',
-          width: popupContents.popupWidth + 'px'
-        }"
-      >
+      <div class="popup-container" :style="{
+        height: popupContents.popupHeight + 'px',
+        width: popupContents.popupWidth + 'px'
+      }">
         <div class="popup-header">
-          <svg
-            style="display: block"
-            fill="none"
-            width="42px"
-            height="42px"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
+          <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <g>
-              <path
-                opacity="0.3"
+              <path opacity="0.3"
                 d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                fill="#323232"
-              />
+                fill="#323232" />
               <path
                 d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12 8V13"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <path
-                d="M12 16V15.9888"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
+                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+              <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
             </g>
           </svg>
           <span class="popup-title">{{ popupContents.popupTitle }}</span>
@@ -307,10 +181,7 @@
         </div>
         <div class="popup-body">
           <div v-html="popupContents.popupDescription"></div>
-          <div
-            v-if="popupContents.popupList && popupContents.popupList.length > 0"
-            class="popup-scrollable-content"
-          >
+          <div v-if="popupContents.popupList && popupContents.popupList.length > 0" class="popup-scrollable-content">
             <ol style="padding-left: 25px">
               <li v-for="item in popupContents.popupList" :key="item">
                 {{ item.barcode + " ➜ " }}
@@ -524,13 +395,13 @@ export default {
           index_i5_id: element.index_i5_id || "",
           create_time: element.create_time
             ? (() => {
-                const date = new Date(element.create_time);
-                if (isNaN(date)) return "";
-                const day = String(date.getDate()).padStart(2, "0");
-                const month = String(date.getMonth() + 1).padStart(2, "0");
-                const year = date.getFullYear();
-                return `${day}.${month}.${year}`;
-              })()
+              const date = new Date(element.create_time);
+              if (isNaN(date)) return "";
+              const day = String(date.getDate()).padStart(2, "0");
+              const month = String(date.getMonth() + 1).padStart(2, "0");
+              const year = date.getFullYear();
+              return `${day}.${month}.${year}`;
+            })()
             : "",
           measuring_unit_facility: element.measuring_unit_facility || "",
           measured_value_facility:
@@ -565,9 +436,8 @@ export default {
           formatter: (cell) => {
             const row = cell.getRow();
             const rowData = row.getData();
-            const checkbox = `<input type="checkbox" title="Select" style="top:-4px" ${
-              rowData.selected ? "checked" : ""
-            } />`;
+            const checkbox = `<input type="checkbox" title="Select" style="top:-4px" ${rowData.selected ? "checked" : ""
+              } />`;
 
             return checkbox;
           },
@@ -620,11 +490,10 @@ export default {
                             ">
                             ${type}
                           </span>
-                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-                            (tableGroupsToggleState == 2
-                              ? library_protocol_name + " ➜ "
-                              : "") + name
-                          }</span>
+                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${(tableGroupsToggleState == 2
+                ? library_protocol_name + " ➜ "
+                : "") + name
+              }</span>
                         </div>
                       `;
           }
@@ -1255,9 +1124,8 @@ export default {
             break;
           }
           let popupTitleQP = `Are you sure?`;
-          let popupDescriptionQP = `Marking the following ${
-            type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQP = `Marking the following ${type === "L" ? "libraries" : "samples"
+            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQP = [...selectedNamesList];
           let onYesQP = () => {
             this.qualityCheckChange(selectedRows, "passed");
@@ -1286,9 +1154,8 @@ export default {
             break;
           }
           let popupTitleQF = `Are you sure?`;
-          let popupDescriptionQF = `Marking the following ${
-            type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQF = `Marking the following ${type === "L" ? "libraries" : "samples"
+            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQF = [...selectedNamesList];
           let onYesQF = () => {
             this.qualityCheckChange(selectedRows, "failed");
@@ -1364,51 +1231,128 @@ export default {
         (row) => row.selected === true
       );
       this.fakeLoadingStart();
-      exportColumns.unshift({
-        title: "Request Name",
-        field: "request_name",
-        visible: true
-      });
       if (exportRows.length === 0) {
         exportRows = this.librariesSamplesList;
       }
-      document.body.appendChild(tempContainer);
-      const tempTabulator = new Tabulator(tempContainer, {
-        data: exportRows,
-        columns: exportColumns,
-        placeholder: "No Libraries and Samples to show.",
-        dependencies: {
-          XLSX: XLSX
-        },
-        downloadConfig: {
-          columnHeaders: true,
-          columnGroups: true,
-          rowGroups: true,
-          columnCalcs: true,
-          dataTree: true
-        }
-      });
+      console.log("Iinnn")
       this.fakeLoadingStop();
+      const biomekData = this.librariesSamplesList.map(row => ({
+        "Request ID": row.request_id,
+        "Pool ID": row.pool_id,
+        "Sample": row.sample,
+        "Barcode": row.barcode,
+        "Protocol": row.protocol,
+        "Index Type": row.index_type,
+        "Index I7 ID": row.index_i7_id,
+        "Index I5 ID": row.index_i5_id,
+        "Coordinate (Index Plate)": row.coordinate,
+        "InputPlate ID": row.input_plate_id,
+        "Concentration Sample (ng/µl)": row.concentration_sample,
+        "DF": row.df,
+        "Concentration Dilution (ng/µl)": row.concentration_dilution,
+        "Starting Amount (ng)": row.starting_amount,
+        "Starting Volume (µl)": row.starting_volume,
+        "µl Sample": row.ul_sample,
+        "µl Buffer": row.ul_buffer
+      }));
+
+      // Create Biomek Run Doc Worksheet
+      const biomekWS = XLSX.utils.json_to_sheet(biomekData);
+
+      // Create 96-well format Worksheet
+      const wellFormatData = [
+        ["Sample Plate 1", "", "", "", "", "", "", "", "", "", "", "", ""],
+        ["='Biomek Run Doc'!J2", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        ["A", "=LEFT('Biomek Run Doc'!A2, 4) & \"_\" & 'Biomek Run Doc'!D2",
+          "=LEFT('Biomek Run Doc'!A10, 4) & \"_\" & 'Biomek Run Doc'!D10",
+          "=LEFT('Biomek Run Doc'!A18, 4) & \"_\" & 'Biomek Run Doc'!D18",
+          "=LEFT('Biomek Run Doc'!A26, 4) & \"_\" & 'Biomek Run Doc'!D26",
+          "=LEFT('Biomek Run Doc'!A34, 4) & \"_\" & 'Biomek Run Doc'!D34",
+          "=LEFT('Biomek Run Doc'!A42, 4) & \"_\" & 'Biomek Run Doc'!D42",
+          "=LEFT('Biomek Run Doc'!A50, 4) & \"_\" & 'Biomek Run Doc'!D50",
+          "=LEFT('Biomek Run Doc'!A58, 4) & \"_\" & 'Biomek Run Doc'!D58",
+          "=LEFT('Biomek Run Doc'!A66, 4) & \"_\" & 'Biomek Run Doc'!D66",
+          "=LEFT('Biomek Run Doc'!A74, 4) & \"_\" & 'Biomek Run Doc'!D74",
+          "=LEFT('Biomek Run Doc'!A82, 4) & \"_\" & 'Biomek Run Doc'!D82",
+          "=LEFT('Biomek Run Doc'!A90, 4) & \"_\" & 'Biomek Run Doc'!D90"],
+        ["B", "=LEFT('Biomek Run Doc'!A3, 4) & \"_\" & 'Biomek Run Doc'!D3",
+          "=LEFT('Biomek Run Doc'!A11, 4) & \"_\" & 'Biomek Run Doc'!D11",
+          "=LEFT('Biomek Run Doc'!A19, 4) & \"_\" & 'Biomek Run Doc'!D19",
+          "=LEFT('Biomek Run Doc'!A27, 4) & \"_\" & 'Biomek Run Doc'!D27",
+          "=LEFT('Biomek Run Doc'!A35, 4) & \"_\" & 'Biomek Run Doc'!D35",
+          "=LEFT('Biomek Run Doc'!A43, 4) & \"_\" & 'Biomek Run Doc'!D43",
+          "=LEFT('Biomek Run Doc'!A51, 4) & \"_\" & 'Biomek Run Doc'!D51",
+          "=LEFT('Biomek Run Doc'!A59, 4) & \"_\" & 'Biomek Run Doc'!D59",
+          "=LEFT('Biomek Run Doc'!A67, 4) & \"_\" & 'Biomek Run Doc'!D67",
+          "=LEFT('Biomek Run Doc'!A75, 4) & \"_\" & 'Biomek Run Doc'!D75",
+          "=LEFT('Biomek Run Doc'!A83, 4) & \"_\" & 'Biomek Run Doc'!D83",
+          "=LEFT('Biomek Run Doc'!A91, 4) & \"_\" & 'Biomek Run Doc'!D91"],
+        // Continue for rows C to H with similar formulas
+        ["C", "=LEFT('Biomek Run Doc'!A4, 4) & \"_\" & 'Biomek Run Doc'!D4",
+          "=LEFT('Biomek Run Doc'!A12, 4) & \"_\" & 'Biomek Run Doc'!D12",
+     /* Add all other cells with formulas */],
+        ["D", "=LEFT('Biomek Run Doc'!A5, 4) & \"_\" & 'Biomek Run Doc'!D5",
+          "=LEFT('Biomek Run Doc'!A13, 4) & \"_\" & 'Biomek Run Doc'!D13",
+     /* Add all other cells with formulas */],
+        ["E", "=LEFT('Biomek Run Doc'!A6, 4) & \"_\" & 'Biomek Run Doc'!D6",
+          "=LEFT('Biomek Run Doc'!A14, 4) & \"_\" & 'Biomek Run Doc'!D14",
+     /* Add all other cells with formulas */],
+        ["F", "=LEFT('Biomek Run Doc'!A7, 4) & \"_\" & 'Biomek Run Doc'!D7",
+          "=LEFT('Biomek Run Doc'!A15, 4) & \"_\" & 'Biomek Run Doc'!D15",
+     /* Add all other cells with formulas */],
+        ["G", "=LEFT('Biomek Run Doc'!A8, 4) & \"_\" & 'Biomek Run Doc'!D8",
+          "=LEFT('Biomek Run Doc'!A16, 4) & \"_\" & 'Biomek Run Doc'!D16",
+     /* Add all other cells with formulas */],
+        ["H", "=LEFT('Biomek Run Doc'!A9, 4) & \"_\" & 'Biomek Run Doc'!D9",
+          "=LEFT('Biomek Run Doc'!A17, 4) & \"_\" & 'Biomek Run Doc'!D17",
+     /* Add all other cells with formulas */],
+        // Add Index Plate section
+        ["Index Plate 1", "", "", "", "", "", "", "", "", "", "", "", ""],
+        ["='Biomek Run Doc'!F2", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        ["A", "='Biomek Run Doc'!I2", "='Biomek Run Doc'!I10", "='Biomek Run Doc'!I18",
+          "='Biomek Run Doc'!I26", "='Biomek Run Doc'!I34", "='Biomek Run Doc'!I42",
+          "='Biomek Run Doc'!I50", "='Biomek Run Doc'!I58", "='Biomek Run Doc'!I66",
+          "='Biomek Run Doc'!I74", "='Biomek Run Doc'!I82", "='Biomek Run Doc'!I90"],
+        ["B", "='Biomek Run Doc'!I3", "='Biomek Run Doc'!I11", "='Biomek Run Doc'!I19",
+          "='Biomek Run Doc'!I27", "='Biomek Run Doc'!I35", "='Biomek Run Doc'!I43",
+          "='Biomek Run Doc'!I51", "='Biomek Run Doc'!I59", "='Biomek Run Doc'!I67",
+          "='Biomek Run Doc'!I75", "='Biomek Run Doc'!I83", "='Biomek Run Doc'!I91"],
+        // Continue for rows C to H with similar formulas
+      ];
+
+      const wellFormatWS = XLSX.utils.aoa_to_sheet(wellFormatData);
+
+      for (let row = 0; row < wellFormatData.length; row++) {
+        for (let col = 0; col < wellFormatData[row].length; col++) {
+          const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+          if (typeof wellFormatData[row][col] === "string" && wellFormatData[row][col].startsWith("=")) {
+            wellFormatWS[cellAddress].f = wellFormatData[row][col];
+          }
+        }
+      }
+
+      // Create Workbook
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, biomekWS, "Biomek Run Doc");
+      XLSX.utils.book_append_sheet(wb, wellFormatWS, "96-well format");
+
+      // Export file
+      XLSX.writeFile(wb, filename);
       setTimeout(() => {
         try {
-          tempTabulator.download("xlsx", filename, {
-            sheetName: "Library Preparation"
-          });
+
         } catch (error) {
           showNotification(
             "Failed to export the data, please try again.",
             "error"
           );
         } finally {
-          tempTabulator.destroy();
-          document.body.removeChild(tempContainer);
         }
       }, 300);
     },
     ellipsisContainer(text, boldText) {
-      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${
-        boldText === true ? "bold" : "normal"
-      }">
+      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${boldText === true ? "bold" : "normal"
+        }">
                 ${text}
               </div>`;
     },
