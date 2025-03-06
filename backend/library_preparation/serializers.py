@@ -28,7 +28,9 @@ class LibraryPreparationListSerializer(ListSerializer):
                     obj.sample.comments_facility = data["comments_facility"]
 
                 if "size_distribution_facility" in data.keys():
-                    obj.sample.size_distribution_facility = data["size_distribution_facility"]
+                    obj.sample.size_distribution_facility = data[
+                        "size_distribution_facility"
+                    ]
 
                 if "measuring_unit_facility" in data.keys():
                     obj.sample.measuring_unit_facility = data["measuring_unit_facility"]
@@ -36,12 +38,14 @@ class LibraryPreparationListSerializer(ListSerializer):
                 if "measured_value_facility" in data.keys():
                     obj.sample.measured_value_facility = data["measured_value_facility"]
 
-                obj.sample.save(update_fields=[
-                    "comments_facility",
-                    "size_distribution_facility",
-                    "measuring_unit_facility",
-                    "measured_value_facility"
-                ])
+                obj.sample.save(
+                    update_fields=[
+                        "comments_facility",
+                        "size_distribution_facility",
+                        "measuring_unit_facility",
+                        "measured_value_facility",
+                    ]
+                )
 
                 if "quality_check" in data.keys():
                     if data["quality_check"] == "passed":
@@ -112,15 +116,23 @@ class LibraryPreparationSerializer(ModelSerializer):
 
         if "concentration_sample" in data:
             try:
-                internal_value["concentration_sample"] = float(data["concentration_sample"])
+                internal_value["concentration_sample"] = float(
+                    data["concentration_sample"]
+                )
             except ValueError:
-                raise ValidationError({"concentration_sample": ["A valid float is required."]})
+                raise ValidationError(
+                    {"concentration_sample": ["A valid float is required."]}
+                )
 
         if "size_distribution_facility" in data:
             try:
-                internal_value["size_distribution_facility"] = float(data["size_distribution_facility"])
+                internal_value["size_distribution_facility"] = float(
+                    data["size_distribution_facility"]
+                )
             except ValueError:
-                raise ValidationError({"size_distribution_facility": ["A valid float is required."]})
+                raise ValidationError(
+                    {"size_distribution_facility": ["A valid float is required."]}
+                )
 
         if "measuring_unit_facility" in data:
             internal_value["measuring_unit_facility"] = data["measuring_unit_facility"]
@@ -168,7 +180,7 @@ class LibraryPreparationSerializer(ModelSerializer):
         return coordinates.get(key, "")
 
     def get_index_type(self, obj):
-        return  obj.sample.index_type.name if obj.sample.index_type else ""
+        return obj.sample.index_type.name if obj.sample.index_type else ""
 
     def get_index_i7_id(self, obj):
         return obj.sample.index_i7_id
@@ -181,12 +193,12 @@ class LibraryPreparationSerializer(ModelSerializer):
 
     def get_measuring_unit_facility(self, obj):
         return obj.sample.measuring_unit_facility
-    
+
     def get_measured_value_facility(self, obj):
         return obj.sample.measured_value_facility
 
     def get_comments_library_sample(self, obj):
         return obj.sample.comments
-    
+
     def get_comments_facility(self, obj):
         return obj.sample.comments_facility
