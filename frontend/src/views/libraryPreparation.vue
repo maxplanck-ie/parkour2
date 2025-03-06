@@ -69,7 +69,7 @@
         Library Preparation
       </div>
 
-      <!-- Sticky right section for search, advanced filters, and select columns -->
+      <!-- Sticky right section for search, and select columns -->
       <div class="sticky-actions">
         <div class="search-bar">
           <input
@@ -82,47 +82,6 @@
             icon="fa-solid fa-magnifying-glass"
             style="color: darkgrey"
           />
-        </div>
-        <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleAdvancedFiltersButton"
-            @click="toggleAdvancedFilters"
-          >
-            <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
-            <span> Advanced Filters </span>
-          </button>
-          <div
-            id="advancedFiltersPopup"
-            v-if="showAdvancedFilters"
-            class="button-popup-container"
-            style="width: 250px; left: -50px"
-          >
-            <label>
-              <div
-                style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                "
-              >
-                <input type="checkbox" v-model="filters.showLibraries" />
-              </div>
-              <div><span style="font-weight: bold">Show</span> Libraries</div>
-            </label>
-            <label>
-              <div
-                style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                "
-              >
-                <input type="checkbox" v-model="filters.showSamples" />
-              </div>
-              <div><span style="font-weight: bold">Show</span> Samples</div>
-            </label>
-          </div>
         </div>
         <div class="button-popup-wrapper">
           <button
@@ -332,7 +291,6 @@
 
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTable.vue";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
 import * as XLSX from "xlsx";
 import {
   showNotification,
@@ -424,11 +382,6 @@ export default {
         }
       },
       searchQuery: "",
-      filters: {
-        showLibraries: true,
-        showSamples: true
-      },
-      showAdvancedFilters: false,
       showSelectColumns: false,
       libraryProtocols: []
     };
@@ -452,19 +405,9 @@ export default {
     searchQuery(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.tabulatorInstance.filterTableData(
-          "search",
+          "search_library_preparation",
           newValue === null ? "" : newValue
         );
-      }
-    },
-    "filters.showLibraries"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData("showLibraries", newValue);
-      }
-    },
-    "filters.showSamples"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData("showSamples", newValue);
       }
     },
     showPopupWindow(newVal) {
@@ -590,7 +533,25 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column blue-background",
+          cssClass: "details-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const finalString = value || "-";
+            return this.ellipsisContainer(finalString, true);
+          }
+        },
+        {
+          title: "Name",
+          field: "name",
+          minWidth: 220,
+          headerFilter: true,
+          visible: true,
+          frozen: true,
+          cssClass: "details-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -621,30 +582,12 @@ export default {
                             ${type}
                           </span>
                           <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-                            (tableGroupsToggleState == 2
-                              ? library_protocol_name + " ➜ "
-                              : "") + name
-                          }</span>
+              (tableGroupsToggleState == 2
+                ? library_protocol_name + " ➜ "
+                : "") + name
+            }</span>
                         </div>
                       `;
-          }
-        },
-        {
-          title: "Name",
-          field: "name",
-          minWidth: 220,
-          headerFilter: true,
-          visible: true,
-          frozen: true,
-          cssClass: "details-column blue-background",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString, true);
           }
         },
         {
@@ -654,7 +597,7 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column blue-background",
+          cssClass: "details-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -670,6 +613,22 @@ export default {
           field: "create_time",
           width: 90,
           headerFilter: true,
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const finalString = value || "-";
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Protocol",
+          field: "library_protocol_name",
+          minWidth: 150,
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -765,7 +724,7 @@ export default {
         {
           title: "Coordinate",
           field: "coordinate",
-          width: 50,
+          width: 40,
           headerVertical: false,
           visible: true,
           cssClass: "regular-column",
@@ -779,221 +738,215 @@ export default {
           }
         },
         {
-          title: "Measuring Unit",
-          field: "measuring_unit_facility",
-          minWidth: 80,
-          width: "6%",
-          editor: "list",
-          editorParams: (cell) => {
-            const row = cell.getRow().getData();
-            const options = [
-              { label: "ng/µl (Concentration)", value: "concentration" },
-              { label: "M (Cells)", value: "m" },
-              { label: "Unknown", value: "-" }
-            ];
-            if (row.type === "L") {
-              return {
-                values: options.filter((option) => option.value !== "m")
-              };
+          title: "Editable Fields",
+          headerHozAlign: "left",
+          visible: true,
+          cssClass: "editable-fields-group",
+          columns: [
+            {
+              title: "Measuring Unit",
+              field: "measuring_unit_facility",
+              minWidth: 80,
+              width: "6%",
+              editor: "list",
+              editorParams: (cell) => {
+                const row = cell.getRow().getData();
+                const options = [
+                  { label: "ng/µl (Concentration)", value: "concentration" },
+                  { label: "M (Cells)", value: "m" },
+                  { label: "Unknown", value: "-" }
+                ];
+                if (row.type === "L") {
+                  return {
+                    values: options.filter((option) => option.value !== "m")
+                  };
+                }
+                return { values: options };
+              },
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const value = cell.getValue();
+                const options = {
+                  concentration: "ng/µl (Concentration)",
+                  m: "M (Cells)",
+                  "-": "Unknown"
+                };
+                const finalString = options[value] || value || "Select";
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "Measured Value",
+              field: "measured_value_facility",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "Size",
+              field: "size_distribution_facility",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "Starting Amount (ng/fmol)",
+              field: "starting_amount",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "PCR Cycles",
+              field: "pcr_cycles",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "Concentration Library (ng/µl)",
+              field: "concentration_library",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "Size (bp)",
+              field: "mean_fragment_size",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "Smear Analysis",
+              field: "smear_analysis",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "Comment",
+              field: "comments_facility",
+              minWidth: 150,
+              editor: "input",
+              headerVertical: false,
+              visible: true,
+              cssClass: "regular-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const value = cell.getValue() || "Empty";
+                return this.ellipsisContainer(value);
+              }
             }
-            return { values: options };
-          },
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const options = {
-              concentration: "ng/µl (Concentration)",
-              m: "M (Cells)",
-              "-": "Unknown"
-            };
-            const finalString = options[value] || value || "Select";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Measured Value",
-          field: "measured_value_facility",
-          minWidth: 60,
-          width: "4%",
-          editor: "number",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Size",
-          field: "size_distribution_facility",
-          minWidth: 60,
-          width: "4%",
-          editor: "number",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Starting Amount (ng/fmol)",
-          field: "starting_amount",
-          minWidth: 60,
-          width: "4%",
-          editor: "number",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "PCR Cycles",
-          field: "pcr_cycles",
-          minWidth: 60,
-          width: "4%",
-          editor: "number",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Concentration Library (ng/µl)",
-          field: "concentration_library",
-          minWidth: 60,
-          width: "4%",
-          editor: "number",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Size (bp)",
-          field: "mean_fragment_size",
-          minWidth: 60,
-          width: "4%",
-          editor: "number",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Smear Analysis",
-          field: "smear_analysis",
-          minWidth: 60,
-          width: "4%",
-          editor: "number",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "QC Comment",
-          field: "comments_facility",
-          minWidth: 150,
-          editor: "input",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const value = cell.getValue() || "Empty";
-            return this.ellipsisContainer(value);
-          }
-        },
-        {
-          title: "Comment",
-          field: "comments",
-          minWidth: 150,
-          editor: "input",
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column no-right-border",
-          contextMenu: () => this.cellContextMenu(true, true, true),
-          formatter: (cell) => {
-            const value = cell.getValue() || "Empty";
-            return this.ellipsisContainer(value);
-          }
+          ]
         }
       ];
 
@@ -1099,26 +1052,10 @@ export default {
       return operations.length ? operations : [];
     },
     handleOutsideClick(event) {
-      const advancedFiltersPopup = this.$el.querySelector(
-        "#advancedFiltersPopup"
-      );
-      const advancedFiltersButton = this.$el.querySelector(
-        "#toggleAdvancedFiltersButton"
-      );
       const selectColumnsPopup = this.$el.querySelector("#selectColumnsPopup");
       const selectColumnsButton = this.$el.querySelector(
         "#toggleSelectColumnsButton"
       );
-
-      if (
-        this.showAdvancedFilters &&
-        advancedFiltersPopup &&
-        !advancedFiltersPopup.contains(event.target) &&
-        advancedFiltersButton !== event.target &&
-        !advancedFiltersButton.contains(event.target)
-      ) {
-        this.showAdvancedFilters = false;
-      }
 
       if (
         this.showSelectColumns &&
@@ -1134,10 +1071,6 @@ export default {
       const isEscape = event.key === "Escape";
       if (isEscape && this.showPopupWindow) {
         this.showPopupWindow = false;
-        return;
-      }
-      if (isEscape && this.showAdvancedFilters) {
-        this.showAdvancedFilters = false;
         return;
       }
       if (isEscape && this.showSelectColumns) {
@@ -1158,17 +1091,8 @@ export default {
       this.tabulatorInstance.toggleGroups(goToInitial);
       this.fakeLoadingStop();
     },
-    toggleAdvancedFilters() {
-      this.showAdvancedFilters = !this.showAdvancedFilters;
-      if (this.showAdvancedFilters) {
-        this.showSelectColumns = false;
-      }
-    },
     toggleSelectColumns() {
       this.showSelectColumns = !this.showSelectColumns;
-      if (this.showSelectColumns) {
-        this.showAdvancedFilters = false;
-      }
     },
     toggleColumnVisibility(column, isMainColumn) {
       this.fakeLoadingStart();
@@ -1356,7 +1280,6 @@ export default {
       const year = today.getFullYear();
       const formattedDate = `${day}_${month}_${year}`;
       const filename = `Library_Preparation_${formattedDate}.xlsx`;
-      const tempContainer = document.createElement("div");
       const exportColumns = this.columnsList
         .filter((col) => col.field !== "selected")
         .map((col) => ({ ...col }));
@@ -1369,159 +1292,106 @@ export default {
       }
       console.log("Iinnn");
       this.fakeLoadingStop();
-      const biomekData = this.librariesSamplesList.map((row) => ({
-        "Request ID": row.request_id,
-        "Pool ID": row.pool_id,
-        Sample: row.sample,
+      const biomekData = exportRows.map((row) => ({
+        "Request ID": row.request_name,
+        "Pool ID": row.pool_name,
+        Sample: row.name,
         Barcode: row.barcode,
-        Protocol: row.protocol,
+        Protocol: row.library_protocol_name,
         "Index Type": row.index_type,
         "Index I7 ID": row.index_i7_id,
         "Index I5 ID": row.index_i5_id,
         "Coordinate (Index Plate)": row.coordinate,
-        "InputPlate ID": row.input_plate_id,
+        "InputPlate ID": "",
         "Concentration Sample (ng/µl)": row.concentration_sample,
-        DF: row.df,
-        "Concentration Dilution (ng/µl)": row.concentration_dilution,
+        DF: "",
+        "Concentration Dilution (ng/µl)": "",
         "Starting Amount (ng)": row.starting_amount,
-        "Starting Volume (µl)": row.starting_volume,
-        "µl Sample": row.ul_sample,
-        "µl Buffer": row.ul_buffer
+        "Starting Volume (µl)": "",
+        "µl Sample": "",
+        "µl Buffer": ""
       }));
 
-      // Create Biomek Run Doc Worksheet
       const biomekWS = XLSX.utils.json_to_sheet(biomekData);
 
-      // Create 96-well format Worksheet
-      const wellFormatData = [
-        ["Sample Plate 1", "", "", "", "", "", "", "", "", "", "", "", ""],
-        ["='Biomek Run Doc'!J2", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        [
-          "A",
-          "=LEFT('Biomek Run Doc'!A2, 4) & \"_\" & 'Biomek Run Doc'!D2",
-          "=LEFT('Biomek Run Doc'!A10, 4) & \"_\" & 'Biomek Run Doc'!D10",
-          "=LEFT('Biomek Run Doc'!A18, 4) & \"_\" & 'Biomek Run Doc'!D18",
-          "=LEFT('Biomek Run Doc'!A26, 4) & \"_\" & 'Biomek Run Doc'!D26",
-          "=LEFT('Biomek Run Doc'!A34, 4) & \"_\" & 'Biomek Run Doc'!D34",
-          "=LEFT('Biomek Run Doc'!A42, 4) & \"_\" & 'Biomek Run Doc'!D42",
-          "=LEFT('Biomek Run Doc'!A50, 4) & \"_\" & 'Biomek Run Doc'!D50",
-          "=LEFT('Biomek Run Doc'!A58, 4) & \"_\" & 'Biomek Run Doc'!D58",
-          "=LEFT('Biomek Run Doc'!A66, 4) & \"_\" & 'Biomek Run Doc'!D66",
-          "=LEFT('Biomek Run Doc'!A74, 4) & \"_\" & 'Biomek Run Doc'!D74",
-          "=LEFT('Biomek Run Doc'!A82, 4) & \"_\" & 'Biomek Run Doc'!D82",
-          "=LEFT('Biomek Run Doc'!A90, 4) & \"_\" & 'Biomek Run Doc'!D90"
-        ],
-        [
-          "B",
-          "=LEFT('Biomek Run Doc'!A3, 4) & \"_\" & 'Biomek Run Doc'!D3",
-          "=LEFT('Biomek Run Doc'!A11, 4) & \"_\" & 'Biomek Run Doc'!D11",
-          "=LEFT('Biomek Run Doc'!A19, 4) & \"_\" & 'Biomek Run Doc'!D19",
-          "=LEFT('Biomek Run Doc'!A27, 4) & \"_\" & 'Biomek Run Doc'!D27",
-          "=LEFT('Biomek Run Doc'!A35, 4) & \"_\" & 'Biomek Run Doc'!D35",
-          "=LEFT('Biomek Run Doc'!A43, 4) & \"_\" & 'Biomek Run Doc'!D43",
-          "=LEFT('Biomek Run Doc'!A51, 4) & \"_\" & 'Biomek Run Doc'!D51",
-          "=LEFT('Biomek Run Doc'!A59, 4) & \"_\" & 'Biomek Run Doc'!D59",
-          "=LEFT('Biomek Run Doc'!A67, 4) & \"_\" & 'Biomek Run Doc'!D67",
-          "=LEFT('Biomek Run Doc'!A75, 4) & \"_\" & 'Biomek Run Doc'!D75",
-          "=LEFT('Biomek Run Doc'!A83, 4) & \"_\" & 'Biomek Run Doc'!D83",
-          "=LEFT('Biomek Run Doc'!A91, 4) & \"_\" & 'Biomek Run Doc'!D91"
-        ],
-        // Continue for rows C to H with similar formulas
-        [
-          "C",
-          "=LEFT('Biomek Run Doc'!A4, 4) & \"_\" & 'Biomek Run Doc'!D4",
-          "=LEFT('Biomek Run Doc'!A12, 4) & \"_\" & 'Biomek Run Doc'!D12"
-          /* Add all other cells with formulas */
-        ],
-        [
-          "D",
-          "=LEFT('Biomek Run Doc'!A5, 4) & \"_\" & 'Biomek Run Doc'!D5",
-          "=LEFT('Biomek Run Doc'!A13, 4) & \"_\" & 'Biomek Run Doc'!D13"
-          /* Add all other cells with formulas */
-        ],
-        [
-          "E",
-          "=LEFT('Biomek Run Doc'!A6, 4) & \"_\" & 'Biomek Run Doc'!D6",
-          "=LEFT('Biomek Run Doc'!A14, 4) & \"_\" & 'Biomek Run Doc'!D14"
-          /* Add all other cells with formulas */
-        ],
-        [
-          "F",
-          "=LEFT('Biomek Run Doc'!A7, 4) & \"_\" & 'Biomek Run Doc'!D7",
-          "=LEFT('Biomek Run Doc'!A15, 4) & \"_\" & 'Biomek Run Doc'!D15"
-          /* Add all other cells with formulas */
-        ],
-        [
-          "G",
-          "=LEFT('Biomek Run Doc'!A8, 4) & \"_\" & 'Biomek Run Doc'!D8",
-          "=LEFT('Biomek Run Doc'!A16, 4) & \"_\" & 'Biomek Run Doc'!D16"
-          /* Add all other cells with formulas */
-        ],
-        [
-          "H",
-          "=LEFT('Biomek Run Doc'!A9, 4) & \"_\" & 'Biomek Run Doc'!D9",
-          "=LEFT('Biomek Run Doc'!A17, 4) & \"_\" & 'Biomek Run Doc'!D17"
-          /* Add all other cells with formulas */
-        ],
-        // Add Index Plate section
-        ["Index Plate 1", "", "", "", "", "", "", "", "", "", "", "", ""],
-        ["='Biomek Run Doc'!F2", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        [
-          "A",
-          "='Biomek Run Doc'!I2",
-          "='Biomek Run Doc'!I10",
-          "='Biomek Run Doc'!I18",
-          "='Biomek Run Doc'!I26",
-          "='Biomek Run Doc'!I34",
-          "='Biomek Run Doc'!I42",
-          "='Biomek Run Doc'!I50",
-          "='Biomek Run Doc'!I58",
-          "='Biomek Run Doc'!I66",
-          "='Biomek Run Doc'!I74",
-          "='Biomek Run Doc'!I82",
-          "='Biomek Run Doc'!I90"
-        ],
-        [
-          "B",
-          "='Biomek Run Doc'!I3",
-          "='Biomek Run Doc'!I11",
-          "='Biomek Run Doc'!I19",
-          "='Biomek Run Doc'!I27",
-          "='Biomek Run Doc'!I35",
-          "='Biomek Run Doc'!I43",
-          "='Biomek Run Doc'!I51",
-          "='Biomek Run Doc'!I59",
-          "='Biomek Run Doc'!I67",
-          "='Biomek Run Doc'!I75",
-          "='Biomek Run Doc'!I83",
-          "='Biomek Run Doc'!I91"
-        ]
-        // Continue for rows C to H with similar formulas
-      ];
+      const wellFormatData = [];
+      const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
+      // 1. First "Sample Plate 1" Section (Sample Names)
+      wellFormatData.push(["Sample Plate 1", ...Array(12).fill("")]);
+      wellFormatData.push([
+        "='Biomek Run Doc'!J2",
+        ...Array.from({ length: 12 }, (_, i) => i + 1)
+      ]);
+
+      for (let rowIdx = 0; rowIdx < 8; rowIdx++) {
+        const biomekStartRow = 2 + rowIdx; // Biomek row offset: A=2, B=3...H=9
+        const row = [rows[rowIdx]];
+        for (let colIdx = 0; colIdx < 12; colIdx++) {
+          const biomekRow = biomekStartRow + 8 * colIdx; // Increment by 8 per column
+          row.push(
+            `=LEFT('Biomek Run Doc'!A${biomekRow}, 4) & "_" & 'Biomek Run Doc'!D${biomekRow}`
+          );
+        }
+        wellFormatData.push(row);
+      }
+
+      // 2. Second "Sample Plate 1" Section (Volumes: µl Sample)
+      wellFormatData.push([""]); // Empty row
+      wellFormatData.push(["Sample Plate 1", ...Array(12).fill("")]);
+      wellFormatData.push([
+        "='Biomek Run Doc'!J2",
+        ...Array.from({ length: 12 }, (_, i) => i + 1)
+      ]);
+
+      for (let rowIdx = 0; rowIdx < 8; rowIdx++) {
+        const biomekStartRow = 2 + rowIdx; // Biomek row offset: A=2, B=3...H=9
+        const row = [rows[rowIdx]];
+        for (let colIdx = 0; colIdx < 12; colIdx++) {
+          const biomekRow = biomekStartRow + 8 * colIdx; // Increment by 8 per column
+          row.push(`='Biomek Run Doc'!P${biomekRow}`); // Column P = µl Sample
+        }
+        wellFormatData.push(row);
+      }
+
+      // 3. Index Plate Section
+      wellFormatData.push([""]); // Empty row
+      wellFormatData.push(["Index Plate 1", ...Array(12).fill("")]);
+      wellFormatData.push([
+        "='Biomek Run Doc'!F2",
+        ...Array.from({ length: 12 }, (_, i) => i + 1)
+      ]);
+
+      for (let rowIdx = 0; rowIdx < 8; rowIdx++) {
+        const biomekStartRow = 2 + rowIdx; // Biomek row offset: A=2, B=3...H=9
+        const row = [rows[rowIdx]];
+        for (let colIdx = 0; colIdx < 12; colIdx++) {
+          const biomekRow = biomekStartRow + 8 * colIdx; // Increment by 8 per column
+          row.push(`='Biomek Run Doc'!I${biomekRow}`); // Column I = Coordinate (Index Plate)
+        }
+        wellFormatData.push(row);
+      }
+
+      // Convert to Worksheet & Mark Formulas
       const wellFormatWS = XLSX.utils.aoa_to_sheet(wellFormatData);
+      const range = XLSX.utils.decode_range(wellFormatWS["!ref"]);
 
-      for (let row = 0; row < wellFormatData.length; row++) {
-        for (let col = 0; col < wellFormatData[row].length; col++) {
-          const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
-          if (
-            typeof wellFormatData[row][col] === "string" &&
-            wellFormatData[row][col].startsWith("=")
-          ) {
-            wellFormatWS[cellAddress].f = wellFormatData[row][col];
+      for (let R = range.s.r; R <= range.e.r; R++) {
+        for (let C = range.s.c; C <= range.e.c; C++) {
+          const cell = wellFormatWS[XLSX.utils.encode_cell({ r: R, c: C })];
+          if (cell?.v?.startsWith?.("=")) {
+            cell.f = cell.v; // Set formula property
+            cell.t = "n"; // Mark as formula type
           }
         }
       }
 
-      // Create Workbook
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, biomekWS, "Biomek Run Doc");
-      XLSX.utils.book_append_sheet(wb, wellFormatWS, "96-well format");
-
-      // Export file
-      XLSX.writeFile(wb, filename);
       setTimeout(() => {
         try {
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, biomekWS, "Biomek Run Doc");
+          XLSX.utils.book_append_sheet(wb, wellFormatWS, "96-well Format");
+          XLSX.writeFile(wb, filename);
         } catch (error) {
           showNotification(
             "Failed to export the data, please try again.",
@@ -1666,19 +1536,11 @@ body,
 </style>
 
 <!--
-Admin Panel refactor
-Export customization
-Add validations according to old component
-Make filters and search specific to the components
+concentration_facilty field is renamed to measured_value_facility
+how should new admin panel look like?
+please check header names in both of the components
 
+add validations according to old component
 
-What kind of filters to use here
-We are grouping by Protocol, then why do we need a column of it
-Combine comments meaning
-Any group header for editable fields
-What fields should be searchable
-Some columns which are removed are still part of the export file
-
-filters line is commented in the table component
 storedcolumns line is set to false
 -->
