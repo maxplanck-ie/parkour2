@@ -582,10 +582,10 @@ export default {
                             ${type}
                           </span>
                           <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-              (tableGroupsToggleState == 2
-                ? library_protocol_name + " ➜ "
-                : "") + name
-            }</span>
+                            (tableGroupsToggleState == 2
+                              ? library_protocol_name + " ➜ "
+                              : "") + name
+                          }</span>
                         </div>
                       `;
           }
@@ -795,8 +795,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -817,8 +817,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -839,8 +839,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -861,8 +861,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -883,8 +883,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -905,8 +905,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -927,8 +927,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
+                      ? "0.0"
+                      : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
