@@ -12,7 +12,7 @@ diff-match-patch==20241021
     # via django-import-export
 dj-database-url==2.3.0
     # via -r backend/requirements/base.in
-django==4.2.19
+django==4.2.20
     # via
     #   -r backend/requirements/base.in
     #   dj-database-url
