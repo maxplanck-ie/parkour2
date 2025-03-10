@@ -950,7 +950,7 @@ export default {
         }
       ];
 
-      if (false) {
+      if (storedColumnState) {
         storedColumnState.forEach((column, index) => {
           if (columnList[index]) columnList[index].visible = column.visible;
           if (column.columns) {

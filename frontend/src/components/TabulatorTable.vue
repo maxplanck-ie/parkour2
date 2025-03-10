@@ -390,9 +390,37 @@ export default {
           }
 
           if (!document.querySelector(".button-popup-container")) {
-            document
-              .getElementsByClassName("tabulator-range-selected")[0]
-              ?.click();
+            const selectedRange = this.tabulatorInstance.getRanges()?.[0];
+
+            if (selectedRange) {
+              const selectedCell = selectedRange.getCells()?.[0][0];
+
+              if (selectedCell) {
+                const selectedCellElement = selectedCell.getElement();
+                const row = selectedCell._cell.row;
+                const column = selectedCell._cell.column;
+
+                console.log(row, column);
+
+                if (row && column) {
+                  this.tabulatorInstance
+                    .scrollToRow(row, "center", false)
+                    .then(() => {
+                      return this.tabulatorInstance.scrollToColumn(
+                        column.getField(),
+                        "center",
+                        false
+                      );
+                    })
+                    .then(() => {
+                      setTimeout(() => {
+                        selectedCellElement?.focus();
+                      }, 50);
+                    })
+                    .catch((err) => console.error("Scrolling error:", err));
+                }
+              }
+            }
           }
 
           const tabulatorElement = this.getTabulatorElement();
