@@ -96,9 +96,10 @@ prune:
 	@echo "Warning: Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
 	@sleep 10s && docker system prune -a -f --volumes
 
-clearpy:  ## Removes some files, created by 'prod' deployment and owned by root. TODO: we should probably have to check duties/static/dist (buildDir from vite.cfg.js); among other directories like backend/.pytest_cache ... gotta check.
+clearpy:  ## Removes some files, created by 'prod' deployment and owned by root. 
 	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
+	@#docker compose exec parkour2-vite find . -type d -name "dist" -exec /bin/rm -rf {} +;
 
 prod: down set-prod deploy-webapp deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
