@@ -8,7 +8,6 @@ from common.mixins import MultiEditMixin
 from common.views import CsrfExemptSessionAuthentication
 from dateutil.relativedelta import relativedelta
 from django.apps import apps
-from django.conf import settings
 from django.db.models import F, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -387,7 +386,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         return response
 
-    @action(methods=["get"], detail=False)
+    @action(methods=["get"], detail=False, permission_classes=[IsAdminUser])
     def retrieve_samplesheet(self, request):
         """Download SampleSheet for all lanes of a flowcell."""
         flowcell_id = request.query_params.get("flowcell_id", "")
@@ -399,6 +398,111 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             "flowcell_id": flowcell.pk,
         }
         return self.download_sample_sheet(post_request)
+
+    @action(methods=["get"], detail=False, permission_classes=[IsAdminUser])
+    def get_related_flowcells(self, request):
+        """
+        Get information about where each sample/library from requests is sequenced,
+        organized by request.
+        """
+        flowcell_id = request.query_params.get("flowcell_id", "")
+        original_flowcell = get_object_or_404(Flowcell, flowcell_id=flowcell_id)
+
+        # Get all requests associated with this flowcell
+        requests_on_flowcell = original_flowcell.requests.all()
+
+        # Find all related flowcells (including the original)
+        all_related_flowcells = (
+            Flowcell.objects.filter(
+                Q(lanes__pool__libraries__request__in=requests_on_flowcell)
+                | Q(lanes__pool__samples__request__in=requests_on_flowcell)
+            )
+            .distinct()
+            .prefetch_related(
+                "lanes__pool__libraries__request",
+                "lanes__pool__samples__request",
+                "sequencer",
+            )
+        )
+
+        # Prepare the response data - organized by request
+        result = {"original_flowcell": flowcell_id, "requests": {}}
+
+        # Initialize the request structure for all requests from original flowcell
+        for req in requests_on_flowcell:
+            result["requests"][req.name] = {"samples": {}, "libraries": {}}
+
+        # Process each flowcell
+        for flowcell in all_related_flowcells:
+            fc_id = flowcell.flowcell_id
+            sequencer_name = (
+                flowcell.sequencer.name if flowcell.sequencer else "Unknown"
+            )
+
+            # Process each lane
+            for lane in flowcell.lanes.all():
+                if lane.pool:
+                    # Process libraries in this pool
+                    for library in lane.pool.libraries.all():
+                        if hasattr(library, "request"):
+                            lib_requests = library.request.all()
+                            for lib_request in lib_requests:
+                                # Only include if it's from the original flowcell's requests
+                                if lib_request in requests_on_flowcell:
+                                    req_name = lib_request.name
+                                    barcode = library.barcode
+
+                                    # Add library to the request structure if not already there
+                                    if (
+                                        barcode
+                                        not in result["requests"][req_name]["libraries"]
+                                    ):
+                                        result["requests"][req_name]["libraries"][
+                                            barcode
+                                        ] = {"name": library.name, "locations": []}
+
+                                    # Add this flowcell/lane location
+                                    result["requests"][req_name]["libraries"][barcode][
+                                        "locations"
+                                    ].append(
+                                        {
+                                            "flowcell": fc_id,
+                                            "lane": lane.name,
+                                            "sequencer": sequencer_name,
+                                        }
+                                    )
+
+                    # Process samples in this pool
+                    for sample in lane.pool.samples.all():
+                        if hasattr(sample, "request"):
+                            sample_requests = sample.request.all()
+                            for sample_request in sample_requests:
+                                # Only include if it's from the original flowcell's requests
+                                if sample_request in requests_on_flowcell:
+                                    req_name = sample_request.name
+                                    barcode = sample.barcode
+
+                                    # Add sample to the request structure if not already there
+                                    if (
+                                        barcode
+                                        not in result["requests"][req_name]["samples"]
+                                    ):
+                                        result["requests"][req_name]["samples"][
+                                            barcode
+                                        ] = {"name": sample.name, "locations": []}
+
+                                    # Add this flowcell/lane location
+                                    result["requests"][req_name]["samples"][barcode][
+                                        "locations"
+                                    ].append(
+                                        {
+                                            "flowcell": fc_id,
+                                            "lane": lane.name,
+                                            "sequencer": sequencer_name,
+                                        }
+                                    )
+
+        return Response(result)
 
 
 class FlowcellAnalysisViewSet(viewsets.ViewSet):
