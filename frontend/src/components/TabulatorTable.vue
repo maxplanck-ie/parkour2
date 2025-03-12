@@ -389,39 +389,39 @@ export default {
             );
           }
 
-          if (!document.querySelector(".button-popup-container")) {
-            const selectedRange = this.tabulatorInstance.getRanges()?.[0];
+          // if (!document.querySelector(".button-popup-container")) {
+          //   const selectedRange = this.tabulatorInstance.getRanges()?.[0];
 
-            if (selectedRange) {
-              const selectedCell = selectedRange.getCells()?.[0][0];
+          //   if (selectedRange) {
+          //     const selectedCell = selectedRange.getCells()?.[0][0];
 
-              if (selectedCell) {
-                const selectedCellElement = selectedCell.getElement();
-                const row = selectedCell._cell.row;
-                const column = selectedCell._cell.column;
+          //     if (selectedCell) {
+          //       const selectedCellElement = selectedCell.getElement();
+          //       const row = selectedCell._cell.row;
+          //       const column = selectedCell._cell.column;
 
-                console.log(row, column);
+          //       console.log(row, column);
 
-                if (row && column) {
-                  this.tabulatorInstance
-                    .scrollToRow(row, "center", false)
-                    .then(() => {
-                      return this.tabulatorInstance.scrollToColumn(
-                        column.getField(),
-                        "center",
-                        false
-                      );
-                    })
-                    .then(() => {
-                      setTimeout(() => {
-                        selectedCellElement?.focus();
-                      }, 50);
-                    })
-                    .catch((err) => console.error("Scrolling error:", err));
-                }
-              }
-            }
-          }
+          //       if (row && column) {
+          //         this.tabulatorInstance
+          //           .scrollToRow(row, "center", false)
+          //           .then(() => {
+          //             return this.tabulatorInstance.scrollToColumn(
+          //               column.getField(),
+          //               "center",
+          //               false
+          //             );
+          //           })
+          //           .then(() => {
+          //             setTimeout(() => {
+          //               selectedCellElement?.focus();
+          //             }, 50);
+          //           })
+          //           .catch((err) => console.error("Scrolling error:", err));
+          //       }
+          //     }
+          //   }
+          // }
 
           const tabulatorElement = this.getTabulatorElement();
           if (this.tableGroupsConfig.noGroupByClass) {
@@ -957,11 +957,15 @@ export default {
   height: 30px !important;
   line-height: 6px;
   padding: 0px !important;
-  border-bottom: 1px solid grey !important;
-  border-right: 1px solid grey !important;
+  border-bottom: 1px solid #bdbdbd !important;
+  border-right: none !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.tabulator-cell.right-border {
+  border-right: 1px solid #bdbdbd !important;
 }
 
 .tabulator-cell.no-right-border {
@@ -975,7 +979,7 @@ export default {
 .tabulator-cell.tabulator-range-selected {
   background-color: #c0e7fd !important;
   color: #003757 !important;
-  border-bottom: 1px solid grey !important;
+  border-bottom: 1px solid #bdbdbd !important;
 }
 
 .tabulator-cell.tabulator-editing {
@@ -1040,9 +1044,12 @@ export default {
   border: none !important;
 }
 
-.tabulator-row:not(.tabulator-group):nth-child(even),
-.tabulator-row:not(.tabulator-group):nth-child(odd) {
+.tabulator-row:not(.tabulator-group) {
   background-color: white !important;
+}
+
+.tabulator-row:not(.tabulator-group):hover {
+  mix-blend-mode: multiply;
 }
 
 .tabulator-row.tabulator-group {
