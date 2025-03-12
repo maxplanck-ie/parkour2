@@ -332,7 +332,7 @@ export default {
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px;">Protocol ➜ ${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 8px;">
+    <span style="font-weight: normal; font-size: 12px; margin-left: 2px;">
       (# of libraries: ${count})
     </span>
   </div>
@@ -517,7 +517,7 @@ export default {
           hozAlign: "center",
           width: 30,
           minWidth: 30,
-          cssClass: "checkbox-column",
+          cssClass: "checkbox-column right-border",
           contextMenu: () => this.cellContextMenu(false, false, false),
           cellClick: function (e, cell) {
             const clickedRow = cell.getRow();
@@ -533,7 +533,7 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column",
+          cssClass: "details-column right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -551,53 +551,7 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
-          formatter: (cell) => {
-            const type = cell.getRow().getData().type;
-            const library_protocol_name = cell
-              .getRow()
-              .getData().library_protocol_name;
-            const name = cell.getValue();
-            const tableGroupsToggleState =
-              this.tabulatorInstance.getTableGroupsToggleState();
-            const bgColor = type === "S" ? "#00800080" : "lightblue";
-            return `
-                        <div style="padding: 4px 8px; display: flex; align-items: center;">
-                          <span title="${type === "S" ? "Sample" : "Library"}" 
-                            style="
-                              display: inline-block;
-                              background-color: ${bgColor};
-                              color: white;
-                              font-size: 10px;
-                              font-weight: bold;
-                              padding: 4px;
-                              border: 2px solid #333;
-                              border-radius: 4px;
-                              margin-right: 8px;
-                            ">
-                            ${type}
-                          </span>
-                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-                            (tableGroupsToggleState == 2
-                              ? library_protocol_name + " ➜ "
-                              : "") + name
-                          }</span>
-                        </div>
-                      `;
-          }
-        },
-        {
-          title: "Barcode",
-          field: "barcode",
-          width: 94,
-          headerFilter: true,
-          visible: true,
-          frozen: true,
-          cssClass: "details-column",
+          cssClass: "details-column right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -605,6 +559,24 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
+            return this.ellipsisContainer(finalString, true);
+          }
+        },
+        {
+          title: "Barcode",
+          field: "barcode",
+          width: 98,
+          headerFilter: true,
+          visible: true,
+          frozen: true,
+          cssClass: "details-column right-border",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const finalString = value + "*" || "-";
             return this.ellipsisContainer(finalString, true);
           }
         },
@@ -756,11 +728,6 @@ export default {
                   { label: "M (Cells)", value: "m" },
                   { label: "Unknown", value: "-" }
                 ];
-                if (row.type === "L") {
-                  return {
-                    values: options.filter((option) => option.value !== "m")
-                  };
-                }
                 return { values: options };
               },
               headerVertical: false,
@@ -795,8 +762,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -817,8 +784,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -839,8 +806,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -861,8 +828,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -883,8 +850,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -905,8 +872,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -927,8 +894,8 @@ export default {
                   rawValue === "" || rawValue === undefined || isNaN(value)
                     ? "-"
                     : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
+                    ? "0.0"
+                    : value.toFixed(1);
                 return this.ellipsisContainer(finalString);
               }
             },
@@ -1541,6 +1508,6 @@ how should new admin panel look like?
 please check header names in both of the components
 
 add validations according to old component
-
-storedcolumns line is set to false
+scroll to focused cell after copy
+measuring unit (sample) allow user to add options through site admin panel 
 -->
