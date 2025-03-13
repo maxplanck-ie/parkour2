@@ -198,3 +198,17 @@ class DateTimeMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class LibraryPreparationTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/library_preparation/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Library Preparation Template"
+        verbose_name_plural = "Templates ➜ Library Preparation"

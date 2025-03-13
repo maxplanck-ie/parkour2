@@ -186,7 +186,13 @@
             <span> Toggle Views </span>
           </button>
         </div>
-        <button class="header-button" @click="exportToExcel">
+        <button
+          class="header-button"
+          @click="
+            showExportPopup = true
+            fetchXlsxFiles();
+          "
+        >
           <font-awesome-icon
             icon="fa-solid fa-file-excel"
             style="color: white"
@@ -286,6 +292,70 @@
         </div>
       </div>
     </div>
+
+    <!-- Popup for Export Options -->
+    <div v-if="showExportPopup" class="popup-overlay">
+      <div class="popup-container" :style="{ width: '600px', height: '400px' }">
+        <div class="popup-header">
+          <span class="popup-title">Export Options</span>
+          <button class="popup-close-button" @click="showExportPopup = false">
+            &times;
+          </button>
+        </div>
+        <div class="popup-body">
+          <div>Select additional sheets to append:</div>
+          <div class="file-list-section">
+            <div
+              v-for="(file, index) in xlsxFiles"
+              :key="index"
+              class="file-item"
+            >
+              <div class="file-info">
+                <font-awesome-icon icon="fa-solid fa-file-excel" />
+                <span>{{ file.name }}</span>
+              </div>
+              <div class="file-actions">
+                <input
+                  type="radio"
+                  :id="'file-radio-' + index"
+                  :value="file"
+                  v-model="selectedFile"
+                />
+                <button @click="downloadFile(file)" class="download-button">
+                  <font-awesome-icon icon="fa-solid fa-download" />
+                  Download
+                </button>
+                <button @click="removeFile(index)" class="remove-button">
+                  <font-awesome-icon icon="fa-solid fa-times" />
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="popup-footer">
+          <div class="file-upload-section">
+            <label for="file-upload" class="file-upload-label">
+              <font-awesome-icon icon="fa-solid fa-upload" />
+              <span>Upload Additional Sheet</span>
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept=".xlsx"
+              @change="handleFileUpload"
+              style="display: none"
+            />
+          </div>
+          <button class="popup-button yes-button" @click="handleExport">
+            OK
+          </button>
+          <button class="popup-button" @click="showExportPopup = false">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -314,6 +384,10 @@ export default {
       librariesSamplesList: [],
       columnsList: [],
       showPopupWindow: false,
+      showExportPopup: false,
+      xlsxFiles: [],
+      selectedFile: null,
+      uploadedFile: null,
       popupContents: {
         popupTitle: "Are you sure?",
         popupDescription: "",
@@ -1240,6 +1314,116 @@ export default {
         this.fakeLoadingStop();
       }
     },
+
+    // Fetch xlsx files
+    async fetchXlsxFiles() {
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/library-preparation-templates/`
+        );
+        this.xlsxFiles = response.data;
+        console.log("Files:", response.data);
+      } catch (error) {
+        handleError(error);
+      }
+    },
+
+    // Handle file upload
+    handleFileUpload(event) {
+      console.log("File selection started");
+
+      const file = event.target.files[0];
+
+      if (
+        file &&
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
+        this.uploadedFile = file;
+        console.log("File selected:", file.name);
+
+        this.uploadFile();
+      } else {
+        showNotification("Please upload a valid XLSX file.", "error");
+      }
+    },
+
+    // Upload the selected XLSX file
+    async uploadFile() {
+      if (!this.uploadedFile) {
+        showNotification("No file selected.", "error");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", this.uploadedFile);
+
+      try {
+        await axiosRef.post(
+          `${urlStringStart}/api/library-preparation-templates/upload/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        );
+
+        showNotification("File uploaded successfully.", "success");
+
+        this.fetchXlsxFiles();
+      } catch (error) {
+        handleError(error);
+      }
+    },
+
+    // Download a file
+    async downloadFile(file) {
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/library-preparation-templates/${file.id}/download/`,
+          {
+            responseType: "blob"
+          }
+        );
+        console.log("response data", response.data)
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", file.name || "filename.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Error downloading file:", error);
+      }
+    },
+
+    // Remove a file
+    async removeFile(index) {
+      const file = this.xlsxFiles[index];
+      try {
+        await axiosRef.delete(
+          `${urlStringStart}/api/library-preparation-templates/${file.id}/remove/`
+        );
+        this.xlsxFiles.splice(index, 1);
+        showNotification("File removed successfully.", "success");
+      } catch (error) {
+        handleError(error);
+      }
+    },
+
+    // Handle the export operation
+    async handleExport() {
+      if (this.selectedFile || this.uploadedFile) {
+        // Combine the selected/uploaded file with the normal export
+        await this.exportToExcel(this.selectedFile || this.uploadedFile);
+        this.showExportPopup = false;
+      } else {
+        showNotification("Please select or upload a file.", "error");
+      }
+    },
     exportToExcel() {
       const today = new Date();
       const day = String(today.getDate()).padStart(2, "0");
@@ -1499,6 +1683,64 @@ body,
   .header-button {
     display: none;
   }
+}
+
+.file-upload-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-upload-label:hover {
+  background-color: #e0e0e0;
+}
+
+.file-list-section {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-button,
+.remove-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.download-button:hover,
+.remove-button:hover {
+  color: #007bff;
 }
 </style>
 

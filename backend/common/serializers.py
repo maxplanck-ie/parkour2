@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from .models import LibraryPreparationTemplate
 
 from .models import CostUnit, Duty, User
 
@@ -19,3 +20,8 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "first_name", "last_name", "facility", "phone", "email")
+
+class LibraryPreparationTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = LibraryPreparationTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
