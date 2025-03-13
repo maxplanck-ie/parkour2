@@ -2,6 +2,10 @@ from common import models, views
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r"library-preparation-templates", views.LibraryPreparationTemplateViewSet, basename="library_preparation_template")
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -29,4 +33,6 @@ urlpatterns = [
         auth_views.PasswordResetConfirmView.as_view(success_url="/login/"),
         name="password_reset_confirm",
     ),
+
+    path("api/", include(router.urls)),
 ]

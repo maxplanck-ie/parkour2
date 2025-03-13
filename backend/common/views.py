@@ -1,5 +1,6 @@
 import json
 from mimetypes import guess_type
+import os
 from os.path import basename
 from urllib.parse import quote
 
@@ -7,7 +8,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from request.models import Request
@@ -17,9 +18,10 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
-from .models import CostUnit, Duty
-from .serializers import CostUnitSerializer, DutySerializer, UserSerializer
+from .models import CostUnit, Duty, LibraryPreparationTemplate
+from .serializers import CostUnitSerializer, DutySerializer, UserSerializer, LibraryPreparationTemplateSerializer
 
 User = get_user_model()
 
@@ -310,3 +312,45 @@ def user_details(request):
 
 def danke(request):
     return render(request, "danke.html")
+
+
+class LibraryPreparationTemplateViewSet(viewsets.ModelViewSet):
+    queryset = LibraryPreparationTemplate.objects.order_by("-uploaded_at")
+    serializer_class = LibraryPreparationTemplateSerializer
+    parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [IsAdminUser]
+
+    @action(detail=False, methods=["post"])
+    def upload(self, request):
+        """Upload a new XLSX file."""
+        file = request.FILES.get("file")
+        if not file:
+            return Response({"success": False, "message": "No file provided."}, status=status.HTTP_400_BAD_REQUEST)
+        if not file.name.endswith(".xlsx"):
+            return Response({"success": False, "message": "Only XLSX files are allowed."}, status=status.HTTP_400_BAD_REQUEST)
+        template = LibraryPreparationTemplate(name=file.name, file=file)
+        template.save()
+        serializer = self.get_serializer(template)
+        return Response({"success": True, "data": serializer.data}, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=["delete"])
+    def remove(self, request, pk=None):
+        """Remove an XLSX file."""
+        template = self.get_object()
+        template.file.delete()
+        template.delete()
+        return Response({"success": True, "message": "File removed successfully."}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
+    def download(self, request, pk=None):
+        """Download an XLSX file."""
+        try:
+            template = self.get_object()
+            file_path = template.file.path
+            if not os.path.exists(file_path):
+                return Response({"error": "File not found"}, status=404)
+            response = FileResponse(open(file_path, 'rb'), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response['Content-Disposition'] = f'attachment; filename="{template.name}"'
+            return response
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
