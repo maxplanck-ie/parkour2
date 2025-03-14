@@ -432,6 +432,44 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         for req in requests_on_flowcell:
             result["requests"][req.name] = {"samples": {}, "libraries": {}}
 
+        def process_records(records, record_type, flowcell_id, lane, sequencer_name):
+            """
+            Helper function to process libraries or samples
+
+            Args:
+                records: QuerySet of libraries or samples
+                record_type: 'libraries' or 'samples'
+                flowcell_id: ID of the current flowcell
+                lane: The current lane
+                sequencer_name: Name of the sequencer
+            """
+            for record in records:
+                if hasattr(record, "request"):
+                    record_requests = record.request.all()
+                    for record_request in record_requests:
+                        # Only include if it's from the original flowcell's requests
+                        if record_request in requests_on_flowcell:
+                            req_name = record_request.name
+                            barcode = record.barcode
+
+                            # Add record to the request structure if not already there
+                            if barcode not in result["requests"][req_name][record_type]:
+                                result["requests"][req_name][record_type][barcode] = {
+                                    "name": record.name,
+                                    "locations": [],
+                                }
+
+                            # Add this flowcell/lane location
+                            result["requests"][req_name][record_type][barcode][
+                                "locations"
+                            ].append(
+                                {
+                                    "flowcell": flowcell_id,
+                                    "lane": lane.name,
+                                    "sequencer": sequencer_name,
+                                }
+                            )
+
         # Process each flowcell
         for flowcell in all_related_flowcells:
             fc_id = flowcell.flowcell_id
@@ -443,64 +481,18 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             for lane in flowcell.lanes.all():
                 if lane.pool:
                     # Process libraries in this pool
-                    for library in lane.pool.libraries.all():
-                        if hasattr(library, "request"):
-                            lib_requests = library.request.all()
-                            for lib_request in lib_requests:
-                                # Only include if it's from the original flowcell's requests
-                                if lib_request in requests_on_flowcell:
-                                    req_name = lib_request.name
-                                    barcode = library.barcode
-
-                                    # Add library to the request structure if not already there
-                                    if (
-                                        barcode
-                                        not in result["requests"][req_name]["libraries"]
-                                    ):
-                                        result["requests"][req_name]["libraries"][
-                                            barcode
-                                        ] = {"name": library.name, "locations": []}
-
-                                    # Add this flowcell/lane location
-                                    result["requests"][req_name]["libraries"][barcode][
-                                        "locations"
-                                    ].append(
-                                        {
-                                            "flowcell": fc_id,
-                                            "lane": lane.name,
-                                            "sequencer": sequencer_name,
-                                        }
-                                    )
+                    process_records(
+                        lane.pool.libraries.all(),
+                        "libraries",
+                        fc_id,
+                        lane,
+                        sequencer_name,
+                    )
 
                     # Process samples in this pool
-                    for sample in lane.pool.samples.all():
-                        if hasattr(sample, "request"):
-                            sample_requests = sample.request.all()
-                            for sample_request in sample_requests:
-                                # Only include if it's from the original flowcell's requests
-                                if sample_request in requests_on_flowcell:
-                                    req_name = sample_request.name
-                                    barcode = sample.barcode
-
-                                    # Add sample to the request structure if not already there
-                                    if (
-                                        barcode
-                                        not in result["requests"][req_name]["samples"]
-                                    ):
-                                        result["requests"][req_name]["samples"][
-                                            barcode
-                                        ] = {"name": sample.name, "locations": []}
-
-                                    # Add this flowcell/lane location
-                                    result["requests"][req_name]["samples"][barcode][
-                                        "locations"
-                                    ].append(
-                                        {
-                                            "flowcell": fc_id,
-                                            "lane": lane.name,
-                                            "sequencer": sequencer_name,
-                                        }
-                                    )
+                    process_records(
+                        lane.pool.samples.all(), "samples", fc_id, lane, sequencer_name
+                    )
 
         return Response(result)
 
