@@ -2,7 +2,7 @@
 #    uv pip compile --universal --python-version 3.10 backend/requirements/base.in -o backend/requirements/3.10/base.txt
 asgiref==3.8.1
     # via django
-attrs==25.1.0
+attrs==25.3.0
     # via
     #   jsonschema
     #   referencing
@@ -63,7 +63,7 @@ numpy==1.25.2 ; python_full_version < '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
-numpy==2.2.3 ; python_full_version >= '3.12'
+numpy==2.2.4 ; python_full_version >= '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
