@@ -19,7 +19,7 @@
     "@fortawesome/vue-fontawesome": "3.0.8",
     "ag-grid-community": "33.1.1",
     "ag-grid-vue3": "33.1.1",
-    "axios": "1.8.2",
+    "axios": "1.8.3",
     "bootstrap": "5.3.3",
     "js-cookie": "3.0.5",
     "moment": "2.30.1",
@@ -31,8 +31,8 @@
     "vue-toastification": "2.0.0-rc.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "5.2.1",
-    "@vitejs/plugin-vue-jsx": "4.1.1",
-    "vite": "6.2.1"
+    "@vitejs/plugin-vue": "5.2.2",
+    "@vitejs/plugin-vue-jsx": "4.1.2",
+    "vite": "6.2.2"
   }
 }
