@@ -201,8 +201,8 @@
                         align-items: center;
                         justify-content: center;
                         border: 2px solid black;
-                        height: 20px;
-                        width: 20px;
+                        height: 18px;
+                        width: 18px;
                         border-radius: 4px;
                         text-align: center;
                         background-color: orange;
@@ -220,10 +220,11 @@
                       <label>
                         <input
                           type="checkbox"
+                          style="width: 20px !important"
                           :checked="subColumn.visible"
                           @change="toggleColumnVisibility(subColumn, false)"
                         />
-                        {{ subColumn.title }}
+                        <span style="width: 100%">{{ subColumn.title }}</span>
                       </label>
                     </li>
                   </ul>
@@ -575,7 +576,7 @@ export default {
           yesButton.focus();
         });
       } else {
-        document.getElementsByClassName("tabulator-range-selected")[0]?.click();
+        document.getElementsByClassName("tabulator-cell")[1]?.click();
       }
     }
   },
@@ -1660,25 +1661,6 @@ body,
   flex: 1;
   overflow: auto;
   position: relative;
-}
-
-.group-action-buttons-container {
-  display: none;
-  align-items: center;
-  height: 15px;
-  margin-left: 10px;
-  padding: 0 10px;
-  border-left: 1px solid grey;
-}
-
-.group-action-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0px;
-  height: 24px;
-  width: 22px;
 }
 
 @media (max-width: 1400px) {
