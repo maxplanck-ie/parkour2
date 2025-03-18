@@ -146,8 +146,8 @@
                         align-items: center;
                         justify-content: center;
                         border: 2px solid black;
-                        height: 20px;
-                        width: 20px;
+                        height: 18px;
+                        width: 18px;
                         border-radius: 4px;
                         text-align: center;
                         background-color: orange;
@@ -165,10 +165,11 @@
                       <label>
                         <input
                           type="checkbox"
+                          style="width: 20px !important"
                           :checked="subColumn.visible"
                           @change="toggleColumnVisibility(subColumn, false)"
                         />
-                        {{ subColumn.title }}
+                        <span style="width: 100%">{{ subColumn.title }}</span>
                       </label>
                     </li>
                   </ul>
@@ -186,13 +187,7 @@
             <span> Toggle Views </span>
           </button>
         </div>
-        <button
-          class="header-button"
-          @click="
-            showExportPopup = true
-            fetchXlsxFiles();
-          "
-        >
+        <button class="header-button" @click="showExportPopup = true">
           <font-awesome-icon
             icon="fa-solid fa-file-excel"
             style="color: white"
@@ -295,7 +290,7 @@
 
     <!-- Popup for Export Options -->
     <div v-if="showExportPopup" class="popup-overlay">
-      <div class="popup-container" :style="{ width: '600px', height: '400px' }">
+      <div class="popup-container" :style="{ width: '670px', height: '500px' }">
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
           <button class="popup-close-button" @click="showExportPopup = false">
@@ -303,54 +298,287 @@
           </button>
         </div>
         <div class="popup-body">
-          <div>Select additional sheets to append:</div>
+          <div>Select or upload additional excel sheets to append:</div>
+          <div
+            style="
+              border-radius: 4px;
+              border: 1px solid lightgrey;
+              padding: 7px;
+              background-color: #33333310;
+            "
+          >
+            <span style="font-weight: bold">NOTE: </span> The selected sheet
+            will be appended to the original Excel file. To reference the
+            default export sheet in your formulas for calculations, be sure to
+            use <span style="font-weight: bold">'Biomek Run Doc'</span> as the
+            sheet name.
+          </div>
           <div class="file-list-section">
+            <div class="file-item">
+              <div class="file-info">
+                <svg
+                  style="display: block"
+                  fill="none"
+                  width="24px"
+                  height="24px"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <g>
+                    <path
+                      opacity="0.1"
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      fill="#323232"
+                    />
+                    <path
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      stroke="#323232"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+                <span>Export without any additional sheets</span>
+              </div>
+              <div class="file-actions">
+                <div
+                  class="file-actions-radio-button"
+                  style="border: none; margin-right: 5px"
+                >
+                  <input
+                    type="radio"
+                    title="Select"
+                    id="without-file"
+                    value="without-file"
+                    v-model="selectedFile"
+                  />
+                </div>
+              </div>
+            </div>
             <div
-              v-for="(file, index) in xlsxFiles"
+              v-for="(file, index) in fetchedLibraryPreparationTemplates"
               :key="index"
               class="file-item"
             >
               <div class="file-info">
-                <font-awesome-icon icon="fa-solid fa-file-excel" />
+                <svg
+                  style="display: block"
+                  fill="none"
+                  width="24px"
+                  height="24px"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <g>
+                    <path
+                      opacity="0.1"
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      fill="#323232"
+                    />
+                    <path
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      stroke="#323232"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M9 6L11 6"
+                      stroke="#323232"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 9L12 9"
+                      stroke="#323232"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M9 12L11 12"
+                      stroke="#323232"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 15L12 15"
+                      stroke="#323232"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
                 <span>{{ file.name }}</span>
               </div>
               <div class="file-actions">
-                <input
-                  type="radio"
-                  :id="'file-radio-' + index"
-                  :value="file"
-                  v-model="selectedFile"
-                />
-                <button @click="downloadFile(file)" class="download-button">
-                  <font-awesome-icon icon="fa-solid fa-download" />
-                  Download
+                <button
+                  @click="downloadExportTemplate(file)"
+                  class="download-button"
+                  title="Download File"
+                >
+                  <svg
+                    style="display: block"
+                    fill="none"
+                    width="24px"
+                    height="24px"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <g>
+                      <path
+                        opacity="0.1"
+                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                        fill="#323232"
+                      />
+                      <path
+                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M12 16L12 11"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </g>
+                  </svg>
                 </button>
-                <button @click="removeFile(index)" class="remove-button">
-                  <font-awesome-icon icon="fa-solid fa-times" />
-                  Remove
+                <button
+                  @click="removeExportTemplate(index)"
+                  class="remove-button"
+                  title="Remove File"
+                >
+                  <svg
+                    style="display: block"
+                    fill="none"
+                    width="24px"
+                    height="24px"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <g>
+                      <path
+                        opacity="0.1"
+                        d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
+                        fill="#323232"
+                      />
+                      <path
+                        d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M3 3L21 21"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </g>
+                  </svg>
                 </button>
+                <div class="file-actions-radio-button">
+                  <input
+                    type="radio"
+                    title="Select File"
+                    :id="'file-radio-' + index"
+                    :value="file"
+                    v-model="selectedFile"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="popup-footer">
           <div class="file-upload-section">
-            <label for="file-upload" class="file-upload-label">
-              <font-awesome-icon icon="fa-solid fa-upload" />
-              <span>Upload Additional Sheet</span>
+            <label
+              for="file-upload"
+              class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet."
+            >
+              <svg
+                style="display: block; margin-right: 4px"
+                fill="none"
+                width="24px"
+                height="24px"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <g>
+                  <path
+                    opacity="0.1"
+                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                    fill="#323232"
+                  />
+                  <path
+                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                    stroke="#323232"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 11L12 16"
+                    stroke="#323232"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14.5 13.5L9.5 13.5"
+                    stroke="#323232"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+              <span>Upload</span>
             </label>
             <input
               id="file-upload"
               type="file"
               accept=".xlsx"
-              @change="handleFileUpload"
+              @change="uploadExportTemplate"
               style="display: none"
             />
           </div>
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button class="popup-button" @click="showExportPopup = false">
+          <button
+            class="popup-button"
+            @click="
+              showExportPopup = false;
+              selectedFile = 'without-file';
+            "
+          >
             Cancel
           </button>
         </div>
@@ -385,9 +613,8 @@ export default {
       columnsList: [],
       showPopupWindow: false,
       showExportPopup: false,
-      xlsxFiles: [],
-      selectedFile: null,
-      uploadedFile: null,
+      fetchedLibraryPreparationTemplates: [],
+      selectedFile: "without-file",
       popupContents: {
         popupTitle: "Are you sure?",
         popupDescription: "",
@@ -463,6 +690,7 @@ export default {
   mounted() {
     this.getLibrariesSamples();
     this.setColumns();
+    this.fetchExportTemplates();
 
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -491,7 +719,7 @@ export default {
           yesButton.focus();
         });
       } else {
-        document.getElementsByClassName("tabulator-range-selected")[0]?.click();
+        document.getElementsByClassName("tabulator-cell")[1]?.click();
       }
     }
   },
@@ -1110,8 +1338,9 @@ export default {
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
-      if (isEscape && this.showPopupWindow) {
+      if (isEscape && (this.showPopupWindow || this.showExportPopup)) {
         this.showPopupWindow = false;
+        this.showExportPopup = false;
         return;
       }
       if (isEscape && this.showSelectColumns) {
@@ -1314,71 +1543,45 @@ export default {
         this.fakeLoadingStop();
       }
     },
-
-    // Fetch xlsx files
-    async fetchXlsxFiles() {
+    async fetchExportTemplates() {
       try {
         const response = await axiosRef.get(
           `${urlStringStart}/api/library-preparation-templates/`
         );
-        this.xlsxFiles = response.data;
-        console.log("Files:", response.data);
+        this.fetchedLibraryPreparationTemplates = response.data;
       } catch (error) {
         handleError(error);
       }
     },
-
-    // Handle file upload
-    handleFileUpload(event) {
-      console.log("File selection started");
-
+    async uploadExportTemplate(event) {
       const file = event.target.files[0];
-
       if (
         file &&
         file.type ===
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
-        this.uploadedFile = file;
-        console.log("File selected:", file.name);
-
-        this.uploadFile();
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+          await axiosRef.post(
+            `${urlStringStart}/api/library-preparation-templates/upload/`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            }
+          );
+          showNotification("File uploaded successfully.", "success");
+          this.fetchExportTemplates();
+        } catch (error) {
+          handleError(error);
+        }
       } else {
         showNotification("Please upload a valid XLSX file.", "error");
       }
     },
-
-    // Upload the selected XLSX file
-    async uploadFile() {
-      if (!this.uploadedFile) {
-        showNotification("No file selected.", "error");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("file", this.uploadedFile);
-
-      try {
-        await axiosRef.post(
-          `${urlStringStart}/api/library-preparation-templates/upload/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          }
-        );
-
-        showNotification("File uploaded successfully.", "success");
-
-        this.fetchXlsxFiles();
-      } catch (error) {
-        handleError(error);
-      }
-    },
-
-    // Download a file
-    async downloadFile(file) {
+    async downloadExportTemplate(file) {
       try {
         const response = await axiosRef.get(
           `${urlStringStart}/api/library-preparation-templates/${file.id}/download/`,
@@ -1386,7 +1589,6 @@ export default {
             responseType: "blob"
           }
         );
-        console.log("response data", response.data)
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
@@ -1396,53 +1598,41 @@ export default {
         link.remove();
         window.URL.revokeObjectURL(url);
       } catch (error) {
-        console.error("Error downloading file:", error);
+        console.error("Error downloading file: ", error);
       }
     },
-
-    // Remove a file
-    async removeFile(index) {
-      const file = this.xlsxFiles[index];
+    async removeExportTemplate(index) {
+      const file = this.fetchedLibraryPreparationTemplates[index];
       try {
         await axiosRef.delete(
           `${urlStringStart}/api/library-preparation-templates/${file.id}/remove/`
         );
-        this.xlsxFiles.splice(index, 1);
+        this.fetchedLibraryPreparationTemplates.splice(index, 1);
         showNotification("File removed successfully.", "success");
       } catch (error) {
-        handleError(error);
+        console.error("Error removing file: ", error);
+      } finally {
+        this.selectedFile = "without-file";
       }
     },
-
-    // Handle the export operation
     async handleExport() {
-      if (this.selectedFile || this.uploadedFile) {
-        // Combine the selected/uploaded file with the normal export
-        await this.exportToExcel(this.selectedFile || this.uploadedFile);
-        this.showExportPopup = false;
-      } else {
-        showNotification("Please select or upload a file.", "error");
-      }
-    },
-    exportToExcel() {
       const today = new Date();
-      const day = String(today.getDate()).padStart(2, "0");
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-      const year = today.getFullYear();
-      const formattedDate = `${day}_${month}_${year}`;
+      const formattedDate = `${String(today.getDate()).padStart(
+        2,
+        "0"
+      )}_${String(today.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}_${today.getFullYear()}`;
       const filename = `Library_Preparation_${formattedDate}.xlsx`;
-      const exportColumns = this.columnsList
-        .filter((col) => col.field !== "selected")
-        .map((col) => ({ ...col }));
+
       let exportRows = this.librariesSamplesList.filter(
         (row) => row.selected === true
       );
-      this.fakeLoadingStart();
       if (exportRows.length === 0) {
         exportRows = this.librariesSamplesList;
       }
-      console.log("Iinnn");
-      this.fakeLoadingStop();
+
       const biomekData = exportRows.map((row) => ({
         "Request ID": row.request_name,
         "Pool ID": row.pool_name,
@@ -1453,104 +1643,60 @@ export default {
         "Index I7 ID": row.index_i7_id,
         "Index I5 ID": row.index_i5_id,
         "Coordinate (Index Plate)": row.coordinate,
-        "InputPlate ID": "",
         "Concentration Sample (ng/µl)": row.concentration_sample,
-        DF: "",
-        "Concentration Dilution (ng/µl)": "",
-        "Starting Amount (ng)": row.starting_amount,
-        "Starting Volume (µl)": "",
-        "µl Sample": "",
-        "µl Buffer": ""
+        "Starting Amount (ng)": row.starting_amount
       }));
 
-      const biomekWS = XLSX.utils.json_to_sheet(biomekData);
+      this.fakeLoadingStart();
 
-      const wellFormatData = [];
-      const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
+      try {
+        const biomekWS = XLSX.utils.json_to_sheet(biomekData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, biomekWS, "Biomek Run Doc");
 
-      // 1. First "Sample Plate 1" Section (Sample Names)
-      wellFormatData.push(["Sample Plate 1", ...Array(12).fill("")]);
-      wellFormatData.push([
-        "='Biomek Run Doc'!J2",
-        ...Array.from({ length: 12 }, (_, i) => i + 1)
-      ]);
+        if (this.selectedFile !== "without-file") {
+          console.log("Fetching selected file:", this.selectedFile.file);
 
-      for (let rowIdx = 0; rowIdx < 8; rowIdx++) {
-        const biomekStartRow = 2 + rowIdx; // Biomek row offset: A=2, B=3...H=9
-        const row = [rows[rowIdx]];
-        for (let colIdx = 0; colIdx < 12; colIdx++) {
-          const biomekRow = biomekStartRow + 8 * colIdx; // Increment by 8 per column
-          row.push(
-            `=LEFT('Biomek Run Doc'!A${biomekRow}, 4) & "_" & 'Biomek Run Doc'!D${biomekRow}`
-          );
-        }
-        wellFormatData.push(row);
-      }
+          const response = await axiosRef.get(this.selectedFile.file, {
+            responseType: "arraybuffer"
+          });
 
-      // 2. Second "Sample Plate 1" Section (Volumes: µl Sample)
-      wellFormatData.push([""]); // Empty row
-      wellFormatData.push(["Sample Plate 1", ...Array(12).fill("")]);
-      wellFormatData.push([
-        "='Biomek Run Doc'!J2",
-        ...Array.from({ length: 12 }, (_, i) => i + 1)
-      ]);
+          console.log("Downloaded file size:", response.data.byteLength);
 
-      for (let rowIdx = 0; rowIdx < 8; rowIdx++) {
-        const biomekStartRow = 2 + rowIdx; // Biomek row offset: A=2, B=3...H=9
-        const row = [rows[rowIdx]];
-        for (let colIdx = 0; colIdx < 12; colIdx++) {
-          const biomekRow = biomekStartRow + 8 * colIdx; // Increment by 8 per column
-          row.push(`='Biomek Run Doc'!P${biomekRow}`); // Column P = µl Sample
-        }
-        wellFormatData.push(row);
-      }
+          const importedWB = XLSX.read(response.data, { type: "array" });
 
-      // 3. Index Plate Section
-      wellFormatData.push([""]); // Empty row
-      wellFormatData.push(["Index Plate 1", ...Array(12).fill("")]);
-      wellFormatData.push([
-        "='Biomek Run Doc'!F2",
-        ...Array.from({ length: 12 }, (_, i) => i + 1)
-      ]);
+          console.log("Sheets in imported file:", importedWB.SheetNames);
 
-      for (let rowIdx = 0; rowIdx < 8; rowIdx++) {
-        const biomekStartRow = 2 + rowIdx; // Biomek row offset: A=2, B=3...H=9
-        const row = [rows[rowIdx]];
-        for (let colIdx = 0; colIdx < 12; colIdx++) {
-          const biomekRow = biomekStartRow + 8 * colIdx; // Increment by 8 per column
-          row.push(`='Biomek Run Doc'!I${biomekRow}`); // Column I = Coordinate (Index Plate)
-        }
-        wellFormatData.push(row);
-      }
-
-      // Convert to Worksheet & Mark Formulas
-      const wellFormatWS = XLSX.utils.aoa_to_sheet(wellFormatData);
-      const range = XLSX.utils.decode_range(wellFormatWS["!ref"]);
-
-      for (let R = range.s.r; R <= range.e.r; R++) {
-        for (let C = range.s.c; C <= range.e.c; C++) {
-          const cell = wellFormatWS[XLSX.utils.encode_cell({ r: R, c: C })];
-          if (cell?.v?.startsWith?.("=")) {
-            cell.f = cell.v; // Set formula property
-            cell.t = "n"; // Mark as formula type
+          if (importedWB.SheetNames.length === 0) {
+            console.error("Error: No sheets found in imported file.");
+            showNotification("The selected file has no sheets.", "error");
+          } else {
+            importedWB.SheetNames.forEach((sheetName) => {
+              const sheet = importedWB.Sheets[sheetName];
+              XLSX.utils.book_append_sheet(wb, sheet, sheetName);
+              console.log(`Appended sheet: ${sheetName}`);
+            });
           }
         }
-      }
 
-      setTimeout(() => {
-        try {
-          const wb = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(wb, biomekWS, "Biomek Run Doc");
-          XLSX.utils.book_append_sheet(wb, wellFormatWS, "96-well Format");
-          XLSX.writeFile(wb, filename);
-        } catch (error) {
-          showNotification(
-            "Failed to export the data, please try again.",
-            "error"
-          );
-        } finally {
-        }
-      }, 300);
+        this.fakeLoadingStop();
+
+        setTimeout(() => {
+          try {
+            XLSX.writeFile(wb, filename);
+            console.log("Export successful:", filename);
+          } catch (error) {
+            console.error("Export error:", error);
+            showNotification(
+              "Failed to export the data, please try again.",
+              "error"
+            );
+          }
+        }, 300);
+      } catch (error) {
+        console.error("Error during export:", error);
+        showNotification("Error during export. Please try again.", "error");
+      }
     },
     ellipsisContainer(text, boldText) {
       return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${
@@ -1604,25 +1750,6 @@ body,
   flex: 1;
   overflow: auto;
   position: relative;
-}
-
-.group-action-buttons-container {
-  display: none;
-  align-items: center;
-  height: 15px;
-  margin-left: 10px;
-  padding: 0 10px;
-  border-left: 1px solid grey;
-}
-
-.group-action-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0px;
-  height: 24px;
-  width: 22px;
 }
 
 @media (max-width: 1400px) {
@@ -1683,64 +1810,6 @@ body,
   .header-button {
     display: none;
   }
-}
-
-.file-upload-label {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #f0f0f0;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.file-upload-label:hover {
-  background-color: #e0e0e0;
-}
-
-.file-list-section {
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-}
-
-.file-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-}
-
-.file-item:last-child {
-  border-bottom: none;
-}
-
-.file-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.file-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.download-button,
-.remove-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-}
-
-.download-button:hover,
-.remove-button:hover {
-  color: #007bff;
 }
 </style>
 

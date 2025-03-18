@@ -149,6 +149,30 @@ input[type="checkbox"]:checked::after {
   box-sizing: border-box;
 }
 
+/* Radio Button */
+input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  border: 2px solid #333;
+  appearance: none;
+  border-radius: 50%;
+}
+
+input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: #45bbff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -398,4 +422,96 @@ input[type="checkbox"]:checked::after {
 
 .green-button:hover {
   background-color: #005b59;
+}
+
+.group-action-buttons-container {
+  display: none;
+  align-items: center;
+  height: 15px;
+  margin-left: 10px;
+  padding: 0 10px;
+  border-left: 1px solid grey;
+}
+
+.group-action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0px;
+  height: 24px;
+  width: 22px;
+}
+
+.file-upload-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px 8px 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-upload-label:hover {
+  background-color: #e0e0e0;
+}
+
+.file-list-section {
+  height: 200px;
+  overflow-y: scroll;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 7px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-info span {
+  max-width: 385px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+}
+
+.file-actions-radio-button {
+  display: flex;
+  align-items: center;
+  padding-left: 13px;
+  margin-left: 8px;
+  margin-right: 5px;
+  border-left: 1px solid lightgrey;
+}
+
+.download-button,
+.remove-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.download-button:hover,
+.remove-button:hover {
+  color: #007bff;
 }
