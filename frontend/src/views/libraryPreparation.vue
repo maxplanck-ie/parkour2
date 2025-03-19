@@ -294,7 +294,7 @@
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
           <span
-            class="info-button"
+            class="popup-info-button"
             @mouseover="showExportHelpTooltip = true"
             @mouseleave="showExportHelpTooltip = false"
           >
@@ -336,7 +336,9 @@
           </button>
         </div>
         <div class="popup-body">
-          <div>Select or upload additional excel sheets to append:</div>
+          <div>
+            Select or upload additional excel sheet templates to append:
+          </div>
           <div class="file-list-section">
             <div class="file-item">
               <div class="file-info">
@@ -443,7 +445,7 @@
                 <button
                   @click="downloadExportTemplate(file)"
                   class="download-button"
-                  title="Download File"
+                  title="Download Original File"
                 >
                   <svg
                     style="display: block"

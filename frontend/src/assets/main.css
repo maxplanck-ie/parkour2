@@ -220,6 +220,8 @@ input[type="radio"]:checked::after {
   padding: 14px;
   font-size: 18px;
   font-weight: bold;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 }
 
 .popup-header svg {
@@ -516,7 +518,7 @@ input[type="radio"]:checked::after {
   color: #007bff;
 }
 
-.info-button {
+.popup-info-button {
   cursor: pointer;
   display: inline-block;
   font-weight: bold;
