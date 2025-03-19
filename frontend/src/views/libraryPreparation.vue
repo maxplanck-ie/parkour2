@@ -293,26 +293,50 @@
       <div class="popup-container" :style="{ width: '670px', height: '500px' }">
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
+          <span
+            class="info-button"
+            @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false"
+          >
+            ?
+            <div v-if="showExportHelpTooltip" class="tooltip-box">
+              <span style="font-weight: bold">INSTRUCTIONS:</span>
+              <ol>
+                <li>
+                  To create custom templates, export the original sheet named
+                  <span style="font-weight: bold">'Parkour'</span> by selecting
+                  the
+                  <span style="font-weight: bold"
+                    >'Export without any additional sheets'</span
+                  >
+                  option.
+                </li>
+                <li>
+                  Add new custom sheets to this exported file, which will serve
+                  as templates.
+                </li>
+                <li>
+                  Upload the modified file, containing both the original
+                  <span style="font-weight: bold">'Parkour'</span> sheet and
+                  newly added
+                  <span style="font-weight: bold">custom sheets</span>. After
+                  uploading the file will appear in the list.
+                </li>
+                <li>
+                  The template is now ready! When you select this modified file
+                  from the list, the system will replace the
+                  <span style="font-weight: bold">'Parkour'</span> sheet with
+                  updated data while keeping all additional sheets intact.
+                </li>
+              </ol>
+            </div>
+          </span>
           <button class="popup-close-button" @click="showExportPopup = false">
             &times;
           </button>
         </div>
         <div class="popup-body">
           <div>Select or upload additional excel sheets to append:</div>
-          <div
-            style="
-              border-radius: 4px;
-              border: 1px solid lightgrey;
-              padding: 7px;
-              background-color: #33333310;
-            "
-          >
-            <span style="font-weight: bold">NOTE: </span> The selected sheet
-            will be appended to the original Excel file. To reference the
-            default export sheet in your formulas for calculations, be sure to
-            use <span style="font-weight: bold">'Biomek Run Doc'</span> as the
-            sheet name.
-          </div>
           <div class="file-list-section">
             <div class="file-item">
               <div class="file-info">
@@ -613,6 +637,7 @@ export default {
       columnsList: [],
       showPopupWindow: false,
       showExportPopup: false,
+      showExportHelpTooltip: false,
       fetchedLibraryPreparationTemplates: [],
       selectedFile: "without-file",
       popupContents: {
@@ -1575,7 +1600,9 @@ export default {
           showNotification("File uploaded successfully.", "success");
           this.fetchExportTemplates();
         } catch (error) {
-          handleError(error);
+          showNotification("Error uploading file: " + error, "error");
+        } finally {
+          this.selectedFile = "without-file";
         }
       } else {
         showNotification("Please upload a valid XLSX file.", "error");
@@ -1592,13 +1619,13 @@ export default {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", file.name || "filename.xlsx");
+        link.setAttribute("download", file.name || "Library_Preparation.xlsx");
         document.body.appendChild(link);
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
       } catch (error) {
-        console.error("Error downloading file: ", error);
+        showNotification("Error downloading file: " + error, "error");
       }
     },
     async removeExportTemplate(index) {
@@ -1610,92 +1637,73 @@ export default {
         this.fetchedLibraryPreparationTemplates.splice(index, 1);
         showNotification("File removed successfully.", "success");
       } catch (error) {
-        console.error("Error removing file: ", error);
+        showNotification("Error removing file: " + error, "error");
       } finally {
         this.selectedFile = "without-file";
       }
     },
     async handleExport() {
-      const today = new Date();
-      const formattedDate = `${String(today.getDate()).padStart(
-        2,
-        "0"
-      )}_${String(today.getMonth() + 1).padStart(
-        2,
-        "0"
-      )}_${today.getFullYear()}`;
-      const filename = `Library_Preparation_${formattedDate}.xlsx`;
-
-      let exportRows = this.librariesSamplesList.filter(
-        (row) => row.selected === true
-      );
-      if (exportRows.length === 0) {
-        exportRows = this.librariesSamplesList;
-      }
-
-      const biomekData = exportRows.map((row) => ({
-        "Request ID": row.request_name,
-        "Pool ID": row.pool_name,
-        Sample: row.name,
-        Barcode: row.barcode,
-        Protocol: row.library_protocol_name,
-        "Index Type": row.index_type,
-        "Index I7 ID": row.index_i7_id,
-        "Index I5 ID": row.index_i5_id,
-        "Coordinate (Index Plate)": row.coordinate,
-        "Concentration Sample (ng/µl)": row.concentration_sample,
-        "Starting Amount (ng)": row.starting_amount
-      }));
-
       this.fakeLoadingStart();
-
       try {
-        const biomekWS = XLSX.utils.json_to_sheet(biomekData);
+        const today = new Date();
+        const formattedDate = `${String(today.getDate()).padStart(
+          2,
+          "0"
+        )}_${String(today.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}_${today.getFullYear()}`;
+        const filename = `Library_Preparation_${formattedDate}.xlsx`;
+        let exportRows = this.librariesSamplesList.filter(
+          (row) => row.selected
+        );
+        if (exportRows.length === 0) exportRows = this.librariesSamplesList;
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, biomekWS, "Biomek Run Doc");
-
+        XLSX.utils.book_append_sheet(
+          wb,
+          XLSX.utils.json_to_sheet(
+            exportRows.map((row) => ({
+              "Request ID": row.request_name,
+              "Pool ID": row.pool_name,
+              Sample: row.name,
+              Barcode: row.barcode,
+              Protocol: row.library_protocol_name,
+              "Index Type": row.index_type,
+              "Index I7 ID": row.index_i7_id,
+              "Index I5 ID": row.index_i5_id,
+              "Coordinate (Index Plate)": row.coordinate,
+              "Concentration Sample (ng/µl)": row.concentration_sample,
+              "Starting Amount (ng)": row.starting_amount
+            }))
+          ),
+          "Parkour"
+        );
         if (this.selectedFile !== "without-file") {
-          console.log("Fetching selected file:", this.selectedFile.file);
-
-          const response = await axiosRef.get(this.selectedFile.file, {
-            responseType: "arraybuffer"
-          });
-
-          console.log("Downloaded file size:", response.data.byteLength);
-
+          const response = await axiosRef.get(
+            `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`,
+            { responseType: "arraybuffer" }
+          );
           const importedWB = XLSX.read(response.data, { type: "array" });
-
-          console.log("Sheets in imported file:", importedWB.SheetNames);
-
-          if (importedWB.SheetNames.length === 0) {
-            console.error("Error: No sheets found in imported file.");
-            showNotification("The selected file has no sheets.", "error");
-          } else {
-            importedWB.SheetNames.forEach((sheetName) => {
-              const sheet = importedWB.Sheets[sheetName];
-              XLSX.utils.book_append_sheet(wb, sheet, sheetName);
-              console.log(`Appended sheet: ${sheetName}`);
-            });
-          }
+          importedWB.SheetNames.forEach((sheetName) => {
+            if (!wb.SheetNames.includes(sheetName)) {
+              XLSX.utils.book_append_sheet(
+                wb,
+                importedWB.Sheets[sheetName],
+                sheetName
+              );
+            }
+          });
         }
-
-        this.fakeLoadingStop();
-
-        setTimeout(() => {
-          try {
-            XLSX.writeFile(wb, filename);
-            console.log("Export successful:", filename);
-          } catch (error) {
-            console.error("Export error:", error);
-            showNotification(
-              "Failed to export the data, please try again.",
-              "error"
-            );
-          }
-        }, 300);
+        XLSX.writeFile(wb, filename);
       } catch (error) {
-        console.error("Error during export:", error);
-        showNotification("Error during export. Please try again.", "error");
+        showNotification(
+          "Error during export. Please try again.\n" + error,
+          "error"
+        );
+      } finally {
+        this.fakeLoadingStop();
+        this.showExportPopup = false;
+        this.selectedFile = "without-file";
       }
     },
     ellipsisContainer(text, boldText) {
@@ -1814,10 +1822,7 @@ body,
 </style>
 
 <!--
-concentration_facilty field is renamed to measured_value_facility
-how should new admin panel look like?
-please check header names in both of the components
-
+modify the admin panel
 add validations according to old component
 scroll to focused cell after copy
 measuring unit (sample) allow user to add options through site admin panel 

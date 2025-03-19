@@ -192,7 +192,7 @@ input[type="radio"]:checked::after {
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: scale(0.8);
   opacity: 0;
@@ -457,7 +457,7 @@ input[type="radio"]:checked::after {
 }
 
 .file-list-section {
-  height: 200px;
+  height: 300px;
   overflow-y: scroll;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -514,4 +514,34 @@ input[type="radio"]:checked::after {
 .download-button:hover,
 .remove-button:hover {
   color: #007bff;
+}
+
+.info-button {
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 12px;
+  font-size: 16px;
+  position: relative;
+}
+
+.tooltip-box {
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  transform: translateX(-50%);
+  width: 400px;
+  background: white;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  color: #000;
+  z-index: 10;
+}
+
+.tooltip-box ol {
+  padding-left: 18px;
+  margin: 5px 0;
 }
