@@ -1824,8 +1824,12 @@ body,
 </style>
 
 <!--
-modify the admin panel
+change colums in export according to the image in vikunja
+preserve styling of the imported file while exporting
+numbering of downloaded templates like incrementing barcode, together with request IDs
 add validations according to old component
+
+modify the admin panel
 scroll to focused cell after copy
 measuring unit (sample) allow user to add options through site admin panel 
 -->
