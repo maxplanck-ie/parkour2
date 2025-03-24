@@ -103,7 +103,7 @@ typing-extensions==4.12.2
     # via
     #   dj-database-url
     #   python-docx
-tzdata==2025.1
+tzdata==2025.2
     # via
     #   django
     #   pandas
