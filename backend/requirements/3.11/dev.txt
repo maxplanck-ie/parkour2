@@ -20,9 +20,9 @@ attrs==25.3.0
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   referencing
-boto3==1.37.13
+boto3==1.37.18
     # via -r backend/requirements/dev.in
-botocore==1.37.13
+botocore==1.37.18
     # via
     #   boto3
     #   s3transfer
@@ -98,7 +98,7 @@ django-cors-headers==4.7.0
     # via -r backend/requirements/dev.in
 django-cryptography-django5==2.2
     # via django-sql-explorer
-django-debug-toolbar==5.0.1
+django-debug-toolbar==5.1.0
     # via -r backend/requirements/dev.in
 django-extensions==3.2.3
     # via
@@ -118,7 +118,7 @@ django-monthfield==0.1.4
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-django-schema-viewer==0.5.2
+django-schema-viewer==0.5.3
     # via -r backend/requirements/dev.in
 django-simple-history==3.8.0
     # via
@@ -221,7 +221,7 @@ numpy==2.2.4 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==1.66.3
+openai==1.68.2
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -267,7 +267,7 @@ pygments==2.19.1
     #   ipython
     #   ipython-pygments-lexers
     #   rich
-pyparsing==3.2.1
+pyparsing==3.2.2
     # via matplotlib
 python-dateutil==2.9.0.post0
     # via
@@ -359,7 +359,7 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   python-docx
     #   referencing
-tzdata==2025.1
+tzdata==2025.2
     # via
     #   -c backend/requirements/3.11/base.txt
     #   django

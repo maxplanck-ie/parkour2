@@ -108,7 +108,7 @@ typing-extensions==4.12.2
     #   dj-database-url
     #   python-docx
     #   referencing
-tzdata==2025.1
+tzdata==2025.2
     # via
     #   django
     #   pandas
