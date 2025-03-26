@@ -441,7 +441,7 @@ export default {
               </div>`
     }
   <div>
-    <span style="font-weight: bold; font-size: 12px;">${value}</span>
+    <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 2px;">
       (#: ${count}, Total Depth: ${totalDepth}M, ${biosafetyLevel})
     </span>
@@ -672,7 +672,6 @@ export default {
         {
           field: "selected",
           visible: true,
-          headerSort: false,
           headerVertical: false,
           frozen: true,
           resizable: false,
@@ -704,7 +703,7 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column name-column right-border",
+          cssClass: "name-column right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
           formatter: (cell) => {
             const type = cell.getRow().getData().type;
@@ -718,8 +717,6 @@ export default {
                           <span title="${type === "S" ? "Sample" : "Library"}" 
                             style="
                               display: inline-block;
-                              background-color: ${bgColor};
-                              color: white;
                               font-size: 10px;
                               font-weight: bold;
                               padding: 4px;
@@ -729,7 +726,7 @@ export default {
                             ">
                             ${type}
                           </span>
-                          <span title="${name}" style="padding: 8px 0px; font-weight:bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
+                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
               (tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name
             }</span>
                         </div>
@@ -755,7 +752,7 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
-            return this.ellipsisContainer(finalString, true);
+            return this.ellipsisContainer(finalString, false);
           }
         },
         {

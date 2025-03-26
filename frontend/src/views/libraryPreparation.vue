@@ -654,12 +654,13 @@ export default {
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
+      
         groupHeader: (value, count, data) => {
           return `
   <div style="display: flex; justify-content: space-between; align-items: center;">
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
-    <span style="font-weight: bold; font-size: 12px;">Protocol ➜ ${value}</span>
+    <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 2px;">
       (# of libraries: ${count})
     </span>
@@ -830,7 +831,6 @@ export default {
         {
           field: "selected",
           visible: true,
-          headerSort: false,
           headerVertical: false,
           frozen: true,
           resizable: false,
@@ -862,7 +862,7 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column right-border",
+          cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -870,25 +870,7 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
-            return this.ellipsisContainer(finalString, true);
-          }
-        },
-        {
-          title: "Name",
-          field: "name",
-          minWidth: 220,
-          headerFilter: true,
-          visible: true,
-          frozen: true,
-          cssClass: "details-column right-border",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString, true);
+            return this.ellipsisContainer(finalString, false);
           }
         },
         {
@@ -898,7 +880,7 @@ export default {
           headerFilter: true,
           visible: true,
           frozen: true,
-          cssClass: "details-column right-border",
+          cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -906,7 +888,23 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value + "*" || "-";
-            return this.ellipsisContainer(finalString, true);
+            return this.ellipsisContainer(finalString, false);
+          }
+        },
+        {
+          title: "Name",
+          field: "name",
+          width: 150,
+          headerFilter: true,
+          visible: true,
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const finalString = value || "-";
+            return this.ellipsisContainer(finalString, false);
           }
         },
         {
@@ -1038,12 +1036,6 @@ export default {
             showNotification("This field is not editable.", "warning");
           }
         },
-        {
-          title: "Editable Fields",
-          headerHozAlign: "left",
-          visible: true,
-          cssClass: "editable-fields-group",
-          columns: [
             {
               title: "Measuring Unit",
               field: "measuring_unit_facility",
@@ -1242,8 +1234,6 @@ export default {
                 return this.ellipsisContainer(value);
               }
             }
-          ]
-        }
       ];
 
       if (storedColumnState) {
@@ -1685,7 +1675,7 @@ export default {
             `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`,
             { responseType: "arraybuffer" }
           );
-          const importedWB = XLSX.read(response.data, { type: "array" });
+          const importedWB = XLSX.read(response.data, { type: "array", cellStyles: true });
           importedWB.SheetNames.forEach((sheetName) => {
             if (!wb.SheetNames.includes(sheetName)) {
               XLSX.utils.book_append_sheet(

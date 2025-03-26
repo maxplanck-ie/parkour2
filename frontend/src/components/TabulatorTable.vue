@@ -182,7 +182,7 @@ export default {
           })),
           layout: "fitColumns",
           columnDefaults: {
-            headerSort: true,
+            headerSort: false,
             headerFilter: false,
             editor: false,
             headerHozAlign: "center",
@@ -446,6 +446,7 @@ export default {
             flatFilters.push(...typesNotIn);
           }
 
+          //this.tabulatorInstance.setSort("barcode", "desc");
           this.tabulatorInstance.setFilter(flatFilters);
 
           const columns = this.tabulatorInstance.getColumns();
@@ -929,7 +930,7 @@ export default {
 .tabulator {
   height: 100%;
   font-size: 12px;
-  border: 1px solid grey;
+  border: 1px solid #d0d0d0;
   border-radius: 4px !important;
 }
 
@@ -957,7 +958,7 @@ export default {
   height: 30px !important;
   line-height: 6px;
   padding: 0px !important;
-  border-bottom: 1px solid #bdbdbd !important;
+  border-bottom: 1px solid #d0d0d0 !important;
   border-right: none !important;
   white-space: nowrap;
   overflow: hidden;
@@ -965,7 +966,7 @@ export default {
 }
 
 .tabulator-cell.right-border {
-  border-right: 1px solid #bdbdbd !important;
+  border-right: 1px solid #d0d0d0 !important;
 }
 
 .tabulator-cell.no-right-border {
@@ -979,7 +980,7 @@ export default {
 .tabulator-cell.tabulator-range-selected {
   background-color: #c0e7fd !important;
   color: #003757 !important;
-  border-bottom: 1px solid #bdbdbd !important;
+  border-bottom: 1px solid #d0d0d0 !important;
 }
 
 .tabulator-cell.tabulator-editing {
@@ -993,11 +994,6 @@ export default {
 
 .tabulator-cell.tabulator-frozen {
   z-index: 1 !important;
-}
-
-.tabulator-cell.details-column {
-  font-weight: bold !important;
-  color: darkslategrey !important;
 }
 
 .tabulator-cell.user-entry-column {
@@ -1015,13 +1011,13 @@ export default {
 }
 
 .tabulator-col {
-  border-right: 1px solid grey !important;
-  border-bottom: 1px solid grey !important;
+  border-right: 1px solid #d0d0d0 !important;
+  border-bottom: 1px solid #d0d0d0 !important;
 }
 
 .tabulator-col-group-cols {
   border: none !important;
-  border-top: 1px solid grey !important;
+  border-top: 1px solid #d0d0d0 !important;
 }
 
 .tabulator-col:not(.tabulator-col-vertical)
@@ -1057,12 +1053,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: #faf1d2;
+  background-color: white;
+  border-top: 1px solid #d0d0d0 !important;
+  border-bottom: 1px solid #d0d0d0 !important;
   z-index: 20;
 }
 
 .tabulator-row.tabulator-group:hover {
-  background-color: #fff9e1;
+  background-color: white;
 }
 
 .tabulator-row:hover .group-action-buttons-container {
@@ -1072,7 +1070,7 @@ export default {
 .tabulator-header-filter input {
   height: 24px;
   font-size: 12px !important;
-  border: 1px solid #33333390 !important;
+  border: 1px solid #d0d0d0 !important;
 }
 
 .no-group-by .tabulator-row-odd:nth-child(1) {
@@ -1080,7 +1078,7 @@ export default {
 }
 
 .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
-  border-top: 1px solid grey !important;
+  border-top: 1px solid #d0d0d0 !important;
 }
 
 .checkbox-column:not(.tabulator-col) {
