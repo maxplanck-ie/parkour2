@@ -1,6 +1,12 @@
 from authtools.admin import NamedUserAdmin
 from authtools.forms import UserCreationForm
-from common.models import CostUnit, Duty, Organization, PrincipalInvestigator, LibraryPreparationTemplate
+from common.models import (
+    CostUnit,
+    Duty,
+    Organization,
+    PrincipalInvestigator,
+    LibraryPreparationTemplate,
+)
 from simple_history.admin import SimpleHistoryAdmin
 from django import forms
 from django.conf import settings
@@ -332,5 +338,6 @@ class LibraryPreparationTemplateAdmin(SimpleHistoryAdmin):
     list_display = ("name", "file", "uploaded_at")
     search_fields = ("name",)
     ordering = ("-uploaded_at",)
+
 
 # admin.site.unregister(User)

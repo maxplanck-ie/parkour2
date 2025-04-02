@@ -1106,8 +1106,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1129,8 +1129,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1152,8 +1152,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1175,8 +1175,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1198,8 +1198,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1221,8 +1221,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1244,8 +1244,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1848,7 +1848,7 @@ body,
 </style>
 
 <!--
-change colums in export according to the image in vikunja
+change columns in export according to the image in vikunja
 preserve styling of the imported file while exporting
 numbering of downloaded templates like incrementing barcode, together with request IDs
 add validations according to old component
