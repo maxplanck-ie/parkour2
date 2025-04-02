@@ -102,6 +102,10 @@ export default {
       type: String,
       required: true
     },
+    groupSort: {
+      type: Object,
+      required: false
+    },
     tableOptions: {
       type: Object,
       default: () => ({})
@@ -170,16 +174,7 @@ export default {
       if (this.rowData && this.columnDefs) {
         const options = {
           data: this.rowData,
-          columns: this.columnDefs.map((column) => ({
-            ...column,
-            headerTooltip: column.title,
-            columns: column.columns
-              ? column.columns.map((child) => ({
-                  ...child,
-                  headerTooltip: child.title
-                }))
-              : undefined
-          })),
+          columns: this.columnDefs,
           layout: "fitColumns",
           columnDefaults: {
             headerSort: false,
@@ -445,8 +440,17 @@ export default {
           if (typesNotIn.length > 0) {
             flatFilters.push(...typesNotIn);
           }
+          if (this.groupSort) {
+            let groupValues = [
+              ...new Set(this.rowData.map((item) => item[this.groupSort.field]))
+            ].sort();
 
-          //this.tabulatorInstance.setSort("barcode", "desc");
+            if (this.groupSort.order === "desc") {
+              groupValues.reverse();
+            }
+
+            this.tabulatorInstance.setGroupValues([groupValues]);
+          }
           this.tabulatorInstance.setFilter(flatFilters);
 
           const columns = this.tabulatorInstance.getColumns();
@@ -1018,13 +1022,6 @@ export default {
 .tabulator-col-group-cols {
   border: none !important;
   border-top: 1px solid #d0d0d0 !important;
-}
-
-.tabulator-col:not(.tabulator-col-vertical)
-  > .tabulator-col-content
-  > .tabulator-col-title-holder
-  > .tabulator-col-title {
-  padding-right: 12px !important;
 }
 
 .tabulator-col-content {
