@@ -37,7 +37,7 @@ django-monthfield==0.1.4
     # via -r backend/requirements/base.in
 django-simple-history==3.8.0
     # via -r backend/requirements/base.in
-djangorestframework==3.16.0
+djangorestframework==3.15.2
     # via
     #   -r backend/requirements/base.in
     #   drf-spectacular
@@ -79,7 +79,7 @@ python-dateutil==2.9.0.post0
     #   pandas
 python-docx==1.1.2
     # via -r backend/requirements/base.in
-pytz==2025.2
+pytz==2025.1
     # via pandas
 pyyaml==6.0.2
     # via drf-spectacular
@@ -87,7 +87,7 @@ referencing==0.36.2
     # via
     #   jsonschema
     #   jsonschema-specifications
-rpds-py==0.24.0
+rpds-py==0.23.1
     # via
     #   jsonschema
     #   referencing
@@ -99,7 +99,7 @@ tablib==3.8.0
     # via django-import-export
 tblib==3.0.0
     # via -r backend/requirements/base.in
-typing-extensions==4.13.0
+typing-extensions==4.12.2
     # via
     #   dj-database-url
     #   python-docx
