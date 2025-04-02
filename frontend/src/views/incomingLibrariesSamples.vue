@@ -260,6 +260,7 @@
         :rowData="librariesSamplesList"
         :columnDefs="columnsList"
         groupBy="request_name"
+        :groupSort="{ field: 'request_name', order: 'desc' }"
         :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
@@ -328,8 +329,8 @@
           >
             <ol style="padding-left: 25px">
               <li v-for="item in popupContents.popupList" :key="item">
-                {{ item.barcode + " ➜ " }}
-                <span style="font-weight: bold">{{ item.name }}</span>
+                <span style="font-weight: bold">{{ item.barcode }}</span>
+                <span>{{ " - " + item.name }}</span>
               </li>
             </ol>
           </div>
@@ -383,6 +384,7 @@ export default {
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
+        initialSort: [{ column: "barcode", dir: "asc" }],
         groupHeader: (value, count, data) => {
           const samplesSubmitted = data.some(
             (item) => item.samples_submitted === true
@@ -699,8 +701,9 @@ export default {
         {
           title: "Name",
           field: "name",
-          minWidth: 220,
+          minWidth: 100,
           headerFilter: true,
+          headerTooltip: "Sample Name",
           visible: true,
           frozen: true,
           cssClass: "name-column right-border",
@@ -741,7 +744,9 @@ export default {
           title: "Barcode",
           field: "barcode",
           width: 98,
+          minWidth: 60,
           headerFilter: true,
+          headerTooltip: "Barcode",
           visible: true,
           frozen: true,
           cssClass: "details-column barcode-column right-border",
@@ -767,6 +772,7 @@ export default {
               minWidth: 80,
               width: "6%",
               headerVertical: false,
+              headerTooltip: "Input Type",
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -785,6 +791,7 @@ export default {
               minWidth: 80,
               width: "6%",
               headerVertical: false,
+              headerTooltip: "Library Preparation Protocol",
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -802,6 +809,7 @@ export default {
               field: "comments",
               minWidth: 100,
               headerVertical: false,
+              headerTooltip: "Comment (User)",
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -819,6 +827,7 @@ export default {
               minWidth: 60,
               width: "4%",
               headerVertical: false,
+              headerTooltip: "Input (User)",
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -831,11 +840,12 @@ export default {
               }
             },
             {
-              title: "Volume",
+              title: "µl",
               field: "volume",
               minWidth: 60,
               width: "4%",
               headerVertical: false,
+              headerTooltip: "Volume (User)",
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -855,11 +865,12 @@ export default {
               }
             },
             {
-              title: "Size",
+              title: "bp",
               field: "mean_fragment_size",
               minWidth: 60,
               width: "4%",
               headerVertical: false,
+              headerTooltip: "Size Distribution (User)",
               visible: true,
               cssClass: "user-entry-column",
               contextMenu: () => this.cellContextMenu(true, false, false),
@@ -887,7 +898,7 @@ export default {
           cssClass: "editable-fields-group",
           columns: [
             {
-              title: "Measuring Unit",
+              title: "Unit",
               field: "measuring_unit_facility",
               minWidth: 80,
               width: "6%",
@@ -907,6 +918,7 @@ export default {
                 return { values: options };
               },
               headerVertical: false,
+              headerTooltip: "Measuring Unit",
               visible: true,
               cssClass: "facility-entry-column",
               contextMenu: () => this.cellContextMenu(true, true, true),
@@ -922,12 +934,13 @@ export default {
               }
             },
             {
-              title: "Measured Value",
+              title: "Amount",
               field: "measured_value_facility",
               minWidth: 60,
               width: "4%",
               editor: "number",
               headerVertical: false,
+              headerTooltip: "Measured Value",
               visible: true,
               cssClass: "facility-entry-column",
               contextMenu: () => this.cellContextMenu(true, true, true),
@@ -944,12 +957,13 @@ export default {
               }
             },
             {
-              title: "Volume",
+              title: "µl",
               field: "sample_volume_facility",
               minWidth: 60,
               width: "4%",
               editor: "number",
               headerVertical: false,
+              headerTooltip: "Volume (Facility)",
               visible: true,
               cssClass: "facility-entry-column",
               editorParams: {
@@ -972,14 +986,44 @@ export default {
               }
             },
             {
-              title: "Size",
+              title: "bp",
               field: "size_distribution_facility",
               minWidth: 60,
               width: "4%",
               editor: "number",
               headerVertical: false,
+              headerTooltip: "Size Distribution (Facility)",
               visible: true,
               cssClass: "facility-entry-column",
+              contextMenu: () => this.cellContextMenu(true, true, true),
+              formatter: (cell) => {
+                const rawValue = cell.getValue();
+                const value = Number(rawValue);
+                const finalString =
+                  rawValue === "" || rawValue === undefined || isNaN(value)
+                    ? "-"
+                    : value === 0
+                    ? "0.0"
+                    : value.toFixed(1);
+                return this.ellipsisContainer(finalString);
+              }
+            },
+            {
+              title: "% Total",
+              field: "percent_total",
+              minWidth: 60,
+              width: "4%",
+              editor: "number",
+              headerVertical: false,
+              headerTooltip: "Smear Analysis (% Total)",
+              visible: true,
+              cssClass: "facility-entry-column",
+              editorParams: {
+                min: 0,
+                max: 100,
+                step: 0.1
+              },
+              validator: ["min:0", "max:100"],
               contextMenu: () => this.cellContextMenu(true, true, true),
               formatter: (cell) => {
                 const rawValue = cell.getValue();
@@ -999,6 +1043,7 @@ export default {
               minWidth: 60,
               width: "4%",
               headerVertical: false,
+              headerTooltip: "RNA Quality",
               visible: true,
               editor: "number",
               editorParams: {
@@ -1039,11 +1084,12 @@ export default {
               }
             },
             {
-              title: "GMO Documentation",
+              title: "GMO",
               field: "gmo_facility",
               minWidth: 60,
               width: "6%",
               editor: "list",
+              headerTooltip: "GMO Documentation",
               editorParams: {
                 values: [
                   { label: "Not Needed", value: "false" },
@@ -1104,6 +1150,7 @@ export default {
               minWidth: 100,
               editor: "input",
               headerVertical: false,
+              headerTooltip: "Comment (Facility)",
               visible: true,
               cssClass: "facility-entry-column no-right-border",
               contextMenu: () => this.cellContextMenu(true, true, true),
