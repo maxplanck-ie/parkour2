@@ -21,7 +21,12 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import CostUnit, Duty, LibraryPreparationTemplate
-from .serializers import CostUnitSerializer, DutySerializer, UserSerializer, LibraryPreparationTemplateSerializer
+from .serializers import (
+    CostUnitSerializer,
+    DutySerializer,
+    UserSerializer,
+    LibraryPreparationTemplateSerializer,
+)
 
 User = get_user_model()
 
@@ -325,13 +330,21 @@ class LibraryPreparationTemplateViewSet(viewsets.ModelViewSet):
         """Upload a new XLSX file."""
         file = request.FILES.get("file")
         if not file:
-            return Response({"success": False, "message": "No file provided."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"success": False, "message": "No file provided."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         if not file.name.endswith(".xlsx"):
-            return Response({"success": False, "message": "Only XLSX files are allowed."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"success": False, "message": "Only XLSX files are allowed."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         template = LibraryPreparationTemplate(name=file.name, file=file)
         template.save()
         serializer = self.get_serializer(template)
-        return Response({"success": True, "data": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(
+            {"success": True, "data": serializer.data}, status=status.HTTP_201_CREATED
+        )
 
     @action(detail=True, methods=["delete"])
     def remove(self, request, pk=None):
@@ -339,7 +352,10 @@ class LibraryPreparationTemplateViewSet(viewsets.ModelViewSet):
         template = self.get_object()
         template.file.delete()
         template.delete()
-        return Response({"success": True, "message": "File removed successfully."}, status=status.HTTP_200_OK)
+        return Response(
+            {"success": True, "message": "File removed successfully."},
+            status=status.HTTP_200_OK,
+        )
 
     @action(detail=True, methods=["get"])
     def download(self, request, pk=None):
@@ -349,8 +365,11 @@ class LibraryPreparationTemplateViewSet(viewsets.ModelViewSet):
             file_path = template.file.path
             if not os.path.exists(file_path):
                 return Response({"error": "File not found"}, status=404)
-            response = FileResponse(open(file_path, 'rb'), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-            response['Content-Disposition'] = f'attachment; filename="{template.name}"'
+            response = FileResponse(
+                open(file_path, "rb"),
+                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+            response["Content-Disposition"] = f'attachment; filename="{template.name}"'
             return response
         except Exception as e:
             return Response({"error": str(e)}, status=500)

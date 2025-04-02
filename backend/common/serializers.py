@@ -21,6 +21,7 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = ("id", "first_name", "last_name", "facility", "phone", "email")
 
+
 class LibraryPreparationTemplateSerializer(ModelSerializer):
     class Meta:
         model = LibraryPreparationTemplate
