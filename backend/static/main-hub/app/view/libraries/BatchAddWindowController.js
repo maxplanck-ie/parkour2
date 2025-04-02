@@ -583,7 +583,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 100
       },
       {
-        text: "Measuring Unit",
+        text: "Unit",
         dataIndex: "measuring_unit",
         tooltip:
           "Choose the Measuring Unit <br><br> - Use 'Unknown' if no values are available",
@@ -610,7 +610,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         renderer: this.comboboxErrorRenderer
       },
       {
-        text: "Measured Value",
+        text: "Amount",
         dataIndex: "measured_value",
         tooltip: "Enter the Measured Value",
         width: 120,

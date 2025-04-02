@@ -205,6 +205,7 @@
         :rowData="librariesSamplesList"
         :columnDefs="columnsList"
         groupBy="library_protocol_name"
+        :groupSort="{ field: 'library_protocol_name', order: 'asc' }"
         :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
@@ -273,8 +274,8 @@
           >
             <ol style="padding-left: 25px">
               <li v-for="item in popupContents.popupList" :key="item">
-                {{ item.barcode + " ➜ " }}
-                <span style="font-weight: bold">{{ item.name }}</span>
+                <span style="font-weight: bold">{{ item.barcode }}</span>
+                <span>{{ " - " + item.name }}</span>
               </li>
             </ol>
           </div>
@@ -654,7 +655,7 @@ export default {
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
-      
+        initialSort: [{ column: "create_time", dir: "asc" }],
         groupHeader: (value, count, data) => {
           return `
   <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -858,8 +859,9 @@ export default {
         {
           title: "Request",
           field: "request_name",
-          minWidth: 220,
+          minWidth: 140,
           headerFilter: true,
+          headerTooltip: "Request",
           visible: true,
           frozen: true,
           cssClass: "right-border",
@@ -877,7 +879,9 @@ export default {
           title: "Barcode",
           field: "barcode",
           width: 98,
+          minWidth: 60,
           headerFilter: true,
+          headerTooltip: "Barcode",
           visible: true,
           frozen: true,
           cssClass: "right-border",
@@ -894,8 +898,10 @@ export default {
         {
           title: "Name",
           field: "name",
-          width: 150,
+          width: 110,
+          minWidth: 60,
           headerFilter: true,
+          headerTooltip: "Sample Name",
           visible: true,
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
@@ -911,7 +917,9 @@ export default {
           title: "Date",
           field: "create_time",
           width: 90,
+          minWidth: 60,
           headerFilter: true,
+          headerTooltip: "Date",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -927,9 +935,11 @@ export default {
         {
           title: "Protocol",
           field: "library_protocol_name",
-          minWidth: 150,
+          width: 110,
+          minWidth: 60,
           visible: true,
           cssClass: "regular-column",
+          headerTooltip: "Library Preparation Protocol",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -943,8 +953,10 @@ export default {
         {
           title: "Comment Library/Input",
           field: "comments_library_sample",
-          minWidth: 150,
+          width: 140,
+          minWidth: 60,
           headerVertical: false,
+          headerTooltip: "Comment (User)",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -960,7 +972,9 @@ export default {
           title: "Pool",
           field: "pool_name",
           width: 84,
+          minWidth: 60,
           headerVertical: false,
+          headerTooltip: "Pool ID",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -976,7 +990,9 @@ export default {
           title: "Index Type",
           field: "index_type",
           width: 96,
+          minWidth: 60,
           headerVertical: false,
+          headerTooltip: "Index Type",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -989,26 +1005,30 @@ export default {
           }
         },
         {
-          title: "Index I5 ID",
-          field: "index_i5_id",
-          width: 105,
-          headerVertical: false,
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          }
-        },
-        {
-          title: "Index I7 ID",
+          title: "I7 ID",
           field: "index_i7_id",
           width: 105,
+          minWidth: 60,
           headerVertical: false,
+          headerTooltip: "Index I7 ID",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
+        },
+        {
+          title: "I5 ID",
+          field: "index_i5_id",
+          width: 105,
+          minWidth: 60,
+          headerVertical: false,
+          headerTooltip: "Index I5 ID",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -1025,6 +1045,7 @@ export default {
           field: "coordinate",
           width: 40,
           headerVertical: false,
+          headerTooltip: "Index Pair Coordinate",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -1036,204 +1057,214 @@ export default {
             showNotification("This field is not editable.", "warning");
           }
         },
-            {
-              title: "Measuring Unit",
-              field: "measuring_unit_facility",
-              minWidth: 80,
-              width: "6%",
-              editor: "list",
-              editorParams: (cell) => {
-                const row = cell.getRow().getData();
-                const options = [
-                  { label: "ng/µl (Concentration)", value: "concentration" },
-                  { label: "M (Cells)", value: "m" },
-                  { label: "Unknown", value: "-" }
-                ];
-                return { values: options };
-              },
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const value = cell.getValue();
-                const options = {
-                  concentration: "ng/µl (Concentration)",
-                  m: "M (Cells)",
-                  "-": "Unknown"
-                };
-                const finalString = options[value] || value || "Select";
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Measured Value",
-              field: "measured_value_facility",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Size",
-              field: "size_distribution_facility",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Starting Amount (ng/fmol)",
-              field: "starting_amount",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "PCR Cycles",
-              field: "pcr_cycles",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Concentration Library (ng/µl)",
-              field: "concentration_library",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Size (bp)",
-              field: "mean_fragment_size",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Smear Analysis",
-              field: "smear_analysis",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                    ? "0.0"
-                    : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Comment",
-              field: "comments_facility",
-              minWidth: 150,
-              editor: "input",
-              headerVertical: false,
-              visible: true,
-              cssClass: "regular-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const value = cell.getValue() || "Empty";
-                return this.ellipsisContainer(value);
-              }
-            }
+        {
+          title: "Unit",
+          field: "measuring_unit_facility",
+          minWidth: 80,
+          width: "6%",
+          editor: "list",
+          editorParams: (cell) => {
+            const row = cell.getRow().getData();
+            const options = [
+              { label: "ng/µl (Concentration)", value: "concentration" },
+              { label: "M (Cells)", value: "m" },
+              { label: "Unknown", value: "-" }
+            ];
+            return { values: options };
+          },
+          headerVertical: false,
+          headerTooltip: "Measuring Unit",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const options = {
+              concentration: "ng/µl (Concentration)",
+              m: "M (Cells)",
+              "-": "Unknown"
+            };
+            const finalString = options[value] || value || "Select";
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Amount",
+          field: "measured_value_facility",
+          minWidth: 60,
+          width: "4%",
+          editor: "number",
+          headerVertical: false,
+          headerTooltip: "Measured Value",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                ? "0.0"
+                : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "bp Sample",
+          field: "size_distribution_facility",
+          minWidth: 60,
+          width: "4%",
+          editor: "number",
+          headerVertical: false,
+          headerTooltip: "Sample Size Distribution (bp)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                ? "0.0"
+                : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Starting Amount",
+          field: "starting_amount",
+          minWidth: 60,
+          width: "4%",
+          editor: "number",
+          headerVertical: false,
+          headerTooltip: "Starting Amount (ng or fmol)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                ? "0.0"
+                : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Cycles",
+          field: "pcr_cycles",
+          minWidth: 60,
+          width: "4%",
+          editor: "number",
+          headerVertical: false,
+          headerTooltip: "PCR Cycles",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                ? "0.0"
+                : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Concentration Library",
+          field: "concentration_library",
+          minWidth: 60,
+          width: "4%",
+          editor: "number",
+          headerVertical: false,
+          headerTooltip: "Concentration Library (ng or µl)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                ? "0.0"
+                : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "bp Library",
+          field: "mean_fragment_size",
+          minWidth: 60,
+          width: "4%",
+          editor: "number",
+          headerVertical: false,
+          headerTooltip: "Library Size Distribution (bp)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                ? "0.0"
+                : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "% Total",
+          field: "smear_analysis",
+          minWidth: 60,
+          width: "4%",
+          editor: "number",
+          headerVertical: false,
+          headerTooltip: "Smear Analysis (% Total)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                ? "0.0"
+                : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Comment",
+          field: "comments_facility",
+          width: 140,
+          minWidth: 60,
+          editor: "input",
+          headerVertical: false,
+          headerTooltip: "Comment (Facility)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, true, true),
+          formatter: (cell) => {
+            const value = cell.getValue() || "Empty";
+            return this.ellipsisContainer(value);
+          }
+        }
       ];
 
       if (storedColumnState) {
@@ -1675,7 +1706,10 @@ export default {
             `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`,
             { responseType: "arraybuffer" }
           );
-          const importedWB = XLSX.read(response.data, { type: "array", cellStyles: true });
+          const importedWB = XLSX.read(response.data, {
+            type: "array",
+            cellStyles: true
+          });
           importedWB.SheetNames.forEach((sheetName) => {
             if (!wb.SheetNames.includes(sheetName)) {
               XLSX.utils.book_append_sheet(
