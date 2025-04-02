@@ -20,9 +20,9 @@ attrs==25.3.0
     #   -c backend/requirements/3.10/base.txt
     #   jsonschema
     #   referencing
-boto3==1.37.23
+boto3==1.37.18
     # via -r backend/requirements/dev.in
-botocore==1.37.23
+botocore==1.37.18
     # via
     #   boto3
     #   s3transfer
@@ -112,7 +112,7 @@ django-linear-migrations==2.17.0
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
-django-migration-linter==5.2.0
+django-migration-linter==5.1.0
     # via -r backend/requirements/dev.in
 django-monthfield==0.1.4
     # via
@@ -126,7 +126,7 @@ django-simple-history==3.8.0
     #   -r backend/requirements/base.in
 django-sql-explorer==5.3
     # via -r backend/requirements/dev.in
-djangorestframework==3.16.0
+djangorestframework==3.15.2
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
@@ -227,7 +227,7 @@ numpy==2.2.4 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==1.69.0
+openai==1.68.2
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -264,16 +264,16 @@ pure-eval==0.2.3
     # via stack-data
 pycparser==2.22 ; platform_python_implementation != 'PyPy'
     # via cffi
-pydantic==2.11.1
+pydantic==2.10.6
     # via openai
-pydantic-core==2.33.0
+pydantic-core==2.27.2
     # via pydantic
 pygments==2.19.1
     # via
     #   ipython
     #   ipython-pygments-lexers
     #   rich
-pyparsing==3.2.3
+pyparsing==3.2.2
     # via matplotlib
 python-dateutil==2.9.0.post0
     # via
@@ -287,7 +287,7 @@ python-docx==1.1.2
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
-pytz==2025.2
+pytz==2025.1
     # via
     #   -c backend/requirements/3.10/base.txt
     #   pandas
@@ -308,9 +308,9 @@ requests==2.32.3
     # via
     #   django-sql-explorer
     #   tiktoken
-rich==14.0.0
+rich==13.9.4
     # via -r backend/requirements/dev.in
-rpds-py==0.24.0
+rpds-py==0.23.1
     # via
     #   -c backend/requirements/3.10/base.txt
     #   jsonschema
@@ -356,7 +356,7 @@ traitlets==5.14.3
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.13.0
+typing-extensions==4.12.2
     # via
     #   -c backend/requirements/3.10/base.txt
     #   anyio
@@ -369,9 +369,6 @@ typing-extensions==4.13.0
     #   python-docx
     #   referencing
     #   rich
-    #   typing-inspection
-typing-inspection==0.4.0
-    # via pydantic
 tzdata==2025.2
     # via
     #   -c backend/requirements/3.10/base.txt
