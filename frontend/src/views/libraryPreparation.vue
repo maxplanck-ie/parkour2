@@ -1106,8 +1106,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1125,12 +1125,14 @@ export default {
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+            let finalString;
+
+            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
+              finalString = "-";
+            } else {
+              finalString = Math.round(value).toString();
+            }
+
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1152,8 +1154,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1171,12 +1173,14 @@ export default {
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+            let finalString;
+
+            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
+              finalString = "-";
+            } else {
+              finalString = Math.round(value).toString();
+            }
+
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1198,8 +1202,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1217,12 +1221,14 @@ export default {
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+            let finalString;
+
+            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
+              finalString = "-";
+            } else {
+              finalString = Math.round(value).toString();
+            }
+
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1244,8 +1250,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                ? "0.0"
+                : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1848,6 +1854,7 @@ body,
 </style>
 
 <!--
+new icon pack
 change columns in export according to the image in vikunja
 preserve styling of the imported file while exporting
 numbering of downloaded templates like incrementing barcode, together with request IDs
