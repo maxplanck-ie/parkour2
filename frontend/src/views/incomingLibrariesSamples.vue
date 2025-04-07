@@ -1167,17 +1167,17 @@ export default {
         }
       ];
 
-      if (storedColumnState) {
-        storedColumnState.forEach((column, index) => {
-          if (columnList[index]) columnList[index].visible = column.visible;
-          if (column.columns) {
-            column.columns.forEach((subColumn, subIndex) => {
-              if (columnList[index])
-                columnList[index].columns[subIndex].visible = subColumn.visible;
-            });
-          }
-        });
-      }
+      // if (storedColumnState) {
+      //   storedColumnState.forEach((column, index) => {
+      //     if (columnList[index]) columnList[index].visible = column.visible;
+      //     if (column.columns) {
+      //       column.columns.forEach((subColumn, subIndex) => {
+      //         if (columnList[index])
+      //           columnList[index].columns[subIndex].visible = subColumn.visible;
+      //       });
+      //     }
+      //   });
+      // }
 
       this.columnsList = columnList;
     },
