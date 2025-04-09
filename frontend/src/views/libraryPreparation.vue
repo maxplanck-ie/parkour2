@@ -616,7 +616,8 @@
 
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTable.vue";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import {
   showNotification,
   handleError,
@@ -759,7 +760,6 @@ export default {
         let response = await axiosRef.get(
           urlStringStart + "/api/library_preparation/"
         );
-
         let fetchedRows = response.data.map((element) => ({
           pk: element.pk || "",
           name: element.name || "",
@@ -1687,46 +1687,69 @@ export default {
           (row) => row.selected
         );
         if (exportRows.length === 0) exportRows = this.librariesSamplesList;
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(
-          wb,
-          XLSX.utils.json_to_sheet(
-            exportRows.map((row) => ({
-              "Request ID": row.request_name,
-              "Pool ID": row.pool_name,
-              Sample: row.name,
-              Barcode: row.barcode,
-              Protocol: row.library_protocol_name,
-              "Index Type": row.index_type,
-              "Index I7 ID": row.index_i7_id,
-              "Index I5 ID": row.index_i5_id,
-              "Coordinate (Index Plate)": row.coordinate,
-              "Concentration Sample (ng/µl)": row.concentration_sample,
-              "Starting Amount (ng)": row.starting_amount
-            }))
-          ),
-          "Parkour"
-        );
+        const wb = new ExcelJS.Workbook();
+
+        const parkourSheet = wb.addWorksheet("Parkour");
+        parkourSheet.columns = [
+          { header: "Request", key: "request_name", width: 25 },
+          { header: "Barcode", key: "barcode", width: 15 },
+          { header: "Name", key: "name", width: 20 },
+          { header: "Date", key: "create_time", width: 15 },
+          { header: "Protocol", key: "library_protocol_name", width: 20 },
+          {
+            header: "Comment Library/Sample",
+            key: "comments_library_sample",
+            width: 25
+          },
+          { header: "Pool", key: "pool_name", width: 10 },
+          { header: "Index Type", key: "index_type", width: 20 },
+          { header: "I7 ID", key: "index_i7_id", width: 20 },
+          { header: "I5 ID", key: "index_i5_id", width: 20 },
+          { header: "Coordinate", key: "coordinate", width: 10 },
+          { header: "Unit", key: "measuring_unit_facility", width: 15 },
+          { header: "Amount", key: "measured_value_facility", width: 15 }
+        ];
+        exportRows.forEach((row) => parkourSheet.addRow(row));
+
         if (this.selectedFile !== "without-file") {
           const response = await axiosRef.get(
             `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`,
             { responseType: "arraybuffer" }
           );
-          const importedWB = XLSX.read(response.data, {
-            type: "array",
-            cellStyles: true
-          });
-          importedWB.SheetNames.forEach((sheetName) => {
-            if (!wb.SheetNames.includes(sheetName)) {
-              XLSX.utils.book_append_sheet(
-                wb,
-                importedWB.Sheets[sheetName],
-                sheetName
-              );
+          await wb.xlsx.load(response.data);
+          const existingParkourSheet = wb.getWorksheet("Parkour");
+          if (existingParkourSheet) {
+            wb.removeWorksheet("Parkour");
+          }
+        }
+        const worksheets = wb._worksheets;
+        let parkourWS = null;
+        worksheets.forEach((sheet) => {
+          if (sheet._name === "Parkour") {
+            parkourWS = sheet;
+          }
+        });
+        wb.views = [
+          {
+            activeTab: 0,
+            firstSheet: 0
+          }
+        ];
+        if (parkourWS) {
+          parkourWS.orderNo = 0;
+          worksheets.forEach((sheet, index) => {
+            if (sheet.name !== "Parkour") {
+              if (sheet.orderNo >= parkourWS.orderNo) {
+                sheet.orderNo += 1;
+              }
             }
           });
         }
-        XLSX.writeFile(wb, filename);
+        const buffer = await wb.xlsx.writeBuffer();
+        const blob = new Blob([buffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        });
+        saveAs(blob, filename);
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,
@@ -1854,7 +1877,12 @@ body,
 </style>
 
 <!--
-new icon pack
+export format: yyyymmdd_Request ID(s)_preparation
+export sort: Preparation Name Project ID (ascending) Barcodes (ascending)
+export formulas don't refresh the values after concat
+sort rows in last view, export
+marking (and unmarking) samples as 'submitted' shouldn't require confirmation
+% Total: Incoming: editable for samples and libraries %, one decimal Preparation: do not shown same field is filled ofr samples Pooling show for libraries (from Incoming) show for samples from preparation
 change columns in export according to the image in vikunja
 preserve styling of the imported file while exporting
 numbering of downloaded templates like incrementing barcode, together with request IDs
