@@ -20,15 +20,17 @@
     "ag-grid-vue3": "33.1.1",
     "axios": "1.8.4",
     "bootstrap": "5.3.3",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "js-cookie": "3.0.5",
     "moment": "2.30.1",
     "pinia": "3.0.1",
     "sass": "1.86.0",
     "serve": "14.2.4",
+    "tabulator-tables": "6.3.0",
     "vue": "3.5.13",
     "vue-router": "4.5.0",
     "vue-toastification": "2.0.0-rc.5",
-    "tabulator-tables": "6.3.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
