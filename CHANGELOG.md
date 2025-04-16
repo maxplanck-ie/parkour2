@@ -5,6 +5,13 @@
 
 - ...
 
+
+25.04.16
+========
+
+- Sequencing Depth for Samples and Libraries accepts 1 decimal position, and any positive values (before it would only take 10 as minimum.)
+
+
 24.12.09
 ========
 
