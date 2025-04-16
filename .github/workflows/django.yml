@@ -1,6 +1,11 @@
 name: Backend
 
 on:
+  workflow_run:
+    workflows:
+      - Update
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       debug_enabled:
