@@ -14,7 +14,7 @@ on:
         required: false
         default: false
   push:
-    branches: ['develop']
+    branches: ['develop', 'update/dependencies']
   pull_request:
     types:
       - opened
