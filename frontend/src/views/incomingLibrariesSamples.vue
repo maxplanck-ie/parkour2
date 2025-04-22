@@ -384,7 +384,10 @@ export default {
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
-        initialSort: [{ column: "barcode", dir: "asc" }],
+        initialSort: [
+          { column: "barcode", dir: "asc" },
+          { column: "name", dir: "desc" }
+        ],
         groupHeader: (value, count, data) => {
           const samplesSubmitted = data.some(
             (item) => item.samples_submitted === true
@@ -399,12 +402,12 @@ export default {
               .map((level) => level && level.toUpperCase())
               .join(" and ") || "No BSL";
           return `
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    ${
-      samplesSubmitted
-        ? `<div title="Samples Submitted" style="display: flex; align-items: center;">
-                <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        ${
+          samplesSubmitted
+            ? `<div title="Samples Submitted" style="display: flex; align-items: center; cursor: pointer;" onclick="handleGroupButtonClick(event, '${value}', 'samplesSubmitted')">
+                <svg fill="none" width="24px" height="24px" style="cursor: pointer;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path opacity="0.3" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="green"/>
                     <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -412,15 +415,15 @@ export default {
                   </g>
                 </svg>
               </div>`
-        : `<div title="Samples not Submitted" style="display: flex; align-items: center;">
-                <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            : `<div title="Samples not Submitted" style="display: flex; align-items: center; cursor: pointer;" onclick="handleGroupButtonClick(event, '${value}', 'samplesSubmitted')">
+                <svg fill="none" width="24px" height="24px" style="cursor: pointer;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#323232"/>
                     <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                   </g>
                 </svg>
               </div>`
-    }
+        }
     ${
       gmo
         ? `<div title="GMO: Yes" style="display: flex; align-items: center;">
@@ -466,15 +469,6 @@ export default {
           <g>
             <path opacity="0.5" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="lightblue"/>
             <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
-      </div>
-      <div title="Mark Request as Samples Submitted/Not Submitted" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'samplesSubmitted')">
-        <svg fill="none" width="24px" height="24px"version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="white"/>
-            <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </g>
         </svg>
       </div>
@@ -601,6 +595,8 @@ export default {
           nucleic_acid_type_name: element.nucleic_acid_type_name || "",
           library_protocol_name: element.library_protocol_name || "",
           biosafety_level: element.biosafety_level || "",
+          percent_total:
+            element.percent_total === 0 ? 0 : element.percent_total || "",
           measuring_unit: element.measuring_unit || "",
           measured_value:
             element.measured_value === 0 ? 0 : element.measured_value || "",
@@ -707,6 +703,11 @@ export default {
           visible: true,
           frozen: true,
           cssClass: "name-column right-border",
+          sorter: (a, b, aRow, bRow) => {
+            return aRow
+              .getData()
+              .request_name.localeCompare(bRow.getData().request_name);
+          },
           contextMenu: () => this.cellContextMenu(true, false, false),
           formatter: (cell) => {
             const type = cell.getRow().getData().type;
@@ -1418,53 +1419,32 @@ export default {
             .samples_submitted
             ? !groupRows[0].getData().samples_submitted
             : true;
-          let popupTitleSS = "Are you sure?";
-          let popupDescriptionSS = `Marking the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">${
-            newSamplesSubmittedState === true
-              ? "Samples Submitted"
-              : "Samples Not Submitted"
-          }</span>, Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
-          let onYesSS = () => {
-            try {
-              this.fakeLoadingStart();
-              const payload = {
-                data: JSON.stringify({
-                  result: newSamplesSubmittedState
-                })
-              };
-              const url = `${urlStringStart}/api/requests/${requestId}/samples_submitted/`;
-              axiosRef.post(url, payload);
-              showNotification(
-                "Request successfully marked as 'Samples Submitted'.",
-                "success"
-              );
-              groupRows.forEach((row) => {
-                let rowData = row.getData();
-                rowData.samples_submitted = rowData.samples_submitted
-                  ? !rowData.samples_submitted
-                  : true;
-                row.update(rowData);
-              });
-              this.tabulatorInstance.recreateTable();
-            } catch (error) {
-              handleError(error);
-            } finally {
-              this.fakeLoadingStop();
-            }
-            this.showPopupWindow = false;
-          };
-          let onNoSS = () => {
-            this.showPopupWindow = false;
-          };
-          this.createPopupWindow(
-            popupTitleSS,
-            popupDescriptionSS,
-            [],
-            onYesSS,
-            onNoSS,
-            220,
-            600
-          );
+          try {
+            this.fakeLoadingStart();
+            const payload = {
+              data: JSON.stringify({
+                result: newSamplesSubmittedState
+              })
+            };
+            const url = `${urlStringStart}/api/requests/${requestId}/samples_submitted/`;
+            axiosRef.post(url, payload);
+            showNotification(
+              "Request successfully marked as 'Samples Submitted'.",
+              "success"
+            );
+            groupRows.forEach((row) => {
+              let rowData = row.getData();
+              rowData.samples_submitted = rowData.samples_submitted
+                ? !rowData.samples_submitted
+                : true;
+              row.update(rowData);
+            });
+            this.tabulatorInstance.recreateTable();
+          } catch (error) {
+            handleError(error);
+          } finally {
+            this.fakeLoadingStop();
+          }
           break;
 
         case "qualityPassed":
@@ -1602,19 +1582,39 @@ export default {
       }
     },
     exportToExcel() {
-      const today = new Date();
-      const day = String(today.getDate()).padStart(2, "0");
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-      const year = today.getFullYear();
-      const formattedDate = `${day}_${month}_${year}`;
-      const filename = `Incoming_Libraries_&_Samples_${formattedDate}.xlsx`;
       const tempContainer = document.createElement("div");
       const exportColumns = this.columnsList
         .filter((col) => col.field !== "selected")
         .map((col) => ({ ...col }));
-      let exportRows = this.librariesSamplesList.filter(
-        (row) => row.selected === true
-      );
+      const today = new Date();
+      const formattedDate = `${today.getFullYear()}${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+      const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
+        const getRequestNum = (str) => {
+          const match = String(str).match(/^(\d+)_/);
+          return match ? parseInt(match[1], 10) : 0;
+        };
+        const aNum = getRequestNum(a.request_name);
+        const bNum = getRequestNum(b.request_name);
+        if (aNum !== bNum) return bNum - aNum;
+        return a.barcode?.localeCompare(b.barcode);
+      });
+      let exportRows = sortedRows.filter((row) => row.selected);
+      if (exportRows.length === 0) exportRows = sortedRows;
+      const requestIdsSet = new Set();
+      exportRows.forEach((row) => {
+        const match = row.request_name?.match(/^(\d+)_/);
+        if (match) {
+          requestIdsSet.add(match[1]);
+        }
+      });
+      const requestIds = Array.from(requestIdsSet)
+        .map((id) => parseInt(id, 10))
+        .sort((a, b) => a - b)
+        .slice(0, 40)
+        .join("_");
+      const filename = `${formattedDate}_${requestIds}_incoming.xlsx`;
       this.fakeLoadingStart();
       exportColumns.unshift({
         title: "Request Name",
