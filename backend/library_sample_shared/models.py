@@ -1,6 +1,6 @@
 from common.models import DateTimeMixin
 from django.conf import settings
-from django.core.validators import MinValueValidator, RegexValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
@@ -370,6 +370,12 @@ class GenericLibrarySample(DateTimeMixin):
         max_length=24,
         null=True,
         blank=True,
+    )
+
+    percent_total = models.FloatField(
+        "Smear Analysis (% Total)",
+        default=100,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
 
     removed_amplification_cycles = models.PositiveIntegerField(

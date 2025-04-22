@@ -656,7 +656,21 @@ export default {
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
-        initialSort: [{ column: "create_time", dir: "asc" }],
+        initialSort: [
+          { column: "barcode", dir: "asc" },
+          {
+            column: "request_name",
+            dir: "asc",
+            sorter: (a, b) => {
+              const getNum = (str) => {
+                const match = String(str).match(/^(\d+)_/);
+                return match ? parseInt(match[1], 10) : 0;
+              };
+              return getNum(a) - getNum(b);
+            }
+          },
+          { column: "library_protocol_name", dir: "asc" }
+        ],
         groupHeader: (value, count, data) => {
           return `
   <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -764,7 +778,7 @@ export default {
           pk: element.pk || "",
           name: element.name || "",
           type: element.barcode[2] || "",
-          barcode: element.barcode || "",
+          barcode: element.barcode + "*" || "",
           is_converted:
             element.is_converted === null ? "" : element.is_converted,
           request_name: element.request_name || "",
@@ -891,7 +905,7 @@ export default {
           },
           formatter: (cell) => {
             const value = cell.getValue();
-            const finalString = value + "*" || "-";
+            const finalString = value || "-";
             return this.ellipsisContainer(finalString, false);
           }
         },
@@ -1169,6 +1183,12 @@ export default {
           headerTooltip: "PCR Cycles",
           visible: true,
           cssClass: "regular-column",
+          editorParams: {
+            min: 0,
+            max: 2147483647,
+            step: 1
+          },
+          validator: ["integer", "min:0", "max:2147483647"],
           contextMenu: () => this.cellContextMenu(true, true, true),
           formatter: (cell) => {
             const rawValue = cell.getValue();
@@ -1217,6 +1237,12 @@ export default {
           headerTooltip: "Library Size Distribution (bp)",
           visible: true,
           cssClass: "regular-column",
+          editorParams: {
+            min: 0,
+            max: 2147483647,
+            step: 1
+          },
+          validator: ["integer", "min:0", "max:2147483647"],
           contextMenu: () => this.cellContextMenu(true, true, true),
           formatter: (cell) => {
             const rawValue = cell.getValue();
@@ -1242,6 +1268,12 @@ export default {
           headerTooltip: "Smear Analysis (% Total)",
           visible: true,
           cssClass: "regular-column",
+          editorParams: {
+            min: 0,
+            max: 100,
+            step: 0.1
+          },
+          validator: ["min:0", "max:100"],
           contextMenu: () => this.cellContextMenu(true, true, true),
           formatter: (cell) => {
             const rawValue = cell.getValue();
@@ -1675,18 +1707,38 @@ export default {
       this.fakeLoadingStart();
       try {
         const today = new Date();
-        const formattedDate = `${String(today.getDate()).padStart(
-          2,
-          "0"
-        )}_${String(today.getMonth() + 1).padStart(
-          2,
-          "0"
-        )}_${today.getFullYear()}`;
-        const filename = `Library_Preparation_${formattedDate}.xlsx`;
-        let exportRows = this.librariesSamplesList.filter(
-          (row) => row.selected
-        );
-        if (exportRows.length === 0) exportRows = this.librariesSamplesList;
+        const formattedDate = `${today.getFullYear()}${String(
+          today.getMonth() + 1
+        ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+        const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
+          const getRequestNum = (str) => {
+            const match = String(str).match(/^(\d+)_/);
+            return match ? parseInt(match[1], 10) : 0;
+          };
+          const protocolCompare = a.library_protocol_name?.localeCompare(
+            b.library_protocol_name
+          );
+          if (protocolCompare !== 0) return protocolCompare;
+          const aNum = getRequestNum(a.request_name);
+          const bNum = getRequestNum(b.request_name);
+          if (aNum !== bNum) return aNum - bNum;
+          return a.barcode?.localeCompare(b.barcode);
+        });
+        let exportRows = sortedRows.filter((row) => row.selected);
+        if (exportRows.length === 0) exportRows = sortedRows;
+        const requestIdsSet = new Set();
+        exportRows.forEach((row) => {
+          const match = row.request_name?.match(/^(\d+)_/);
+          if (match) {
+            requestIdsSet.add(match[1]);
+          }
+        });
+        const requestIds = Array.from(requestIdsSet)
+          .map((id) => parseInt(id, 10))
+          .sort((a, b) => a - b)
+          .slice(0, 40)
+          .join("_");
+        const filename = `${formattedDate}_${requestIds}_preparation.xlsx`;
         const wb = new ExcelJS.Workbook();
 
         const parkourSheet = wb.addWorksheet("Parkour");
@@ -1877,18 +1929,12 @@ body,
 </style>
 
 <!--
-export format: yyyymmdd_Request ID(s)_preparation
-export sort: Preparation Name Project ID (ascending) Barcodes (ascending)
-export formulas don't refresh the values after concat
-sort rows in last view, export
-marking (and unmarking) samples as 'submitted' shouldn't require confirmation
+add validations according to old component: deleting, right click operations, copy paste on ctrl operaitons
+
 % Total: Incoming: editable for samples and libraries %, one decimal Preparation: do not shown same field is filled ofr samples Pooling show for libraries (from Incoming) show for samples from preparation
-change columns in export according to the image in vikunja
-preserve styling of the imported file while exporting
-numbering of downloaded templates like incrementing barcode, together with request IDs
-add validations according to old component
+export formulas don't refresh the values after concat
 
 modify the admin panel
 scroll to focused cell after copy
-measuring unit (sample) allow user to add options through site admin panel 
+measuring unit (sample) allow user to add options through site admin panel
 -->
