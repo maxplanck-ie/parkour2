@@ -733,6 +733,7 @@ export default {
   },
   mounted() {
     this.getLibrariesSamples();
+    this.getROCrateData();
     this.setColumns();
     this.fetchExportTemplates();
 
@@ -835,6 +836,30 @@ export default {
         handleError(error);
       } finally {
         this.loading = false;
+      }
+    },
+    async getROCrateData() {
+      try {
+        const response = await axiosRef.get(
+          urlStringStart + "/api/generate_ro_crate/?sample_id=3314"
+        );
+
+        console.log(response.data);
+
+        // const dataStr = JSON.stringify(response.data, null, 2);
+        // const blob = new Blob([dataStr], { type: "application/ld+json" });
+        // const url = URL.createObjectURL(blob);
+
+        // const link = document.createElement("a");
+        // link.href = url;
+        // link.download = "ro_crate.jsonld";
+        // document.body.appendChild(link);
+        // link.click();
+
+        // document.body.removeChild(link);
+        // URL.revokeObjectURL(url);
+      } catch (error) {
+        handleError(error);
       }
     },
     setColumns() {

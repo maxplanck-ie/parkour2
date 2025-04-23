@@ -17,7 +17,7 @@ from invoicing.views import (
     LibraryPreparationCostsViewSet,
     SequencingCostsViewSet,
 )
-from library.views import LibrarySampleTree, LibraryViewSet
+from library.views import LibrarySampleTree, LibraryViewSet, GenerateROCrate
 from library_preparation.views import LibraryPreparationViewSet
 from library_sample_shared.views import (
     ConcentrationMethodViewSet,
@@ -73,9 +73,11 @@ router.register(
     r"nucleic_acid_types", NucleicAcidTypeViewSet, basename="nucleic-acid-type"
 )
 router.register(r"pool_sizes", PoolSizeViewSet, basename="pool-size")
-
 router.register(
     r"libraries_and_samples", LibrarySampleTree, basename="libraries-and-samples"
+)
+router.register(
+    r"generate_ro_crate", GenerateROCrate, basename="generate-ro-crate"
 )
 router.register(r"libraries", LibraryViewSet, basename="libraries")
 router.register(r"samples", SampleViewSet, basename="samples")
