@@ -1,13 +1,18 @@
 import logging
 import operator
+import json
 from functools import reduce
 
 from common.utils import retrieve_group_items
 from django.apps import apps
-from django.db.models import Prefetch, Q
+from django.db.models import Prefetch, Q, Model, ManyToOneRel, ManyToManyRel
+from django.forms.models import model_to_dict
 from library_sample_shared.views import LibrarySampleBaseViewSet
+from django.http import JsonResponse
+from datetime import datetime
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from .serializers import (
     LibrarySerializer,
@@ -24,7 +29,7 @@ logger = logging.getLogger("db")
 
 class LibrarySampleTree(viewsets.ViewSet):
     def filter_and_search(
-        self, queryset, search_string, status_filter, library_protocol_filter
+        self, queryset, search_string=None, status_filter=None, library_protocol_filter=None
     ):
         """Helper function for both get_queryset and list action"""
         if search_string:
@@ -156,7 +161,143 @@ class LibrarySampleTree(viewsets.ViewSet):
             ]  # omit rows (requests) that would be empty upon expanding (clicking plus sign)
 
             return Response({"success": True, "children": filtered_data})
+    
+class GenerateROCrate(viewsets.ViewSet):
+    def is_json_serializable(self, value):
+        try:
+            json.dumps(value)
+            return True
+        except (TypeError, OverflowError):
+            return False
 
+    def serialize_model_instance(self, obj):
+        if not isinstance(obj, Model):
+            return str(obj)
+
+        result = {}
+        for field in obj._meta.get_fields():
+            if isinstance(field, (ManyToOneRel, ManyToManyRel)):
+                continue
+            field_name = field.name
+            try:
+                value = getattr(obj, field_name)
+                if isinstance(value, Model):
+                    result[field_name] = self.serialize_model_instance(value)
+                else:
+                    result[field_name] = value if self.is_json_serializable(value) else str(value)
+            except Exception:
+                result[field_name] = None
+        return result
+
+    def get_library_or_sample_data(self, sample_id=None, library_id=None):
+        if sample_id:
+            try:
+                sample = Sample.objects.select_related(
+                    "nucleic_acid_type",
+                    "library_protocol",
+                    "library_type",
+                    "read_length",
+                    "organism",
+                    "index_type",
+                    "librarypreparation",
+                    "pooling"
+                ).get(pk=sample_id)
+
+                sample_data = self.serialize_model_instance(sample)
+                return sample_data
+            except Sample.DoesNotExist:
+                return None
+
+        elif library_id:
+            try:
+                library = Library.objects.select_related(
+                    "library_protocol",
+                    "library_type",
+                    "read_length",
+                    "index_type",
+                    "organism",
+                ).get(pk=library_id)
+
+                return [{
+                    "id": library.id,
+                    "name": library.name,
+                    "barcode": library.barcode,
+                    "library_protocol_name": library.library_protocol.name if library.library_protocol else "",
+                    "create_time": library.create_time.isoformat() if library.create_time else "",
+                    "organism_name": library.organism.name if library.organism else "",
+                    "nucleic_acid_type_name": "",  # Libraries typically don't have this
+                    "library_type_name": library.library_type.name if library.library_type else "",
+                    "read_length_name": library.read_length.name if library.read_length else "",
+                    "sequencing_depth": library.sequencing_depth,
+                    "rna_quality": "",  # Optional field
+                    "is_converted": "",  # Optional field
+                    "record_type": "Library",
+                    "request_name": library.request.name if library.request else "",
+                    "request_id": library.request.id if library.request else ""
+                }]
+            except Library.DoesNotExist:
+                return None
+        return None
+
+    def list(self, request):
+        sample_id = request.query_params.get("sample_id")
+        library_id = request.query_params.get("library_id")
+
+        data = self.get_library_or_sample_data(sample_id=sample_id, library_id=library_id)
+
+        if not data:
+            return Response({"success": False, "message": "No sample or library found for given ID."}, status=404)
+
+        ro_crate = {
+            "@context": "https://w3id.org/ro/crate/1.1/context",
+            "@graph": []
+        }
+
+        root_metadata = {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        }
+
+        dataset = {
+            "@id": "./",
+            "@type": "Dataset",
+            "name": "ISA Sample or Library Record",
+            "datePublished": datetime.now().isoformat(),
+            "hasPart": []
+        }
+
+        # for item in data:
+        #     item_id = f"#{item['record_type'].lower()}-{item['id']}"
+        #     item_entity = {
+        #         "@id": item_id,
+        #         "@type": item["record_type"],
+        #         "name": item["name"],
+        #         "identifier": item["barcode"],
+        #         "description": item["library_protocol_name"],
+        #         "dateCreated": item["create_time"],
+        #         "organism": item["organism_name"],
+        #         "nucleicAcidType": item["nucleic_acid_type_name"],
+        #         "libraryType": item["library_type_name"],
+        #         "readLength": item["read_length_name"],
+        #         "sequencingDepth": item["sequencing_depth"],
+        #         "rnaQuality": item["rna_quality"],
+        #         "isConverted": item["is_converted"],
+        #         "recordType": item["record_type"],
+        #     }
+        #     dataset["hasPart"].append({"@id": item_id})
+        #     ro_crate["@graph"].append(item_entity)
+
+        ro_crate["@graph"].insert(0, root_metadata)
+        ro_crate["@graph"].insert(1, dataset)
+        ro_crate["@graph"].insert(2, data)
+
+        return JsonResponse(ro_crate, safe=False)
 
 class LibraryViewSet(LibrarySampleBaseViewSet):
     serializer_class = LibrarySerializer
