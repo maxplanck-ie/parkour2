@@ -8,7 +8,6 @@ from django.urls import reverse
 from library.models import Library
 from library_sample_shared.models import (
     BarcodeCounter,
-    ConcentrationMethod,
     IndexType,
     LibraryProtocol,
     LibraryType,
@@ -52,7 +51,7 @@ def create_library(name, status=0, save=True, read_length=None, index_type=None)
         name=name,
         status=status,
         organism_id=organism.pk,
-        concentration=1.0,
+        measured_value=1.0,
         read_length_id=read_length.pk,
         sequencing_depth=1,
         library_protocol_id=library_protocol.pk,
@@ -208,7 +207,7 @@ class TestLibraries(BaseTestCase):
                         {
                             "name": name,
                             "organism": library.organism.pk,
-                            "concentration": 1.0,
+                            "measured_value": 1.0,
                             "read_length": library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library.library_protocol.pk,
@@ -238,7 +237,7 @@ class TestLibraries(BaseTestCase):
                         {
                             "name": name,
                             "organism": self.library.organism.pk,
-                            "concentration": 1.0,
+                            "measured_value": 1.0,
                             "read_length": self.library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.library.library_protocol.pk,
@@ -249,7 +248,7 @@ class TestLibraries(BaseTestCase):
                         },
                         {
                             "name": self._get_random_name(),
-                            "concentration": 1.0,
+                            "measured_value": -3,
                             "sequencing_depth": 1,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -306,7 +305,7 @@ class TestLibraries(BaseTestCase):
                             "pk": library.pk,
                             "name": new_name,
                             "organism": library.organism.pk,
-                            "concentration": 1.0,
+                            "measured_value": 1.0,
                             "read_length": library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library.library_protocol.pk,
@@ -339,7 +338,7 @@ class TestLibraries(BaseTestCase):
                             "pk": library1.pk,
                             "name": new_name1,
                             "organism": library1.organism.pk,
-                            "concentration": 1.0,
+                            "measured_value": 1.0,
                             "read_length": library1.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library1.library_protocol.pk,
@@ -351,7 +350,7 @@ class TestLibraries(BaseTestCase):
                         {
                             "pk": library2.pk,
                             "name": new_name2,
-                            "concentration": 2.0,
+                            "measured_value": -3,
                             "sequencing_depth": 2,
                             "index_reads": 0,
                             "mean_fragment_size": 2,
