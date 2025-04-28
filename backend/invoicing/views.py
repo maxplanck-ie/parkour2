@@ -143,7 +143,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         end_date = flowcells.last().create_time
         end_date = end_date + relativedelta(months=1)
 
-        dates = pd.date_range(start_date, end_date, inclusive="left", freq="M")
+        dates = pd.date_range(start_date, end_date, inclusive="left", freq="ME")
         for dt in dates:
             try:
                 report = InvoicingReport.objects.get(month=dt.strftime("%Y-%m"))
