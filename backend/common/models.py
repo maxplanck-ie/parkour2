@@ -1,8 +1,7 @@
-from datetime import datetime
-
 from authtools.models import AbstractEmailUser
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 
@@ -163,7 +162,7 @@ class Duty(models.Model):
     )
     start_date = models.DateTimeField(
         "Start Date",
-        default=datetime.now,
+        default=timezone.now,
     )
     end_date = models.DateTimeField(
         "End Date",
