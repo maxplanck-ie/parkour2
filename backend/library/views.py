@@ -6,10 +6,10 @@ from functools import reduce
 from common.utils import retrieve_group_items
 from django.apps import apps
 from django.db.models import Prefetch, Q, Model, ManyToOneRel, ManyToManyRel
+from django.utils import timezone
 from django.forms.models import model_to_dict
 from library_sample_shared.views import LibrarySampleBaseViewSet
 from django.http import JsonResponse
-from datetime import datetime
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -323,8 +323,8 @@ class GenerateROCrate(viewsets.ViewSet):
             "@id": "./",
             "@type": "Dataset",
             "name": "ISA Sample or Library Record",
-            "datePublished": datetime.now().isoformat(),
             "hasPart": []
+            "datePublished": timezone.now().isoformat(),
         }
 
         # for item in data:
