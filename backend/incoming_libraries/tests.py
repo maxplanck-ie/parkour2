@@ -62,8 +62,8 @@ class TestIncomingLibraries(BaseTestCase):
                         {
                             "pk": library.pk,
                             "record_type": "Library",
-                            "dilution_factor": 2,
-                            "concentration_facility": 2.0,
+                            "percent_total": 66,
+                            "measured_value_facility": 2.0,
                         }
                     ]
                 )
@@ -72,8 +72,8 @@ class TestIncomingLibraries(BaseTestCase):
         updated_library = Library.objects.get(pk=library.pk)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["success"])
-        self.assertEqual(updated_library.dilution_factor, 2)
-        self.assertEqual(updated_library.concentration_facility, 2.0)
+        self.assertEqual(updated_library.percent_total, 66)
+        self.assertEqual(updated_library.measured_value_facility, 2.0)
 
     def test_contains_invalid_records(self):
         """
@@ -91,12 +91,12 @@ class TestIncomingLibraries(BaseTestCase):
                         {
                             "pk": library1.pk,
                             "record_type": "Library",
-                            "concentration_facility": 2.0,
+                            "measured_value_facility": 2.0,
                         },
                         {
                             "pk": library2.pk,
                             "record_type": "Library",
-                            "dilution_factor": "string value",
+                            "percent_total": "string value",
                         },
                     ]
                 )
@@ -107,7 +107,7 @@ class TestIncomingLibraries(BaseTestCase):
         self.assertTrue(data["success"])
         self.assertEqual(data["message"], "Some records cannot be updated.")
         self.assertEqual(
-            Library.objects.get(pk=library1.pk).concentration_facility, 2.0
+            Library.objects.get(pk=library1.pk).measured_value_facility, 2.0
         )
 
     def test_contains_invalid_id(self):
@@ -125,12 +125,12 @@ class TestIncomingLibraries(BaseTestCase):
                         {
                             "pk": library.pk,
                             "record_type": "Library",
-                            "concentration_facility": 2.0,
+                            "measured_value_facility": 2.0,
                         },
                         {
                             "pk": "blah",
                             "record_type": "Sample",
-                            "concentration_facility": 2.0,
+                            "measured_value_facility": 2.0,
                         },
                     ]
                 )
@@ -139,7 +139,9 @@ class TestIncomingLibraries(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data["success"])
-        self.assertEqual(Library.objects.get(pk=library.pk).concentration_facility, 2.0)
+        self.assertEqual(
+            Library.objects.get(pk=library.pk).measured_value_facility, 2.0
+        )
 
     def test_quality_check_passed(self):
         """Ensure quality check has passed behaves correctly."""
