@@ -841,7 +841,7 @@ export default {
     async getROCrateData() {
       try {
         const response = await axiosRef.get(
-          urlStringStart + "/api/generate_ro_crate/?sample_id=26718"
+          urlStringStart + "/api/generate_ro_crate/?sample_ids=3315,3316"
         );
 
         console.log(response.data);
@@ -1960,6 +1960,5 @@ add validations according to old component: deleting, right click operations, co
 export formulas don't refresh the values after concat
 
 modify the admin panel
-scroll to focused cell after copy
 measuring unit (sample) allow user to add options through site admin panel
 -->

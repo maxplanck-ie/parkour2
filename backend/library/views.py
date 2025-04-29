@@ -189,71 +189,126 @@ class GenerateROCrate(viewsets.ViewSet):
                 result[field_name] = None
         return result
 
-    def get_library_or_sample_data(self, sample_id=None, library_id=None):
-        if sample_id:
-            try:
-                sample = Sample.objects.select_related(
-                    "nucleic_acid_type",
-                    "library_protocol",
-                    "library_type",
-                    "read_length",
-                    "organism",
-                    "index_type",
-                    "librarypreparation",
-                    "pooling"
-                ).get(pk=sample_id)
-
-                sample_data = self.serialize_model_instance(sample)
-                return sample_data
-            except Sample.DoesNotExist:
-                return None
-
-        elif library_id:
-            try:
-                library = Library.objects.select_related(
-                    "library_protocol",
-                    "library_type",
-                    "read_length",
-                    "index_type",
-                    "organism",
-                ).get(pk=library_id)
-
-                return [{
-                    "id": library.id,
-                    "name": library.name,
-                    "barcode": library.barcode,
-                    "library_protocol_name": library.library_protocol.name if library.library_protocol else "",
-                    "create_time": library.create_time.isoformat() if library.create_time else "",
-                    "organism_name": library.organism.name if library.organism else "",
-                    "nucleic_acid_type_name": "",  # Libraries typically don't have this
-                    "library_type_name": library.library_type.name if library.library_type else "",
-                    "read_length_name": library.read_length.name if library.read_length else "",
-                    "sequencing_depth": library.sequencing_depth,
-                    "rna_quality": "",  # Optional field
-                    "is_converted": "",  # Optional field
-                    "record_type": "Library",
-                    "request_name": library.request.name if library.request else "",
-                    "request_id": library.request.id if library.request else ""
-                }]
-            except Library.DoesNotExist:
-                return None
-        return None
-
     def list(self, request):
-        sample_id = request.query_params.get("sample_id")
-        library_id = request.query_params.get("library_id")
+        library_ids = request.query_params.get("library_ids")
+        sample_ids = request.query_params.get("sample_ids")
+        request_ids = request.query_params.get("request_ids")
+        barcodes = request.query_params.get("barcodes")
 
-        data = self.get_library_or_sample_data(sample_id=sample_id, library_id=library_id)
+        ls_data = []
+        request_data = []
 
-        if not data:
-            return Response({"success": False, "message": "No sample or library found for given ID."}, status=404)
+        if sample_ids:
+            samples = Sample.objects.select_related(
+                "nucleic_acid_type",
+                "library_protocol",
+                "library_type",
+                "read_length",
+                "organism",
+                "index_type",
+                "librarypreparation",
+                "pooling"
+            ).filter(id__in=sample_ids)
+
+            for sample in samples:
+                ls_data.append(self.serialize_model_instance(sample))
+
+        if library_ids:
+            libraries = Library.objects.select_related(
+                "library_protocol",
+                "library_type",
+                "read_length",
+                "index_type",
+                "organism",
+                "test"
+            ).filter(id__in=library_ids)
+
+            for lib in libraries:
+                ls_data.append(self.serialize_model_instance(lib))
+
+        if request_ids:
+            sample_req_matches = Sample.objects.select_related(
+                "nucleic_acid_type",
+                "library_protocol",
+                "library_type",
+                "read_length",
+                "organism",
+                "index_type",
+                "librarypreparation",
+                "pooling"
+            ).filter(request_id__in=barcodes)
+
+            for sample in sample_req_matches:
+                ls_data.append(self.serialize_model_instance(sample))
+
+            library_req_matches = Library.objects.select_related(
+                "library_protocol",
+                "library_type",
+                "read_length",
+                "index_type",
+                "organism",
+                "test"
+            ).filter(request_id__in=barcodes)
+
+            for lib in library_req_matches:
+                ls_data.append(self.serialize_model_instance(lib))
+
+        if barcodes:
+            sample_bar_matches = Sample.objects.select_related(
+                "nucleic_acid_type",
+                "library_protocol",
+                "library_type",
+                "read_length",
+                "organism",
+                "index_type",
+                "librarypreparation",
+                "pooling"
+            ).filter(barcode__in=barcodes)
+
+            for sample in sample_bar_matches:
+                ls_data.append(self.serialize_model_instance(sample))
+
+            library_bar_matches = Library.objects.select_related(
+                "library_protocol",
+                "library_type",
+                "read_length",
+                "index_type",
+                "organism",
+                "test"
+            ).filter(barcode__in=barcodes)
+
+            for lib in library_bar_matches:
+                ls_data.append(self.serialize_model_instance(lib))
+
+        # request_qs = Request.objects.prefetch_related(
+        #         Prefetch("samples", queryset=Sample.objects.filter(barcode__in=barcodes))
+        #     )
+
+        # for obj in request_qs:
+        #     request_data.append(RequestChildrenNodesSerializer(obj).data)
+
+        # request_qs = Request.objects.prefetch_related(
+        #     # Prefetch("libraries", queryset=Library.objects.select_related(
+        #     #         "library_protocol",
+        #     #         "library_type",
+        #     #         "read_length",
+        #     #         "index_type",
+        #     #         "organism",
+        #     #     ).get(pk=library_id)),
+        #         Prefetch("samples", queryset=Sample.objects.filter(barcode=barcode)))
+        
+        # obj = request_qs.first()  # or get(), depending
+        # request_data = RequestChildrenNodesSerializer(obj).data
+
+        if not ls_data:
+            return Response({"success": False, "message": "No matching library or sample found."}, status=404)
 
         ro_crate = {
             "@context": "https://w3id.org/ro/crate/1.1/context",
             "@graph": []
         }
 
-        root_metadata = {
+        ro_metadata = {
             "@id": "ro-crate-metadata.json",
             "@type": "CreativeWork",
             "conformsTo": {
@@ -264,7 +319,7 @@ class GenerateROCrate(viewsets.ViewSet):
             }
         }
 
-        dataset = {
+        ro_dataset = {
             "@id": "./",
             "@type": "Dataset",
             "name": "ISA Sample or Library Record",
@@ -293,9 +348,10 @@ class GenerateROCrate(viewsets.ViewSet):
         #     dataset["hasPart"].append({"@id": item_id})
         #     ro_crate["@graph"].append(item_entity)
 
-        ro_crate["@graph"].insert(0, root_metadata)
-        ro_crate["@graph"].insert(1, dataset)
-        ro_crate["@graph"].insert(2, data)
+        ro_crate["@graph"].insert(0, ro_metadata)
+        ro_crate["@graph"].insert(1, ro_dataset)
+        ro_crate["@graph"].insert(2, ls_data)
+        ro_crate["@graph"].insert(3, request_data)
 
         return JsonResponse(ro_crate, safe=False)
 
