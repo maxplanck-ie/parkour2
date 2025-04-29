@@ -220,7 +220,16 @@ class BarcodeCounter(models.Model):
 
 
 class LibraryProtocol(models.Model):
-    name = models.CharField("Name", max_length=150)
+    name = models.CharField(
+        "Name",
+        max_length=150,
+        validators=[
+            RegexValidator(
+                r"^[a-zA-Z0-9_\- \(\):\.\']$",
+                "Only alphanumeric characters, spaces, dashes, underscores, parentheses, colons, dots, and single quotes are allowed.",
+            )
+        ],
+    )
     type = models.CharField(
         "Type",
         max_length=5,
