@@ -12,6 +12,60 @@
 - Potential fix to BarcodeCounter bug (generate fn. was using its default argument, which would take the year from when module is loaded, not when the fn. is called) that caused to be reset every year when a new deployment was made.
 - ...
 
+We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libaries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value`.
+
+Various fields added for measuring units, biosafety levels, and GMO tracking. In detail:
+
+> #### library_sample_shared.models.GenericLibrarySample
+>
+> New Fields:
+> - measured_value: FloatField for measured value.
+> - volume: FloatField for sample volume.
+> - percent_total: FloatField for smear analysis (% total).
+> - measured_value_facility: FloatField for measured value at the facility level.
+>
+> Removed Fields:
+> - concentration: Renamed to measured_value.
+> - concentration_method: Renamed to removed_concentration_method (marked as not in use).
+> - equal_representation_nucleotides: Renamed to removed_equal_representation_nucleotides (marked as not in use).
+> - amplification_cycles: Renamed to removed_amplification_cycles (marked as not in use).
+> - dilution_factor: Renamed to removed_dilution_factor (marked as not in use).
+> - concentration_method_facility: Renamed to removed_concentration_method_facility (marked as not in use).
+> 
+> #### sample.models.Sample
+>
+> New Fields:
+> - measuring_unit: CharField for measuring unit with choices.
+> - biosafety_level: CharField for biosafety level with choices.
+> - gmo: BooleanField for genetically modified organism.
+> - measuring_unit_facility: CharField for measuring unit at the facility level.
+> - gmo_facility: BooleanField for genetically modified organism at the facility level.
+>
+> Modified Fields:
+> - nucleic_acid_type: Verbose name changed to "Input Type".
+> - rna_quality: No structural change.
+>
+> No Removed Fields.
+> 
+> #### library.models.Library
+>
+> New Fields:
+> - measuring_unit: CharField for measuring unit with choices.
+> - measuring_unit_facility: CharField for measuring unit at the facility level.
+>
+> Removed Fields:
+> - qpcr_result: Renamed to removed_qpcr_result (marked as not in use).
+> - qpcr_result_facility: Renamed to removed_qpcr_result_facility (marked as not in use).
+> 
+> #### library_preparation.models.LibraryPreparation
+>
+> Removed Fields:
+> - spike_in_description: Renamed to removed_spike_in_description (marked as not in use).
+> - spike_in_volume: Renamed to removed_spike_in_volume (marked as not in use).
+> - nM: Renamed to removed_nM (marked as not in use).
+> - qpcr_result: Renamed to removed_qpcr_result (marked as not in use).
+
+And, we introduced as a new model (`LibraryPreparationTemplate`) for managing XLSX spreadsheet files that work as templates during Export (functionality will be described in documentation because it deserves a page of its own.)
 
 24.12.09
 ========
