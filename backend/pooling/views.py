@@ -59,7 +59,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 "index_i5",
                 "sequencing_depth",
                 "mean_fragment_size",
-                "concentration_facility",
+                "measured_value_facility",
             )
         )
 
@@ -360,7 +360,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             req = record.request.get()
 
             if isinstance(record, Library):
-                concentration = record.concentration_facility
+                concentration = record.measured_value_facility
                 smear_analysis = 100
                 lib_index += 1
             else:
@@ -475,7 +475,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             req = record.request.get()
 
             if isinstance(record, Library):
-                concentration = record.concentration_facility
+                concentration = record.measured_value_facility
                 mean_fragment_size = bp[lib_index]
                 lib_index += 1
             else:
@@ -700,7 +700,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row_idx = str(row_num + 1)
 
             if isinstance(record, Library):
-                concentration = record.concentration_facility
+                concentration = record.measured_value_facility
                 mean_fragment_size = record.mean_fragment_size
             else:
                 concentration = record.librarypreparation.concentration_library

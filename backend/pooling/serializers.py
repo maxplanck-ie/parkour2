@@ -138,7 +138,7 @@ class PoolingLibrarySerializer(PoolingBaseSerializer):
         model = Library
 
     def get_concentration_library(self, obj):
-        return obj.concentration_facility
+        return obj.measured_value_facility
 
     def get_mean_fragment_size(self, obj):
         return obj.size_distribution_facility
