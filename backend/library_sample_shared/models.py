@@ -225,7 +225,7 @@ class LibraryProtocol(models.Model):
         max_length=150,
         validators=[
             RegexValidator(
-                r"^[a-zA-Z0-9_\- \(\):\.\']$",
+                r"^[a-zA-Z0-9_\- \(\):\.\']+$",
                 "Only alphanumeric characters, spaces, dashes, underscores, parentheses, colons, dots, and single quotes are allowed.",
             )
         ],
