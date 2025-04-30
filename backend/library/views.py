@@ -196,71 +196,52 @@ class GenerateROCrate(viewsets.ViewSet):
                 result[field_name] = None
         return result
 
+    def snake_to_camel_case(self, snake_str):
+        components = snake_str.split("_")
+        return components[0] + "".join(x.title() for x in components[1:])
+
+    def clean_data(self, data):
+        keys_to_remove = {"id", "pk", "archived"}
+        cleaned_data = {}
+
+        for key, value in data.items():
+            if key in keys_to_remove or key.startswith("removed_") or value is None:
+                continue
+
+            if isinstance(value, dict):
+                if value.get("archived") is True:
+                    continue
+                value = self.clean_data(value)
+
+            cleaned_key = self.snake_to_camel_case(key)
+            cleaned_data[cleaned_key] = value
+
+        return cleaned_data
+
+    def process_data(self, data):
+        return [self.clean_data(item) for item in data]
+
     def list(self, request):
-        library_ids = request.query_params.get("library_ids")
-        sample_ids = request.query_params.get("sample_ids")
-        request_ids = request.query_params.get("request_ids")
         barcodes = request.query_params.get("barcodes")
+        barcodes_list = barcodes.split(",")
 
         ls_data = []
         request_data = []
+        merged_data = []
 
-        if sample_ids:
-            samples = Sample.objects.select_related(
-                "nucleic_acid_type",
+        if barcodes_list:
+            library_bar_matches = Library.objects.select_related(
                 "library_protocol",
                 "library_type",
                 "read_length",
-                "organism",
                 "index_type",
-                "librarypreparation",
+                "organism",
                 "pooling",
-            ).filter(id__in=sample_ids)
+            ).filter(barcode__in=barcodes_list)
 
-            for sample in samples:
-                ls_data.append(self.serialize_model_instance(sample))
-
-        if library_ids:
-            libraries = Library.objects.select_related(
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "index_type",
-                "organism",
-                "test",
-            ).filter(id__in=library_ids)
-
-            for lib in libraries:
+            for lib in library_bar_matches:
                 ls_data.append(self.serialize_model_instance(lib))
 
-        if request_ids:
-            sample_req_matches = Sample.objects.select_related(
-                "nucleic_acid_type",
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "organism",
-                "index_type",
-                "librarypreparation",
-                "pooling",
-            ).filter(request_id__in=barcodes)
-
-            for sample in sample_req_matches:
-                ls_data.append(self.serialize_model_instance(sample))
-
-            library_req_matches = Library.objects.select_related(
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "index_type",
-                "organism",
-                "test",
-            ).filter(request_id__in=barcodes)
-
-            for lib in library_req_matches:
-                ls_data.append(self.serialize_model_instance(lib))
-
-        if barcodes:
             sample_bar_matches = Sample.objects.select_related(
                 "nucleic_acid_type",
                 "library_protocol",
@@ -270,48 +251,51 @@ class GenerateROCrate(viewsets.ViewSet):
                 "index_type",
                 "librarypreparation",
                 "pooling",
-            ).filter(barcode__in=barcodes)
+            ).filter(barcode__in=barcodes_list)
 
             for sample in sample_bar_matches:
                 ls_data.append(self.serialize_model_instance(sample))
 
-            library_bar_matches = Library.objects.select_related(
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "index_type",
-                "organism",
-                "test",
-            ).filter(barcode__in=barcodes)
+            request_qs = (
+                Request.objects.filter(
+                    Q(libraries__barcode__in=barcodes_list)
+                    | Q(samples__barcode__in=barcodes_list)
+                )
+                .prefetch_related(
+                    Prefetch("libraries", queryset=library_bar_matches),
+                    Prefetch("samples", queryset=sample_bar_matches),
+                )
+                .distinct()
+            )
 
-            for lib in library_bar_matches:
-                ls_data.append(self.serialize_model_instance(lib))
-
-        # request_qs = Request.objects.prefetch_related(
-        #         Prefetch("samples", queryset=Sample.objects.filter(barcode__in=barcodes))
-        #     )
-
-        # for obj in request_qs:
-        #     request_data.append(RequestChildrenNodesSerializer(obj).data)
-
-        # request_qs = Request.objects.prefetch_related(
-        #     # Prefetch("libraries", queryset=Library.objects.select_related(
-        #     #         "library_protocol",
-        #     #         "library_type",
-        #     #         "read_length",
-        #     #         "index_type",
-        #     #         "organism",
-        #     #     ).get(pk=library_id)),
-        #         Prefetch("samples", queryset=Sample.objects.filter(barcode=barcode)))
-
-        # obj = request_qs.first()  # or get(), depending
-        # request_data = RequestChildrenNodesSerializer(obj).data
+            for obj in request_qs:
+                request_data.append(RequestChildrenNodesSerializer(obj).data)
 
         if not ls_data:
             return Response(
                 {"success": False, "message": "No matching library or sample found."},
                 status=404,
             )
+
+        ls_data = self.process_data(ls_data)
+        request_data = self.process_data(
+            request_data
+        )  # Still doesn't process the children
+
+        # barcode_to_child = {}
+        # for request in request_data:
+        #     for child in request.get("children", []):
+        #         barcode = child.get("barcode")
+        #         if barcode:
+        #             barcode_to_child[barcode] = child
+
+        # for item in ls_data:
+        #     barcode = item.get("barcode")
+        #     if barcode and barcode in barcode_to_child:
+        #         merged = {**item, **barcode_to_child[barcode]}
+        #     else:
+        #         merged = item
+        #     merged_data.append(merged)
 
         ro_crate = {"@context": "https://w3id.org/ro/crate/1.1/context", "@graph": []}
 
@@ -326,30 +310,9 @@ class GenerateROCrate(viewsets.ViewSet):
             "@id": "./",
             "@type": "Dataset",
             "name": "ISA Sample or Library Record",
-            "datePublished": timezone.now().isoformat(),
+            "datePublished": datetime.now().isoformat(),
             "hasPart": [],
         }
-
-        # for item in data:
-        #     item_id = f"#{item['record_type'].lower()}-{item['id']}"
-        #     item_entity = {
-        #         "@id": item_id,
-        #         "@type": item["record_type"],
-        #         "name": item["name"],
-        #         "identifier": item["barcode"],
-        #         "description": item["library_protocol_name"],
-        #         "dateCreated": item["create_time"],
-        #         "organism": item["organism_name"],
-        #         "nucleicAcidType": item["nucleic_acid_type_name"],
-        #         "libraryType": item["library_type_name"],
-        #         "readLength": item["read_length_name"],
-        #         "sequencingDepth": item["sequencing_depth"],
-        #         "rnaQuality": item["rna_quality"],
-        #         "isConverted": item["is_converted"],
-        #         "recordType": item["record_type"],
-        #     }
-        #     dataset["hasPart"].append({"@id": item_id})
-        #     ro_crate["@graph"].append(item_entity)
 
         ro_crate["@graph"].insert(0, ro_metadata)
         ro_crate["@graph"].insert(1, ro_dataset)
