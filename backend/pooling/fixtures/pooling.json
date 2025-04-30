@@ -1,2264 +1,2264 @@
 [
-  {
-    "model": "pooling.pooling",
-    "pk": 1,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.529Z",
-      "update_time": "2018-08-21T15:31:56.451Z",
-      "library": 40,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
+    {
+        "model": "pooling.pooling",
+        "pk": 1,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.529Z",
+            "update_time": "2018-08-21T15:31:56.451Z",
+            "library": 40,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 2,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.537Z",
+            "update_time": "2018-08-21T15:31:56.506Z",
+            "library": 45,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 3,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.544Z",
+            "update_time": "2018-08-21T15:31:56.516Z",
+            "library": 46,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 4,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.551Z",
+            "update_time": "2018-08-21T15:31:56.537Z",
+            "library": 48,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 5,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.558Z",
+            "update_time": "2018-08-21T15:31:56.495Z",
+            "library": 44,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 6,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.565Z",
+            "update_time": "2018-08-21T15:31:56.527Z",
+            "library": 47,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 7,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.573Z",
+            "update_time": "2018-08-21T15:31:56.464Z",
+            "library": 41,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 8,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.580Z",
+            "update_time": "2018-08-21T15:31:56.474Z",
+            "library": 42,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 9,
+        "fields": {
+            "create_time": "2018-08-21T15:19:32.588Z",
+            "update_time": "2018-08-21T15:31:56.485Z",
+            "library": 43,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 10,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.587Z",
+            "update_time": "2018-08-21T15:31:51.379Z",
+            "library": 6,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 11,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.594Z",
+            "update_time": "2018-08-21T15:31:51.400Z",
+            "library": 8,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 12,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.601Z",
+            "update_time": "2018-08-21T15:31:51.442Z",
+            "library": 12,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 13,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.609Z",
+            "update_time": "2018-08-21T15:31:51.410Z",
+            "library": 9,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 14,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.616Z",
+            "update_time": "2018-08-21T15:31:51.323Z",
+            "library": 1,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 15,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.623Z",
+            "update_time": "2018-08-21T15:31:51.336Z",
+            "library": 2,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 16,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.632Z",
+            "update_time": "2018-08-21T15:31:51.347Z",
+            "library": 3,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 17,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.642Z",
+            "update_time": "2018-08-21T15:31:51.390Z",
+            "library": 7,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 18,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.652Z",
+            "update_time": "2018-08-21T15:31:51.421Z",
+            "library": 10,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 19,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.661Z",
+            "update_time": "2018-08-21T15:31:51.432Z",
+            "library": 11,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 20,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.668Z",
+            "update_time": "2018-08-21T15:31:51.358Z",
+            "library": 4,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 21,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.675Z",
+            "update_time": "2018-08-21T15:31:51.368Z",
+            "library": 5,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 22,
+        "fields": {
+            "create_time": "2018-08-21T15:20:15.682Z",
+            "update_time": "2018-08-21T15:31:51.452Z",
+            "library": 13,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 23,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.315Z",
+            "update_time": "2018-08-21T15:31:47.251Z",
+            "library": 25,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 24,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.322Z",
+            "update_time": "2018-08-21T15:31:47.184Z",
+            "library": 19,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 25,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.330Z",
+            "update_time": "2018-08-21T15:31:47.217Z",
+            "library": 22,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 26,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.337Z",
+            "update_time": "2018-08-21T15:31:47.206Z",
+            "library": 21,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 27,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.344Z",
+            "update_time": "2018-08-21T15:31:47.151Z",
+            "library": 16,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 28,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.351Z",
+            "update_time": "2018-08-21T15:31:47.229Z",
+            "library": 23,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 29,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.358Z",
+            "update_time": "2018-08-21T15:31:47.262Z",
+            "library": 26,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 30,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.365Z",
+            "update_time": "2018-08-21T15:31:47.172Z",
+            "library": 18,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 31,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.372Z",
+            "update_time": "2018-08-21T15:31:47.196Z",
+            "library": 20,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 32,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.379Z",
+            "update_time": "2018-08-21T15:31:47.123Z",
+            "library": 14,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 33,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.386Z",
+            "update_time": "2018-08-21T15:31:47.161Z",
+            "library": 17,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 34,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.393Z",
+            "update_time": "2018-08-21T15:31:47.137Z",
+            "library": 15,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 35,
+        "fields": {
+            "create_time": "2018-08-21T15:20:33.400Z",
+            "update_time": "2018-08-21T15:31:47.240Z",
+            "library": 24,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 36,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.310Z",
+            "update_time": "2018-08-21T15:31:42.432Z",
+            "library": 34,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 37,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.317Z",
+            "update_time": "2018-08-21T15:31:42.411Z",
+            "library": 32,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 38,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.324Z",
+            "update_time": "2018-08-21T15:31:42.380Z",
+            "library": 29,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 39,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.331Z",
+            "update_time": "2018-08-21T15:31:42.422Z",
+            "library": 33,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 40,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.337Z",
+            "update_time": "2018-08-21T15:31:42.485Z",
+            "library": 39,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 41,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.344Z",
+            "update_time": "2018-08-21T15:31:42.401Z",
+            "library": 31,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 42,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.350Z",
+            "update_time": "2018-08-21T15:31:42.443Z",
+            "library": 35,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 43,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.357Z",
+            "update_time": "2018-08-21T15:31:42.475Z",
+            "library": 38,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 44,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.364Z",
+            "update_time": "2018-08-21T15:31:42.390Z",
+            "library": 30,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 45,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.371Z",
+            "update_time": "2018-08-21T15:31:42.356Z",
+            "library": 27,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 46,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.377Z",
+            "update_time": "2018-08-21T15:31:42.369Z",
+            "library": 28,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 47,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.384Z",
+            "update_time": "2018-08-21T15:31:42.453Z",
+            "library": 36,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 48,
+        "fields": {
+            "create_time": "2018-08-21T15:20:42.391Z",
+            "update_time": "2018-08-21T15:31:42.464Z",
+            "library": 37,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 49,
+        "fields": {
+            "create_time": "2018-08-21T15:25:57.959Z",
+            "update_time": "2018-08-21T15:31:31.212Z",
+            "library": null,
+            "sample": 64,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 50,
+        "fields": {
+            "create_time": "2018-08-21T15:25:57.991Z",
+            "update_time": "2018-08-21T15:31:31.228Z",
+            "library": null,
+            "sample": 65,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 51,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.021Z",
+            "update_time": "2018-08-21T15:31:31.242Z",
+            "library": null,
+            "sample": 66,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 52,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.050Z",
+            "update_time": "2018-08-21T15:31:31.256Z",
+            "library": null,
+            "sample": 67,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 53,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.079Z",
+            "update_time": "2018-08-21T15:31:31.270Z",
+            "library": null,
+            "sample": 68,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 54,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.110Z",
+            "update_time": "2018-08-21T15:31:31.285Z",
+            "library": null,
+            "sample": 69,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 55,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.139Z",
+            "update_time": "2018-08-21T15:31:31.301Z",
+            "library": null,
+            "sample": 70,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 56,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.168Z",
+            "update_time": "2018-08-21T15:31:31.316Z",
+            "library": null,
+            "sample": 71,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 57,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.197Z",
+            "update_time": "2018-08-21T15:31:31.332Z",
+            "library": null,
+            "sample": 72,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 58,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.227Z",
+            "update_time": "2018-08-21T15:31:31.347Z",
+            "library": null,
+            "sample": 73,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 59,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.257Z",
+            "update_time": "2018-08-21T15:31:31.361Z",
+            "library": null,
+            "sample": 74,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 60,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.286Z",
+            "update_time": "2018-08-21T15:31:31.375Z",
+            "library": null,
+            "sample": 75,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 61,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.317Z",
+            "update_time": "2018-08-21T15:31:31.389Z",
+            "library": null,
+            "sample": 76,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 62,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.346Z",
+            "update_time": "2018-08-21T15:31:31.405Z",
+            "library": null,
+            "sample": 77,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 63,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.375Z",
+            "update_time": "2018-08-21T15:31:31.420Z",
+            "library": null,
+            "sample": 78,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 64,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.404Z",
+            "update_time": "2018-08-21T15:31:31.434Z",
+            "library": null,
+            "sample": 79,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 65,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.433Z",
+            "update_time": "2018-08-21T15:31:31.447Z",
+            "library": null,
+            "sample": 80,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 66,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.462Z",
+            "update_time": "2018-08-21T15:31:31.462Z",
+            "library": null,
+            "sample": 81,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 67,
+        "fields": {
+            "create_time": "2018-08-21T15:25:58.491Z",
+            "update_time": "2018-08-21T15:31:31.475Z",
+            "library": null,
+            "sample": 82,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 68,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.429Z",
+            "update_time": "2018-08-21T15:31:25.536Z",
+            "library": null,
+            "sample": 43,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 69,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.460Z",
+            "update_time": "2018-08-21T15:31:25.553Z",
+            "library": null,
+            "sample": 44,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 70,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.490Z",
+            "update_time": "2018-08-21T15:31:25.567Z",
+            "library": null,
+            "sample": 45,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 71,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.519Z",
+            "update_time": "2018-08-21T15:31:25.581Z",
+            "library": null,
+            "sample": 46,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 72,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.549Z",
+            "update_time": "2018-08-21T15:31:25.596Z",
+            "library": null,
+            "sample": 47,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 73,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.579Z",
+            "update_time": "2018-08-21T15:31:25.611Z",
+            "library": null,
+            "sample": 48,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 74,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.610Z",
+            "update_time": "2018-08-21T15:31:25.625Z",
+            "library": null,
+            "sample": 49,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 75,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.639Z",
+            "update_time": "2018-08-21T15:31:25.639Z",
+            "library": null,
+            "sample": 50,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 76,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.668Z",
+            "update_time": "2018-08-21T15:31:25.653Z",
+            "library": null,
+            "sample": 51,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 77,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.698Z",
+            "update_time": "2018-08-21T15:31:25.666Z",
+            "library": null,
+            "sample": 52,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 78,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.727Z",
+            "update_time": "2018-08-21T15:31:25.680Z",
+            "library": null,
+            "sample": 53,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 79,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.757Z",
+            "update_time": "2018-08-21T15:31:25.694Z",
+            "library": null,
+            "sample": 54,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 80,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.788Z",
+            "update_time": "2018-08-21T15:31:25.707Z",
+            "library": null,
+            "sample": 55,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 81,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.818Z",
+            "update_time": "2018-08-21T15:31:25.722Z",
+            "library": null,
+            "sample": 56,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 82,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.851Z",
+            "update_time": "2018-08-21T15:31:25.735Z",
+            "library": null,
+            "sample": 57,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 83,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.881Z",
+            "update_time": "2018-08-21T15:31:25.749Z",
+            "library": null,
+            "sample": 58,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 84,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.912Z",
+            "update_time": "2018-08-21T15:31:25.762Z",
+            "library": null,
+            "sample": 59,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 85,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.942Z",
+            "update_time": "2018-08-21T15:31:25.776Z",
+            "library": null,
+            "sample": 60,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 86,
+        "fields": {
+            "create_time": "2018-08-21T15:29:06.971Z",
+            "update_time": "2018-08-21T15:31:25.790Z",
+            "library": null,
+            "sample": 61,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 87,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.001Z",
+            "update_time": "2018-08-21T15:31:25.803Z",
+            "library": null,
+            "sample": 62,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 88,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.030Z",
+            "update_time": "2018-08-21T15:31:25.818Z",
+            "library": null,
+            "sample": 63,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 89,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.059Z",
+            "update_time": "2018-08-21T15:31:36.847Z",
+            "library": null,
+            "sample": 83,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 90,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.089Z",
+            "update_time": "2018-08-21T15:31:36.864Z",
+            "library": null,
+            "sample": 84,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 91,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.119Z",
+            "update_time": "2018-08-21T15:31:36.878Z",
+            "library": null,
+            "sample": 85,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 92,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.149Z",
+            "update_time": "2018-08-21T15:31:36.891Z",
+            "library": null,
+            "sample": 86,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 93,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.179Z",
+            "update_time": "2018-08-21T15:31:36.904Z",
+            "library": null,
+            "sample": 87,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 94,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.222Z",
+            "update_time": "2018-08-21T15:31:36.917Z",
+            "library": null,
+            "sample": 88,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 95,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.262Z",
+            "update_time": "2018-08-21T15:31:36.931Z",
+            "library": null,
+            "sample": 89,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 96,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.293Z",
+            "update_time": "2018-08-21T15:31:36.944Z",
+            "library": null,
+            "sample": 90,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 97,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.326Z",
+            "update_time": "2018-08-21T15:31:36.958Z",
+            "library": null,
+            "sample": 91,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 98,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.359Z",
+            "update_time": "2018-08-21T15:31:36.971Z",
+            "library": null,
+            "sample": 92,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 99,
+        "fields": {
+            "create_time": "2018-08-21T15:29:07.392Z",
+            "update_time": "2018-08-21T15:31:36.985Z",
+            "library": null,
+            "sample": 93,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 100,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.432Z",
+            "update_time": "2018-08-21T15:37:42.624Z",
+            "library": 62,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 101,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.439Z",
+            "update_time": "2018-08-21T15:37:42.717Z",
+            "library": 71,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 102,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.446Z",
+            "update_time": "2018-08-21T15:37:42.569Z",
+            "library": 57,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 103,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.453Z",
+            "update_time": "2018-08-21T15:37:42.727Z",
+            "library": 72,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 104,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.460Z",
+            "update_time": "2018-08-21T15:37:42.614Z",
+            "library": 61,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 105,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.468Z",
+            "update_time": "2018-08-21T15:37:42.655Z",
+            "library": 65,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 106,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.475Z",
+            "update_time": "2018-08-21T15:37:42.517Z",
+            "library": 52,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 107,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.482Z",
+            "update_time": "2018-08-21T15:37:42.484Z",
+            "library": 49,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 108,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.488Z",
+            "update_time": "2018-08-21T15:37:42.496Z",
+            "library": 50,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 109,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.496Z",
+            "update_time": "2018-08-21T15:37:42.527Z",
+            "library": 53,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 110,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.502Z",
+            "update_time": "2018-08-21T15:37:42.538Z",
+            "library": 54,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 111,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.510Z",
+            "update_time": "2018-08-21T15:37:42.507Z",
+            "library": 51,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 112,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.517Z",
+            "update_time": "2018-08-21T15:37:42.706Z",
+            "library": 70,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 113,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.525Z",
+            "update_time": "2018-08-21T15:37:42.645Z",
+            "library": 64,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 114,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.532Z",
+            "update_time": "2018-08-21T15:37:42.548Z",
+            "library": 55,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 115,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.540Z",
+            "update_time": "2018-08-21T15:37:42.685Z",
+            "library": 68,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 116,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.549Z",
+            "update_time": "2018-08-21T15:37:42.581Z",
+            "library": 58,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 117,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.557Z",
+            "update_time": "2018-08-21T15:37:42.665Z",
+            "library": 66,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 118,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.564Z",
+            "update_time": "2018-08-21T15:37:42.695Z",
+            "library": 69,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 119,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.572Z",
+            "update_time": "2018-08-21T15:37:42.594Z",
+            "library": 59,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 120,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.580Z",
+            "update_time": "2018-08-21T15:37:42.604Z",
+            "library": 60,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 121,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.587Z",
+            "update_time": "2018-08-21T15:37:42.634Z",
+            "library": 63,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 122,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.595Z",
+            "update_time": "2018-08-21T15:37:42.675Z",
+            "library": 67,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 123,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.601Z",
+            "update_time": "2018-08-21T15:37:42.748Z",
+            "library": 74,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 124,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.608Z",
+            "update_time": "2018-08-21T15:37:42.737Z",
+            "library": 73,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 125,
+        "fields": {
+            "create_time": "2018-08-21T15:37:31.615Z",
+            "update_time": "2018-08-21T15:37:42.558Z",
+            "library": 56,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 126,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.769Z",
+            "update_time": "2018-08-21T15:40:11.514Z",
+            "library": 77,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 127,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.777Z",
+            "update_time": "2018-08-21T15:40:11.491Z",
+            "library": 75,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 128,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.783Z",
+            "update_time": "2018-08-21T15:40:11.567Z",
+            "library": 82,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 129,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.790Z",
+            "update_time": "2018-08-21T15:40:11.503Z",
+            "library": 76,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 130,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.797Z",
+            "update_time": "2018-08-21T15:40:11.546Z",
+            "library": 80,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 131,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.804Z",
+            "update_time": "2018-08-21T15:40:11.557Z",
+            "library": 81,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 132,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.811Z",
+            "update_time": "2018-08-21T15:40:11.577Z",
+            "library": 83,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 133,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.818Z",
+            "update_time": "2018-08-21T15:40:11.524Z",
+            "library": 78,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 134,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.824Z",
+            "update_time": "2018-08-21T15:40:11.588Z",
+            "library": 84,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 135,
+        "fields": {
+            "create_time": "2018-08-21T15:40:01.831Z",
+            "update_time": "2018-08-21T15:40:11.535Z",
+            "library": 79,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 136,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.526Z",
+            "update_time": "2018-08-21T15:45:25.212Z",
+            "library": null,
+            "sample": 94,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 137,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.558Z",
+            "update_time": "2018-08-21T15:45:25.231Z",
+            "library": null,
+            "sample": 95,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 138,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.591Z",
+            "update_time": "2018-08-21T15:45:25.248Z",
+            "library": null,
+            "sample": 96,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 139,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.628Z",
+            "update_time": "2018-08-21T15:45:25.263Z",
+            "library": null,
+            "sample": 97,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 140,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.664Z",
+            "update_time": "2018-08-21T15:45:28.698Z",
+            "library": null,
+            "sample": 98,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 141,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.700Z",
+            "update_time": "2018-08-21T15:45:28.715Z",
+            "library": null,
+            "sample": 99,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 142,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.734Z",
+            "update_time": "2018-08-21T15:45:28.730Z",
+            "library": null,
+            "sample": 101,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 143,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.768Z",
+            "update_time": "2018-08-21T15:45:28.745Z",
+            "library": null,
+            "sample": 102,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 144,
+        "fields": {
+            "create_time": "2018-08-21T15:45:14.803Z",
+            "update_time": "2018-08-21T15:45:28.761Z",
+            "library": null,
+            "sample": 103,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 145,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.074Z",
+            "update_time": "2018-08-21T15:46:07.436Z",
+            "library": null,
+            "sample": 104,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 146,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.107Z",
+            "update_time": "2018-08-21T15:46:07.456Z",
+            "library": null,
+            "sample": 105,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 147,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.139Z",
+            "update_time": "2018-08-21T15:46:07.473Z",
+            "library": null,
+            "sample": 106,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 148,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.171Z",
+            "update_time": "2018-08-21T15:46:07.490Z",
+            "library": null,
+            "sample": 107,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 149,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.202Z",
+            "update_time": "2018-08-21T15:46:07.505Z",
+            "library": null,
+            "sample": 108,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 150,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.233Z",
+            "update_time": "2018-08-21T15:46:07.520Z",
+            "library": null,
+            "sample": 109,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 151,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.264Z",
+            "update_time": "2018-08-21T15:46:07.535Z",
+            "library": null,
+            "sample": 110,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 152,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.292Z",
+            "update_time": "2018-08-21T15:46:07.549Z",
+            "library": null,
+            "sample": 111,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 153,
+        "fields": {
+            "create_time": "2018-08-21T15:46:02.322Z",
+            "update_time": "2018-08-21T15:46:07.564Z",
+            "library": null,
+            "sample": 112,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 154,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.221Z",
+            "update_time": "2018-08-21T17:29:37.223Z",
+            "library": 117,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 155,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.228Z",
+            "update_time": "2018-08-21T17:29:37.229Z",
+            "library": 112,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 156,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.234Z",
+            "update_time": "2018-08-21T17:29:37.236Z",
+            "library": 118,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 157,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.241Z",
+            "update_time": "2018-08-21T17:29:37.243Z",
+            "library": 111,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 158,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.248Z",
+            "update_time": "2018-08-21T17:29:37.249Z",
+            "library": 116,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 159,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.255Z",
+            "update_time": "2018-08-21T17:29:37.257Z",
+            "library": 119,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 160,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.264Z",
+            "update_time": "2018-08-21T17:29:37.265Z",
+            "library": 114,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 161,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.271Z",
+            "update_time": "2018-08-21T17:29:37.272Z",
+            "library": 113,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 162,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.278Z",
+            "update_time": "2018-08-21T17:29:37.279Z",
+            "library": 115,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 163,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.284Z",
+            "update_time": "2018-08-21T17:29:37.286Z",
+            "library": 122,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 164,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.291Z",
+            "update_time": "2018-08-21T17:29:37.293Z",
+            "library": 120,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 165,
+        "fields": {
+            "create_time": "2018-08-21T17:29:37.298Z",
+            "update_time": "2018-08-21T17:29:37.300Z",
+            "library": 121,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 166,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.438Z",
+            "update_time": "2023-03-17T16:51:01.768Z",
+            "library": 85,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 167,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.440Z",
+            "update_time": "2023-03-17T16:51:01.774Z",
+            "library": 86,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 168,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.442Z",
+            "update_time": "2023-03-17T16:51:01.795Z",
+            "library": 90,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 169,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.443Z",
+            "update_time": "2023-03-17T16:51:01.790Z",
+            "library": 89,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 170,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.445Z",
+            "update_time": "2023-03-17T16:51:01.810Z",
+            "library": 93,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 171,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.447Z",
+            "update_time": "2023-03-17T16:51:01.781Z",
+            "library": 87,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 172,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.448Z",
+            "update_time": "2023-03-17T16:51:01.786Z",
+            "library": 88,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 173,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.450Z",
+            "update_time": "2023-03-17T16:51:01.799Z",
+            "library": 91,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "pooling.pooling",
+        "pk": 174,
+        "fields": {
+            "create_time": "2023-01-25T15:22:53.451Z",
+            "update_time": "2023-03-17T16:51:01.803Z",
+            "library": 92,
+            "sample": null,
+            "concentration_c1": null,
+            "comment": "",
+            "archived": false
+        }
     }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 2,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.537Z",
-      "update_time": "2018-08-21T15:31:56.506Z",
-      "library": 45,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 3,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.544Z",
-      "update_time": "2018-08-21T15:31:56.516Z",
-      "library": 46,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 4,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.551Z",
-      "update_time": "2018-08-21T15:31:56.537Z",
-      "library": 48,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 5,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.558Z",
-      "update_time": "2018-08-21T15:31:56.495Z",
-      "library": 44,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 6,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.565Z",
-      "update_time": "2018-08-21T15:31:56.527Z",
-      "library": 47,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 7,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.573Z",
-      "update_time": "2018-08-21T15:31:56.464Z",
-      "library": 41,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 8,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.580Z",
-      "update_time": "2018-08-21T15:31:56.474Z",
-      "library": 42,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 9,
-    "fields": {
-      "create_time": "2018-08-21T15:19:32.588Z",
-      "update_time": "2018-08-21T15:31:56.485Z",
-      "library": 43,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 10,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.587Z",
-      "update_time": "2018-08-21T15:31:51.379Z",
-      "library": 6,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 11,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.594Z",
-      "update_time": "2018-08-21T15:31:51.400Z",
-      "library": 8,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 12,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.601Z",
-      "update_time": "2018-08-21T15:31:51.442Z",
-      "library": 12,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 13,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.609Z",
-      "update_time": "2018-08-21T15:31:51.410Z",
-      "library": 9,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 14,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.616Z",
-      "update_time": "2018-08-21T15:31:51.323Z",
-      "library": 1,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 15,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.623Z",
-      "update_time": "2018-08-21T15:31:51.336Z",
-      "library": 2,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 16,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.632Z",
-      "update_time": "2018-08-21T15:31:51.347Z",
-      "library": 3,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 17,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.642Z",
-      "update_time": "2018-08-21T15:31:51.390Z",
-      "library": 7,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 18,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.652Z",
-      "update_time": "2018-08-21T15:31:51.421Z",
-      "library": 10,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 19,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.661Z",
-      "update_time": "2018-08-21T15:31:51.432Z",
-      "library": 11,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 20,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.668Z",
-      "update_time": "2018-08-21T15:31:51.358Z",
-      "library": 4,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 21,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.675Z",
-      "update_time": "2018-08-21T15:31:51.368Z",
-      "library": 5,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 22,
-    "fields": {
-      "create_time": "2018-08-21T15:20:15.682Z",
-      "update_time": "2018-08-21T15:31:51.452Z",
-      "library": 13,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 23,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.315Z",
-      "update_time": "2018-08-21T15:31:47.251Z",
-      "library": 25,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 24,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.322Z",
-      "update_time": "2018-08-21T15:31:47.184Z",
-      "library": 19,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 25,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.330Z",
-      "update_time": "2018-08-21T15:31:47.217Z",
-      "library": 22,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 26,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.337Z",
-      "update_time": "2018-08-21T15:31:47.206Z",
-      "library": 21,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 27,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.344Z",
-      "update_time": "2018-08-21T15:31:47.151Z",
-      "library": 16,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 28,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.351Z",
-      "update_time": "2018-08-21T15:31:47.229Z",
-      "library": 23,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 29,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.358Z",
-      "update_time": "2018-08-21T15:31:47.262Z",
-      "library": 26,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 30,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.365Z",
-      "update_time": "2018-08-21T15:31:47.172Z",
-      "library": 18,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 31,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.372Z",
-      "update_time": "2018-08-21T15:31:47.196Z",
-      "library": 20,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 32,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.379Z",
-      "update_time": "2018-08-21T15:31:47.123Z",
-      "library": 14,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 33,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.386Z",
-      "update_time": "2018-08-21T15:31:47.161Z",
-      "library": 17,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 34,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.393Z",
-      "update_time": "2018-08-21T15:31:47.137Z",
-      "library": 15,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 35,
-    "fields": {
-      "create_time": "2018-08-21T15:20:33.400Z",
-      "update_time": "2018-08-21T15:31:47.240Z",
-      "library": 24,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 36,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.310Z",
-      "update_time": "2018-08-21T15:31:42.432Z",
-      "library": 34,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 37,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.317Z",
-      "update_time": "2018-08-21T15:31:42.411Z",
-      "library": 32,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 38,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.324Z",
-      "update_time": "2018-08-21T15:31:42.380Z",
-      "library": 29,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 39,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.331Z",
-      "update_time": "2018-08-21T15:31:42.422Z",
-      "library": 33,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 40,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.337Z",
-      "update_time": "2018-08-21T15:31:42.485Z",
-      "library": 39,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 41,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.344Z",
-      "update_time": "2018-08-21T15:31:42.401Z",
-      "library": 31,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 42,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.350Z",
-      "update_time": "2018-08-21T15:31:42.443Z",
-      "library": 35,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 43,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.357Z",
-      "update_time": "2018-08-21T15:31:42.475Z",
-      "library": 38,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 44,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.364Z",
-      "update_time": "2018-08-21T15:31:42.390Z",
-      "library": 30,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 45,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.371Z",
-      "update_time": "2018-08-21T15:31:42.356Z",
-      "library": 27,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 46,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.377Z",
-      "update_time": "2018-08-21T15:31:42.369Z",
-      "library": 28,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 47,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.384Z",
-      "update_time": "2018-08-21T15:31:42.453Z",
-      "library": 36,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 48,
-    "fields": {
-      "create_time": "2018-08-21T15:20:42.391Z",
-      "update_time": "2018-08-21T15:31:42.464Z",
-      "library": 37,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 49,
-    "fields": {
-      "create_time": "2018-08-21T15:25:57.959Z",
-      "update_time": "2018-08-21T15:31:31.212Z",
-      "library": null,
-      "sample": 64,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 50,
-    "fields": {
-      "create_time": "2018-08-21T15:25:57.991Z",
-      "update_time": "2018-08-21T15:31:31.228Z",
-      "library": null,
-      "sample": 65,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 51,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.021Z",
-      "update_time": "2018-08-21T15:31:31.242Z",
-      "library": null,
-      "sample": 66,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 52,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.050Z",
-      "update_time": "2018-08-21T15:31:31.256Z",
-      "library": null,
-      "sample": 67,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 53,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.079Z",
-      "update_time": "2018-08-21T15:31:31.270Z",
-      "library": null,
-      "sample": 68,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 54,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.110Z",
-      "update_time": "2018-08-21T15:31:31.285Z",
-      "library": null,
-      "sample": 69,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 55,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.139Z",
-      "update_time": "2018-08-21T15:31:31.301Z",
-      "library": null,
-      "sample": 70,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 56,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.168Z",
-      "update_time": "2018-08-21T15:31:31.316Z",
-      "library": null,
-      "sample": 71,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 57,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.197Z",
-      "update_time": "2018-08-21T15:31:31.332Z",
-      "library": null,
-      "sample": 72,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 58,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.227Z",
-      "update_time": "2018-08-21T15:31:31.347Z",
-      "library": null,
-      "sample": 73,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 59,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.257Z",
-      "update_time": "2018-08-21T15:31:31.361Z",
-      "library": null,
-      "sample": 74,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 60,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.286Z",
-      "update_time": "2018-08-21T15:31:31.375Z",
-      "library": null,
-      "sample": 75,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 61,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.317Z",
-      "update_time": "2018-08-21T15:31:31.389Z",
-      "library": null,
-      "sample": 76,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 62,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.346Z",
-      "update_time": "2018-08-21T15:31:31.405Z",
-      "library": null,
-      "sample": 77,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 63,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.375Z",
-      "update_time": "2018-08-21T15:31:31.420Z",
-      "library": null,
-      "sample": 78,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 64,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.404Z",
-      "update_time": "2018-08-21T15:31:31.434Z",
-      "library": null,
-      "sample": 79,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 65,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.433Z",
-      "update_time": "2018-08-21T15:31:31.447Z",
-      "library": null,
-      "sample": 80,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 66,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.462Z",
-      "update_time": "2018-08-21T15:31:31.462Z",
-      "library": null,
-      "sample": 81,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 67,
-    "fields": {
-      "create_time": "2018-08-21T15:25:58.491Z",
-      "update_time": "2018-08-21T15:31:31.475Z",
-      "library": null,
-      "sample": 82,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 68,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.429Z",
-      "update_time": "2018-08-21T15:31:25.536Z",
-      "library": null,
-      "sample": 43,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 69,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.460Z",
-      "update_time": "2018-08-21T15:31:25.553Z",
-      "library": null,
-      "sample": 44,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 70,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.490Z",
-      "update_time": "2018-08-21T15:31:25.567Z",
-      "library": null,
-      "sample": 45,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 71,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.519Z",
-      "update_time": "2018-08-21T15:31:25.581Z",
-      "library": null,
-      "sample": 46,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 72,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.549Z",
-      "update_time": "2018-08-21T15:31:25.596Z",
-      "library": null,
-      "sample": 47,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 73,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.579Z",
-      "update_time": "2018-08-21T15:31:25.611Z",
-      "library": null,
-      "sample": 48,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 74,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.610Z",
-      "update_time": "2018-08-21T15:31:25.625Z",
-      "library": null,
-      "sample": 49,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 75,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.639Z",
-      "update_time": "2018-08-21T15:31:25.639Z",
-      "library": null,
-      "sample": 50,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 76,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.668Z",
-      "update_time": "2018-08-21T15:31:25.653Z",
-      "library": null,
-      "sample": 51,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 77,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.698Z",
-      "update_time": "2018-08-21T15:31:25.666Z",
-      "library": null,
-      "sample": 52,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 78,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.727Z",
-      "update_time": "2018-08-21T15:31:25.680Z",
-      "library": null,
-      "sample": 53,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 79,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.757Z",
-      "update_time": "2018-08-21T15:31:25.694Z",
-      "library": null,
-      "sample": 54,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 80,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.788Z",
-      "update_time": "2018-08-21T15:31:25.707Z",
-      "library": null,
-      "sample": 55,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 81,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.818Z",
-      "update_time": "2018-08-21T15:31:25.722Z",
-      "library": null,
-      "sample": 56,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 82,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.851Z",
-      "update_time": "2018-08-21T15:31:25.735Z",
-      "library": null,
-      "sample": 57,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 83,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.881Z",
-      "update_time": "2018-08-21T15:31:25.749Z",
-      "library": null,
-      "sample": 58,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 84,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.912Z",
-      "update_time": "2018-08-21T15:31:25.762Z",
-      "library": null,
-      "sample": 59,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 85,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.942Z",
-      "update_time": "2018-08-21T15:31:25.776Z",
-      "library": null,
-      "sample": 60,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 86,
-    "fields": {
-      "create_time": "2018-08-21T15:29:06.971Z",
-      "update_time": "2018-08-21T15:31:25.790Z",
-      "library": null,
-      "sample": 61,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 87,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.001Z",
-      "update_time": "2018-08-21T15:31:25.803Z",
-      "library": null,
-      "sample": 62,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 88,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.030Z",
-      "update_time": "2018-08-21T15:31:25.818Z",
-      "library": null,
-      "sample": 63,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 89,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.059Z",
-      "update_time": "2018-08-21T15:31:36.847Z",
-      "library": null,
-      "sample": 83,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 90,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.089Z",
-      "update_time": "2018-08-21T15:31:36.864Z",
-      "library": null,
-      "sample": 84,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 91,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.119Z",
-      "update_time": "2018-08-21T15:31:36.878Z",
-      "library": null,
-      "sample": 85,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 92,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.149Z",
-      "update_time": "2018-08-21T15:31:36.891Z",
-      "library": null,
-      "sample": 86,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 93,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.179Z",
-      "update_time": "2018-08-21T15:31:36.904Z",
-      "library": null,
-      "sample": 87,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 94,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.222Z",
-      "update_time": "2018-08-21T15:31:36.917Z",
-      "library": null,
-      "sample": 88,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 95,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.262Z",
-      "update_time": "2018-08-21T15:31:36.931Z",
-      "library": null,
-      "sample": 89,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 96,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.293Z",
-      "update_time": "2018-08-21T15:31:36.944Z",
-      "library": null,
-      "sample": 90,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 97,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.326Z",
-      "update_time": "2018-08-21T15:31:36.958Z",
-      "library": null,
-      "sample": 91,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 98,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.359Z",
-      "update_time": "2018-08-21T15:31:36.971Z",
-      "library": null,
-      "sample": 92,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 99,
-    "fields": {
-      "create_time": "2018-08-21T15:29:07.392Z",
-      "update_time": "2018-08-21T15:31:36.985Z",
-      "library": null,
-      "sample": 93,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 100,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.432Z",
-      "update_time": "2018-08-21T15:37:42.624Z",
-      "library": 62,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 101,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.439Z",
-      "update_time": "2018-08-21T15:37:42.717Z",
-      "library": 71,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 102,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.446Z",
-      "update_time": "2018-08-21T15:37:42.569Z",
-      "library": 57,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 103,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.453Z",
-      "update_time": "2018-08-21T15:37:42.727Z",
-      "library": 72,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 104,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.460Z",
-      "update_time": "2018-08-21T15:37:42.614Z",
-      "library": 61,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 105,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.468Z",
-      "update_time": "2018-08-21T15:37:42.655Z",
-      "library": 65,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 106,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.475Z",
-      "update_time": "2018-08-21T15:37:42.517Z",
-      "library": 52,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 107,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.482Z",
-      "update_time": "2018-08-21T15:37:42.484Z",
-      "library": 49,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 108,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.488Z",
-      "update_time": "2018-08-21T15:37:42.496Z",
-      "library": 50,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 109,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.496Z",
-      "update_time": "2018-08-21T15:37:42.527Z",
-      "library": 53,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 110,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.502Z",
-      "update_time": "2018-08-21T15:37:42.538Z",
-      "library": 54,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 111,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.510Z",
-      "update_time": "2018-08-21T15:37:42.507Z",
-      "library": 51,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 112,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.517Z",
-      "update_time": "2018-08-21T15:37:42.706Z",
-      "library": 70,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 113,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.525Z",
-      "update_time": "2018-08-21T15:37:42.645Z",
-      "library": 64,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 114,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.532Z",
-      "update_time": "2018-08-21T15:37:42.548Z",
-      "library": 55,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 115,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.540Z",
-      "update_time": "2018-08-21T15:37:42.685Z",
-      "library": 68,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 116,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.549Z",
-      "update_time": "2018-08-21T15:37:42.581Z",
-      "library": 58,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 117,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.557Z",
-      "update_time": "2018-08-21T15:37:42.665Z",
-      "library": 66,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 118,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.564Z",
-      "update_time": "2018-08-21T15:37:42.695Z",
-      "library": 69,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 119,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.572Z",
-      "update_time": "2018-08-21T15:37:42.594Z",
-      "library": 59,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 120,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.580Z",
-      "update_time": "2018-08-21T15:37:42.604Z",
-      "library": 60,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 121,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.587Z",
-      "update_time": "2018-08-21T15:37:42.634Z",
-      "library": 63,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 122,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.595Z",
-      "update_time": "2018-08-21T15:37:42.675Z",
-      "library": 67,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 123,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.601Z",
-      "update_time": "2018-08-21T15:37:42.748Z",
-      "library": 74,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 124,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.608Z",
-      "update_time": "2018-08-21T15:37:42.737Z",
-      "library": 73,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 125,
-    "fields": {
-      "create_time": "2018-08-21T15:37:31.615Z",
-      "update_time": "2018-08-21T15:37:42.558Z",
-      "library": 56,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 126,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.769Z",
-      "update_time": "2018-08-21T15:40:11.514Z",
-      "library": 77,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 127,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.777Z",
-      "update_time": "2018-08-21T15:40:11.491Z",
-      "library": 75,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 128,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.783Z",
-      "update_time": "2018-08-21T15:40:11.567Z",
-      "library": 82,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 129,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.790Z",
-      "update_time": "2018-08-21T15:40:11.503Z",
-      "library": 76,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 130,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.797Z",
-      "update_time": "2018-08-21T15:40:11.546Z",
-      "library": 80,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 131,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.804Z",
-      "update_time": "2018-08-21T15:40:11.557Z",
-      "library": 81,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 132,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.811Z",
-      "update_time": "2018-08-21T15:40:11.577Z",
-      "library": 83,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 133,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.818Z",
-      "update_time": "2018-08-21T15:40:11.524Z",
-      "library": 78,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 134,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.824Z",
-      "update_time": "2018-08-21T15:40:11.588Z",
-      "library": 84,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 135,
-    "fields": {
-      "create_time": "2018-08-21T15:40:01.831Z",
-      "update_time": "2018-08-21T15:40:11.535Z",
-      "library": 79,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 136,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.526Z",
-      "update_time": "2018-08-21T15:45:25.212Z",
-      "library": null,
-      "sample": 94,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 137,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.558Z",
-      "update_time": "2018-08-21T15:45:25.231Z",
-      "library": null,
-      "sample": 95,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 138,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.591Z",
-      "update_time": "2018-08-21T15:45:25.248Z",
-      "library": null,
-      "sample": 96,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 139,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.628Z",
-      "update_time": "2018-08-21T15:45:25.263Z",
-      "library": null,
-      "sample": 97,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 140,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.664Z",
-      "update_time": "2018-08-21T15:45:28.698Z",
-      "library": null,
-      "sample": 98,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 141,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.700Z",
-      "update_time": "2018-08-21T15:45:28.715Z",
-      "library": null,
-      "sample": 99,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 142,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.734Z",
-      "update_time": "2018-08-21T15:45:28.730Z",
-      "library": null,
-      "sample": 101,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 143,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.768Z",
-      "update_time": "2018-08-21T15:45:28.745Z",
-      "library": null,
-      "sample": 102,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 144,
-    "fields": {
-      "create_time": "2018-08-21T15:45:14.803Z",
-      "update_time": "2018-08-21T15:45:28.761Z",
-      "library": null,
-      "sample": 103,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 145,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.074Z",
-      "update_time": "2018-08-21T15:46:07.436Z",
-      "library": null,
-      "sample": 104,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 146,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.107Z",
-      "update_time": "2018-08-21T15:46:07.456Z",
-      "library": null,
-      "sample": 105,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 147,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.139Z",
-      "update_time": "2018-08-21T15:46:07.473Z",
-      "library": null,
-      "sample": 106,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 148,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.171Z",
-      "update_time": "2018-08-21T15:46:07.490Z",
-      "library": null,
-      "sample": 107,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 149,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.202Z",
-      "update_time": "2018-08-21T15:46:07.505Z",
-      "library": null,
-      "sample": 108,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 150,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.233Z",
-      "update_time": "2018-08-21T15:46:07.520Z",
-      "library": null,
-      "sample": 109,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 151,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.264Z",
-      "update_time": "2018-08-21T15:46:07.535Z",
-      "library": null,
-      "sample": 110,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 152,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.292Z",
-      "update_time": "2018-08-21T15:46:07.549Z",
-      "library": null,
-      "sample": 111,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 153,
-    "fields": {
-      "create_time": "2018-08-21T15:46:02.322Z",
-      "update_time": "2018-08-21T15:46:07.564Z",
-      "library": null,
-      "sample": 112,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 154,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.221Z",
-      "update_time": "2018-08-21T17:29:37.223Z",
-      "library": 117,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 155,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.228Z",
-      "update_time": "2018-08-21T17:29:37.229Z",
-      "library": 112,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 156,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.234Z",
-      "update_time": "2018-08-21T17:29:37.236Z",
-      "library": 118,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 157,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.241Z",
-      "update_time": "2018-08-21T17:29:37.243Z",
-      "library": 111,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 158,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.248Z",
-      "update_time": "2018-08-21T17:29:37.249Z",
-      "library": 116,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 159,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.255Z",
-      "update_time": "2018-08-21T17:29:37.257Z",
-      "library": 119,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 160,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.264Z",
-      "update_time": "2018-08-21T17:29:37.265Z",
-      "library": 114,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 161,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.271Z",
-      "update_time": "2018-08-21T17:29:37.272Z",
-      "library": 113,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 162,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.278Z",
-      "update_time": "2018-08-21T17:29:37.279Z",
-      "library": 115,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 163,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.284Z",
-      "update_time": "2018-08-21T17:29:37.286Z",
-      "library": 122,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 164,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.291Z",
-      "update_time": "2018-08-21T17:29:37.293Z",
-      "library": 120,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 165,
-    "fields": {
-      "create_time": "2018-08-21T17:29:37.298Z",
-      "update_time": "2018-08-21T17:29:37.300Z",
-      "library": 121,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 166,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.438Z",
-      "update_time": "2023-03-17T16:51:01.768Z",
-      "library": 85,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 167,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.440Z",
-      "update_time": "2023-03-17T16:51:01.774Z",
-      "library": 86,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 168,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.442Z",
-      "update_time": "2023-03-17T16:51:01.795Z",
-      "library": 90,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 169,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.443Z",
-      "update_time": "2023-03-17T16:51:01.790Z",
-      "library": 89,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 170,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.445Z",
-      "update_time": "2023-03-17T16:51:01.810Z",
-      "library": 93,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 171,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.447Z",
-      "update_time": "2023-03-17T16:51:01.781Z",
-      "library": 87,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 172,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.448Z",
-      "update_time": "2023-03-17T16:51:01.786Z",
-      "library": 88,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 173,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.450Z",
-      "update_time": "2023-03-17T16:51:01.799Z",
-      "library": 91,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "pooling.pooling",
-    "pk": 174,
-    "fields": {
-      "create_time": "2023-01-25T15:22:53.451Z",
-      "update_time": "2023-03-17T16:51:01.803Z",
-      "library": 92,
-      "sample": null,
-      "concentration_c1": null,
-      "comment": "",
-      "archived": false
-    }
-  }
 ]

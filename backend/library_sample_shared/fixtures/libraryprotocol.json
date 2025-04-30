@@ -1,754 +1,754 @@
 [
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 1,
-    "fields": {
-      "name": "Other - DNA Methods",
-      "type": "DNA",
-      "provider": "-",
-      "catalog": "-",
-      "explanation": "-",
-      "input_requirements": "-",
-      "typical_application": "-",
-      "status": 1,
-      "comments": "",
-      "archived": false
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 1,
+        "fields": {
+            "name": "Other - DNA Methods",
+            "type": "DNA",
+            "provider": "-",
+            "catalog": "-",
+            "explanation": "-",
+            "input_requirements": "-",
+            "typical_application": "-",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 2,
+        "fields": {
+            "name": "Other - RNA Methods",
+            "type": "RNA",
+            "provider": "-",
+            "catalog": "-",
+            "explanation": "-",
+            "input_requirements": "-",
+            "typical_application": "-",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 4,
+        "fields": {
+            "name": "NEBNext Ultra II DNA Library Prep Kit for Illumina",
+            "type": "DNA",
+            "provider": "NEB",
+            "catalog": "E7645S/L",
+            "explanation": "enzymes and buffers ideal to convert a small amount of DNA input into indexed libraries",
+            "input_requirements": "500 - 1 \u00b5g of fragmented DNA",
+            "typical_application": "ChIP-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 5,
+        "fields": {
+            "name": "TruSeq DNA PCR-Free Sample Preparation",
+            "type": "DNA",
+            "provider": "Illumina",
+            "catalog": "FC-121-3001",
+            "explanation": "covaris-assisted shearing of DNA to desired fragment size, ligation of indexed adaptors, no PCR",
+            "input_requirements": "1 \u00b5g high molecular weight genomic DANN",
+            "typical_application": "WGS",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 6,
+        "fields": {
+            "name": "Nextera DNA Sample Preparation",
+            "type": "DNA",
+            "provider": "Illumina",
+            "catalog": "FC-121-1030",
+            "explanation": "fragmentation and adaptor ligation in a single step (tagmentation), PCR to provide single- or dual-indexed libraries",
+            "input_requirements": "50 ng high molecular weight genomic DNA",
+            "typical_application": "ATAC-Seq",
+            "status": 1,
+            "comments": "can be used for: large/complex Genome sequencing",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 7,
+        "fields": {
+            "name": "Nextera XT DNA Sample Preparation",
+            "type": "DNA",
+            "provider": "Illumina",
+            "catalog": "FC-131-1024",
+            "explanation": "fragmentation and adaptor ligation in a single step (tagmentation), PCR to provide single- or dual-indexed libraries",
+            "input_requirements": "1 ng high molecular weight DNA",
+            "typical_application": "ATAC-Seq",
+            "status": 1,
+            "comments": "can be used for: small Genome, Amplicons, Plasmide, ds-cDNA sequencing",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 8,
+        "fields": {
+            "name": "TruSeq DNA Methylation Kit",
+            "type": "DNA",
+            "provider": "Illumina",
+            "catalog": "EGMK91324",
+            "explanation": "bisulfite conversion of input DNA, prep of indexed libraries",
+            "input_requirements": "50-100 ng high molecular weight genomic DNA",
+            "typical_application": "WGBS",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 9,
+        "fields": {
+            "name": "Custom protocol for amplicon preparation",
+            "type": "DNA",
+            "provider": "NA",
+            "catalog": "NA",
+            "explanation": "Amplicons provided by user, PCR is done by facility to produce indexed sequencing libraries",
+            "input_requirements": "NA",
+            "typical_application": "Amplicon-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 10,
+        "fields": {
+            "name": "TruSeq Stranded mRNA",
+            "type": "RNA",
+            "provider": "Illumina",
+            "catalog": "RS-122-2101",
+            "explanation": "mRNA enrichment with poly-T oligo attached magnetic beads, cDNA prep (random priming, dUTP incorporation for strand specificity), indexed library preparation",
+            "input_requirements": "100 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
+            "typical_application": "stranded mRNA-Seq",
+            "status": 1,
+            "comments": "previously isolated mRNA can also serve as starting material",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 11,
+        "fields": {
+            "name": "TruSeq Stranded Total RNA (Gold)",
+            "type": "RNA",
+            "provider": "Illumina",
+            "catalog": "RS-122-2301",
+            "explanation": "removal of rRNA using biotinylated, target-specific oligos combined with magnetic Ribo-Zero rRNA removal beads. Gold: depletion of both cytoplasmic and mitochondrial rRNA, cDNA prep (random priming, dUTP incorporation for strand specificity), indexed",
+            "input_requirements": "100 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
+            "typical_application": "stranded RNA-Seq",
+            "status": 1,
+            "comments": "Oligos designed to target Mouse/Rat/Human, can be used for other organisms drosophila/zebrafish",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 12,
+        "fields": {
+            "name": "SMART-Seq v4 Ultra Low Input RNA",
+            "type": "RNA",
+            "provider": "Clontech Laboratories",
+            "catalog": "6348888",
+            "explanation": "double-stranded full length cDNA preparation (dT-priming), Conversion of cDNA into indexed libraries using i.e. Nextera DNA library preparation",
+            "input_requirements": "10 pg - 10 ng total RNA, RIN/RQN: 8",
+            "typical_application": "mRNA-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 13,
+        "fields": {
+            "name": "TruSeq Small RNA Sample Prep",
+            "type": "RNA",
+            "provider": "ILLUMINA",
+            "catalog": "RS-200-0012",
+            "explanation": "ligation of adapters to small RNA molecules, first strand cDNA synthesis, PCR enrichment for indexed library preparation, purification with polyacryamid gelelectrophoresis",
+            "input_requirements": "1 \u00b5g total RNA, RIN/RQN: 8",
+            "typical_application": "small RNA-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 14,
+        "fields": {
+            "name": "NEBNext Ultra RNA Library Prep (mRNA)",
+            "type": "RNA",
+            "provider": "NEB",
+            "catalog": "E7530S/L",
+            "explanation": "mRNA enrichment with poly-T oligo attached magnetic beads, cDNA prep (random priming), indexed library prep",
+            "input_requirements": "10 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
+            "typical_application": "mRNA-Seq",
+            "status": 1,
+            "comments": "alternative to TruSeq stranded mRNA, lower RNA input, no strand specificity",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 15,
+        "fields": {
+            "name": "NEBNext Ultra RNA Library Prep (total RNA)",
+            "type": "RNA",
+            "provider": "NEB",
+            "catalog": "E7530S/L",
+            "explanation": "removal of rRNA using target-specific oligos combined with RNaseH and DNaseI digestion, cDNA prep (random priming), indexed library prep",
+            "input_requirements": "100 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
+            "typical_application": "RNA-Seq",
+            "status": 1,
+            "comments": "alternative to TruSeq stranded total RNA kit, alternate rRNA removal technology, no strand specificity",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 16,
+        "fields": {
+            "name": "Cel-Seq 2 for single cell RNA-Seq",
+            "type": "RNA",
+            "provider": "NA",
+            "catalog": "NA",
+            "explanation": "NA",
+            "input_requirements": "NA",
+            "typical_application": "single cell RNA-seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 17,
+        "fields": {
+            "name": "Quality Control",
+            "type": "DNA",
+            "provider": "-",
+            "catalog": "-",
+            "explanation": "-",
+            "input_requirements": "-",
+            "typical_application": "-",
+            "status": 1,
+            "comments": "Not a protocol. It's a special entry used for the Preparation Costs calculation for libraries.",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 19,
+        "fields": {
+            "name": "ChIP (std sonication) plus NEB II",
+            "type": "DNA",
+            "provider": "Deep Sequencing facility",
+            "catalog": "Version 1",
+            "explanation": "Standardized chromatin extraction (NEXSON + shearing), immunoprecipitation, DNA purification, library (NEB Next Ultra II)",
+            "input_requirements": "10,000 to 100,000 fixed cells per ChIP",
+            "typical_application": "ChIP-seq for histones and abundant TF",
+            "status": 1,
+            "comments": "procedure developed for gold standard epigenome production within the International Human Epigenome Consortium (IHEC). For additional details follow this publication: doi: 10.1093/nar/gkv1495",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 20,
+        "fields": {
+            "name": "Lexogen 3'mRNA-Seq",
+            "type": "RNA",
+            "provider": "Lexogen",
+            "catalog": "015UG009V0223",
+            "explanation": "3' Prime Seq",
+            "input_requirements": "500  ng total RNA",
+            "typical_application": "3' mRNA-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 21,
+        "fields": {
+            "name": "10xGenomics for single cell RNA-Seq",
+            "type": "RNA",
+            "provider": "10xgenomics",
+            "catalog": "NA",
+            "explanation": "NA",
+            "input_requirements": "Na",
+            "typical_application": "single cell RNA-seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 22,
+        "fields": {
+            "name": "ChIP RELACS high-throughput",
+            "type": "DNA",
+            "provider": "Deep Sequencing facility",
+            "catalog": "Version 2",
+            "explanation": "multiplexed ChIP for histones and TFs",
+            "input_requirements": "1,000 to 100,000 fixed cells per ChIP",
+            "typical_application": "high-throughput ChIP, quantitative studies",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 23,
+        "fields": {
+            "name": "ChIP RELACS using Std library",
+            "type": "DNA",
+            "provider": "Deep Sequencing facility",
+            "catalog": "Version 1",
+            "explanation": "The protocol uses the RELACS workflow but without the nuclei barcoding step. Library is prepared on purified DNA using the NEB workflow",
+            "input_requirements": "10,000 to 100,000 fixed cells per ChIP",
+            "typical_application": "enzymatic ChIP for small scale studies. Best suited for weakly bound TFs",
+            "status": 2,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 24,
+        "fields": {
+            "name": "NEBNext Low Input RNA Library Preparation",
+            "type": "RNA",
+            "provider": "NEB",
+            "catalog": "E6420",
+            "explanation": "prepration and amplification of full length cDNA, cDNA library preparation",
+            "input_requirements": "2 pg - 200 ng total RNA",
+            "typical_application": "mRNA-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 25,
+        "fields": {
+            "name": "ChIP Std protocol",
+            "type": "DNA",
+            "provider": "Deep Sequencing facility",
+            "catalog": "Version 1",
+            "explanation": "Nuclei extraction (NEXSON), chromatin shearing and immunoprecipitation",
+            "input_requirements": "100,000 to 5,000,000 cells",
+            "typical_application": "ChIP-seq for histones and abundant TF",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 26,
+        "fields": {
+            "name": "HI-C",
+            "type": "DNA",
+            "provider": "Deep Sequencing facility",
+            "catalog": "Version 5",
+            "explanation": "Optimized in situ Hi-C protocol for mammals or Drosophila",
+            "input_requirements": "2 million cells (Mammal), 40 million cells (Drosophila)",
+            "typical_application": "chromatin organization mapping",
+            "status": 1,
+            "comments": "Contact the facility for project discussion",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 27,
+        "fields": {
+            "name": "NEBNext Enzymatic Methyl-seq (EM-seq)",
+            "type": "DNA",
+            "provider": "NEB",
+            "catalog": "E7120",
+            "explanation": "Improved workflow for the detection of 5-mC and 5-hmC DNA modifications",
+            "input_requirements": "10-200 ng DNA",
+            "typical_application": "DNA methylation analysis",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 30,
+        "fields": {
+            "name": "Nanopore Direct RNA (SQK-RNA002)",
+            "type": "RNA",
+            "provider": "Oxford Nanopore Technologies",
+            "catalog": "SQK_RNA002",
+            "explanation": "Direct RNA Sequencing",
+            "input_requirements": "500 ng PolyA-RNA",
+            "typical_application": "full-length RNA-Seq, w/ modifications possible",
+            "status": 1,
+            "comments": "Kit is recommended for:\r\nnative RNA-Seq, exploration of modified bases",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 31,
+        "fields": {
+            "name": "QuantSeq 3\u2019 mRNA-Seq Library Prep FWD",
+            "type": "RNA",
+            "provider": "Lexogen",
+            "catalog": "015",
+            "explanation": "QuantSeq FWD contains the Illumina Read 1 linker sequence in the second strand synthesis primer, hence NGS reads are generated towards the poly(A) tail, directly reflecting the mRNA sequence. Recommended  for Gene Expression Analysis.",
+            "input_requirements": "100 pg - 500 ng total RNA",
+            "typical_application": "3' mRNA-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 32,
+        "fields": {
+            "name": "QuantSeq 3\u2019 mRNA-Seq Library Prep REV",
+            "type": "RNA",
+            "provider": "Lexogen",
+            "catalog": "016",
+            "explanation": "With QuantSeq Reverse (REV) it is possible to exactly pinpoint the 3\u2019 end in Read 1, hence to study the 3\u2019 UTR and alternative polyadenylation. With the Custom Sequencing Primer the first nucleotide of Reads 1 is the last nucleotide of the mRNA",
+            "input_requirements": "100 pg - 500 ng total RNA",
+            "typical_application": "3' mRNA-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 33,
+        "fields": {
+            "name": "Nanopore Custom Total RNA",
+            "type": "RNA",
+            "provider": "Custom + Oxford Nanopore Technologies",
+            "catalog": "Custom + SQK_PCB109",
+            "explanation": "Sequencing of full-length transcripts after ribo-depletion",
+            "input_requirements": "10 \u00b5g of very high quality RNA (RQN/RINe >9)",
+            "typical_application": "Full-length cDNA sequencing of ribo-depleted RNA",
+            "status": 1,
+            "comments": "Custom protocol to sequence full-length transcripts of (ribo-depleted) total RNA. Note that very high quality and quantity of input RNA is required. This custom protocol adds a poly-A tail to all RNA fragments, i.e. RNAs with and without native poly-A tail will be polyadenylated resulting in longer poly-A tails for RNAs with native poly-A tail and an artificial poly-A tail for RNAs without native poly-A tail.",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 34,
+        "fields": {
+            "name": "Nanopore Custom ncRNA",
+            "type": "RNA",
+            "provider": "Custom + Oxford Nanopore Technologies",
+            "catalog": "Custom + SQK_PCB109",
+            "explanation": "Sequencing of full-length ncRNA transcripts",
+            "input_requirements": "10 \u00b5g of very high quality RNA (RQN/RINe >9)",
+            "typical_application": "Full-length cDNA sequencing of ncRNA",
+            "status": 1,
+            "comments": "Custom protocol to sequence full-length transcripts of non-coding RNA. Note that very high quality and quantity of input RNA is required. Input RNA is first ribo- then mRNA depleted (using oligo-d(T)).\r\nThis custom protocol adds a poly-A tail to all RNA fragments; also those without native poly-A tail.",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 35,
+        "fields": {
+            "name": "NEBNext Multiplex Small RNALibrary Prep",
+            "type": "RNA",
+            "provider": "NEB",
+            "catalog": "E7300",
+            "explanation": "Small RNA library preparation from total RNA",
+            "input_requirements": "100 ng - 1 \u00b5g total RNA",
+            "typical_application": "small RNA-Seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 39,
+        "fields": {
+            "name": "CUT_and_x",
+            "type": "DNA",
+            "provider": "NA",
+            "catalog": "NA",
+            "explanation": "NA",
+            "input_requirements": "NA",
+            "typical_application": "CUTandRUN-seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 42,
+        "fields": {
+            "name": "Illumina Stranded Total RNA w/ Ribo-Zero Plus",
+            "type": "RNA",
+            "provider": "Illumina",
+            "catalog": "20040529",
+            "explanation": "ribo-depleted RNAseq with strand information",
+            "input_requirements": "10 - 1000 ng",
+            "typical_application": "Transcriptomics",
+            "status": 1,
+            "comments": "ribo-depleted RNAseq with strand information",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 43,
+        "fields": {
+            "name": "Illumina Stranded mRNA Prep, Ligation",
+            "type": "RNA",
+            "provider": "Illumina",
+            "catalog": "20040534",
+            "explanation": "stranded mRNA library preparation",
+            "input_requirements": "total RNA",
+            "typical_application": "Transcriptomics",
+            "status": 1,
+            "comments": "selection of mRNAs via poly-A capture, strand information",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 44,
+        "fields": {
+            "name": "Nanopore Ultra-Long DNA (SQK-ULK001)",
+            "type": "DNA",
+            "provider": "Oxford Nanopore Technologies + Circulomics",
+            "catalog": "SQK-ULK001; SKU NB-900-001-01; SKU NB-900-601-01",
+            "explanation": "Preparation of ultra high molecular weight (uHMW) DNA for sequencing with Oxford Nanopore devices",
+            "input_requirements": "6 M cells from culture, or 40\u00b5g of uHMW DNA in max. 750 ul buffer: 10 mM Tris.HCl, 1 mM EDTA pH 9,  0.02% v/v Triton X-100",
+            "typical_application": "Genome assembly/improvements, De-Novo",
+            "status": 1,
+            "comments": "Either cells from culture or already extracted uHMW gDNA can be submitted.\r\n\r\nFor cells: Please alert us at least 5 working days before you plan on submitting the cells. Then bring 6 M cells with a minimum of 90% living cells. Prior FACS sorting is recommended, please submit the sorting report along with the cells. First QC point is eluted gDNA. \r\n\r\nFor gDNA: Please make sure to elute gDNA in EB containing 0.02% Triton X-100 (10 mM Tris.HCl, 1 mM EDTA pH 9,  0.02% v/v Triton X-100 ). Required are 40\u00b5g of uHMW gDNA in max. 750 ul. Initial QC is done before beginning the library preparation.\r\n\r\nWe will contact you if the majority of your extracted gDNA is below 50kb or you do not have the minimum of 40\u00b5g required input.",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 45,
+        "fields": {
+            "name": "ATAC-seq",
+            "type": "DNA",
+            "provider": "Illumina and custom protocol",
+            "catalog": "custom protocol",
+            "explanation": "the protocol start with nuclei extraction and incubation of nuclei with Tn5, which will insert transposon in accessible chromatin regions. The regions will be then enriched by PCR.",
+            "input_requirements": "min 50,000 cells",
+            "typical_application": "open chromatin assay",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 48,
+        "fields": {
+            "name": "Nanopore DNAseq (SQK-LSK114)",
+            "type": "DNA",
+            "provider": "Oxford Nanopore Technologies",
+            "catalog": "SQK-LSK114",
+            "explanation": "DNA sequencing with barcoding option",
+            "input_requirements": "1 \u00b5g (or 100-200 fmol)",
+            "typical_application": "high-throughput DNAseq",
+            "status": 1,
+            "comments": "Recommended when high-throughput is required (typically 8+ Gb per flow cell). Recommended for DNA fragments of up to 50kb. PCR-free. Duplex reads with higher accuracies are available \u2013 please contact us if interested in these.",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 49,
+        "fields": {
+            "name": "Nanopore cDNA PCR (SQK-PCB111.24)",
+            "type": "RNA",
+            "provider": "Oxford Nanopore Technologies",
+            "catalog": "SQK-PCB111.24",
+            "explanation": "Sequencing of full-length transcripts",
+            "input_requirements": "4 ng PolyA RNA, 200 ng Total RNA",
+            "typical_application": "Full length cDNA sequencing",
+            "status": 1,
+            "comments": "This kit is highly recommended for users who would like to identify and quantify full-length transcripts want to explore isoforms, splice variants and fusion transcripts using full-length cDNAs have a low starting amount of RNA would like to generate high amounts of cDNA data wish to start from total RNA wish to multiplex samples to reduce price per sample.",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 50,
+        "fields": {
+            "name": "Chromium Next GEM Single Cell ATAC v2",
+            "type": "DNA",
+            "provider": "10x Genomics",
+            "catalog": "PN-1000390, PN-1000406",
+            "explanation": "single cell ATAC-seq based on Chromium Controller",
+            "input_requirements": "Nuclei solution, 155-7700 nuclei/\u00b5l",
+            "typical_application": "Chromatin Studies",
+            "status": 1,
+            "comments": "Used to determine the regulatory landscape of chromatin in hundreds to thousands of cells in a single sample.",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 51,
+        "fields": {
+            "name": "Chromium_NextGEM_SingleCell3Prime_GeneExpression_v3.1_DualIndex",
+            "type": "RNA",
+            "provider": "10x Genomics",
+            "catalog": "PN-1000268, PN-1000269",
+            "explanation": "NA",
+            "input_requirements": "NA",
+            "typical_application": "single cell RNA-seq",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 52,
+        "fields": {
+            "name": "Chromium_NextGEM_Multiome_ATAC",
+            "type": "DNA",
+            "provider": "10x Genomics",
+            "catalog": "PN000280, PN000281",
+            "explanation": "scATAC seq part for combined scATAC and scRNA libraries.",
+            "input_requirements": "500 - 10,000 nuclei",
+            "typical_application": "Chromatin/GEX studies",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 53,
+        "fields": {
+            "name": "Chromium_NextGEM_Multiome_GEX",
+            "type": "RNA",
+            "provider": "10x Genomics",
+            "catalog": "PN1000283, PN1000285",
+            "explanation": "scRNA seq part for combined scATAC and scRNA libraries.",
+            "input_requirements": "500 - 10,000 cells",
+            "typical_application": "Chromatin/GEX studies",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 55,
+        "fields": {
+            "name": "Nanopore Pore-C v2",
+            "type": "DNA",
+            "provider": "Nanopore and custom protocol",
+            "catalog": "custom",
+            "explanation": "the protocol measures long range interactions with long reads sequencing. Similar to Hi-C but without biotin selection of ligated fragments and coupled with long read",
+            "input_requirements": "5-10 milllions fixed cells",
+            "typical_application": "long range chromatin interactions",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 56,
+        "fields": {
+            "name": "ATAC-seq for fixed cells v1",
+            "type": "DNA",
+            "provider": "Deep Sequencing Facility",
+            "catalog": "v1",
+            "explanation": "open chromatin assay on formaldehyde fixed cells",
+            "input_requirements": "100,000 cells",
+            "typical_application": "open chromatin",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 57,
+        "fields": {
+            "name": "MuxATAC-seq for fixed cells v1",
+            "type": "DNA",
+            "provider": "Deep Sequencing Facility",
+            "catalog": "v1",
+            "explanation": "open chromatin assay on formaldehyde fixed cells using barcoded Tn5",
+            "input_requirements": "100,000 cells",
+            "typical_application": "open chromatin",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 58,
+        "fields": {
+            "name": "MUXscATAC-seq v3",
+            "type": "DNA",
+            "provider": "Deep Sequencing Facility",
+            "catalog": "v3",
+            "explanation": "open chromatin single cell ATAC-seq assay using 10x Genomics chromium technology and custom protocol for Tn5 sample barcoding",
+            "input_requirements": "100,000 cells (fresh)",
+            "typical_application": "open chromatin",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.libraryprotocol",
+        "pk": 59,
+        "fields": {
+            "name": "HiChIP v1",
+            "type": "DNA",
+            "provider": "Deep Sequencing Facility",
+            "catalog": "custom",
+            "explanation": "to discover long range interactions mediated by a specific factor",
+            "input_requirements": "15 million fixed cells",
+            "typical_application": "long range chromatin interactions",
+            "status": 1,
+            "comments": "",
+            "archived": false
+        }
     }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 2,
-    "fields": {
-      "name": "Other - RNA Methods",
-      "type": "RNA",
-      "provider": "-",
-      "catalog": "-",
-      "explanation": "-",
-      "input_requirements": "-",
-      "typical_application": "-",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 4,
-    "fields": {
-      "name": "NEBNext Ultra II DNA Library Prep Kit for Illumina",
-      "type": "DNA",
-      "provider": "NEB",
-      "catalog": "E7645S/L",
-      "explanation": "enzymes and buffers ideal to convert a small amount of DNA input into indexed libraries",
-      "input_requirements": "500 - 1 \u00b5g of fragmented DNA",
-      "typical_application": "ChIP-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 5,
-    "fields": {
-      "name": "TruSeq DNA PCR-Free Sample Preparation",
-      "type": "DNA",
-      "provider": "Illumina",
-      "catalog": "FC-121-3001",
-      "explanation": "covaris-assisted shearing of DNA to desired fragment size, ligation of indexed adaptors, no PCR",
-      "input_requirements": "1 \u00b5g high molecular weight genomic DANN",
-      "typical_application": "WGS",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 6,
-    "fields": {
-      "name": "Nextera DNA Sample Preparation",
-      "type": "DNA",
-      "provider": "Illumina",
-      "catalog": "FC-121-1030",
-      "explanation": "fragmentation and adaptor ligation in a single step (tagmentation), PCR to provide single- or dual-indexed libraries",
-      "input_requirements": "50 ng high molecular weight genomic DNA",
-      "typical_application": "ATAC-Seq",
-      "status": 1,
-      "comments": "can be used for: large/complex Genome sequencing",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 7,
-    "fields": {
-      "name": "Nextera XT DNA Sample Preparation",
-      "type": "DNA",
-      "provider": "Illumina",
-      "catalog": "FC-131-1024",
-      "explanation": "fragmentation and adaptor ligation in a single step (tagmentation), PCR to provide single- or dual-indexed libraries",
-      "input_requirements": "1 ng high molecular weight DNA",
-      "typical_application": "ATAC-Seq",
-      "status": 1,
-      "comments": "can be used for: small Genome, Amplicons, Plasmide, ds-cDNA sequencing",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 8,
-    "fields": {
-      "name": "TruSeq DNA Methylation Kit",
-      "type": "DNA",
-      "provider": "Illumina",
-      "catalog": "EGMK91324",
-      "explanation": "bisulfite conversion of input DNA, prep of indexed libraries",
-      "input_requirements": "50-100 ng high molecular weight genomic DNA",
-      "typical_application": "WGBS",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 9,
-    "fields": {
-      "name": "Custom protocol for amplicon preparation",
-      "type": "DNA",
-      "provider": "NA",
-      "catalog": "NA",
-      "explanation": "Amplicons provided by user, PCR is done by facility to produce indexed sequencing libraries",
-      "input_requirements": "NA",
-      "typical_application": "Amplicon-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 10,
-    "fields": {
-      "name": "TruSeq Stranded mRNA",
-      "type": "RNA",
-      "provider": "Illumina",
-      "catalog": "RS-122-2101",
-      "explanation": "mRNA enrichment with poly-T oligo attached magnetic beads, cDNA prep (random priming, dUTP incorporation for strand specificity), indexed library preparation",
-      "input_requirements": "100 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
-      "typical_application": "stranded mRNA-Seq",
-      "status": 1,
-      "comments": "previously isolated mRNA can also serve as starting material",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 11,
-    "fields": {
-      "name": "TruSeq Stranded Total RNA (Gold)",
-      "type": "RNA",
-      "provider": "Illumina",
-      "catalog": "RS-122-2301",
-      "explanation": "removal of rRNA using biotinylated, target-specific oligos combined with magnetic Ribo-Zero rRNA removal beads. Gold: depletion of both cytoplasmic and mitochondrial rRNA, cDNA prep (random priming, dUTP incorporation for strand specificity), indexed",
-      "input_requirements": "100 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
-      "typical_application": "stranded RNA-Seq",
-      "status": 1,
-      "comments": "Oligos designed to target Mouse/Rat/Human, can be used for other organisms drosophila/zebrafish",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 12,
-    "fields": {
-      "name": "SMART-Seq v4 Ultra Low Input RNA",
-      "type": "RNA",
-      "provider": "Clontech Laboratories",
-      "catalog": "6348888",
-      "explanation": "double-stranded full length cDNA preparation (dT-priming), Conversion of cDNA into indexed libraries using i.e. Nextera DNA library preparation",
-      "input_requirements": "10 pg - 10 ng total RNA, RIN/RQN: 8",
-      "typical_application": "mRNA-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 13,
-    "fields": {
-      "name": "TruSeq Small RNA Sample Prep",
-      "type": "RNA",
-      "provider": "ILLUMINA",
-      "catalog": "RS-200-0012",
-      "explanation": "ligation of adapters to small RNA molecules, first strand cDNA synthesis, PCR enrichment for indexed library preparation, purification with polyacryamid gelelectrophoresis",
-      "input_requirements": "1 \u00b5g total RNA, RIN/RQN: 8",
-      "typical_application": "small RNA-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 14,
-    "fields": {
-      "name": "NEBNext Ultra RNA Library Prep (mRNA)",
-      "type": "RNA",
-      "provider": "NEB",
-      "catalog": "E7530S/L",
-      "explanation": "mRNA enrichment with poly-T oligo attached magnetic beads, cDNA prep (random priming), indexed library prep",
-      "input_requirements": "10 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
-      "typical_application": "mRNA-Seq",
-      "status": 1,
-      "comments": "alternative to TruSeq stranded mRNA, lower RNA input, no strand specificity",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 15,
-    "fields": {
-      "name": "NEBNext Ultra RNA Library Prep (total RNA)",
-      "type": "RNA",
-      "provider": "NEB",
-      "catalog": "E7530S/L",
-      "explanation": "removal of rRNA using target-specific oligos combined with RNaseH and DNaseI digestion, cDNA prep (random priming), indexed library prep",
-      "input_requirements": "100 ng - 1 \u00b5g total RNA, RIN/RQN: 8",
-      "typical_application": "RNA-Seq",
-      "status": 1,
-      "comments": "alternative to TruSeq stranded total RNA kit, alternate rRNA removal technology, no strand specificity",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 16,
-    "fields": {
-      "name": "Cel-Seq 2 for single cell RNA-Seq",
-      "type": "RNA",
-      "provider": "NA",
-      "catalog": "NA",
-      "explanation": "NA",
-      "input_requirements": "NA",
-      "typical_application": "single cell RNA-seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 17,
-    "fields": {
-      "name": "Quality Control",
-      "type": "DNA",
-      "provider": "-",
-      "catalog": "-",
-      "explanation": "-",
-      "input_requirements": "-",
-      "typical_application": "-",
-      "status": 1,
-      "comments": "Not a protocol. It's a special entry used for the Preparation Costs calculation for libraries.",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 19,
-    "fields": {
-      "name": "ChIP (std sonication) plus NEB II",
-      "type": "DNA",
-      "provider": "Deep Sequencing facility",
-      "catalog": "Version 1",
-      "explanation": "Standardized chromatin extraction (NEXSON + shearing), immunoprecipitation, DNA purification, library (NEB Next Ultra II)",
-      "input_requirements": "10,000 to 100,000 fixed cells per ChIP",
-      "typical_application": "ChIP-seq for histones and abundant TF",
-      "status": 1,
-      "comments": "procedure developed for gold standard epigenome production within the International Human Epigenome Consortium (IHEC). For additional details follow this publication: doi: 10.1093/nar/gkv1495",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 20,
-    "fields": {
-      "name": "Lexogen 3'mRNA-Seq",
-      "type": "RNA",
-      "provider": "Lexogen",
-      "catalog": "015UG009V0223",
-      "explanation": "3' Prime Seq",
-      "input_requirements": "500  ng total RNA",
-      "typical_application": "3' mRNA-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 21,
-    "fields": {
-      "name": "10xGenomics for single cell RNA-Seq",
-      "type": "RNA",
-      "provider": "10xgenomics",
-      "catalog": "NA",
-      "explanation": "NA",
-      "input_requirements": "Na",
-      "typical_application": "single cell RNA-seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 22,
-    "fields": {
-      "name": "ChIP RELACS high-throughput",
-      "type": "DNA",
-      "provider": "Deep Sequencing facility",
-      "catalog": "Version 2",
-      "explanation": "multiplexed ChIP for histones and TFs",
-      "input_requirements": "1,000 to 100,000 fixed cells per ChIP",
-      "typical_application": "high-throughput ChIP, quantitative studies",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 23,
-    "fields": {
-      "name": "ChIP RELACS using Std library",
-      "type": "DNA",
-      "provider": "Deep Sequencing facility",
-      "catalog": "Version 1",
-      "explanation": "The protocol uses the RELACS workflow but without the nuclei barcoding step. Library is prepared on purified DNA using the NEB workflow",
-      "input_requirements": "10,000 to 100,000 fixed cells per ChIP",
-      "typical_application": "enzymatic ChIP for small scale studies. Best suited for weakly bound TFs",
-      "status": 2,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 24,
-    "fields": {
-      "name": "NEBNext Low Input RNA Library Preparation",
-      "type": "RNA",
-      "provider": "NEB",
-      "catalog": "E6420",
-      "explanation": "prepration and amplification of full length cDNA, cDNA library preparation",
-      "input_requirements": "2 pg - 200 ng total RNA",
-      "typical_application": "mRNA-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 25,
-    "fields": {
-      "name": "ChIP Std protocol",
-      "type": "DNA",
-      "provider": "Deep Sequencing facility",
-      "catalog": "Version 1",
-      "explanation": "Nuclei extraction (NEXSON), chromatin shearing and immunoprecipitation",
-      "input_requirements": "100,000 to 5,000,000 cells",
-      "typical_application": "ChIP-seq for histones and abundant TF",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 26,
-    "fields": {
-      "name": "HI-C",
-      "type": "DNA",
-      "provider": "Deep Sequencing facility",
-      "catalog": "Version 5",
-      "explanation": "Optimized in situ Hi-C protocol for mammals or Drosophila",
-      "input_requirements": "2 million cells (Mammal), 40 million cells (Drosophila)",
-      "typical_application": "chromatin organization mapping",
-      "status": 1,
-      "comments": "Contact the facility for project discussion",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 27,
-    "fields": {
-      "name": "NEBNext Enzymatic Methyl-seq (EM-seq)",
-      "type": "DNA",
-      "provider": "NEB",
-      "catalog": "E7120",
-      "explanation": "Improved workflow for the detection of 5-mC and 5-hmC DNA modifications",
-      "input_requirements": "10-200 ng DNA",
-      "typical_application": "DNA methylation analysis",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 30,
-    "fields": {
-      "name": "Nanopore Direct RNA (SQK-RNA002)",
-      "type": "RNA",
-      "provider": "Oxford Nanopore Technologies",
-      "catalog": "SQK_RNA002",
-      "explanation": "Direct RNA Sequencing",
-      "input_requirements": "500 ng PolyA-RNA",
-      "typical_application": "full-length RNA-Seq, w/ modifications possible",
-      "status": 1,
-      "comments": "Kit is recommended for:\r\nnative RNA-Seq, exploration of modified bases",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 31,
-    "fields": {
-      "name": "QuantSeq 3\u2019 mRNA-Seq Library Prep FWD",
-      "type": "RNA",
-      "provider": "Lexogen",
-      "catalog": "015",
-      "explanation": "QuantSeq FWD contains the Illumina Read 1 linker sequence in the second strand synthesis primer, hence NGS reads are generated towards the poly(A) tail, directly reflecting the mRNA sequence. Recommended  for Gene Expression Analysis.",
-      "input_requirements": "100 pg - 500 ng total RNA",
-      "typical_application": "3' mRNA-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 32,
-    "fields": {
-      "name": "QuantSeq 3\u2019 mRNA-Seq Library Prep REV",
-      "type": "RNA",
-      "provider": "Lexogen",
-      "catalog": "016",
-      "explanation": "With QuantSeq Reverse (REV) it is possible to exactly pinpoint the 3\u2019 end in Read 1, hence to study the 3\u2019 UTR and alternative polyadenylation. With the Custom Sequencing Primer the first nucleotide of Reads 1 is the last nucleotide of the mRNA",
-      "input_requirements": "100 pg - 500 ng total RNA",
-      "typical_application": "3' mRNA-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 33,
-    "fields": {
-      "name": "Nanopore Custom Total RNA",
-      "type": "RNA",
-      "provider": "Custom + Oxford Nanopore Technologies",
-      "catalog": "Custom + SQK_PCB109",
-      "explanation": "Sequencing of full-length transcripts after ribo-depletion",
-      "input_requirements": "10 \u00b5g of very high quality RNA (RQN/RINe >9)",
-      "typical_application": "Full-length cDNA sequencing of ribo-depleted RNA",
-      "status": 1,
-      "comments": "Custom protocol to sequence full-length transcripts of (ribo-depleted) total RNA. Note that very high quality and quantity of input RNA is required. This custom protocol adds a poly-A tail to all RNA fragments, i.e. RNAs with and without native poly-A tail will be polyadenylated resulting in longer poly-A tails for RNAs with native poly-A tail and an artificial poly-A tail for RNAs without native poly-A tail.",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 34,
-    "fields": {
-      "name": "Nanopore Custom ncRNA",
-      "type": "RNA",
-      "provider": "Custom + Oxford Nanopore Technologies",
-      "catalog": "Custom + SQK_PCB109",
-      "explanation": "Sequencing of full-length ncRNA transcripts",
-      "input_requirements": "10 \u00b5g of very high quality RNA (RQN/RINe >9)",
-      "typical_application": "Full-length cDNA sequencing of ncRNA",
-      "status": 1,
-      "comments": "Custom protocol to sequence full-length transcripts of non-coding RNA. Note that very high quality and quantity of input RNA is required. Input RNA is first ribo- then mRNA depleted (using oligo-d(T)).\r\nThis custom protocol adds a poly-A tail to all RNA fragments; also those without native poly-A tail.",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 35,
-    "fields": {
-      "name": "NEBNext Multiplex Small RNALibrary Prep",
-      "type": "RNA",
-      "provider": "NEB",
-      "catalog": "E7300",
-      "explanation": "Small RNA library preparation from total RNA",
-      "input_requirements": "100 ng - 1 \u00b5g total RNA",
-      "typical_application": "small RNA-Seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 39,
-    "fields": {
-      "name": "CUT_and_x",
-      "type": "DNA",
-      "provider": "NA",
-      "catalog": "NA",
-      "explanation": "NA",
-      "input_requirements": "NA",
-      "typical_application": "CUTandRUN-seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 42,
-    "fields": {
-      "name": "Illumina Stranded Total RNA w/ Ribo-Zero Plus",
-      "type": "RNA",
-      "provider": "Illumina",
-      "catalog": "20040529",
-      "explanation": "ribo-depleted RNAseq with strand information",
-      "input_requirements": "10 - 1000 ng",
-      "typical_application": "Transcriptomics",
-      "status": 1,
-      "comments": "ribo-depleted RNAseq with strand information",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 43,
-    "fields": {
-      "name": "Illumina Stranded mRNA Prep, Ligation",
-      "type": "RNA",
-      "provider": "Illumina",
-      "catalog": "20040534",
-      "explanation": "stranded mRNA library preparation",
-      "input_requirements": "total RNA",
-      "typical_application": "Transcriptomics",
-      "status": 1,
-      "comments": "selection of mRNAs via poly-A capture, strand information",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 44,
-    "fields": {
-      "name": "Nanopore Ultra-Long DNA (SQK-ULK001)",
-      "type": "DNA",
-      "provider": "Oxford Nanopore Technologies + Circulomics",
-      "catalog": "SQK-ULK001; SKU NB-900-001-01; SKU NB-900-601-01",
-      "explanation": "Preparation of ultra high molecular weight (uHMW) DNA for sequencing with Oxford Nanopore devices",
-      "input_requirements": "6 M cells from culture, or 40\u00b5g of uHMW DNA in max. 750 ul buffer: 10 mM Tris.HCl, 1 mM EDTA pH 9,  0.02% v/v Triton X-100",
-      "typical_application": "Genome assembly/improvements, De-Novo",
-      "status": 1,
-      "comments": "Either cells from culture or already extracted uHMW gDNA can be submitted.\r\n\r\nFor cells: Please alert us at least 5 working days before you plan on submitting the cells. Then bring 6 M cells with a minimum of 90% living cells. Prior FACS sorting is recommended, please submit the sorting report along with the cells. First QC point is eluted gDNA. \r\n\r\nFor gDNA: Please make sure to elute gDNA in EB containing 0.02% Triton X-100 (10 mM Tris.HCl, 1 mM EDTA pH 9,  0.02% v/v Triton X-100 ). Required are 40\u00b5g of uHMW gDNA in max. 750 ul. Initial QC is done before beginning the library preparation.\r\n\r\nWe will contact you if the majority of your extracted gDNA is below 50kb or you do not have the minimum of 40\u00b5g required input.",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 45,
-    "fields": {
-      "name": "ATAC-seq",
-      "type": "DNA",
-      "provider": "Illumina and custom protocol",
-      "catalog": "custom protocol",
-      "explanation": "the protocol start with nuclei extraction and incubation of nuclei with Tn5, which will insert transposon in accessible chromatin regions. The regions will be then enriched by PCR.",
-      "input_requirements": "min 50,000 cells",
-      "typical_application": "open chromatin assay",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 48,
-    "fields": {
-      "name": "Nanopore DNAseq (SQK-LSK114)",
-      "type": "DNA",
-      "provider": "Oxford Nanopore Technologies",
-      "catalog": "SQK-LSK114",
-      "explanation": "DNA sequencing with barcoding option",
-      "input_requirements": "1 \u00b5g (or 100-200 fmol)",
-      "typical_application": "high-throughput DNAseq",
-      "status": 1,
-      "comments": "Recommended when high-throughput is required (typically 8+ Gb per flow cell). Recommended for DNA fragments of up to 50kb. PCR-free. Duplex reads with higher accuracies are available \u2013 please contact us if interested in these.",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 49,
-    "fields": {
-      "name": "Nanopore cDNA PCR (SQK-PCB111.24)",
-      "type": "RNA",
-      "provider": "Oxford Nanopore Technologies",
-      "catalog": "SQK-PCB111.24",
-      "explanation": "Sequencing of full-length transcripts",
-      "input_requirements": "4 ng PolyA RNA, 200 ng Total RNA",
-      "typical_application": "Full length cDNA sequencing",
-      "status": 1,
-      "comments": "This kit is highly recommended for users who would like to identify and quantify full-length transcripts want to explore isoforms, splice variants and fusion transcripts using full-length cDNAs have a low starting amount of RNA would like to generate high amounts of cDNA data wish to start from total RNA wish to multiplex samples to reduce price per sample.",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 50,
-    "fields": {
-      "name": "Chromium Next GEM Single Cell ATAC v2",
-      "type": "DNA",
-      "provider": "10x Genomics",
-      "catalog": "PN-1000390, PN-1000406",
-      "explanation": "single cell ATAC-seq based on Chromium Controller",
-      "input_requirements": "Nuclei solution, 155-7700 nuclei/\u00b5l",
-      "typical_application": "Chromatin Studies",
-      "status": 1,
-      "comments": "Used to determine the regulatory landscape of chromatin in hundreds to thousands of cells in a single sample.",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 51,
-    "fields": {
-      "name": "Chromium_NextGEM_SingleCell3Prime_GeneExpression_v3.1_DualIndex",
-      "type": "RNA",
-      "provider": "10x Genomics",
-      "catalog": "PN-1000268, PN-1000269",
-      "explanation": "NA",
-      "input_requirements": "NA",
-      "typical_application": "single cell RNA-seq",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 52,
-    "fields": {
-      "name": "Chromium_NextGEM_Multiome_ATAC",
-      "type": "DNA",
-      "provider": "10x Genomics",
-      "catalog": "PN000280, PN000281",
-      "explanation": "scATAC seq part for combined scATAC and scRNA libraries.",
-      "input_requirements": "500 - 10,000 nuclei",
-      "typical_application": "Chromatin/GEX studies",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 53,
-    "fields": {
-      "name": "Chromium_NextGEM_Multiome_GEX",
-      "type": "RNA",
-      "provider": "10x Genomics",
-      "catalog": "PN1000283, PN1000285",
-      "explanation": "scRNA seq part for combined scATAC and scRNA libraries.",
-      "input_requirements": "500 - 10,000 cells",
-      "typical_application": "Chromatin/GEX studies",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 55,
-    "fields": {
-      "name": "Nanopore Pore-C v2",
-      "type": "DNA",
-      "provider": "Nanopore and custom protocol",
-      "catalog": "custom",
-      "explanation": "the protocol measures long range interactions with long reads sequencing. Similar to Hi-C but without biotin selection of ligated fragments and coupled with long read",
-      "input_requirements": "5-10 milllions fixed cells",
-      "typical_application": "long range chromatin interactions",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 56,
-    "fields": {
-      "name": "ATAC-seq for fixed cells v1",
-      "type": "DNA",
-      "provider": "Deep Sequencing Facility",
-      "catalog": "v1",
-      "explanation": "open chromatin assay on formaldehyde fixed cells",
-      "input_requirements": "100,000 cells",
-      "typical_application": "open chromatin",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 57,
-    "fields": {
-      "name": "MuxATAC-seq for fixed cells v1",
-      "type": "DNA",
-      "provider": "Deep Sequencing Facility",
-      "catalog": "v1",
-      "explanation": "open chromatin assay on formaldehyde fixed cells using barcoded Tn5",
-      "input_requirements": "100,000 cells",
-      "typical_application": "open chromatin",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 58,
-    "fields": {
-      "name": "MUXscATAC-seq v3",
-      "type": "DNA",
-      "provider": "Deep Sequencing Facility",
-      "catalog": "v3",
-      "explanation": "open chromatin single cell ATAC-seq assay using 10x Genomics chromium technology and custom protocol for Tn5 sample barcoding",
-      "input_requirements": "100,000 cells (fresh)",
-      "typical_application": "open chromatin",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.libraryprotocol",
-    "pk": 59,
-    "fields": {
-      "name": "HiChIP v1",
-      "type": "DNA",
-      "provider": "Deep Sequencing Facility",
-      "catalog": "custom",
-      "explanation": "to discover long range interactions mediated by a specific factor",
-      "input_requirements": "15 million fixed cells",
-      "typical_application": "long range chromatin interactions",
-      "status": 1,
-      "comments": "",
-      "archived": false
-    }
-  }
 ]
