@@ -1,122 +1,122 @@
 [
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 1,
-    "fields": {
-      "name": "DNA (genomic)",
-      "type": "DNA",
-      "status": 1,
-      "archived": false
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 1,
+        "fields": {
+            "name": "DNA (genomic)",
+            "type": "DNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 2,
+        "fields": {
+            "name": "DNA (fragmented, i.e. Input plus ChIP)",
+            "type": "DNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 3,
+        "fields": {
+            "name": "DNA (cDNA)",
+            "type": "DNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 4,
+        "fields": {
+            "name": "DNA (Amplicons)",
+            "type": "DNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 5,
+        "fields": {
+            "name": "RNA (total)",
+            "type": "RNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 6,
+        "fields": {
+            "name": "RNA (mRNA)",
+            "type": "RNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 7,
+        "fields": {
+            "name": "RNA (rRNA depleted)",
+            "type": "RNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 8,
+        "fields": {
+            "name": "RNA (small RNA)",
+            "type": "RNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 9,
+        "fields": {
+            "name": "Fixed cells (specify antibody)",
+            "type": "DNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 10,
+        "fields": {
+            "name": "fixed cell pellets",
+            "type": "DNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 11,
+        "fields": {
+            "name": "Cell suspension",
+            "type": "DNA",
+            "status": 1,
+            "archived": false
+        }
+    },
+    {
+        "model": "sample.nucleicacidtype",
+        "pk": 12,
+        "fields": {
+            "name": "Cell suspension_RNA_methods",
+            "type": "RNA",
+            "status": 1,
+            "archived": false
+        }
     }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 2,
-    "fields": {
-      "name": "DNA (fragmented, i.e. Input plus ChIP)",
-      "type": "DNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 3,
-    "fields": {
-      "name": "DNA (cDNA)",
-      "type": "DNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 4,
-    "fields": {
-      "name": "DNA (Amplicons)",
-      "type": "DNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 5,
-    "fields": {
-      "name": "RNA (total)",
-      "type": "RNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 6,
-    "fields": {
-      "name": "RNA (mRNA)",
-      "type": "RNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 7,
-    "fields": {
-      "name": "RNA (rRNA depleted)",
-      "type": "RNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 8,
-    "fields": {
-      "name": "RNA (small RNA)",
-      "type": "RNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 9,
-    "fields": {
-      "name": "Fixed cells (specify antibody)",
-      "type": "DNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 10,
-    "fields": {
-      "name": "fixed cell pellets",
-      "type": "DNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 11,
-    "fields": {
-      "name": "Cell suspension",
-      "type": "DNA",
-      "status": 1,
-      "archived": false
-    }
-  },
-  {
-    "model": "sample.nucleicacidtype",
-    "pk": 12,
-    "fields": {
-      "name": "Cell suspension_RNA_methods",
-      "type": "RNA",
-      "status": 1,
-      "archived": false
-    }
-  }
 ]

@@ -1,145 +1,145 @@
 [
-  {
-    "model": "flowcell.lane",
-    "pk": 1,
-    "fields": {
-      "name": "Lane 1",
-      "pool": 1,
-      "loading_concentration": 3.0,
-      "phix": 1.0,
-      "completed": false
+    {
+        "model": "flowcell.lane",
+        "pk": 1,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 1,
+            "loading_concentration": 3.0,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 2,
+        "fields": {
+            "name": "Lane 2",
+            "pool": 2,
+            "loading_concentration": 3.0,
+            "phix": 10.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 3,
+        "fields": {
+            "name": "Lane 3",
+            "pool": 3,
+            "loading_concentration": 3.0,
+            "phix": 10.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 4,
+        "fields": {
+            "name": "Lane 4",
+            "pool": 4,
+            "loading_concentration": 3.0,
+            "phix": 10.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 5,
+        "fields": {
+            "name": "Lane 5",
+            "pool": 5,
+            "loading_concentration": 3.0,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 6,
+        "fields": {
+            "name": "Lane 6",
+            "pool": 6,
+            "loading_concentration": 3.0,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 7,
+        "fields": {
+            "name": "Lane 7",
+            "pool": 6,
+            "loading_concentration": 3.0,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 8,
+        "fields": {
+            "name": "Lane 8",
+            "pool": 7,
+            "loading_concentration": 3.0,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 9,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 9,
+            "loading_concentration": 9.0,
+            "phix": 15.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 10,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 11,
+            "loading_concentration": 1.8,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 11,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 12,
+            "loading_concentration": 12.0,
+            "phix": 1.0,
+            "completed": false
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 12,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 7,
+            "loading_concentration": null,
+            "phix": null,
+            "completed": true
+        }
+    },
+    {
+        "model": "flowcell.lane",
+        "pk": 13,
+        "fields": {
+            "name": "Lane 1",
+            "pool": 7,
+            "loading_concentration": null,
+            "phix": null,
+            "completed": false
+        }
     }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 2,
-    "fields": {
-      "name": "Lane 2",
-      "pool": 2,
-      "loading_concentration": 3.0,
-      "phix": 10.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 3,
-    "fields": {
-      "name": "Lane 3",
-      "pool": 3,
-      "loading_concentration": 3.0,
-      "phix": 10.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 4,
-    "fields": {
-      "name": "Lane 4",
-      "pool": 4,
-      "loading_concentration": 3.0,
-      "phix": 10.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 5,
-    "fields": {
-      "name": "Lane 5",
-      "pool": 5,
-      "loading_concentration": 3.0,
-      "phix": 1.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 6,
-    "fields": {
-      "name": "Lane 6",
-      "pool": 6,
-      "loading_concentration": 3.0,
-      "phix": 1.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 7,
-    "fields": {
-      "name": "Lane 7",
-      "pool": 6,
-      "loading_concentration": 3.0,
-      "phix": 1.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 8,
-    "fields": {
-      "name": "Lane 8",
-      "pool": 7,
-      "loading_concentration": 3.0,
-      "phix": 1.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 9,
-    "fields": {
-      "name": "Lane 1",
-      "pool": 9,
-      "loading_concentration": 9.0,
-      "phix": 15.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 10,
-    "fields": {
-      "name": "Lane 1",
-      "pool": 11,
-      "loading_concentration": 1.8,
-      "phix": 1.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 11,
-    "fields": {
-      "name": "Lane 1",
-      "pool": 12,
-      "loading_concentration": 12.0,
-      "phix": 1.0,
-      "completed": false
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 12,
-    "fields": {
-      "name": "Lane 1",
-      "pool": 7,
-      "loading_concentration": null,
-      "phix": null,
-      "completed": true
-    }
-  },
-  {
-    "model": "flowcell.lane",
-    "pk": 13,
-    "fields": {
-      "name": "Lane 1",
-      "pool": 7,
-      "loading_concentration": null,
-      "phix": null,
-      "completed": false
-    }
-  }
 ]

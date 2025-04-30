@@ -1,10 +1,10 @@
 [
-  {
-    "model": "library_sample_shared.barcodecounter",
-    "pk": 1,
-    "fields": {
-      "year": 2018,
-      "last_id": 321
+    {
+        "model": "library_sample_shared.barcodecounter",
+        "pk": 1,
+        "fields": {
+            "year": 2018,
+            "last_id": 321
+        }
     }
-  }
 ]

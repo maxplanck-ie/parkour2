@@ -1,92 +1,127 @@
 [
-  {
-    "model": "flowcell.flowcell",
-    "pk": 1,
-    "fields": {
-      "create_time": "2018-08-21T15:34:08.002Z",
-      "update_time": "2018-08-21T15:34:08.002Z",
-      "flowcell_id": "HWVGFBBXX",
-      "sequencer": 5,
-      "matrix": null,
-      "sequences": null,
-      "archived": false,
-      "lanes": [1, 2, 3, 4, 5, 6, 7, 8],
-      "requests": [2, 3, 4, 5, 6]
+    {
+        "model": "flowcell.flowcell",
+        "pk": 1,
+        "fields": {
+            "create_time": "2018-08-21T15:34:08.002Z",
+            "update_time": "2018-08-21T15:34:08.002Z",
+            "flowcell_id": "HWVGFBBXX",
+            "sequencer": 5,
+            "matrix": null,
+            "sequences": null,
+            "archived": false,
+            "lanes": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ],
+            "requests": [
+                2,
+                3,
+                4,
+                5,
+                6
+            ]
+        }
+    },
+    {
+        "model": "flowcell.flowcell",
+        "pk": 2,
+        "fields": {
+            "create_time": "2018-08-21T15:38:36.174Z",
+            "update_time": "2018-08-21T15:38:36.174Z",
+            "flowcell_id": "C34RF",
+            "sequencer": 1,
+            "matrix": null,
+            "sequences": null,
+            "archived": false,
+            "lanes": [
+                9
+            ],
+            "requests": [
+                7
+            ]
+        }
+    },
+    {
+        "model": "flowcell.flowcell",
+        "pk": 3,
+        "fields": {
+            "create_time": "2018-08-21T15:41:06.380Z",
+            "update_time": "2018-08-21T15:41:06.380Z",
+            "flowcell_id": "AH55FLAFXY",
+            "sequencer": 3,
+            "matrix": null,
+            "sequences": null,
+            "archived": false,
+            "lanes": [
+                10
+            ],
+            "requests": [
+                10
+            ]
+        }
+    },
+    {
+        "model": "flowcell.flowcell",
+        "pk": 4,
+        "fields": {
+            "create_time": "2018-08-21T15:47:04.363Z",
+            "update_time": "2018-08-21T15:47:04.363Z",
+            "flowcell_id": "BHLNCH3CX2",
+            "sequencer": 6,
+            "matrix": null,
+            "sequences": null,
+            "archived": false,
+            "lanes": [
+                11
+            ],
+            "requests": [
+                8
+            ]
+        }
+    },
+    {
+        "model": "flowcell.flowcell",
+        "pk": 5,
+        "fields": {
+            "create_time": "2023-03-17T16:51:17.091Z",
+            "update_time": "2023-03-17T16:51:17.091Z",
+            "flowcell_id": "bxbxbxbx",
+            "sequencer": 3,
+            "matrix": null,
+            "sequences": null,
+            "archived": false,
+            "lanes": [
+                12
+            ],
+            "requests": [
+                2
+            ]
+        }
+    },
+    {
+        "model": "flowcell.flowcell",
+        "pk": 6,
+        "fields": {
+            "create_time": "2023-07-17T16:06:28.778Z",
+            "update_time": "2023-07-17T16:06:28.778Z",
+            "flowcell_id": "e5yethethe",
+            "sequencer": 3,
+            "matrix": null,
+            "sequences": null,
+            "archived": false,
+            "lanes": [
+                13
+            ],
+            "requests": [
+                2
+            ]
+        }
     }
-  },
-  {
-    "model": "flowcell.flowcell",
-    "pk": 2,
-    "fields": {
-      "create_time": "2018-08-21T15:38:36.174Z",
-      "update_time": "2018-08-21T15:38:36.174Z",
-      "flowcell_id": "C34RF",
-      "sequencer": 1,
-      "matrix": null,
-      "sequences": null,
-      "archived": false,
-      "lanes": [9],
-      "requests": [7]
-    }
-  },
-  {
-    "model": "flowcell.flowcell",
-    "pk": 3,
-    "fields": {
-      "create_time": "2018-08-21T15:41:06.380Z",
-      "update_time": "2018-08-21T15:41:06.380Z",
-      "flowcell_id": "AH55FLAFXY",
-      "sequencer": 3,
-      "matrix": null,
-      "sequences": null,
-      "archived": false,
-      "lanes": [10],
-      "requests": [10]
-    }
-  },
-  {
-    "model": "flowcell.flowcell",
-    "pk": 4,
-    "fields": {
-      "create_time": "2018-08-21T15:47:04.363Z",
-      "update_time": "2018-08-21T15:47:04.363Z",
-      "flowcell_id": "BHLNCH3CX2",
-      "sequencer": 6,
-      "matrix": null,
-      "sequences": null,
-      "archived": false,
-      "lanes": [11],
-      "requests": [8]
-    }
-  },
-  {
-    "model": "flowcell.flowcell",
-    "pk": 5,
-    "fields": {
-      "create_time": "2023-03-17T16:51:17.091Z",
-      "update_time": "2023-03-17T16:51:17.091Z",
-      "flowcell_id": "bxbxbxbx",
-      "sequencer": 3,
-      "matrix": null,
-      "sequences": null,
-      "archived": false,
-      "lanes": [12],
-      "requests": [2]
-    }
-  },
-  {
-    "model": "flowcell.flowcell",
-    "pk": 6,
-    "fields": {
-      "create_time": "2023-07-17T16:06:28.778Z",
-      "update_time": "2023-07-17T16:06:28.778Z",
-      "flowcell_id": "e5yethethe",
-      "sequencer": 3,
-      "matrix": null,
-      "sequences": null,
-      "archived": false,
-      "lanes": [13],
-      "requests": [2]
-    }
-  }
 ]
