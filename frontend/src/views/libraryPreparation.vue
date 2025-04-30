@@ -841,7 +841,8 @@ export default {
     async getROCrateData() {
       try {
         const response = await axiosRef.get(
-          urlStringStart + "/api/generate_ro_crate/?sample_ids=3315,3316"
+          urlStringStart +
+            "/api/generate_ro_crate/?barcodes=24L003409,24L003524"
         );
 
         console.log(response.data);
@@ -1955,7 +1956,6 @@ body,
 
 <!--
 add validations according to old component: deleting, right click operations, copy paste on ctrl operations
-
 % Total: Incoming: editable for samples and libraries %, one decimal Preparation: do not shown same field is filled ofr samples Pooling show for libraries (from Incoming) show for samples from preparation
 export formulas don't refresh the values after concat
 
