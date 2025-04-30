@@ -76,9 +76,7 @@ router.register(r"pool_sizes", PoolSizeViewSet, basename="pool-size")
 router.register(
     r"libraries_and_samples", LibrarySampleTree, basename="libraries-and-samples"
 )
-router.register(
-    r"generate_ro_crate", GenerateROCrate, basename="generate-ro-crate"
-)
+router.register(r"generate_ro_crate", GenerateROCrate, basename="generate-ro-crate")
 router.register(r"libraries", LibraryViewSet, basename="libraries")
 router.register(r"samples", SampleViewSet, basename="samples")
 

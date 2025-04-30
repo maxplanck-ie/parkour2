@@ -5,20 +5,23 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0014_librarypreparationtemplate_and_more'),
+        ("common", "0014_librarypreparationtemplate_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='duty',
-            name='start_date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Start Date'),
+            model_name="duty",
+            name="start_date",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name="Start Date"
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalduty',
-            name='start_date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Start Date'),
+            model_name="historicalduty",
+            name="start_date",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name="Start Date"
+            ),
         ),
     ]
