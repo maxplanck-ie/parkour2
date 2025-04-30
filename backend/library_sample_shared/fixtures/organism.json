@@ -1,132 +1,158 @@
 [
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 1,
-    "fields": {
-      "name": "Other",
-      "scientific_name": null,
-      "taxon_id": null,
-      "archived": false
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 1,
+        "fields": {
+            "name": "Other",
+            "label": null,
+            "yaml": null,
+            "scientific_name": null,
+            "taxon_id": null,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 2,
+        "fields": {
+            "name": "human",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Homo sapiens",
+            "taxon_id": 9606,
+            "archived": true
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 3,
+        "fields": {
+            "name": "mouse",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Mus musculus",
+            "taxon_id": 10090,
+            "archived": true
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 4,
+        "fields": {
+            "name": "D. melanogaster (dm6)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Drosophila melanogaster",
+            "taxon_id": 7227,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 5,
+        "fields": {
+            "name": "D. rerio (GRCz11)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Danio rerio",
+            "taxon_id": 7955,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 6,
+        "fields": {
+            "name": "O. melastigma",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Oryzias melastigma",
+            "taxon_id": 30732,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 7,
+        "fields": {
+            "name": "P. marinus",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Petromyzon marinus",
+            "taxon_id": 7757,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 8,
+        "fields": {
+            "name": "A. gambiae (AgamP4)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Anopheles gambiae",
+            "taxon_id": 7165,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 9,
+        "fields": {
+            "name": "C. elegans (WS285)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Caenorhabditis elegans",
+            "taxon_id": 6239,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 10,
+        "fields": {
+            "name": "H. sapiens (GRCh37 / hg19)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Homo sapiens",
+            "taxon_id": null,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 11,
+        "fields": {
+            "name": "H. sapiens (GRCh38)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Homo sapiens",
+            "taxon_id": null,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 12,
+        "fields": {
+            "name": "M. musculus (GRCm38 / mm10)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Mus musculus",
+            "taxon_id": null,
+            "archived": false
+        }
+    },
+    {
+        "model": "library_sample_shared.organism",
+        "pk": 13,
+        "fields": {
+            "name": "M. musculus (GRCm39)",
+            "label": null,
+            "yaml": null,
+            "scientific_name": "Mus musculus",
+            "taxon_id": null,
+            "archived": false
+        }
     }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 2,
-    "fields": {
-      "name": "human",
-      "scientific_name": "Homo sapiens",
-      "taxon_id": 9606,
-      "archived": true
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 3,
-    "fields": {
-      "name": "mouse",
-      "scientific_name": "Mus musculus",
-      "taxon_id": 10090,
-      "archived": true
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 4,
-    "fields": {
-      "name": "D. melanogaster (dm6)",
-      "scientific_name": "Drosophila melanogaster",
-      "taxon_id": 7227,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 5,
-    "fields": {
-      "name": "D. rerio (GRCz11)",
-      "scientific_name": "Danio rerio",
-      "taxon_id": 7955,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 6,
-    "fields": {
-      "name": "O. melastigma",
-      "scientific_name": "Oryzias melastigma",
-      "taxon_id": 30732,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 7,
-    "fields": {
-      "name": "P. marinus",
-      "scientific_name": "Petromyzon marinus",
-      "taxon_id": 7757,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 8,
-    "fields": {
-      "name": "A. gambiae (AgamP4)",
-      "scientific_name": "Anopheles gambiae",
-      "taxon_id": 7165,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 9,
-    "fields": {
-      "name": "C. elegans (WS285)",
-      "scientific_name": "Caenorhabditis elegans",
-      "taxon_id": 6239,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 10,
-    "fields": {
-      "name": "H. sapiens (GRCh37 / hg19)",
-      "scientific_name": "Homo sapiens",
-      "taxon_id": null,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 11,
-    "fields": {
-      "name": "H. sapiens (GRCh38)",
-      "scientific_name": "Homo sapiens",
-      "taxon_id": null,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 12,
-    "fields": {
-      "name": "M. musculus (GRCm38 / mm10)",
-      "scientific_name": "Mus musculus",
-      "taxon_id": null,
-      "archived": false
-    }
-  },
-  {
-    "model": "library_sample_shared.organism",
-    "pk": 13,
-    "fields": {
-      "name": "M. musculus (GRCm39)",
-      "scientific_name": "Mus musculus",
-      "taxon_id": null,
-      "archived": false
-    }
-  }
 ]
