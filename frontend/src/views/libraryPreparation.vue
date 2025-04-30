@@ -1145,8 +1145,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1193,8 +1193,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1247,8 +1247,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1307,8 +1307,8 @@ export default {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1954,7 +1954,7 @@ body,
 </style>
 
 <!--
-add validations according to old component: deleting, right click operations, copy paste on ctrl operaitons
+add validations according to old component: deleting, right click operations, copy paste on ctrl operations
 
 % Total: Incoming: editable for samples and libraries %, one decimal Preparation: do not shown same field is filled ofr samples Pooling show for libraries (from Incoming) show for samples from preparation
 export formulas don't refresh the values after concat

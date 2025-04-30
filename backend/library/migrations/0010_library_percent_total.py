@@ -5,15 +5,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0009_rename_dilution_factor_library_removed_dilution_factor'),
+        ("library", "0009_rename_dilution_factor_library_removed_dilution_factor"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='library',
-            name='percent_total',
-            field=models.FloatField(default=100, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)], verbose_name='Smear Analysis (% Total)'),
+            model_name="library",
+            name="percent_total",
+            field=models.FloatField(
+                default=100,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(100),
+                ],
+                verbose_name="Smear Analysis (% Total)",
+            ),
         ),
     ]
