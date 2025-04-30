@@ -10,7 +10,9 @@
 
 We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libaries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value`.
 
-Various fields added for measuring units, biosafety levels, and GMO tracking. In detail:
+- We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libraries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value`.
+
+- Various fields added for measuring units, biosafety levels, and GMO tracking. In detail:
 
 > #### library_sample_shared.models.GenericLibrarySample
 >
