@@ -3,11 +3,15 @@
 ??.??.??
 ========
 
-- ...
+Non-breaking changes:
 
-We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libaries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value`.
+- Sequencing Depth for Samples and Libraries accepts 1 decimal position, and any positive values (before it would only take 10 as minimum.)
 
-Various fields added for measuring units, biosafety levels, and GMO tracking. In detail:
+Breaking changes:
+
+- We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libaries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value`.
+
+- Various fields added for measuring units, biosafety levels, and GMO tracking. In detail:
 
 > #### library_sample_shared.models.GenericLibrarySample
 >
@@ -58,7 +62,8 @@ Various fields added for measuring units, biosafety levels, and GMO tracking. In
 > - nM: Renamed to removed_nM (marked as not in use).
 > - qpcr_result: Renamed to removed_qpcr_result (marked as not in use).
 
-And, we introduced as a new model (`LibraryPreparationTemplate`) for managing XLSX spreadsheet files that work as templates during Export (functionality will be described in documentation because it deserves a page of its own.)
+- And, we introduced as a new model (`LibraryPreparationTemplate`) for managing XLSX spreadsheet files that work as templates during Export (functionality will be described in documentation because it deserves a page of its own.)
+
 
 24.12.09
 ========

@@ -48,6 +48,9 @@ DATABASES["readonly"] = dj_database_url.config(
 EXPLORER_CONNECTIONS = {"Default": "readonly"}
 EXPLORER_DEFAULT_CONNECTION = "readonly"
 
+# this experiment was abandoned, before re-establishing do check lederboards...
+# https://aider.chat/docs/leaderboards/by-release-date.html
+# https://openrouter.ai/models?fmt=cards&max_price=0&order=top-weekly
 EXPLORER_ASSISTANT_MODEL = {
     "name": "meta-llama/llama-3.1-8b-instruct:free",
     "max_tokens": 131072,

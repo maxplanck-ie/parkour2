@@ -1,3 +1,7 @@
+/* this experiment was abandoned, before re-establishing do check lederboards...
+https://aider.chat/docs/leaderboards/by-release-date.html
+https://openrouter.ai/models?fmt=cards&max_price=0&order=top-weekly
+*/
 {
     "openrouter/google/gemma-2-9b-it:free": {
         "max_tokens": 4096,

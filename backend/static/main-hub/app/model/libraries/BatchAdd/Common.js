@@ -116,7 +116,9 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     library_type: "presence",
     volume: "greaterthanten",
     read_length: "presence",
-    sequencing_depth: "greaterthanten",
+    sequencing_depth: "greaterthanzero",
+    // amplification_cycles: 'presence',
+    // concentration_method: 'presence',
     organism: "presence"
   }
 });

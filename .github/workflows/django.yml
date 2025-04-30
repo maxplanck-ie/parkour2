@@ -1,6 +1,11 @@
 name: Backend
 
 on:
+  workflow_run:
+    workflows:
+      - Update
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       debug_enabled:
@@ -9,7 +14,7 @@ on:
         required: false
         default: false
   push:
-    branches: ['develop']
+    branches: ['develop', 'update/dependencies']
   pull_request:
     types:
       - opened

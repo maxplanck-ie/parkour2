@@ -2,7 +2,7 @@
 #    uv pip compile --universal --python-version 3.12 backend/requirements/base.in -o backend/requirements/3.12/base.txt
 asgiref==3.8.1
     # via django
-attrs==25.1.0
+attrs==25.3.0
     # via
     #   jsonschema
     #   referencing
@@ -12,7 +12,7 @@ diff-match-patch==20241021
     # via django-import-export
 dj-database-url==2.3.0
     # via -r backend/requirements/base.in
-django==4.2.19
+django==4.2.20
     # via
     #   -r backend/requirements/base.in
     #   dj-database-url
@@ -29,7 +29,7 @@ django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd
     # via -r backend/requirements/base.in
 django-extensions==3.2.3
     # via -r backend/requirements/base.in
-django-import-export==4.3.6
+django-import-export==4.3.7
     # via -r backend/requirements/base.in
 django-linear-migrations==2.17.0
     # via -r backend/requirements/base.in
@@ -59,7 +59,7 @@ jsonschema-specifications==2024.10.1
     # via jsonschema
 lxml==5.3.1
     # via python-docx
-numpy==2.2.3
+numpy==2.2.4
     # via
     #   -r backend/requirements/base.in
     #   pandas
@@ -104,7 +104,7 @@ typing-extensions==4.12.2
     #   dj-database-url
     #   python-docx
     #   referencing
-tzdata==2025.1
+tzdata==2025.2
     # via
     #   django
     #   pandas
