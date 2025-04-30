@@ -29,7 +29,11 @@ logger = logging.getLogger("db")
 
 class LibrarySampleTree(viewsets.ViewSet):
     def filter_and_search(
-        self, queryset, search_string=None, status_filter=None, library_protocol_filter=None
+        self,
+        queryset,
+        search_string=None,
+        status_filter=None,
+        library_protocol_filter=None,
     ):
         """Helper function for both get_queryset and list action"""
         if search_string:
@@ -161,7 +165,8 @@ class LibrarySampleTree(viewsets.ViewSet):
             ]  # omit rows (requests) that would be empty upon expanding (clicking plus sign)
 
             return Response({"success": True, "children": filtered_data})
-    
+
+
 class GenerateROCrate(viewsets.ViewSet):
     def is_json_serializable(self, value):
         try:
@@ -184,7 +189,9 @@ class GenerateROCrate(viewsets.ViewSet):
                 if isinstance(value, Model):
                     result[field_name] = self.serialize_model_instance(value)
                 else:
-                    result[field_name] = value if self.is_json_serializable(value) else str(value)
+                    result[field_name] = (
+                        value if self.is_json_serializable(value) else str(value)
+                    )
             except Exception:
                 result[field_name] = None
         return result
@@ -207,7 +214,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "organism",
                 "index_type",
                 "librarypreparation",
-                "pooling"
+                "pooling",
             ).filter(id__in=sample_ids)
 
             for sample in samples:
@@ -220,7 +227,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "read_length",
                 "index_type",
                 "organism",
-                "test"
+                "test",
             ).filter(id__in=library_ids)
 
             for lib in libraries:
@@ -235,7 +242,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "organism",
                 "index_type",
                 "librarypreparation",
-                "pooling"
+                "pooling",
             ).filter(request_id__in=barcodes)
 
             for sample in sample_req_matches:
@@ -247,7 +254,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "read_length",
                 "index_type",
                 "organism",
-                "test"
+                "test",
             ).filter(request_id__in=barcodes)
 
             for lib in library_req_matches:
@@ -262,7 +269,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "organism",
                 "index_type",
                 "librarypreparation",
-                "pooling"
+                "pooling",
             ).filter(barcode__in=barcodes)
 
             for sample in sample_bar_matches:
@@ -274,7 +281,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "read_length",
                 "index_type",
                 "organism",
-                "test"
+                "test",
             ).filter(barcode__in=barcodes)
 
             for lib in library_bar_matches:
@@ -296,35 +303,31 @@ class GenerateROCrate(viewsets.ViewSet):
         #     #         "organism",
         #     #     ).get(pk=library_id)),
         #         Prefetch("samples", queryset=Sample.objects.filter(barcode=barcode)))
-        
+
         # obj = request_qs.first()  # or get(), depending
         # request_data = RequestChildrenNodesSerializer(obj).data
 
         if not ls_data:
-            return Response({"success": False, "message": "No matching library or sample found."}, status=404)
+            return Response(
+                {"success": False, "message": "No matching library or sample found."},
+                status=404,
+            )
 
-        ro_crate = {
-            "@context": "https://w3id.org/ro/crate/1.1/context",
-            "@graph": []
-        }
+        ro_crate = {"@context": "https://w3id.org/ro/crate/1.1/context", "@graph": []}
 
         ro_metadata = {
             "@id": "ro-crate-metadata.json",
             "@type": "CreativeWork",
-            "conformsTo": {
-                "@id": "https://w3id.org/ro/crate/1.1"
-            },
-            "about": {
-                "@id": "./"
-            }
+            "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"},
+            "about": {"@id": "./"},
         }
 
         ro_dataset = {
             "@id": "./",
             "@type": "Dataset",
             "name": "ISA Sample or Library Record",
-            "hasPart": []
             "datePublished": timezone.now().isoformat(),
+            "hasPart": [],
         }
 
         # for item in data:
@@ -354,6 +357,7 @@ class GenerateROCrate(viewsets.ViewSet):
         ro_crate["@graph"].insert(3, request_data)
 
         return JsonResponse(ro_crate, safe=False)
+
 
 class LibraryViewSet(LibrarySampleBaseViewSet):
     serializer_class = LibrarySerializer
