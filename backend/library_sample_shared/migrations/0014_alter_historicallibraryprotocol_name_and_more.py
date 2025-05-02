@@ -3,7 +3,10 @@
 import django.core.validators
 import re
 from django.db import migrations, models
+import django.db.models.deletion
+import simple_history.models
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -56,13 +59,15 @@ def clean_library_protocol_names(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library_sample_shared", "0014_historicalindexpair"),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        (
+            "library_sample_shared",
+            "0013_alter_indexpair_char_coord_historicalorganism_and_more",
+        ),
     ]
 
     operations = [
-        # First clean the data
         migrations.RunPython(clean_library_protocol_names, migrations.RunPython.noop),
-        # Then add the validators
         migrations.AlterField(
             model_name="historicallibraryprotocol",
             name="name",
@@ -70,7 +75,7 @@ class Migration(migrations.Migration):
                 max_length=150,
                 validators=[
                     django.core.validators.RegexValidator(
-                        r"^[a-zA-Z0-9_\- \(\):\.\']+$",
+                        "^[a-zA-Z0-9_\\- \\(\\):\\.\\']+$",
                         "Only alphanumeric characters, spaces, dashes, underscores, parentheses, colons, dots, and single quotes are allowed.",
                     )
                 ],
@@ -84,11 +89,108 @@ class Migration(migrations.Migration):
                 max_length=150,
                 validators=[
                     django.core.validators.RegexValidator(
-                        r"^[a-zA-Z0-9_\- \(\):\.\']+$",
+                        "^[a-zA-Z0-9_\\- \\(\\):\\.\\']+$",
                         "Only alphanumeric characters, spaces, dashes, underscores, parentheses, colons, dots, and single quotes are allowed.",
                     )
                 ],
                 verbose_name="Name",
             ),
+        ),
+        migrations.CreateModel(
+            name="HistoricalIndexPair",
+            fields=[
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "char_coord",
+                    models.CharField(
+                        max_length=1,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^[A-Z]$",
+                                "Only capital alphabetical characters are allowed.",
+                            )
+                        ],
+                        verbose_name="Character Coordinate",
+                    ),
+                ),
+                (
+                    "num_coord",
+                    models.PositiveSmallIntegerField(
+                        validators=[django.core.validators.MinValueValidator(1)],
+                        verbose_name="Numeric Coordinate",
+                    ),
+                ),
+                (
+                    "archived",
+                    models.BooleanField(default=False, verbose_name="Archived"),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "index1",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="library_sample_shared.indexi7",
+                        verbose_name="Index 1",
+                    ),
+                ),
+                (
+                    "index2",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="library_sample_shared.indexi5",
+                        verbose_name="Index 2",
+                    ),
+                ),
+                (
+                    "index_type",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="library_sample_shared.indextype",
+                        verbose_name="Index Type",
+                    ),
+                ),
+            ],
+            options={
+                "verbose_name": "historical Index Pair",
+                "verbose_name_plural": "historical Index Pairs",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
+            },
+            bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
     ]
