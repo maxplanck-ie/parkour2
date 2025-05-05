@@ -7,111 +7,185 @@ import library_sample_shared.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library_sample_shared', '0014_alter_historicallibraryprotocol_name_and_more'),
-        ('sample', '0008_delete_historicalsample'),
+        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("sample", "0008_delete_historicalsample"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='nucleicacidtype',
-            options={'verbose_name': 'Input Type', 'verbose_name_plural': 'Input Types'},
+            name="nucleicacidtype",
+            options={
+                "verbose_name": "Input Type",
+                "verbose_name_plural": "Input Types",
+            },
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='amplification_cycles',
-            new_name='removed_amplification_cycles',
+            model_name="sample",
+            old_name="amplification_cycles",
+            new_name="removed_amplification_cycles",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='concentration_method_facility',
-            new_name='removed_concentration_method_facility',
+            model_name="sample",
+            old_name="concentration_method_facility",
+            new_name="removed_concentration_method_facility",
         ),
         migrations.RenameField(
-            model_name='sample',
-            old_name='dilution_factor',
-            new_name='removed_dilution_factor',
+            model_name="sample",
+            old_name="dilution_factor",
+            new_name="removed_dilution_factor",
         ),
         migrations.RemoveField(
-            model_name='sample',
-            name='concentration',
+            model_name="sample",
+            name="concentration",
         ),
         migrations.RemoveField(
-            model_name='sample',
-            name='concentration_facility',
+            model_name="sample",
+            name="concentration_facility",
         ),
         migrations.RemoveField(
-            model_name='sample',
-            name='concentration_method',
+            model_name="sample",
+            name="concentration_method",
         ),
         migrations.RemoveField(
-            model_name='sample',
-            name='equal_representation_nucleotides',
+            model_name="sample",
+            name="equal_representation_nucleotides",
         ),
         migrations.AddField(
-            model_name='sample',
-            name='biosafety_level',
-            field=models.CharField(choices=[('bsl1', 'BSL1'), ('bsl2', 'BSL2')], max_length=50, null=True, verbose_name='Biosafety Level'),
+            model_name="sample",
+            name="biosafety_level",
+            field=models.CharField(
+                choices=[("bsl1", "BSL1"), ("bsl2", "BSL2")],
+                max_length=50,
+                null=True,
+                verbose_name="Biosafety Level",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='gmo',
-            field=models.BooleanField(blank=True, null=True, verbose_name='Genetically Modified Organism'),
+            model_name="sample",
+            name="gmo",
+            field=models.BooleanField(
+                blank=True, null=True, verbose_name="Genetically Modified Organism"
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='gmo_facility',
-            field=models.BooleanField(blank=True, null=True, verbose_name='Genetically Modified Organism (facility)'),
+            model_name="sample",
+            name="gmo_facility",
+            field=models.BooleanField(
+                blank=True,
+                null=True,
+                verbose_name="Genetically Modified Organism (facility)",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='measured_value',
-            field=models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(-1)], verbose_name='Measured Value'),
+            model_name="sample",
+            name="measured_value",
+            field=models.FloatField(
+                blank=True,
+                null=True,
+                validators=[django.core.validators.MinValueValidator(-1)],
+                verbose_name="Measured Value",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='measured_value_facility',
-            field=models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(-1)], verbose_name='Measured Value (facility)'),
+            model_name="sample",
+            name="measured_value_facility",
+            field=models.FloatField(
+                blank=True,
+                null=True,
+                validators=[django.core.validators.MinValueValidator(-1)],
+                verbose_name="Measured Value (facility)",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='measuring_unit',
-            field=models.CharField(blank=True, choices=[('concentration', 'ng/µl (Concentration)'), ('m', 'M (Cells)'), ('-', 'Unknown')], max_length=50, null=True, verbose_name='Measuring Unit'),
+            model_name="sample",
+            name="measuring_unit",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("concentration", "ng/µl (Concentration)"),
+                    ("m", "M (Cells)"),
+                    ("-", "Unknown"),
+                ],
+                max_length=50,
+                null=True,
+                verbose_name="Measuring Unit",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='measuring_unit_facility',
-            field=models.CharField(blank=True, choices=[('concentration', 'ng/µl (Concentration)'), ('m', 'M (Cells)'), ('-', 'Unknown')], max_length=50, null=True, verbose_name='Measuring Unit (facility)'),
+            model_name="sample",
+            name="measuring_unit_facility",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("concentration", "ng/µl (Concentration)"),
+                    ("m", "M (Cells)"),
+                    ("-", "Unknown"),
+                ],
+                max_length=50,
+                null=True,
+                verbose_name="Measuring Unit (facility)",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='percent_total',
-            field=models.FloatField(default=100, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)], verbose_name='Smear Analysis (% Total)'),
+            model_name="sample",
+            name="percent_total",
+            field=models.FloatField(
+                default=100,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(100),
+                ],
+                verbose_name="Smear Analysis (% Total)",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='removed_concentration_method',
-            field=models.ForeignKey(blank=True, null=True, on_delete=models.SET(library_sample_shared.models.get_removed_concentrationmethod), to='library_sample_shared.concentrationmethod', verbose_name='Concentration Method'),
+            model_name="sample",
+            name="removed_concentration_method",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=models.SET(
+                    library_sample_shared.models.get_removed_concentrationmethod
+                ),
+                to="library_sample_shared.concentrationmethod",
+                verbose_name="Concentration Method",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='removed_equal_representation_nucleotides',
-            field=models.BooleanField(blank=True, default=False, verbose_name='Equal Representation of Nucleotides'),
+            model_name="sample",
+            name="removed_equal_representation_nucleotides",
+            field=models.BooleanField(
+                blank=True,
+                default=False,
+                verbose_name="Equal Representation of Nucleotides",
+            ),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='volume',
-            field=models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(10)], verbose_name='Volume'),
+            model_name="sample",
+            name="volume",
+            field=models.FloatField(
+                blank=True,
+                null=True,
+                validators=[django.core.validators.MinValueValidator(10)],
+                verbose_name="Volume",
+            ),
         ),
         migrations.AlterField(
-            model_name='sample',
-            name='nucleic_acid_type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='sample.nucleicacidtype', verbose_name='Input Type'),
+            model_name="sample",
+            name="nucleic_acid_type",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="sample.nucleicacidtype",
+                verbose_name="Input Type",
+            ),
         ),
         migrations.AlterField(
-            model_name='sample',
-            name='size_distribution_facility',
-            field=models.FloatField(blank=True, null=True, verbose_name='Size Distribution'),
+            model_name="sample",
+            name="size_distribution_facility",
+            field=models.FloatField(
+                blank=True, null=True, verbose_name="Size Distribution"
+            ),
         ),
     ]
