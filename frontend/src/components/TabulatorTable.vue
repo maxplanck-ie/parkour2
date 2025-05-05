@@ -289,7 +289,7 @@ export default {
                   hasValidationErrors = true;
                   errors.push({
                     barcode: rowData.barcode,
-                    message: `Cell ${cellNumber}: Editing is not allowd in this cell.`
+                    message: `Cell ${cellNumber}: Editing is not allowed in this cell.`
                   });
                   return;
                 }
