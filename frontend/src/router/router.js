@@ -3,6 +3,7 @@ import dutiesView from "../views/dutiesView.vue";
 import vueApp from "../vueApp.vue";
 import IncomingLibrariesSamples from "../views/incomingLibrariesSamples.vue";
 import libraryPreparation from "../views/libraryPreparation.vue";
+import pooling from "../views/pooling.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,11 @@ const router = createRouter({
           path: "library_preparation",
           name: "Library Preparation",
           component: libraryPreparation
+        },
+        {
+          path: "Pooling",
+          name: "Pooling",
+          component: pooling
         }
       ]
     }

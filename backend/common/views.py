@@ -93,7 +93,7 @@ def get_navigation_tree(request):
             {
                 "text": "Pooling",
                 "iconCls": "x-fa fa-sort-amount-desc",
-                "viewType": "pooling",
+                "viewType": "pooling-vue",
                 "leaf": True,
             },
             {

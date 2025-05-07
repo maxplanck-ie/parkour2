@@ -841,8 +841,7 @@ export default {
     async getROCrateData() {
       try {
         const response = await axiosRef.get(
-          urlStringStart +
-            "/api/generate_ro_crate/?barcodes=24L003409,24L003524"
+          urlStringStart + "/api/generate_ro_crate/?barcodes=25L005612"
         );
 
         console.log(response.data);
