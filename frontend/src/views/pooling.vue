@@ -65,9 +65,7 @@
           />
         </svg>
       </div>
-      <div class="header-title" style="display: inline">
-        Pooling
-      </div>
+      <div class="header-title" style="display: inline">Pooling</div>
 
       <!-- Sticky right section for search, and select columns -->
       <div class="sticky-actions">
