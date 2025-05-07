@@ -206,7 +206,7 @@ class GenerateROCrate(viewsets.ViewSet):
         cleaned_data = {}
 
         for key, value in data.items():
-            if key in keys_to_remove or key.startswith("removed_") or value is None:
+            if key in keys_to_remove or key.startswith("removed_"):
                 continue
 
             if isinstance(value, dict):

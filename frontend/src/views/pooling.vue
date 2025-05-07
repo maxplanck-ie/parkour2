@@ -626,7 +626,7 @@ const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
 export default {
-  name: "LibraryPreparation",
+  name: "Pooling",
   components: {
     TabulatorTable
   },
