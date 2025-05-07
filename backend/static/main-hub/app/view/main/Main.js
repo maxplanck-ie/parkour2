@@ -14,7 +14,7 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.librarypreparation.LibraryPreparation",
     "MainHub.view.librarypreparationvue.LibraryPreparationVue",
     "MainHub.view.pooling.Pooling",
-    "MainHub.view.pooling.PoolingVue",
+    "MainHub.view.poolingvue.PoolingVue",
     "MainHub.view.flowcell.Flowcells",
     "MainHub.view.invoicing.Invoicing",
     "MainHub.view.usage.Usage",
