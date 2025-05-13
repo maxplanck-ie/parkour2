@@ -1,7 +1,6 @@
 import logging
 import operator
 import json
-import datetime
 from functools import reduce
 
 from common.utils import retrieve_group_items
@@ -311,7 +310,7 @@ class GenerateROCrate(viewsets.ViewSet):
             "@id": "./",
             "@type": "Dataset",
             "name": "ISA Sample or Library Record",
-            "datePublished": datetime.datetime.now().isoformat(),
+            "datePublished": timezone.now().isoformat(),
             "hasPart": [],
         }
 
