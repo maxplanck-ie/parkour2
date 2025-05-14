@@ -9,9 +9,11 @@ Non-breaking changes:
 
 Breaking changes:
 
-- We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libraries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value`.
+- We've a new frontend using [Tabulator](https://www.tabulator.info) and VueJS for the submodules of staff users. There are several changes to models, most notable Samples and Libraries.
 
-- Various fields added for measuring units, biosafety levels, and GMO tracking. <details><summary>Click here to see detailed information on models' changes.</summary>
+- Several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value + measured_unit`.
+
+- Various fields added for measurements, biosafety, and tracking. <details><summary>Click here to see detailed information on models' changes.</summary>
 
     #### library_sample_shared.models.GenericLibrarySample
     New Fields:
