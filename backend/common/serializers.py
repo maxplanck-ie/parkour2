@@ -27,6 +27,7 @@ class LibraryPreparationTemplateSerializer(ModelSerializer):
         model = LibraryPreparationTemplate
         fields = ["id", "name", "file", "uploaded_at"]
 
+
 class PoolingTemplateSerializer(ModelSerializer):
     class Meta:
         model = PoolingTemplate
