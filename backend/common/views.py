@@ -26,7 +26,7 @@ from .serializers import (
     DutySerializer,
     UserSerializer,
     LibraryPreparationTemplateSerializer,
-    PoolingTemplateSerializer
+    PoolingTemplateSerializer,
 )
 
 User = get_user_model()
@@ -374,7 +374,7 @@ class LibraryPreparationTemplateViewSet(viewsets.ModelViewSet):
             return response
         except Exception as e:
             return Response({"error": str(e)}, status=500)
-        
+
 
 class PoolingTemplateViewSet(viewsets.ModelViewSet):
     queryset = PoolingTemplate.objects.order_by("-uploaded_at")
