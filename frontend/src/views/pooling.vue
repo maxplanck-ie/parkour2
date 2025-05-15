@@ -699,7 +699,9 @@ export default {
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 1px;">
-        | Pool Size: ${totalDepth}M reads (${pool_size}) ${comment ? "| Comment: " + comment : ""}
+        | Pool Size: ${totalDepth}M reads (${pool_size}) ${
+          comment ? "| Comment: " + comment : ""
+        }
     </span>
   </div>
 </div>
@@ -821,6 +823,7 @@ export default {
           pool_name: element.pool_name || "",
           pool_size: element.pool_size || "",
           percentage_library: element.percentage_library || "",
+          combined_smear_analysis: element.combined_smear_analysis || "",
           comment: element.comment || "",
           status: element.status || "",
           barcode:
@@ -917,7 +920,7 @@ export default {
           field: "request_name",
           minWidth: 140,
           headerFilter: true,
-          headerTooltip: "Request",
+          headerTooltip: "Request ID",
           visible: true,
           frozen: true,
           cssClass: "right-border",
@@ -936,7 +939,7 @@ export default {
           field: "name",
           minWidth: 60,
           headerFilter: true,
-          headerTooltip: "Sample Name",
+          headerTooltip: "Library Name",
           visible: true,
           frozen: true,
           cssClass: "right-border",
@@ -1013,7 +1016,7 @@ export default {
         },
         {
           title: "% Total",
-          field: "smear_analysis",
+          field: "combined_smear_analysis",
           minWidth: 60,
           width: "6%",
           headerVertical: false,
@@ -1023,14 +1026,7 @@ export default {
           contextMenu: () => this.cellContextMenu(true, false, false),
           formatter: (cell) => {
             const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
+            return this.ellipsisContainer(rawValue + "%" || "-");
           }
         },
         {
@@ -1039,7 +1035,7 @@ export default {
           minWidth: 60,
           width: "6%",
           headerVertical: false,
-          headerTooltip: "Library Size Distribution (bp)",
+          headerTooltip: "Mean Fragment Size (bp)",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -1061,7 +1057,7 @@ export default {
           minWidth: 60,
           width: "6%",
           headerVertical: false,
-          headerTooltip: "Library Size Distribution (bp)",
+          headerTooltip: "Sequencing Depth (M)",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -1079,24 +1075,17 @@ export default {
         },
         {
           title: "%",
-          field: "smear_analysis",
+          field: "percentage_library",
           minWidth: 60,
           width: "6%",
           headerVertical: false,
-          headerTooltip: "Smear Analysis (% Total)",
+          headerTooltip: "% Library in Pool",
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
           formatter: (cell) => {
             const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
+            return this.ellipsisContainer(rawValue || "-");
           }
         },
         {
@@ -1711,9 +1700,7 @@ export default {
             const match = String(str).match(/^(\d+)_/);
             return match ? parseInt(match[1], 10) : 0;
           };
-          const protocolCompare = a.library_protocol_name?.localeCompare(
-            b.library_protocol_name
-          );
+          const protocolCompare = a.pool_name?.localeCompare(b.pool_name);
           if (protocolCompare !== 0) return protocolCompare;
           const aNum = getRequestNum(a.request_name);
           const bNum = getRequestNum(b.request_name);
@@ -1736,29 +1723,6 @@ export default {
           .join("_");
         const filename = `${formattedDate}_${requestIds}_pooling.xlsx`;
         const wb = new ExcelJS.Workbook();
-
-        const parkourSheet = wb.addWorksheet("Parkour");
-        parkourSheet.columns = [
-          { header: "Request", key: "request_name", width: 25 },
-          { header: "Barcode", key: "barcode", width: 15 },
-          { header: "Name", key: "name", width: 20 },
-          { header: "Date", key: "create_time", width: 15 },
-          { header: "Protocol", key: "library_protocol_name", width: 20 },
-          {
-            header: "Comment Library/Sample",
-            key: "comments_library_sample",
-            width: 25
-          },
-          { header: "Pool", key: "pool_name", width: 10 },
-          { header: "Index Type", key: "index_type", width: 20 },
-          { header: "I7 ID", key: "index_i7_id", width: 20 },
-          { header: "I5 ID", key: "index_i5_id", width: 20 },
-          { header: "Coordinate", key: "coordinate", width: 10 },
-          { header: "Unit", key: "measuring_unit_facility", width: 15 },
-          { header: "Amount", key: "measured_value_facility", width: 15 }
-        ];
-        exportRows.forEach((row) => parkourSheet.addRow(row));
-
         if (this.selectedFile !== "without-file") {
           const response = await axiosRef.get(
             `${urlStringStart}/api/pooling-templates/${this.selectedFile.id}/download/`,
@@ -1770,6 +1734,33 @@ export default {
             wb.removeWorksheet("Parkour");
           }
         }
+
+        const parkourSheet = wb.addWorksheet("Parkour");
+        parkourSheet.columns = [
+          { header: "Pool", key: "pool_name", width: 20 },
+          { header: "Request", key: "request_name", width: 25 },
+          { header: "Name", key: "name", width: 25 },
+          { header: "Barcode", key: "barcode", width: 15 },
+          { header: "Date", key: "create_time", width: 15 },
+          {
+            header: "Concentration Library",
+            key: "concentration_library",
+            width: 20
+          },
+          { header: "% Total", key: "combined_smear_analysis", width: 20 },
+          { header: "bp", key: "mean_fragment_size", width: 20 },
+          { header: "Depth (M)", key: "sequencing_depth", width: 20 },
+          { header: "%", key: "percentage_library", width: 20 },
+          { header: "Coord", key: "coordinate", width: 10 },
+          { header: "I7 ID", key: "index_i7_id", width: 20 },
+          { header: "Index I7", key: "index_i7", width: 20 },
+          { header: "I5 ID", key: "index_i5_id", width: 20 },
+          { header: "Index I5", key: "index_i5", width: 20 }
+        ];
+        exportRows.forEach((row) => {
+          parkourSheet.addRow(row);
+        });
+
         const worksheets = wb._worksheets;
         let parkourWS = null;
         worksheets.forEach((sheet) => {
@@ -1935,15 +1926,9 @@ body,
 </style>
 
 <!--
-red group styling
-export columns changes
 destroy pool and edit comment icon
 change main pooling icon
-which fields to search
 search shouldn't show the groups if no result matches
-what sorting order
-
-check quality check
-check grey rows logic
-check red groups logic
+sorting order
+while exporting and only grey rows exist on screen, then it shouldn't export any row
 -->

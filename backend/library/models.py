@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from library_sample_shared.models import GenericLibrarySample
 
@@ -24,6 +24,12 @@ class Library(GenericLibrarySample):
         "Mean Fragment Size",
         null=True,
         blank=True,
+    )
+
+    percent_total = models.FloatField(
+        "Smear Analysis (% Total)",
+        default=100,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
 
     removed_qpcr_result = models.FloatField(

@@ -733,7 +733,7 @@ export default {
   },
   mounted() {
     this.getLibrariesSamples();
-    this.getROCrateData();
+    // this.getROCrateData();
     this.setColumns();
     this.fetchExportTemplates();
 
@@ -1954,8 +1954,8 @@ body,
 </style>
 
 <!--
+fix sorting in 3rd sheet and export
 add validations according to old component: deleting, right click operations, copy paste on ctrl operations
-% Total: Incoming: editable for samples and libraries %, one decimal Preparation: do not shown same field is filled ofr samples Pooling show for libraries (from Incoming) show for samples from preparation
 export formulas don't refresh the values after concat
 
 modify the admin panel
