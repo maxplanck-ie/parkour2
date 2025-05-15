@@ -211,3 +211,16 @@ class LibraryPreparationTemplate(models.Model):
     class Meta:
         verbose_name = "Library Preparation Template"
         verbose_name_plural = "Templates ➜ Library Preparation"
+
+class PoolingTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/pooling/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Pooling Template"
+        verbose_name_plural = "Templates ➜ Pooling"
