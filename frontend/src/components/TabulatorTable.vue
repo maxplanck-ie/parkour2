@@ -638,6 +638,28 @@ export default {
           }
           break;
 
+        case "search_pooling":
+          if (keyword !== "") {
+            this.tableFiltersState.search = [
+              [
+                { field: "name", type: "like", value: keyword },
+                { field: "request_name", type: "like", value: keyword },
+                { field: "pool_name", type: "like", value: keyword },
+                { field: "barcode", type: "like", value: keyword },
+                {
+                  field: "comments_library_sample",
+                  type: "like",
+                  value: keyword
+                },
+                { field: "comments", type: "like", value: keyword },
+                { field: "comments_facility", type: "like", value: keyword }
+              ]
+            ];
+          } else {
+            delete this.tableFiltersState.search;
+          }
+          break;
+
         case "showLibraries":
           const foundInL = typesIn.find((item) => item.value === "L");
           if (keyword === true && !foundInL) {

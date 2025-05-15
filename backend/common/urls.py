@@ -11,6 +11,12 @@ router.register(
     basename="library_preparation_template",
 )
 
+router.register(
+    r"pooling-templates",
+    views.PoolingTemplateViewSet,
+    basename="pooling_template",
+)
+
 urlpatterns = [
     path("", views.index, name="index"),
     path("get_navigation_tree/", views.get_navigation_tree, name="get_navigation_tree"),
