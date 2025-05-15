@@ -397,6 +397,13 @@ export default {
           },
           { column: "library_protocol_name", dir: "asc" }
         ],
+        rowFormatter: (row) => {
+          const data = row.getData();
+          if (data.record_type === "Sample" && (data.status === 2 || data.status === -2)) {
+            row.getElement().style.opacity = "0.6";
+            row.getElement().style.backgroundColor = "#f5f5f5";
+          }
+        },
         groupHeader: (value, count, data) => {
           const pool_size = data[0] && data[0].pool_size;
           const totalDepth = data.reduce(
@@ -404,8 +411,15 @@ export default {
             0
           );
           const comment = data[0] && data[0].comment;
+
+          const numMissingSamples = data.filter(
+            item => item.record_type === "Sample" && item.status < 3
+          ).length;
+
+          const headerClass = numMissingSamples > 0 ? "pool-header-red" : "pool-header-green";
+
           return `
-  <div style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="${headerClass}" style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
@@ -444,6 +458,26 @@ export default {
         </svg>
       </div>
       <div title="Mark selected as Quality Checked: Failed" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityFailed')">
+        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
+            <path d="M9 9L15 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 9L9 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
+          </g>
+        </svg>
+      </div>
+      <div title="Edit Comment" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'editComment')">
+        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
+            <path d="M9 9L15 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 9L9 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
+          </g>
+        </svg>
+      </div>
+      <div title="Destroy Pool" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'destroyPool')">
         <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g>
             <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
@@ -567,11 +601,22 @@ export default {
           frozen: true,
           resizable: false,
           formatter: (cell) => {
-            const row = cell.getRow();
-            const rowData = row.getData();
-            const checkbox = `<input type="checkbox" title="Select" style="top:-4px" ${rowData.selected ? "checked" : ""
-              } />`;
-
+            const rowData = cell.getRow().getData();
+            const shouldShowCheckbox = !(
+              rowData.record_type === "Sample" &&
+              (rowData.status === 2 || rowData.status === -2)
+            );
+            if (!shouldShowCheckbox) {
+              return "";
+            }
+            const checkbox = `
+              <input
+                type="checkbox"
+                title="Select"
+                style="top:-4px"
+                ${rowData.selected ? "checked" : ""}
+              />
+            `;
             return checkbox;
           },
           hozAlign: "center",
@@ -580,10 +625,12 @@ export default {
           cssClass: "checkbox-column right-border",
           contextMenu: () => this.cellContextMenu(false, false, false),
           cellClick: function (e, cell) {
-            const clickedRow = cell.getRow();
-            const rowData = clickedRow.getData();
+            const row = cell.getRow();
+            const rowData = row.getData();
             const checkbox = e.target;
-            rowData.selected = checkbox.checked;
+            if (checkbox && checkbox.type === "checkbox") {
+              rowData.selected = checkbox.checked;
+            }
           }
         },
         {
@@ -1061,7 +1108,11 @@ export default {
       switch (action) {
         case "selectAll":
           groupRows.forEach((row) => {
-            row.getData().selected = true;
+            const data = row.getData();
+            if (data.record_type === "Sample" && (data.status === 2 || data.status === -2)) {
+              return;
+            }
+            data.selected = true;
             row.update({});
             const rowElement = row.getElement();
             const checkbox = rowElement.querySelector('input[type="checkbox"]');
@@ -1074,7 +1125,11 @@ export default {
 
         case "deselectAll":
           groupRows.forEach((row) => {
-            row.getData().selected = false;
+            const data = row.getData();
+            if (data.record_type === "Sample" && (data.status === 2 || data.status === -2)) {
+              return;
+            }
+            data.selected = false;
             row.update({});
             const rowElement = row.getElement();
             const checkbox = rowElement.querySelector('input[type="checkbox"]');
@@ -1144,7 +1199,118 @@ export default {
             700
           );
           break;
+
+        case "editComment":
+          this.editGroupComment(groupValue);
+          break;
+
+        case "destroyPool":
+          this.destroyPool(groupValue);
+          break;
       }
+    },
+    async editGroupComment(groupValue) {
+      const group = this.tabulatorInstance
+        .getTable()
+        .getGroups()
+        .find(g => g.getKey() === groupValue);
+
+      if (!group) return;
+
+      const groupRows = group.getRows();
+      const currentComment = groupRows[0]?.getData().comment || '';
+      const poolName = groupRows[0]?.getData().pool_name;
+
+      this.createPopupWindow(
+        'Edit Comment',
+        `Enter the new comment for the pool <span style="font-weight: bold">'${poolName}'</span>:`,
+        [],
+        async () => {
+          const newComment = document.querySelector('.popup-body textarea').value;
+          try {
+            const poolId = groupRows[0]?.getData().pool;
+            if (!poolId) throw new Error('Pool ID not found');
+
+            await axiosRef.post(
+              `${urlStringStart}/api/pooling/${poolId}/edit_comment/`,
+              { data: JSON.stringify({ newComment }) }
+            );
+
+            showNotification('Comment updated successfully.', 'success');
+            this.showPopupWindow = false;
+            await this.getLibrariesSamples();
+          } catch (error) {
+            this.showPopupWindow = false;
+            handleError(error);
+          }
+        },
+        () => {
+          this.showPopupWindow = false;
+        },
+        350,
+        500
+      );
+
+      this.$nextTick(() => {
+        const popupBody = document.querySelector('.popup-body');
+        if (popupBody) {
+          const textInput = document.createElement('textarea');
+          textInput.style.width = '100%';
+          textInput.style.height = '100%';
+          textInput.style.padding = '8px';
+          textInput.style.border = '1px solid lightgrey';
+          textInput.style.resize = 'none';
+          textInput.placeholder = 'Enter comment...';
+          textInput.value = currentComment;
+          textInput.style.boxSizing = 'border-box';
+          textInput.style.verticalAlign = 'top';
+          textInput.style.textAlign = 'left';
+
+          popupBody.appendChild(textInput);
+        }
+      });
+    },
+    async destroyPool(groupValue) {
+      const group = this.tabulatorInstance
+        .getTable()
+        .getGroups()
+        .find(g => g.getKey() === groupValue);
+
+      if (!group) return;
+
+      const groupRows = group.getRows();
+      const poolId = groupRows[0]?.getData().pool;
+      const poolName = groupRows[0]?.getData().pool_name;
+
+      if (!poolId) {
+        showNotification('Pool ID was not found.', 'error');
+        return;
+      }
+
+      this.createPopupWindow(
+        'Destroy Pool',
+        `Are you sure you want to destroy the pool <span style="font-weight: bold">'${poolName}'</span>? This will also clear the library preparation data for the libraries which didn't reach the status 'Library Prepared'.`,
+        [],
+        async () => {
+          try {
+            await axiosRef.post(
+              `${urlStringStart}/api/pooling/${poolId}/destroy_pool/`
+            );
+
+            showNotification('Pool destroyed successfully.', 'success');
+            this.showPopupWindow = false;
+            await this.getLibrariesSamples();
+          } catch (error) {
+            this.showPopupWindow = false;
+            handleError(error);
+          }
+        },
+        () => {
+          this.showPopupWindow = false;
+        },
+        240,
+        600
+      );
     },
     async qualityCheckChange(groupRows, qualityCheck) {
       this.fakeLoadingStart();
@@ -1410,6 +1576,16 @@ body,
   position: relative;
 }
 
+.pool-header-green {
+  color: #e8f5e9 !important;
+  border-left: 4px solid #4caf50;
+}
+
+.pool-header-red {
+  color: #ffebee !important;
+  border-left: 4px solid #f44336;
+}
+
 @media (max-width: 1400px) {
   .header-title {
     min-width: 80px;
@@ -1472,10 +1648,15 @@ body,
 </style>
 
 <!--
-change main pooling icon
-search shouldn't show the groups if no result matches
+red group styling
 export columns changes
-add destroy pool functionality
-add edit comment functionality
-grey rows logic, red groups logic, which fields to search, sorting order
+destroy pool and edit comment icon
+change main pooling icon
+which fields to search
+search shouldn't show the groups if no result matches
+what sorting order
+
+check quality check
+check grey rows logic
+check red groups logic
 -->
