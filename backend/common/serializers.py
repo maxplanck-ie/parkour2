@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import LibraryPreparationTemplate
+from .models import LibraryPreparationTemplate, PoolingTemplate
 
 from .models import CostUnit, Duty, User
 
@@ -25,4 +25,9 @@ class UserSerializer(ModelSerializer):
 class LibraryPreparationTemplateSerializer(ModelSerializer):
     class Meta:
         model = LibraryPreparationTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+class PoolingTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = PoolingTemplate
         fields = ["id", "name", "file", "uploaded_at"]
