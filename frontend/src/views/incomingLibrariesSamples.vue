@@ -1032,7 +1032,20 @@ export default {
               },
               validator: ["min:0", "max:100"],
               contextMenu: () => this.cellContextMenu(true, true, true),
+              cellEditing: (cell) => {
+                const rowData = cell.getRow().getData();
+                if (rowData.type === "S") {
+                  showNotification(
+                    "This field is not available for samples.",
+                    "warning"
+                  );
+                }
+                if (rowData.type === "S") {
+                  cell.getTable().modules.edit.currentCell = null;
+                }
+              },
               formatter: (cell) => {
+                const rowData = cell.getRow().getData();
                 const rawValue = cell.getValue();
                 const value = Number(rawValue);
                 const finalString =
@@ -1041,6 +1054,12 @@ export default {
                     : value === 0
                       ? "0.0"
                       : value.toFixed(1);
+                const cellElement = cell.getElement();
+                if (rowData.type === "S") {
+                  cellElement.classList.add("disable-editing");
+                } else {
+                  cellElement.classList.remove("disable-editing");
+                }
                 return this.ellipsisContainer(finalString);
               }
             },

@@ -645,14 +645,7 @@ export default {
                 { field: "name", type: "like", value: keyword },
                 { field: "request_name", type: "like", value: keyword },
                 { field: "pool_name", type: "like", value: keyword },
-                { field: "barcode", type: "like", value: keyword },
-                {
-                  field: "comments_library_sample",
-                  type: "like",
-                  value: keyword
-                },
-                { field: "comments", type: "like", value: keyword },
-                { field: "comments_facility", type: "like", value: keyword }
+                { field: "barcode", type: "like", value: keyword }
               ]
             ];
           } else {

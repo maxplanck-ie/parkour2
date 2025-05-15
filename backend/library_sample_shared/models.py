@@ -381,12 +381,6 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    percent_total = models.FloatField(
-        "Smear Analysis (% Total)",
-        default=100,
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-    )
-
     removed_amplification_cycles = models.PositiveIntegerField(
         "Amplification cycles",
         null=True,
