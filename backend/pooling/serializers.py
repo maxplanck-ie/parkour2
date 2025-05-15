@@ -43,6 +43,7 @@ class PoolingBaseSerializer(ModelSerializer):
     mean_fragment_size = SerializerMethodField()
     coordinate = SerializerMethodField()
     create_time = SerializerMethodField()
+    combined_smear_analysis = SerializerMethodField()
     quality_check = CharField(required=False)
 
     class Meta:
@@ -66,6 +67,7 @@ class PoolingBaseSerializer(ModelSerializer):
             "index_i5_id",
             "index_i7",
             "index_i5",
+            "combined_smear_analysis",
         )
         extra_kwargs = {
             "name": {"required": False},
@@ -143,6 +145,9 @@ class PoolingLibrarySerializer(PoolingBaseSerializer):
     def get_mean_fragment_size(self, obj):
         return obj.size_distribution_facility
 
+    def get_combined_smear_analysis(self, obj):
+        return obj.percent_total
+
 
 class PoolingSampleSerializer(PoolingBaseSerializer):
     class Meta(PoolingBaseSerializer.Meta):
@@ -159,6 +164,9 @@ class PoolingSampleSerializer(PoolingBaseSerializer):
 
     def _get_library_preparation_object(self, obj):
         return self.context.get("library_preparation").get(obj.pk, None)
+
+    def get_combined_smear_analysis(self, obj):
+        return obj.librarypreparation.smear_analysis
 
 
 class PoolSerializer(ModelSerializer):

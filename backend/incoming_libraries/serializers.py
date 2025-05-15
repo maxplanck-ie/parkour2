@@ -58,7 +58,6 @@ class BaseSerializer(ModelSerializer):
             "size_distribution_facility",
             "comments_facility",
             "sequencing_depth",
-            "percent_total",
             "library_protocol_name",
             "measuring_unit_facility",
             "measured_value_facility",
@@ -68,7 +67,6 @@ class BaseSerializer(ModelSerializer):
             "barcode": {"required": False},
             "library_protocol": {"required": False},
             "sequencing_depth": {"required": False},
-            "percent_total": {"required": False},
             "measuring_unit": {"required": False},
             "measured_value": {"required": False},
             "measuring_unit_facility": {"required": False},
@@ -85,12 +83,16 @@ class BaseSerializer(ModelSerializer):
 class LibrarySerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = Library
-        fields = BaseSerializer.Meta.fields + ("mean_fragment_size",)
+        fields = BaseSerializer.Meta.fields + (
+            "mean_fragment_size",
+            "percent_total",
+        )
 
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,
             **{
                 "mean_fragment_size": {"required": False},
+                "percent_total": {"required": False},
             },
         }
 

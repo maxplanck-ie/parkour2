@@ -1,1 +1,1 @@
-0009_alter_nucleicacidtype_options_and_more
+0010_remove_sample_percent_total
