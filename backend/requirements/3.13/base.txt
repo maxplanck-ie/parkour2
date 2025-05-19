@@ -12,7 +12,7 @@ diff-match-patch==20241021
     # via django-import-export
 dj-database-url==2.3.0
     # via -r backend/requirements/base.in
-django==4.2.20
+django==4.2.21
     # via
     #   -r backend/requirements/base.in
     #   dj-database-url
@@ -27,7 +27,7 @@ django-admin-list-filter-dropdown==1.0.3
     # via -r backend/requirements/base.in
 django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd26f085fdac9951009acda804dc
     # via -r backend/requirements/base.in
-django-extensions==3.2.3
+django-extensions==4.1
     # via -r backend/requirements/base.in
 django-import-export==4.3.7
     # via -r backend/requirements/base.in
@@ -37,7 +37,7 @@ django-monthfield==0.1.4
     # via -r backend/requirements/base.in
 django-simple-history==3.8.0
     # via -r backend/requirements/base.in
-djangorestframework==3.15.2
+djangorestframework==3.16.0
     # via
     #   -r backend/requirements/base.in
     #   drf-spectacular
@@ -45,9 +45,9 @@ drf-spectacular==0.28.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.56.0
+fonttools==4.58.0
     # via fpdf2
-fpdf2==2.8.2
+fpdf2==2.8.3
     # via -r backend/requirements/base.in
 gunicorn==23.0.0
     # via -r backend/requirements/base.in
@@ -55,21 +55,21 @@ inflection==0.5.1
     # via drf-spectacular
 jsonschema==4.23.0
     # via drf-spectacular
-jsonschema-specifications==2024.10.1
+jsonschema-specifications==2025.4.1
     # via jsonschema
-lxml==5.3.1
+lxml==5.4.0
     # via python-docx
-numpy==2.2.4
+numpy==2.2.6
     # via
     #   -r backend/requirements/base.in
     #   pandas
 openpyxl==3.1.5
     # via -r backend/requirements/base.in
-packaging==24.2
+packaging==25.0
     # via gunicorn
 pandas==2.2.3
     # via -r backend/requirements/base.in
-pillow==11.1.0
+pillow==11.2.1
     # via fpdf2
 psycopg2==2.9.10
     # via -r backend/requirements/base.in
@@ -79,7 +79,7 @@ python-dateutil==2.9.0.post0
     #   pandas
 python-docx==1.1.2
     # via -r backend/requirements/base.in
-pytz==2025.1
+pytz==2025.2
     # via pandas
 pyyaml==6.0.2
     # via drf-spectacular
@@ -87,7 +87,7 @@ referencing==0.36.2
     # via
     #   jsonschema
     #   jsonschema-specifications
-rpds-py==0.23.1
+rpds-py==0.25.0
     # via
     #   jsonschema
     #   referencing
@@ -97,9 +97,9 @@ sqlparse==0.5.3
     # via django
 tablib==3.8.0
     # via django-import-export
-tblib==3.0.0
+tblib==3.1.0
     # via -r backend/requirements/base.in
-typing-extensions==4.12.2
+typing-extensions==4.13.2
     # via
     #   dj-database-url
     #   python-docx
