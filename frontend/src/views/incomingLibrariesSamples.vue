@@ -715,7 +715,6 @@ export default {
             const name = cell.getValue();
             const tableGroupsToggleState =
               this.tabulatorInstance.getTableGroupsToggleState();
-            const bgColor = type === "S" ? "#00800080" : "lightblue";
             return `
                         <div style="padding: 4px 8px; display: flex; align-items: center;">
                           <span title="${type === "S" ? "Sample" : "Library"}" 
@@ -1795,9 +1794,5 @@ body,
 
 <!--
 add export just like preparation
-scroll to focused cell after copy
-select all, change columns checkboxes delay
-resize width of table or collapse/expand side modules should refresh the table width
-make paste errors window movable
-show hover tooltips with use of a library
+clicking on export button resets the width of columns
 -->
