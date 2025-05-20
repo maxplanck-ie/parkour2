@@ -21,45 +21,36 @@
         >
           <path
             opacity="0.3"
-            d="M14 17.5C14 16.0955 14 15.3933 14.3371 14.8889C14.483 14.6705 14.6705 14.483 14.8889 14.3371C15.3933 14 16.0955 14 17.5 14V14V14C18.9045 14 19.6067 14 20.1111 14.3371C20.3295 14.483 20.517 14.6705 20.6629 14.8889C21 15.3933 21 16.0955 21 17.5V17.5V17.5C21 18.9045 21 19.6067 20.6629 20.1111C20.517 20.3295 20.3295 20.517 20.1111 20.6629C19.6067 21 18.9045 21 17.5 21V21V21C16.0955 21 15.3933 21 14.8889 20.6629C14.6705 20.517 14.483 20.3295 14.3371 20.1111C14 19.6067 14 18.9045 14 17.5V17.5V17.5Z"
-            fill="#333333"
+            d="M3 7C3 5.11438 3 4.17157 3.58579 3.58579C4.17157 3 5.11438 3 7 3V3V3C8.88562 3 9.82843 3 10.4142 3.58579C11 4.17157 11 5.11438 11 7V12V17C11 18.8856 11 19.8284 10.4142 20.4142C9.82843 21 8.88562 21 7 21V21V21C5.11438 21 4.17157 21 3.58579 20.4142C3 19.8284 3 18.8856 3 17V12V7Z"
+            fill="#323232"
           />
           <path
             opacity="0.3"
-            d="M3 17.5C3 16.0955 3 15.3933 3.33706 14.8889C3.48298 14.6705 3.67048 14.483 3.88886 14.3371C4.39331 14 5.09554 14 6.5 14V14V14C7.90446 14 8.60669 14 9.11114 14.3371C9.32952 14.483 9.51702 14.6705 9.66294 14.8889C10 15.3933 10 16.0955 10 17.5V17.5V17.5C10 18.9045 10 19.6067 9.66294 20.1111C9.51702 20.3295 9.32952 20.517 9.11114 20.6629C8.60669 21 7.90446 21 6.5 21V21V21C5.09554 21 4.39331 21 3.88886 20.6629C3.67048 20.517 3.48298 20.3295 3.33706 20.1111C3 19.6067 3 18.9045 3 17.5V17.5V17.5Z"
-            fill="#333333"
+            d="M18.7671 13.0317L10.7988 21L16.9998 21C18.8854 21 19.8282 21 20.414 20.4142C20.9998 19.8284 20.9998 18.8856 20.9998 17C20.9998 15.1144 20.9998 14.1716 20.414 13.5858C20.0499 13.2217 19.5478 13.0839 18.7671 13.0317Z"
+            fill="#323232"
           />
           <path
-            opacity="0.3"
-            d="M3 6.5C3 5.09554 3 4.39331 3.33706 3.88886C3.48298 3.67048 3.67048 3.48298 3.88886 3.33706C4.39331 3 5.09554 3 6.5 3V3V3C7.90446 3 8.60669 3 9.11114 3.33706C9.32952 3.48298 9.51702 3.67048 9.66294 3.88886C10 4.39331 10 5.09554 10 6.5V6.5V6.5C10 7.90446 10 8.60669 9.66294 9.11114C9.51702 9.32952 9.32952 9.51702 9.11114 9.66294C8.60669 10 7.90446 10 6.5 10V10V10C5.09554 10 4.39331 10 3.88886 9.66294C3.67048 9.51702 3.48298 9.32952 3.33706 9.11114C3 8.60669 3 7.90446 3 6.5V6.5V6.5Z"
-            fill="#333333"
-          />
-          <path
-            d="M14 17.5C14 16.0955 14 15.3933 14.3371 14.8889C14.483 14.6705 14.6705 14.483 14.8889 14.3371C15.3933 14 16.0955 14 17.5 14V14V14C18.9045 14 19.6067 14 20.1111 14.3371C20.3295 14.483 20.517 14.6705 20.6629 14.8889C21 15.3933 21 16.0955 21 17.5V17.5V17.5C21 18.9045 21 19.6067 20.6629 20.1111C20.517 20.3295 20.3295 20.517 20.1111 20.6629C19.6067 21 18.9045 21 17.5 21V21V21C16.0955 21 15.3933 21 14.8889 20.6629C14.6705 20.517 14.483 20.3295 14.3371 20.1111C14 19.6067 14 18.9045 14 17.5V17.5V17.5Z"
+            d="M3 7C3 5.11438 3 4.17157 3.58579 3.58579C4.17157 3 5.11438 3 7 3V3V3C8.88562 3 9.82843 3 10.4142 3.58579C11 4.17157 11 5.11438 11 7V12V17C11 18.8856 11 19.8284 10.4142 20.4142C9.82843 21 8.88562 21 7 21V21V21C5.11438 21 4.17157 21 3.58579 20.4142C3 19.8284 3 18.8856 3 17V12V7Z"
             stroke="white"
             stroke-width="1.5"
-          />
-          <path
-            d="M3 17.5C3 16.0955 3 15.3933 3.33706 14.8889C3.48298 14.6705 3.67048 14.483 3.88886 14.3371C4.39331 14 5.09554 14 6.5 14V14V14C7.90446 14 8.60669 14 9.11114 14.3371C9.32952 14.483 9.51702 14.6705 9.66294 14.8889C10 15.3933 10 16.0955 10 17.5V17.5V17.5C10 18.9045 10 19.6067 9.66294 20.1111C9.51702 20.3295 9.32952 20.517 9.11114 20.6629C8.60669 21 7.90446 21 6.5 21V21V21C5.09554 21 4.39331 21 3.88886 20.6629C3.67048 20.517 3.48298 20.3295 3.33706 20.1111C3 19.6067 3 18.9045 3 17.5V17.5V17.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
-          <path
-            d="M3 6.5C3 5.09554 3 4.39331 3.33706 3.88886C3.48298 3.67048 3.67048 3.48298 3.88886 3.33706C4.39331 3 5.09554 3 6.5 3V3V3C7.90446 3 8.60669 3 9.11114 3.33706C9.32952 3.48298 9.51702 3.67048 9.66294 3.88886C10 4.39331 10 5.09554 10 6.5V6.5V6.5C10 7.90446 10 8.60669 9.66294 9.11114C9.51702 9.32952 9.32952 9.51702 9.11114 9.66294C8.60669 10 7.90446 10 6.5 10V10V10C5.09554 10 4.39331 10 3.88886 9.66294C3.67048 9.51702 3.48298 9.32952 3.33706 9.11114C3 8.60669 3 7.90446 3 6.5V6.5V6.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
-          <path
-            d="M14 6.5H21"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
             stroke-linejoin="round"
           />
           <path
-            d="M17.5 3V10"
+            d="M11 7.5L12.6716 5.82843C14.0049 4.49509 14.6716 3.82843 15.5 3.82843C16.3284 3.82843 16.9951 4.49509 18.3284 5.82843L19.1716 6.67157C20.5049 8.00491 21.1716 8.67157 21.1716 9.5C21.1716 10.3284 20.5049 10.9951 19.1716 12.3284L11 20.5"
             stroke="white"
             stroke-width="1.5"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7 21L17 21C18.8856 21 19.8284 21 20.4142 20.4142C21 19.8284 21 18.8856 21 17L21 15.5C21 15.0353 21 14.803 20.9616 14.6098C20.8038 13.8164 20.1836 13.1962 19.3902 13.0384C19.197 13 18.9647 13 18.5 13V13"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7 17.01L7 17"
+            stroke="white"
+            stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -203,7 +194,7 @@
         :rowData="librariesSamplesList"
         :columnDefs="columnsList"
         groupBy="pool_name"
-        :groupSort="{ field: 'pool_name', order: 'asc' }"
+        :groupSort="{ field: 'pool_name', order: 'desc' }"
         :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
@@ -654,7 +645,6 @@ export default {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
         initialSort: [
-          { column: "barcode", dir: "asc" },
           {
             column: "request_name",
             dir: "asc",
@@ -666,7 +656,7 @@ export default {
               return getNum(a) - getNum(b);
             }
           },
-          { column: "library_protocol_name", dir: "asc" }
+          { column: "barcode", dir: "asc" }
         ],
         rowFormatter: (row) => {
           const data = row.getData();
@@ -747,19 +737,22 @@ export default {
       <div title="Edit Comment" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'editComment')">
         <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g>
-            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
-            <path d="M9 9L15 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M15 9L9 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
+            <path opacity="0.3" d="M21 13V7C21 5.11438 21 4.17157 20.4142 3.58579C19.8284 3 18.8856 3 17 3H7C5.11438 3 4.17157 3 3.58579 3.58579C3 4.17157 3 5.11438 3 7V13C3 14.8856 3 15.8284 3.58579 16.4142C4.17157 17 5.11438 17 7 17H9H9.02322C9.31982 17 9.5955 17.1528 9.75269 17.4043L11.864 20.7824C11.9268 20.8829 12.0732 20.8829 12.136 20.7824L14.2945 17.3288C14.4223 17.1242 14.6465 17 14.8877 17H15H17C18.8856 17 19.8284 17 20.4142 16.4142C21 15.8284 21 14.8856 21 13Z" fill="orange"/>
+            <path d="M7 9L17 9" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M7 12L13 12" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M21 13V7C21 5.11438 21 4.17157 20.4142 3.58579C19.8284 3 18.8856 3 17 3H7C5.11438 3 4.17157 3 3.58579 3.58579C3 4.17157 3 5.11438 3 7V13C3 14.8856 3 15.8284 3.58579 16.4142C4.17157 17 5.11438 17 7 17H9H9.02322C9.31982 17 9.5955 17.1528 9.75269 17.4043L11.864 20.7824C11.9268 20.8829 12.0732 20.8829 12.136 20.7824L14.2945 17.3288C14.4223 17.1242 14.6465 17 14.8877 17H15H17C18.8856 17 19.8284 17 20.4142 16.4142C21 15.8284 21 14.8856 21 13Z" stroke="#323232" stroke-width="1.8" stroke-linejoin="round"/>
           </g>
         </svg>
       </div>
       <div title="Destroy Pool" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'destroyPool')">
         <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
-            <path d="M9 9L15 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M15 9L9 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <g> 
+            <path opacity="0.3" d="M9 8H15L14 18H10L9 8Z" fill="#323232"/>
+            <path d="M9 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M15 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M6 8H18" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M8 8L9 18H15L16 8" stroke="#323232" stroke-width="1.8" stroke-linejoin="round"/>
             <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
           </g>
         </svg>
@@ -929,9 +922,19 @@ export default {
             showNotification("This field is not editable.", "warning");
           },
           formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString, false);
+            const pool_name = cell.getRow().getData().pool_name;
+            const name = cell.getValue();
+            const tableGroupsToggleState =
+              this.tabulatorInstance.getTableGroupsToggleState();
+            return `
+                        <div style="padding: 4px 12px; display: flex; align-items: center;">
+                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
+                            (tableGroupsToggleState == 2
+                              ? pool_name + " ➜ "
+                              : "") + name
+                          }</span>
+                        </div>
+                      `;
           }
         },
         {
@@ -1700,8 +1703,8 @@ export default {
             const match = String(str).match(/^(\d+)_/);
             return match ? parseInt(match[1], 10) : 0;
           };
-          const protocolCompare = a.pool_name?.localeCompare(b.pool_name);
-          if (protocolCompare !== 0) return protocolCompare;
+          const poolCompare = b.pool_name?.localeCompare(a.pool_name);
+          if (poolCompare !== 0) return poolCompare;
           const aNum = getRequestNum(a.request_name);
           const bNum = getRequestNum(b.request_name);
           if (aNum !== bNum) return aNum - bNum;
@@ -1926,9 +1929,7 @@ body,
 </style>
 
 <!--
-destroy pool and edit comment icon
-change main pooling icon
 search shouldn't show the groups if no result matches
-sorting order
+sorting order: 3rd sheet
 while exporting and only grey rows exist on screen, then it shouldn't export any row
 -->
