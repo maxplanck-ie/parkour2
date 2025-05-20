@@ -657,6 +657,7 @@ export default {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
         initialSort: [
+          { column: "library_protocol_name", dir: "asc" },
           { column: "barcode", dir: "asc" },
           {
             column: "request_name",
@@ -668,8 +669,7 @@ export default {
               };
               return getNum(a) - getNum(b);
             }
-          },
-          { column: "library_protocol_name", dir: "asc" }
+          }
         ],
         groupHeader: (value, count, data) => {
           return `
@@ -1740,8 +1740,8 @@ export default {
             const match = String(str).match(/^(\d+)_/);
             return match ? parseInt(match[1], 10) : 0;
           };
-          const protocolCompare = a.library_protocol_name?.localeCompare(
-            b.library_protocol_name
+          const protocolCompare = b.library_protocol_name?.localeCompare(
+            a.library_protocol_name
           );
           if (protocolCompare !== 0) return protocolCompare;
           const aNum = getRequestNum(a.request_name);
@@ -1954,7 +1954,6 @@ body,
 </style>
 
 <!--
-fix sorting in 3rd sheet and export
 add validations according to old component: deleting, right click operations, copy paste on ctrl operations
 export formulas don't refresh the values after concat
 
