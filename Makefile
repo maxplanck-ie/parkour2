@@ -283,9 +283,8 @@ models:
 show-urls:
 	@docker exec parkour2-django python manage.py show_urls
 
-maintenance: compile precomitupd ncu
-
-precomitupd:
+maintenance: compile ncu
+	@uv tool upgrade pre-commit
 	@pre-commit autoupdate
 
 compile:
@@ -309,7 +308,7 @@ compile:
 	done
 
 ncu:
-	# @npm install -g npm-check-updates
+	# TODO: upgrade ncu first?
 	@cd frontend && ncu -u
 
 get-pin:
@@ -320,6 +319,9 @@ env-setup-dev:
 	@echo "$ uv python install 3.12"
 	@echo "$ echo ruff black djlint | xargs -n1 uv tool install --python 3.12"
 	@echo "$ uv tool install --python 3.12 pre-commit --with pre-commit-uv"
+	## We're skipping this for now, since it's covered by the CI anyway.
+	#@echo "Second, install npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm"
+	#@echo "$ npm install -g npm-check-updates"
 
 open-pr:
 	@git pull && git push && git pull origin develop
