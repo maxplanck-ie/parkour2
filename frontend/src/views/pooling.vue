@@ -1943,6 +1943,7 @@ body,
 </style>
 
 <!--
+close the groups by default
 search shouldn't show the groups if no result matches
 sorting order: 3rd sheet
 while exporting and only grey rows exist on screen, then it shouldn't export any row
