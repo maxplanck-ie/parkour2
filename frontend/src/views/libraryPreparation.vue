@@ -1362,6 +1362,36 @@ export default {
           "info"
         );
       } else {
+        if (allowApplyToAll) {
+          operations.push({
+            label: "Apply to All",
+            action: (e, cell) => {
+              const value = cell.getValue();
+              const field = cell.getField();
+              const libraryProtocolName = cell
+                .getRow()
+                .getData().library_protocol_name;
+              this.tabulatorInstance
+                .getTable()
+                .getRows()
+                .forEach((row) => {
+                  if (
+                    row.getData().library_protocol_name === libraryProtocolName
+                  ) {
+                    const targetCell = row.getCell(field);
+                    if (
+                      !targetCell
+                        .getElement()
+                        .classList.contains("disable-editing")
+                    ) {
+                      targetCell.setValue(value);
+                    }
+                  }
+                });
+            }
+          });
+        }
+
         if (allowCopy) {
           operations.push({
             label: "Copy",
@@ -1394,36 +1424,6 @@ export default {
                   showNotification(error.message, "error");
                 }
               });
-            }
-          });
-        }
-
-        if (allowApplyToAll) {
-          operations.push({
-            label: "Apply to All",
-            action: (e, cell) => {
-              const value = cell.getValue();
-              const field = cell.getField();
-              const libraryProtocolName = cell
-                .getRow()
-                .getData().library_protocol_name;
-              this.tabulatorInstance
-                .getTable()
-                .getRows()
-                .forEach((row) => {
-                  if (
-                    row.getData().library_protocol_name === libraryProtocolName
-                  ) {
-                    const targetCell = row.getCell(field);
-                    if (
-                      !targetCell
-                        .getElement()
-                        .classList.contains("disable-editing")
-                    ) {
-                      targetCell.setValue(value);
-                    }
-                  }
-                });
             }
           });
         }
@@ -1784,7 +1784,8 @@ export default {
           { header: "I5 ID", key: "index_i5_id", width: 20 },
           { header: "Coordinate", key: "coordinate", width: 10 },
           { header: "Unit", key: "measuring_unit_facility", width: 15 },
-          { header: "Amount", key: "measured_value_facility", width: 15 }
+          { header: "Amount", key: "measured_value_facility", width: 15 },
+          { header: "bp Sample", key: "size_distribution_facility", width: 15 }
         ];
         exportRows.forEach((row) => parkourSheet.addRow(row));
 

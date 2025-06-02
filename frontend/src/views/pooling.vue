@@ -688,7 +688,7 @@ export default {
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 1px;">
+    <span style="font-weight: normal; font-size: 12px; margin-left: 1px; color: black;">
         | Pool Size: ${totalDepth}M reads (${pool_size}) ${
           comment ? "| Comment: " + comment : ""
         }
@@ -815,8 +815,8 @@ export default {
           pool: element.pool || "",
           pool_name: element.pool_name || "",
           pool_size: element.pool_size || "",
-          percentage_library: element.percentage_library || "",
-          combined_smear_analysis: element.combined_smear_analysis || "",
+          percentage_library: parseFloat(element.percentage_library) || "",
+          combined_smear_analysis: parseFloat(element.combined_smear_analysis) || "",
           comment: element.comment || "",
           status: element.status || "",
           barcode:
@@ -1088,7 +1088,7 @@ export default {
           contextMenu: () => this.cellContextMenu(true, false, false),
           formatter: (cell) => {
             const rawValue = cell.getValue();
-            return this.ellipsisContainer(rawValue || "-");
+            return this.ellipsisContainer(rawValue + "%" || "-");
           }
         },
         {
@@ -1214,6 +1214,36 @@ export default {
           "info"
         );
       } else {
+        if (allowApplyToAll) {
+          operations.push({
+            label: "Apply to All",
+            action: (e, cell) => {
+              const value = cell.getValue();
+              const field = cell.getField();
+              const libraryProtocolName = cell
+                .getRow()
+                .getData().library_protocol_name;
+              this.tabulatorInstance
+                .getTable()
+                .getRows()
+                .forEach((row) => {
+                  if (
+                    row.getData().library_protocol_name === libraryProtocolName
+                  ) {
+                    const targetCell = row.getCell(field);
+                    if (
+                      !targetCell
+                        .getElement()
+                        .classList.contains("disable-editing")
+                    ) {
+                      targetCell.setValue(value);
+                    }
+                  }
+                });
+            }
+          });
+        }
+
         if (allowCopy) {
           operations.push({
             label: "Copy",
@@ -1246,36 +1276,6 @@ export default {
                   showNotification(error.message, "error");
                 }
               });
-            }
-          });
-        }
-
-        if (allowApplyToAll) {
-          operations.push({
-            label: "Apply to All",
-            action: (e, cell) => {
-              const value = cell.getValue();
-              const field = cell.getField();
-              const libraryProtocolName = cell
-                .getRow()
-                .getData().library_protocol_name;
-              this.tabulatorInstance
-                .getTable()
-                .getRows()
-                .forEach((row) => {
-                  if (
-                    row.getData().library_protocol_name === libraryProtocolName
-                  ) {
-                    const targetCell = row.getCell(field);
-                    if (
-                      !targetCell
-                        .getElement()
-                        .classList.contains("disable-editing")
-                    ) {
-                      targetCell.setValue(value);
-                    }
-                  }
-                });
             }
           });
         }
@@ -1694,22 +1694,27 @@ export default {
     async handleExport() {
       this.fakeLoadingStart();
       try {
-        const today = new Date();
-        const formattedDate = `${today.getFullYear()}${String(
-          today.getMonth() + 1
-        ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
-        const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
-          const getRequestNum = (str) => {
-            const match = String(str).match(/^(\d+)_/);
-            return match ? parseInt(match[1], 10) : 0;
-          };
-          const poolCompare = b.pool_name?.localeCompare(a.pool_name);
-          if (poolCompare !== 0) return poolCompare;
-          const aNum = getRequestNum(a.request_name);
-          const bNum = getRequestNum(b.request_name);
-          if (aNum !== bNum) return aNum - bNum;
-          return a.barcode?.localeCompare(b.barcode);
-        });
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+
+    const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
+      const getRequestNum = (str) => {
+        const match = String(str).match(/^(\d+)_/);
+        return match ? parseInt(match[1], 10) : 0;
+      };
+      const poolCompare = b.pool_name?.localeCompare(a.pool_name);
+      if (poolCompare !== 0) return poolCompare;
+      const aNum = getRequestNum(a.request_name);
+      const bNum = getRequestNum(b.request_name);
+      if (aNum !== bNum) return aNum - bNum;
+      return a.barcode?.localeCompare(b.barcode);
+    });
+    const uniquePools = [...new Set(sortedRows.map(row => row.pool))].sort().join("_");
+    const uniqueRequestIDs = [...new Set(sortedRows.map(row => {
+      const match = row.request_name.match(/^(\d+)_/);
+      return match ? match[1] : row.request_name;
+    }))].sort().join("-");
+
         let exportRows = sortedRows.filter((row) => row.selected);
         if (exportRows.length === 0) exportRows = sortedRows;
         const requestIdsSet = new Set();
@@ -1724,7 +1729,7 @@ export default {
           .sort((a, b) => a - b)
           .slice(0, 40)
           .join("_");
-        const filename = `${formattedDate}_${requestIds}_pooling.xlsx`;
+    const filename = `${uniquePools}_${formattedDate}_${uniqueRequestIDs}`;
         const wb = new ExcelJS.Workbook();
         if (this.selectedFile !== "without-file") {
           const response = await axiosRef.get(
@@ -1859,12 +1864,12 @@ body,
 
 .pool-header-green {
   color: #e8f5e9 !important;
-  border-left: 4px solid #4caf50;
+  border-left: 16px solid #4caf50;
 }
 
 .pool-header-red {
   color: #ffebee !important;
-  border-left: 4px solid #f44336;
+  border-left: 16px solid #f44336;
 }
 
 @media (max-width: 1400px) {
