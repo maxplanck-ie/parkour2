@@ -1955,6 +1955,7 @@ body,
 </style>
 
 <!--
+fix export like pooling
 add validations according to old component: deleting, right click operations, copy paste on ctrl operations
 export formulas don't refresh the values after concat
 
