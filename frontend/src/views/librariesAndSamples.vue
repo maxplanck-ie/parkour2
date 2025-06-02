@@ -50,7 +50,7 @@
         </svg>
       </div>
       <div class="header-title" style="display: inline">
-        Incoming Libraries and Samples
+        Libraries and Samples
       </div>
 
       <!-- Sticky right section for search, advanced filters, and select columns -->
