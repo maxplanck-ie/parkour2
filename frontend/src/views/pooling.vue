@@ -816,7 +816,8 @@ export default {
           pool_name: element.pool_name || "",
           pool_size: element.pool_size || "",
           percentage_library: parseFloat(element.percentage_library) || "",
-          combined_smear_analysis: parseFloat(element.combined_smear_analysis) || "",
+          combined_smear_analysis:
+            parseFloat(element.combined_smear_analysis) || "",
           comment: element.comment || "",
           status: element.status || "",
           barcode:
@@ -1694,26 +1695,34 @@ export default {
     async handleExport() {
       this.fakeLoadingStart();
       try {
-    const today = new Date();
-    const formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+        const today = new Date();
+        const formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
 
-    const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
-      const getRequestNum = (str) => {
-        const match = String(str).match(/^(\d+)_/);
-        return match ? parseInt(match[1], 10) : 0;
-      };
-      const poolCompare = b.pool_name?.localeCompare(a.pool_name);
-      if (poolCompare !== 0) return poolCompare;
-      const aNum = getRequestNum(a.request_name);
-      const bNum = getRequestNum(b.request_name);
-      if (aNum !== bNum) return aNum - bNum;
-      return a.barcode?.localeCompare(b.barcode);
-    });
-    const uniquePools = [...new Set(sortedRows.map(row => row.pool_name))].sort().join("_");
-    const uniqueRequestIDs = [...new Set(sortedRows.map(row => {
-      const match = row.request_name.match(/^(\d+)_/);
-      return match ? match[1] : row.request_name;
-    }))].sort().join("-");
+        const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
+          const getRequestNum = (str) => {
+            const match = String(str).match(/^(\d+)_/);
+            return match ? parseInt(match[1], 10) : 0;
+          };
+          const poolCompare = b.pool_name?.localeCompare(a.pool_name);
+          if (poolCompare !== 0) return poolCompare;
+          const aNum = getRequestNum(a.request_name);
+          const bNum = getRequestNum(b.request_name);
+          if (aNum !== bNum) return aNum - bNum;
+          return a.barcode?.localeCompare(b.barcode);
+        });
+        const uniquePools = [...new Set(sortedRows.map((row) => row.pool_name))]
+          .sort()
+          .join("_");
+        const uniqueRequestIDs = [
+          ...new Set(
+            sortedRows.map((row) => {
+              const match = row.request_name.match(/^(\d+)_/);
+              return match ? match[1] : row.request_name;
+            })
+          )
+        ]
+          .sort()
+          .join("-");
 
         let exportRows = sortedRows.filter((row) => row.selected);
         if (exportRows.length === 0) exportRows = sortedRows;
@@ -1729,7 +1738,7 @@ export default {
           .sort((a, b) => a - b)
           .slice(0, 40)
           .join("_");
-    const filename = `${uniquePools}_${formattedDate}_${uniqueRequestIDs}`;
+        const filename = `${uniquePools}_${formattedDate}_${uniqueRequestIDs}`;
         const wb = new ExcelJS.Workbook();
         if (this.selectedFile !== "without-file") {
           const response = await axiosRef.get(
