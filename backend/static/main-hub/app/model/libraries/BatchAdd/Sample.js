@@ -45,7 +45,8 @@ Ext.define("MainHub.model.libraries.BatchAdd.Sample", {
   ],
 
   validators: {
-    nucleic_acid_type: "presence"
+    nucleic_acid_type: "presence",
+    biosafety_level: "presence",
     // rna_quality: "rnaquality"
   }
 });
