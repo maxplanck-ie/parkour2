@@ -1709,7 +1709,7 @@ export default {
       if (aNum !== bNum) return aNum - bNum;
       return a.barcode?.localeCompare(b.barcode);
     });
-    const uniquePools = [...new Set(sortedRows.map(row => row.pool))].sort().join("_");
+    const uniquePools = [...new Set(sortedRows.map(row => row.pool_name))].sort().join("_");
     const uniqueRequestIDs = [...new Set(sortedRows.map(row => {
       const match = row.request_name.match(/^(\d+)_/);
       return match ? match[1] : row.request_name;
