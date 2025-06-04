@@ -61,6 +61,7 @@ class BaseSerializer(ModelSerializer):
             "library_protocol_name",
             "measuring_unit_facility",
             "measured_value_facility",
+            "read_length"
         )
         extra_kwargs = {
             "name": {"required": False},
@@ -71,6 +72,7 @@ class BaseSerializer(ModelSerializer):
             "measured_value": {"required": False},
             "measuring_unit_facility": {"required": False},
             "measured_value_facility": {"required": False},
+            "read_length": {"required": False},
         }
 
     def get_record_type(self, obj):

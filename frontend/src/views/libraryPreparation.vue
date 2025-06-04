@@ -677,8 +677,8 @@ export default {
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 2px;">
-      (# of libraries: ${count})
+    <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
+      (# of Libraries: ${count})
     </span>
   </div>
 </div>
