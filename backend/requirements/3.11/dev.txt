@@ -20,28 +20,28 @@ attrs==25.3.0
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   referencing
-boto3==1.37.18
+boto3==1.38.32
     # via -r backend/requirements/dev.in
-botocore==1.37.18
+botocore==1.38.32
     # via
     #   boto3
     #   s3transfer
-certifi==2025.1.31
+certifi==2025.4.26
     # via
     #   httpcore
     #   httpx
     #   requests
 cffi==1.17.1 ; platform_python_implementation != 'PyPy'
     # via cryptography
-charset-normalizer==3.4.1
+charset-normalizer==3.4.2
     # via requests
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
     #   ipython
     #   tqdm
-contourpy==1.3.1
+contourpy==1.3.2
     # via matplotlib
-cryptography==44.0.2
+cryptography==45.0.3
     # via
     #   django-cryptography-django5
     #   django-sql-explorer
@@ -61,11 +61,11 @@ diff-match-patch==20241021
     #   django-import-export
 distro==1.9.0
     # via openai
-dj-database-url==2.3.0
+dj-database-url==3.0.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-django==4.2.20
+django==4.2.22
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -98,9 +98,9 @@ django-cors-headers==4.7.0
     # via -r backend/requirements/dev.in
 django-cryptography-django5==2.2
     # via django-sql-explorer
-django-debug-toolbar==5.1.0
+django-debug-toolbar==5.2.0
     # via -r backend/requirements/dev.in
-django-extensions==3.2.3
+django-extensions==4.1
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -112,7 +112,7 @@ django-linear-migrations==2.17.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-django-migration-linter==5.1.0
+django-migration-linter==5.2.0
     # via -r backend/requirements/dev.in
 django-monthfield==0.1.4
     # via
@@ -126,7 +126,7 @@ django-simple-history==3.8.0
     #   -r backend/requirements/base.in
 django-sql-explorer==5.3
     # via -r backend/requirements/dev.in
-djangorestframework==3.15.2
+djangorestframework==3.16.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -141,12 +141,12 @@ et-xmlfile==2.0.0
     #   openpyxl
 executing==2.2.0
     # via stack-data
-fonttools==4.56.0
+fonttools==4.58.2
     # via
     #   -c backend/requirements/3.11/base.txt
     #   fpdf2
     #   matplotlib
-fpdf2==2.8.2
+fpdf2==2.8.3
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -154,9 +154,9 @@ gunicorn==23.0.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-h11==0.14.0
+h11==0.16.0
     # via httpcore
-httpcore==1.0.7
+httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via openai
@@ -171,29 +171,29 @@ inflection==0.5.1
     #   drf-spectacular
 ipdb==0.13.13
     # via -r backend/requirements/dev.in
-ipython==9.0.2
+ipython==9.3.0
     # via ipdb
 ipython-pygments-lexers==1.1.1
     # via ipython
 jedi==0.19.2
     # via ipython
-jiter==0.9.0
+jiter==0.10.0
     # via openai
 jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-jsonschema==4.23.0
+jsonschema==4.24.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   drf-spectacular
-jsonschema-specifications==2024.10.1
+jsonschema-specifications==2025.4.1
     # via
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
 kiwisolver==1.4.8
     # via matplotlib
-lxml==5.3.1
+lxml==5.4.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   python-docx
@@ -201,7 +201,7 @@ markdown-it-py==3.0.0
     # via rich
 markupsafe==3.0.2
     # via werkzeug
-matplotlib==3.10.1
+matplotlib==3.10.3
     # via -r backend/requirements/dev.in
 matplotlib-inline==0.1.7
     # via ipython
@@ -214,25 +214,25 @@ numpy==1.25.2 ; python_full_version < '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-numpy==2.2.4 ; python_full_version >= '3.12'
+numpy==2.3.0 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==1.68.2
+openai==1.84.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-packaging==24.2
+packaging==25.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   gunicorn
     #   matplotlib
-pandas==2.2.3
+pandas==2.3.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -241,12 +241,12 @@ parso==0.8.4
     # via jedi
 pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via ipython
-pillow==11.1.0
+pillow==11.2.1
     # via
     #   -c backend/requirements/3.11/base.txt
     #   fpdf2
     #   matplotlib
-prompt-toolkit==3.0.50
+prompt-toolkit==3.0.51
     # via ipython
 psycopg2==2.9.10
     # via
@@ -258,16 +258,16 @@ pure-eval==0.2.3
     # via stack-data
 pycparser==2.22 ; platform_python_implementation != 'PyPy'
     # via cffi
-pydantic==2.10.6
+pydantic==2.11.5
     # via openai
-pydantic-core==2.27.2
+pydantic-core==2.33.2
     # via pydantic
 pygments==2.19.1
     # via
     #   ipython
     #   ipython-pygments-lexers
     #   rich
-pyparsing==3.2.2
+pyparsing==3.2.3
     # via matplotlib
 python-dateutil==2.9.0.post0
     # via
@@ -281,11 +281,11 @@ python-docx==1.1.2
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
-pytz==2025.1
+pytz==2025.2
     # via
     #   -c backend/requirements/3.11/base.txt
     #   pandas
-pywatchman==2.0.0
+pywatchman==3.0.0
     # via -r backend/requirements/dev.in
 pyyaml==6.0.2
     # via
@@ -302,14 +302,14 @@ requests==2.32.3
     # via
     #   django-sql-explorer
     #   tiktoken
-rich==13.9.4
+rich==14.0.0
     # via -r backend/requirements/dev.in
-rpds-py==0.23.1
+rpds-py==0.25.1
     # via
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   referencing
-s3transfer==0.11.4
+s3transfer==0.13.0
     # via boto3
 six==1.17.0
     # via
@@ -319,7 +319,7 @@ sniffio==1.3.1
     # via
     #   anyio
     #   openai
-sql-metadata==2.15.0
+sql-metadata==2.17.0
     # via -r backend/requirements/dev.in
 sqlparse==0.5.3
     # via
@@ -334,7 +334,7 @@ tablib==3.8.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   django-import-export
-tblib==3.0.0
+tblib==3.1.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -348,7 +348,7 @@ traitlets==5.14.3
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.12.2
+typing-extensions==4.14.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   anyio
@@ -359,16 +359,19 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   python-docx
     #   referencing
+    #   typing-inspection
+typing-inspection==0.4.1
+    # via pydantic
 tzdata==2025.2
     # via
     #   -c backend/requirements/3.11/base.txt
     #   django
     #   pandas
-uritemplate==4.1.1
+uritemplate==4.2.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   drf-spectacular
-urllib3==2.3.0
+urllib3==2.4.0
     # via
     #   botocore
     #   requests
@@ -376,7 +379,7 @@ wcwidth==0.2.13
     # via prompt-toolkit
 werkzeug==3.1.3
     # via -r backend/requirements/dev.in
-xlsxwriter==3.2.2
+xlsxwriter==3.2.3
     # via -r backend/requirements/dev.in
 xlwt==1.3.0
     # via
