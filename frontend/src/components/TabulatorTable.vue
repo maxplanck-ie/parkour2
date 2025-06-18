@@ -513,9 +513,9 @@ export default {
               const visibleRows = group.getRows();
               const groupElement = group.getElement();
               if (visibleRows.length === 0 && this.groupBy !== "name") {
-                groupElement.classList.add("hidden-group");
+                groupElement.classList.add("hidden-group1");
               } else {
-                groupElement.classList.remove("hidden-group");
+                groupElement.classList.remove("hidden-group1");
               }
             });
           }, 0);

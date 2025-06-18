@@ -91,80 +91,57 @@ class LibrarySampleTree(viewsets.ViewSet):
         return queryset
 
     def list(self, request):
-        """Get the list of libraries and samples."""
+        """Optimized: Get all child libraries and samples across all requests."""
 
-        show_all = request.query_params.get("showAll") or False
-        search_string = request.query_params.get("searchString")
-        status_filter = request.query_params.get("statusFilter")
-        library_protocol_filter = request.query_params.get("libraryProtocolFilter")
-        request_id = request.query_params.get("node", None)
+        request_ids = Request.objects.filter(archived=False).values_list(
+            "id", flat=True
+        )
 
-        if request_id and request_id != "root":
-            libraries_qs = Library.objects.all().select_related(
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "index_type",
-                "organism",
-            )
-            samples_qs = Sample.objects.all().select_related(
-                "nucleic_acid_type",
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "organism",
-            )
+        # Prefetch optimized related fields for Sample
+        samples = Sample.objects.filter(request__id__in=request_ids).select_related(
+            "nucleic_acid_type",
+            "library_protocol",
+            "library_type",
+            "read_length",
+            "organism",
+        )
 
-            libraries_qs = self.filter_and_search(
-                libraries_qs, search_string, status_filter, library_protocol_filter
-            )
-            samples_qs = self.filter_and_search(
-                samples_qs, search_string, status_filter, library_protocol_filter
-            )
+        # Prefetch optimized related fields for Library
+        libraries = Library.objects.filter(request__id__in=request_ids).select_related(
+            "library_protocol", "library_type", "read_length", "index_type", "organism"
+        )
 
-            queryset = (
-                Request.objects.filter(archived=False, pk=request_id)
-                .prefetch_related(
-                    Prefetch("libraries", queryset=libraries_qs),
-                    Prefetch("samples", queryset=samples_qs),
-                )
-                .only("name")
+        # Serialize samples
+        sample_data = []
+        for sample in samples:
+            sample_data.append(
+                {
+                    "id": sample.id,
+                    "pk": sample.pk,
+                    "name": sample.name,
+                    "barcode": sample.barcode,
+                    "status": sample.status,
+                    "create_time": sample.create_time.isoformat(),
+                }
             )
 
-            if not self.request.user.is_staff:
-                if not self.request.user.is_pi:
-                    queryset = queryset.filter(user=self.request.user)
-                else:
-                    queryset = retrieve_group_items(self.request, queryset)
-
-            queryset = queryset.first()
-            serializer = RequestChildrenNodesSerializer(queryset)
-
-            try:
-                return Response(
-                    {
-                        "success": True,
-                        "children": serializer.data["children"],
-                    }
-                )
-            except KeyError:
-                return Response(
-                    {
-                        "success": False,
-                        "children": [],
-                    },
-                    400,
-                )
-        else:
-            queryset = self.get_queryset(
-                show_all, search_string, status_filter, library_protocol_filter
+        # Serialize libraries
+        library_data = []
+        for lib in libraries:
+            library_data.append(
+                {
+                    "id": lib.id,
+                    "pk": lib.pk,
+                    "name": lib.name,
+                    "barcode": lib.barcode,
+                    "status": lib.status,
+                    "create_time": lib.create_time.isoformat(),
+                }
             )
-            serializer = RequestParentNodeSerializer(queryset, many=True)
-            filtered_data = [
-                item for item in serializer.data if item["total_records_count"] != 0
-            ]  # omit rows (requests) that would be empty upon expanding (clicking plus sign)
 
-            return Response({"success": True, "children": filtered_data})
+        combined_data = sample_data + library_data
+
+        return Response({"success": True, "children": combined_data})
 
 
 class GenerateROCrate(viewsets.ViewSet):
