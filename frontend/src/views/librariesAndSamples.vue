@@ -195,7 +195,7 @@
         ref="tabulatorTableRef"
         :rowData="librariesSamplesList"
         :columnDefs="columnsList"
-        groupBy="name"
+        groupBy="pool_name"
         :groupSort="{ field: 'pool_name', order: 'desc' }"
         :groupStartOpen="false"
         :tableOptions="{
@@ -661,40 +661,19 @@ export default {
           },
           { column: "barcode", dir: "asc" }
         ],
-        rowFormatter: (row) => {
-          const data = row.getData();
-          if (
-            data.record_type === "Sample" &&
-            (data.status === 2 || data.status === -2)
-          ) {
-            row.getElement().style.opacity = "0.6";
-            row.getElement().style.backgroundColor = "#f5f5f5";
-          }
-        },
         groupHeader: (value, count, data) => {
-          const pool_size = data[0] && data[0].pool_size;
           const totalDepth = data.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
             0
           );
-          const comment = data[0] && data[0].comment;
-
-          const numMissingSamples = data.filter(
-            (item) => item.record_type === "Sample" && item.status < 3
-          ).length;
-
-          const headerClass =
-            numMissingSamples > 0 ? "pool-header-red" : "pool-header-green";
 
           return `
-  <div class="${headerClass}" style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 1px; color: black;">
-        | Pool Size: ${totalDepth}M reads (${pool_size}) ${
-          comment ? "| Comment: " + comment : ""
-        }
+    <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
+      (#: ${count}, Total Depth: ${totalDepth}M)
     </span>
   </div>
 </div>
@@ -826,6 +805,92 @@ export default {
               ? 0
               : element.total_sequencing_depth || ""
         }));
+        //         let fetchedRows = [
+        //     {
+        //         "pk": 20595,
+        //         "name": "Ctrl_F2_female_NSC_RNA_direct",
+        //         "type": "L",
+        //         "barcode": "25L006927*",
+        //         "is_converted": true,
+        //         "request_name": "3593_Hess_Hilgers",
+        //         "pool_name": "Pool_2761",
+        //         "library_protocol": 65,
+        //         "library_protocol_name": "Nanopore Direct RNA (SQK-RNA004)",
+        //         "concentration_sample": "",
+        //         "concentration_library": "",
+        //         "starting_amount": 400,
+        //         "pcr_cycles": "",
+        //         "mean_fragment_size": "",
+        //         "smear_analysis": 100,
+        //         "comments": "",
+        //         "comments_facility": "",
+        //         "comments_library_sample": "Sample Preparation Course, May 6-9 2025",
+        //         "coordinate": "",
+        //         "index_type": "Nanopore No Index",
+        //         "index_i7_id": "No_index1",
+        //         "index_i5_id": "",
+        //         "create_time": "06.05.2025",
+        //         "measuring_unit_facility": "k",
+        //         "measured_value_facility": "",
+        //         "size_distribution_facility": ""
+        //     },
+        //     {
+        //         "pk": 20596,
+        //         "name": "Ctrl_F2_female_NSC_cDNA",
+        //         "type": "L",
+        //         "barcode": "25L006928*",
+        //         "is_converted": true,
+        //         "request_name": "3593_Hess_Hilgers",
+        //         "pool_name": "Pool_2762",
+        //         "library_protocol": 63,
+        //         "library_protocol_name": "Nanopore cDNA PCR (SQK-PCB114.24)",
+        //         "concentration_sample": "",
+        //         "concentration_library": "",
+        //         "starting_amount": 10,
+        //         "pcr_cycles": "",
+        //         "mean_fragment_size": "",
+        //         "smear_analysis": 100,
+        //         "comments": "",
+        //         "comments_facility": "",
+        //         "comments_library_sample": "Sample Preparation Course, May 6-9 2025; please note that both libraries will be prepared from the same sample",
+        //         "coordinate": "",
+        //         "index_type": "Nanopore SQK-PCB114 + 16S114",
+        //         "index_i7_id": "BP09",
+        //         "index_i5_id": "",
+        //         "create_time": "06.05.2025",
+        //         "measuring_unit_facility": "",
+        //         "measured_value_facility": "",
+        //         "size_distribution_facility": ""
+        //     },
+        //     {
+        //         "pk": 20597,
+        //         "name": "Ctrl_F2_female_NCS_cDNA2",
+        //         "type": "L",
+        //         "barcode": "25L006933*",
+        //         "is_converted": true,
+        //         "request_name": "3593_Hess_Hilgers",
+        //         "pool_name": "Pool_2762",
+        //         "library_protocol": 63,
+        //         "library_protocol_name": "Nanopore cDNA PCR (SQK-PCB114.24)",
+        //         "concentration_sample": "",
+        //         "concentration_library": "",
+        //         "starting_amount": 10,
+        //         "pcr_cycles": "",
+        //         "mean_fragment_size": "",
+        //         "smear_analysis": 100,
+        //         "comments": "",
+        //         "comments_facility": "",
+        //         "comments_library_sample": "for course",
+        //         "coordinate": "",
+        //         "index_type": "Nanopore SQK-PCB114 + 16S114",
+        //         "index_i7_id": "BP21",
+        //         "index_i5_id": "",
+        //         "create_time": "06.05.2025",
+        //         "measuring_unit_facility": "",
+        //         "measured_value_facility": "",
+        //         "size_distribution_facility": ""
+        //     }
+        // ];
         this.librariesSamplesList = fetchedRows;
       } catch (error) {
         handleError(error);
@@ -879,11 +944,11 @@ export default {
           }
         },
         {
-          title: "Request",
-          field: "request_name",
+          title: "Name",
+          field: "name",
           minWidth: 140,
           headerFilter: true,
-          headerTooltip: "Request ID",
+          headerTooltip: "Name",
           visible: true,
           frozen: true,
           cssClass: "right-border",
@@ -908,11 +973,11 @@ export default {
           }
         },
         {
-          title: "Name",
-          field: "name",
+          title: "Status",
+          field: "status",
           minWidth: 60,
           headerFilter: true,
-          headerTooltip: "Library Name",
+          headerTooltip: "Status",
           visible: true,
           frozen: true,
           cssClass: "right-border",
@@ -1856,16 +1921,6 @@ body,
   flex: 1;
   overflow: auto;
   position: relative;
-}
-
-.pool-header-green {
-  color: #e8f5e9 !important;
-  border-left: 16px solid #4caf50;
-}
-
-.pool-header-red {
-  color: #ffebee !important;
-  border-left: 16px solid #f44336;
 }
 
 @media (max-width: 1400px) {

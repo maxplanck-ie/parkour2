@@ -665,8 +665,7 @@ export default {
             data.record_type === "Sample" &&
             (data.status === 2 || data.status === -2)
           ) {
-            row.getElement().style.opacity = "0.6";
-            row.getElement().style.backgroundColor = "#f5f5f5";
+            row.getElement().style.opacity = "0.7";
           }
         },
         groupHeader: (value, count, data) => {
