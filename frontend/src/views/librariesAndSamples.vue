@@ -4,93 +4,39 @@
     <div v-if="loading || fakeLoading" class="loading-overlay">
       <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
-        Loading <span style="font-weight: bold">Incoming Libraries</span> and
-        <span style="font-weight: bold">Samples</span>...
+        Loading <span style="font-weight: bold">Libraries & Samples</span>...
       </p>
     </div>
-
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
         <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <g>
-            <path opacity="0.3"
-              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              fill="#333333" />
-            <path
-              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              stroke="white" stroke-width="1.5" />
-            <path d="M14.5 14.5L9 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M10 15H14.6717C14.853 15 15 14.853 15 14.6716V10" stroke="white" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round" />
-          </g>
+          <path opacity="0.3"
+            d="M3 7C3 5.11438 3 4.17157 3.58579 3.58579C4.17157 3 5.11438 3 7 3V3V3C8.88562 3 9.82843 3 10.4142 3.58579C11 4.17157 11 5.11438 11 7V12V17C11 18.8856 11 19.8284 10.4142 20.4142C9.82843 21 8.88562 21 7 21V21V21C5.11438 21 4.17157 21 3.58579 20.4142C3 19.8284 3 18.8856 3 17V12V7Z"
+            fill="#323232" />
+          <path opacity="0.3"
+            d="M18.7671 13.0317L10.7988 21L16.9998 21C18.8854 21 19.8282 21 20.414 20.4142C20.9998 19.8284 20.9998 18.8856 20.9998 17C20.9998 15.1144 20.9998 14.1716 20.414 13.5858C20.0499 13.2217 19.5478 13.0839 18.7671 13.0317Z"
+            fill="#323232" />
+          <path
+            d="M3 7C3 5.11438 3 4.17157 3.58579 3.58579C4.17157 3 5.11438 3 7 3V3V3C8.88562 3 9.82843 3 10.4142 3.58579C11 4.17157 11 5.11438 11 7V12V17C11 18.8856 11 19.8284 10.4142 20.4142C9.82843 21 8.88562 21 7 21V21V21C5.11438 21 4.17157 21 3.58579 20.4142C3 19.8284 3 18.8856 3 17V12V7Z"
+            stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+          <path
+            d="M11 7.5L12.6716 5.82843C14.0049 4.49509 14.6716 3.82843 15.5 3.82843C16.3284 3.82843 16.9951 4.49509 18.3284 5.82843L19.1716 6.67157C20.5049 8.00491 21.1716 8.67157 21.1716 9.5C21.1716 10.3284 20.5049 10.9951 19.1716 12.3284L11 20.5"
+            stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+          <path
+            d="M7 21L17 21C18.8856 21 19.8284 21 20.4142 20.4142C21 19.8284 21 18.8856 21 17L21 15.5C21 15.0353 21 14.803 20.9616 14.6098C20.8038 13.8164 20.1836 13.1962 19.3902 13.0384C19.197 13 18.9647 13 18.5 13V13"
+            stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M7 17.01L7 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
-      <div class="header-title" style="display: inline">
-        Libraries and Samples
-      </div>
+      <div class="header-title" style="display: inline">Libraries & Samples</div>
 
-      <!-- Sticky right section for search, advanced filters, and select columns -->
+      <!-- Sticky right section for search, and select columns -->
       <div class="sticky-actions">
         <div class="search-bar">
           <input ref="searchInput" v-model="searchQuery" type="text" placeholder="Search" />
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey" />
-        </div>
-        <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
-            <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
-            <span> Advanced Filters </span>
-          </button>
-          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
-            style="width: 250px; left: -50px">
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.showLibraries" />
-              </div>
-              <div><span style="font-weight: bold">Show</span> Libraries</div>
-            </label>
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.showSamples" />
-              </div>
-              <div><span style="font-weight: bold">Show</span> Samples</div>
-            </label>
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.onlySamplesSubmitted" />
-              </div>
-              <div>
-                <span style="font-weight: bold">Filter Requests</span> with
-                Samples Submitted
-              </div>
-            </label>
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.onlyGmo" />
-              </div>
-              <div>
-                <span style="font-weight: bold">Filter Requests</span> with GMO
-                ➜ Yes
-              </div>
-            </label>
-          </div>
         </div>
         <div class="button-popup-wrapper">
           <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
@@ -155,7 +101,7 @@
             <span> Toggle Views </span>
           </button>
         </div>
-        <button class="header-button" @click="exportToExcel">
+        <button class="header-button" @click="handleExportClick">
           <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
@@ -165,9 +111,8 @@
     <!-- Main content section with table -->
     <div class="table-container">
       <TabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList" :columnDefs="columnsList"
-        groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }" :tableOptions="{
+        groupBy="pool_name" :groupSort="{ field: 'pool_name', order: 'desc' }" :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
-          onBatchCellValueChanged,
           fakeLoadingStart,
           fakeLoadingStop
         }" />
@@ -217,13 +162,184 @@
         </div>
       </div>
     </div>
+
+    <!-- Popup for Export Options -->
+    <div v-if="showExportPopup" class="popup-overlay">
+      <div class="popup-container" :style="{ width: '670px', height: '500px' }">
+        <div class="popup-header">
+          <span class="popup-title">Export Options</span>
+          <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false">
+            ?
+            <div v-if="showExportHelpTooltip" class="tooltip-box">
+              <span style="font-weight: bold">INSTRUCTIONS:</span>
+              <ol>
+                <li>
+                  To create custom templates, export the original sheet named
+                  <span style="font-weight: bold">'Parkour'</span> by selecting
+                  the
+                  <span style="font-weight: bold">'Export without any additional sheets'</span>
+                  option.
+                </li>
+                <li>
+                  Add new custom sheets to this exported file, which will serve
+                  as templates.
+                </li>
+                <li>
+                  Upload the modified file, containing both the original
+                  <span style="font-weight: bold">'Parkour'</span> sheet and
+                  newly added
+                  <span style="font-weight: bold">custom sheets</span>. After
+                  uploading the file will appear in the list.
+                </li>
+                <li>
+                  The template is now ready! When you select this modified file
+                  from the list, the system will replace the
+                  <span style="font-weight: bold">'Parkour'</span> sheet with
+                  updated data while keeping all additional sheets intact.
+                </li>
+              </ol>
+            </div>
+          </span>
+          <button class="popup-close-button" @click="showExportPopup = false">
+            &times;
+          </button>
+        </div>
+        <div class="popup-body">
+          <div>
+            Select or upload additional excel sheet templates to append:
+          </div>
+          <div class="file-list-section">
+            <div class="file-item">
+              <div class="file-info">
+                <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <g>
+                    <path opacity="0.1"
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      fill="#323232" />
+                    <path
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                  </g>
+                </svg>
+                <span>Export without any additional sheets</span>
+              </div>
+              <div class="file-actions">
+                <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
+                  <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
+                </div>
+              </div>
+            </div>
+            <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
+              <div class="file-info">
+                <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <g>
+                    <path opacity="0.1"
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      fill="#323232" />
+                    <path
+                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                      stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                    <path d="M9 6L11 6" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M10 9L12 9" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M9 12L11 12" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M10 15L12 15" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </g>
+                </svg>
+                <span>{{ file.name }}</span>
+              </div>
+              <div class="file-actions">
+                <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
+                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g>
+                      <path opacity="0.1"
+                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                        fill="#323232" />
+                      <path
+                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                      <path d="M12 16L12 11" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14" stroke="#323232"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                </button>
+                <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
+                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g>
+                      <path opacity="0.1"
+                        d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
+                        fill="#323232" />
+                      <path
+                        d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
+                        stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path
+                        d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
+                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                      <path d="M3 3L21 21" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                </button>
+                <div class="file-actions-radio-button">
+                  <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
+                    v-model="selectedFile" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="popup-footer">
+          <div class="file-upload-section">
+            <label for="file-upload" class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet.">
+              <svg style="display: block; margin-right: 4px" fill="none" width="24px" height="24px" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g>
+                  <path opacity="0.1"
+                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                    fill="#323232" />
+                  <path
+                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                    stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                  <path d="M12 11L12 16" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M14.5 13.5L9.5 13.5" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </g>
+              </svg>
+              <span>Upload</span>
+            </label>
+            <input id="file-upload" type="file" accept=".xlsx" @change="uploadExportTemplate" style="display: none" />
+          </div>
+          <button class="popup-button yes-button" @click="handleExport">
+            OK
+          </button>
+          <button class="popup-button" @click="
+            showExportPopup = false;
+          selectedFile = 'without-file';
+          ">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTable.vue";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import {
   showNotification,
   handleError,
@@ -234,7 +350,7 @@ const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
 export default {
-  name: "IncomingLibrariesAndSamples",
+  name: "LibrariesAndSamples",
   components: {
     TabulatorTable
   },
@@ -246,6 +362,10 @@ export default {
       librariesSamplesList: [],
       columnsList: [],
       showPopupWindow: false,
+      showExportPopup: false,
+      showExportHelpTooltip: false,
+      fetchedLibrariesAndSamplesTemplates: [],
+      selectedFile: "without-file",
       popupContents: {
         popupTitle: "Are you sure?",
         popupDescription: "",
@@ -259,68 +379,52 @@ export default {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
         initialSort: [
-          { column: "barcode", dir: "asc" },
-          { column: "name", dir: "desc" }
+          {
+            column: "request_name",
+            dir: "asc",
+            sorter: (a, b) => {
+              const getNum = (str) => {
+                const match = String(str).match(/^(\d+)_/);
+                return match ? parseInt(match[1], 10) : 0;
+              };
+              return getNum(a) - getNum(b);
+            }
+          },
+          { column: "barcode", dir: "asc" }
         ],
+        rowFormatter: (row) => {
+          const data = row.getData();
+          if (
+            data.record_type === "Sample" &&
+            (data.status === 2 || data.status === -2)
+          ) {
+            row.getElement().style.opacity = "0.6";
+            row.getElement().style.backgroundColor = "#f5f5f5";
+          }
+        },
         groupHeader: (value, count, data) => {
-          const samplesSubmitted = data.some(
-            (item) => item.samples_submitted === true
-          );
-          const gmo = data.some((item) => item.gmo === true);
+          const pool_size = data[0] && data[0].pool_size;
           const totalDepth = data.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
             0
           );
-          const biosafetyLevel =
-            [...new Set(data.map((item) => item.biosafety_level))]
-              .map((level) => level && level.toUpperCase())
-              .join(" and ") || "No BSL";
+          const comment = data[0] && data[0].comment;
+
+          const numMissingSamples = data.filter(
+            (item) => item.record_type === "Sample" && item.status < 3
+          ).length;
+
+          const headerClass =
+            numMissingSamples > 0 ? "pool-header-red" : "pool-header-green";
+
           return `
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        ${samplesSubmitted
-              ? `<div title="Samples Submitted" style="display: flex; align-items: center; cursor: pointer;" onclick="handleGroupButtonClick(event, '${value}', 'samplesSubmitted')">
-                <svg fill="none" width="24px" height="24px" style="cursor: pointer;" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <g>
-                    <path opacity="0.3" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="green"/>
-                    <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 12L10.8189 13.8189V13.8189C10.9189 13.9189 11.0811 13.9189 11.1811 13.8189V13.8189L15 10" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </g>
-                </svg>
-              </div>`
-              : `<div title="Samples not Submitted" style="display: flex; align-items: center; cursor: pointer;" onclick="handleGroupButtonClick(event, '${value}', 'samplesSubmitted')">
-                <svg fill="none" width="24px" height="24px" style="cursor: pointer;" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <g>
-                    <path opacity="0.1" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="#323232"/>
-                    <path d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </g>
-                </svg>
-              </div>`
-            }
-    ${gmo
-              ? `<div title="GMO: Yes" style="display: flex; align-items: center;">
-                <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <g>
-                    <path opacity="0.3" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="red"/>
-                    <path d="M10.255 4.18806C9.84269 5.17755 8.68655 5.62456 7.71327 5.17535C6.10289 4.4321 4.4321 6.10289 5.17535 7.71327C5.62456 8.68655 5.17755 9.84269 4.18806 10.255C2.63693 10.9013 2.63693 13.0987 4.18806 13.745C5.17755 14.1573 5.62456 15.3135 5.17535 16.2867C4.4321 17.8971 6.10289 19.5679 7.71327 18.8246C8.68655 18.3754 9.84269 18.8224 10.255 19.8119C10.9013 21.3631 13.0987 21.3631 13.745 19.8119C14.1573 18.8224 15.3135 18.3754 16.2867 18.8246C17.8971 19.5679 19.5679 17.8971 18.8246 16.2867C18.3754 15.3135 18.8224 14.1573 19.8119 13.745C21.3631 13.0987 21.3631 10.9013 19.8119 10.255C18.8224 9.84269 18.3754 8.68655 18.8246 7.71327C19.5679 6.10289 17.8971 4.4321 16.2867 5.17535C15.3135 5.62456 14.1573 5.17755 13.745 4.18806C13.0987 2.63693 10.9013 2.63693 10.255 4.18806Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" fill="white" stroke="#323232" stroke-width="1.8"/>
-                  </g>
-                </svg>
-              </div>`
-              : `<div title="GMO: No" style="display: flex; align-items: center;">
-                <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <g>
-                    <path opacity="0.3" d="M13.8179 4.54512L13.6275 4.27845C12.8298 3.16176 11.1702 3.16176 10.3725 4.27845L10.1821 4.54512C9.76092 5.13471 9.05384 5.45043 8.33373 5.37041L7.48471 5.27608C6.21088 5.13454 5.13454 6.21088 5.27608 7.48471L5.37041 8.33373C5.45043 9.05384 5.13471 9.76092 4.54512 10.1821L4.27845 10.3725C3.16176 11.1702 3.16176 12.8298 4.27845 13.6275L4.54512 13.8179C5.13471 14.2391 5.45043 14.9462 5.37041 15.6663L5.27608 16.5153C5.13454 17.7891 6.21088 18.8655 7.48471 18.7239L8.33373 18.6296C9.05384 18.5496 9.76092 18.8653 10.1821 19.4549L10.3725 19.7215C11.1702 20.8382 12.8298 20.8382 13.6275 19.7215L13.8179 19.4549C14.2391 18.8653 14.9462 18.5496 15.6663 18.6296L16.5153 18.7239C17.7891 18.8655 18.8655 17.7891 18.7239 16.5153L18.6296 15.6663C18.5496 14.9462 18.8653 14.2391 19.4549 13.8179L19.7215 13.6275C20.8382 12.8298 20.8382 11.1702 19.7215 10.3725L19.4549 10.1821C18.8653 9.76092 18.5496 9.05384 18.6296 8.33373L18.7239 7.48471C18.8655 6.21088 17.7891 5.13454 16.5153 5.27608L15.6663 5.37041C14.9462 5.45043 14.2391 5.13471 13.8179 4.54512Z" fill="green"/>
-                    <path d="M10.255 4.18806C9.84269 5.17755 8.68655 5.62456 7.71327 5.17535C6.10289 4.4321 4.4321 6.10289 5.17535 7.71327C5.62456 8.68655 5.17755 9.84269 4.18806 10.255C2.63693 10.9013 2.63693 13.0987 4.18806 13.745C5.17755 14.1573 5.62456 15.3135 5.17535 16.2867C4.4321 17.8971 6.10289 19.5679 7.71327 18.8246C8.68655 18.3754 9.84269 18.8224 10.255 19.8119C10.9013 21.3631 13.0987 21.3631 13.745 19.8119C14.1573 18.8224 15.3135 18.3754 16.2867 18.8246C17.8971 19.5679 19.5679 17.8971 18.8246 16.2867C18.3754 15.3135 18.8224 14.1573 19.8119 13.745C21.3631 13.0987 21.3631 10.9013 19.8119 10.255C18.8224 9.84269 18.3754 8.68655 18.8246 7.71327C19.5679 6.10289 17.8971 4.4321 16.2867 5.17535C15.3135 5.62456 14.1573 5.17755 13.745 4.18806C13.0987 2.63693 10.9013 2.63693 10.255 4.18806Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" fill="white" stroke="#323232" stroke-width="1.8"/>
-                  </g>
-                </svg>
-              </div>`
-            }
+  <div class="${headerClass}" style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 2px;">
-      (#: ${count}, Total Depth: ${totalDepth}M, ${biosafetyLevel})
+    <span style="font-weight: normal; font-size: 12px; margin-left: 1px; color: black;">
+        | Pool Size: ${totalDepth}M reads (${pool_size}) ${comment ? "| Comment: " + comment : ""
+            }
     </span>
   </div>
 </div>
@@ -363,12 +467,25 @@ export default {
           </g>
         </svg>
       </div>
-      <div title="Mark selected as Quality Checked: Compromised" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityCompromised')">
-        <svg fill="none" width="40px" height="40px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <div title="Edit Comment" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'editComment')">
+        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g>
-            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="orange"/>
-            <path d="M12 8L12 13" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 16V15.9888" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path opacity="0.3" d="M21 13V7C21 5.11438 21 4.17157 20.4142 3.58579C19.8284 3 18.8856 3 17 3H7C5.11438 3 4.17157 3 3.58579 3.58579C3 4.17157 3 5.11438 3 7V13C3 14.8856 3 15.8284 3.58579 16.4142C4.17157 17 5.11438 17 7 17H9H9.02322C9.31982 17 9.5955 17.1528 9.75269 17.4043L11.864 20.7824C11.9268 20.8829 12.0732 20.8829 12.136 20.7824L14.2945 17.3288C14.4223 17.1242 14.6465 17 14.8877 17H15H17C18.8856 17 19.8284 17 20.4142 16.4142C21 15.8284 21 14.8856 21 13Z" fill="orange"/>
+            <path d="M7 9L17 9" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M7 12L13 12" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M21 13V7C21 5.11438 21 4.17157 20.4142 3.58579C19.8284 3 18.8856 3 17 3H7C5.11438 3 4.17157 3 3.58579 3.58579C3 4.17157 3 5.11438 3 7V13C3 14.8856 3 15.8284 3.58579 16.4142C4.17157 17 5.11438 17 7 17H9H9.02322C9.31982 17 9.5955 17.1528 9.75269 17.4043L11.864 20.7824C11.9268 20.8829 12.0732 20.8829 12.136 20.7824L14.2945 17.3288C14.4223 17.1242 14.6465 17 14.8877 17H15H17C18.8856 17 19.8284 17 20.4142 16.4142C21 15.8284 21 14.8856 21 13Z" stroke="#323232" stroke-width="1.8" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </div>
+      <div title="Destroy Pool" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'destroyPool')">
+        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <g> 
+            <path opacity="0.3" d="M9 8H15L14 18H10L9 8Z" fill="#323232"/>
+            <path d="M9 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M15 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M6 8H18" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M8 8L9 18H15L16 8" stroke="#323232" stroke-width="1.8" stroke-linejoin="round"/>
             <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
           </g>
         </svg>
@@ -379,13 +496,6 @@ export default {
         }
       },
       searchQuery: "",
-      filters: {
-        showLibraries: true,
-        showSamples: true,
-        onlySamplesSubmitted: false,
-        onlyGmo: false
-      },
-      showAdvancedFilters: false,
       showSelectColumns: false,
       libraryProtocols: []
     };
@@ -393,6 +503,7 @@ export default {
   mounted() {
     this.getLibrariesSamples();
     this.setColumns();
+    this.fetchExportTemplates();
 
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -409,32 +520,9 @@ export default {
     searchQuery(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.tabulatorInstance.filterTableData(
-          "search_incoming_libraries_and_samples",
+          "search_libraries_and_samples",
           newValue === null ? "" : newValue
         );
-      }
-    },
-    "filters.showLibraries"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData("showLibraries", newValue);
-      }
-    },
-    "filters.showSamples"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData("showSamples", newValue);
-      }
-    },
-    "filters.onlySamplesSubmitted"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData(
-          "onlySamplesSubmitted",
-          newValue
-        );
-      }
-    },
-    "filters.onlyGmo"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData("onlyGmo", newValue);
       }
     },
     showPopupWindow(newVal) {
@@ -452,79 +540,55 @@ export default {
     async getLibrariesSamples() {
       this.loading = true;
       try {
-        let response = await axiosRef.get(
-          urlStringStart + "/api/incoming_libraries/"
-        );
-        let fetchedRows = response.data.map((element) => ({
+        let response = await axiosRef.get(urlStringStart + "/api/libraries_and_samples/");
+        let fetchedRows = response.data.children.map((element) => ({
           pk: element.pk || "",
-          record_type: element.record_type || "",
-          request_id: element.request || "",
-          request_name: element.request_name || "",
           name: element.name || "",
-          type: element.barcode[2] || "",
-          barcode: element.barcode || "",
-          samples_submitted: element.samples_submitted || "",
-          nucleic_acid_type_name: element.nucleic_acid_type_name || "",
-          library_protocol_name: element.library_protocol_name || "",
-          biosafety_level: element.biosafety_level || "",
-          percent_total:
-            element.percent_total === 0 ? 0 : element.percent_total || "",
-          measuring_unit: element.measuring_unit || "",
-          measured_value:
-            element.measured_value === 0 ? 0 : element.measured_value || "",
-          input:
-            element.measuring_value == null && element.measured_element == null
-              ? "-"
-              : element.measuring_unit === "concentration"
-                ? `${String(
-                  element.measured_value === 0
-                    ? 0
-                    : element.measured_value || ""
-                )} ng/µl`
-                : element.measuring_unit === "m"
-                  ? `${String(
-                    element.measured_value === 0
-                      ? 0
-                      : element.measured_value || ""
-                  )} M`
-                  : element.measuring_unit !== "-"
-                    ? `${String(
-                      element.measured_value === 0
-                        ? 0
-                        : element.measured_value || ""
-                    )} ${String(element.measuring_unit || "-")}`
-                    : `${String(
-                      element.measured_value === 0
-                        ? 0
-                        : element.measured_value || ""
-                    )}`,
-          volume: element.volume === 0 ? 0 : element.volume || "",
+          record_type: element.record_type || "",
+          pool: element.pool || "",
+          pool_name: element.pool_name || "",
+          pool_size: element.pool_size || "",
+          percentage_library: parseFloat(element.percentage_library) || "",
+          combined_smear_analysis:
+            parseFloat(element.combined_smear_analysis) || "",
+          comment: element.comment || "",
+          status: element.status || "",
+          barcode:
+            element.record_type === "Sample" && element.barcode
+              ? element.barcode + "*"
+              : element.barcode || "",
+          type: element.barcode ? element.barcode[2] || "" : "",
+          request: element.request || "",
+          request_name: element.request_name || "",
+          sequencing_depth:
+            element.sequencing_depth === 0 ? 0 : element.sequencing_depth || "",
+          concentration_c1:
+            element.concentration_c1 === 0 ? 0 : element.concentration_c1 || "",
+          concentration_library:
+            element.concentration_library === 0
+              ? 0
+              : element.concentration_library || "",
           mean_fragment_size:
             element.mean_fragment_size === 0
               ? 0
               : element.mean_fragment_size || "",
-          comments: element.comments || "",
-          measuring_unit_facility: element.measuring_unit_facility || "",
-          measured_value_facility:
-            element.measured_value_facility === 0
-              ? 0
-              : element.measured_value_facility || "",
-          sample_volume_facility:
-            element.sample_volume_facility === 0
-              ? 0
-              : element.sample_volume_facility || "",
-          size_distribution_facility:
-            element.size_distribution_facility === 0
-              ? 0
-              : element.size_distribution_facility || "",
-          sequencing_depth:
-            element.sequencing_depth === 0 ? 0 : element.sequencing_depth || "",
-          rna_quality:
-            element.rna_quality === 0 ? 0 : element.rna_quality || "",
-          gmo: element.gmo === null ? "" : element.gmo,
-          gmo_facility:
-            element.gmo_facility === null ? "" : element.gmo_facility,
-          comments_facility: element.comments_facility || ""
+          create_time: element.create_time
+            ? (() => {
+              const date = new Date(element.create_time);
+              if (isNaN(date)) return "";
+              const day = String(date.getDate()).padStart(2, "0");
+              const month = String(date.getMonth() + 1).padStart(2, "0");
+              const year = date.getFullYear();
+              return `${day}.${month}.${year}`;
+            })()
+            : "",
+          coordinate: element.coordinate || "",
+          index_i7_id: element.index_i7_id || "",
+          index_i5_id: element.index_i5_id || "",
+          index_i7: element.index_i7 || "",
+          index_i5: element.index_i5 || "",
+          is_converted:
+            element.is_converted === null ? "" : element.is_converted
         }));
         this.librariesSamplesList = fetchedRows;
       } catch (error) {
@@ -535,7 +599,7 @@ export default {
     },
     setColumns() {
       const storedColumnState = JSON.parse(
-        localStorage.getItem("incomingLibrariesAndSamplesColumnSettings")
+        localStorage.getItem("librariesAndSamplesColumnSettings")
       );
 
       let columnList = [
@@ -546,11 +610,22 @@ export default {
           frozen: true,
           resizable: false,
           formatter: (cell) => {
-            const row = cell.getRow();
-            const rowData = row.getData();
-            const checkbox = `<input type="checkbox" title="Select" style="top:-4px" ${rowData.selected ? "checked" : ""
-              } />`;
-
+            const rowData = cell.getRow().getData();
+            const shouldShowCheckbox = !(
+              rowData.record_type === "Sample" &&
+              (rowData.status === 2 || rowData.status === -2)
+            );
+            if (!shouldShowCheckbox) {
+              return "";
+            }
+            const checkbox = `
+              <input
+                type="checkbox"
+                title="Select"
+                style="top:-4px"
+                ${rowData.selected ? "checked" : ""}
+              />
+            `;
             return checkbox;
           },
           hozAlign: "center",
@@ -559,69 +634,51 @@ export default {
           cssClass: "checkbox-column right-border",
           contextMenu: () => this.cellContextMenu(false, false, false),
           cellClick: function (e, cell) {
-            const clickedRow = cell.getRow();
-            const rowData = clickedRow.getData();
+            const row = cell.getRow();
+            const rowData = row.getData();
             const checkbox = e.target;
-            rowData.selected = checkbox.checked;
+            if (checkbox && checkbox.type === "checkbox") {
+              rowData.selected = checkbox.checked;
+            }
+          }
+        },
+        {
+          title: "Request",
+          field: "request_name",
+          minWidth: 140,
+          headerFilter: true,
+          headerTooltip: "Request ID",
+          visible: true,
+          frozen: true,
+          cssClass: "right-border",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const pool_name = cell.getRow().getData().pool_name;
+            const name = cell.getValue();
+            const tableGroupsToggleState =
+              this.tabulatorInstance.getTableGroupsToggleState();
+            return `
+                        <div style="padding: 4px 12px; display: flex; align-items: center;">
+                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${(tableGroupsToggleState == 2
+                ? pool_name + " ➜ "
+                : "") + name
+              }</span>
+                        </div>
+                      `;
           }
         },
         {
           title: "Name",
           field: "name",
-          minWidth: 100,
-          headerFilter: true,
-          headerTooltip: "Sample Name",
-          visible: true,
-          frozen: true,
-          cssClass: "name-column right-border",
-          sorter: (a, b, aRow, bRow) => {
-            return aRow
-              .getData()
-              .request_name.localeCompare(bRow.getData().request_name);
-          },
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const type = cell.getRow().getData().type;
-            const request_name = cell.getRow().getData().request_name;
-            const name = cell.getValue();
-            const tableGroupsToggleState =
-              this.tabulatorInstance.getTableGroupsToggleState();
-            return `
-                        <div style="padding: 4px 8px; display: flex; align-items: center;">
-                          <span title="${type === "S" ? "Sample" : "Library"}" 
-                            style="
-                              display: inline-block;
-                              font-size: 10px;
-                              font-weight: bold;
-                              padding: 4px;
-                              border: 2px solid #333;
-                              border-radius: 4px;
-                              margin-right: 8px;
-                            ">
-                            ${type}
-                          </span>
-                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${(tableGroupsToggleState == 2
-                ? request_name + " ➜ "
-                : "") + name
-              }</span>
-                        </div>
-                      `;
-          },
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          }
-        },
-        {
-          title: "Barcode",
-          field: "barcode",
-          width: 98,
           minWidth: 60,
           headerFilter: true,
-          headerTooltip: "Barcode",
+          headerTooltip: "Library Name",
           visible: true,
           frozen: true,
-          cssClass: "details-column barcode-column right-border",
+          cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
@@ -633,428 +690,228 @@ export default {
           }
         },
         {
-          title: "From Users",
-          headerHozAlign: "left",
+          title: "Barcode",
+          field: "barcode",
+          width: 98,
+          minWidth: 60,
+          headerFilter: true,
+          headerTooltip: "Barcode",
           visible: true,
-          cssClass: "editable-fields-group",
-          columns: [
-            {
-              title: "Input Type",
-              field: "nucleic_acid_type_name",
-              minWidth: 80,
-              width: "6%",
-              headerVertical: false,
-              headerTooltip: "Input Type",
-              visible: true,
-              cssClass: "user-entry-column",
-              contextMenu: () => this.cellContextMenu(true, false, false),
-              formatter: (cell) => {
-                const value = cell.getValue();
-                const finalString = value || "No Input Type";
-                return this.ellipsisContainer(finalString);
-              },
-              cellDblClick: function (e, cell) {
-                showNotification("This field is not editable.", "warning");
-              }
-            },
-            {
-              title: "Protocol",
-              field: "library_protocol_name",
-              minWidth: 80,
-              width: "6%",
-              headerVertical: false,
-              headerTooltip: "Library Preparation Protocol",
-              visible: true,
-              cssClass: "user-entry-column",
-              contextMenu: () => this.cellContextMenu(true, false, false),
-              formatter: (cell) => {
-                const value = cell.getValue();
-                const finalString = value || "No Protocol";
-                return this.ellipsisContainer(finalString);
-              },
-              cellDblClick: function (e, cell) {
-                showNotification("This field is not editable.", "warning");
-              }
-            },
-            {
-              title: "Comment Library/Input",
-              field: "comments",
-              minWidth: 100,
-              headerVertical: false,
-              headerTooltip: "Comment (User)",
-              visible: true,
-              cssClass: "user-entry-column",
-              contextMenu: () => this.cellContextMenu(true, false, false),
-              formatter: (cell) => {
-                const finalString = cell.getValue() || "Empty";
-                return this.ellipsisContainer(finalString);
-              },
-              cellDblClick: function (e, cell) {
-                showNotification("This field is not editable.", "warning");
-              }
-            },
-            {
-              title: "Input",
-              field: "input",
-              minWidth: 60,
-              width: "4%",
-              headerVertical: false,
-              headerTooltip: "Input (User)",
-              visible: true,
-              cssClass: "user-entry-column",
-              contextMenu: () => this.cellContextMenu(true, false, false),
-              cellDblClick: function (e, cell) {
-                showNotification("This field is not editable.", "warning");
-              },
-              formatter: (cell) => {
-                const value = cell.getValue();
-                return this.ellipsisContainer(value);
-              }
-            },
-            {
-              title: "µl",
-              field: "volume",
-              minWidth: 60,
-              width: "4%",
-              headerVertical: false,
-              headerTooltip: "Volume (User)",
-              visible: true,
-              cssClass: "user-entry-column",
-              contextMenu: () => this.cellContextMenu(true, false, false),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              },
-              cellDblClick: function (e, cell) {
-                showNotification("This field is not editable.", "warning");
-              }
-            },
-            {
-              title: "bp",
-              field: "mean_fragment_size",
-              minWidth: 60,
-              width: "4%",
-              headerVertical: false,
-              headerTooltip: "Size Distribution (User)",
-              visible: true,
-              cssClass: "user-entry-column",
-              contextMenu: () => this.cellContextMenu(true, false, false),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                let finalString;
-
-                if (rawValue === "" || rawValue === undefined || isNaN(value)) {
-                  finalString = "-";
-                } else {
-                  finalString = Math.round(value).toString();
-                }
-
-                return this.ellipsisContainer(finalString);
-              },
-              cellDblClick: function (e, cell) {
-                showNotification("This field is not editable.", "warning");
-              }
-            }
-          ]
+          frozen: true,
+          cssClass: "right-border",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const finalString = value || "-";
+            return this.ellipsisContainer(finalString, false);
+          }
         },
         {
-          title: "From Facility",
-          headerHozAlign: "left",
+          title: "Date",
+          field: "create_time",
+          width: 90,
+          minWidth: 60,
+          headerFilter: true,
+          headerTooltip: "Date",
           visible: true,
-          cssClass: "editable-fields-group",
-          columns: [
-            {
-              title: "Unit",
-              field: "measuring_unit_facility",
-              minWidth: 80,
-              width: "6%",
-              editor: "list",
-              editorParams: (cell) => {
-                const row = cell.getRow().getData();
-                const options = [
-                  { label: "ng/µl (Concentration)", value: "concentration" },
-                  { label: "M (Cells)", value: "m" },
-                  { label: "Unknown", value: "-" }
-                ];
-                if (row.type === "L") {
-                  return {
-                    values: options.filter((option) => option.value !== "m")
-                  };
-                }
-                return { values: options };
-              },
-              headerVertical: false,
-              headerTooltip: "Measuring Unit",
-              visible: true,
-              cssClass: "facility-entry-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const value = cell.getValue();
-                const options = {
-                  concentration: "ng/µl (Concentration)",
-                  m: "M (Cells)",
-                  "-": "Unknown"
-                };
-                const finalString = options[value] || value || "Select";
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Amount",
-              field: "measured_value_facility",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              headerTooltip: "Measured Value",
-              visible: true,
-              cssClass: "facility-entry-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "µl",
-              field: "sample_volume_facility",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              headerTooltip: "Volume (Facility)",
-              visible: true,
-              cssClass: "facility-entry-column",
-              editorParams: {
-                min: 0,
-                max: 2147483647,
-                step: 1
-              },
-              validator: ["integer", "min:0", "max:2147483647"],
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = parseInt(rawValue, 10);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "bp",
-              field: "size_distribution_facility",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              headerTooltip: "Size Distribution (Facility)",
-              visible: true,
-              cssClass: "facility-entry-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                let finalString;
-
-                if (rawValue === "" || rawValue === undefined || isNaN(value)) {
-                  finalString = "-";
-                } else {
-                  finalString = Math.round(value).toString();
-                }
-
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "% Total",
-              field: "percent_total",
-              minWidth: 60,
-              width: "4%",
-              editor: "number",
-              headerVertical: false,
-              headerTooltip: "Smear Analysis (% Total)",
-              visible: true,
-              cssClass: "facility-entry-column",
-              editorParams: {
-                min: 0,
-                max: 100,
-                step: 0.1
-              },
-              validator: ["min:0", "max:100"],
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              cellEditing: (cell) => {
-                const rowData = cell.getRow().getData();
-                if (rowData.type === "S") {
-                  showNotification(
-                    "This field is not available for samples.",
-                    "warning"
-                  );
-                }
-                if (rowData.type === "S") {
-                  cell.getTable().modules.edit.currentCell = null;
-                }
-              },
-              formatter: (cell) => {
-                const rowData = cell.getRow().getData();
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
-                const cellElement = cell.getElement();
-                if (rowData.type === "S") {
-                  cellElement.classList.add("disable-editing");
-                } else {
-                  cellElement.classList.remove("disable-editing");
-                }
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "RQN",
-              field: "rna_quality",
-              minWidth: 60,
-              width: "4%",
-              headerVertical: false,
-              headerTooltip: "RNA Quality",
-              visible: true,
-              editor: "number",
-              editorParams: {
-                min: 0,
-                max: 11,
-                step: 0.1
-              },
-              validator: ["min:0", "max:11"],
-              cssClass: "facility-entry-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              cellEditing: (cell) => {
-                const rowData = cell.getRow().getData();
-                if (rowData.type === "L") {
-                  showNotification(
-                    "This field is not available for libraries.",
-                    "warning"
-                  );
-                  cell.getTable().modules.edit.currentCell = null;
-                }
-              },
-              formatter: (cell) => {
-                const rawValue = cell.getValue();
-                const value = Number(rawValue);
-                const finalString =
-                  rawValue === "" || rawValue === undefined || isNaN(value)
-                    ? "-"
-                    : value === 0
-                      ? "0.0"
-                      : value.toFixed(1);
-                const rowData = cell.getRow().getData();
-                const cellElement = cell.getElement();
-                if (rowData.type === "L") {
-                  cellElement.classList.add("disable-editing");
-                } else {
-                  cellElement.classList.remove("disable-editing");
-                }
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "GMO",
-              field: "gmo_facility",
-              minWidth: 60,
-              width: "6%",
-              editor: "list",
-              headerTooltip: "GMO Documentation",
-              editorParams: {
-                values: [
-                  { label: "Not Needed", value: "false" },
-                  { label: "Risk Assessment Done", value: "true" }
-                ]
-              },
-              cssClass: "facility-entry-column",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              cellEditing: (cell) => {
-                const rowData = cell.getRow().getData();
-                if (rowData.type === "L") {
-                  showNotification(
-                    "This field is not available for libraries.",
-                    "warning"
-                  );
-                }
-                if (rowData.gmo === false || rowData.gmo === "") {
-                  showNotification(
-                    "GMO is marked as 'NO' for this sample and cannot be edited.",
-                    "warning"
-                  );
-                }
-                if (
-                  rowData.type === "L" ||
-                  rowData.gmo == false ||
-                  rowData.gmo == ""
-                ) {
-                  cell.getTable().modules.edit.currentCell = null;
-                }
-              },
-              headerFilter: false,
-              headerVertical: false,
-              visible: true,
-              formatter: (cell) => {
-                const value = cell.getValue();
-                const options = {
-                  false: "Not Needed",
-                  true: "Risk Assessment Done"
-                };
-                const finalString = options[value] || value || "Select";
-                const rowData = cell.getRow().getData();
-                const cellElement = cell.getElement();
-                if (
-                  rowData.type === "L" ||
-                  rowData.gmo === false ||
-                  rowData.gmo === ""
-                ) {
-                  cellElement.classList.add("disable-editing");
-                } else {
-                  cellElement.classList.remove("disable-editing");
-                }
-                return this.ellipsisContainer(finalString);
-              }
-            },
-            {
-              title: "Comment",
-              field: "comments_facility",
-              minWidth: 100,
-              editor: "input",
-              headerVertical: false,
-              headerTooltip: "Comment (Facility)",
-              visible: true,
-              cssClass: "facility-entry-column no-right-border",
-              contextMenu: () => this.cellContextMenu(true, true, true),
-              formatter: (cell) => {
-                const value = cell.getValue() || "Empty";
-                return this.ellipsisContainer(value);
-              }
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const finalString = value || "-";
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Concentration Library",
+          field: "concentration_library",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Concentration Library (ng or µl)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            const finalString =
+              rawValue === "" || rawValue === undefined || isNaN(value)
+                ? "-"
+                : value === 0
+                  ? "0.0"
+                  : value.toFixed(1);
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "% Total",
+          field: "combined_smear_analysis",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Smear Analysis (% Total)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            return this.ellipsisContainer(rawValue + "%" || "-");
+          }
+        },
+        {
+          title: "bp",
+          field: "mean_fragment_size",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Mean Fragment Size (bp)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            let finalString;
+            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
+              finalString = "-";
+            } else {
+              finalString = Math.round(value).toString();
             }
-          ]
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "Depth (M)",
+          field: "sequencing_depth",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Sequencing Depth (M)",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            const value = Number(rawValue);
+            let finalString;
+            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
+              finalString = "-";
+            } else {
+              finalString = Math.round(value).toString();
+            }
+            return this.ellipsisContainer(finalString);
+          }
+        },
+        {
+          title: "%",
+          field: "percentage_library",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "% Library in Pool",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const rawValue = cell.getValue();
+            return this.ellipsisContainer(rawValue + "%" || "-");
+          }
+        },
+        {
+          title: "Coord",
+          field: "coordinate",
+          width: 80,
+          headerVertical: false,
+          headerTooltip: "Index Pair Coordinate",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
+        },
+        {
+          title: "I7 ID",
+          field: "index_i7_id",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Index I7 ID",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
+        },
+        {
+          title: "Index I7",
+          field: "index_i7",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Index I7 ID",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
+        },
+        {
+          title: "I5 ID",
+          field: "index_i5_id",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Index I5 ID",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
+        },
+        {
+          title: "Index I5",
+          field: "index_i5",
+          minWidth: 60,
+          width: "6%",
+          headerVertical: false,
+          headerTooltip: "Index I5 ID",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
         }
       ];
 
@@ -1096,12 +953,16 @@ export default {
             action: (e, cell) => {
               const value = cell.getValue();
               const field = cell.getField();
-              const requestName = cell.getRow().getData().request_name;
+              const libraryProtocolName = cell
+                .getRow()
+                .getData().library_protocol_name;
               this.tabulatorInstance
                 .getTable()
                 .getRows()
                 .forEach((row) => {
-                  if (row.getData().request_name === requestName) {
+                  if (
+                    row.getData().library_protocol_name === libraryProtocolName
+                  ) {
                     const targetCell = row.getCell(field);
                     if (
                       !targetCell
@@ -1156,26 +1017,10 @@ export default {
       return operations.length ? operations : [];
     },
     handleOutsideClick(event) {
-      const advancedFiltersPopup = this.$el.querySelector(
-        "#advancedFiltersPopup"
-      );
-      const advancedFiltersButton = this.$el.querySelector(
-        "#toggleAdvancedFiltersButton"
-      );
       const selectColumnsPopup = this.$el.querySelector("#selectColumnsPopup");
       const selectColumnsButton = this.$el.querySelector(
         "#toggleSelectColumnsButton"
       );
-
-      if (
-        this.showAdvancedFilters &&
-        advancedFiltersPopup &&
-        !advancedFiltersPopup.contains(event.target) &&
-        advancedFiltersButton !== event.target &&
-        !advancedFiltersButton.contains(event.target)
-      ) {
-        this.showAdvancedFilters = false;
-      }
 
       if (
         this.showSelectColumns &&
@@ -1189,12 +1034,9 @@ export default {
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
-      if (isEscape && this.showPopupWindow) {
+      if (isEscape && (this.showPopupWindow || this.showExportPopup)) {
         this.showPopupWindow = false;
-        return;
-      }
-      if (isEscape && this.showAdvancedFilters) {
-        this.showAdvancedFilters = false;
+        this.showExportPopup = false;
         return;
       }
       if (isEscape && this.showSelectColumns) {
@@ -1215,17 +1057,8 @@ export default {
       this.tabulatorInstance.toggleGroups(goToInitial);
       this.fakeLoadingStop();
     },
-    toggleAdvancedFilters() {
-      this.showAdvancedFilters = !this.showAdvancedFilters;
-      if (this.showAdvancedFilters) {
-        this.showSelectColumns = false;
-      }
-    },
     toggleSelectColumns() {
       this.showSelectColumns = !this.showSelectColumns;
-      if (this.showSelectColumns) {
-        this.showAdvancedFilters = false;
-      }
     },
     toggleColumnVisibility(column, isMainColumn) {
       this.fakeLoadingStart();
@@ -1253,7 +1086,7 @@ export default {
       }
 
       localStorage.setItem(
-        "incomingLibrariesAndSamplesColumnSettings",
+        "librariesAndSamplesColumnSettings",
         JSON.stringify(updatedColumns)
       );
       this.columnsList = updatedColumns;
@@ -1270,7 +1103,6 @@ export default {
       const groupElement = group.getElement();
       const selectedRows = groupRows.filter((row) => row.getData().selected);
       const type = selectedRows[0] && selectedRows[0].getData().type;
-      const requestId = groupRows[0].getData().request_id;
       const requestName = group._group.key;
       const selectedNamesList = selectedRows.map((item) => {
         return { barcode: item.getData().barcode, name: item.getData().name };
@@ -1280,7 +1112,14 @@ export default {
       switch (action) {
         case "selectAll":
           groupRows.forEach((row) => {
-            row.getData().selected = true;
+            const data = row.getData();
+            if (
+              data.record_type === "Sample" &&
+              (data.status === 2 || data.status === -2)
+            ) {
+              return;
+            }
+            data.selected = true;
             row.update({});
             const rowElement = row.getElement();
             const checkbox = rowElement.querySelector('input[type="checkbox"]');
@@ -1293,7 +1132,14 @@ export default {
 
         case "deselectAll":
           groupRows.forEach((row) => {
-            row.getData().selected = false;
+            const data = row.getData();
+            if (
+              data.record_type === "Sample" &&
+              (data.status === 2 || data.status === -2)
+            ) {
+              return;
+            }
+            data.selected = false;
             row.update({});
             const rowElement = row.getElement();
             const checkbox = rowElement.querySelector('input[type="checkbox"]');
@@ -1302,39 +1148,6 @@ export default {
             }
           });
           if (!group._group.visible) groupElement.click();
-          break;
-
-        case "samplesSubmitted":
-          let newSamplesSubmittedState = groupRows[0].getData()
-            .samples_submitted
-            ? !groupRows[0].getData().samples_submitted
-            : true;
-          try {
-            this.fakeLoadingStart();
-            const payload = {
-              data: JSON.stringify({
-                result: newSamplesSubmittedState
-              })
-            };
-            const url = `${urlStringStart}/api/requests/${requestId}/samples_submitted/`;
-            axiosRef.post(url, payload);
-            showNotification(
-              "Request successfully marked as 'Samples Submitted'.",
-              "success"
-            );
-            groupRows.forEach((row) => {
-              let rowData = row.getData();
-              rowData.samples_submitted = rowData.samples_submitted
-                ? !rowData.samples_submitted
-                : true;
-              row.update(rowData);
-            });
-            this.tabulatorInstance.recreateTable();
-          } catch (error) {
-            handleError(error);
-          } finally {
-            this.fakeLoadingStop();
-          }
           break;
 
         case "qualityPassed":
@@ -1362,36 +1175,6 @@ export default {
             popupListQP,
             onYesQP,
             onNoQP,
-            popupHeight,
-            700
-          );
-          break;
-
-        case "qualityCompromised":
-          if (selectedRows.length === 0) {
-            showNotification(
-              "Please select libraries/samples in the request first.",
-              "warning"
-            );
-            break;
-          }
-          let popupTitleQC = `Are you sure?`;
-          let popupDescriptionQC = `Marking the following ${type === "L" ? "libraries" : "samples"
-            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Compromised</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
-          let popupListQC = [...selectedNamesList];
-          let onYesQC = () => {
-            this.qualityCheckChange(selectedRows, "compromised");
-            this.showPopupWindow = false;
-          };
-          let onNoQC = () => {
-            this.showPopupWindow = false;
-          };
-          this.createPopupWindow(
-            popupTitleQC,
-            popupDescriptionQC,
-            popupListQC,
-            onYesQC,
-            onNoQC,
             popupHeight,
             700
           );
@@ -1426,20 +1209,120 @@ export default {
             700
           );
           break;
+
+        case "editComment":
+          this.editGroupComment(groupValue);
+          break;
+
+        case "destroyPool":
+          this.destroyPool(groupValue);
+          break;
       }
     },
-    async onBatchCellValueChanged(batchChanges) {
-      try {
-        const payload = {
-          data: JSON.stringify(batchChanges)
-        };
-        await axiosRef.post(
-          `${urlStringStart}/api/incoming_libraries/edit/`,
-          payload
-        );
-      } catch (error) {
-        handleError(error);
+    async editGroupComment(groupValue) {
+      const group = this.tabulatorInstance
+        .getTable()
+        .getGroups()
+        .find((g) => g.getKey() === groupValue);
+
+      if (!group) return;
+
+      const groupRows = group.getRows();
+      const currentComment = groupRows[0]?.getData().comment || "";
+      const poolName = groupRows[0]?.getData().pool_name;
+
+      this.createPopupWindow(
+        "Edit Comment",
+        `Enter the new comment for the pool <span style="font-weight: bold">'${poolName}'</span>:`,
+        [],
+        async () => {
+          const newComment = document.querySelector(
+            ".popup-body textarea"
+          ).value;
+          try {
+            const poolId = groupRows[0]?.getData().pool;
+            if (!poolId) throw new Error("Pool ID not found");
+
+            await axiosRef.post(
+              `${urlStringStart}/api/libraries_and_samples/${poolId}/edit_comment/`,
+              { data: JSON.stringify({ newComment }) }
+            );
+
+            showNotification("Comment updated successfully.", "success");
+            this.showPopupWindow = false;
+            await this.getLibrariesSamples();
+          } catch (error) {
+            this.showPopupWindow = false;
+            handleError(error);
+          }
+        },
+        () => {
+          this.showPopupWindow = false;
+        },
+        350,
+        500
+      );
+
+      this.$nextTick(() => {
+        const popupBody = document.querySelector(".popup-body");
+        if (popupBody) {
+          const textInput = document.createElement("textarea");
+          textInput.style.width = "100%";
+          textInput.style.height = "100%";
+          textInput.style.padding = "8px";
+          textInput.style.border = "1px solid lightgrey";
+          textInput.style.resize = "none";
+          textInput.placeholder = "Enter comment...";
+          textInput.value = currentComment;
+          textInput.style.boxSizing = "border-box";
+          textInput.style.verticalAlign = "top";
+          textInput.style.textAlign = "left";
+
+          popupBody.appendChild(textInput);
+        }
+      });
+    },
+    async destroyPool(groupValue) {
+      const group = this.tabulatorInstance
+        .getTable()
+        .getGroups()
+        .find((g) => g.getKey() === groupValue);
+
+      if (!group) return;
+
+      const groupRows = group.getRows();
+      const poolId = groupRows[0]?.getData().pool;
+      const poolName = groupRows[0]?.getData().pool_name;
+
+      if (!poolId) {
+        showNotification("Pool ID was not found.", "error");
+        return;
       }
+
+      this.createPopupWindow(
+        "Destroy Pool",
+        `Are you sure you want to destroy the pool <span style="font-weight: bold">'${poolName}'</span>? This will also clear the library preparation data for the libraries which didn't reach the status 'Library Prepared'.`,
+        [],
+        async () => {
+          try {
+            await axiosRef.post(
+              `${urlStringStart}/api/libraries_and_samples/${poolId}/destroy_pool/`
+            );
+
+            showNotification("Pool destroyed successfully.", "success");
+            this.showPopupWindow = false;
+            await this.getLibrariesSamples();
+          } catch (error) {
+            this.showPopupWindow = false;
+            handleError(error);
+          }
+        },
+        () => {
+          this.showPopupWindow = false;
+        },
+        240,
+        600
+      );
     },
     async qualityCheckChange(groupRows, qualityCheck) {
       this.fakeLoadingStart();
@@ -1453,10 +1336,7 @@ export default {
         )
       };
       try {
-        await axiosRef.post(
-          `${urlStringStart}/api/incoming_libraries/edit/`,
-          payload
-        );
+        await axiosRef.post(`${urlStringStart}/api/libraries_and_samples/edit/`, payload);
         showNotification(
           "Quality check status updated successfully.",
           "success"
@@ -1468,81 +1348,212 @@ export default {
         this.fakeLoadingStop();
       }
     },
-    exportToExcel() {
-      const tempContainer = document.createElement("div");
-      const exportColumns = this.columnsList
-        .filter((col) => col.field !== "selected")
-        .map((col) => ({ ...col }));
-      const today = new Date();
-      const formattedDate = `${today.getFullYear()}${String(
-        today.getMonth() + 1
-      ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
-      const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
-        const getRequestNum = (str) => {
-          const match = String(str).match(/^(\d+)_/);
-          return match ? parseInt(match[1], 10) : 0;
-        };
-        const aNum = getRequestNum(a.request_name);
-        const bNum = getRequestNum(b.request_name);
-        if (aNum !== bNum) return bNum - aNum;
-        return a.barcode?.localeCompare(b.barcode);
-      });
-      let exportRows = sortedRows.filter((row) => row.selected);
-      if (exportRows.length === 0) exportRows = sortedRows;
-      const requestIdsSet = new Set();
-      exportRows.forEach((row) => {
-        const match = row.request_name?.match(/^(\d+)_/);
-        if (match) {
-          requestIdsSet.add(match[1]);
-        }
-      });
-      const requestIds = Array.from(requestIdsSet)
-        .map((id) => parseInt(id, 10))
-        .sort((a, b) => a - b)
-        .slice(0, 40)
-        .join("_");
-      const filename = `${formattedDate}_${requestIds}_incoming.xlsx`;
-      this.fakeLoadingStart();
-      exportColumns.unshift({
-        title: "Request Name",
-        field: "request_name",
-        visible: true
-      });
-      if (exportRows.length === 0) {
-        exportRows = this.librariesSamplesList;
+    async fetchExportTemplates() {
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/libraries-and-samples-templates/`
+        );
+        this.fetchedLibrariesAndSamplesTemplates = response.data;
+      } catch (error) {
+        handleError(error);
       }
-      document.body.appendChild(tempContainer);
-      const tempTabulator = new Tabulator(tempContainer, {
-        data: exportRows,
-        columns: exportColumns,
-        placeholder: "No Libraries and Samples to show.",
-        dependencies: {
-          XLSX: XLSX
-        },
-        downloadConfig: {
-          columnHeaders: true,
-          columnGroups: true,
-          rowGroups: true,
-          columnCalcs: true,
-          dataTree: true
-        }
-      });
-      this.fakeLoadingStop();
-      setTimeout(() => {
+    },
+    async uploadExportTemplate(event) {
+      const file = event.target.files[0];
+      if (
+        file &&
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
+        const formData = new FormData();
+        formData.append("file", file);
         try {
-          tempTabulator.download("xlsx", filename, {
-            sheetName: "Incoming Libraries & Samples"
-          });
-        } catch (error) {
-          showNotification(
-            "Failed to export the data, please try again.",
-            "error"
+          await axiosRef.post(
+            `${urlStringStart}/api/libraries-and-samples-templates/upload/`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            }
           );
+          showNotification("File uploaded successfully.", "success");
+          this.fetchExportTemplates();
+        } catch (error) {
+          showNotification("Error uploading file: " + error, "error");
         } finally {
-          tempTabulator.destroy();
-          document.body.removeChild(tempContainer);
+          this.selectedFile = "without-file";
         }
-      }, 300);
+      } else {
+        showNotification("Please upload a valid XLSX file.", "error");
+      }
+    },
+    async downloadExportTemplate(file) {
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/libraries-and-samples-templates/${file.id}/download/`,
+          {
+            responseType: "blob"
+          }
+        );
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", file.name || "LibrariesAndSamples.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        showNotification("Error downloading file: " + error, "error");
+      }
+    },
+    async removeExportTemplate(index) {
+      const file = this.fetchedLibrariesAndSamplesTemplates[index];
+      try {
+        await axiosRef.delete(
+          `${urlStringStart}/api/libraries-and-samples-templates/${file.id}/remove/`
+        );
+        this.fetchedLibrariesAndSamplesTemplates.splice(index, 1);
+        showNotification("File removed successfully.", "success");
+      } catch (error) {
+        showNotification("Error removing file: " + error, "error");
+      } finally {
+        this.selectedFile = "without-file";
+      }
+    },
+    handleExportClick() {
+      const selectedRows = this.librariesSamplesList.filter((row) => row.selected);
+      if (selectedRows.length === 0) {
+        showNotification('Please select at least one library to export.', 'warning');
+      } else {
+        showExportPopup = true;
+      }
+    },
+    async handleExport() {
+      this.fakeLoadingStart();
+      try {
+        const today = new Date();
+        const formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+
+        const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
+          const getRequestNum = (str) => {
+            const match = String(str).match(/^(\d+)_/);
+            return match ? parseInt(match[1], 10) : 0;
+          };
+          const poolCompare = b.pool_name?.localeCompare(a.pool_name);
+          if (poolCompare !== 0) return poolCompare;
+          const aNum = getRequestNum(a.request_name);
+          const bNum = getRequestNum(b.request_name);
+          if (aNum !== bNum) return aNum - bNum;
+          return a.barcode?.localeCompare(b.barcode);
+        });
+        const uniquePools = [...new Set(sortedRows.map((row) => row.pool_name))]
+          .sort()
+          .join("_");
+        const uniqueRequestIDs = [
+          ...new Set(
+            sortedRows.map((row) => {
+              const match = row.request_name.match(/^(\d+)_/);
+              return match ? match[1] : row.request_name;
+            })
+          )
+        ]
+          .sort()
+          .join("_");
+
+        let exportRows = sortedRows.filter((row) => row.selected);
+        if (exportRows.length === 0) exportRows = sortedRows;
+        const requestIdsSet = new Set();
+        exportRows.forEach((row) => {
+          const match = row.request_name?.match(/^(\d+)_/);
+          if (match) {
+            requestIdsSet.add(match[1]);
+          }
+        });
+        const requestIds = Array.from(requestIdsSet)
+          .map((id) => parseInt(id, 10))
+          .sort((a, b) => a - b)
+          .slice(0, 40)
+          .join("_");
+        const filename = `${uniquePools}_${formattedDate}_${uniqueRequestIDs}`;
+        const wb = new ExcelJS.Workbook();
+        if (this.selectedFile !== "without-file") {
+          const response = await axiosRef.get(
+            `${urlStringStart}/api/libraries-and-samples-templates/${this.selectedFile.id}/download/`,
+            { responseType: "arraybuffer" }
+          );
+          await wb.xlsx.load(response.data);
+          const existingParkourSheet = wb.getWorksheet("Parkour");
+          if (existingParkourSheet) {
+            wb.removeWorksheet("Parkour");
+          }
+        }
+
+        const parkourSheet = wb.addWorksheet("Parkour");
+        parkourSheet.columns = [
+          { header: "Pool", key: "pool_name", width: 20 },
+          { header: "Request", key: "request_name", width: 25 },
+          { header: "Name", key: "name", width: 25 },
+          { header: "Barcode", key: "barcode", width: 15 },
+          { header: "Date", key: "create_time", width: 15 },
+          {
+            header: "Concentration Library",
+            key: "concentration_library",
+            width: 20
+          },
+          { header: "% Total", key: "combined_smear_analysis", width: 20 },
+          { header: "bp", key: "mean_fragment_size", width: 20 },
+          { header: "Depth (M)", key: "sequencing_depth", width: 20 },
+          { header: "%", key: "percentage_library", width: 20 },
+          { header: "Coord", key: "coordinate", width: 10 },
+          { header: "I7 ID", key: "index_i7_id", width: 20 },
+          { header: "Index I7", key: "index_i7", width: 20 },
+          { header: "I5 ID", key: "index_i5_id", width: 20 },
+          { header: "Index I5", key: "index_i5", width: 20 }
+        ];
+        exportRows.forEach((row) => {
+          parkourSheet.addRow(row);
+        });
+
+        const worksheets = wb._worksheets;
+        let parkourWS = null;
+        worksheets.forEach((sheet) => {
+          if (sheet._name === "Parkour") {
+            parkourWS = sheet;
+          }
+        });
+        wb.views = [
+          {
+            activeTab: 0,
+            firstSheet: 0
+          }
+        ];
+        if (parkourWS) {
+          parkourWS.orderNo = 0;
+          worksheets.forEach((sheet, index) => {
+            if (sheet.name !== "Parkour") {
+              if (sheet.orderNo >= parkourWS.orderNo) {
+                sheet.orderNo += 1;
+              }
+            }
+          });
+        }
+        const buffer = await wb.xlsx.writeBuffer();
+        const blob = new Blob([buffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        });
+        saveAs(blob, filename);
+      } catch (error) {
+        showNotification(
+          "Error during export. Please try again.\n" + error,
+          "error"
+        );
+      } finally {
+        this.fakeLoadingStop();
+        this.showExportPopup = false;
+        this.selectedFile = "without-file";
+      }
     },
     ellipsisContainer(text, boldText) {
       return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${boldText === true ? "bold" : "normal"
@@ -1595,6 +1606,16 @@ body,
   flex: 1;
   overflow: auto;
   position: relative;
+}
+
+.pool-header-green {
+  color: #e8f5e9 !important;
+  border-left: 16px solid #4caf50;
+}
+
+.pool-header-red {
+  color: #ffebee !important;
+  border-left: 16px solid #f44336;
 }
 
 @media (max-width: 1400px) {
@@ -1659,4 +1680,5 @@ body,
 </style>
 
 <!--
+sorting order: 3rd sheet
 -->

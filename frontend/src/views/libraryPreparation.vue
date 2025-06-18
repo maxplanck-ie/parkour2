@@ -835,6 +835,7 @@ export default {
             const options = [
               { label: "ng/µl (Concentration)", value: "concentration" },
               { label: "M (Cells)", value: "m" },
+              { label: "k (Cells)", value: "k" },
               { label: "Unknown", value: "-" }
             ];
             return { values: options };
@@ -849,6 +850,7 @@ export default {
             const options = {
               concentration: "ng/µl (Concentration)",
               m: "M (Cells)",
+              k: "k (Cells)",
               "-": "Unknown"
             };
             const finalString = options[value] || value || "Select";
@@ -1458,9 +1460,8 @@ export default {
       this.fakeLoadingStart();
       try {
         const today = new Date();
-        const formattedDate = `${today.getFullYear()}${String(
-          today.getMonth() + 1
-        ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+        const formattedDate = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+
         const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
           const getRequestNum = (str) => {
             const match = String(str).match(/^(\d+)_/);
@@ -1475,6 +1476,7 @@ export default {
           if (aNum !== bNum) return aNum - bNum;
           return a.barcode?.localeCompare(b.barcode);
         });
+
         let exportRows = sortedRows.filter((row) => row.selected);
         if (exportRows.length === 0) exportRows = sortedRows;
         const requestIdsSet = new Set();
@@ -1491,6 +1493,17 @@ export default {
           .join("_");
         const filename = `${formattedDate}_${requestIds}_preparation.xlsx`;
         const wb = new ExcelJS.Workbook();
+        if (this.selectedFile !== "without-file") {
+          const response = await axiosRef.get(
+            `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`,
+            { responseType: "arraybuffer" }
+          );
+          await wb.xlsx.load(response.data);
+          const existingParkourSheet = wb.getWorksheet("Parkour");
+          if (existingParkourSheet) {
+            wb.removeWorksheet("Parkour");
+          }
+        }
 
         const parkourSheet = wb.addWorksheet("Parkour");
         parkourSheet.columns = [
@@ -1513,19 +1526,10 @@ export default {
           { header: "Amount", key: "measured_value_facility", width: 15 },
           { header: "bp Sample", key: "size_distribution_facility", width: 15 }
         ];
-        exportRows.forEach((row) => parkourSheet.addRow(row));
+        exportRows.forEach((row) => {
+          parkourSheet.addRow(row);
+        });
 
-        if (this.selectedFile !== "without-file") {
-          const response = await axiosRef.get(
-            `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`,
-            { responseType: "arraybuffer" }
-          );
-          await wb.xlsx.load(response.data);
-          const existingParkourSheet = wb.getWorksheet("Parkour");
-          if (existingParkourSheet) {
-            wb.removeWorksheet("Parkour");
-          }
-        }
         const worksheets = wb._worksheets;
         let parkourWS = null;
         worksheets.forEach((sheet) => {
@@ -1680,10 +1684,8 @@ body,
 </style>
 
 <!--
-fix export like pooling
 add validations according to old component: deleting, right click operations, copy paste on ctrl operations
 export formulas don't refresh the values after concat
 
 modify the admin panel
-measuring unit (sample) allow user to add options through site admin panel
 -->

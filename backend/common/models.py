@@ -198,6 +198,31 @@ class DateTimeMixin(models.Model):
     class Meta:
         abstract = True
 
+class LibrariesAndSamplesTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/libraries_and_samples/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Libraries & Samples Template"
+        verbose_name_plural = "Templates ➜ Libraries & Samples"
+
+class IncomingLibrariesSamplesTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/incoming_libraries_samples/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Incoming Libraries/Samples Template"
+        verbose_name_plural = "Templates ➜ Incoming Libraries/Samples"
 
 class LibraryPreparationTemplate(models.Model):
     name = models.CharField("File Name", max_length=200)
