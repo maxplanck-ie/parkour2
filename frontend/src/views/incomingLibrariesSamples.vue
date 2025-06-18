@@ -786,11 +786,12 @@ export default {
                 const options = [
                   { label: "ng/µl (Concentration)", value: "concentration" },
                   { label: "M (Cells)", value: "m" },
+                  { label: "k (Cells)", value: "k" },
                   { label: "Unknown", value: "-" }
                 ];
                 if (row.type === "L") {
                   return {
-                    values: options.filter((option) => option.value !== "m")
+                    values: options.filter((option) => option.value !== "m" && option.value !== "k")
                   };
                 }
                 return { values: options };
@@ -805,6 +806,7 @@ export default {
                 const options = {
                   concentration: "ng/µl (Concentration)",
                   m: "M (Cells)",
+                  k: "k (Cells)",
                   "-": "Unknown"
                 };
                 const finalString = options[value] || value || "Select";

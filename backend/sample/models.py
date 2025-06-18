@@ -29,6 +29,7 @@ class Sample(GenericLibrarySample):
     MEASURING_UNIT_CHOICES = [
         ("ng/µl (Concentration)", "concentration", "Concentration"),
         ("M (Cells)", "m", "Cells"),
+        ("k (Cells)", "k", "Cells"),
         ("Unknown", "-", "Unknown"),
     ]
 
