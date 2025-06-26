@@ -547,3 +547,82 @@ input[type="radio"]:checked::after {
   padding-left: 18px;
   margin: 5px 0;
 }
+
+/* Status Circle */
+.status {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin: 8px auto;
+}
+
+.status.pending-submission {
+  background-color: #9e9e9e;
+}
+
+.status.submission-completed {
+  background-color: #8d6e63;
+}
+
+.status.galaxy-status-online,
+.status.quality-check-approved {
+  background-color: #66bb6a;
+}
+
+.status.galaxy-status-offline,
+.status.quality-check-failed {
+  background-color: #ef5350;
+}
+
+.status.quality-check-compromised {
+  background-color: #ffc107;
+}
+
+.status.library-prepared {
+  background-color: #3f51b5;
+}
+
+.status.library-pooled {
+  background-color: #f48fb1;
+}
+
+.status.sequencing {
+  background-color: #ba68c8;
+}
+
+.status.completed {
+  background-color: #009688;
+}
+
+/* Date Picker */
+.date-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-filter {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.date-filter label {
+  font-size: 14px;
+  color: white;
+  margin: auto;
+  margin-right: 5px;
+}
+
+.date-filter input[type="date"] {
+  padding: 6px;
+  border: none;
+  border-radius: 2px;
+  font-size: 14px;
+  height: 26px;
+  width: 115px;
+  color: #555;
+  background: #ffffff;
+}
