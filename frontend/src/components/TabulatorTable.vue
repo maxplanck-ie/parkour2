@@ -684,6 +684,23 @@ export default {
           }
           break;
 
+        //     if (filterId === 'protocol') {
+        //   this.advancedFilters.protocol = value;
+        // } else if (filterId === 'analysisType') {
+        //   this.advancedFilters.analysisType = value;
+        // } else if (filterId === 'sequencer') {
+        //   this.advancedFilters.sequencer = value;
+        // } else if (filterId === 'readLength') {
+        //   this.advancedFilters.readLength = value;
+        // } else if (filterId === 'resetAdvancedFilters') {
+        //   this.advancedFilters = {
+        //     protocol: null,
+        //     analysisType: null,
+        //     sequencer: null,
+        //     readLength: null
+        //   };
+        // }
+
         default:
           break;
       }

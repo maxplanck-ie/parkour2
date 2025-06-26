@@ -49,52 +49,52 @@
           </button>
           <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
             style="width: 250px; left: -50px">
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.showLibraries" />
-              </div>
-              <div><span style="font-weight: bold">Show</span> Libraries</div>
-            </label>
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.showSamples" />
-              </div>
-              <div><span style="font-weight: bold">Show</span> Samples</div>
-            </label>
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.onlySamplesSubmitted" />
-              </div>
-              <div>
-                <span style="font-weight: bold">Filter Requests</span> with
-                Samples Submitted
-              </div>
-            </label>
-            <label>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  text-align: center;
-                ">
-                <input type="checkbox" v-model="filters.onlyGmo" />
-              </div>
-              <div>
-                <span style="font-weight: bold">Filter Requests</span> with GMO
-                ➜ Yes
-              </div>
-            </label>
+            <div class="filter-item">
+              <label>Protocol</label>
+              <select v-model="filters.protocol"
+                @change="tabulatorInstance.filterTableData('protocol', filters.protocol)">
+                <option :value="null">All Protocols</option>
+                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.name">
+                  {{ protocol.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label>Analysis Type</label>
+              <select v-model="filters.analysisType"
+                @change="tabulatorInstance.filterTableData('analysisType', filters.analysisType)">
+                <option :value="null">All Analysis Types</option>
+                <option v-for="type in analysisTypesList" :key="type.id" :value="type.name">
+                  {{ type.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label>Sequencer</label>
+              <select v-model="filters.sequencer"
+                @change="tabulatorInstance.filterTableData('sequencer', filters.sequencer)">
+                <option :value="null">All Sequencers</option>
+                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.name">
+                  {{ sequencer.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label>Read Length</label>
+              <select v-model="filters.readLength"
+                @change="tabulatorInstance.filterTableData('readLength', filters.readLength)">
+                <option :value="null">All Read Lengths</option>
+                <option v-for="length in readLengthsList" :key="length.id" :value="length.name">
+                  {{ length.name }}
+                </option>
+              </select>
+            </div>
+            <button @click="resetAdvancedFilters" class="reset-button">
+              Reset Filters
+            </button>
           </div>
         </div>
         <div class="button-popup-wrapper">
@@ -488,14 +488,19 @@ export default {
       },
       searchQuery: "",
       filters: {
-        showLibraries: true,
-        showSamples: true,
+        protocol: null,
+        analysisType: null,
+        sequencer: null,
+        readLength: null
       },
+      protocolsList: [],
+      analysisTypesList: [],
+      sequencersList: [],
+      readLengthsList: [],
       startDate: sixMonthsAgo,
       endDate: today,
       showAdvancedFilters: false,
       showSelectColumns: false,
-      libraryProtocols: []
     };
   },
   computed: {
@@ -519,6 +524,7 @@ export default {
   mounted() {
     this.getLibrariesSamples();
     this.setColumns();
+    // this.fetchFilterOptions();
     this.fetchExportTemplates();
 
     document.addEventListener("click", this.handleOutsideClick);
@@ -643,7 +649,7 @@ export default {
             "request_id": 3644,
             "request_name": "3644_Yoo_Cissé",
             "name": "H3K27ac",
-            "type": "L",
+            "type": "S",
             "barcode": "25S007986",
             "status": 1,
             "create_time": "2025-06-18T15:18:56.586777+02:00",
@@ -675,7 +681,7 @@ export default {
             "request_name": "3644_Yoo_Cissé",
             "name": "Pol2_Ser2ph",
             "barcode": "25S007987",
-            "type": "L",
+            "type": "S",
             "status": 1,
             "create_time": "2025-06-18T15:18:56.593921+02:00",
             "library_protocol": 22,
@@ -706,7 +712,7 @@ export default {
             "request_name": "3644_Yoo_Cissé",
             "name": "Pol2_Ser5ph",
             "barcode": "25S007988",
-            "type": "L",
+            "type": "S",
             "status": 1,
             "create_time": "2025-06-18T15:18:56.597499+02:00",
             "library_protocol": 22,
@@ -737,7 +743,7 @@ export default {
             "request_name": "3644_Yoo_Cissé",
             "name": "CTCF",
             "barcode": "25S007989",
-            "type": "L",
+            "type": "S",
             "status": 1,
             "create_time": "2025-06-18T15:18:56.601884+02:00",
             "library_protocol": 22,
@@ -767,7 +773,7 @@ export default {
             "request_id": 3644,
             "request_name": "3644_Yoo_Cissé",
             "name": "Med1_poly",
-            "type": "L",
+            "type": "S",
             "barcode": "25S007990",
             "status": 1,
             "create_time": "2025-06-18T15:18:56.606885+02:00",
@@ -793,6 +799,471 @@ export default {
             "nucleic_acid_type_name": "fixed cell pellets",
             "leaf": true,
             "id": 29170
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Gen1_250327_18m",
+            "barcode": "25L007475",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.679276+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 248.407,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24669,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28599
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Gen2_250327_18m",
+            "barcode": "25L007476",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.683927+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 273.165,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24670,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28600
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Gen3_250327_18m",
+            "barcode": "25L007477",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.687225+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 364.264,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24671,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28601
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Gen4_250327_18m",
+            "barcode": "25L007478",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.690452+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 132.662,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24672,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28602
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Gen5_250327_18m",
+            "barcode": "25L007479",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.693696+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 196.321,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24673,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28603
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Control1_250327_18m",
+            "barcode": "25L007480",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.696946+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 312.388,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24674,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28604
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Control2_250327_18m",
+            "barcode": "25L007481",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.700724+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 138.357,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24675,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28605
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Control3_250328_18m",
+            "barcode": "25L007482",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.704316+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 143.656,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24676,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28606
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Control4_250329_18m",
+            "barcode": "25L007483",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.707901+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 213.534,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24677,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28607
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Control5_250330_18m",
+            "barcode": "25L007484",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.711273+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 134.454,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24678,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28608
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Old1_250327",
+            "barcode": "25L007485",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.714763+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 307.688,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24679,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28609
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Old2_250327",
+            "barcode": "25L007486",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.718175+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 249.771,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24680,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28610
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Old3_250327",
+            "barcode": "25L007487",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.721364+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 237.768,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24681,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28611
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Young1_250327",
+            "barcode": "25L007488",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.724565+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 322.585,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24682,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28612
+          },
+          {
+            "request_id": 3630,
+            "request_name": "3630_Daviti_Denboba",
+            "name": "Young2_250327",
+            "barcode": "25L007489",
+            "status": 5,
+            "type": "L",
+            "create_time": "2025-06-03T11:21:54.728066+02:00",
+            "library_protocol": 69,
+            "library_protocol_name": "Nanopore 16S Barcoding Kit (SQK-16S114)",
+            "library_type": 29,
+            "library_type_name": "Nanopore 16s Library",
+            "organism": 14,
+            "equal_representation_nucleotides": false,
+            "concentration": 302.513,
+            "concentration_method": 4,
+            "read_length": 17,
+            "read_length_name": "Oxford Nanopore",
+            "sequencing_depth": 20,
+            "comments": "",
+            "amplification_cycles": 0,
+            "organism_name": "M. musculus (GRCm39)",
+            "pk": 24683,
+            "record_type": "Sample",
+            "is_converted": true,
+            "rna_quality": null,
+            "nucleic_acid_type": 16,
+            "nucleic_acid_type_name": "DNA (genomic)",
+            "leaf": true,
+            "id": 28613
           }
         ];
         this.librariesSamplesList = fetchedRows;
@@ -801,6 +1272,29 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    async fetchFilterOptions() {
+      try {
+        const protocolsRes = await axiosRef.get(`${urlStringStart}/api/library_protocols/`);
+        this.protocolsList = protocolsRes.data;
+        const analysisRes = await axiosRef.get(`${urlStringStart}/api/analysis_types/`);
+        this.analysisTypesList = analysisRes.data;
+        const sequencersRes = await axiosRef.get(`${urlStringStart}/api/sequencers/`);
+        this.sequencersList = sequencersRes.data;
+        const readLengthsRes = await axiosRef.get(`${urlStringStart}/api/read_lengths/`);
+        this.readLengthsList = readLengthsRes.data;
+      } catch (error) {
+        handleError(error);
+      }
+    },
+    resetAdvancedFilters() {
+      this.filters = {
+        protocol: null,
+        analysisType: null,
+        sequencer: null,
+        readLength: null
+      };
+      this.tabulatorInstance.filterTableData("resetAdvancedFilters", true);
     },
     setColumns() {
       const storedColumnState = JSON.parse(
@@ -1037,6 +1531,7 @@ export default {
           minWidth: 80,
           width: "5%",
           headerVertical: false,
+          headerFilter: true,
           headerTooltip: "Input Type",
           visible: true,
           cssClass: "regular-column",
@@ -1056,6 +1551,7 @@ export default {
           minWidth: 80,
           width: "5%",
           visible: true,
+          headerFilter: true,
           cssClass: "regular-column",
           headerTooltip: "Library Preparation Protocol",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -1074,6 +1570,7 @@ export default {
           minWidth: 80,
           width: "5%",
           visible: true,
+          headerFilter: true,
           cssClass: "regular-column",
           headerTooltip: "Analysis Type",
           contextMenu: () => this.cellContextMenu(true, false, false),
@@ -1092,6 +1589,7 @@ export default {
           minWidth: 60,
           width: "3.5%",
           headerVertical: false,
+          headerFilter: true,
           headerTooltip: "Measured Amount with Unit",
           visible: true,
           cssClass: "regular-column",
@@ -1462,10 +1960,26 @@ export default {
       return operations.length ? operations : [];
     },
     handleOutsideClick(event) {
+      const advancedFiltersPopup = this.$el.querySelector(
+        "#advancedFiltersPopup"
+      );
+      const advancedFiltersButton = this.$el.querySelector(
+        "#toggleAdvancedFiltersButton"
+      );
       const selectColumnsPopup = this.$el.querySelector("#selectColumnsPopup");
       const selectColumnsButton = this.$el.querySelector(
         "#toggleSelectColumnsButton"
       );
+
+      if (
+        this.showAdvancedFilters &&
+        advancedFiltersPopup &&
+        !advancedFiltersPopup.contains(event.target) &&
+        advancedFiltersButton !== event.target &&
+        !advancedFiltersButton.contains(event.target)
+      ) {
+        this.showAdvancedFilters = false;
+      }
 
       if (
         this.showSelectColumns &&
@@ -1479,9 +1993,16 @@ export default {
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
-      if (isEscape && (this.showPopupWindow || this.showExportPopup)) {
+      if (isEscape && this.showPopupWindow) {
         this.showPopupWindow = false;
+        return;
+      }
+      if (isEscape && this.showExportPopup) {
         this.showExportPopup = false;
+        return;
+      }
+      if (isEscape && this.showAdvancedFilters) {
+        this.showAdvancedFilters = false;
         return;
       }
       if (isEscape && this.showSelectColumns) {
@@ -1528,6 +2049,12 @@ export default {
       }
       else
         this.getLibrariesSamples();
+    },
+    toggleAdvancedFilters() {
+      this.showAdvancedFilters = !this.showAdvancedFilters;
+      if (this.showAdvancedFilters) {
+        this.showSelectColumns = false;
+      }
     },
     toggleSelectColumns() {
       this.showSelectColumns = !this.showSelectColumns;
