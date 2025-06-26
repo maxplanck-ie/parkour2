@@ -4,48 +4,22 @@
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div
-      class="popup-container"
-      :style="{
-        height: errorsPopupContents.errorsPopupHeight + 'px',
-        width: errorsPopupContents.errorsPopupWidth + 'px'
-      }"
-    >
+    <div class="popup-container" :style="{
+      height: errorsPopupContents.errorsPopupHeight + 'px',
+      width: errorsPopupContents.errorsPopupWidth + 'px'
+    }">
       <div class="popup-header">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <g>
-            <path
-              opacity="0.3"
+            <path opacity="0.3"
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              fill="#323232"
-            />
+              fill="#323232" />
             <path
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M12 8V13"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-            <path
-              d="M12 16V15.9888"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
+              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
           </g>
         </svg>
         <span class="popup-title">Paste Error</span>
@@ -58,15 +32,9 @@
           Following errors occurred while pasting, please try again after
           fixing:
         </div>
-        <div
-          v-if="errorsPopupContents.errorsList?.length"
-          class="popup-scrollable-content"
-        >
+        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
           <ol style="padding-left: 25px">
-            <li
-              v-for="(item, index) in errorsPopupContents.errorsList"
-              :key="index"
-            >
+            <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
               {{ item.barcode + " ➜ " }}
               <span style="font-weight: bold">{{ item.message }}</span>
             </li>
@@ -80,7 +48,6 @@
       </div>
     </div>
   </div>
-  {{ console.log(rowData) }}
 </template>
 
 <script>
@@ -446,16 +413,6 @@ export default {
           if (typesNotIn.length > 0) {
             flatFilters.push(...typesNotIn);
           }
-          if (this.groupSort) {
-            let groupValues = [
-              ...new Set(this.rowData.map((item) => item[this.groupSort.field]))
-            ].sort();
-
-            if (this.groupSort.order === "desc") {
-              groupValues.reverse();
-            }
-            this.tabulatorInstance.setGroupValues([groupValues]);
-          }
           this.tabulatorInstance.setFilter(flatFilters);
 
           const columns = this.tabulatorInstance.getColumns();
@@ -508,17 +465,18 @@ export default {
 
         this.tabulatorInstance.on("dataFiltered", () => {
           setTimeout(() => {
-            const groups = this.tabulatorInstance.getGroups();
-            groups.forEach((group) => {
-              const visibleRows = group.getRows();
-              const groupElement = group.getElement();
-              if (visibleRows.length === 0 && this.groupBy !== "name") {
-                groupElement.classList.add("hidden-group1");
-              } else {
-                groupElement.classList.remove("hidden-group1");
+            if (this.groupSort && this.groupBy) {
+              let groupValues = [
+                ...new Set(this.tabulatorInstance.getData("active").map((item) => item[this.groupSort.field]))
+              ].sort();
+
+              if (this.groupSort.order === "desc") {
+                groupValues.reverse();
               }
-            });
+              this.tabulatorInstance.setGroupValues([groupValues]);
+            }
           }, 0);
+
         });
 
         this.tabulatorInstance.on("columnResized", (column) => {
@@ -598,7 +556,8 @@ export default {
         this.tabulatorInstance.setColumns(this.columnDefs);
         this.getTabulatorElement().classList.remove("no-group-by");
         this.showAllGroups();
-        this.tabulatorInstance.setGroupBy(this.groupBy);
+        if (this.groupBy)
+          this.tabulatorInstance.setGroupBy(this.groupBy);
         this.tableRangeBoundsState = {
           start: null,
           end: null
@@ -607,6 +566,8 @@ export default {
       }
     },
 
+    // Make sure that records in rowData have "type" field, in order for these filters to work. Check the defination of "this.tableFiltersState" to get more context.
+    // If "type" is not defined, then the records won't show up in the table.
     filterTableData(operation, keyword) {
       let typesIn = this.tableFiltersState.typesIn;
       let typesNotIn = this.tableFiltersState.typesNotIn;
@@ -933,8 +894,8 @@ export default {
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                  getRow: () => ({ getData: () => rowData })
-                })
+                getRow: () => ({ getData: () => rowData })
+              })
               : columnDef.editorParams;
           const options =
             editorParamsList?.values?.map((opt) =>
@@ -1126,7 +1087,7 @@ export default {
   padding: 10px 0px !important;
 }
 
-.editable-fields-group > .tabulator-col-content > div > div {
+.title-field-group>.tabulator-col-content>div>div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }
@@ -1136,6 +1097,5 @@ export default {
 scroll to focused cell after copy
 select all, change columns checkboxes delay
 resize width of table or collapse/expand side modules should refresh the table width
-make paste errors window movable
 show hover tooltips with use of a library
 -->
