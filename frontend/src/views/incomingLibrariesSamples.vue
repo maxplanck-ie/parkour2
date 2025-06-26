@@ -389,7 +389,6 @@ export default {
       },
       showAdvancedFilters: false,
       showSelectColumns: false,
-      libraryProtocols: []
     };
   },
   mounted() {

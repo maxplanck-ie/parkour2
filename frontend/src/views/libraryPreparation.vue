@@ -457,7 +457,6 @@ export default {
       },
       searchQuery: "",
       showSelectColumns: false,
-      libraryProtocols: []
     };
   },
   mounted() {

@@ -620,9 +620,41 @@ input[type="radio"]:checked::after {
   padding: 6px;
   border: none;
   border-radius: 2px;
-  font-size: 14px;
+  font-size: 13px;
   height: 26px;
   width: 115px;
   color: #555;
   background: #ffffff;
+}
+
+.filter-item {
+  margin-bottom: 12px;
+}
+
+.filter-item label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.filter-item select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.reset-button {
+  width: 100%;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.reset-button:hover {
+  background-color: #e0e0e0;
 }
