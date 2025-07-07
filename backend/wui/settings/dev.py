@@ -1,3 +1,6 @@
+import socket
+import subprocess
+
 from .base import *
 
 DEBUG = True
@@ -10,15 +13,37 @@ INSTALLED_APPS += [
     # "explorer",
 ]
 
-MIDDLEWARE += [
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    *MIDDLEWARE,
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost",
+]
 
-def show_toolbar_to_all_IPs(request):
-    return True
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS += [ip[: ip.rfind(".")] + ".1" for ip in ips]
+
+# Additional support for Docker desktop on Windows/Mac
+try:
+    result = subprocess.run(
+        ["hostname", "-I"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode == 0:
+        docker_ips = result.stdout.strip().split()
+        INTERNAL_IPS.extend(docker_ips)
+except (subprocess.SubprocessError, FileNotFoundError):
+    pass
+
+additional_ips = os.environ.get("DEBUG_TOOLBAR_INTERNAL_IPS")
+if additional_ips:
+    INTERNAL_IPS.extend(ip.strip() for ip in additional_ips.split(","))
 
 
 # CORS settings to enable API calls for Vue.js while development
@@ -28,7 +53,13 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": show_toolbar_to_all_IPs,
+    "SHOW_TOOLBAR_CALLBACK": lambda _: True,
+    "SHOW_COLLAPSED": True,
+    "SHOW_TEMPLATE_CONTEXT": True,
+    "DISABLE_PANELS": set(),
+    "RENDER_PANELS": False,
+    "RESULTS_CACHE_SIZE": 100,
+    "SQL_WARNING_THRESHOLD": 500,  # milliseconds
 }
 
 MIGRATION_LINTER_OPTIONS = {
@@ -36,7 +67,8 @@ MIGRATION_LINTER_OPTIONS = {
 }
 
 READONLY_DATABASE_URL = os.environ.get(
-    "READONLY_DATABASE_URL", "sqlite:////usr/src/db.sqlite"
+    "READONLY_DATABASE_URL",
+    "sqlite:////usr/src/db.sqlite",
 )
 
 DATABASES["readonly"] = dj_database_url.config(
@@ -87,3 +119,4 @@ LOGGING["loggers"] = {
         "handlers": ["rich_console"],
     },
 }
+
