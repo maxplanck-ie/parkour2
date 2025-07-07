@@ -119,4 +119,3 @@ LOGGING["loggers"] = {
         "handlers": ["rich_console"],
     },
 }
-
