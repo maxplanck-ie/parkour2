@@ -1906,5 +1906,6 @@ body,
 </style>
 
 <!--
+check if database view gets updated every time the new records are added to lib, sam, req
 sorting order: 3rd sheet
 -->

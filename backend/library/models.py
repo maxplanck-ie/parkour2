@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from library_sample_shared.models import GenericLibrarySample
+from django.contrib.postgres.fields import ArrayField
 
 
 class Library(GenericLibrarySample):
@@ -78,6 +79,11 @@ class CompleteLibraryData(models.Model):
     index_i5 = models.CharField(max_length=24, null=True)
     request_id = models.IntegerField()
     request_name = models.CharField(max_length=255)
+    pools = ArrayField(
+        models.CharField(max_length=100),
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         managed = False
