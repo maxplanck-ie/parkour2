@@ -12,6 +12,7 @@ SELECT
     l.mean_fragment_size,
     l.percent_total,
     l.measuring_unit_facility,
+    l.pool,
     r.id AS request_id,
     r.name AS request_name,
     o.name AS organism_name,
