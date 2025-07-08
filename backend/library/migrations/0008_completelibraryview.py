@@ -20,7 +20,7 @@ SELECT
     it.name AS index_type_name,
     l.index_reads,
     l.index_i7,
-    l.index_i5,
+    l.index_i5
 FROM library_library AS l
 JOIN request_request_libraries AS rl ON l.id = rl.library_id
 JOIN request_request AS r ON rl.request_id = r.id
