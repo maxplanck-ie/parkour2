@@ -21,7 +21,6 @@ SELECT
     l.index_reads,
     l.index_i7,
     l.index_i5,
-    rl.created_at AS request_library_created_at
 FROM library_library AS l
 JOIN request_request_libraries AS rl ON l.id = rl.library_id
 JOIN request_request AS r ON rl.request_id = r.id
