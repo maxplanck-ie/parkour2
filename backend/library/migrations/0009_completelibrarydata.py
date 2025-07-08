@@ -29,7 +29,6 @@ class Migration(migrations.Migration):
                 ('index_reads', models.PositiveSmallIntegerField(null=True)),
                 ('index_i7', models.CharField(max_length=24, null=True)),
                 ('index_i5', models.CharField(max_length=24, null=True)),
-                ('request_library_created_at', models.DateTimeField(null=True)),
                 ('request_id', models.IntegerField()),
                 ('request_name', models.CharField(max_length=255)),
             ],
