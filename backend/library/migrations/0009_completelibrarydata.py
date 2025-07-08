@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0009_merge_20250708_2030'),
+        ('library', '0008_completelibraryview'),
     ]
 
     operations = [
