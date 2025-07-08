@@ -58,3 +58,20 @@ class Library(GenericLibrarySample):
     class Meta:
         verbose_name = "Library"
         verbose_name_plural = "Libraries"
+
+class CompleteLibraryData(models.Model):
+    library_id = models.IntegerField(primary_key=True)
+    barcode = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    status = models.IntegerField()
+    sequencing_depth = models.FloatField()
+    measuring_unit = models.CharField(max_length=50)
+    mean_fragment_size = models.FloatField()
+    percent_total = models.FloatField()
+    measuring_unit_facility = models.CharField(max_length=100)
+    request_id = models.IntegerField()
+    request_name = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = "complete_library_data"
