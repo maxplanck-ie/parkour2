@@ -21,7 +21,6 @@ class Migration(migrations.Migration):
                 ('measuring_unit', models.CharField(max_length=50)),
                 ('mean_fragment_size', models.FloatField()),
                 ('percent_total', models.FloatField()),
-                ('pool', models.CharField(max_length=100)),
                 ('measuring_unit_facility', models.CharField(max_length=100)),
                 ('organism_name', models.CharField(max_length=100, null=True)),
                 ('library_protocol_name', models.CharField(max_length=150, null=True)),
