@@ -25,10 +25,10 @@ SELECT
 FROM library_library AS l
 JOIN request_request_libraries AS rl ON l.id = rl.library_id
 JOIN request_request AS r ON rl.request_id = r.id
-LEFT JOIN common_organism AS o ON l.organism_id = o.id
-LEFT JOIN common_libraryprotocol AS lp ON l.library_protocol_id = lp.id
-LEFT JOIN common_librarytype AS lt ON l.library_type_id = lt.id
-LEFT JOIN common_indextype AS it ON l.index_type_id = it.id;
+LEFT JOIN library_sample_shared_organism AS o ON l.organism_id = o.id
+LEFT JOIN library_sample_shared_libraryprotocol AS lp ON l.library_protocol_id = lp.id
+LEFT JOIN library_sample_shared_librarytype AS lt ON l.library_type_id = lt.id
+LEFT JOIN library_sample_shared_indextype AS it ON l.index_type_id = it.id;
 """
 
 class Migration(migrations.Migration):
