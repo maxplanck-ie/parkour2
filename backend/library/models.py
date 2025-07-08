@@ -79,11 +79,8 @@ class CompleteLibraryData(models.Model):
     index_i5 = models.CharField(max_length=24, null=True)
     request_id = models.IntegerField()
     request_name = models.CharField(max_length=255)
-    pools = ArrayField(
-        models.CharField(max_length=100),
-        blank=True,
-        null=True,
-    )
+    pool_name = models.CharField(max_length=100)
+    create_time = models.DateTimeField()
 
     class Meta:
         managed = False

@@ -14,6 +14,7 @@ SELECT
     l.measuring_unit_facility,
     r.id AS request_id,
     r.name AS request_name,
+    r.create_time AS create_time,
     o.name AS organism_name,
     lp.name AS library_protocol_name,
     lt.name AS library_type_name,

@@ -636,7 +636,6 @@ export default {
             element.sequencing_depth === 0 ? 0 : element.sequencing_depth || "",
           read_length: element.read_length === 0 ? 0 : element.read_length || "",
           gmo: element.gmo === null ? "" : element.gmo,
-          pool: element.pool || "",
           pool_name: element.pool_name || "",
           status: element.status || "",
           status_text:
@@ -880,7 +879,7 @@ export default {
         },
         {
           title: "Pool Paths",
-          field: "pool_paths",
+          field: "pool_name",
           width: 85,
           minWidth: 60,
           headerFilter: true,
@@ -1706,7 +1705,7 @@ export default {
           { header: "Status", key: "status_text", width: 15 },
           { header: "S/L", key: "type", width: 10 },
           { header: "Barcode", key: "barcode", width: 15 },
-          { header: "Pool Paths", key: "pool_paths", width: 20 },
+          { header: "Pool Paths", key: "pool_name", width: 20 },
           { header: "GMO", key: "gmo", width: 20 },
           { header: "Date", key: "create_time", width: 15 },
           { header: "Input Type", key: "nucleic_acid_type_name", width: 20 },
@@ -1907,5 +1906,15 @@ body,
 
 <!--
 check if database view gets updated every time the new records are added to lib, sam, req
+can a single library or sample have multiple poolpaths
+gmo or gmo facility?
 sorting order: 3rd sheet
+
+from django.db import connection
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM complete_library_data LIMIT 10")
+    columns = [col[0] for col in cursor.description]
+    results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+for record in results:
+    print(record)
 -->
