@@ -34,6 +34,8 @@ LEFT JOIN library_sample_shared_indextype AS it ON l.index_type_id = it.id;
 class Migration(migrations.Migration):
 
     dependencies = [
+        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("library", "0007_rename_amplification_cycles_library_removed_amplification_cycles_and_more"),
         ("request", "0009_historicalrequest"),
     ]
 
