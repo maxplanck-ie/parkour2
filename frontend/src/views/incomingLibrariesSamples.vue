@@ -267,14 +267,16 @@ export default {
             (item) => item.samples_submitted === true
           );
           const gmo = data.some((item) => item.gmo === true);
-          const totalDepth = data.reduce(
+          let totalDepth = data.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
             0
           );
-          const totalReadLength = data.reduce((sum, row) => {
+          totalDepth = Number(totalDepth.toFixed(1));
+          let totalReadLength = data.reduce((sum, row) => {
             const readLength = Number(row.read_length);
             return sum + (isNaN(readLength) ? 0 : readLength);
           }, 0);
+          totalReadLength = Number(totalReadLength.toFixed(1));
           const biosafetyLevel =
             [...new Set(data.map((item) => item.biosafety_level))]
               .map((level) => level && level.toUpperCase())
