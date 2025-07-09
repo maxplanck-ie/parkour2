@@ -27,7 +27,7 @@
     "pinia": "3.0.1",
     "sass": "1.86.0",
     "serve": "14.2.4",
-    "tabulator-tables": "6.3.0",
+    "tabulator-tables": "6.3.1",
     "vue": "3.5.13",
     "vue-router": "4.5.0",
     "vue-toastification": "2.0.0-rc.5",

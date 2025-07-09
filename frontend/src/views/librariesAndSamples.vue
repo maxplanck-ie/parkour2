@@ -170,12 +170,6 @@
             </ul>
           </div>
         </div>
-        <div class="button-popup-wrapper">
-          <button class="header-button" @click="toggleGroups">
-            <font-awesome-icon icon="fa-solid fa-layer-group" style="color: white" />
-            <span> Toggle Views </span>
-          </button>
-        </div>
         <button class="header-button" @click="handleExportClick">
           <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
@@ -185,13 +179,59 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <TabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList" :columnDefs="columnsList"
-        groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }" :groupStartOpen="false"
-        :tableOptions="{
+      <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
+        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop
         }" />
+    </div>
+
+    <!-- Pagination controls -->
+    <div v-if="!loading && pagination.totalPages > 1" class="pagination-controls">
+      <div class="pagination-info">
+        Showing page {{ pagination.currentPage }} of {{ pagination.totalPages }}
+        ({{ pagination.totalRecords }} records)
+      </div>
+
+      <div class="pagination-buttons">
+        <button class="pagination-button" @click="changePage(1)" :disabled="pagination.currentPage === 1">
+          &laquo; First
+        </button>
+
+        <button class="pagination-button" @click="changePage(pagination.currentPage - 1)"
+          :disabled="pagination.currentPage === 1">
+          &lsaquo; Prev
+        </button>
+
+        <div class="page-input">
+          <input type="number" v-model.number="pageInput" min="1" :max="pagination.totalPages" @keyup.enter="goToPage"
+            @blur="validatePageInput">
+          <span>of {{ pagination.totalPages }}</span>
+        </div>
+
+        <button class="pagination-button" @click="changePage(pagination.currentPage + 1)"
+          :disabled="pagination.currentPage === pagination.totalPages">
+          Next &rsaquo;
+        </button>
+
+        <button class="pagination-button" @click="changePage(pagination.totalPages)"
+          :disabled="pagination.currentPage === pagination.totalPages">
+          Last &raquo;
+        </button>
+      </div>
+
+      <div class="page-size-selector">
+        <label>Show:</label>
+        <select v-model="pagination.pageSize" @change="handlePageSizeChange">
+          <option value="100">100</option>
+          <option value="300">300</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
+        <span>per page</span>
+      </div>
     </div>
 
     <!-- Popup window -->
@@ -413,7 +453,7 @@
 </template>
 
 <script lang="jsx">
-import TabulatorTable from "../components/TabulatorTable.vue";
+import LiteTabulatorTable from "../components/LiteTabulatorTable.vue";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import {
@@ -428,12 +468,12 @@ const urlStringStart = urlStringStartsWith();
 export default {
   name: "LibrariesAndSamples",
   components: {
-    TabulatorTable
+    LiteTabulatorTable
   },
   data() {
     const today = new Date();
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(today.getMonth() - 6);
+    const fiveYearsAgo = new Date();
+    fiveYearsAgo.setFullYear(today.getFullYear() - 5);
     return {
       tabulatorInstance: null,
       loading: true,
@@ -454,6 +494,13 @@ export default {
         popupHeight: 220,
         popupWidth: 600
       },
+      pagination: {
+        currentPage: 1,
+        pageSize: 300,
+        totalPages: 1,
+        totalRecords: 0
+      },
+      pageInput: 1,
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
@@ -461,11 +508,14 @@ export default {
           { column: "name", dir: "asc" },
           { column: "barcode", dir: "asc" }
         ],
+        renderVertical: "basic",
         groupHeader: (value, count, data) => {
-          const totalDepth = data.reduce(
+          let totalDepth = data.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
             0
           );
+
+          totalDepth = Number(totalDepth.toFixed(1));
 
           return `
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
@@ -473,7 +523,7 @@ export default {
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-      (#: ${count}, Total Depth: ${totalDepth}M)
+      (#: ${count}, Total Depth: ${totalDepth})
     </span>
   </div>
 </div>
@@ -513,7 +563,7 @@ export default {
       analysisTypesList: [],
       sequencersList: [],
       readLengthsList: [],
-      startDate: sixMonthsAgo,
+      startDate: fiveYearsAgo,
       endDate: today,
       showAdvancedFilters: false,
       showSelectColumns: false
@@ -538,7 +588,7 @@ export default {
     }
   },
   mounted() {
-    this.getLibrariesSamples();
+    this.getLibrariesSamples(1);
     this.setColumns();
     // this.fetchFilterOptions();
     this.fetchExportTemplates();
@@ -556,11 +606,11 @@ export default {
   },
   watch: {
     searchQuery(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData(
-          "search_libraries_and_samples",
-          newValue === null ? "" : newValue
-        );
+      if (newValue !== oldValue && newValue !== null) {
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+          this.getLibrariesSamples(1);
+        }, 500);
       }
     },
     "filters.showLibraries"(newValue, oldValue) {
@@ -572,6 +622,9 @@ export default {
       if (newValue !== oldValue) {
         this.tabulatorInstance.filterTableData("showSamples", newValue);
       }
+    },
+    'pagination.currentPage'(newPage) {
+      this.pageInput = newPage;
     },
     showPopupWindow(newVal) {
       if (newVal) {
@@ -585,18 +638,28 @@ export default {
     }
   },
   methods: {
-    async getLibrariesSamples() {
+    async getLibrariesSamples(page = 1) {
       this.loading = true;
       try {
         const params = {
           start_date: this.formatDisplayDate(this.startDate),
-          end_date: this.formatDisplayDate(this.endDate)
+          end_date: this.formatDisplayDate(this.endDate),
+          page: page,
+          size: this.pagination.pageSize
         };
 
         let response = await axiosRef.get(
           urlStringStart + "/api/libraries_and_samples/",
           { params }
         );
+
+        this.pagination = {
+          currentPage: page,
+          pageSize: response.data.page_size,
+          totalPages: response.data.total_pages,
+          totalRecords: response.data.total
+        };
+
         let fetchedRows = response.data?.children.map((element) => ({
           pk: element.pk || "",
           record_type: element.record_type || "",
@@ -695,6 +758,17 @@ export default {
         this.readLengthsList = readLengthsRes.data;
       } catch (error) {
         handleError(error);
+      }
+    },
+    addPaginationControls() {
+      if (this.tabulatorInstance) {
+        const footer = this.createPaginationElement();
+        const tableEl = this.tabulatorInstance.getElement();
+
+        const existingFooter = tableEl.querySelector('.tabulator-pagination-footer');
+        if (existingFooter) existingFooter.remove();
+
+        tableEl.appendChild(footer);
       }
     },
     resetAdvancedFilters() {
@@ -837,8 +911,8 @@ export default {
         {
           title: "S/L",
           field: "type",
-          width: 30,
-          minWidth: 30,
+          width: 45,
+          minWidth: 45,
           headerFilter: true,
           headerTooltip: "Type",
           visible: true,
@@ -1428,11 +1502,6 @@ export default {
         this.fakeLoading = false;
       }, 300);
     },
-    toggleGroups(goToInitial) {
-      this.fakeLoadingStart();
-      this.tabulatorInstance.toggleGroups(goToInitial);
-      this.fakeLoadingStop();
-    },
     formatDateForInput(date) {
       if (!date) return "";
       const year = date.getFullYear();
@@ -1456,7 +1525,7 @@ export default {
         this.startDate = this.endDate;
         this.endDate = temp;
         return;
-      } else this.getLibrariesSamples();
+      } else this.getLibrariesSamples(1);
     },
     toggleAdvancedFilters() {
       this.showAdvancedFilters = !this.showAdvancedFilters;
@@ -1766,6 +1835,26 @@ export default {
         this.showExportPopup = false;
         this.selectedFile = "without-file";
       }
+    },
+    changePage(page) {
+      if (page >= 1 && page <= this.pagination.totalPages && page !== this.pagination.currentPage) {
+        this.getLibrariesSamples(page);
+      }
+    },
+    goToPage() {
+      const page = Math.max(1, Math.min(this.pageInput, this.pagination.totalPages));
+      if (page !== this.pagination.currentPage) {
+        this.changePage(page);
+      } else {
+        this.pageInput = this.pagination.currentPage;
+      }
+    },
+    validatePageInput() {
+      if (this.pageInput < 1) this.pageInput = 1;
+      if (this.pageInput > this.pagination.totalPages) this.pageInput = this.pagination.totalPages;
+    },
+    handlePageSizeChange() {
+      this.getLibrariesSamples(1);
     },
     ellipsisContainer(text, boldText) {
       return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${boldText === true ? "bold" : "normal"
