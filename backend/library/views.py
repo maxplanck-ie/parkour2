@@ -33,6 +33,8 @@ class LibrarySampleTree(viewsets.ViewSet):
         library_protocol_filter = request.GET.get("library_protocol")
         start_date_str = request.GET.get("start_date")
         end_date_str = request.GET.get("end_date")
+        page = int(request.GET.get("page", 1))
+        page_size = int(request.GET.get("size", 300))
 
         queryset = CompleteLibraryData.objects.all()
 
@@ -60,9 +62,21 @@ class LibrarySampleTree(viewsets.ViewSet):
         if library_protocol_filter:
             queryset = queryset.filter(library_protocol_name__icontains=library_protocol_filter)
 
-        data = list(queryset.values())
+        total_count = queryset.count()
+        total_pages = (total_count + page_size - 1) // page_size
+        offset = (page - 1) * page_size
+        paginated_queryset = queryset[offset:offset + page_size]
 
-        return Response({"success": True, "children": data})
+        data = list(paginated_queryset.values())
+
+        return Response({
+            "success": True,
+            "total": total_count,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+            "children": data
+        })
 
 
 class GenerateROCrate(viewsets.ViewSet):
