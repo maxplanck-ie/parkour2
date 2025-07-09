@@ -468,7 +468,19 @@ export default {
             if (this.groupSort && this.groupBy) {
               let groupValues = [
                 ...new Set(this.tabulatorInstance.getData("active").map((item) => item[this.groupSort.field]))
-              ].sort();
+              ];
+
+              if (this.groupSort.field === "request_name") {
+                groupValues.sort((a, b) => {
+                  const getNumber = (val) => {
+                    const num = parseInt(val.split('_')[0], 10);
+                    return isNaN(num) ? 0 : num;
+                  };
+                  return getNumber(a) - getNumber(b);
+                });
+              } else {
+                groupValues.sort();
+              }
 
               if (this.groupSort.order === "desc") {
                 groupValues.reverse();

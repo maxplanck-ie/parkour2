@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from datetime import datetime
 
 from .serializers import (
     LibrarySerializer,
@@ -26,8 +27,24 @@ CompleteLibraryData = apps.get_model("library", "CompleteLibraryData")
 
 logger = logging.getLogger("db")
 class LibrarySampleTree(viewsets.ViewSet):
-    def filter_and_search(self, queryset, search_string=None, status_filter=None, library_protocol_filter=None):
-        """Apply search and filter parameters to the queryset."""
+    def list(self, request):
+        search_string = request.GET.get("search")
+        status_filter = request.GET.get("status")
+        library_protocol_filter = request.GET.get("library_protocol")
+        start_date_str = request.GET.get("start_date")
+        end_date_str = request.GET.get("end_date")
+
+        queryset = CompleteLibraryData.objects.all()
+
+        if start_date_str and end_date_str:
+            try:
+                start_date = datetime.strptime(start_date_str, "%d.%m.%Y")
+                end_date = datetime.strptime(end_date_str, "%d.%m.%Y")
+                end_date = end_date.replace(hour=23, minute=59, second=59)
+                queryset = queryset.filter(create_time__range=(start_date, end_date))
+            except ValueError as e:
+                return Response({"success": False, "error": "Invalid date format. Use MM.DD.YYYY"}, status=400)
+
         if search_string:
             search_fields = [
                 "name__icontains",
@@ -42,16 +59,6 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         if library_protocol_filter:
             queryset = queryset.filter(library_protocol_name__icontains=library_protocol_filter)
-
-        return queryset
-
-    def list(self, request):
-        search_string = request.GET.get("search")
-        status_filter = request.GET.get("status")
-        library_protocol_filter = request.GET.get("library_protocol")
-
-        queryset = CompleteLibraryData.objects.all()
-        queryset = self.filter_and_search(queryset, search_string, status_filter, library_protocol_filter)
 
         data = list(queryset.values())
 
