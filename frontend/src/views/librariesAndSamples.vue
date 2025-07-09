@@ -588,17 +588,14 @@ export default {
     async getLibrariesSamples() {
       this.loading = true;
       try {
-        // const params = {
-        //   start_date: this.formatDisplayDate(this.startDate),
-        //   end_date: this.formatDisplayDate(this.endDate)
-        // };
+        const params = {
+          start_date: this.formatDisplayDate(this.startDate),
+          end_date: this.formatDisplayDate(this.endDate)
+        };
 
-        // let response = await axiosRef.get(
-        //   urlStringStart + "/api/libraries_and_samples/",
-        //   { params }
-        // );
         let response = await axiosRef.get(
-          urlStringStart + "/api/libraries_and_samples/"
+          urlStringStart + "/api/libraries_and_samples/",
+          { params }
         );
         let fetchedRows = response.data?.children.map((element) => ({
           pk: element.pk || "",
