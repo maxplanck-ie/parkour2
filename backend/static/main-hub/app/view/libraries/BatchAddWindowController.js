@@ -614,9 +614,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           ),
           valueField: "index",
           store: "indexI7Store",
-          regex: new RegExp("^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"),
+          regex: new RegExp("^[ATCG]{6,}$"),
           regexText:
-            "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+            "Only A, T, C and G (uppercase) are allowed. Index length must be 6 or more nucleotides.",
           matchFieldWidth: false
         },
         renderer: this.errorRenderer
@@ -640,9 +640,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           ),
           valueField: "index",
           store: "indexI5Store",
-          regex: new RegExp("^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"),
+          regex: new RegExp("^[ATCG]{6,}$"),
           regexText:
-            "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+            "Only A, T, C and G (uppercase) are allowed. Index length must be 6 or more nucleotides.",
           matchFieldWidth: false
         },
         renderer: this.errorRenderer

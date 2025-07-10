@@ -213,10 +213,10 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Index 1 (I7) <sup><strong><span class="field-tooltip" tooltip-text="Select from predefined list; make sure the displayed index is the sequence used for barcoding. Or enter sequence of index used for barcoding (typically 6 nucleotides)">[?]</span></strong></sup>',
                   emptyText: "Index 1 (I7)",
                   regex: new RegExp(
-                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
+                    "^[ATCG]{6,}$"
                   ),
                   regexText:
-                    "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+                    "Only A, T, C and G (uppercase) are allowed. Index length must be 6 or more nucleotides.",
                   store: "indexI7Store",
                   disabled: true
                 },
@@ -238,10 +238,10 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Index 2 (I5) <sup><strong><span class="field-tooltip" tooltip-text="Select from predefined list; make sure the displayed index is the sequence used for barcoding. Or enter sequence of index used for barcoding (typically 6 nucleotides)">[?]</span></strong></sup>',
                   emptyText: "Index 2 (I5)",
                   regex: new RegExp(
-                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
+                    "^[ATCG]{6,}$"
                   ),
                   regexText:
-                    "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+                    "Only A, T, C and G (uppercase) are allowed. Index length must be 6 or more nucleotides.",
                   store: "indexI5Store",
                   disabled: true
                 },
