@@ -472,8 +472,8 @@ export default {
   },
   data() {
     const today = new Date();
-    const fiveYearsAgo = new Date();
-    fiveYearsAgo.setFullYear(today.getFullYear() - 5);
+    const twentyYearsAgo = new Date();
+    twentyYearsAgo.setFullYear(today.getFullYear() - 20);
     return {
       tabulatorInstance: null,
       loading: true,
@@ -563,7 +563,7 @@ export default {
       analysisTypesList: [],
       sequencersList: [],
       readLengthsList: [],
-      startDate: fiveYearsAgo,
+      startDate: twentyYearsAgo,
       endDate: today,
       showAdvancedFilters: false,
       showSelectColumns: false
@@ -647,6 +647,12 @@ export default {
           page: page,
           size: this.pagination.pageSize
         };
+
+        
+        if (this.searchQuery) {
+          params.search = this.searchQuery;
+        }
+
 
         let response = await axiosRef.get(
           urlStringStart + "/api/libraries_and_samples/",
@@ -1995,6 +2001,9 @@ check if database view gets updated every time the new records are added to lib,
 can a single library or sample have multiple poolpaths
 gmo or gmo facility?
 sorting order: 3rd sheet
+Status Filter
+Plate Coord: Coordinate of sample in 96-well plate (mouse hover)
+Order of the request per page should be latest to oldest
 
 from django.db import connection
 with connection.cursor() as cursor:
