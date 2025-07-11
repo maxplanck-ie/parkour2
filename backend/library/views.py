@@ -36,7 +36,7 @@ class LibrarySampleTree(viewsets.ViewSet):
         page = int(request.GET.get("page", 1))
         page_size = int(request.GET.get("size", 300))
 
-        queryset = CompleteLibraryData.objects.all()
+        queryset = CompleteLibraryData.objects.all().order_by("-create_time")
 
         if start_date_str and end_date_str:
             try:
