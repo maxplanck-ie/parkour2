@@ -124,3 +124,29 @@ class Sample(GenericLibrarySample):
     #     # if prev_obj and prev_obj.status in [2, -2] and self.status == 3:
     #     #     pooling_obj = Pooling(sample=self)
     #     #     pooling_obj.save()
+
+class CompleteSampleData(models.Model):
+    sample_id = models.IntegerField(primary_key=True)
+    barcode = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    status = models.IntegerField()
+    # sequencing_depth = models.FloatField()
+    # measuring_unit = models.CharField(max_length=50)
+    # mean_fragment_size = models.FloatField()
+    # percent_total = models.FloatField()
+    # measuring_unit_facility = models.CharField(max_length=100)
+    # organism_name = models.CharField(max_length=100, null=True)
+    # library_protocol_name = models.CharField(max_length=150, null=True)
+    # library_type_name = models.CharField(max_length=200, null=True)
+    # index_type_name = models.CharField(max_length=100, null=True)
+    # index_reads = models.PositiveSmallIntegerField(null=True)
+    # index_i7 = models.CharField(max_length=24, null=True)
+    # index_i5 = models.CharField(max_length=24, null=True)
+    # request_id = models.IntegerField()
+    # request_name = models.CharField(max_length=255)
+    # pool_name = models.CharField(max_length=100)
+    # create_time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = "complete_sample_data"

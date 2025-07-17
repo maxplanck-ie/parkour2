@@ -648,7 +648,7 @@ export default {
           size: this.pagination.pageSize
         };
 
-        
+
         if (this.searchQuery) {
           params.search = this.searchQuery;
         }
@@ -1997,9 +1997,6 @@ body,
 </style>
 
 <!--
-check if database view gets updated every time the new records are added to lib, sam, req
-can a single library or sample have multiple poolpaths
-gmo or gmo facility?
 sorting order: 3rd sheet
 Status Filter
 Plate Coord: Coordinate of sample in 96-well plate (mouse hover)
