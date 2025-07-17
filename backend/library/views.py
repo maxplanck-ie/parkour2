@@ -4,14 +4,15 @@ from functools import reduce
 
 from django.apps import apps
 from django.db.models import Prefetch, Q, Model, ManyToOneRel, ManyToManyRel, Max
-from django.utils import timezone
 from library_sample_shared.views import LibrarySampleBaseViewSet
 from django.http import JsonResponse
 from collections import defaultdict
 from operator import or_
+from itertools import chain
 from rest_framework import viewsets
 from rest_framework.response import Response
-from datetime import datetime
+from django.utils import timezone
+from datetime import datetime, timedelta
 
 from .serializers import (
     LibrarySerializer,
@@ -43,12 +44,12 @@ class LibrarySampleTree(viewsets.ViewSet):
         # Apply date filter
         if start_date_str and end_date_str:
             try:
-                start_date = datetime.strptime(start_date_str, "%d.%m.%Y")
-                end_date = datetime.strptime(end_date_str, "%d.%m.%Y")
+                start_date = timezone.make_aware(datetime.strptime(start_date_str, "%d.%m.%Y"))
+                end_date = timezone.make_aware(datetime.strptime(end_date_str, "%d.%m.%Y"))
                 end_date = end_date.replace(hour=23, minute=59, second=59)
                 library_queryset = library_queryset.filter(create_time__range=(start_date, end_date))
                 sample_queryset = sample_queryset.filter(create_time__range=(start_date, end_date))
-            except ValueError:
+            except ValueError as e:
                 return Response({"success": False, "error": "Invalid date format. Use DD.MM.YYYY"}, status=400)
 
         # Apply search filter
@@ -85,7 +86,7 @@ class LibrarySampleTree(viewsets.ViewSet):
         )
 
         # Combine and find latest time per request
-        request_time_map = defaultdict(datetime.min)
+        request_time_map = defaultdict(lambda: timezone.make_aware(datetime.min))
         for request_name, latest_time in chain(library_requests, sample_requests):
             if latest_time > request_time_map[request_name]:
                 request_time_map[request_name] = latest_time

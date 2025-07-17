@@ -7,6 +7,7 @@ SELECT
     s.barcode,
     s.name,
     s.status,
+    s.measuring_unit,
     s.id AS request_id,
     s.name AS request_name,
     s.create_time AS create_time
