@@ -131,7 +131,7 @@ class CompleteSampleData(models.Model):
     name = models.CharField(max_length=255)
     status = models.IntegerField()
     # sequencing_depth = models.FloatField()
-    # measuring_unit = models.CharField(max_length=50)
+    measuring_unit = models.CharField(max_length=50)
     # mean_fragment_size = models.FloatField()
     # percent_total = models.FloatField()
     # measuring_unit_facility = models.CharField(max_length=100)
@@ -142,10 +142,10 @@ class CompleteSampleData(models.Model):
     # index_reads = models.PositiveSmallIntegerField(null=True)
     # index_i7 = models.CharField(max_length=24, null=True)
     # index_i5 = models.CharField(max_length=24, null=True)
-    # request_id = models.IntegerField()
-    # request_name = models.CharField(max_length=255)
+    request_id = models.IntegerField()
+    request_name = models.CharField(max_length=255)
     # pool_name = models.CharField(max_length=100)
-    # create_time = models.DateTimeField()
+    create_time = models.DateTimeField()
 
     class Meta:
         managed = False

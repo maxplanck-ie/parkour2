@@ -1997,11 +1997,6 @@ body,
 </style>
 
 <!--
-sorting order: 3rd sheet
-Status Filter
-Plate Coord: Coordinate of sample in 96-well plate (mouse hover)
-Order of the request per page should be latest to oldest
-
 from django.db import connection
 with connection.cursor() as cursor:
     cursor.execute("SELECT * FROM complete_library_data LIMIT 10")
