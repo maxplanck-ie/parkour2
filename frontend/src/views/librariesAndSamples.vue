@@ -610,7 +610,7 @@ export default {
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => {
           this.getLibrariesSamples(1);
-        }, 500);
+        }, 1000);
       }
     },
     "filters.showLibraries"(newValue, oldValue) {
@@ -703,7 +703,7 @@ export default {
           read_length: element.read_length === 0 ? 0 : element.read_length || "",
           gmo: element.gmo === null ? "" : element.gmo,
           pool_name: element.pool_name || "",
-          status: element.status || "",
+          status: element.status === 0 ? 0 : element.status || "",
           status_text:
             {
               "-1": "Quality check failed",
@@ -957,10 +957,30 @@ export default {
           }
         },
         {
+          title: "Plate Coord",
+          field: "well_position",
+          width: 80,
+          minWidth: 60,
+          headerFilter: true,
+          headerTooltip: "Coordinate of Sample in 96-well Plate",
+          visible: true,
+          frozen: true,
+          cssClass: "right-border",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          },
+          formatter: (cell) => {
+            const value = cell.getValue();
+            const finalString = value || "-";
+            return this.ellipsisContainer(finalString, false);
+          }
+        },
+        {
           title: "Barcode",
           field: "barcode",
-          width: 90,
-          minWidth: 60,
+          width: 95,
+          minWidth: 95,
           headerFilter: true,
           headerTooltip: "Barcode",
           visible: true,
