@@ -620,8 +620,8 @@ export default {
         {
           title: "Barcode",
           field: "barcode",
-          width: 98,
-          minWidth: 60,
+          width: 95,
+          minWidth: 95,
           headerFilter: true,
           headerTooltip: "Barcode",
           visible: true,
