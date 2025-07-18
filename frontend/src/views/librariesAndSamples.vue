@@ -35,11 +35,12 @@
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input type="date" id="startDate" v-model="startDateFormatted" @change="handleDateFilterChange" />
+            <input type="date" id="startDate" :value="startDateFormatted" @blur="updateDate('start', $event)"
+              required />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input type="date" id="endDate" v-model="endDateFormatted" @change="handleDateFilterChange" />
+            <input type="date" id="endDate" :value="endDateFormatted" @blur="updateDate('end', $event)" required />
           </div>
         </div>
         <div class="button-popup-wrapper">
@@ -50,9 +51,10 @@
           <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
             style="width: 250px; left: -50px">
 
+            <!-- Status Filter -->
             <div class="filter-item">
               <label>Status</label>
-              <select v-model="filters.status" @change="tabulatorInstance.filterTableData('status', filters.status)">
+              <select v-model="filters.status" @change="getLibrariesSamples(1)">
                 <option :value="null">All Statuses</option>
                 <option v-for="(text, num) in statusMap" :key="num" :value="num">
                   {{ text }}
@@ -60,65 +62,51 @@
               </select>
             </div>
 
+            <!-- Protocol Filter -->
             <div class="filter-item">
               <label>Protocol</label>
-              <select v-model="filters.protocol" @change="
-                tabulatorInstance.filterTableData(
-                  'protocol',
-                  filters.protocol
-                )
-                ">
+              <select v-model="filters.protocol" @change="getLibrariesSamples(1)">
                 <option :value="null">All Protocols</option>
-                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.name">
+                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.id">
                   {{ protocol.name }}
                 </option>
               </select>
             </div>
 
+            <!-- Analysis Type Filter -->
             <div class="filter-item">
               <label>Analysis Type</label>
-              <select v-model="filters.analysisType" @change="
-                tabulatorInstance.filterTableData(
-                  'analysisType',
-                  filters.analysisType
-                )
-                ">
+              <select v-model="filters.analysisType" @change="getLibrariesSamples(1)">
                 <option :value="null">All Analysis Types</option>
-                <option v-for="type in analysisTypesList" :key="type.id" :value="type.name">
+                <option v-for="type in analysisTypesList" :key="type.id" :value="type.id">
                   {{ type.name }}
                 </option>
               </select>
             </div>
 
+            <!-- Sequencer Filter -->
             <div class="filter-item">
               <label>Sequencer</label>
-              <select v-model="filters.sequencer" @change="
-                tabulatorInstance.filterTableData(
-                  'sequencer',
-                  filters.sequencer
-                )
-                ">
+              <select v-model="filters.sequencer" @change="getLibrariesSamples(1)">
                 <option :value="null">All Sequencers</option>
-                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.name">
+                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.id">
                   {{ sequencer.name }}
                 </option>
               </select>
             </div>
 
+            <!-- Read Length Filter -->
             <div class="filter-item">
               <label>Read Length</label>
-              <select v-model="filters.readLength" @change="
-                tabulatorInstance.filterTableData(
-                  'readLength',
-                  filters.readLength
-                )
-                ">
+              <select v-model="filters.readLength" @change="getLibrariesSamples(1)">
                 <option :value="null">All Read Lengths</option>
-                <option v-for="length in readLengthsList" :key="length.id" :value="length.name">
+                <option v-for="length in readLengthsList" :key="length.id" :value="length.id">
                   {{ length.name }}
                 </option>
               </select>
             </div>
+
+            <!-- Reset Filters Button -->
             <button @click="resetAdvancedFilters" class="reset-button">
               Reset Filters
             </button>
@@ -588,6 +576,8 @@ export default {
       readLengthsList: [],
       startDate: twentyYearsAgo,
       endDate: today,
+      lastValidStartDate: null,
+      lastValidEndDate: null,
       showAdvancedFilters: false,
       showSelectColumns: false
     };
@@ -615,6 +605,9 @@ export default {
     this.setColumns();
     this.fetchFilterOptions();
     this.fetchExportTemplates();
+
+    this.lastValidStartDate = new Date(this.startDate);
+    this.lastValidEndDate = new Date(this.endDate);
 
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -671,11 +664,27 @@ export default {
           size: this.pagination.pageSize
         };
 
-
+        // Add search parameter if exists
         if (this.searchQuery) {
           params.search = this.searchQuery;
         }
 
+        // Add advanced filter parameters
+        if (this.filters.status !== null) {
+          params.status = this.filters.status;
+        }
+        if (this.filters.protocol !== null) {
+          params.library_protocol = this.filters.protocol;
+        }
+        if (this.filters.analysisType !== null) {
+          params.analysis_type = this.filters.analysisType;
+        }
+        if (this.filters.sequencer !== null) {
+          params.sequencer = this.filters.sequencer;
+        }
+        if (this.filters.readLength !== null) {
+          params.read_length = this.filters.readLength;
+        }
 
         let response = await axiosRef.get(
           urlStringStart + "/api/libraries_and_samples/",
@@ -807,7 +816,7 @@ export default {
           return getVal(a.name) - getVal(b.name);
         });
         const analysisRes = await axiosRef.get(
-          `${urlStringStart}/api/analysis_types/`
+          `${urlStringStart}/api/library_types/`
         );
         this.analysisTypesList = analysisRes.data.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
         const sequencersRes = await axiosRef.get(
@@ -832,26 +841,15 @@ export default {
         default: return '';
       }
     },
-    addPaginationControls() {
-      if (this.tabulatorInstance) {
-        const footer = this.createPaginationElement();
-        const tableEl = this.tabulatorInstance.getElement();
-
-        const existingFooter = tableEl.querySelector('.tabulator-pagination-footer');
-        if (existingFooter) existingFooter.remove();
-
-        tableEl.appendChild(footer);
-      }
-    },
     resetAdvancedFilters() {
       this.filters = {
+        status: null,
         protocol: null,
         analysisType: null,
         sequencer: null,
-        readLength: null,
-        status: null
+        readLength: null
       };
-      this.tabulatorInstance.filterTableData("resetAdvancedFilters", true);
+      this.getLibrariesSamples(1);
     },
     setColumns() {
       const storedColumnState = JSON.parse(
@@ -1560,7 +1558,6 @@ export default {
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     },
-
     formatDisplayDate(date) {
       if (!date) return "";
       const day = String(date.getDate()).padStart(2, "0");
@@ -1568,15 +1565,49 @@ export default {
       const year = date.getFullYear();
       return `${day}.${month}.${year}`;
     },
-
-    handleDateFilterChange() {
-      if (this.startDate && this.endDate && this.startDate > this.endDate) {
-        showNotification("Please enter a valid date range.", "warning");
-        const temp = this.startDate;
-        this.startDate = this.endDate;
-        this.endDate = temp;
+    updateDate(type, event) {
+      const value = event.target.value;
+      if (!value) {
+        showNotification("Date cannot be empty", "error");
+        this.revertDate(type);
         return;
-      } else this.getLibrariesSamples(1);
+      }
+
+      const newDate = new Date(value);
+      if (isNaN(newDate.getTime())) {
+        showNotification("Invalid date format", "error");
+        this.revertDate(type);
+        return;
+      }
+
+      if (type === 'start') {
+        this.startDate = newDate;
+        this.lastValidStartDate = newDate;
+      } else {
+        this.endDate = newDate;
+        this.lastValidEndDate = newDate;
+      }
+
+      this.validateAndFetch();
+    },
+    revertDate(type) {
+      if (type === 'start') {
+        this.startDate = new Date(this.lastValidStartDate);
+      } else {
+        this.endDate = new Date(this.lastValidEndDate);
+      }
+    },
+    validateAndFetch() {
+      if (!this.startDate || !this.endDate) {
+        showNotification("Both dates are required", "error");
+        return;
+      }
+      if (this.startDate > this.endDate) {
+        showNotification("Start date cannot be after end date", "warning");
+        [this.startDate, this.endDate] = [this.endDate, this.startDate];
+        [this.lastValidStartDate, this.lastValidEndDate] = [this.startDate, this.endDate];
+      }
+      this.getLibrariesSamples(1);
     },
     toggleAdvancedFilters() {
       this.showAdvancedFilters = !this.showAdvancedFilters;
@@ -1913,26 +1944,6 @@ export default {
                 ${text}
               </div>`;
     },
-    createPopupWindow(
-      popupTitle,
-      popupDescription,
-      popupList,
-      onYes,
-      onNo,
-      popupHeight,
-      popupWidth
-    ) {
-      this.popupContents.popupTitle = popupTitle;
-      this.popupContents.popupDescription = popupDescription;
-      this.popupContents.popupList = popupList;
-      this.popupContents.onYes = onYes;
-      this.popupContents.onNo = onNo;
-      if (popupWidth && popupHeight) {
-        this.popupContents.popupHeight = popupHeight;
-        this.popupContents.popupWidth = popupWidth;
-      }
-      this.showPopupWindow = true;
-    }
   }
 };
 </script>
