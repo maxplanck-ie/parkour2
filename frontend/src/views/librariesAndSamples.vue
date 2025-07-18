@@ -180,8 +180,8 @@
     <!-- Main content section with table -->
     <div class="table-container">
       <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
-        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
-        :groupStartOpen="false" :tableOptions="{
+        :groupValues="sortedGroupValues" :columnDefs="columnsList" groupBy="request_name"
+        :groupSort="{ field: 'request_name', order: 'desc' }" :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop
@@ -192,7 +192,7 @@
     <div v-if="!loading && pagination.totalPages > 1" class="pagination-controls">
       <div class="pagination-info">
         Showing page {{ pagination.currentPage }} of {{ pagination.totalPages }}
-        ({{ pagination.totalRecords }} records)
+        ({{ new Intl.NumberFormat().format(pagination.totalRequests) }} requests)
       </div>
 
       <div class="pagination-buttons">
@@ -498,7 +498,7 @@ export default {
         currentPage: 1,
         pageSize: 300,
         totalPages: 1,
-        totalRecords: 0
+        totalRequests: 0
       },
       pageInput: 1,
       tableOptions: {
@@ -585,7 +585,7 @@ export default {
       set(value) {
         this.endDate = value ? new Date(value) : null;
       }
-    }
+    },
   },
   mounted() {
     this.getLibrariesSamples(1);
@@ -663,7 +663,7 @@ export default {
           currentPage: page,
           pageSize: response.data.page_size,
           totalPages: response.data.total_pages,
-          totalRecords: response.data.total
+          totalRequests: response.data.total
         };
 
         let fetchedRows = response.data?.children.map((element) => ({
@@ -737,6 +737,28 @@ export default {
           index_i7: element.index_i7 || "",
           index_i5: element.index_i5 || "",
         }));
+
+        const field = "request_name";
+        const seen = Object.create(null);
+        const sortedGroupValues = [];
+
+        for (let i = 0; i < fetchedRows.length; i++) {
+          const val = fetchedRows[i][field];
+          if (val && !seen[val]) {
+            seen[val] = true;
+            sortedGroupValues.push(val);
+          }
+        }
+
+        sortedGroupValues.sort((a, b) => {
+          const getNumber = (val) => {
+            const num = val && typeof val === "string" ? parseInt(val.split("_")[0], 10) : 0;
+            return isNaN(num) ? 0 : num;
+          };
+          return getNumber(b) - getNumber(a);
+        });
+
+        this.sortedGroupValues = sortedGroupValues;
         this.librariesSamplesList = fetchedRows;
       } catch (error) {
         handleError(error);
