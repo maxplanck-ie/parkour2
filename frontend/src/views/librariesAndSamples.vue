@@ -49,6 +49,17 @@
           </button>
           <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
             style="width: 250px; left: -50px">
+
+            <div class="filter-item">
+              <label>Status</label>
+              <select v-model="filters.status" @change="tabulatorInstance.filterTableData('status', filters.status)">
+                <option :value="null">All Statuses</option>
+                <option v-for="(text, num) in statusMap" :key="num" :value="num">
+                  {{ text }}
+                </option>
+              </select>
+            </div>
+
             <div class="filter-item">
               <label>Protocol</label>
               <select v-model="filters.protocol" @change="
@@ -191,7 +202,7 @@
     <!-- Pagination controls -->
     <div v-if="!loading && pagination.totalPages > 1" class="pagination-controls">
       <div class="pagination-info">
-        Showing page {{ pagination.currentPage }} of {{ pagination.totalPages }}
+        Page {{ pagination.currentPage }} of {{ pagination.totalPages }}
         ({{ new Intl.NumberFormat().format(pagination.totalRequests) }} requests)
       </div>
 
@@ -501,6 +512,17 @@ export default {
         totalRequests: 0
       },
       pageInput: 1,
+      statusMap: {
+        '-1': 'Quality Check Failed',
+        '-2': 'Quality Check Compromised',
+        '0': 'Pending Submission',
+        '1': 'Submission Completed',
+        '2': 'Quality Check Approved',
+        '3': 'Library Prepared',
+        '4': 'Library Pooled',
+        '5': 'Sequencing',
+        '6': 'Delivered'
+      },
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
@@ -554,6 +576,7 @@ export default {
       },
       searchQuery: "",
       filters: {
+        status: null,
         protocol: null,
         analysisType: null,
         sequencer: null,
@@ -590,7 +613,7 @@ export default {
   mounted() {
     this.getLibrariesSamples(1);
     this.setColumns();
-    // this.fetchFilterOptions();
+    this.fetchFilterOptions();
     this.fetchExportTemplates();
 
     document.addEventListener("click", this.handleOutsideClick);
@@ -672,18 +695,6 @@ export default {
           return isNaN(date) ? "" : date.toLocaleDateString("de-DE");
         };
 
-        const statusMap = {
-          "-1": "Quality check failed",
-          "-2": "Quality check compromised",
-          "0": "Pending submission",
-          "1": "Submission completed",
-          "2": "Quality check approved",
-          "3": "Library prepared",
-          "4": "Library pooled",
-          "5": "Sequencing",
-          "6": "Delivered",
-        };
-
         const coordinates = Array.from({ length: 96 }, (_, i) => {
           const row = String.fromCharCode(65 + (i % 8));
           const col = Math.floor(i / 8) + 1;
@@ -731,7 +742,7 @@ export default {
             gmo: e.gmo ?? "",
             pool_name: e.pool_name ?? "",
             status: getValue(e.status),
-            status_text: statusMap[e.status] ?? "-",
+            status_text: this.statusMap[e.status] ?? "-",
             well_position: "",
             concentration_library: getValue(e.concentration_library),
             create_time: e.create_time ? getFormattedDate(e.create_time) : "",
@@ -787,21 +798,38 @@ export default {
         const protocolsRes = await axiosRef.get(
           `${urlStringStart}/api/library_protocols/`
         );
-        this.protocolsList = protocolsRes.data;
-        const analysisRes = await axiosRef.get(
-          `${urlStringStart}/api/analysis_types/`
-        );
-        this.analysisTypesList = analysisRes.data;
-        const sequencersRes = await axiosRef.get(
-          `${urlStringStart}/api/sequencers/`
-        );
-        this.sequencersList = sequencersRes.data;
+        this.protocolsList = protocolsRes.data.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
         const readLengthsRes = await axiosRef.get(
           `${urlStringStart}/api/read_lengths/`
         );
-        this.readLengthsList = readLengthsRes.data;
+        this.readLengthsList = readLengthsRes.data.sort((a, b) => {
+          const getVal = str => (str.match(/\d+/g)?.map(Number)[1] ?? Infinity);
+          return getVal(a.name) - getVal(b.name);
+        });
+        const analysisRes = await axiosRef.get(
+          `${urlStringStart}/api/analysis_types/`
+        );
+        this.analysisTypesList = analysisRes.data.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+        const sequencersRes = await axiosRef.get(
+          `${urlStringStart}/api/sequencers/`
+        );
+        this.sequencersList = sequencersRes.data.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
       } catch (error) {
         handleError(error);
+      }
+    },
+    getStatusClass(status) {
+      switch (String(status)) {
+        case '-1': return 'quality-check-failed';
+        case '-2': return 'quality-check-compromised';
+        case '0': return 'pending-submission';
+        case '1': return 'submission-completed';
+        case '2': return 'quality-check-approved';
+        case '3': return 'library-prepared';
+        case '4': return 'library-pooled';
+        case '5': return 'sequencing';
+        case '6': return 'delivered';
+        default: return '';
       }
     },
     addPaginationControls() {
@@ -820,7 +848,8 @@ export default {
         protocol: null,
         analysisType: null,
         sequencer: null,
-        readLength: null
+        readLength: null,
+        status: null
       };
       this.tabulatorInstance.filterTableData("resetAdvancedFilters", true);
     },
@@ -905,50 +934,8 @@ export default {
           },
           formatter: (cell) => {
             const value = cell.getValue();
-            let statusClass = "status ";
-            let tooltip = "";
-
-            switch (value) {
-              case -1:
-                statusClass += "quality-check-failed";
-                tooltip = "Quality check failed";
-                break;
-              case -2:
-                statusClass += "quality-check-compromised";
-                tooltip = "Quality check compromised";
-                break;
-              case 0:
-                statusClass += "pending-submission";
-                tooltip = "Pending submission";
-                break;
-              case 1:
-                statusClass += "submission-completed";
-                tooltip = "Submission completed";
-                break;
-              case 2:
-                statusClass += "quality-check-approved";
-                tooltip = "Quality check approved";
-                break;
-              case 3:
-                statusClass += "library-prepared";
-                tooltip = "Library prepared";
-                break;
-              case 4:
-                statusClass += "library-pooled";
-                tooltip = "Library pooled";
-                break;
-              case 5:
-                statusClass += "sequencing";
-                tooltip = "Sequencing";
-                break;
-              case 6:
-                statusClass += "delivered";
-                tooltip = "Delivered";
-                break;
-              default:
-                return "";
-            }
-
+            const tooltip = this.statusMap[value];
+            const statusClass = `status ${this.getStatusClass(value)}`;
             return `<div class="${statusClass}" title="${tooltip}"></div>`;
           }
         },
