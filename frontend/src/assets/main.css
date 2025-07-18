@@ -620,10 +620,11 @@ input[type="radio"]:checked::after {
   padding: 6px;
   border: none;
   border-radius: 2px;
-  font-size: 13px;
   height: 26px;
   width: 115px;
   color: #555;
+  font-family: sans-serif;
+  font-size: 13px;
   background: #ffffff;
 }
 
@@ -633,7 +634,13 @@ input[type="radio"]:checked::after {
 
 .filter-item label {
   display: block;
-  margin-bottom: 4px;
+  padding: 5px;
+  margin-bottom: 0px;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-end-start-radius: 0px;
+  border-end-end-radius: 0px;
+  background-color: #f0f0f0;
   font-weight: bold;
 }
 
@@ -641,7 +648,8 @@ input[type="radio"]:checked::after {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-end-start-radius: 4px;
+  border-end-end-radius: 4px;
   background-color: white;
 }
 
@@ -652,7 +660,8 @@ input[type="radio"]:checked::after {
   border: 1px solid #ddd;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
 .reset-button:hover {
