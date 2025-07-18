@@ -38,7 +38,7 @@ class LibrarySampleTree(viewsets.ViewSet):
         page_size = int(request.GET.get("size", 300))
 
         # Initialize querysets
-        library_queryset = CompleteLibraryData.objects.all()
+        library_queryset = CompleteLibraryData.objects.none()
         sample_queryset = CompleteSampleData.objects.all()
 
         # Apply date filter

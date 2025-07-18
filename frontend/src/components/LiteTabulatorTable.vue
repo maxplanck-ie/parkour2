@@ -20,6 +20,11 @@ export default {
       type: Array,
       required: true
     },
+    groupValues: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
     groupBy: {
       type: String,
       required: true
@@ -41,7 +46,6 @@ export default {
   data() {
     return {
       tabulatorInstance: null,
-      previousData: null,
       tableFiltersState: {
         typesIn: [
           { field: "type", type: "=", value: "L" },
@@ -98,6 +102,7 @@ export default {
           },
           tooltips: true,
           resizableColumns: true,
+          groupValues: [this.groupValues],
           groupToggleElement: "header",
           selectable: true,
           selectableRange: 1,
@@ -173,10 +178,6 @@ export default {
           });
           this.tabulatorInstance.restoreRedraw();
         });
-
-        this.previousData = JSON.stringify(this.rowData);
-
-
 
         this.tabulatorInstance.on("columnResized", (column) => {
           const field = column.getField();

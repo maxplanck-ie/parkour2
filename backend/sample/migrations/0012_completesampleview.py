@@ -8,9 +8,9 @@ SELECT
     s.name,
     s.status,
     s.measuring_unit,
-    s.id AS request_id,
-    s.name AS request_name,
-    s.create_time AS create_time
+    r.id AS request_id,
+    r.name AS request_name,
+    r.create_time AS create_time
 FROM sample_sample AS s
 JOIN request_request_samples AS rl ON s.id = rl.sample_id
 JOIN request_request AS r ON rl.request_id = r.id
