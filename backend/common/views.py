@@ -68,7 +68,7 @@ def get_navigation_tree(request):
         {
             "text": "Libraries & Samples",
             "iconCls": "x-fa fa-flask",
-            "viewType": "libraries",
+            "viewType": "libraries-vue",
             "leaf": True,
         },
     ]
