@@ -62,7 +62,6 @@ export default {
         groupBy: this.groupBy,
         noGroupByClass: false
       },
-      tableEachGroupsToggleState: [],
       tableColumnWidths: {},
     };
   },
@@ -80,9 +79,6 @@ export default {
   },
   mounted() {
     this.initializeTable();
-  },
-  beforeDestroy() {
-    document.removeEventListener("keydown", this.handleKeyDown);
   },
   methods: {
     initializeTable() {
@@ -130,12 +126,7 @@ export default {
           downloadConfig: {},
           groupContextMenu: [],
           groupBy: this.tableGroupsConfig.groupBy,
-          groupStartOpen: (value) => {
-            const groupState = this.tableEachGroupsToggleState.find(
-              (item) => item.group === value
-            );
-            return groupState ? !groupState.isClose : this.groupStartOpen;
-          },
+          groupStartOpen: this.groupStartOpen,
           ...this.tableOptions
         };
 
@@ -143,7 +134,6 @@ export default {
 
         this.tabulatorInstance.on("tableBuilt", () => {
           this.tabulatorInstance.blockRedraw();
-          document.addEventListener("keydown", this.handleKeyDown);
 
           const tabulatorElement = this.getTabulatorElement();
           if (this.tableGroupsConfig.noGroupByClass) {
