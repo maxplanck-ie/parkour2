@@ -666,100 +666,116 @@ export default {
           totalRequests: response.data.total
         };
 
-        let fetchedRows = response.data?.children.map((element) => ({
-          pk: element.pk || "",
-          record_type: element.record_type || "",
-          request_id: element.request || "",
-          request_name: element.request_name || "",
-          name: element.name || "",
-          type: element.barcode ? element.barcode[2] || "" : "",
-          barcode:
-            element.record_type === "Sample" && element.barcode[2] === "L"
-              ? element.barcode + "*"
-              : element.barcode || "",
-          nucleic_acid_type_name: element.nucleic_acid_type_name || "",
-          library_protocol_name: element.library_protocol_name || "",
-          analysis_type: element.analysis_type || "",
-          measuring_unit: element.measuring_unit || "",
-          measured_value:
-            element.measured_value === 0 ? 0 : element.measured_value || "",
-          starting_amount:
-            element.starting_amount === 0 ? 0 : element.starting_amount || "",
-          pcr_cycles: element.pcr_cycles === 0 ? 0 : element.pcr_cycles || "",
-          input:
-            element.measuring_value == null && element.measured_element == null
-              ? "-"
-              : element.measuring_unit === "concentration"
-                ? `${element.measured_value === 0 ? 0 : element.measured_value || ""} ng/µl`
-                : element.measuring_unit === "m"
-                  ? `${element.measured_value === 0 ? 0 : element.measured_value || ""} M`
-                  : element.measuring_unit !== "-"
-                    ? `${element.measured_value === 0 ? 0 : element.measured_value || ""} ${element.measuring_unit || "-"}`
-                    : `${element.measured_value === 0 ? 0 : element.measured_value || ""}`,
-          mean_fragment_size:
-            element.mean_fragment_size === 0 ? 0 : element.mean_fragment_size || "",
-          sequencing_depth:
-            element.sequencing_depth === 0 ? 0 : element.sequencing_depth || "",
-          read_length: element.read_length === 0 ? 0 : element.read_length || "",
-          gmo: element.gmo === null ? "" : element.gmo,
-          pool_name: element.pool_name || "",
-          status: element.status === 0 ? 0 : element.status || "",
-          status_text:
-            {
-              "-1": "Quality check failed",
-              "-2": "Quality check compromised",
-              "0": "Pending submission",
-              "1": "Submission completed",
-              "2": "Quality check approved",
-              "3": "Library prepared",
-              "4": "Library pooled",
-              "5": "Sequencing",
-              "6": "Delivered",
-            }[element.status] || "-",
-          concentration_library:
-            element.concentration_library === 0
-              ? 0
-              : element.concentration_library || "",
-          create_time: element.create_time
-            ? (() => {
-              const date = new Date(element.create_time);
-              if (isNaN(date)) return "";
-              const day = String(date.getDate()).padStart(2, "0");
-              const month = String(date.getMonth() + 1).padStart(2, "0");
-              const year = date.getFullYear();
-              return `${day}.${month}.${year}`;
-            })()
-            : "",
-          index_type: element.index_type || "",
-          coordinate: element.coordinate || "",
-          index_i7_id: element.index_i7_id || "",
-          index_i5_id: element.index_i5_id || "",
-          index_i7: element.index_i7 || "",
-          index_i5: element.index_i5 || "",
-        }));
+        const getValue = (val) => (val === 0 ? 0 : val || "");
+        const getFormattedDate = (str) => {
+          const date = new Date(str);
+          return isNaN(date) ? "" : date.toLocaleDateString("de-DE");
+        };
 
-        const field = "request_name";
-        const seen = Object.create(null);
-        const sortedGroupValues = [];
+        const statusMap = {
+          "-1": "Quality check failed",
+          "-2": "Quality check compromised",
+          "0": "Pending submission",
+          "1": "Submission completed",
+          "2": "Quality check approved",
+          "3": "Library prepared",
+          "4": "Library pooled",
+          "5": "Sequencing",
+          "6": "Delivered",
+        };
 
-        for (let i = 0; i < fetchedRows.length; i++) {
-          const val = fetchedRows[i][field];
-          if (val && !seen[val]) {
-            seen[val] = true;
-            sortedGroupValues.push(val);
-          }
-        }
-
-        sortedGroupValues.sort((a, b) => {
-          const getNumber = (val) => {
-            const num = val && typeof val === "string" ? parseInt(val.split("_")[0], 10) : 0;
-            return isNaN(num) ? 0 : num;
-          };
-          return getNumber(b) - getNumber(a);
+        const coordinates = Array.from({ length: 96 }, (_, i) => {
+          const row = String.fromCharCode(65 + (i % 8));
+          const col = Math.floor(i / 8) + 1;
+          return `${row}${col}`;
         });
 
+        const groupsMap = new Map();
+        const requestNamesSet = new Set();
+        const allRows = [];
+
+        (response.data?.children || []).forEach((e) => {
+          const barcode = e.barcode ?? "";
+          const barcodeSuffix = barcode?.[2] ?? "";
+          const measuredVal = getValue(e.measured_value);
+          const unit = e.measuring_unit;
+
+          let input = "-";
+          if (e.measuring_value != null || e.measured_element != null) {
+            if (unit === "concentration") input = `${measuredVal} ng/µl`;
+            else if (unit === "m") input = `${measuredVal} M`;
+            else if (unit && unit !== "-") input = `${measuredVal} ${unit}`;
+            else input = `${measuredVal}`;
+          }
+
+          const row = {
+            pk: e.pk ?? "",
+            record_type: e.record_type ?? "",
+            request_id: e.request ?? "",
+            request_name: e.request_name ?? "",
+            name: e.name ?? "",
+            type: barcodeSuffix,
+            barcode:
+              e.record_type === "Sample" && barcodeSuffix === "L" ? barcode + "*" : barcode,
+            nucleic_acid_type_name: e.nucleic_acid_type_name ?? "",
+            library_protocol_name: e.library_protocol_name ?? "",
+            analysis_type: e.analysis_type ?? "",
+            measuring_unit: unit ?? "",
+            measured_value: measuredVal,
+            starting_amount: getValue(e.starting_amount),
+            pcr_cycles: getValue(e.pcr_cycles),
+            input,
+            mean_fragment_size: getValue(e.mean_fragment_size),
+            sequencing_depth: getValue(e.sequencing_depth),
+            read_length: getValue(e.read_length),
+            gmo: e.gmo ?? "",
+            pool_name: e.pool_name ?? "",
+            status: getValue(e.status),
+            status_text: statusMap[e.status] ?? "-",
+            well_position: "",
+            concentration_library: getValue(e.concentration_library),
+            create_time: e.create_time ? getFormattedDate(e.create_time) : "",
+            index_type: e.index_type ?? "",
+            coordinate: e.coordinate ?? "",
+            index_i7_id: e.index_i7_id ?? "",
+            index_i5_id: e.index_i5_id ?? "",
+            index_i7: e.index_i7 ?? "",
+            index_i5: e.index_i5 ?? "",
+          };
+
+          allRows.push(row);
+
+          if (row.request_name && !requestNamesSet.has(row.request_name)) {
+            requestNamesSet.add(row.request_name);
+          }
+
+          if (!groupsMap.has(row.request_name)) {
+            groupsMap.set(row.request_name, []);
+          }
+          groupsMap.get(row.request_name).push(row);
+        });
+
+        const sortedGroupValues = Array.from(requestNamesSet).sort((a, b) => {
+          const getNum = (val) => parseInt(val?.split("_")[0], 10) || 0;
+          return getNum(b) - getNum(a);
+        });
+
+        for (const group of groupsMap.values()) {
+          group.sort((a, b) =>
+            (a.barcode || "").localeCompare(b.barcode || "", undefined, {
+              numeric: true,
+              sensitivity: "base",
+            })
+          );
+
+          group.forEach((row, idx) => {
+            row.well_position = coordinates[idx % 96];
+          });
+        }
+
         this.sortedGroupValues = sortedGroupValues;
-        this.librariesSamplesList = fetchedRows;
+        this.librariesSamplesList = allRows;
+
       } catch (error) {
         handleError(error);
       } finally {
