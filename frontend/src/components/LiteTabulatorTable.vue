@@ -7,7 +7,6 @@
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import * as XLSX from "xlsx";
 import "tabulator-tables/dist/css/tabulator_bootstrap5.min.css";
-import { showNotification } from "../utils/utilities";
 import { markRaw } from "vue";
 
 export default {
@@ -46,18 +45,6 @@ export default {
   data() {
     return {
       tabulatorInstance: null,
-      tableFiltersState: {
-        typesIn: [
-          { field: "type", type: "=", value: "L" },
-          { field: "type", type: "=", value: "S" }
-        ],
-        typesNotIn: []
-      },
-      tableRangeBoundsState: {
-        start: null,
-        end: null
-      },
-      tableGroupsToggleState: 0,
       tableGroupsConfig: {
         groupBy: this.groupBy,
         noGroupByClass: false
@@ -142,30 +129,6 @@ export default {
             tabulatorElement.classList.remove("no-group-by");
           }
 
-          this.tabulatorInstance.setGroupBy(this.tableGroupsConfig.groupBy);
-
-          let typesNotIn = this.tableFiltersState.typesNotIn;
-          let flatFilters = Object.entries(this.tableFiltersState)
-            .filter(([key, value]) => {
-              if (key === "typesNotIn") return false;
-              return Array.isArray(value)
-                ? value.length > 0
-                : Object.keys(value).length > 0;
-            })
-            .map(([key, value]) => value);
-
-          if (typesNotIn.length > 0) {
-            flatFilters.push(...typesNotIn);
-          }
-          this.tabulatorInstance.setFilter(flatFilters);
-
-          const columns = this.tabulatorInstance.getColumns();
-          columns.forEach((column) => {
-            const field = column.getField();
-            if (this.tableColumnWidths[field]) {
-              column.setWidth(this.tableColumnWidths[field]);
-            }
-          });
           this.tabulatorInstance.restoreRedraw();
         });
 
@@ -175,22 +138,22 @@ export default {
           this.tableColumnWidths[field] = width;
         });
 
-        this.tabulatorInstance.on("rangeChanged", (range) => {
-          console.log(range)
-          const start = range.getBounds().start;
-          const end = range.getBounds().end;
-          this.tableRangeBoundsState = {
-            start: start,
-            end: end
-          };
-        });
-
         this.tabulatorInstance.on("clipboardCopied", () => {
           this.tableOptions.fakeLoadingStart();
           this.refreshTable();
           this.tableOptions.fakeLoadingStop();
         });
 
+        this.tabulatorInstance.on("renderStarted", () => {
+          this.tabulatorInstance.element.style.minHeight =
+            this.tabulatorInstance.element.offsetHeight + "px";
+        });
+
+        this.tabulatorInstance.on("renderComplete", () => {
+          this.tabulatorInstance.element.style.minHeight =
+            this.tabulatorInstance.element.querySelector(".tabulator-tableholder")
+              .offsetHeight + "px";
+        });
       }
     },
 
@@ -200,7 +163,7 @@ export default {
 
     updateTableData() {
       if (this.tabulatorInstance) {
-        this.tabulatorInstance.setData(this.rowData);
+        this.tabulatorInstance.replaceData(this.rowData);
       }
     },
 
@@ -213,216 +176,10 @@ export default {
       }
     },
 
-    filterTableData(operation, keyword) {
-      let typesIn = this.tableFiltersState.typesIn;
-      let typesNotIn = this.tableFiltersState.typesNotIn;
-      switch (operation) {
-        case "search_incoming_libraries_and_samples":
-          if (keyword !== "") {
-            this.tableFiltersState.search = [
-              [
-                { field: "name", type: "like", value: keyword },
-                { field: "request_name", type: "like", value: keyword },
-                { field: "barcode", type: "like", value: keyword },
-                {
-                  field: "nucleic_acid_type_name",
-                  type: "like",
-                  value: keyword
-                },
-                {
-                  field: "library_protocol_name",
-                  type: "like",
-                  value: keyword
-                },
-                { field: "comments", type: "like", value: keyword },
-                { field: "comments_facility", type: "like", value: keyword }
-              ]
-            ];
-          } else {
-            delete this.tableFiltersState.search;
-          }
-          break;
-
-        case "search_library_preparation":
-          if (keyword !== "") {
-            this.tableFiltersState.search = [
-              [
-                { field: "name", type: "like", value: keyword },
-                { field: "request_name", type: "like", value: keyword },
-                { field: "barcode", type: "like", value: keyword },
-                {
-                  field: "comments_library_sample",
-                  type: "like",
-                  value: keyword
-                },
-                { field: "comments", type: "like", value: keyword },
-                { field: "comments_facility", type: "like", value: keyword }
-              ]
-            ];
-          } else {
-            delete this.tableFiltersState.search;
-          }
-          break;
-
-        case "search_pooling":
-          if (keyword !== "") {
-            this.tableFiltersState.search = [
-              [
-                { field: "name", type: "like", value: keyword },
-                { field: "request_name", type: "like", value: keyword },
-                { field: "pool_name", type: "like", value: keyword },
-                { field: "barcode", type: "like", value: keyword }
-              ]
-            ];
-          } else {
-            delete this.tableFiltersState.search;
-          }
-          break;
-
-        case "showLibraries":
-          const foundInL = typesIn.find((item) => item.value === "L");
-          if (keyword === true && !foundInL) {
-            typesIn.push({ field: "type", type: "=", value: "L" });
-            typesNotIn = typesNotIn.filter((item) => item.value !== "L");
-          } else if (keyword === false && foundInL) {
-            typesIn = typesIn.filter((item) => item.value !== "L");
-            typesNotIn.push({ field: "type", type: "!=", value: "L" });
-          }
-          this.tableFiltersState.typesIn = typesIn;
-          this.tableFiltersState.typesNotIn = typesNotIn;
-          break;
-
-        case "showSamples":
-          const foundInS = typesIn.find((item) => item.value === "S");
-          if (keyword === true && !foundInS) {
-            typesIn.push({ field: "type", type: "=", value: "S" });
-            typesNotIn = typesNotIn.filter((item) => item.value !== "S");
-          } else if (keyword === false && foundInS) {
-            typesIn = typesIn.filter((item) => item.value !== "S");
-            typesNotIn.push({ field: "type", type: "!=", value: "S" });
-          }
-          this.tableFiltersState.typesIn = typesIn;
-          this.tableFiltersState.typesNotIn = typesNotIn;
-          break;
-
-        case "onlySamplesSubmitted":
-          if (keyword === true) {
-            this.tableFiltersState.onlySamplesSubmitted = {
-              field: "samples_submitted",
-              type: "=",
-              value: keyword
-            };
-          } else {
-            delete this.tableFiltersState.onlySamplesSubmitted;
-          }
-          break;
-
-        case "onlyGmo":
-          if (keyword === true) {
-            this.tableFiltersState.onlyGmo = {
-              field: "gmo",
-              type: "=",
-              value: true
-            };
-          } else {
-            delete this.tableFiltersState.onlyGmo;
-          }
-          break;
-
-        default:
-          break;
-      }
-
-      let flatFilters = Object.entries(this.tableFiltersState)
-        .filter(([key, value]) => {
-          if (key === "typesNotIn") return false;
-          return Array.isArray(value)
-            ? value.length > 0
-            : Object.keys(value).length > 0;
-        })
-        .map(([key, value]) => value);
-
-      if (typesNotIn.length > 0) {
-        flatFilters.push(...typesNotIn);
-      }
-
-      this.tabulatorInstance.setFilter(flatFilters);
-    },
-
-    showAllGroups() {
-      if (this.tabulatorInstance) {
-        this.tabulatorInstance.blockRedraw();
-        this.tabulatorInstance.getGroups().forEach((group) => group.show());
-        this.tabulatorInstance.restoreRedraw();
-      }
-    },
-
-    hideAllGroups() {
-      if (this.tabulatorInstance) {
-        this.tabulatorInstance.blockRedraw();
-        this.tabulatorInstance.getGroups().forEach((group) => group.hide());
-        this.tabulatorInstance.restoreRedraw();
-      }
-    },
-
-    getTableGroupsToggleState() {
-      return this.tableGroupsToggleState;
-    },
-
-    toggleGroups(goToInitial) {
-      if (goToInitial === true || this.tableGroupsToggleState == 2) {
-        this.tableGroupsToggleState = 0;
-      } else {
-        const allGroups = this.tabulatorInstance.getGroups();
-        const closedGroupCount = allGroups.filter(
-          (group) => !group._group.visible
-        ).length;
-
-        if (closedGroupCount === allGroups.length) {
-          this.tableGroupsToggleState = 2;
-        } else if (closedGroupCount === 0) {
-          this.tableGroupsToggleState = 1;
-        } else {
-          this.tableGroupsToggleState = 0;
-        }
-      }
-
-      switch (this.tableGroupsToggleState) {
-        case 0:
-          this.showAllGroups();
-          this.tableGroupsConfig.groupBy = this.groupBy;
-          this.tableGroupsConfig.noGroupByClass = false;
-          break;
-
-        case 1:
-          this.hideAllGroups();
-          this.tableGroupsConfig.groupBy = this.groupBy;
-          this.tableGroupsConfig.noGroupByClass = false;
-          break;
-
-        case 2:
-          this.showAllGroups();
-          this.tableGroupsConfig.groupBy = false;
-          this.tableGroupsConfig.noGroupByClass = true;
-          break;
-      }
-
-      this.refreshTable();
-    },
-
     refreshTable() {
       if (this.tabulatorInstance) {
         this.tabulatorInstance.redraw();
       }
-    },
-
-    recreateTable() {
-      const oldTable = document.getElementById("tabulatorTable");
-      const newTable = oldTable.cloneNode(false);
-      oldTable.replaceWith(newTable);
-      this.$nextTick(() => {
-        this.initializeTable();
-      });
     },
 
     getTable() {
@@ -595,8 +352,7 @@ export default {
 </style>
 
 <!--
-scroll to focused cell after copy
-select all, change columns checkboxes delay
+store column width in browser storage
 resize width of table or collapse/expand side modules should refresh the table width
 show hover tooltips with use of a library
 -->

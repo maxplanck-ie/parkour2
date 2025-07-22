@@ -29,7 +29,8 @@
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input ref="searchInput" v-model="searchQuery" type="text" placeholder="Search" />
+          <input ref="searchInput" v-model="searchQuery" type="text" placeholder="Search"
+            :disabled="loading || fakeLoading" />
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey" />
         </div>
         <div class="date-filters">
@@ -230,51 +231,6 @@
           <option value="1000">1000</option>
         </select>
         <span>per page</span>
-      </div>
-    </div>
-
-    <!-- Popup window -->
-    <div v-if="showPopupWindow" class="popup-overlay">
-      <div class="popup-container" :style="{
-        height: popupContents.popupHeight + 'px',
-        width: popupContents.popupWidth + 'px'
-      }">
-        <div class="popup-header">
-          <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g>
-              <path opacity="0.3"
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                fill="#323232" />
-              <path
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-              <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-            </g>
-          </svg>
-          <span class="popup-title">{{ popupContents.popupTitle }}</span>
-          <button class="popup-close-button" @click="showPopupWindow = false">
-            &times;
-          </button>
-        </div>
-        <div class="popup-body">
-          <div v-html="popupContents.popupDescription"></div>
-          <div v-if="popupContents.popupList && popupContents.popupList.length > 0" class="popup-scrollable-content">
-            <ol style="padding-left: 25px">
-              <li v-for="item in popupContents.popupList" :key="item">
-                <span style="font-weight: bold">{{ item.barcode }}</span>
-                <span>{{ " - " + item.name }}</span>
-              </li>
-            </ol>
-          </div>
-        </div>
-        <div class="popup-footer">
-          <button class="popup-button yes-button" @click="popupContents.onYes">
-            Yes
-          </button>
-          <button class="popup-button" @click="popupContents.onNo">No</button>
-        </div>
       </div>
     </div>
 
@@ -479,20 +435,10 @@ export default {
       fakeLoading: false,
       librariesSamplesList: [],
       columnsList: [],
-      showPopupWindow: false,
       showExportPopup: false,
       showExportHelpTooltip: false,
       fetchedLibrariesAndSamplesTemplates: [],
       selectedFile: "without-file",
-      popupContents: {
-        popupTitle: "Are you sure?",
-        popupDescription: "",
-        popupList: [],
-        onYes: null,
-        onNo: null,
-        popupHeight: 220,
-        popupWidth: 600
-      },
       pagination: {
         currentPage: 1,
         pageSize: 300,
@@ -626,32 +572,17 @@ export default {
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => {
           this.getLibrariesSamples(1);
+          // this.$nextTick(() => {
+          //   if (this.$refs.searchInput) {
+          //     this.$refs.searchInput.focus();
+          //   }
+          // });
         }, 1000);
-      }
-    },
-    "filters.showLibraries"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData("showLibraries", newValue);
-      }
-    },
-    "filters.showSamples"(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabulatorInstance.filterTableData("showSamples", newValue);
       }
     },
     'pagination.currentPage'(newPage) {
       this.pageInput = newPage;
     },
-    showPopupWindow(newVal) {
-      if (newVal) {
-        this.$nextTick(() => {
-          const yesButton = document.querySelector(".popup-button.yes-button");
-          yesButton.focus();
-        });
-      } else {
-        document.getElementsByClassName("tabulator-cell")[1]?.click();
-      }
-    }
   },
   methods: {
     async getLibrariesSamples(page = 1) {
@@ -905,14 +836,9 @@ export default {
           formatter: (cell) => {
             const request_name = cell.getRow().getData().request_name;
             const name = cell.getValue();
-            const tableGroupsToggleState =
-              this.tabulatorInstance.getTableGroupsToggleState();
             return `
                         <div style="padding: 4px 12px; display: flex; align-items: center;">
-                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${(tableGroupsToggleState == 2
-                ? request_name + " ➜ "
-                : "") + name
-              }</span>
+                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${name}</span>
                         </div>
                       `;
           }
@@ -1526,10 +1452,6 @@ export default {
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
-      if (isEscape && this.showPopupWindow) {
-        this.showPopupWindow = false;
-        return;
-      }
       if (isEscape && this.showExportPopup) {
         this.showExportPopup = false;
         return;
@@ -1814,9 +1736,13 @@ export default {
           if (aNum !== bNum) return aNum - bNum;
           return a.barcode?.localeCompare(b.barcode);
         });
+
+        let exportRows = sortedRows.filter((row) => row.selected);
+        if (exportRows.length === 0) exportRows = sortedRows;
+
         const uniqueRequestIDs = [
           ...new Set(
-            sortedRows.map((row) => {
+            exportRows.map((row) => {
               const match = row.request_name.match(/^(\d+)_/);
               return match ? match[1] : row.request_name;
             })
@@ -1825,8 +1751,6 @@ export default {
           .sort()
           .join("_");
 
-        let exportRows = sortedRows.filter((row) => row.selected);
-        if (exportRows.length === 0) exportRows = sortedRows;
         const filename = `${formattedDate}_${uniqueRequestIDs}_libraries_and_samples`;
         const wb = new ExcelJS.Workbook();
         if (this.selectedFile !== "without-file") {
@@ -2060,4 +1984,14 @@ with connection.cursor() as cursor:
     results = [dict(zip(columns, row)) for row in cursor.fetchall()]
 for record in results:
     print(record)
+
+samples all fields
+libraries all fields
+advanced filters refactor, make work
+
+search don't allow to type
+date filter fix
+opening groups scrolls to first group
+
+make such that libraries or samples in complete data/view should update after changes in libraries or samples or other models
 -->
