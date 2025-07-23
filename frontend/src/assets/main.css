@@ -626,6 +626,7 @@ input[type="radio"]:checked::after {
   font-family: sans-serif;
   font-size: 13px;
   background: #ffffff;
+  text-transform: uppercase;
 }
 
 .filter-item {

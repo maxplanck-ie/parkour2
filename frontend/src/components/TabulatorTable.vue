@@ -4,22 +4,48 @@
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div class="popup-container" :style="{
-      height: errorsPopupContents.errorsPopupHeight + 'px',
-      width: errorsPopupContents.errorsPopupWidth + 'px'
-    }">
+    <div
+      class="popup-container"
+      :style="{
+        height: errorsPopupContents.errorsPopupHeight + 'px',
+        width: errorsPopupContents.errorsPopupWidth + 'px'
+      }"
+    >
       <div class="popup-header">
-        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <svg
+          style="display: block"
+          fill="none"
+          width="42px"
+          height="42px"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
           <g>
-            <path opacity="0.3"
+            <path
+              opacity="0.3"
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              fill="#323232" />
+              fill="#323232"
+            />
             <path
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12 8V13"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <path
+              d="M12 16V15.9888"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
           </g>
         </svg>
         <span class="popup-title">Paste Error</span>
@@ -32,9 +58,15 @@
           Following errors occurred while pasting, please try again after
           fixing:
         </div>
-        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
+        <div
+          v-if="errorsPopupContents.errorsList?.length"
+          class="popup-scrollable-content"
+        >
           <ol style="padding-left: 25px">
-            <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
+            <li
+              v-for="(item, index) in errorsPopupContents.errorsList"
+              :key="index"
+            >
               {{ item.barcode + " ➜ " }}
               <span style="font-weight: bold">{{ item.message }}</span>
             </li>
@@ -55,6 +87,7 @@ import { TabulatorFull as Tabulator } from "tabulator-tables";
 import * as XLSX from "xlsx";
 import "tabulator-tables/dist/css/tabulator_bootstrap5.min.css";
 import { showNotification } from "../utils/utilities";
+import { markRaw } from "vue";
 
 export default {
   name: "TabulatorTable",
@@ -94,10 +127,6 @@ export default {
           { field: "type", type: "=", value: "S" }
         ],
         typesNotIn: []
-      },
-      tableRangeBoundsState: {
-        start: null,
-        end: null
       },
       tableGroupsToggleState: 0,
       tableGroupsConfig: {
@@ -331,31 +360,16 @@ export default {
           downloadConfig: {},
           groupContextMenu: [],
           groupBy: this.tableGroupsConfig.groupBy,
-          groupStartOpen: (value) => {
-            const groupState = this.tableEachGroupsToggleState.find(
-              (item) => item.group === value
-            );
-            return groupState ? !groupState.isClose : this.groupStartOpen;
-          },
+          groupStartOpen: this.groupStartOpen,
           ...this.tableOptions
         };
 
-        this.tabulatorInstance = new Tabulator("#tabulatorTable", options);
+        this.tabulatorInstance = markRaw(
+          new Tabulator("#tabulatorTable", options)
+        );
 
         this.tabulatorInstance.on("tableBuilt", () => {
           document.addEventListener("keydown", this.handleKeyDown);
-
-          if (
-            this.tableRangeBoundsState.start &&
-            this.tableRangeBoundsState.end
-          ) {
-            let start = this.tableRangeBoundsState.start;
-            let end = this.tableRangeBoundsState.end;
-            this.tabulatorInstance.addRange(
-              start.getComponent(),
-              end.getComponent()
-            );
-          }
 
           // if (!document.querySelector(".button-popup-container")) {
           //   const selectedRange = this.tabulatorInstance.getRanges()?.[0];
@@ -467,13 +481,17 @@ export default {
           setTimeout(() => {
             if (this.groupSort && this.groupBy) {
               let groupValues = [
-                ...new Set(this.tabulatorInstance.getData("active").map((item) => item[this.groupSort.field]))
+                ...new Set(
+                  this.tabulatorInstance
+                    .getData("active")
+                    .map((item) => item[this.groupSort.field])
+                )
               ];
 
               if (this.groupSort.field === "request_name") {
                 groupValues.sort((a, b) => {
                   const getNumber = (val) => {
-                    const num = parseInt(val.split('_')[0], 10);
+                    const num = parseInt(val.split("_")[0], 10);
                     return isNaN(num) ? 0 : num;
                   };
                   return getNumber(a) - getNumber(b);
@@ -488,7 +506,6 @@ export default {
               this.tabulatorInstance.setGroupValues([groupValues]);
             }
           }, 0);
-
         });
 
         this.tabulatorInstance.on("columnResized", (column) => {
@@ -497,18 +514,8 @@ export default {
           this.tableColumnWidths[field] = width;
         });
 
-        this.tabulatorInstance.on("rangeChanged", (range) => {
-          const start = range.getBounds().start;
-          const end = range.getBounds().end;
-          this.tableRangeBoundsState = {
-            start: start,
-            end: end
-          };
-        });
-
         this.tabulatorInstance.on("clipboardCopied", () => {
           this.tableOptions.fakeLoadingStart();
-          this.recreateTable();
           this.tableOptions.fakeLoadingStop();
         });
 
@@ -538,9 +545,14 @@ export default {
             }
 
             const rows = this.tabulatorInstance.getRows();
+            let row = {};
             if (rows.length > 0) {
-              const firstRow = rows[0];
-              const cells = firstRow.getCells();
+              if (this.groupSort.order === "desc") {
+                row = rows[rows.length - 1];
+              } else {
+                row = rows[0];
+              }
+              const cells = row.getCells();
               if (cells.length > 0) {
                 const topLeftCell = cells[0];
                 this.tabulatorInstance.addRange(topLeftCell, topLeftCell);
@@ -555,8 +567,6 @@ export default {
       return document.getElementById("tabulatorTable");
     },
 
-    // Tabulator Bug: When we use table.setData() or table.replaceData(), range paste does not work and gives "No bounds defined for this range" error.
-    // Hence we need to destroy and recreate table again, when using these methods.
     updateTableData() {
       if (this.tabulatorInstance) {
         this.tabulatorInstance.setData(this.rowData);
@@ -564,21 +574,17 @@ export default {
     },
 
     updateTableColumns() {
+      this.tabulatorInstance.blockRedraw();
       if (this.tabulatorInstance) {
         this.tabulatorInstance.setColumns(this.columnDefs);
         this.getTabulatorElement().classList.remove("no-group-by");
         this.showAllGroups();
-        if (this.groupBy)
-          this.tabulatorInstance.setGroupBy(this.groupBy);
-        this.tableRangeBoundsState = {
-          start: null,
-          end: null
-        };
-        this.recreateTable();
+        if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
       }
+      this.tabulatorInstance.restoreRedraw();
     },
 
-    // Make sure that records in rowData have "type" field, in order for these filters to work. Check the defination of "this.tableFiltersState" to get more context.
+    // Make sure that records in rowData have "type" field, in order for these filters to work. Check the definition of "this.tableFiltersState" to get more context.
     // If "type" is not defined, then the records won't show up in the table.
     filterTableData(operation, keyword) {
       let typesIn = this.tableFiltersState.typesIn;
@@ -609,7 +615,6 @@ export default {
             delete this.tableFiltersState.search;
           }
           break;
-
         case "search_library_preparation":
           if (keyword !== "") {
             this.tableFiltersState.search = [
@@ -630,7 +635,6 @@ export default {
             delete this.tableFiltersState.search;
           }
           break;
-
         case "search_pooling":
           if (keyword !== "") {
             this.tableFiltersState.search = [
@@ -645,7 +649,6 @@ export default {
             delete this.tableFiltersState.search;
           }
           break;
-
         case "showLibraries":
           const foundInL = typesIn.find((item) => item.value === "L");
           if (keyword === true && !foundInL) {
@@ -658,7 +661,6 @@ export default {
           this.tableFiltersState.typesIn = typesIn;
           this.tableFiltersState.typesNotIn = typesNotIn;
           break;
-
         case "showSamples":
           const foundInS = typesIn.find((item) => item.value === "S");
           if (keyword === true && !foundInS) {
@@ -671,7 +673,6 @@ export default {
           this.tableFiltersState.typesIn = typesIn;
           this.tableFiltersState.typesNotIn = typesNotIn;
           break;
-
         case "onlySamplesSubmitted":
           if (keyword === true) {
             this.tableFiltersState.onlySamplesSubmitted = {
@@ -683,7 +684,6 @@ export default {
             delete this.tableFiltersState.onlySamplesSubmitted;
           }
           break;
-
         case "onlyGmo":
           if (keyword === true) {
             this.tableFiltersState.onlyGmo = {
@@ -695,28 +695,9 @@ export default {
             delete this.tableFiltersState.onlyGmo;
           }
           break;
-
-        //     if (filterId === 'protocol') {
-        //   this.advancedFilters.protocol = value;
-        // } else if (filterId === 'analysisType') {
-        //   this.advancedFilters.analysisType = value;
-        // } else if (filterId === 'sequencer') {
-        //   this.advancedFilters.sequencer = value;
-        // } else if (filterId === 'readLength') {
-        //   this.advancedFilters.readLength = value;
-        // } else if (filterId === 'resetAdvancedFilters') {
-        //   this.advancedFilters = {
-        //     protocol: null,
-        //     analysisType: null,
-        //     sequencer: null,
-        //     readLength: null
-        //   };
-        // }
-
         default:
           break;
       }
-
       let flatFilters = Object.entries(this.tableFiltersState)
         .filter(([key, value]) => {
           if (key === "typesNotIn") return false;
@@ -729,7 +710,6 @@ export default {
       if (typesNotIn.length > 0) {
         flatFilters.push(...typesNotIn);
       }
-
       this.tabulatorInstance.setFilter(flatFilters);
     },
 
@@ -761,7 +741,6 @@ export default {
         const closedGroupCount = allGroups.filter(
           (group) => !group._group.visible
         ).length;
-
         if (closedGroupCount === allGroups.length) {
           this.tableGroupsToggleState = 2;
         } else if (closedGroupCount === 0) {
@@ -770,28 +749,23 @@ export default {
           this.tableGroupsToggleState = 0;
         }
       }
-
       switch (this.tableGroupsToggleState) {
         case 0:
           this.showAllGroups();
           this.tableGroupsConfig.groupBy = this.groupBy;
           this.tableGroupsConfig.noGroupByClass = false;
           break;
-
         case 1:
           this.hideAllGroups();
           this.tableGroupsConfig.groupBy = this.groupBy;
           this.tableGroupsConfig.noGroupByClass = false;
           break;
-
         case 2:
           this.showAllGroups();
           this.tableGroupsConfig.groupBy = false;
           this.tableGroupsConfig.noGroupByClass = true;
           break;
       }
-
-      this.recreateTable();
     },
 
     refreshTable() {
@@ -822,7 +796,6 @@ export default {
         !event.ctrlKey &&
         !event.metaKey &&
         !event.altKey;
-
       let selectedRanges = this.tabulatorInstance.getRanges();
       let selectedRangesData = this.tabulatorInstance.getRangesData();
       let isRangeSelected =
@@ -830,12 +803,10 @@ export default {
         (selectedRangesData[0].length > 0 ||
           (selectedRangesData[0][0] &&
             Object.keys(selectedRangesData[0][0]).length > 0));
-
       if (isEscape && this.showErrorsWindow) {
         this.showErrorsWindow = false;
         return;
       }
-
       if (
         document.activeElement &&
         (document.activeElement.tagName === "INPUT" ||
@@ -843,7 +814,6 @@ export default {
       ) {
         return;
       }
-
       if (isDeleteOrBackspace) {
         if (!isRangeSelected) return;
         let firstRangeCells = selectedRanges[0]
@@ -864,7 +834,6 @@ export default {
         event.preventDefault();
         return;
       }
-
       if (isPrintableKey) {
         let firstRangeCells = selectedRanges[0]
           ? selectedRanges[0].getCells()
@@ -879,7 +848,6 @@ export default {
             return;
           }
           firstCell.edit();
-
           const input = document.activeElement;
           if (
             input &&
@@ -895,7 +863,6 @@ export default {
 
     validateCellValue(value, columnDef, rowData) {
       const editorType = columnDef.editor;
-
       switch (editorType) {
         case "number":
           const numValue = parseFloat(value);
@@ -918,13 +885,12 @@ export default {
             throw new Error(`Value must be between ${min} and ${max}.`);
           }
           return value == "" ? "" : numValue;
-
         case "list":
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                getRow: () => ({ getData: () => rowData })
-              })
+                  getRow: () => ({ getData: () => rowData })
+                })
               : columnDef.editorParams;
           const options =
             editorParamsList?.values?.map((opt) =>
@@ -942,7 +908,6 @@ export default {
             );
           }
           return value;
-
         case "input":
         default:
           if (columnDef.validator) {
@@ -1116,16 +1081,13 @@ export default {
   padding: 10px 0px !important;
 }
 
-.title-field-group>.tabulator-col-content>div>div {
+.title-field-group > .tabulator-col-content > div > div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }
 </style>
 
 <!--
-scroll to focused cell after copy
-select all, change columns checkboxes delay
-resize width of table or collapse/expand side modules should refresh the table width
-show hover tooltips with use of a library
-store column width in browser storage
+Fix APIs failing when multiple edits together
+Cleanup state
 -->
