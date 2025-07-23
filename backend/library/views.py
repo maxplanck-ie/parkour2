@@ -33,6 +33,9 @@ class LibrarySampleTree(viewsets.ViewSet):
         search_string = request.GET.get("search")
         status_filter = request.GET.get("status")
         library_protocol_filter = request.GET.get("library_protocol")
+        analysis_type_filter = request.GET.get("analysis_type")
+        sequencer_filter = request.GET.get("sequencer")
+        read_length_filter = request.GET.get("read_length")
         start_date_str = request.GET.get("start_date")
         end_date_str = request.GET.get("end_date")
         page = int(request.GET.get("page", 1))
@@ -75,11 +78,27 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         if status_filter:
             library_queryset = library_queryset.filter(status=int(status_filter))
+            sample_queryset = sample_queryset.filter(status=int(status_filter))
 
         if library_protocol_filter:
             library_queryset = library_queryset.filter(
                 library_protocol_name__icontains=library_protocol_filter
             )
+            sample_queryset = sample_queryset.filter(
+                library_protocol_name__icontains=library_protocol_filter
+            )
+
+        # if analysis_type_filter:
+        #     sample_queryset = sample_queryset.filter(analysis_type__icontains=analysis_type_filter)
+
+        # if sequencer_filter:
+        #     sample_queryset = sample_queryset.filter(sequencer__icontains=sequencer_filter)
+
+        # if read_length_filter:
+        #     try:
+        #         sample_queryset = sample_queryset.filter(read_length=int(read_length_filter))
+        #     except ValueError:
+        #         return Response({"success": False, "error": "Invalid read_length value."}, status=400)
 
         library_requests = (
             library_queryset.values("request_name")
