@@ -129,7 +129,7 @@
             ref="dutiesGrid"
             class="ag-theme-alpine"
             style="margin: 15px; height: 669px"
-            rowSelection="multiple"
+            :rowSelection="rowSelectionOptions"
             animateRows="true"
             rowDragManaged="true"
             stopEditingWhenCellsLoseFocus="true"
@@ -340,7 +340,8 @@ export default {
       columnsList: [],
       gridOptions: {},
       gridData: [],
-      selectedFilter: "ongoing"
+      selectedFilter: "ongoing",
+      rowSelectionOptions: "multiple"
     };
   },
   setup() {},
@@ -765,10 +766,12 @@ export default {
     },
     updateGridDataObject() {
       let gridData = [];
-      this.gridOptions.api.forEachNode((rowNode, index) => {
-        gridData.push(rowNode.data);
-      });
-      this.gridData = gridData;
+      if (this.$refs.dutiesGrid && this.$refs.dutiesGrid.api) {
+        this.$refs.dutiesGrid.api.forEachNode((rowNode, index) => {
+          gridData.push(rowNode.data);
+        });
+        this.gridData = gridData;
+      }
     }
   }
 };
