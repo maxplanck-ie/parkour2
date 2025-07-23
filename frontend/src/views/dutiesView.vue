@@ -797,8 +797,6 @@ export default {
   width: 100%;
   height: 30px;
   background: whitesmoke;
-  padding: 4px;
-  font-size: 14px !important;
 }
 
 .comment-textarea {
@@ -815,6 +813,19 @@ export default {
   font-size: 12px;
   outline: none;
   font-size: 14px;
+  padding: 4px;
+  font-family: sans-serif;
+}
+
+.date-selector {
+  text-transform: uppercase;
+  padding: 7px;
+  font-size: 13px;
+}
+
+.comment-textarea {
+  padding: 7px;
+  resize: none;
 }
 
 select:disabled {
