@@ -27,7 +27,7 @@ JOIN request_request AS r ON rl.request_id = r.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON s.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON s.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON s.index_type_id = it.id
-LEFT JOIN index_generator_pool_samples AS ips ON l.id = ips.sample_id
+LEFT JOIN index_generator_pool_samples AS ips ON s.id = ips.sample_id
 LEFT JOIN index_generator_pool AS ip ON ips.pool_id = ip.id;
 """
 
