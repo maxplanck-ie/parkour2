@@ -9,7 +9,7 @@ INSTALLED_APPS += [
     "schema_viewer",
     # "debug_toolbar",
     "django_migration_linter",
-    "corsheaders",
+    "corsheaders"   ,
     # "explorer",
 ]
 
