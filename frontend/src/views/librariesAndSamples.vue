@@ -607,6 +607,30 @@ export default {
         };
 
         const getValue = (val) => (val === 0 ? 0 : val || "");
+        const getInput = (e) => {
+          const measuredValueRaw = e.measured_value;
+          const measuredUnitRaw = e.measuring_unit;
+          const measuredValueEmpty = measuredValueRaw === null || measuredValueRaw === undefined || measuredValueRaw === "";
+          const measuredUnitEmpty = measuredUnitRaw === null || measuredUnitRaw === undefined || measuredUnitRaw === "";
+          if (measuredValueEmpty && measuredUnitEmpty) {
+            return "";
+          }
+          const measuredValue = getValue(measuredValueRaw);
+          const measuredUnit = measuredUnitRaw || "";
+          if (measuredValueEmpty && !measuredUnitEmpty) {
+            if (measuredUnit === "concentration") return "ng/µl";
+            if (measuredUnit === "m") return "M";
+            if (measuredUnit === "k") return "k";
+            if (measuredUnit === "-") return "✗";
+            return measuredUnit;
+          }
+          if (measuredUnit === "concentration") return `${measuredValue} ng/µl`;
+          if (measuredUnit === "m") return `${measuredValue} M`;
+          if (measuredUnit === "k") return `${measuredValue} k`;
+          if (measuredUnit === "-") return `${measuredValue} ✗`;
+          if (measuredUnit !== "") return `${measuredValue} ${measuredUnit}`;
+          return `${measuredValue}`;
+        }
         const getFormattedDate = (str) => {
           const date = new Date(str);
           return isNaN(date) ? "" : date.toLocaleDateString("de-DE");
@@ -625,16 +649,6 @@ export default {
         (response.data?.children || []).forEach((e) => {
           const barcode = e.barcode ?? "";
           const barcodeSuffix = barcode?.[2] ?? "";
-          const measuredVal = getValue(e.measured_value);
-          const unit = e.measuring_unit;
-
-          let input = "-";
-          if (e.measuring_value != null || e.measured_element != null) {
-            if (unit === "concentration") input = `${measuredVal} ng/µl`;
-            else if (unit === "m") input = `${measuredVal} M`;
-            else if (unit && unit !== "-") input = `${measuredVal} ${unit}`;
-            else input = `${measuredVal}`;
-          }
 
           const row = {
             pk: e.pk ?? "",
@@ -648,25 +662,23 @@ export default {
             nucleic_acid_type_name: e.nucleic_acid_type_name ?? "",
             library_protocol_name: e.library_protocol_name ?? "",
             analysis_type_name: e.analysis_type_name ?? "",
-            measuring_unit: unit ?? "",
-            measured_value: measuredVal,
             starting_amount: getValue(e.starting_amount),
             pcr_cycles: getValue(e.pcr_cycles),
-            input,
+            input: getInput(e),
             average_fragment_size: getValue(e.average_fragment_size),
             sequencing_depth: getValue(e.sequencing_depth),
-            read_length: getValue(e.read_length),
-            gmo: e.gmo === true ? "Yes" : e.gmo === false ? "No" : "",
+            read_length_name: getValue(e.read_length_name),
+            gmo: element.gmo === null ? "" : element.gmo,
             pool_name: e.pool_name ?? "",
             status: getValue(e.status),
             status_text: this.statusMap[e.status] ?? "-",
             well_position: "",
             concentration_library: getValue(e.concentration_library),
             create_time: e.create_time ? getFormattedDate(e.create_time) : "",
-            index_type: e.index_type ?? "",
+            index_type_name: e.index_type_name ?? "",
             coordinate: e.coordinate ?? "",
-            index_i7_id: e.index_i7_id ?? "",
-            index_i5_id: e.index_i5_id ?? "",
+            i7_id: e.i7_id ?? "",
+            i5_id: e.i5_id ?? "",
             index_i7: e.index_i7 ?? "",
             index_i5: e.index_i5 ?? "",
           };
@@ -1094,7 +1106,7 @@ export default {
           }
         },
         {
-          title: "ng/µl",
+          title: "ng/µl Library",
           field: "concentration_library",
           minWidth: 60,
           width: "3.5%",
@@ -1144,7 +1156,7 @@ export default {
         },
         {
           title: "Index Type",
-          field: "index_type",
+          field: "index_type_name",
           minWidth: 60,
           width: "4%",
           headerVertical: false,
@@ -1180,7 +1192,7 @@ export default {
         },
         {
           title: "I7 ID",
-          field: "index_i7_id",
+          field: "i7_id",
           minWidth: 60,
           width: "3.5%",
           headerVertical: false,
@@ -1216,7 +1228,7 @@ export default {
         },
         {
           title: "I5 ID",
-          field: "index_i5_id",
+          field: "i5_id",
           minWidth: 60,
           width: "3.5%",
           headerVertical: false,
@@ -1252,7 +1264,7 @@ export default {
         },
         {
           title: "Length",
-          field: "read_length",
+          field: "read_length_name",
           minWidth: 60,
           width: "3.5%",
           headerVertical: false,
@@ -1763,15 +1775,15 @@ export default {
           { header: "Input", key: "input", width: 15 },
           { header: "Starting Amount", key: "starting_amount", width: 18 },
           { header: "Cycles", key: "pcr_cycles", width: 12 },
-          { header: "ng/µl", key: "concentration_library", width: 15 },
+          { header: "ng/µl Library", key: "concentration_library", width: 15 },
           { header: "bp", key: "average_fragment_size", width: 12 },
-          { header: "Index Type", key: "index_type", width: 15 },
+          { header: "Index Type", key: "index_type_name", width: 15 },
           { header: "Coord", key: "coordinate", width: 12 },
-          { header: "I7 ID", key: "index_i7_id", width: 15 },
+          { header: "I7 ID", key: "i7_id", width: 15 },
           { header: "Index I7", key: "index_i7", width: 15 },
-          { header: "I5 ID", key: "index_i5_id", width: 15 },
+          { header: "I5 ID", key: "i5_id", width: 15 },
           { header: "Index I5", key: "index_i5", width: 15 },
-          { header: "Length", key: "read_length", width: 12 },
+          { header: "Length", key: "read_length_name", width: 12 },
           { header: "Depth (M)", key: "sequencing_depth", width: 15 }
         ];
 

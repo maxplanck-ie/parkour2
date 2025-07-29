@@ -125,6 +125,8 @@ class Sample(GenericLibrarySample):
     #     #     pooling_obj = Pooling(sample=self)
     #     #     pooling_obj.save()
 
+
+# To add or remove fields to this model please do necessary changes to sample/migrations/XXXX_completesampleview.py
 class CompleteSampleData(models.Model):
     sample_id = models.IntegerField(primary_key=True)
     barcode = models.CharField(max_length=100)
@@ -140,11 +142,17 @@ class CompleteSampleData(models.Model):
     library_protocol_name = models.CharField(max_length=150, null=True)
     analysis_type_id = models.IntegerField()
     analysis_type_name = models.CharField(max_length=200, null=True)
+    read_length_id = models.IntegerField(null=True)
+    read_length_name = models.CharField(max_length=50, null=True)
     average_fragment_size = models.FloatField()
+    starting_amount = models.FloatField()
+    pcr_cycles = models.IntegerField()
     index_type_name = models.CharField(max_length=100, null=True)
-    index_reads = models.PositiveSmallIntegerField(null=True)
+    coordinate = models.CharField(max_length=3, null=True)
     index_i7 = models.CharField(max_length=24, null=True)
+    i7_id = models.CharField(max_length=50, null=True)
     index_i5 = models.CharField(max_length=24, null=True)
+    i5_id = models.CharField(max_length=50, null=True)
     request_id = models.IntegerField()
     request_name = models.CharField(max_length=255)
     pool_name = models.CharField(max_length=100)

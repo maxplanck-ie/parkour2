@@ -60,6 +60,8 @@ class Library(GenericLibrarySample):
         verbose_name = "Library"
         verbose_name_plural = "Libraries"
 
+
+# To add or remove fields to this model please do necessary changes to library/migrations/XXXX_completelibraryview.py
 class CompleteLibraryData(models.Model):
     library_id = models.IntegerField(primary_key=True)
     barcode = models.CharField(max_length=100)
@@ -67,16 +69,21 @@ class CompleteLibraryData(models.Model):
     status = models.IntegerField()
     sequencing_depth = models.FloatField()
     measuring_unit = models.CharField(max_length=50)
+    measured_value = models.FloatField()
     percent_total = models.FloatField()
     library_protocol_id = models.IntegerField()
     library_protocol_name = models.CharField(max_length=150, null=True)
     analysis_type_id = models.IntegerField()
     analysis_type_name = models.CharField(max_length=200, null=True)
+    read_length_id = models.IntegerField(null=True)
+    read_length_name = models.CharField(max_length=50, null=True)
     average_fragment_size = models.FloatField()
     index_type_name = models.CharField(max_length=100, null=True)
-    index_reads = models.PositiveSmallIntegerField(null=True)
+    coordinate = models.CharField(max_length=3, null=True)
     index_i7 = models.CharField(max_length=24, null=True)
+    i7_id = models.CharField(max_length=50, null=True)
     index_i5 = models.CharField(max_length=24, null=True)
+    i5_id = models.CharField(max_length=50, null=True)
     request_id = models.IntegerField()
     request_name = models.CharField(max_length=255)
     pool_name = models.CharField(max_length=100)
