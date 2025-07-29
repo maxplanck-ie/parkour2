@@ -4,6 +4,8 @@
 ========
 
 - Sequencing Depth for Samples and Libraries accepts 1 decimal position, and any positive values (before it would only take 10 as minimum.)
+- Indeces when loading a sequencing request can have any lenght above 5 now.
+- Downloading SampleSheet is now customized for the case of sequencer names that start with `AVITI`, given that new emerging technologies are giving better results.
 - ...
 
 

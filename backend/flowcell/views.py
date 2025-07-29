@@ -307,7 +307,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     def download_sample_sheet(self, request):
         """Generate Benchtop Protocol as XLS file for selected lanes."""
 
-        def create_row(lane, record):
+        def create_row(lane, record, legacy=False):
             index_i7 = IndexI7.objects.filter(
                 archived=False, index=record.index_i7, index_type=record.index_type
             )
@@ -326,44 +326,76 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             )
             library_protocol = str(library_protocol.encode("ASCII", "ignore"), "utf-8")
 
-            return [
-                lane.name.split()[1],  # Lane
-                record.barcode,  # Sample_ID
-                record.name,  # Sample_Name
-                "",  # Sample_Plate
-                "",  # Sample_Well
-                index_i7_id,  # I7_Index_ID
-                record.index_i7,  # index
-                index_i5_id,  # I5_Index_ID
-                record.index_i5,  # index2
-                request_name,  # Sample_Project / Request ID
-                library_protocol,  # Description / Library Protocol
-            ]
+            if legacy:
+                this_row = [
+                    lane.name.split()[1],  # Lane
+                    record.barcode,  # Sample_ID
+                    record.name,  # Sample_Name
+                    "",  # Sample_Plate
+                    "",  # Sample_Well
+                    index_i7_id,  # I7_Index_ID
+                    record.index_i7,  # index1
+                    index_i5_id,  # I5_Index_ID
+                    record.index_i5,  # index2
+                    request_name,  # Sample_Project / Request ID
+                    library_protocol,  # Description / Library Protocol
+                ]
+            else:
+                i5 = (
+                    record.index_i5.replace("A", "t")
+                    .replace("C", "g")
+                    .replace("T", "a")
+                    .replace("G", "c")
+                    .upper()[::-1]
+                )
+                this_row = [
+                    record.barcode,  # Sample_ID, calling it 'Name' in RunManifest header
+                    record.index_i7,  # index1
+                    i5,  # index2 (reverse complement)
+                    lane.name.split()[1],  # Lane
+                    request_name,  # Sample_Project / Request ID
+                ]
+            return this_row
 
         response = HttpResponse(content_type="text/csv")
         ids = json.loads(request.data.get("ids", "[]"))
         flowcell_id = request.data.get("flowcell_id", "")
-        writer = csv.writer(response)
-        writer.writerow(["[Data]"] + [""] * 10)
-        writer.writerow(
-            [
-                "Lane",
-                "Sample_ID",
-                "Sample_Name",
-                "Sample_Plate",
-                "Sample_Well",
-                "I7_Index_ID",
-                "index",
-                "I5_Index_ID",
-                "index2",
-                "Sample_Project",
-                "Description",
-            ]
-        )
-
         flowcell = Flowcell.objects.filter(archived=False).get(pk=flowcell_id)
-        f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
-        response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
+
+        writer = csv.writer(response)
+
+        if not "AVITI" in flowcell.sequencer.name:
+            writer.writerow(["[Data]"] + [""] * 10)
+            writer.writerow(
+                [
+                    "Lane",
+                    "Sample_ID",
+                    "Sample_Name",
+                    "Sample_Plate",
+                    "Sample_Well",
+                    "I7_Index_ID",
+                    "index",
+                    "I5_Index_ID",
+                    "index2",
+                    "Sample_Project",
+                    "Description",
+                ]
+            )
+            f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
+            response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
+
+        else:
+            writer.writerow(["[SAMPLES]"] + [""] * 4)
+            writer.writerow(
+                [
+                    "Sample_Name",
+                    "index1",
+                    "index2",
+                    "Lane",
+                    "Sample_Project",
+                ]
+            )
+            response["Content-Disposition"] = 'attachment; filename="RunManifest.csv"'
 
         lanes = Lane.objects.filter(pk__in=ids).order_by("name")
 
@@ -377,10 +409,16 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             )
 
             for record in records:
-                row = create_row(lane, record)
+                row = create_row(
+                    lane, record, legacy=not "AVITI" in flowcell.sequencer.name
+                )
                 rows.append(row)
 
-        rows = sorted(rows, key=lambda x: (x[0], x[1][3:]))
+        if not "AVITI" in flowcell.sequencer.name:
+            rows = sorted(rows, key=lambda x: (x[0], x[1][3:]))
+        else:
+            rows = sorted(rows, key=lambda x: x[0])
+
         for row in rows:
             writer.writerow(row)
 
