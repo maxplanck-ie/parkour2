@@ -7,36 +7,47 @@ SELECT
     s.barcode,
     s.name,
     s.status,
-    s.measuring_unit,
     s.sequencing_depth,
-    s.measured_value,
-    s.gmo,
-    r.id AS request_id,
-    r.name AS request_name,
-    r.create_time AS create_time,
     nat.id AS nucleic_acid_type_id,
     nat.name AS nucleic_acid_type_name,
+    s.measuring_unit,
+    s.measured_value,
+    s.gmo,
     lp.id AS library_protocol_id,
     lp.name AS library_protocol_name,
     lt.id AS analysis_type_id,
     lt.name AS analysis_type_name,
     lp2.mean_fragment_size AS average_fragment_size,
+    lp2.starting_amount,
+    lp2.pcr_cycles,
+    lp2.concentration_library,
     it.name AS index_type_name,
-    s.index_reads,
     s.index_i7,
     s.index_i5,
-    ip.name AS pool_name
+    i7.index_id AS i7_id,
+    i5.index_id AS i5_id,
+    ip.coordinate,
+    s.read_length_id,
+    rl.name AS read_length_name,
+    r.id AS request_id,
+    r.name AS request_name,
+    ip.name AS pool_name,
+    r.create_time AS create_time
 FROM sample_sample AS s
-JOIN request_request_samples AS rl ON s.id = rl.sample_id
-JOIN request_request AS r ON rl.request_id = r.id
+JOIN request_request_samples AS rrs ON s.id = rrs.sample_id
+JOIN request_request AS r ON rrs.request_id = r.id
 LEFT JOIN sample_nucleicacidtype AS nat ON s.nucleic_acid_type_id = nat.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON s.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON s.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON s.index_type_id = it.id
 LEFT JOIN index_generator_pool_samples AS ips ON s.id = ips.sample_id
 LEFT JOIN index_generator_pool AS ip ON ips.pool_id = ip.id
-LEFT JOIN library_preparation_librarypreparation AS lp2 ON lp2.sample_id = s.id;
+LEFT JOIN library_preparation_librarypreparation AS lp2 ON lp2.sample_id = s.id
+LEFT JOIN library_sample_shared_indexi7 AS i7 ON s.index_i7 = i7.index
+LEFT JOIN library_sample_shared_indexi5 AS i5 ON s.index_i5 = i5.index
+LEFT JOIN library_sample_shared_readlength AS rl ON s.read_length_id = rl.id;
 """
+
 
 class Migration(migrations.Migration):
 
@@ -48,7 +59,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunSQL(
-            sql=VIEW_SQL,
-            reverse_sql="DROP VIEW IF EXISTS complete_sample_data;"
+            sql=VIEW_SQL, reverse_sql="DROP VIEW IF EXISTS complete_sample_data;"
         ),
     ]

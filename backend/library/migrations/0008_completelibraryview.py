@@ -9,8 +9,10 @@ SELECT
     l.status,
     l.sequencing_depth,
     l.measuring_unit,
+    l.measured_value,
     l.percent_total,
     l.size_distribution_facility AS average_fragment_size,
+    l.measured_value_facility AS concentration_library,
     r.id AS request_id,
     r.name AS request_name,
     r.create_time AS create_time,
@@ -19,31 +21,41 @@ SELECT
     lt.id AS analysis_type_id,
     lt.name AS analysis_type_name,
     it.name AS index_type_name,
-    l.index_reads,
     l.index_i7,
     l.index_i5,
+    i7.index_id AS i7_id,
+    i5.index_id AS i5_id,
+    ip.coordinate,
+    l.read_length_id,
+    rl.name AS read_length_name,
     ip.name AS pool_name
 FROM library_library AS l
-JOIN request_request_libraries AS rl ON l.id = rl.library_id
-JOIN request_request AS r ON rl.request_id = r.id
+JOIN request_request_libraries AS rrl ON l.id = rrl.library_id
+JOIN request_request AS r ON rrl.request_id = r.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON l.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON l.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON l.index_type_id = it.id
 LEFT JOIN index_generator_pool_libraries AS ipl ON l.id = ipl.library_id
-LEFT JOIN index_generator_pool AS ip ON ipl.pool_id = ip.id;
+LEFT JOIN index_generator_pool AS ip ON ipl.pool_id = ip.id
+LEFT JOIN library_sample_shared_indexi7 AS i7 ON l.index_i7 = i7.index
+LEFT JOIN library_sample_shared_indexi5 AS i5 ON l.index_i5 = i5.index
+LEFT JOIN library_sample_shared_readlength AS rl ON l.read_length_id = rl.id;
 """
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
         ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
-        ("library", "0007_rename_amplification_cycles_library_removed_amplification_cycles_and_more"),
+        (
+            "library",
+            "0007_rename_amplification_cycles_library_removed_amplification_cycles_and_more",
+        ),
         ("request", "0009_historicalrequest"),
     ]
 
     operations = [
         migrations.RunSQL(
-            sql=VIEW_SQL,
-            reverse_sql="DROP VIEW IF EXISTS complete_library_data;"
+            sql=VIEW_SQL, reverse_sql="DROP VIEW IF EXISTS complete_library_data;"
         ),
     ]
