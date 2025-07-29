@@ -309,7 +309,7 @@ compile:
 
 ncu:
 	# TODO: upgrade ncu first?
-	@cd frontend && ncu -u
+	@cd frontend && ncu \!ag-grid-* -u
 
 get-pin:
 	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2 | uniq
