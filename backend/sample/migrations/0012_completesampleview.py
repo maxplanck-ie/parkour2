@@ -14,6 +14,9 @@ SELECT
     r.id AS request_id,
     r.name AS request_name,
     r.create_time AS create_time,
+    nat.id AS nucleic_acid_type_id,
+    nat.name AS nucleic_acid_type_name,
+    lp.id AS library_protocol_id,
     lp.name AS library_protocol_name,
     lt.name AS library_type_name,
     it.name AS index_type_name,
@@ -24,6 +27,7 @@ SELECT
 FROM sample_sample AS s
 JOIN request_request_samples AS rl ON s.id = rl.sample_id
 JOIN request_request AS r ON rl.request_id = r.id
+LEFT JOIN sample_nucleicacidtype AS nat ON s.nucleic_acid_type_id = nat.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON s.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON s.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON s.index_type_id = it.id
