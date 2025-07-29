@@ -14,6 +14,7 @@ SELECT
     r.id AS request_id,
     r.name AS request_name,
     r.create_time AS create_time,
+    lp.id AS library_protocol_id,
     lp.name AS library_protocol_name,
     lt.name AS library_type_name,
     it.name AS index_type_name,

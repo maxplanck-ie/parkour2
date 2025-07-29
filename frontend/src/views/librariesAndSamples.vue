@@ -29,19 +29,21 @@
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input ref="searchInput" v-model="searchQuery" type="text" placeholder="Search"
-            :disabled="loading || fakeLoading" />
-          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey" />
+          <input ref="searchInput" v-model="searchQuery" @keyup.enter="handleSearchAction" type="text"
+            placeholder="Search" />
+          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey; cursor: pointer;"
+            @click="handleSearchAction" />
         </div>
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input type="date" id="startDate" :value="startDateFormatted" @blur="updateDate('start', $event)"
+            <input type="date" id="startDate" :class="{ 'invalid-date': !startDateValid }" v-model="startDateString"
               required />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input type="date" id="endDate" :value="endDateFormatted" @blur="updateDate('end', $event)" required />
+            <input type="date" id="endDate" :class="{ 'invalid-date': !endDateValid }" v-model="endDateString"
+              required />
           </div>
         </div>
         <div class="button-popup-wrapper">
@@ -189,7 +191,7 @@
     </div>
 
     <!-- Pagination controls -->
-    <div v-if="!loading && pagination.totalPages > 1" class="pagination-controls">
+    <div v-if="!loading" class="pagination-controls">
       <div class="pagination-info">
         Page {{ pagination.currentPage }} of {{ pagination.totalPages }}
         ({{ new Intl.NumberFormat().format(pagination.totalRequests) }} requests)
@@ -427,8 +429,8 @@ export default {
   },
   data() {
     const today = new Date();
-    const twentyYearsAgo = new Date();
-    twentyYearsAgo.setFullYear(today.getFullYear() - 20);
+    const initialStartDate = new Date();
+    initialStartDate.setFullYear(today.getFullYear() - 10);
     return {
       tabulatorInstance: null,
       loading: true,
@@ -520,40 +522,22 @@ export default {
       analysisTypesList: [],
       sequencersList: [],
       readLengthsList: [],
-      startDate: twentyYearsAgo,
+      startDate: initialStartDate,
       endDate: today,
-      lastValidStartDate: null,
-      lastValidEndDate: null,
+      startDateString: this.formatDateForInput(initialStartDate),
+      endDateString: this.formatDateForInput(today),
+      startDateValid: true,
+      endDateValid: true,
+      dateChangeTimer: null,
       showAdvancedFilters: false,
       showSelectColumns: false
     };
-  },
-  computed: {
-    startDateFormatted: {
-      get() {
-        return this.formatDateForInput(this.startDate);
-      },
-      set(value) {
-        this.startDate = value ? new Date(value) : null;
-      }
-    },
-    endDateFormatted: {
-      get() {
-        return this.formatDateForInput(this.endDate);
-      },
-      set(value) {
-        this.endDate = value ? new Date(value) : null;
-      }
-    },
   },
   mounted() {
     this.getLibrariesSamples(1);
     this.setColumns();
     this.fetchFilterOptions();
     this.fetchExportTemplates();
-
-    this.lastValidStartDate = new Date(this.startDate);
-    this.lastValidEndDate = new Date(this.endDate);
 
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -567,22 +551,15 @@ export default {
     document.removeEventListener("keydown", this.handleKeyDown);
   },
   watch: {
-    searchQuery(newValue, oldValue) {
-      if (newValue !== oldValue && newValue !== null) {
-        clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {
-          this.getLibrariesSamples(1);
-          // this.$nextTick(() => {
-          //   if (this.$refs.searchInput) {
-          //     this.$refs.searchInput.focus();
-          //   }
-          // });
-        }, 1000);
-      }
-    },
     'pagination.currentPage'(newPage) {
       this.pageInput = newPage;
     },
+    startDateString(newVal) {
+      this.handleDateChange('start', newVal);
+    },
+    endDateString(newVal) {
+      this.handleDateChange('end', newVal);
+    }
   },
   methods: {
     async getLibrariesSamples(page = 1) {
@@ -679,7 +656,7 @@ export default {
             mean_fragment_size: getValue(e.mean_fragment_size),
             sequencing_depth: getValue(e.sequencing_depth),
             read_length: getValue(e.read_length),
-            gmo: e.gmo ?? "",
+            gmo: e.gmo === true ? "Yes" : e.gmo === false ? "No" : "",
             pool_name: e.pool_name ?? "",
             status: getValue(e.status),
             status_text: this.statusMap[e.status] ?? "-",
@@ -757,6 +734,12 @@ export default {
       } catch (error) {
         handleError(error);
       }
+    },
+    handleSearchAction() {
+      if (this.loading) return;
+      const query = this.searchQuery?.trim() || '';
+      this.searchQuery = query;
+      this.getLibrariesSamples(1);
     },
     getStatusClass(status) {
       switch (String(status)) {
@@ -957,11 +940,7 @@ export default {
           },
           formatter: (cell) => {
             const value = cell.getValue();
-            const options = {
-              false: "Not Needed",
-              true: "Risk Assessment Done"
-            };
-            const finalString = options[value] || value || "-";
+            const finalString = value || "-";
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1487,49 +1466,47 @@ export default {
       const year = date.getFullYear();
       return `${day}.${month}.${year}`;
     },
-    updateDate(type, event) {
-      const value = event.target.value;
-      if (!value) {
-        showNotification("Date cannot be empty", "error");
-        this.revertDate(type);
-        return;
-      }
-
+    handleDateChange(type, value) {
+      clearTimeout(this.dateChangeTimer);
+      this[`${type}DateValid`] = this.isValidDate(value);
+      if (!this[`${type}DateValid`]) return;
+      this.dateChangeTimer = setTimeout(() => {
+        this.updateActualDate(type, value);
+        this.validateDateRange();
+        this.getLibrariesSamples(1);
+      }, 500);
+    },
+    isValidDate(dateString) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return false;
+      const [yearStr, monthStr, dayStr] = dateString.split("-");
+      const year = Number(yearStr);
+      const month = Number(monthStr);
+      const day = Number(dayStr);
+      if (year < 1000 || year > 9999) return false;
+      if (month < 1 || month > 12) return false;
+      if (day < 1 || day > 31) return false;
+      const date = new Date(dateString);
+      return (
+        date.getFullYear() === year &&
+        date.getMonth() + 1 === month &&
+        date.getDate() === day
+      );
+    },
+    updateActualDate(type, value) {
       const newDate = new Date(value);
-      if (isNaN(newDate.getTime())) {
-        showNotification("Invalid date format", "error");
-        this.revertDate(type);
-        return;
-      }
-
-      if (type === 'start') {
-        this.startDate = newDate;
-        this.lastValidStartDate = newDate;
-      } else {
-        this.endDate = newDate;
-        this.lastValidEndDate = newDate;
-      }
-
-      this.validateAndFetch();
+      this[`${type}Date`] = newDate;
+      this[`lastValid${type.charAt(0).toUpperCase() + type.slice(1)}Date`] = newDate;
     },
-    revertDate(type) {
-      if (type === 'start') {
-        this.startDate = new Date(this.lastValidStartDate);
-      } else {
-        this.endDate = new Date(this.lastValidEndDate);
-      }
-    },
-    validateAndFetch() {
-      if (!this.startDate || !this.endDate) {
-        showNotification("Both dates are required", "error");
-        return;
-      }
+    validateDateRange() {
       if (this.startDate > this.endDate) {
-        showNotification("Start date cannot be after end date", "warning");
-        [this.startDate, this.endDate] = [this.endDate, this.startDate];
-        [this.lastValidStartDate, this.lastValidEndDate] = [this.startDate, this.endDate];
+        showNotification("Start date cannot be after end date.", "warning");
+        this.startDateValid = false;
+        this.endDateValid = false;
       }
-      this.getLibrariesSamples(1);
+      else {
+        this.startDateValid = true;
+        this.endDateValid = true;
+      }
     },
     toggleAdvancedFilters() {
       this.showAdvancedFilters = !this.showAdvancedFilters;
@@ -1987,11 +1964,12 @@ for record in results:
 
 samples all fields
 libraries all fields
-advanced filters refactor, make work
+filters API make work
+export columns set
 
-search don't allow to type
-date filter fix
-opening groups scrolls to first group
-
-make such that libraries or samples in complete data/view should update after changes in libraries or samples or other models
+store column width in browser storage
+resize width of table or collapse/expand side modules should refresh the table width
+white page on 1000 records API call
+right border makes horizontal scollbar
+scrollbar jumps
 -->

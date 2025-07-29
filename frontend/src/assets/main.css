@@ -627,6 +627,13 @@ input[type="radio"]:checked::after {
   font-size: 13px;
   background: #ffffff;
   text-transform: uppercase;
+  outline: none;
+}
+
+.invalid-date {
+  border: 1px solid #ff6b6b !important;
+  border-radius: 2px;
+  background-color: #fff0f0;
 }
 
 .filter-item {

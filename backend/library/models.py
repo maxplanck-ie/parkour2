@@ -69,6 +69,7 @@ class CompleteLibraryData(models.Model):
     measuring_unit = models.CharField(max_length=50)
     mean_fragment_size = models.FloatField()
     percent_total = models.FloatField()
+    library_protocol_id = models.IntegerField()
     library_protocol_name = models.CharField(max_length=150, null=True)
     library_type_name = models.CharField(max_length=200, null=True)
     index_type_name = models.CharField(max_length=100, null=True)
