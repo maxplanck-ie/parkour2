@@ -23,9 +23,9 @@ SELECT
     it.name AS index_type_name,
     l.index_i7,
     l.index_i5,
-    i7.index_id AS i7_id,
-    i5.index_id AS i5_id,
-    ip.coordinate,
+    (i7.prefix || i7.number) AS i7_id,
+    (i5.prefix || i5.number) AS i5_id,
+    ip.char_coord || ip.num_coord::text AS coordinate,
     l.read_length_id,
     rl.name AS read_length_name,
     ip.name AS pool_name
