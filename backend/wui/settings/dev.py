@@ -7,14 +7,14 @@ DEBUG = True
 
 INSTALLED_APPS += [
     "schema_viewer",
-    "debug_toolbar",
+    # "debug_toolbar",
     "django_migration_linter",
     "corsheaders",
     # "explorer",
 ]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     *MIDDLEWARE,
     "corsheaders.middleware.CorsMiddleware",
 ]
