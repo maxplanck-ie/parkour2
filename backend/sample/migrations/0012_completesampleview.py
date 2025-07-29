@@ -18,7 +18,9 @@ SELECT
     nat.name AS nucleic_acid_type_name,
     lp.id AS library_protocol_id,
     lp.name AS library_protocol_name,
-    lt.name AS library_type_name,
+    lt.id AS analysis_type_id,
+    lt.name AS analysis_type_name,
+    lp2.mean_fragment_size AS average_fragment_size,
     it.name AS index_type_name,
     s.index_reads,
     s.index_i7,
@@ -32,7 +34,8 @@ LEFT JOIN library_sample_shared_libraryprotocol AS lp ON s.library_protocol_id =
 LEFT JOIN library_sample_shared_librarytype AS lt ON s.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON s.index_type_id = it.id
 LEFT JOIN index_generator_pool_samples AS ips ON s.id = ips.sample_id
-LEFT JOIN index_generator_pool AS ip ON ips.pool_id = ip.id;
+LEFT JOIN index_generator_pool AS ip ON ips.pool_id = ip.id
+LEFT JOIN library_preparation_librarypreparation AS lp2 ON lp2.sample_id = s.id;
 """
 
 class Migration(migrations.Migration):
