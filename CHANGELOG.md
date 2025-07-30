@@ -6,6 +6,7 @@
 - Sequencing Depth for Samples and Libraries accepts 1 decimal position, and any positive values (before it would only take 10 as minimum.)
 - Indeces when loading a sequencing request can have any lenght above 5 now.
 - Downloading SampleSheet is now customized for the case of sequencer names that start with `AVITI`, given that new emerging technologies are giving better results.
+- Potential fix to BarcodeCounter bug (generate fn. was using its default argument, which would take the year from when module is loaded, not when the fn. is called) that caused to be reset every year when a new deployment was made.
 - ...
 
 
