@@ -668,7 +668,7 @@ export default {
             average_fragment_size: getValue(e.average_fragment_size),
             sequencing_depth: getValue(e.sequencing_depth),
             read_length_name: getValue(e.read_length_name),
-            gmo: element.gmo === null ? "" : element.gmo,
+            gmo: e.gmo === null ? "" : e.gmo,
             pool_name: e.pool_name ?? "",
             status: getValue(e.status),
             status_text: this.statusMap[e.status] ?? "-",
@@ -952,7 +952,11 @@ export default {
           },
           formatter: (cell) => {
             const value = cell.getValue();
-            const finalString = value || "-";
+            const options = {
+              false: "No",
+              true: "Yes"
+            };
+            const finalString = options[value] || "-";
             return this.ellipsisContainer(finalString);
           }
         },
@@ -1141,13 +1145,11 @@ export default {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
             let finalString;
-
             if (rawValue === "" || rawValue === undefined || isNaN(value)) {
               finalString = "-";
             } else {
               finalString = Math.round(value).toString();
             }
-
             return this.ellipsisContainer(finalString);
           },
           cellDblClick: function (e, cell) {
@@ -1273,15 +1275,11 @@ export default {
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
           formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            let finalString;
-            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
-              finalString = "-";
-            } else {
-              finalString = Math.round(value).toString();
-            }
+            const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1304,6 +1302,9 @@ export default {
               finalString = Math.round(value).toString();
             }
             return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
           }
         }
       ];
