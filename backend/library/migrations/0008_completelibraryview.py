@@ -23,12 +23,12 @@ SELECT
     it.name AS index_type_name,
     l.index_i7,
     l.index_i5,
-    (i7.prefix || i7.number) AS i7_id,
-    (i5.prefix || i5.number) AS i5_id,
-    ip.char_coord || ip.num_coord::text AS coordinate,
+    i7.id AS i7_id,
+    i5.id AS i5_id,
+    (ip.char_coord || ip.num_coord) AS coordinate,
     l.read_length_id,
     rl.name AS read_length_name,
-    ip.name AS pool_name
+    igp.name AS pool_name
 FROM library_library AS l
 JOIN request_request_libraries AS rrl ON l.id = rrl.library_id
 JOIN request_request AS r ON rrl.request_id = r.id
@@ -36,10 +36,12 @@ LEFT JOIN library_sample_shared_libraryprotocol AS lp ON l.library_protocol_id =
 LEFT JOIN library_sample_shared_librarytype AS lt ON l.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON l.index_type_id = it.id
 LEFT JOIN index_generator_pool_libraries AS ipl ON l.id = ipl.library_id
-LEFT JOIN index_generator_pool AS ip ON ipl.pool_id = ip.id
-LEFT JOIN library_sample_shared_indexi7 AS i7 ON l.index_i7 = i7.index
-LEFT JOIN library_sample_shared_indexi5 AS i5 ON l.index_i5 = i5.index
-LEFT JOIN library_sample_shared_readlength AS rl ON l.read_length_id = rl.id;
+LEFT JOIN index_generator_pool AS igp ON ipl.pool_id = igp.id
+LEFT JOIN library_sample_shared_readlength AS rl ON l.read_length_id = rl.id
+LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = l.index_i7
+LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = l.index_i5
+LEFT JOIN library_sample_shared_indexpair AS ip
+    ON ip.index1_id = i7.id AND ip.index2_id = i5.id;
 """
 
 
