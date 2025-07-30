@@ -81,21 +81,33 @@ class LibrarySampleTree(viewsets.ViewSet):
             sample_queryset = sample_queryset.filter(status=int(status_filter))
 
         if library_protocol_filter:
-            library_queryset = library_queryset.filter(library_protocol_id=int(library_protocol_filter))
-            sample_queryset = sample_queryset.filter(library_protocol_id=int(library_protocol_filter))
+            library_queryset = library_queryset.filter(
+                library_protocol_id=int(library_protocol_filter)
+            )
+            sample_queryset = sample_queryset.filter(
+                library_protocol_id=int(library_protocol_filter)
+            )
 
         if analysis_type_filter:
-            library_queryset = library_queryset.filter(analysis_type_id=int(analysis_type_filter))
-            sample_queryset = sample_queryset.filter(analysis_type_id=int(analysis_type_filter))
+            library_queryset = library_queryset.filter(
+                analysis_type_id=int(analysis_type_filter)
+            )
+            sample_queryset = sample_queryset.filter(
+                analysis_type_id=int(analysis_type_filter)
+            )
 
         if sequencer_filter:
-            sample_queryset = sample_queryset.filter(sequencer__icontains=sequencer_filter)
+            sample_queryset = sample_queryset.filter(
+                sequencer__icontains=sequencer_filter
+            )
 
         if read_length_filter:
-            try:
-                sample_queryset = sample_queryset.filter(read_length=int(read_length_filter))
-            except ValueError:
-                return Response({"success": False, "error": "Invalid read_length value."}, status=400)
+            library_queryset = library_queryset.filter(
+                read_length_id=int(read_length_filter)
+            )
+            sample_queryset = sample_queryset.filter(
+                read_length_id=int(read_length_filter)
+            )
 
         library_requests = (
             library_queryset.values("request_name")
