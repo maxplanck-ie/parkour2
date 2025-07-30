@@ -1766,6 +1766,7 @@ export default {
           { header: "Name", key: "name", width: 25 },
           { header: "Status", key: "status_text", width: 15 },
           { header: "S/L", key: "type", width: 10 },
+          { header: "Plate Coord", key: "well_position", width: 10},
           { header: "Barcode", key: "barcode", width: 15 },
           { header: "Pool Paths", key: "pool_name", width: 20 },
           { header: "GMO", key: "gmo", width: 20 },
@@ -1975,9 +1976,6 @@ with connection.cursor() as cursor:
 for record in results:
     print(record)
 
-samples all fields
-libraries all fields
-filters API make work
 export columns set
 
 store column width in browser storage
