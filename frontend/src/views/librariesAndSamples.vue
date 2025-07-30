@@ -1766,7 +1766,7 @@ export default {
           { header: "Name", key: "name", width: 25 },
           { header: "Status", key: "status_text", width: 15 },
           { header: "S/L", key: "type", width: 10 },
-          { header: "Plate Coord", key: "well_position", width: 10},
+          { header: "Plate Coord", key: "well_position", width: 10 },
           { header: "Barcode", key: "barcode", width: 15 },
           { header: "Pool Paths", key: "pool_name", width: 20 },
           { header: "GMO", key: "gmo", width: 20 },
@@ -1976,11 +1976,9 @@ with connection.cursor() as cursor:
 for record in results:
     print(record)
 
-export columns set
-
 store column width in browser storage
 resize width of table or collapse/expand side modules should refresh the table width
 white page on 1000 records API call
 right border makes horizontal scollbar
-scrollbar jumps
+scrollbar jumps on virtualDOM
 -->
