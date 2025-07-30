@@ -438,7 +438,7 @@ class GenericLibrarySample(DateTimeMixin):
         abstract = True
 
     def generate_barcode(self):
-        counter = BarcodeCounter.load()
+        counter = BarcodeCounter.load(timezone.now().year)
         counter.increment()
         counter.save()
 
