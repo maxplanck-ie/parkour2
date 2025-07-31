@@ -307,7 +307,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     def download_sample_sheet(self, request):
         """Generate Benchtop Protocol as XLS file for selected lanes."""
 
-        def create_row(lane, record, legacy=False):
+        def create_row(lane, record, monolane, legacy=False):
             index_i7 = IndexI7.objects.filter(
                 archived=False, index=record.index_i7, index_type=record.index_type
             )
@@ -326,9 +326,9 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             )
             library_protocol = str(library_protocol.encode("ASCII", "ignore"), "utf-8")
 
-            lane_name = lane.name.split()[1]
-            if len(lanes) == 1:
-                assert lane_name == "1", "Monolane should have lane name 1"
+            if not monolane:
+                lane_name = lane.name.split()[1]
+            else:
                 lane_name = "1+2"
 
             if legacy:
@@ -415,7 +415,10 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
             for record in records:
                 row = create_row(
-                    lane, record, legacy=not "AVITI" in flowcell.sequencer.name
+                    lane,
+                    record,
+                    monolane=len(lanes) == 1,
+                    legacy=not "AVITI" in flowcell.sequencer.name,
                 )
                 rows.append(row)
 
