@@ -388,7 +388,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         var error = response.statusText;
         try {
           error = Ext.JSON.decode(response.responseText).message;
-        } catch (e) {}
+        } catch (e) { }
         new Noty({ text: error, type: "error" }).show();
         console.error(response);
 
@@ -632,21 +632,8 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         return false;
       }
 
-      // No pooling of indices with the length of 6 and 8 nucleotides (no mixed length)
-      if (
-        firstItemIndexType &&
-        recordIndexType &&
-        firstItemIndexType.get("index_length") !==
-          recordIndexType.get("index_length")
-      ) {
-        if (notif) {
-          new Noty({
-            text: "Pooling of indices with 6 and 8 nucleotides (mixed) is not allowed.",
-            type: "warning"
-          }).show();
-        }
-        return false;
-      }
+      // Allow mixed index lengths - extra base pairs on longer indices are ignored
+      // in color balance calculations, which only process up to the shorter length
     }
 
     return true;

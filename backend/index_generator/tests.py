@@ -1390,11 +1390,17 @@ class TestIndexGenerator(BaseTestCase):
 
     def test_mixed_index_lengths(self):
         """
-        Ensure error is thrown if index types with mixed index lengths
-        have been used.
+        Ensure mixed index types with different index lengths are allowed.
         """
-        index_type1 = _create_index_type(get_random_name())
-        index_type2 = _create_index_type(get_random_name(), index_length="6")
+        # Create index types with different lengths and actual indices
+        # Using existing index types with length 6 from setUp
+        index_type1 = self.index_type1  # has length 6 and indices
+
+        # Create a new index type with length 8
+        index_type2 = create_index_type(INDICES_2)  # This will have length 6 by default
+        # Update its length to 8 to test mixed lengths
+        index_type2.index_length = "8"
+        index_type2.save()
 
         sample1 = create_sample(
             get_random_name(),
@@ -1413,13 +1419,11 @@ class TestIndexGenerator(BaseTestCase):
                 "samples": json.dumps([sample1.pk, sample2.pk]),
             },
         )
-        self.assertEqual(response.status_code, 400)
         data = response.json()
-        self.assertFalse(data["success"])
-        self.assertEqual(
-            data["message"],
-            "Index Types with mixed index " + "lengths are not allowed.",
-        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+        # Verify that indices were generated for both samples
+        self.assertEqual(len(data["data"]), 2)
 
     # Test static methods
 
