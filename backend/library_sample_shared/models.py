@@ -187,10 +187,6 @@ class IndexPair(models.Model):
         verbose_name = "Index Pair"
         verbose_name_plural = "Index Pairs"
 
-    @property
-    def coordinate(self):
-        return f"{self.char_coord}{self.num_coord}"
-
     def __str__(self):
         index1_id = self.index1.index_id if self.index1 else ""
         index2_id = self.index2.index_id if self.index2 else ""
@@ -198,6 +194,25 @@ class IndexPair(models.Model):
         if self.index_type.is_dual:
             output += f"-{index2_id}"
         return output
+
+    def save(self, *args, **kwargs):
+        # Check if this is an update and the archived status is changing to True
+        if self.pk is not None:
+            old_instance = IndexPair.objects.get(pk=self.pk)
+            if not old_instance.archived and self.archived:
+                # Archive the constituent indices when the pair is archived
+                if self.index1:
+                    self.index1.archived = True
+                    self.index1.save(update_fields=["archived"])
+                if self.index2:
+                    self.index2.archived = True
+                    self.index2.save(update_fields=["archived"])
+
+        super().save(*args, **kwargs)
+
+    @property
+    def coordinate(self):
+        return f"{self.char_coord}{self.num_coord}"
 
 
 class BarcodeCounter(models.Model):
