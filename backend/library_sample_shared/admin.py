@@ -169,11 +169,37 @@ class IndexPairAdmin(admin.ModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
+        # Get the IDs before updating
+        index_pair_ids = list(queryset.values_list("id", flat=True))
         queryset.update(archived=True)
+
+        # Fetch fresh objects with related fields
+        for obj in IndexPair.objects.select_related("index1", "index2").filter(
+            id__in=index_pair_ids
+        ):
+            if obj.index1 and not obj.index1.archived:
+                obj.index1.archived = True
+                obj.index1.save(update_fields=["archived"])
+            if obj.index2 and not obj.index2.archived:
+                obj.index2.archived = True
+                obj.index2.save(update_fields=["archived"])
 
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
+        # Get the IDs before updating
+        index_pair_ids = list(queryset.values_list("id", flat=True))
         queryset.update(archived=False)
+
+        # Fetch fresh objects with related fields
+        for obj in IndexPair.objects.select_related("index1", "index2").filter(
+            id__in=index_pair_ids
+        ):
+            if obj.index1 and obj.index1.archived:
+                obj.index1.archived = False
+                obj.index1.save(update_fields=["archived"])
+            if obj.index2 and obj.index2.archived:
+                obj.index2.archived = False
+                obj.index2.save(update_fields=["archived"])
 
     def index_pair(self, obj):
         return str(obj)
