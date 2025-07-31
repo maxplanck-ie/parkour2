@@ -326,9 +326,14 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             )
             library_protocol = str(library_protocol.encode("ASCII", "ignore"), "utf-8")
 
+            lane_name = lane.name.split()[1]
+            if len(lanes) == 1:
+                assert lane_name == "1", "Monolane should have lane name 1"
+                lane_name = "1+2"
+
             if legacy:
                 this_row = [
-                    lane.name.split()[1],  # Lane
+                    lane_name,  # Lane
                     record.barcode,  # Sample_ID
                     record.name,  # Sample_Name
                     "",  # Sample_Plate
@@ -352,7 +357,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                     record.barcode,  # Sample_ID, calling it 'Name' in RunManifest header
                     record.index_i7,  # index1
                     i5,  # index2 (reverse complement)
-                    lane.name.split()[1],  # Lane
+                    lane_name,  # Lane
                     request_name,  # Sample_Project / Request ID
                 ]
             return this_row
