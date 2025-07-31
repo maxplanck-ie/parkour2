@@ -310,12 +310,9 @@ class IndexGenerator:
             raise ValueError("Mixed long-read and short-read indices are not allowed")
 
         index_lengths = [x.index_length for x in index_types]
-        if len(set(index_lengths)) != 1:
-            raise ValueError(
-                "Index Types with mixed index lengths " + "are not allowed."
-            )
-
-        self.index_length = int(index_lengths[0])
+        # Allow mixed index lengths - extra base pairs on longer indices are ignored
+        # in color balance calculations, which only process up to the shorter length
+        self.index_length = max(index_lengths) if index_lengths else 0
 
         return index_types
 
@@ -567,7 +564,7 @@ class IndexGenerator:
                 scores = self.calculate_scores(
                     sample, converted_index, color_distribution, total_depth
                 )
-                avg_score = sum(scores) / self.index_length
+                avg_score = sum(scores) / len(converted_index)
                 if avg_score < result_index["avg_score"]:
                     result_index = {"avg_score": avg_score, "index": index}
 
@@ -618,7 +615,6 @@ class IndexGenerator:
             )
 
         # Calculate color distribution
-        index_length = len(indices_in_result[0])
         color_distribution, total_depth = self.calculate_color_distribution(
             indices_in_result, depths, sample
         )
@@ -634,7 +630,7 @@ class IndexGenerator:
                 scores = self.calculate_scores(
                     sample, converted_index, color_distribution, total_depth
                 )
-                avg_score = sum(scores) / index_length
+                avg_score = sum(scores) / len(converted_index)
                 if avg_score < result_pair["avg_score"]:
                     result_pair = {
                         "avg_score": avg_score,
@@ -678,11 +674,11 @@ class IndexGenerator:
 
     def calculate_color_distribution(self, indices, sequencing_depths, sample):
         total_depth = 0
-        index_length = len(indices[0])
-        color_distribution = [{"G": 0, "R": 0} for _ in range(index_length)]
+        max_index_length = max(len(index) for index in indices)
+        color_distribution = [{"G": 0, "R": 0} for _ in range(max_index_length)]
         for i, index in enumerate(indices):
             idx = self.convert_index(index)
-            for cycle in range(index_length):
+            for cycle in range(len(idx)):
                 color = idx[cycle]
                 color_distribution[cycle][color] += sequencing_depths[i]
             total_depth += sequencing_depths[i]
@@ -710,7 +706,9 @@ class IndexGenerator:
         distribution = list(current_color_distribution)
         result = []
 
-        for cycle in range(len(current_converted_index)):
+        for cycle in range(
+            min(len(current_converted_index), len(current_color_distribution))
+        ):
             color = current_converted_index[cycle]
             distribution[cycle][color] += current_sample.sequencing_depth
 
