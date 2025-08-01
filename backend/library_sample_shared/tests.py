@@ -41,12 +41,17 @@ def create_library_protocol(name, type="DNA"):
     return library_protocol
 
 
-def create_index_type(
-    name, save=True, is_dual=False, index_length="8", format="single"
-):
-    index_type = IndexType(
-        name=name, is_dual=is_dual, index_length=index_length, format=format
-    )
+def _create_index_type(name, save=True, is_dual=False, format="single"):
+    index_type = IndexType(name=name, is_dual=is_dual, format=format)
+
+    if save:
+        index_type.save()
+
+    return index_type
+
+
+def create_index_type(name, save=True, is_dual=False, format="single"):
+    index_type = IndexType(name=name, is_dual=is_dual, format=format)
 
     if save:
         index_type.save()

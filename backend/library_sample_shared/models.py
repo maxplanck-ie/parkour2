@@ -103,13 +103,6 @@ class IndexType(models.Model):
     name = models.CharField("Name", max_length=100)
     is_dual = models.BooleanField("Is Dual", default=False)
 
-    index_length = models.CharField(
-        "Index Length",
-        max_length=2,
-        choices=(("6", "6"), ("8", "8"), ("10", "10"), ("12", "12"), ("24", "24")),
-        default="8",
-    )
-
     format = models.CharField(
         "Format",
         max_length=11,

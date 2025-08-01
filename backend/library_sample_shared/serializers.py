@@ -36,7 +36,6 @@ class ConcentrationMethodSerializer(ModelSerializer):
 
 class IndexTypeSerializer(ModelSerializer):
     index_reads = SerializerMethodField()
-    index_length = SerializerMethodField()
 
     class Meta:
         model = IndexType
@@ -46,16 +45,12 @@ class IndexTypeSerializer(ModelSerializer):
             "index_reads",
             "is_dual",
             "format",
-            "index_length",
             "archived",
             "read_type",
         )
 
     def get_index_reads(self, obj):
         return 2 if obj.is_dual else 1
-
-    def get_index_length(self, obj):
-        return int(obj.get_index_length_display())
 
 
 class IndexBaseSerializer(ModelSerializer):

@@ -326,10 +326,16 @@ class IndexGenerator:
         if len(set(index_read_type)) != 1:
             raise ValueError("Mixed long-read and short-read indices are not allowed")
 
-        index_lengths = [int(x.index_length) for x in index_types if x.index_length]
-        # Allow mixed index lengths - extra base pairs on longer indices are ignored
-        # in color balance calculations, which only process up to the shorter length
-        self.index_length = max(index_lengths) if index_lengths else 0
+        # Calculate max index length dynamically from actual indices
+        all_indices = []
+        for index_type in index_types:
+            all_indices.extend([idx.index for idx in index_type.indices_i7.all()])
+            if index_type.is_dual:
+                all_indices.extend([idx.index for idx in index_type.indices_i5.all()])
+
+        self.index_length = (
+            max(len(index) for index in all_indices) if all_indices else 0
+        )
 
         return index_types
 

@@ -103,7 +103,7 @@ class IndexPairInline(admin.TabularInline):
 class IndexTypeAdmin(ImportExportModelAdmin):
     form = IndexTypeForm
 
-    list_display = ("name", "index_length", "is_dual", "format", "archived")
+    list_display = ("name", "is_dual", "format", "archived")
 
     list_filter = (ArchivedFilter,)
 
@@ -119,7 +119,6 @@ class IndexTypeAdmin(ImportExportModelAdmin):
                 "fields": (
                     "name",
                     "read_type",
-                    "index_length",
                     "format",
                     "is_dual",
                     "indices_i7",
