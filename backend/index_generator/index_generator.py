@@ -68,8 +68,14 @@ class IndexRegistry:
             self.pairs[index_type.pk] = []
 
         index_pairs = IndexPair.objects.filter(
-            archived=False, index_type=index_type
+            archived=False,
+            index_type=index_type,
+            index1__isnull=False,  # Ensure index1 is not null
         ).select_related("index1", "index2")
+
+        # For dual mode, also ensure index2 is not null
+        if self.mode == "dual":
+            index_pairs = index_pairs.filter(index2__isnull=False)
 
         # Sort index pairs according to the chosen direction
         if direction == "right":
@@ -95,6 +101,10 @@ class IndexRegistry:
         index_pairs = index_pairs[start_idx:] + index_pairs[:start_idx]
 
         for pair in index_pairs:
+            # Check if pair.index1 is None to avoid NoneType attribute errors
+            if pair.index1 is None:
+                raise ValueError(f"IndexPair {pair.id} has no index1 assigned")
+
             index1 = self.create_index_dict(
                 index_type.format,
                 index_type.pk,
@@ -106,6 +116,12 @@ class IndexRegistry:
             )
 
             if self.mode == "dual":
+                # Check if pair.index2 is None for dual mode
+                if pair.index2 is None:
+                    raise ValueError(
+                        f"IndexPair {pair.id} has no index2 assigned for dual mode"
+                    )
+
                 index2 = self.create_index_dict(
                     index_type.format,
                     index_type.pk,
