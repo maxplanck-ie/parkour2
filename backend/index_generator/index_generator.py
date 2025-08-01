@@ -309,7 +309,7 @@ class IndexGenerator:
         if len(set(index_read_type)) != 1:
             raise ValueError("Mixed long-read and short-read indices are not allowed")
 
-        index_lengths = [x.index_length for x in index_types]
+        index_lengths = [int(x.index_length) for x in index_types if x.index_length]
         # Allow mixed index lengths - extra base pairs on longer indices are ignored
         # in color balance calculations, which only process up to the shorter length
         self.index_length = max(index_lengths) if index_lengths else 0
@@ -362,6 +362,9 @@ class IndexGenerator:
         # Group samples by the index type format
         plate_samples, tube_samples = [], []
         for sample in self.samples:
+            if not sample.index_type:
+                msg = f"Sample {sample.name} has no index type assigned"
+                raise ValueError(msg)
             if sample.index_type.format == "plate":
                 plate_samples.append(sample)
             else:
@@ -491,6 +494,10 @@ class IndexGenerator:
 
     def find_random(self, sample):
         """Find a pair of random indices I7/I5 for a given sample."""
+
+        if not sample.index_type:
+            msg = f"Sample {sample.name} has no index type assigned"
+            raise ValueError(msg)
 
         if sample.index_type.format == "single":
             index_i7 = random.choice(
