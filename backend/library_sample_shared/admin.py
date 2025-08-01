@@ -168,8 +168,9 @@ class IndexPairAdmin(admin.ModelAdmin):
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
-        # Get the IDs before updating
+        # Get the IDs and index types before updating
         index_pair_ids = list(queryset.values_list("id", flat=True))
+        affected_index_types = set(queryset.values_list("index_type", flat=True))
         queryset.update(archived=True)
 
         # Fetch fresh objects with related fields
@@ -183,15 +184,29 @@ class IndexPairAdmin(admin.ModelAdmin):
                 obj.index2.archived = True
                 obj.index2.save(update_fields=["archived"])
 
+        # Check if any IndexTypes should be archived
+        for index_type_id in affected_index_types:
+            if index_type_id:  # Make sure it's not None
+                # Check if there are any non-archived pairs left for this IndexType
+                remaining_pairs = IndexPair.objects.filter(
+                    index_type_id=index_type_id,
+                    archived=False
+                ).exists()
+                
+                if not remaining_pairs:
+                    # Archive the IndexType as well
+                    IndexType.objects.filter(id=index_type_id).update(archived=True)
+
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
-        # Get the IDs before updating
+        # Get the IDs and index types before updating
         index_pair_ids = list(queryset.values_list("id", flat=True))
+        affected_index_types = set(queryset.values_list("index_type", flat=True))
         queryset.update(archived=False)
 
         # Fetch fresh objects with related fields
         for obj in IndexPair.objects.select_related("index1", "index2").filter(
-            id__in=index_pair_ids
+            id__in=index_pair_ids,
         ):
             if obj.index1 and obj.index1.archived:
                 obj.index1.archived = False
@@ -199,6 +214,11 @@ class IndexPairAdmin(admin.ModelAdmin):
             if obj.index2 and obj.index2.archived:
                 obj.index2.archived = False
                 obj.index2.save(update_fields=["archived"])
+
+        # Unarchive associated IndexTypes if they were archived
+        for index_type_id in affected_index_types:
+            if index_type_id:  # Make sure it's not None
+                IndexType.objects.filter(id=index_type_id, archived=True).update(archived=False)
 
     def index_pair(self, obj):
         return str(obj)
