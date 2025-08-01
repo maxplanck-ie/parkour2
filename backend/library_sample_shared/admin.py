@@ -219,6 +219,28 @@ class IndexPairAdmin(admin.ModelAdmin):
             *super().get_urls(),
         ]
 
+    def _clean_index_name(self, index_name):
+        """
+        Clean index name by removing version suffix and ensuring it's a numeric string.
+
+        Args:
+            index_name (str): Raw index name that may contain version suffix (e.g., '0004v3', '0001v2')
+
+        Returns:
+            str: Cleaned index name with only numeric part and padding (e.g., '0004')
+        """
+        # Remove version suffix if present (v1, v2, v3, etc. - case insensitive)
+        cleaned_name = re.sub(r"v\d+$", "", index_name, flags=re.IGNORECASE).strip()
+
+        # Validate that the cleaned name can be converted to an integer
+        try:
+            int(cleaned_name)
+        except ValueError:
+            msg = f"Index name '{index_name}' cannot be converted to a valid integer after cleaning"
+            raise ValueError(msg) from None
+        else:
+            return cleaned_name
+
     def import_index_pairs(self, request):
         error = ""
 
@@ -333,14 +355,19 @@ class IndexPairAdmin(admin.ModelAdmin):
                 # Import index pairs
                 for index_pair in index_pairs:
                     index_type = IndexType.objects.get(name=index_pair.index_type)
+
+                    # Clean index names by removing "v3" suffix and ensuring they're numeric
+                    index1_name = self._clean_index_name(index_pair.index1_name)
+                    index2_name = self._clean_index_name(index_pair.index2_name)
+
                     index1 = IndexI7.objects.create(
                         prefix=index_pair.index1_prefix,
-                        number=index_pair.index1_name,
+                        number=index1_name,
                         index=index_pair.index1_sequence,
                     )
                     index2 = IndexI5.objects.create(
                         prefix=index_pair.index2_prefix,
-                        number=index_pair.index2_name,
+                        number=index2_name,
                         index=index_pair.index2_sequence,
                     )
                     IndexPair.objects.create(
