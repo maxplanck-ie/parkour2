@@ -4,6 +4,7 @@ import re
 import string
 from collections import Counter, OrderedDict, defaultdict, namedtuple
 
+from common.utils import cast_index_number
 from django.apps import apps
 
 IndexI7 = apps.get_model("library_sample_shared", "IndexI7")
@@ -503,7 +504,10 @@ class IndexGenerator:
 
         with_index = sorted(
             with_index,
-            key=lambda x: (x["index_i7"]["prefix"], int(x["index_i7"]["number"])),
+            key=lambda x: (
+                x["index_i7"]["prefix"],
+                cast_index_number(x["index_i7"]["number"]),
+            ),
         )
 
         self._result.extend(no_index + with_index)
@@ -802,12 +806,16 @@ class IndexGenerator:
     @staticmethod
     def sort_indices(indices):
         """Sort indices I7/I5 by ID."""
-        return sorted(indices, key=lambda x: (x["index_type"], int(x["number"])))
+        return sorted(
+            indices, key=lambda x: (x["index_type"], cast_index_number(x["number"]))
+        )
 
     @staticmethod
     def sort_pairs(pairs):
         """Sort index pairs (only by Index I7 ID)."""
-        return sorted(pairs, key=lambda x: (x[0]["index_type"], int(x[0]["number"])))
+        return sorted(
+            pairs, key=lambda x: (x[0]["index_type"], cast_index_number(x[0]["number"]))
+        )
 
     @staticmethod
     def create_result_dict(obj, index_i7, index_i5):

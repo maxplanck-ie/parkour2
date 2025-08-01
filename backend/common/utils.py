@@ -99,3 +99,8 @@ def retrieve_group_items(request, queryset):
         assert isinstance(this_lab_group, User)
         queryset = queryset.filter(user=this_lab_group)
     return queryset
+
+
+def cast_index_number(index_number):
+    """convert "0004v3" to "0004" and so on"""
+    return int(index_number.split("v")[0]) if "v" in index_number else int(index_number)
