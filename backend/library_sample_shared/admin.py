@@ -189,10 +189,9 @@ class IndexPairAdmin(admin.ModelAdmin):
             if index_type_id:  # Make sure it's not None
                 # Check if there are any non-archived pairs left for this IndexType
                 remaining_pairs = IndexPair.objects.filter(
-                    index_type_id=index_type_id,
-                    archived=False
+                    index_type_id=index_type_id, archived=False
                 ).exists()
-                
+
                 if not remaining_pairs:
                     # Archive the IndexType as well
                     IndexType.objects.filter(id=index_type_id).update(archived=True)
@@ -218,7 +217,9 @@ class IndexPairAdmin(admin.ModelAdmin):
         # Unarchive associated IndexTypes if they were archived
         for index_type_id in affected_index_types:
             if index_type_id:  # Make sure it's not None
-                IndexType.objects.filter(id=index_type_id, archived=True).update(archived=False)
+                IndexType.objects.filter(id=index_type_id, archived=True).update(
+                    archived=False
+                )
 
     def index_pair(self, obj):
         return str(obj)

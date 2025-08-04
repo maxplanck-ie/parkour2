@@ -4,14 +4,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library_sample_shared', '0013_alter_indexpair_char_coord_historicalorganism_and_more'),
+        (
+            "library_sample_shared",
+            "0013_alter_indexpair_char_coord_historicalorganism_and_more",
+        ),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='indextype',
-            name='index_length',
+            model_name="indextype",
+            name="index_length",
         ),
     ]
