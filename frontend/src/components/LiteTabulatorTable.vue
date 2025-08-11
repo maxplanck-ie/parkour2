@@ -1,6 +1,9 @@
 <template>
+    <!-- This Tabulator Table uses Virtual DOM and performs smoothly for usecase with plenty of records -->
     <!-- Table Element -->
-    <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+    <div class="lite-tabulator-table" style="height: 100%;">
+        <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+    </div>
 </template>
 
 <script>
@@ -50,7 +53,6 @@ export default {
                 noGroupByClass: false
             },
             tableColumnWidths: {},
-            scrollPosition: 0,
         };
     },
     watch: {
@@ -84,6 +86,7 @@ export default {
                         resizable: "header",
                         headerContextMenu: []
                     },
+                    renderVertical: "basic",
                     tooltips: true,
                     resizableColumns: true,
                     groupValues: [this.groupValues],
@@ -115,11 +118,6 @@ export default {
                     groupContextMenu: [],
                     groupBy: this.tableGroupsConfig.groupBy,
                     groupStartOpen: this.groupStartOpen,
-                    groupVisibilityChanging: (group) => {
-                        const scrollElement = this.tabulatorInstance.rowManager.element;
-                        this.scrollPosition = scrollElement.scrollTop;
-                        this.tabulatorInstance.blockRedraw();
-                    },
 
                     ...this.tableOptions
                 };
@@ -139,14 +137,16 @@ export default {
                     this.tabulatorInstance.restoreRedraw();
                 });
 
-                this.tabulatorInstance.on("groupClick", (e, group) => {
-                    const scrollElement = this.tabulatorInstance.rowManager.element;
-                    const currentScroll = scrollElement.scrollTop;
-                    setTimeout(() => {
-                        scrollElement.scrollTop = currentScroll;
-                    }, 0);
-                    this.tabulatorInstance.restoreRedraw();
-                });
+                this.tabulatorInstance.on("groupVisibilityChanged", (group, visible) => {
+                    console.log(group)
+                    if (group._group.visible) {
+                        this.tabulatorInstance.getGroups().forEach(g => {
+                            if (g._group.key !== group._group.key && g._group.visible) {
+                                g.toggle();
+                            }
+                        });
+                    }
+                })
 
                 this.tabulatorInstance.on("columnResized", (column) => {
                     const field = column.getField();
@@ -195,23 +195,23 @@ export default {
 </script>
 
 <style>
-.tabulator {
+.lite-tabulator-table .tabulator {
     height: 100%;
     font-size: 12px;
     border: 1px solid #d0d0d0;
     border-radius: 4px !important;
 }
 
-.tabulator-table {
+.lite-tabulator-table .tabulator-table {
     background-color: #7788992d !important;
     z-index: 10;
 }
 
-.tabulator-header {
+.lite-tabulator-table .tabulator-header {
     border: none !important;
 }
 
-.tabulator-placeholder {
+.lite-tabulator-table .tabulator-placeholder {
     text-align: center;
     width: 600px !important;
     height: 100%;
@@ -219,11 +219,11 @@ export default {
     white-space: nowrap;
 }
 
-.tabulator-range-active {
+.lite-tabulator-table .tabulator-range-active {
     border: none !important;
 }
 
-.tabulator-cell {
+.lite-tabulator-table .tabulator-cell {
     height: 30px !important;
     line-height: 6px;
     padding: 0px !important;
@@ -234,83 +234,83 @@ export default {
     text-overflow: ellipsis;
 }
 
-.tabulator-cell.right-border {
+.lite-tabulator-table .tabulator-cell.right-border {
     border-right: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-cell.no-right-border {
+.lite-tabulator-table .tabulator-cell.no-right-border {
     border-right: none !important;
 }
 
-.tabulator-cell.disable-range-selection {
+.lite-tabulator-table .tabulator-cell.disable-range-selection {
     pointer-events: none;
 }
 
-.tabulator-cell.tabulator-range-selected {
+.lite-tabulator-table .tabulator-cell.tabulator-range-selected {
     background-color: #c0e7fd !important;
     color: #003757 !important;
     border-bottom: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-cell.tabulator-editing {
+.lite-tabulator-table .tabulator-cell.tabulator-editing {
     background-color: lightgoldenrodyellow !important;
     padding-left: 10px !important;
 }
 
-.tabulator-cell.tabulator-editable {
+.lite-tabulator-table .tabulator-cell.tabulator-editable {
     cursor: pointer;
 }
 
-.tabulator-cell.tabulator-frozen {
+.lite-tabulator-table .tabulator-cell.tabulator-frozen {
     z-index: 1 !important;
 }
 
-.tabulator-cell.user-entry-column {
+.lite-tabulator-table .tabulator-cell.user-entry-column {
     background-color: #ffebee;
     color: #c62828;
 }
 
-.tabulator-cell.facility-entry-column {
+.lite-tabulator-table .tabulator-cell.facility-entry-column {
     background-color: #c4ecc2;
     color: #388e3c;
 }
 
-.tabulator-cell.facility-entry-column.disable-editing {
+.lite-tabulator-table .tabulator-cell.facility-entry-column.disable-editing {
     background-color: #b6dbb4;
 }
 
-.tabulator-col {
+.lite-tabulator-table .tabulator-col {
     border-right: 1px solid #d0d0d0 !important;
     border-bottom: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-col-group-cols {
+.lite-tabulator-table .tabulator-col-group-cols {
     border: none !important;
     border-top: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-col-content {
+.lite-tabulator-table .tabulator-col-content {
     padding: 5px !important;
 }
 
-.tabulator-row {
+.lite-tabulator-table .tabulator-row {
     min-height: 0;
     height: 30px !important;
 }
 
-.tabulator-row[role="row"] {
+.lite-tabulator-table .tabulator-row[role="row"] {
     border: none !important;
 }
 
-.tabulator-row:not(.tabulator-group) {
+.lite-tabulator-table .tabulator-row:not(.tabulator-group) {
     background-color: white !important;
 }
 
-.tabulator-row:not(.tabulator-group):hover {
+.lite-tabulator-table .tabulator-row:not(.tabulator-group):hover {
     mix-blend-mode: multiply;
 }
 
-.tabulator-row.tabulator-group {
+.lite-tabulator-table .tabulator-row.tabulator-group {
     margin-top: 3px;
     display: flex;
     align-items: center;
@@ -321,37 +321,37 @@ export default {
     z-index: 20;
 }
 
-.tabulator-row.tabulator-group:hover {
+.lite-tabulator-table .tabulator-row.tabulator-group:hover {
     background-color: white;
 }
 
-.tabulator-row:hover .group-action-buttons-container {
+.lite-tabulator-table .tabulator-row:hover .group-action-buttons-container {
     display: flex;
 }
 
-.tabulator-header-filter input {
+.lite-tabulator-table .tabulator-header-filter input {
     height: 24px;
     font-size: 12px !important;
     border: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-group.hidden-group {
+.lite-tabulator-table .tabulator-group.hidden-group {
     display: none !important;
 }
 
-.no-group-by .tabulator-row-odd:nth-child(1) {
+.lite-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) {
     margin-top: 5px;
 }
 
-.no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
+.lite-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
     border-top: 1px solid #d0d0d0 !important;
 }
 
-.checkbox-column:not(.tabulator-col) {
+.lite-tabulator-table .checkbox-column:not(.tabulator-col) {
     padding: 10px 0px !important;
 }
 
-.title-field-group>.tabulator-col-content>div>div {
+.lite-tabulator-table .title-field-group>.tabulator-col-content>div>div {
     font-weight: 600 !important;
     color: rgb(99, 99, 99) !important;
 }

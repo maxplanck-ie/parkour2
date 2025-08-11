@@ -443,7 +443,7 @@ export default {
       selectedFile: "without-file",
       pagination: {
         currentPage: 1,
-        pageSize: 300,
+        pageSize: 100,
         totalPages: 1,
         totalRequests: 0
       },
@@ -466,7 +466,6 @@ export default {
           { column: "name", dir: "asc" },
           { column: "barcode", dir: "asc" }
         ],
-        renderVertical: "basic",
         groupHeader: (value, count, data) => {
           let totalDepth = data.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
@@ -1981,4 +1980,7 @@ resize width of table or collapse/expand side modules should refresh the table w
 white page on 1000 records API call
 right border makes horizontal scollbar
 scrollbar jumps on virtualDOM
+
+sort should apply on search aswell
+filtering on separate fields should not show groups
 -->
