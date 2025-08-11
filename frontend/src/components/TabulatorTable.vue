@@ -1,51 +1,27 @@
 <template>
   <!-- Table Element -->
-  <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+  <div class="normal-tabulator-table">
+    <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+  </div>
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div
-      class="popup-container"
-      :style="{
-        height: errorsPopupContents.errorsPopupHeight + 'px',
-        width: errorsPopupContents.errorsPopupWidth + 'px'
-      }"
-    >
+    <div class="popup-container" :style="{
+      height: errorsPopupContents.errorsPopupHeight + 'px',
+      width: errorsPopupContents.errorsPopupWidth + 'px'
+    }">
       <div class="popup-header">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <g>
-            <path
-              opacity="0.3"
+            <path opacity="0.3"
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              fill="#323232"
-            />
+              fill="#323232" />
             <path
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M12 8V13"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-            <path
-              d="M12 16V15.9888"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
+              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
           </g>
         </svg>
         <span class="popup-title">Paste Error</span>
@@ -58,15 +34,9 @@
           Following errors occurred while pasting, please try again after
           fixing:
         </div>
-        <div
-          v-if="errorsPopupContents.errorsList?.length"
-          class="popup-scrollable-content"
-        >
+        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
           <ol style="padding-left: 25px">
-            <li
-              v-for="(item, index) in errorsPopupContents.errorsList"
-              :key="index"
-            >
+            <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
               {{ item.barcode + " ➜ " }}
               <span style="font-weight: bold">{{ item.message }}</span>
             </li>
@@ -889,8 +859,8 @@ export default {
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                  getRow: () => ({ getData: () => rowData })
-                })
+                getRow: () => ({ getData: () => rowData })
+              })
               : columnDef.editorParams;
           const options =
             editorParamsList?.values?.map((opt) =>
@@ -926,34 +896,35 @@ export default {
 </script>
 
 <style>
-.tabulator {
+.normal-tabulator-table .tabulator {
   height: 100%;
   font-size: 12px;
   border: 1px solid #d0d0d0;
   border-radius: 4px !important;
 }
 
-.tabulator-table {
+.normal-tabulator-table .tabulator-table {
   background-color: #7788992d !important;
   z-index: 10;
 }
 
-.tabulator-header {
+.normal-tabulator-table .tabulator-header {
   border: none !important;
 }
 
-.tabulator-placeholder {
+.normal-tabulator-table .tabulator-placeholder {
   text-align: center;
   width: 600px !important;
+  height: 100%;
   background-color: #7788992d !important;
   white-space: nowrap;
 }
 
-.tabulator-range-active {
+.normal-tabulator-table .tabulator-range-active {
   border: none !important;
 }
 
-.tabulator-cell {
+.normal-tabulator-table .tabulator-cell {
   height: 30px !important;
   line-height: 6px;
   padding: 0px !important;
@@ -964,83 +935,83 @@ export default {
   text-overflow: ellipsis;
 }
 
-.tabulator-cell.right-border {
+.normal-tabulator-table .tabulator-cell.right-border {
   border-right: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-cell.no-right-border {
+.normal-tabulator-table .tabulator-cell.no-right-border {
   border-right: none !important;
 }
 
-.tabulator-cell.disable-range-selection {
+.normal-tabulator-table .tabulator-cell.disable-range-selection {
   pointer-events: none;
 }
 
-.tabulator-cell.tabulator-range-selected {
+.normal-tabulator-table .tabulator-cell.tabulator-range-selected {
   background-color: #c0e7fd !important;
   color: #003757 !important;
   border-bottom: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-cell.tabulator-editing {
+.normal-tabulator-table .tabulator-cell.tabulator-editing {
   background-color: lightgoldenrodyellow !important;
   padding-left: 10px !important;
 }
 
-.tabulator-cell.tabulator-editable {
+.normal-tabulator-table .tabulator-cell.tabulator-editable {
   cursor: pointer;
 }
 
-.tabulator-cell.tabulator-frozen {
+.normal-tabulator-table .tabulator-cell.tabulator-frozen {
   z-index: 1 !important;
 }
 
-.tabulator-cell.user-entry-column {
+.normal-tabulator-table .tabulator-cell.user-entry-column {
   background-color: #ffebee;
   color: #c62828;
 }
 
-.tabulator-cell.facility-entry-column {
+.normal-tabulator-table .tabulator-cell.facility-entry-column {
   background-color: #c4ecc2;
   color: #388e3c;
 }
 
-.tabulator-cell.facility-entry-column.disable-editing {
+.normal-tabulator-table .tabulator-cell.facility-entry-column.disable-editing {
   background-color: #b6dbb4;
 }
 
-.tabulator-col {
+.normal-tabulator-table .tabulator-col {
   border-right: 1px solid #d0d0d0 !important;
   border-bottom: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-col-group-cols {
+.normal-tabulator-table .tabulator-col-group-cols {
   border: none !important;
   border-top: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-col-content {
+.normal-tabulator-table .tabulator-col-content {
   padding: 5px !important;
 }
 
-.tabulator-row {
+.normal-tabulator-table .tabulator-row {
   min-height: 0;
   height: 30px !important;
 }
 
-.tabulator-row[role="row"] {
+.normal-tabulator-table .tabulator-row[role="row"] {
   border: none !important;
 }
 
-.tabulator-row:not(.tabulator-group) {
+.normal-tabulator-table .tabulator-row:not(.tabulator-group) {
   background-color: white !important;
 }
 
-.tabulator-row:not(.tabulator-group):hover {
+.normal-tabulator-table .tabulator-row:not(.tabulator-group):hover {
   mix-blend-mode: multiply;
 }
 
-.tabulator-row.tabulator-group {
+.normal-tabulator-table .tabulator-row.tabulator-group {
   margin-top: 3px;
   display: flex;
   align-items: center;
@@ -1051,37 +1022,37 @@ export default {
   z-index: 20;
 }
 
-.tabulator-row.tabulator-group:hover {
+.normal-tabulator-table .tabulator-row.tabulator-group:hover {
   background-color: white;
 }
 
-.tabulator-row:hover .group-action-buttons-container {
+.normal-tabulator-table .tabulator-row:hover .group-action-buttons-container {
   display: flex;
 }
 
-.tabulator-header-filter input {
+.normal-tabulator-table .tabulator-header-filter input {
   height: 24px;
   font-size: 12px !important;
   border: 1px solid #d0d0d0 !important;
 }
 
-.tabulator-group.hidden-group {
+.normal-tabulator-table .tabulator-group.hidden-group {
   display: none !important;
 }
 
-.no-group-by .tabulator-row-odd:nth-child(1) {
+.normal-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) {
   margin-top: 5px;
 }
 
-.no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
+.normal-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
-.checkbox-column:not(.tabulator-col) {
+.normal-tabulator-table .checkbox-column:not(.tabulator-col) {
   padding: 10px 0px !important;
 }
 
-.title-field-group > .tabulator-col-content > div > div {
+.normal-tabulator-table .title-field-group>.tabulator-col-content>div>div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }
