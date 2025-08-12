@@ -49,7 +49,6 @@ LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = s.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
     ON ip.index1_id = i7.id
     AND ip.index2_id = i5.id
-    AND ip.index_type_id = s.index_type_id
 ORDER BY s.id;
 """
 
