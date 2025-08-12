@@ -48,16 +48,12 @@ LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = l.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
     ON ip.index1_id = i7.id
     AND ip.index2_id = i5.id
-
--- pools array (library -> pool libraries)
 LEFT JOIN LATERAL (
     SELECT array_agg(DISTINCT p.name) AS pool_names
     FROM index_generator_pool_libraries pl
     JOIN index_generator_pool p ON pl.pool_id = p.id
     WHERE pl.library_id = l.id
 ) pools ON TRUE
-
--- flowcells & sequencers via correct lane & m2m tables
 LEFT JOIN LATERAL (
     SELECT
         array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
@@ -65,12 +61,10 @@ LEFT JOIN LATERAL (
         array_agg(DISTINCT seq.id) AS sequencer_ids
     FROM index_generator_pool_libraries ipl2
     JOIN index_generator_pool p2 ON ipl2.pool_id = p2.id
-    -- lane is in sequencer app
-    JOIN sequencer_lane lane2 ON lane2.pool_id = p2.id
-    -- M2M table between flowcell and lane
-    JOIN sequencer_flowcell_lanes fc_lane ON fc_lane.lane_id = lane2.id
-    JOIN sequencer_flowcell fc ON fc_lane.flowcell_id = fc.id
-    LEFT JOIN sequencer_sequencer seq ON fc.sequencer_id = seq.id
+    JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
+    JOIN flowcell_flowcell_lanes fc_lane ON fc_lane.lane_id = lane2.id
+    JOIN flowcell_flowcell fc ON fc_lane.flowcell_id = fc.id
+    LEFT JOIN flowcell_sequencer seq ON fc.sequencer_id = seq.id
     WHERE ipl2.library_id = l.id
 ) fcids ON TRUE
 ORDER BY l.id;
