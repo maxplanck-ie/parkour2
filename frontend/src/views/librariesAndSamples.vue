@@ -2343,18 +2343,13 @@ with connection.cursor() as cursor:
 for record in results:
     print(record)
 
+check fields in the export
+add field Flowcell ID from Invoicing Creation Date + Flowcell ID multiple ID's per field copy: only FC ID
+make search work for flowcell_ids and pool_names
+
 set group values for filtering
 change logic of storing visibility in browser storage
 store column width in browser storage
-
-check fields in the export
-
-search poolid and flowcell ID too
-make sequecer filter work
-
-add field Flowcell ID from Invoicing Creation Date + Flowcell ID multiple ID's per field copy: only FC ID
-add field Sequencer
-
 white page on 1000 records API call
 
 everywhere: multiple pool names
