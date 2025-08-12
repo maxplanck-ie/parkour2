@@ -83,6 +83,7 @@ class Migration(migrations.Migration):
         ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
         ("sample", "0011_alter_sample_measuring_unit_and_more"),
         ("request", "0009_historicalrequest"),
+        ("flowcell", "0004_archived_feature"),
     ]
 
     operations = [

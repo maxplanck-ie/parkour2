@@ -84,7 +84,7 @@ class Migration(migrations.Migration):
             "library",
             "0007_rename_amplification_cycles_library_removed_amplification_cycles_and_more",
         ),
-        ("request", "0009_historicalrequest"),
+        ("flowcell", "0004_archived_feature"),
     ]
 
     operations = [
