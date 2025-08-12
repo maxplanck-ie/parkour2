@@ -1,9 +1,9 @@
 <template>
-    <!-- This Tabulator Table uses Virtual DOM and performs smoothly for usecase with plenty of records -->
-    <!-- Table Element -->
-    <div class="lite-tabulator-table" style="height: 100%;">
-        <div id="tabulatorTable" ref="tabulatorTableRef"></div>
-    </div>
+  <!-- This Tabulator Table uses Virtual DOM and performs smoothly for usecase with plenty of records -->
+  <!-- Table Element -->
+  <div class="lite-tabulator-table" style="height: 100%">
+    <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+  </div>
 </template>
 
 <script>
@@ -13,362 +13,370 @@ import "tabulator-tables/dist/css/tabulator_bootstrap5.min.css";
 import { markRaw } from "vue";
 
 export default {
-    name: "LiteTabulatorTable",
-    props: {
-        rowData: {
-            type: Array
-        },
-        columnDefs: {
-            type: Array,
-            required: true
-        },
-        groupBy: {
-            type: String,
-            required: true
-        },
-        groupSort: {
-            type: Object,
-            required: false
-        },
-        groupStartOpen: {
-            type: Boolean,
-            required: false,
-            default: true
-        },
-        tableOptions: {
-            type: Object,
-            default: () => ({})
-        }
+  name: "LiteTabulatorTable",
+  props: {
+    rowData: {
+      type: Array
     },
-    data() {
-        return {
-            tabulatorInstance: null,
-            tableGroupsConfig: {
-                groupBy: this.groupBy,
-                noGroupByClass: false
-            },
-            tableColumnWidths: {},
-            scrollPosition: 0
-        };
+    columnDefs: {
+      type: Array,
+      required: true
     },
-    watch: {
-        rowData(newData, oldData) {
-            if (newData !== oldData) {
-                this.updateTableData();
-            }
-        },
-        columnDefs(newColumns, oldColumns) {
-            if (newColumns !== oldColumns) {
-                this.updateTableColumns();
-            }
-        },
+    groupBy: {
+      type: String,
+      required: true
     },
-    computed: {
-        sortedGroupValues() {
-            if (!this.rowData || !this.groupBy) return [];
-            const uniqueGroups = new Set();
-            this.rowData.forEach(row => {
-                if (row[this.groupBy]) uniqueGroups.add(row[this.groupBy]);
-            });
-            return Array.from(uniqueGroups).sort((a, b) => {
-                const getNum = val => parseInt(val?.split('_')[0], 10) || 0;
-                return getNum(b) - getNum(a);
-            });
-        }
+    groupSort: {
+      type: Object,
+      required: false
     },
-    mounted() {
-        this.initializeTable();
+    groupStartOpen: {
+      type: Boolean,
+      required: false,
+      default: true
     },
-    methods: {
-        initializeTable() {
-            if (this.rowData && this.columnDefs) {
-                let options = {
-                    data: this.rowData,
-                    columns: this.columnDefs,
-                    reactiveData: true,
-                    layout: "fitColumns",
-                    columnDefaults: {
-                        headerSort: false,
-                        headerFilter: false,
-                        editor: false,
-                        headerHozAlign: "center",
-                        resizable: "header",
-                        headerContextMenu: []
-                    },
-                    renderVertical: "basic",
-                    tooltips: true,
-                    resizableColumns: true,
-                    selectable: true,
-                    selectableRange: 1,
-                    selectableRangeColumns: false,
-                    selectableRangeRows: false,
-                    selectableRangeClearCells: false,
-                    editTriggerEvent: "dblclick",
-                    clipboard: true,
-                    clipboardCopyStyled: false,
-                    clipboardCopyConfig: {
-                        formatCells: false,
-                        rowHeaders: false,
-                        columnHeaders: false
-                    },
-                    clipboardCopyRowRange: "range",
-                    clipboardCopyFormatter: function (type, output) {
-                        if (type == "plain") {
-                            output += "\n";
-                        }
-                        return output;
-                    },
-                    dependencies: {
-                        XLSX: XLSX
-                    },
-                    downloadConfig: {},
-                    groupValues: [this.sortedGroupValues],
-                    groupToggleElement: "header",
-                    groupContextMenu: [],
-                    groupBy: this.tableGroupsConfig.groupBy,
-                    groupStartOpen: this.groupStartOpen,
-
-                    ...this.tableOptions
-                };
-
-                this.tabulatorInstance = markRaw(new Tabulator("#tabulatorTable", options));
-
-                this.tabulatorInstance.on("tableBuilt", () => {
-                    this.tabulatorInstance.blockRedraw();
-                    const tabulatorElement = this.getTabulatorElement();
-                    if (this.tableGroupsConfig.noGroupByClass) {
-                        tabulatorElement.classList.add("no-group-by");
-                    } else {
-                        tabulatorElement.classList.remove("no-group-by");
-                    }
-                    this.tabulatorInstance.restoreRedraw();
-                });
-
-                this.tabulatorInstance.on("dataFiltered", () => {
-                    this.refreshTable();
-                });
-
-                this.tabulatorInstance.on("columnResized", (column) => {
-                    const field = column.getField();
-                    const width = column.getWidth();
-                    this.tableColumnWidths[field] = width;
-                });
-
-                this.tabulatorInstance.on("clipboardCopied", () => {
-                    this.tableOptions.fakeLoadingStart();
-                    this.refreshTable();
-                    this.tableOptions.fakeLoadingStop();
-                });
-
-                this.tabulatorInstance.on("groupClick", (e, group) => {
-                    const scrollElement = this.tabulatorInstance.rowManager.element;
-                    this.scrollPosition = scrollElement.scrollTop;
-                });
-
-                this.tabulatorInstance.on("groupVisibilityChanged", (group, visible) => {
-                    requestAnimationFrame(() => {
-                        const scrollElement = this.tabulatorInstance.rowManager.element;
-                        scrollElement.scrollTop = this.scrollPosition;
-                    });
-                    if (!visible) {
-                        this.refreshTable();
-                    }
-                });
-            }
-        },
-
-        getTabulatorElement() {
-            return document.getElementById("tabulatorTable");
-        },
-
-        updateTableData() {
-            if (this.tabulatorInstance) {
-                this.tabulatorInstance.replaceData(this.rowData);
-            }
-        },
-
-        updateTableColumns() {
-            if (this.tabulatorInstance) {
-                this.tabulatorInstance.setColumns(this.columnDefs);
-                if (this.groupBy)
-                    this.tabulatorInstance.setGroupBy(this.groupBy);
-                this.refreshTable();
-            }
-        },
-
-        refreshTable() {
-            if (this.tabulatorInstance) {
-                this.tabulatorInstance.redraw();
-            }
-        },
-
-        getTable() {
-            return this.tabulatorInstance;
-        },
+    tableOptions: {
+      type: Object,
+      default: () => ({})
     }
+  },
+  data() {
+    return {
+      tabulatorInstance: null,
+      tableGroupsConfig: {
+        groupBy: this.groupBy,
+        noGroupByClass: false
+      },
+      tableColumnWidths: {},
+      scrollPosition: 0
+    };
+  },
+  watch: {
+    rowData(newData, oldData) {
+      if (newData !== oldData) {
+        this.updateTableData();
+      }
+    },
+    columnDefs(newColumns, oldColumns) {
+      if (newColumns !== oldColumns) {
+        this.updateTableColumns();
+      }
+    }
+  },
+  computed: {
+    sortedGroupValues() {
+      if (!this.rowData || !this.groupBy) return [];
+      const uniqueGroups = new Set();
+      this.rowData.forEach((row) => {
+        if (row[this.groupBy]) uniqueGroups.add(row[this.groupBy]);
+      });
+      return Array.from(uniqueGroups).sort((a, b) => {
+        const getNum = (val) => parseInt(val?.split("_")[0], 10) || 0;
+        return getNum(b) - getNum(a);
+      });
+    }
+  },
+  mounted() {
+    this.initializeTable();
+  },
+  methods: {
+    initializeTable() {
+      if (this.rowData && this.columnDefs) {
+        let options = {
+          data: this.rowData,
+          columns: this.columnDefs,
+          reactiveData: true,
+          layout: "fitColumns",
+          columnDefaults: {
+            headerSort: false,
+            headerFilter: false,
+            editor: false,
+            headerHozAlign: "center",
+            resizable: "header",
+            headerContextMenu: []
+          },
+          renderVertical: "basic",
+          tooltips: true,
+          resizableColumns: true,
+          selectable: true,
+          selectableRange: 1,
+          selectableRangeColumns: false,
+          selectableRangeRows: false,
+          selectableRangeClearCells: false,
+          editTriggerEvent: "dblclick",
+          clipboard: true,
+          clipboardCopyStyled: false,
+          clipboardCopyConfig: {
+            formatCells: false,
+            rowHeaders: false,
+            columnHeaders: false
+          },
+          clipboardCopyRowRange: "range",
+          clipboardCopyFormatter: function (type, output) {
+            if (type == "plain") {
+              output += "\n";
+            }
+            return output;
+          },
+          dependencies: {
+            XLSX: XLSX
+          },
+          downloadConfig: {},
+          groupValues: [this.sortedGroupValues],
+          groupToggleElement: "header",
+          groupContextMenu: [],
+          groupBy: this.tableGroupsConfig.groupBy,
+          groupStartOpen: this.groupStartOpen,
+
+          ...this.tableOptions
+        };
+
+        this.tabulatorInstance = markRaw(
+          new Tabulator("#tabulatorTable", options)
+        );
+
+        this.tabulatorInstance.on("tableBuilt", () => {
+          this.tabulatorInstance.blockRedraw();
+          const tabulatorElement = this.getTabulatorElement();
+          if (this.tableGroupsConfig.noGroupByClass) {
+            tabulatorElement.classList.add("no-group-by");
+          } else {
+            tabulatorElement.classList.remove("no-group-by");
+          }
+          this.tabulatorInstance.restoreRedraw();
+        });
+
+        this.tabulatorInstance.on("dataFiltered", () => {
+          this.refreshTable();
+        });
+
+        this.tabulatorInstance.on("columnResized", (column) => {
+          const field = column.getField();
+          const width = column.getWidth();
+          this.tableColumnWidths[field] = width;
+          this.refreshTable();
+        });
+
+        this.tabulatorInstance.on("clipboardCopied", () => {
+          this.tableOptions.fakeLoadingStart();
+          this.refreshTable();
+          this.tableOptions.fakeLoadingStop();
+        });
+
+        this.tabulatorInstance.on("groupClick", (e, group) => {
+          const scrollElement = this.tabulatorInstance.rowManager.element;
+          this.scrollPosition = scrollElement.scrollTop;
+        });
+
+        this.tabulatorInstance.on(
+          "groupVisibilityChanged",
+          (group, visible) => {
+            requestAnimationFrame(() => {
+              const scrollElement = this.tabulatorInstance.rowManager.element;
+              scrollElement.scrollTop = this.scrollPosition;
+            });
+            if (!visible) {
+              this.refreshTable();
+            }
+          }
+        );
+      }
+    },
+
+    getTabulatorElement() {
+      return document.getElementById("tabulatorTable");
+    },
+
+    updateTableData() {
+      if (this.tabulatorInstance) {
+        this.tabulatorInstance.replaceData(this.rowData);
+      }
+    },
+
+    updateTableColumns() {
+      if (this.tabulatorInstance) {
+        this.tabulatorInstance.setColumns(this.columnDefs);
+        if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
+        this.refreshTable();
+      }
+    },
+
+    refreshTable() {
+      if (this.tabulatorInstance) {
+        this.tabulatorInstance.redraw();
+      }
+    },
+
+    getTable() {
+      return this.tabulatorInstance;
+    }
+  }
 };
 </script>
 
 <style>
 .lite-tabulator-table .tabulator {
-    height: 100%;
-    font-size: 12px;
-    border: 1px solid #d0d0d0;
-    border-radius: 4px !important;
+  height: 100%;
+  font-size: 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px !important;
 }
 
 .lite-tabulator-table .tabulator-table {
-    background-color: #7788992d !important;
-    z-index: 10;
+  background-color: #7788992d !important;
+  z-index: 10;
 }
 
 .lite-tabulator-table .tabulator-header {
-    border: none !important;
+  border: none !important;
 }
 
 .lite-tabulator-table .tabulator-placeholder {
-    text-align: center;
-    width: 600px !important;
-    height: 100%;
-    background-color: #7788992d !important;
-    white-space: nowrap;
+  text-align: center;
+  width: 600px !important;
+  height: 100%;
+  background-color: #7788992d !important;
+  white-space: nowrap;
 }
 
 .lite-tabulator-table .tabulator-range-active {
-    border: none !important;
+  border: none !important;
 }
 
 .lite-tabulator-table .tabulator-cell {
-    height: 30px !important;
-    line-height: 6px;
-    padding: 0px !important;
-    border-bottom: 1px solid #d0d0d0 !important;
-    border-right: none !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  height: 30px !important;
+  line-height: 6px;
+  padding: 0px !important;
+  border-bottom: 1px solid #d0d0d0 !important;
+  border-right: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .lite-tabulator-table .tabulator-cell.right-border {
-    border-right: 1px solid #d0d0d0 !important;
+  border-right: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .tabulator-cell.no-right-border {
-    border-right: none !important;
+  border-right: none !important;
 }
 
 .lite-tabulator-table .tabulator-cell.disable-range-selection {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .lite-tabulator-table .tabulator-cell.tabulator-range-selected {
-    background-color: #c0e7fd !important;
-    color: #003757 !important;
-    border-bottom: 1px solid #d0d0d0 !important;
+  background-color: #c0e7fd !important;
+  color: #003757 !important;
+  border-bottom: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .tabulator-cell.tabulator-editing {
-    background-color: lightgoldenrodyellow !important;
-    padding-left: 10px !important;
+  background-color: lightgoldenrodyellow !important;
+  padding-left: 10px !important;
 }
 
 .lite-tabulator-table .tabulator-cell.tabulator-editable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .lite-tabulator-table .tabulator-cell.tabulator-frozen {
-    z-index: 1 !important;
+  z-index: 1 !important;
 }
 
 .lite-tabulator-table .tabulator-cell.user-entry-column {
-    background-color: #ffebee;
-    color: #c62828;
+  background-color: #ffebee;
+  color: #c62828;
 }
 
 .lite-tabulator-table .tabulator-cell.facility-entry-column {
-    background-color: #c4ecc2;
-    color: #388e3c;
+  background-color: #c4ecc2;
+  color: #388e3c;
 }
 
 .lite-tabulator-table .tabulator-cell.facility-entry-column.disable-editing {
-    background-color: #b6dbb4;
+  background-color: #b6dbb4;
 }
 
 .lite-tabulator-table .tabulator-col {
-    border-right: 1px solid #d0d0d0 !important;
-    border-bottom: 1px solid #d0d0d0 !important;
+  border-right: 1px solid #d0d0d0 !important;
+  border-bottom: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .tabulator-col-group-cols {
-    border: none !important;
-    border-top: 1px solid #d0d0d0 !important;
+  border: none !important;
+  border-top: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .tabulator-col-content {
-    padding: 5px !important;
+  padding: 5px !important;
 }
 
 .lite-tabulator-table .tabulator-row {
-    min-height: 0;
-    height: 30px !important;
+  min-height: 0;
+  height: 30px !important;
 }
 
 .lite-tabulator-table .tabulator-row[role="row"] {
-    border: none !important;
+  border: none !important;
 }
 
 .lite-tabulator-table .tabulator-row:not(.tabulator-group) {
-    background-color: white !important;
-    border-right: 1px solid #d0d0d0 !important;
+  background-color: white !important;
+  border-right: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .tabulator-row:not(.tabulator-group):hover {
-    mix-blend-mode: multiply;
+  mix-blend-mode: multiply;
 }
 
 .lite-tabulator-table .tabulator-row.tabulator-group {
-    margin-top: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: white;
-    border-top: 1px solid #d0d0d0 !important;
-    border-bottom: 1px solid #d0d0d0 !important;
-    z-index: 20;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: white;
+  border-top: 1px solid #d0d0d0 !important;
+  border-bottom: 1px solid #d0d0d0 !important;
+  z-index: 20;
 }
 
 .lite-tabulator-table .tabulator-row.tabulator-group:hover {
-    background-color: white;
+  background-color: white;
 }
 
 .lite-tabulator-table .tabulator-row:hover .group-action-buttons-container {
-    display: flex;
+  display: flex;
 }
 
 .lite-tabulator-table .tabulator-header-filter input {
-    height: 24px;
-    font-size: 12px !important;
-    border: 1px solid #d0d0d0 !important;
+  height: 24px;
+  font-size: 12px !important;
+  border: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .tabulator-group.hidden-group {
-    display: none !important;
+  display: none !important;
 }
 
 .lite-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 
-.lite-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
-    border-top: 1px solid #d0d0d0 !important;
+.lite-tabulator-table
+  .no-group-by
+  .tabulator-row-odd:nth-child(1)
+  .tabulator-cell {
+  border-top: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .checkbox-column:not(.tabulator-col) {
-    padding: 10px 0px !important;
+  padding: 10px 0px !important;
 }
 
-.lite-tabulator-table .title-field-group>.tabulator-col-content>div>div {
-    font-weight: 600 !important;
-    color: rgb(99, 99, 99) !important;
+.lite-tabulator-table .title-field-group > .tabulator-col-content > div > div {
+  font-weight: 600 !important;
+  color: rgb(99, 99, 99) !important;
 }
 </style>
