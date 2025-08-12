@@ -50,12 +50,16 @@ LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = s.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
     ON ip.index1_id = i7.id
     AND ip.index2_id = i5.id
+
+-- pools array (sample -> pool samples)
 LEFT JOIN LATERAL (
     SELECT array_agg(DISTINCT p.name) AS pool_names
     FROM index_generator_pool_samples ps
     JOIN index_generator_pool p ON ps.pool_id = p.id
     WHERE ps.sample_id = s.id
 ) pools ON TRUE
+
+-- flowcells & sequencers via correct lane & m2m tables
 LEFT JOIN LATERAL (
     SELECT
         array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
@@ -63,11 +67,13 @@ LEFT JOIN LATERAL (
         array_agg(DISTINCT seq.id) AS sequencer_ids
     FROM index_generator_pool_samples ps2
     JOIN index_generator_pool p2 ON ps2.pool_id = p2.id
-    JOIN index_generator_lane lane2 ON p2.id = lane2.pool_id
-    JOIN index_generator_flowcell fc ON lane2.id = fc.lane_id
+    JOIN sequencer_lane lane2 ON lane2.pool_id = p2.id
+    JOIN sequencer_flowcell_lanes fc_lane ON fc_lane.lane_id = lane2.id
+    JOIN sequencer_flowcell fc ON fc_lane.flowcell_id = fc.id
     LEFT JOIN sequencer_sequencer seq ON fc.sequencer_id = seq.id
     WHERE ps2.sample_id = s.id
 ) fcids ON TRUE
+
 ORDER BY s.id;
 """
 
