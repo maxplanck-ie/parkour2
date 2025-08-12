@@ -32,27 +32,45 @@ SELECT DISTINCT ON (l.id)
         ELSE ''
     END AS coordinate,
     rl.name AS read_length_name,
-    igp.name AS pool_name
+    pools.pool_names,
+    fcids.flowcell_ids,
+    fcids.sequencer_names,
+    fcids.sequencer_ids
 FROM library_library AS l
 JOIN request_request_libraries AS rrl ON l.id = rrl.library_id
 JOIN request_request AS r ON rrl.request_id = r.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON l.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON l.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON l.index_type_id = it.id
-LEFT JOIN index_generator_pool_libraries AS ipl ON l.id = ipl.library_id
-LEFT JOIN index_generator_pool AS igp ON ipl.pool_id = igp.id
 LEFT JOIN library_sample_shared_readlength AS rl ON l.read_length_id = rl.id
 LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = l.index_i7
 LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = l.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
     ON ip.index1_id = i7.id
     AND ip.index2_id = i5.id
+LEFT JOIN LATERAL (
+    SELECT array_agg(DISTINCT p.name) AS pool_names
+    FROM index_generator_pool_libraries pl
+    JOIN index_generator_pool p ON pl.pool_id = p.id
+    WHERE pl.library_id = l.id
+) pools ON TRUE
+LEFT JOIN LATERAL (
+    SELECT
+        array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
+        array_agg(DISTINCT s.name) AS sequencer_names,
+        array_agg(DISTINCT s.id) AS sequencer_ids
+    FROM index_generator_pool_libraries ipl2
+    JOIN index_generator_pool p2 ON ipl2.pool_id = p2.id
+    JOIN index_generator_lane lane2 ON p2.id = lane2.pool_id
+    JOIN index_generator_flowcell fc ON lane2.id = fc.lane_id
+    LEFT JOIN sequencer_sequencer s ON fc.sequencer_id = s.id
+    WHERE ipl2.library_id = l.id
+) fcids ON TRUE
 ORDER BY l.id;
 """
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
         (
