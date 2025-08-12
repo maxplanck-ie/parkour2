@@ -32,7 +32,10 @@ SELECT DISTINCT ON (s.id)
     r.id AS request_id,
     r.name AS request_name,
     r.create_time AS create_time,
-    igp.name AS pool_name
+    pools.pool_names,
+    fcids.flowcell_ids,
+    fcids.sequencer_names,
+    fcids.sequencer_ids
 FROM sample_sample AS s
 JOIN request_request_samples AS rrs ON s.id = rrs.sample_id
 JOIN request_request AS r ON rrs.request_id = r.id
@@ -40,8 +43,6 @@ LEFT JOIN sample_nucleicacidtype AS nat ON s.nucleic_acid_type_id = nat.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON s.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON s.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON s.index_type_id = it.id
-LEFT JOIN index_generator_pool_samples AS ips ON s.id = ips.sample_id
-LEFT JOIN index_generator_pool AS igp ON ips.pool_id = igp.id
 LEFT JOIN library_preparation_librarypreparation AS lp2 ON lp2.sample_id = s.id
 LEFT JOIN library_sample_shared_readlength AS rl ON s.read_length_id = rl.id
 LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = s.index_i7
@@ -49,12 +50,29 @@ LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = s.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
     ON ip.index1_id = i7.id
     AND ip.index2_id = i5.id
+LEFT JOIN LATERAL (
+    SELECT array_agg(DISTINCT p.name) AS pool_names
+    FROM index_generator_pool_samples ps
+    JOIN index_generator_pool p ON ps.pool_id = p.id
+    WHERE ps.sample_id = s.id
+) pools ON TRUE
+LEFT JOIN LATERAL (
+    SELECT
+        array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
+        array_agg(DISTINCT seq.name) AS sequencer_names,
+        array_agg(DISTINCT seq.id) AS sequencer_ids
+    FROM index_generator_pool_samples ps2
+    JOIN index_generator_pool p2 ON ps2.pool_id = p2.id
+    JOIN index_generator_lane lane2 ON p2.id = lane2.pool_id
+    JOIN index_generator_flowcell fc ON lane2.id = fc.lane_id
+    LEFT JOIN sequencer_sequencer seq ON fc.sequencer_id = seq.id
+    WHERE ps2.sample_id = s.id
+) fcids ON TRUE
 ORDER BY s.id;
 """
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
         ("sample", "0011_alter_sample_measuring_unit_and_more"),

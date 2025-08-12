@@ -981,7 +981,10 @@ export default {
             sequencing_depth: getValue(e.sequencing_depth),
             read_length_name: getValue(e.read_length_name),
             gmo: e.gmo === null ? "" : e.gmo,
-            pool_name: e.pool_name ?? "",
+            pool_names:
+              Array.isArray(e.pool_names) && e.pool_names.length > 0
+                ? e.pool_names.join(", ")
+                : "",
             status: getValue(e.status),
             status_text: this.statusMap[e.status] ?? "-",
             well_position: "",
@@ -992,7 +995,15 @@ export default {
             i7_id: e.i7_id ?? "",
             i5_id: e.i5_id ?? "",
             index_i7: e.index_i7 ?? "",
-            index_i5: e.index_i5 ?? ""
+            index_i5: e.index_i5 ?? "",
+            flowcell_ids:
+              Array.isArray(e.flowcell_ids) && e.flowcell_ids.length > 0
+                ? e.flowcell_ids.join(", ")
+                : "",
+            sequencer_names:
+              Array.isArray(e.sequencer_names) && e.sequencer_names.length > 0
+                ? e.sequencer_names.join(", ")
+                : ""
           };
 
           allRows.push(row);
@@ -1196,7 +1207,7 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
-            return this.ellipsisContainer(finalString, false);
+            return this.ellipsisContainer(finalString);
           }
         },
         {
@@ -1216,7 +1227,7 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
-            return this.ellipsisContainer(finalString, false);
+            return this.ellipsisContainer(finalString);
           }
         },
         {
@@ -1236,12 +1247,12 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
-            return this.ellipsisContainer(finalString, false);
+            return this.ellipsisContainer(finalString);
           }
         },
         {
           title: "Pool Paths",
-          field: "pool_name",
+          field: "pool_names",
           width: 85,
           minWidth: 60,
           headerFilter: true,
@@ -1255,7 +1266,7 @@ export default {
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
-            return this.ellipsisContainer(finalString, false);
+            return this.ellipsisContainer(finalString);
           }
         },
         {
@@ -1622,6 +1633,42 @@ export default {
             } else {
               finalString = Math.round(value).toString();
             }
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
+        },
+        {
+          title: "Flowcell IDs",
+          field: "flowcell_ids",
+          minWidth: 60,
+          width: "5.5%",
+          headerVertical: false,
+          headerTooltip: "Flowcell IDs",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
+            return this.ellipsisContainer(finalString);
+          },
+          cellDblClick: function (e, cell) {
+            showNotification("This field is not editable.", "warning");
+          }
+        },
+        {
+          title: "Sequencers",
+          field: "sequencer_names",
+          minWidth: 60,
+          width: "5.5%",
+          headerVertical: false,
+          headerTooltip: "Sequencer",
+          visible: true,
+          cssClass: "regular-column",
+          contextMenu: () => this.cellContextMenu(true, false, false),
+          formatter: (cell) => {
+            const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
           },
           cellDblClick: function (e, cell) {
@@ -2077,7 +2124,7 @@ export default {
           { header: "S/L", key: "type", width: 10 },
           { header: "Plate Coord", key: "well_position", width: 10 },
           { header: "Barcode", key: "barcode", width: 15 },
-          { header: "Pool Paths", key: "pool_name", width: 20 },
+          { header: "Pool Paths", key: "pool_names", width: 20 },
           { header: "GMO", key: "gmo", width: 20 },
           { header: "Date", key: "create_time", width: 15 },
           { header: "Input Type", key: "nucleic_acid_type_name", width: 20 },
@@ -2095,7 +2142,9 @@ export default {
           { header: "I5 ID", key: "i5_id", width: 15 },
           { header: "Index I5", key: "index_i5", width: 15 },
           { header: "Length", key: "read_length_name", width: 12 },
-          { header: "Depth (M)", key: "sequencing_depth", width: 15 }
+          { header: "Depth (M)", key: "sequencing_depth", width: 15 },
+          { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
+          { header: "Sequencers", key: "sequencer_names", width: 20 }
         ];
 
         exportRows.forEach((row) => {
@@ -2298,10 +2347,18 @@ set group values for filtering
 change logic of storing visibility in browser storage
 store column width in browser storage
 
-check export
 check fields in the export
 
-changes from vikunja
+search poolid and flowcell ID too
+make sequecer filter work
+
+add field Flowcell ID from Invoicing Creation Date + Flowcell ID multiple ID's per field copy: only FC ID
+add field Sequencer
 
 white page on 1000 records API call
+
+everywhere: multiple pool names
+everywhere: no barcode * in copy and export
+everywhere: units should show as original units in export
+everywhere: input if -1 and x should show as Unknown, do the same for measured_value and measured_value_facility fields.
 -->

@@ -87,8 +87,11 @@ class CompleteLibraryData(models.Model):
     i5_id = models.CharField(max_length=50, null=True)
     request_id = models.IntegerField()
     request_name = models.CharField(max_length=255)
-    pool_name = models.CharField(max_length=100)
     create_time = models.DateTimeField()
+    pool_names = ArrayField(models.CharField(max_length=100), null=True)
+    flowcell_ids = ArrayField(models.CharField(max_length=50), null=True)
+    sequencer_ids = ArrayField(models.IntegerField(), null=True)
+    sequencer_names = ArrayField(models.CharField(max_length=50), null=True)
 
     class Meta:
         managed = False
