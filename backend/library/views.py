@@ -97,9 +97,9 @@ class LibrarySampleTree(viewsets.ViewSet):
             )
 
         if sequencer_filter:
-            sample_queryset = sample_queryset.filter(
-                sequencer__icontains=sequencer_filter
-            )
+            seq_id = int(sequencer_filter)
+            library_queryset = library_queryset.filter(sequencer_ids__contains=[seq_id])
+            sample_queryset = sample_queryset.filter(sequencer_ids__contains=[seq_id])
 
         if read_length_filter:
             library_queryset = library_queryset.filter(

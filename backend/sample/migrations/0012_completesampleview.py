@@ -64,7 +64,7 @@ LEFT JOIN LATERAL (
     SELECT
         array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
         array_agg(DISTINCT seq.name) AS sequencer_names,
-        array_agg(DISTINCT seq.id) AS sequencer_ids
+        array_agg(DISTINCT seq.id::integer) AS sequencer_ids
     FROM index_generator_pool_samples ps2
     JOIN index_generator_pool p2 ON ps2.pool_id = p2.id
     JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
