@@ -52,7 +52,7 @@
             <span> Advanced Filters </span>
           </button>
           <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
-            style="width: 250px; left: -50px">
+            style="height: 473px; width: 250px; left: -50px;">
 
             <!-- Status Filter -->
             <div class="filter-item">
@@ -123,6 +123,7 @@
           <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
               left: -50px;
               width: 250px;
+              height: 473px;
               padding-right: 8px;
               padding-top: 10px;
               padding-bottom: 10px;
@@ -130,7 +131,7 @@
             <ul style="
                 padding-left: 0px;
                 padding-right: 10px;
-                max-height: 300px;
+                max-height: 100%;
                 overflow-y: auto;
               ">
               <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
@@ -182,8 +183,8 @@
     <!-- Main content section with table -->
     <div class="table-container">
       <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
-        :groupValues="sortedGroupValues" :columnDefs="columnsList" groupBy="request_name"
-        :groupSort="{ field: 'request_name', order: 'desc' }" :groupStartOpen="false" :tableOptions="{
+        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop
@@ -443,7 +444,7 @@ export default {
       selectedFile: "without-file",
       pagination: {
         currentPage: 1,
-        pageSize: 100,
+        pageSize: 300,
         totalPages: 1,
         totalRequests: 0
       },
@@ -694,11 +695,6 @@ export default {
           groupsMap.get(row.request_name).push(row);
         });
 
-        const sortedGroupValues = Array.from(requestNamesSet).sort((a, b) => {
-          const getNum = (val) => parseInt(val?.split("_")[0], 10) || 0;
-          return getNum(b) - getNum(a);
-        });
-
         for (const group of groupsMap.values()) {
           group.sort((a, b) =>
             (a.barcode || "").localeCompare(b.barcode || "", undefined, {
@@ -712,7 +708,6 @@ export default {
           });
         }
 
-        this.sortedGroupValues = sortedGroupValues;
         this.librariesSamplesList = allRows;
 
       } catch (error) {
@@ -1582,12 +1577,6 @@ export default {
         case "selectAll":
           groupRows.forEach((row) => {
             const data = row.getData();
-            if (
-              data.record_type === "Sample" &&
-              (data.status === 2 || data.status === -2)
-            ) {
-              return;
-            }
             data.selected = true;
             row.update({});
             const rowElement = row.getElement();
@@ -1602,12 +1591,6 @@ export default {
         case "deselectAll":
           groupRows.forEach((row) => {
             const data = row.getData();
-            if (
-              data.record_type === "Sample" &&
-              (data.status === 2 || data.status === -2)
-            ) {
-              return;
-            }
             data.selected = false;
             row.update({});
             const rowElement = row.getElement();
@@ -1975,12 +1958,15 @@ with connection.cursor() as cursor:
 for record in results:
     print(record)
 
+set group values for filtering
+change logic of storing visiblity in browser storage
 store column width in browser storage
-resize width of table or collapse/expand side modules should refresh the table width
-white page on 1000 records API call
-right border makes horizontal scollbar
-scrollbar jumps on virtualDOM
 
-sort should apply on search aswell
-filtering on separate fields should not show groups
+check export
+check fields in the table
+check fields in the export
+
+changes from vikunja
+
+white page on 1000 records API call
 -->

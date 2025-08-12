@@ -22,11 +22,6 @@ export default {
             type: Array,
             required: true
         },
-        groupValues: {
-            type: Array,
-            required: false,
-            default: () => []
-        },
         groupBy: {
             type: String,
             required: true
@@ -53,6 +48,7 @@ export default {
                 noGroupByClass: false
             },
             tableColumnWidths: {},
+            scrollPosition: 0
         };
     },
     watch: {
@@ -66,6 +62,19 @@ export default {
                 this.updateTableColumns();
             }
         },
+    },
+    computed: {
+        sortedGroupValues() {
+            if (!this.rowData || !this.groupBy) return [];
+            const uniqueGroups = new Set();
+            this.rowData.forEach(row => {
+                if (row[this.groupBy]) uniqueGroups.add(row[this.groupBy]);
+            });
+            return Array.from(uniqueGroups).sort((a, b) => {
+                const getNum = val => parseInt(val?.split('_')[0], 10) || 0;
+                return getNum(b) - getNum(a);
+            });
+        }
     },
     mounted() {
         this.initializeTable();
@@ -89,8 +98,6 @@ export default {
                     renderVertical: "basic",
                     tooltips: true,
                     resizableColumns: true,
-                    groupValues: [this.groupValues],
-                    groupToggleElement: "header",
                     selectable: true,
                     selectableRange: 1,
                     selectableRangeColumns: false,
@@ -115,6 +122,8 @@ export default {
                         XLSX: XLSX
                     },
                     downloadConfig: {},
+                    groupValues: [this.sortedGroupValues],
+                    groupToggleElement: "header",
                     groupContextMenu: [],
                     groupBy: this.tableGroupsConfig.groupBy,
                     groupStartOpen: this.groupStartOpen,
@@ -126,27 +135,18 @@ export default {
 
                 this.tabulatorInstance.on("tableBuilt", () => {
                     this.tabulatorInstance.blockRedraw();
-
                     const tabulatorElement = this.getTabulatorElement();
                     if (this.tableGroupsConfig.noGroupByClass) {
                         tabulatorElement.classList.add("no-group-by");
                     } else {
                         tabulatorElement.classList.remove("no-group-by");
                     }
-
                     this.tabulatorInstance.restoreRedraw();
                 });
 
-                this.tabulatorInstance.on("groupVisibilityChanged", (group, visible) => {
-                    console.log(group)
-                    if (group._group.visible) {
-                        this.tabulatorInstance.getGroups().forEach(g => {
-                            if (g._group.key !== group._group.key && g._group.visible) {
-                                g.toggle();
-                            }
-                        });
-                    }
-                })
+                this.tabulatorInstance.on("dataFiltered", () => {
+                    this.refreshTable();
+                });
 
                 this.tabulatorInstance.on("columnResized", (column) => {
                     const field = column.getField();
@@ -158,6 +158,21 @@ export default {
                     this.tableOptions.fakeLoadingStart();
                     this.refreshTable();
                     this.tableOptions.fakeLoadingStop();
+                });
+
+                this.tabulatorInstance.on("groupClick", (e, group) => {
+                    const scrollElement = this.tabulatorInstance.rowManager.element;
+                    this.scrollPosition = scrollElement.scrollTop;
+                });
+
+                this.tabulatorInstance.on("groupVisibilityChanged", (group, visible) => {
+                    requestAnimationFrame(() => {
+                        const scrollElement = this.tabulatorInstance.rowManager.element;
+                        scrollElement.scrollTop = this.scrollPosition;
+                    });
+                    if (!visible) {
+                        this.refreshTable();
+                    }
                 });
             }
         },
@@ -304,6 +319,7 @@ export default {
 
 .lite-tabulator-table .tabulator-row:not(.tabulator-group) {
     background-color: white !important;
+    border-right: 1px solid #d0d0d0 !important;
 }
 
 .lite-tabulator-table .tabulator-row:not(.tabulator-group):hover {
