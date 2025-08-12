@@ -160,8 +160,8 @@ class CompleteSampleData(models.Model):
     create_time = models.DateTimeField()
     pool_names = ArrayField(models.CharField(max_length=100), null=True)
     flowcell_ids = ArrayField(models.CharField(max_length=50), null=True)
-    sequencer_names = ArrayField(models.CharField(max_length=50), null=True)
     sequencer_ids = ArrayField(models.IntegerField(), null=True)
+    sequencer_names = ArrayField(models.CharField(max_length=50), null=True)
 
     class Meta:
         managed = False
