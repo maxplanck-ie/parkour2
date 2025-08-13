@@ -47,7 +47,6 @@ export default {
         groupBy: this.groupBy,
         noGroupByClass: false
       },
-      tableColumnWidths: {},
       scrollPosition: 0
     };
   },
@@ -85,7 +84,6 @@ export default {
         let options = {
           data: this.rowData,
           columns: this.columnDefs,
-          reactiveData: true,
           layout: "fitColumns",
           columnDefaults: {
             headerSort: false,
@@ -151,11 +149,22 @@ export default {
         });
 
         this.tabulatorInstance.on("columnResized", (column) => {
-          const field = column.getField();
-          const width = column.getWidth();
-          this.tableColumnWidths[field] = width;
-          this.refreshTable();
+          if (this.tableOptions.handleColumnResized) {
+            this.tableOptions.handleColumnResized(column);
+          }
         });
+
+        this.tabulatorInstance.on(
+          "columnVisibilityChanged",
+          (column, visible) => {
+            if (this.tableOptions.handleColumnVisibilityChanged) {
+              this.tableOptions.handleColumnVisibilityChanged(
+                column.getField(),
+                visible
+              );
+            }
+          }
+        );
 
         this.tabulatorInstance.on("clipboardCopied", () => {
           this.tableOptions.fakeLoadingStart();

@@ -212,17 +212,17 @@
             style="
               left: -50px;
               width: 250px;
-              height: 473px;
-              padding-right: 8px;
-              padding-top: 10px;
-              padding-bottom: 10px;
+              max-height: 473px;
+              display: flex;
+              flex-direction: column;
+              padding: 10px 10px 5px 10px;
             "
           >
             <ul
               style="
-                padding-left: 0px;
-                padding-right: 10px;
-                max-height: 100%;
+                padding: 5px 10px 0 10px;
+                margin: 0;
+                flex-grow: 1;
                 overflow-y: auto;
               "
             >
@@ -247,7 +247,7 @@
                       v-if="!column.columns"
                       type="checkbox"
                       :checked="column.visible"
-                      @change="toggleColumnVisibility(column, true)"
+                      @change="toggleColumnVisibility(column)"
                     />
                     <font-awesome-icon
                       v-if="column.columns"
@@ -265,20 +265,22 @@
                         color: white;
                       "
                     />
-                    <span style="font-weight: bold">{{ column.title }}</span>
+                    <span>{{ column.title }}</span>
                   </label>
-                  <ul v-if="column.columns" style="padding-left: 15px">
+                  <ul
+                    v-if="column.columns"
+                    style="padding-left: 15px; margin-top: 5px"
+                  >
                     <li
                       v-for="(subColumn, subIndex) in column.columns"
                       :key="subIndex"
-                      style="list-style: none"
+                      style="list-style: none; margin-bottom: 5px"
                     >
                       <label>
                         <input
                           type="checkbox"
-                          style="width: 20px !important"
                           :checked="subColumn.visible"
-                          @change="toggleColumnVisibility(subColumn, false)"
+                          @change="toggleColumnVisibility(subColumn)"
                         />
                         <span style="width: 100%">{{ subColumn.title }}</span>
                       </label>
@@ -287,6 +289,25 @@
                 </template>
               </li>
             </ul>
+            <div
+              style="
+                padding-top: 8px;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+              "
+            >
+              <button @click="resetColumnVisibility" class="reset-button">
+                Reset Visibility Settings
+              </button>
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
+                Reset Width Settings
+              </button>
+            </div>
           </div>
         </div>
         <button class="header-button" @click="handleExportClick">
@@ -312,7 +333,9 @@
         :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
-          fakeLoadingStop
+          fakeLoadingStop,
+          handleColumnResized,
+          handleColumnVisibilityChanged
         }"
       />
     </div>
@@ -1110,11 +1133,33 @@ export default {
       this.getLibrariesSamples(1);
     },
     setColumns() {
-      const storedColumnState = JSON.parse(
-        localStorage.getItem("librariesAndSamplesColumnSettings")
+      const storedVisibility = JSON.parse(
+        localStorage.getItem("librariesAndSamplesColumnVisibility") || "{}"
+      );
+      const storedWidths = JSON.parse(
+        localStorage.getItem("librariesAndSamplesColumnWidths") || "{}"
       );
 
-      let columnList = [
+      const applySettings = (columns) => {
+        return columns.map((column) => {
+          if (column.field) {
+            if (storedWidths[column.field]) {
+              column.width = storedWidths[column.field];
+              if (column.minWidth && column.width < column.minWidth) {
+                column.width = column.minWidth;
+              }
+            }
+            column.visible =
+              storedVisibility[column.field] ?? column.visible ?? true;
+          }
+          if (column.columns) {
+            column.columns = applySettings(column.columns);
+          }
+          return column;
+        });
+      };
+
+      let columnDefs = [
         {
           field: "selected",
           visible: true,
@@ -1157,9 +1202,6 @@ export default {
           frozen: true,
           cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const request_name = cell.getRow().getData().request_name;
             const name = cell.getValue();
@@ -1180,9 +1222,6 @@ export default {
           frozen: true,
           cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const tooltip = this.statusMap[value];
@@ -1201,9 +1240,6 @@ export default {
           frozen: true,
           cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
@@ -1221,9 +1257,6 @@ export default {
           frozen: true,
           cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
@@ -1241,9 +1274,6 @@ export default {
           frozen: true,
           cssClass: "right-border",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
@@ -1260,9 +1290,6 @@ export default {
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
@@ -1279,9 +1306,6 @@ export default {
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const options = {
@@ -1302,9 +1326,6 @@ export default {
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
@@ -1326,9 +1347,6 @@ export default {
             const value = cell.getValue();
             const finalString = value || "No Input Type";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1341,9 +1359,6 @@ export default {
           cssClass: "regular-column",
           headerTooltip: "Library Preparation Protocol",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "No Protocol";
@@ -1360,9 +1375,6 @@ export default {
           cssClass: "regular-column",
           headerTooltip: "Analysis Type",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "No Analysis Type";
@@ -1380,9 +1392,6 @@ export default {
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "-";
@@ -1399,9 +1408,6 @@ export default {
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
@@ -1424,9 +1430,6 @@ export default {
           visible: true,
           cssClass: "regular-column",
           contextMenu: () => this.cellContextMenu(true, false, false),
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
-          },
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
@@ -1483,9 +1486,6 @@ export default {
               finalString = Math.round(value).toString();
             }
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1501,9 +1501,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1519,9 +1516,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1537,9 +1531,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1555,9 +1546,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1573,9 +1561,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1591,9 +1576,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1609,9 +1591,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1634,9 +1613,6 @@ export default {
               finalString = Math.round(value).toString();
             }
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1652,9 +1628,6 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         },
         {
@@ -1670,26 +1643,11 @@ export default {
           formatter: (cell) => {
             const finalString = cell.getValue() || "-";
             return this.ellipsisContainer(finalString);
-          },
-          cellDblClick: function (e, cell) {
-            showNotification("This field is not editable.", "warning");
           }
         }
       ];
 
-      // if (storedColumnState) {
-      //   storedColumnState.forEach((column, index) => {
-      //     if (columnList[index]) columnList[index].visible = column.visible;
-      //     if (column.columns) {
-      //       column.columns.forEach((subColumn, subIndex) => {
-      //         if (columnList[index])
-      //           columnList[index].columns[subIndex].visible = subColumn.visible;
-      //       });
-      //     }
-      //   });
-      // }
-
-      this.columnsList = columnList;
+      this.columnsList = applySettings(columnDefs);
     },
     cellContextMenu(allowCopy, allowPaste, allowApplyToAll) {
       const operations = [];
@@ -1898,37 +1856,57 @@ export default {
     toggleSelectColumns() {
       this.showSelectColumns = !this.showSelectColumns;
     },
-    toggleColumnVisibility(column, isMainColumn) {
+    handleColumnResized(column) {
+      const field = column.getField();
+      const width = column.getWidth();
+      const storedWidths = JSON.parse(
+        localStorage.getItem("librariesAndSamplesColumnWidths") || "{}"
+      );
+      const newWidths = {
+        ...storedWidths,
+        [field]: width
+      };
+      localStorage.setItem(
+        "librariesAndSamplesColumnWidths",
+        JSON.stringify(newWidths)
+      );
       this.fakeLoadingStart();
-      let updatedColumns;
+      setTimeout(() => this.fakeLoadingStop(), 50);
+    },
+    handleColumnVisibilityChanged(field, visible) {
+      const storedVisibility = JSON.parse(
+        localStorage.getItem("librariesAndSamplesColumnVisibility") || "{}"
+      );
 
-      if (isMainColumn) {
-        updatedColumns = this.columnsList.map((col) => {
-          return {
-            ...col,
-            visible: col === column ? !col.visible : col.visible
-          };
-        });
-      } else {
-        updatedColumns = this.columnsList.map((col) => {
-          if (col.columns) {
-            return {
-              ...col,
-              columns: col.columns.map((subCol) => ({
-                ...subCol,
-                visible: subCol === column ? !subCol.visible : subCol.visible
-              }))
-            };
-          } else return col;
-        });
-      }
+      const newVisibility = {
+        ...storedVisibility,
+        [field]: visible
+      };
 
       localStorage.setItem(
-        "librariesAndSamplesColumnSettings",
-        JSON.stringify(updatedColumns)
+        "librariesAndSamplesColumnVisibility",
+        JSON.stringify(newVisibility)
       );
-      this.columnsList = updatedColumns;
-      this.fakeLoadingStop();
+
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 50);
+    },
+    toggleColumnVisibility(column) {
+      if (this.tabulatorInstance) {
+        this.tabulatorInstance.getTable().toggleColumn(column.field);
+      }
+    },
+    resetColumnWidths() {
+      localStorage.removeItem("librariesAndSamplesColumnWidths");
+      this.setColumns();
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 300);
+    },
+    resetColumnVisibility() {
+      localStorage.removeItem("librariesAndSamplesColumnVisibility");
+      this.setColumns();
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 300);
     },
     handleGroupButtonClick(event, groupValue, action) {
       event.stopPropagation();
@@ -2344,12 +2322,10 @@ for record in results:
     print(record)
 
 check fields in the export
-add field Flowcell ID from Invoicing Creation Date + Flowcell ID multiple ID's per field copy: only FC ID
 make search work for flowcell_ids and pool_names
+make layout of the select columns good, reset column visibility should also reset the list checkboxes
 
 set group values for filtering
-change logic of storing visibility in browser storage
-store column width in browser storage
 white page on 1000 records API call
 
 everywhere: multiple pool names
