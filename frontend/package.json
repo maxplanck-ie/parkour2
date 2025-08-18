@@ -13,26 +13,26 @@
     "start-prod": "npm install && vite build && npx serve -s dist -l 5173"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "6.7.2",
-    "@fortawesome/free-regular-svg-icons": "6.7.2",
-    "@fortawesome/free-solid-svg-icons": "6.7.2",
-    "@fortawesome/vue-fontawesome": "3.0.8",
-    "ag-grid-community": "33.1.1",
-    "ag-grid-vue3": "33.1.1",
-    "axios": "1.8.4",
-    "bootstrap": "5.3.3",
+    "@fortawesome/fontawesome-svg-core": "7.0.0",
+    "@fortawesome/free-regular-svg-icons": "7.0.0",
+    "@fortawesome/free-solid-svg-icons": "7.0.0",
+    "@fortawesome/vue-fontawesome": "3.1.1",
+    "ag-grid-community": "34.1.1",
+    "ag-grid-vue3": "34.1.1",
+    "axios": "1.11.0",
+    "bootstrap": "5.3.7",
     "js-cookie": "3.0.5",
     "moment": "2.30.1",
-    "pinia": "3.0.1",
-    "sass": "1.86.0",
+    "pinia": "3.0.3",
+    "sass": "1.90.0",
     "serve": "14.2.4",
-    "vue": "3.5.13",
-    "vue-router": "4.5.0",
+    "vue": "3.5.18",
+    "vue-router": "4.5.1",
     "vue-toastification": "2.0.0-rc.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "5.2.3",
-    "@vitejs/plugin-vue-jsx": "4.1.2",
-    "vite": "6.2.2"
+    "@vitejs/plugin-vue": "6.0.1",
+    "@vitejs/plugin-vue-jsx": "5.0.1",
+    "vite": "7.1.2"
   }
 }
