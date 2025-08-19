@@ -14,14 +14,10 @@ on:
         required: false
         default: false
   push:
-    branches: ['develop', 'update/dependencies']
+    branches: [develop, update/dependencies]
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-      - closed
+    branches: [develop, update/dependencies]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   run-prod-bare:
