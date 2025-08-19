@@ -17,6 +17,7 @@
 - Downloading SampleSheet is now customized for the case of sequencer names that start with `AVITI`, given that new emerging technologies are giving better results. In such case, the i5 is reverse complemented, so that we keep our 'standardization' effort as we have always done (centered on NovaSeq.)
 - Potential fix to BarcodeCounter bug (generate fn. was using its default argument, which would take the year from when module is loaded, not when the fn. is called) that caused to be reset every year when a new deployment was made.
 
+
 24.12.09
 ========
 
