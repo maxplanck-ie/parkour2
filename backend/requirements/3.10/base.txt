@@ -57,7 +57,7 @@ jsonschema==4.25.1
     # via drf-spectacular
 jsonschema-specifications==2025.4.1
     # via jsonschema
-lxml==6.0.0
+lxml==6.0.1
     # via python-docx
 numpy==1.25.2 ; python_full_version < '3.12'
     # via
@@ -71,7 +71,7 @@ openpyxl==3.1.5
     # via -r backend/requirements/base.in
 packaging==25.0
     # via gunicorn
-pandas==2.3.1
+pandas==2.3.2
     # via -r backend/requirements/base.in
 pillow==11.3.0
     # via fpdf2
