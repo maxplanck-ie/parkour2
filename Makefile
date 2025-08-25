@@ -245,15 +245,8 @@ test: playwright lint-migras check-migras check-templates coverage-html  ## Run 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --ipython
 
-# list-sessions:
-# 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; print([ User.objects.get(id=s.get_decoded().get('_auth_user_id')) for s in Session.objects.iterator() ])"
-## https://django-user-sessions.readthedocs.io/en/stable/
-# kill-sessions:
-# 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; for s in Session.objects.iterator(): s.delete()"
-
-# DEPRECATED. Did BarcodeCounter bug bite us again?!
-#reload-code:  ## Gracefully ship small code updates into production backend
-#	@docker compose exec -it parkour2-django kill -1 1
+reload-code:  ## Gracefully ship small code updates into production backend
+	@docker compose exec -it parkour2-django kill -1 1
 
 ## This should be a cronjob on your host VM/ production deployment machine.
 clearsessions:
