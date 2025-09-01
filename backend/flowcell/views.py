@@ -387,20 +387,21 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 ]
             )
             f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
-            response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
 
         else:
             writer.writerow(["[SAMPLES]"] + [""] * 4)
             writer.writerow(
                 [
-                    "Sample_Name",
-                    "index1",
-                    "index2",
+                    "SampleName",
+                    "Index1",
+                    "Index2",
                     "Lane",
-                    "Sample_Project",
+                    "Project",
                 ]
             )
-            response["Content-Disposition"] = 'attachment; filename="RunManifest.csv"'
+            f_name = "%s_RunManifest.csv" % flowcell.flowcell_id
+
+        response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
 
         lanes = Lane.objects.filter(pk__in=ids).order_by("name")
 
