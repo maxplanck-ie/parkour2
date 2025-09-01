@@ -45,7 +45,7 @@ drf-spectacular==0.28.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.59.1
+fonttools==4.59.2
     # via fpdf2
 fpdf2==2.8.4
     # via -r backend/requirements/base.in
@@ -87,7 +87,7 @@ referencing==0.36.2
     # via
     #   jsonschema
     #   jsonschema-specifications
-rpds-py==0.27.0
+rpds-py==0.27.1
     # via
     #   jsonschema
     #   referencing
@@ -99,7 +99,7 @@ tablib==3.8.0
     # via django-import-export
 tblib==3.1.0
     # via -r backend/requirements/base.in
-typing-extensions==4.14.1
+typing-extensions==4.15.0
     # via python-docx
 tzdata==2025.2
     # via
