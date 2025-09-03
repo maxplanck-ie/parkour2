@@ -99,15 +99,21 @@
             ref="dutiesGrid"
             class="ag-theme-alpine"
             style="height: 723px"
-            rowSelection="multiple"
-            animateRows="true"
-            rowDragManaged="true"
-            stopEditingWhenCellsLoseFocus="true"
+            theme="legacy"
+            :rowSelection="{
+              mode: 'multiRow',
+              checkboxes: false,
+              headerCheckbox: false
+            }"
+            :animateRows="true"
+            :rowDragManaged="true"
+            :stopEditingWhenCellsLoseFocus="true"
             :columnDefs="columnsList"
             :rowData="dutiesList"
             :gridOptions="gridOptions"
             @cellValueChanged="editDuty"
             @first-data-rendered="updateGridDataObject"
+            @grid-ready="onGridReady"
           />
         </div>
       </div>
@@ -303,7 +309,8 @@ export default {
       columnsList: [],
       gridOptions: {},
       gridData: [],
-      selectedFilter: "ongoing"
+      selectedFilter: "ongoing",
+      gridApi: null
     };
   },
   setup() {},
@@ -319,6 +326,9 @@ export default {
   },
   computed: {},
   methods: {
+    onGridReady(params) {
+      this.gridApi = params.api;
+    },
     updateDutyObject(event) {
       let newDuty = toRaw(this.newDuty);
       if (event.target.id === "facility") {
@@ -727,11 +737,13 @@ export default {
       ];
     },
     updateGridDataObject() {
-      let gridData = [];
-      this.gridOptions.api.forEachNode((rowNode, index) => {
-        gridData.push(rowNode.data);
-      });
-      this.gridData = gridData;
+      if (this.gridApi) {
+        let gridData = [];
+        this.gridApi.forEachNode((rowNode, index) => {
+          gridData.push(rowNode.data);
+        });
+        this.gridData = gridData;
+      }
     }
   }
 };

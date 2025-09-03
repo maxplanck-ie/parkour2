@@ -17,6 +17,10 @@ import {
   faCalendarPlus,
   faCalendarDays
 } from "@fortawesome/free-regular-svg-icons";
+import { createPinia } from "pinia";
+import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 const app = createApp(vueApp);
 
@@ -29,6 +33,7 @@ library.add(
 
 app.use(router);
 app.use(toast);
+app.use(createPinia());
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.config.productionTip = false;
 app.mount("#app");
