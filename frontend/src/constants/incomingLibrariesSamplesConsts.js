@@ -137,7 +137,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
       width: 30,
       minWidth: 30,
       cssClass: "checkbox-column right-border",
-      contextMenu: () => cellContextMenu(false, false, false),
+      contextMenu: () =>
+        cellContextMenu(false, false, false, getTabulatorInstance),
       cellClick: function (e, cell) {
         const clickedRow = cell.getRow();
         const rowData = clickedRow.getData();
@@ -159,7 +160,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           .getData()
           .request_name.localeCompare(bRow.getData().request_name);
       },
-      contextMenu: () => cellContextMenu(true, false, false),
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
         const type = cell.getRow().getData().type;
         const request_name = cell.getRow().getData().request_name;
@@ -187,7 +189,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
                         </div>
                       `;
       },
-      contextMenu: () => cellContextMenu(true, false, false),
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -202,7 +205,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
       visible: true,
       frozen: true,
       cssClass: "details-column barcode-column right-border",
-      contextMenu: () => cellContextMenu(true, false, false),
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -227,7 +231,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Input Type",
           visible: true,
           cssClass: "user-entry-column",
-          contextMenu: () => cellContextMenu(true, false, false),
+          contextMenu: () =>
+            cellContextMenu(true, false, false, getTabulatorInstance),
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "No Input Type";
@@ -246,7 +251,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Library Preparation Protocol",
           visible: true,
           cssClass: "user-entry-column",
-          contextMenu: () => cellContextMenu(true, false, false),
+          contextMenu: () =>
+            cellContextMenu(true, false, false, getTabulatorInstance),
           formatter: (cell) => {
             const value = cell.getValue();
             const finalString = value || "No Protocol";
@@ -264,7 +270,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Comment (User)",
           visible: true,
           cssClass: "user-entry-column",
-          contextMenu: () => cellContextMenu(true, false, false),
+          contextMenu: () =>
+            cellContextMenu(true, false, false, getTabulatorInstance),
           formatter: (cell) => {
             const finalString = cell.getValue() || "Empty";
             return ellipsisContainer(finalString);
@@ -282,7 +289,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Input (User)",
           visible: true,
           cssClass: "user-entry-column",
-          contextMenu: () => cellContextMenu(true, false, false),
+          contextMenu: () =>
+            cellContextMenu(true, false, false, getTabulatorInstance),
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
           },
@@ -301,7 +309,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Volume (User)",
           visible: true,
           cssClass: "user-entry-column",
-          contextMenu: () => cellContextMenu(true, false, false),
+          contextMenu: () =>
+            cellContextMenu(true, false, false, getTabulatorInstance),
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
@@ -326,7 +335,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Size Distribution (User)",
           visible: true,
           cssClass: "user-entry-column",
-          contextMenu: () => cellContextMenu(true, false, false),
+          contextMenu: () =>
+            cellContextMenu(true, false, false, getTabulatorInstance),
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
@@ -379,7 +389,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Measurement Unit",
           visible: true,
           cssClass: "facility-entry-column",
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           formatter: (cell) => {
             const value = cell.getValue();
             const options = {
@@ -402,7 +413,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Measured Value",
           visible: true,
           cssClass: "facility-entry-column",
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
@@ -434,7 +446,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             step: 1,
           },
           validator: ["integer", "min:0", "max:2147483647"],
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = parseInt(rawValue, 10);
@@ -457,7 +470,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Size Distribution (Facility)",
           visible: true,
           cssClass: "facility-entry-column",
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           formatter: (cell) => {
             const rawValue = cell.getValue();
             const value = Number(rawValue);
@@ -488,7 +502,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             step: 0.1,
           },
           validator: ["min:0", "max:100"],
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           cellEditing: (cell) => {
             const rowData = cell.getRow().getData();
             if (rowData.type === "S") {
@@ -536,7 +551,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           validator: ["min:0", "max:11"],
           cssClass: "facility-entry-column",
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           cellEditing: (cell) => {
             const rowData = cell.getRow().getData();
             if (rowData.type === "L") {
@@ -580,7 +596,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             ],
           },
           cssClass: "facility-entry-column",
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           cellEditing: (cell) => {
             const rowData = cell.getRow().getData();
             if (rowData.type === "L") {
@@ -636,7 +653,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Comment (Facility)",
           visible: true,
           cssClass: "facility-entry-column no-right-border",
-          contextMenu: () => cellContextMenu(true, true, true),
+          contextMenu: () =>
+            cellContextMenu(true, true, true, getTabulatorInstance),
           formatter: (cell) => {
             const value = cell.getValue() || "Empty";
             return ellipsisContainer(value);

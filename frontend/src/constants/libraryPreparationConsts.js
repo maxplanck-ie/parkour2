@@ -2,16 +2,15 @@ import {
   cellContextMenu,
   ellipsisContainer,
 } from "../utilities/utilityFunctions";
-import { statusMap, getStatusClass } from "./statusMap";
 
-export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
+export function libraryPreparationGroupHeader(value, count) {
   return `
-  <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-      (#: ${count}, Total Depth: ${totalDepth})
+      (# of Libraries: ${count})
     </span>
   </div>
 </div>
@@ -35,12 +34,31 @@ export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
           </g>
         </svg>
       </div>
+      <div title="Mark selected as Quality Checked: Passed" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityPassed')">
+        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="green"/>
+            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
+            <path d="M9 12L10.6828 13.6828V13.6828C10.858 13.858 11.142 13.858 11.3172 13.6828V13.6828L15 10" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </div>
+      <div title="Mark selected as Quality Checked: Failed" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityFailed')">
+        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
+            <path d="M9 9L15 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 9L9 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 `;
 }
 
-export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
+export function libraryPreparationColumnDefs(getTabulatorInstance) {
   return [
     {
       field: "selected",
@@ -49,15 +67,12 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       frozen: true,
       resizable: false,
       formatter: (cell) => {
-        const rowData = cell.getRow().getData();
-        const checkbox = `
-              <input
-                type="checkbox"
-                title="Select"
-                style="top:-4px"
-                ${rowData.selected ? "checked" : ""}
-              />
-            `;
+        const row = cell.getRow();
+        const rowData = row.getData();
+        const checkbox = `<input type="checkbox" title="Select" style="top:-4px" ${
+          rowData.selected ? "checked" : ""
+        } />`;
+
         return checkbox;
       },
       hozAlign: "center",
@@ -67,87 +82,30 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       contextMenu: () =>
         cellContextMenu(false, false, false, getTabulatorInstance),
       cellClick: function (e, cell) {
-        const row = cell.getRow();
-        const rowData = row.getData();
+        const clickedRow = cell.getRow();
+        const rowData = clickedRow.getData();
         const checkbox = e.target;
-        if (checkbox && checkbox.type === "checkbox") {
-          rowData.selected = checkbox.checked;
-        }
+        rowData.selected = checkbox.checked;
       },
     },
     {
-      title: "Name",
-      field: "name",
+      title: "Request",
+      field: "request_name",
       minWidth: 140,
       headerFilter: true,
-      headerTooltip: "Name",
+      headerTooltip: "Request",
       visible: true,
       frozen: true,
       cssClass: "right-border",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const request_name = cell.getRow().getData().request_name;
-        const name = cell.getValue();
-        return `
-                        <div style="padding: 4px 12px; display: flex; align-items: center;">
-                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${name}</span>
-                        </div>
-                      `;
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
       },
-    },
-    {
-      title: "Status",
-      field: "status",
-      width: 50,
-      headerFilter: true,
-      headerTooltip: "Status",
-      visible: true,
-      frozen: true,
-      cssClass: "right-border",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const value = cell.getValue();
-        const tooltip = statusMap[value];
-        const statusClass = `status ${getStatusClass(value)}`;
-        return `<div class="${statusClass}" title="${tooltip}"></div>`;
-      },
-    },
-    {
-      title: "S/L",
-      field: "type",
-      width: 45,
-      minWidth: 45,
-      headerFilter: true,
-      headerTooltip: "Type",
-      visible: true,
-      frozen: true,
-      cssClass: "right-border",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
         const value = cell.getValue();
         const finalString = value || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "Plate Coord",
-      field: "well_position",
-      width: 80,
-      minWidth: 60,
-      headerFilter: true,
-      headerTooltip: "Coordinate of Sample in 96-well Plate",
-      visible: true,
-      frozen: true,
-      cssClass: "right-border",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const value = cell.getValue();
-        const finalString = value || "-";
-        return ellipsisContainer(finalString);
+        return ellipsisContainer(finalString, false);
       },
     },
     {
@@ -162,48 +120,32 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       cssClass: "right-border",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
       formatter: (cell) => {
         const value = cell.getValue();
         const finalString = value || "-";
-        return ellipsisContainer(finalString);
+        return ellipsisContainer(finalString, false);
       },
     },
     {
-      title: "Pool Paths",
-      field: "pool_names",
-      width: 85,
+      title: "Name",
+      field: "name",
+      width: 110,
       minWidth: 60,
       headerFilter: true,
-      headerTooltip: "Pool Paths",
+      headerTooltip: "Sample Name",
       visible: true,
-      cssClass: "regular-column",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
       formatter: (cell) => {
         const value = cell.getValue();
         const finalString = value || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "GMO",
-      field: "gmo",
-      width: 85,
-      minWidth: 60,
-      headerFilter: true,
-      headerTooltip: "Genetically Modified Organism",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const value = cell.getValue();
-        const options = {
-          false: "No",
-          true: "Yes",
-        };
-        const finalString = options[value] || "-";
-        return ellipsisContainer(finalString);
+        return ellipsisContainer(finalString, false);
       },
     },
     {
@@ -217,6 +159,9 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
       formatter: (cell) => {
         const value = cell.getValue();
         const finalString = value || "-";
@@ -224,34 +169,18 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       },
     },
     {
-      title: "Input Type",
-      field: "nucleic_acid_type_name",
-      minWidth: 80,
-      width: "5%",
-      headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Input Type",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const value = cell.getValue();
-        const finalString = value || "No Input Type";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
       title: "Protocol",
       field: "library_protocol_name",
-      minWidth: 80,
-      width: "5%",
+      width: 110,
+      minWidth: 60,
       visible: true,
-      headerFilter: true,
       cssClass: "regular-column",
       headerTooltip: "Library Preparation Protocol",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
       formatter: (cell) => {
         const value = cell.getValue();
         const finalString = value || "No Protocol";
@@ -259,37 +188,202 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       },
     },
     {
-      title: "Analysis Type",
-      field: "analysis_type_name",
-      minWidth: 80,
-      width: "5%",
+      title: "Comment Library/Input",
+      field: "comments_library_sample",
+      width: 140,
+      minWidth: 60,
+      headerVertical: false,
+      headerTooltip: "Comment (User)",
       visible: true,
-      headerFilter: true,
       cssClass: "regular-column",
-      headerTooltip: "Analysis Type",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
+        const finalString = cell.getValue() || "Empty";
+        return ellipsisContainer(finalString);
+      },
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
+    },
+    {
+      title: "Pool",
+      field: "pool_name",
+      width: 84,
+      minWidth: 60,
+      headerVertical: false,
+      headerTooltip: "Pool ID",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const finalString = cell.getValue() || "-";
+        return ellipsisContainer(finalString);
+      },
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
+    },
+    {
+      title: "Index Type",
+      field: "index_type",
+      width: 96,
+      minWidth: 60,
+      headerVertical: false,
+      headerTooltip: "Index Type",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const finalString = cell.getValue() || "-";
+        return ellipsisContainer(finalString);
+      },
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
+    },
+    {
+      title: "I7 ID",
+      field: "index_i7_id",
+      width: 105,
+      minWidth: 60,
+      headerVertical: false,
+      headerTooltip: "Index I7 ID",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const finalString = cell.getValue() || "-";
+        return ellipsisContainer(finalString);
+      },
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
+    },
+    {
+      title: "I5 ID",
+      field: "index_i5_id",
+      width: 105,
+      minWidth: 60,
+      headerVertical: false,
+      headerTooltip: "Index I5 ID",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const finalString = cell.getValue() || "-";
+        return ellipsisContainer(finalString);
+      },
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
+    },
+    {
+      title: "Coordinate",
+      field: "coordinate",
+      width: 40,
+      headerVertical: false,
+      headerTooltip: "Index Pair Coordinate",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const finalString = cell.getValue() || "-";
+        return ellipsisContainer(finalString);
+      },
+      cellDblClick: function (e, cell) {
+        showNotification("This field is not editable.", "warning");
+      },
+    },
+    {
+      title: "Unit",
+      field: "measuring_unit_facility",
+      minWidth: 80,
+      width: "6%",
+      editor: "list",
+      editorParams: (cell) => {
+        const row = cell.getRow().getData();
+        const options = [
+          { label: "ng/µl (Concentration)", value: "concentration" },
+          { label: "M (Cells)", value: "m" },
+          { label: "k (Cells)", value: "k" },
+          { label: "Unknown", value: "-" },
+        ];
+        return { values: options };
+      },
+      headerVertical: false,
+      headerTooltip: "Measurement Unit",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, true, true, getTabulatorInstance),
+      formatter: (cell) => {
         const value = cell.getValue();
-        const finalString = value || "No Analysis Type";
+        const options = {
+          concentration: "ng/µl (Concentration)",
+          m: "M (Cells)",
+          k: "k (Cells)",
+          "-": "Unknown",
+        };
+        const finalString = options[value] || value || "Select";
         return ellipsisContainer(finalString);
       },
     },
     {
-      title: "Input",
-      field: "input",
+      title: "Amount",
+      field: "measured_value_facility",
       minWidth: 60,
-      width: "3.5%",
+      width: "4%",
+      editor: "number",
       headerVertical: false,
-      headerFilter: true,
-      headerTooltip: "Measured Amount with Unit",
+      headerTooltip: "Measured Value",
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
-        const value = cell.getValue();
-        const finalString = value || "-";
+        const rawValue = cell.getValue();
+        const value = Number(rawValue);
+        const finalString =
+          rawValue === "" ||
+          rawValue === undefined ||
+          isNaN(value) ||
+          value === -1
+            ? "-"
+            : value === 0
+            ? "0.0"
+            : value.toFixed(1);
+        return ellipsisContainer(finalString);
+      },
+    },
+    {
+      title: "bp Sample",
+      field: "size_distribution_facility",
+      minWidth: 60,
+      width: "4%",
+      editor: "number",
+      headerVertical: false,
+      headerTooltip: "Sample Average Fragment Size (bp)",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, true, true, getTabulatorInstance),
+      formatter: (cell) => {
+        const rawValue = cell.getValue();
+        const value = Number(rawValue);
+        let finalString;
+
+        if (rawValue === "" || rawValue === undefined || isNaN(value)) {
+          finalString = "-";
+        } else {
+          finalString = Math.round(value).toString();
+        }
+
         return ellipsisContainer(finalString);
       },
     },
@@ -297,13 +391,14 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       title: "Starting Amount",
       field: "starting_amount",
       minWidth: 60,
-      width: "3.5%",
+      width: "4%",
+      editor: "number",
       headerVertical: false,
       headerTooltip: "Starting Amount (ng or fmol)",
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -320,13 +415,20 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       title: "Cycles",
       field: "pcr_cycles",
       minWidth: 60,
-      width: "3.5%",
+      width: "4%",
+      editor: "number",
       headerVertical: false,
       headerTooltip: "PCR Cycles",
       visible: true,
       cssClass: "regular-column",
+      editorParams: {
+        min: 0,
+        max: 2147483647,
+        step: 1,
+      },
+      validator: ["integer", "min:0", "max:2147483647"],
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -342,16 +444,17 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       },
     },
     {
-      title: "ng/µl Library",
+      title: "ng/µl",
       field: "concentration_library",
       minWidth: 60,
-      width: "3.5%",
+      width: "4%",
+      editor: "number",
       headerVertical: false,
       headerTooltip: "Concentration Library (ng/µl)",
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -365,193 +468,82 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       },
     },
     {
-      title: "bp",
-      field: "average_fragment_size",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Library Average Fragment Size",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const rawValue = cell.getValue();
-        const value = Number(rawValue);
-        let finalString;
-        if (rawValue === "" || rawValue === undefined || isNaN(value)) {
-          finalString = "-";
-        } else {
-          finalString = Math.round(value).toString();
-        }
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "Index Type",
-      field: "index_type_name",
+      title: "bp Library",
+      field: "mean_fragment_size",
       minWidth: 60,
       width: "4%",
+      editor: "number",
       headerVertical: false,
-      headerTooltip: "Index Type",
+      headerTooltip: "Library Average Fragment Size (bp)",
       visible: true,
       cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
+      editorParams: {
+        min: 0,
+        max: 2147483647,
+        step: 1,
       },
-    },
-    {
-      title: "Coord",
-      field: "coordinate",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Index Pair Coordinate",
-      visible: true,
-      cssClass: "regular-column",
+      validator: ["integer", "min:0", "max:2147483647"],
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "I7 ID",
-      field: "i7_id",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Index I7 ID",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "Index I7",
-      field: "index_i7",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Index I7 ID",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "I5 ID",
-      field: "i5_id",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Index I5 ID",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "Index I5",
-      field: "index_i5",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Index I5 ID",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "Length",
-      field: "read_length_name",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Read Length",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
-      formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "Depth (M)",
-      field: "sequencing_depth",
-      minWidth: 60,
-      width: "3.5%",
-      headerVertical: false,
-      headerTooltip: "Sequencing Depth (M)",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
         let finalString;
+
         if (rawValue === "" || rawValue === undefined || isNaN(value)) {
           finalString = "-";
         } else {
           finalString = Math.round(value).toString();
         }
+
         return ellipsisContainer(finalString);
       },
     },
     {
-      title: "Flowcell IDs",
-      field: "flowcell_ids",
+      title: "% Total",
+      field: "smear_analysis",
       minWidth: 60,
-      width: "5.5%",
+      width: "4%",
+      editor: "number",
       headerVertical: false,
-      headerTooltip: "Flowcell IDs",
+      headerTooltip: "Smear Analysis (% Total)",
       visible: true,
       cssClass: "regular-column",
+      editorParams: {
+        min: 0,
+        max: 100,
+        step: 0.1,
+      },
+      validator: ["min:0", "max:100"],
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
+        const rawValue = cell.getValue();
+        const value = Number(rawValue);
+        const finalString =
+          rawValue === "" || rawValue === undefined || isNaN(value)
+            ? "-"
+            : value === 0
+            ? "0.0"
+            : value.toFixed(1);
         return ellipsisContainer(finalString);
       },
     },
     {
-      title: "Sequencers",
-      field: "sequencer_names",
+      title: "Comment",
+      field: "comments_facility",
+      width: 140,
       minWidth: 60,
-      width: "5.5%",
+      editor: "input",
       headerVertical: false,
-      headerTooltip: "Sequencer",
+      headerTooltip: "Comment (Facility)",
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
-        const finalString = cell.getValue() || "-";
-        return ellipsisContainer(finalString);
+        const value = cell.getValue() || "Empty";
+        return ellipsisContainer(value);
       },
     },
   ];
