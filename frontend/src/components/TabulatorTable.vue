@@ -695,9 +695,9 @@ export default {
       this.tableGroupsConfig.noGroupByClass = false;
     },
 
-    refreshTable() {
+    refreshTable(hard) {
       if (this.tabulatorInstance) {
-        this.tabulatorInstance.redraw();
+        this.tabulatorInstance.redraw(hard);
       }
     },
 
@@ -801,9 +801,21 @@ export default {
             (max !== undefined && numValue > max)
           ) {
             const nf = new Intl.NumberFormat();
-            const minStr = min !== undefined ? nf.format(Number(min)) : min;
-            const maxStr = max !== undefined ? nf.format(Number(max)) : max;
-            throw new Error(`Value must be between ${minStr} and ${maxStr}.`);
+            const hasMin = min !== undefined;
+            const hasMax = max !== undefined;
+            const minStr = hasMin ? nf.format(Number(min)) : undefined;
+            const maxStr = hasMax ? nf.format(Number(max)) : undefined;
+
+            let message;
+            if (hasMin && hasMax) {
+              message = `Value must be between ${minStr} and ${maxStr}.`;
+            } else if (hasMin) {
+              message = `Value should be more than ${minStr}.`;
+            } else {
+              message = `Value should be less than ${maxStr}.`;
+            }
+
+            throw new Error(message);
           }
           return value == "" ? "" : numValue;
         case "list":

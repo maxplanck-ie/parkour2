@@ -12,18 +12,40 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <svg
+          style="display: block"
+          fill="none"
+          width="42px"
+          height="42px"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
           <g>
-            <path opacity="0.3"
+            <path
+              opacity="0.3"
               d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              fill="#333333" />
+              fill="#333333"
+            />
             <path
               d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              stroke="white" stroke-width="1.5" />
-            <path d="M14.5 14.5L9 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M10 15H14.6717C14.853 15 15 14.853 15 14.6716V10" stroke="white" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round" />
+              stroke="white"
+              stroke-width="1.5"
+            />
+            <path
+              d="M14.5 14.5L9 9"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M10 15H14.6717C14.853 15 15 14.853 15 14.6716V10"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </g>
         </svg>
       </div>
@@ -34,42 +56,64 @@
       <!-- Sticky right section for search, advanced filters, and select columns -->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input ref="searchInput" v-model="searchQuery" type="text" placeholder="Search" />
-          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey" />
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search"
+          />
+          <font-awesome-icon
+            icon="fa-solid fa-magnifying-glass"
+            style="color: darkgrey"
+          />
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
+          <button
+            class="header-button"
+            id="toggleAdvancedFiltersButton"
+            @click="toggleAdvancedFilters"
+          >
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
-            style="width: 250px; left: -50px">
+          <div
+            id="advancedFiltersPopup"
+            v-if="showAdvancedFilters"
+            class="button-popup-container"
+            style="width: 250px; left: -50px"
+          >
             <label>
-              <div style="
+              <div
+                style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                ">
+                "
+              >
                 <input type="checkbox" v-model="filters.showLibraries" />
               </div>
               <div><span style="font-weight: bold">Show</span> Libraries</div>
             </label>
             <label>
-              <div style="
+              <div
+                style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                ">
+                "
+              >
                 <input type="checkbox" v-model="filters.showSamples" />
               </div>
               <div><span style="font-weight: bold">Show</span> Samples</div>
             </label>
             <label>
-              <div style="
+              <div
+                style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                ">
+                "
+              >
                 <input type="checkbox" v-model="filters.onlySamplesSubmitted" />
               </div>
               <div>
@@ -78,11 +122,13 @@
               </div>
             </label>
             <label>
-              <div style="
+              <div
+                style="
                   display: flex;
                   justify-content: center;
                   text-align: center;
-                ">
+                "
+              >
                 <input type="checkbox" v-model="filters.onlyGmo" />
               </div>
               <div>
@@ -93,35 +139,64 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
-            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
+          <button
+            class="header-button"
+            id="toggleSelectColumnsButton"
+            @click="toggleSelectColumns"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-columns"
+              style="color: white"
+            />
             <span> Select Columns </span>
           </button>
-          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
+          <div
+            id="selectColumnsPopup"
+            v-if="showSelectColumns"
+            class="button-popup-container"
+            style="
               left: -50px;
               width: 250px;
               padding-right: 8px;
               padding-top: 10px;
               padding-bottom: 10px;
-            ">
-            <ul style="
+            "
+          >
+            <ul
+              style="
                 padding-left: 0px;
                 padding-right: 10px;
                 max-height: 300px;
                 overflow-y: auto;
-              ">
-              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
-                <template v-if="
-                  column.field !== 'selected' ||
-                  (column.field === 'selected' && column.visible == false)
-                ">
-                  <label :style="{
-                    backgroundColor: column.columns ? '#33333310' : 'white',
-                    cursor: column.columns ? 'default' : 'pointer'
-                  }">
-                    <input v-if="!column.columns" type="checkbox" :checked="column.visible"
-                      @change="toggleColumnVisibility(column, true)" />
-                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
+              "
+            >
+              <li
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
+              >
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label
+                    :style="{
+                      backgroundColor: column.columns ? '#33333310' : 'white',
+                      cursor: column.columns ? 'default' : 'pointer'
+                    }"
+                  >
+                    <input
+                      v-if="!column.columns"
+                      type="checkbox"
+                      :checked="column.visible"
+                      @change="toggleColumnVisibility(column, true)"
+                    />
+                    <font-awesome-icon
+                      v-if="column.columns"
+                      icon="fa-solid fa-caret-down"
+                      style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -132,14 +207,23 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      " />
+                      "
+                    />
                     <span style="font-weight: bold">{{ column.title }}</span>
                   </label>
                   <ul v-if="column.columns" style="padding-left: 15px">
-                    <li v-for="(subColumn, subIndex) in column.columns" :key="subIndex" style="list-style: none">
+                    <li
+                      v-for="(subColumn, subIndex) in column.columns"
+                      :key="subIndex"
+                      style="list-style: none"
+                    >
                       <label>
-                        <input type="checkbox" style="width: 20px !important" :checked="subColumn.visible"
-                          @change="toggleColumnVisibility(subColumn, false)" />
+                        <input
+                          type="checkbox"
+                          style="width: 20px !important"
+                          :checked="subColumn.visible"
+                          @change="toggleColumnVisibility(subColumn, false)"
+                        />
                         <span style="width: 100%">{{ subColumn.title }}</span>
                       </label>
                     </li>
@@ -151,12 +235,18 @@
         </div>
         <div class="button-popup-wrapper">
           <button class="header-button" @click="toggleGroups">
-            <font-awesome-icon icon="fa-solid fa-layer-group" style="color: white" />
+            <font-awesome-icon
+              icon="fa-solid fa-layer-group"
+              style="color: white"
+            />
             <span> Toggle Views </span>
           </button>
         </div>
         <button class="header-button" @click="exportToExcel">
-          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
+          <font-awesome-icon
+            icon="fa-solid fa-file-excel"
+            style="color: white"
+          />
           <span> Export to Excel </span>
         </button>
       </div>
@@ -164,34 +254,67 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <TabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList" :columnDefs="columnsList"
-        groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }" :groupStartOpen="true"
+      <TabulatorTable
+        v-if="!loading"
+        ref="tabulatorTableRef"
+        :rowData="librariesSamplesList"
+        :columnDefs="columnsList"
+        groupBy="request_name"
+        :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="true"
         :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
           fakeLoadingStart,
           fakeLoadingStop
-        }" />
+        }"
+      />
     </div>
 
     <!-- Popup window -->
     <div v-if="showPopupWindow" class="popup-overlay">
-      <div class="popup-container" :style="{
-        height: popupContents.popupHeight + 'px',
-        width: popupContents.popupWidth + 'px'
-      }">
+      <div
+        class="popup-container"
+        :style="{
+          height: popupContents.popupHeight + 'px',
+          width: popupContents.popupWidth + 'px'
+        }"
+      >
         <div class="popup-header">
-          <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <svg
+            style="display: block"
+            fill="none"
+            width="42px"
+            height="42px"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
             <g>
-              <path opacity="0.3"
+              <path
+                opacity="0.3"
                 d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                fill="#323232" />
+                fill="#323232"
+              />
               <path
                 d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-              <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12 8V13"
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M12 16V15.9888"
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
             </g>
           </svg>
           <span class="popup-title">{{ popupContents.popupTitle }}</span>
@@ -201,7 +324,10 @@
         </div>
         <div class="popup-body">
           <div v-html="popupContents.popupDescription"></div>
-          <div v-if="popupContents.popupList && popupContents.popupList.length > 0" class="popup-scrollable-content">
+          <div
+            v-if="popupContents.popupList && popupContents.popupList.length > 0"
+            class="popup-scrollable-content"
+          >
             <ol style="padding-left: 25px">
               <li v-for="item in popupContents.popupList" :key="item">
                 <span style="font-weight: bold">{{ item.barcode }}</span>
@@ -231,7 +357,10 @@ import {
   createAxiosObject,
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
-import { incomingLibrariesSamplesGroupHeader, incomingLibrariesSamplesColumnDefs } from "../constants/incomingLibrariesSamplesConsts"
+import {
+  incomingLibrariesSamplesGroupHeader,
+  incomingLibrariesSamplesColumnDefs
+} from "../constants/incomingLibrariesSamplesConsts";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
@@ -283,7 +412,15 @@ export default {
             [...new Set(data.map((item) => item.biosafety_level))]
               .map((level) => level && level.toUpperCase())
               .join(" and ") || "No BSL";
-          return incomingLibrariesSamplesGroupHeader(value, count, samplesSubmitted, gmo, totalDepth, totalReadLength, biosafetyLevel);
+          return incomingLibrariesSamplesGroupHeader(
+            value,
+            count,
+            samplesSubmitted,
+            gmo,
+            totalDepth,
+            totalReadLength,
+            biosafetyLevel
+          );
         }
       },
       searchQuery: "",
@@ -463,7 +600,9 @@ export default {
         });
       };
 
-      let columnDefs = incomingLibrariesSamplesColumnDefs(() => this.tabulatorInstance);
+      let columnDefs = incomingLibrariesSamplesColumnDefs(
+        () => this.tabulatorInstance
+      );
 
       this.columnsList = applySettings(columnDefs);
     },
@@ -641,7 +780,10 @@ export default {
                 : true;
               row.update(rowData);
             });
-            this.tabulatorInstance.refreshTable();
+            const table = this.tabulatorInstance.getTable();
+            table?.blockRedraw();
+            group._group.generateGroupHeaderContents();
+            table?.restoreRedraw();
           } catch (error) {
             handleError(error);
           } finally {
@@ -658,8 +800,9 @@ export default {
             break;
           }
           let popupTitleQP = `Are you sure?`;
-          let popupDescriptionQP = `Marking the following ${type === "L" ? "libraries" : "samples"
-            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQP = `Marking the following ${
+            type === "L" ? "libraries" : "samples"
+          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQP = [...selectedNamesList];
           let onYesQP = () => {
             this.qualityCheckChange(selectedRows, "passed");
@@ -688,8 +831,9 @@ export default {
             break;
           }
           let popupTitleQC = `Are you sure?`;
-          let popupDescriptionQC = `Marking the following ${type === "L" ? "libraries" : "samples"
-            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Compromised</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQC = `Marking the following ${
+            type === "L" ? "libraries" : "samples"
+          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Compromised</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQC = [...selectedNamesList];
           let onYesQC = () => {
             this.qualityCheckChange(selectedRows, "compromised");
@@ -718,8 +862,9 @@ export default {
             break;
           }
           let popupTitleQF = `Are you sure?`;
-          let popupDescriptionQF = `Marking the following ${type === "L" ? "libraries" : "samples"
-            } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          let popupDescriptionQF = `Marking the following ${
+            type === "L" ? "libraries" : "samples"
+          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
           let popupListQF = [...selectedNamesList];
           let onYesQF = () => {
             this.qualityCheckChange(selectedRows, "failed");
@@ -857,8 +1002,9 @@ export default {
       }, 300);
     },
     ellipsisContainer(text, boldText) {
-      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${boldText === true ? "bold" : "normal"
-        }">
+      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${
+        boldText === true ? "bold" : "normal"
+      }">
                 ${text}
               </div>`;
     },

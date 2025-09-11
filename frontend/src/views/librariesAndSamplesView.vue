@@ -7,22 +7,45 @@
         Loading <span style="font-weight: bold">Libraries & Samples</span>...
       </p>
       <p v-if="exportLoading">
-        <span style="font-weight: bold">Please wait, this might take a while</span>...
+        <span style="font-weight: bold"
+          >Please wait, this might take a while</span
+        >...
       </p>
     </div>
 
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd"
+        <svg
+          style="display: block"
+          fill="none"
+          width="42px"
+          height="42px"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <path
+            opacity="0.3"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
             d="M5 15L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L19 15H5Z"
-            fill="#323232" />
+            fill="#323232"
+          />
           <path
             d="M15.0486 4H8.95137C8.46527 4 8.31058 4.65529 8.74536 4.87268C8.90142 4.95071 9 5.11022 9 5.2847V10.1716C9 10.702 8.78929 11.2107 8.41421 11.5858L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L15.5858 11.5858C15.2107 11.2107 15 10.702 15 10.1716V5.2847C15 5.11022 15.0986 4.95071 15.2546 4.87268C15.6894 4.65529 15.5347 4 15.0486 4Z"
-            stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M5 15H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M5 15H19"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </div>
       <div class="header-title" style="display: inline">
@@ -32,36 +55,66 @@
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input ref="searchInput" v-model="searchQuery" @keyup.enter="handleSearchAction" type="text"
-            placeholder="Search" />
-          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey; cursor: pointer"
-            @click="handleSearchAction" />
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            @keyup.enter="handleSearchAction"
+            type="text"
+            placeholder="Search"
+          />
+          <font-awesome-icon
+            icon="fa-solid fa-magnifying-glass"
+            style="color: darkgrey; cursor: pointer"
+            @click="handleSearchAction"
+          />
         </div>
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input type="date" id="startDate" :class="{ 'invalid-date': !startDateValid }" v-model="startDateString"
-              required />
+            <input
+              type="date"
+              id="startDate"
+              :class="{ 'invalid-date': !startDateValid }"
+              v-model="startDateString"
+              required
+            />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input type="date" id="endDate" :class="{ 'invalid-date': !endDateValid }" v-model="endDateString"
-              required />
+            <input
+              type="date"
+              id="endDate"
+              :class="{ 'invalid-date': !endDateValid }"
+              v-model="endDateString"
+              required
+            />
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
+          <button
+            class="header-button"
+            id="toggleAdvancedFiltersButton"
+            @click="toggleAdvancedFilters"
+          >
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
-            style="height: 473px; width: 250px; left: -50px">
+          <div
+            id="advancedFiltersPopup"
+            v-if="showAdvancedFilters"
+            class="button-popup-container"
+            style="height: 473px; width: 250px; left: -50px"
+          >
             <!-- Status Filter -->
             <div class="filter-item">
               <label>Status</label>
               <select v-model="filters.status" @change="getLibrariesSamples(1)">
                 <option :value="null">All Statuses</option>
-                <option v-for="(text, num) in statusMap" :key="num" :value="num">
+                <option
+                  v-for="(text, num) in statusMap"
+                  :key="num"
+                  :value="num"
+                >
                   {{ text }}
                 </option>
               </select>
@@ -70,9 +123,16 @@
             <!-- Protocol Filter -->
             <div class="filter-item">
               <label>Protocol</label>
-              <select v-model="filters.protocol" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.protocol"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Protocols</option>
-                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.id">
+                <option
+                  v-for="protocol in protocolsList"
+                  :key="protocol.id"
+                  :value="protocol.id"
+                >
                   {{ protocol.name }}
                 </option>
               </select>
@@ -81,9 +141,16 @@
             <!-- Analysis Type Filter -->
             <div class="filter-item">
               <label>Analysis Type</label>
-              <select v-model="filters.analysisType" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.analysisType"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Analysis Types</option>
-                <option v-for="type in analysisTypesList" :key="type.id" :value="type.id">
+                <option
+                  v-for="type in analysisTypesList"
+                  :key="type.id"
+                  :value="type.id"
+                >
                   {{ type.name }}
                 </option>
               </select>
@@ -92,9 +159,16 @@
             <!-- Sequencer Filter -->
             <div class="filter-item">
               <label>Sequencer</label>
-              <select v-model="filters.sequencer" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.sequencer"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Sequencers</option>
-                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.id">
+                <option
+                  v-for="sequencer in sequencersList"
+                  :key="sequencer.id"
+                  :value="sequencer.id"
+                >
                   {{ sequencer.name }}
                 </option>
               </select>
@@ -103,9 +177,16 @@
             <!-- Read Length Filter -->
             <div class="filter-item">
               <label>Read Length</label>
-              <select v-model="filters.readLength" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.readLength"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Read Lengths</option>
-                <option v-for="length in readLengthsList" :key="length.id" :value="length.id">
+                <option
+                  v-for="length in readLengthsList"
+                  :key="length.id"
+                  :value="length.id"
+                >
                   {{ length.name }}
                 </option>
               </select>
@@ -118,36 +199,65 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
-            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
+          <button
+            class="header-button"
+            id="toggleSelectColumnsButton"
+            @click="toggleSelectColumns"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-columns"
+              style="color: white"
+            />
             <span> Select Columns </span>
           </button>
-          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
+          <div
+            id="selectColumnsPopup"
+            v-if="showSelectColumns"
+            class="button-popup-container"
+            style="
               left: -50px;
               width: 250px;
               max-height: 473px;
               display: flex;
               flex-direction: column;
               padding: 10px 10px 5px 10px;
-            ">
-            <ul style="
+            "
+          >
+            <ul
+              style="
                 padding: 5px 7px 7px;
                 margin: 0;
                 flex-grow: 1;
                 overflow-y: auto;
-              ">
-              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
-                <template v-if="
-                  column.field !== 'selected' ||
-                  (column.field === 'selected' && column.visible == false)
-                ">
-                  <label :style="{
-                    backgroundColor: column.columns ? '#33333310' : 'white',
-                    cursor: column.columns ? 'default' : 'pointer'
-                  }">
-                    <input v-if="!column.columns" type="checkbox" v-model="column.visible"
-                      @change="toggleColumnVisibility(column)" />
-                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
+              "
+            >
+              <li
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
+              >
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label
+                    :style="{
+                      backgroundColor: column.columns ? '#33333310' : 'white',
+                      cursor: column.columns ? 'default' : 'pointer'
+                    }"
+                  >
+                    <input
+                      v-if="!column.columns"
+                      type="checkbox"
+                      v-model="column.visible"
+                      @change="toggleColumnVisibility(column)"
+                    />
+                    <font-awesome-icon
+                      v-if="column.columns"
+                      icon="fa-solid fa-caret-down"
+                      style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -158,29 +268,39 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      " />
+                      "
+                    />
                     <span>{{ column.title }}</span>
                   </label>
                 </template>
               </li>
             </ul>
-            <div style="
+            <div
+              style="
                 padding-top: 8px;
                 border-top: 1px solid #eee;
                 display: flex;
                 flex-direction: column;
-              ">
+              "
+            >
               <button @click="resetColumnVisibility" class="reset-button">
                 Reset Visibility Settings
               </button>
-              <button style="margin-bottom: 5px" @click="resetColumnWidths" class="reset-button">
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
                 Reset Width Settings
               </button>
             </div>
           </div>
         </div>
         <button class="header-button" @click="handleExportClick">
-          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
+          <font-awesome-icon
+            icon="fa-solid fa-file-excel"
+            style="color: white"
+          />
           <span> Export to Excel </span>
         </button>
       </div>
@@ -188,15 +308,22 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
-        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
-        :groupStartOpen="false" :tableOptions="{
+      <LiteTabulatorTable
+        v-if="!loading"
+        ref="tabulatorTableRef"
+        :rowData="librariesSamplesList"
+        :columnDefs="columnsList"
+        groupBy="request_name"
+        :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="false"
+        :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
           handleColumnVisibilityChanged
-        }" />
+        }"
+      />
     </div>
 
     <!-- Pagination controls -->
@@ -209,28 +336,47 @@
       </div>
 
       <div class="pagination-buttons">
-        <button class="pagination-button" @click="changePage(1)" :disabled="pagination.currentPage === 1">
+        <button
+          class="pagination-button"
+          @click="changePage(1)"
+          :disabled="pagination.currentPage === 1"
+        >
           &laquo; First
         </button>
 
-        <button class="pagination-button" @click="changePage(pagination.currentPage - 1)"
-          :disabled="pagination.currentPage === 1">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.currentPage - 1)"
+          :disabled="pagination.currentPage === 1"
+        >
           &lsaquo; Prev
         </button>
 
         <div class="page-input">
-          <input type="number" v-model.number="pageInput" min="1" :max="pagination.totalPages" @keyup.enter="goToPage"
-            @blur="validatePageInput" />
+          <input
+            type="number"
+            v-model.number="pageInput"
+            min="1"
+            :max="pagination.totalPages"
+            @keyup.enter="goToPage"
+            @blur="validatePageInput"
+          />
           <span>of {{ pagination.totalPages }}</span>
         </div>
 
-        <button class="pagination-button" @click="changePage(pagination.currentPage + 1)"
-          :disabled="pagination.currentPage === pagination.totalPages">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.currentPage + 1)"
+          :disabled="pagination.currentPage === pagination.totalPages"
+        >
           Next &rsaquo;
         </button>
 
-        <button class="pagination-button" @click="changePage(pagination.totalPages)"
-          :disabled="pagination.currentPage === pagination.totalPages">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.totalPages)"
+          :disabled="pagination.currentPage === pagination.totalPages"
+        >
           Last &raquo;
         </button>
       </div>
@@ -248,25 +394,42 @@
     </div>
 
     <!-- Popup for Export Options -->
-    <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
-      @dragenter="handleDragEnter" @dragleave="handleDragLeave" :class="{ 'drag-over': isDragOver }">
-
+    <div
+      v-if="showExportPopup"
+      class="popup-overlay"
+      @dragover.prevent="handleDragOver"
+      @drop="handleDrop"
+      @dragenter="handleDragEnter"
+      @dragleave="handleDragLeave"
+      :class="{ 'drag-over': isDragOver }"
+    >
       <div class="drag-drop-indicator">
-        <div style="
-          display: flex;
-          justify-content: center; 
-          align-items: center; 
-          height: 200px; 
-        ">
-          <p>Drop <span style="font-weight: bold">XLSX file</span> here to upload as <span
-              style="font-weight: bold">template</span></p>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+          "
+        >
+          <p>
+            Drop <span style="font-weight: bold">XLSX file</span> here to upload
+            as <span style="font-weight: bold">template</span>
+          </p>
         </div>
       </div>
-      <div v-if="!isDragOver" class="popup-container" :style="{ width: '670px', height: '500px' }">
+      <div
+        v-if="!isDragOver"
+        class="popup-container"
+        :style="{ width: '670px', height: '500px' }"
+      >
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
-          <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
-            @mouseleave="showExportHelpTooltip = false">
+          <span
+            class="popup-info-button"
+            @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false"
+          >
             ?
             <div v-if="showExportHelpTooltip" class="tooltip-box">
               <span style="font-weight: bold">INSTRUCTIONS:</span>
@@ -275,7 +438,9 @@
                   To create custom templates, export the original sheet named
                   <span style="font-weight: bold">'Parkour'</span> by selecting
                   the
-                  <span style="font-weight: bold">'Export without any additional sheets'</span>
+                  <span style="font-weight: bold"
+                    >'Export without any additional sheets'</span
+                  >
                   option.
                 </li>
                 <li>
@@ -304,109 +469,235 @@
         </div>
         <div class="popup-body">
           <div class="export-section">
-            <div style="font-weight: bold; margin-bottom: 8px;">Export Options:</div>
+            <div style="font-weight: bold; margin-bottom: 8px">
+              Export Options:
+            </div>
             <div class="export-selection-radio-option">
-              <input type="radio" id="export-selected" value="selected" v-model="exportSelection"
-                :disabled="!hasSelectedRows">
-              <label for="export-selected" :class="{ 'disabled': !hasSelectedRows }">
+              <input
+                type="radio"
+                id="export-selected"
+                value="selected"
+                v-model="exportSelection"
+                :disabled="!hasSelectedRows"
+              />
+              <label
+                for="export-selected"
+                :class="{ disabled: !hasSelectedRows }"
+              >
                 Export selected libraries & samples
               </label>
             </div>
             <div class="export-selection-radio-option">
-              <input type="radio" id="export-all" value="all" v-model="exportSelection">
-              <label for="export-all">
-                Export all libraries & samples
-              </label>
+              <input
+                type="radio"
+                id="export-all"
+                value="all"
+                v-model="exportSelection"
+              />
+              <label for="export-all"> Export all libraries & samples </label>
             </div>
           </div>
           <div class="export-section" style="height: 100%">
-            <div style="font-weight: bold; margin-bottom: 8px;">
+            <div style="font-weight: bold; margin-bottom: 8px">
               Upload additional excel sheet templates to append:
             </div>
             <div class="file-list-section">
               <div class="file-item">
                 <div class="file-info">
-                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <svg
+                    style="display: block"
+                    fill="none"
+                    width="24px"
+                    height="24px"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
                     <g>
-                      <path opacity="0.1"
+                      <path
+                        opacity="0.1"
                         d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232" />
+                        fill="#323232"
+                      />
                       <path
                         d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                      />
                     </g>
                   </svg>
                   <span>Export without any additional sheets</span>
                 </div>
                 <div class="file-actions">
-                  <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
-                    <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
+                  <div
+                    class="file-actions-radio-button"
+                    style="border: none; margin-right: 5px"
+                  >
+                    <input
+                      type="radio"
+                      title="Select"
+                      id="without-file"
+                      value="without-file"
+                      v-model="selectedFile"
+                    />
                   </div>
                 </div>
               </div>
-              <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
+              <div
+                v-for="(file, index) in fetchedLibrariesAndSamplesTemplates"
+                :key="index"
+                class="file-item"
+              >
                 <div class="file-info">
-                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <svg
+                    style="display: block"
+                    fill="none"
+                    width="24px"
+                    height="24px"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
                     <g>
-                      <path opacity="0.1"
+                      <path
+                        opacity="0.1"
                         d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232" />
+                        fill="#323232"
+                      />
                       <path
                         d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                      <path d="M9 6L11 6" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                      <path d="M10 9L12 9" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                      <path d="M9 12L11 12" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                      <path d="M10 15L12 15" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M9 6L11 6"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M10 9L12 9"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M9 12L11 12"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M10 15L12 15"
+                        stroke="#323232"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
                     </g>
                   </svg>
                   <span>{{ file.name }}</span>
                 </div>
                 <div class="file-actions">
-                  <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
-                    <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <button
+                    @click="downloadExportTemplate(file)"
+                    class="download-button"
+                    title="Download Original File"
+                  >
+                    <svg
+                      style="display: block"
+                      fill="none"
+                      width="24px"
+                      height="24px"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
                       <g>
-                        <path opacity="0.1"
+                        <path
+                          opacity="0.1"
                           d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          fill="#323232" />
+                          fill="#323232"
+                        />
                         <path
                           d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                        <path d="M12 16L12 11" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" />
-                        <path d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14" stroke="#323232"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                          stroke="#323232"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M12 16L12 11"
+                          stroke="#323232"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14"
+                          stroke="#323232"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
                       </g>
                     </svg>
                   </button>
-                  <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
-                    <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <button
+                    @click="removeExportTemplate(index)"
+                    class="remove-button"
+                    title="Remove File"
+                  >
+                    <svg
+                      style="display: block"
+                      fill="none"
+                      width="24px"
+                      height="24px"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
                       <g>
-                        <path opacity="0.1"
+                        <path
+                          opacity="0.1"
                           d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
-                          fill="#323232" />
+                          fill="#323232"
+                        />
                         <path
                           d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
-                          stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                          stroke="#323232"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
                         <path
                           d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
-                          stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                        <path d="M3 3L21 21" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" />
+                          stroke="#323232"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M3 3L21 21"
+                          stroke="#323232"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
                       </g>
                     </svg>
                   </button>
                   <div class="file-actions-radio-button">
-                    <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
-                      v-model="selectedFile" />
+                    <input
+                      type="radio"
+                      title="Select File"
+                      :id="'file-radio-' + index"
+                      :value="file"
+                      v-model="selectedFile"
+                    />
                   </div>
                 </div>
               </div>
@@ -415,34 +706,68 @@
         </div>
         <div class="popup-footer">
           <div class="file-upload-section">
-            <label for="file-upload" class="file-upload-label"
-              title="Upload additional sheet to append to the exported sheet.">
-              <svg style="display: block; margin-right: 4px" fill="none" width="24px" height="24px" version="1.1"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <label
+              for="file-upload"
+              class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet."
+            >
+              <svg
+                style="display: block; margin-right: 4px"
+                fill="none"
+                width="24px"
+                height="24px"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
                 <g>
-                  <path opacity="0.1"
+                  <path
+                    opacity="0.1"
                     d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    fill="#323232" />
+                    fill="#323232"
+                  />
                   <path
                     d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                  <path d="M12 11L12 16" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                  <path d="M14.5 13.5L9.5 13.5" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
+                    stroke="#323232"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 11L12 16"
+                    stroke="#323232"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14.5 13.5L9.5 13.5"
+                    stroke="#323232"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </g>
               </svg>
               <span>Upload</span>
             </label>
-            <input id="file-upload" type="file" accept=".xlsx" @change="uploadExportTemplate" style="display: none" />
+            <input
+              id="file-upload"
+              type="file"
+              accept=".xlsx"
+              @change="uploadExportTemplate"
+              style="display: none"
+            />
           </div>
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button class="popup-button" @click="
-            showExportPopup = false;
-          selectedFile = 'without-file';
-          ">
+          <button
+            class="popup-button"
+            @click="
+              showExportPopup = false;
+              selectedFile = 'without-file';
+            "
+          >
             Cancel
           </button>
         </div>
@@ -464,7 +789,10 @@ import {
   formatDateForInput,
   formatDisplayDate
 } from "../utilities/utilityFunctions";
-import { librariesAndSamplesGroupHeader, librariesAndSamplesColumnDefs } from "../constants/librariesAndSamplesConsts";
+import {
+  librariesAndSamplesGroupHeader,
+  librariesAndSamplesColumnDefs
+} from "../constants/librariesAndSamplesConsts";
 import { statusMap } from "../constants/statusConsts";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
@@ -490,7 +818,7 @@ export default {
       showExportHelpTooltip: false,
       fetchedLibrariesAndSamplesTemplates: [],
       selectedFile: "without-file",
-      exportSelection: 'selected',
+      exportSelection: "selected",
       hasSelectedRows: false,
       pagination: {
         currentPage: 1,
@@ -751,9 +1079,7 @@ export default {
 
         if (exportOnly) {
           return allRows;
-        }
-        else
-          this.librariesSamplesList = allRows;
+        } else this.librariesSamplesList = allRows;
       } catch (error) {
         handleError(error);
       } finally {
@@ -834,7 +1160,9 @@ export default {
         });
       };
 
-      let columnDefs = librariesAndSamplesColumnDefs(() => this.tabulatorInstance);
+      let columnDefs = librariesAndSamplesColumnDefs(
+        () => this.tabulatorInstance
+      );
 
       this.columnsList = applySettings(columnDefs);
     },
@@ -1042,7 +1370,7 @@ export default {
       if (
         file &&
         file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
         const formData = new FormData();
         formData.append("file", file);
@@ -1102,8 +1430,10 @@ export default {
       }
     },
     handleExportClick() {
-      this.hasSelectedRows = this.librariesSamplesList.some(row => row.selected);
-      this.exportSelection = this.hasSelectedRows ? 'selected' : 'all';
+      this.hasSelectedRows = this.librariesSamplesList.some(
+        (row) => row.selected
+      );
+      this.exportSelection = this.hasSelectedRows ? "selected" : "all";
       this.showExportPopup = true;
     },
     async handleExport() {
@@ -1115,10 +1445,9 @@ export default {
         ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
 
         let exportRows = [];
-        if (this.exportSelection === 'selected') {
-          exportRows = this.librariesSamplesList.filter(row => row.selected);
-        }
-        else {
+        if (this.exportSelection === "selected") {
+          exportRows = this.librariesSamplesList.filter((row) => row.selected);
+        } else {
           this.exportLoading = true;
           exportRows = await this.getLibrariesSamples(1, true);
         }
@@ -1145,12 +1474,10 @@ export default {
           .sort()
           .join("_");
 
-
         let filename = "";
-        if (this.exportSelection === 'selected') {
+        if (this.exportSelection === "selected") {
           filename = `${formattedDate}_${uniqueRequestIDs}_libraries_and_samples`;
-        }
-        else {
+        } else {
           filename = `${formattedDate}_libraries_and_samples`;
         }
 
@@ -1222,9 +1549,15 @@ export default {
           if (sheet.name === "Parkour") return;
           sheet.eachRow((row) => {
             row.eachCell((cell) => {
-              if (cell && (cell.formula || (cell.model && cell.model.formula) || (cell.value && cell.value.formula))) {
+              if (
+                cell &&
+                (cell.formula ||
+                  (cell.model && cell.model.formula) ||
+                  (cell.value && cell.value.formula))
+              ) {
                 if (cell.model) cell.model.result = undefined;
-                if (cell.value && typeof cell.value === "object") cell.value.result = undefined;
+                if (cell.value && typeof cell.value === "object")
+                  cell.value.result = undefined;
               }
             });
           });
@@ -1242,7 +1575,7 @@ export default {
         );
       } finally {
         this.fakeLoadingStop();
-        if (!this.exportSelection === 'selected')
+        if (!this.exportSelection === "selected")
           setTimeout(() => {
             this.loading = false;
           }, 2000);
@@ -1269,13 +1602,18 @@ export default {
 
       const files = e.dataTransfer.files;
       if (files.length > 1) {
-        showNotification("Please upload only one XLSX file at a time.", "error");
-      }
-      else
-        this.processUploadedFile(files[0]);
+        showNotification(
+          "Please upload only one XLSX file at a time.",
+          "error"
+        );
+      } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
-      if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      if (
+        file &&
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
         const event = {
           target: {
             files: [file]
@@ -1285,8 +1623,7 @@ export default {
       } else {
         showNotification("Please upload a valid XLSX file.", "error");
       }
-    }
-    ,
+    },
     changePage(page) {
       if (
         page >= 1 &&
@@ -1314,7 +1651,7 @@ export default {
     },
     handlePageSizeChange() {
       this.getLibrariesSamples(1);
-    },
+    }
   }
 };
 </script>
@@ -1424,14 +1761,9 @@ body,
 </style>
 
 <!--
-from django.db import connection
-with connection.cursor() as cursor:
-    cursor.execute("SELECT * FROM complete_library_data LIMIT 10")
-    columns = [col[0] for col in cursor.description]
-    results = [dict(zip(columns, row)) for row in cursor.fetchall()]
-for record in results:
-    print(record)
+Fix libraries_and_samples API not fetching the latest first request
 
+everywhere: editor validations for all editable columns
 everywhere: multiple pool names
 everywhere: no barcode * in copy and export
 everywhere: units should show as original units in export

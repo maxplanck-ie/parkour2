@@ -49,7 +49,7 @@
 .Vue-Toastification__toast-body {
   margin-right: 10px;
   font-size: 14px !important;
-  font-weight: 550;
+  font-weight: bold;
 }
 
 .Vue-Toastification__close-button {
@@ -64,7 +64,7 @@
 .Vue-Toastification__toast--info .Vue-Toastification__icon,
 .Vue-Toastification__toast--info .Vue-Toastification__toast-body,
 .Vue-Toastification__toast--info .Vue-Toastification__close-button {
-  color: #ffffffe5;
+  color: #ffffff;
 }
 
 /* Success Toast */
@@ -75,7 +75,7 @@
 .Vue-Toastification__toast--success .Vue-Toastification__icon,
 .Vue-Toastification__toast--success .Vue-Toastification__toast-body,
 .Vue-Toastification__toast--success .Vue-Toastification__close-button {
-  color: #ffffffe5;
+  color: #ffffff;
 }
 
 /* Warning Toast */
@@ -86,7 +86,7 @@
 .Vue-Toastification__toast--warning .Vue-Toastification__icon,
 .Vue-Toastification__toast--warning .Vue-Toastification__toast-body,
 .Vue-Toastification__toast--warning .Vue-Toastification__close-button {
-  color: #333333e1;
+  color: #333333;
 }
 
 /* Error Toast */
@@ -301,7 +301,7 @@ input[type="radio"]:checked::after {
 
 .popup-overlay.drag-over {
   background-color: #00bfff36;
-  border: 2px dashed #2196F3;
+  border: 2px dashed #2196f3;
   animation: popup-appear 0.2s ease-out forwards;
 }
 
@@ -318,10 +318,9 @@ input[type="radio"]:checked::after {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 20px;
   border-radius: 8px;
-  border: 2px dashed #2196F3;
+  border: 2px dashed #2196f3;
   z-index: 1002;
   display: none;
-
 }
 
 .popup-overlay.drag-over .drag-drop-indicator {

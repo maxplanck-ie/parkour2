@@ -1,7 +1,7 @@
 import {
   cellContextMenu,
   ellipsisContainer,
-  showNotification,
+  showNotification
 } from "../utilities/utilityFunctions";
 
 export function incomingLibrariesSamplesGroupHeader(
@@ -144,7 +144,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
         const rowData = clickedRow.getData();
         const checkbox = e.target;
         rowData.selected = checkbox.checked;
-      },
+      }
     },
     {
       title: "Name",
@@ -184,8 +184,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
                             ${type}
                           </span>
                           <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-          (tableGroupsToggleState == 2 ? request_name + " ➜ " : "") + name
-        }</span>
+                            (tableGroupsToggleState == 2
+                              ? request_name + " ➜ "
+                              : "") + name
+                          }</span>
                         </div>
                       `;
       },
@@ -193,7 +195,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
         cellContextMenu(true, false, false, getTabulatorInstance),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      },
+      }
     },
     {
       title: "Barcode",
@@ -214,7 +216,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString, false);
-      },
+      }
     },
     {
       title: "From Users",
@@ -240,7 +242,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          },
+          }
         },
         {
           title: "Protocol",
@@ -260,7 +262,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          },
+          }
         },
         {
           title: "Comment Library/Input",
@@ -278,7 +280,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          },
+          }
         },
         {
           title: "Input",
@@ -298,7 +300,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             const value = cell.getValue();
             const finalString = value || "-";
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "µl",
@@ -318,13 +320,13 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return ellipsisContainer(finalString);
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          },
+          }
         },
         {
           title: "bp",
@@ -352,9 +354,9 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          },
-        },
-      ],
+          }
+        }
+      ]
     },
     {
       title: "From Facility",
@@ -362,7 +364,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "title-field-group",
       columns: [
-                {
+        {
           title: "Value",
           field: "measured_value_facility",
           minWidth: 60,
@@ -372,6 +374,11 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           headerTooltip: "Measured Value",
           visible: true,
           cssClass: "facility-entry-column",
+          editorParams: {
+            min: 0,
+            step: 0.1
+          },
+          validator: ["min:0"],
           contextMenu: () =>
             cellContextMenu(true, true, true, getTabulatorInstance),
           formatter: (cell) => {
@@ -384,10 +391,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               value === -1
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "Unit",
@@ -401,13 +408,13 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               { label: "ng/µl (Concentration)", value: "concentration" },
               { label: "M (Cells)", value: "m" },
               { label: "k (Cells)", value: "k" },
-              { label: "Unknown", value: "-" },
+              { label: "Unknown", value: "-" }
             ];
             if (row.type === "L") {
               return {
                 values: options.filter(
                   (option) => option.value !== "m" && option.value !== "k"
-                ),
+                )
               };
             }
             return { values: options };
@@ -424,11 +431,11 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               concentration: "ng/µl (Concentration)",
               m: "M (Cells)",
               k: "k (Cells)",
-              "-": "Unknown",
+              "-": "Unknown"
             };
             const finalString = options[value] || value || "Select";
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "µl",
@@ -442,22 +449,22 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           cssClass: "facility-entry-column",
           editorParams: {
             min: 0,
-            max: 2147483647,
-            step: 0.1,
+            step: 0.1
           },
+          validator: ["min:0"],
           contextMenu: () =>
             cellContextMenu(true, true, true, getTabulatorInstance),
           formatter: (cell) => {
             const rawValue = cell.getValue();
-            const value = parseFloat(rawValue, 10);
+            const value = Number(rawValue);
             const finalString =
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "bp",
@@ -483,7 +490,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             }
 
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "% Total",
@@ -498,7 +505,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editorParams: {
             min: 0,
             max: 100,
-            step: 0.1,
+            step: 0.1
           },
           validator: ["min:0", "max:100"],
           contextMenu: () =>
@@ -523,8 +530,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             const cellElement = cell.getElement();
             if (rowData.type === "S") {
               cellElement.classList.add("disable-editing");
@@ -532,7 +539,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cellElement.classList.remove("disable-editing");
             }
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "RQN",
@@ -546,7 +553,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editorParams: {
             min: 0,
             max: 11,
-            step: 0.1,
+            step: 0.1
           },
           validator: ["min:0", "max:11"],
           cssClass: "facility-entry-column",
@@ -569,8 +576,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               rawValue === "" || rawValue === undefined || isNaN(value)
                 ? "-"
                 : value === 0
-                ? "0.0"
-                : value.toFixed(1);
+                  ? "0.0"
+                  : value.toFixed(1);
             const rowData = cell.getRow().getData();
             const cellElement = cell.getElement();
             if (rowData.type === "L") {
@@ -579,7 +586,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cellElement.classList.remove("disable-editing");
             }
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "GMO",
@@ -591,8 +598,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editorParams: {
             values: [
               { label: "Not Needed", value: "false" },
-              { label: "Risk Assessment Done", value: "true" },
-            ],
+              { label: "Risk Assessment Done", value: "true" }
+            ]
           },
           cssClass: "facility-entry-column",
           contextMenu: () =>
@@ -626,9 +633,9 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             const value = cell.getValue();
             const options = {
               false: "Not Needed",
-              true: "Risk Assessment Done",
+              true: "Risk Assessment Done"
             };
-            const finalString = options[value] || value || "Select";
+            const finalString = options[value] || value || "No";
             const rowData = cell.getRow().getData();
             const cellElement = cell.getElement();
             if (
@@ -641,7 +648,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cellElement.classList.remove("disable-editing");
             }
             return ellipsisContainer(finalString);
-          },
+          }
         },
         {
           title: "Comment",
@@ -657,9 +664,9 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           formatter: (cell) => {
             const value = cell.getValue() || "-";
             return ellipsisContainer(value);
-          },
-        },
-      ],
-    },
+          }
+        }
+      ]
+    }
   ];
 }
