@@ -199,7 +199,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
-        const finalString = cell.getValue() || "Empty";
+        const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
       cellDblClick: function (e, cell) {
@@ -300,6 +300,33 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         showNotification("This field is not editable.", "warning");
       },
     },
+        {
+      title: "Value",
+      field: "measured_value_facility",
+      minWidth: 60,
+      width: "4%",
+      editor: "number",
+      headerVertical: false,
+      headerTooltip: "Measured Value",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, true, true, getTabulatorInstance),
+      formatter: (cell) => {
+        const rawValue = cell.getValue();
+        const value = Number(rawValue);
+        const finalString =
+          rawValue === "" ||
+          rawValue === undefined ||
+          isNaN(value) ||
+          value === -1
+            ? "-"
+            : value === 0
+            ? "0.0"
+            : value.toFixed(1);
+        return ellipsisContainer(finalString);
+      },
+    },
     {
       title: "Unit",
       field: "measuring_unit_facility",
@@ -331,33 +358,6 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
           "-": "Unknown",
         };
         const finalString = options[value] || value || "Select";
-        return ellipsisContainer(finalString);
-      },
-    },
-    {
-      title: "Amount",
-      field: "measured_value_facility",
-      minWidth: 60,
-      width: "4%",
-      editor: "number",
-      headerVertical: false,
-      headerTooltip: "Measured Value",
-      visible: true,
-      cssClass: "regular-column",
-      contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
-      formatter: (cell) => {
-        const rawValue = cell.getValue();
-        const value = Number(rawValue);
-        const finalString =
-          rawValue === "" ||
-          rawValue === undefined ||
-          isNaN(value) ||
-          value === -1
-            ? "-"
-            : value === 0
-            ? "0.0"
-            : value.toFixed(1);
         return ellipsisContainer(finalString);
       },
     },
@@ -542,7 +542,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       contextMenu: () =>
         cellContextMenu(true, true, true, getTabulatorInstance),
       formatter: (cell) => {
-        const value = cell.getValue() || "Empty";
+        const value = cell.getValue() || "-";
         return ellipsisContainer(value);
       },
     },

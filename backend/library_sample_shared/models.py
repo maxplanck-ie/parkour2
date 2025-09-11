@@ -416,8 +416,9 @@ class GenericLibrarySample(DateTimeMixin):
         on_delete=models.SET_NULL,
     )  # This field is not in use
 
-    sample_volume_facility = models.PositiveIntegerField(
+    sample_volume_facility = models.FloatField(
         "Sample Volume",
+        validators=[MinValueValidator(0)],
         null=True,
         blank=True,
     )
