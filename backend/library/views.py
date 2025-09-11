@@ -70,6 +70,8 @@ class LibrarySampleTree(viewsets.ViewSet):
                 "name__icontains",
                 "barcode__icontains",
                 "request_name__icontains",
+                "flowcell_ids__icontains",
+                "pool_names__icontains",
             ]
             search_q = [Q(**{field: search_string}) for field in search_fields]
             combined_search = reduce(or_, search_q)

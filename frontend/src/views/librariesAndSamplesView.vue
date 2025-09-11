@@ -1386,11 +1386,6 @@ with connection.cursor() as cursor:
 for record in results:
     print(record)
 
-check fields in the export
-make search work for flowcell_ids and pool_names
-
-set group values for filtering
-
 everywhere: multiple pool names
 everywhere: no barcode * in copy and export
 everywhere: units should show as original units in export
