@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.apps import apps
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
@@ -120,6 +121,28 @@ class RequestSerializer(ModelSerializer):
         files_to_delete = list(old_files - new_files)
         for file in files_to_delete:
             file.delete()
+
+        return instance
+
+    def create(self, validated_data):
+        # Pull out m2m/link data supplied via to_internal_value
+        libraries_ids = validated_data.pop("libraries", [])
+        samples_ids = validated_data.pop("samples", [])
+        files_ids = validated_data.pop("files", [])
+
+        instance = super().create(validated_data)
+
+        # Attach M2M relations explicitly so signals fire reliably
+        if libraries_ids:
+            Library = apps.get_model("library", "Library")
+            instance.libraries.set(Library.objects.filter(pk__in=libraries_ids))
+        if samples_ids:
+            Sample = apps.get_model("sample", "Sample")
+            instance.samples.set(Sample.objects.filter(pk__in=samples_ids))
+        if files_ids:
+            # Files are normal M2M; set if provided
+            FileRequest = apps.get_model("request", "FileRequest")
+            instance.files.set(FileRequest.objects.filter(pk__in=files_ids))
 
         return instance
 

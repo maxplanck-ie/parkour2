@@ -61,8 +61,7 @@ class Library(GenericLibrarySample):
         verbose_name_plural = "Libraries"
 
 
-# To add or remove fields to this model please do necessary changes to library/migrations/XXXX_completelibraryview.py
-class CompleteLibraryData(models.Model):
+class CompleteLibraryDataMV(models.Model):
     library_id = models.IntegerField(primary_key=True)
     barcode = models.CharField(max_length=100)
     name = models.CharField(max_length=255)
@@ -92,7 +91,8 @@ class CompleteLibraryData(models.Model):
     flowcell_ids = ArrayField(models.CharField(max_length=50), null=True)
     sequencer_ids = ArrayField(models.IntegerField(), null=True)
     sequencer_names = ArrayField(models.CharField(max_length=50), null=True)
+    # search_vector exists in MV; we don't need to query it directly via ORM
 
     class Meta:
         managed = False
-        db_table = "complete_library_data"
+        db_table = "complete_library_data_mv"

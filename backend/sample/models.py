@@ -127,8 +127,7 @@ class Sample(GenericLibrarySample):
     #     #     pooling_obj.save()
 
 
-# To add or remove fields to this model please do necessary changes to sample/migrations/XXXX_completesampleview.py
-class CompleteSampleData(models.Model):
+class CompleteSampleDataMV(models.Model):
     sample_id = models.IntegerField(primary_key=True)
     barcode = models.CharField(max_length=100)
     name = models.CharField(max_length=255)
@@ -165,4 +164,4 @@ class CompleteSampleData(models.Model):
 
     class Meta:
         managed = False
-        db_table = "complete_sample_data"
+        db_table = "complete_sample_data_mv"
