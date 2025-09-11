@@ -3,7 +3,7 @@ from django.db import migrations
 
 CREATE_SQL = """
 CREATE MATERIALIZED VIEW complete_sample_data_mv AS
-SELECT
+SELECT DISTINCT ON (s.id, r.id)
     s.id AS sample_id,
     s.barcode,
     s.name,
@@ -79,7 +79,8 @@ LEFT JOIN LATERAL (
     JOIN flowcell_flowcell fc ON fc_lane.flowcell_id = fc.id
     LEFT JOIN flowcell_sequencer seq ON fc.sequencer_id = seq.id
     WHERE ps2.sample_id = s.id
-) fcids ON TRUE;
+) fcids ON TRUE
+ORDER BY s.id, r.id;
 """
 
 
