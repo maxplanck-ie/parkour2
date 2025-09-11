@@ -1763,6 +1763,8 @@ body,
 <!--
 Fix libraries_and_samples API not fetching the latest first request
 
+copy features to other pages
+
 everywhere: editor validations for all editable columns
 everywhere: multiple pool names
 everywhere: no barcode * in copy and export
