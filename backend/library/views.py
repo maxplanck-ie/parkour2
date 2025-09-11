@@ -67,17 +67,26 @@ class LibrarySampleTree(viewsets.ViewSet):
                 )
 
         if search_string:
-            search_fields = [
-                "name__icontains",
-                "barcode__icontains",
-                "request_name__icontains",
-                "flowcell_ids__icontains",
-                "pool_names__icontains",
+            search_terms = [
+                term.strip() for term in search_string.split(",") if term.strip()
             ]
-            search_q = [Q(**{field: search_string}) for field in search_fields]
-            combined_search = reduce(or_, search_q)
-            library_queryset = library_queryset.filter(combined_search)
-            sample_queryset = sample_queryset.filter(combined_search)
+            all_search_q = []
+            for search_term in search_terms:
+                search_fields = [
+                    "name__icontains",
+                    "barcode__icontains",
+                    "request_name__icontains",
+                    "flowcell_ids__icontains",
+                    "pool_names__icontains",
+                ]
+                search_q = [Q(**{field: search_term}) for field in search_fields]
+                combined_search = reduce(or_, search_q)
+                all_search_q.append(combined_search)
+
+            if all_search_q:
+                final_search = reduce(or_, all_search_q)
+                library_queryset = library_queryset.filter(final_search)
+                sample_queryset = sample_queryset.filter(final_search)
 
         if status_filter:
             library_queryset = library_queryset.filter(status=int(status_filter))
@@ -139,7 +148,7 @@ class LibrarySampleTree(viewsets.ViewSet):
         if page_size:
             total_pages = (total_requests + page_size - 1) // page_size
             offset = (page - 1) * page_size
-            paginated_requests = request_names[offset: offset + page_size]
+            paginated_requests = request_names[offset : offset + page_size]
         else:
             total_pages = 1
             paginated_requests = request_names

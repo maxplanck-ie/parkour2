@@ -56,6 +56,7 @@ def refresh_complete_data_materialized_views(concurrently: bool = True) -> None:
 
 # Non-blocking schedulers (run after commit in a background thread)
 def schedule_refresh_library_mv(concurrently: bool = True) -> None:
+    # Offload to a background thread after commit to keep writes fast
     def _run():
         refresh_library_mv(concurrently=concurrently)
 
@@ -63,13 +64,17 @@ def schedule_refresh_library_mv(concurrently: bool = True) -> None:
 
 
 def schedule_refresh_sample_mv(concurrently: bool = True) -> None:
+    # Offload to a background thread after commit to keep writes fast
     def _run():
         refresh_sample_mv(concurrently=concurrently)
 
     transaction.on_commit(lambda: threading.Thread(target=_run, daemon=True).start())
 
 
-def schedule_refresh_complete_data_materialized_views(concurrently: bool = True) -> None:
+def schedule_refresh_complete_data_materialized_views(
+    concurrently: bool = True,
+) -> None:
+    # Offload to a background thread after commit to keep writes fast
     def _run():
         refresh_complete_data_materialized_views(concurrently=concurrently)
 

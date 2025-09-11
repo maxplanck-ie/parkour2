@@ -1029,7 +1029,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         editor: {
           xtype: "numberfield",
           minValue: 0,
-          step: 10
+          step: 1
         },
         renderer: this.errorRenderer
       },
