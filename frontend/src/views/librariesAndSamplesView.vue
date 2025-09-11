@@ -1165,9 +1165,8 @@ export default {
 
         let parkourSheet = wb.getWorksheet("Parkour");
         if (parkourSheet) {
-          parkourSheet.eachRow((row, rowNumber) => {
-            parkourSheet.spliceRows(rowNumber, 1);
-          });
+          const toDelete = parkourSheet.rowCount;
+          if (toDelete > 0) parkourSheet.spliceRows(1, toDelete);
           parkourSheet.columns = [];
         } else {
           parkourSheet = wb.addWorksheet("Parkour");
@@ -1203,9 +1202,7 @@ export default {
           { header: "Sequencers", key: "sequencer_names", width: 20 }
         ];
 
-        sortedExportRows.forEach((row) => {
-          parkourSheet.addRow(row);
-        });
+        parkourSheet.addRows(sortedExportRows);
 
         const sortedSheets = [...wb.worksheets].sort(
           (a, b) => a.orderNo - b.orderNo
@@ -1222,10 +1219,12 @@ export default {
         wb.views = [{ activeTab: 0, firstSheet: 0 }];
 
         wb.worksheets.forEach((sheet) => {
+          if (sheet.name === "Parkour") return;
           sheet.eachRow((row) => {
             row.eachCell((cell) => {
-              if (cell.formula) {
-                cell.model.result = undefined;
+              if (cell && (cell.formula || (cell.model && cell.model.formula) || (cell.value && cell.value.formula))) {
+                if (cell.model) cell.model.result = undefined;
+                if (cell.value && typeof cell.value === "object") cell.value.result = undefined;
               }
             });
           });
