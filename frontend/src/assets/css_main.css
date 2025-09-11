@@ -1,4 +1,4 @@
-@import "./base.css";
+@import "./css_base.css";
 
 @media (hover: hover) {
   a:hover {
@@ -6,11 +6,33 @@
   }
 }
 
+@keyframes popup-appear {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 /* Toast */
 .Vue-Toastification__toast {
   position: relative;
   border-radius: 6px;
-  border: 2px solid #333333;
+  border: 1px solid #333333;
   display: flex;
   align-items: center;
   min-width: 200px;
@@ -69,13 +91,13 @@
 
 /* Error Toast */
 .Vue-Toastification__toast--error {
-  background-color: #ff6969 !important;
+  background-color: #ff7878 !important;
 }
 
 .Vue-Toastification__toast--error .Vue-Toastification__icon,
 .Vue-Toastification__toast--error .Vue-Toastification__toast-body,
 .Vue-Toastification__toast--error .Vue-Toastification__close-button {
-  color: #333333e1;
+  color: #333333;
 }
 
 /* Loading Spinner */
@@ -91,6 +113,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: fade-in 0.15s ease-out forwards;
 }
 
 .spinner {
@@ -197,18 +220,7 @@ input[type="radio"]:checked::after {
   transform: scale(0.8);
   opacity: 0;
   animation: popup-appear 0.2s ease-out forwards;
-}
-
-@keyframes popup-appear {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  z-index: 1001;
 }
 
 .popup-header {
@@ -285,6 +297,36 @@ input[type="radio"]:checked::after {
 
 .popup-button:focus {
   outline: 2px solid #333333;
+}
+
+.popup-overlay.drag-over {
+  background-color: #00bfff36;
+  border: 2px dashed #2196F3;
+  animation: popup-appear 0.2s ease-out forwards;
+}
+
+.popup-overlay.drag-over .popup-container {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+.drag-drop-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px dashed #2196F3;
+  z-index: 1002;
+  display: none;
+
+}
+
+.popup-overlay.drag-over .drag-drop-indicator {
+  display: block;
+  animation: 0.2s ease-out;
 }
 
 .header {
@@ -394,9 +436,9 @@ input[type="radio"]:checked::after {
   gap: 10px;
   font-size: 14px;
   color: black;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   cursor: pointer;
-  padding: 8px 10px;
+  padding: 5px 7px;
   border: 2px solid #ddd;
   border-radius: 4px;
   transition: background-color 0.3s ease;

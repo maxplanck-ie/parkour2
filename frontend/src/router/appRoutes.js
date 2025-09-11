@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import dutiesView from "../views/dutiesView.vue";
 import vueApp from "../vueApp.vue";
-import librariesAndSamples from "../views/librariesAndSamples.vue";
-import IncomingLibrariesSamples from "../views/incomingLibrariesSamples.vue";
-import libraryPreparation from "../views/libraryPreparation.vue";
-import pooling from "../views/pooling.vue";
+import librariesAndSamples from "../views/librariesAndSamplesView.vue";
+import IncomingLibrariesSamples from "../views/incomingLibrariesSamplesView.vue";
+import libraryPreparation from "../views/libraryPreparationView.vue";
+import pooling from "../views/poolingView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

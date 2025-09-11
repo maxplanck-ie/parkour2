@@ -309,7 +309,7 @@ import {
   handleError,
   getProp,
   urlStringStartsWith
-} from "../utils/utilities";
+} from "../utilities/utilityFunctions";
 import { toRaw } from "vue";
 import axios from "axios";
 import moment from "moment";

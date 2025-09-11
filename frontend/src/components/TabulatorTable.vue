@@ -1,6 +1,6 @@
 <template>
   <!-- Table Element -->
-  <div class="normal-tabulator-table">
+  <div class="normal-tabulator-table" style="height: 100%">
     <div id="tabulatorTable" ref="tabulatorTableRef"></div>
   </div>
 
@@ -56,7 +56,7 @@
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import * as XLSX from "xlsx";
 import "tabulator-tables/dist/css/tabulator_bootstrap5.min.css";
-import { showNotification } from "../utils/utilities";
+import { showNotification } from "../utilities/utilityFunctions";
 import { markRaw } from "vue";
 
 export default {

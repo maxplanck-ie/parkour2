@@ -11,36 +11,15 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path
-            opacity="0.3"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd"
             d="M5 15L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L19 15H5Z"
-            fill="#323232"
-          />
+            fill="#323232" />
           <path
             d="M15.0486 4H8.95137C8.46527 4 8.31058 4.65529 8.74536 4.87268C8.90142 4.95071 9 5.11022 9 5.2847V10.1716C9 10.702 8.78929 11.2107 8.41421 11.5858L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L15.5858 11.5858C15.2107 11.2107 15 10.702 15 10.1716V5.2847C15 5.11022 15.0986 4.95071 15.2546 4.87268C15.6894 4.65529 15.5347 4 15.0486 4Z"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M5 15H19"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+            stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M5 15H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
       <div class="header-title" style="display: inline">
@@ -50,66 +29,36 @@
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input
-            ref="searchInput"
-            v-model="searchQuery"
-            @keyup.enter="handleSearchAction"
-            type="text"
-            placeholder="Search"
-          />
-          <font-awesome-icon
-            icon="fa-solid fa-magnifying-glass"
-            style="color: darkgrey; cursor: pointer"
-            @click="handleSearchAction"
-          />
+          <input ref="searchInput" v-model="searchQuery" @keyup.enter="handleSearchAction" type="text"
+            placeholder="Search" />
+          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey; cursor: pointer"
+            @click="handleSearchAction" />
         </div>
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input
-              type="date"
-              id="startDate"
-              :class="{ 'invalid-date': !startDateValid }"
-              v-model="startDateString"
-              required
-            />
+            <input type="date" id="startDate" :class="{ 'invalid-date': !startDateValid }" v-model="startDateString"
+              required />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input
-              type="date"
-              id="endDate"
-              :class="{ 'invalid-date': !endDateValid }"
-              v-model="endDateString"
-              required
-            />
+            <input type="date" id="endDate" :class="{ 'invalid-date': !endDateValid }" v-model="endDateString"
+              required />
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleAdvancedFiltersButton"
-            @click="toggleAdvancedFilters"
-          >
+          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div
-            id="advancedFiltersPopup"
-            v-if="showAdvancedFilters"
-            class="button-popup-container"
-            style="height: 473px; width: 250px; left: -50px"
-          >
+          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
+            style="height: 473px; width: 250px; left: -50px">
             <!-- Status Filter -->
             <div class="filter-item">
               <label>Status</label>
               <select v-model="filters.status" @change="getLibrariesSamples(1)">
                 <option :value="null">All Statuses</option>
-                <option
-                  v-for="(text, num) in statusMap"
-                  :key="num"
-                  :value="num"
-                >
+                <option v-for="(text, num) in statusMap" :key="num" :value="num">
                   {{ text }}
                 </option>
               </select>
@@ -118,16 +67,9 @@
             <!-- Protocol Filter -->
             <div class="filter-item">
               <label>Protocol</label>
-              <select
-                v-model="filters.protocol"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.protocol" @change="getLibrariesSamples(1)">
                 <option :value="null">All Protocols</option>
-                <option
-                  v-for="protocol in protocolsList"
-                  :key="protocol.id"
-                  :value="protocol.id"
-                >
+                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.id">
                   {{ protocol.name }}
                 </option>
               </select>
@@ -136,16 +78,9 @@
             <!-- Analysis Type Filter -->
             <div class="filter-item">
               <label>Analysis Type</label>
-              <select
-                v-model="filters.analysisType"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.analysisType" @change="getLibrariesSamples(1)">
                 <option :value="null">All Analysis Types</option>
-                <option
-                  v-for="type in analysisTypesList"
-                  :key="type.id"
-                  :value="type.id"
-                >
+                <option v-for="type in analysisTypesList" :key="type.id" :value="type.id">
                   {{ type.name }}
                 </option>
               </select>
@@ -154,16 +89,9 @@
             <!-- Sequencer Filter -->
             <div class="filter-item">
               <label>Sequencer</label>
-              <select
-                v-model="filters.sequencer"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.sequencer" @change="getLibrariesSamples(1)">
                 <option :value="null">All Sequencers</option>
-                <option
-                  v-for="sequencer in sequencersList"
-                  :key="sequencer.id"
-                  :value="sequencer.id"
-                >
+                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.id">
                   {{ sequencer.name }}
                 </option>
               </select>
@@ -172,16 +100,9 @@
             <!-- Read Length Filter -->
             <div class="filter-item">
               <label>Read Length</label>
-              <select
-                v-model="filters.readLength"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.readLength" @change="getLibrariesSamples(1)">
                 <option :value="null">All Read Lengths</option>
-                <option
-                  v-for="length in readLengthsList"
-                  :key="length.id"
-                  :value="length.id"
-                >
+                <option v-for="length in readLengthsList" :key="length.id" :value="length.id">
                   {{ length.name }}
                 </option>
               </select>
@@ -194,65 +115,36 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleSelectColumnsButton"
-            @click="toggleSelectColumns"
-          >
-            <font-awesome-icon
-              icon="fa-solid fa-columns"
-              style="color: white"
-            />
+          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
+            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
             <span> Select Columns </span>
           </button>
-          <div
-            id="selectColumnsPopup"
-            v-if="showSelectColumns"
-            class="button-popup-container"
-            style="
+          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
               left: -50px;
               width: 250px;
               max-height: 473px;
               display: flex;
               flex-direction: column;
               padding: 10px 10px 5px 10px;
-            "
-          >
-            <ul
-              style="
-                padding: 5px 10px 0 10px;
+            ">
+            <ul style="
+                padding: 5px 7px 7px;
                 margin: 0;
                 flex-grow: 1;
                 overflow-y: auto;
-              "
-            >
-              <li
-                v-for="(column, index) in columnsList"
-                :key="index"
-                style="list-style: none"
-              >
-                <template
-                  v-if="
-                    column.field !== 'selected' ||
-                    (column.field === 'selected' && column.visible == false)
-                  "
-                >
-                  <label
-                    :style="{
-                      backgroundColor: column.columns ? '#33333310' : 'white',
-                      cursor: column.columns ? 'default' : 'pointer'
-                    }"
-                  >
-                    <input
-                      v-if="!column.columns"
-                      type="checkbox"
-                      :checked="column.visible"
-                      @change="toggleColumnVisibility(column)"
-                    />
-                    <font-awesome-icon
-                      v-if="column.columns"
-                      icon="fa-solid fa-caret-down"
-                      style="
+              ">
+              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
+                <template v-if="
+                  column.field !== 'selected' ||
+                  (column.field === 'selected' && column.visible == false)
+                ">
+                  <label :style="{
+                    backgroundColor: column.columns ? '#33333310' : 'white',
+                    cursor: column.columns ? 'default' : 'pointer'
+                  }">
+                    <input v-if="!column.columns" type="checkbox" v-model="column.visible"
+                      @change="toggleColumnVisibility(column)" />
+                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -263,58 +155,29 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      "
-                    />
+                      " />
                     <span>{{ column.title }}</span>
                   </label>
-                  <ul
-                    v-if="column.columns"
-                    style="padding-left: 15px; margin-top: 5px"
-                  >
-                    <li
-                      v-for="(subColumn, subIndex) in column.columns"
-                      :key="subIndex"
-                      style="list-style: none; margin-bottom: 5px"
-                    >
-                      <label>
-                        <input
-                          type="checkbox"
-                          :checked="subColumn.visible"
-                          @change="toggleColumnVisibility(subColumn)"
-                        />
-                        <span style="width: 100%">{{ subColumn.title }}</span>
-                      </label>
-                    </li>
-                  </ul>
                 </template>
               </li>
             </ul>
-            <div
-              style="
+            <div style="
                 padding-top: 8px;
                 border-top: 1px solid #eee;
                 display: flex;
                 flex-direction: column;
-              "
-            >
+              ">
               <button @click="resetColumnVisibility" class="reset-button">
                 Reset Visibility Settings
               </button>
-              <button
-                style="margin-bottom: 5px"
-                @click="resetColumnWidths"
-                class="reset-button"
-              >
+              <button style="margin-bottom: 5px" @click="resetColumnWidths" class="reset-button">
                 Reset Width Settings
               </button>
             </div>
           </div>
         </div>
         <button class="header-button" @click="handleExportClick">
-          <font-awesome-icon
-            icon="fa-solid fa-file-excel"
-            style="color: white"
-          />
+          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
       </div>
@@ -322,22 +185,15 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <LiteTabulatorTable
-        v-if="!loading"
-        ref="tabulatorTableRef"
-        :rowData="librariesSamplesList"
-        :columnDefs="columnsList"
-        groupBy="request_name"
-        :groupSort="{ field: 'request_name', order: 'desc' }"
-        :groupStartOpen="false"
-        :tableOptions="{
+      <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
+        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
           handleColumnVisibilityChanged
-        }"
-      />
+        }" />
     </div>
 
     <!-- Pagination controls -->
@@ -350,47 +206,28 @@
       </div>
 
       <div class="pagination-buttons">
-        <button
-          class="pagination-button"
-          @click="changePage(1)"
-          :disabled="pagination.currentPage === 1"
-        >
+        <button class="pagination-button" @click="changePage(1)" :disabled="pagination.currentPage === 1">
           &laquo; First
         </button>
 
-        <button
-          class="pagination-button"
-          @click="changePage(pagination.currentPage - 1)"
-          :disabled="pagination.currentPage === 1"
-        >
+        <button class="pagination-button" @click="changePage(pagination.currentPage - 1)"
+          :disabled="pagination.currentPage === 1">
           &lsaquo; Prev
         </button>
 
         <div class="page-input">
-          <input
-            type="number"
-            v-model.number="pageInput"
-            min="1"
-            :max="pagination.totalPages"
-            @keyup.enter="goToPage"
-            @blur="validatePageInput"
-          />
+          <input type="number" v-model.number="pageInput" min="1" :max="pagination.totalPages" @keyup.enter="goToPage"
+            @blur="validatePageInput" />
           <span>of {{ pagination.totalPages }}</span>
         </div>
 
-        <button
-          class="pagination-button"
-          @click="changePage(pagination.currentPage + 1)"
-          :disabled="pagination.currentPage === pagination.totalPages"
-        >
+        <button class="pagination-button" @click="changePage(pagination.currentPage + 1)"
+          :disabled="pagination.currentPage === pagination.totalPages">
           Next &rsaquo;
         </button>
 
-        <button
-          class="pagination-button"
-          @click="changePage(pagination.totalPages)"
-          :disabled="pagination.currentPage === pagination.totalPages"
-        >
+        <button class="pagination-button" @click="changePage(pagination.totalPages)"
+          :disabled="pagination.currentPage === pagination.totalPages">
           Last &raquo;
         </button>
       </div>
@@ -408,15 +245,25 @@
     </div>
 
     <!-- Popup for Export Options -->
-    <div v-if="showExportPopup" class="popup-overlay">
-      <div class="popup-container" :style="{ width: '670px', height: '500px' }">
+    <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
+      @dragenter="handleDragEnter" @dragleave="handleDragLeave" :class="{ 'drag-over': isDragOver }">
+
+      <div class="drag-drop-indicator">
+        <div style="
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 200px; 
+  ">
+          <p>Drop <span style="font-weight: bold">XLSX file</span> here to upload as <span
+              style="font-weight: bold">template</span></p>
+        </div>
+      </div>
+      <div v-if="!isDragOver" class="popup-container" :style="{ width: '670px', height: '500px' }">
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
-          <span
-            class="popup-info-button"
-            @mouseover="showExportHelpTooltip = true"
-            @mouseleave="showExportHelpTooltip = false"
-          >
+          <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false">
             ?
             <div v-if="showExportHelpTooltip" class="tooltip-box">
               <span style="font-weight: bold">INSTRUCTIONS:</span>
@@ -425,9 +272,7 @@
                   To create custom templates, export the original sheet named
                   <span style="font-weight: bold">'Parkour'</span> by selecting
                   the
-                  <span style="font-weight: bold"
-                    >'Export without any additional sheets'</span
-                  >
+                  <span style="font-weight: bold">'Export without any additional sheets'</span>
                   option.
                 </li>
                 <li>
@@ -461,200 +306,87 @@
           <div class="file-list-section">
             <div class="file-item">
               <div class="file-info">
-                <svg
-                  style="display: block"
-                  fill="none"
-                  width="24px"
-                  height="24px"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
+                <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <g>
-                    <path
-                      opacity="0.1"
+                    <path opacity="0.1"
                       d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      fill="#323232"
-                    />
+                      fill="#323232" />
                     <path
                       d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      stroke="#323232"
-                      stroke-width="2"
-                      stroke-linejoin="round"
-                    />
+                      stroke="#323232" stroke-width="2" stroke-linejoin="round" />
                   </g>
                 </svg>
                 <span>Export without any additional sheets</span>
               </div>
               <div class="file-actions">
-                <div
-                  class="file-actions-radio-button"
-                  style="border: none; margin-right: 5px"
-                >
-                  <input
-                    type="radio"
-                    title="Select"
-                    id="without-file"
-                    value="without-file"
-                    v-model="selectedFile"
-                  />
+                <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
+                  <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
                 </div>
               </div>
             </div>
-            <div
-              v-for="(file, index) in fetchedLibrariesAndSamplesTemplates"
-              :key="index"
-              class="file-item"
-            >
+            <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
               <div class="file-info">
-                <svg
-                  style="display: block"
-                  fill="none"
-                  width="24px"
-                  height="24px"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
+                <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <g>
-                    <path
-                      opacity="0.1"
+                    <path opacity="0.1"
                       d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      fill="#323232"
-                    />
+                      fill="#323232" />
                     <path
                       d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      stroke="#323232"
-                      stroke-width="2"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M9 6L11 6"
-                      stroke="#323232"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M10 9L12 9"
-                      stroke="#323232"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M9 12L11 12"
-                      stroke="#323232"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M10 15L12 15"
-                      stroke="#323232"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                      stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                    <path d="M9 6L11 6" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M10 9L12 9" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M9 12L11 12" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M10 15L12 15" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
                   </g>
                 </svg>
                 <span>{{ file.name }}</span>
               </div>
               <div class="file-actions">
-                <button
-                  @click="downloadExportTemplate(file)"
-                  class="download-button"
-                  title="Download Original File"
-                >
-                  <svg
-                    style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
+                <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
+                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g>
-                      <path
-                        opacity="0.1"
+                      <path opacity="0.1"
                         d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232"
-                      />
+                        fill="#323232" />
                       <path
                         d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M12 16L12 11"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
+                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                      <path d="M12 16L12 11" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14" stroke="#323232"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </g>
                   </svg>
                 </button>
-                <button
-                  @click="removeExportTemplate(index)"
-                  class="remove-button"
-                  title="Remove File"
-                >
-                  <svg
-                    style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
+                <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
+                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g>
-                      <path
-                        opacity="0.1"
+                      <path opacity="0.1"
                         d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
-                        fill="#323232"
-                      />
+                        fill="#323232" />
                       <path
                         d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
+                        stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                       <path
                         d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M3 3L21 21"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
+                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                      <path d="M3 3L21 21" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
                     </g>
                   </svg>
                 </button>
                 <div class="file-actions-radio-button">
-                  <input
-                    type="radio"
-                    title="Select File"
-                    :id="'file-radio-' + index"
-                    :value="file"
-                    v-model="selectedFile"
-                  />
+                  <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
+                    v-model="selectedFile" />
                 </div>
               </div>
             </div>
@@ -662,68 +394,34 @@
         </div>
         <div class="popup-footer">
           <div class="file-upload-section">
-            <label
-              for="file-upload"
-              class="file-upload-label"
-              title="Upload additional sheet to append to the exported sheet."
-            >
-              <svg
-                style="display: block; margin-right: 4px"
-                fill="none"
-                width="24px"
-                height="24px"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
+            <label for="file-upload" class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet.">
+              <svg style="display: block; margin-right: 4px" fill="none" width="24px" height="24px" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g>
-                  <path
-                    opacity="0.1"
+                  <path opacity="0.1"
                     d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    fill="#323232"
-                  />
+                    fill="#323232" />
                   <path
                     d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12 11L12 16"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14.5 13.5L9.5 13.5"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
+                    stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                  <path d="M12 11L12 16" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M14.5 13.5L9.5 13.5" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </g>
               </svg>
               <span>Upload</span>
             </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".xlsx"
-              @change="uploadExportTemplate"
-              style="display: none"
-            />
+            <input id="file-upload" type="file" accept=".xlsx" @change="uploadExportTemplate" style="display: none" />
           </div>
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button
-            class="popup-button"
-            @click="
-              showExportPopup = false;
-              selectedFile = 'without-file';
-            "
-          >
+          <button class="popup-button" @click="
+            showExportPopup = false;
+          selectedFile = 'without-file';
+          ">
             Cancel
           </button>
         </div>
@@ -740,8 +438,13 @@ import {
   showNotification,
   handleError,
   createAxiosObject,
-  urlStringStartsWith
-} from "../utils/utilities";
+  urlStringStartsWith,
+  isValidDate,
+  formatDateForInput,
+  formatDisplayDate
+} from "../utilities/utilityFunctions";
+import { librariesAndSamplesGroupHeader, librariesAndSamplesColumnDefs } from "../constants/librariesAndSamplesConsts";
+import { statusMap } from "../constants/statusConsts";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
@@ -757,6 +460,7 @@ export default {
     return {
       tabulatorInstance: null,
       loading: true,
+      isDragOver: false,
       fakeLoading: false,
       librariesSamplesList: [],
       columnsList: [],
@@ -771,17 +475,6 @@ export default {
         totalRequests: 0
       },
       pageInput: 1,
-      statusMap: {
-        "-1": "Quality Check Failed",
-        "-2": "Quality Check Compromised",
-        0: "Pending Submission",
-        1: "Submission Completed",
-        2: "Quality Check Approved",
-        3: "Library Prepared",
-        4: "Library Pooled",
-        5: "Sequencing",
-        6: "Delivered"
-      },
       tableOptions: {
         index: "barcode",
         placeholder: "No Libraries and Samples to show.",
@@ -797,39 +490,7 @@ export default {
 
           totalDepth = Number(totalDepth.toFixed(1));
 
-          return `
-  <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
-  <div>
-    <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-      (#: ${count}, Total Depth: ${totalDepth})
-    </span>
-  </div>
-</div>
-    <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
-      <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M21 12H12V3H15.024C19.9452 3 21 4.05476 21 8.976V12Z" fill="lightblue"/>
-            <path opacity="0.5" d="M3 15.024V12H12V21H8.976C4.05476 21 3 19.9452 3 15.024Z" fill="lightblue"/>
-            <path d="M3 8.976C3 4.05476 4.05476 3 8.976 3H15.024C19.9452 3 21 4.05476 21 8.976V15.024C21 19.9452 19.9452 21 15.024 21H8.976C4.05476 21 3 19.9452 3 15.024V8.976Z" stroke="#323232" stroke-width="1.8"/>
-            <path d="M12 3V21" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 12L3 12" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
-      </div>
-      <div title="Deselect All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deselectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="lightblue"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
-      </div>
-    </div>
-  </div>
-`;
+          return librariesAndSamplesGroupHeader(value, count, totalDepth);
         }
       },
       searchQuery: "",
@@ -846,8 +507,8 @@ export default {
       readLengthsList: [],
       startDate: initialStartDate,
       endDate: today,
-      startDateString: this.formatDateForInput(initialStartDate),
-      endDateString: this.formatDateForInput(today),
+      startDateString: formatDateForInput(initialStartDate),
+      endDateString: formatDateForInput(today),
       startDateValid: true,
       endDateValid: true,
       dateChangeTimer: null,
@@ -872,6 +533,11 @@ export default {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
   },
+  computed: {
+    statusMap() {
+      return statusMap;
+    }
+  },
   watch: {
     "pagination.currentPage"(newPage) {
       this.pageInput = newPage;
@@ -888,8 +554,8 @@ export default {
       this.loading = true;
       try {
         const params = {
-          start_date: this.formatDisplayDate(this.startDate),
-          end_date: this.formatDisplayDate(this.endDate),
+          start_date: formatDisplayDate(this.startDate),
+          end_date: formatDisplayDate(this.endDate),
           page: page,
           size: this.pagination.pageSize
         };
@@ -1009,7 +675,7 @@ export default {
                 ? e.pool_names.join(", ")
                 : "",
             status: getValue(e.status),
-            status_text: this.statusMap[e.status] ?? "-",
+            status_text: statusMap[e.status] ?? "-",
             well_position: "",
             concentration_library: getValue(e.concentration_library),
             create_time: e.create_time ? getFormattedDate(e.create_time) : "",
@@ -1098,30 +764,6 @@ export default {
       this.searchQuery = query;
       this.getLibrariesSamples(1);
     },
-    getStatusClass(status) {
-      switch (String(status)) {
-        case "-1":
-          return "quality-check-failed";
-        case "-2":
-          return "quality-check-compromised";
-        case "0":
-          return "pending-submission";
-        case "1":
-          return "submission-completed";
-        case "2":
-          return "quality-check-approved";
-        case "3":
-          return "library-prepared";
-        case "4":
-          return "library-pooled";
-        case "5":
-          return "sequencing";
-        case "6":
-          return "delivered";
-        default:
-          return "";
-      }
-    },
     resetAdvancedFilters() {
       this.filters = {
         status: null,
@@ -1159,582 +801,9 @@ export default {
         });
       };
 
-      let columnDefs = [
-        {
-          field: "selected",
-          visible: true,
-          headerVertical: false,
-          frozen: true,
-          resizable: false,
-          formatter: (cell) => {
-            const rowData = cell.getRow().getData();
-            const checkbox = `
-              <input
-                type="checkbox"
-                title="Select"
-                style="top:-4px"
-                ${rowData.selected ? "checked" : ""}
-              />
-            `;
-            return checkbox;
-          },
-          hozAlign: "center",
-          width: 30,
-          minWidth: 30,
-          cssClass: "checkbox-column right-border",
-          contextMenu: () => this.cellContextMenu(false, false, false),
-          cellClick: function (e, cell) {
-            const row = cell.getRow();
-            const rowData = row.getData();
-            const checkbox = e.target;
-            if (checkbox && checkbox.type === "checkbox") {
-              rowData.selected = checkbox.checked;
-            }
-          }
-        },
-        {
-          title: "Name",
-          field: "name",
-          minWidth: 140,
-          headerFilter: true,
-          headerTooltip: "Name",
-          visible: true,
-          frozen: true,
-          cssClass: "right-border",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const request_name = cell.getRow().getData().request_name;
-            const name = cell.getValue();
-            return `
-                        <div style="padding: 4px 12px; display: flex; align-items: center;">
-                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${name}</span>
-                        </div>
-                      `;
-          }
-        },
-        {
-          title: "Status",
-          field: "status",
-          width: 50,
-          headerFilter: true,
-          headerTooltip: "Status",
-          visible: true,
-          frozen: true,
-          cssClass: "right-border",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const tooltip = this.statusMap[value];
-            const statusClass = `status ${this.getStatusClass(value)}`;
-            return `<div class="${statusClass}" title="${tooltip}"></div>`;
-          }
-        },
-        {
-          title: "S/L",
-          field: "type",
-          width: 45,
-          minWidth: 45,
-          headerFilter: true,
-          headerTooltip: "Type",
-          visible: true,
-          frozen: true,
-          cssClass: "right-border",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Plate Coord",
-          field: "well_position",
-          width: 80,
-          minWidth: 60,
-          headerFilter: true,
-          headerTooltip: "Coordinate of Sample in 96-well Plate",
-          visible: true,
-          frozen: true,
-          cssClass: "right-border",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Barcode",
-          field: "barcode",
-          width: 95,
-          minWidth: 95,
-          headerFilter: true,
-          headerTooltip: "Barcode",
-          visible: true,
-          frozen: true,
-          cssClass: "right-border",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Pool Paths",
-          field: "pool_names",
-          width: 85,
-          minWidth: 60,
-          headerFilter: true,
-          headerTooltip: "Pool Paths",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "GMO",
-          field: "gmo",
-          width: 85,
-          minWidth: 60,
-          headerFilter: true,
-          headerTooltip: "Genetically Modified Organism",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const options = {
-              false: "No",
-              true: "Yes"
-            };
-            const finalString = options[value] || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Date",
-          field: "create_time",
-          width: 90,
-          minWidth: 60,
-          headerFilter: true,
-          headerTooltip: "Date",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Input Type",
-          field: "nucleic_acid_type_name",
-          minWidth: 80,
-          width: "5%",
-          headerVertical: false,
-          headerFilter: true,
-          headerTooltip: "Input Type",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "No Input Type";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Protocol",
-          field: "library_protocol_name",
-          minWidth: 80,
-          width: "5%",
-          visible: true,
-          headerFilter: true,
-          cssClass: "regular-column",
-          headerTooltip: "Library Preparation Protocol",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "No Protocol";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Analysis Type",
-          field: "analysis_type_name",
-          minWidth: 80,
-          width: "5%",
-          visible: true,
-          headerFilter: true,
-          cssClass: "regular-column",
-          headerTooltip: "Analysis Type",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "No Analysis Type";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Input",
-          field: "input",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerFilter: true,
-          headerTooltip: "Measured Amount with Unit",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const value = cell.getValue();
-            const finalString = value || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Starting Amount",
-          field: "starting_amount",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Starting Amount (ng or fmol)",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Cycles",
-          field: "pcr_cycles",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "PCR Cycles",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            let finalString;
-
-            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
-              finalString = "-";
-            } else {
-              finalString = Math.round(value).toString();
-            }
-
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "ng/µl Library",
-          field: "concentration_library",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Concentration Library (ng/µl)",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            const finalString =
-              rawValue === "" || rawValue === undefined || isNaN(value)
-                ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "bp",
-          field: "average_fragment_size",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Library Average Fragment Size",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            let finalString;
-            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
-              finalString = "-";
-            } else {
-              finalString = Math.round(value).toString();
-            }
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Index Type",
-          field: "index_type_name",
-          minWidth: 60,
-          width: "4%",
-          headerVertical: false,
-          headerTooltip: "Index Type",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Coord",
-          field: "coordinate",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Index Pair Coordinate",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "I7 ID",
-          field: "i7_id",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Index I7 ID",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Index I7",
-          field: "index_i7",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Index I7 ID",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "I5 ID",
-          field: "i5_id",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Index I5 ID",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Index I5",
-          field: "index_i5",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Index I5 ID",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Length",
-          field: "read_length_name",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Read Length",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Depth (M)",
-          field: "sequencing_depth",
-          minWidth: 60,
-          width: "3.5%",
-          headerVertical: false,
-          headerTooltip: "Sequencing Depth (M)",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const rawValue = cell.getValue();
-            const value = Number(rawValue);
-            let finalString;
-            if (rawValue === "" || rawValue === undefined || isNaN(value)) {
-              finalString = "-";
-            } else {
-              finalString = Math.round(value).toString();
-            }
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Flowcell IDs",
-          field: "flowcell_ids",
-          minWidth: 60,
-          width: "5.5%",
-          headerVertical: false,
-          headerTooltip: "Flowcell IDs",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        },
-        {
-          title: "Sequencers",
-          field: "sequencer_names",
-          minWidth: 60,
-          width: "5.5%",
-          headerVertical: false,
-          headerTooltip: "Sequencer",
-          visible: true,
-          cssClass: "regular-column",
-          contextMenu: () => this.cellContextMenu(true, false, false),
-          formatter: (cell) => {
-            const finalString = cell.getValue() || "-";
-            return this.ellipsisContainer(finalString);
-          }
-        }
-      ];
+      let columnDefs = librariesAndSamplesColumnDefs(() => this.tabulatorInstance);
 
       this.columnsList = applySettings(columnDefs);
-    },
-    cellContextMenu(allowCopy, allowPaste, allowApplyToAll) {
-      const operations = [];
-      let isRangeSelected = false;
-      let selectedRangesData = this.tabulatorInstance
-        .getTable()
-        .getRangesData();
-      if (selectedRangesData.length > 0) {
-        let firstRangeFields = Object.keys(selectedRangesData[0][0]);
-        isRangeSelected =
-          selectedRangesData[0].length > 1 || firstRangeFields.length > 1;
-      }
-
-      if (isRangeSelected) {
-        showNotification(
-          "Please use Ctrl+C to copy, and Ctrl+V to paste in a range selection.",
-          "info"
-        );
-      } else {
-        if (allowApplyToAll) {
-          operations.push({
-            label: "Apply to All",
-            action: (e, cell) => {
-              const value = cell.getValue();
-              const field = cell.getField();
-              const libraryProtocolName = cell
-                .getRow()
-                .getData().library_protocol_name;
-              this.tabulatorInstance
-                .getTable()
-                .getRows()
-                .forEach((row) => {
-                  if (
-                    row.getData().library_protocol_name === libraryProtocolName
-                  ) {
-                    const targetCell = row.getCell(field);
-                    if (
-                      !targetCell
-                        .getElement()
-                        .classList.contains("disable-editing")
-                    ) {
-                      targetCell.setValue(value);
-                    }
-                  }
-                });
-            }
-          });
-        }
-
-        if (allowCopy) {
-          operations.push({
-            label: "Copy",
-            action: (e, cell) => {
-              const value = cell.getValue();
-              navigator.clipboard.writeText(value);
-            }
-          });
-        }
-
-        if (allowPaste) {
-          operations.push({
-            label: "Paste",
-            action: (e, cell) => {
-              if (cell.getElement().classList.contains("disable-editing")) {
-                return;
-              }
-              navigator.clipboard.readText().then((text) => {
-                try {
-                  const columnDef = cell.getColumn().getDefinition();
-                  const rowData = cell.getRow().getData();
-                  const validatedValue =
-                    this.tabulatorInstance.validateCellValue(
-                      text,
-                      columnDef,
-                      rowData
-                    );
-                  cell.setValue(validatedValue);
-                } catch (error) {
-                  showNotification(error.message, "error");
-                }
-              });
-            }
-          });
-        }
-      }
-
-      return operations.length ? operations : [];
     },
     handleOutsideClick(event) {
       const advancedFiltersPopup = this.$el.querySelector(
@@ -1791,45 +860,15 @@ export default {
         this.fakeLoading = false;
       }, 300);
     },
-    formatDateForInput(date) {
-      if (!date) return "";
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    },
-    formatDisplayDate(date) {
-      if (!date) return "";
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      return `${day}.${month}.${year}`;
-    },
     handleDateChange(type, value) {
       clearTimeout(this.dateChangeTimer);
-      this[`${type}DateValid`] = this.isValidDate(value);
+      this[`${type}DateValid`] = isValidDate(value);
       if (!this[`${type}DateValid`]) return;
       this.dateChangeTimer = setTimeout(() => {
         this.updateActualDate(type, value);
         this.validateDateRange();
         this.getLibrariesSamples(1);
       }, 500);
-    },
-    isValidDate(dateString) {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return false;
-      const [yearStr, monthStr, dayStr] = dateString.split("-");
-      const year = Number(yearStr);
-      const month = Number(monthStr);
-      const day = Number(dayStr);
-      if (year < 1000 || year > 9999) return false;
-      if (month < 1 || month > 12) return false;
-      if (day < 1 || day > 31) return false;
-      const date = new Date(dateString);
-      return (
-        date.getFullYear() === year &&
-        date.getMonth() + 1 === month &&
-        date.getDate() === day
-      );
     },
     updateActualDate(type, value) {
       const newDate = new Date(value);
@@ -1970,7 +1009,7 @@ export default {
       if (
         file &&
         file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
         const formData = new FormData();
         formData.append("file", file);
@@ -2030,17 +1069,13 @@ export default {
       }
     },
     handleExportClick() {
-      const selectedRows = this.librariesSamplesList.filter(
+      let selectedRows = this.librariesSamplesList.filter(
         (row) => row.selected
       );
       if (selectedRows.length === 0) {
-        showNotification(
-          "Please select at least one library/sample to export.",
-          "warning"
-        );
-      } else {
-        this.showExportPopup = true;
+        selectedRows = this.librariesSamplesList;
       }
+      this.showExportPopup = true;
     },
     async handleExport() {
       this.fakeLoadingStart();
@@ -2169,6 +1204,43 @@ export default {
         this.selectedFile = "without-file";
       }
     },
+    handleDragOver(e) {
+      e.preventDefault();
+      this.isDragOver = true;
+    },
+    handleDragEnter(e) {
+      e.preventDefault();
+      this.isDragOver = true;
+    },
+    handleDragLeave(e) {
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        this.isDragOver = false;
+      }
+    },
+    handleDrop(e) {
+      e.preventDefault();
+      this.isDragOver = false;
+
+      const files = e.dataTransfer.files;
+      if (files.length > 1) {
+        showNotification("Please upload only one XLSX file at a time.", "error");
+      }
+      else
+        this.processUploadedFile(files[0]);
+    },
+    processUploadedFile(file) {
+      if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        const event = {
+          target: {
+            files: [file]
+          }
+        };
+        this.uploadExportTemplate(event);
+      } else {
+        showNotification("Please upload a valid XLSX file.", "error");
+      }
+    }
+    ,
     changePage(page) {
       if (
         page >= 1 &&
@@ -2197,13 +1269,6 @@ export default {
     handlePageSizeChange() {
       this.getLibrariesSamples(1);
     },
-    ellipsisContainer(text, boldText) {
-      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${
-        boldText === true ? "bold" : "normal"
-      }">
-                ${text}
-              </div>`;
-    }
   }
 };
 </script>
@@ -2323,10 +1388,8 @@ for record in results:
 
 check fields in the export
 make search work for flowcell_ids and pool_names
-make layout of the select columns good, reset column visibility should also reset the list checkboxes
 
 set group values for filtering
-white page on 1000 records API call
 
 everywhere: multiple pool names
 everywhere: no barcode * in copy and export

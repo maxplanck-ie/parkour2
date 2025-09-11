@@ -20,7 +20,14 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 
-from .models import CostUnit, Duty, LibrariesAndSamplesTemplate, IncomingLibrariesSamplesTemplate, LibraryPreparationTemplate, PoolingTemplate
+from .models import (
+    CostUnit,
+    Duty,
+    LibrariesAndSamplesTemplate,
+    IncomingLibrariesSamplesTemplate,
+    LibraryPreparationTemplate,
+    PoolingTemplate,
+)
 from .serializers import (
     CostUnitSerializer,
     DutySerializer,
@@ -321,6 +328,7 @@ def user_details(request):
 def danke(request):
     return render(request, "danke.html")
 
+
 class BaseTemplateViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
     permission_classes = [IsAdminUser]
@@ -333,7 +341,7 @@ class BaseTemplateViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["post"])
     def upload(self, request):
-        """Upload a new XLSX file."""
+        """Upload a new XLSX file (replaces old if exists)."""
         file = request.FILES.get("file")
         if not file:
             return Response(
@@ -345,6 +353,10 @@ class BaseTemplateViewSet(viewsets.ModelViewSet):
                 {"success": False, "message": "Only XLSX files are allowed."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        old_template = self.model.objects.first()
+        if old_template:
+            old_template.file.delete()
+            old_template.delete()
         template = self.model(name=file.name, file=file)
         template.save()
         serializer = self.get_serializer(template)
@@ -379,7 +391,7 @@ class BaseTemplateViewSet(viewsets.ModelViewSet):
             return response
         except Exception as e:
             return Response({"error": str(e)}, status=500)
-        
+
 
 class LibrariesAndSamplesTemplateViewSet(BaseTemplateViewSet):
     model = LibrariesAndSamplesTemplate

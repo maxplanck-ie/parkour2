@@ -1,5 +1,5 @@
 <template>
-  <!-- This Tabulator Table uses Virtual DOM and performs smoothly for usecase with plenty of records -->
+  <!-- This Tabulator table is specially optimized for handling large numbers of records. -->
   <!-- Table Element -->
   <div class="lite-tabulator-table" style="height: 100%">
     <div id="tabulatorTable" ref="tabulatorTableRef"></div>
@@ -47,7 +47,8 @@ export default {
         groupBy: this.groupBy,
         noGroupByClass: false
       },
-      scrollPosition: 0
+      scrollPosition: 0,
+      lastGroupValues: []
     };
   },
   watch: {
@@ -60,19 +61,6 @@ export default {
       if (newColumns !== oldColumns) {
         this.updateTableColumns();
       }
-    }
-  },
-  computed: {
-    sortedGroupValues() {
-      if (!this.rowData || !this.groupBy) return [];
-      const uniqueGroups = new Set();
-      this.rowData.forEach((row) => {
-        if (row[this.groupBy]) uniqueGroups.add(row[this.groupBy]);
-      });
-      return Array.from(uniqueGroups).sort((a, b) => {
-        const getNum = (val) => parseInt(val?.split("_")[0], 10) || 0;
-        return getNum(b) - getNum(a);
-      });
     }
   },
   mounted() {
@@ -102,7 +90,7 @@ export default {
           selectableRangeRows: false,
           selectableRangeClearCells: false,
           editTriggerEvent: "dblclick",
-          clipboard: true,
+          clipboard: "copy",
           clipboardCopyStyled: false,
           clipboardCopyConfig: {
             formatCells: false,
@@ -120,7 +108,6 @@ export default {
             XLSX: XLSX
           },
           downloadConfig: {},
-          groupValues: [this.sortedGroupValues],
           groupToggleElement: "header",
           groupContextMenu: [],
           groupBy: this.tableGroupsConfig.groupBy,
@@ -144,8 +131,9 @@ export default {
           this.tabulatorInstance.restoreRedraw();
         });
 
-        this.tabulatorInstance.on("dataFiltered", () => {
-          this.refreshTable();
+        this.tabulatorInstance.on("renderComplete", () => {
+          const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
+          this.updateGroupValuesFromRows(rows);
         });
 
         this.tabulatorInstance.on("columnResized", (column) => {
@@ -194,6 +182,26 @@ export default {
 
     getTabulatorElement() {
       return document.getElementById("tabulatorTable");
+    },
+
+    updateGroupValuesFromRows(rows) {
+      if (!this.tabulatorInstance || !this.groupBy || !rows) return;
+      const uniqueGroups = new Set();
+      rows.forEach((row) => {
+        const val = row?._row?.data?.[this.groupBy] ?? row?.getData?.()?.[this.groupBy];
+        if (val) uniqueGroups.add(val);
+      });
+      const sortedGroupValues = Array.from(uniqueGroups).sort((a, b) => {
+        const getNum = (val) => parseInt(val?.split("_")[0], 10) || 0;
+        return getNum(b) - getNum(a);
+      });
+      const isSameOrder =
+        this.lastGroupValues.length === sortedGroupValues.length &&
+        this.lastGroupValues.every((v, i) => v === sortedGroupValues[i]);
+      if (!isSameOrder) {
+        this.lastGroupValues = sortedGroupValues;
+        this.tabulatorInstance.setGroupValues([sortedGroupValues]);
+      }
     },
 
     updateTableData() {
@@ -373,10 +381,7 @@ export default {
   margin-top: 5px;
 }
 
-.lite-tabulator-table
-  .no-group-by
-  .tabulator-row-odd:nth-child(1)
-  .tabulator-cell {
+.lite-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
@@ -384,7 +389,7 @@ export default {
   padding: 10px 0px !important;
 }
 
-.lite-tabulator-table .title-field-group > .tabulator-col-content > div > div {
+.lite-tabulator-table .title-field-group>.tabulator-col-content>div>div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }

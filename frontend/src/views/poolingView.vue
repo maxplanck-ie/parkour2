@@ -346,7 +346,7 @@ import {
   handleError,
   createAxiosObject,
   urlStringStartsWith
-} from "../utils/utilities";
+} from "../utilities/utilityFunctions";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
