@@ -39,7 +39,8 @@ class LibrarySampleTree(viewsets.ViewSet):
         start_date_str = request.GET.get("start_date")
         end_date_str = request.GET.get("end_date")
         page = int(request.GET.get("page", 1))
-        page_size = int(request.GET.get("size", 300))
+        page_size_param = request.GET.get("size")
+        page_size = int(page_size_param) if page_size_param else None
 
         library_queryset = CompleteLibraryData.objects.all()
         sample_queryset = CompleteSampleData.objects.all()
@@ -132,11 +133,16 @@ class LibrarySampleTree(viewsets.ViewSet):
             request_time_map.items(), key=lambda x: x[1], reverse=True
         )
         request_names = [req for req, _ in sorted_requests]
+
         total_requests = len(request_names)
 
-        total_pages = (total_requests + page_size - 1) // page_size
-        offset = (page - 1) * page_size
-        paginated_requests = request_names[offset : offset + page_size]
+        if page_size:
+            total_pages = (total_requests + page_size - 1) // page_size
+            offset = (page - 1) * page_size
+            paginated_requests = request_names[offset: offset + page_size]
+        else:
+            total_pages = 1
+            paginated_requests = request_names
 
         libraries = (
             library_queryset.filter(request_name__in=paginated_requests)
@@ -164,8 +170,8 @@ class LibrarySampleTree(viewsets.ViewSet):
             {
                 "success": True,
                 "total": total_requests,
-                "page": page,
-                "page_size": page_size,
+                "page": page if page_size else 1,
+                "page_size": page_size if page_size else total_requests,
                 "total_pages": total_pages,
                 "children": combined_data,
             }
