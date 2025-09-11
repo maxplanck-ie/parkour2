@@ -188,7 +188,8 @@ export default {
       if (!this.tabulatorInstance || !this.groupBy || !rows) return;
       const uniqueGroups = new Set();
       rows.forEach((row) => {
-        const val = row?._row?.data?.[this.groupBy] ?? row?.getData?.()?.[this.groupBy];
+        const val =
+          row?._row?.data?.[this.groupBy] ?? row?.getData?.()?.[this.groupBy];
         if (val) uniqueGroups.add(val);
       });
       const sortedGroupValues = Array.from(uniqueGroups).sort((a, b) => {
@@ -381,7 +382,10 @@ export default {
   margin-top: 5px;
 }
 
-.lite-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
+.lite-tabulator-table
+  .no-group-by
+  .tabulator-row-odd:nth-child(1)
+  .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
@@ -389,8 +393,12 @@ export default {
   padding: 10px 0px !important;
 }
 
-.lite-tabulator-table .title-field-group>.tabulator-col-content>div>div {
+.lite-tabulator-table .title-field-group > .tabulator-col-content > div > div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }
 </style>
+
+<!--
+Add VirtualDOM support
+-->

@@ -6,22 +6,48 @@
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div class="popup-container" :style="{
-      height: errorsPopupContents.errorsPopupHeight + 'px',
-      width: errorsPopupContents.errorsPopupWidth + 'px'
-    }">
+    <div
+      class="popup-container"
+      :style="{
+        height: errorsPopupContents.errorsPopupHeight + 'px',
+        width: errorsPopupContents.errorsPopupWidth + 'px'
+      }"
+    >
       <div class="popup-header">
-        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <svg
+          style="display: block"
+          fill="none"
+          width="42px"
+          height="42px"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
           <g>
-            <path opacity="0.3"
+            <path
+              opacity="0.3"
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              fill="#323232" />
+              fill="#323232"
+            />
             <path
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12 8V13"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <path
+              d="M12 16V15.9888"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
           </g>
         </svg>
         <span class="popup-title">Paste Error</span>
@@ -34,9 +60,15 @@
           Following errors occurred while pasting, please try again after
           fixing:
         </div>
-        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
+        <div
+          v-if="errorsPopupContents.errorsList?.length"
+          class="popup-scrollable-content"
+        >
           <ol style="padding-left: 25px">
-            <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
+            <li
+              v-for="(item, index) in errorsPopupContents.errorsList"
+              :key="index"
+            >
               {{ item.barcode + " ➜ " }}
               <span style="font-weight: bold">{{ item.message }}</span>
             </li>
@@ -341,40 +373,6 @@ export default {
         this.tabulatorInstance.on("tableBuilt", () => {
           document.addEventListener("keydown", this.handleKeyDown);
 
-          // if (!document.querySelector(".button-popup-container")) {
-          //   const selectedRange = this.tabulatorInstance.getRanges()?.[0];
-
-          //   if (selectedRange) {
-          //     const selectedCell = selectedRange.getCells()?.[0][0];
-
-          //     if (selectedCell) {
-          //       const selectedCellElement = selectedCell.getElement();
-          //       const row = selectedCell._cell.row;
-          //       const column = selectedCell._cell.column;
-
-          //       console.log(row, column);
-
-          //       if (row && column) {
-          //         this.tabulatorInstance
-          //           .scrollToRow(row, "center", false)
-          //           .then(() => {
-          //             return this.tabulatorInstance.scrollToColumn(
-          //               column.getField(),
-          //               "center",
-          //               false
-          //             );
-          //           })
-          //           .then(() => {
-          //             setTimeout(() => {
-          //               selectedCellElement?.focus();
-          //             }, 50);
-          //           })
-          //           .catch((err) => console.error("Scrolling error:", err));
-          //       }
-          //     }
-          //   }
-          // }
-
           const tabulatorElement = this.getTabulatorElement();
           if (this.tableGroupsConfig.noGroupByClass) {
             tabulatorElement.classList.add("no-group-by");
@@ -398,14 +396,6 @@ export default {
             flatFilters.push(...typesNotIn);
           }
           this.tabulatorInstance.setFilter(flatFilters);
-
-          const columns = this.tabulatorInstance.getColumns();
-          columns.forEach((column) => {
-            const field = column.getField();
-            if (this.tableColumnWidths[field]) {
-              column.setWidth(this.tableColumnWidths[field]);
-            }
-          });
         });
 
         this.previousData = JSON.stringify(this.rowData);
@@ -478,12 +468,6 @@ export default {
           }, 0);
         });
 
-        this.tabulatorInstance.on("columnResized", (column) => {
-          const field = column.getField();
-          const width = column.getWidth();
-          this.tableColumnWidths[field] = width;
-        });
-
         this.tabulatorInstance.on("clipboardCopied", () => {
           this.tableOptions.fakeLoadingStart();
           this.tableOptions.fakeLoadingStop();
@@ -496,37 +480,20 @@ export default {
           }
         });
 
+        this.tabulatorInstance.on("columnResized", (column) => {
+          if (this.tableOptions.handleColumnResized) {
+            this.tableOptions.handleColumnResized(column);
+          }
+        });
+
         this.tabulatorInstance.on(
-          "groupVisibilityChanged",
-          (group, visible) => {
-            const groupValue = group.getKey();
-
-            const index = this.tableEachGroupsToggleState.findIndex(
-              (item) => item.group === groupValue
-            );
-
-            if (index !== -1) {
-              this.tableEachGroupsToggleState[index].isClose = !visible;
-            } else {
-              this.tableEachGroupsToggleState.push({
-                group: groupValue,
-                isClose: !visible
-              });
-            }
-
-            const rows = this.tabulatorInstance.getRows();
-            let row = {};
-            if (rows.length > 0) {
-              if (this.groupSort.order === "desc") {
-                row = rows[rows.length - 1];
-              } else {
-                row = rows[0];
-              }
-              const cells = row.getCells();
-              if (cells.length > 0) {
-                const topLeftCell = cells[0];
-                this.tabulatorInstance.addRange(topLeftCell, topLeftCell);
-              }
+          "columnVisibilityChanged",
+          (column, visible) => {
+            if (this.tableOptions.handleColumnVisibilityChanged) {
+              this.tableOptions.handleColumnVisibilityChanged(
+                column.getField(),
+                visible
+              );
             }
           }
         );
@@ -704,53 +671,34 @@ export default {
     },
 
     toggleGroups(goToInitial) {
-      if (goToInitial === true || this.tableGroupsToggleState == 2) {
+      if (goToInitial === true) {
         this.tableGroupsToggleState = 0;
+        this.showAllGroups();
+        this.tableGroupsConfig.groupBy = this.groupBy;
+        this.tableGroupsConfig.noGroupByClass = false;
+        return;
+      }
+
+      const allGroups = this.tabulatorInstance?.getGroups?.() || [];
+      if (allGroups.length === 0) return;
+
+      const closedCount = allGroups.filter((g) => !g._group.visible).length;
+      if (closedCount === allGroups.length) {
+        this.tableGroupsToggleState = 0;
+        this.showAllGroups();
       } else {
-        const allGroups = this.tabulatorInstance.getGroups();
-        const closedGroupCount = allGroups.filter(
-          (group) => !group._group.visible
-        ).length;
-        if (closedGroupCount === allGroups.length) {
-          this.tableGroupsToggleState = 2;
-        } else if (closedGroupCount === 0) {
-          this.tableGroupsToggleState = 1;
-        } else {
-          this.tableGroupsToggleState = 0;
-        }
+        this.tableGroupsToggleState = 1;
+        this.hideAllGroups();
       }
-      switch (this.tableGroupsToggleState) {
-        case 0:
-          this.showAllGroups();
-          this.tableGroupsConfig.groupBy = this.groupBy;
-          this.tableGroupsConfig.noGroupByClass = false;
-          break;
-        case 1:
-          this.hideAllGroups();
-          this.tableGroupsConfig.groupBy = this.groupBy;
-          this.tableGroupsConfig.noGroupByClass = false;
-          break;
-        case 2:
-          this.showAllGroups();
-          this.tableGroupsConfig.groupBy = false;
-          this.tableGroupsConfig.noGroupByClass = true;
-          break;
-      }
+
+      this.tableGroupsConfig.groupBy = this.groupBy;
+      this.tableGroupsConfig.noGroupByClass = false;
     },
 
     refreshTable() {
       if (this.tabulatorInstance) {
         this.tabulatorInstance.redraw();
       }
-    },
-
-    recreateTable() {
-      const oldTable = document.getElementById("tabulatorTable");
-      const newTable = oldTable.cloneNode(false);
-      oldTable.replaceWith(newTable);
-      this.$nextTick(() => {
-        this.initializeTable();
-      });
     },
 
     getTable() {
@@ -852,15 +800,18 @@ export default {
             (min !== undefined && numValue < min) ||
             (max !== undefined && numValue > max)
           ) {
-            throw new Error(`Value must be between ${min} and ${max}.`);
+            const nf = new Intl.NumberFormat();
+            const minStr = min !== undefined ? nf.format(Number(min)) : min;
+            const maxStr = max !== undefined ? nf.format(Number(max)) : max;
+            throw new Error(`Value must be between ${minStr} and ${maxStr}.`);
           }
           return value == "" ? "" : numValue;
         case "list":
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                getRow: () => ({ getData: () => rowData })
-              })
+                  getRow: () => ({ getData: () => rowData })
+                })
               : columnDef.editorParams;
           const options =
             editorParamsList?.values?.map((opt) =>
@@ -1044,7 +995,10 @@ export default {
   margin-top: 5px;
 }
 
-.normal-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
+.normal-tabulator-table
+  .no-group-by
+  .tabulator-row-odd:nth-child(1)
+  .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
@@ -1052,7 +1006,11 @@ export default {
   padding: 10px 0px !important;
 }
 
-.normal-tabulator-table .title-field-group>.tabulator-col-content>div>div {
+.normal-tabulator-table
+  .title-field-group
+  > .tabulator-col-content
+  > div
+  > div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }
@@ -1060,5 +1018,4 @@ export default {
 
 <!--
 Fix APIs failing when multiple edits together
-Cleanup state
 -->
