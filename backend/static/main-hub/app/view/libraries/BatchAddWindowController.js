@@ -391,6 +391,32 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         }
       }
 
+      // Toggle GMO editor: enable only for 'Cell suspension'
+      var gmoEditor = Ext.getCmp("gmoEditor");
+      if (gmoEditor) {
+        var naRec = null;
+        if (record.get("nucleic_acid_type") !== null) {
+          naRec = nucleicAcidTypesStore.findRecord(
+            "id",
+            record.get("nucleic_acid_type")
+          );
+        }
+        var enableGmo =
+          naRec &&
+          String(naRec.get("name") || "").toLowerCase() === "cell suspension";
+        if (enableGmo) {
+          gmoEditor.enable();
+          if (record.get("gmo") !== true) {
+            record.set("gmo", true);
+          }
+        } else {
+          gmoEditor.disable();
+          if (record.get("gmo") !== false) {
+            record.set("gmo", false);
+          }
+        }
+      }
+
       // Reset Measured Value if Measuring Unit is changed
       if (!measuringUnitEditor.getValue()) {
         measuredValueEditor.setValue(null);
@@ -455,6 +481,17 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         measuredValueEditor.setValue(null);
         measuredValueEditor.enable();
       }
+    }
+
+    if (typeof changes["nucleic_acid_type"] !== "undefined") {
+      var natStore = Ext.getStore("nucleicAcidTypesStore");
+      var natRec = natStore
+        ? natStore.findRecord("id", record.get("nucleic_acid_type"))
+        : null;
+      var isCellSuspension =
+        natRec &&
+        String(natRec.get("name") || "").toLowerCase() === "cell suspension";
+      record.set("gmo", !!isCellSuspension);
     }
 
     record.commit();
@@ -527,6 +564,42 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     this.filterLibraryProtocols(libraryProtocolsStore, record.get("type"));
     libraryProtocolEditor.enable();
+
+    // Enable/disable GMO when Input Type changes
+    var gmoEditor = Ext.getCmp("gmoEditor");
+    if (gmoEditor) {
+      var isCellSuspension =
+        String(record.get("name") || "").toLowerCase() === "cell suspension";
+
+      var grid = fld.up("grid");
+      var rowPlugin = grid && grid.findPlugin ? grid.findPlugin("rowediting") : null;
+      var rowRec = rowPlugin && rowPlugin.context ? rowPlugin.context.record : null;
+      if (!rowRec && grid && grid.getSelectionModel) {
+        var selModel = grid.getSelectionModel();
+        if (selModel && selModel.getCurrentPosition) {
+          var pos = selModel.getCurrentPosition();
+          if (pos && grid.getStore) {
+            rowRec = grid.getStore().getAt(pos.row);
+          }
+        } else if (selModel && selModel.getSelection) {
+          rowRec = selModel.getSelection()[0];
+        }
+      }
+
+      if (isCellSuspension) {
+        gmoEditor.enable();
+        if (rowRec && rowRec.get("gmo") !== true) {
+          rowRec.set("gmo", true);
+        }
+        gmoEditor.setValue(true);
+      } else {
+        gmoEditor.disable();
+        if (rowRec && rowRec.get("gmo") !== false) {
+          rowRec.set("gmo", false);
+        }
+        gmoEditor.setValue(false);
+      }
+    }
   },
 
   selectMeasuringUnit: function (fld, record) {
@@ -762,6 +835,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "organism"
     ];
     columns = this.sortColumns(columns, order);
+    columns = this.applyResponsiveColumnWidths(columns);
 
     return [store, columns];
   },
@@ -841,6 +915,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 90,
         editor: {
           xtype: "combobox",
+          id: "gmoEditor",
+          itemId: "gmoEditor",
           queryMode: "local",
           valueField: "value",
           displayField: "name",
@@ -908,6 +984,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "gmo"
     ];
     columns = this.sortColumns(columns, order);
+    columns = this.applyResponsiveColumnWidths(columns);
 
     return [store, columns];
   },
@@ -921,6 +998,33 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     return _.sortBy(columns, function (column) {
       return orderMap[column.dataIndex];
     });
+  },
+
+  applyResponsiveColumnWidths: function (columns) {
+    var processed = [];
+
+    Ext.Array.each(columns, function (col) {
+      var c = Ext.apply({}, col);
+      if (c.xtype === "rownumberer") {
+        processed.push(c);
+        return;
+      }
+      var weight;
+      if (Ext.isNumber(c.width)) {
+        weight = c.width;
+        c.minWidth = c.minWidth || Math.max(70, Math.min(220, c.width));
+        delete c.width;
+      } else if (Ext.isNumber(c.flex)) {
+        weight = c.minWidth || 200;
+      } else {
+        weight = 120;
+      }
+
+      c.flex = weight;
+      processed.push(c);
+    });
+
+    return processed;
   },
 
   getCommonColumns: function (mode) {

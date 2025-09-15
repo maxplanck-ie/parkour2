@@ -1490,16 +1490,8 @@ export default {
           await wb.xlsx.load(response.data);
         }
 
-        let parkourSheet = wb.getWorksheet("Parkour");
-        if (parkourSheet) {
-          const toDelete = parkourSheet.rowCount;
-          if (toDelete > 0) parkourSheet.spliceRows(1, toDelete);
-          parkourSheet.columns = [];
-        } else {
-          parkourSheet = wb.addWorksheet("Parkour");
-        }
-
-        parkourSheet.columns = [
+        // Define the expected headers and keys we populate
+        const expectedColumns = [
           { header: "Request Name", key: "request_name", width: 25 },
           { header: "Name", key: "name", width: 25 },
           { header: "Status", key: "status_text", width: 15 },
@@ -1529,7 +1521,71 @@ export default {
           { header: "Sequencers", key: "sequencer_names", width: 20 }
         ];
 
-        parkourSheet.addRows(sortedExportRows);
+        let parkourSheet = wb.getWorksheet("Parkour");
+        if (!parkourSheet) {
+          parkourSheet = wb.addWorksheet("Parkour");
+          parkourSheet.columns = expectedColumns;
+          parkourSheet.addRows(sortedExportRows);
+        } else {
+          const headerRowIndex = 1;
+          const headerRow = parkourSheet.getRow(headerRowIndex);
+          const headerToCol = new Map();
+          for (let c = 1; c <= headerRow.cellCount; c++) {
+            let v = headerRow.getCell(c).value;
+            if (v && typeof v === "object" && v.richText) {
+              v = v.richText.map((t) => t.text).join("");
+            } else if (v && typeof v === "object" && v.text) {
+              v = v.text;
+            }
+            if (typeof v === "string" && v.trim()) headerToCol.set(v.trim(), c);
+          }
+
+          const keyToCol = new Map();
+          let matchedHeaders = 0;
+          expectedColumns.forEach((col) => {
+            const idx = headerToCol.get(col.header);
+            if (idx) {
+              keyToCol.set(col.key, idx);
+              matchedHeaders++;
+            }
+          });
+
+          if (matchedHeaders < 6) {
+            const lastRow = parkourSheet.rowCount;
+            for (let r = 2; r <= lastRow; r++) {
+              const row = parkourSheet.getRow(r);
+              row.eachCell((cell) => {
+                cell.value = null;
+              });
+            }
+            expectedColumns.forEach((col, i) => {
+              const colIdx = i + 1;
+              parkourSheet.getCell(headerRowIndex, colIdx).value = col.header;
+              if (col.width) parkourSheet.getColumn(colIdx).width = col.width;
+              keyToCol.set(col.key, colIdx);
+            });
+          } else {
+            const lastRow = parkourSheet.rowCount;
+            for (let r = headerRowIndex + 1; r <= lastRow; r++) {
+              const row = parkourSheet.getRow(r);
+              expectedColumns.forEach((col) => {
+                const cIdx = keyToCol.get(col.key);
+                if (cIdx) row.getCell(cIdx).value = null;
+              });
+            }
+          }
+
+          let rIndex = headerRowIndex + 1;
+          for (const dataRow of sortedExportRows) {
+            const row = parkourSheet.getRow(rIndex);
+            expectedColumns.forEach((col) => {
+              const cIdx = keyToCol.get(col.key);
+              if (cIdx) row.getCell(cIdx).value = dataRow[col.key] ?? null;
+            });
+            if (row.commit) row.commit();
+            rIndex++;
+          }
+        }
 
         const sortedSheets = [...wb.worksheets].sort(
           (a, b) => a.orderNo - b.orderNo
