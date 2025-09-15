@@ -31,7 +31,7 @@ django-extensions==4.1
     # via -r backend/requirements/base.in
 django-import-export==4.3.9
     # via -r backend/requirements/base.in
-django-linear-migrations==2.17.0
+django-linear-migrations==2.18.0
     # via -r backend/requirements/base.in
 django-monthfield==0.1.4
     # via -r backend/requirements/base.in
@@ -63,7 +63,7 @@ numpy==1.25.2 ; python_full_version < '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
-numpy==2.3.2 ; python_full_version >= '3.12'
+numpy==2.3.3 ; python_full_version >= '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
