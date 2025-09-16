@@ -4,7 +4,7 @@
     <div v-if="loading || fakeLoading" class="loading-overlay">
       <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
-        Loading <span style="font-weight: bold">Libraries & Samples</span>...
+        Loading <span style="font-weight: bold">Library Preparation</span>...
       </p>
     </div>
 
@@ -260,7 +260,7 @@
                   </div>
                 </div>
               </div>
-              <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
+              <div v-for="(file, index) in fetchedLibraryPreparationTemplates" :key="index" class="file-item">
                 <div class="file-info">
                   <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -427,6 +427,10 @@ export default {
         ],
         groupHeader: (value, count, data) => {
           return libraryPreparationGroupHeader(value, count);
+        },
+        getClearValueForField: (field) => {
+          if (field === "smear_analysis") return 100;
+          return "";
         }
       },
       searchQuery: "",
@@ -435,9 +439,10 @@ export default {
   },
   mounted() {
     this.getLibrariesSamples();
-    // this.getROCrateData();
     this.setColumns();
     this.fetchExportTemplates();
+
+    // this.getROCrateData();
 
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -911,33 +916,37 @@ export default {
       }
     },
     handleExportClick() {
-      // let requestIdsSet = new Set();
-      //   [...this.librariesSamplesList].filter((row) => row.selected).forEach((row) => {
-      //     const match = row.request_name?.match(/^(\d+)_/);
-      //     if (match) {
-      //       requestIdsSet.add(match[1]);
-      //     }
-      //   });
-      // if (requestIdsSet.length === 0) {
-      //   showNotification("Please select at least one request to export.", "warning")
-      //   return;
-      // }
-      // else if (requestIdsSet.length > 1) {
-      //   showNotification("Please select at least one request to export.", "warning")
-      //   return;
-      // }
-      // else
+      const selected = this.librariesSamplesList.filter((row) => row.selected);
+      if (selected.length === 0) {
+        showNotification(
+          "Please select at least one library or sample to export.",
+          "warning"
+        );
+        return;
+      }
+      const protoSet = new Set(
+        selected.map((r) => r.library_protocol_name || r.library_protocol)
+      );
+      if (protoSet.size > 1) {
+        showNotification(
+          "Please select rows from a single Library Preparation Protocol.",
+          "warning"
+        );
+        return;
+      }
       this.showExportPopup = true;
     },
     async handleExport() {
-      this.fakeLoadingStart();
       try {
+        this.fakeLoadingStart();
         const today = new Date();
         const formattedDate = `${today.getFullYear()}${String(
           today.getMonth() + 1
         ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
 
-        const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
+        let exportRows = this.librariesSamplesList.filter((row) => row.selected);
+
+        const sortedExportRows = [...exportRows].sort((a, b) => {
           const getRequestNum = (str) => {
             const match = String(str).match(/^(\d+)_/);
             return match ? parseInt(match[1], 10) : 0;
@@ -952,20 +961,21 @@ export default {
           return a.barcode?.localeCompare(b.barcode);
         });
 
-        let exportRows = sortedRows.filter((row) => row.selected);
-        const requestIdsSet = new Set();
-        exportRows.forEach((row) => {
-          const match = row.request_name?.match(/^(\d+)_/);
-          if (match) {
-            requestIdsSet.add(match[1]);
-          }
-        });
-        const requestIds = Array.from(requestIdsSet)
-          .map((id) => parseInt(id, 10))
-          .sort((a, b) => a - b)
-          .slice(0, 40)
+        const uniqueRequestIDs = [
+          ...new Set(
+            sortedExportRows.map((row) => {
+              const match = row.request_name.match(/^(\d+)_/);
+              return match ? match[1] : row.request_name;
+            })
+          )
+        ]
+          .sort()
           .join("_");
-        const filename = `${formattedDate}_${requestIds}_preparation.xlsx`;
+
+        let filename = "";
+
+        filename = `${formattedDate}_${uniqueRequestIDs}_preparation`;
+
         const wb = new ExcelJS.Workbook();
         if (this.selectedFile !== "without-file") {
           const response = await axiosRef.get(
@@ -975,17 +985,7 @@ export default {
           await wb.xlsx.load(response.data);
         }
 
-        let parkourSheet = wb.getWorksheet("Parkour");
-        if (parkourSheet) {
-          parkourSheet.eachRow((row, rowNumber) => {
-            parkourSheet.spliceRows(rowNumber, 1);
-          });
-          parkourSheet.columns = [];
-        } else {
-          parkourSheet = wb.addWorksheet("Parkour");
-        }
-
-        parkourSheet.columns = [
+        const expectedColumns = [
           { header: "Request", key: "request_name", width: 25 },
           { header: "Barcode", key: "barcode", width: 15 },
           { header: "Name", key: "name", width: 20 },
@@ -1006,9 +1006,71 @@ export default {
           { header: "bp Sample", key: "size_distribution_facility", width: 15 }
         ];
 
-        exportRows.forEach((row) => {
-          parkourSheet.addRow(row);
-        });
+        let parkourSheet = wb.getWorksheet("Parkour");
+        if (!parkourSheet) {
+          parkourSheet = wb.addWorksheet("Parkour");
+          parkourSheet.columns = expectedColumns;
+          parkourSheet.addRows(sortedExportRows);
+        } else {
+          const headerRowIndex = 1;
+          const headerRow = parkourSheet.getRow(headerRowIndex);
+          const headerToCol = new Map();
+          for (let c = 1; c <= headerRow.cellCount; c++) {
+            let v = headerRow.getCell(c).value;
+            if (v && typeof v === "object" && v.richText) {
+              v = v.richText.map((t) => t.text).join("");
+            } else if (v && typeof v === "object" && v.text) {
+              v = v.text;
+            }
+            if (typeof v === "string" && v.trim()) headerToCol.set(v.trim(), c);
+          }
+
+          const keyToCol = new Map();
+          let matchedHeaders = 0;
+          expectedColumns.forEach((col) => {
+            const idx = headerToCol.get(col.header);
+            if (idx) {
+              keyToCol.set(col.key, idx);
+              matchedHeaders++;
+            }
+          });
+
+          if (matchedHeaders < 6) {
+            const lastRow = parkourSheet.rowCount;
+            for (let r = 2; r <= lastRow; r++) {
+              const row = parkourSheet.getRow(r);
+              row.eachCell((cell) => {
+                cell.value = null;
+              });
+            }
+            expectedColumns.forEach((col, i) => {
+              const colIdx = i + 1;
+              parkourSheet.getCell(headerRowIndex, colIdx).value = col.header;
+              if (col.width) parkourSheet.getColumn(colIdx).width = col.width;
+              keyToCol.set(col.key, colIdx);
+            });
+          } else {
+            const lastRow = parkourSheet.rowCount;
+            for (let r = headerRowIndex + 1; r <= lastRow; r++) {
+              const row = parkourSheet.getRow(r);
+              expectedColumns.forEach((col) => {
+                const cIdx = keyToCol.get(col.key);
+                if (cIdx) row.getCell(cIdx).value = null;
+              });
+            }
+          }
+
+          let rIndex = headerRowIndex + 1;
+          for (const dataRow of sortedExportRows) {
+            const row = parkourSheet.getRow(rIndex);
+            expectedColumns.forEach((col) => {
+              const cIdx = keyToCol.get(col.key);
+              if (cIdx) row.getCell(cIdx).value = dataRow[col.key] ?? null;
+            });
+            if (row.commit) row.commit();
+            rIndex++;
+          }
+        }
 
         const sortedSheets = [...wb.worksheets].sort(
           (a, b) => a.orderNo - b.orderNo
@@ -1025,10 +1087,18 @@ export default {
         wb.views = [{ activeTab: 0, firstSheet: 0 }];
 
         wb.worksheets.forEach((sheet) => {
+          if (sheet.name === "Parkour") return;
           sheet.eachRow((row) => {
             row.eachCell((cell) => {
-              if (cell.formula) {
-                cell.model.result = undefined;
+              if (
+                cell &&
+                (cell.formula ||
+                  (cell.model && cell.model.formula) ||
+                  (cell.value && cell.value.formula))
+              ) {
+                if (cell.model) cell.model.result = undefined;
+                if (cell.value && typeof cell.value === "object")
+                  cell.value.result = undefined;
               }
             });
           });
@@ -1039,15 +1109,51 @@ export default {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         });
         saveAs(blob, filename);
-      } catch (error) {
-        showNotification(
-          "Error during export. Please try again.\n" + error,
-          "error"
-        );
       } finally {
         this.fakeLoadingStop();
         this.showExportPopup = false;
         this.selectedFile = "without-file";
+      }
+    },
+    handleDragOver(e) {
+      e.preventDefault();
+      this.isDragOver = true;
+    },
+    handleDragEnter(e) {
+      e.preventDefault();
+      this.isDragOver = true;
+    },
+    handleDragLeave(e) {
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        this.isDragOver = false;
+      }
+    },
+    handleDrop(e) {
+      e.preventDefault();
+      this.isDragOver = false;
+
+      const files = e.dataTransfer.files;
+      if (files.length > 1) {
+        showNotification(
+          "Please upload only one XLSX file at a time.",
+          "error"
+        );
+      } else this.processUploadedFile(files[0]);
+    },
+    processUploadedFile(file) {
+      if (
+        file &&
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
+        const event = {
+          target: {
+            files: [file]
+          }
+        };
+        this.uploadExportTemplate(event);
+      } else {
+        showNotification("Please upload a valid XLSX file.", "error");
       }
     },
     ellipsisContainer(text, boldText) {
@@ -1163,11 +1269,3 @@ body,
   }
 }
 </style>
-
-<!--
-bp Sample: delete gives error
-add validations according to old component: deleting, right click operations, copy paste on ctrl operations
-export formulas don't refresh the values after concat
-
-modify the admin panel
--->

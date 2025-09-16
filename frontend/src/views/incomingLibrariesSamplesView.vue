@@ -442,8 +442,8 @@
 
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTable.vue";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import {
   showNotification,
   handleError,
@@ -797,7 +797,6 @@ export default {
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     handleColumnVisibilityChanged(field, visible) {
-      console.log("inn")
       const storedVisibility = JSON.parse(
         localStorage.getItem("incomingLibrariesAndSamplesColumnVisibility") || "{}"
       );
@@ -812,7 +811,7 @@ export default {
         JSON.stringify(newVisibility)
       );
 
-      this.fakeLoadingStart();
+      // this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     toggleColumnVisibility(column) {

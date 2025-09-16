@@ -115,24 +115,28 @@ class LibraryPreparationSerializer(ModelSerializer):
         internal_value = super().to_internal_value(data)
 
         if "concentration_sample" in data:
-            try:
-                internal_value["concentration_sample"] = float(
-                    data["concentration_sample"]
-                )
-            except ValueError:
-                raise ValidationError(
-                    {"concentration_sample": ["A valid float is required."]}
-                )
+            raw = data["concentration_sample"]
+            if raw in (None, ""):
+                internal_value["concentration_sample"] = None
+            else:
+                try:
+                    internal_value["concentration_sample"] = float(raw)
+                except (TypeError, ValueError):
+                    raise ValidationError(
+                        {"concentration_sample": ["A valid float is required."]}
+                    )
 
         if "size_distribution_facility" in data:
-            try:
-                internal_value["size_distribution_facility"] = float(
-                    data["size_distribution_facility"]
-                )
-            except ValueError:
-                raise ValidationError(
-                    {"size_distribution_facility": ["A valid float is required."]}
-                )
+            raw = data["size_distribution_facility"]
+            if raw in (None, ""):
+                internal_value["size_distribution_facility"] = None
+            else:
+                try:
+                    internal_value["size_distribution_facility"] = float(raw)
+                except (TypeError, ValueError):
+                    raise ValidationError(
+                        {"size_distribution_facility": ["A valid float is required."]}
+                    )
 
         if "measuring_unit_facility" in data:
             internal_value["measuring_unit_facility"] = data["measuring_unit_facility"]

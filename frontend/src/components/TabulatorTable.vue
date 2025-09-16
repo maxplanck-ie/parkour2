@@ -719,7 +719,10 @@ export default {
               .classList.contains("disable-editing");
 
             if (isEditable && !disabledEditing) {
-              cell.setValue("");
+              const fieldName = cell._cell.column.getField();
+              const overrideFn = this.tableOptions && this.tableOptions.getClearValueForField;
+              const clearVal = typeof overrideFn === "function" ? overrideFn(fieldName) : "";
+              cell.setValue(clearVal);
             }
           });
         });
