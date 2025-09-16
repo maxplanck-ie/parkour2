@@ -693,6 +693,10 @@ input[type="radio"]:checked::after {
   outline: none;
 }
 
+.date-filters input[type="date"]:not(:valid) {
+  font-size: 12px;
+}
+
 .invalid-date {
   border: 1px solid #ff6b6b !important;
   border-radius: 2px;

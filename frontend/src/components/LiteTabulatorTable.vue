@@ -382,10 +382,7 @@ export default {
   margin-top: 5px;
 }
 
-.lite-tabulator-table
-  .no-group-by
-  .tabulator-row-odd:nth-child(1)
-  .tabulator-cell {
+.lite-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
@@ -393,7 +390,7 @@ export default {
   padding: 10px 0px !important;
 }
 
-.lite-tabulator-table .title-field-group > .tabulator-col-content > div > div {
+.lite-tabulator-table .title-field-group>.tabulator-col-content>div>div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }

@@ -6,48 +6,22 @@
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div
-      class="popup-container"
-      :style="{
-        height: errorsPopupContents.errorsPopupHeight + 'px',
-        width: errorsPopupContents.errorsPopupWidth + 'px'
-      }"
-    >
+    <div class="popup-container" :style="{
+      height: errorsPopupContents.errorsPopupHeight + 'px',
+      width: errorsPopupContents.errorsPopupWidth + 'px'
+    }">
       <div class="popup-header">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <g>
-            <path
-              opacity="0.3"
+            <path opacity="0.3"
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              fill="#323232"
-            />
+              fill="#323232" />
             <path
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M12 8V13"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-            <path
-              d="M12 16V15.9888"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
+              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
           </g>
         </svg>
         <span class="popup-title">Paste Error</span>
@@ -60,15 +34,9 @@
           Following errors occurred while pasting, please try again after
           fixing:
         </div>
-        <div
-          v-if="errorsPopupContents.errorsList?.length"
-          class="popup-scrollable-content"
-        >
+        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
           <ol style="padding-left: 25px">
-            <li
-              v-for="(item, index) in errorsPopupContents.errorsList"
-              :key="index"
-            >
+            <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
               {{ item.barcode + " ➜ " }}
               <span style="font-weight: bold">{{ item.message }}</span>
             </li>
@@ -374,6 +342,12 @@ export default {
           document.addEventListener("keydown", this.handleKeyDown);
 
           const tabulatorElement = this.getTabulatorElement();
+          tabulatorElement.addEventListener("keydown", (e) => {
+            const tag = e.target && e.target.tagName;
+            if ((tag === "INPUT" || tag === "TEXTAREA") && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
+              e.stopPropagation();
+            }
+          }, true);
           if (this.tableGroupsConfig.noGroupByClass) {
             tabulatorElement.classList.add("no-group-by");
           } else {
@@ -781,49 +755,63 @@ export default {
 
     validateCellValue(value, columnDef, rowData) {
       const editorType = columnDef.editor;
+      const resolveEditorParams = () =>
+        typeof columnDef.editorParams === "function"
+          ? columnDef.editorParams({ getRow: () => ({ getData: () => rowData }) })
+          : columnDef.editorParams || {};
+      const applyValidators = (val) => {
+        if (!columnDef.validator) return;
+        const validators = Array.isArray(columnDef.validator)
+          ? columnDef.validator
+          : [columnDef.validator];
+        for (const rule of validators) {
+          if (typeof rule === "function") {
+            const res = rule(val);
+            if (res !== true) throw new Error(res || "Invalid value.");
+          } else if (typeof rule === "string") {
+            const trimmed = rule.trim().toLowerCase();
+            if (trimmed === "integer") {
+              if (!Number.isInteger(val)) throw new Error("Value must be an integer.");
+            } else if (trimmed.startsWith("min:")) {
+              const v = Number(trimmed.slice(4));
+              if (!Number.isNaN(v) && val < v)
+                throw new Error(`Value should be more than ${new Intl.NumberFormat().format(v)}.`);
+            } else if (trimmed.startsWith("max:")) {
+              const v = Number(trimmed.slice(4));
+              if (!Number.isNaN(v) && val > v)
+                throw new Error(`Value should be less than ${new Intl.NumberFormat().format(v)}.`);
+            }
+          }
+        }
+      };
       switch (editorType) {
-        case "number":
-          const numValue = parseFloat(value);
-          const editorParamsNumber = columnDef.editorParams || {};
-          const min = editorParamsNumber.min;
-          const max = editorParamsNumber.max;
-          if (
-            columnDef.field === "sample_volume_facility" &&
-            !Number.isInteger(numValue)
-          ) {
-            throw new Error("Volume (facility) is a positive integer field.");
-          }
-          if (isNaN(numValue) && value !== "") {
-            throw new Error("Invalid numeric format, please check!");
-          }
-          if (
-            (min !== undefined && numValue < min) ||
-            (max !== undefined && numValue > max)
-          ) {
+        case "number": {
+          const str = String(value).trim();
+          if (str === "") return "";
+          const numValue = Number(str);
+          if (Number.isNaN(numValue)) throw new Error("Invalid numeric format, please check!");
+          applyValidators(numValue);
+          const { min, max } = resolveEditorParams();
+          if ((min !== undefined && numValue < min) || (max !== undefined && numValue > max)) {
             const nf = new Intl.NumberFormat();
             const hasMin = min !== undefined;
             const hasMax = max !== undefined;
             const minStr = hasMin ? nf.format(Number(min)) : undefined;
             const maxStr = hasMax ? nf.format(Number(max)) : undefined;
-
             let message;
-            if (hasMin && hasMax) {
-              message = `Value must be between ${minStr} and ${maxStr}.`;
-            } else if (hasMin) {
-              message = `Value should be more than ${minStr}.`;
-            } else {
-              message = `Value should be less than ${maxStr}.`;
-            }
-
+            if (hasMin && hasMax) message = `Value must be between ${minStr} and ${maxStr}.`;
+            else if (hasMin) message = `Value should be more than ${minStr}.`;
+            else message = `Value should be less than ${maxStr}.`;
             throw new Error(message);
           }
-          return value == "" ? "" : numValue;
+          return numValue;
+        }
         case "list":
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                  getRow: () => ({ getData: () => rowData })
-                })
+                getRow: () => ({ getData: () => rowData })
+              })
               : columnDef.editorParams;
           const options =
             editorParamsList?.values?.map((opt) =>
@@ -1007,10 +995,7 @@ export default {
   margin-top: 5px;
 }
 
-.normal-tabulator-table
-  .no-group-by
-  .tabulator-row-odd:nth-child(1)
-  .tabulator-cell {
+.normal-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
@@ -1018,16 +1003,18 @@ export default {
   padding: 10px 0px !important;
 }
 
-.normal-tabulator-table
-  .title-field-group
-  > .tabulator-col-content
-  > div
-  > div {
+.normal-tabulator-table .title-field-group>.tabulator-col-content>div>div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
+}
+
+.normal-tabulator-table input[type="number"]::-webkit-outer-spin-button,
+.normal-tabulator-table input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
 
 <!--
-Fix APIs failing when multiple edits together
+Fix APIs failing when multiple edits together, especially when DEL or BACKSPACE
 -->
