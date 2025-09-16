@@ -47,14 +47,15 @@
           <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
               left: -50px;
               width: 250px;
-              padding-right: 8px;
-              padding-top: 10px;
-              padding-bottom: 10px;
+              max-height: 473px;
+              display: flex;
+              flex-direction: column;
+              padding: 10px 10px 5px 10px;
             ">
             <ul style="
-                padding-left: 0px;
-                padding-right: 10px;
-                max-height: 300px;
+                padding: 5px 7px 7px;
+                margin: 0;
+                flex-grow: 1;
                 overflow-y: auto;
               ">
               <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
@@ -66,8 +67,8 @@
                     backgroundColor: column.columns ? '#33333310' : 'white',
                     cursor: column.columns ? 'default' : 'pointer'
                   }">
-                    <input v-if="!column.columns" type="checkbox" :checked="column.visible"
-                      @change="toggleColumnVisibility(column, true)" />
+                    <input v-if="!column.columns" type="checkbox" v-model="column.visible"
+                      @change="toggleColumnVisibility(column)" />
                     <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
                         display: flex;
                         align-items: center;
@@ -80,20 +81,24 @@
                         background-color: orange;
                         color: white;
                       " />
-                    <span style="font-weight: bold">{{ column.title }}</span>
+                    <span>{{ column.title }}</span>
                   </label>
-                  <ul v-if="column.columns" style="padding-left: 15px">
-                    <li v-for="(subColumn, subIndex) in column.columns" :key="subIndex" style="list-style: none">
-                      <label>
-                        <input type="checkbox" style="width: 20px !important" :checked="subColumn.visible"
-                          @change="toggleColumnVisibility(subColumn, false)" />
-                        <span style="width: 100%">{{ subColumn.title }}</span>
-                      </label>
-                    </li>
-                  </ul>
                 </template>
               </li>
             </ul>
+            <div style="
+                padding-top: 8px;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+              ">
+              <button @click="resetColumnVisibility" class="reset-button">
+                Reset Visibility Settings
+              </button>
+              <button style="margin-bottom: 5px" @click="resetColumnWidths" class="reset-button">
+                Reset Width Settings
+              </button>
+            </div>
           </div>
         </div>
         <div class="button-popup-wrapper">
@@ -115,7 +120,9 @@
         groupBy="pool_name" :groupSort="{ field: 'pool_name', order: 'desc' }" :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
-          fakeLoadingStop
+          fakeLoadingStop,
+          handleColumnResized,
+          handleColumnVisibilityChanged
         }" />
     </div>
 
@@ -165,8 +172,21 @@
     </div>
 
     <!-- Popup for Export Options -->
-    <div v-if="showExportPopup" class="popup-overlay">
-      <div class="popup-container" :style="{ width: '670px', height: '500px' }">
+    <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
+      @dragenter="handleDragEnter" @dragleave="handleDragLeave" :class="{ 'drag-over': isDragOver }">
+
+      <div class="drag-drop-indicator">
+        <div style="
+          display: flex;
+          justify-content: center; 
+          align-items: center; 
+          height: 200px; 
+        ">
+          <p>Drop <span style="font-weight: bold">XLSX file</span> here to upload as <span
+              style="font-weight: bold">template</span></p>
+        </div>
+      </div>
+      <div v-if="!isDragOver" class="popup-container" :style="{ width: '670px', height: '500px' }">
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
           <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
@@ -207,56 +227,34 @@
           </button>
         </div>
         <div class="popup-body">
-          <div>
-            Select or upload additional excel sheet templates to append:
-          </div>
-          <div class="file-list-section">
-            <div class="file-item">
-              <div class="file-info">
-                <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <g>
-                    <path opacity="0.1"
-                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      fill="#323232" />
-                    <path
-                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                  </g>
-                </svg>
-                <span>Export without any additional sheets</span>
-              </div>
-              <div class="file-actions">
-                <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
-                  <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
+          <div class="export-section" style="height: 100%">
+            <div style="font-weight: bold; margin-bottom: 8px;">
+              Upload additional excel sheet templates to append:
+            </div>
+            <div class="file-list-section" style="height: 280px;">
+              <div class="file-item">
+                <div class="file-info">
+                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g>
+                      <path opacity="0.1"
+                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                        fill="#323232" />
+                      <path
+                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                  <span>Export without any additional sheets</span>
+                </div>
+                <div class="file-actions">
+                  <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
+                    <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div v-for="(file, index) in fetchedPoolingTemplates" :key="index" class="file-item">
-              <div class="file-info">
-                <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <g>
-                    <path opacity="0.1"
-                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      fill="#323232" />
-                    <path
-                      d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                      stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                    <path d="M9 6L11 6" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path d="M10 9L12 9" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path d="M9 12L11 12" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path d="M10 15L12 15" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                  </g>
-                </svg>
-                <span>{{ file.name }}</span>
-              </div>
-              <div class="file-actions">
-                <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
+              <div v-for="(file, index) in fetchedPoolingTemplates" :key="index" class="file-item">
+                <div class="file-info">
                   <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g>
@@ -266,34 +264,58 @@
                       <path
                         d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
                         stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                      <path d="M12 16L12 11" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      <path d="M9 6L11 6" stroke="#323232" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
-                      <path d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14" stroke="#323232"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                  </svg>
-                </button>
-                <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
-                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g>
-                      <path opacity="0.1"
-                        d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
-                        fill="#323232" />
-                      <path
-                        d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
-                        stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      <path
-                        d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
-                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                      <path d="M3 3L21 21" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                      <path d="M10 9L12 9" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M9 12L11 12" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M10 15L12 15" stroke="#323232" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                     </g>
                   </svg>
-                </button>
-                <div class="file-actions-radio-button">
-                  <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
-                    v-model="selectedFile" />
+                  <span>{{ file.name }}</span>
+                </div>
+                <div class="file-actions">
+                  <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
+                    <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <g>
+                        <path opacity="0.1"
+                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                          fill="#323232" />
+                        <path
+                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
+                          stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                        <path d="M12 16L12 11" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" />
+                        <path d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14" stroke="#323232"
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </g>
+                    </svg>
+                  </button>
+                  <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
+                    <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <g>
+                        <path opacity="0.1"
+                          d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
+                          fill="#323232" />
+                        <path
+                          d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
+                          stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                          d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
+                          stroke="#323232" stroke-width="2" stroke-linejoin="round" />
+                        <path d="M3 3L21 21" stroke="#323232" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" />
+                      </g>
+                    </svg>
+                  </button>
+                  <div class="file-actions-radio-button">
+                    <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
+                      v-model="selectedFile" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -361,6 +383,7 @@ export default {
       tabulatorInstance: null,
       loading: true,
       fakeLoading: false,
+      isDragOver: false,
       librariesSamplesList: [],
       columnsList: [],
       showPopupWindow: false,
@@ -517,7 +540,7 @@ export default {
         this.loading = false;
       }
     },
-        setColumns() {
+    setColumns() {
       const storedVisibility = JSON.parse(
         localStorage.getItem("poolingColumnVisibility") || "{}"
       );
@@ -592,37 +615,57 @@ export default {
     toggleSelectColumns() {
       this.showSelectColumns = !this.showSelectColumns;
     },
-    toggleColumnVisibility(column, isMainColumn) {
+    handleColumnResized(column) {
+      const field = column.getField();
+      const width = column.getWidth();
+      const storedWidths = JSON.parse(
+        localStorage.getItem("poolingColumnWidths") || "{}"
+      );
+      const newWidths = {
+        ...storedWidths,
+        [field]: width
+      };
+      localStorage.setItem(
+        "poolingColumnWidths",
+        JSON.stringify(newWidths)
+      );
       this.fakeLoadingStart();
-      let updatedColumns;
+      setTimeout(() => this.fakeLoadingStop(), 50);
+    },
+    handleColumnVisibilityChanged(field, visible) {
+      const storedVisibility = JSON.parse(
+        localStorage.getItem("poolingColumnVisibility") || "{}"
+      );
 
-      if (isMainColumn) {
-        updatedColumns = this.columnsList.map((col) => {
-          return {
-            ...col,
-            visible: col === column ? !col.visible : col.visible
-          };
-        });
-      } else {
-        updatedColumns = this.columnsList.map((col) => {
-          if (col.columns) {
-            return {
-              ...col,
-              columns: col.columns.map((subCol) => ({
-                ...subCol,
-                visible: subCol === column ? !subCol.visible : subCol.visible
-              }))
-            };
-          } else return col;
-        });
-      }
+      const newVisibility = {
+        ...storedVisibility,
+        [field]: visible
+      };
 
       localStorage.setItem(
-        "poolingColumnSettings",
-        JSON.stringify(updatedColumns)
+        "poolingColumnVisibility",
+        JSON.stringify(newVisibility)
       );
-      this.columnsList = updatedColumns;
-      this.fakeLoadingStop();
+
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 50);
+    },
+    toggleColumnVisibility(column) {
+      if (this.tabulatorInstance) {
+        this.tabulatorInstance.getTable().toggleColumn(column.field);
+      }
+    },
+    resetColumnWidths() {
+      localStorage.removeItem("poolingColumnWidths");
+      this.setColumns();
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 300);
+    },
+    resetColumnVisibility() {
+      localStorage.removeItem("poolingColumnVisibility");
+      this.setColumns();
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), 300);
     },
     handleGroupButtonClick(event, groupValue, action) {
       event.stopPropagation();
@@ -955,27 +998,37 @@ export default {
       }
     },
     handleExportClick() {
-      const selectedRows = this.librariesSamplesList.filter(
-        (row) => row.selected
-      );
-      if (selectedRows.length === 0) {
+      const selected = this.librariesSamplesList.filter((row) => row.selected);
+      if (selected.length === 0) {
         showNotification(
-          "Please select at least one library to export.",
+          "Please select at least one library or sample to export.",
           "warning"
         );
-      } else {
-        this.showExportPopup = true;
+        return;
       }
+      const protoSet = new Set(
+        selected.map((r) => r.pool_name || r.pool)
+      );
+      if (protoSet.size > 1) {
+        showNotification(
+          "Please select rows from a single Pool.",
+          "warning"
+        );
+        return;
+      }
+      this.showExportPopup = true;
     },
     async handleExport() {
-      this.fakeLoadingStart();
       try {
+        this.fakeLoadingStart();
         const today = new Date();
         const formattedDate = `${today.getFullYear()}${String(
           today.getMonth() + 1
         ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
 
-        const sortedRows = [...this.librariesSamplesList].sort((a, b) => {
+        let exportRows = this.librariesSamplesList.filter((row) => row.selected);
+
+        const sortedExportRows = [...exportRows].sort((a, b) => {
           const getRequestNum = (str) => {
             const match = String(str).match(/^(\d+)_/);
             return match ? parseInt(match[1], 10) : 0;
@@ -987,22 +1040,15 @@ export default {
           if (aNum !== bNum) return aNum - bNum;
           return a.barcode?.localeCompare(b.barcode);
         });
-        let exportRows = sortedRows.filter((row) => row.selected);
-        if (exportRows.length === 0) exportRows = sortedRows;
-        const uniquePools = [...new Set(exportRows.map((row) => row.pool_name))]
+
+        const uniquePools = [...new Set(sortedExportRows.map((row) => row.pool_name))]
           .sort()
           .join("_");
-        const uniqueRequestIDs = [
-          ...new Set(
-            exportRows.map((row) => {
-              const match = row.request_name.match(/^(\d+)_/);
-              return match ? match[1] : row.request_name;
-            })
-          )
-        ]
-          .sort()
-          .join("_");
-        const filename = `${uniquePools}_${formattedDate}_${uniqueRequestIDs}`;
+
+        let filename = "";
+
+        filename = `${formattedDate}_${uniquePools}_pooling`;
+
         const wb = new ExcelJS.Workbook();
         if (this.selectedFile !== "without-file") {
           const response = await axiosRef.get(
@@ -1012,17 +1058,7 @@ export default {
           await wb.xlsx.load(response.data);
         }
 
-        let parkourSheet = wb.getWorksheet("Parkour");
-        if (parkourSheet) {
-          parkourSheet.eachRow((row, rowNumber) => {
-            parkourSheet.spliceRows(rowNumber, 1);
-          });
-          parkourSheet.columns = [];
-        } else {
-          parkourSheet = wb.addWorksheet("Parkour");
-        }
-
-        parkourSheet.columns = [
+        const expectedColumns = [
           { header: "Pool", key: "pool_name", width: 20 },
           { header: "Request", key: "request_name", width: 25 },
           { header: "Name", key: "name", width: 25 },
@@ -1044,9 +1080,71 @@ export default {
           { header: "Index I5", key: "index_i5", width: 20 }
         ];
 
-        exportRows.forEach((row) => {
-          parkourSheet.addRow(row);
-        });
+        let parkourSheet = wb.getWorksheet("Parkour");
+        if (!parkourSheet) {
+          parkourSheet = wb.addWorksheet("Parkour");
+          parkourSheet.columns = expectedColumns;
+          parkourSheet.addRows(sortedExportRows);
+        } else {
+          const headerRowIndex = 1;
+          const headerRow = parkourSheet.getRow(headerRowIndex);
+          const headerToCol = new Map();
+          for (let c = 1; c <= headerRow.cellCount; c++) {
+            let v = headerRow.getCell(c).value;
+            if (v && typeof v === "object" && v.richText) {
+              v = v.richText.map((t) => t.text).join("");
+            } else if (v && typeof v === "object" && v.text) {
+              v = v.text;
+            }
+            if (typeof v === "string" && v.trim()) headerToCol.set(v.trim(), c);
+          }
+
+          const keyToCol = new Map();
+          let matchedHeaders = 0;
+          expectedColumns.forEach((col) => {
+            const idx = headerToCol.get(col.header);
+            if (idx) {
+              keyToCol.set(col.key, idx);
+              matchedHeaders++;
+            }
+          });
+
+          if (matchedHeaders < 6) {
+            const lastRow = parkourSheet.rowCount;
+            for (let r = 2; r <= lastRow; r++) {
+              const row = parkourSheet.getRow(r);
+              row.eachCell((cell) => {
+                cell.value = null;
+              });
+            }
+            expectedColumns.forEach((col, i) => {
+              const colIdx = i + 1;
+              parkourSheet.getCell(headerRowIndex, colIdx).value = col.header;
+              if (col.width) parkourSheet.getColumn(colIdx).width = col.width;
+              keyToCol.set(col.key, colIdx);
+            });
+          } else {
+            const lastRow = parkourSheet.rowCount;
+            for (let r = headerRowIndex + 1; r <= lastRow; r++) {
+              const row = parkourSheet.getRow(r);
+              expectedColumns.forEach((col) => {
+                const cIdx = keyToCol.get(col.key);
+                if (cIdx) row.getCell(cIdx).value = null;
+              });
+            }
+          }
+
+          let rIndex = headerRowIndex + 1;
+          for (const dataRow of sortedExportRows) {
+            const row = parkourSheet.getRow(rIndex);
+            expectedColumns.forEach((col) => {
+              const cIdx = keyToCol.get(col.key);
+              if (cIdx) row.getCell(cIdx).value = dataRow[col.key] ?? null;
+            });
+            if (row.commit) row.commit();
+            rIndex++;
+          }
+        }
 
         const sortedSheets = [...wb.worksheets].sort(
           (a, b) => a.orderNo - b.orderNo
@@ -1063,10 +1161,18 @@ export default {
         wb.views = [{ activeTab: 0, firstSheet: 0 }];
 
         wb.worksheets.forEach((sheet) => {
+          if (sheet.name === "Parkour") return;
           sheet.eachRow((row) => {
             row.eachCell((cell) => {
-              if (cell.formula) {
-                cell.model.result = undefined;
+              if (
+                cell &&
+                (cell.formula ||
+                  (cell.model && cell.model.formula) ||
+                  (cell.value && cell.value.formula))
+              ) {
+                if (cell.model) cell.model.result = undefined;
+                if (cell.value && typeof cell.value === "object")
+                  cell.value.result = undefined;
               }
             });
           });
@@ -1077,15 +1183,51 @@ export default {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         });
         saveAs(blob, filename);
-      } catch (error) {
-        showNotification(
-          "Error during export. Please try again.\n" + error,
-          "error"
-        );
       } finally {
         this.fakeLoadingStop();
         this.showExportPopup = false;
         this.selectedFile = "without-file";
+      }
+    },
+    handleDragOver(e) {
+      e.preventDefault();
+      this.isDragOver = true;
+    },
+    handleDragEnter(e) {
+      e.preventDefault();
+      this.isDragOver = true;
+    },
+    handleDragLeave(e) {
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        this.isDragOver = false;
+      }
+    },
+    handleDrop(e) {
+      e.preventDefault();
+      this.isDragOver = false;
+
+      const files = e.dataTransfer.files;
+      if (files.length > 1) {
+        showNotification(
+          "Please upload only one XLSX file at a time.",
+          "error"
+        );
+      } else this.processUploadedFile(files[0]);
+    },
+    processUploadedFile(file) {
+      if (
+        file &&
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
+        const event = {
+          target: {
+            files: [file]
+          }
+        };
+        this.uploadExportTemplate(event);
+      } else {
+        showNotification("Please upload a valid XLSX file.", "error");
       }
     },
     ellipsisContainer(text, boldText) {
@@ -1213,5 +1355,5 @@ body,
 </style>
 
 <!--
-sorting order: 3rd sheet
+When filtering, the color of pool is changing
 -->
