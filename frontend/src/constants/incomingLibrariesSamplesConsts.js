@@ -638,9 +638,13 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               false: "Not Needed",
               true: "Risk Assessment Done",
             };
-            const finalString = options[value] || value || "No";
             const rowData = cell.getRow().getData();
             const cellElement = cell.getElement();
+            let finalString;
+
+            finalString = Object.prototype.hasOwnProperty.call(options, value)
+              ? options[value]
+              : value || (rowData.gmo === true ? "-" : "No");
             if (
               rowData.type === "L" ||
               rowData.gmo === false ||

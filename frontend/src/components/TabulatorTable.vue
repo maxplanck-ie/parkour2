@@ -91,6 +91,7 @@ export default {
     return {
       tabulatorInstance: null,
       previousData: null,
+      preventEditorBlurHandler: null,
       tableFiltersState: {
         typesIn: [
           { field: "type", type: "=", value: "L" },
@@ -140,6 +141,11 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener("keydown", this.handleKeyDown);
+    const tabulatorElement = this.getTabulatorElement();
+    if (tabulatorElement && this.preventEditorBlurHandler) {
+      tabulatorElement.removeEventListener("mousedown", this.preventEditorBlurHandler, true);
+      tabulatorElement.removeEventListener("click", this.preventEditorBlurHandler, true);
+    }
   },
   methods: {
     initializeTable() {
@@ -348,6 +354,20 @@ export default {
               e.stopPropagation();
             }
           }, true);
+
+          if (this.preventEditorBlurHandler) {
+            tabulatorElement.removeEventListener("mousedown", this.preventEditorBlurHandler, true);
+            tabulatorElement.removeEventListener("click", this.preventEditorBlurHandler, true);
+          }
+
+          this.preventEditorBlurHandler = (event) => {
+            if (event.target.closest(".tabulator-cell.tabulator-editing")) {
+              event.stopPropagation();
+            }
+          };
+
+          tabulatorElement.addEventListener("mousedown", this.preventEditorBlurHandler, true);
+          tabulatorElement.addEventListener("click", this.preventEditorBlurHandler, true);
           if (this.tableGroupsConfig.noGroupByClass) {
             tabulatorElement.classList.add("no-group-by");
           } else {
@@ -1015,6 +1035,26 @@ export default {
 .normal-tabulator-table input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.normal-tabulator-table input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.normal-tabulator-table input[type="number"]::-moz-number-spin-box,
+.normal-tabulator-table input[type="number"]::-moz-number-spin-up,
+.normal-tabulator-table input[type="number"]::-moz-number-spin-down {
+  display: none;
+}
+
+.tabulator-edit-list .tabulator-edit-list-item.active,
+.tabulator-edit-list .tabulator-edit-list-item.focused,
+.tabulator-edit-list .tabulator-edit-list-item.active .tabulator-edit-list-item-label,
+.tabulator-edit-list .tabulator-edit-list-item.focused .tabulator-edit-list-item-label {
+  background-color: #2967c5;
+  color: #fff !important;
+  outline: none;
 }
 </style>
 

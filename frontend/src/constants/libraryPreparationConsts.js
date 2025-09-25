@@ -154,7 +154,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 90,
       minWidth: 60,
       headerFilter: true,
-      headerTooltip: "Date",
+      headerTooltip: "Date (Since)",
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
