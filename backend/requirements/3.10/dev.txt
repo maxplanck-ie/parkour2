@@ -2,13 +2,13 @@
 #    uv pip compile --universal --python-version 3.10 backend/requirements/dev.in -c backend/requirements/3.10/base.txt -o backend/requirements/3.10/dev.txt
 annotated-types==0.7.0
     # via pydantic
-anyio==4.10.0
+anyio==4.11.0
     # via
     #   httpx
     #   openai
 appdirs==1.4.4
     # via django-migration-linter
-asgiref==3.9.1
+asgiref==3.9.2
     # via
     #   -c backend/requirements/3.10/base.txt
     #   django
@@ -20,9 +20,9 @@ attrs==25.3.0
     #   -c backend/requirements/3.10/base.txt
     #   jsonschema
     #   referencing
-boto3==1.40.25
+boto3==1.40.40
     # via -r backend/requirements/dev.in
-botocore==1.40.25
+botocore==1.40.40
     # via
     #   boto3
     #   s3transfer
@@ -31,7 +31,7 @@ certifi==2025.8.3
     #   httpcore
     #   httpx
     #   requests
-cffi==1.17.1 ; platform_python_implementation != 'PyPy'
+cffi==2.0.0 ; platform_python_implementation != 'PyPy'
     # via cryptography
 charset-normalizer==3.4.3
     # via requests
@@ -43,7 +43,7 @@ contourpy==1.3.2 ; python_full_version < '3.11'
     # via matplotlib
 contourpy==1.3.3 ; python_full_version >= '3.11'
     # via matplotlib
-cryptography==45.0.7
+cryptography==46.0.1
     # via
     #   django-cryptography-django5
     #   django-sql-explorer
@@ -96,7 +96,7 @@ django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
-django-cors-headers==4.7.0
+django-cors-headers==4.9.0
     # via -r backend/requirements/dev.in
 django-cryptography-django5==2.2
     # via django-sql-explorer
@@ -106,11 +106,11 @@ django-extensions==4.1
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
-django-import-export==4.3.9
+django-import-export==4.3.10
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
-django-linear-migrations==2.17.0
+django-linear-migrations==2.19.0
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
@@ -147,7 +147,7 @@ exceptiongroup==1.3.0 ; python_full_version < '3.11'
     #   ipython
 executing==2.2.1
     # via stack-data
-fonttools==4.59.2
+fonttools==4.60.0
     # via
     #   -c backend/requirements/3.10/base.txt
     #   fpdf2
@@ -185,7 +185,7 @@ ipython-pygments-lexers==1.1.1 ; python_full_version >= '3.11'
     # via ipython
 jedi==0.19.2
     # via ipython
-jiter==0.10.0
+jiter==0.11.0
     # via openai
 jmespath==1.0.1
     # via
@@ -201,13 +201,13 @@ jsonschema-specifications==2025.9.1
     #   jsonschema
 kiwisolver==1.4.9
     # via matplotlib
-lxml==6.0.1
+lxml==6.0.2
     # via
     #   -c backend/requirements/3.10/base.txt
     #   python-docx
 markdown-it-py==4.0.0
     # via rich
-markupsafe==3.0.2
+markupsafe==3.0.3
     # via werkzeug
 matplotlib==3.10.6
     # via -r backend/requirements/dev.in
@@ -222,14 +222,14 @@ numpy==1.25.2 ; python_full_version < '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-numpy==2.3.2 ; python_full_version >= '3.12'
+numpy==2.3.3 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==1.106.1
+openai==1.109.1
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -264,9 +264,9 @@ ptyprocess==0.7.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via pexpect
 pure-eval==0.2.3
     # via stack-data
-pycparser==2.22 ; platform_python_implementation != 'PyPy'
+pycparser==2.23 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via cffi
-pydantic==2.11.7
+pydantic==2.11.9
     # via openai
 pydantic-core==2.33.2
     # via pydantic
@@ -275,7 +275,7 @@ pygments==2.19.2
     #   ipython
     #   ipython-pygments-lexers
     #   rich
-pyparsing==3.2.3
+pyparsing==3.2.5
     # via matplotlib
 python-dateutil==2.9.0.post0
     # via
@@ -295,7 +295,7 @@ pytz==2025.2
     #   pandas
 pywatchman==3.0.0
     # via -r backend/requirements/dev.in
-pyyaml==6.0.2
+pyyaml==6.0.3
     # via
     #   -c backend/requirements/3.10/base.txt
     #   drf-spectacular
@@ -304,7 +304,7 @@ referencing==0.36.2
     #   -c backend/requirements/3.10/base.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2025.9.1
+regex==2025.9.18
     # via tiktoken
 requests==2.32.5
     # via
@@ -317,7 +317,7 @@ rpds-py==0.27.1
     #   -c backend/requirements/3.10/base.txt
     #   jsonschema
     #   referencing
-s3transfer==0.13.1
+s3transfer==0.14.0
     # via boto3
 six==1.17.0
     # via
@@ -363,6 +363,7 @@ typing-extensions==4.15.0
     #   -c backend/requirements/3.10/base.txt
     #   anyio
     #   asgiref
+    #   cryptography
     #   exceptiongroup
     #   ipython
     #   openai
@@ -386,11 +387,11 @@ urllib3==2.5.0
     # via
     #   botocore
     #   requests
-wcwidth==0.2.13
+wcwidth==0.2.14
     # via prompt-toolkit
 werkzeug==3.1.3
     # via -r backend/requirements/dev.in
-xlsxwriter==3.2.5
+xlsxwriter==3.2.9
     # via -r backend/requirements/dev.in
 xlwt==1.3.0
     # via
