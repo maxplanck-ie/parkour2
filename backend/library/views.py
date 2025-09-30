@@ -67,24 +67,30 @@ class LibrarySampleTree(viewsets.ViewSet):
                 )
 
         if search_string:
-            search_terms = [
-                term.strip() for term in search_string.split(",") if term.strip()
-            ]
-            all_search_q = []
-            for search_term in search_terms:
-                search_fields = [
-                    "name__icontains",
-                    "barcode__icontains",
-                    "request_name__icontains",
-                    "flowcell_ids__icontains",
-                    "pool_names__icontains",
-                ]
-                search_q = [Q(**{field: search_term}) for field in search_fields]
-                combined_search = reduce(or_, search_q)
-                all_search_q.append(combined_search)
+            or_groups = [grp.strip() for grp in search_string.split(";") if grp.strip()]
+            all_or_q = []
 
-            if all_search_q:
-                final_search = reduce(or_, all_search_q)
+            for group in or_groups:
+                terms = [term.strip() for term in group.split(",") if term.strip()]
+                and_qs = []
+                for term in terms:
+                    search_fields = [
+                        "name__icontains",
+                        "barcode__icontains",
+                        "request_name__icontains",
+                        "flowcell_ids__icontains",
+                        "pool_names__icontains",
+                    ]
+                    field_qs = [Q(**{field: term}) for field in search_fields]
+                    combined_or_for_term = reduce(or_, field_qs)
+                    and_qs.append(combined_or_for_term)
+
+                if and_qs:
+                    combined_and_group = reduce(lambda a, b: a & b, and_qs)
+                    all_or_q.append(combined_and_group)
+
+            if all_or_q:
+                final_search = reduce(or_, all_or_q)
                 library_queryset = library_queryset.filter(final_search)
                 sample_queryset = sample_queryset.filter(final_search)
 
