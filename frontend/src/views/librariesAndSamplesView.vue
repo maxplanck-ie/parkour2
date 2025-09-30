@@ -463,7 +463,8 @@ import {
   urlStringStartsWith,
   isValidDate,
   formatDateForInput,
-  formatDisplayDate
+  formatDisplayDate,
+  validateAndFixExcelBuffer
 } from "../utilities/utilityFunctions";
 import {
   librariesAndSamplesGroupHeader,
@@ -1170,7 +1171,8 @@ export default {
             `${urlStringStart}/api/libraries-and-samples-templates/${this.selectedFile.id}/download/`,
             { responseType: "arraybuffer" }
           );
-          await wb.xlsx.load(response.data);
+          const fixedBuffer = await validateAndFixExcelBuffer(response.data);
+          await wb.xlsx.load(fixedBuffer);
         }
 
         const expectedColumns = [

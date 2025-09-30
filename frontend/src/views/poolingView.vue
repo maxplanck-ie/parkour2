@@ -367,7 +367,8 @@ import {
   showNotification,
   handleError,
   createAxiosObject,
-  urlStringStartsWith
+  urlStringStartsWith,
+  validateAndFixExcelBuffer
 } from "../utilities/utilityFunctions";
 import { poolingColumnDefs, poolingGroupHeader } from "../constants/poolingConsts";
 const axiosRef = createAxiosObject();
@@ -1055,7 +1056,8 @@ export default {
             `${urlStringStart}/api/pooling-templates/${this.selectedFile.id}/download/`,
             { responseType: "arraybuffer" }
           );
-          await wb.xlsx.load(response.data);
+          const fixedBuffer = await validateAndFixExcelBuffer(response.data);
+          await wb.xlsx.load(fixedBuffer);
         }
 
         const expectedColumns = [
@@ -1229,12 +1231,6 @@ export default {
       } else {
         showNotification("Please upload a valid XLSX file.", "error");
       }
-    },
-    ellipsisContainer(text, boldText) {
-      return `<div title='${text}' style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${boldText === true ? "bold" : "normal"
-        }">
-                ${text}
-              </div>`;
     },
     createPopupWindow(
       popupTitle,

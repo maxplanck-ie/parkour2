@@ -1,6 +1,7 @@
 import { useToast } from "vue-toastification";
 import axios from "axios";
 import Cookies from "js-cookie";
+import JSZip from "jszip";
 
 const toast = useToast();
 
@@ -189,4 +190,37 @@ export function cellContextMenu(
   }
 
   return operations.length ? operations : [];
+}
+
+export async function validateAndFixExcelBuffer(buffer) {
+  try {
+    const zip = await JSZip.loadAsync(buffer);
+    const sheetFiles = Object.keys(zip.files).filter(
+      (f) => f.startsWith("xl/worksheets/") && f.endsWith(".xml")
+    );
+    for (const file of sheetFiles) {
+      let xmlText = await zip.files[file].async("string");
+      xmlText = xmlText.replace(/<dimension[^>]*\/>/g, "");
+      xmlText = xmlText.replace(/<dimension[^>]*>.*?<\/dimension>/g, "");
+      xmlText = xmlText.replace(/sqref="[^"]*"/g, (match) => {
+        if (match.includes("XFD1048576")) {
+          return 'sqref="A1:Z1000"';
+        }
+        return match;
+      });
+      zip.file(file, xmlText);
+    }
+    if (zip.files["xl/calcChain.xml"]) {
+      delete zip.files["xl/calcChain.xml"];
+    }
+    const fixedBuffer = await zip.generateAsync({
+      type: "arraybuffer",
+      compression: "DEFLATE",
+    });
+
+    return fixedBuffer;
+  } catch (error) {
+    showNotification("Error in validating the excel file: " + error, "error");
+    throw error;
+  }
 }
