@@ -1501,8 +1501,6 @@ body,
 </style>
 
 <!--
-Fix libraries_and_samples API not fetching the latest first request
-
 everywhere: no barcode * in copy and export
 everywhere: units should show as original units in export
 everywhere: input if -1 and x should show as Unknown, do the same for measured_value and measured_value_facility fields.
