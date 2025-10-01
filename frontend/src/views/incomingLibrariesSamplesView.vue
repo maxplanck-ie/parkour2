@@ -620,21 +620,13 @@ export default {
             element.measured_value === 0 ? 0 : element.measured_value || "",
           input: (({ measured_value: mv, measuring_unit: mu }) => {
             const isEmpty = (v) => v === null || v === undefined || v === "";
-            if (mv === -1 && mu === "-") return "Unknown";
+            if (mv === -1 && mu === "x") return "Unknown";
             if (isEmpty(mv) && isEmpty(mu)) return "";
             const val = mv === 0 ? 0 : mv || "";
             const unit = mu || "";
             if (isEmpty(mv) && !isEmpty(mu)) {
-              if (unit === "concentration") return "ng/µl";
-              if (unit === "m") return "M";
-              if (unit === "k") return "k";
-              if (unit === "-") return "x";
               return unit;
             }
-            if (unit === "concentration") return `${val} ng/µl`;
-            if (unit === "m") return `${val} M`;
-            if (unit === "k") return `${val} k`;
-            if (unit === "-") return `${val} x`;
             if (unit !== "") return `${val} ${unit}`;
             return `${val}`;
           })(element),

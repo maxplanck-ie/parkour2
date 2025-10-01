@@ -403,15 +403,15 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editorParams: (cell) => {
             const row = cell.getRow().getData();
             const options = [
-              { label: "ng/µl (Concentration)", value: "concentration" },
-              { label: "M (Cells)", value: "m" },
+              { label: "ng/µl (Concentration)", value: "ng/µl" },
+              { label: "M (Cells)", value: "M" },
               { label: "k (Cells)", value: "k" },
-              { label: "Unknown", value: "-" },
+              { label: "Unknown", value: "x" },
             ];
             if (row.type === "L") {
               return {
                 values: options.filter(
-                  (option) => option.value !== "m" && option.value !== "k"
+                  (option) => option.value !== "M" && option.value !== "k"
                 ),
               };
             }
@@ -426,10 +426,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           formatter: (cell) => {
             const value = cell.getValue();
             const options = {
-              concentration: "ng/µl (Concentration)",
-              m: "M (Cells)",
-              k: "k (Cells)",
-              "-": "Unknown",
+              "ng/µl": "ng/µl (Concentration)",
+              "M": "M (Cells)",
+              "k": "k (Cells)",
+              "x": "Unknown",
             };
             const finalString = options[value] || value || "Select";
             return ellipsisContainer(finalString);

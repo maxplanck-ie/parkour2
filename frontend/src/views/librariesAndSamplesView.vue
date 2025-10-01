@@ -645,18 +645,10 @@ export default {
           }
           const measuredValue = getValue(measuredValueRaw);
           const measuredUnit = measuredUnitRaw || "";
-          if (measuredValue === -1 && measuredUnit === "-") return "Unknown";
+          if (measuredValue === -1 && measuredUnit === "x") return "Unknown";
           if (measuredValueEmpty && !measuredUnitEmpty) {
-            if (measuredUnit === "concentration") return "ng/µl";
-            if (measuredUnit === "m") return "M";
-            if (measuredUnit === "k") return "k";
-            if (measuredUnit === "-") return "x";
             return measuredUnit;
           }
-          if (measuredUnit === "concentration") return `${measuredValue} ng/µl`;
-          if (measuredUnit === "m") return `${measuredValue} M`;
-          if (measuredUnit === "k") return `${measuredValue} k`;
-          if (measuredUnit === "-") return `${measuredValue} x`;
           if (measuredUnit !== "") return `${measuredValue} ${measuredUnit}`;
           return `${measuredValue}`;
         };
