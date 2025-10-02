@@ -191,7 +191,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             item.set("measuring_unit", record.get("measuring_unit"));
 
             // Update Measured Value based on Measuring Unit
-            if (record.get("measuring_unit") === "x") {
+            if (record.get("measuring_unit") === "Unknown") {
               item.set("measured_value", -1);
             } else {
               item.set("measured_value", null);
@@ -363,7 +363,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         measuredValueEditor.disable();
         record.set("measured_value", null);
       } else {
-        if (measuringUnitEditor.getValue() === "x") {
+        if (measuringUnitEditor.getValue() === "Unknown") {
           measuredValueEditor.setValue(null);
           measuredValueEditor.disable();
           record.set("measured_value", -1);
@@ -423,7 +423,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         measuredValueEditor.disable();
         record.set("measured_value", null);
       } else {
-        if (measuringUnitEditor.getValue() === "x") {
+        if (measuringUnitEditor.getValue() === "Unknown") {
           measuredValueEditor.setValue(null);
           measuredValueEditor.disable();
           record.set("measured_value", -1);
@@ -473,7 +473,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       measuredValueEditor.disable();
       record.set("measured_value", null);
     } else {
-      if (measuringUnitEditor.getValue() === "x") {
+      if (measuringUnitEditor.getValue() === "Unknown") {
         measuredValueEditor.setValue(null);
         measuredValueEditor.disable();
         record.set("measured_value", -1);
@@ -611,7 +611,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       measuredValueEditor.disable();
       record.set("measured_value", null);
     } else {
-      if (measuringUnitEditor.getValue() === "x") {
+      if (measuringUnitEditor.getValue() === "Unknown") {
         measuredValueEditor.setValue(null);
         measuredValueEditor.disable();
         record.set("measured_value", -1);
@@ -672,7 +672,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             fields: ["id", "name"],
             data: [
               { id: "ng/µl", name: "ng/µl (Concentration)" },
-              { id: "x", name: "Unknown" }
+              { id: "Unknown", name: "Unknown" }
             ]
           },
           forceSelection: true,
@@ -866,7 +866,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
               { id: "ng/µl", name: "ng/µl (Concentration)" },
               { id: "M", name: "M (Cells)" },
               { id: "k", name: "k (Cells)" },
-              { id: "x", name: "Unknown" }
+              { id: "Unknown", name: "Unknown" }
             ]
           },
           forceSelection: true,

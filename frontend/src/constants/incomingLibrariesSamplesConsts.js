@@ -406,7 +406,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               { label: "ng/µl (Concentration)", value: "ng/µl" },
               { label: "M (Cells)", value: "M" },
               { label: "k (Cells)", value: "k" },
-              { label: "Unknown", value: "x" },
+              { label: "Unknown", value: "Unknown" },
             ];
             if (row.type === "L") {
               return {
@@ -427,9 +427,9 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             const value = cell.getValue();
             const options = {
               "ng/µl": "ng/µl (Concentration)",
-              "M": "M (Cells)",
-              "k": "k (Cells)",
-              "x": "Unknown",
+              M: "M (Cells)",
+              k: "k (Cells)",
+              Unknown: "Unknown",
             };
             const finalString = options[value] || value || "Select";
             return ellipsisContainer(finalString);
@@ -599,10 +599,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editor: "list",
           headerTooltip: "GMO Documentation",
           editorParams: {
-            values: [
-              { label: "Not Needed", value: "false" },
-              { label: "Risk Assessment Done", value: "true" },
-            ],
+            values: ["Not Needed", "Risk Assessment Done"].map((v) => ({
+              label: v,
+              value: v,
+            })),
           },
           cssClass: "facility-entry-column",
           contextMenu: () =>
@@ -634,17 +634,9 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           visible: true,
           formatter: (cell) => {
             const value = cell.getValue();
-            const options = {
-              false: "Not Needed",
-              true: "Risk Assessment Done",
-            };
             const rowData = cell.getRow().getData();
             const cellElement = cell.getElement();
-            let finalString;
-
-            finalString = Object.prototype.hasOwnProperty.call(options, value)
-              ? options[value]
-              : value || (rowData.gmo === true ? "-" : "No");
+            const finalString = value || (rowData.gmo === true ? "-" : "No");
             if (
               rowData.type === "L" ||
               rowData.gmo === false ||

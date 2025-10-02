@@ -409,8 +409,20 @@ export default {
                 key !== "samples_submitted" &&
                 key !== "quality_check"
               ) {
-                if (row[key] !== oldRow[key]) {
-                  changedFields[key] = row[key] === "" ? null : row[key];
+                if (key === 'gmo_facility') {
+                  if (row[key] !== oldRow[key]) {
+                    if (row[key] === "Not Needed" || row[key] === false) {
+                      changedFields[key] = false;
+                    } else if (row[key] === "Risk Assessment Done" || row[key] === true) {
+                      changedFields[key] = true;
+                    } else {
+                      changedFields[key] = row[key];
+                    }
+                  }
+                } else {
+                  if (row[key] !== oldRow[key]) {
+                    changedFields[key] = row[key] === "" ? null : row[key];
+                  }
                 }
               }
             });

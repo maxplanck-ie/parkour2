@@ -7,7 +7,7 @@ from django.contrib.postgres.fields import ArrayField
 class Library(GenericLibrarySample):
     MEASURING_UNIT_CHOICES = [
         ("ng/µl (Concentration)", "ng/µl", "Concentration"),
-        ("Unknown", "x", "Unknown"),
+        ("Unknown", "Unknown", "Unknown"),
     ]
 
     measuring_unit = models.CharField(

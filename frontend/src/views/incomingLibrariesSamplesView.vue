@@ -620,7 +620,7 @@ export default {
             element.measured_value === 0 ? 0 : element.measured_value || "",
           input: (({ measured_value: mv, measuring_unit: mu }) => {
             const isEmpty = (v) => v === null || v === undefined || v === "";
-            if (mv === -1 && mu === "x") return "Unknown";
+            if (mv === -1 && mu === "Unknown") return "Unknown";
             if (isEmpty(mv) && isEmpty(mu)) return "";
             const val = mv === 0 ? 0 : mv || "";
             const unit = mu || "";
@@ -657,7 +657,7 @@ export default {
             element.rna_quality === 0 ? 0 : element.rna_quality || "",
           gmo: element.gmo === null ? "" : element.gmo,
           gmo_facility:
-            element.gmo_facility === null ? "" : element.gmo_facility,
+            element.gmo_facility === null ? "" : element.gmo_facility === true ? "Risk Assessment Done" : "Not Needed",
           comments_facility: element.comments_facility || ""
         }));
         this.librariesSamplesList = fetchedRows;
@@ -1453,7 +1453,3 @@ body,
   }
 }
 </style>
-
-<!--
-Column visibility being triggered automatically
--->

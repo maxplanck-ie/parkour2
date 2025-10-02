@@ -125,8 +125,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       formatter: (cell) => {
         const value = cell.getValue();
-        const finalString = value || "-";
-        return ellipsisContainer(finalString, false);
+        const finalString = value + "*" || "-";
+        return ellipsisContainer(finalString);
       },
     },
     {
@@ -344,7 +344,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
           { label: "ng/µl (Concentration)", value: "ng/µl" },
           { label: "M (Cells)", value: "M" },
           { label: "k (Cells)", value: "k" },
-          { label: "Unknown", value: "x" },
+          { label: "Unknown", value: "Unknown" },
         ];
         return { values: options };
       },
@@ -358,9 +358,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const options = {
           "ng/µl": "ng/µl (Concentration)",
-          "M": "M (Cells)",
-          "k": "k (Cells)",
-          "x": "Unknown",
+          M: "M (Cells)",
+          k: "k (Cells)",
+          Unknown: "Unknown",
         };
         const finalString = options[value] || value || "Select";
         return ellipsisContainer(finalString);

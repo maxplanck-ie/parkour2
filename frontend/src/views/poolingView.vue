@@ -501,10 +501,7 @@ export default {
             parseFloat(element.combined_smear_analysis) || "",
           comment: element.comment || "",
           status: element.status || "",
-          barcode:
-            element.record_type === "Sample" && element.barcode[2] === "L"
-              ? element.barcode + "*"
-              : element.barcode || "",
+          barcode: element.barcode || "",
           type: element.barcode ? element.barcode[2] || "" : "",
           request: element.request || "",
           request_name: element.request_name || "",
@@ -1349,7 +1346,3 @@ body,
   }
 }
 </style>
-
-<!--
-When filtering, the color of pool is changing
--->

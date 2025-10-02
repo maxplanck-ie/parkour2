@@ -487,7 +487,7 @@ export default {
           pk: element.pk || "",
           name: element.name || "",
           type: element.barcode[2] || "",
-          barcode: element.barcode + "*" || "",
+          barcode: element.barcode || "",
           is_converted:
             element.is_converted === null ? "" : element.is_converted,
           request_name: element.request_name || "",

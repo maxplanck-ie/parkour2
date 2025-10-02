@@ -31,7 +31,7 @@ class Sample(GenericLibrarySample):
         ("ng/µl (Concentration)", "ng/µl", "Concentration"),
         ("M (Cells)", "M", "Cells"),
         ("k (Cells)", "k", "Cells"),
-        ("Unknown", "x", "Unknown"),
+        ("Unknown", "Unknown", "Unknown"),
     ]
 
     BIOSAFETY_LEVEL_CHOICES = [("BSL1", "bsl1"), ("BSL2", "bsl2")]

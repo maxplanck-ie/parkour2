@@ -163,8 +163,14 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
+        const rowData = cell.getRow().getData();
         const value = cell.getValue();
-        const finalString = value || "-";
+        const barcode = value || "-";
+        const barcodeSuffix = value?.[2] ?? "";
+        const finalString =
+          rowData.record_type === "Sample" && barcodeSuffix === "L"
+            ? barcode + "*"
+            : barcode;
         return ellipsisContainer(finalString);
       },
     },
@@ -198,11 +204,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
         const value = cell.getValue();
-        const options = {
-          false: "No",
-          true: "Yes",
-        };
-        const finalString = options[value] || "-";
+        const finalString = value || "-";
         return ellipsisContainer(finalString);
       },
     },

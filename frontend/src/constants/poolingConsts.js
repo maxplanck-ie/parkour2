@@ -197,9 +197,15 @@ export function poolingColumnDefs(getTabulatorInstance) {
         showNotification("This field is not editable.", "warning");
       },
       formatter: (cell) => {
+        const rowData = cell.getRow().getData();
         const value = cell.getValue();
-        const finalString = value || "-";
-        return ellipsisContainer(finalString, false);
+        const barcode = value || "-";
+        const barcodeSuffix = value?.[2] ?? "";
+        const finalString =
+          rowData.record_type === "Sample" && barcodeSuffix === "L"
+            ? barcode + "*"
+            : barcode;
+        return ellipsisContainer(finalString);
       },
     },
     {

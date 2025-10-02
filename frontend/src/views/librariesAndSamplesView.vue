@@ -645,7 +645,7 @@ export default {
           }
           const measuredValue = getValue(measuredValueRaw);
           const measuredUnit = measuredUnitRaw || "";
-          if (measuredValue === -1 && measuredUnit === "x") return "Unknown";
+          if (measuredValue === -1 && measuredUnit === "Unknown") return "Unknown";
           if (measuredValueEmpty && !measuredUnitEmpty) {
             return measuredUnit;
           }
@@ -672,20 +672,14 @@ export default {
         const allRows = [];
 
         (response.data?.children || []).forEach((e) => {
-          const barcode = e.barcode ?? "";
-          const barcodeSuffix = barcode?.[2] ?? "";
-
           const row = {
             pk: e.pk ?? "",
             record_type: e.record_type ?? "",
             request_id: e.request ?? "",
             request_name: e.request_name ?? "",
             name: e.name ?? "",
-            type: barcodeSuffix,
-            barcode:
-              e.record_type === "Sample" && barcodeSuffix === "L"
-                ? barcode + "*"
-                : barcode,
+            type: e.barcode?.[2] ?? "",
+            barcode: e.barcode ?? "",
             nucleic_acid_type_name: e.nucleic_acid_type_name ?? "",
             library_protocol_name: e.library_protocol_name ?? "",
             analysis_type_name: e.analysis_type_name ?? "",
@@ -695,7 +689,7 @@ export default {
             average_fragment_size: getValue(e.average_fragment_size),
             sequencing_depth: getValue(e.sequencing_depth),
             read_length_name: getValue(e.read_length_name),
-            gmo: e.gmo === null ? "" : e.gmo,
+            gmo: e.gmo === null ? "" : e.gmo === true ? "Yes" : "No",
             pool_names:
               Array.isArray(e.pool_names) && e.pool_names.length > 0
                 ? e.pool_names.join(", ")
@@ -1491,9 +1485,3 @@ body,
   }
 }
 </style>
-
-<!--
-everywhere: no barcode * in copy and export
-everywhere: units should show as original units in export
-everywhere: input if -1 and x should show as Unknown, do the same for measured_value and measured_value_facility fields.
--->
