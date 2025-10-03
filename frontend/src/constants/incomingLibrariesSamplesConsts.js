@@ -218,6 +218,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
     },
     {
       title: "From Users",
+      field: "from_user",
       headerHozAlign: "left",
       visible: true,
       cssClass: "title-field-group",
@@ -358,6 +359,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
     },
     {
       title: "From Facility",
+      field: "from_facility",
       headerHozAlign: "left",
       visible: true,
       cssClass: "title-field-group",

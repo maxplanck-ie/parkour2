@@ -140,7 +140,7 @@
                     <li v-for="(subColumn, subIndex) in column.columns" :key="subIndex" style="list-style: none">
                       <label>
                         <input type="checkbox" style="width: 20px !important" :checked="subColumn.visible"
-                          @change="toggleColumnVisibility(subColumn, false)" />
+                          @change="toggleColumnVisibility(subColumn)" />
                         <span style="width: 100%">{{ subColumn.title }}</span>
                       </label>
                     </li>
@@ -790,22 +790,24 @@ export default {
       setTimeout(() => this.fakeLoadingStop(), 50);
     },
     handleColumnVisibilityChanged(field, visible) {
-      const storedVisibility = JSON.parse(
-        localStorage.getItem("incomingLibrariesAndSamplesColumnVisibility") || "{}"
-      );
+      if (field !== "from_user" && field !== "from_facility") {
+        const storedVisibility = JSON.parse(
+          localStorage.getItem("incomingLibrariesAndSamplesColumnVisibility") || "{}"
+        );
 
-      const newVisibility = {
-        ...storedVisibility,
-        [field]: visible
-      };
+        const newVisibility = {
+          ...storedVisibility,
+          [field]: visible
+        };
 
-      localStorage.setItem(
-        "incomingLibrariesAndSamplesColumnVisibility",
-        JSON.stringify(newVisibility)
-      );
+        localStorage.setItem(
+          "incomingLibrariesAndSamplesColumnVisibility",
+          JSON.stringify(newVisibility)
+        );
 
-      // this.fakeLoadingStart();
-      setTimeout(() => this.fakeLoadingStop(), 50);
+        this.fakeLoadingStart();
+        setTimeout(() => this.fakeLoadingStop(), 50);
+      }
     },
     toggleColumnVisibility(column) {
       if (this.tabulatorInstance) {

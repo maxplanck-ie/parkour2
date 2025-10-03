@@ -429,17 +429,9 @@ export default {
         },
         groupHeader: (value, count, data) => {
           const pool_size = data[0] && data[0].pool_size;
-          let totalDepth = data.reduce(
-            (sum, row) => sum + (row.sequencing_depth || 0),
-            0
-          );
-          totalDepth = Number(totalDepth.toFixed(1));
+          const totalDepth = data[0] && data[0].poolTotalDepth;
           const comment = data[0] && data[0].comment;
-          const numMissingSamples = data.filter(
-            (item) => item.record_type === "Sample" && item.status < 3
-          ).length;
-          const headerClass =
-            numMissingSamples > 0 ? "pool-header-red" : "pool-header-green";
+          const headerClass = data[0] && data[0].poolHeaderColor;
 
           return poolingGroupHeader(value, count, headerClass, totalDepth, pool_size, comment);
         }
@@ -531,6 +523,18 @@ export default {
           index_i7: element.index_i7 || "",
           index_i5: element.index_i5 || ""
         }));
+        const poolData = this.calculatePoolGroupData(fetchedRows);
+        fetchedRows = fetchedRows.map(row => {
+          if (row.pool_name && poolData[row.pool_name]) {
+            return {
+              ...row,
+              poolHeaderColor: poolData[row.pool_name].color,
+              poolTotalDepth: poolData[row.pool_name].totalDepth,
+              poolMissingSamples: poolData[row.pool_name].missingSamples
+            };
+          }
+          return row;
+        });
         this.librariesSamplesList = fetchedRows;
       } catch (error) {
         handleError(error);
@@ -920,6 +924,32 @@ export default {
       } finally {
         this.fakeLoadingStop();
       }
+    },
+    calculatePoolGroupData(rows) {
+      const poolData = {};
+      rows.forEach(row => {
+        if (!row.pool_name) return;
+        if (!poolData[row.pool_name]) {
+          poolData[row.pool_name] = {
+            rows: [],
+            totalDepth: 0,
+            missingSamples: 0
+          };
+        }
+        poolData[row.pool_name].rows.push(row);
+        if (row.sequencing_depth) {
+          poolData[row.pool_name].totalDepth += row.sequencing_depth;
+        }
+        if (row.record_type === "Sample" && row.status < 3) {
+          poolData[row.pool_name].missingSamples++;
+        }
+      });
+      Object.keys(poolData).forEach(poolName => {
+        const data = poolData[poolName];
+        data.totalDepth = Number(data.totalDepth.toFixed(1));
+        data.color = data.missingSamples > 0 ? "pool-header-red" : "pool-header-green";
+      });
+      return poolData;
     },
     async fetchExportTemplates() {
       try {
