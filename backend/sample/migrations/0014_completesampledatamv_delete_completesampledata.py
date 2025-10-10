@@ -7,22 +7,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0010_rebuild_complete_library_data_mv'),
+        ("sample", "0013_completesampledata"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CompleteLibraryDataMV',
+            name='CompleteSampleDataMV',
             fields=[
-                ('library_id', models.IntegerField(primary_key=True, serialize=False)),
+                ('sample_id', models.IntegerField(primary_key=True, serialize=False)),
                 ('barcode', models.CharField(max_length=100)),
                 ('name', models.CharField(max_length=255)),
                 ('status', models.IntegerField()),
                 ('sequencing_depth', models.FloatField()),
+                ('nucleic_acid_type_id', models.IntegerField()),
+                ('nucleic_acid_type_name', models.CharField(max_length=100)),
                 ('measuring_unit', models.CharField(max_length=50)),
                 ('measured_value', models.FloatField()),
                 ('concentration_library', models.FloatField()),
-                ('percent_total', models.FloatField()),
+                ('gmo', models.BooleanField()),
                 ('library_protocol_id', models.IntegerField()),
                 ('library_protocol_name', models.CharField(max_length=150, null=True)),
                 ('analysis_type_id', models.IntegerField()),
@@ -30,6 +32,8 @@ class Migration(migrations.Migration):
                 ('read_length_id', models.IntegerField(null=True)),
                 ('read_length_name', models.CharField(max_length=50, null=True)),
                 ('average_fragment_size', models.FloatField()),
+                ('starting_amount', models.FloatField()),
+                ('pcr_cycles', models.IntegerField()),
                 ('index_type_name', models.CharField(max_length=100, null=True)),
                 ('coordinate', models.CharField(max_length=3, null=True)),
                 ('index_i7', models.CharField(max_length=24, null=True)),
@@ -45,11 +49,11 @@ class Migration(migrations.Migration):
                 ('sequencer_names', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=50), null=True, size=None)),
             ],
             options={
-                'db_table': 'complete_library_data_mv',
+                'db_table': 'complete_sample_data_mv',
                 'managed': False,
             },
         ),
         migrations.DeleteModel(
-            name='CompleteLibraryData',
+            name='CompleteSampleData',
         ),
     ]

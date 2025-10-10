@@ -61,7 +61,7 @@ class Library(GenericLibrarySample):
         verbose_name_plural = "Libraries"
 
 
-class CompleteLibraryDataMV(models.Model):
+class CompleteLibraryData(models.Model):
     library_id = models.IntegerField(primary_key=True)
     barcode = models.CharField(max_length=100)
     name = models.CharField(max_length=255)

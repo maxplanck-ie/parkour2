@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0015_completesampledatamv_delete_completesampledata'),
+        ('sample', '0014_completesampledatamv_delete_completesampledata'),
     ]
 
     operations = [

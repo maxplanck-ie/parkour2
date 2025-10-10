@@ -127,7 +127,7 @@ class Sample(GenericLibrarySample):
     #     #     pooling_obj.save()
 
 
-class CompleteSampleDataMV(models.Model):
+class CompleteSampleData(models.Model):
     sample_id = models.IntegerField(primary_key=True)
     barcode = models.CharField(max_length=100)
     name = models.CharField(max_length=255)

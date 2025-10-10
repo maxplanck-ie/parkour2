@@ -1,46 +1,86 @@
 from django.db import migrations
 
 
-CREATE_SQL = """
-CREATE MATERIALIZED VIEW complete_sample_data_mv AS
+DROP_MV_SQL = "DROP MATERIALIZED VIEW IF EXISTS complete_sample_data_mv CASCADE;"
+
+CREATE_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS complete_sample_data_mv (
+    sample_id INTEGER PRIMARY KEY,
+    barcode VARCHAR(100) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    status INTEGER NOT NULL,
+    sequencing_depth DOUBLE PRECISION,
+    nucleic_acid_type_id INTEGER,
+    nucleic_acid_type_name VARCHAR(100),
+    measuring_unit VARCHAR(50),
+    measured_value DOUBLE PRECISION,
+    concentration_library DOUBLE PRECISION,
+    gmo BOOLEAN,
+    library_protocol_id INTEGER,
+    library_protocol_name VARCHAR(150),
+    analysis_type_id INTEGER,
+    analysis_type_name VARCHAR(200),
+    read_length_id INTEGER,
+    read_length_name VARCHAR(50),
+    average_fragment_size DOUBLE PRECISION,
+    starting_amount DOUBLE PRECISION,
+    pcr_cycles INTEGER,
+    index_type_name VARCHAR(100),
+    coordinate VARCHAR(3),
+    index_i7 VARCHAR(24),
+    i7_id VARCHAR(50),
+    index_i5 VARCHAR(24),
+    i5_id VARCHAR(50),
+    request_id INTEGER,
+    request_name VARCHAR(255),
+    create_time TIMESTAMP WITH TIME ZONE,
+    pool_names VARCHAR(100)[],
+    flowcell_ids VARCHAR(50)[],
+    sequencer_ids INTEGER[],
+    sequencer_names VARCHAR(50)[],
+    search_vector TSVECTOR
+);
+"""
+
+SAMPLE_SELECT_SQL = """
 SELECT DISTINCT ON (s.id, r.id)
     s.id AS sample_id,
     s.barcode,
     s.name,
     s.status,
     s.sequencing_depth,
-    s.measuring_unit,
-    s.measured_value,
-    s.gmo,
-    s.index_i7,
-    s.index_i5,
-    s.read_length_id,
     nat.id AS nucleic_acid_type_id,
     nat.name AS nucleic_acid_type_name,
+    s.measuring_unit,
+    s.measured_value,
+    lp2.concentration_library,
+    s.gmo,
     lp.id AS library_protocol_id,
     lp.name AS library_protocol_name,
     lt.id AS analysis_type_id,
     lt.name AS analysis_type_name,
+    s.read_length_id,
+    rl.name AS read_length_name,
     lp2.mean_fragment_size AS average_fragment_size,
     lp2.starting_amount,
     lp2.pcr_cycles,
-    lp2.concentration_library,
-    COALESCE(i7.prefix, '') || COALESCE(i7.number, '') AS i7_id,
-    COALESCE(i5.prefix, '') || COALESCE(i5.number, '') AS i5_id,
+    it.name AS index_type_name,
     CASE
         WHEN ip.char_coord IS NOT NULL AND ip.num_coord IS NOT NULL
         THEN ip.char_coord || ip.num_coord::text
         ELSE ''
     END AS coordinate,
-    it.name AS index_type_name,
-    rl.name AS read_length_name,
+    s.index_i7,
+    COALESCE(i7.prefix, '') || COALESCE(i7.number, '') AS i7_id,
+    s.index_i5,
+    COALESCE(i5.prefix, '') || COALESCE(i5.number, '') AS i5_id,
     r.id AS request_id,
     r.name AS request_name,
     r.create_time AS create_time,
     pools.pool_names,
     fcids.flowcell_ids,
-    fcids.sequencer_names,
     fcids.sequencer_ids,
+    fcids.sequencer_names,
     to_tsvector('simple',
         COALESCE(s.name,'') || ' ' ||
         COALESCE(s.barcode,'') || ' ' ||
@@ -70,8 +110,8 @@ LEFT JOIN LATERAL (
 LEFT JOIN LATERAL (
     SELECT
         array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
-        array_agg(DISTINCT seq.name) AS sequencer_names,
-        array_agg(DISTINCT seq.id::integer) AS sequencer_ids
+        array_agg(DISTINCT seq.id::integer) AS sequencer_ids,
+        array_agg(DISTINCT seq.name) AS sequencer_names
     FROM index_generator_pool_samples ps2
     JOIN index_generator_pool p2 ON ps2.pool_id = p2.id
     JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
@@ -83,6 +123,45 @@ LEFT JOIN LATERAL (
 ORDER BY s.id, r.id;
 """
 
+POPULATE_SQL = f"""
+INSERT INTO complete_sample_data_mv (
+    sample_id,
+    barcode,
+    name,
+    status,
+    sequencing_depth,
+    nucleic_acid_type_id,
+    nucleic_acid_type_name,
+    measuring_unit,
+    measured_value,
+    concentration_library,
+    gmo,
+    library_protocol_id,
+    library_protocol_name,
+    analysis_type_id,
+    analysis_type_name,
+    read_length_id,
+    read_length_name,
+    average_fragment_size,
+    starting_amount,
+    pcr_cycles,
+    index_type_name,
+    coordinate,
+    index_i7,
+    i7_id,
+    index_i5,
+    i5_id,
+    request_id,
+    request_name,
+    create_time,
+    pool_names,
+    flowcell_ids,
+    sequencer_ids,
+    sequencer_names,
+    search_vector
+)
+{SAMPLE_SELECT_SQL}
+"""
 
 INDEX_SQL = """
 CREATE UNIQUE INDEX IF NOT EXISTS idx_csd_mv_pk ON complete_sample_data_mv (sample_id, request_id);
@@ -99,20 +178,40 @@ CREATE INDEX IF NOT EXISTS idx_csd_mv_pool_names ON complete_sample_data_mv USIN
 CREATE INDEX IF NOT EXISTS idx_csd_mv_search_vector ON complete_sample_data_mv USING GIN (search_vector);
 """
 
+CREATE_MV_SQL = """
+CREATE MATERIALIZED VIEW complete_sample_data_mv AS
+{SAMPLE_SELECT_SQL}
+""".format(SAMPLE_SELECT_SQL=SAMPLE_SELECT_SQL.strip())
+
 
 class Migration(migrations.Migration):
-    atomic = False
-
     dependencies = [
-        ("sample", "0013_completesampledata"),
+        ("sample", "0016_alter_sample_measuring_unit_and_more"),
     ]
 
     operations = [
-        migrations.RunSQL(
-            sql="DROP MATERIALIZED VIEW IF EXISTS complete_sample_data_mv;",
-            reverse_sql="",
+        migrations.RenameModel(
+            old_name="CompleteSampleDataMV",
+            new_name="CompleteSampleData",
         ),
-        migrations.RunSQL(sql=CREATE_SQL, reverse_sql="DROP MATERIALIZED VIEW IF EXISTS complete_sample_data_mv;"),
-        migrations.RunSQL(sql="REFRESH MATERIALIZED VIEW complete_sample_data_mv;", reverse_sql=""),
-        migrations.RunSQL(sql=INDEX_SQL, reverse_sql=""),
+        migrations.RunSQL(
+            sql=DROP_MV_SQL,
+            reverse_sql="DROP TABLE IF EXISTS complete_sample_data_mv CASCADE;",
+        ),
+        migrations.RunSQL(
+            sql=CREATE_TABLE_SQL,
+            reverse_sql=CREATE_MV_SQL,
+        ),
+        migrations.RunSQL(
+            sql="TRUNCATE TABLE complete_sample_data_mv;",
+            reverse_sql=migrations.RunSQL.noop,
+        ),
+        migrations.RunSQL(
+            sql=POPULATE_SQL,
+            reverse_sql="REFRESH MATERIALIZED VIEW complete_sample_data_mv;",
+        ),
+        migrations.RunSQL(
+            sql=INDEX_SQL,
+            reverse_sql=INDEX_SQL,
+        ),
     ]

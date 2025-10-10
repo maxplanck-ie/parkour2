@@ -22,8 +22,8 @@ from .serializers import (
 Request = apps.get_model("request", "Request")
 Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
-CompleteLibraryData = apps.get_model("library", "CompleteLibraryDataMV")
-CompleteSampleData = apps.get_model("sample", "CompleteSampleDataMV")
+CompleteLibraryData = apps.get_model("library", "CompleteLibraryData")
+CompleteSampleData = apps.get_model("sample", "CompleteSampleData")
 
 logger = logging.getLogger("db")
 

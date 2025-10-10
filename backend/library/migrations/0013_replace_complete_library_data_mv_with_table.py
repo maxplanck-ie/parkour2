@@ -1,8 +1,44 @@
 from django.db import migrations
 
 
-CREATE_SQL = """
-CREATE MATERIALIZED VIEW complete_library_data_mv AS
+DROP_MV_SQL = "DROP MATERIALIZED VIEW IF EXISTS complete_library_data_mv CASCADE;"
+
+CREATE_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS complete_library_data_mv (
+    library_id INTEGER PRIMARY KEY,
+    barcode VARCHAR(100) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    status INTEGER NOT NULL,
+    sequencing_depth DOUBLE PRECISION,
+    measuring_unit VARCHAR(50),
+    measured_value DOUBLE PRECISION,
+    concentration_library DOUBLE PRECISION,
+    percent_total DOUBLE PRECISION,
+    library_protocol_id INTEGER,
+    library_protocol_name VARCHAR(150),
+    analysis_type_id INTEGER,
+    analysis_type_name VARCHAR(200),
+    read_length_id INTEGER,
+    read_length_name VARCHAR(50),
+    average_fragment_size DOUBLE PRECISION,
+    index_type_name VARCHAR(100),
+    coordinate VARCHAR(3),
+    index_i7 VARCHAR(24),
+    i7_id VARCHAR(50),
+    index_i5 VARCHAR(24),
+    i5_id VARCHAR(50),
+    request_id INTEGER,
+    request_name VARCHAR(255),
+    create_time TIMESTAMP WITH TIME ZONE,
+    pool_names VARCHAR(100)[],
+    flowcell_ids VARCHAR(50)[],
+    sequencer_ids INTEGER[],
+    sequencer_names VARCHAR(50)[],
+    search_vector TSVECTOR
+);
+"""
+
+LIBRARY_SELECT_SQL = """
 SELECT DISTINCT ON (l.id, r.id)
     l.id AS library_id,
     l.barcode,
@@ -11,32 +47,32 @@ SELECT DISTINCT ON (l.id, r.id)
     l.sequencing_depth,
     l.measuring_unit,
     l.measured_value,
-    l.percent_total,
-    l.size_distribution_facility AS average_fragment_size,
     l.measured_value_facility AS concentration_library,
-    l.read_length_id,
-    l.index_i7,
-    l.index_i5,
-    r.id AS request_id,
-    r.name AS request_name,
-    r.create_time AS create_time,
+    l.percent_total,
     lp.id AS library_protocol_id,
     lp.name AS library_protocol_name,
     lt.id AS analysis_type_id,
     lt.name AS analysis_type_name,
+    l.read_length_id,
+    rl.name AS read_length_name,
+    l.size_distribution_facility AS average_fragment_size,
     it.name AS index_type_name,
-    COALESCE(i7.prefix, '') || COALESCE(i7.number, '') AS i7_id,
-    COALESCE(i5.prefix, '') || COALESCE(i5.number, '') AS i5_id,
     CASE
         WHEN ip.char_coord IS NOT NULL AND ip.num_coord IS NOT NULL
         THEN ip.char_coord || ip.num_coord::text
         ELSE ''
     END AS coordinate,
-    rl.name AS read_length_name,
+    l.index_i7,
+    COALESCE(i7.prefix, '') || COALESCE(i7.number, '') AS i7_id,
+    l.index_i5,
+    COALESCE(i5.prefix, '') || COALESCE(i5.number, '') AS i5_id,
+    r.id AS request_id,
+    r.name AS request_name,
+    r.create_time AS create_time,
     pools.pool_names,
     fcids.flowcell_ids,
-    fcids.sequencer_names,
     fcids.sequencer_ids,
+    fcids.sequencer_names,
     to_tsvector('simple',
         COALESCE(l.name,'') || ' ' ||
         COALESCE(l.barcode,'') || ' ' ||
@@ -64,8 +100,8 @@ LEFT JOIN LATERAL (
 LEFT JOIN LATERAL (
     SELECT
         array_agg(DISTINCT fc.flowcell_id) AS flowcell_ids,
-        array_agg(DISTINCT seq.name) AS sequencer_names,
-        array_agg(DISTINCT seq.id::integer) AS sequencer_ids
+        array_agg(DISTINCT seq.id::integer) AS sequencer_ids,
+        array_agg(DISTINCT seq.name) AS sequencer_names
     FROM index_generator_pool_libraries ipl2
     JOIN index_generator_pool p2 ON ipl2.pool_id = p2.id
     JOIN flowcell_lane lane2 ON lane2.pool_id = p2.id
@@ -77,6 +113,41 @@ LEFT JOIN LATERAL (
 ORDER BY l.id, r.id;
 """
 
+POPULATE_SQL = f"""
+INSERT INTO complete_library_data_mv (
+    library_id,
+    barcode,
+    name,
+    status,
+    sequencing_depth,
+    measuring_unit,
+    measured_value,
+    concentration_library,
+    percent_total,
+    library_protocol_id,
+    library_protocol_name,
+    analysis_type_id,
+    analysis_type_name,
+    read_length_id,
+    read_length_name,
+    average_fragment_size,
+    index_type_name,
+    coordinate,
+    index_i7,
+    i7_id,
+    index_i5,
+    i5_id,
+    request_id,
+    request_name,
+    create_time,
+    pool_names,
+    flowcell_ids,
+    sequencer_ids,
+    sequencer_names,
+    search_vector
+)
+{LIBRARY_SELECT_SQL}
+"""
 
 INDEX_SQL = """
 CREATE UNIQUE INDEX IF NOT EXISTS idx_cld_mv_pk ON complete_library_data_mv (library_id, request_id);
@@ -93,20 +164,40 @@ CREATE INDEX IF NOT EXISTS idx_cld_mv_pool_names ON complete_library_data_mv USI
 CREATE INDEX IF NOT EXISTS idx_cld_mv_search_vector ON complete_library_data_mv USING GIN (search_vector);
 """
 
+CREATE_MV_SQL = """
+CREATE MATERIALIZED VIEW complete_library_data_mv AS
+{LIBRARY_SELECT_SQL}
+""".format(LIBRARY_SELECT_SQL=LIBRARY_SELECT_SQL.strip())
+
 
 class Migration(migrations.Migration):
-    atomic = False
-
     dependencies = [
-        ("library", "0009_completelibrarydata"),
+        ("library", "0012_alter_library_measuring_unit_and_more"),
     ]
 
     operations = [
-        migrations.RunSQL(
-            sql="DROP MATERIALIZED VIEW IF EXISTS complete_library_data_mv;",
-            reverse_sql="",
+        migrations.RenameModel(
+            old_name="CompleteLibraryDataMV",
+            new_name="CompleteLibraryData",
         ),
-        migrations.RunSQL(sql=CREATE_SQL, reverse_sql="DROP MATERIALIZED VIEW IF EXISTS complete_library_data_mv;"),
-        migrations.RunSQL(sql="REFRESH MATERIALIZED VIEW complete_library_data_mv;", reverse_sql=""),
-        migrations.RunSQL(sql=INDEX_SQL, reverse_sql=""),
+        migrations.RunSQL(
+            sql=DROP_MV_SQL,
+            reverse_sql="DROP TABLE IF EXISTS complete_library_data_mv CASCADE;",
+        ),
+        migrations.RunSQL(
+            sql=CREATE_TABLE_SQL,
+            reverse_sql=CREATE_MV_SQL,
+        ),
+        migrations.RunSQL(
+            sql="TRUNCATE TABLE complete_library_data_mv;",
+            reverse_sql=migrations.RunSQL.noop,
+        ),
+        migrations.RunSQL(
+            sql=POPULATE_SQL,
+            reverse_sql="REFRESH MATERIALIZED VIEW complete_library_data_mv;",
+        ),
+        migrations.RunSQL(
+            sql=INDEX_SQL,
+            reverse_sql=INDEX_SQL,
+        ),
     ]

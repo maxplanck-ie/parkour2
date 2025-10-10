@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0011_completelibrarydatamv_delete_completelibrarydata'),
+        ('library', '0010_completelibrarydatamv_delete_completelibrarydata'),
     ]
 
     operations = [
