@@ -91,7 +91,6 @@ class CompleteLibraryData(models.Model):
     flowcell_ids = ArrayField(models.CharField(max_length=50), null=True)
     sequencer_ids = ArrayField(models.IntegerField(), null=True)
     sequencer_names = ArrayField(models.CharField(max_length=50), null=True)
-    # search_vector exists in MV; we don't need to query it directly via ORM
 
     class Meta:
         managed = False

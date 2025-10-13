@@ -671,3 +671,25 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
     },
   ];
 }
+
+export function incomingLibrariesSamplesExportColumns() {
+  return [
+    { header: "Request", key: "request_name", width: 22 },
+    { header: "Name", key: "name", width: 24 },
+    { header: "Barcode", key: "barcode", width: 16 },
+    { header: "Input Type", key: "nucleic_acid_type_name", width: 18 },
+    { header: "Protocol", key: "library_protocol_name", width: 18 },
+    { header: "Comment Library/Input", key: "comments", width: 24 },
+    { header: "Input", key: "input", width: 16 },
+    { header: "Volume (µl)", key: "volume", width: 12 },
+    { header: "bp (User)", key: "mean_fragment_size", width: 12 },
+    { header: "Value (Facility)", key: "measured_value_facility", width: 16 },
+    { header: "Unit (Facility)", key: "measuring_unit_facility", width: 16 },
+    { header: "Volume (Facility)", key: "sample_volume_facility", width: 16 },
+    { header: "bp (Facility)", key: "size_distribution_facility", width: 14 },
+    { header: "% Total", key: "percent_total", width: 10 },
+    { header: "RQN", key: "rna_quality", width: 10 },
+    { header: "GMO", key: "gmo_facility", width: 16 },
+    { header: "Comment (Facility)", key: "comments_facility", width: 24 },
+  ];
+}

@@ -566,3 +566,35 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
     },
   ];
 }
+
+export function librariesAndSamplesExportColumns() {
+  return [
+    { header: "Request Name", key: "request_name", width: 25 },
+    { header: "Name", key: "name", width: 25 },
+    { header: "Status", key: "status_text", width: 15 },
+    { header: "S/L", key: "type", width: 10 },
+    { header: "Plate Coord", key: "well_position", width: 10 },
+    { header: "Barcode", key: "barcode", width: 15 },
+    { header: "Pool Paths", key: "pool_names", width: 20 },
+    { header: "GMO", key: "gmo", width: 20 },
+    { header: "Date", key: "create_time", width: 15 },
+    { header: "Input Type", key: "nucleic_acid_type_name", width: 20 },
+    { header: "Protocol", key: "library_protocol_name", width: 20 },
+    { header: "Analysis Type", key: "analysis_type_name", width: 20 },
+    { header: "Input", key: "input", width: 15 },
+    { header: "Starting Amount", key: "starting_amount", width: 18 },
+    { header: "Cycles", key: "pcr_cycles", width: 12 },
+    { header: "ng/µl Library", key: "concentration_library", width: 15 },
+    { header: "bp", key: "average_fragment_size", width: 12 },
+    { header: "Index Type", key: "index_type_name", width: 15 },
+    { header: "Coord", key: "coordinate", width: 12 },
+    { header: "I7 ID", key: "i7_id", width: 15 },
+    { header: "Index I7", key: "index_i7", width: 15 },
+    { header: "I5 ID", key: "i5_id", width: 15 },
+    { header: "Index I5", key: "index_i5", width: 15 },
+    { header: "Length", key: "read_length_name", width: 12 },
+    { header: "Depth (M)", key: "sequencing_depth", width: 15 },
+    { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
+    { header: "Sequencers", key: "sequencer_names", width: 20 },
+  ];
+}

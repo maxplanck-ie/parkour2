@@ -566,3 +566,26 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
     },
   ];
 }
+
+export function libraryPreparationExportColumns() {
+  return [
+    { header: "Request", key: "request_name", width: 25 },
+    { header: "Barcode", key: "barcode", width: 15 },
+    { header: "Name", key: "name", width: 20 },
+    { header: "Date", key: "create_time", width: 15 },
+    { header: "Protocol", key: "library_protocol_name", width: 20 },
+    {
+      header: "Comment Library/Sample",
+      key: "comments_library_sample",
+      width: 25,
+    },
+    { header: "Pool", key: "pool_name", width: 10 },
+    { header: "Index Type", key: "index_type", width: 20 },
+    { header: "I7 ID", key: "index_i7_id", width: 20 },
+    { header: "I5 ID", key: "index_i5_id", width: 20 },
+    { header: "Coordinate", key: "coordinate", width: 10 },
+    { header: "Value", key: "measured_value_facility", width: 15 },
+    { header: "Unit", key: "measuring_unit_facility", width: 15 },
+    { header: "bp Sample", key: "size_distribution_facility", width: 15 },
+  ];
+}

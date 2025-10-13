@@ -368,16 +368,15 @@
 
 <script lang="jsx">
 import TabulatorTable from "../components/TabulatorTable.vue";
-import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import {
   showNotification,
   handleError,
   createAxiosObject,
   urlStringStartsWith,
-  validateAndFixExcelBuffer
+  createExcelExportBlob
 } from "../utilities/utilityFunctions";
-import { libraryPreparationColumnDefs, libraryPreparationGroupHeader } from "../constants/libraryPreparationConsts";
+import { libraryPreparationColumnDefs, libraryPreparationExportColumns, libraryPreparationGroupHeader } from "../constants/libraryPreparationConsts";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
@@ -977,138 +976,18 @@ export default {
 
         filename = `${formattedDate}_${uniqueRequestIDs}_preparation`;
 
-        const wb = new ExcelJS.Workbook();
-        if (this.selectedFile !== "without-file") {
-          const response = await axiosRef.get(
-            `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`,
-            { responseType: "arraybuffer" }
-          );
-          const fixedBuffer = await validateAndFixExcelBuffer(response.data);
-          await wb.xlsx.load(fixedBuffer);
-        }
+        const exportColumns = libraryPreparationExportColumns();
 
-        const expectedColumns = [
-          { header: "Request", key: "request_name", width: 25 },
-          { header: "Barcode", key: "barcode", width: 15 },
-          { header: "Name", key: "name", width: 20 },
-          { header: "Date", key: "create_time", width: 15 },
-          { header: "Protocol", key: "library_protocol_name", width: 20 },
-          {
-            header: "Comment Library/Sample",
-            key: "comments_library_sample",
-            width: 25
-          },
-          { header: "Pool", key: "pool_name", width: 10 },
-          { header: "Index Type", key: "index_type", width: 20 },
-          { header: "I7 ID", key: "index_i7_id", width: 20 },
-          { header: "I5 ID", key: "index_i5_id", width: 20 },
-          { header: "Coordinate", key: "coordinate", width: 10 },
-          { header: "Value", key: "measured_value_facility", width: 15 },
-          { header: "Unit", key: "measuring_unit_facility", width: 15 },
-          { header: "bp Sample", key: "size_distribution_facility", width: 15 }
-        ];
+        const templateDownloadUrl =
+          this.selectedFile !== "without-file"
+            ? `${urlStringStart}/api/library-preparation-templates/${this.selectedFile.id}/download/`
+            : null;
 
-        let parkourSheet = wb.getWorksheet("Parkour");
-        if (!parkourSheet) {
-          parkourSheet = wb.addWorksheet("Parkour");
-          parkourSheet.columns = expectedColumns;
-          parkourSheet.addRows(sortedExportRows);
-        } else {
-          const headerRowIndex = 1;
-          const headerRow = parkourSheet.getRow(headerRowIndex);
-          const headerToCol = new Map();
-          for (let c = 1; c <= headerRow.cellCount; c++) {
-            let v = headerRow.getCell(c).value;
-            if (v && typeof v === "object" && v.richText) {
-              v = v.richText.map((t) => t.text).join("");
-            } else if (v && typeof v === "object" && v.text) {
-              v = v.text;
-            }
-            if (typeof v === "string" && v.trim()) headerToCol.set(v.trim(), c);
-          }
-
-          const keyToCol = new Map();
-          let matchedHeaders = 0;
-          expectedColumns.forEach((col) => {
-            const idx = headerToCol.get(col.header);
-            if (idx) {
-              keyToCol.set(col.key, idx);
-              matchedHeaders++;
-            }
-          });
-
-          if (matchedHeaders < 6) {
-            const lastRow = parkourSheet.rowCount;
-            for (let r = 2; r <= lastRow; r++) {
-              const row = parkourSheet.getRow(r);
-              row.eachCell((cell) => {
-                cell.value = null;
-              });
-            }
-            expectedColumns.forEach((col, i) => {
-              const colIdx = i + 1;
-              parkourSheet.getCell(headerRowIndex, colIdx).value = col.header;
-              if (col.width) parkourSheet.getColumn(colIdx).width = col.width;
-              keyToCol.set(col.key, colIdx);
-            });
-          } else {
-            const lastRow = parkourSheet.rowCount;
-            for (let r = headerRowIndex + 1; r <= lastRow; r++) {
-              const row = parkourSheet.getRow(r);
-              expectedColumns.forEach((col) => {
-                const cIdx = keyToCol.get(col.key);
-                if (cIdx) row.getCell(cIdx).value = null;
-              });
-            }
-          }
-
-          let rIndex = headerRowIndex + 1;
-          for (const dataRow of sortedExportRows) {
-            const row = parkourSheet.getRow(rIndex);
-            expectedColumns.forEach((col) => {
-              const cIdx = keyToCol.get(col.key);
-              if (cIdx) row.getCell(cIdx).value = dataRow[col.key] ?? null;
-            });
-            if (row.commit) row.commit();
-            rIndex++;
-          }
-        }
-
-        const sortedSheets = [...wb.worksheets].sort(
-          (a, b) => a.orderNo - b.orderNo
-        );
-        const otherSheets = sortedSheets.filter(
-          (sheet) => sheet !== parkourSheet
-        );
-
-        parkourSheet.orderNo = 0;
-        otherSheets.forEach((sheet, index) => {
-          sheet.orderNo = index + 1;
-        });
-
-        wb.views = [{ activeTab: 0, firstSheet: 0 }];
-
-        wb.worksheets.forEach((sheet) => {
-          if (sheet.name === "Parkour") return;
-          sheet.eachRow((row) => {
-            row.eachCell((cell) => {
-              if (
-                cell &&
-                (cell.formula ||
-                  (cell.model && cell.model.formula) ||
-                  (cell.value && cell.value.formula))
-              ) {
-                if (cell.model) cell.model.result = undefined;
-                if (cell.value && typeof cell.value === "object")
-                  cell.value.result = undefined;
-              }
-            });
-          });
-        });
-
-        const buffer = await wb.xlsx.writeBuffer();
-        const blob = new Blob([buffer], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        const blob = await createExcelExportBlob({
+          rows: sortedExportRows,
+          exportColumns,
+          axiosInstance: axiosRef,
+          templateDownloadUrl
         });
         saveAs(blob, filename);
       } finally {

@@ -425,3 +425,27 @@ export function poolingColumnDefs(getTabulatorInstance) {
     },
   ];
 }
+
+export function poolingExportColumns() {
+  return [
+    { header: "Pool", key: "pool_name", width: 20 },
+    { header: "Request", key: "request_name", width: 25 },
+    { header: "Name", key: "name", width: 25 },
+    { header: "Barcode", key: "barcode", width: 15 },
+    { header: "Date", key: "create_time", width: 15 },
+    {
+      header: "Concentration Library",
+      key: "concentration_library",
+      width: 20,
+    },
+    { header: "% Total", key: "combined_smear_analysis", width: 20 },
+    { header: "bp", key: "mean_fragment_size", width: 20 },
+    { header: "Depth (M)", key: "sequencing_depth", width: 20 },
+    { header: "%", key: "percentage_library", width: 20 },
+    { header: "Coord", key: "coordinate", width: 10 },
+    { header: "I7 ID", key: "index_i7_id", width: 20 },
+    { header: "Index I7", key: "index_i7", width: 20 },
+    { header: "I5 ID", key: "index_i5_id", width: 20 },
+    { header: "Index I5", key: "index_i5", width: 20 },
+  ];
+}
