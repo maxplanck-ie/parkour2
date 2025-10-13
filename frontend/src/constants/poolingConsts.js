@@ -143,9 +143,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
       cssClass: "right-border",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
-      },
       formatter: (cell) => {
         const pool_name = cell.getRow().getData().pool_name;
         const name = cell.getValue();
@@ -153,12 +150,11 @@ export function poolingColumnDefs(getTabulatorInstance) {
         const tableGroupsToggleState =
           tabulatorInstance.getTableGroupsToggleState();
         return `
-                        <div style="padding: 4px 12px; display: flex; align-items: center;">
-                          <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
-          (tableGroupsToggleState == 2 ? pool_name + " ➜ " : "") + name
-        }</span>
-                        </div>
-                      `;
+              <div style="padding: 4px 12px; display: flex; align-items: center;">
+                <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${
+                  (tableGroupsToggleState == 2 ? pool_name + " ➜ " : "") + name
+                }</span>
+              </div>`;
       },
     },
     {
@@ -172,9 +168,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
       cssClass: "right-border",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
-      },
       formatter: (cell) => {
         const value = cell.getValue();
         const finalString = value || "-";
@@ -193,9 +186,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
       cssClass: "right-border",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
-      },
       formatter: (cell) => {
         const rowData = cell.getRow().getData();
         const value = cell.getValue();
@@ -219,9 +209,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
-      },
       formatter: (cell) => {
         const value = cell.getValue();
         const finalString = value || "-";
@@ -343,9 +330,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
-      },
     },
     {
       title: "I7 ID",
@@ -361,9 +345,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
       },
     },
     {
@@ -381,9 +362,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
-      },
     },
     {
       title: "I5 ID",
@@ -400,9 +378,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
-      },
     },
     {
       title: "Index I5",
@@ -418,9 +393,6 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
-      cellDblClick: function (e, cell) {
-        showNotification("This field is not editable.", "warning");
       },
     },
   ];
