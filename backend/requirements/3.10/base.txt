@@ -2,7 +2,7 @@
 #    uv pip compile --universal --python-version 3.10 backend/requirements/base.in -o backend/requirements/3.10/base.txt
 asgiref==3.10.0
     # via django
-attrs==25.3.0
+attrs==25.4.0
     # via
     #   jsonschema
     #   referencing
@@ -75,7 +75,7 @@ pandas==2.3.3
     # via -r backend/requirements/base.in
 pillow==11.3.0
     # via fpdf2
-psycopg2==2.9.10
+psycopg2==2.9.11
     # via -r backend/requirements/base.in
 python-dateutil==2.9.0.post0
     # via
