@@ -13,6 +13,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.utils import timezone
 from datetime import datetime
+from common.utils import retrieve_group_items
 
 from .serializers import (
     LibrarySerializer,
@@ -26,6 +27,15 @@ CompleteLibraryData = apps.get_model("library", "CompleteLibraryData")
 CompleteSampleData = apps.get_model("sample", "CompleteSampleData")
 
 logger = logging.getLogger("db")
+
+
+def get_accessible_requests(django_request):
+    queryset = Request.objects.filter(archived=False)
+    if django_request.user.is_staff:
+        return queryset
+    if getattr(django_request.user, "is_pi", False):
+        return retrieve_group_items(django_request, queryset)
+    return queryset.filter(user=django_request.user)
 
 
 class LibrarySampleTree(viewsets.ViewSet):
@@ -44,6 +54,11 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         library_queryset = CompleteLibraryData.objects.all()
         sample_queryset = CompleteSampleData.objects.all()
+
+        accessible_requests = get_accessible_requests(request)
+        accessible_request_ids = accessible_requests.values_list("id", flat=True)
+        library_queryset = library_queryset.filter(request_id__in=accessible_request_ids)
+        sample_queryset = sample_queryset.filter(request_id__in=accessible_request_ids)
 
         if start_date_str and end_date_str:
             try:
@@ -250,6 +265,7 @@ class GenerateROCrate(viewsets.ViewSet):
     def list(self, request):
         barcodes = request.query_params.get("barcodes")
         barcodes_list = barcodes.split(",")
+        accessible_requests = get_accessible_requests(request)
 
         ls_data = []
         request_data = []
@@ -263,7 +279,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "index_type",
                 "organism",
                 "pooling",
-            ).filter(barcode__in=barcodes_list)
+            ).filter(barcode__in=barcodes_list, request__in=accessible_requests)
 
             for lib in library_bar_matches:
                 ls_data.append(self.serialize_model_instance(lib))
@@ -277,22 +293,18 @@ class GenerateROCrate(viewsets.ViewSet):
                 "index_type",
                 "librarypreparation",
                 "pooling",
-            ).filter(barcode__in=barcodes_list)
+            ).filter(barcode__in=barcodes_list, request__in=accessible_requests)
 
             for sample in sample_bar_matches:
                 ls_data.append(self.serialize_model_instance(sample))
 
-            request_qs = (
-                Request.objects.filter(
-                    Q(libraries__barcode__in=barcodes_list)
-                    | Q(samples__barcode__in=barcodes_list)
-                )
-                .prefetch_related(
-                    Prefetch("libraries", queryset=library_bar_matches),
-                    Prefetch("samples", queryset=sample_bar_matches),
-                )
-                .distinct()
-            )
+            request_qs = accessible_requests.filter(
+                Q(libraries__barcode__in=barcodes_list)
+                | Q(samples__barcode__in=barcodes_list)
+            ).prefetch_related(
+                Prefetch("libraries", queryset=library_bar_matches),
+                Prefetch("samples", queryset=sample_bar_matches),
+            ).distinct()
 
             for obj in request_qs:
                 request_data.append(RequestChildrenNodesSerializer(obj).data)
