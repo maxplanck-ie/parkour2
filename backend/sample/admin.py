@@ -104,7 +104,7 @@ class SampleAdmin(SimpleHistoryAdmin):
                 "fields": (
                     "measuring_unit_facility",
                     "measured_value_facility",
-                    "gmo_facilitydilution_factor",
+                    "gmo_facility",
                     "sample_volume_facility",
                     "amount_facility",
                     "size_distribution_facility",

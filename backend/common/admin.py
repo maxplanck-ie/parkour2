@@ -5,7 +5,6 @@ from common.models import (
     Duty,
     Organization,
     PrincipalInvestigator,
-    LibraryPreparationTemplate,
 )
 from simple_history.admin import SimpleHistoryAdmin
 from django import forms
@@ -331,13 +330,6 @@ class DutyAdmin(SimpleHistoryAdmin):
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
         queryset.update(archived=False)
-
-
-@admin.register(LibraryPreparationTemplate)
-class LibraryPreparationTemplateAdmin(SimpleHistoryAdmin):
-    list_display = ("name", "file", "uploaded_at")
-    search_fields = ("name",)
-    ordering = ("-uploaded_at",)
 
 
 # admin.site.unregister(User)
