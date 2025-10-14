@@ -82,10 +82,26 @@
               </select>
             </div>
           </div>
-          <ag-grid-vue ref="dutiesGrid" class="ag-theme-alpine" style="margin: 15px; height: 669px"
-            :rowSelection="rowSelectionOptions" animateRows="true" rowDragManaged="true"
-            stopEditingWhenCellsLoseFocus="true" :columnDefs="columnsList" :rowData="dutiesList"
-            :gridOptions="gridOptions" @cellValueChanged="editDuty" @first-data-rendered="updateGridDataObject" />
+          <ag-grid-vue
+            ref="dutiesGrid"
+            class="ag-theme-alpine"
+            style="margin: 15px; height: 669px"
+            theme="legacy"
+            :rowSelection="{
+              mode: 'multiRow',
+              checkboxes: false,
+              headerCheckbox: false
+            }"
+            :animateRows="true"
+            :rowDragManaged="true"
+            :stopEditingWhenCellsLoseFocus="true"
+            :columnDefs="columnsList"
+            :rowData="dutiesList"
+            :gridOptions="gridOptions"
+            @cellValueChanged="editDuty"
+            @first-data-rendered="updateGridDataObject"
+            @grid-ready="onGridReady"
+          />
         </div>
       </div>
       <div class="add-duty-container" style="
@@ -231,7 +247,7 @@ export default {
       gridOptions: {},
       gridData: [],
       selectedFilter: "ongoing",
-      rowSelectionOptions: "multiple"
+      gridApi: null
     };
   },
   setup() { },
@@ -247,6 +263,9 @@ export default {
   },
   computed: {},
   methods: {
+    onGridReady(params) {
+      this.gridApi = params.api;
+    },
     updateDutyObject(event) {
       let newDuty = toRaw(this.newDuty);
       if (event.target.id === "facility") {
@@ -655,13 +674,16 @@ export default {
       ];
     },
     updateGridDataObject() {
-      let gridData = [];
-      if (this.$refs.dutiesGrid && this.$refs.dutiesGrid.api) {
-        this.$refs.dutiesGrid.api.forEachNode((rowNode, index) => {
-          gridData.push(rowNode.data);
-        });
-        this.gridData = gridData;
+      const api =
+        this.gridApi || (this.$refs.dutiesGrid && this.$refs.dutiesGrid.api);
+      if (!api) {
+        return;
       }
+      const gridData = [];
+      api.forEachNode((rowNode) => {
+        gridData.push(rowNode.data);
+      });
+      this.gridData = gridData;
     }
   }
 };

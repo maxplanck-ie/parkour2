@@ -113,14 +113,9 @@ class TestFixedCostsViewSet(BaseAPITestCase):
 
     def test_update_price(self):
         """Ensure update price behaves correctly."""
-        response = self.client.put(
+        response = self.client.patch(
             path=reverse("fixed-costs-detail", kwargs={"pk": self.cost.pk}),
-            data=json.dumps(
-                {
-                    "id": self.cost.pk,
-                    "price": 15,
-                }
-            ),
+            data=json.dumps({"price": 15}),
             content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -196,14 +191,9 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
 
     def test_update_price(self):
         """Ensure update price behaves correctly."""
-        response = self.client.put(
+        response = self.client.patch(
             path=reverse("sequencing-costs-detail", kwargs={"pk": self.cost.pk}),
-            data=json.dumps(
-                {
-                    "id": self.cost.pk,
-                    "price": 15,
-                }
-            ),
+            data=json.dumps({"price": 15}),
             content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)

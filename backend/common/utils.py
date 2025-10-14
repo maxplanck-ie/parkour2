@@ -102,5 +102,9 @@ def retrieve_group_items(request, queryset):
 
 
 def cast_index_number(index_number):
-    """convert "0004v3" to "0004" and so on"""
-    return int(index_number.split("v")[0]) if "v" in index_number else int(index_number)
+    """convert "0004v3" or "0004V3" to "0004" and so on"""
+    return (
+        int(index_number.lower().split("v")[0])
+        if "v" in index_number.lower()
+        else int(index_number)
+    )

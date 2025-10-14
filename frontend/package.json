@@ -12,31 +12,31 @@
     "start-prod": "npm install && vite build && npx serve -s dist -l 5173"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "6.7.2",
-    "@fortawesome/free-regular-svg-icons": "6.7.2",
-    "@fortawesome/free-solid-svg-icons": "6.7.2",
-    "@fortawesome/vue-fontawesome": "3.0.8",
-    "ag-grid-community": "32.3.3",
-    "ag-grid-vue3": "32.3.3",
-    "axios": "1.8.4",
-    "bootstrap": "5.3.3",
+    "@fortawesome/fontawesome-svg-core": "7.1.0",
+    "@fortawesome/free-regular-svg-icons": "7.1.0",
+    "@fortawesome/free-solid-svg-icons": "7.1.0",
+    "@fortawesome/vue-fontawesome": "3.1.2",
+    "ag-grid-community": "34.1.2",
+    "ag-grid-vue3": "34.1.2",
+    "axios": "1.12.2",
+    "bootstrap": "5.3.8",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "js-cookie": "3.0.5",
+    "jszip": "^3.10.1",
     "moment": "2.30.1",
-    "pinia": "3.0.1",
-    "sass": "1.86.0",
-    "serve": "14.2.4",
+    "pinia": "3.0.3",
+    "sass": "1.93.2",
+    "serve": "14.2.5",
     "tabulator-tables": "6.3.1",
-    "vue": "3.5.13",
-    "vue-router": "4.5.0",
+    "vue": "3.5.22",
+    "vue-router": "4.5.1",
     "vue-toastification": "2.0.0-rc.5",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
-    "jszip": "^3.10.1"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "5.2.3",
-    "@vitejs/plugin-vue-jsx": "4.1.2",
-    "vite": "6.2.2"
+    "@vitejs/plugin-vue": "6.0.1",
+    "@vitejs/plugin-vue-jsx": "5.1.1",
+    "vite": "7.1.9"
   }
 }

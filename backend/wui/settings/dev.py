@@ -15,8 +15,8 @@ INSTALLED_APPS += [
 
 MIDDLEWARE = [
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
-    *MIDDLEWARE,
     "corsheaders.middleware.CorsMiddleware",
+    *MIDDLEWARE,
 ]
 
 INTERNAL_IPS = [

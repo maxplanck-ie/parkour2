@@ -1,16 +1,17 @@
 name: Frontend
 
 on:
+  workflow_run:
+    workflows:
+      - Update
+    types:
+      - completed
   workflow_dispatch:
   push:
-    branches: ['develop']
+    branches: [develop, update/dependencies]
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-      - closed
+    branches: [develop, update/dependencies]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 
 jobs:

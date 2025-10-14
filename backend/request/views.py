@@ -59,10 +59,10 @@ logger = logging.getLogger("db")
 
 class PDF(FPDF):  # pragma: no cover
     def __init__(self, title="Title", font="Arial"):
+        super().__init__()
         self.core_fonts_encoding = "UTF-8"
         self.title = title
         self.font = font
-        super().__init__()
 
     def header(self):
         self.set_font(self.font, style="B", size=14)  # Arial bold 15
