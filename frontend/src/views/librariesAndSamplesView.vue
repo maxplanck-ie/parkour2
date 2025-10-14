@@ -2,9 +2,9 @@
   <div class="parent-container">
     <!-- Loading overlay -->
     <div v-if="(loading || fakeLoading) && !exportLoading" class="loading-overlay">
+      <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
-      <div class="spinner"></div>
-      Loading <span style="font-weight: bold">Libraries & Samples</span>...
+        Loading <span style="font-weight: bold">Libraries & Samples</span>...
       </p>
     </div>
     <div v-if="exportLoading" class="loading-overlay">

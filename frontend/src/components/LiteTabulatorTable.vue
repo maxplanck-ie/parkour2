@@ -398,4 +398,5 @@ export default {
 
 <!--
 Add VirtualDOM support
+Allow opening only 3 groups at a time
 -->
