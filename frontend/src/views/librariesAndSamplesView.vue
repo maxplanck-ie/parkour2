@@ -486,7 +486,6 @@ import {
 import { statusMap } from "../constants/statusConsts";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
-const currentUser = typeof window !== "undefined" && window.USER ? window.USER : {};
 
 export default {
   name: "LibrariesAndSamples",
@@ -511,7 +510,7 @@ export default {
       selectedFile: "without-file",
       exportSelection: "selected",
       hasSelectedRows: false,
-      isStaffUser: Boolean(currentUser && currentUser.is_staff),
+      isStaffUser: false,
       pagination: {
         currentPage: 1,
         pageSize: 300,
@@ -564,9 +563,7 @@ export default {
     this.getLibrariesSamples(1);
     this.setColumns();
     this.fetchFilterOptions();
-    if (this.isStaffUser) {
-      this.fetchExportTemplates();
-    }
+    this.fetchStaffStatus();
 
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -596,6 +593,21 @@ export default {
     }
   },
   methods: {
+    async fetchStaffStatus() {
+      try {
+        const response = await axiosRef.get(`${urlStringStart}/api_user_details`);
+        const payload = response.data ? response.data.USER : null;
+        const user = typeof payload === "string" ? JSON.parse(payload) : payload;
+        const staffFlag = user?.is_staff;
+        this.isStaffUser = staffFlag === true;
+        if (this.isStaffUser) {
+          this.fetchExportTemplates();
+        }
+      } catch (error) {
+        showNotification("Failed to fetch user details.", "error");
+        this.isStaffUser = false;
+      }
+    },
     async getLibrariesSamples(page = 1, exportOnly) {
       this.loading = true;
       try {
