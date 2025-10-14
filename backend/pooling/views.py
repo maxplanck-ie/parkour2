@@ -222,7 +222,6 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 matching_library = Library.objects.filter(barcode=barcode).last()
 
                 if matching_sample:
-                    my_status = matching_sample.status
                     matching_sample.is_pooled = False
 
                     if matching_sample.status == 2:
@@ -242,20 +241,19 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                         matching_sample.save()
 
                 elif matching_library:
-                    my_status = matching_library.status
                     matching_library.status = 2
                     matching_library.is_pooled = False
                     matching_library.save()
 
                 else:
                     return Response(status=status.HTTP_404_NOT_FOUND)
-                assert my_status > 0
 
             pool.delete()
 
             return Response(status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.exception("Failed to destroy pool %s", pk)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(

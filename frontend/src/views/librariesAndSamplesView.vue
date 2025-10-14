@@ -1,14 +1,19 @@
 <template>
   <div class="parent-container">
     <!-- Loading overlay -->
-    <div v-if="loading || fakeLoading" class="loading-overlay">
-      <div v-if="!fakeLoading || exportLoading" class="spinner"></div>
+    <div v-if="(loading || fakeLoading) && !exportLoading" class="loading-overlay">
       <p v-if="!fakeLoading">
-        Loading <span style="font-weight: bold">Libraries & Samples</span>...
+      <div class="spinner"></div>
+      Loading <span style="font-weight: bold">Libraries & Samples</span>...
       </p>
-      <p v-if="exportLoading">
-        <span style="font-weight: bold">Please wait, this might take a while</span>...
-      </p>
+    </div>
+    <div v-if="exportLoading" class="loading-overlay">
+      <div class="export-long-loading">
+        <span>
+          <strong>Please wait</strong>, this might take a while...
+        </span>
+        <div class="spinner" style="height: 35px; width:35px;"></div>
+      </div>
     </div>
 
     <!-- Header -->
@@ -1157,7 +1162,7 @@ export default {
           this.selectedFile !== "without-file"
             ? `${urlStringStart}/api/libraries-and-samples-templates/${this.selectedFile.id}/download/`
             : null;
-            
+
         const blob = await createExcelExportBlob({
           rows: sortedExportRows,
           exportColumns,
@@ -1171,6 +1176,10 @@ export default {
           "error"
         );
       } finally {
+        if (this.exportLoading) {
+          this.exportLoading = false;
+          showNotification("File has been exported successfully.", "success");
+        }
         this.fakeLoadingStop();
         if (!this.exportSelection === "selected")
           setTimeout(() => {
@@ -1260,6 +1269,20 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+.export-long-loading {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #333;
+  border-radius: 4px;
 }
 
 .parent-container {

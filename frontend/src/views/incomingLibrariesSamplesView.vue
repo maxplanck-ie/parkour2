@@ -734,8 +734,9 @@ export default {
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
-      if (isEscape && this.showPopupWindow) {
+      if (isEscape && (this.showPopupWindow || this.showExportPopup)) {
         this.showPopupWindow = false;
+        this.showExportPopup = false;
         return;
       }
       if (isEscape && this.showAdvancedFilters) {

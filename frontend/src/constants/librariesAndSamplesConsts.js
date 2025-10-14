@@ -4,6 +4,53 @@ import {
 } from "../utilities/utilityFunctions";
 import { statusMap, getStatusClass } from "./statusConsts";
 
+const sortedStatusEntries = Object.entries(statusMap).sort(
+  ([keyA], [keyB]) => Number(keyA) - Number(keyB)
+);
+
+function createStatusHeaderTooltip() {
+  if (typeof document === "undefined") {
+    return [
+      "Status Codes",
+      ...sortedStatusEntries.map(([key, label]) => `${key}: ${label}`),
+    ].join("\n");
+  }
+
+  const container = document.createElement("div");
+  container.style.textAlign = "left";
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.gap = "4px";
+
+  const heading = document.createElement("div");
+  heading.style.fontWeight = "700";
+  heading.style.marginBottom = "2px";
+  heading.textContent = "Status Codes";
+  container.appendChild(heading);
+
+  sortedStatusEntries.forEach(([key, label]) => {
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.gap = "6px";
+    row.style.alignItems = "center";
+
+    const code = document.createElement("span");
+    code.style.fontWeight = "600";
+    code.style.minWidth = "20px";
+    code.style.textAlign = "right";
+    code.textContent = key;
+
+    const description = document.createElement("span");
+    description.textContent = label;
+
+    row.appendChild(code);
+    row.appendChild(description);
+    container.appendChild(row);
+  });
+
+  return container;
+}
+
 export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
   return `
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
@@ -101,7 +148,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       field: "status",
       width: 50,
       headerFilter: true,
-      headerTooltip: "Status",
+      headerTooltip: () => createStatusHeaderTooltip(),
       visible: true,
       frozen: true,
       cssClass: "right-border",
