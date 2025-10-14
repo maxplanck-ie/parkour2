@@ -255,7 +255,7 @@
     <!-- Popup for Export Options -->
     <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
       @dragenter="handleDragEnter" @dragleave="handleDragLeave" :class="{ 'drag-over': isDragOver }">
-      <div class="drag-drop-indicator">
+      <div v-if="isStaffUser" class="drag-drop-indicator">
         <div style="
             display: flex;
             justify-content: center;
@@ -325,7 +325,7 @@
               <label for="export-all"> Export all libraries & samples </label>
             </div>
           </div>
-          <div class="export-section" style="height: 100%">
+          <div v-if="isStaffUser" class="export-section" style="height: 100%">
             <div style="font-weight: bold; margin-bottom: 8px">
               Upload additional excel sheet templates to append:
             </div>
@@ -418,9 +418,17 @@
               </div>
             </div>
           </div>
+          <div v-else class="export-section" style="height: 100%">
+            <div style="font-weight: bold; margin-bottom: 8px">
+              Upload additional excel sheet templates to append:
+            </div>
+            <p style="margin: 0; color: #666;">
+              Additional templates and uploads are limited to staff members.
+            </p>
+          </div>
         </div>
         <div class="popup-footer">
-          <div class="file-upload-section">
+          <div v-if="isStaffUser" class="file-upload-section">
             <label for="file-upload" class="file-upload-label"
               title="Upload additional sheet to append to the exported sheet.">
               <svg style="display: block; margin-right: 4px" fill="none" width="24px" height="24px" version="1.1"
@@ -478,6 +486,7 @@ import {
 import { statusMap } from "../constants/statusConsts";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const currentUser = typeof window !== "undefined" && window.USER ? window.USER : {};
 
 export default {
   name: "LibrariesAndSamples",
@@ -502,6 +511,7 @@ export default {
       selectedFile: "without-file",
       exportSelection: "selected",
       hasSelectedRows: false,
+      isStaffUser: Boolean(currentUser && currentUser.is_staff),
       pagination: {
         currentPage: 1,
         pageSize: 300,
@@ -554,7 +564,9 @@ export default {
     this.getLibrariesSamples(1);
     this.setColumns();
     this.fetchFilterOptions();
-    this.fetchExportTemplates();
+    if (this.isStaffUser) {
+      this.fetchExportTemplates();
+    }
 
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -1031,6 +1043,9 @@ export default {
       }
     },
     async fetchExportTemplates() {
+      if (!this.isStaffUser) {
+        return;
+      }
       try {
         const response = await axiosRef.get(
           `${urlStringStart}/api/libraries-and-samples-templates/`
@@ -1041,6 +1056,9 @@ export default {
       }
     },
     async uploadExportTemplate(event) {
+      if (!this.isStaffUser) {
+        return;
+      }
       const file = event.target.files[0];
       if (
         file &&
@@ -1071,6 +1089,9 @@ export default {
       }
     },
     async downloadExportTemplate(file) {
+      if (!this.isStaffUser) {
+        return;
+      }
       try {
         const response = await axiosRef.get(
           `${urlStringStart}/api/libraries-and-samples-templates/${file.id}/download/`,
@@ -1091,6 +1112,9 @@ export default {
       }
     },
     async removeExportTemplate(index) {
+      if (!this.isStaffUser) {
+        return;
+      }
       const file = this.fetchedLibrariesAndSamplesTemplates[index];
       try {
         await axiosRef.delete(
@@ -1191,19 +1215,35 @@ export default {
     },
     handleDragOver(e) {
       e.preventDefault();
+      if (!this.isStaffUser) {
+        this.isDragOver = false;
+        return;
+      }
       this.isDragOver = true;
     },
     handleDragEnter(e) {
       e.preventDefault();
+      if (!this.isStaffUser) {
+        this.isDragOver = false;
+        return;
+      }
       this.isDragOver = true;
     },
     handleDragLeave(e) {
+      if (!this.isStaffUser) {
+        this.isDragOver = false;
+        return;
+      }
       if (!e.currentTarget.contains(e.relatedTarget)) {
         this.isDragOver = false;
       }
     },
     handleDrop(e) {
       e.preventDefault();
+      if (!this.isStaffUser) {
+        this.isDragOver = false;
+        return;
+      }
       this.isDragOver = false;
 
       const files = e.dataTransfer.files;
@@ -1215,6 +1255,9 @@ export default {
       } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
+      if (!this.isStaffUser) {
+        return;
+      }
       if (
         file &&
         file.type ===
