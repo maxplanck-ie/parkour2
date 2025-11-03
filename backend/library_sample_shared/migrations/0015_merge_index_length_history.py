@@ -15,5 +15,6 @@ class Migration(migrations.Migration):
         ),
     ]
 
-    # No schema changes; this migration merely linearizes history.
+    # No schema changes; this migration merges the two 0014 branches so
+    # Django sees a single linear history.
     operations = []
