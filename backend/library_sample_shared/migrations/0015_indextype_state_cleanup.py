@@ -9,7 +9,11 @@ class Migration(migrations.Migration):
             "library_sample_shared",
             "0014_remove_index_length_field",
         ),
+        (
+            "library_sample_shared",
+            "0014_alter_historicallibraryprotocol_name_and_more",
+        ),
     ]
 
-    # No further changes required; keep numbering aligned.
+    # No schema changes; this migration merely linearizes history.
     operations = []
