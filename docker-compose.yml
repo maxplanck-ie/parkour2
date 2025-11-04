@@ -20,12 +20,12 @@ services:
       test:
         [
           "CMD-SHELL",
-          "PGPASSWORD=$$POSTGRES_PASSWORD pg_isready -h 127.0.0.1 -p 5432 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\"",
+          "PGPASSWORD=$$POSTGRES_PASSWORD pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\"",
         ]
-      interval: 10s
-      timeout: 2s
-      start_period: 20s
-      retries: 10
+      interval: 120s
+      timeout: 120s
+      start_period: 0s
+      retries: 1
     ports:
       - 5432:5432
 
