@@ -15,7 +15,7 @@ services:
       - ./misc/parkour.env
     restart: always
     volumes:
-      - pgdb:/var/lib/postgresql/data/
+      - pgdb:/var/lib/postgresql
     healthcheck:
       test: pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
       interval: 360s
