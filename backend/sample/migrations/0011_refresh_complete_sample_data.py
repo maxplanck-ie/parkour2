@@ -190,7 +190,7 @@ CREATE MATERIALIZED VIEW complete_sample_data_mv AS
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0011_update_sample_measurement_fields'),
+        ('sample', '0010_update_sample_measurement_fields'),
     ]
 
     operations = [
@@ -263,4 +263,3 @@ class Migration(migrations.Migration):
             ],
         ),
     ]
-

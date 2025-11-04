@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0010_remove_sample_percent_total'),
+        ('sample', '0009_alter_nucleicacidtype_options_and_more'),
     ]
 
     operations = [
@@ -59,4 +59,3 @@ class Migration(migrations.Migration):
             ],
         ),
     ]
-

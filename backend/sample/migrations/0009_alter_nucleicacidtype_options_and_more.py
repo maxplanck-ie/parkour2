@@ -129,18 +129,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name="sample",
-            name="percent_total",
-            field=models.FloatField(
-                default=100,
-                validators=[
-                    django.core.validators.MinValueValidator(0),
-                    django.core.validators.MaxValueValidator(100),
-                ],
-                verbose_name="Smear Analysis (% Total)",
-            ),
-        ),
-        migrations.AddField(
-            model_name="sample",
             name="removed_concentration_method",
             field=models.ForeignKey(
                 blank=True,
