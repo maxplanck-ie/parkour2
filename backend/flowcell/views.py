@@ -7,6 +7,7 @@ import unicodedata
 from common.mixins import MultiEditMixin
 from common.views import CsrfExemptSessionAuthentication
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
 from django.apps import apps
 from django.db.models import F, Prefetch, Q
 from django.http import HttpResponse
@@ -95,7 +96,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = LaneSerializer
 
     def get_queryset(self):
-        today = timezone.datetime.today()
+        today = timezone.localtime()
 
         default_start_date = today - relativedelta(months=0)
         default_end_date = today
@@ -107,11 +108,14 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             "end", default_end_date.strftime("%Y-%m")
         )
 
-        start_date = timezone.datetime.strptime(start_date_param, "%Y-%m")
-        end_date = timezone.datetime.strptime(end_date_param, "%Y-%m")
+        start_date = datetime.strptime(start_date_param, "%Y-%m").replace(day=1)
+        end_date = datetime.strptime(end_date_param, "%Y-%m").replace(day=1)
+        end_date = end_date + relativedelta(months=1, seconds=-1)
 
-        start_date = start_date.replace(day=1)
-        end_date = end_date.replace(day=1) + relativedelta(months=1, seconds=-1)
+        if timezone.is_naive(start_date):
+            start_date = timezone.make_aware(start_date)
+        if timezone.is_naive(end_date):
+            end_date = timezone.make_aware(end_date)
 
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
