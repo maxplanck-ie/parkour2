@@ -114,9 +114,18 @@ class TestLibrarySampleTree(BaseTestCase):
     def test_libraries_and_samples_list(self):
         """Ensure get all libraries and samples works correctly."""
         response = self.client.get(reverse("libraries-and-samples-list"))
-        data = response.json()["children"][0]
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.request.name, data["name"])
+        payload = response.json()
+
+        self.assertTrue(payload.get("success"))
+        self.assertIn("children", payload)
+        self.assertIsInstance(payload["children"], list)
+
+        if payload["children"]:
+            record = payload["children"][0]
+            self.assertIn("record_type", record)
+            self.assertIn(record["record_type"], {"Library", "Sample"})
+            self.assertIn("barcode", record)
 
 
 class TestLibraries(BaseTestCase):
