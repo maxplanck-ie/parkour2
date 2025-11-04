@@ -44,12 +44,6 @@ jobs:
         run: |
           make
           make create-admin
-      - name: Dump postgres logs if unhealthy
-        if: failure()
-        run: |
-          docker compose ps
-          docker logs parkour2-postgres || docker compose logs parkour2-postgres || true
-          docker inspect --format='{{json .State.Health}}' parkour2-postgres || true
 
   build-and-test:
     env:
