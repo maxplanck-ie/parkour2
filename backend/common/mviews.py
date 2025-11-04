@@ -244,6 +244,111 @@ INSERT INTO complete_sample_data_mv (
 """
 
 
+def _ensure_denormalized_tables_exist() -> None:
+    statements = [
+        """
+        CREATE TABLE IF NOT EXISTS complete_library_data_mv (
+            library_id INTEGER PRIMARY KEY,
+            barcode VARCHAR(100),
+            name VARCHAR(255),
+            status INTEGER,
+            sequencing_depth DOUBLE PRECISION,
+            measuring_unit VARCHAR(50),
+            measured_value DOUBLE PRECISION,
+            concentration_library DOUBLE PRECISION,
+            percent_total DOUBLE PRECISION,
+            library_protocol_id INTEGER,
+            library_protocol_name VARCHAR(150),
+            analysis_type_id INTEGER,
+            analysis_type_name VARCHAR(200),
+            read_length_id INTEGER,
+            read_length_name VARCHAR(50),
+            average_fragment_size DOUBLE PRECISION,
+            index_type_name VARCHAR(100),
+            coordinate VARCHAR(3),
+            index_i7 VARCHAR(24),
+            i7_id VARCHAR(50),
+            index_i5 VARCHAR(24),
+            i5_id VARCHAR(50),
+            request_id INTEGER,
+            request_name VARCHAR(255),
+            create_time TIMESTAMP WITH TIME ZONE,
+            pool_names TEXT[],
+            flowcell_ids TEXT[],
+            sequencer_ids INTEGER[],
+            sequencer_names TEXT[],
+            search_vector TSVECTOR
+        );
+        """,
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_complete_library_data_mv_pk
+            ON complete_library_data_mv (library_id);
+        """,
+        """
+        CREATE INDEX IF NOT EXISTS idx_complete_library_data_mv_request
+            ON complete_library_data_mv (request_id);
+        """,
+        """
+        CREATE INDEX IF NOT EXISTS idx_complete_library_data_mv_search
+            ON complete_library_data_mv USING GIN (search_vector);
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS complete_sample_data_mv (
+            sample_id INTEGER PRIMARY KEY,
+            barcode VARCHAR(100),
+            name VARCHAR(255),
+            status INTEGER,
+            sequencing_depth DOUBLE PRECISION,
+            nucleic_acid_type_id INTEGER,
+            nucleic_acid_type_name VARCHAR(100),
+            measuring_unit VARCHAR(50),
+            measured_value DOUBLE PRECISION,
+            concentration_library DOUBLE PRECISION,
+            gmo BOOLEAN,
+            library_protocol_id INTEGER,
+            library_protocol_name VARCHAR(150),
+            analysis_type_id INTEGER,
+            analysis_type_name VARCHAR(200),
+            read_length_id INTEGER,
+            read_length_name VARCHAR(50),
+            average_fragment_size DOUBLE PRECISION,
+            starting_amount DOUBLE PRECISION,
+            pcr_cycles INTEGER,
+            index_type_name VARCHAR(100),
+            coordinate VARCHAR(3),
+            index_i7 VARCHAR(24),
+            i7_id VARCHAR(50),
+            index_i5 VARCHAR(24),
+            i5_id VARCHAR(50),
+            request_id INTEGER,
+            request_name VARCHAR(255),
+            create_time TIMESTAMP WITH TIME ZONE,
+            pool_names TEXT[],
+            flowcell_ids TEXT[],
+            sequencer_ids INTEGER[],
+            sequencer_names TEXT[],
+            search_vector TSVECTOR
+        );
+        """,
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_complete_sample_data_mv_pk
+            ON complete_sample_data_mv (sample_id);
+        """,
+        """
+        CREATE INDEX IF NOT EXISTS idx_complete_sample_data_mv_request
+            ON complete_sample_data_mv (request_id);
+        """,
+        """
+        CREATE INDEX IF NOT EXISTS idx_complete_sample_data_mv_search
+            ON complete_sample_data_mv USING GIN (search_vector);
+        """,
+    ]
+
+    with connections["default"].cursor() as cursor:
+        for statement in statements:
+            cursor.execute(statement)
+
+
 _pending_library_ids: Set[int] = set()
 _pending_sample_ids: Set[int] = set()
 _pending_full_refresh = False
@@ -319,6 +424,9 @@ def _drain_and_refresh() -> None:
             if _batch_refresh_timer:
                 _batch_refresh_timer.cancel()
             _batch_refresh_timer = None
+
+        if full_refresh or library_ids or sample_ids:
+            _ensure_denormalized_tables_exist()
 
         if full_refresh:
             logger.debug("Executing full denormalized data refresh")

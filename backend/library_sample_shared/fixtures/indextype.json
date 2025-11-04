@@ -5,7 +5,6 @@
     "fields": {
       "name": "Other",
       "is_dual": false,
-      "index_length": "6",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -19,7 +18,6 @@
     "fields": {
       "name": "TruSeq small RNA (I7: RPI1-RPI48)",
       "is_dual": false,
-      "index_length": "6",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -82,7 +80,6 @@
     "fields": {
       "name": "TruSeq Kit LT (I7: A001-A027)",
       "is_dual": false,
-      "index_length": "6",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -121,7 +118,6 @@
     "fields": {
       "name": "Nextera XT (I7: N701-N729, I5: S501-S522)",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -181,7 +177,6 @@
     "fields": {
       "name": "NEBNext 96 Index Primer (I7: P1_A1-P96_H12)",
       "is_dual": false,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -292,7 +287,6 @@
     "fields": {
       "name": "NEBNext Multiplex Oligos (Set 1-4, I7: NEB_P1-P48)",
       "is_dual": false,
-      "index_length": "6",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -355,7 +349,6 @@
     "fields": {
       "name": "NEBNext Dual Index Primer (I7: i701-i712, I5: i501-i508)",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -391,7 +384,6 @@
     "fields": {
       "name": "TruSeq Kit HT (I7: D701-D712, I5: D501-D508)",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -427,7 +419,6 @@
     "fields": {
       "name": "TruSeq UDI Adapter",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -491,7 +482,6 @@
     "fields": {
       "name": "TruSeq UDI Primers",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -699,7 +689,6 @@
     "fields": {
       "name": "Nextera XT Pairs  (I7: N701-N712, I5: S517-S508)",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -735,7 +724,6 @@
     "fields": {
       "name": "TruSeq DNA Methylation Index PCR Primers",
       "is_dual": false,
-      "index_length": "6",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -762,7 +750,6 @@
     "fields": {
       "name": "Obsolete_ONT PCR cDNA Barcoding SQK PCB109",
       "is_dual": false,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -789,7 +776,6 @@
     "fields": {
       "name": "NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -997,7 +983,6 @@
     "fields": {
       "name": "Chromium i7 Multiplex Kit Single Cell v2_v3_PN120262",
       "is_dual": false,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -1011,7 +996,6 @@
     "fields": {
       "name": "Single Index Kit T Set A Single Cell v3.1_PN1000213",
       "is_dual": false,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -1025,7 +1009,6 @@
     "fields": {
       "name": "IDT for Illumina \u2013 TruSeq DNA/RNA UD Indexes, 20022370-71",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -1233,7 +1216,6 @@
     "fields": {
       "name": "Lexogen i5_i7_6nt Indexes_04496_04796",
       "is_dual": true,
-      "index_length": "6",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -1441,7 +1423,6 @@
     "fields": {
       "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set A_20027213/20040553",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -1649,7 +1630,6 @@
     "fields": {
       "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set B_20027214/20040554",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -1857,7 +1837,6 @@
     "fields": {
       "name": "Lexogen i5_i7_8nt Indexes_10796",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2065,7 +2044,6 @@
     "fields": {
       "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 2 E6442",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2273,7 +2251,6 @@
     "fields": {
       "name": "NEBNext Multiplex Oligos for Enzymatic Methyl_seq E7140",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2337,7 +2314,6 @@
     "fields": {
       "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set C_20042666/2004555",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2545,7 +2521,6 @@
     "fields": {
       "name": "IDT\u00ae for Illumina DNA/RNA UD Indexes Set D_20742667/20040556",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2753,7 +2728,6 @@
     "fields": {
       "name": "NuGEN Ovation SoLo RNA-Seq System",
       "is_dual": false,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2767,7 +2741,6 @@
     "fields": {
       "name": "Accel-NGS\u00ae 2S Plus DNA Library Kit",
       "is_dual": false,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -2781,7 +2754,6 @@
     "fields": {
       "name": "NuGEN Ovation Ultralow Methyl-Seq Library Systems",
       "is_dual": false,
-      "index_length": "6",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -2795,7 +2767,6 @@
     "fields": {
       "name": "Chromium i7 Multiplex Kit N Set A v1 PN-100084",
       "is_dual": false,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2809,7 +2780,6 @@
     "fields": {
       "name": "Accel-NGS 1S Plus DNA_Swift_1S_UDI Kit_19096",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -2823,7 +2793,6 @@
     "fields": {
       "name": "Single Index Kit N Set A_Single Cell ATAC v1.1_PN1000212",
       "is_dual": false,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -2854,7 +2823,6 @@
     "fields": {
       "name": "Dual Index Kit TT Set A_Single Cell RNA 3'v3.1_PN1000215",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -3062,7 +3030,6 @@
     "fields": {
       "name": "Custom_Buenrostro2015",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -3148,7 +3115,6 @@
     "fields": {
       "name": "Nanopore No Index",
       "is_dual": false,
-      "index_length": "24",
       "format": "single",
       "read_type": "long",
       "archived": false,
@@ -3165,7 +3131,6 @@
     "fields": {
       "name": "Indexing Primer Set HT for Illumina v2_634443/634420",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -3201,7 +3166,6 @@
     "fields": {
       "name": "Bonasio",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -3237,7 +3201,6 @@
     "fields": {
       "name": "TAKARA Unique Dual Index Kit_Cat. No. R400744",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -3251,7 +3214,6 @@
     "fields": {
       "name": "Nanopore Native Barcoding (EXP-NBD104)",
       "is_dual": false,
-      "index_length": "24",
       "format": "single",
       "read_type": "long",
       "archived": false,
@@ -3278,7 +3240,6 @@
     "fields": {
       "name": "Nanopore SQK-PCB111 (BP01-24)",
       "is_dual": false,
-      "index_length": "24",
       "format": "single",
       "read_type": "long",
       "archived": false,
@@ -3317,7 +3278,6 @@
     "fields": {
       "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 3 E6444",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -3525,7 +3485,6 @@
     "fields": {
       "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 4 E6446",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -3733,7 +3692,6 @@
     "fields": {
       "name": "NEBNext\u00ae Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs Set 5 E6448",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -3941,7 +3899,6 @@
     "fields": {
       "name": "NEBNext\u00ae Multiplex Oligos for Illumina\u00ae (Dual Index Primers Set 2) E7780S",
       "is_dual": true,
-      "index_length": "8",
       "format": "single",
       "read_type": "short",
       "archived": false,
@@ -3977,7 +3934,6 @@
     "fields": {
       "name": "Primer indexes for tagmented libraries_24 UDI Set 1_C01011034",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -4041,7 +3997,6 @@
     "fields": {
       "name": "Primer indexes for tagmented libraries_24 UDI Set 2_C01011036",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
@@ -4105,7 +4060,6 @@
     "fields": {
       "name": "Primer indexes for tagmented libraries_24 UDI Set 3_C01011037",
       "is_dual": true,
-      "index_length": "8",
       "format": "plate",
       "read_type": "short",
       "archived": false,
