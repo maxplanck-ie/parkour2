@@ -17,14 +17,10 @@ services:
     volumes:
       - pgdb:/var/lib/postgresql/data/
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "PGPASSWORD=$$POSTGRES_PASSWORD pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\"",
-        ]
-      interval: 120s
-      timeout: 120s
-      start_period: 0s
+      test: pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 360s
+      timeout: 360s
+      start_period: 360s
       retries: 1
     ports:
       - 5432:5432
