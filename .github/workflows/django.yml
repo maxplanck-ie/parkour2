@@ -28,6 +28,12 @@ jobs:
       - name: Build and see that DEBUG is respected
         run: |
           make prod-ci
+      - name: Dump postgres logs if unhealthy
+        if: failure()
+        run: |
+          docker compose ps
+          docker logs parkour2-postgres || docker compose logs parkour2-postgres || true
+          docker inspect --format='{{json .State.Health}}' parkour2-postgres || true
 
   install-per-wiki-instructions:
     if: github.repository == 'maxplanck-ie/parkour2'
