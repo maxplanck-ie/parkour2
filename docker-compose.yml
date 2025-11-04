@@ -18,10 +18,9 @@ services:
       - pgdb:/var/lib/postgresql
     healthcheck:
       test: pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
-      interval: 360s
-      timeout: 360s
-      start_period: 360s
-      retries: 1
+      interval: 10s
+      timeout: 2s
+      retries: 10
     ports:
       - 5432:5432
 
