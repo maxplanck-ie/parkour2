@@ -1,6 +1,6 @@
 import {
   cellContextMenu,
-  ellipsisContainer,
+  ellipsisContainer
 } from "../utilities/utilityFunctions";
 import { statusMap, getStatusClass } from "./statusConsts";
 
@@ -12,7 +12,7 @@ function createStatusHeaderTooltip() {
   if (typeof document === "undefined") {
     return [
       "Status Codes",
-      ...sortedStatusEntries.map(([key, label]) => `${key}: ${label}`),
+      ...sortedStatusEntries.map(([key, label]) => `${key}: ${label}`)
     ].join("\n");
   }
 
@@ -82,6 +82,7 @@ export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
           </g>
         </svg>
       </div>
+      <!--
       <div title="Download RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
         <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M5 15L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L19 15H5Z" fill="lightblue"/>
@@ -89,6 +90,7 @@ export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
           <path d="M5 15H19" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
+      -->
     </div>
   </div>
 `;
@@ -127,7 +129,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         if (checkbox && checkbox.type === "checkbox") {
           rowData.selected = checkbox.checked;
         }
-      },
+      }
     },
     {
       title: "Name",
@@ -148,7 +150,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
                           <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${name}</span>
                         </div>
                       `;
-      },
+      }
     },
     {
       title: "Status",
@@ -166,7 +168,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const tooltip = statusMap[value];
         const statusClass = `status ${getStatusClass(value)}`;
         return `<div class="${statusClass}" title="${tooltip}"></div>`;
-      },
+      }
     },
     {
       title: "S/L",
@@ -184,7 +186,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Plate Coord",
@@ -202,7 +204,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Barcode",
@@ -226,7 +228,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
             ? barcode + "*"
             : barcode;
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Pool Paths",
@@ -243,7 +245,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "GMO",
@@ -260,7 +262,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Date",
@@ -277,7 +279,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Input Type",
@@ -295,7 +297,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "No Input Type";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Protocol",
@@ -312,7 +314,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "No Protocol";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Analysis Type",
@@ -329,7 +331,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "No Analysis Type";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Input",
@@ -346,7 +348,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Starting Amount",
@@ -366,10 +368,10 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
             : value === 0
-            ? "0.0"
-            : value.toFixed(1);
+              ? "0.0"
+              : value.toFixed(1);
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Cycles",
@@ -394,7 +396,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         }
 
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "ng/µl Library",
@@ -414,10 +416,10 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
             : value === 0
-            ? "0.0"
-            : value.toFixed(1);
+              ? "0.0"
+              : value.toFixed(1);
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "bp",
@@ -440,7 +442,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index Type",
@@ -457,7 +459,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Coord",
@@ -474,7 +476,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "I7 ID",
@@ -491,7 +493,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index I7",
@@ -508,7 +510,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "I5 ID",
@@ -525,7 +527,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index I5",
@@ -542,7 +544,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Length",
@@ -559,7 +561,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Depth (M)",
@@ -582,7 +584,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Flowcell IDs",
@@ -599,7 +601,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Sequencers",
@@ -616,8 +618,8 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
-    },
+      }
+    }
   ];
 }
 
@@ -649,6 +651,6 @@ export function librariesAndSamplesExportColumns() {
     { header: "Length", key: "read_length_name", width: 12 },
     { header: "Depth (M)", key: "sequencing_depth", width: 15 },
     { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
-    { header: "Sequencers", key: "sequencer_names", width: 20 },
+    { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
 }
