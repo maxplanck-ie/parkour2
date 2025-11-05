@@ -17,7 +17,8 @@ from invoicing.views import (
     LibraryPreparationCostsViewSet,
     SequencingCostsViewSet,
 )
-from library.views import LibrarySampleTree, LibraryViewSet, GenerateROCrate
+from library.views import LibrarySampleTree, LibraryViewSet
+from library.ro_crate import GenerateROCrate
 from library_preparation.views import LibraryPreparationViewSet
 from library_sample_shared.views import (
     ConcentrationMethodViewSet,

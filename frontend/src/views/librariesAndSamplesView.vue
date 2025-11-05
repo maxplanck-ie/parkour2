@@ -778,6 +778,58 @@ export default {
         this.loading = false;
       }
     },
+    async getROCrateData({ barcodes = [], requestName = "" } = {}) {
+      if (!Array.isArray(barcodes) || barcodes.length === 0) {
+        showNotification(
+          "Select at least one library or sample to download RO-Crate.",
+          "warning"
+        );
+        return;
+      }
+
+      try {
+        this.exportLoading = true;
+
+        const params = {
+          barcodes: barcodes.join(",")
+        };
+
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/generate_ro_crate/`,
+          { params }
+        );
+
+        const dataStr = JSON.stringify(response.data, null, 2);
+        const blob = new Blob([dataStr], { type: "application/ld+json" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        const sanitize = (value) =>
+          String(value || "")
+            .replace(/[^a-z0-9-_.]+/gi, "_")
+            .replace(/_+/g, "_")
+            .replace(/^_|_$/g, "");
+        const safeBarcodeName = sanitize(barcodes.join("_"));
+        const filename = safeBarcodeName
+          ? `${safeBarcodeName}_ro_crate.jsonld`
+          : "ro_crate.jsonld";
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        showNotification("RO-Crate downloaded successfully.", "success");
+      } catch (error) {
+        handleError(error);
+      } finally {
+        if (this.exportLoading) {
+          this.exportLoading = false;
+        }
+      }
+    },
     async fetchFilterOptions() {
       try {
         const protocolsRes = await axiosRef.get(
@@ -1007,7 +1059,7 @@ export default {
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
     },
-    handleGroupButtonClick(event, groupValue, action) {
+    async handleGroupButtonClick(event, groupValue, action) {
       event.stopPropagation();
 
       const group = this.tabulatorInstance
@@ -1052,6 +1104,38 @@ export default {
           });
           if (!group._group.visible) groupElement.click();
           break;
+        case "downloadROCrate": {
+          if (!selectedRows.length) {
+            showNotification(
+              "Select at least one library or sample to download RO-Crate.",
+              "warning"
+            );
+            if (!group._group.visible) groupElement.click();
+            break;
+          }
+          const barcodes = Array.from(
+            new Set(
+              selectedRows
+                .map((row) => row.getData().barcode)
+                .map((barcode) => ((barcode ?? "") + "").trim())
+                .filter((barcode) => Boolean(barcode))
+            )
+          );
+          if (!barcodes.length) {
+            showNotification(
+              "Selected entries do not contain valid barcodes.",
+              "error"
+            );
+            if (!group._group.visible) groupElement.click();
+            break;
+          }
+          await this.getROCrateData({
+            barcodes,
+            requestName
+          });
+          if (!group._group.visible) groupElement.click();
+          break;
+        }
       }
     },
     async fetchExportTemplates() {

@@ -1,41 +1,22 @@
-import logging
-import json
+from collections import defaultdict
+from datetime import datetime
 from functools import reduce
+from itertools import chain
+from operator import or_
 
 from django.apps import apps
-from django.db.models import Prefetch, Q, Model, ManyToOneRel, ManyToManyRel, Max
-from library_sample_shared.views import LibrarySampleBaseViewSet
-from django.http import JsonResponse
-from collections import defaultdict
-from operator import or_
-from itertools import chain
+from django.db.models import Max, Q
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.response import Response
-from django.utils import timezone
-from datetime import datetime
-from common.utils import retrieve_group_items
 
-from .serializers import (
-    LibrarySerializer,
-    RequestChildrenNodesSerializer,
-)
+from library_sample_shared.views import LibrarySampleBaseViewSet
 
-Request = apps.get_model("request", "Request")
-Library = apps.get_model("library", "Library")
-Sample = apps.get_model("sample", "Sample")
+from .serializers import LibrarySerializer
+from .utils import get_accessible_requests
+
 CompleteLibraryData = apps.get_model("library", "CompleteLibraryData")
 CompleteSampleData = apps.get_model("sample", "CompleteSampleData")
-
-logger = logging.getLogger("db")
-
-
-def get_accessible_requests(django_request):
-    queryset = Request.objects.filter(archived=False)
-    if django_request.user.is_staff:
-        return queryset
-    if getattr(django_request.user, "is_pi", False):
-        return retrieve_group_items(django_request, queryset)
-    return queryset.filter(user=django_request.user)
 
 
 class LibrarySampleTree(viewsets.ViewSet):
@@ -75,7 +56,7 @@ class LibrarySampleTree(viewsets.ViewSet):
                 sample_queryset = sample_queryset.filter(
                     create_time__range=(start_date, end_date)
                 )
-            except ValueError as e:
+            except ValueError:
                 return Response(
                     {"success": False, "error": "Invalid date format. Use DD.MM.YYYY"},
                     status=400,
@@ -206,158 +187,6 @@ class LibrarySampleTree(viewsets.ViewSet):
                 "children": combined_data,
             }
         )
-
-
-class GenerateROCrate(viewsets.ViewSet):
-    def is_json_serializable(self, value):
-        try:
-            json.dumps(value)
-            return True
-        except (TypeError, OverflowError):
-            return False
-
-    def serialize_model_instance(self, obj):
-        if not isinstance(obj, Model):
-            return str(obj)
-
-        result = {}
-        for field in obj._meta.get_fields():
-            if isinstance(field, (ManyToOneRel, ManyToManyRel)):
-                continue
-            field_name = field.name
-            try:
-                value = getattr(obj, field_name)
-                if isinstance(value, Model):
-                    result[field_name] = self.serialize_model_instance(value)
-                else:
-                    result[field_name] = (
-                        value if self.is_json_serializable(value) else str(value)
-                    )
-            except Exception:
-                result[field_name] = None
-        return result
-
-    def snake_to_camel_case(self, snake_str):
-        components = snake_str.split("_")
-        return components[0] + "".join(x.title() for x in components[1:])
-
-    def clean_data(self, data):
-        keys_to_remove = {"id", "pk", "archived"}
-        cleaned_data = {}
-
-        for key, value in data.items():
-            if key in keys_to_remove or key.startswith("removed_"):
-                continue
-
-            if isinstance(value, dict):
-                if value.get("archived") is True:
-                    continue
-                value = self.clean_data(value)
-
-            cleaned_key = self.snake_to_camel_case(key)
-            cleaned_data[cleaned_key] = value
-
-        return cleaned_data
-
-    def process_data(self, data):
-        return [self.clean_data(item) for item in data]
-
-    def list(self, request):
-        barcodes = request.query_params.get("barcodes")
-        barcodes_list = barcodes.split(",")
-        accessible_requests = get_accessible_requests(request)
-
-        ls_data = []
-        request_data = []
-        merged_data = []
-
-        if barcodes_list:
-            library_bar_matches = Library.objects.select_related(
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "index_type",
-                "organism",
-                "pooling",
-            ).filter(barcode__in=barcodes_list, request__in=accessible_requests)
-
-            for lib in library_bar_matches:
-                ls_data.append(self.serialize_model_instance(lib))
-
-            sample_bar_matches = Sample.objects.select_related(
-                "nucleic_acid_type",
-                "library_protocol",
-                "library_type",
-                "read_length",
-                "organism",
-                "index_type",
-                "librarypreparation",
-                "pooling",
-            ).filter(barcode__in=barcodes_list, request__in=accessible_requests)
-
-            for sample in sample_bar_matches:
-                ls_data.append(self.serialize_model_instance(sample))
-
-            request_qs = accessible_requests.filter(
-                Q(libraries__barcode__in=barcodes_list)
-                | Q(samples__barcode__in=barcodes_list)
-            ).prefetch_related(
-                Prefetch("libraries", queryset=library_bar_matches),
-                Prefetch("samples", queryset=sample_bar_matches),
-            ).distinct()
-
-            for obj in request_qs:
-                request_data.append(RequestChildrenNodesSerializer(obj).data)
-
-        if not ls_data:
-            return Response(
-                {"success": False, "message": "No matching library or sample found."},
-                status=404,
-            )
-
-        ls_data = self.process_data(ls_data)
-        request_data = self.process_data(
-            request_data
-        )  # Still doesn't process the children
-
-        # barcode_to_child = {}
-        # for request in request_data:
-        #     for child in request.get("children", []):
-        #         barcode = child.get("barcode")
-        #         if barcode:
-        #             barcode_to_child[barcode] = child
-
-        # for item in ls_data:
-        #     barcode = item.get("barcode")
-        #     if barcode and barcode in barcode_to_child:
-        #         merged = {**item, **barcode_to_child[barcode]}
-        #     else:
-        #         merged = item
-        #     merged_data.append(merged)
-
-        ro_crate = {"@context": "https://w3id.org/ro/crate/1.1/context", "@graph": []}
-
-        ro_metadata = {
-            "@id": "ro-crate-metadata.json",
-            "@type": "CreativeWork",
-            "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"},
-            "about": {"@id": "./"},
-        }
-
-        ro_dataset = {
-            "@id": "./",
-            "@type": "Dataset",
-            "name": "ISA Sample or Library Record",
-            "datePublished": timezone.now().isoformat(),
-            "hasPart": [],
-        }
-
-        ro_crate["@graph"].insert(0, ro_metadata)
-        ro_crate["@graph"].insert(1, ro_dataset)
-        ro_crate["@graph"].insert(2, ls_data)
-        ro_crate["@graph"].insert(3, request_data)
-
-        return JsonResponse(ro_crate, safe=False)
 
 
 class LibraryViewSet(LibrarySampleBaseViewSet):

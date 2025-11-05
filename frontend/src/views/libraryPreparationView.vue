@@ -442,8 +442,6 @@ export default {
     this.setColumns();
     this.fetchExportTemplates();
 
-    // this.getROCrateData();
-
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
@@ -543,30 +541,6 @@ export default {
         handleError(error);
       } finally {
         this.loading = false;
-      }
-    },
-    async getROCrateData() {
-      try {
-        const response = await axiosRef.get(
-          urlStringStart + "/api/generate_ro_crate/?barcodes=25L005612"
-        );
-
-        console.log(response.data);
-
-        const dataStr = JSON.stringify(response.data, null, 2);
-        const blob = new Blob([dataStr], { type: "application/ld+json" });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "ro_crate.jsonld";
-        document.body.appendChild(link);
-        link.click();
-
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      } catch (error) {
-        handleError(error);
       }
     },
     setColumns() {
