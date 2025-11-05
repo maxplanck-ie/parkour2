@@ -92,8 +92,22 @@ LEFT JOIN library_sample_shared_libraryprotocol AS lp ON l.library_protocol_id =
 LEFT JOIN library_sample_shared_librarytype AS lt ON l.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON l.index_type_id = it.id
 LEFT JOIN library_sample_shared_readlength AS rl ON l.read_length_id = rl.id
-LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = l.index_i7
-LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = l.index_i5
+LEFT JOIN library_sample_shared_indexi7 AS i7
+    ON i7.index = l.index_i7
+    AND EXISTS (
+        SELECT 1
+        FROM library_sample_shared_indextype_indices_i7 AS iti7
+        WHERE iti7.indexi7_id = i7.id
+          AND iti7.indextype_id = l.index_type_id
+    )
+LEFT JOIN library_sample_shared_indexi5 AS i5
+    ON i5.index = l.index_i5
+    AND EXISTS (
+        SELECT 1
+        FROM library_sample_shared_indextype_indices_i5 AS iti5
+        WHERE iti5.indexi5_id = i5.id
+          AND iti5.indextype_id = l.index_type_id
+    )
 LEFT JOIN library_sample_shared_indexpair AS ip
     ON ip.index1_id = i7.id AND ip.index2_id = i5.id AND ip.index_type_id = l.index_type_id
 LEFT JOIN LATERAL (
