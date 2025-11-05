@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Callable, Iterable, Sequence, Tuple
+from typing import Tuple
+from collections.abc import Callable, Iterable, Sequence
 
 from django.apps import apps
 from django.db import transaction
@@ -37,7 +38,7 @@ Pooling = apps.get_model("pooling", "Pooling")
 DEFAULT_REFRESH_DELAY = 0.5
 
 
-def _normalize_ids(values: Iterable[int] | None) -> Tuple[int, ...]:
+def _normalize_ids(values: Iterable[int] | None) -> tuple[int, ...]:
     if not values:
         return ()
     cleaned = {int(v) for v in values if v is not None}
@@ -57,7 +58,7 @@ def _cache_related_ids(instance, libs: Iterable[int], samples: Iterable[int]) ->
     instance._denorm_sample_ids = tuple(samples)
 
 
-def _get_cached_ids(instance) -> Tuple[Tuple[int, ...], Tuple[int, ...]]:
+def _get_cached_ids(instance) -> tuple[tuple[int, ...], tuple[int, ...]]:
     return (
         getattr(instance, "_denorm_library_ids", ()),
         getattr(instance, "_denorm_sample_ids", ()),
@@ -86,51 +87,55 @@ def _queue_refresh(
     transaction.on_commit(_callback)
 
 
-def _collect_request_dependencies(request: Request) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_request_dependencies(
+    request: Request,
+) -> tuple[Sequence[int], Sequence[int]]:
     libs = _query_ids(request.libraries.all())
     samples = _query_ids(request.samples.all())
     return libs, samples
 
 
-def _collect_read_length(instance: ReadLength) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_read_length(instance: ReadLength) -> tuple[Sequence[int], Sequence[int]]:
     libs = _query_ids(Library.objects.filter(read_length_id=instance.pk))
     samples = _query_ids(Sample.objects.filter(read_length_id=instance.pk))
     return libs, samples
 
 
-def _collect_library_protocol(instance: LibraryProtocol) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_library_protocol(
+    instance: LibraryProtocol,
+) -> tuple[Sequence[int], Sequence[int]]:
     libs = _query_ids(Library.objects.filter(library_protocol_id=instance.pk))
     samples = _query_ids(Sample.objects.filter(library_protocol_id=instance.pk))
     return libs, samples
 
 
-def _collect_library_type(instance: LibraryType) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_library_type(instance: LibraryType) -> tuple[Sequence[int], Sequence[int]]:
     libs = _query_ids(Library.objects.filter(library_type_id=instance.pk))
     samples = _query_ids(Sample.objects.filter(library_type_id=instance.pk))
     return libs, samples
 
 
-def _collect_index_type(instance: IndexType) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_index_type(instance: IndexType) -> tuple[Sequence[int], Sequence[int]]:
     libs = _query_ids(Library.objects.filter(index_type_id=instance.pk))
     samples = _query_ids(Sample.objects.filter(index_type_id=instance.pk))
     return libs, samples
 
 
-def _collect_index_i7(instance: IndexI7) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_index_i7(instance: IndexI7) -> tuple[Sequence[int], Sequence[int]]:
     index_value = instance.index
     libs = _query_ids(Library.objects.filter(index_i7=index_value))
     samples = _query_ids(Sample.objects.filter(index_i7=index_value))
     return libs, samples
 
 
-def _collect_index_i5(instance: IndexI5) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_index_i5(instance: IndexI5) -> tuple[Sequence[int], Sequence[int]]:
     index_value = instance.index
     libs = _query_ids(Library.objects.filter(index_i5=index_value))
     samples = _query_ids(Sample.objects.filter(index_i5=index_value))
     return libs, samples
 
 
-def _collect_index_pair(instance: IndexPair) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_index_pair(instance: IndexPair) -> tuple[Sequence[int], Sequence[int]]:
     index_i7 = getattr(instance.index1, "index", None)
     index_i5 = getattr(instance.index2, "index", None)
     if not index_i7 and not index_i5:
@@ -138,6 +143,9 @@ def _collect_index_pair(instance: IndexPair) -> Tuple[Sequence[int], Sequence[in
 
     library_filter = Q()
     sample_filter = Q()
+    if instance.index_type_id:
+        library_filter &= Q(index_type_id=instance.index_type_id)
+        sample_filter &= Q(index_type_id=instance.index_type_id)
     if index_i7:
         library_filter &= Q(index_i7=index_i7)
         sample_filter &= Q(index_i7=index_i7)
@@ -150,24 +158,30 @@ def _collect_index_pair(instance: IndexPair) -> Tuple[Sequence[int], Sequence[in
     return libs, samples
 
 
-def _collect_nucleic_acid_type(instance: NucleicAcidType) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_nucleic_acid_type(
+    instance: NucleicAcidType,
+) -> tuple[Sequence[int], Sequence[int]]:
     samples = _query_ids(Sample.objects.filter(nucleic_acid_type_id=instance.pk))
     return (), samples
 
 
-def _collect_pool(instance: Pool) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_pool(instance: Pool) -> tuple[Sequence[int], Sequence[int]]:
     libs = _query_ids(instance.libraries.all())
     samples = _query_ids(instance.samples.all())
     return libs, samples
 
 
-def _collect_flowcells(flowcells: Iterable[Flowcell]) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_flowcells(
+    flowcells: Iterable[Flowcell],
+) -> tuple[Sequence[int], Sequence[int]]:
     flowcell_ids = [fc.id for fc in flowcells if fc.id]
     if not flowcell_ids:
         return (), ()
 
     pool_ids = _query_ids(
-        Lane.objects.filter(flowcell__id__in=flowcell_ids).exclude(pool_id__isnull=True),
+        Lane.objects.filter(flowcell__id__in=flowcell_ids).exclude(
+            pool_id__isnull=True
+        ),
         field="pool_id",
     )
     request_ids = [
@@ -192,12 +206,12 @@ def _collect_flowcells(flowcells: Iterable[Flowcell]) -> Tuple[Sequence[int], Se
     return tuple(sorted(libs)), tuple(sorted(samples))
 
 
-def _collect_sequencer(instance: Sequencer) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_sequencer(instance: Sequencer) -> tuple[Sequence[int], Sequence[int]]:
     flowcells = Flowcell.objects.filter(sequencer_id=instance.pk)
     return _collect_flowcells(flowcells)
 
 
-def _collect_lane(instance: Lane) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_lane(instance: Lane) -> tuple[Sequence[int], Sequence[int]]:
     libs = set()
     samples = set()
 
@@ -213,16 +227,18 @@ def _collect_lane(instance: Lane) -> Tuple[Sequence[int], Sequence[int]]:
     return tuple(sorted(libs)), tuple(sorted(samples))
 
 
-def _collect_flowcell(instance: Flowcell) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_flowcell(instance: Flowcell) -> tuple[Sequence[int], Sequence[int]]:
     return _collect_flowcells([instance])
 
 
-def _collect_library_preparation(instance: LibraryPreparation) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_library_preparation(
+    instance: LibraryPreparation,
+) -> tuple[Sequence[int], Sequence[int]]:
     sample_id = instance.sample_id
     return (), (sample_id,) if sample_id else ()
 
 
-def _collect_pooling(instance: Pooling) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_pooling(instance: Pooling) -> tuple[Sequence[int], Sequence[int]]:
     libs = (instance.library_id,) if instance.library_id else ()
     samples = (instance.sample_id,) if instance.sample_id else ()
     return libs, samples
@@ -246,7 +262,9 @@ RELATED_COLLECTORS: dict[type, Callable] = {
 }
 
 
-def _collect_and_cache(instance, collector: Callable) -> Tuple[Sequence[int], Sequence[int]]:
+def _collect_and_cache(
+    instance, collector: Callable
+) -> tuple[Sequence[int], Sequence[int]]:
     libs, samples = collector(instance)
     _cache_related_ids(instance, libs, samples)
     return libs, samples
