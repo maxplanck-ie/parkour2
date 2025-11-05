@@ -103,7 +103,7 @@ LEFT JOIN library_sample_shared_readlength AS rl ON s.read_length_id = rl.id
 LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = s.index_i7
 LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = s.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
-    ON ip.index1_id = i7.id AND ip.index2_id = i5.id
+    ON ip.index1_id = i7.id AND ip.index2_id = i5.id AND ip.index_type_id = s.index_type_id
 LEFT JOIN LATERAL (
     SELECT array_agg(DISTINCT p.name) AS pool_names
     FROM index_generator_pool_samples ps
@@ -188,9 +188,8 @@ CREATE MATERIALIZED VIEW complete_sample_data_mv AS
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sample', '0010_update_sample_measurement_fields'),
+        ("sample", "0010_update_sample_measurement_fields"),
     ]
 
     operations = [
@@ -219,45 +218,86 @@ class Migration(migrations.Migration):
             ],
             state_operations=[
                 migrations.CreateModel(
-                    name='CompleteSampleData',
+                    name="CompleteSampleData",
                     fields=[
-                        ('sample_id', models.IntegerField(primary_key=True, serialize=False)),
-                        ('barcode', models.CharField(max_length=100)),
-                        ('name', models.CharField(max_length=255)),
-                        ('status', models.IntegerField()),
-                        ('sequencing_depth', models.FloatField()),
-                        ('nucleic_acid_type_id', models.IntegerField()),
-                        ('nucleic_acid_type_name', models.CharField(max_length=100)),
-                        ('measuring_unit', models.CharField(max_length=50)),
-                        ('measured_value', models.FloatField()),
-                        ('concentration_library', models.FloatField()),
-                        ('gmo', models.BooleanField()),
-                        ('library_protocol_id', models.IntegerField()),
-                        ('library_protocol_name', models.CharField(max_length=150, null=True)),
-                        ('analysis_type_id', models.IntegerField()),
-                        ('analysis_type_name', models.CharField(max_length=200, null=True)),
-                        ('read_length_id', models.IntegerField(null=True)),
-                        ('read_length_name', models.CharField(max_length=50, null=True)),
-                        ('average_fragment_size', models.FloatField()),
-                        ('starting_amount', models.FloatField()),
-                        ('pcr_cycles', models.IntegerField()),
-                        ('index_type_name', models.CharField(max_length=100, null=True)),
-                        ('coordinate', models.CharField(max_length=3, null=True)),
-                        ('index_i7', models.CharField(max_length=24, null=True)),
-                        ('i7_id', models.CharField(max_length=50, null=True)),
-                        ('index_i5', models.CharField(max_length=24, null=True)),
-                        ('i5_id', models.CharField(max_length=50, null=True)),
-                        ('request_id', models.IntegerField()),
-                        ('request_name', models.CharField(max_length=255)),
-                        ('create_time', models.DateTimeField()),
-                        ('pool_names', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=100), null=True, size=None)),
-                        ('flowcell_ids', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=50), null=True, size=None)),
-                        ('sequencer_ids', django.contrib.postgres.fields.ArrayField(base_field=models.IntegerField(), null=True, size=None)),
-                        ('sequencer_names', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=50), null=True, size=None)),
+                        (
+                            "sample_id",
+                            models.IntegerField(primary_key=True, serialize=False),
+                        ),
+                        ("barcode", models.CharField(max_length=100)),
+                        ("name", models.CharField(max_length=255)),
+                        ("status", models.IntegerField()),
+                        ("sequencing_depth", models.FloatField()),
+                        ("nucleic_acid_type_id", models.IntegerField()),
+                        ("nucleic_acid_type_name", models.CharField(max_length=100)),
+                        ("measuring_unit", models.CharField(max_length=50)),
+                        ("measured_value", models.FloatField()),
+                        ("concentration_library", models.FloatField()),
+                        ("gmo", models.BooleanField()),
+                        ("library_protocol_id", models.IntegerField()),
+                        (
+                            "library_protocol_name",
+                            models.CharField(max_length=150, null=True),
+                        ),
+                        ("analysis_type_id", models.IntegerField()),
+                        (
+                            "analysis_type_name",
+                            models.CharField(max_length=200, null=True),
+                        ),
+                        ("read_length_id", models.IntegerField(null=True)),
+                        (
+                            "read_length_name",
+                            models.CharField(max_length=50, null=True),
+                        ),
+                        ("average_fragment_size", models.FloatField()),
+                        ("starting_amount", models.FloatField()),
+                        ("pcr_cycles", models.IntegerField()),
+                        (
+                            "index_type_name",
+                            models.CharField(max_length=100, null=True),
+                        ),
+                        ("coordinate", models.CharField(max_length=3, null=True)),
+                        ("index_i7", models.CharField(max_length=24, null=True)),
+                        ("i7_id", models.CharField(max_length=50, null=True)),
+                        ("index_i5", models.CharField(max_length=24, null=True)),
+                        ("i5_id", models.CharField(max_length=50, null=True)),
+                        ("request_id", models.IntegerField()),
+                        ("request_name", models.CharField(max_length=255)),
+                        ("create_time", models.DateTimeField()),
+                        (
+                            "pool_names",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.CharField(max_length=100),
+                                null=True,
+                                size=None,
+                            ),
+                        ),
+                        (
+                            "flowcell_ids",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.CharField(max_length=50),
+                                null=True,
+                                size=None,
+                            ),
+                        ),
+                        (
+                            "sequencer_ids",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.IntegerField(), null=True, size=None
+                            ),
+                        ),
+                        (
+                            "sequencer_names",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.CharField(max_length=50),
+                                null=True,
+                                size=None,
+                            ),
+                        ),
                     ],
                     options={
-                        'db_table': 'complete_sample_data_mv',
-                        'managed': False,
+                        "db_table": "complete_sample_data_mv",
+                        "managed": False,
                     },
                 ),
             ],

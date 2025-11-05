@@ -95,7 +95,7 @@ LEFT JOIN library_sample_shared_readlength AS rl ON l.read_length_id = rl.id
 LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = l.index_i7
 LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = l.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
-    ON ip.index1_id = i7.id AND ip.index2_id = i5.id
+    ON ip.index1_id = i7.id AND ip.index2_id = i5.id AND ip.index_type_id = l.index_type_id
 LEFT JOIN LATERAL (
     SELECT array_agg(DISTINCT p.name) AS pool_names
     FROM index_generator_pool_libraries pl
@@ -215,7 +215,10 @@ class Migration(migrations.Migration):
                 migrations.CreateModel(
                     name="CompleteLibraryData",
                     fields=[
-                        ("library_id", models.IntegerField(primary_key=True, serialize=False)),
+                        (
+                            "library_id",
+                            models.IntegerField(primary_key=True, serialize=False),
+                        ),
                         ("barcode", models.CharField(max_length=100)),
                         ("name", models.CharField(max_length=255)),
                         ("status", models.IntegerField()),
@@ -225,13 +228,25 @@ class Migration(migrations.Migration):
                         ("concentration_library", models.FloatField()),
                         ("percent_total", models.FloatField()),
                         ("library_protocol_id", models.IntegerField()),
-                        ("library_protocol_name", models.CharField(max_length=150, null=True)),
+                        (
+                            "library_protocol_name",
+                            models.CharField(max_length=150, null=True),
+                        ),
                         ("analysis_type_id", models.IntegerField()),
-                        ("analysis_type_name", models.CharField(max_length=200, null=True)),
+                        (
+                            "analysis_type_name",
+                            models.CharField(max_length=200, null=True),
+                        ),
                         ("read_length_id", models.IntegerField(null=True)),
-                        ("read_length_name", models.CharField(max_length=50, null=True)),
+                        (
+                            "read_length_name",
+                            models.CharField(max_length=50, null=True),
+                        ),
                         ("average_fragment_size", models.FloatField()),
-                        ("index_type_name", models.CharField(max_length=100, null=True)),
+                        (
+                            "index_type_name",
+                            models.CharField(max_length=100, null=True),
+                        ),
                         ("coordinate", models.CharField(max_length=3, null=True)),
                         ("index_i7", models.CharField(max_length=24, null=True)),
                         ("i7_id", models.CharField(max_length=50, null=True)),
@@ -240,10 +255,36 @@ class Migration(migrations.Migration):
                         ("request_id", models.IntegerField()),
                         ("request_name", models.CharField(max_length=255)),
                         ("create_time", models.DateTimeField()),
-                        ("pool_names", django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=100), null=True, size=None)),
-                        ("flowcell_ids", django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=50), null=True, size=None)),
-                        ("sequencer_ids", django.contrib.postgres.fields.ArrayField(base_field=models.IntegerField(), null=True, size=None)),
-                        ("sequencer_names", django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=50), null=True, size=None)),
+                        (
+                            "pool_names",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.CharField(max_length=100),
+                                null=True,
+                                size=None,
+                            ),
+                        ),
+                        (
+                            "flowcell_ids",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.CharField(max_length=50),
+                                null=True,
+                                size=None,
+                            ),
+                        ),
+                        (
+                            "sequencer_ids",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.IntegerField(), null=True, size=None
+                            ),
+                        ),
+                        (
+                            "sequencer_names",
+                            django.contrib.postgres.fields.ArrayField(
+                                base_field=models.CharField(max_length=50),
+                                null=True,
+                                size=None,
+                            ),
+                        ),
                     ],
                     options={
                         "db_table": "complete_library_data_mv",
@@ -253,4 +294,3 @@ class Migration(migrations.Migration):
             ],
         ),
     ]
-

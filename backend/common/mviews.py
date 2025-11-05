@@ -1,6 +1,7 @@
 import logging
 import threading
-from typing import Iterable, Optional, Sequence, Set
+from typing import Optional, Set
+from collections.abc import Iterable, Sequence
 
 from django.db import connections, transaction, close_old_connections
 
@@ -59,7 +60,7 @@ LEFT JOIN library_sample_shared_readlength AS rl ON l.read_length_id = rl.id
 LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = l.index_i7
 LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = l.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
-    ON ip.index1_id = i7.id AND ip.index2_id = i5.id
+    ON ip.index1_id = i7.id AND ip.index2_id = i5.id AND ip.index_type_id = l.index_type_id
 LEFT JOIN LATERAL (
     SELECT array_agg(DISTINCT p.name) AS pool_names
     FROM index_generator_pool_libraries pl
@@ -142,7 +143,7 @@ LEFT JOIN library_sample_shared_readlength AS rl ON s.read_length_id = rl.id
 LEFT JOIN library_sample_shared_indexi7 AS i7 ON i7.index = s.index_i7
 LEFT JOIN library_sample_shared_indexi5 AS i5 ON i5.index = s.index_i5
 LEFT JOIN library_sample_shared_indexpair AS ip
-    ON ip.index1_id = i7.id AND ip.index2_id = i5.id
+    ON ip.index1_id = i7.id AND ip.index2_id = i5.id AND ip.index_type_id = s.index_type_id
 LEFT JOIN LATERAL (
     SELECT array_agg(DISTINCT p.name) AS pool_names
     FROM index_generator_pool_samples ps
@@ -349,17 +350,17 @@ def _ensure_denormalized_tables_exist() -> None:
             cursor.execute(statement)
 
 
-_pending_library_ids: Set[int] = set()
-_pending_sample_ids: Set[int] = set()
+_pending_library_ids: set[int] = set()
+_pending_sample_ids: set[int] = set()
 _pending_full_refresh = False
-_batch_refresh_timer: Optional[threading.Timer] = None
+_batch_refresh_timer: threading.Timer | None = None
 _batch_refresh_lock = threading.Lock()
 
 
-def _make_iterable(values: Optional[Iterable[int]]) -> Sequence[int]:
+def _make_iterable(values: Iterable[int] | None) -> Sequence[int]:
     if not values:
         return ()
-    return tuple(sorted(set(int(v) for v in values if v is not None)))
+    return tuple(sorted({int(v) for v in values if v is not None}))
 
 
 def _execute_library_refresh(library_ids: Sequence[int]) -> None:
@@ -457,8 +458,8 @@ def _schedule_refresh(delay: float) -> None:
 
 
 def _queue_refresh(
-    library_ids: Optional[Iterable[int]] = None,
-    sample_ids: Optional[Iterable[int]] = None,
+    library_ids: Iterable[int] | None = None,
+    sample_ids: Iterable[int] | None = None,
     full_refresh: bool = False,
     delay: float = 0.0,
 ) -> None:
@@ -485,8 +486,8 @@ def _queue_refresh(
 
 def refresh_complete_data_materialized_views(
     concurrently: bool = True,
-    library_ids: Optional[Iterable[int]] = None,
-    sample_ids: Optional[Iterable[int]] = None,
+    library_ids: Iterable[int] | None = None,
+    sample_ids: Iterable[int] | None = None,
     full_refresh: bool = False,
 ) -> None:
     """
@@ -507,8 +508,8 @@ def refresh_complete_data_materialized_views(
 
 def refresh_immediately_non_blocking(
     concurrently: bool = True,
-    library_ids: Optional[Iterable[int]] = None,
-    sample_ids: Optional[Iterable[int]] = None,
+    library_ids: Iterable[int] | None = None,
+    sample_ids: Iterable[int] | None = None,
     full_refresh: bool = False,
 ) -> None:
     """Queue a refresh in the background as soon as possible."""
@@ -523,8 +524,8 @@ def refresh_immediately_non_blocking(
 def refresh_batched(
     concurrently: bool = True,
     delay: float = 2.0,
-    library_ids: Optional[Iterable[int]] = None,
-    sample_ids: Optional[Iterable[int]] = None,
+    library_ids: Iterable[int] | None = None,
+    sample_ids: Iterable[int] | None = None,
     full_refresh: bool = False,
 ) -> None:
     """
