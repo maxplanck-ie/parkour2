@@ -95,13 +95,12 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
     var store = gridView.grid.getStore();
     var allowedColumns = [
       "dilution_factor",
-      "concentration_facility",
-      "concentration_method_facility",
+      "measuring_unit_facility",
+      "measured_value_facility",
       "sample_volume_facility",
       "amount_facility",
       "size_distribution_facility",
       "comments_facility",
-      "qpcr_result_facility",
       "rna_quality_facility"
     ];
     var ngFormulaDataIndices = [

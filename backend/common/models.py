@@ -1,8 +1,7 @@
-from datetime import datetime
-
 from authtools.models import AbstractEmailUser
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 
@@ -163,7 +162,7 @@ class Duty(models.Model):
     )
     start_date = models.DateTimeField(
         "Start Date",
-        default=datetime.now,
+        default=timezone.now,
     )
     end_date = models.DateTimeField(
         "End Date",
@@ -198,3 +197,56 @@ class DateTimeMixin(models.Model):
 
     class Meta:
         abstract = True
+
+class LibrariesAndSamplesTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/libraries_and_samples/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Libraries & Samples Template"
+        verbose_name_plural = "Templates ➜ Libraries & Samples"
+
+class IncomingLibrariesSamplesTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/incoming_libraries_samples/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Incoming Libraries/Samples Template"
+        verbose_name_plural = "Templates ➜ Incoming Libraries/Samples"
+
+class LibraryPreparationTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/library_preparation/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Library Preparation Template"
+        verbose_name_plural = "Templates ➜ Library Preparation"
+
+
+class PoolingTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/pooling/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Pooling Template"
+        verbose_name_plural = "Templates ➜ Pooling"

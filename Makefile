@@ -395,7 +395,7 @@ load-fixtures-migras: put-old-migras apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 	@$(MAKE) put-new-migras
 
-update-fixtures: dev-easy load-fixtures-migras  ## Redeploy with fixtures, migrate fields, save data to json.
+update-fixtures: dev-easy load-fixtures-migras  ## Redeploy (local) with fixtures, migrate fields, save data to json.
 	@docker compose exec parkour2-django python manage.py save_initial_data
 
 enable-ollama:

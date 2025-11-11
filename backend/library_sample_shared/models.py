@@ -1,6 +1,6 @@
 from common.models import DateTimeMixin
 from django.conf import settings
-from django.core.validators import MinValueValidator, RegexValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
 from simple_history.models import HistoricalRecords
@@ -174,6 +174,8 @@ class IndexPair(models.Model):
         "Numeric Coordinate", validators=[MinValueValidator(1)]
     )
 
+    history = HistoricalRecords(inherit=True)
+
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
@@ -211,7 +213,16 @@ class BarcodeCounter(models.Model):
 
 
 class LibraryProtocol(models.Model):
-    name = models.CharField("Name", max_length=150)
+    name = models.CharField(
+        "Name",
+        max_length=150,
+        validators=[
+            RegexValidator(
+                r"^[a-zA-Z0-9_\- \(\):\.\']+$",
+                "Only alphanumeric characters, spaces, dashes, underscores, parentheses, colons, dots, and single quotes are allowed.",
+            )
+        ],
+    )
     type = models.CharField(
         "Type",
         max_length=5,
@@ -309,17 +320,26 @@ class GenericLibrarySample(DateTimeMixin):
         Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
     )
 
-    concentration = models.FloatField("Concentration")
-
-    concentration_method = models.ForeignKey(
-        ConcentrationMethod,
-        verbose_name="Concentration Method",
-        on_delete=models.SET(get_removed_concentrationmethod),
+    measured_value = models.FloatField(
+        "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
     )
 
-    equal_representation_nucleotides = models.BooleanField(
+    removed_concentration_method = models.ForeignKey(
+        ConcentrationMethod,
+        verbose_name="Concentration Method",
+        null=True,
+        blank=True,
+        on_delete=models.SET(get_removed_concentrationmethod),
+    )  # This field is not in use
+
+    removed_equal_representation_nucleotides = models.BooleanField(
         "Equal Representation of Nucleotides",
-        default=True,
+        blank=True,
+        default=False,
+    )  # This field is not in use
+
+    volume = models.FloatField(
+        "Volume", validators=[MinValueValidator(10)], null=True, blank=True
     )
 
     read_length = models.ForeignKey(
@@ -361,11 +381,11 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    amplification_cycles = models.PositiveIntegerField(
+    removed_amplification_cycles = models.PositiveIntegerField(
         "Amplification cycles",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     @property
     def index_i7_id(self):
@@ -381,29 +401,24 @@ class GenericLibrarySample(DateTimeMixin):
 
     # Facility
 
-    dilution_factor = models.PositiveIntegerField(
+    removed_dilution_factor = models.PositiveIntegerField(
         "Dilution Factor",
         default=1,
         blank=True,
-    )
+    )  # This field is not in use
 
-    concentration_facility = models.FloatField(
-        "Concentration",
-        null=True,
-        blank=True,
-    )
-
-    concentration_method_facility = models.ForeignKey(
+    removed_concentration_method_facility = models.ForeignKey(
         ConcentrationMethod,
         related_name="+",
         verbose_name="Concentration Method",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-    )
+    )  # This field is not in use
 
-    sample_volume_facility = models.PositiveIntegerField(
+    sample_volume_facility = models.FloatField(
         "Sample Volume",
+        validators=[MinValueValidator(0)],
         null=True,
         blank=True,
     )
@@ -414,15 +429,21 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
-    size_distribution_facility = models.CharField(
+    size_distribution_facility = models.FloatField(
         "Size Distribution",
-        max_length=200,
         null=True,
         blank=True,
     )
 
     comments_facility = models.TextField(
         "Comments",
+        null=True,
+        blank=True,
+    )
+
+    measured_value_facility = models.FloatField(
+        "Measured Value (facility)",
+        validators=[MinValueValidator(-1)],
         null=True,
         blank=True,
     )
@@ -441,6 +462,12 @@ class GenericLibrarySample(DateTimeMixin):
 
         self.barcode = barcode
         self.save(update_fields=["barcode"])
+
+    def get_measuring_unit_details(self):
+        for display_name, unit, input_type in self.MEASURING_UNIT_CHOICES:
+            if display_name == self.measuring_unit:
+                return display_name, unit, input_type
+        return None, None, None
 
     def save(self, *args, **kwargs):
         created = self.pk is None

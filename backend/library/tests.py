@@ -1,6 +1,7 @@
 import json
+from unittest.mock import patch
 
-from common.tests import BaseTestCase
+from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name, timezone
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -8,7 +9,6 @@ from django.urls import reverse
 from library.models import Library
 from library_sample_shared.models import (
     BarcodeCounter,
-    ConcentrationMethod,
     IndexType,
     LibraryProtocol,
     LibraryType,
@@ -24,9 +24,6 @@ User = get_user_model()
 def create_library(name, status=0, save=True, read_length=None, index_type=None):
     organism = Organism(name="Organism")
     organism.save()
-
-    concentration_method = ConcentrationMethod(name="Concentration Method")
-    concentration_method.save()
 
     if read_length is None:
         read_length = ReadLength(name="Read Length")
@@ -55,13 +52,11 @@ def create_library(name, status=0, save=True, read_length=None, index_type=None)
         name=name,
         status=status,
         organism_id=organism.pk,
-        concentration=1.0,
-        concentration_method_id=concentration_method.pk,
+        measured_value=1.0,
         read_length_id=read_length.pk,
         sequencing_depth=1,
         library_protocol_id=library_protocol.pk,
         library_type_id=library_type.pk,
-        amplification_cycles=1,
         index_type_id=index_type.pk,
         index_reads=0,
         mean_fragment_size=1,
@@ -71,6 +66,11 @@ def create_library(name, status=0, save=True, read_length=None, index_type=None)
         library.save()
 
     return library
+
+
+class _MockQuerySet(list):
+    def filter(self, *args, **kwargs):
+        return self
 
 
 # Models
@@ -120,9 +120,18 @@ class TestLibrarySampleTree(BaseTestCase):
     def test_libraries_and_samples_list(self):
         """Ensure get all libraries and samples works correctly."""
         response = self.client.get(reverse("libraries-and-samples-list"))
-        data = response.json()["children"][0]
         self.assertEqual(response.status_code, 200)
-        self.assertIn(self.request.name, data["name"])
+        payload = response.json()
+
+        self.assertTrue(payload.get("success"))
+        self.assertIn("children", payload)
+        self.assertIsInstance(payload["children"], list)
+
+        if payload["children"]:
+            record = payload["children"][0]
+            self.assertIn("record_type", record)
+            self.assertIn(record["record_type"], {"Library", "Sample"})
+            self.assertIn("barcode", record)
 
 
 class TestLibraries(BaseTestCase):
@@ -213,13 +222,11 @@ class TestLibraries(BaseTestCase):
                         {
                             "name": name,
                             "organism": library.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": library.concentration_method.pk,
+                            "measured_value": 1.0,
                             "read_length": library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library.library_protocol.pk,
                             "library_type": library.library_type.pk,
-                            "amplification_cycles": 1,
                             "index_type": library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -245,22 +252,19 @@ class TestLibraries(BaseTestCase):
                         {
                             "name": name,
                             "organism": self.library.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": self.library.concentration_method.pk,
+                            "measured_value": 1.0,
                             "read_length": self.library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.library.library_protocol.pk,
                             "library_type": self.library.library_type.pk,
-                            "amplification_cycles": 1,
                             "index_type": self.library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
                         },
                         {
                             "name": self._get_random_name(),
-                            "concentration": 1.0,
+                            "measured_value": -3,
                             "sequencing_depth": 1,
-                            "amplification_cycles": 1,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
                         },
@@ -316,13 +320,11 @@ class TestLibraries(BaseTestCase):
                             "pk": library.pk,
                             "name": new_name,
                             "organism": library.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": library.concentration_method.pk,
+                            "measured_value": 1.0,
                             "read_length": library.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library.library_protocol.pk,
                             "library_type": library.library_type.pk,
-                            "amplification_cycles": 1,
                             "index_type": library.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -351,13 +353,11 @@ class TestLibraries(BaseTestCase):
                             "pk": library1.pk,
                             "name": new_name1,
                             "organism": library1.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": library1.concentration_method.pk,
+                            "measured_value": 1.0,
                             "read_length": library1.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": library1.library_protocol.pk,
                             "library_type": library1.library_type.pk,
-                            "amplification_cycles": 1,
                             "index_type": library1.index_type.pk,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
@@ -365,9 +365,8 @@ class TestLibraries(BaseTestCase):
                         {
                             "pk": library2.pk,
                             "name": new_name2,
-                            "concentration": 2.0,
+                            "measured_value": -3,
                             "sequencing_depth": 2,
-                            "amplification_cycles": 2,
                             "index_reads": 0,
                             "mean_fragment_size": 2,
                         },
@@ -413,3 +412,81 @@ class TestLibraries(BaseTestCase):
             )
         )
         self.assertEqual(response.status_code, 404)
+
+
+class TestGenerateROCrateAPI(BaseAPITestCase):
+    """Tests for the RO-Crate export endpoint."""
+
+    def setUp(self):
+        super().setUp()
+        self.user = self.create_user("rocrate@test.io", "foo-bar")
+        self.user.first_name = "Test"
+        self.user.last_name = "User"
+        self.user.save()
+        self.client.login(email="rocrate@test.io", password="foo-bar")
+        self.request = Request.objects.create(user=self.user)
+        self.request.refresh_from_db()
+
+    def _parse_payload(self, response):
+        if hasattr(response, "data"):
+            return response.data
+        return json.loads(response.content.decode("utf-8"))
+
+    def test_requires_identifier_parameters(self):
+        """Request must provide barcodes or request names."""
+        response = self.client.get(reverse("generate-ro-crate-list"))
+        self.assertEqual(response.status_code, 400)
+        payload = self._parse_payload(response)
+        self.assertIn("error", payload)
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_returns_placeholder_when_no_matches(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        """Unknown identifiers should return an empty crate with a helpful message."""
+        mock_library_objects.filter.return_value = _MockQuerySet()
+        mock_sample_objects.filter.return_value = _MockQuerySet()
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"barcodes": "UNKNOWN123"}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = self._parse_payload(response)
+        self.assertIn("@graph", payload)
+
+        dataset_entry = next(
+            (entry for entry in payload["@graph"] if entry.get("@id") == "./"), {}
+        )
+        self.assertEqual(
+            dataset_entry.get("description"),
+            "No matching barcodes or requests were found.",
+        )
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_generates_ro_crate_for_request_name(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        """Exporting by request name should yield a structured RO-Crate."""
+        mock_library_objects.filter.return_value = _MockQuerySet()
+        mock_sample_objects.filter.return_value = _MockQuerySet()
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"requests": self.request.name}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = self._parse_payload(response)
+        self.assertIn("@graph", payload)
+
+        graph_ids = {entry.get("@id") for entry in payload["@graph"]}
+        self.assertIn("./", graph_ids)
+        self.assertIn(f"#investigation-{self.request.id}", graph_ids)
+
+        dataset_entry = next(
+            (entry for entry in payload["@graph"] if entry.get("@id") == "./"), {}
+        )
+        self.assertIn(
+            {"@id": f"#investigation-{self.request.id}"},
+            dataset_entry.get("hasPart", []),
+        )

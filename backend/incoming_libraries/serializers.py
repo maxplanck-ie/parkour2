@@ -48,11 +48,10 @@ class BaseSerializer(ModelSerializer):
             "barcode",
             "record_type",
             "library_protocol",
-            "concentration",
-            "concentration_method",
-            "dilution_factor",
-            "concentration_facility",
-            "concentration_method_facility",
+            "measuring_unit",
+            "measured_value",
+            "volume",
+            "comments",
             "sample_volume_facility",
             "amount_facility",
             "quality_check",
@@ -60,14 +59,20 @@ class BaseSerializer(ModelSerializer):
             "comments_facility",
             "sequencing_depth",
             "library_protocol_name",
+            "measuring_unit_facility",
+            "measured_value_facility",
+            "read_length"
         )
         extra_kwargs = {
             "name": {"required": False},
             "barcode": {"required": False},
             "library_protocol": {"required": False},
-            "concentration": {"required": False},
-            "concentration_method": {"required": False},
             "sequencing_depth": {"required": False},
+            "measuring_unit": {"required": False},
+            "measured_value": {"required": False},
+            "measuring_unit_facility": {"required": False},
+            "measured_value_facility": {"required": False},
+            "read_length": {"required": False},
         }
 
     def get_record_type(self, obj):
@@ -81,15 +86,15 @@ class LibrarySerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = Library
         fields = BaseSerializer.Meta.fields + (
-            "qpcr_result",
-            "qpcr_result_facility",
             "mean_fragment_size",
+            "percent_total",
         )
+
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,
             **{
-                "qpcr_result": {"required": False},
                 "mean_fragment_size": {"required": False},
+                "percent_total": {"required": False},
             },
         }
 
@@ -104,12 +109,18 @@ class SampleSerializer(BaseSerializer):
             "nucleic_acid_type_name",
             "rna_quality",
             "rna_quality_facility",
+            "gmo",
+            "gmo_facility",
+            "biosafety_level",
         )
         extra_kwargs = {
             **BaseSerializer.Meta.extra_kwargs,
             **{
                 "nucleic_acid_type": {"required": False},
                 "rna_quality": {"required": False},
+                "gmo": {"required": False},
+                "gmo_facility": {"required": False},
+                "biosafety_level": {"required": False},
             },
         }
 

@@ -2,6 +2,7 @@ import json
 
 from common.tests import BaseTestCase
 from common.utils import get_random_name
+from index_generator.models import Pool
 from index_generator.tests import create_pool
 from library.tests import create_library
 from request.models import Request
@@ -330,3 +331,43 @@ class TestPooling(BaseTestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/ms-excel")
+
+    def test_destroy_pool_handles_negative_sample_status(self):
+        pooling_object = create_pooling_object(self.user, add_sample=True)
+        sample = pooling_object.sample.__class__.objects.get(
+            pk=pooling_object.sample.pk
+        )
+        pool = sample.pool.get()
+
+        sample.status = -2
+        sample.is_pooled = True
+        sample.save()
+
+        response = self.client.post(f"/api/pooling/{pool.pk}/destroy_pool/")
+
+        self.assertEqual(response.status_code, 200)
+        sample.refresh_from_db()
+        self.assertEqual(sample.status, 2)
+        self.assertFalse(sample.is_pooled)
+        self.assertFalse(sample.pool.exists())
+        self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
+
+    def test_destroy_pool_handles_negative_library_status(self):
+        pooling_object = create_pooling_object(self.user, add_library=True)
+        library = pooling_object.library.__class__.objects.get(
+            pk=pooling_object.library.pk
+        )
+        pool = library.pool.get()
+
+        library.status = -2
+        library.is_pooled = True
+        library.save()
+
+        response = self.client.post(f"/api/pooling/{pool.pk}/destroy_pool/")
+
+        self.assertEqual(response.status_code, 200)
+        library.refresh_from_db()
+        self.assertEqual(library.status, 2)
+        self.assertFalse(library.is_pooled)
+        self.assertFalse(library.pool.exists())
+        self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())

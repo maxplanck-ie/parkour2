@@ -1,17 +1,22 @@
-import "./assets/main.css";
+import "./assets/css_main.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "vue-toastification/dist/index.css";
 
 import { createApp } from "vue";
 import vueApp from "./vueApp.vue";
-import router from "./router/router.js";
+import router from "./router/appRoutes.js";
 import toast from "vue-toastification";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faChalkboardUser,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faFilter,
+  faColumns,
+  faFileExcel,
+  faLayerGroup,
+  faCaretDown
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -28,7 +33,12 @@ library.add(
   faChalkboardUser,
   faMagnifyingGlass,
   faCalendarPlus,
-  faCalendarDays
+  faCalendarDays,
+  faFilter,
+  faColumns,
+  faFileExcel,
+  faLayerGroup,
+  faCaretDown
 );
 
 app.use(router);

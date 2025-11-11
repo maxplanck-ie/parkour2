@@ -43,7 +43,7 @@ def test_login_page(page: Page):
     forgotPasswordEmailSubmitButton.click()
     expect(page.get_by_text("Password reset sent")).to_be_visible()
     expect(
-        page.get_by_text("We’ve emailed you instructions for setting your password")
+        page.locator("text=/We.?ve emailed you instructions for setting your password/i")
     ).to_be_visible()
     utilities.visit_login_page(page)
     emailInput.fill(wrongEmailId)

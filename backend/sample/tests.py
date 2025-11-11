@@ -8,7 +8,6 @@ from django.urls import reverse
 from django.utils import timezone
 from library_sample_shared.models import (
     BarcodeCounter,
-    ConcentrationMethod,
     LibraryProtocol,
     LibraryType,
     Organism,
@@ -24,9 +23,6 @@ User = get_user_model()
 def create_sample(name, status=0, save=True, read_length=None, index_type=None):
     organism = Organism(name="Organism")
     organism.save()
-
-    concentration_method = ConcentrationMethod(name="Concentration Method")
-    concentration_method.save()
 
     if read_length is None:
         read_length = ReadLength(name="Read Length")
@@ -54,8 +50,7 @@ def create_sample(name, status=0, save=True, read_length=None, index_type=None):
         name=name,
         status=status,
         organism_id=organism.pk,
-        concentration=1.0,
-        concentration_method_id=concentration_method.pk,
+        measured_value=1.0,
         read_length_id=read_length.pk,
         sequencing_depth=1,
         library_protocol_id=library_protocol.pk,
@@ -215,8 +210,7 @@ class TestSamples(BaseTestCase):
                         {
                             "name": name,
                             "organism": self.sample.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": self.sample.concentration_method.pk,
+                            "measured_value": 1.0,
                             "read_length": self.sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.sample.library_protocol.pk,
@@ -244,8 +238,7 @@ class TestSamples(BaseTestCase):
                         {
                             "name": name,
                             "organism": self.sample.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": self.sample.concentration_method.pk,
+                            "measured_value": 1,
                             "read_length": self.sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": self.sample.library_protocol.pk,
@@ -254,7 +247,7 @@ class TestSamples(BaseTestCase):
                         },
                         {
                             "name": self._get_random_name(),
-                            "concentration": 1.0,
+                            "measured_value": -3,
                             "sequencing_depth": 1,
                         },
                     ]
@@ -309,8 +302,7 @@ class TestSamples(BaseTestCase):
                             "pk": sample.pk,
                             "name": new_name,
                             "organism": sample.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": sample.concentration_method.pk,
+                            "measured_value": 1.0,
                             "read_length": sample.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": sample.library_protocol.pk,
@@ -341,8 +333,7 @@ class TestSamples(BaseTestCase):
                             "pk": sample1.pk,
                             "name": new_name1,
                             "organism": sample1.organism.pk,
-                            "concentration": 1.0,
-                            "concentration_method": sample1.concentration_method.pk,
+                            "measured_value": 1.0,
                             "read_length": sample1.read_length.pk,
                             "sequencing_depth": 1,
                             "library_protocol": sample1.library_protocol.pk,
@@ -353,7 +344,7 @@ class TestSamples(BaseTestCase):
                             "pk": sample2.pk,
                             "name": new_name2,
                             "sample_id": sample2.pk,
-                            "concentration": 1.0,
+                            "measured_value": -3,
                             "sequencing_depth": 1,
                         },
                     ]

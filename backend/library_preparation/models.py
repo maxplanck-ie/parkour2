@@ -15,17 +15,17 @@ class LibraryPreparation(DateTimeMixin):
         blank=True,
     )
 
-    spike_in_description = models.TextField(
+    removed_spike_in_description = models.TextField(
         "Spike-in Description",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
-    spike_in_volume = models.FloatField(
+    removed_spike_in_volume = models.FloatField(
         "Spike-in Volume",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     pcr_cycles = models.IntegerField(
         "PCR Cycles",
@@ -45,17 +45,17 @@ class LibraryPreparation(DateTimeMixin):
         blank=True,
     )
 
-    nM = models.FloatField(
+    removed_nM = models.FloatField(
         "nM",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
-    qpcr_result = models.FloatField(
+    removed_qpcr_result = models.FloatField(
         "qPCR Result",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     comments = models.TextField(
         "Comments",

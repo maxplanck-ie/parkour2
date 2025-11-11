@@ -1,6 +1,11 @@
 from authtools.admin import NamedUserAdmin
 from authtools.forms import UserCreationForm
-from common.models import CostUnit, Duty, Organization, PrincipalInvestigator
+from common.models import (
+    CostUnit,
+    Duty,
+    Organization,
+    PrincipalInvestigator,
+)
 from simple_history.admin import SimpleHistoryAdmin
 from django import forms
 from django.conf import settings

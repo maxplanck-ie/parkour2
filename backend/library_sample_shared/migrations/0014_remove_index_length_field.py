@@ -12,8 +12,24 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name="indextype",
-            name="index_length",
+        migrations.SeparateDatabaseAndState(
+            database_operations=[
+                migrations.RunSQL(
+                    sql=(
+                        "ALTER TABLE library_sample_shared_indextype "
+                        "DROP COLUMN IF EXISTS index_length"
+                    ),
+                    reverse_sql=(
+                        "ALTER TABLE library_sample_shared_indextype "
+                        "ADD COLUMN index_length varchar(2) NOT NULL DEFAULT '8'"
+                    ),
+                )
+            ],
+            state_operations=[
+                migrations.RemoveField(
+                    model_name="indextype",
+                    name="index_length",
+                )
+            ],
         ),
     ]

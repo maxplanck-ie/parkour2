@@ -1,4 +1,10 @@
 from rest_framework.serializers import ModelSerializer
+from .models import (
+    LibrariesAndSamplesTemplate,
+    IncomingLibrariesSamplesTemplate,
+    LibraryPreparationTemplate,
+    PoolingTemplate,
+)
 
 from .models import CostUnit, Duty, User
 
@@ -19,3 +25,27 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "first_name", "last_name", "facility", "phone", "email")
+
+
+class LibrariesAndSamplesTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = LibrariesAndSamplesTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+
+class IncomingLibrariesSamplesTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = IncomingLibrariesSamplesTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+
+class LibraryPreparationTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = LibraryPreparationTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+
+class PoolingTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = PoolingTemplate
+        fields = ["id", "name", "file", "uploaded_at"]

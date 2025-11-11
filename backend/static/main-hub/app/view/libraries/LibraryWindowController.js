@@ -139,15 +139,6 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
         true
       );
 
-      // Set Concentration Method
-      var concentrationMethodField = Ext.getCmp("concentrationMethodField");
-      concentrationMethodField.select(record.concentration_method);
-      concentrationMethodField.fireEvent(
-        "select",
-        concentrationMethodField,
-        concentrationMethodField.findRecordByValue(record.concentration_method)
-      );
-
       // Set Read Length
       var readLengthField = Ext.getCmp("readLengthField");
       readLengthField.select(record.readLengthId);
@@ -335,19 +326,6 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
         "select",
         organismSampleField,
         organismSampleField.findRecordByValue(record.organism)
-      );
-
-      // Set concentration method
-      var concentrationSampleMethodField = Ext.getCmp(
-        "concentrationSampleMethodField"
-      );
-      concentrationSampleMethodField.select(record.concentration_method);
-      concentrationSampleMethodField.fireEvent(
-        "select",
-        concentrationSampleMethodField,
-        concentrationSampleMethodField.findRecordByValue(
-          record.concentration_method
-        )
       );
 
       // Set read length
