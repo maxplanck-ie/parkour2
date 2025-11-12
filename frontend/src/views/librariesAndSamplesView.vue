@@ -184,7 +184,7 @@
             </div>
           </div>
         </div>
-        <button class="header-button" @click="handleExportClick">
+        <button class="header-button" id="openExportPopupButton" @click="handleExportClick">
           <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
@@ -921,6 +921,8 @@ export default {
       const selectColumnsButton = this.$el.querySelector(
         "#toggleSelectColumnsButton"
       );
+      const exportPopup = this.$el.querySelector(".popup-container");
+      const exportButton = this.$el.querySelector("#openExportPopupButton");
 
       if (
         this.showAdvancedFilters &&
@@ -940,6 +942,19 @@ export default {
         !selectColumnsButton.contains(event.target)
       ) {
         this.showSelectColumns = false;
+      }
+
+      const clickOnExportButton =
+        exportButton &&
+        (exportButton === event.target || exportButton.contains(event.target));
+
+      if (
+        this.showExportPopup &&
+        exportPopup &&
+        !exportPopup.contains(event.target) &&
+        !clickOnExportButton
+      ) {
+        this.showExportPopup = false;
       }
     },
     handleKeyDown(event) {

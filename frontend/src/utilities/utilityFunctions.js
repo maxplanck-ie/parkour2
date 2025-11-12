@@ -18,6 +18,26 @@ export function showNotification(content, type) {
   else if (type === "warning") toast.warning(content, options);
 }
 
+function notifyParentAuthRequired() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage(
+        {
+          source: "mainhub-vue",
+          type: "auth-required",
+        },
+        window.location.origin
+      );
+    }
+  } catch (error) {
+    // No-op: notification is a best-effort signal.
+  }
+}
+
 export function handleError(error) {
   if (
     error.response &&
@@ -25,6 +45,7 @@ export function handleError(error) {
     error.response.status === 403
   ) {
     let slices = window.location.href.split("/vue/");
+    notifyParentAuthRequired();
     window.location.href =
       urlStringStartsWith() + "/login/?next=/vue/" + slices[1];
   } else if (error.message) {
