@@ -1,54 +1,83 @@
 import {
   cellContextMenu,
-  ellipsisContainer
+  ellipsisContainer,
 } from "../utilities/utilityFunctions";
 import { statusMap, getStatusClass } from "./statusConsts";
 
 const sortedStatusEntries = Object.entries(statusMap).sort(
   ([keyA], [keyB]) => Number(keyA) - Number(keyB)
 );
+let inputDropdownFocusCount = 0;
 
-function createStatusHeaderTooltip() {
-  if (typeof document === "undefined") {
-    return [
-      "Status Codes",
-      ...sortedStatusEntries.map(([key, label]) => `${key}: ${label}`)
-    ].join("\n");
+function updateInputDropdownTooltipState(isOpen) {
+  inputDropdownFocusCount = isOpen
+    ? inputDropdownFocusCount + 1
+    : Math.max(0, inputDropdownFocusCount - 1);
+  if (inputDropdownFocusCount > 0) {
+    document.body.classList.add("input-dropdown-open");
+  } else {
+    document.body.classList.remove("input-dropdown-open");
+  }
+}
+
+function createInputColumnHeader(cellComponent, options = {}) {
+  const mode =
+    options.inputColumnMode === "mode_facility" ? "mode_facility" : "mode_user";
+
+  const template = document.createElement("div");
+  template.innerHTML = `
+    <div class="tabulator-input-header" style="display: flex; flex-direction: column; gap: 4px; align-items: stretch; width: 100%;">
+      <div class="tabulator-input-header__title" style="font-size: 12px; color: #333;">Input</div>
+      <div class="tabulator-header-filter" style="margin-top: -2px;">
+        <select class="tabulator-input-header__select" title="Choose which Input value to display" style="height: 24px; font-size: 12px !important; border: 1px solid #d0d0d0 !important; width: 100%; font-size: 12px; font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 2px 4px; border-radius: 4px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
+        <option value="mode_user">User</option>
+        <option value="mode_facility">Facility</option>
+        </select>
+      </div>
+    </div>
+  `;
+
+  const container = template.firstElementChild;
+  const select = container.querySelector(".tabulator-input-header__select");
+  if (select) {
+    select.value = mode;
+    select.addEventListener("focus", () =>
+      updateInputDropdownTooltipState(true)
+    );
+    select.addEventListener("blur", () =>
+      updateInputDropdownTooltipState(false)
+    );
+    select.addEventListener("change", (event) => {
+      const newMode = event.target.value;
+      if (typeof options.onInputColumnModeChange === "function") {
+        options.onInputColumnModeChange(newMode);
+      }
+    });
   }
 
-  const container = document.createElement("div");
-  container.style.textAlign = "left";
-  container.style.display = "flex";
-  container.style.flexDirection = "column";
-  container.style.gap = "4px";
-
-  const heading = document.createElement("div");
-  heading.style.fontWeight = "700";
-  heading.style.marginBottom = "2px";
-  heading.textContent = "Status Codes";
-  container.appendChild(heading);
-
-  sortedStatusEntries.forEach(([key, label]) => {
-    const row = document.createElement("div");
-    row.style.display = "flex";
-    row.style.gap = "6px";
-    row.style.alignItems = "center";
-
-    const code = document.createElement("span");
-    code.style.fontWeight = "600";
-    code.style.minWidth = "20px";
-    code.style.textAlign = "right";
-    code.textContent = key;
-
-    const description = document.createElement("span");
-    description.textContent = label;
-
-    row.appendChild(code);
-    row.appendChild(description);
-    container.appendChild(row);
-  });
-
   return container;
+}
+
+function createStatusHeaderTooltip() {
+  const rowsHtml = sortedStatusEntries
+    .map(
+      ([key, label]) => `
+      <div style="display: flex; gap: 6px; align-items: center;">
+        <span style="font-weight: 600; min-width: 20px; text-align: right;">${key}</span>
+        <span>${label}</span>
+      </div>`
+    )
+    .join("");
+
+  const template = document.createElement("div");
+  template.innerHTML = `
+    <div style="text-align: left; display: flex; flex-direction: column; gap: 4px;">
+      <div style="font-weight: 700; margin-bottom: 2px;">Status Codes</div>
+      ${rowsHtml}
+    </div>
+  `;
+
+  return template.firstElementChild;
 }
 
 export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
@@ -96,7 +125,13 @@ export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
 `;
 }
 
-export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
+export function librariesAndSamplesColumnDefs(
+  getTabulatorInstance,
+  columnOptions = {}
+) {
+  const { inputColumnMode = "mode_user", onInputColumnModeChange = () => {} } =
+    columnOptions;
+
   return [
     {
       field: "selected",
@@ -110,7 +145,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
               <input
                 type="checkbox"
                 title="Select"
-                style="top:-4px"
+                style="top: -4px;"
                 ${rowData.selected ? "checked" : ""}
               />
             `;
@@ -129,7 +164,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         if (checkbox && checkbox.type === "checkbox") {
           rowData.selected = checkbox.checked;
         }
-      }
+      },
     },
     {
       title: "Name",
@@ -150,7 +185,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
                           <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${name}</span>
                         </div>
                       `;
-      }
+      },
     },
     {
       title: "Status",
@@ -168,7 +203,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const tooltip = statusMap[value];
         const statusClass = `status ${getStatusClass(value)}`;
         return `<div class="${statusClass}" title="${tooltip}"></div>`;
-      }
+      },
     },
     {
       title: "S/L",
@@ -186,7 +221,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Plate Coord",
@@ -204,7 +239,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Barcode",
@@ -228,7 +263,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
             ? barcode + "*"
             : barcode;
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Pool Paths",
@@ -245,7 +280,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "GMO",
@@ -262,7 +297,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Date",
@@ -279,7 +314,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Input Type",
@@ -297,7 +332,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "No Input Type";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Protocol",
@@ -314,7 +349,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "No Protocol";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Analysis Type",
@@ -331,15 +366,21 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "No Analysis Type";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Input",
-      field: "input",
+      field: "input_display",
       minWidth: 60,
-      width: "3.5%",
+      width: "5%",
       headerVertical: false,
       headerTooltip: "Measured Amount with Unit",
+      titleFormatter: (cell, formatterParams) =>
+        createInputColumnHeader(cell, formatterParams),
+      titleFormatterParams: {
+        inputColumnMode,
+        onInputColumnModeChange,
+      },
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
@@ -348,7 +389,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Starting Amount",
@@ -368,10 +409,10 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
             : value === 0
-              ? "0.0"
-              : value.toFixed(1);
+            ? "0.0"
+            : value.toFixed(1);
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Cycles",
@@ -396,7 +437,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
         }
 
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "ng/µl Library",
@@ -416,10 +457,10 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
             : value === 0
-              ? "0.0"
-              : value.toFixed(1);
+            ? "0.0"
+            : value.toFixed(1);
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "bp",
@@ -442,7 +483,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Index Type",
@@ -459,7 +500,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Coord",
@@ -476,7 +517,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "I7 ID",
@@ -493,7 +534,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Index I7",
@@ -510,7 +551,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "I5 ID",
@@ -527,7 +568,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Index I5",
@@ -544,7 +585,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Length",
@@ -561,7 +602,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Depth (M)",
@@ -584,7 +625,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Flowcell IDs",
@@ -601,7 +642,7 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Sequencers",
@@ -618,8 +659,8 @@ export function librariesAndSamplesColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      }
-    }
+      },
+    },
   ];
 }
 
@@ -651,6 +692,6 @@ export function librariesAndSamplesExportColumns() {
     { header: "Length", key: "read_length_name", width: 12 },
     { header: "Depth (M)", key: "sequencing_depth", width: 15 },
     { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
-    { header: "Sequencers", key: "sequencer_names", width: 20 }
+    { header: "Sequencers", key: "sequencer_names", width: 20 },
   ];
 }
