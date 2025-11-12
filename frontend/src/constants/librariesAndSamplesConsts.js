@@ -7,17 +7,9 @@ import { statusMap, getStatusClass } from "./statusConsts";
 const sortedStatusEntries = Object.entries(statusMap).sort(
   ([keyA], [keyB]) => Number(keyA) - Number(keyB)
 );
-let inputDropdownFocusCount = 0;
 
 function updateInputDropdownTooltipState(isOpen) {
-  inputDropdownFocusCount = isOpen
-    ? inputDropdownFocusCount + 1
-    : Math.max(0, inputDropdownFocusCount - 1);
-  if (inputDropdownFocusCount > 0) {
-    document.body.classList.add("input-dropdown-open");
-  } else {
-    document.body.classList.remove("input-dropdown-open");
-  }
+  document.body.classList.toggle("input-dropdown-open", Boolean(isOpen));
 }
 
 function createInputColumnHeader(cellComponent, options = {}) {
@@ -29,7 +21,7 @@ function createInputColumnHeader(cellComponent, options = {}) {
     <div class="tabulator-input-header" style="display: flex; flex-direction: column; gap: 4px; align-items: stretch; width: 100%;">
       <div class="tabulator-input-header__title" style="font-size: 12px; color: #333;">Input</div>
       <div class="tabulator-header-filter" style="margin-top: -2px;">
-        <select class="tabulator-input-header__select" title="Choose which Input value to display" style="height: 24px; font-size: 12px !important; border: 1px solid #d0d0d0 !important; width: 100%; font-size: 12px; font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 2px 4px; border-radius: 4px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
+        <select class="tabulator-input-header__select" style="height: 24px; font-size: 12px !important; border: 1px solid #d0d0d0 !important; width: 100%; font-size: 12px; font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 2px 4px; border-radius: 4px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
         <option value="mode_user">User</option>
         <option value="mode_facility">Facility</option>
         </select>
@@ -371,7 +363,7 @@ export function librariesAndSamplesColumnDefs(
     {
       title: "Input",
       field: "input_display",
-      minWidth: 60,
+      minWidth: 85,
       width: "5%",
       headerVertical: false,
       headerTooltip: "Measured Amount with Unit",

@@ -1096,13 +1096,18 @@ export default {
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
     },
-    handleInputColumnModeChange(mode) {
+    async handleInputColumnModeChange(mode) {
       const normalizedMode = mode === "mode_facility" ? "mode_facility" : "mode_user";
       if (this.inputColumnMode === normalizedMode) return;
-      this.inputColumnMode = normalizedMode;
-      localStorage.setItem("librariesAndSamplesInputColumnMode", this.inputColumnMode);
-      this.applyInputColumnMode();
-      this.refreshInputColumnValues();
+      this.fakeLoadingStart();
+      try {
+        this.inputColumnMode = normalizedMode;
+        localStorage.setItem("librariesAndSamplesInputColumnMode", this.inputColumnMode);
+        this.applyInputColumnMode();
+        await this.tabulatorInstance.getTable().replaceData(this.librariesSamplesList);
+      } finally {
+        setTimeout(() => this.fakeLoadingStop(), 200);
+      }
     },
     applyInputColumnMode(rows = this.librariesSamplesList) {
       if (!Array.isArray(rows)) return;
@@ -1110,19 +1115,6 @@ export default {
         this.inputColumnMode === "mode_facility" ? "input_facility" : "input";
       rows.forEach((row) => {
         row.input_display = row?.[sourceField] ?? "";
-      });
-    },
-    refreshInputColumnValues() {
-      if (!this.tabulatorInstance || !this.tabulatorInstance.getTable) return;
-      const table = this.tabulatorInstance.getTable();
-      if (!table || typeof table.getRows !== "function") return;
-      const sourceField =
-        this.inputColumnMode === "mode_facility" ? "input_facility" : "input";
-      table.getRows().forEach((row) => {
-        const data = row.getData();
-        row.update({
-          input_display: data?.[sourceField] ?? ""
-        });
       });
     },
     async handleGroupButtonClick(event, groupValue, action) {
