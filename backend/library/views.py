@@ -166,12 +166,60 @@ class LibrarySampleTree(viewsets.ViewSet):
             .values()
         )
 
+        facility_input_fields = (
+            "measured_value_facility",
+            "measuring_unit_facility",
+        )
+        sample_preparation_fields = (
+            "starting_amount",
+            "pcr_cycles",
+            "concentration_library",
+            "average_fragment_size",
+        )
+        library_measure_fields = ("concentration_library", "average_fragment_size")
+        sample_only_fields = ("starting_amount", "pcr_cycles")
+        post_incoming_statuses = {-2, 2, 3, 4, 5, 6}
+        preparation_passed_statuses = {3, 4, 5, 6}
+
+        def apply_status_masks(record, record_type):
+            """Hide stage-specific values until the item advances to the next step."""
+            status_value = record.get("status")
+            try:
+                status_value = int(status_value)
+            except (TypeError, ValueError):
+                return
+
+            is_sample = record_type == "Sample"
+            show_post_incoming = status_value in post_incoming_statuses
+            show_preparation_values = status_value in preparation_passed_statuses
+
+            if not show_post_incoming:
+                for field in facility_input_fields:
+                    if field in record:
+                        record[field] = None
+
+            if is_sample:
+                if not show_preparation_values:
+                    for field in sample_preparation_fields:
+                        if field in record:
+                            record[field] = None
+            else:
+                for field in sample_only_fields:
+                    if field in record:
+                        record[field] = None
+                if not show_post_incoming:
+                    for field in library_measure_fields:
+                        if field in record:
+                            record[field] = None
+
         combined_data = []
         for lib in libraries:
+            apply_status_masks(lib, "Library")
             lib["record_type"] = "Library"
             combined_data.append(lib)
 
         for sample in samples:
+            apply_status_masks(sample, "Sample")
             sample["record_type"] = "Sample"
             combined_data.append(sample)
 
