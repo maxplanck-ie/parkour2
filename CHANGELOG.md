@@ -17,22 +17,22 @@
 - Downloading SampleSheet is now customized for the case of sequencer names that start with `AVITI`, given that new emerging technologies are giving better results. In such case, the i5 is reverse complemented, so that we keep our 'standardization' effort as we have always done (centered on NovaSeq.)
 - Potential fix to BarcodeCounter bug (generate fn. was using its default argument, which would take the year from when module is loaded, not when the fn. is called) that caused to be reset every year when a new deployment was made.
 
-We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libaries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value`.
+We've a new frontend using Tabulator, and transitioned the first few submodules for staff users. There are several changes to models, most notable Samples and Libaries. Also, several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measuring_value`.
 
 - We've a new frontend using [Tabulator](https://www.tabulator.info) and VueJS for the submodules of staff users. There are several changes to models, most notable Samples and Libraries.
 
-- Several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measured_value + measured_unit`.
+- Several fields were renamed with a `removed_` prefix and marked as no longer in use. In the future, we'd remove these fields and copy old data to the new versions (if applicable), for example: `concentration => measuring_value + measuring_unit`.
 
 - Various fields added for measurements, biosafety, and tracking. <details><summary>Click here to see detailed information on models' changes.</summary>
 
     #### library_sample_shared.models.GenericLibrarySample
     New Fields:
-    - measured_value: FloatField for measured value.
+    - measuring_value: FloatField for measured value.
     - volume: FloatField for sample volume.
     - percent_total: FloatField for smear analysis (% total).
-    - measured_value_facility: FloatField for measured value at the facility level.
+    - measuring_value_facility: FloatField for measured value at the facility level.
     Removed Fields:
-    - concentration: Renamed to measured_value.
+    - concentration: Renamed to measuring_value.
     - concentration_method: Renamed to removed_concentration_method (marked as not in use).
     - equal_representation_nucleotides: Renamed to removed_equal_representation_nucleotides (marked as not in use).
     - amplification_cycles: Renamed to removed_amplification_cycles (marked as not in use).
