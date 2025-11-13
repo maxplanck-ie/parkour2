@@ -29,7 +29,7 @@ WORKDIR /usr/src/app
 
 ## Pre-heat the cache
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install setuptools wheel psycopg2 gunicorn django~=4.2
+    uv pip install setuptools wheel psycopg2 gunicorn django~=5.2
 ## First, bring dependencies specification and install them
 COPY ./backend/requirements requirements
 RUN --mount=type=cache,target=/root/.cache/uv \
