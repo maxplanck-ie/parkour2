@@ -7,14 +7,13 @@ class Migration(migrations.Migration):
     dependencies = [
         (
             "library_sample_shared",
-            "0014_alter_historicallibraryprotocol_name_and_more.py",
+            "0013_alter_indexpair_char_coord_historicalorganism_and_more",
         ),
     ]
 
     operations = [
-        migrations.RenameField(
+        migrations.RemoveField(
             model_name="indextype",
-            old_name="index_length",
-            new_name="removed_index_length",
+            name="index_length",
         ),
     ]
