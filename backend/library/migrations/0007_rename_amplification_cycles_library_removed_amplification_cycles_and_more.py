@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("library_sample_shared", "0014_remove_index_length_field"),
         ("library", "0006_delete_historicallibrary"),
     ]
 

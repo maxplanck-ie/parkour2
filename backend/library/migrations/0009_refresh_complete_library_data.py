@@ -28,7 +28,7 @@ CREATE_MV_SQL = library_create_mv_sql()
 class Migration(migrations.Migration):
     dependencies = [
         ("library", "0008_update_library_fields"),
-        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("library_sample_shared", "0014_remove_index_length_field"),
         ("request", "0009_historicalrequest"),
         ("flowcell", "0004_archived_feature"),
     ]

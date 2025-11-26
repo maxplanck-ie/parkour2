@@ -7,7 +7,7 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("library_sample_shared", "0014_remove_index_length_field"),
         ("sample", "0008_delete_historicalsample"),
     ]
 
