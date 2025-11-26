@@ -670,7 +670,7 @@ export function librariesAndSamplesExportColumns() {
     { header: "Input Type", key: "nucleic_acid_type_name", width: 20 },
     { header: "Protocol", key: "library_protocol_name", width: 20 },
     { header: "Analysis Type", key: "analysis_type_name", width: 20 },
-    { header: "Input", key: "input", width: 15 },
+    { header: "Input", key: "input_display", width: 15 },
     { header: "Starting Amount", key: "starting_amount", width: 18 },
     { header: "Cycles", key: "pcr_cycles", width: 12 },
     { header: "ng/µl Library", key: "concentration_library", width: 15 },

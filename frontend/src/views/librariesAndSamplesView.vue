@@ -887,6 +887,18 @@ export default {
       };
       this.getLibrariesSamples(1);
     },
+    syncInputHeaderMode(mode = this.inputColumnMode) {
+      const normalizedMode =
+        mode === "mode_facility" ? "mode_facility" : "mode_user";
+      const inputColumn = this.columnsList.find(
+        (column) => column.field === "input_display"
+      );
+      if (!inputColumn) return;
+      inputColumn.titleFormatterParams = {
+        ...(inputColumn.titleFormatterParams || {}),
+        inputColumnMode: normalizedMode
+      };
+    },
     setColumns() {
       const storedVisibility = JSON.parse(
         localStorage.getItem("librariesAndSamplesColumnVisibility") || "{}"
@@ -931,6 +943,7 @@ export default {
       );
 
       this.columnsList = applySettings(columnDefs);
+      this.syncInputHeaderMode();
     },
     handleOutsideClick(event) {
       const advancedFiltersPopup = this.$el.querySelector(
@@ -1103,6 +1116,7 @@ export default {
       try {
         this.inputColumnMode = normalizedMode;
         localStorage.setItem("librariesAndSamplesInputColumnMode", this.inputColumnMode);
+        this.syncInputHeaderMode(normalizedMode);
         this.applyInputColumnMode();
         await this.tabulatorInstance.getTable().replaceData(this.librariesSamplesList);
       } finally {

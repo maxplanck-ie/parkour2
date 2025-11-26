@@ -487,9 +487,9 @@ export default {
           pool: element.pool || "",
           pool_name: element.pool_name || "",
           pool_size: element.pool_size || "",
-          percentage_library: parseFloat(element.percentage_library) || "",
+          percentage_library: isNaN(parseFloat(element.percentage_library)) ? "" : parseFloat(element.percentage_library),
           combined_smear_analysis:
-            parseFloat(element.combined_smear_analysis) || "",
+            isNaN(parseFloat(element.combined_smear_analysis)) ? "" : parseFloat(element.combined_smear_analysis) || "",
           comment: element.comment || "",
           status: element.status || "",
           barcode: element.barcode || "",
