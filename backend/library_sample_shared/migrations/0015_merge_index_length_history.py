@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
     dependencies = [
         (
             "library_sample_shared",
-            "0014_remove_index_length_field",
+            "0014_rename_index_length_field",
         ),
         (
             "library_sample_shared",

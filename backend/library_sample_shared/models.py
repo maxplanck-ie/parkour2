@@ -137,6 +137,19 @@ class IndexType(models.Model):
         default="short",
     )
 
+    removed_index_length = models.CharField(
+        "Removed Index Length",
+        max_length=2,
+        choices=(
+            ("6", "6"),
+            ("8", "8"),
+            ("10", "10"),
+            ("12", "12"),
+            ("24", "24"),
+        ),
+        default="8",
+    )  # This field is not in use
+
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
