@@ -18,6 +18,26 @@ export function showNotification(content, type) {
   else if (type === "warning") toast.warning(content, options);
 }
 
+function notifyParentAuthRequired() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage(
+        {
+          source: "mainhub-vue",
+          type: "auth-required",
+        },
+        window.location.origin
+      );
+    }
+  } catch (error) {
+    // No-op: notification is a best-effort signal.
+  }
+}
+
 export function handleError(error) {
   if (
     error.response &&
@@ -25,6 +45,7 @@ export function handleError(error) {
     error.response.status === 403
   ) {
     let slices = window.location.href.split("/vue/");
+    notifyParentAuthRequired();
     window.location.href =
       urlStringStartsWith() + "/login/?next=/vue/" + slices[1];
   } else if (error.message) {
@@ -134,22 +155,49 @@ export function cellContextMenu(
         action: (e, cell) => {
           const value = cell.getValue();
           const field = cell.getField();
-          const libraryProtocolName = cell
-            .getRow()
-            .getData().library_protocol_name;
-          tabulatorInstance
-            .getTable()
-            .getRows()
-            .forEach((row) => {
-              if (row.getData().library_protocol_name === libraryProtocolName) {
-                const targetCell = row.getCell(field);
-                if (
-                  !targetCell.getElement().classList.contains("disable-editing")
-                ) {
-                  targetCell.setValue(value);
-                }
-              }
-            });
+          const rowData = cell.getRow().getData();
+          const groupByField =
+            tabulatorInstance?.tableGroupsConfig?.groupBy ||
+            tabulatorInstance?.groupBy ||
+            null;
+          const requestId = rowData.request_id;
+          const requestName = rowData.request_name;
+          const protocolName = rowData.library_protocol_name;
+          const tableRows = tabulatorInstance.getTable().getRows();
+
+          tableRows.forEach((row) => {
+            const data = row.getData();
+            let sameGroup = false;
+
+            // Incoming Libraries & Samples: apply within the same request
+            if (groupByField === "request_name") {
+              sameGroup =
+                (requestId && data.request_id === requestId) ||
+                (!requestId && data.request_name === requestName);
+            }
+            // Library Preparation: apply within the same library protocol
+            else if (groupByField === "library_protocol_name") {
+              sameGroup = data.library_protocol_name === protocolName;
+            }
+
+            else {
+              sameGroup =
+                (requestId && data.request_id === requestId) ||
+                (protocolName &&
+                  data.library_protocol_name === protocolName) ||
+                data.request_name === requestName;
+            }
+
+            if (!sameGroup) return;
+
+            const targetCell = row.getCell(field);
+            if (
+              targetCell &&
+              !targetCell.getElement().classList.contains("disable-editing")
+            ) {
+              targetCell.setValue(value);
+            }
+          });
         },
       });
     }

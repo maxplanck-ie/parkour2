@@ -184,7 +184,7 @@
             </div>
           </div>
         </div>
-        <button class="header-button" @click="handleExportClick">
+        <button class="header-button" id="openExportPopupButton" @click="handleExportClick">
           <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
@@ -556,7 +556,8 @@ export default {
       endDateValid: true,
       dateChangeTimer: null,
       showAdvancedFilters: false,
-      showSelectColumns: false
+      showSelectColumns: false,
+      inputColumnMode: "mode_user"
     };
   },
   mounted() {
@@ -658,9 +659,7 @@ export default {
         }
 
         const getValue = (val) => (val === 0 ? 0 : val || "");
-        const getInput = (e) => {
-          const measuredValueRaw = e.measured_value;
-          const measuredUnitRaw = e.measuring_unit;
+        const buildInputValue = (measuredValueRaw, measuredUnitRaw) => {
           const measuredValueEmpty =
             measuredValueRaw === null ||
             measuredValueRaw === undefined ||
@@ -681,6 +680,13 @@ export default {
           if (measuredUnit !== "") return `${measuredValue} ${measuredUnit}`;
           return `${measuredValue}`;
         };
+        const getInput = (record) =>
+          buildInputValue(record.measured_value, record.measuring_unit);
+        const getInputFacility = (record) =>
+          buildInputValue(
+            record.measured_value_facility,
+            record.measuring_unit_facility
+          );
         const getFormattedDate = (str) => {
           const date = new Date(str);
           if (isNaN(date)) return "";
@@ -715,6 +721,8 @@ export default {
             starting_amount: getValue(e.starting_amount),
             pcr_cycles: getValue(e.pcr_cycles),
             input: getInput(e),
+            input_facility: getInputFacility(e),
+            input_display: "",
             average_fragment_size: getValue(e.average_fragment_size),
             sequencing_depth: getValue(e.sequencing_depth),
             read_length_name: getValue(e.read_length_name),
@@ -768,6 +776,8 @@ export default {
             row.well_position = coordinates[idx % 96];
           });
         }
+
+        this.applyInputColumnMode(allRows);
 
         if (exportOnly) {
           return allRows;
@@ -877,6 +887,18 @@ export default {
       };
       this.getLibrariesSamples(1);
     },
+    syncInputHeaderMode(mode = this.inputColumnMode) {
+      const normalizedMode =
+        mode === "mode_facility" ? "mode_facility" : "mode_user";
+      const inputColumn = this.columnsList.find(
+        (column) => column.field === "input_display"
+      );
+      if (!inputColumn) return;
+      inputColumn.titleFormatterParams = {
+        ...(inputColumn.titleFormatterParams || {}),
+        inputColumnMode: normalizedMode
+      };
+    },
     setColumns() {
       const storedVisibility = JSON.parse(
         localStorage.getItem("librariesAndSamplesColumnVisibility") || "{}"
@@ -885,17 +907,25 @@ export default {
         localStorage.getItem("librariesAndSamplesColumnWidths") || "{}"
       );
 
+      const storedInputColumnMode = localStorage.getItem("librariesAndSamplesInputColumnMode");
+      if (storedInputColumnMode === "mode_facility" || storedInputColumnMode === "mode_user") {
+        this.inputColumnMode = storedInputColumnMode;
+      }
+
       const applySettings = (columns) => {
         return columns.map((column) => {
           if (column.field) {
-            if (storedWidths[column.field]) {
+            if (Object.prototype.hasOwnProperty.call(storedWidths, column.field)) {
               column.width = storedWidths[column.field];
               if (column.minWidth && column.width < column.minWidth) {
                 column.width = column.minWidth;
               }
             }
-            column.visible =
-              storedVisibility[column.field] ?? column.visible ?? true;
+            if (Object.prototype.hasOwnProperty.call(storedVisibility, column.field)) {
+              column.visible = storedVisibility[column.field];
+            } else {
+              column.visible = column.visible ?? true;
+            }
           }
           if (column.columns) {
             column.columns = applySettings(column.columns);
@@ -905,10 +935,15 @@ export default {
       };
 
       let columnDefs = librariesAndSamplesColumnDefs(
-        () => this.tabulatorInstance
+        () => this.tabulatorInstance,
+        {
+          inputColumnMode: this.inputColumnMode,
+          onInputColumnModeChange: this.handleInputColumnModeChange.bind(this)
+        }
       );
 
       this.columnsList = applySettings(columnDefs);
+      this.syncInputHeaderMode();
     },
     handleOutsideClick(event) {
       const advancedFiltersPopup = this.$el.querySelector(
@@ -921,6 +956,8 @@ export default {
       const selectColumnsButton = this.$el.querySelector(
         "#toggleSelectColumnsButton"
       );
+      const exportPopup = this.$el.querySelector(".popup-container");
+      const exportButton = this.$el.querySelector("#openExportPopupButton");
 
       if (
         this.showAdvancedFilters &&
@@ -940,6 +977,19 @@ export default {
         !selectColumnsButton.contains(event.target)
       ) {
         this.showSelectColumns = false;
+      }
+
+      const clickOnExportButton =
+        exportButton &&
+        (exportButton === event.target || exportButton.contains(event.target));
+
+      if (
+        this.showExportPopup &&
+        exportPopup &&
+        !exportPopup.contains(event.target) &&
+        !clickOnExportButton
+      ) {
+        this.showExportPopup = false;
       }
     },
     handleKeyDown(event) {
@@ -1058,6 +1108,28 @@ export default {
       this.setColumns();
       this.fakeLoadingStart();
       setTimeout(() => this.fakeLoadingStop(), 300);
+    },
+    async handleInputColumnModeChange(mode) {
+      const normalizedMode = mode === "mode_facility" ? "mode_facility" : "mode_user";
+      if (this.inputColumnMode === normalizedMode) return;
+      this.fakeLoadingStart();
+      try {
+        this.inputColumnMode = normalizedMode;
+        localStorage.setItem("librariesAndSamplesInputColumnMode", this.inputColumnMode);
+        this.syncInputHeaderMode(normalizedMode);
+        this.applyInputColumnMode();
+        await this.tabulatorInstance.getTable().replaceData(this.librariesSamplesList);
+      } finally {
+        setTimeout(() => this.fakeLoadingStop(), 200);
+      }
+    },
+    applyInputColumnMode(rows = this.librariesSamplesList) {
+      if (!Array.isArray(rows)) return;
+      const sourceField =
+        this.inputColumnMode === "mode_facility" ? "input_facility" : "input";
+      rows.forEach((row) => {
+        row.input_display = row?.[sourceField] ?? "";
+      });
     },
     async handleGroupButtonClick(event, groupValue, action) {
       event.stopPropagation();
@@ -1410,20 +1482,6 @@ body,
   padding: 0;
 }
 
-.export-long-loading {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  font-size: 16px;
-  color: #333;
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #333;
-  border-radius: 4px;
-}
-
 .parent-container {
   width: 100%;
   height: 100%;
@@ -1441,6 +1499,25 @@ body,
 .search-bar {
   width: 400px;
 }
+
+body.input-dropdown-open .tabulator-tooltip {
+  display: none !important;
+}
+
+.export-long-loading {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
 
 @media (max-width: 1500px) {
   .header-title {

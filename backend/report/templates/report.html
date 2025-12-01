@@ -29,6 +29,12 @@
     table caption {
         font-size: 1.3em;
     }
+
+    #download-xlsx {
+        min-width: 150px;
+        white-space: nowrap;
+        padding: 6px 20px;
+    }
 </style>
 {% endblock css %}
 
@@ -36,7 +42,10 @@
 <div id="report">
     <div>
     <div class="col-md-4 col-md-offset-4 daterange">
-        <input type="text" name="daterange" class="form-control"/>
+        <div style="display:flex; gap:12px; align-items:center;">
+            <input type="text" name="daterange" class="form-control"/>
+            <a id="download-xlsx" class="btn btn-default" href="#">Download XLS</a>
+        </div>
         <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
     </div>
 
@@ -256,6 +265,15 @@
         var start = picker.startDate.format('DD.MM.YYYY');
         var end = picker.endDate.format('DD.MM.YYYY');
         location.search = $.query.set('start', start).set('end', end).toString();
+    });
+
+    $('#download-xlsx').on('click', function (e) {
+        e.preventDefault();
+        var picker = $dateRangePicker.data('daterangepicker');
+        var start = picker.startDate.format('DD.MM.YYYY');
+        var end = picker.endDate.format('DD.MM.YYYY');
+        var url = "{% url 'report-xlsx' %}" + '?start=' + encodeURIComponent(start) + '&end=' + encodeURIComponent(end);
+        window.location = url;
     });
 </script>
 {% endblock %}

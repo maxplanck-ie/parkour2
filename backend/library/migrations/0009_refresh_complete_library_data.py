@@ -28,7 +28,7 @@ CREATE_MV_SQL = library_create_mv_sql()
 class Migration(migrations.Migration):
     dependencies = [
         ("library", "0008_update_library_fields"),
-        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("library_sample_shared", "0014_remove_index_length_field"),
         ("request", "0009_historicalrequest"),
         ("flowcell", "0004_archived_feature"),
     ]
@@ -75,6 +75,11 @@ class Migration(migrations.Migration):
                         ("sequencing_depth", models.FloatField()),
                         ("measuring_unit", models.CharField(max_length=50)),
                         ("measured_value", models.FloatField()),
+                        (
+                            "measuring_unit_facility",
+                            models.CharField(max_length=50),
+                        ),
+                        ("measured_value_facility", models.FloatField()),
                         ("concentration_library", models.FloatField()),
                         ("percent_total", models.FloatField()),
                         ("library_protocol_id", models.IntegerField()),

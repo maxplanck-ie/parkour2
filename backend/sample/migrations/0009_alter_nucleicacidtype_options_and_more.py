@@ -3,12 +3,11 @@
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
-import library_sample_shared.models
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("library_sample_shared", "0014_remove_index_length_field"),
         ("sample", "0008_delete_historicalsample"),
     ]
 
@@ -27,29 +26,33 @@ class Migration(migrations.Migration):
         ),
         migrations.RenameField(
             model_name="sample",
+            old_name="concentration_method",
+            new_name="removed_concentration_method",
+        ),
+        migrations.RenameField(
+            model_name="sample",
             old_name="concentration_method_facility",
             new_name="removed_concentration_method_facility",
+        ),
+        migrations.RenameField(
+            model_name="sample",
+            old_name="equal_representation_nucleotides",
+            new_name="removed_equal_representation_nucleotides",
         ),
         migrations.RenameField(
             model_name="sample",
             old_name="dilution_factor",
             new_name="removed_dilution_factor",
         ),
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name="sample",
-            name="concentration",
+            old_name="concentration",
+            new_name="measured_value",
         ),
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name="sample",
-            name="concentration_facility",
-        ),
-        migrations.RemoveField(
-            model_name="sample",
-            name="concentration_method",
-        ),
-        migrations.RemoveField(
-            model_name="sample",
-            name="equal_representation_nucleotides",
+            old_name="concentration_facility",
+            new_name="measured_value_facility",
         ),
         migrations.AddField(
             model_name="sample",
@@ -77,7 +80,7 @@ class Migration(migrations.Migration):
                 verbose_name="Genetically Modified Organism (facility)",
             ),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name="sample",
             name="measured_value",
             field=models.FloatField(
@@ -87,7 +90,7 @@ class Migration(migrations.Migration):
                 verbose_name="Measured Value",
             ),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name="sample",
             name="measured_value_facility",
             field=models.FloatField(
@@ -125,28 +128,6 @@ class Migration(migrations.Migration):
                 max_length=50,
                 null=True,
                 verbose_name="Measuring Unit (facility)",
-            ),
-        ),
-        migrations.AddField(
-            model_name="sample",
-            name="removed_concentration_method",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=models.SET(
-                    library_sample_shared.models.get_removed_concentrationmethod
-                ),
-                to="library_sample_shared.concentrationmethod",
-                verbose_name="Concentration Method",
-            ),
-        ),
-        migrations.AddField(
-            model_name="sample",
-            name="removed_equal_representation_nucleotides",
-            field=models.BooleanField(
-                blank=True,
-                default=False,
-                verbose_name="Equal Representation of Nucleotides",
             ),
         ),
         migrations.AddField(

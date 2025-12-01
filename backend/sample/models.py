@@ -137,6 +137,8 @@ class CompleteSampleData(models.Model):
     nucleic_acid_type_name = models.CharField(max_length=100)
     measuring_unit = models.CharField(max_length=50)
     measured_value = models.FloatField()
+    measuring_unit_facility = models.CharField(max_length=50)
+    measured_value_facility = models.FloatField()
     concentration_library = models.FloatField()
     gmo = models.BooleanField()
     library_protocol_id = models.IntegerField()

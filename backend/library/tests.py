@@ -132,6 +132,8 @@ class TestLibrarySampleTree(BaseTestCase):
             self.assertIn("record_type", record)
             self.assertIn(record["record_type"], {"Library", "Sample"})
             self.assertIn("barcode", record)
+            self.assertIn("measuring_unit_facility", record)
+            self.assertIn("measured_value_facility", record)
 
 
 class TestLibraries(BaseTestCase):
