@@ -169,7 +169,7 @@
             <span> Toggle Views </span>
           </button>
         </div>
-        <button class="header-button" @click="handleExportClick">
+        <button class="header-button" id="openExportPopupButton" @click="handleExportClick">
           <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
@@ -192,7 +192,7 @@
 
     <!-- Popup window -->
     <div v-if="showPopupWindow" class="popup-overlay">
-      <div class="popup-container" :style="{
+      <div class="popup-container confirmation-popup" :style="{
         height: popupContents.popupHeight + 'px',
         width: popupContents.popupWidth + 'px'
       }">
@@ -251,7 +251,7 @@
           </p>
         </div>
       </div>
-      <div v-if="!isDragOver" class="popup-container" :style="{ width: '670px', height: '500px' }">
+      <div v-if="!isDragOver" class="popup-container export-popup" :style="{ width: '670px', height: '500px' }">
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
           <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
@@ -711,6 +711,12 @@ export default {
       const selectColumnsButton = this.$el.querySelector(
         "#toggleSelectColumnsButton"
       );
+      const exportPopup = this.$el.querySelector(".export-popup");
+      const exportButton = this.$el.querySelector("#openExportPopupButton");
+      const confirmationPopup = this.$el.querySelector(".confirmation-popup");
+      const clickOnExportButton =
+        exportButton &&
+        (exportButton === event.target || exportButton.contains(event.target));
 
       if (
         this.showAdvancedFilters &&
@@ -730,6 +736,23 @@ export default {
         !selectColumnsButton.contains(event.target)
       ) {
         this.showSelectColumns = false;
+      }
+
+      if (
+        this.showExportPopup &&
+        exportPopup &&
+        !exportPopup.contains(event.target) &&
+        !clickOnExportButton
+      ) {
+        this.showExportPopup = false;
+      }
+
+      if (
+        this.showPopupWindow &&
+        confirmationPopup &&
+        !confirmationPopup.contains(event.target)
+      ) {
+        this.showPopupWindow = false;
       }
     },
     handleKeyDown(event) {

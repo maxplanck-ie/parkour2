@@ -69,6 +69,8 @@ class CompleteLibraryData(models.Model):
     sequencing_depth = models.FloatField()
     measuring_unit = models.CharField(max_length=50)
     measured_value = models.FloatField()
+    measuring_unit_facility = models.CharField(max_length=50)
+    measured_value_facility = models.FloatField()
     concentration_library = models.FloatField()
     percent_total = models.FloatField()
     library_protocol_id = models.IntegerField()

@@ -24,6 +24,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { createPinia } from "pinia";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
+import { initParentMessageBridge } from "./utilities/iframeMessaging";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -46,4 +47,5 @@ app.use(toast);
 app.use(createPinia());
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.config.productionTip = false;
+initParentMessageBridge();
 app.mount("#app");

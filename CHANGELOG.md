@@ -5,6 +5,11 @@
 
 - ...
 
+25.12.02
+========
+
+- Finalized the upgrade with Tabulator frontend to many of the staff users' submodules in the app, and the Samples and Libraries models were updated accordingly too.
+
 
 25.08.14
 ========

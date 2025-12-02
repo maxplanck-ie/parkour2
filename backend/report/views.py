@@ -1,4 +1,5 @@
-from collections import Counter, OrderedDict
+import json
+from collections import Counter, OrderedDict, defaultdict
 
 import numpy as np
 from django.apps import apps
@@ -6,7 +7,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Prefetch
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from io import BytesIO
 from django.shortcuts import render
 from django.utils import timezone
 from pandas import DataFrame
@@ -30,13 +32,13 @@ class Report:
     def __init__(self, start, end):
         libraries_qs = (
             Library.objects.select_related("library_protocol")
-            .only("id", "library_protocol__name")
+            .only("id", "library_protocol__name", "sequencing_depth")
             .filter(create_time__gt=start, create_time__lt=end)
         )
 
         samples_qs = (
             Sample.objects.select_related("library_protocol")
-            .only("id", "library_protocol__name")
+            .only("id", "library_protocol__name", "sequencing_depth")
             .filter(create_time__gt=start, create_time__lt=end)
         )
 
@@ -400,6 +402,143 @@ def report(request):
     # data["turnaround"] = report.get_turnaround()
 
     return render(request, "report.html", data)
+
+
+@login_required
+@staff_member_required
+def report_xlsx(request):
+    """Return an Excel file for the currently selected report date range."""
+    now = timezone.now()
+    start = request.GET.get("start", now)
+    end = request.GET.get("end", now)
+
+    try:
+        start = (
+            timezone.datetime.strptime(start, "%d.%m.%Y")
+            if type(start) is str
+            else start
+        )
+    except ValueError:
+        start = now
+    finally:
+        start = start.replace(hour=0, minute=0)
+
+    try:
+        end = timezone.datetime.strptime(end, "%d.%m.%Y") if type(end) is str else end
+    except ValueError:
+        end = now
+    finally:
+        end = end.replace(hour=23, minute=59)
+
+    if start > end:
+        start = end.replace(hour=0, minute=0)
+
+    report = Report(start, end)
+
+    filtered_requests = []
+    all_library_ids = set()
+    all_sample_ids = set()
+
+    for req in report.requests:
+        libraries = list(getattr(req, "fetched_libraries", []))
+        samples = list(getattr(req, "fetched_samples", []))
+        if not libraries and not samples:
+            continue
+        filtered_requests.append((req, libraries, samples))
+        all_library_ids.update(obj.id for obj in libraries)
+        all_sample_ids.update(obj.id for obj in samples)
+
+    record_pool_map = defaultdict(set)
+
+    if all_library_ids:
+        through = Pool.libraries.through
+        for pool_id, library_id in through.objects.filter(
+            library_id__in=all_library_ids
+        ).values_list("pool_id", "library_id"):
+            record_pool_map[("library", library_id)].add(pool_id)
+
+    if all_sample_ids:
+        through = Pool.samples.through
+        for pool_id, sample_id in through.objects.filter(
+            sample_id__in=all_sample_ids
+        ).values_list("pool_id", "sample_id"):
+            record_pool_map[("sample", sample_id)].add(pool_id)
+
+    pool_ids = set()
+    for pool_list in record_pool_map.values():
+        pool_ids.update(pool_list)
+
+    pool_sequencers_map = defaultdict(set)
+    if pool_ids:
+        for pool_id, sequencer_name in Flowcell.objects.filter(
+            lanes__pool_id__in=pool_ids
+        ).values_list("lanes__pool_id", "sequencer__name"):
+            if sequencer_name:
+                pool_sequencers_map[pool_id].add(sequencer_name)
+
+    def serialize_counter(counter):
+        if not counter:
+            return ""
+        if len(counter) == 1:
+            return counter.most_common(1)[0][0]
+        return json.dumps(dict(counter), sort_keys=True)
+
+    rows = []
+    for req, libraries, samples in filtered_requests:
+        records = libraries + samples
+        sequencing_depth = sum(
+            getattr(obj, "sequencing_depth", 0) or 0 for obj in records
+        )
+        record_count = len(records)
+
+        protocol_counter = Counter()
+        pool_counter = Counter()
+        sequencer_counter = Counter()
+
+        for obj in records:
+            protocol = getattr(getattr(obj, "library_protocol", None), "name", None)
+            if protocol:
+                protocol_counter[protocol] += 1
+
+            record_key = (obj._meta.model_name, obj.id)
+            for pool_id in record_pool_map.get(record_key, set()):
+                pool_counter[str(pool_id)] += 1
+                for sequencer_name in pool_sequencers_map.get(pool_id, set()):
+                    sequencer_counter[sequencer_name] += 1
+
+        rows.append(
+            {
+                "Request ID": req.id,
+                "Number of records": record_count,
+                "Library Preparation Protocol": serialize_counter(protocol_counter),
+                "Sequencing depth (per request)": sequencing_depth,
+                "Pool ID": serialize_counter(pool_counter),
+                "Sequencing device": serialize_counter(sequencer_counter),
+            }
+        )
+
+    columns = [
+        "Request ID",
+        "Number of records",
+        "Library Preparation Protocol",
+        "Sequencing depth (per request)",
+        "Pool ID",
+        "Sequencing device",
+    ]
+    df = DataFrame(rows, columns=columns)
+
+    buf = BytesIO()
+    df.to_excel(buf, index=False)
+    buf.seek(0)
+
+    filename = f"report_{start.strftime('%Y%m%d')}_{end.strftime('%Y%m%d')}.xlsx"
+    response = HttpResponse(
+        buf.getvalue(),
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+    return response
 
 
 @login_required

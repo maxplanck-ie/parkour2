@@ -75,7 +75,35 @@ Ext.define("MainHub.Application", {
   requires: ["Ext.ux.ToastMessage"],
 
   launch: function () {
-    // TODO - Launch the application
+    this.initIframeMessageBridge();
+  },
+
+  initIframeMessageBridge: function () {
+    if (this.iframeMessageHandler) {
+      return;
+    }
+
+    var me = this;
+
+    me.iframeReloadPending = false;
+    me.iframeMessageHandler = Ext.bind(me.handleIframeBridgeMessage, me);
+    window.addEventListener("message", me.iframeMessageHandler);
+  },
+
+  handleIframeBridgeMessage: function (event) {
+    if (!event || event.origin !== window.location.origin) {
+      return;
+    }
+
+    var data = event.data || {};
+    if (
+      data.source === "mainhub-vue" &&
+      data.type === "auth-required" &&
+      !this.iframeReloadPending
+    ) {
+      this.iframeReloadPending = true;
+      window.location.reload();
+    }
   },
 
   onAppUpdate: function () {

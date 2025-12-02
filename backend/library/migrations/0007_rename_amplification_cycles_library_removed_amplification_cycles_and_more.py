@@ -2,12 +2,11 @@
 
 import django.core.validators
 from django.db import migrations, models
-import library_sample_shared.models
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("library_sample_shared", "0014_alter_historicallibraryprotocol_name_and_more"),
+        ("library_sample_shared", "0014_remove_index_length_field"),
         ("library", "0006_delete_historicallibrary"),
     ]
 
@@ -16,11 +15,6 @@ class Migration(migrations.Migration):
             model_name="library",
             old_name="amplification_cycles",
             new_name="removed_amplification_cycles",
-        ),
-        migrations.RenameField(
-            model_name="library",
-            old_name="concentration_method_facility",
-            new_name="removed_concentration_method_facility",
         ),
         migrations.RenameField(
             model_name="library",
@@ -37,23 +31,32 @@ class Migration(migrations.Migration):
             old_name="qpcr_result_facility",
             new_name="removed_qpcr_result_facility",
         ),
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name="library",
-            name="concentration",
+            old_name="concentration_method",
+            new_name="removed_concentration_method",
         ),
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name="library",
-            name="concentration_facility",
+            old_name="concentration_method_facility",
+            new_name="removed_concentration_method_facility",
         ),
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name="library",
-            name="concentration_method",
+            old_name="equal_representation_nucleotides",
+            new_name="removed_equal_representation_nucleotides",
         ),
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name="library",
-            name="equal_representation_nucleotides",
+            old_name="concentration",
+            new_name="measured_value",
         ),
-        migrations.AddField(
+        migrations.RenameField(
+            model_name="library",
+            old_name="concentration_facility",
+            new_name="measured_value_facility",
+        ),
+        migrations.AlterField(
             model_name="library",
             name="measured_value",
             field=models.FloatField(
@@ -63,7 +66,7 @@ class Migration(migrations.Migration):
                 verbose_name="Measured Value",
             ),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name="library",
             name="measured_value_facility",
             field=models.FloatField(
@@ -105,28 +108,6 @@ class Migration(migrations.Migration):
                     django.core.validators.MaxValueValidator(100),
                 ],
                 verbose_name="Smear Analysis (% Total)",
-            ),
-        ),
-        migrations.AddField(
-            model_name="library",
-            name="removed_concentration_method",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=models.SET(
-                    library_sample_shared.models.get_removed_concentrationmethod
-                ),
-                to="library_sample_shared.concentrationmethod",
-                verbose_name="Concentration Method",
-            ),
-        ),
-        migrations.AddField(
-            model_name="library",
-            name="removed_equal_representation_nucleotides",
-            field=models.BooleanField(
-                blank=True,
-                default=False,
-                verbose_name="Equal Representation of Nucleotides",
             ),
         ),
         migrations.AddField(
