@@ -123,7 +123,7 @@
     <!-- Main content section with table -->
     <div class="table-container">
       <TabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList" :columnDefs="columnsList"
-        groupBy="library_protocol_name" :groupSort="{ field: 'library_protocol_name', order: 'asc' }" :tableOptions="{
+        groupBy="library_protocol_name" :groupSort="{ field: 'library_protocol_name', order: 'asc' }" :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
           fakeLoadingStart,

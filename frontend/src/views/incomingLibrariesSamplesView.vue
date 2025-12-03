@@ -285,7 +285,7 @@
         :columnDefs="columnsList"
         groupBy="request_name"
         :groupSort="{ field: 'request_name', order: 'desc' }"
-        :groupStartOpen="true"
+  :groupStartOpen="false"
         :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
