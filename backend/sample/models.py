@@ -31,6 +31,7 @@ class Sample(GenericLibrarySample):
         ("ng/µl (Concentration)", "ng/µl", "Concentration"),
         ("M (Cells)", "M", "Cells"),
         ("k (Cells)", "k", "Cells"),
+        ("Cells", "Cells", "Cells"),
         ("Unknown", "Unknown", "Unknown"),
     ]
 
