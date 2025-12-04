@@ -469,12 +469,15 @@ def report_xlsx(request):
         pool_ids.update(pool_list)
 
     pool_sequencers_map = defaultdict(set)
+    pool_flowcell_dates_map = defaultdict(set)
     if pool_ids:
-        for pool_id, sequencer_name in Flowcell.objects.filter(
+        for pool_id, sequencer_name, flowcell_create_time in Flowcell.objects.filter(
             lanes__pool_id__in=pool_ids
-        ).values_list("lanes__pool_id", "sequencer__name"):
+        ).values_list("lanes__pool_id", "sequencer__name", "create_time"):
             if sequencer_name:
                 pool_sequencers_map[pool_id].add(sequencer_name)
+            if flowcell_create_time:
+                pool_flowcell_dates_map[pool_id].add(flowcell_create_time)
 
     def serialize_counter(counter):
         if not counter:
@@ -494,6 +497,7 @@ def report_xlsx(request):
         protocol_counter = Counter()
         pool_counter = Counter()
         sequencer_counter = Counter()
+        flowcell_dates = set()
 
         for obj in records:
             protocol = getattr(getattr(obj, "library_protocol", None), "name", None)
@@ -505,10 +509,22 @@ def report_xlsx(request):
                 pool_counter[str(pool_id)] += 1
                 for sequencer_name in pool_sequencers_map.get(pool_id, set()):
                     sequencer_counter[sequencer_name] += 1
+                for flowcell_create_time in pool_flowcell_dates_map.get(pool_id, set()):
+                    flowcell_dates.add(flowcell_create_time)
+
+        submission_date = getattr(req, "create_time", None)
+        if submission_date:
+            submission_date = timezone.localtime(submission_date).replace(tzinfo=None)
+
+        sequencing_date = min(flowcell_dates) if flowcell_dates else None
+        if sequencing_date:
+            sequencing_date = timezone.localtime(sequencing_date).replace(tzinfo=None)
 
         rows.append(
             {
                 "Request ID": req.id,
+                "Submission Date": submission_date,
+                "Sequencing Date": sequencing_date,
                 "Number of records": record_count,
                 "Library Preparation Protocol": serialize_counter(protocol_counter),
                 "Sequencing depth (per request)": sequencing_depth,
@@ -519,6 +535,8 @@ def report_xlsx(request):
 
     columns = [
         "Request ID",
+        "Submission Date",
+        "Sequencing Date",
         "Number of records",
         "Library Preparation Protocol",
         "Sequencing depth (per request)",
