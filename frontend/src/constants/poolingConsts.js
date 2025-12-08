@@ -1,6 +1,6 @@
 import {
   cellContextMenu,
-  ellipsisContainer,
+  ellipsisContainer
 } from "../utilities/utilityFunctions";
 
 export function poolingGroupHeader(
@@ -18,8 +18,8 @@ export function poolingGroupHeader(
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 1px; color: black;">
         | Pool Size: ${totalDepth}M reads (${pool_size}) ${
-    comment ? "| Comment: " + comment : ""
-  }
+          comment ? "| Comment: " + comment : ""
+        }
     </span>
   </div>
 </div>
@@ -130,7 +130,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
         if (checkbox && checkbox.type === "checkbox") {
           rowData.selected = checkbox.checked;
         }
-      },
+      }
     },
     {
       title: "Request",
@@ -155,7 +155,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
                   (tableGroupsToggleState == 2 ? pool_name + " ➜ " : "") + name
                 }</span>
               </div>`;
-      },
+      }
     },
     {
       title: "Name",
@@ -172,7 +172,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString, false);
-      },
+      }
     },
     {
       title: "Barcode",
@@ -196,7 +196,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
             ? barcode + "*"
             : barcode;
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Date",
@@ -213,7 +213,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "ng/µl",
@@ -233,10 +233,10 @@ export function poolingColumnDefs(getTabulatorInstance) {
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
             : value === 0
-            ? "0.0"
-            : value.toFixed(1);
+              ? "0.0"
+              : value.toFixed(1);
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "% Total",
@@ -252,7 +252,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const rawValue = cell.getValue();
         return ellipsisContainer(rawValue + "%" || "-");
-      },
+      }
     },
     {
       title: "bp",
@@ -275,7 +275,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Depth (M)",
@@ -298,7 +298,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "%",
@@ -314,7 +314,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const rawValue = cell.getValue();
         return ellipsisContainer(rawValue + "%" || "-");
-      },
+      }
     },
     {
       title: "Coord",
@@ -329,7 +329,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "I7 ID",
@@ -345,7 +345,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index I7",
@@ -361,7 +361,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "I5 ID",
@@ -377,7 +377,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index I5",
@@ -393,8 +393,8 @@ export function poolingColumnDefs(getTabulatorInstance) {
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
-    },
+      }
+    }
   ];
 }
 
@@ -408,7 +408,7 @@ export function poolingExportColumns() {
     {
       header: "Concentration Library",
       key: "concentration_library",
-      width: 20,
+      width: 20
     },
     { header: "% Total", key: "combined_smear_analysis", width: 20 },
     { header: "bp", key: "mean_fragment_size", width: 20 },
@@ -418,6 +418,6 @@ export function poolingExportColumns() {
     { header: "I7 ID", key: "index_i7_id", width: 20 },
     { header: "Index I7", key: "index_i7", width: 20 },
     { header: "I5 ID", key: "index_i5_id", width: 20 },
-    { header: "Index I5", key: "index_i5", width: 20 },
+    { header: "Index I5", key: "index_i5", width: 20 }
   ];
 }

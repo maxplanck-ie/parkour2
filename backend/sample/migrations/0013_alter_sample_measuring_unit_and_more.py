@@ -4,20 +4,43 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sample', '0012_alter_sample_removed_concentration_method_and_more'),
+        ("sample", "0012_alter_sample_removed_concentration_method_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sample',
-            name='measuring_unit',
-            field=models.CharField(blank=True, choices=[('ng/µl', 'ng/µl (Concentration)'), ('M', 'M (Cells)'), ('k', 'k (Cells)'), ('Cells', 'Cells'), ('Unknown', 'Unknown')], max_length=50, null=True, verbose_name='Measuring Unit'),
+            model_name="sample",
+            name="measuring_unit",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("ng/µl", "ng/µl (Concentration)"),
+                    ("M", "M (Cells)"),
+                    ("k", "k (Cells)"),
+                    ("Cells", "Cells"),
+                    ("Unknown", "Unknown"),
+                ],
+                max_length=50,
+                null=True,
+                verbose_name="Measuring Unit",
+            ),
         ),
         migrations.AlterField(
-            model_name='sample',
-            name='measuring_unit_facility',
-            field=models.CharField(blank=True, choices=[('ng/µl', 'ng/µl (Concentration)'), ('M', 'M (Cells)'), ('k', 'k (Cells)'), ('Cells', 'Cells'), ('Unknown', 'Unknown')], max_length=50, null=True, verbose_name='Measuring Unit (facility)'),
+            model_name="sample",
+            name="measuring_unit_facility",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("ng/µl", "ng/µl (Concentration)"),
+                    ("M", "M (Cells)"),
+                    ("k", "k (Cells)"),
+                    ("Cells", "Cells"),
+                    ("Unknown", "Unknown"),
+                ],
+                max_length=50,
+                null=True,
+                verbose_name="Measuring Unit (facility)",
+            ),
         ),
     ]

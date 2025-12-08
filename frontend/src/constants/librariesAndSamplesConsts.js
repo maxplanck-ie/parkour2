@@ -1,6 +1,6 @@
 import {
   cellContextMenu,
-  ellipsisContainer,
+  ellipsisContainer
 } from "../utilities/utilityFunctions";
 import { statusMap, getStatusClass } from "./statusConsts";
 
@@ -156,7 +156,7 @@ export function librariesAndSamplesColumnDefs(
         if (checkbox && checkbox.type === "checkbox") {
           rowData.selected = checkbox.checked;
         }
-      },
+      }
     },
     {
       title: "Name",
@@ -177,7 +177,7 @@ export function librariesAndSamplesColumnDefs(
                           <span title="${name}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${name}</span>
                         </div>
                       `;
-      },
+      }
     },
     {
       title: "Status",
@@ -195,7 +195,7 @@ export function librariesAndSamplesColumnDefs(
         const tooltip = statusMap[value];
         const statusClass = `status ${getStatusClass(value)}`;
         return `<div class="${statusClass}" title="${tooltip}"></div>`;
-      },
+      }
     },
     {
       title: "S/L",
@@ -213,7 +213,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Plate Coord",
@@ -231,7 +231,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Barcode",
@@ -255,7 +255,7 @@ export function librariesAndSamplesColumnDefs(
             ? barcode + "*"
             : barcode;
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Pool Paths",
@@ -272,7 +272,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "GMO",
@@ -289,7 +289,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Date",
@@ -306,7 +306,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Input Type",
@@ -324,7 +324,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "No Input Type";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Protocol",
@@ -341,7 +341,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "No Protocol";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Analysis Type",
@@ -358,7 +358,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "No Analysis Type";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Input",
@@ -371,7 +371,7 @@ export function librariesAndSamplesColumnDefs(
         createInputColumnHeader(cell, formatterParams),
       titleFormatterParams: {
         inputColumnMode,
-        onInputColumnModeChange,
+        onInputColumnModeChange
       },
       visible: true,
       cssClass: "regular-column",
@@ -381,7 +381,7 @@ export function librariesAndSamplesColumnDefs(
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Starting Amount",
@@ -401,10 +401,10 @@ export function librariesAndSamplesColumnDefs(
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
             : value === 0
-            ? "0.0"
-            : value.toFixed(1);
+              ? "0.0"
+              : value.toFixed(1);
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Cycles",
@@ -429,7 +429,7 @@ export function librariesAndSamplesColumnDefs(
         }
 
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "ng/µl Library",
@@ -449,10 +449,10 @@ export function librariesAndSamplesColumnDefs(
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
             : value === 0
-            ? "0.0"
-            : value.toFixed(1);
+              ? "0.0"
+              : value.toFixed(1);
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "bp",
@@ -475,7 +475,7 @@ export function librariesAndSamplesColumnDefs(
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index Type",
@@ -492,7 +492,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Coord",
@@ -509,7 +509,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "I7 ID",
@@ -526,7 +526,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index I7",
@@ -543,7 +543,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "I5 ID",
@@ -560,7 +560,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Index I5",
@@ -577,7 +577,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Length",
@@ -594,7 +594,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Depth (M)",
@@ -617,7 +617,7 @@ export function librariesAndSamplesColumnDefs(
           finalString = Math.round(value).toString();
         }
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Flowcell IDs",
@@ -634,7 +634,7 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
+      }
     },
     {
       title: "Sequencers",
@@ -651,8 +651,8 @@ export function librariesAndSamplesColumnDefs(
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
-      },
-    },
+      }
+    }
   ];
 }
 
@@ -684,6 +684,6 @@ export function librariesAndSamplesExportColumns() {
     { header: "Length", key: "read_length_name", width: 12 },
     { header: "Depth (M)", key: "sequencing_depth", width: 15 },
     { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
-    { header: "Sequencers", key: "sequencer_names", width: 20 },
+    { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
 }

@@ -5,21 +5,32 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0009_refresh_complete_library_data'),
-        ('library_sample_shared', '0015_alter_historicallibraryprotocol_name_and_more'),
+        ("library", "0009_refresh_complete_library_data"),
+        ("library_sample_shared", "0015_alter_historicallibraryprotocol_name_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='library',
-            name='removed_concentration_method',
-            field=models.ForeignKey(blank=True, null=True, on_delete=models.SET(library_sample_shared.models.get_removed_concentrationmethod), to='library_sample_shared.concentrationmethod', verbose_name='Concentration Method'),
+            model_name="library",
+            name="removed_concentration_method",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=models.SET(
+                    library_sample_shared.models.get_removed_concentrationmethod
+                ),
+                to="library_sample_shared.concentrationmethod",
+                verbose_name="Concentration Method",
+            ),
         ),
         migrations.AlterField(
-            model_name='library',
-            name='removed_equal_representation_nucleotides',
-            field=models.BooleanField(blank=True, default=False, verbose_name='Equal Representation of Nucleotides'),
+            model_name="library",
+            name="removed_equal_representation_nucleotides",
+            field=models.BooleanField(
+                blank=True,
+                default=False,
+                verbose_name="Equal Representation of Nucleotides",
+            ),
         ),
     ]

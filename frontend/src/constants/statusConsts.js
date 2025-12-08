@@ -7,7 +7,7 @@ export const statusMap = {
   3: "Library Prepared",
   4: "Library Pooled",
   5: "Sequencing",
-  6: "Delivered",
+  6: "Delivered"
 };
 
 export function getStatusClass(status) {

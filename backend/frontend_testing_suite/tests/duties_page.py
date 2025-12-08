@@ -29,6 +29,8 @@ def test_duties_page(page: Page):
     page.locator("select#backup_name").select_option(index=1)
     today = datetime.date.today()
     page.locator("input#start_date").fill(today.strftime("%Y-%m-%d"))
-    page.locator("input#end_date").fill((today + datetime.timedelta(days=7)).strftime("%Y-%m-%d"))
+    page.locator("input#end_date").fill(
+        (today + datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+    )
     page.locator("select#platform").select_option(index=1)
     page.locator("textarea#comment").fill("Automated UI smoke test entry")

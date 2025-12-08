@@ -25,6 +25,7 @@ Flowcell = apps.get_model("flowcell", "Flowcell")
 Lane = apps.get_model("flowcell", "Lane")
 IndexPool = apps.get_model("index_generator", "Pool")
 
+
 def _parse_csv_values(raw_value):
     if not raw_value:
         return []
@@ -153,7 +154,6 @@ def _deduplicate_properties(properties):
 
 
 class GenerateROCrate(viewsets.ViewSet):
-
     def list(self, request):
         barcode_values = _parse_csv_values(request.query_params.get("barcodes"))
         request_values = _parse_csv_values(request.query_params.get("requests"))
@@ -167,9 +167,7 @@ class GenerateROCrate(viewsets.ViewSet):
             )
 
         accessible_requests = get_accessible_requests(request)
-        accessible_request_ids = list(
-            accessible_requests.values_list("id", flat=True)
-        )
+        accessible_request_ids = list(accessible_requests.values_list("id", flat=True))
 
         library_data_qs = CompleteLibraryData.objects.filter(
             request_id__in=accessible_request_ids
@@ -191,9 +189,7 @@ class GenerateROCrate(viewsets.ViewSet):
         library_data = list(library_data_qs)
         sample_data = list(sample_data_qs)
 
-        found_barcodes = {
-            entry.barcode for entry in chain(library_data, sample_data)
-        }
+        found_barcodes = {entry.barcode for entry in chain(library_data, sample_data)}
         missing_barcodes = sorted(
             {barcode for barcode in barcode_values if barcode not in found_barcodes}
         )
@@ -206,9 +202,7 @@ class GenerateROCrate(viewsets.ViewSet):
         request_ids_from_names = set(
             requests_from_names_qs.values_list("id", flat=True)
         )
-        found_request_names = set(
-            requests_from_names_qs.values_list("name", flat=True)
-        )
+        found_request_names = set(requests_from_names_qs.values_list("name", flat=True))
         missing_requests = sorted(
             {name for name in request_values if name not in found_request_names}
         )
@@ -296,7 +290,9 @@ class GenerateROCrate(viewsets.ViewSet):
                 )
                 org_id = register_organization(pi_obj.organization)
                 if org_id:
-                    _append_property(properties, "affiliatedOrganization", {"@id": org_id})
+                    _append_property(
+                        properties, "affiliatedOrganization", {"@id": org_id}
+                    )
                 pi_entities[entity_id] = {
                     "@id": entity_id,
                     "@type": "Person",
@@ -333,7 +329,9 @@ class GenerateROCrate(viewsets.ViewSet):
                 )
                 pi_id = register_principal_investigator(cost_unit.pi)
                 if pi_id:
-                    _append_property(properties, "principalInvestigator", {"@id": pi_id})
+                    _append_property(
+                        properties, "principalInvestigator", {"@id": pi_id}
+                    )
                 cost_unit_entities[entity_id] = {
                     "@id": entity_id,
                     "@type": "Thing",
@@ -421,9 +419,7 @@ class GenerateROCrate(viewsets.ViewSet):
             if entity_id not in nucleic_acid_entities:
                 properties = _deduplicate_properties(
                     _build_property_values(
-                        _extract_model_fields(
-                            nucleic_acid, prefix="nucleic_acid_type_"
-                        )
+                        _extract_model_fields(nucleic_acid, prefix="nucleic_acid_type_")
                     )
                 )
                 nucleic_acid_entities[entity_id] = {
@@ -525,6 +521,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "additionalProperty": _deduplicate_properties(properties),
                 }
             return entity_id
+
         library_ids = [entry.library_id for entry in library_data]
         sample_ids = [entry.sample_id for entry in sample_data]
 
@@ -568,12 +565,9 @@ class GenerateROCrate(viewsets.ViewSet):
         pooling_by_library = {}
         pooling_by_sample = {}
         if library_ids or sample_ids:
-            pooling_qs = (
-                Pooling.objects.filter(
-                    Q(library_id__in=library_ids) | Q(sample_id__in=sample_ids)
-                )
-                .select_related("library", "sample")
-            )
+            pooling_qs = Pooling.objects.filter(
+                Q(library_id__in=library_ids) | Q(sample_id__in=sample_ids)
+            ).select_related("library", "sample")
             for pooling_record in pooling_qs:
                 if pooling_record.library_id:
                     pooling_by_library[pooling_record.library_id] = pooling_record
@@ -605,16 +599,13 @@ class GenerateROCrate(viewsets.ViewSet):
 
             index_pools_qs = (
                 IndexPool.objects.filter(
-                    Q(libraries__id__in=library_ids)
-                    | Q(samples__id__in=sample_ids)
+                    Q(libraries__id__in=library_ids) | Q(samples__id__in=sample_ids)
                 )
                 .select_related("size", "user")
                 .distinct()
             )
             if index_pool_prefetches:
-                index_pools_qs = index_pools_qs.prefetch_related(
-                    *index_pool_prefetches
-            )
+                index_pools_qs = index_pools_qs.prefetch_related(*index_pool_prefetches)
 
             index_pools = list(index_pools_qs)
 
@@ -622,7 +613,9 @@ class GenerateROCrate(viewsets.ViewSet):
                 pool_entity_id = register_index_pool(pool)
                 for library in pool.libraries.all():
                     if library.id in library_id_set:
-                        library_to_index_pools[library.id].append({"@id": pool_entity_id})
+                        library_to_index_pools[library.id].append(
+                            {"@id": pool_entity_id}
+                        )
                 for sample in pool.samples.all():
                     if sample.id in sample_id_set:
                         sample_to_index_pools[sample.id].append({"@id": pool_entity_id})
@@ -659,7 +652,9 @@ class GenerateROCrate(viewsets.ViewSet):
 
             for flowcell in flowcells_qs:
                 associated_requests = [
-                    req.id for req in flowcell.requests.all() if req.id in requests_by_id
+                    req.id
+                    for req in flowcell.requests.all()
+                    if req.id in requests_by_id
                 ]
                 if not associated_requests:
                     continue
@@ -743,9 +738,15 @@ class GenerateROCrate(viewsets.ViewSet):
                 "@id": "https://w3id.org/isa/principalInvestigator",
                 "@type": "@id",
             },
-            "usesProtocol": {"@id": "https://w3id.org/isa/usesProtocol", "@type": "@id"},
+            "usesProtocol": {
+                "@id": "https://w3id.org/isa/usesProtocol",
+                "@type": "@id",
+            },
             "associatedPool": {"@id": "https://schema.org/isRelatedTo", "@type": "@id"},
-            "hasInstrument": {"@id": "https://w3id.org/isa/hasInstrument", "@type": "@id"},
+            "hasInstrument": {
+                "@id": "https://w3id.org/isa/hasInstrument",
+                "@type": "@id",
+            },
             "hasLane": {"@id": "https://w3id.org/isa/hasPart", "@type": "@id"},
             "costUnit": {"@id": "https://schema.org/identifier", "@type": "@id"},
         }
@@ -849,16 +850,16 @@ class GenerateROCrate(viewsets.ViewSet):
                         "affiliatedOrganization",
                         {"@id": user_org_id},
                     )
-                user_pi_id = register_principal_investigator(getattr(request_obj.user, "pi", None))
+                user_pi_id = register_principal_investigator(
+                    getattr(request_obj.user, "pi", None)
+                )
                 if user_pi_id:
                     _append_property(
                         investigation_properties,
                         "principalInvestigator",
                         {"@id": user_pi_id},
                     )
-            investigation_properties = _deduplicate_properties(
-                investigation_properties
-            )
+            investigation_properties = _deduplicate_properties(investigation_properties)
             investigation_entity = {
                 "@id": investigation_id,
                 "@type": "Investigation",
@@ -1159,5 +1160,6 @@ class GenerateROCrate(viewsets.ViewSet):
             content_type="application/ld+json",
             safe=True,
         )
+
 
 __all__ = ["GenerateROCrate"]

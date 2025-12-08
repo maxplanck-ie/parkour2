@@ -9,7 +9,7 @@ const toast = useToast();
 export function showNotification(content, type) {
   let options = {
     timeout: 5000,
-    position: "top-left",
+    position: "top-left"
   };
 
   if (type === "info") toast.info(content, options);
@@ -28,7 +28,7 @@ function notifyParentAuthRequired() {
       window.parent.postMessage(
         {
           source: "mainhub-vue",
-          type: "auth-required",
+          type: "auth-required"
         },
         window.location.origin
       );
@@ -81,8 +81,8 @@ export function createAxiosObject() {
     withCredentials: true,
     headers: {
       "content-type": "application/json",
-      "X-CSRFToken": Cookies.get("csrftoken"),
-    },
+      "X-CSRFToken": Cookies.get("csrftoken")
+    }
   });
 }
 
@@ -178,13 +178,10 @@ export function cellContextMenu(
             // Library Preparation: apply within the same library protocol
             else if (groupByField === "library_protocol_name") {
               sameGroup = data.library_protocol_name === protocolName;
-            }
-
-            else {
+            } else {
               sameGroup =
                 (requestId && data.request_id === requestId) ||
-                (protocolName &&
-                  data.library_protocol_name === protocolName) ||
+                (protocolName && data.library_protocol_name === protocolName) ||
                 data.request_name === requestName;
             }
 
@@ -198,7 +195,7 @@ export function cellContextMenu(
               targetCell.setValue(value);
             }
           });
-        },
+        }
       });
     }
 
@@ -208,7 +205,7 @@ export function cellContextMenu(
         action: (e, cell) => {
           const value = cell.getValue();
           navigator.clipboard.writeText(value);
-        },
+        }
       });
     }
 
@@ -233,7 +230,7 @@ export function cellContextMenu(
               showNotification(error.message, "error");
             }
           });
-        },
+        }
       });
     }
   }
@@ -264,7 +261,7 @@ export async function validateAndFixExcelBuffer(buffer) {
     }
     const fixedBuffer = await zip.generateAsync({
       type: "arraybuffer",
-      compression: "DEFLATE",
+      compression: "DEFLATE"
     });
 
     return fixedBuffer;
@@ -291,7 +288,7 @@ function parseDataValidations(snippet, namespaces) {
     xr: "http://schemas.microsoft.com/office/spreadsheetml/2014/revision",
     xr2: "http://schemas.microsoft.com/office/spreadsheetml/2015/revision2",
     xr3: "http://schemas.microsoft.com/office/spreadsheetml/2016/revision3",
-    xm: "http://schemas.microsoft.com/office/excel/2006/main",
+    xm: "http://schemas.microsoft.com/office/excel/2006/main"
   };
   Object.entries(KNOWN_NAMESPACE_URIS).forEach(([prefix, uri]) => {
     if (prefix === "main") return;
@@ -390,7 +387,7 @@ function parseDataValidations(snippet, namespaces) {
       errorTitle,
       error,
       errorStyle,
-      formulae,
+      formulae
     });
   }
 
@@ -470,7 +467,7 @@ async function extractDataValidationSnippets(buffer) {
     const endIndex = closeIndex + closeMatch[0].length;
     return {
       snippet: xml.slice(openMatch.index, endIndex),
-      kind: "regular",
+      kind: "regular"
     };
   };
   if (!buffer) return new Map();
@@ -517,7 +514,7 @@ function applyTemplateValidations(workbook, validationsBySheet) {
         errorTitle,
         error,
         errorStyle,
-        formulae,
+        formulae
       }) => {
         if (!addresses || !addresses.length) return;
         addresses.forEach((address) => {
@@ -549,14 +546,14 @@ export async function createExcelExportBlob({
   axiosInstance,
   templateDownloadUrl,
   sheetName = "Parkour",
-  minMatchedHeaders = 6,
+  minMatchedHeaders = 6
 } = {}) {
   const workbook = new ExcelJS.Workbook();
   let validationsBySheet = null;
 
   if (templateDownloadUrl) {
     const response = await axiosInstance.get(templateDownloadUrl, {
-      responseType: "arraybuffer",
+      responseType: "arraybuffer"
     });
     const templateBuffer = response.data;
     validationsBySheet = await extractDataValidationSnippets(templateBuffer);
@@ -684,6 +681,6 @@ export async function createExcelExportBlob({
 
   const buffer = await workbook.xlsx.writeBuffer();
   return new Blob([buffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   });
 }

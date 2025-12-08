@@ -16,31 +16,31 @@ const router = createRouter({
         {
           path: "duties",
           name: "Duties",
-          component: dutiesView,
+          component: dutiesView
         },
         {
           path: "libraries_and_samples",
           name: "Libraries & Samples",
-          component: librariesAndSamples,
+          component: librariesAndSamples
         },
         {
           path: "incoming_libraries_samples",
           name: "Incoming Libraries/Samples",
-          component: IncomingLibrariesSamples,
+          component: IncomingLibrariesSamples
         },
         {
           path: "library_preparation",
           name: "Library Preparation",
-          component: libraryPreparation,
+          component: libraryPreparation
         },
         {
           path: "Pooling",
           name: "Pooling",
-          component: pooling,
-        },
-      ],
-    },
-  ],
+          component: pooling
+        }
+      ]
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {

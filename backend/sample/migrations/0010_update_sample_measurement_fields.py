@@ -5,9 +5,8 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sample', '0009_alter_nucleicacidtype_options_and_more'),
+        ("sample", "0009_alter_nucleicacidtype_options_and_more"),
     ]
 
     operations = [
@@ -15,45 +14,45 @@ class Migration(migrations.Migration):
             database_operations=[],
             state_operations=[
                 migrations.AlterField(
-                    model_name='sample',
-                    name='measuring_unit',
+                    model_name="sample",
+                    name="measuring_unit",
                     field=models.CharField(
                         blank=True,
                         choices=[
-                            ('ng/\u00b5l', 'ng/\u00b5l (Concentration)'),
-                            ('M', 'M (Cells)'),
-                            ('k', 'k (Cells)'),
-                            ('Unknown', 'Unknown'),
+                            ("ng/\u00b5l", "ng/\u00b5l (Concentration)"),
+                            ("M", "M (Cells)"),
+                            ("k", "k (Cells)"),
+                            ("Unknown", "Unknown"),
                         ],
                         max_length=50,
                         null=True,
-                        verbose_name='Measuring Unit',
+                        verbose_name="Measuring Unit",
                     ),
                 ),
                 migrations.AlterField(
-                    model_name='sample',
-                    name='measuring_unit_facility',
+                    model_name="sample",
+                    name="measuring_unit_facility",
                     field=models.CharField(
                         blank=True,
                         choices=[
-                            ('ng/\u00b5l', 'ng/\u00b5l (Concentration)'),
-                            ('M', 'M (Cells)'),
-                            ('k', 'k (Cells)'),
-                            ('Unknown', 'Unknown'),
+                            ("ng/\u00b5l", "ng/\u00b5l (Concentration)"),
+                            ("M", "M (Cells)"),
+                            ("k", "k (Cells)"),
+                            ("Unknown", "Unknown"),
                         ],
                         max_length=50,
                         null=True,
-                        verbose_name='Measuring Unit (facility)',
+                        verbose_name="Measuring Unit (facility)",
                     ),
                 ),
                 migrations.AlterField(
-                    model_name='sample',
-                    name='sample_volume_facility',
+                    model_name="sample",
+                    name="sample_volume_facility",
                     field=models.FloatField(
                         blank=True,
                         null=True,
                         validators=[django.core.validators.MinValueValidator(0)],
-                        verbose_name='Sample Volume',
+                        verbose_name="Sample Volume",
                     ),
                 ),
             ],

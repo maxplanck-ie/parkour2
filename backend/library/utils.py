@@ -12,4 +12,3 @@ def get_accessible_requests(django_request):
     if getattr(django_request.user, "is_pi", False):
         return retrieve_group_items(django_request, queryset)
     return queryset.filter(user=django_request.user)
-

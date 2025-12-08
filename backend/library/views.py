@@ -38,7 +38,9 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         accessible_requests = get_accessible_requests(request)
         accessible_request_ids = accessible_requests.values_list("id", flat=True)
-        library_queryset = library_queryset.filter(request_id__in=accessible_request_ids)
+        library_queryset = library_queryset.filter(
+            request_id__in=accessible_request_ids
+        )
         sample_queryset = sample_queryset.filter(request_id__in=accessible_request_ids)
 
         if start_date_str and end_date_str:

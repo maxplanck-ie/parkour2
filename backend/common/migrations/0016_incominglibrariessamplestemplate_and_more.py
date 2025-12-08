@@ -7,77 +7,152 @@ import simple_history.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0015_poolingtemplate_historicalpoolingtemplate'),
+        ("common", "0015_poolingtemplate_historicalpoolingtemplate"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='IncomingLibrariesSamplesTemplate',
+            name="IncomingLibrariesSamplesTemplate",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='File Name')),
-                ('file', models.FileField(upload_to='templates/incoming_libraries_samples/')),
-                ('uploaded_at', models.DateTimeField(auto_now_add=True, verbose_name='Uploaded At')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, verbose_name="File Name")),
+                (
+                    "file",
+                    models.FileField(upload_to="templates/incoming_libraries_samples/"),
+                ),
+                (
+                    "uploaded_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At"),
+                ),
             ],
             options={
-                'verbose_name': 'Incoming Libraries/Samples Template',
-                'verbose_name_plural': 'Templates ➜ Incoming Libraries/Samples',
+                "verbose_name": "Incoming Libraries/Samples Template",
+                "verbose_name_plural": "Templates ➜ Incoming Libraries/Samples",
             },
         ),
         migrations.CreateModel(
-            name='LibrariesAndSamplesTemplate',
+            name="LibrariesAndSamplesTemplate",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='File Name')),
-                ('file', models.FileField(upload_to='templates/libraries_and_samples/')),
-                ('uploaded_at', models.DateTimeField(auto_now_add=True, verbose_name='Uploaded At')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, verbose_name="File Name")),
+                (
+                    "file",
+                    models.FileField(upload_to="templates/libraries_and_samples/"),
+                ),
+                (
+                    "uploaded_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At"),
+                ),
             ],
             options={
-                'verbose_name': 'Libraries & Samples Template',
-                'verbose_name_plural': 'Templates ➜ Libraries & Samples',
+                "verbose_name": "Libraries & Samples Template",
+                "verbose_name_plural": "Templates ➜ Libraries & Samples",
             },
         ),
         migrations.CreateModel(
-            name='HistoricalLibrariesAndSamplesTemplate',
+            name="HistoricalLibrariesAndSamplesTemplate",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='File Name')),
-                ('file', models.TextField(max_length=100)),
-                ('uploaded_at', models.DateTimeField(blank=True, editable=False, verbose_name='Uploaded At')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, verbose_name="File Name")),
+                ("file", models.TextField(max_length=100)),
+                (
+                    "uploaded_at",
+                    models.DateTimeField(
+                        blank=True, editable=False, verbose_name="Uploaded At"
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Libraries & Samples Template',
-                'verbose_name_plural': 'historical Templates ➜ Libraries & Samples',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Libraries & Samples Template",
+                "verbose_name_plural": "historical Templates ➜ Libraries & Samples",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='HistoricalIncomingLibrariesSamplesTemplate',
+            name="HistoricalIncomingLibrariesSamplesTemplate",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='File Name')),
-                ('file', models.TextField(max_length=100)),
-                ('uploaded_at', models.DateTimeField(blank=True, editable=False, verbose_name='Uploaded At')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, verbose_name="File Name")),
+                ("file", models.TextField(max_length=100)),
+                (
+                    "uploaded_at",
+                    models.DateTimeField(
+                        blank=True, editable=False, verbose_name="Uploaded At"
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Incoming Libraries/Samples Template',
-                'verbose_name_plural': 'historical Templates ➜ Incoming Libraries/Samples',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Incoming Libraries/Samples Template",
+                "verbose_name_plural": "historical Templates ➜ Incoming Libraries/Samples",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),

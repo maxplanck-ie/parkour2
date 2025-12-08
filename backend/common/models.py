@@ -198,6 +198,7 @@ class DateTimeMixin(models.Model):
     class Meta:
         abstract = True
 
+
 class LibrariesAndSamplesTemplate(models.Model):
     name = models.CharField("File Name", max_length=200)
     file = models.FileField(upload_to="templates/libraries_and_samples/")
@@ -211,6 +212,7 @@ class LibrariesAndSamplesTemplate(models.Model):
         verbose_name = "Libraries & Samples Template"
         verbose_name_plural = "Templates ➜ Libraries & Samples"
 
+
 class IncomingLibrariesSamplesTemplate(models.Model):
     name = models.CharField("File Name", max_length=200)
     file = models.FileField(upload_to="templates/incoming_libraries_samples/")
@@ -223,6 +225,7 @@ class IncomingLibrariesSamplesTemplate(models.Model):
     class Meta:
         verbose_name = "Incoming Libraries/Samples Template"
         verbose_name_plural = "Templates ➜ Incoming Libraries/Samples"
+
 
 class LibraryPreparationTemplate(models.Model):
     name = models.CharField("File Name", max_length=200)
