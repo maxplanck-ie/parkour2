@@ -285,7 +285,7 @@
         :columnDefs="columnsList"
         groupBy="request_name"
         :groupSort="{ field: 'request_name', order: 'desc' }"
-  :groupStartOpen="false"
+        :groupStartOpen="false"
         :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
@@ -820,11 +820,27 @@ export default {
             0
           );
           totalDepth = Number(totalDepth.toFixed(1));
-          let totalReadLength = data.reduce((sum, row) => {
-            const readLength = Number(row.read_length);
-            return sum + (isNaN(readLength) ? 0 : readLength);
-          }, 0);
-          totalReadLength = Number(totalReadLength.toFixed(1));
+          const readLengthLabels = [
+            ...new Set(
+              data
+                .map((row) =>
+                  row.read_length_name !== undefined
+                    ? row.read_length_name
+                    : row.read_length
+                )
+                .filter((value) => {
+                  if (value === null || value === undefined) {
+                    return false;
+                  }
+                  const trimmedValue = String(value).trim();
+                  return trimmedValue.length > 0;
+                })
+                .map((value) => String(value).trim())
+            )
+          ];
+          const readLengthDisplay = readLengthLabels.length
+            ? readLengthLabels.join(", ")
+            : "No Read Length";
           const biosafetyLevel =
             [...new Set(data.map((item) => item.biosafety_level))]
               .map((level) => level && level.toUpperCase())
@@ -835,7 +851,7 @@ export default {
             samplesSubmitted,
             gmo,
             totalDepth,
-            totalReadLength,
+            readLengthDisplay,
             biosafetyLevel
           );
         }
@@ -969,6 +985,7 @@ export default {
             element.sequencing_depth === 0 ? 0 : element.sequencing_depth || "",
           read_length:
             element.read_length === 0 ? 0 : element.read_length || "",
+          read_length_name: element.read_length_name || "",
           rna_quality_facility:
             element.rna_quality_facility === 0
               ? 0

@@ -43,6 +43,14 @@ class TestIncomingLibraries(BaseTestCase):
         self.assertIn(self.sample1.name, samples)
         self.assertIn(self.sample2.name, samples)
         self.assertNotIn(self.library2.name, libraries)
+        library_record = next(
+            item
+            for item in data
+            if item["record_type"] == "Library" and item["pk"] == self.library1.pk
+        )
+        self.assertEqual(
+            library_record["read_length_name"], self.library1.read_length.name
+        )
 
     def test_incoming_libraries_list_non_staff(self):
         """Ensure error is thrown if a non-staff user tries to get the list."""

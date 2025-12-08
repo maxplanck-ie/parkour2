@@ -10,7 +10,7 @@ export function incomingLibrariesSamplesGroupHeader(
   samplesSubmitted,
   gmo,
   totalDepth,
-  totalReadLength,
+  readLengthDisplay,
   biosafetyLevel
 ) {
   return `
@@ -58,7 +58,9 @@ export function incomingLibrariesSamplesGroupHeader(
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-      (#: ${count}, Total Depth: ${totalDepth}M, Length: ${totalReadLength}, ${biosafetyLevel})
+      (#: ${count}, Total Depth: ${totalDepth}M, Read Lengths: ${
+        readLengthDisplay || "No Read Length"
+      }, ${biosafetyLevel})
     </span>
   </div>
 </div>

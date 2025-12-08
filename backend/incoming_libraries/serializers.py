@@ -39,6 +39,7 @@ class BaseSerializer(ModelSerializer):
     quality_check = CharField(required=False)
     record_type = SerializerMethodField()
     library_protocol_name = SerializerMethodField()
+    read_length_name = SerializerMethodField()
 
     class Meta:
         list_serializer_class = BaseListSerializer
@@ -61,7 +62,8 @@ class BaseSerializer(ModelSerializer):
             "library_protocol_name",
             "measuring_unit_facility",
             "measured_value_facility",
-            "read_length"
+            "read_length",
+            "read_length_name",
         )
         extra_kwargs = {
             "name": {"required": False},
@@ -80,6 +82,9 @@ class BaseSerializer(ModelSerializer):
 
     def get_library_protocol_name(self, obj):
         return obj.library_protocol.name
+
+    def get_read_length_name(self, obj):
+        return getattr(obj.read_length, "name", None)
 
 
 class LibrarySerializer(BaseSerializer):
