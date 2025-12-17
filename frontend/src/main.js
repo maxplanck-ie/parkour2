@@ -16,7 +16,17 @@ import {
   faColumns,
   faFileExcel,
   faLayerGroup,
-  faCaretDown
+  faCaretDown,
+  faSquarePlus,
+  faTrash,
+  faAngleLeft,
+  faAngleRight,
+  faCircleInfo,
+  faCircleCheck,
+  faCircleExclamation,
+  faFileLines,
+  faDownload,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -39,7 +49,17 @@ library.add(
   faColumns,
   faFileExcel,
   faLayerGroup,
-  faCaretDown
+  faCaretDown,
+  faSquarePlus,
+  faTrash,
+  faAngleLeft,
+  faAngleRight,
+  faCircleInfo,
+  faCircleCheck,
+  faCircleExclamation,
+  faFileLines,
+  faDownload,
+  faXmark
 );
 
 app.use(router);

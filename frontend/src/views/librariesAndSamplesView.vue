@@ -311,6 +311,15 @@
           />
           <span> Export to Excel </span>
         </button>
+
+        <button
+          class="header-button"
+          type="button"
+          @click="openAddRequestModal"
+        >
+          <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+          <span> Add Request </span>
+        </button>
       </div>
     </div>
 
@@ -400,6 +409,14 @@
         <span>per page</span>
       </div>
     </div>
+
+    <!-- Popup for Add Request -->
+    <AddRequestView
+      :show="showAddRequestModal"
+      :is-staff-user="isStaffUser"
+      @close="closeAddRequestModal"
+      @saved="handleAddRequestSaved"
+    />
 
     <!-- Popup for Export Options -->
     <div
@@ -811,13 +828,15 @@ import {
   librariesAndSamplesExportColumns
 } from "../constants/librariesAndSamplesConsts";
 import { statusMap } from "../constants/statusConsts";
+import AddRequestView from "./addRequestView.vue";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
 export default {
   name: "LibrariesAndSamples",
   components: {
-    LiteTabulatorTable
+    LiteTabulatorTable,
+    AddRequestView
   },
   data() {
     const today = new Date();
@@ -884,7 +903,8 @@ export default {
       dateChangeTimer: null,
       showAdvancedFilters: false,
       showSelectColumns: false,
-      inputColumnMode: "mode_user"
+      inputColumnMode: "mode_user",
+      showAddRequestModal: false
     };
   },
   mounted() {
@@ -1337,6 +1357,10 @@ export default {
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
+      if (isEscape && this.showAddRequestModal) {
+        this.closeAddRequestModal();
+        return;
+      }
       if (isEscape && this.showExportPopup) {
         this.showExportPopup = false;
         return;
@@ -1479,6 +1503,15 @@ export default {
       rows.forEach((row) => {
         row.input_display = row?.[sourceField] ?? "";
       });
+    },
+    openAddRequestModal() {
+      this.showAddRequestModal = true;
+    },
+    closeAddRequestModal() {
+      this.showAddRequestModal = false;
+    },
+    handleAddRequestSaved() {
+      this.getLibrariesSamples(1);
     },
     async handleGroupButtonClick(event, groupValue, action) {
       event.stopPropagation();
@@ -1846,7 +1879,7 @@ body,
 }
 
 .search-bar {
-  width: 400px;
+  width: 340px;
 }
 
 body.input-dropdown-open .tabulator-tooltip {
@@ -1867,13 +1900,14 @@ body.input-dropdown-open .tabulator-tooltip {
   border-radius: 4px;
 }
 
+
 @media (max-width: 1500px) {
   .header-title {
     min-width: 80px;
   }
 
   .search-bar {
-    width: 280px;
+    width: 260px;
   }
 
   .search-bar input {
@@ -1887,7 +1921,7 @@ body.input-dropdown-open .tabulator-tooltip {
 
 @media (max-width: 1400px) {
   .search-bar {
-    width: 250px;
+    width: 230px;
   }
 
   .search-bar input {
@@ -1913,11 +1947,11 @@ body.input-dropdown-open .tabulator-tooltip {
   }
 
   .search-bar {
-    width: 130px;
+    width: 120px;
   }
 
   .search-bar input {
-    width: 85px;
+    width: 75px;
   }
 
   .date-filters {

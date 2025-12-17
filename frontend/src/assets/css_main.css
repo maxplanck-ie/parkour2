@@ -686,7 +686,7 @@ input[type="radio"]:checked::after {
   height: 26px;
   width: 115px;
   color: #555;
-  font-family: sans-serif;
+  font-family: var(--app-font-family);
   font-size: 13px;
   background: #ffffff;
   text-transform: uppercase;

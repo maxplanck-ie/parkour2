@@ -134,9 +134,13 @@ export function cellContextMenu(
   getTabulatorInstance
 ) {
   const tabulatorInstance = getTabulatorInstance();
+  const tableRef =
+    typeof tabulatorInstance?.getTable === "function"
+      ? tabulatorInstance.getTable()
+      : tabulatorInstance;
   const operations = [];
   let isRangeSelected = false;
-  let selectedRangesData = tabulatorInstance.getTable().getRangesData();
+  let selectedRangesData = tableRef?.getRangesData?.() || [];
   if (selectedRangesData.length > 0) {
     let firstRangeFields = Object.keys(selectedRangesData[0][0]);
     isRangeSelected =
@@ -163,7 +167,7 @@ export function cellContextMenu(
           const requestId = rowData.request_id;
           const requestName = rowData.request_name;
           const protocolName = rowData.library_protocol_name;
-          const tableRows = tabulatorInstance.getTable().getRows();
+          const tableRows = tableRef?.getRows?.() || [];
 
           tableRows.forEach((row) => {
             const data = row.getData();

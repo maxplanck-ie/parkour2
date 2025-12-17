@@ -2,7 +2,7 @@
   <!-- This Tabulator table is specially optimized for handling large numbers of records. -->
   <!-- Table Element -->
   <div class="lite-tabulator-table" style="height: 100%">
-    <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+    <div :id="tableId" ref="tabulatorTableRef"></div>
   </div>
 </template>
 
@@ -18,17 +18,23 @@ export default {
     rowData: {
       type: Array
     },
+    tableId: {
+      type: String,
+      default: "tabulatorTable"
+    },
     columnDefs: {
       type: Array,
       required: true
     },
     groupBy: {
-      type: String,
-      required: true
+      type: [String, Function, Boolean],
+      required: false,
+      default: null
     },
     groupSort: {
       type: Object,
-      required: false
+      required: false,
+      default: null
     },
     groupStartOpen: {
       type: Boolean,
@@ -44,7 +50,7 @@ export default {
     return {
       tabulatorInstance: null,
       tableGroupsConfig: {
-        groupBy: this.groupBy,
+        groupBy: this.groupBy ?? false,
         noGroupByClass: false
       },
       scrollPosition: 0,
@@ -110,14 +116,14 @@ export default {
           downloadConfig: {},
           groupToggleElement: "header",
           groupContextMenu: [],
-          groupBy: this.tableGroupsConfig.groupBy,
+          groupBy: this.tableGroupsConfig.groupBy || false,
           groupStartOpen: this.groupStartOpen,
 
           ...this.tableOptions
         };
 
         this.tabulatorInstance = markRaw(
-          new Tabulator("#tabulatorTable", options)
+          new Tabulator(`#${this.tableId}`, options)
         );
 
         this.tabulatorInstance.on("tableBuilt", () => {
@@ -134,6 +140,9 @@ export default {
         this.tabulatorInstance.on("renderComplete", () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
           this.updateGroupValuesFromRows(rows);
+          if (this.tableOptions.handleRenderComplete) {
+            this.tableOptions.handleRenderComplete();
+          }
         });
 
         this.tabulatorInstance.on("columnResized", (column) => {
@@ -181,7 +190,7 @@ export default {
     },
 
     getTabulatorElement() {
-      return document.getElementById("tabulatorTable");
+      return document.getElementById(this.tableId);
     },
 
     updateGroupValuesFromRows(rows) {
@@ -214,7 +223,7 @@ export default {
     updateTableColumns() {
       if (this.tabulatorInstance) {
         this.tabulatorInstance.setColumns(this.columnDefs);
-        if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
+        this.tabulatorInstance.setGroupBy(this.groupBy || false);
         this.refreshTable();
       }
     },

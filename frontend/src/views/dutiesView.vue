@@ -829,7 +829,7 @@ export default {
   outline: none;
   font-size: 14px;
   padding: 4px;
-  font-family: sans-serif;
+  font-family: var(--app-font-family);
 }
 
 .date-selector {
