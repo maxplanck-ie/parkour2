@@ -1879,7 +1879,7 @@ body,
 }
 
 .search-bar {
-  width: 340px;
+  width: 330px;
 }
 
 body.input-dropdown-open .tabulator-tooltip {
@@ -1907,7 +1907,7 @@ body.input-dropdown-open .tabulator-tooltip {
   }
 
   .search-bar {
-    width: 260px;
+    width: 250px;
   }
 
   .search-bar input {
@@ -1921,7 +1921,7 @@ body.input-dropdown-open .tabulator-tooltip {
 
 @media (max-width: 1400px) {
   .search-bar {
-    width: 230px;
+    width: 220px;
   }
 
   .search-bar input {
@@ -1947,7 +1947,7 @@ body.input-dropdown-open .tabulator-tooltip {
   }
 
   .search-bar {
-    width: 120px;
+    width: 110px;
   }
 
   .search-bar input {
