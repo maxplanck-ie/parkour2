@@ -35,7 +35,7 @@ django-linear-migrations==2.19.0
     # via -r backend/requirements/base.in
 django-monthfield==0.1.4
     # via -r backend/requirements/base.in
-django-simple-history==3.10.1
+django-simple-history==3.11.0
     # via -r backend/requirements/base.in
 djangorestframework==3.16.1
     # via
@@ -45,7 +45,7 @@ drf-spectacular==0.29.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.61.0
+fonttools==4.61.1
     # via fpdf2
 fpdf2==2.8.5
     # via -r backend/requirements/base.in
@@ -63,7 +63,7 @@ numpy==1.25.2 ; python_full_version < '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
-numpy==2.3.5 ; python_full_version >= '3.12'
+numpy==2.4.0 ; python_full_version >= '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
@@ -97,7 +97,7 @@ rpds-py==0.30.0
     #   referencing
 six==1.17.0
     # via python-dateutil
-sqlparse==0.5.4
+sqlparse==0.5.5
     # via django
 tablib==3.9.0
     # via django-import-export
@@ -108,7 +108,7 @@ typing-extensions==4.15.0
     #   asgiref
     #   python-docx
     #   referencing
-tzdata==2025.2
+tzdata==2025.3
     # via
     #   django
     #   pandas
