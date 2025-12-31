@@ -247,6 +247,8 @@ export default {
   font-size: 12px;
   border: 1px solid #d0d0d0;
   border-radius: 8px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 
 .lite-tabulator-table .tabulator-table {
