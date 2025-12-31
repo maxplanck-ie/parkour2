@@ -28,6 +28,27 @@
   }
 }
 
+.app-tooltip {
+  position: fixed;
+  z-index: 3000;
+  max-width: 260px;
+  padding: 6px 8px;
+  background: #404a57;
+  color: #ffffff;
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity 0.12s ease;
+}
+
+.app-tooltip.is-visible {
+  opacity: 1;
+}
+
 /* Toast */
 .Vue-Toastification__toast {
   position: relative;
