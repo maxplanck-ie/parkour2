@@ -954,7 +954,9 @@ export default {
           samples_submitted: element.samples_submitted || "",
           nucleic_acid_type_name: element.nucleic_acid_type_name || "",
           library_protocol_name: element.library_protocol_name || "",
-          biosafety_level: element.biosafety_level || "",
+          biosafety_level:
+            element.record_type === "Library" ? "BSL1"
+              : element.biosafety_level || "",
           percent_total:
             element.percent_total === 0 ? 0 : element.percent_total || "",
           measuring_unit: element.measuring_unit || "",
