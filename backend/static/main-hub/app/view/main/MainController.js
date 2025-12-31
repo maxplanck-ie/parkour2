@@ -184,6 +184,14 @@ Ext.define("MainHub.view.main.MainController", {
           : null
       });
     });
+
+    Ext.defer(function () {
+      toolbar.updateLayout();
+      var headerBar = toolbar.up("toolbar");
+      if (headerBar) {
+        headerBar.updateLayout();
+      }
+    }, 0);
   },
 
   buildMenuForNode: function (node) {
