@@ -794,6 +794,9 @@ export default {
       selectedFile: "without-file",
       exportSelection: "selected",
       hasSelectedRows: false,
+      pendingEditChanges: {},
+      pendingEditTimer: null,
+      isSavingEdits: false,
       popupContents: {
         popupTitle: "Are you sure?",
         popupDescription: "",
@@ -854,6 +857,10 @@ export default {
             readLengthDisplay,
             biosafetyLevel
           );
+        },
+        getClearValueForField: (field) => {
+          if (field === "percent_total") return 100;
+          return "";
         }
       },
       searchQuery: "",
@@ -882,6 +889,9 @@ export default {
   beforeDestroy() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
+    if (this.pendingEditTimer) {
+      clearTimeout(this.pendingEditTimer);
+    }
   },
   watch: {
     searchQuery(newValue, oldValue) {
@@ -1366,17 +1376,59 @@ export default {
           break;
       }
     },
-    async onBatchCellValueChanged(batchChanges) {
+    onBatchCellValueChanged(batchChanges) {
+      this.queueBatchChanges(batchChanges);
+      this.scheduleBatchSave();
+    },
+    queueBatchChanges(batchChanges) {
+      batchChanges.forEach((change) => {
+        const key = `${change.record_type}:${change.pk}`;
+        if (!this.pendingEditChanges[key]) {
+          this.pendingEditChanges[key] = {
+            pk: change.pk,
+            record_type: change.record_type
+          };
+        }
+        Object.keys(change).forEach((field) => {
+          if (field !== "pk" && field !== "record_type") {
+            this.pendingEditChanges[key][field] = change[field];
+          }
+        });
+      });
+    },
+    scheduleBatchSave() {
+      if (this.pendingEditTimer) {
+        clearTimeout(this.pendingEditTimer);
+      }
+      this.pendingEditTimer = setTimeout(() => {
+        this.flushPendingEdits();
+      }, 300);
+    },
+    async flushPendingEdits() {
+      if (this.isSavingEdits) {
+        return;
+      }
+      const pending = Object.values(this.pendingEditChanges);
+      if (pending.length === 0) return;
+
+      this.pendingEditChanges = {};
+      this.isSavingEdits = true;
       try {
         const payload = {
-          data: JSON.stringify(batchChanges)
+          data: JSON.stringify(pending)
         };
         await axiosRef.post(
           `${urlStringStart}/api/incoming_libraries/edit/`,
           payload
         );
       } catch (error) {
+        this.queueBatchChanges(pending);
         handleError(error);
+      } finally {
+        this.isSavingEdits = false;
+        if (Object.keys(this.pendingEditChanges).length > 0) {
+          this.flushPendingEdits();
+        }
       }
     },
     async qualityCheckChange(groupRows, qualityCheck) {
