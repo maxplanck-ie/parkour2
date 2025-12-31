@@ -64,7 +64,8 @@
           v-if="errorsPopupContents.errorsList?.length"
           class="popup-scrollable-content"
         >
-          <ol style="padding-left: 25px">
+          <div class="popup-scrollable-content-inner">
+            <ol style="padding-left: 25px">
             <li
               v-for="(item, index) in errorsPopupContents.errorsList"
               :key="index"
@@ -72,7 +73,8 @@
               {{ item.barcode + " ➜ " }}
               <span style="font-weight: bold">{{ item.message }}</span>
             </li>
-          </ol>
+            </ol>
+          </div>
         </div>
       </div>
       <div class="popup-footer">
@@ -972,7 +974,7 @@ export default {
   height: 100%;
   font-size: 12px;
   border: 1px solid #d0d0d0;
-  border-radius: 4px !important;
+  border-radius: 8px !important;
 }
 
 .normal-tabulator-table .tabulator-table {
@@ -1166,3 +1168,4 @@ export default {
   outline: none;
 }
 </style>
+

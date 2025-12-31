@@ -354,19 +354,23 @@
             v-if="popupContents.popupList && popupContents.popupList.length > 0"
             class="popup-scrollable-content"
           >
-            <ol style="padding-left: 25px">
-              <li v-for="item in popupContents.popupList" :key="item">
-                <span style="font-weight: bold">{{ item.barcode }}</span>
-                <span>{{ " - " + item.name }}</span>
-              </li>
-            </ol>
+            <div class="popup-scrollable-content-inner">
+              <ol style="padding-left: 25px">
+                <li v-for="item in popupContents.popupList" :key="item">
+                  <span style="font-weight: bold">{{ item.barcode }}</span>
+                  <span>{{ " - " + item.name }}</span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
         <div class="popup-footer">
           <button class="popup-button yes-button" @click="popupContents.onYes">
-            Yes
+            Confirm
           </button>
-          <button class="popup-button" @click="popupContents.onNo">No</button>
+          <button class="popup-button secondary" @click="popupContents.onNo">
+            Cancel
+          </button>
         </div>
       </div>
     </div>
@@ -803,8 +807,8 @@ export default {
         popupList: [],
         onYes: null,
         onNo: null,
-        popupHeight: 220,
-        popupWidth: 600
+        popupHeight: 240,
+        popupWidth: 680
       },
       tableOptions: {
         index: "barcode",
@@ -1219,7 +1223,7 @@ export default {
       const selectedNamesList = selectedRows.map((item) => {
         return { barcode: item.getData().barcode, name: item.getData().name };
       });
-      const popupHeight = Math.min(420, 260 + selectedNamesList.length * 22);
+      const popupHeight = Math.min(440, 280 + selectedNamesList.length * 22);
 
       switch (action) {
         case "selectAll":
@@ -1295,7 +1299,7 @@ export default {
           let popupTitleQP = `Are you sure?`;
           let popupDescriptionQP = `Marking the following ${
             type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Passed</span>. Proceed by pressing the <span style="font-weight: bold">Confirm</span> button.`;
           let popupListQP = [...selectedNamesList];
           let onYesQP = () => {
             this.qualityCheckChange(selectedRows, "passed");
@@ -1326,7 +1330,7 @@ export default {
           let popupTitleQC = `Are you sure?`;
           let popupDescriptionQC = `Marking the following ${
             type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Compromised</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Compromised</span>. Proceed by pressing the <span style="font-weight: bold">Confirm</span> button.`;
           let popupListQC = [...selectedNamesList];
           let onYesQC = () => {
             this.qualityCheckChange(selectedRows, "compromised");
@@ -1357,7 +1361,7 @@ export default {
           let popupTitleQF = `Are you sure?`;
           let popupDescriptionQF = `Marking the following ${
             type === "L" ? "libraries" : "samples"
-          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Confirm your action by pressing the <span style="font-weight: bold">Yes</span> button.`;
+          } from the request <span style="font-weight: bold">'${requestName}'</span> as <span style="font-weight: bold">Quality Check: Failed</span>. Proceed by pressing the <span style="font-weight: bold">Confirm</span> button.`;
           let popupListQF = [...selectedNamesList];
           let onYesQF = () => {
             this.qualityCheckChange(selectedRows, "failed");
@@ -1761,3 +1765,4 @@ body,
   }
 }
 </style>
+

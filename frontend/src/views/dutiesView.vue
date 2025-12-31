@@ -46,7 +46,7 @@
           style="
             margin-right: 12px;
             border: 1px solid black;
-            border-radius: 4px;
+            border-radius: 8px;
           "
         >
           <div
@@ -55,7 +55,7 @@
               height: 70px;
               background: #ecebe5;
               display: flex;
-              border-radius: 4px;
+              border-radius: 8px;
               align-items: center;
             "
           >
@@ -74,8 +74,8 @@
                   width: 35px;
                   height: 35px;
                   text-align: center;
-                  border-top-left-radius: 4px;
-                  border-bottom-left-radius: 4px;
+                  border-top-left-radius: 8px;
+                  border-bottom-left-radius: 8px;
                 "
               >
                 <font-awesome-icon
@@ -100,8 +100,8 @@
                   width: 35px;
                   height: 35px;
                   text-align: center;
-                  border-top-left-radius: 4px;
-                  border-bottom-left-radius: 4px;
+                  border-top-left-radius: 8px;
+                  border-bottom-left-radius: 8px;
                 "
               >
                 <font-awesome-icon
@@ -155,7 +155,7 @@
           height: 771px;
           max-width: 20%;
           border: 1px solid #006c66;
-          border-radius: 4px;
+          border-radius: 8px;
         "
       >
         <div
@@ -803,8 +803,8 @@ export default {
   border: 1px solid grey;
   background: whitesmoke;
   outline: none;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .dropdown-select,
@@ -824,7 +824,7 @@ export default {
 .date-selector,
 .comment-textarea {
   border: 1px solid grey;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 12px;
   outline: none;
   font-size: 14px;
@@ -863,3 +863,4 @@ select:disabled {
   }
 }
 </style>
+

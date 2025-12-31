@@ -697,3 +697,4 @@ export function incomingLibrariesSamplesExportColumns() {
     { header: "Comment (Facility)", key: "comments_facility", width: 24 }
   ];
 }
+

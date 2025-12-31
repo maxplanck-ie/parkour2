@@ -271,12 +271,14 @@
             v-if="popupContents.popupList && popupContents.popupList.length > 0"
             class="popup-scrollable-content"
           >
-            <ol style="padding-left: 25px">
-              <li v-for="item in popupContents.popupList" :key="item">
-                <span style="font-weight: bold">{{ item.barcode }}</span>
-                <span>{{ " - " + item.name }}</span>
-              </li>
-            </ol>
+            <div class="popup-scrollable-content-inner">
+              <ol style="padding-left: 25px">
+                <li v-for="item in popupContents.popupList" :key="item">
+                  <span style="font-weight: bold">{{ item.barcode }}</span>
+                  <span>{{ " - " + item.name }}</span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
         <div class="popup-footer">
@@ -1575,3 +1577,4 @@ body,
   }
 }
 </style>
+

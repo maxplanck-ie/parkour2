@@ -21,7 +21,7 @@ function createInputColumnHeader(cellComponent, options = {}) {
     <div class="tabulator-input-header" style="display: flex; flex-direction: column; gap: 4px; align-items: stretch; width: 100%;">
       <div class="tabulator-input-header__title" style="font-size: 12px; color: #333;">Input</div>
       <div class="tabulator-header-filter" style="margin-top: -2px;">
-        <select class="tabulator-input-header__select" style="height: 24px; font-size: 12px !important; border: 1px solid #d0d0d0 !important; width: 100%; font-size: 12px; font-family: var(--app-font-family, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif); padding: 2px 4px; border-radius: 4px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
+        <select class="tabulator-input-header__select" style="height: 24px; font-size: 12px !important; border: 1px solid #d0d0d0 !important; width: 100%; font-size: 12px; font-family: var(--app-font-family, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif); padding: 2px 4px; border-radius: 8px; background-color: #fff; cursor: pointer; box-sizing: border-box;">
         <option value="mode_user">User</option>
         <option value="mode_facility">Facility</option>
         </select>
@@ -687,3 +687,4 @@ export function librariesAndSamplesExportColumns() {
     { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
 }
+

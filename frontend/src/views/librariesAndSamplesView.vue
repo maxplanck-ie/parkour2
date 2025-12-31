@@ -1897,7 +1897,7 @@ body.input-dropdown-open .tabulator-tooltip {
   background-color: white;
   padding: 20px;
   border: 1px solid #333;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 
@@ -1977,3 +1977,4 @@ body.input-dropdown-open .tabulator-tooltip {
   }
 }
 </style>
+

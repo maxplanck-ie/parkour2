@@ -246,7 +246,7 @@ export default {
   height: 100%;
   font-size: 12px;
   border: 1px solid #d0d0d0;
-  border-radius: 4px !important;
+  border-radius: 8px !important;
 }
 
 .lite-tabulator-table .tabulator-table {
@@ -412,3 +412,4 @@ export default {
 Add VirtualDOM support
 Allow opening only 3 groups at a time
 -->
+

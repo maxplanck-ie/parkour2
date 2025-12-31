@@ -102,7 +102,7 @@
                   Signed Deep Sequencing Request
                 </div>
                 <button class="info-pill" type="button"
-                  title="1. Save the request.&#10;2. Download the Deep Sequencing Request blank using the download button below.&#10;3. Print, check GMO declaration(s), and sign it.&#10;4. Scan the blank and upload it back using the upload button below.&#10;&#10;Note: if the blank is already uploaded, you cannot update it.">
+                  title="1. Save the request.&#10;2. Download the Deep Sequencing Request blank.&#10;3. Print, check GMO declaration(s), and sign it.&#10;4. Scan the blank and upload it back.&#10;&#10;Note: if the blank is already uploaded, you cannot update it.">
                   <font-awesome-icon icon="fa-solid fa-circle-info" />
                 </button>
               </div>
@@ -115,10 +115,6 @@
                 </span>
               </div>
             </div>
-            <p class="gmo-link">
-              GMO? Download
-              <a href="static/docs/S1.docx" target="_blank" rel="noopener">Formblatt S1</a>.
-            </p>
           </section>
           <button class="panel-toggle-button" type="button" @click="toggleFormPanel"
             :aria-label="isFormPanelCollapsed ? 'Expand details panel' : 'Collapse details panel'">
@@ -129,25 +125,60 @@
         <section class="records-panel" :class="{ expanded: isFormPanelCollapsed }">
           <div class="records-toolbar">
             <div class="switch-wrapper">
-              <label class="record-type-switch">
+              <div class="controls-group">
+                <label
+                  class="record-type-switch"
+                  title="Switch between Library and Sample entry modes."
+                >
                 <input type="checkbox" :checked="addRequestMode === 'sample'"
-                  @change="handleRecordTypeSwitch($event.target.checked ? 'sample' : 'library')" />
-                <span class="slider">
-                  <span class="option" :class="{ active: addRequestMode === 'library' }">
-                    Library
+                  @change="requestRecordTypeSwitch($event)" />
+                  <span class="slider">
+                    <span
+                      class="option"
+                      :class="{ active: addRequestMode === 'library' }"
+                      title="Library: user prepared libraries."
+                    >
+                      Library
+                    </span>
+                    <span
+                      class="option"
+                      :class="{ active: addRequestMode === 'sample' }"
+                      title="Sample: facility prepared libraries."
+                    >
+                      Sample
+                    </span>
                   </span>
-                  <span class="option" :class="{ active: addRequestMode === 'sample' }">
-                    Sample
-                  </span>
-                </span>
-              </label>
-              <button class="icon-button" type="button" title="Add a new row" @click="addDraftRow">
-                <font-awesome-icon icon="fa-solid fa-square-plus" />
-              </button>
-              <button class="icon-button" type="button" title="Delete selected rows"
-                :disabled="!selectedDraftRowIds.length" @click="deleteSelectedDraftRows">
-                <font-awesome-icon icon="fa-solid fa-trash" />
-              </button>
+                </label>
+                <button class="icon-button" type="button" title="Add a new row" @click="addDraftRow">
+                  <font-awesome-icon icon="fa-solid fa-square-plus" />
+                </button>
+                <button class="icon-button" type="button" title="Delete selected rows"
+                  :disabled="!selectedDraftRowIds.length" @click="deleteSelectedDraftRows">
+                  <font-awesome-icon icon="fa-solid fa-trash" />
+                </button>
+              </div>
+              <div v-if="addRequestMode === 'sample'" class="download-buttons">
+                <a
+                  class="download-button"
+                  :href="gmoFormUrl"
+                  target="_blank"
+                  rel="noopener"
+                  title="Download Formblatt S1 (GMO)."
+                >
+                  <font-awesome-icon icon="fa-solid fa-download" />
+                  <span>Formblatt S1</span>
+                </a>
+                <a
+                  class="download-button"
+                  :href="relacsDownloadUrl"
+                  target="_blank"
+                  rel="noopener"
+                  title="Download RELACS Pellets Abs form."
+                >
+                  <font-awesome-icon icon="fa-solid fa-download" />
+                  <span>RELACS Pellets Abs</span>
+                </a>
+              </div>
             </div>
           </div>
           <div class="draft-table" ref="draftTableWrapper">
@@ -169,6 +200,29 @@
           <button class="popup-button yes-button" type="button" :disabled="isRequestSaving" @click="saveNewRequest">
             <span v-if="isRequestSaving">Saving...</span>
             <span v-else>Save Request</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showToggleConfirm" class="confirm-overlay" @keydown="handleConfirmKeydown" tabindex="0">
+      <div class="confirm-modal">
+        <div class="confirm-header">
+          <span class="confirm-title">Switch record type?</span>
+          <button class="popup-close-button" type="button" @click="cancelToggleSwitch">
+            &times;
+          </button>
+        </div>
+        <div class="confirm-body">
+          Switching between Library and Sample will clear all rows you have added.
+          Do you want to continue?
+        </div>
+        <div class="confirm-footer">
+          <button class="popup-button" type="button" @click="cancelToggleSwitch">
+            Cancel
+          </button>
+          <button class="popup-button yes-button" type="button" @click="confirmToggleSwitch">
+            OK
           </button>
         </div>
       </div>
@@ -237,9 +291,13 @@ export default {
         { value: true, label: "Yes" },
         { value: false, label: "No" }
       ],
+      gmoFormUrl: `${urlStringStart}/static/docs/S1.docx`,
+      relacsDownloadUrl: `${urlStringStart}/api/requests/download_RELACS_Pellets_Abs_form`,
       indexI7OptionsByType: {},
       indexI5OptionsByType: {},
       indexOptionsLoading: {},
+      showToggleConfirm: false,
+      pendingToggleMode: null,
       newRequest: {
         cost_unit: "",
         description: ""
@@ -263,6 +321,14 @@ export default {
         this.prepareAddRequestModal();
       } else {
         this.resetState();
+      }
+    },
+    showToggleConfirm(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          const overlay = this.$el?.querySelector?.(".confirm-overlay");
+          overlay?.focus?.();
+        });
       }
     },
     "newRequest.cost_unit"(newValue) {
@@ -428,6 +494,8 @@ export default {
       this.costUnitError = "";
       this.uploadedRequestFiles = [];
       this.uploadedRequestFileIds = [];
+      this.showToggleConfirm = false;
+      this.pendingToggleMode = null;
       if (this.$refs.requestFileInput) {
         this.$refs.requestFileInput.value = "";
       }
@@ -485,6 +553,46 @@ export default {
         table?.clearData?.();
         this.applyValidationStyling();
       });
+    },
+    requestRecordTypeSwitch(event) {
+      const nextMode = event?.target?.checked ? "sample" : "library";
+      const normalized = nextMode === "sample" ? "sample" : "library";
+      if (this.addRequestMode === normalized) return;
+      if (this.addRequestDraftRows.length > 0) {
+        this.pendingToggleMode = normalized;
+        this.showToggleConfirm = true;
+        if (event?.target) {
+          event.target.checked = this.addRequestMode === "sample";
+        }
+        return;
+      }
+      this.handleRecordTypeSwitch(normalized);
+    },
+    confirmToggleSwitch() {
+      if (!this.pendingToggleMode) {
+        this.showToggleConfirm = false;
+        return;
+      }
+      const nextMode = this.pendingToggleMode;
+      this.pendingToggleMode = null;
+      this.showToggleConfirm = false;
+      this.handleRecordTypeSwitch(nextMode);
+    },
+    cancelToggleSwitch() {
+      this.pendingToggleMode = null;
+      this.showToggleConfirm = false;
+    },
+    handleConfirmKeydown(event) {
+      if (!this.showToggleConfirm) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        this.cancelToggleSwitch();
+        return;
+      }
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.confirmToggleSwitch();
+      }
     },
     formatFileSize(size) {
       if (size === undefined || size === null) return "-";
@@ -1253,6 +1361,87 @@ export default {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.confirm-modal {
+  background: #ffffff;
+  border-radius: 8px;
+  width: 420px;
+  max-width: calc(100% - 40px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.confirm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #0b5f5a;
+  background: #006c64;
+}
+
+.confirm-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.confirm-body {
+  padding: 16px;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.confirm-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px 16px;
+}
+
+.confirm-modal .popup-close-button {
+  color: #ffffff;
+}
+
+.confirm-modal .popup-close-button:hover {
+  color: #cfe9e6;
+}
+
+.confirm-modal .popup-button {
+  background: #006c64;
+  border: 1px solid #0b5f5a;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-weight: 600;
+}
+
+.confirm-modal .popup-button:hover {
+  background: #0a5d56;
+}
+
+.confirm-modal .popup-button:not(.yes-button) {
+  background: #ffffff;
+  color: #006c64;
+}
+
+.confirm-modal .popup-button:not(.yes-button):hover {
+  background: #e8f2f1;
+}
+
 .add-request-header {
   display: flex;
   justify-content: space-between;
@@ -1359,7 +1548,7 @@ export default {
 .field-block select {
   padding: 11px 8px;
   border: 1px solid #d0d0d0;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
   color: #232323;
@@ -1371,7 +1560,7 @@ export default {
 .field-block textarea {
   padding: 11px 12px;
   border: 1px solid #d0d0d0;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
   color: #232323;
@@ -1417,7 +1606,7 @@ export default {
 .files-section {
   border: 1px solid #d0d0d0;
   background: #f6f8fa;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 12px;
 }
 
@@ -1443,7 +1632,7 @@ export default {
   overflow: hidden;
   margin-top: 8px;
   font-size: 12px;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .files-table th,
@@ -1568,7 +1757,7 @@ export default {
   justify-content: center;
   width: 24px;
   height: 24px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: none;
   background: #1864ab;
   color: #ffffff;
@@ -1576,10 +1765,35 @@ export default {
   cursor: help;
 }
 
-.gmo-link {
-  margin-top: 6px;
-  margin-bottom: 0;
+.download-buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #f6f8fa;
+}
+
+.download-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid #0f5c84;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #0f5c84;
   font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.download-button:hover {
+  background: #e8f2f7;
+  border-color: #0a4a6a;
+  color: #0a4a6a;
 }
 
 .status-success {
@@ -1617,8 +1831,8 @@ export default {
   align-items: center;
   justify-content: center;
   transition: background 0.2s ease;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .panel-toggle-button:hover {
@@ -1638,6 +1852,16 @@ export default {
   flex-wrap: wrap;
 }
 
+.controls-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #f6f8fa;
+}
+
 .switch-label {
   font-size: 12px;
   text-transform: uppercase;
@@ -1649,7 +1873,7 @@ export default {
   position: relative;
   width: 150px;
   height: 36px;
-  border-radius: 4px;
+  border-radius: 8px;
   background: #e1e6ea;
   border: 1px solid #d0d0d0;
   cursor: pointer;
@@ -1680,7 +1904,7 @@ export default {
   left: 0;
   width: 50%;
   height: 100%;
-  border-radius: 4px;
+  border-radius: 8px;
   background: #0f766e;
   transition: transform 0.25s ease;
   z-index: 0;
@@ -1704,7 +1928,7 @@ export default {
 .icon-button {
   width: 34px;
   height: 34px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: none;
   background: #0f766e;
   color: white;
@@ -1759,3 +1983,4 @@ export default {
   background-color: #fdecea !important;
 }
 </style>
+
