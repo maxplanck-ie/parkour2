@@ -53,7 +53,7 @@
         </svg>
       </div>
       <div class="header-title" style="display: inline">
-        Libraries & Samples
+        Requests
       </div>
 
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->

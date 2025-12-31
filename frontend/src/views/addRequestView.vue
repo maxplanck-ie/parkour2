@@ -128,7 +128,7 @@
               <div class="controls-group">
                 <label
                   class="record-type-switch"
-                  title="Switch between Library and Sample entry modes."
+                  title="Switch between Library and Sample entry modes"
                 >
                 <input type="checkbox" :checked="addRequestMode === 'sample'"
                   @change="requestRecordTypeSwitch($event)" />
@@ -136,14 +136,12 @@
                     <span
                       class="option"
                       :class="{ active: addRequestMode === 'library' }"
-                      title="Library: user prepared libraries."
                     >
                       Library
                     </span>
                     <span
                       class="option"
                       :class="{ active: addRequestMode === 'sample' }"
-                      title="Sample: facility prepared libraries."
                     >
                       Sample
                     </span>
