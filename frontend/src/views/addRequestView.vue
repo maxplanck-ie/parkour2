@@ -1347,6 +1347,7 @@ export default {
   justify-content: center;
   padding: 20px;
   z-index: 999;
+  animation: add-request-fade-in 0.18s ease-out;
 }
 
 .add-request-modal {
@@ -1357,6 +1358,9 @@ export default {
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
+  opacity: 0;
+  animation: add-request-pop-in 0.22s ease-out forwards;
 }
 
 .confirm-overlay {
@@ -1979,6 +1983,26 @@ export default {
 
 .add-request-modal .cell-invalid {
   background-color: #fdecea !important;
+}
+
+@keyframes add-request-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes add-request-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>
 
