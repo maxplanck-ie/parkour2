@@ -19,6 +19,7 @@ Ext.define("MainHub.view.main.MainController", {
   onMainViewRender: function () {
     var me = this;
     me.ensureTopNavStyles();
+    me.bindHeaderLayoutFix();
 
     Ext.getStore("NavigationTree").on("load", function (store) {
       me.buildTopNavigation(store);
@@ -90,7 +91,7 @@ Ext.define("MainHub.view.main.MainController", {
         "  color: #0b7f78;",
         "}",
         ".main-logo {",
-        "  width: auto !important;",
+        "  width: 200px !important;",
         "  height: 68px;",
         "  padding: 0 20px 0 0;",
         "  margin-left: 10px;",
@@ -142,6 +143,40 @@ Ext.define("MainHub.view.main.MainController", {
       ].join("\n"),
       "top-nav-styles"
     );
+  },
+
+  bindHeaderLayoutFix: function () {
+    var me = this,
+      refs = me.getReferences(),
+      headerBar = Ext.getCmp("headerBar"),
+      logoCmp = refs && refs.logo;
+
+    if (!headerBar || !logoCmp) {
+      return;
+    }
+
+    var scheduleLayout = function () {
+      Ext.defer(function () {
+        if (!headerBar.destroyed) {
+          headerBar.updateLayout();
+        }
+      }, 0);
+    };
+
+    var bindLogoLoad = function () {
+      var imgEl = logoCmp.getEl() && logoCmp.getEl().down("img");
+      if (imgEl) {
+        imgEl.on("load", scheduleLayout, null, { single: true });
+      }
+    };
+
+    if (logoCmp.rendered) {
+      bindLogoLoad();
+    } else {
+      logoCmp.on("afterrender", bindLogoLoad, null, { single: true });
+    }
+
+    scheduleLayout();
   },
 
   buildTopNavigation: function (store) {
