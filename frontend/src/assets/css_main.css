@@ -39,6 +39,7 @@
   box-shadow: none;
   font-size: 12px;
   line-height: 1.4;
+  white-space: pre-line;
   pointer-events: none;
   opacity: 0;
   transform: translateZ(0);

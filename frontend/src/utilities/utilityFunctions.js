@@ -167,6 +167,8 @@ export function cellContextMenu(
           const requestId = rowData.request_id;
           const requestName = rowData.request_name;
           const protocolName = rowData.library_protocol_name;
+          const applyToAllRows =
+            !groupByField && !requestId && !requestName && !protocolName;
           const tableRows = tableRef?.getRows?.() || [];
 
           tableRows.forEach((row) => {
@@ -189,6 +191,9 @@ export function cellContextMenu(
                 data.request_name === requestName;
             }
 
+            if (applyToAllRows) {
+              sameGroup = true;
+            }
             if (!sameGroup) return;
 
             const targetCell = row.getCell(field);

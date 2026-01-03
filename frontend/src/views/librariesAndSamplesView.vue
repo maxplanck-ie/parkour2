@@ -1357,10 +1357,6 @@ export default {
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
-      if (isEscape && this.showAddRequestModal) {
-        this.closeAddRequestModal();
-        return;
-      }
       if (isEscape && this.showExportPopup) {
         this.showExportPopup = false;
         return;

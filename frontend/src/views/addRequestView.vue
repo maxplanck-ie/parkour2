@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="add-request-overlay" @click.self="emitClose">
+  <div v-if="show" class="add-request-overlay">
     <div class="add-request-modal">
       <div class="add-request-header">
         <span class="title-with-icon">
@@ -10,7 +10,7 @@
           <button class="help-button" type="button" @click="openHelpPage" title="Open MAX page on Intranet">
             ?
           </button>
-          <button class="popup-close-button" type="button" @click="emitClose">
+          <button class="popup-close-button" type="button" @click="requestCloseModal">
             &times;
           </button>
         </div>
@@ -126,23 +126,14 @@
           <div class="records-toolbar">
             <div class="switch-wrapper">
               <div class="controls-group">
-                <label
-                  class="record-type-switch"
-                  title="Switch between Library and Sample entry modes"
-                >
-                <input type="checkbox" :checked="addRequestMode === 'sample'"
-                  @change="requestRecordTypeSwitch($event)" />
+                <label class="record-type-switch" title="Switch between Library and Sample entry modes">
+                  <input type="checkbox" :checked="addRequestMode === 'sample'"
+                    @change="requestRecordTypeSwitch($event)" />
                   <span class="slider">
-                    <span
-                      class="option"
-                      :class="{ active: addRequestMode === 'library' }"
-                    >
+                    <span class="option" :class="{ active: addRequestMode === 'library' }">
                       Library
                     </span>
-                    <span
-                      class="option"
-                      :class="{ active: addRequestMode === 'sample' }"
-                    >
+                    <span class="option" :class="{ active: addRequestMode === 'sample' }">
                       Sample
                     </span>
                   </span>
@@ -151,28 +142,18 @@
                   <font-awesome-icon icon="fa-solid fa-square-plus" />
                 </button>
                 <button class="icon-button" type="button" title="Delete selected rows"
-                  :disabled="!selectedDraftRowIds.length" @click="deleteSelectedDraftRows">
+                  :disabled="!selectedDraftRowIds.length" @click="requestDeleteSelectedDraftRows">
                   <font-awesome-icon icon="fa-solid fa-trash" />
                 </button>
               </div>
               <div v-if="addRequestMode === 'sample'" class="download-buttons">
-                <a
-                  class="download-button"
-                  :href="gmoFormUrl"
-                  target="_blank"
-                  rel="noopener"
-                  title="Download Formblatt S1 (GMO)."
-                >
+                <a class="download-button" :href="gmoFormUrl" target="_blank" rel="noopener"
+                  title="Download Formblatt S1 (GMO).">
                   <font-awesome-icon icon="fa-solid fa-download" />
                   <span>Formblatt S1</span>
                 </a>
-                <a
-                  class="download-button"
-                  :href="relacsDownloadUrl"
-                  target="_blank"
-                  rel="noopener"
-                  title="Download RELACS Pellets Abs form."
-                >
+                <a class="download-button" :href="relacsDownloadUrl" target="_blank" rel="noopener"
+                  title="Download RELACS Pellets Abs form.">
                   <font-awesome-icon icon="fa-solid fa-download" />
                   <span>RELACS Pellets Abs</span>
                 </a>
@@ -180,9 +161,9 @@
             </div>
           </div>
           <div class="draft-table" ref="draftTableWrapper">
-            <LiteTabulatorTable ref="addRequestDraftTableRef" tableId="addRequestDraftTable"
-              :rowData="addRequestDraftRows" :columnDefs="addRequestColumns"
-              :tableOptions="addRequestDraftTableOptions" />
+            <TabulatorTable ref="addRequestDraftTableRef" tableId="addRequestDraftTable" :rowData="addRequestDraftRows"
+              :columnDefs="addRequestColumns" :tableOptions="addRequestDraftTableOptions" :groupBy="null"
+              :groupSort="null" :groupStartOpen="false" :enableDefaultFilters="false" />
           </div>
         </section>
       </div>
@@ -192,7 +173,7 @@
           <span>{{ footerLabel }}</span>
         </div>
         <div class="footer-actions">
-          <button class="popup-button secondary" type="button" @click="emitClose">
+          <button class="popup-button secondary" type="button" @click="requestCloseModal">
             Cancel
           </button>
           <button class="popup-button yes-button" type="button" :disabled="isRequestSaving" @click="saveNewRequest">
@@ -225,11 +206,54 @@
         </div>
       </div>
     </div>
+    <div v-if="showDeleteConfirm" class="confirm-overlay" @keydown="handleDeleteConfirmKeydown" tabindex="0">
+      <div class="confirm-modal">
+        <div class="confirm-header">
+          <span class="confirm-title">Delete selected rows?</span>
+          <button class="popup-close-button" type="button" @click="cancelDeleteSelectedRows">
+            &times;
+          </button>
+        </div>
+        <div class="confirm-body">
+          This will permanently remove {{ selectedDraftRowIds.length }} row(s).
+          Do you want to continue?
+        </div>
+        <div class="confirm-footer">
+          <button class="popup-button" type="button" @click="cancelDeleteSelectedRows">
+            Cancel
+          </button>
+          <button class="popup-button yes-button" type="button" @click="confirmDeleteSelectedRows">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+    <div v-if="showCloseConfirm" class="confirm-overlay" @keydown="handleCloseConfirmKeydown" tabindex="0">
+      <div class="confirm-modal">
+        <div class="confirm-header">
+          <span class="confirm-title">Discard new request?</span>
+          <button class="popup-close-button" type="button" @click="cancelCloseModal">
+            &times;
+          </button>
+        </div>
+        <div class="confirm-body">
+          Closing now will discard your entered data. Do you want to continue?
+        </div>
+        <div class="confirm-footer">
+          <button class="popup-button" type="button" @click="cancelCloseModal">
+            Cancel
+          </button>
+          <button class="popup-button yes-button" type="button" @click="confirmCloseModal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import LiteTabulatorTable from "../components/LiteTabulatorTable.vue";
+import TabulatorTable from "../components/TabulatorTable.vue";
 import {
   showNotification,
   handleError,
@@ -249,7 +273,7 @@ const urlStringStart = urlStringStartsWith();
 export default {
   name: "AddRequestView",
   components: {
-    LiteTabulatorTable
+    TabulatorTable
   },
   props: {
     show: {
@@ -295,6 +319,8 @@ export default {
       indexI5OptionsByType: {},
       indexOptionsLoading: {},
       showToggleConfirm: false,
+      showDeleteConfirm: false,
+      showCloseConfirm: false,
       pendingToggleMode: null,
       newRequest: {
         cost_unit: "",
@@ -329,6 +355,24 @@ export default {
         });
       }
     },
+    showDeleteConfirm(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          const overlays = this.$el?.querySelectorAll?.(".confirm-overlay");
+          const overlay = overlays?.[overlays.length - 1];
+          overlay?.focus?.();
+        });
+      }
+    },
+    showCloseConfirm(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          const overlays = this.$el?.querySelectorAll?.(".confirm-overlay");
+          const overlay = overlays?.[overlays.length - 1];
+          overlay?.focus?.();
+        });
+      }
+    },
     "newRequest.cost_unit"(newValue) {
       if (newValue) {
         this.costUnitError = "";
@@ -353,7 +397,9 @@ export default {
       const normalizeOptions = (list = []) =>
         list.map((item) => ({
           value: item.id ?? item.value ?? item.pk ?? item.name,
-          label: item.name ?? item.label ?? item.text ?? item.value ?? ""
+          label: item.name ?? item.label ?? item.text ?? item.value ?? "",
+          type: item.type,
+          library_protocol: item.library_protocol
         }));
 
       const getInstance = () =>
@@ -410,17 +456,14 @@ export default {
         selectable: true,
         layout: "fitColumns",
         persistenceMode: false,
+        rowFormatter: (row) => vm.applyRowStyling(row),
         rowSelectionChanged: () => handleSelection(),
         dataChanged: () => {
           handleSelection();
           this.revalidateDraftRows();
         },
-        cellEditing(cell) {
-          return vm.handleCellEditing(cell);
-        },
-        cellEdited(cell) {
-          vm.handleCellEdited(cell);
-        },
+        cellEditing: (cell) => vm.handleCellEditing(cell),
+        handleCellEdited: (cell) => vm.handleCellEdited(cell),
         handleRenderComplete: () => this.applyValidationStyling()
       };
     },
@@ -435,10 +478,70 @@ export default {
     }
   },
   methods: {
+    findIndexOptionByValue(options = [], value) {
+      if (value === "" || value === undefined || value === null) return null;
+      const match = String(value);
+      return (
+        options.find((option) => String(option.value) === match) || null
+      );
+    },
     fieldHasValue(value) {
       if (value === null || value === undefined) return false;
       if (typeof value === "string") return value.trim() !== "";
       return value !== "";
+    },
+    refreshRowFormatting(row) {
+      if (row?.reformat) {
+        row.reformat();
+        return;
+      }
+      const table = row?.getTable?.();
+      table?.redraw?.();
+    },
+    isLibraryFieldEditable(field, rowData) {
+      if (field === "library_type") {
+        return Boolean(rowData.library_protocol);
+      }
+      if (field === "index_reads") {
+        return Boolean(rowData.index_type);
+      }
+      if (field === "index_i7") {
+        return Number(rowData.index_reads) >= 1;
+      }
+      if (field === "index_i5") {
+        return Number(rowData.index_reads) >= 2;
+      }
+      if (field === "measured_value") {
+        return (
+          Boolean(rowData.measuring_unit) &&
+          rowData.measuring_unit !== "Unknown"
+        );
+      }
+      return true;
+    },
+    isSampleFieldEditable(field, rowData) {
+      if (field === "library_protocol") {
+        return Boolean(rowData.nucleic_acid_type);
+      }
+      if (field === "library_type") {
+        return Boolean(rowData.library_protocol);
+      }
+      if (field === "measured_value") {
+        return (
+          Boolean(rowData.measuring_unit) &&
+          rowData.measuring_unit !== "Unknown"
+        );
+      }
+      if (field === "gmo") {
+        return this.isCellSuspensionType(rowData.nucleic_acid_type);
+      }
+      return true;
+    },
+    isFieldEditable(field, rowData) {
+      if (this.addRequestMode === "library") {
+        return this.isLibraryFieldEditable(field, rowData);
+      }
+      return this.isSampleFieldEditable(field, rowData);
     },
     isFieldRequired(field, rowData) {
       if (this.addRequestMode === "library") {
@@ -473,6 +576,55 @@ export default {
     emitClose() {
       this.$emit("close");
     },
+    requestCloseModal() {
+      if (!this.hasUnsavedChanges()) {
+        this.emitClose();
+        return;
+      }
+      this.showCloseConfirm = true;
+    },
+    confirmCloseModal() {
+      this.showCloseConfirm = false;
+      this.emitClose();
+    },
+    cancelCloseModal() {
+      this.showCloseConfirm = false;
+    },
+    handleCloseConfirmKeydown(event) {
+      if (!this.showCloseConfirm) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        this.cancelCloseModal();
+        return;
+      }
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.confirmCloseModal();
+      }
+    },
+    hasUnsavedChanges() {
+      const costUnit = this.newRequest.cost_unit;
+      const description = (this.newRequest.description || "").trim();
+      if (costUnit || description) {
+        return true;
+      }
+      if (this.uploadedRequestFiles.length || this.uploadedRequestFileIds.length) {
+        return true;
+      }
+      const rows = this.getDraftTableRows();
+      if (rows.length) {
+        return true;
+      }
+      return rows.some((row) => {
+        if (!row) return false;
+        const fields = Object.keys(row);
+        return fields.some((field) => {
+          if (field === "tempId" || field === "selected") return false;
+          if (field === "gmo") return Boolean(row[field]) === true;
+          return this.fieldHasValue(row[field]);
+        });
+      });
+    },
     emitSaved(payload) {
       this.$emit("saved", payload);
     },
@@ -493,6 +645,8 @@ export default {
       this.uploadedRequestFiles = [];
       this.uploadedRequestFileIds = [];
       this.showToggleConfirm = false;
+      this.showDeleteConfirm = false;
+      this.showCloseConfirm = false;
       this.pendingToggleMode = null;
       if (this.$refs.requestFileInput) {
         this.$refs.requestFileInput.value = "";
@@ -527,6 +681,29 @@ export default {
         this.addRequestMode === "sample" ? { ...baseRow, gmo: false } : baseRow;
       this.addRequestDraftRows = [...this.addRequestDraftRows, row];
       this.$nextTick(() => this.revalidateDraftRows());
+    },
+    requestDeleteSelectedDraftRows() {
+      if (!this.selectedDraftRowIds.length) return;
+      this.showDeleteConfirm = true;
+    },
+    confirmDeleteSelectedRows() {
+      this.showDeleteConfirm = false;
+      this.deleteSelectedDraftRows();
+    },
+    cancelDeleteSelectedRows() {
+      this.showDeleteConfirm = false;
+    },
+    handleDeleteConfirmKeydown(event) {
+      if (!this.showDeleteConfirm) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        this.cancelDeleteSelectedRows();
+        return;
+      }
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.confirmDeleteSelectedRows();
+      }
     },
     deleteSelectedDraftRows() {
       if (!this.selectedDraftRowIds.length) return;
@@ -618,7 +795,16 @@ export default {
     },
     revalidateDraftRows() {
       const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
-      const rows = table?.getData?.() || this.addRequestDraftRows || [];
+      const tableRows = table?.getRows?.() || [];
+      const rows = tableRows.length
+        ? tableRows.map((row) => row.getData())
+        : this.addRequestDraftRows || [];
+      const nameCounts = {};
+      rows.forEach((row) => {
+        const name = (row?.name || "").trim();
+        if (!name) return;
+        nameCounts[name] = (nameCounts[name] || 0) + 1;
+      });
       const validations = {};
       let validCount = 0;
       rows.forEach((row, index) => {
@@ -627,8 +813,8 @@ export default {
         }
         const errors =
           this.addRequestMode === "library"
-            ? this.validateLibraryRow(row, index)
-            : this.validateSampleRow(row, index);
+            ? this.validateLibraryRow(row, index, nameCounts)
+            : this.validateSampleRow(row, index, nameCounts);
         validations[row.tempId || `row-${index}`] = errors;
         if (!Object.keys(errors).length) {
           validCount += 1;
@@ -643,40 +829,69 @@ export default {
       };
       return result;
     },
+    applyCellStyling(cell) {
+      const el = cell?.getElement?.();
+      if (!el) return;
+      el.classList.remove(
+        "cell-valid",
+        "cell-invalid",
+        "required-empty",
+        "required-filled"
+      );
+      el.removeAttribute("title");
+      el.removeAttribute("data-tooltip-original");
+      const tooltipNodes = el.querySelectorAll(
+        "[data-tooltip-original],[title]"
+      );
+      tooltipNodes.forEach((node) => {
+        if (node !== el) {
+          node.removeAttribute("title");
+          node.removeAttribute("data-tooltip-original");
+        }
+      });
+      const rowData = cell.getRow?.()?.getData?.();
+      const field = cell.getField?.();
+      if (!rowData || !field || field === "selected") return;
+      const errors = this.draftValidationState[rowData.tempId] || {};
+      const cellValue = cell.getValue?.();
+      const valuePresent = this.fieldHasValue(cellValue);
+      const required = this.isFieldRequired(field, rowData);
+      const disabledTooltip = el.getAttribute("data-disabled-tooltip");
+      const isDisabled = el.classList.contains("disable-editing");
+      if (required) {
+        el.classList.add(valuePresent ? "required-filled" : "required-empty");
+      }
+      if (errors[field]) {
+        el.classList.add("cell-invalid");
+        if (disabledTooltip) {
+          el.setAttribute("data-tooltip-original", disabledTooltip);
+        } else {
+          el.setAttribute("data-tooltip-original", errors[field]);
+        }
+      } else if (isDisabled && disabledTooltip) {
+        el.setAttribute("data-tooltip-original", disabledTooltip);
+      } else if (valuePresent) {
+        el.classList.add("cell-valid");
+      }
+    },
+    applyRowStyling(row) {
+      const rowData = row?.getData?.();
+      const rowId = rowData?.tempId;
+      const rowErrors = (rowId && this.draftValidationState[rowId]) || {};
+      const hasErrors = Object.keys(rowErrors).length > 0;
+      const rowEl = row?.getElement?.();
+      if (rowEl) {
+        rowEl.classList.toggle("row-has-errors", hasErrors);
+        rowEl.classList.toggle("row-all-valid", !hasErrors);
+      }
+      const cells = row?.getCells?.() || [];
+      cells.forEach((cell) => this.applyCellStyling(cell));
+    },
     applyValidationStyling() {
       const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
       if (!table) return;
-      const cells = table.getCells?.() || [];
-      cells.forEach((cell) => {
-        const el = cell.getElement?.();
-        if (!el) return;
-        el.classList.remove("cell-valid", "cell-invalid");
-        el.removeAttribute("title");
-        el.style.removeProperty("background-color");
-        const rowData = cell.getRow?.()?.getData?.();
-        const field = cell.getField?.();
-        if (!rowData || !field || field === "selected") return;
-        const errors = this.draftValidationState[rowData.tempId] || {};
-        const valuePresent = this.fieldHasValue(rowData[field]);
-        const required = this.isFieldRequired(field, rowData);
-        const requiredColorEmpty = "#fdeaea";
-        const requiredColorFilled = "#e6f4f1";
-        const optionalColor = "#e6f4f1";
-        if (required) {
-          const color = valuePresent ? requiredColorFilled : requiredColorEmpty;
-          el.style.setProperty("background-color", color, "important");
-        } else {
-          el.style.setProperty("background-color", optionalColor, "important");
-        }
-        if (errors[field]) {
-          el.classList.add("cell-invalid");
-          el.setAttribute("title", errors[field]);
-        } else if (
-          valuePresent
-        ) {
-          el.classList.add("cell-valid");
-        }
-      });
+      const rows = table.getRows?.() || [];
+      rows.forEach((row) => this.applyRowStyling(row));
     },
     getDraftTableRows() {
       const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
@@ -766,6 +981,15 @@ export default {
         this.handleSampleCellEdited(field, row);
       }
       this.revalidateDraftRows();
+      const rowData = row.getData?.() || {};
+      const rowErrors = this.draftValidationState[rowData.tempId] || {};
+      console.debug("[addRequest] row-validate", {
+        field,
+        value: cell.getValue?.(),
+        rowId: rowData.tempId,
+        errors: rowErrors
+      });
+      this.applyRowStyling(row);
     },
     handleLibraryCellEdited(field, row) {
       const data = { ...row.getData() };
@@ -775,6 +999,7 @@ export default {
         data.index_i7 = "";
         data.index_i5 = "";
         row.update(data);
+        this.refreshRowFormatting(row);
         if (typeId) {
           this.fetchIndexOptionsForType(typeId);
         }
@@ -783,11 +1008,13 @@ export default {
       if (field === "library_protocol") {
         data.library_type = "";
         row.update(data);
+        this.refreshRowFormatting(row);
         return;
       }
       if (field === "measuring_unit") {
         this.applyMeasuringUnitSideEffects(data);
         row.update(data);
+        this.refreshRowFormatting(row);
         return;
       }
       if (field === "measured_value") {
@@ -809,6 +1036,31 @@ export default {
           data.index_i5 = "";
         }
         row.update(data);
+        this.refreshRowFormatting(row);
+      }
+      if (field === "index_i7") {
+        const reads = Number(data.index_reads);
+        if (Number.isFinite(reads) && reads >= 2) {
+          const typeKey = data.index_type ? String(data.index_type) : "";
+          const i7Options = this.indexI7OptionsByType[typeKey] || [];
+          const i5Options = this.indexI5OptionsByType[typeKey] || [];
+          const selectedI7 = this.findIndexOptionByValue(
+            i7Options,
+            data.index_i7
+          );
+          if (selectedI7 && !data.index_i5) {
+            const match = i5Options.find(
+              (option) =>
+                option.index_id &&
+                option.index_id === selectedI7.index_id
+            );
+            if (match) {
+              data.index_i5 = match.value;
+              row.update(data);
+              this.refreshRowFormatting(row);
+            }
+          }
+        }
       }
     },
     handleSampleCellEdited(field, row) {
@@ -818,16 +1070,19 @@ export default {
         data.library_type = "";
         data.gmo = this.isCellSuspensionType(data.nucleic_acid_type);
         row.update(data);
+        this.refreshRowFormatting(row);
         return;
       }
       if (field === "library_protocol") {
         data.library_type = "";
         row.update(data);
+        this.refreshRowFormatting(row);
         return;
       }
       if (field === "measuring_unit") {
         this.applyMeasuringUnitSideEffects(data);
         row.update(data);
+        this.refreshRowFormatting(row);
         return;
       }
       if (field === "measured_value") {
@@ -889,11 +1144,21 @@ export default {
           const list = response?.data?.data || response?.data || [];
           return list.map((item) => ({
             value: item.index ?? item.value ?? item.id ?? item.name ?? "",
-            label: item.name ?? item.index ?? item.index_id ?? ""
+            label: item.name ?? item.index ?? item.index_id ?? "",
+            index_id: item.index_id ?? "",
+            index: item.index ?? ""
           }));
         };
-        const i7Options = formatOptions(i7Res);
-        const i5Options = formatOptions(i5Res);
+        const i7Options = formatOptions(i7Res).sort((a, b) =>
+          String(a.label || "").localeCompare(String(b.label || ""), undefined, {
+            sensitivity: "base"
+          })
+        );
+        const i5Options = formatOptions(i5Res).sort((a, b) =>
+          String(a.label || "").localeCompare(String(b.label || ""), undefined, {
+            sensitivity: "base"
+          })
+        );
         this.indexI7OptionsByType = {
           ...this.indexI7OptionsByType,
           [key]: i7Options
@@ -965,45 +1230,63 @@ export default {
       }
       return this.normalizeNumber(row.measured_value);
     },
-    validateLibraryRow(row, index) {
+    validateLibraryRow(row, index, nameCounts = {}) {
       const prefix = `Row ${index + 1}`;
       const errors = {};
+      const isEditable = (field) => this.isLibraryFieldEditable(field, row);
       const name = (row.name || "").trim();
       if (!name) {
-        errors.name = `${prefix}: Name is required.`;
+        errors.name = `${prefix}: Name is a required field.`;
       } else if (!/^[A-Za-z0-9_-]+$/.test(name)) {
         errors.name = `${prefix}: Name must contain only letters, numbers, _ or -.`;
+      } else if ((nameCounts[name] || 0) > 1) {
+        errors.name = `${prefix}: Name must be unique.`;
       }
-      if (!row.library_protocol) {
-        errors.library_protocol = `${prefix}: Protocol is required.`;
+      if (isEditable("measuring_unit") && !row.measuring_unit) {
+        errors.measuring_unit = `${prefix}: Measuring Unit is a required field.`;
       }
-      if (!row.library_type) {
-        errors.library_type = `${prefix}: Analysis Type is required.`;
+      if (isEditable("library_protocol") && !row.library_protocol) {
+        errors.library_protocol = `${prefix}: Protocol is a required field.`;
       }
-      if (!row.read_length) {
-        errors.read_length = `${prefix}: Read Length is required.`;
+      if (isEditable("library_type") && !row.library_type) {
+        errors.library_type = `${prefix}: Analysis Type is a required field.`;
+      }
+      if (isEditable("read_length") && !row.read_length) {
+        errors.read_length = `${prefix}: Read Length is a required field.`;
       }
       const depth = this.normalizeNumber(row.sequencing_depth);
-      if (depth === null || depth < 1) {
-        errors.sequencing_depth = `${prefix}: Sequencing Depth must be at least 1.`;
+      if (isEditable("sequencing_depth") && (depth === null || depth <= 0)) {
+        errors.sequencing_depth = `${prefix}: Sequencing Depth must be greater than 0.`;
       }
-      if (!row.organism) {
-        errors.organism = `${prefix}: Organism is required.`;
+      if (isEditable("organism") && !row.organism) {
+        errors.organism = `${prefix}: Organism is a required field.`;
       }
-      if (!row.index_type) {
-        errors.index_type = `${prefix}: Index Type is required.`;
+      const volume = this.normalizeNumber(row.volume);
+      if (isEditable("volume") && (volume === null || volume < 10)) {
+        errors.volume = `${prefix}: Volume must be at least 10.`;
+      }
+      const fragmentSize = this.normalizeNumber(row.mean_fragment_size);
+      if (
+        isEditable("mean_fragment_size") &&
+        (fragmentSize === null || fragmentSize <= 0)
+      ) {
+        errors.mean_fragment_size = `${prefix}: Size (bp) must be greater than 0.`;
+      }
+      if (isEditable("index_type") && !row.index_type) {
+        errors.index_type = `${prefix}: Index Type is a required field.`;
       }
       const reads = this.normalizeNumber(row.index_reads);
-      if (reads === null) {
-        errors.index_reads = `${prefix}: # of Index Reads is required.`;
+      if (isEditable("index_reads") && reads === null) {
+        errors.index_reads = `${prefix}: # of Index Reads is a required field.`;
       }
-      if (reads >= 1 && !row.index_i7) {
-        errors.index_i7 = `${prefix}: Index I7 is required.`;
+      if (isEditable("index_i7") && reads >= 1 && !row.index_i7) {
+        errors.index_i7 = `${prefix}: Index I7 is a required field.`;
       }
-      if (reads >= 2 && !row.index_i5) {
+      if (isEditable("index_i5") && reads >= 2 && !row.index_i5) {
         errors.index_i5 = `${prefix}: Index I5 is required when using 2 reads.`;
       }
       if (
+        isEditable("measured_value") &&
         row.measuring_unit &&
         row.measuring_unit !== "Unknown" &&
         this.normalizeNumber(row.measured_value) === null
@@ -1012,38 +1295,49 @@ export default {
       }
       return errors;
     },
-    validateSampleRow(row, index) {
+    validateSampleRow(row, index, nameCounts = {}) {
       const prefix = `Row ${index + 1}`;
       const errors = {};
+      const isEditable = (field) => this.isSampleFieldEditable(field, row);
       const name = (row.name || "").trim();
       if (!name) {
-        errors.name = `${prefix}: Name is required.`;
+        errors.name = `${prefix}: Name is a required field.`;
       } else if (!/^[A-Za-z0-9_-]+$/.test(name)) {
         errors.name = `${prefix}: Name must contain only letters, numbers, _ or -.`;
+      } else if ((nameCounts[name] || 0) > 1) {
+        errors.name = `${prefix}: Name must be unique.`;
       }
-      if (!row.nucleic_acid_type) {
-        errors.nucleic_acid_type = `${prefix}: Input Type is required.`;
+      if (isEditable("nucleic_acid_type") && !row.nucleic_acid_type) {
+        errors.nucleic_acid_type = `${prefix}: Input Type is a required field.`;
       }
-      if (!row.library_protocol) {
-        errors.library_protocol = `${prefix}: Protocol is required.`;
+      if (isEditable("measuring_unit") && !row.measuring_unit) {
+        errors.measuring_unit = `${prefix}: Measuring Unit is a required field.`;
       }
-      if (!row.library_type) {
-        errors.library_type = `${prefix}: Analysis Type is required.`;
+      if (isEditable("library_protocol") && !row.library_protocol) {
+        errors.library_protocol = `${prefix}: Protocol is a required field.`;
       }
-      if (!row.read_length) {
-        errors.read_length = `${prefix}: Read Length is required.`;
+      if (isEditable("library_type") && !row.library_type) {
+        errors.library_type = `${prefix}: Analysis Type is a required field.`;
+      }
+      if (isEditable("read_length") && !row.read_length) {
+        errors.read_length = `${prefix}: Read Length is a required field.`;
       }
       const depth = this.normalizeNumber(row.sequencing_depth);
-      if (depth === null || depth < 1) {
-        errors.sequencing_depth = `${prefix}: Sequencing Depth must be at least 1.`;
+      if (isEditable("sequencing_depth") && (depth === null || depth <= 0)) {
+        errors.sequencing_depth = `${prefix}: Sequencing Depth must be greater than 0.`;
       }
-      if (!row.organism) {
-        errors.organism = `${prefix}: Organism is required.`;
+      if (isEditable("organism") && !row.organism) {
+        errors.organism = `${prefix}: Organism is a required field.`;
       }
-      if (!row.biosafety_level) {
-        errors.biosafety_level = `${prefix}: Biosafety Level is required.`;
+      const volume = this.normalizeNumber(row.volume);
+      if (isEditable("volume") && (volume === null || volume < 10)) {
+        errors.volume = `${prefix}: Volume must be at least 10.`;
+      }
+      if (isEditable("biosafety_level") && !row.biosafety_level) {
+        errors.biosafety_level = `${prefix}: Biosafety Level is a required field.`;
       }
       if (
+        isEditable("measured_value") &&
         row.measuring_unit &&
         row.measuring_unit !== "Unknown" &&
         this.normalizeNumber(row.measured_value) === null
@@ -1174,7 +1468,11 @@ export default {
     async fetchCostUnits() {
       try {
         const response = await axiosRef.get(`${urlStringStart}/api/cost_units/`);
-        this.costUnits = response.data || [];
+        this.costUnits = (response.data || []).sort((a, b) =>
+          String(a.name || "").localeCompare(String(b.name || ""), undefined, {
+            sensitivity: "base"
+          })
+        );
       } catch (error) {
         handleError(error);
       }
@@ -1184,10 +1482,10 @@ export default {
       const description = (this.newRequest.description || "").trim();
       const descriptionValid = !!description;
       if (!descriptionValid) {
-        this.descriptionError = "Description is required.";
+        this.descriptionError = "Description is a required field.";
       }
       if (!this.isStaffUser && !this.newRequest.cost_unit) {
-        this.costUnitError = "Cost unit is required.";
+        this.costUnitError = "Cost unit is a required field.";
       }
       if (this.descriptionError || this.costUnitError) {
         showNotification("Please fill required fields.", "warning");
@@ -1353,8 +1651,8 @@ export default {
 .add-request-modal {
   background: white;
   border-radius: 8px;
-  width: calc(100% - 60px);
-  height: calc(100% - 60px);
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
@@ -1376,7 +1674,7 @@ export default {
 .confirm-modal {
   background: #ffffff;
   border-radius: 8px;
-  width: 420px;
+  width: 460px;
   max-width: calc(100% - 40px);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -1989,6 +2287,7 @@ export default {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -1999,10 +2298,22 @@ export default {
     opacity: 0;
     transform: scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
 </style>
+<!--
+i5 i7 index set values after setting one
+api data sort by name
 
+all column consts revisit
+esc or del behaviour
+context menu behaviour
+ctrl+c ctrl+v
+width of columns
+
+refactor all files
+-->

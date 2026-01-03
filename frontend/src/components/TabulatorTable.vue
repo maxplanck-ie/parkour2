@@ -1,53 +1,27 @@
 <template>
   <!-- Table Element -->
   <div class="normal-tabulator-table" style="height: 100%">
-    <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+    <div :id="tableId" ref="tabulatorTableRef"></div>
   </div>
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div
-      class="popup-container"
-      :style="{
-        height: errorsPopupContents.errorsPopupHeight + 'px',
-        width: errorsPopupContents.errorsPopupWidth + 'px'
-      }"
-    >
+    <div class="popup-container" :style="{
+      height: errorsPopupContents.errorsPopupHeight + 'px',
+      width: errorsPopupContents.errorsPopupWidth + 'px'
+    }">
       <div class="popup-header">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
+        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <g>
-            <path
-              opacity="0.3"
+            <path opacity="0.3"
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              fill="#323232"
-            />
+              fill="#323232" />
             <path
               d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M12 8V13"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-            <path
-              d="M12 16V15.9888"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
+              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 8V13" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 16V15.9888" stroke="white" stroke-width="1.5" stroke-linecap="round" />
           </g>
         </svg>
         <span class="popup-title">Paste Error</span>
@@ -60,19 +34,13 @@
           Following errors occurred while pasting, please try again after
           fixing:
         </div>
-        <div
-          v-if="errorsPopupContents.errorsList?.length"
-          class="popup-scrollable-content"
-        >
+        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
           <div class="popup-scrollable-content-inner">
             <ol style="padding-left: 25px">
-            <li
-              v-for="(item, index) in errorsPopupContents.errorsList"
-              :key="index"
-            >
-              {{ item.barcode + " ➜ " }}
-              <span style="font-weight: bold">{{ item.message }}</span>
-            </li>
+              <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
+                {{ item.barcode + " ➜ " }}
+                <span style="font-weight: bold">{{ item.message }}</span>
+              </li>
             </ol>
           </div>
         </div>
@@ -99,19 +67,29 @@ export default {
     rowData: {
       type: Array
     },
+    tableId: {
+      type: String,
+      default: "tabulatorTable"
+    },
     columnDefs: {
       type: Array,
       required: true
     },
     groupBy: {
       type: String,
-      required: true
+      required: false,
+      default: null
     },
     groupSort: {
       type: Object,
       required: false
     },
     groupStartOpen: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    enableDefaultFilters: {
       type: Boolean,
       required: false,
       default: true
@@ -378,13 +356,13 @@ export default {
           },
           downloadConfig: {},
           groupContextMenu: [],
-          groupBy: this.tableGroupsConfig.groupBy,
+          groupBy: this.tableGroupsConfig.groupBy || false,
           groupStartOpen: this.groupStartOpen,
           ...this.tableOptions
         };
 
         this.tabulatorInstance = markRaw(
-          new Tabulator("#tabulatorTable", options)
+          new Tabulator(`#${this.tableId}`, options)
         );
 
         this.tabulatorInstance.on("tableBuilt", () => {
@@ -442,25 +420,31 @@ export default {
 
           this.tabulatorInstance.setGroupBy(this.tableGroupsConfig.groupBy);
 
-          let typesNotIn = this.tableFiltersState.typesNotIn;
-          let flatFilters = Object.entries(this.tableFiltersState)
-            .filter(([key, value]) => {
-              if (key === "typesNotIn") return false;
-              return Array.isArray(value)
-                ? value.length > 0
-                : Object.keys(value).length > 0;
-            })
-            .map(([key, value]) => value);
+          if (this.enableDefaultFilters) {
+            let typesNotIn = this.tableFiltersState.typesNotIn;
+            let flatFilters = Object.entries(this.tableFiltersState)
+              .filter(([key, value]) => {
+                if (key === "typesNotIn") return false;
+                return Array.isArray(value)
+                  ? value.length > 0
+                  : Object.keys(value).length > 0;
+              })
+              .map(([key, value]) => value);
 
-          if (typesNotIn.length > 0) {
-            flatFilters.push(...typesNotIn);
+            if (typesNotIn.length > 0) {
+              flatFilters.push(...typesNotIn);
+            }
+            this.tabulatorInstance.setFilter(flatFilters);
           }
-          this.tabulatorInstance.setFilter(flatFilters);
         });
 
         this.previousData = JSON.stringify(this.rowData);
 
         this.tabulatorInstance.on("dataChanged", (updatedData) => {
+          if (typeof this.tableOptions.onBatchCellValueChanged !== "function") {
+            this.previousData = JSON.stringify(updatedData);
+            return;
+          }
           const currentData = JSON.stringify(updatedData);
           const previousParsed = JSON.parse(this.previousData);
           const batchChanges = [];
@@ -515,17 +499,34 @@ export default {
         this.tabulatorInstance.on("renderComplete", () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
           this.updateGroupValuesFromRows(rows);
+          if (this.tableOptions.handleRenderComplete) {
+            this.tableOptions.handleRenderComplete();
+          }
+        });
+
+        this.tabulatorInstance.on("cellEdited", (cell) => {
+          if (this.tableOptions.handleCellEdited) {
+            this.tableOptions.handleCellEdited(cell);
+          }
         });
 
         this.tabulatorInstance.on("clipboardCopied", () => {
-          this.tableOptions.fakeLoadingStart();
-          this.tableOptions.fakeLoadingStop();
+          if (this.tableOptions.fakeLoadingStart) {
+            this.tableOptions.fakeLoadingStart();
+          }
+          if (this.tableOptions.fakeLoadingStop) {
+            this.tableOptions.fakeLoadingStop();
+          }
         });
 
         this.tabulatorInstance.on("clipboardPasted", () => {
           if (this.errorsPopupContents.errorsList.length == 0) {
-            this.tableOptions.fakeLoadingStart();
-            this.tableOptions.fakeLoadingStop();
+            if (this.tableOptions.fakeLoadingStart) {
+              this.tableOptions.fakeLoadingStart();
+            }
+            if (this.tableOptions.fakeLoadingStop) {
+              this.tableOptions.fakeLoadingStop();
+            }
           }
         });
 
@@ -550,7 +551,7 @@ export default {
     },
 
     getTabulatorElement() {
-      return document.getElementById("tabulatorTable");
+      return document.getElementById(this.tableId);
     },
 
     updateGroupValuesFromRows(rows) {
@@ -869,8 +870,8 @@ export default {
       const resolveEditorParams = () =>
         typeof columnDef.editorParams === "function"
           ? columnDef.editorParams({
-              getRow: () => ({ getData: () => rowData })
-            })
+            getRow: () => ({ getData: () => rowData })
+          })
           : columnDef.editorParams || {};
       const applyValidators = (val) => {
         if (!columnDef.validator) return;
@@ -933,17 +934,25 @@ export default {
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                  getRow: () => ({ getData: () => rowData })
-                })
+                getRow: () => ({ getData: () => rowData })
+              })
               : columnDef.editorParams;
-          const options =
-            editorParamsList?.values?.map((opt) =>
+          let options = [];
+          let optionLabels = [];
+          if (Array.isArray(editorParamsList?.values)) {
+            options = editorParamsList.values.map((opt) =>
               typeof opt === "object" ? opt.value : opt
-            ) || [];
-          const optionLabels =
-            editorParamsList?.values?.map((opt) =>
+            );
+            optionLabels = editorParamsList.values.map((opt) =>
               typeof opt === "object" ? opt.label : opt
-            ) || [];
+            );
+          } else if (
+            editorParamsList?.values &&
+            typeof editorParamsList.values === "object"
+          ) {
+            options = Object.keys(editorParamsList.values);
+            optionLabels = Object.values(editorParamsList.values);
+          }
           if (!options.includes(value)) {
             throw new Error(
               `Invalid option! valid choices are ➜ \n${optionLabels.join(
@@ -1050,10 +1059,6 @@ export default {
   color: #388e3c;
 }
 
-.normal-tabulator-table .tabulator-cell.facility-entry-column.disable-editing {
-  background-color: #b6dbb4;
-}
-
 .normal-tabulator-table .tabulator-col {
   border-right: 1px solid #d0d0d0 !important;
   border-bottom: 1px solid #d0d0d0 !important;
@@ -1118,10 +1123,7 @@ export default {
   margin-top: 5px;
 }
 
-.normal-tabulator-table
-  .no-group-by
-  .tabulator-row-odd:nth-child(1)
-  .tabulator-cell {
+.normal-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
@@ -1129,11 +1131,7 @@ export default {
   padding: 10px 0px !important;
 }
 
-.normal-tabulator-table
-  .title-field-group
-  > .tabulator-col-content
-  > div
-  > div {
+.normal-tabulator-table .title-field-group>.tabulator-col-content>div>div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }
@@ -1157,15 +1155,49 @@ export default {
 
 .tabulator-edit-list .tabulator-edit-list-item.active,
 .tabulator-edit-list .tabulator-edit-list-item.focused,
-.tabulator-edit-list
-  .tabulator-edit-list-item.active
-  .tabulator-edit-list-item-label,
-.tabulator-edit-list
-  .tabulator-edit-list-item.focused
-  .tabulator-edit-list-item-label {
+.tabulator-edit-list .tabulator-edit-list-item.active .tabulator-edit-list-item-label,
+.tabulator-edit-list .tabulator-edit-list-item.focused .tabulator-edit-list-item-label {
   background-color: #2967c5;
   color: #fff !important;
   outline: none;
 }
-</style>
 
+.normal-tabulator-table .tabulator-cell.required-empty {
+  background-color: #f5bcbc;
+}
+
+.normal-tabulator-table .tabulator-cell.cell-invalid:not(.tabulator-range-selected) {
+  background-color: #f5bcbc;
+}
+
+.normal-tabulator-table .tabulator-row.row-has-errors .tabulator-cell.required-filled:not(.disable-editing) {
+  background-color: #f9e5e5;
+}
+
+.normal-tabulator-table .tabulator-row.row-has-errors .tabulator-cell:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected):not(.disable-editing) {
+  background-color: #f9e5e5;
+}
+
+.normal-tabulator-table .tabulator-row.row-has-errors .tabulator-cell.disable-editing:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected) {
+  background-color: #f9e5e5;
+}
+
+.normal-tabulator-table .tabulator-row.row-all-valid .tabulator-cell.required-filled:not(.disable-editing),
+.normal-tabulator-table .tabulator-row.row-all-valid .tabulator-cell:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected):not(.disable-editing) {
+  background-color: #e4fae3;
+}
+
+.normal-tabulator-table .tabulator-row.row-all-valid .tabulator-cell.disable-editing:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected) {
+  background-color: #e4fae3;
+}
+
+.normal-tabulator-table .tabulator-cell.disable-editing {
+  background-image: repeating-linear-gradient(135deg,
+      rgba(156, 163, 175, 0.3),
+      rgba(156, 163, 175, 0.3) 6px,
+      rgba(255, 255, 255, 0) 6px,
+      rgba(255, 255, 255, 0) 12px) !important;
+  color: #6f7680 !important;
+  cursor: not-allowed;
+}
+</style>

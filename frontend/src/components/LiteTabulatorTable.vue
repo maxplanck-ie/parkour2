@@ -314,20 +314,6 @@ export default {
   z-index: 1 !important;
 }
 
-.lite-tabulator-table .tabulator-cell.user-entry-column {
-  background-color: #ffebee;
-  color: #c62828;
-}
-
-.lite-tabulator-table .tabulator-cell.facility-entry-column {
-  background-color: #c4ecc2;
-  color: #388e3c;
-}
-
-.lite-tabulator-table .tabulator-cell.facility-entry-column.disable-editing {
-  background-color: #b6dbb4;
-}
-
 .lite-tabulator-table .tabulator-col {
   border-right: 1px solid #d0d0d0 !important;
   border-bottom: 1px solid #d0d0d0 !important;
