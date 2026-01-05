@@ -10,7 +10,7 @@ defusedxml==0.7.1
     # via fpdf2
 diff-match-patch==20241021
     # via django-import-export
-dj-database-url==3.0.1
+dj-database-url==3.1.0
     # via -r backend/requirements/base.in
 django==5.2.9
     # via
@@ -35,7 +35,7 @@ django-linear-migrations==2.19.0
     # via -r backend/requirements/base.in
 django-monthfield==0.1.4
     # via -r backend/requirements/base.in
-django-simple-history==3.10.1
+django-simple-history==3.11.0
     # via -r backend/requirements/base.in
 djangorestframework==3.16.1
     # via
@@ -45,7 +45,7 @@ drf-spectacular==0.29.0
     # via -r backend/requirements/base.in
 et-xmlfile==2.0.0
     # via openpyxl
-fonttools==4.61.0
+fonttools==4.61.1
     # via fpdf2
 fpdf2==2.8.5
     # via -r backend/requirements/base.in
@@ -59,7 +59,7 @@ jsonschema-specifications==2025.9.1
     # via jsonschema
 lxml==6.0.2
     # via python-docx
-numpy==2.3.5
+numpy==2.4.0
     # via
     #   -r backend/requirements/base.in
     #   pandas
@@ -69,7 +69,7 @@ packaging==25.0
     # via gunicorn
 pandas==2.3.3
     # via -r backend/requirements/base.in
-pillow==12.0.0
+pillow==12.1.0
     # via fpdf2
 psycopg2==2.9.11
     # via -r backend/requirements/base.in
@@ -93,7 +93,7 @@ rpds-py==0.30.0
     #   referencing
 six==1.17.0
     # via python-dateutil
-sqlparse==0.5.4
+sqlparse==0.5.5
     # via django
 tablib==3.9.0
     # via django-import-export
@@ -103,7 +103,7 @@ typing-extensions==4.15.0
     # via
     #   python-docx
     #   referencing
-tzdata==2025.2
+tzdata==2025.3
     # via
     #   django
     #   pandas

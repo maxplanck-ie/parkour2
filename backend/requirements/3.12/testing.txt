@@ -27,16 +27,16 @@ attrs==25.4.0
     #   -c backend/requirements/3.12/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.4
+boto3==1.42.21
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.4
+botocore==1.42.21
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   boto3
     #   s3transfer
-certifi==2025.11.12
+certifi==2026.1.4
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   httpcore
@@ -60,7 +60,7 @@ contourpy==1.3.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   matplotlib
-coverage==7.12.0
+coverage==7.13.1
     # via pytest-cov
 cryptography==46.0.3
     # via
@@ -88,7 +88,7 @@ distro==1.9.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   openai
-dj-database-url==3.0.1
+dj-database-url==3.1.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -147,7 +147,7 @@ django-linear-migrations==2.19.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
-django-migration-linter==5.2.0
+django-migration-linter==6.0.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
@@ -159,7 +159,7 @@ django-schema-viewer==0.5.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-django-simple-history==3.10.1
+django-simple-history==3.11.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
@@ -186,7 +186,7 @@ executing==2.2.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   stack-data
-fonttools==4.61.0
+fonttools==4.61.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   fpdf2
@@ -274,7 +274,7 @@ markupsafe==3.0.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   werkzeug
-matplotlib==3.10.7
+matplotlib==3.10.8
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
@@ -286,14 +286,14 @@ mdurl==0.1.2
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   markdown-it-py
-numpy==2.3.5
+numpy==2.4.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.9.0
+openai==2.14.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
@@ -320,12 +320,12 @@ pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   ipython
-pillow==12.0.0
+pillow==12.1.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.56.0
+playwright==1.57.0
     # via pytest-playwright
 pluggy==1.6.0
     # via
@@ -368,7 +368,7 @@ pygments==2.19.2
     #   ipython-pygments-lexers
     #   pytest
     #   rich
-pyparsing==3.2.5
+pyparsing==3.3.1
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   matplotlib
@@ -455,7 +455,7 @@ sql-metadata==2.19.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   -r backend/requirements/dev.in
-sqlparse==0.5.4
+sqlparse==0.5.5
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   django
@@ -508,7 +508,7 @@ typing-inspection==0.4.2
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   pydantic
-tzdata==2025.2
+tzdata==2025.3
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   django
@@ -517,7 +517,7 @@ uritemplate==4.2.0
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   drf-spectacular
-urllib3==2.6.0
+urllib3==2.6.2
     # via
     #   -c backend/requirements/3.12/dev.txt
     #   botocore
