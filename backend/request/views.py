@@ -874,7 +874,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 r.name,
                 rtype[0],
                 r.nucleic_acid_type.name if rtype == "Sample" else "-",
-                r.concentration,
+                r.measured_value_facility,
                 r.mean_fragment_size if rtype == "Library" else "-",
                 r.comments,
             ]
