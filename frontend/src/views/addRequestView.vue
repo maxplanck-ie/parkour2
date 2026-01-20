@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div v-if="show" class="add-request-overlay">
     <div class="add-request-modal">
       <div class="add-request-header">
@@ -61,60 +61,44 @@
                 <input ref="requestFileInput" type="file" multiple @change="handleRequestFileUpload"
                   style="display: none" />
               </div>
-              <table class="files-table">
-                <thead>
-                  <tr>
-                    <th style="width: 46%">Name</th>
-                    <th style="width: 27%">Size</th>
-                    <th style="width: 27%"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-if="!uploadedRequestFiles.length">
-                    <td colspan="3" class="empty-cell">No files uploaded yet.</td>
-                  </tr>
-                  <tr v-for="file in uploadedRequestFiles" :key="file.id">
-                    <td class="file-name-cell">
-                      <span class="file-name-text" :title="file.name">{{ file.name }}</span>
-                    </td>
-                    <td class="file-size-cell" :title="formatFileSize(file.size)">
-                      {{ formatFileSize(file.size) }}
-                    </td>
-                    <td class="actions-cell">
-                      <button type="button" class="icon-action"
-                        :title="file.path ? `Download ${file.name}` : 'Download unavailable'" :disabled="!file.path"
-                        @click="downloadUploadedFile(file)">
-                        <font-awesome-icon icon="fa-solid fa-download" />
-                      </button>
-                      <button type="button" class="icon-action danger" :title="`Remove ${file.name}`"
-                        @click="removeUploadedFile(file.id)">
-                        <font-awesome-icon icon="fa-solid fa-xmark" />
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="files-table-wrapper">
+                <table class="files-table" :class="{ 'files-table-empty': !uploadedRequestFiles.length }">
+                  <thead>
+                    <tr>
+                      <th style="width: 46%">Name</th>
+                      <th style="width: 27%">Size</th>
+                      <th style="width: 27%"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-if="!uploadedRequestFiles.length">
+                      <td colspan="3" class="empty-cell">No files uploaded yet.</td>
+                    </tr>
+                    <tr v-for="file in uploadedRequestFiles" :key="file.id">
+                      <td class="file-name-cell">
+                        <span class="file-name-text" :title="file.name">{{ file.name }}</span>
+                      </td>
+                      <td class="file-size-cell" :title="formatFileSize(file.size)">
+                        {{ formatFileSize(file.size) }}
+                      </td>
+                      <td class="actions-cell">
+                        <button type="button" class="icon-action"
+                          :title="file.path ? `Download ${file.name}` : 'Download unavailable'" :disabled="!file.path"
+                          @click="downloadUploadedFile(file)">
+                          <font-awesome-icon icon="fa-solid fa-download" />
+                        </button>
+                        <button type="button" class="icon-action danger" :title="`Remove ${file.name}`"
+                          @click="removeUploadedFile(file.id)">
+                          <font-awesome-icon icon="fa-solid fa-xmark" />
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            <div class="signed-request-info">
-              <div class="signed-request-header">
-                <div class="signed-request-label">
-                  Signed Deep Sequencing Request
-                </div>
-                <button class="info-pill" type="button"
-                  title="1. Save the request.&#10;2. Download the Deep Sequencing Request blank.&#10;3. Print, check GMO declaration(s), and sign it.&#10;4. Scan the blank and upload it back.&#10;&#10;Note: if the blank is already uploaded, you cannot update it.">
-                  <font-awesome-icon icon="fa-solid fa-circle-info" />
-                </button>
-              </div>
-              <div class="signed-request-row">
-                <span class="signed-request-status"
-                  :class="uploadedRequestFiles.length ? 'status-success' : 'status-warning'">
-                  <font-awesome-icon
-                    :icon="uploadedRequestFiles.length ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
-                  {{ uploadedRequestFiles.length ? "Uploaded" : "Not Uploaded" }}
-                </span>
-              </div>
-            </div>
+
           </section>
           <button class="panel-toggle-button" type="button" @click="toggleFormPanel"
             :aria-label="isFormPanelCollapsed ? 'Expand details panel' : 'Collapse details panel'">
@@ -283,6 +267,10 @@ export default {
     isStaffUser: {
       type: Boolean,
       default: false
+    },
+    userId: {
+      type: [Number, String],
+      default: null
     }
   },
   data() {
@@ -296,11 +284,11 @@ export default {
       isRequestSaving: false,
       draftRowCounter: 0,
       libraryMeasuringUnits: [
-        { value: "ng/µl", label: "ng/µl (Concentration)" },
+        { value: "ng/┬Ál", label: "ng/┬Ál (Concentration)" },
         { value: "Unknown", label: "Unknown" }
       ],
       sampleMeasuringUnits: [
-        { value: "ng/µl", label: "ng/µl (Concentration)" },
+        { value: "ng/┬Ál", label: "ng/┬Ál (Concentration)" },
         { value: "M", label: "M (Cells)" },
         { value: "k", label: "k (Cells)" },
         { value: "Unknown", label: "Unknown" }
@@ -1467,7 +1455,11 @@ export default {
     },
     async fetchCostUnits() {
       try {
-        const response = await axiosRef.get(`${urlStringStart}/api/cost_units/`);
+        const response = await axiosRef.get(`${urlStringStart}/api/cost_units/`, {
+          params: {
+            user_id: this.userId
+          }
+        });
         this.costUnits = (response.data || []).sort((a, b) =>
           String(a.name || "").localeCompare(String(b.name || ""), undefined, {
             sensitivity: "base"
@@ -1908,6 +1900,9 @@ export default {
   background: #f6f8fa;
   border-radius: 8px;
   padding: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .files-header {
@@ -1923,16 +1918,28 @@ export default {
   color: #6b7280;
 }
 
-.files-table {
+.files-table-wrapper {
   width: 100%;
   border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.files-table {
+  width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
-  overflow: hidden;
-  margin-top: 8px;
   font-size: 12px;
-  border-radius: 8px;
+}
+
+.files-table.files-table-empty {
+  height: 100%;
 }
 
 .files-table th,
@@ -2007,63 +2014,7 @@ export default {
   color: #a3272b;
 }
 
-.signed-request-info {
-  font-size: 13px;
-  color: #374151;
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
-  padding: 12px 14px;
-  background: #f9fafb;
-  margin-bottom: 12px;
-}
 
-.signed-request-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.signed-request-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  font-weight: 500;
-  flex-wrap: wrap;
-}
-
-.signed-request-label {
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.signed-request-status {
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid;
-}
-
-.signed-request-info .info-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 8px;
-  border: none;
-  background: #1864ab;
-  color: #ffffff;
-  font-size: 12px;
-  cursor: help;
-}
 
 .download-buttons {
   display: inline-flex;

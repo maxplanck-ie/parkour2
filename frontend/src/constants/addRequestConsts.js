@@ -31,7 +31,7 @@ export const SAMPLE_REQUIRED_FIELDS = new Set([
 ]);
 
 function createValuesMap(options = []) {
-  const map = {};
+  const values = [];
   options.forEach((option) => {
     const key =
       option?.value ??
@@ -42,10 +42,10 @@ function createValuesMap(options = []) {
     const label =
       option?.label ?? option?.name ?? option?.text ?? option?.value ?? "";
     if (key !== undefined && key !== null) {
-      map[String(key)] = label;
+      values.push({ label: String(label), value: String(key) });
     }
   });
-  return map;
+  return values;
 }
 
 const INDEX_SEQUENCE_REGEX = /^[ATCG]{6,}$/;
@@ -85,7 +85,7 @@ function findOptionLabel(options = [], value) {
     return String(key) === stringValue;
   });
   return match
-    ? match.label ?? match.name ?? match.text ?? stringValue
+    ? (match.label ?? match.name ?? match.text ?? stringValue)
     : stringValue;
 }
 
@@ -95,8 +95,8 @@ const createListFormatter =
     ellipsisContainer(
       formatDisplayValue(
         findOptionLabel(options, cell.getValue()),
-        SELECT_PLACEHOLDER
-      )
+        SELECT_PLACEHOLDER,
+      ),
     );
 
 function listEditorConfig(options = [], placeholder = "Select") {
@@ -106,6 +106,8 @@ function listEditorConfig(options = [], placeholder = "Select") {
       values: createValuesMap(options),
       clearable: true,
       emptyValue: "",
+      autocomplete: true,
+      listOnEmpty: true,
       placeholder,
     },
   };
@@ -124,7 +126,7 @@ function filterLibraryTypesByProtocol(types = [], protocolId) {
     .sort((a, b) =>
       String(a.label || "").localeCompare(String(b.label || ""), undefined, {
         sensitivity: "base",
-      })
+      }),
     );
 }
 
@@ -193,7 +195,7 @@ function checkboxColumn(getTabulatorInstance, onSelectionChange) {
 export function getAddRequestLibraryColumns(
   getTabulatorInstance,
   editors = {},
-  onSelectionChange
+  onSelectionChange,
 ) {
   const {
     protocols = [],
@@ -241,6 +243,8 @@ export function getAddRequestLibraryColumns(
       values: createValuesMap(options),
       clearable: true,
       emptyValue: "",
+      autocomplete: true,
+      listOnEmpty: true,
       placeholder: "Select",
     };
   };
@@ -340,12 +344,12 @@ export function getAddRequestLibraryColumns(
         value === "" || value === undefined || value === null
           ? true
           : /^[A-Za-z0-9_-]+$/.test(String(value))
-          ? true
-          : "Only letters, numbers, _ and - are allowed.",
+            ? true
+            : "Only letters, numbers, _ and - are allowed.",
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("name"),
-        libraryDisabledMessage("name")
+        libraryDisabledMessage("name"),
       ),
     },
     {
@@ -361,7 +365,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(protocols),
         libraryEditable("library_protocol"),
-        libraryDisabledMessage("library_protocol")
+        libraryDisabledMessage("library_protocol"),
       ),
     },
     {
@@ -377,7 +381,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("comments"),
-        libraryDisabledMessage("comments")
+        libraryDisabledMessage("comments"),
       ),
     },
     {
@@ -394,7 +398,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(getLibraryTypeOptions),
         libraryEditable("library_type"),
-        libraryDisabledMessage("library_type")
+        libraryDisabledMessage("library_type"),
       ),
     },
     {
@@ -411,7 +415,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(libraryUnits),
         libraryEditable("measuring_unit"),
-        libraryDisabledMessage("measuring_unit")
+        libraryDisabledMessage("measuring_unit"),
       ),
     },
     {
@@ -436,7 +440,7 @@ export function getAddRequestLibraryColumns(
           return ellipsisContainer(formatDisplayValue(value));
         },
         libraryEditable("measured_value"),
-        libraryDisabledMessage("measured_value")
+        libraryDisabledMessage("measured_value"),
       ),
     },
     {
@@ -454,7 +458,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("mean_fragment_size"),
-        libraryDisabledMessage("mean_fragment_size")
+        libraryDisabledMessage("mean_fragment_size"),
       ),
     },
     {
@@ -472,7 +476,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("volume"),
-        libraryDisabledMessage("volume")
+        libraryDisabledMessage("volume"),
       ),
     },
     {
@@ -488,7 +492,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(readLengths),
         libraryEditable("read_length"),
-        libraryDisabledMessage("read_length")
+        libraryDisabledMessage("read_length"),
       ),
     },
     {
@@ -517,7 +521,7 @@ export function getAddRequestLibraryColumns(
           return ellipsisContainer(display);
         },
         libraryEditable("sequencing_depth"),
-        libraryDisabledMessage("sequencing_depth")
+        libraryDisabledMessage("sequencing_depth"),
       ),
     },
     {
@@ -533,7 +537,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(indexTypes),
         libraryEditable("index_type"),
-        libraryDisabledMessage("index_type")
+        libraryDisabledMessage("index_type"),
       ),
     },
     {
@@ -551,7 +555,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(dynamicOptions.reads),
         libraryEditable("index_reads"),
-        libraryDisabledMessage("index_reads")
+        libraryDisabledMessage("index_reads"),
       ),
     },
     {
@@ -569,7 +573,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(dynamicOptions.i7),
         libraryEditable("index_i7"),
-        libraryDisabledMessage("index_i7")
+        libraryDisabledMessage("index_i7"),
       ),
     },
     {
@@ -587,7 +591,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(dynamicOptions.i5),
         libraryEditable("index_i5"),
-        libraryDisabledMessage("index_i5")
+        libraryDisabledMessage("index_i5"),
       ),
     },
     {
@@ -603,7 +607,7 @@ export function getAddRequestLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(organisms),
         libraryEditable("organism"),
-        libraryDisabledMessage("organism")
+        libraryDisabledMessage("organism"),
       ),
     },
   ];
@@ -620,7 +624,7 @@ export function getAddRequestLibraryColumns(
 export function getAddRequestSampleColumns(
   getTabulatorInstance,
   editors = {},
-  onSelectionChange
+  onSelectionChange,
 ) {
   const {
     nucleicAcidTypes = [],
@@ -664,7 +668,7 @@ export function getAddRequestSampleColumns(
     const selectedId = rowData?.nucleic_acid_type;
     if (selectedId === undefined || selectedId === null) return null;
     return nucleicAcidTypes.find(
-      (option) => String(option.value) === String(selectedId)
+      (option) => String(option.value) === String(selectedId),
     );
   };
   const dynamicListFormatter = (getOptionsFn) => (cell) => {
@@ -682,6 +686,8 @@ export function getAddRequestSampleColumns(
       values: createValuesMap(options),
       clearable: true,
       emptyValue: "",
+      autocomplete: true,
+      listOnEmpty: true,
       placeholder: "Select",
     };
   };
@@ -696,7 +702,7 @@ export function getAddRequestSampleColumns(
       .sort((a, b) =>
         String(a.label || "").localeCompare(String(b.label || ""), undefined, {
           sensitivity: "base",
-        })
+        }),
       );
   };
   const isCellSuspension = (rowData) => {
@@ -760,12 +766,12 @@ export function getAddRequestSampleColumns(
         value === "" || value === undefined || value === null
           ? true
           : /^[A-Za-z0-9_-]+$/.test(String(value))
-          ? true
-          : "Only letters, numbers, _ and - are allowed.",
+            ? true
+            : "Only letters, numbers, _ and - are allowed.",
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         sampleEditable("name"),
-        sampleDisabledMessage("name")
+        sampleDisabledMessage("name"),
       ),
     },
     {
@@ -781,7 +787,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(nucleicAcidTypes),
         sampleEditable("nucleic_acid_type"),
-        sampleDisabledMessage("nucleic_acid_type")
+        sampleDisabledMessage("nucleic_acid_type"),
       ),
     },
     {
@@ -797,7 +803,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         sampleEditable("comments"),
-        sampleDisabledMessage("comments")
+        sampleDisabledMessage("comments"),
       ),
     },
     {
@@ -814,7 +820,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(sampleUnits),
         sampleEditable("measuring_unit"),
-        sampleDisabledMessage("measuring_unit")
+        sampleDisabledMessage("measuring_unit"),
       ),
     },
     {
@@ -839,7 +845,7 @@ export function getAddRequestSampleColumns(
           return ellipsisContainer(formatDisplayValue(value));
         },
         sampleEditable("measured_value"),
-        sampleDisabledMessage("measured_value")
+        sampleDisabledMessage("measured_value"),
       ),
     },
     {
@@ -857,7 +863,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         sampleEditable("volume"),
-        sampleDisabledMessage("volume")
+        sampleDisabledMessage("volume"),
       ),
     },
     {
@@ -874,7 +880,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(getProtocolOptions),
         sampleEditable("library_protocol"),
-        sampleDisabledMessage("library_protocol")
+        sampleDisabledMessage("library_protocol"),
       ),
     },
     {
@@ -891,7 +897,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(getLibraryTypeOptions),
         sampleEditable("library_type"),
-        sampleDisabledMessage("library_type")
+        sampleDisabledMessage("library_type"),
       ),
     },
     {
@@ -907,7 +913,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(readLengths),
         sampleEditable("read_length"),
-        sampleDisabledMessage("read_length")
+        sampleDisabledMessage("read_length"),
       ),
     },
     {
@@ -936,7 +942,7 @@ export function getAddRequestSampleColumns(
           return ellipsisContainer(display);
         },
         sampleEditable("sequencing_depth"),
-        sampleDisabledMessage("sequencing_depth")
+        sampleDisabledMessage("sequencing_depth"),
       ),
     },
     {
@@ -952,7 +958,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(organisms),
         sampleEditable("organism"),
-        sampleDisabledMessage("organism")
+        sampleDisabledMessage("organism"),
       ),
     },
     {
@@ -968,7 +974,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(biosafety),
         sampleEditable("biosafety_level"),
-        sampleDisabledMessage("biosafety_level")
+        sampleDisabledMessage("biosafety_level"),
       ),
     },
     {
@@ -986,7 +992,7 @@ export function getAddRequestSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(gmo),
         sampleEditable("gmo"),
-        sampleDisabledMessage("gmo")
+        sampleDisabledMessage("gmo"),
       ),
     },
   ];
