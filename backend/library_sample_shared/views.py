@@ -13,6 +13,7 @@ from .models import (
     ConcentrationMethod,
     IndexI5,
     IndexI7,
+    IndexPair,
     IndexType,
     LibraryProtocol,
     LibraryType,
@@ -121,6 +122,37 @@ class IndexViewSet(viewsets.ViewSet):
     def i5(self, request):
         """Get the list of indices i5."""
         data = self._get_sorted_indices(IndexI5, IndexI5Serializer)
+        return Response(data)
+
+    @action(methods=["get"], detail=False)
+    def pairs(self, request):
+        """Get the list of index pairs for an index type."""
+        index_type_id = request.query_params.get("index_type_id", None)
+        if not index_type_id:
+            return Response([])
+        try:
+            queryset = (
+                IndexPair.objects.filter(
+                    archived=False,
+                    index_type_id=index_type_id,
+                    index1__archived=False,
+                    index2__archived=False,
+                )
+                .select_related("index1", "index2")
+            )
+        except ValueError:
+            return Response([])
+
+        data = [
+            {
+                "index1_id": pair.index1.index_id if pair.index1 else "",
+                "index1": pair.index1.index if pair.index1 else "",
+                "index2_id": pair.index2.index_id if pair.index2 else "",
+                "index2": pair.index2.index if pair.index2 else "",
+            }
+            for pair in queryset
+            if pair.index1 and pair.index2
+        ]
         return Response(data)
 
     def _get_sorted_indices(self, model_class, serializer_model_class):

@@ -1,7 +1,4 @@
-import {
-  cellContextMenu,
-  ellipsisContainer,
-} from "../utilities/utilityFunctions";
+import { cellContextMenu, ellipsisContainer } from "../utilities/utilityFunctions";
 
 export const LIBRARY_REQUIRED_FIELDS = new Set([
   "name",
@@ -14,7 +11,6 @@ export const LIBRARY_REQUIRED_FIELDS = new Set([
   "volume",
   "mean_fragment_size",
   "index_type",
-  "index_reads",
 ]);
 
 export const SAMPLE_REQUIRED_FIELDS = new Set([
@@ -106,6 +102,7 @@ function listEditorConfig(options = [], placeholder = "Select") {
       values: createValuesMap(options),
       clearable: true,
       emptyValue: "",
+      allowEmpty: true,
       autocomplete: true,
       listOnEmpty: true,
       placeholder,
@@ -204,7 +201,7 @@ export function getAddRequestLibraryColumns(
     readLengths = [],
     indexTypes = [],
     organisms = [],
-    getIndexReadsOptions,
+    getIndexReadsCount,
     getIndexI7Options,
     getIndexI5Options,
   } = editors;
@@ -218,13 +215,11 @@ export function getAddRequestLibraryColumns(
         ];
 
   const dynamicOptions = {
-    reads:
-      typeof getIndexReadsOptions === "function"
-        ? getIndexReadsOptions
-        : () => [],
     i7: typeof getIndexI7Options === "function" ? getIndexI7Options : () => [],
     i5: typeof getIndexI5Options === "function" ? getIndexI5Options : () => [],
   };
+  const resolveIndexReadsCount =
+    typeof getIndexReadsCount === "function" ? getIndexReadsCount : () => 0;
 
   const getRowData = (cell) => cell?.getRow?.()?.getData?.() || {};
   const dynamicListFormatter = (getOptionsFn) => (cell) => {
@@ -243,6 +238,7 @@ export function getAddRequestLibraryColumns(
       values: createValuesMap(options),
       clearable: true,
       emptyValue: "",
+      allowEmpty: true,
       autocomplete: true,
       listOnEmpty: true,
       placeholder: "Select",
@@ -256,14 +252,11 @@ export function getAddRequestLibraryColumns(
     if (field === "library_type") {
       return Boolean(rowData.library_protocol);
     }
-    if (field === "index_reads") {
-      return Boolean(rowData.index_type);
-    }
     if (field === "index_i7") {
-      return Number(rowData.index_reads) >= 1;
+      return resolveIndexReadsCount(rowData) >= 1;
     }
     if (field === "index_i5") {
-      return Number(rowData.index_reads) >= 2;
+      return resolveIndexReadsCount(rowData) >= 2;
     }
     if (field === "measured_value") {
       return (
@@ -280,41 +273,22 @@ export function getAddRequestLibraryColumns(
     if (field === "library_type" && !rowData.library_protocol) {
       return "Select a Protocol first.";
     }
-    if (field === "index_reads" && !rowData.index_type) {
-      return "Select an Index Type first.";
-    }
     if (field === "index_i7") {
       if (!rowData.index_type) {
         return "Select an Index Type first.";
       }
-      const rawReads = rowData.index_reads;
-      if (rawReads === "" || rawReads === null || rawReads === undefined) {
-        return "Select # of Index Reads first.";
-      }
-      let reads = Number(rawReads);
-      if (!Number.isFinite(reads)) reads = 0;
+      const reads = resolveIndexReadsCount(rowData);
       if (reads < 1) {
-        if (reads === 0) {
-          return "Index Reads is 0. Increase to 1 to enable Index I7.";
-        }
-        return "Select # of Index Reads first.";
+        return "Index I7 is not available for this Index Type.";
       }
     }
     if (field === "index_i5") {
       if (!rowData.index_type) {
         return "Select an Index Type first.";
       }
-      const rawReads = rowData.index_reads;
-      if (rawReads === "" || rawReads === null || rawReads === undefined) {
-        return "Select # of Index Reads (2) first.";
-      }
-      let reads = Number(rawReads);
-      if (!Number.isFinite(reads)) reads = 0;
+      const reads = resolveIndexReadsCount(rowData);
       if (reads < 2) {
-        if (reads === 0) {
-          return "Index Reads is 0. Increase to 2 to enable Index I5.";
-        }
-        return "Select # of Index Reads (2) first.";
+        return "Index I5 is not available for this Index Type.";
       }
     }
     if (field === "measured_value") {
@@ -541,24 +515,6 @@ export function getAddRequestLibraryColumns(
       ),
     },
     {
-      title: "# of Index Reads",
-      field: "index_reads",
-      width: "8%",
-      headerVertical: false,
-      headerTooltip: "Choose the Number of Index Reads",
-      visible: true,
-      cssClass: "regular-column",
-      editor: "list",
-      editorParams: dynamicEditorParams(dynamicOptions.reads),
-      hozAlign: "left",
-      editable: libraryEditable("index_reads"),
-      formatter: decorateFormatter(
-        dynamicListFormatter(dynamicOptions.reads),
-        libraryEditable("index_reads"),
-        libraryDisabledMessage("index_reads"),
-      ),
-    },
-    {
       title: "Index I7",
       field: "index_i7",
       width: "8%",
@@ -686,6 +642,7 @@ export function getAddRequestSampleColumns(
       values: createValuesMap(options),
       clearable: true,
       emptyValue: "",
+      allowEmpty: true,
       autocomplete: true,
       listOnEmpty: true,
       placeholder: "Select",

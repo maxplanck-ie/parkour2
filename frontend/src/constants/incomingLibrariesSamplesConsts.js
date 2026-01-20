@@ -1,7 +1,7 @@
 import {
   cellContextMenu,
   ellipsisContainer,
-  showNotification
+  showNotification,
 } from "../utilities/utilityFunctions";
 
 export function incomingLibrariesSamplesGroupHeader(
@@ -11,7 +11,7 @@ export function incomingLibrariesSamplesGroupHeader(
   gmo,
   totalDepth,
   readLengthDisplay,
-  biosafetyLevel
+  biosafetyLevel,
 ) {
   return `
     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -146,7 +146,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
         const rowData = clickedRow.getData();
         const checkbox = e.target;
         rowData.selected = checkbox.checked;
-      }
+      },
     },
     {
       title: "Name",
@@ -197,7 +197,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
         cellContextMenu(true, false, false, getTabulatorInstance),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      }
+      },
     },
     {
       title: "Barcode",
@@ -218,7 +218,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString, false);
-      }
+      },
     },
     {
       title: "From Users",
@@ -245,7 +245,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          }
+          },
         },
         {
           title: "Protocol",
@@ -265,7 +265,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          }
+          },
         },
         {
           title: "Comment Library/Input",
@@ -283,7 +283,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          }
+          },
         },
         {
           title: "Input",
@@ -303,7 +303,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             const value = cell.getValue();
             const finalString = value || "-";
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "µl",
@@ -329,7 +329,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          }
+          },
         },
         {
           title: "bp",
@@ -357,9 +357,9 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
           cellDblClick: function (e, cell) {
             showNotification("This field is not editable.", "warning");
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       title: "From Facility",
@@ -380,7 +380,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           cssClass: "facility-entry-column",
           editorParams: {
             min: 0,
-            step: 0.1
+            step: 0.1,
           },
           validator: ["min:0"],
           contextMenu: () =>
@@ -398,7 +398,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
                   ? "0.0"
                   : value.toFixed(1);
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "Unit",
@@ -412,16 +412,24 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               { label: "ng/µl (Concentration)", value: "ng/µl" },
               { label: "M (Cells)", value: "M" },
               { label: "k (Cells)", value: "k" },
-              { label: "Unknown", value: "Unknown" }
+              { label: "Unknown", value: "Unknown" },
             ];
             if (row.type === "L") {
               return {
                 values: options.filter(
-                  (option) => option.value !== "M" && option.value !== "k"
-                )
+                  (option) => option.value !== "M" && option.value !== "k",
+                ),
+                autocomplete: true,
+                listOnEmpty: true,
+                freetext: false,
               };
             }
-            return { values: options };
+            return {
+              values: options,
+              autocomplete: true,
+              listOnEmpty: true,
+              freetext: false,
+            };
           },
           headerVertical: false,
           headerTooltip: "Measurement Unit",
@@ -435,11 +443,11 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               "ng/µl": "ng/µl (Concentration)",
               M: "M (Cells)",
               k: "k (Cells)",
-              Unknown: "Unknown"
+              Unknown: "Unknown",
             };
             const finalString = options[value] || value || "Select";
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "µl",
@@ -453,7 +461,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           cssClass: "facility-entry-column",
           editorParams: {
             min: 0,
-            step: 0.1
+            step: 0.1,
           },
           validator: ["min:0"],
           contextMenu: () =>
@@ -468,7 +476,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
                   ? "0.0"
                   : value.toFixed(1);
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "bp",
@@ -482,7 +490,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           cssClass: "facility-entry-column",
           editorParams: {
             min: 0,
-            step: 1
+            step: 1,
           },
           validator: ["min:0"],
           contextMenu: () =>
@@ -499,7 +507,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             }
 
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "% Total",
@@ -514,7 +522,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editorParams: {
             min: 0,
             max: 100,
-            step: 0.1
+            step: 0.1,
           },
           validator: ["min:0", "max:100"],
           contextMenu: () =>
@@ -524,7 +532,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             if (rowData.type === "S") {
               showNotification(
                 "This field is not available for samples.",
-                "warning"
+                "warning",
               );
             }
             if (rowData.type === "S") {
@@ -548,7 +556,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cellElement.classList.remove("disable-editing");
             }
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "RQN",
@@ -562,7 +570,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editorParams: {
             min: 0,
             max: 11,
-            step: 0.1
+            step: 0.1,
           },
           validator: ["min:0", "max:11"],
           cssClass: "facility-entry-column",
@@ -573,7 +581,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             if (rowData.type === "L") {
               showNotification(
                 "This field is not available for libraries.",
-                "warning"
+                "warning",
               );
               cell.getTable().modules.edit.currentCell = null;
             }
@@ -595,7 +603,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cellElement.classList.remove("disable-editing");
             }
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "GMO",
@@ -607,8 +615,11 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           editorParams: {
             values: ["Not Needed", "Risk Assessment Done"].map((v) => ({
               label: v,
-              value: v
-            }))
+              value: v,
+            })),
+            autocomplete: true,
+            listOnEmpty: true,
+            freetext: false,
           },
           cssClass: "facility-entry-column",
           contextMenu: () =>
@@ -618,13 +629,13 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             if (rowData.type === "L") {
               showNotification(
                 "This field is not available for libraries.",
-                "warning"
+                "warning",
               );
             }
             if (rowData.gmo === false || rowData.gmo === "") {
               showNotification(
                 "GMO is marked as 'NO' for this sample and cannot be edited.",
-                "warning"
+                "warning",
               );
             }
             if (
@@ -653,7 +664,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               cellElement.classList.remove("disable-editing");
             }
             return ellipsisContainer(finalString);
-          }
+          },
         },
         {
           title: "Comment",
@@ -669,10 +680,10 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           formatter: (cell) => {
             const value = cell.getValue() || "-";
             return ellipsisContainer(value);
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    },
   ];
 }
 
@@ -694,7 +705,6 @@ export function incomingLibrariesSamplesExportColumns() {
     { header: "% Total", key: "percent_total", width: 10 },
     { header: "RQN", key: "rna_quality_facility", width: 10 },
     { header: "GMO", key: "gmo_facility", width: 16 },
-    { header: "Comment (Facility)", key: "comments_facility", width: 24 }
+    { header: "Comment (Facility)", key: "comments_facility", width: 24 },
   ];
 }
-

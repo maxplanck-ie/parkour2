@@ -305,6 +305,7 @@ export default {
       relacsDownloadUrl: `${urlStringStart}/api/requests/download_RELACS_Pellets_Abs_form`,
       indexI7OptionsByType: {},
       indexI5OptionsByType: {},
+      indexPairsByType: {},
       indexOptionsLoading: {},
       showToggleConfirm: false,
       showDeleteConfirm: false,
@@ -401,8 +402,7 @@ export default {
         readLengths: normalizeOptions(this.readLengthsList),
         indexTypes: normalizeOptions(this.indexTypesList),
         organisms: normalizeOptions(this.organismsList),
-        getIndexReadsOptions: (row) =>
-          this.getLibraryIndexReadsOptions(row),
+        getIndexReadsCount: (row) => this.getIndexReadsCount(row),
         getIndexI7Options: (row) => this.getLibraryIndexI7Options(row),
         getIndexI5Options: (row) => this.getLibraryIndexI5Options(row)
       };
@@ -490,14 +490,11 @@ export default {
       if (field === "library_type") {
         return Boolean(rowData.library_protocol);
       }
-      if (field === "index_reads") {
-        return Boolean(rowData.index_type);
-      }
       if (field === "index_i7") {
-        return Number(rowData.index_reads) >= 1;
+        return this.getIndexReadsCount(rowData) >= 1;
       }
       if (field === "index_i5") {
-        return Number(rowData.index_reads) >= 2;
+        return this.getIndexReadsCount(rowData) >= 2;
       }
       if (field === "measured_value") {
         return (
@@ -534,10 +531,10 @@ export default {
     isFieldRequired(field, rowData) {
       if (this.addRequestMode === "library") {
         if (field === "index_i7") {
-          return Number(rowData.index_reads) >= 1;
+          return this.getIndexReadsCount(rowData) >= 1;
         }
         if (field === "index_i5") {
-          return Number(rowData.index_reads) >= 2;
+          return this.getIndexReadsCount(rowData) >= 2;
         }
         if (field === "measured_value") {
           const unit = rowData.measuring_unit;
@@ -909,19 +906,13 @@ export default {
       }
 
       if (this.addRequestMode === "library") {
-        if (field === "index_reads" && !rowData.index_type) {
-          showNotification("Select an Index Type first.", "warning");
-          return false;
-        }
         if (field === "index_i7") {
-          const reads = Number(rowData.index_reads) || 0;
-          if (reads < 1) {
+          if (this.getIndexReadsCount(rowData) < 1) {
             return false;
           }
         }
         if (field === "index_i5") {
-          const reads = Number(rowData.index_reads) || 0;
-          if (reads < 2) {
+          if (this.getIndexReadsCount(rowData) < 2) {
             return false;
           }
         }
@@ -971,19 +962,12 @@ export default {
       this.revalidateDraftRows();
       const rowData = row.getData?.() || {};
       const rowErrors = this.draftValidationState[rowData.tempId] || {};
-      console.debug("[addRequest] row-validate", {
-        field,
-        value: cell.getValue?.(),
-        rowId: rowData.tempId,
-        errors: rowErrors
-      });
       this.applyRowStyling(row);
     },
     handleLibraryCellEdited(field, row) {
       const data = { ...row.getData() };
       if (field === "index_type") {
         const typeId = data.index_type;
-        data.index_reads = "";
         data.index_i7 = "";
         data.index_i5 = "";
         row.update(data);
@@ -1012,41 +996,27 @@ export default {
         }
         return;
       }
-      if (field === "index_reads") {
-        const reads = Number(data.index_reads);
-        if (!Number.isFinite(reads) || reads < 0) {
-          data.index_reads = "";
-        }
-        if (!reads || reads < 1) {
-          data.index_i7 = "";
-          data.index_i5 = "";
-        } else if (reads === 1) {
-          data.index_i5 = "";
-        }
-        row.update(data);
-        this.refreshRowFormatting(row);
-      }
       if (field === "index_i7") {
-        const reads = Number(data.index_reads);
-        if (Number.isFinite(reads) && reads >= 2) {
-          const typeKey = data.index_type ? String(data.index_type) : "";
-          const i7Options = this.indexI7OptionsByType[typeKey] || [];
-          const i5Options = this.indexI5OptionsByType[typeKey] || [];
-          const selectedI7 = this.findIndexOptionByValue(
-            i7Options,
-            data.index_i7
-          );
-          if (selectedI7 && !data.index_i5) {
-            const match = i5Options.find(
-              (option) =>
-                option.index_id &&
-                option.index_id === selectedI7.index_id
-            );
-            if (match) {
-              data.index_i5 = match.value;
-              row.update(data);
-              this.refreshRowFormatting(row);
-            }
+        const reads = this.getIndexReadsCount(data);
+        if (reads >= 2) {
+          const matched = this.tryAutoSelectI5(row, data);
+          if (!matched && data.index_type) {
+            this.fetchIndexOptionsForType(data.index_type, {
+              row,
+              selectedI7: data.index_i7
+            });
+          }
+        }
+      }
+      if (field === "index_i5") {
+        const reads = this.getIndexReadsCount(data);
+        if (reads >= 2) {
+          const matched = this.tryAutoSelectI7(row, data);
+          if (!matched && data.index_type) {
+            this.fetchIndexOptionsForType(data.index_type, {
+              row,
+              selectedI5: data.index_i5
+            });
           }
         }
       }
@@ -1080,8 +1050,9 @@ export default {
         }
       }
     },
-    buildIndexReadsOptions(typeId) {
-      if (!typeId) return [];
+    getIndexReadsCount(rowData = {}) {
+      const typeId = rowData?.index_type;
+      if (!typeId) return 0;
       const typeKey = String(typeId);
       const match = this.indexTypesList.find((item) => {
         const key =
@@ -1089,15 +1060,8 @@ export default {
         return String(key) === typeKey;
       });
       const maxReads = Number(match?.index_reads);
-      if (!Number.isFinite(maxReads) || maxReads < 0) return [];
-      const options = [];
-      for (let i = 0; i <= maxReads; i += 1) {
-        options.push({ value: i, label: `${i}` });
-      }
-      return options;
-    },
-    getLibraryIndexReadsOptions(rowData = {}) {
-      return this.buildIndexReadsOptions(rowData?.index_type);
+      if (!Number.isFinite(maxReads) || maxReads < 0) return 0;
+      return maxReads;
     },
     getLibraryIndexI7Options(rowData = {}) {
       const typeKey = rowData?.index_type ? String(rowData.index_type) : "";
@@ -1109,22 +1073,27 @@ export default {
       if (!typeKey) return [];
       return this.indexI5OptionsByType[typeKey] || [];
     },
-    async fetchIndexOptionsForType(typeId) {
+    async fetchIndexOptionsForType(typeId, autoSelect = null) {
       if (!typeId) return;
       const key = String(typeId);
       if (
         this.indexOptionsLoading[key] ||
-        (this.indexI7OptionsByType[key] && this.indexI5OptionsByType[key])
+        (this.indexI7OptionsByType[key] &&
+          this.indexI5OptionsByType[key] &&
+          this.indexPairsByType[key])
       ) {
         return;
       }
       this.indexOptionsLoading = { ...this.indexOptionsLoading, [key]: true };
       try {
-        const [i7Res, i5Res] = await Promise.all([
+        const [i7Res, i5Res, pairsRes] = await Promise.all([
           axiosRef.get(`${urlStringStart}/api/indices/i7/`, {
             params: { index_type_id: key }
           }),
           axiosRef.get(`${urlStringStart}/api/indices/i5/`, {
+            params: { index_type_id: key }
+          }),
+          axiosRef.get(`${urlStringStart}/api/indices/pairs/`, {
             params: { index_type_id: key }
           })
         ]);
@@ -1147,6 +1116,15 @@ export default {
             sensitivity: "base"
           })
         );
+        const pairsList = pairsRes?.data?.data || pairsRes?.data || [];
+        const pairsMap = {};
+        pairsList.forEach((pair) => {
+          const i7Id = pair?.index1_id || "";
+          const i5Id = pair?.index2_id || "";
+          if (i7Id && i5Id) {
+            pairsMap[i7Id] = i5Id;
+          }
+        });
         this.indexI7OptionsByType = {
           ...this.indexI7OptionsByType,
           [key]: i7Options
@@ -1155,6 +1133,24 @@ export default {
           ...this.indexI5OptionsByType,
           [key]: i5Options
         };
+        this.indexPairsByType = {
+          ...this.indexPairsByType,
+          [key]: pairsMap
+        };
+        if (autoSelect?.row && autoSelect?.selectedI7) {
+          const rowData = {
+            ...autoSelect.row.getData(),
+            index_i7: autoSelect.selectedI7
+          };
+          this.tryAutoSelectI5(autoSelect.row, rowData);
+        }
+        if (autoSelect?.row && autoSelect?.selectedI5) {
+          const rowData = {
+            ...autoSelect.row.getData(),
+            index_i5: autoSelect.selectedI5
+          };
+          this.tryAutoSelectI7(autoSelect.row, rowData);
+        }
         this.redrawDraftTable();
       } catch (error) {
         handleError(error);
@@ -1162,6 +1158,66 @@ export default {
         const { [key]: _discard, ...rest } = this.indexOptionsLoading;
         this.indexOptionsLoading = rest;
       }
+    },
+    tryAutoSelectI5(row, rowData) {
+      if (!row || !rowData) return false;
+      if (!rowData.index_type || !rowData.index_i7) {
+        return false;
+      }
+      const reads = this.getIndexReadsCount(rowData);
+      if (reads < 2) return false;
+      const typeKey = String(rowData.index_type);
+      const i7Options = this.indexI7OptionsByType[typeKey] || [];
+      const i5Options = this.indexI5OptionsByType[typeKey] || [];
+      const pairsMap = this.indexPairsByType[typeKey] || null;
+      if (!i7Options.length || !i5Options.length || !pairsMap) return false;
+      const selectedI7 = this.findIndexOptionByValue(
+        i7Options,
+        rowData.index_i7
+      );
+      if (!selectedI7 || !selectedI7.index_id) return false;
+      const i5IndexId = pairsMap[selectedI7.index_id];
+      if (!i5IndexId) return false;
+      const match = i5Options.find(
+        (option) => option.index_id && option.index_id === i5IndexId
+      );
+      if (!match) return false;
+      if (rowData.index_i5 === match.value) return true;
+      const updated = { ...rowData, index_i5: match.value };
+      row.update(updated);
+      this.refreshRowFormatting(row);
+      return true;
+    },
+    tryAutoSelectI7(row, rowData) {
+      if (!row || !rowData) return false;
+      if (!rowData.index_type || !rowData.index_i5) {
+        return false;
+      }
+      const reads = this.getIndexReadsCount(rowData);
+      if (reads < 2) return false;
+      const typeKey = String(rowData.index_type);
+      const i7Options = this.indexI7OptionsByType[typeKey] || [];
+      const i5Options = this.indexI5OptionsByType[typeKey] || [];
+      const pairsMap = this.indexPairsByType[typeKey] || null;
+      if (!i7Options.length || !i5Options.length || !pairsMap) return false;
+      const selectedI5 = this.findIndexOptionByValue(
+        i5Options,
+        rowData.index_i5
+      );
+      if (!selectedI5 || !selectedI5.index_id) return false;
+      const i7IndexId = Object.keys(pairsMap).find(
+        (key) => pairsMap[key] === selectedI5.index_id
+      );
+      if (!i7IndexId) return false;
+      const match = i7Options.find(
+        (option) => option.index_id && option.index_id === i7IndexId
+      );
+      if (!match) return false;
+      if (rowData.index_i7 === match.value) return true;
+      const updated = { ...rowData, index_i7: match.value };
+      row.update(updated);
+      this.refreshRowFormatting(row);
+      return true;
     },
     redrawDraftTable() {
       const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
@@ -1263,15 +1319,12 @@ export default {
       if (isEditable("index_type") && !row.index_type) {
         errors.index_type = `${prefix}: Index Type is a required field.`;
       }
-      const reads = this.normalizeNumber(row.index_reads);
-      if (isEditable("index_reads") && reads === null) {
-        errors.index_reads = `${prefix}: # of Index Reads is a required field.`;
-      }
+      const reads = this.getIndexReadsCount(row);
       if (isEditable("index_i7") && reads >= 1 && !row.index_i7) {
-        errors.index_i7 = `${prefix}: Index I7 is a required field.`;
+        errors.index_i7 = `${prefix}: Index I7 is required for this index type.`;
       }
       if (isEditable("index_i5") && reads >= 2 && !row.index_i5) {
-        errors.index_i5 = `${prefix}: Index I5 is required when using 2 reads.`;
+        errors.index_i5 = `${prefix}: Index I5 is required for this index type.`;
       }
       if (
         isEditable("measured_value") &&
@@ -1346,7 +1399,7 @@ export default {
         read_length: this.normalizeId(row.read_length),
         sequencing_depth: this.normalizeNumber(row.sequencing_depth),
         index_type: this.normalizeId(row.index_type),
-        index_reads: this.normalizeNumber(row.index_reads),
+        index_reads: this.getIndexReadsCount(row),
         index_i7: row.index_i7 || null,
         index_i5: row.index_i5 || null,
         organism: this.normalizeId(row.organism),
@@ -2257,9 +2310,6 @@ export default {
 }
 </style>
 <!--
-i5 i7 index set values after setting one
-api data sort by name
-
 all column consts revisit
 esc or del behaviour
 context menu behaviour

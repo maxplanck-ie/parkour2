@@ -9,7 +9,7 @@ const toast = useToast();
 export function showNotification(content, type) {
   let options = {
     timeout: 5000,
-    position: "top-left"
+    position: "top-left",
   };
 
   if (type === "info") toast.info(content, options);
@@ -28,9 +28,9 @@ function notifyParentAuthRequired() {
       window.parent.postMessage(
         {
           source: "mainhub-vue",
-          type: "auth-required"
+          type: "auth-required",
         },
-        window.location.origin
+        window.location.origin,
       );
     }
   } catch (error) {
@@ -53,7 +53,7 @@ export function handleError(error) {
   } else {
     showNotification(
       "An error occurred while processing your request.\nPlease contact the BioInfo department for assistance.",
-      "error"
+      "error",
     );
   }
 }
@@ -81,8 +81,8 @@ export function createAxiosObject() {
     withCredentials: true,
     headers: {
       "content-type": "application/json",
-      "X-CSRFToken": Cookies.get("csrftoken")
-    }
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
   });
 }
 
@@ -131,7 +131,7 @@ export function cellContextMenu(
   allowCopy,
   allowPaste,
   allowApplyToAll,
-  getTabulatorInstance
+  getTabulatorInstance,
 ) {
   const tabulatorInstance = getTabulatorInstance();
   const tableRef =
@@ -150,7 +150,7 @@ export function cellContextMenu(
   if (isRangeSelected) {
     showNotification(
       "Please use Ctrl+C to copy, and Ctrl+V to paste in a range selection.",
-      "info"
+      "info",
     );
   } else {
     if (allowApplyToAll) {
@@ -204,7 +204,7 @@ export function cellContextMenu(
               targetCell.setValue(value);
             }
           });
-        }
+        },
       });
     }
 
@@ -214,7 +214,7 @@ export function cellContextMenu(
         action: (e, cell) => {
           const value = cell.getValue();
           navigator.clipboard.writeText(value);
-        }
+        },
       });
     }
 
@@ -232,14 +232,14 @@ export function cellContextMenu(
               const validatedValue = tabulatorInstance.validateCellValue(
                 text,
                 columnDef,
-                rowData
+                rowData,
               );
               cell.setValue(validatedValue);
             } catch (error) {
               showNotification(error.message, "error");
             }
           });
-        }
+        },
       });
     }
   }
@@ -251,7 +251,7 @@ export async function validateAndFixExcelBuffer(buffer) {
   try {
     const zip = await JSZip.loadAsync(buffer);
     const sheetFiles = Object.keys(zip.files).filter(
-      (f) => f.startsWith("xl/worksheets/") && f.endsWith(".xml")
+      (f) => f.startsWith("xl/worksheets/") && f.endsWith(".xml"),
     );
     for (const file of sheetFiles) {
       let xmlText = await zip.files[file].async("string");
@@ -270,7 +270,7 @@ export async function validateAndFixExcelBuffer(buffer) {
     }
     const fixedBuffer = await zip.generateAsync({
       type: "arraybuffer",
-      compression: "DEFLATE"
+      compression: "DEFLATE",
     });
 
     return fixedBuffer;
@@ -297,7 +297,7 @@ function parseDataValidations(snippet, namespaces) {
     xr: "http://schemas.microsoft.com/office/spreadsheetml/2014/revision",
     xr2: "http://schemas.microsoft.com/office/spreadsheetml/2015/revision2",
     xr3: "http://schemas.microsoft.com/office/spreadsheetml/2016/revision3",
-    xm: "http://schemas.microsoft.com/office/excel/2006/main"
+    xm: "http://schemas.microsoft.com/office/excel/2006/main",
   };
   Object.entries(KNOWN_NAMESPACE_URIS).forEach(([prefix, uri]) => {
     if (prefix === "main") return;
@@ -396,7 +396,7 @@ function parseDataValidations(snippet, namespaces) {
       errorTitle,
       error,
       errorStyle,
-      formulae
+      formulae,
     });
   }
 
@@ -476,7 +476,7 @@ async function extractDataValidationSnippets(buffer) {
     const endIndex = closeIndex + closeMatch[0].length;
     return {
       snippet: xml.slice(openMatch.index, endIndex),
-      kind: "regular"
+      kind: "regular",
     };
   };
   if (!buffer) return new Map();
@@ -494,7 +494,7 @@ async function extractDataValidationSnippets(buffer) {
     }
     const parsedValidations = parseDataValidations(
       found.snippet,
-      sheetNamespaces
+      sheetNamespaces,
     );
     if (parsedValidations.length) {
       validationsBySheet.set(sheetName, parsedValidations);
@@ -523,7 +523,7 @@ function applyTemplateValidations(workbook, validationsBySheet) {
         errorTitle,
         error,
         errorStyle,
-        formulae
+        formulae,
       }) => {
         if (!addresses || !addresses.length) return;
         addresses.forEach((address) => {
@@ -544,7 +544,7 @@ function applyTemplateValidations(workbook, validationsBySheet) {
           if (formulae && formulae.length) options.formulae = [...formulae];
           dataValidations.add(address, options);
         });
-      }
+      },
     );
   });
 }
@@ -555,14 +555,14 @@ export async function createExcelExportBlob({
   axiosInstance,
   templateDownloadUrl,
   sheetName = "Parkour",
-  minMatchedHeaders = 6
+  minMatchedHeaders = 6,
 } = {}) {
   const workbook = new ExcelJS.Workbook();
   let validationsBySheet = null;
 
   if (templateDownloadUrl) {
     const response = await axiosInstance.get(templateDownloadUrl, {
-      responseType: "arraybuffer"
+      responseType: "arraybuffer",
     });
     const templateBuffer = response.data;
     validationsBySheet = await extractDataValidationSnippets(templateBuffer);
@@ -655,7 +655,7 @@ export async function createExcelExportBlob({
   }
 
   const sortedSheets = [...workbook.worksheets].sort(
-    (a, b) => a.orderNo - b.orderNo
+    (a, b) => a.orderNo - b.orderNo,
   );
   const targetSheet = worksheet;
   const otherSheets = sortedSheets.filter((sheet) => sheet !== targetSheet);
@@ -690,6 +690,6 @@ export async function createExcelExportBlob({
 
   const buffer = await workbook.xlsx.writeBuffer();
   return new Blob([buffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 }
