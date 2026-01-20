@@ -253,7 +253,7 @@ export default {
               colStart,
               colStart + pastedColumnCount
             );
-            const batchUpdates = {};
+            const batchUpdates = new Map();
             const isSingleCell = rowStart === rowEnd && colStart === colEnd;
             let targetGroup = null;
             let changedRows = new Set();
@@ -329,10 +329,12 @@ export default {
                 }
               });
 
-              batchUpdates[rowData.barcode] = updatedRow;
+              const updateKey =
+                rowData?.tempId ?? rowData?.barcode ?? `row-${rowNumber}`;
+              batchUpdates.set(updateKey, updatedRow);
             });
 
-            const updatedRowsArray = Object.values(batchUpdates);
+            const updatedRowsArray = Array.from(batchUpdates.values());
             if (updatedRowsArray.length) {
               this.tabulatorInstance.updateData(updatedRowsArray);
 
