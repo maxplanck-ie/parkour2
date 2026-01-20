@@ -42,7 +42,8 @@
                 Description<span class="required">*</span>
               </span>
               <textarea v-model="newRequest.description" class="description-textarea" rows="6"
-                placeholder="Describe Request" :class="{ 'input-error': descriptionError }"></textarea>
+                placeholder="Provide a brief description of your project, including any details important for handling and documentation. Indicate whether you have a backup of your study material (Yes/No)."
+                :class="{ 'input-error': descriptionError }"></textarea>
               <div v-if="descriptionError" class="field-error">
                 {{ descriptionError }}
               </div>
