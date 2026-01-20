@@ -208,11 +208,13 @@ export default {
           },
           clipboardCopyRowRange: "range",
           clipboardPasteAction: "range",
-          clipboardCopyFormatter: function (type, output) {
-            if (type == "plain") {
-              output += "\n";
+          clipboardCopyFormatter: (type, output) => {
+            if (type !== "plain") return output;
+            const customCopy = this.buildClipboardOutputFromSelection();
+            if (customCopy?.usedCustom) {
+              return `${customCopy.output}\n`;
             }
-            return output;
+            return `${output}\n`;
           },
           clipboardPasteParser: async (clipboard) => {
             this.errorsPopupContents.errorsList = [];
@@ -885,6 +887,30 @@ export default {
       }
     },
 
+    buildClipboardOutputFromSelection() {
+      const ranges = this.tabulatorInstance?.getRanges?.() || [];
+      if (!ranges.length) return null;
+      const cells = ranges[0]?.getCells?.() || [];
+      if (!cells.length) return null;
+      let usedCustom = false;
+      const rows = cells.map((rowCells) =>
+        rowCells.map((cell) => {
+          const columnDef = cell.getColumn?.().getDefinition?.() || {};
+          if (typeof columnDef.clipboardCopyValue === "function") {
+            usedCustom = true;
+            const custom = columnDef.clipboardCopyValue(cell);
+            if (custom === undefined || custom === null) return "";
+            return String(custom);
+          }
+          const value = cell.getValue?.();
+          if (value === undefined || value === null) return "";
+          return String(value);
+        })
+      );
+      const output = rows.map((row) => row.join("\t")).join("\n");
+      return { output, usedCustom };
+    },
+
     validateCellValue(value, columnDef, rowData) {
       const editorType = columnDef.editor;
       const resolveEditorParams = () =>
@@ -950,7 +976,10 @@ export default {
           }
           return numValue;
         }
-        case "list":
+        case "list": {
+          if (value === "" || value === undefined || value === null) {
+            return "";
+          }
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
@@ -974,6 +1003,33 @@ export default {
             optionLabels = Object.values(editorParamsList.values);
           }
           if (!options.includes(value)) {
+            const normalized = String(value).trim();
+            if (normalized !== "") {
+              const exactIndex = optionLabels.findIndex(
+                (label) => String(label).trim() === normalized
+              );
+              if (exactIndex !== -1) {
+                return options[exactIndex];
+              }
+              const normalizedLower = normalized.toLowerCase();
+              const ciIndex = optionLabels.findIndex(
+                (label) => String(label).trim().toLowerCase() === normalizedLower
+              );
+              if (ciIndex !== -1) {
+                return options[ciIndex];
+              }
+            }
+            if (typeof columnDef.pasteValueResolver === "function") {
+              const resolved = columnDef.pasteValueResolver(value, {
+                options,
+                optionLabels,
+                rowData
+              });
+              if (resolved !== undefined && resolved !== null && resolved !== "") {
+                applyValidators(resolved);
+                return resolved;
+              }
+            }
             if (columnDef.validator) {
               applyValidators(value);
               return value;
@@ -985,6 +1041,7 @@ export default {
             );
           }
           return value;
+        }
         case "input":
         default:
           if (columnDef.validator) {
@@ -1191,7 +1248,7 @@ export default {
 }
 
 .normal-tabulator-table .tabulator-cell.cell-invalid:not(.tabulator-range-selected) {
-  background-color: #f5bcbc;
+  background-color: #f5bcbc !important;
 }
 
 .normal-tabulator-table .tabulator-row.row-has-errors .tabulator-cell.required-filled:not(.disable-editing) {

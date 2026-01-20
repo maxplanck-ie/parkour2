@@ -98,6 +98,36 @@ const createListFormatter =
       ),
     );
 
+const createListClipboardValueGetter =
+  (options = [], placeholder = SELECT_PLACEHOLDER) =>
+  (cell) => {
+    const value = cell?.getValue?.();
+    const label = findOptionLabel(options, value);
+    if (label !== null && label !== undefined) {
+      return String(label);
+    }
+    return formatDisplayValue(value, placeholder);
+  };
+
+const createDynamicListClipboardValueGetter =
+  (getOptionsFn, getRowData, placeholder = SELECT_PLACEHOLDER) =>
+  (cell) => {
+    const options = getOptionsFn(getRowData(cell));
+    const label = findOptionLabel(options, cell.getValue());
+    if (label !== null && label !== undefined) {
+      return String(label);
+    }
+    const rawValue = cell.getValue();
+    return formatDisplayValue(rawValue, placeholder);
+  };
+
+function extractIndexSequence(value) {
+  if (value === undefined || value === null) return "";
+  const text = String(value).toUpperCase();
+  const match = text.match(/[ATCG]{6,24}/);
+  return match ? match[0] : "";
+}
+
 function listEditorConfig(options = [], placeholder = "Select") {
   return {
     editor: "list",
@@ -346,6 +376,7 @@ export function getAddRequestLibraryColumns(
         libraryEditable("library_protocol"),
         libraryDisabledMessage("library_protocol"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(protocols),
     },
     {
       title: "Comment Library",
@@ -381,6 +412,10 @@ export function getAddRequestLibraryColumns(
         libraryEditable("library_type"),
         libraryDisabledMessage("library_type"),
       ),
+      clipboardCopyValue: createDynamicListClipboardValueGetter(
+        getLibraryTypeOptions,
+        getRowData,
+      ),
     },
     {
       title: "Unit",
@@ -399,6 +434,7 @@ export function getAddRequestLibraryColumns(
         libraryEditable("measuring_unit"),
         libraryDisabledMessage("measuring_unit"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(libraryUnits),
     },
     {
       title: "Amount",
@@ -480,6 +516,7 @@ export function getAddRequestLibraryColumns(
         libraryEditable("read_length"),
         libraryDisabledMessage("read_length"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(readLengths),
     },
     {
       title: "Depth (M)",
@@ -527,6 +564,7 @@ export function getAddRequestLibraryColumns(
         libraryEditable("index_type"),
         libraryDisabledMessage("index_type"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(indexTypes),
     },
     {
       title: "Index I7",
@@ -546,6 +584,11 @@ export function getAddRequestLibraryColumns(
         libraryEditable("index_i7"),
         libraryDisabledMessage("index_i7"),
       ),
+      clipboardCopyValue: createDynamicListClipboardValueGetter(
+        dynamicOptions.i7,
+        getRowData,
+      ),
+      pasteValueResolver: (value) => extractIndexSequence(value),
     },
     {
       title: "Index I5",
@@ -565,6 +608,11 @@ export function getAddRequestLibraryColumns(
         libraryEditable("index_i5"),
         libraryDisabledMessage("index_i5"),
       ),
+      clipboardCopyValue: createDynamicListClipboardValueGetter(
+        dynamicOptions.i5,
+        getRowData,
+      ),
+      pasteValueResolver: (value) => extractIndexSequence(value),
     },
     {
       title: "Organism",
@@ -582,6 +630,7 @@ export function getAddRequestLibraryColumns(
         libraryEditable("organism"),
         libraryDisabledMessage("organism"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(organisms),
     },
   ];
   columns.forEach((column) => {
@@ -765,6 +814,7 @@ export function getAddRequestSampleColumns(
         sampleEditable("nucleic_acid_type"),
         sampleDisabledMessage("nucleic_acid_type"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(nucleicAcidTypes),
     },
     {
       title: "Comment Input",
@@ -800,6 +850,7 @@ export function getAddRequestSampleColumns(
         sampleEditable("measuring_unit"),
         sampleDisabledMessage("measuring_unit"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(sampleUnits),
     },
     {
       title: "Amount",
@@ -863,6 +914,10 @@ export function getAddRequestSampleColumns(
         sampleEditable("library_protocol"),
         sampleDisabledMessage("library_protocol"),
       ),
+      clipboardCopyValue: createDynamicListClipboardValueGetter(
+        getProtocolOptions,
+        getRowData,
+      ),
     },
     {
       title: "Analysis Type",
@@ -881,6 +936,10 @@ export function getAddRequestSampleColumns(
         sampleEditable("library_type"),
         sampleDisabledMessage("library_type"),
       ),
+      clipboardCopyValue: createDynamicListClipboardValueGetter(
+        getLibraryTypeOptions,
+        getRowData,
+      ),
     },
     {
       title: "Read Length",
@@ -898,6 +957,7 @@ export function getAddRequestSampleColumns(
         sampleEditable("read_length"),
         sampleDisabledMessage("read_length"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(readLengths),
     },
     {
       title: "Depth (M)",
@@ -945,6 +1005,7 @@ export function getAddRequestSampleColumns(
         sampleEditable("organism"),
         sampleDisabledMessage("organism"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(organisms),
     },
     {
       title: "Biosafety Level",
@@ -962,6 +1023,7 @@ export function getAddRequestSampleColumns(
         sampleEditable("biosafety_level"),
         sampleDisabledMessage("biosafety_level"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(biosafety),
     },
     {
       title: "GMO",
@@ -981,6 +1043,7 @@ export function getAddRequestSampleColumns(
         sampleEditable("gmo"),
         sampleDisabledMessage("gmo"),
       ),
+      clipboardCopyValue: createListClipboardValueGetter(gmo),
     },
   ];
   columns.forEach((column) => {

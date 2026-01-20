@@ -2109,18 +2109,6 @@ export default {
   color: #0a4a6a;
 }
 
-.status-success {
-  color: #0f766e;
-  border-color: #0f766e;
-  background: rgba(15, 118, 110, 0.08);
-}
-
-.status-warning {
-  color: #b45309;
-  border-color: #f59e0b;
-  background: rgba(245, 158, 11, 0.12);
-}
-
 .records-panel {
   flex: 1;
   display: flex;
@@ -2173,13 +2161,6 @@ export default {
   border: 1px solid #d0d0d0;
   border-radius: 6px;
   background: #f6f8fa;
-}
-
-.switch-label {
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #5f6473;
-  font-weight: 600;
 }
 
 .record-type-switch {
@@ -2288,14 +2269,6 @@ export default {
   background: #0f766e;
 }
 
-.add-request-modal .cell-valid {
-  background-color: #e8f5e9 !important;
-}
-
-.add-request-modal .cell-invalid {
-  background-color: #fdecea !important;
-}
-
 @keyframes add-request-fade-in {
   from {
     opacity: 0;
@@ -2319,9 +2292,7 @@ export default {
 }
 </style>
 <!--
-paste: col name instead of cell number
 after save behaviour
-two names same then doesnt show error in both
 
 all column consts revisit
 esc or del behaviour
