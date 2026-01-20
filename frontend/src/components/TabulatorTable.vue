@@ -338,6 +338,15 @@ export default {
             if (updatedRowsArray.length) {
               this.tabulatorInstance.updateData(updatedRowsArray);
 
+              if (changedRows.size) {
+                changedRows.forEach((rowPosition) => {
+                  const row = this.tabulatorInstance.getRowFromPosition(
+                    rowPosition
+                  );
+                  row?.reformat?.();
+                });
+              }
+
               if (changedRows.size && changedCols.size) {
                 const startRow = this.tabulatorInstance.getRowFromPosition(
                   Math.min(...changedRows)
@@ -844,13 +853,23 @@ export default {
           : [];
         firstRangeCells.forEach((row) => {
           row.forEach((cell) => {
-            let isEditable = cell._cell.column.getDefinition().editor;
-            let disabledEditing = cell
-              .getElement()
-              .classList.contains("disable-editing");
+            const columnDef = cell.getColumn?.().getDefinition?.() || {};
+            const rowData = cell.getRow?.().getData?.() || {};
+            const isEditable = (() => {
+              if (columnDef.editor === false) return false;
+              if (typeof columnDef.editable === "function") {
+                return columnDef.editable({
+                  getRow: () => ({ getData: () => rowData })
+                });
+              }
+              if (typeof columnDef.editable === "boolean") {
+                return columnDef.editable;
+              }
+              return Boolean(columnDef.editor);
+            })();
 
-            if (isEditable && !disabledEditing) {
-              const fieldName = cell._cell.column.getField();
+            if (isEditable) {
+              const fieldName = cell.getField?.();
               const overrideFn =
                 this.tableOptions && this.tableOptions.getClearValueForField;
               const clearVal =
@@ -868,10 +887,21 @@ export default {
           : [];
         let firstCell = firstRangeCells[0][0];
         if (firstCell) {
-          let disabledEditing = firstCell
-            .getElement()
-            .classList.contains("disable-editing");
-          if (disabledEditing) {
+          const columnDef = firstCell.getColumn?.().getDefinition?.() || {};
+          const rowData = firstCell.getRow?.().getData?.() || {};
+          const isEditable = (() => {
+            if (columnDef.editor === false) return false;
+            if (typeof columnDef.editable === "function") {
+              return columnDef.editable({
+                getRow: () => ({ getData: () => rowData })
+              });
+            }
+            if (typeof columnDef.editable === "boolean") {
+              return columnDef.editable;
+            }
+            return Boolean(columnDef.editor);
+          })();
+          if (!isEditable) {
             showNotification("Editing is disabled for this field.", "warning");
             return;
           }

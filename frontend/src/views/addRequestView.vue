@@ -2295,9 +2295,7 @@ export default {
 after save behaviour
 
 all column consts revisit
-esc or del behaviour
 context menu behaviour
-ctrl+c ctrl+v
 
 refactor all files
 -->

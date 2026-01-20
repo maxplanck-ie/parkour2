@@ -197,10 +197,22 @@ export function cellContextMenu(
             if (!sameGroup) return;
 
             const targetCell = row.getCell(field);
-            if (
-              targetCell &&
-              !targetCell.getElement().classList.contains("disable-editing")
-            ) {
+            if (!targetCell) return;
+            const columnDef = targetCell.getColumn().getDefinition();
+            const targetRowData = targetCell.getRow().getData();
+            const isEditable = (() => {
+              if (columnDef.editor === false) return false;
+              if (typeof columnDef.editable === "function") {
+                return columnDef.editable({
+                  getRow: () => ({ getData: () => targetRowData }),
+                });
+              }
+              if (typeof columnDef.editable === "boolean") {
+                return columnDef.editable;
+              }
+              return Boolean(columnDef.editor);
+            })();
+            if (isEditable) {
               targetCell.setValue(value);
             }
           });
@@ -222,13 +234,25 @@ export function cellContextMenu(
       operations.push({
         label: "Paste",
         action: (e, cell) => {
-          if (cell.getElement().classList.contains("disable-editing")) {
+          const columnDef = cell.getColumn().getDefinition();
+          const rowData = cell.getRow().getData();
+          const isEditable = (() => {
+            if (columnDef.editor === false) return false;
+            if (typeof columnDef.editable === "function") {
+              return columnDef.editable({
+                getRow: () => ({ getData: () => rowData }),
+              });
+            }
+            if (typeof columnDef.editable === "boolean") {
+              return columnDef.editable;
+            }
+            return Boolean(columnDef.editor);
+          })();
+          if (!isEditable) {
             return;
           }
           navigator.clipboard.readText().then((text) => {
             try {
-              const columnDef = cell.getColumn().getDefinition();
-              const rowData = cell.getRow().getData();
               const validatedValue = tabulatorInstance.validateCellValue(
                 text,
                 columnDef,
