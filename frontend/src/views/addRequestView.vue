@@ -445,6 +445,7 @@ export default {
         selectable: true,
         layout: "fitColumns",
         persistenceMode: false,
+        showPasteErrorRowNumber: true,
         rowFormatter: (row) => vm.applyRowStyling(row),
         rowSelectionChanged: () => handleSelection(),
         dataChanged: () => {

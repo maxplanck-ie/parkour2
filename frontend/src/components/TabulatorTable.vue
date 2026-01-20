@@ -38,7 +38,14 @@
           <div class="popup-scrollable-content-inner">
             <ol style="padding-left: 25px">
               <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
-                {{ item.barcode + " ➜ " }}
+                <span
+                  v-if="tableOptions && tableOptions.showPasteErrorRowNumber && item.rowNumber"
+                >
+                  {{ "Row " + item.rowNumber + " ➜ " }}
+                </span>
+                <span v-else-if="item.barcode">
+                  {{ item.barcode + " ➜ " }}
+                </span>
                 <span style="font-weight: bold">{{ item.message }}</span>
               </li>
             </ol>
@@ -269,17 +276,17 @@ export default {
               )
                 return;
 
-              let cellNumber = 0;
               const rowData = tableRow.getData();
+              const rowNumber = rowStart + rowOffset + 1;
               const updatedRow = { ...rowData };
 
               pastedRow.forEach((cellValue, colOffset) => {
                 const column = rangeColumns[colOffset];
                 if (!column) return;
+                const cellNumber = colStart + colOffset + 1;
                 const field = column.getField();
                 const columnDef = column.getDefinition();
                 const cell = tableRow.getCell(field);
-                cellNumber++;
 
                 if (
                   columnDef.editor === false ||
@@ -288,6 +295,7 @@ export default {
                   hasValidationErrors = true;
                   errors.push({
                     barcode: rowData.barcode,
+                    rowNumber,
                     message: `Cell ${cellNumber}: Editing is not allowed in this cell.`
                   });
                   return;
@@ -305,6 +313,7 @@ export default {
                   hasValidationErrors = true;
                   errors.push({
                     barcode: rowData.barcode,
+                    rowNumber,
                     message: `Cell ${cellNumber}: ${error.message}`
                   });
                 }
