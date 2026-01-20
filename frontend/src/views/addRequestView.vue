@@ -452,6 +452,7 @@ export default {
           handleSelection();
           this.revalidateDraftRows();
         },
+        handlePasteApplied: (rows) => vm.handlePasteApplied(rows),
         cellEditing: (cell) => vm.handleCellEditing(cell),
         handleCellEdited: (cell) => vm.handleCellEdited(cell),
         handleRenderComplete: () => this.applyValidationStyling()
@@ -488,40 +489,52 @@ export default {
       const table = row?.getTable?.();
       table?.redraw?.();
     },
+    refreshRowsForIndexType(typeKey) {
+      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+      const rows = table?.getRows?.() || [];
+      rows.forEach((row) => {
+        const rowData = row?.getData?.() || {};
+        if (String(rowData.index_type || "") !== String(typeKey)) return;
+        row?.reformat?.();
+      });
+    },
+    handlePasteApplied(rows = []) {
+      const list = Array.isArray(rows) ? rows : [];
+      list.forEach((row) => {
+        if (row?.index_type && (row?.index_i7 || row?.index_i5)) {
+          const typeKey = String(row.index_type);
+          const hasI7 = Boolean(this.indexI7OptionsByType[typeKey]);
+          const hasI5 = Boolean(this.indexI5OptionsByType[typeKey]);
+          if (hasI7 && hasI5) {
+            this.refreshRowsForIndexType(typeKey);
+          } else {
+            this.fetchIndexOptionsForType(row.index_type);
+          }
+        }
+      });
+      this.$nextTick(() => {
+        this.revalidateDraftRows();
+        this.applyValidationStyling();
+      });
+    },
+    hasMeasuredValueUnit(rowData) {
+      const unit = rowData?.measuring_unit;
+      return Boolean(unit) && unit !== "Unknown";
+    },
     isLibraryFieldEditable(field, rowData) {
-      if (field === "library_type") {
-        return Boolean(rowData.library_protocol);
-      }
-      if (field === "index_i7") {
-        return this.getIndexReadsCount(rowData) >= 1;
-      }
-      if (field === "index_i5") {
-        return this.getIndexReadsCount(rowData) >= 2;
-      }
-      if (field === "measured_value") {
-        return (
-          Boolean(rowData.measuring_unit) &&
-          rowData.measuring_unit !== "Unknown"
-        );
-      }
+      if (field === "library_type") return Boolean(rowData.library_protocol);
+      if (field === "index_i7") return this.getIndexReadsCount(rowData) >= 1;
+      if (field === "index_i5") return this.getIndexReadsCount(rowData) >= 2;
+      if (field === "measured_value") return this.hasMeasuredValueUnit(rowData);
       return true;
     },
     isSampleFieldEditable(field, rowData) {
-      if (field === "library_protocol") {
+      if (field === "library_protocol")
         return Boolean(rowData.nucleic_acid_type);
-      }
-      if (field === "library_type") {
-        return Boolean(rowData.library_protocol);
-      }
-      if (field === "measured_value") {
-        return (
-          Boolean(rowData.measuring_unit) &&
-          rowData.measuring_unit !== "Unknown"
-        );
-      }
-      if (field === "gmo") {
+      if (field === "library_type") return Boolean(rowData.library_protocol);
+      if (field === "measured_value") return this.hasMeasuredValueUnit(rowData);
+      if (field === "gmo")
         return this.isCellSuspensionType(rowData.nucleic_acid_type);
-      }
       return true;
     },
     isFieldEditable(field, rowData) {
@@ -531,24 +544,22 @@ export default {
       return this.isSampleFieldEditable(field, rowData);
     },
     isFieldRequired(field, rowData) {
-      if (this.addRequestMode === "library") {
-        if (field === "index_i7") {
-          return this.getIndexReadsCount(rowData) >= 1;
-        }
-        if (field === "index_i5") {
-          return this.getIndexReadsCount(rowData) >= 2;
-        }
-        if (field === "measured_value") {
-          const unit = rowData.measuring_unit;
-          return unit && unit !== "Unknown";
-        }
-        return LIBRARY_REQUIRED_FIELDS.has(field);
+      if (field === "index_i7") {
+        return this.addRequestMode === "library"
+          ? this.getIndexReadsCount(rowData) >= 1
+          : false;
+      }
+      if (field === "index_i5") {
+        return this.addRequestMode === "library"
+          ? this.getIndexReadsCount(rowData) >= 2
+          : false;
       }
       if (field === "measured_value") {
-        const unit = rowData.measuring_unit;
-        return unit && unit !== "Unknown";
+        return this.hasMeasuredValueUnit(rowData);
       }
-      return SAMPLE_REQUIRED_FIELDS.has(field);
+      return this.addRequestMode === "library"
+        ? LIBRARY_REQUIRED_FIELDS.has(field)
+        : SAMPLE_REQUIRED_FIELDS.has(field);
     },
     toggleFormPanel() {
       this.isFormPanelCollapsed = !this.isFormPanelCollapsed;
@@ -592,25 +603,10 @@ export default {
     hasUnsavedChanges() {
       const costUnit = this.newRequest.cost_unit;
       const description = (this.newRequest.description || "").trim();
-      if (costUnit || description) {
+      if (costUnit || description) return true;
+      if (this.uploadedRequestFiles.length || this.uploadedRequestFileIds.length)
         return true;
-      }
-      if (this.uploadedRequestFiles.length || this.uploadedRequestFileIds.length) {
-        return true;
-      }
-      const rows = this.getDraftTableRows();
-      if (rows.length) {
-        return true;
-      }
-      return rows.some((row) => {
-        if (!row) return false;
-        const fields = Object.keys(row);
-        return fields.some((field) => {
-          if (field === "tempId" || field === "selected") return false;
-          if (field === "gmo") return Boolean(row[field]) === true;
-          return this.fieldHasValue(row[field]);
-        });
-      });
+      return this.getDraftTableRows().length > 0;
     },
     emitSaved(payload) {
       this.$emit("saved", payload);
@@ -1160,7 +1156,11 @@ export default {
           };
           this.tryAutoSelectI7(autoSelect.row, rowData);
         }
-        this.redrawDraftTable();
+        this.$nextTick(() => {
+          this.refreshRowsForIndexType(key);
+          this.revalidateDraftRows();
+          this.applyValidationStyling();
+        });
       } catch (error) {
         handleError(error);
       } finally {
@@ -2319,13 +2319,14 @@ export default {
 }
 </style>
 <!--
-add hover tooltips
+paste: col name instead of cell number
+after save behaviour
+two names same then doesnt show error in both
 
 all column consts revisit
 esc or del behaviour
 context menu behaviour
 ctrl+c ctrl+v
-width of columns
 
 refactor all files
 -->

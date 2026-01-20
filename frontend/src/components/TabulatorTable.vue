@@ -254,7 +254,6 @@ export default {
             const batchUpdates = {};
             const isSingleCell = rowStart === rowEnd && colStart === colEnd;
             let targetGroup = null;
-            let hasValidationErrors = false;
             let changedRows = new Set();
             let changedCols = new Set();
 
@@ -277,6 +276,7 @@ export default {
                 return;
 
               const rowData = tableRow.getData();
+              const workingRow = { ...rowData };
               const rowNumber = rowStart + rowOffset + 1;
               const updatedRow = { ...rowData };
 
@@ -287,12 +287,20 @@ export default {
                 const field = column.getField();
                 const columnDef = column.getDefinition();
                 const cell = tableRow.getCell(field);
+                const isEditable = (() => {
+                  if (columnDef.editor === false) return false;
+                  if (typeof columnDef.editable === "function") {
+                    return columnDef.editable({
+                      getRow: () => ({ getData: () => workingRow })
+                    });
+                  }
+                  if (typeof columnDef.editable === "boolean") {
+                    return columnDef.editable;
+                  }
+                  return true;
+                })();
 
-                if (
-                  columnDef.editor === false ||
-                  cell.getElement().classList.contains("disable-editing")
-                ) {
-                  hasValidationErrors = true;
+                if (!isEditable) {
                   errors.push({
                     barcode: rowData.barcode,
                     rowNumber,
@@ -305,12 +313,12 @@ export default {
                   updatedRow[field] = this.validateCellValue(
                     cellValue,
                     columnDef,
-                    rowData
+                    workingRow
                   );
+                  workingRow[field] = updatedRow[field];
                   changedRows.add(rowStart + rowOffset + 1);
                   changedCols.add(colStart + colOffset);
                 } catch (error) {
-                  hasValidationErrors = true;
                   errors.push({
                     barcode: rowData.barcode,
                     rowNumber,
@@ -321,19 +329,6 @@ export default {
 
               batchUpdates[rowData.barcode] = updatedRow;
             });
-
-            if (hasValidationErrors) {
-              if (errors.length) {
-                this.errorsPopupContents = {
-                  errorsList: errors,
-                  errorsPopupHeight: Math.min(420, 260 + errors.length * 34),
-                  errorsPopupWidth: 600
-                };
-                this.showErrorsWindow = true;
-                return [];
-              }
-              return [];
-            }
 
             const updatedRowsArray = Object.values(batchUpdates);
             if (updatedRowsArray.length) {
@@ -356,6 +351,22 @@ export default {
                   );
                 }
               }
+            }
+
+            if (
+              updatedRowsArray.length &&
+              typeof this.tableOptions.handlePasteApplied === "function"
+            ) {
+              this.tableOptions.handlePasteApplied(updatedRowsArray);
+            }
+
+            if (errors.length) {
+              this.errorsPopupContents = {
+                errorsList: errors,
+                errorsPopupHeight: Math.min(420, 260 + errors.length * 34),
+                errorsPopupWidth: 600
+              };
+              this.showErrorsWindow = true;
             }
 
             return [];
@@ -963,6 +974,10 @@ export default {
             optionLabels = Object.values(editorParamsList.values);
           }
           if (!options.includes(value)) {
+            if (columnDef.validator) {
+              applyValidators(value);
+              return value;
+            }
             throw new Error(
               `Invalid option! valid choices are ➜ \n${optionLabels.join(
                 ", "
