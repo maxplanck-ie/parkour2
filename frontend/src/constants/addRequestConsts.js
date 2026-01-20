@@ -103,7 +103,7 @@ function listEditorConfig(options = [], placeholder = "Select") {
     editor: "list",
     editorParams: {
       values: createValuesMap(options),
-      clearable: true,
+      clearable: false,
       emptyValue: "",
       allowEmpty: true,
       autocomplete: true,
@@ -239,7 +239,7 @@ export function getAddRequestLibraryColumns(
     const options = getOptionsFn(getRowData(cell));
     return {
       values: createValuesMap(options),
-      clearable: true,
+      clearable: false,
       emptyValue: "",
       allowEmpty: true,
       autocomplete: true,
@@ -657,7 +657,7 @@ export function getAddRequestSampleColumns(
     const options = getOptionsFn(getRowData(cell));
     return {
       values: createValuesMap(options),
-      clearable: true,
+      clearable: false,
       emptyValue: "",
       allowEmpty: true,
       autocomplete: true,

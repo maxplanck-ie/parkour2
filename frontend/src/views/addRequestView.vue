@@ -333,9 +333,7 @@ export default {
     show(newVal) {
       if (newVal) {
         this.prepareAddRequestModal();
-        this.$nextTick(() => this.setupDraftTableResizeHandling());
       } else {
-        this.teardownDraftTableResizeHandling();
         this.resetState();
       }
     },
