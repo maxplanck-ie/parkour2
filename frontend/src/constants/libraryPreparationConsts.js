@@ -81,7 +81,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       minWidth: 30,
       cssClass: "checkbox-column right-border",
       contextMenu: () =>
-        cellContextMenu(false, false, false, getTabulatorInstance),
+        cellContextMenu(false, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       cellClick: function (e, cell) {
         const clickedRow = cell.getRow();
         const rowData = clickedRow.getData();
@@ -99,7 +99,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       frozen: true,
       cssClass: "right-border",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -120,7 +120,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       frozen: true,
       cssClass: "right-border",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -139,7 +139,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       headerTooltip: "Sample Name",
       visible: true,
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -159,7 +159,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -178,7 +178,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       headerTooltip: "Library Preparation Protocol",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -198,7 +198,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
@@ -217,7 +217,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
@@ -236,7 +236,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
@@ -255,7 +255,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
@@ -274,7 +274,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
@@ -292,7 +292,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
@@ -317,7 +317,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -359,7 +359,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const value = cell.getValue();
         const options = {
@@ -388,7 +388,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -419,7 +419,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -448,7 +448,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       validator: ["integer", "min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -479,7 +479,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -508,7 +508,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       validator: ["integer", "min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -540,7 +540,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
       validator: ["min:0", "max:100"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -564,7 +564,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, { blockActionsOnDisabledCells: true }),
       formatter: (cell) => {
         const value = cell.getValue() || "-";
         return ellipsisContainer(value);

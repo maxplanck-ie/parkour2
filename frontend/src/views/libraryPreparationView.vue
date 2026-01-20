@@ -728,7 +728,8 @@ export default {
         getClearValueForField: (field) => {
           if (field === "smear_analysis") return 100;
           return "";
-        }
+        },
+        blockActionsOnDisabledCells: true
       },
       searchQuery: "",
       showSelectColumns: false

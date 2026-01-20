@@ -865,7 +865,8 @@ export default {
         getClearValueForField: (field) => {
           if (field === "percent_total") return 100;
           return "";
-        }
+        },
+        blockActionsOnDisabledCells: true
       },
       searchQuery: "",
       filters: {

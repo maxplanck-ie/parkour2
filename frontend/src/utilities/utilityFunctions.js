@@ -132,7 +132,10 @@ export function cellContextMenu(
   allowPaste,
   allowApplyToAll,
   getTabulatorInstance,
+  options = {},
 ) {
+  const shouldBlockDisabledCells =
+    options.blockActionsOnDisabledCells === true;
   const tabulatorInstance = getTabulatorInstance();
   const tableRef =
     typeof tabulatorInstance?.getTable === "function"
@@ -198,6 +201,13 @@ export function cellContextMenu(
 
             const targetCell = row.getCell(field);
             if (!targetCell) return;
+            const targetCellEl = targetCell.getElement?.();
+            if (
+              shouldBlockDisabledCells &&
+              targetCellEl?.classList?.contains("disable-editing")
+            ) {
+              return;
+            }
             const columnDef = targetCell.getColumn().getDefinition();
             const targetRowData = targetCell.getRow().getData();
             const isEditable = (() => {
@@ -234,6 +244,13 @@ export function cellContextMenu(
       operations.push({
         label: "Paste",
         action: (e, cell) => {
+          const cellEl = cell.getElement?.();
+          if (
+            shouldBlockDisabledCells &&
+            cellEl?.classList?.contains("disable-editing")
+          ) {
+            return;
+          }
           const columnDef = cell.getColumn().getDefinition();
           const rowData = cell.getRow().getData();
           const isEditable = (() => {

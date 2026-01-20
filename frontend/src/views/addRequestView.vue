@@ -453,6 +453,12 @@ export default {
           this.revalidateDraftRows();
         },
         handlePasteApplied: (rows) => vm.handlePasteApplied(rows),
+        handleDeleteApplied: () => {
+          const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+          const rows = table?.getRows?.() || [];
+          rows.forEach((row) => row.reformat?.());
+          this.revalidateDraftRows();
+        },
         cellEditing: (cell) => vm.handleCellEditing(cell),
         handleCellEdited: (cell) => vm.handleCellEdited(cell),
         handleRenderComplete: () => this.applyValidationStyling()
@@ -2298,4 +2304,11 @@ all column consts revisit
 context menu behaviour
 
 refactor all files
+
+Incoming libraries and samples: "value from facility" preparation: "Value", "Concentration Library ng/µl"
+rna_quality keep as "removed" in db
+
+gmo should be false by default everytime
+if text DNA/RNA - GMO disabled rest, default: empty, choose yes/no
+
 -->

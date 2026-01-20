@@ -38,9 +38,7 @@
           <div class="popup-scrollable-content-inner">
             <ol style="padding-left: 25px">
               <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
-                <span
-                  v-if="tableOptions && tableOptions.showPasteErrorRowNumber && item.rowNumber"
-                >
+                <span v-if="tableOptions && tableOptions.showPasteErrorRowNumber && item.rowNumber">
                   {{ "Row " + item.rowNumber + " ➜ " }}
                 </span>
                 <span v-else-if="item.barcode">
@@ -290,6 +288,15 @@ export default {
                 const columnDef = column.getDefinition();
                 const cell = tableRow.getCell(field);
                 const isEditable = (() => {
+                  const shouldBlockDisabledCells =
+                    this.tableOptions?.blockActionsOnDisabledCells === true;
+                  const cellEl = cell?.getElement?.();
+                  if (
+                    shouldBlockDisabledCells &&
+                    cellEl?.classList?.contains("disable-editing")
+                  ) {
+                    return false;
+                  }
                   if (columnDef.editor === false) return false;
                   if (typeof columnDef.editable === "function") {
                     return columnDef.editable({
@@ -303,6 +310,10 @@ export default {
                 })();
 
                 if (!isEditable) {
+                  const trimmedValue = String(cellValue ?? "").trim();
+                  if (trimmedValue === "") {
+                    return;
+                  }
                   errors.push({
                     barcode: rowData.barcode,
                     rowNumber,
@@ -828,13 +839,6 @@ export default {
         !event.ctrlKey &&
         !event.metaKey &&
         !event.altKey;
-      let selectedRanges = this.tabulatorInstance.getRanges();
-      let selectedRangesData = this.tabulatorInstance.getRangesData();
-      let isRangeSelected =
-        selectedRangesData.length > 0 &&
-        (selectedRangesData[0].length > 0 ||
-          (selectedRangesData[0][0] &&
-            Object.keys(selectedRangesData[0][0]).length > 0));
       if (isEscape && this.showErrorsWindow) {
         this.showErrorsWindow = false;
         return;
@@ -846,62 +850,68 @@ export default {
       ) {
         return;
       }
+      const selectedRanges = this.tabulatorInstance.getRanges?.() || [];
+      const rangeCells = selectedRanges[0]?.getCells?.() || [];
+      const getIsEditable = (cell, rowData) => {
+        const shouldBlockDisabledCells =
+          this.tableOptions?.blockActionsOnDisabledCells === true;
+        const cellEl = cell.getElement?.();
+        if (shouldBlockDisabledCells && cellEl?.classList?.contains("disable-editing")) {
+          return false;
+        }
+        const columnDef = cell.getColumn?.().getDefinition?.() || {};
+        if (columnDef.editor === false) return false;
+        if (typeof columnDef.editable === "function") {
+          return columnDef.editable({
+            getRow: () => ({ getData: () => rowData })
+          });
+        }
+        if (typeof columnDef.editable === "boolean") {
+          return columnDef.editable;
+        }
+        return Boolean(columnDef.editor);
+      };
       if (isDeleteOrBackspace) {
-        if (!isRangeSelected) return;
-        let firstRangeCells = selectedRanges[0]
-          ? selectedRanges[0].getCells()
-          : [];
-        firstRangeCells.forEach((row) => {
+        if (!rangeCells.length) return;
+        const rowOriginals = new Map();
+        const rowUpdates = new Map();
+        rangeCells.forEach((row) => {
           row.forEach((cell) => {
-            const columnDef = cell.getColumn?.().getDefinition?.() || {};
-            const rowData = cell.getRow?.().getData?.() || {};
-            const isEditable = (() => {
-              if (columnDef.editor === false) return false;
-              if (typeof columnDef.editable === "function") {
-                return columnDef.editable({
-                  getRow: () => ({ getData: () => rowData })
-                });
-              }
-              if (typeof columnDef.editable === "boolean") {
-                return columnDef.editable;
-              }
-              return Boolean(columnDef.editor);
-            })();
-
-            if (isEditable) {
-              const fieldName = cell.getField?.();
-              const overrideFn =
-                this.tableOptions && this.tableOptions.getClearValueForField;
-              const clearVal =
-                typeof overrideFn === "function" ? overrideFn(fieldName) : "";
-              cell.setValue(clearVal);
+            const rowComp = cell.getRow?.();
+            if (!rowComp) return;
+            if (!rowOriginals.has(rowComp)) {
+              rowOriginals.set(rowComp, rowComp.getData?.() || {});
             }
+            const rowData = rowOriginals.get(rowComp) || {};
+            if (!getIsEditable(cell, rowData)) return;
+            const fieldName = cell.getField?.();
+            const overrideFn =
+              this.tableOptions && this.tableOptions.getClearValueForField;
+            const clearVal =
+              typeof overrideFn === "function" ? overrideFn(fieldName) : "";
+            const base = rowUpdates.get(rowComp) || { ...rowData };
+            rowUpdates.set(rowComp, { ...base, [fieldName]: clearVal });
           });
         });
+        rowUpdates.forEach((data, rowComp) => {
+          rowComp?.update?.(data);
+        });
+        if (
+          rowUpdates.size &&
+          typeof this.tableOptions.handleDeleteApplied === "function"
+        ) {
+          this.tableOptions.handleDeleteApplied(
+            Array.from(rowUpdates.values())
+          );
+        }
         event.preventDefault();
         return;
       }
       if (isPrintableKey) {
-        let firstRangeCells = selectedRanges[0]
-          ? selectedRanges[0].getCells()
-          : [];
-        let firstCell = firstRangeCells[0][0];
+        const firstCell = rangeCells[0]?.[0];
         if (firstCell) {
-          const columnDef = firstCell.getColumn?.().getDefinition?.() || {};
           const rowData = firstCell.getRow?.().getData?.() || {};
-          const isEditable = (() => {
-            if (columnDef.editor === false) return false;
-            if (typeof columnDef.editable === "function") {
-              return columnDef.editable({
-                getRow: () => ({ getData: () => rowData })
-              });
-            }
-            if (typeof columnDef.editable === "boolean") {
-              return columnDef.editable;
-            }
-            return Boolean(columnDef.editor);
-          })();
-          if (!isEditable) {
+          if (!getIsEditable(firstCell, rowData)) {
             showNotification("Editing is disabled for this field.", "warning");
             return;
           }
