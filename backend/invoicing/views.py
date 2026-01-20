@@ -273,9 +273,16 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
                 .values_list("name", flat=True)
             )
 
-            protocol = LibraryProtocol.objects.filter(archived=False).get(
-                pk=item["library_protocol"]
+            protocol_name = (
+                LibraryProtocol.objects.filter(
+                    archived=False, pk=item["library_protocol"]
+                )
+                .values_list("name", flat=True)
+                .first()
             )
+            if not protocol_name:
+                # Legacy requests may reference deleted or archived protocols.
+                protocol_name = "Unknown"
 
             row = [
                 item["request"],
@@ -286,7 +293,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
                 percentage,
                 read_lengths,
                 item["num_libraries_samples"],
-                protocol.name,
+                protocol_name,
                 item["fixed_costs"],
                 item["sequencing_costs"],
                 item["preparation_costs"],
