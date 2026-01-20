@@ -285,11 +285,11 @@ export default {
       isRequestSaving: false,
       draftRowCounter: 0,
       libraryMeasuringUnits: [
-        { value: "ng/┬Ál", label: "ng/┬Ál (Concentration)" },
+        { value: "ng/µl", label: "ng/µl (Concentration)" },
         { value: "Unknown", label: "Unknown" }
       ],
       sampleMeasuringUnits: [
-        { value: "ng/┬Ál", label: "ng/┬Ál (Concentration)" },
+        { value: "ng/µl", label: "ng/µl (Concentration)" },
         { value: "M", label: "M (Cells)" },
         { value: "k", label: "k (Cells)" },
         { value: "Unknown", label: "Unknown" }
@@ -326,14 +326,16 @@ export default {
       readLengthsList: [],
       nucleicAcidTypesList: [],
       organismsList: [],
-      indexTypesList: []
+      indexTypesList: [],
     };
   },
   watch: {
     show(newVal) {
       if (newVal) {
         this.prepareAddRequestModal();
+        this.$nextTick(() => this.setupDraftTableResizeHandling());
       } else {
+        this.teardownDraftTableResizeHandling();
         this.resetState();
       }
     },
@@ -858,6 +860,13 @@ export default {
         el.setAttribute("data-tooltip-original", disabledTooltip);
       } else if (valuePresent) {
         el.classList.add("cell-valid");
+      }
+      const hasValidationTooltip = el.getAttribute("data-tooltip-original");
+      if (!hasValidationTooltip) {
+        const displayText = (el.textContent || "").trim();
+        if (displayText) {
+          el.setAttribute("title", displayText);
+        }
       }
     },
     applyRowStyling(row) {
@@ -2311,6 +2320,8 @@ export default {
 }
 </style>
 <!--
+add hover tooltips
+
 all column consts revisit
 esc or del behaviour
 context menu behaviour

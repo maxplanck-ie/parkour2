@@ -1,4 +1,7 @@
-import { cellContextMenu, ellipsisContainer } from "../utilities/utilityFunctions";
+import {
+  cellContextMenu,
+  ellipsisContainer,
+} from "../utilities/utilityFunctions";
 
 export const LIBRARY_REQUIRED_FIELDS = new Set([
   "name",
@@ -307,7 +310,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Name",
       field: "name",
-      width: "10%",
+      minWidth: 110,
+      widthGrow: 2,
       headerVertical: false,
       headerTooltip: "Enter a Unique Name",
       frozen: true,
@@ -329,7 +333,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Protocol",
       field: "library_protocol",
-      width: "10%",
+      minWidth: 110,
+      widthGrow: 1.2,
       headerVertical: false,
       headerTooltip: "Choose the Library Preparation Protocol",
       visible: true,
@@ -345,7 +350,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Comment Library",
       field: "comments",
-      width: "10%",
+      minWidth: 130,
+      widthGrow: 2,
       headerVertical: false,
       headerTooltip:
         "Description of the Library Generation and the Expected Quality <br><br> - ChIP-Seq library, includes adapter dimers <br> - ChIP-Seq library contains fragments > 1kbp <br> - Amplicon, bp is the product of interest",
@@ -361,7 +367,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Analysis Type",
       field: "library_type",
-      width: "8%",
+      minWidth: 110,
+      widthGrow: 1.2,
       headerVertical: false,
       headerTooltip: "Choose the Analysis Type",
       visible: true,
@@ -378,7 +385,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Unit",
       field: "measuring_unit",
-      width: "6%",
+      width: 80,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip:
         "Choose the Measuring Unit <br><br> - Use 'Unknown' if no values are available",
@@ -395,7 +403,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Amount",
       field: "measured_value",
-      width: "6%",
+      width: 80,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip: "Enter the Measured Value",
       visible: true,
@@ -420,7 +429,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Size (bp)",
       field: "mean_fragment_size",
-      width: "7%",
+      width: 80,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip: "Enter the Mean Fragment Size (in bp)",
       visible: true,
@@ -438,7 +448,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Volume (µl)",
       field: "volume",
-      width: "7%",
+      width: 80,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip: "Enter the Measured Volume",
       visible: true,
@@ -456,7 +467,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Read Length",
       field: "read_length",
-      width: "8%",
+      width: 100,
+      minWidth: 100,
       headerVertical: false,
       headerTooltip: "Choose the Read Length",
       visible: true,
@@ -472,7 +484,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Depth (M)",
       field: "sequencing_depth",
-      width: "6%",
+      width: 80,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip:
         "Enter the Sequencing Depth (in Millions of Paired-End Fragments)",
@@ -501,7 +514,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Index Type",
       field: "index_type",
-      width: "8%",
+      minWidth: 100,
+      widthGrow: 1.2,
       headerVertical: false,
       headerTooltip: "Choose the Index Type",
       visible: true,
@@ -517,7 +531,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Index I7",
       field: "index_i7",
-      width: "8%",
+      minWidth: 100,
+      widthGrow: 1.7,
       headerVertical: false,
       headerTooltip: "Choose Index I7",
       visible: true,
@@ -535,7 +550,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Index I5",
       field: "index_i5",
-      width: "8%",
+      minWidth: 100,
+      widthGrow: 1.7,
       headerVertical: false,
       headerTooltip: "Choose Index I5",
       visible: true,
@@ -553,7 +569,8 @@ export function getAddRequestLibraryColumns(
     {
       title: "Organism",
       field: "organism",
-      width: "10%",
+      width: 100,
+      minWidth: 100,
       headerVertical: false,
       headerTooltip: "Choose the Organism",
       visible: true,
@@ -713,7 +730,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Name",
       field: "name",
-      width: "10%",
+      minWidth: 110,
+      widthGrow: 2,
       headerVertical: false,
       headerTooltip: "Enter a Unique Name",
       visible: true,
@@ -734,7 +752,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Input Type",
       field: "nucleic_acid_type",
-      width: "10%",
+      minWidth: 110,
+      widthGrow: 1.2,
       headerVertical: false,
       headerTooltip: "Choose the Input Type",
       visible: true,
@@ -750,7 +769,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Comment Input",
       field: "comments",
-      width: "10%",
+      minWidth: 130,
+      widthGrow: 2,
       headerVertical: false,
       headerTooltip:
         "Description of the Input Generation and the Expected Quality <br><br> - pull-down assay, target: H3K9me3 <br> - Column-purified RNA, high quality, DNase treated <br> - FFPE extracted total RNA, fragmentation expected",
@@ -764,9 +784,10 @@ export function getAddRequestSampleColumns(
       ),
     },
     {
-      title: "Measuring Unit",
+      title: "Unit",
       field: "measuring_unit",
-      width: "8%",
+      width: 90,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip:
         "Choose the Measuring Unit <br><br> - Use 'Unknown' if no values are available",
@@ -781,9 +802,10 @@ export function getAddRequestSampleColumns(
       ),
     },
     {
-      title: "Measured Value",
+      title: "Amount",
       field: "measured_value",
-      width: "8%",
+      width: 90,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip: "Enter the Measured Value",
       visible: true,
@@ -808,7 +830,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Volume (µl)",
       field: "volume",
-      width: "8%",
+      width: 90,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip: "Enter the Measured Volume",
       visible: true,
@@ -826,7 +849,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Protocol",
       field: "library_protocol",
-      width: "10%",
+      minWidth: 110,
+      widthGrow: 1.2,
       headerVertical: false,
       headerTooltip: "Choose the Library Preparation Protocol",
       visible: true,
@@ -843,7 +867,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Analysis Type",
       field: "library_type",
-      width: "8%",
+      minWidth: 110,
+      widthGrow: 1.2,
       headerVertical: false,
       headerTooltip: "Choose the Analysis Type",
       visible: true,
@@ -860,7 +885,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Read Length",
       field: "read_length",
-      width: "8%",
+      width: 100,
+      minWidth: 100,
       headerVertical: false,
       headerTooltip: "Choose the Read Length",
       visible: true,
@@ -876,7 +902,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Depth (M)",
       field: "sequencing_depth",
-      width: "6%",
+      width: 90,
+      minWidth: 80,
       headerVertical: false,
       headerTooltip:
         "Enter the Sequencing Depth (in Millions of Paired-End Fragments)",
@@ -905,7 +932,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Organism",
       field: "organism",
-      width: "10%",
+      width: 100,
+      minWidth: 100,
       headerVertical: false,
       headerTooltip: "Choose the Organism",
       visible: true,
@@ -921,7 +949,8 @@ export function getAddRequestSampleColumns(
     {
       title: "Biosafety Level",
       field: "biosafety_level",
-      width: "7%",
+      width: 100,
+      minWidth: 100,
       headerVertical: false,
       headerTooltip: "Choose the Biosafety Level",
       visible: true,
@@ -937,7 +966,8 @@ export function getAddRequestSampleColumns(
     {
       title: "GMO",
       field: "gmo",
-      width: "5%",
+      width: 80,
+      minWidth: 70,
       headerVertical: false,
       headerTooltip:
         "Choose if you are submitting Genetically Modified Organisms, often applies to living cells",
