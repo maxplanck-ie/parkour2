@@ -1120,7 +1120,6 @@ def export_request(request):
             "index_reads",  # libraries
             "index_i7",  # libraries
             "index_i5",  # libraries
-            "rna_quality",  # samples
             "read_length",
             "sequencing_depth",
             "organism",
@@ -1144,7 +1143,6 @@ def export_request(request):
                         "_",  # index_reads
                         "_",  # index_i7
                         "_",  # index_i5
-                        r.rna_quality,
                         r.read_length,
                         r.sequencing_depth,
                         r.organism,
@@ -1166,7 +1164,6 @@ def export_request(request):
                         r.index_reads,
                         r.index_i7,
                         r.index_i5,
-                        "_",  # rna_quality
                         r.read_length,
                         r.sequencing_depth,
                         r.organism,

@@ -38,7 +38,6 @@ class SamplesResource(resources.ModelResource):
             "library_protocol",
             "library_type",
             "concentration",
-            "rna_quality",
             "read_length",
             "sequencing_depth",
             "organism",

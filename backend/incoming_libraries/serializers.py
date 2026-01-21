@@ -112,7 +112,6 @@ class SampleSerializer(BaseSerializer):
         fields = BaseSerializer.Meta.fields + (
             "nucleic_acid_type",
             "nucleic_acid_type_name",
-            "rna_quality",
             "rna_quality_facility",
             "gmo",
             "gmo_facility",
@@ -122,7 +121,6 @@ class SampleSerializer(BaseSerializer):
             **BaseSerializer.Meta.extra_kwargs,
             **{
                 "nucleic_acid_type": {"required": False},
-                "rna_quality": {"required": False},
                 "gmo": {"required": False},
                 "gmo_facility": {"required": False},
                 "biosafety_level": {"required": False},
