@@ -2319,7 +2319,6 @@ export default {
 </style>
 <!--
 after save behaviour
-rna_quality keep as "removed" in db
 reset width in incoming libraries and samples resets toggle of rows
 
 refactor/simplify all the files
