@@ -287,6 +287,8 @@ export default {
                 const field = column.getField();
                 const columnDef = column.getDefinition();
                 const cell = tableRow.getCell(field);
+                const columnTitle =
+                  columnDef?.title || field || `Cell ${cellNumber}`;
                 const isEditable = (() => {
                   const shouldBlockDisabledCells =
                     this.tableOptions?.blockActionsOnDisabledCells === true;
@@ -317,7 +319,7 @@ export default {
                   errors.push({
                     barcode: rowData.barcode,
                     rowNumber,
-                    message: `Cell ${cellNumber}: Editing is not allowed in this cell.`
+                    message: `${columnTitle}: Editing is not allowed in this cell.`
                   });
                   return;
                 }
@@ -335,7 +337,7 @@ export default {
                   errors.push({
                     barcode: rowData.barcode,
                     rowNumber,
-                    message: `Cell ${cellNumber}: ${error.message}`
+                    message: `${columnTitle}: ${error.message}`
                   });
                 }
               });
@@ -969,23 +971,23 @@ export default {
         for (const rule of validators) {
           if (typeof rule === "function") {
             const res = rule(val);
-            if (res !== true) throw new Error(res || "Invalid value.");
+            if (res !== true) throw new Error(res || "Entered value is invalid.");
           } else if (typeof rule === "string") {
             const trimmed = rule.trim().toLowerCase();
             if (trimmed === "integer") {
               if (!Number.isInteger(val))
-                throw new Error("Value must be an integer.");
+                throw new Error("Entered value must be an integer.");
             } else if (trimmed.startsWith("min:")) {
               const v = Number(trimmed.slice(4));
               if (!Number.isNaN(v) && val < v)
                 throw new Error(
-                  `Value should be more than ${new Intl.NumberFormat().format(v)}.`
+                  `Entered value should be more than ${new Intl.NumberFormat().format(v)}.`
                 );
             } else if (trimmed.startsWith("max:")) {
               const v = Number(trimmed.slice(4));
               if (!Number.isNaN(v) && val > v)
                 throw new Error(
-                  `Value should be less than ${new Intl.NumberFormat().format(v)}.`
+                  `Entered value should be less than ${new Intl.NumberFormat().format(v)}.`
                 );
             }
           }
@@ -997,7 +999,7 @@ export default {
           if (str === "") return "";
           const numValue = Number(str);
           if (Number.isNaN(numValue))
-            throw new Error("Invalid numeric format, please check!");
+            throw new Error("Entered number format is invalid.");
           applyValidators(numValue);
           const { min, max } = resolveEditorParams();
           if (
@@ -1011,9 +1013,9 @@ export default {
             const maxStr = hasMax ? nf.format(Number(max)) : undefined;
             let message;
             if (hasMin && hasMax)
-              message = `Value must be between ${minStr} and ${maxStr}.`;
-            else if (hasMin) message = `Value should be more than ${minStr}.`;
-            else message = `Value should be less than ${maxStr}.`;
+              message = `Entered value must be between ${minStr} and ${maxStr}.`;
+            else if (hasMin) message = `Entered value should be more than ${minStr}.`;
+            else message = `Entered value should be less than ${maxStr}.`;
             throw new Error(message);
           }
           return numValue;
@@ -1077,9 +1079,7 @@ export default {
               return value;
             }
             throw new Error(
-              `Invalid option! valid choices are ➜ \n${optionLabels.join(
-                ", "
-              )}.`
+              "Entered value must be from the dropdown list."
             );
           }
           return value;
@@ -1090,7 +1090,7 @@ export default {
             const validationResult = columnDef.validator(value);
             if (validationResult !== true) {
               throw new Error(
-                validationResult || "Invalid data format, please check!"
+                validationResult || "Entered date format is invalid."
               );
             }
           }

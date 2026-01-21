@@ -540,7 +540,7 @@ export default {
       if (field === "library_type") return Boolean(rowData.library_protocol);
       if (field === "measured_value") return this.hasMeasuredValueUnit(rowData);
       if (field === "gmo")
-        return this.isCellSuspensionType(rowData.nucleic_acid_type);
+        return this.isGmoAllowedInputType(rowData.nucleic_acid_type);
       return true;
     },
     isFieldEditable(field, rowData) {
@@ -562,6 +562,9 @@ export default {
       }
       if (field === "measured_value") {
         return this.hasMeasuredValueUnit(rowData);
+      }
+      if (field === "gmo") {
+        return this.isGmoAllowedInputType(rowData.nucleic_acid_type);
       }
       return this.addRequestMode === "library"
         ? LIBRARY_REQUIRED_FIELDS.has(field)
@@ -667,7 +670,7 @@ export default {
         name: ""
       };
       const row =
-        this.addRequestMode === "sample" ? { ...baseRow, gmo: false } : baseRow;
+        this.addRequestMode === "sample" ? { ...baseRow, gmo: null } : baseRow;
       this.addRequestDraftRows = [...this.addRequestDraftRows, row];
       this.$nextTick(() => this.revalidateDraftRows());
     },
@@ -944,7 +947,7 @@ export default {
       }
       if (
         field === "gmo" &&
-        !this.isCellSuspensionType(rowData.nucleic_acid_type)
+        !this.isGmoAllowedInputType(rowData.nucleic_acid_type)
       ) {
         showNotification(
           "GMO is editable only for Cell Suspension inputs.",
@@ -1037,7 +1040,7 @@ export default {
       if (field === "nucleic_acid_type") {
         data.library_protocol = "";
         data.library_type = "";
-        data.gmo = this.isCellSuspensionType(data.nucleic_acid_type);
+        data.gmo = null;
         row.update(data);
         this.refreshRowFormatting(row);
         return;
@@ -1261,12 +1264,14 @@ export default {
         }) || null
       );
     },
-    isCellSuspensionType(value) {
+    isGmoAllowedInputType(value) {
       const meta = this.getNucleicAcidMeta(value);
       if (!meta || typeof meta.name !== "string") {
-        return false;
+        return true;
       }
-      return meta.name.trim().toLowerCase() === "cell suspension";
+      const name = meta.name.trim().toLowerCase();
+      if (!name) return true;
+      return !(name.includes("dna") || name.includes("rna"));
     },
     applyMeasuringUnitSideEffects(rowData) {
       if (!rowData) return;
@@ -1393,6 +1398,15 @@ export default {
         errors.biosafety_level = `${prefix}: Biosafety Level is a required field.`;
       }
       if (
+        isEditable("gmo") &&
+        row.gmo !== true &&
+        row.gmo !== false &&
+        row.gmo !== "true" &&
+        row.gmo !== "false"
+      ) {
+        errors.gmo = `${prefix}: Propagable & GMO is a required field.`;
+      }
+      if (
         isEditable("measured_value") &&
         row.measuring_unit &&
         row.measuring_unit !== "Unknown" &&
@@ -1422,11 +1436,17 @@ export default {
       };
     },
     buildSamplePayload(row) {
-      const rawGmo = row.gmo;
-      const gmoValue =
-        typeof rawGmo === "string"
-          ? rawGmo === "true"
-          : rawGmo === true;
+      const gmoValue = (() => {
+        const value = row.gmo;
+        if (value === true || value === "true") return true;
+        if (value === false || value === "false") return false;
+        if (typeof value === "string") {
+          const normalized = value.trim().toLowerCase();
+          if (normalized === "yes") return true;
+          if (normalized === "no") return false;
+        }
+        return null;
+      })();
       return {
         name: (row.name || "").trim(),
         nucleic_acid_type: this.normalizeId(row.nucleic_acid_type),
@@ -2299,16 +2319,9 @@ export default {
 </style>
 <!--
 after save behaviour
-
-all column consts revisit
-context menu behaviour
-
-refactor all files
-
-Incoming libraries and samples: "value from facility" preparation: "Value", "Concentration Library ng/µl"
 rna_quality keep as "removed" in db
+reset width in incoming libraries and samples resets toggle of rows
 
-gmo should be false by default everytime
-if text DNA/RNA - GMO disabled rest, default: empty, choose yes/no
-
+refactor/simplify all the files
+unit test all the pages
 -->

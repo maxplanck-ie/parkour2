@@ -38,7 +38,7 @@ export function incomingLibrariesSamplesGroupHeader(
         }
     ${
       gmo
-        ? `<div title="GMO: Yes" style="display: flex; align-items: center;">
+        ? `<div title="Propagable and GMO: Yes" style="display: flex; align-items: center;">
                 <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                   <g>
                     <path d="M21 12 L18.36 18.36 L12 21 L5.64 18.36 L3 12 L5.64 5.64 L12 3 L18.36 5.64 Z" fill="#FFB6C1" stroke="#323232" stroke-width="1.8" stroke-linejoin="round" transform="rotate(-22.5 12 12)"/>
@@ -46,7 +46,7 @@ export function incomingLibrariesSamplesGroupHeader(
                   </g>
                 </svg>
               </div>`
-        : `<div title="GMO: No" style="display: flex; align-items: center;">
+        : `<div title="Propagable and GMO: No" style="display: flex; align-items: center;">
                   <svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
                     <g>
                       <path d="M21 12 L18.36 18.36 L12 21 L5.64 18.36 L3 12 L5.64 5.64 L12 3 L18.36 5.64 Z" fill="#B2D8B2" stroke="#323232" stroke-width="1.8" stroke-linejoin="round" transform="rotate(-22.5 12 12)"/>
@@ -394,9 +394,7 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
               isNaN(value) ||
               value === -1
                 ? "-"
-                : value === 0
-                  ? "0.0"
-                  : value.toFixed(1);
+                : value.toFixed(2);
             return ellipsisContainer(finalString);
           },
         },
@@ -606,12 +604,12 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
           },
         },
         {
-          title: "GMO",
+          title: "Propagable & GMO",
           field: "gmo_facility",
           minWidth: 60,
-          width: "6%",
+          width: "7%",
           editor: "list",
-          headerTooltip: "GMO Documentation",
+          headerTooltip: "Propagable & GMO Documentation",
           editorParams: {
             values: ["Not Needed", "Risk Assessment Done"].map((v) => ({
               label: v,
@@ -704,7 +702,7 @@ export function incomingLibrariesSamplesExportColumns() {
     { header: "bp (Facility)", key: "size_distribution_facility", width: 14 },
     { header: "% Total", key: "percent_total", width: 10 },
     { header: "RQN", key: "rna_quality_facility", width: 10 },
-    { header: "GMO", key: "gmo_facility", width: 16 },
+    { header: "Propagable & GMO", key: "gmo_facility", width: 24 },
     { header: "Comment (Facility)", key: "comments_facility", width: 24 },
   ];
 }

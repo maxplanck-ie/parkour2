@@ -275,9 +275,9 @@ export function librariesAndSamplesColumnDefs(
       }
     },
     {
-      title: "GMO",
+      title: "Propagable & GMO",
       field: "gmo",
-      width: 85,
+      width: 120,
       minWidth: 60,
       headerFilter: true,
       headerTooltip: "Genetically Modified Organism",
@@ -665,7 +665,7 @@ export function librariesAndSamplesExportColumns() {
     { header: "Plate Coord", key: "well_position", width: 10 },
     { header: "Barcode", key: "barcode", width: 15 },
     { header: "Pool Paths", key: "pool_names", width: 20 },
-    { header: "GMO", key: "gmo", width: 20 },
+    { header: "Propagable & GMO", key: "gmo", width: 22 },
     { header: "Date", key: "create_time", width: 15 },
     { header: "Input Type", key: "nucleic_acid_type_name", width: 20 },
     { header: "Protocol", key: "library_protocol_name", width: 20 },

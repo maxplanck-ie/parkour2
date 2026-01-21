@@ -728,10 +728,12 @@ export function getAddRequestSampleColumns(
         }),
       );
   };
-  const isCellSuspension = (rowData) => {
+  const isGmoAllowedInputType = (rowData) => {
     const meta = getNucleicAcidMeta(rowData);
     const label = meta?.label ?? "";
-    return String(label).trim().toLowerCase() === "cell suspension";
+    const normalized = String(label).trim().toLowerCase();
+    if (!normalized) return true;
+    return !(normalized.includes("dna") || normalized.includes("rna"));
   };
   const isSampleEditable = (field, rowData) => {
     if (field === "library_protocol") {
@@ -746,7 +748,7 @@ export function getAddRequestSampleColumns(
       );
     }
     if (field === "gmo") {
-      return isCellSuspension(rowData);
+      return isGmoAllowedInputType(rowData);
     }
     return true;
   };
@@ -768,8 +770,8 @@ export function getAddRequestSampleColumns(
         return "Measured Value is disabled when unit is Unknown.";
       }
     }
-    if (field === "gmo" && !isCellSuspension(rowData)) {
-      return "GMO is enabled only for Cell Suspension inputs.";
+    if (field === "gmo" && !isGmoAllowedInputType(rowData)) {
+      return "Propagable & GMO is disabled when the Input Type contains DNA or RNA.";
     }
     return "";
   };
@@ -1026,13 +1028,13 @@ export function getAddRequestSampleColumns(
       clipboardCopyValue: createListClipboardValueGetter(biosafety),
     },
     {
-      title: "GMO",
+      title: "Propagable & GMO",
       field: "gmo",
-      width: 80,
+      width: 120,
       minWidth: 70,
       headerVertical: false,
       headerTooltip:
-        "Choose if you are submitting Genetically Modified Organisms, often applies to living cells",
+        "Select 'Yes' if the material includes propagable, genetically modified organisms (e.g., viable genetically engineered cells).<br>In this case, complete and attach Formblatt S1 – Aufzeichnung weiterer genetischer Arbeiten. Documentation of all genetic engineering work is required under § 6 Gentechnikgesetz (GenTG).",
       visible: true,
       cssClass: "regular-column",
       editor: "input",

@@ -327,9 +327,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
           isNaN(value) ||
           value === -1
             ? "-"
-            : value === 0
-              ? "0.0"
-              : value.toFixed(1);
+            : value.toFixed(2);
         return ellipsisContainer(finalString);
       },
     },
@@ -426,9 +424,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         const finalString =
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
-            : value === 0
-              ? "0.0"
-              : value.toFixed(1);
+            : value.toFixed(1);
         return ellipsisContainer(finalString);
       },
     },
@@ -488,7 +484,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
             ? "-"
             : value === 0
               ? "0.0"
-              : value.toFixed(1);
+              : value.toFixed(2);
         return ellipsisContainer(finalString);
       },
     },

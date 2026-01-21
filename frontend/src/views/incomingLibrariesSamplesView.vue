@@ -132,8 +132,7 @@
                 <input type="checkbox" v-model="filters.onlyGmo" />
               </div>
               <div>
-                <span style="font-weight: bold">Filter Requests</span> with GMO
-                ➜ Yes
+                <span style="font-weight: bold">Filter Requests</span> with Propagable &amp; GMO ➜ Yes
               </div>
             </label>
           </div>
