@@ -20,9 +20,9 @@ attrs==25.4.0
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   referencing
-boto3==1.42.30
+boto3==1.42.34
     # via -r backend/requirements/dev.in
-botocore==1.42.30
+botocore==1.42.34
     # via
     #   boto3
     #   s3transfer
@@ -98,7 +98,7 @@ django-cors-headers==4.9.0
     # via -r backend/requirements/dev.in
 django-cryptography-django5==2.2
     # via django-sql-explorer
-django-debug-toolbar==6.1.0
+django-debug-toolbar==6.2.0
     # via -r backend/requirements/dev.in
 django-extensions==4.1
     # via
@@ -150,7 +150,7 @@ fpdf2==2.8.5
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
-gunicorn==23.0.0
+gunicorn==24.1.1
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
@@ -179,7 +179,7 @@ jedi==0.19.2
     # via ipython
 jiter==0.12.0
     # via openai
-jmespath==1.0.1
+jmespath==1.1.0
     # via
     #   boto3
     #   botocore
@@ -220,12 +220,12 @@ openpyxl==3.1.5
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
-packaging==25.0
+packaging==26.0
     # via
     #   -c backend/requirements/3.12/base.txt
     #   gunicorn
     #   matplotlib
-pandas==2.3.3
+pandas==3.0.0
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
@@ -249,7 +249,7 @@ ptyprocess==0.7.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via pexpect
 pure-eval==0.2.3
     # via stack-data
-pycparser==2.23 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
+pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via cffi
 pydantic==2.12.5
     # via openai
@@ -260,7 +260,7 @@ pygments==2.19.2
     #   ipython
     #   ipython-pygments-lexers
     #   rich
-pyparsing==3.3.1
+pyparsing==3.3.2
     # via matplotlib
 python-dateutil==2.9.0.post0
     # via
@@ -274,10 +274,6 @@ python-docx==1.2.0
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
-pytz==2025.2
-    # via
-    #   -c backend/requirements/3.12/base.txt
-    #   pandas
 pywatchman==3.0.0
     # via -r backend/requirements/dev.in
 pyyaml==6.0.3
@@ -295,7 +291,7 @@ requests==2.32.5
     # via
     #   django-sql-explorer
     #   tiktoken
-rich==14.2.0
+rich==14.3.1
     # via -r backend/requirements/dev.in
 rpds-py==0.30.0
     # via
@@ -351,7 +347,7 @@ typing-extensions==4.15.0
     #   typing-inspection
 typing-inspection==0.4.2
     # via pydantic
-tzdata==2025.3
+tzdata==2025.3 ; sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.12/base.txt
     #   django
@@ -364,7 +360,7 @@ urllib3==2.6.3
     # via
     #   botocore
     #   requests
-wcwidth==0.2.14
+wcwidth==0.4.0
     # via prompt-toolkit
 werkzeug==3.1.5
     # via -r backend/requirements/dev.in
