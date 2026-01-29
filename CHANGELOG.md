@@ -4,6 +4,13 @@
 ========
 
 - ...
+- Updated backend and frontend dependencies.
+- Small bugfixes for old concentration field rename (at invoicing, report, and requestviewset!)
+- Meaningful read lengths for the new "Incoming" frontend.
+- The "full db dump" at `/report` has now a download XLSX functionality that helps calculating turnaround.
+- Updated fixtures.
+- Support for any number of cells (e.g. Morula)
+- All emails sent by Django have a copy to `settings.SENDER_EMAIL` so that their webmail app has a copy. It is highly recommended that such account has a filter to messages with the subject "[ Parkour2 | x ]" where `x` can be: "pending approval", "request approved", or "new message".
 
 25.12.02
 ========
