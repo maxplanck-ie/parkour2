@@ -238,6 +238,7 @@ input[type="radio"]:checked::after {
   display: flex;
   flex-direction: column;
   overflow: visible;
+  box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: scale(0.8);
   opacity: 0;
@@ -336,6 +337,23 @@ input[type="radio"]:checked::after {
 
 .popup-button.secondary:hover {
   background-color: #e8f2f1;
+}
+
+.popup-button.secondary.small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popup-button.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popup-button.secondary.small svg {
+  width: 16px;
+  height: 16px;
 }
 
 .popup-overlay.drag-over {
@@ -539,10 +557,21 @@ input[type="radio"]:checked::after {
 .group-action-buttons-container {
   display: none;
   align-items: center;
-  height: 15px;
-  margin-left: 10px;
-  padding: 0 10px;
-  border-left: 1px solid grey;
+  height: 24px;
+  margin-left: 16px;
+  padding: 0 14px;
+  position: relative;
+}
+
+.group-action-buttons-container::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  background: grey;
+  transform: translateY(-50%);
 }
 
 .group-action-button {
@@ -552,7 +581,58 @@ input[type="radio"]:checked::after {
   font-size: 16px;
   padding: 0px;
   height: 24px;
-  width: 22px;
+  width: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.group-action-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.group-action-icon-img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.group-action-icon-img.icon-24 {
+  width: 24px;
+  height: 24px;
+}
+
+.group-action-separator {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: grey;
+  margin-right: 8px;
+}
+
+.group-action-tag {
+  background: #257beb;
+  border: 1px solid #1d4ed8;
+  color: #ffffff !important;
+  border-radius: 8px;
+  padding: 1px px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.group-action-tag span {
+  margin: 0px !important;
+  color: #ffffff !important;
+}
+
+.group-action-tag:hover {
+  background-color: #2765b6;
 }
 
 .export-section {

@@ -57,24 +57,6 @@ LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 logger = logging.getLogger("db")
 
 
-def _recipient_list_with_sender_copy(*recipients):
-    emails = []
-    for recipient in recipients:
-        if not recipient:
-            continue
-        if isinstance(recipient, (list, tuple, set)):
-            emails.extend([r for r in recipient if r])
-        else:
-            emails.append(recipient)
-
-    sender_email = getattr(settings, "SERVER_EMAIL", None)
-    if sender_email:
-        emails.append(sender_email)
-
-    # Preserve order while removing duplicates
-    return list(dict.fromkeys(emails))
-
-
 class PDF(FPDF):  # pragma: no cover
     def __init__(self, title="Title", font="Arial"):
         super().__init__()
@@ -653,7 +635,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Send an email to the PI."""
         error = ""
         instance = self.get_object()
-        subject = f"[ Parkour2 | pending approval ] "
+        subject = f"[ Parkour2 | sequencing experiment is pending approval ] "
         subject += request.data.get("subject", "")
         message = request.data.get("message", "")
         include_records = json.loads(request.POST.get("include_records", "true"))
@@ -697,7 +679,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=_recipient_list_with_sender_copy(instance.user.pi.email),
+                recipient_list=[instance.user.pi.email],
             )
         except Exception as e:
             error = str(e)
@@ -728,7 +710,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 records = sorted(records, key=lambda x: x.barcode[3:])
 
             send_mail(
-                subject=f"[ Parkour2 | new message ] " + subject,
+                subject=subject,
                 message="",
                 html_message=render_to_string(
                     "email.html",
@@ -739,7 +721,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=_recipient_list_with_sender_copy(instance.user.email),
+                recipient_list=[instance.user.email],
             )
 
         except Exception as e:
@@ -873,6 +855,14 @@ class RequestViewSet(viewsets.ModelViewSet):
             + "attachment to each request in Parkour "
             + "(parkour.ie-freiburg.mpg.de)."
         )
+        def get_concentration_value(record):
+            for attr in ("measured_value_facility", "measured_value", "concentration_library"):
+                if hasattr(record, attr):
+                    value = getattr(record, attr)
+                    if value is not None and value != "":
+                        return value
+            return "-"
+
         header = [
             "Date",
             "ID",
@@ -892,7 +882,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 r.name,
                 rtype[0],
                 r.nucleic_acid_type.name if rtype == "Sample" else "-",
-                r.measured_value_facility,
+                get_concentration_value(r),
                 r.mean_fragment_size if rtype == "Library" else "-",
                 r.comments,
             ]
@@ -927,7 +917,6 @@ class RequestViewSet(viewsets.ModelViewSet):
             "PCR",
             "ng/µl",
             "bp",
-            "nM",
             "Comments",
         ]
         data = []
@@ -942,7 +931,6 @@ class RequestViewSet(viewsets.ModelViewSet):
                 r.pcr_cycles,
                 r.concentration_library,
                 r.mean_fragment_size,
-                r.nM,
                 r.comments,
             ]
             data.append(row)
@@ -1125,6 +1113,13 @@ def export_request(request):
             "organism",
             "comments",
         )
+        def get_concentration_value(record):
+            for attr in ("measured_value", "measured_value_facility", "concentration_library"):
+                if hasattr(record, attr):
+                    value = getattr(record, attr)
+                    if value is not None and value != "":
+                        return value
+            return ""
         records = req.records
         for r in records:
             r_type = r.__class__.__name__
@@ -1137,7 +1132,7 @@ def export_request(request):
                         r.nucleic_acid_type,
                         r.library_protocol,
                         r.library_type,
-                        r.concentration,
+                        get_concentration_value(r),
                         "_",  # mean_fragment_size
                         "_",  # index_type
                         "_",  # index_reads
@@ -1158,7 +1153,7 @@ def export_request(request):
                         "_",  # nucleic_acid_type
                         r.library_protocol,
                         r.library_type,
-                        r.concentration,
+                        get_concentration_value(r),
                         r.mean_fragment_size,
                         r.index_type,
                         r.index_reads,
@@ -1291,7 +1286,7 @@ class ApproveViewSet(viewsets.ModelViewSet):
             logger.exception(e)
             return JsonResponse({"success": not error, "error": error})
         send_mail(
-            subject=f"[ Parkour2 | request approved ] {instance.name}",
+            subject=f"[ Parkour2 | seq. request was approved ] {instance.name}",
             message="",
             html_message=render_to_string(
                 "approved.html",
@@ -1301,9 +1296,6 @@ class ApproveViewSet(viewsets.ModelViewSet):
                 },
             ),
             from_email=settings.SERVER_EMAIL,
-            recipient_list=_recipient_list_with_sender_copy(
-                instance.user.email,
-                instance.user.pi.email,
-            ),
+            recipient_list=[instance.user.email, instance.user.pi.email],
         )
         return HttpResponseRedirect("/danke")

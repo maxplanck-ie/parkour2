@@ -18,7 +18,9 @@ import {
   faLayerGroup,
   faCaretDown,
   faSquarePlus,
+  faPaperPlane,
   faTrash,
+  faPen,
   faAngleLeft,
   faAngleRight,
   faCircleInfo,
@@ -26,7 +28,8 @@ import {
   faCircleExclamation,
   faFileLines,
   faDownload,
-  faXmark
+  faXmark,
+  faDesktop
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -51,7 +54,9 @@ library.add(
   faLayerGroup,
   faCaretDown,
   faSquarePlus,
+  faPaperPlane,
   faTrash,
+  faPen,
   faAngleLeft,
   faAngleRight,
   faCircleInfo,
@@ -59,7 +64,8 @@ library.add(
   faCircleExclamation,
   faFileLines,
   faDownload,
-  faXmark
+  faXmark,
+  faDesktop
 );
 
 app.use(router);

@@ -17,16 +17,7 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg style="display: block" fill="none" width="42px" height="42px" version="1.1"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd"
-            d="M5 15L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L19 15H5Z"
-            fill="#323232" />
-          <path
-            d="M15.0486 4H8.95137C8.46527 4 8.31058 4.65529 8.74536 4.87268C8.90142 4.95071 9 5.11022 9 5.2847V10.1716C9 10.702 8.78929 11.2107 8.41421 11.5858L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L15.5858 11.5858C15.2107 11.2107 15 10.702 15 10.1716V5.2847C15 5.11022 15.0986 4.95071 15.2546 4.87268C15.6894 4.65529 15.5347 4 15.0486 4Z"
-            stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M5 15H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <img :src="iconLibrariesHeader" alt="Libraries & Samples" width="42" height="42" style="display: block" />
       </div>
       <div class="header-title" style="display: inline">
         Libraries & Samples
@@ -256,8 +247,9 @@
     </div>
 
     <!-- Popup for Add Request -->
-    <AddRequestView :show="showAddRequestModal" :is-staff-user="isStaffUser" :user-id="userId"
-      @close="closeAddRequestModal" @saved="handleAddRequestSaved" />
+    <AddRequestView :show="showAddRequestModal" :mode="requestModalMode" :request-id="requestModalRequestId"
+      :request-meta="activeRequestMeta" :is-staff-user="isStaffUser" :user-id="userId" @close="closeAddRequestModal"
+      @saved="handleAddRequestSaved" />
 
     <!-- Popup for Export Options -->
     <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
@@ -339,17 +331,8 @@
             <div class="file-list-section">
               <div class="file-item">
                 <div class="file-info">
-                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g>
-                      <path opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232" />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                    </g>
-                  </svg>
+                  <img :src="iconExportTemplateFile" alt="Export without any additional sheets" width="24" height="24"
+                    style="display: block" />
                   <span>Export without any additional sheets</span>
                 </div>
                 <div class="file-actions">
@@ -360,62 +343,16 @@
               </div>
               <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
                 <div class="file-info">
-                  <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g>
-                      <path opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232" />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                      <path d="M9 6L11 6" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                      <path d="M10 9L12 9" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                      <path d="M9 12L11 12" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                      <path d="M10 15L12 15" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    </g>
-                  </svg>
+                  <img :src="iconExportTemplateFileLines" :alt="file.name" width="24" height="24"
+                    style="display: block" />
                   <span>{{ file.name }}</span>
                 </div>
                 <div class="file-actions">
                   <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
-                    <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <g>
-                        <path opacity="0.1"
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          fill="#323232" />
-                        <path
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                        <path d="M12 16L12 11" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" />
-                        <path d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14" stroke="#323232"
-                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      </g>
-                    </svg>
+                    <img :src="iconExportDownload" alt="Download" width="24" height="24" style="display: block" />
                   </button>
                   <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
-                    <svg style="display: block" fill="none" width="24px" height="24px" version="1.1"
-                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <g>
-                        <path opacity="0.1"
-                          d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
-                          fill="#323232" />
-                        <path
-                          d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
-                          stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path
-                          d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
-                          stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                        <path d="M3 3L21 21" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" />
-                      </g>
-                    </svg>
+                    <img :src="iconExportRemove" alt="Remove" width="24" height="24" style="display: block" />
                   </button>
                   <div class="file-actions-radio-button">
                     <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
@@ -438,21 +375,8 @@
           <div v-if="isStaffUser" class="file-upload-section">
             <label for="file-upload" class="file-upload-label"
               title="Upload additional sheet to append to the exported sheet.">
-              <svg style="display: block; margin-right: 4px" fill="none" width="24px" height="24px" version="1.1"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g>
-                  <path opacity="0.1"
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    fill="#323232" />
-                  <path
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    stroke="#323232" stroke-width="2" stroke-linejoin="round" />
-                  <path d="M12 11L12 16" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                  <path d="M14.5 13.5L9.5 13.5" stroke="#323232" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </g>
-              </svg>
+              <img :src="iconExportUpload" alt="Upload" width="24" height="24"
+                style="display: block; margin-right: 4px" />
               <span>Upload</span>
             </label>
             <input id="file-upload" type="file" accept=".xlsx" @change="uploadExportTemplate" style="display: none" />
@@ -469,6 +393,10 @@
         </div>
       </div>
     </div>
+
+    <RequestActionsPopups :active-action="activeRequestAction" :request-context="activeRequestContext"
+      :is-staff-user="isStaffUser" :paperless-approval="paperlessApproval" @close="closeRequestActionModal"
+      @refresh="handleRequestActionRefresh" />
   </div>
 </template>
 
@@ -492,6 +420,13 @@ import {
 } from "../constants/librariesAndSamplesConsts";
 import { statusMap } from "../constants/statusConsts";
 import AddRequestView from "./addRequestView.vue";
+import RequestActionsPopups from "../components/RequestActionsPopups.vue";
+import iconLibrariesHeader from "../assets/icons/header_libraries_samples.svg";
+import iconExportTemplateFile from "../assets/icons/export_template.svg";
+import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
+import iconExportDownload from "../assets/icons/export_download.svg";
+import iconExportRemove from "../assets/icons/export_remove.svg";
+import iconExportUpload from "../assets/icons/export_upload.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
@@ -499,13 +434,20 @@ export default {
   name: "LibrariesAndSamples",
   components: {
     LiteTabulatorTable,
-    AddRequestView
+    AddRequestView,
+    RequestActionsPopups
   },
   data() {
     const today = new Date();
     const initialStartDate = new Date();
     initialStartDate.setFullYear(today.getFullYear() - 10);
     return {
+      iconLibrariesHeader,
+      iconExportTemplateFile,
+      iconExportTemplateFileLines,
+      iconExportDownload,
+      iconExportRemove,
+      iconExportUpload,
       tabulatorInstance: null,
       loading: true,
       fakeLoading: false,
@@ -543,7 +485,23 @@ export default {
 
           totalDepth = Number(totalDepth.toFixed(1));
 
-          return librariesAndSamplesGroupHeader(value, count, totalDepth);
+          const rows = Array.isArray(data) ? data : [];
+          const requiresApproval =
+            rows.length > 0 && rows.every((row) => Number(row.status) === 0);
+          const requestId = rows[0]?.request_id;
+          const meta = requestId ? this.requestMetaById[requestId] : null;
+          const allowDelete = meta ? !meta.restrict_permissions : false;
+          const canDownloadUpload =
+            meta ? meta.deep_seq_request_path === "" : false;
+
+          return librariesAndSamplesGroupHeader(value, count, totalDepth, {
+            showStaffActions: this.isStaffUser,
+            showSolicitApproval: this.paperlessApproval,
+            allowDelete,
+            showApprovalTag: requiresApproval && this.paperlessApproval,
+            canDownloadRequestForm: canDownloadUpload,
+            canUploadSignedRequest: canDownloadUpload
+          });
         }
       },
       searchQuery: "",
@@ -568,7 +526,14 @@ export default {
       showAdvancedFilters: false,
       showSelectColumns: false,
       inputColumnMode: "mode_user",
-      showAddRequestModal: false
+      showAddRequestModal: false,
+      requestModalMode: "create",
+      requestModalRequestId: null,
+      activeRequestMeta: null,
+      activeRequestAction: null,
+      activeRequestContext: null,
+      paperlessApproval: false,
+      requestMetaById: {}
     };
   },
   mounted() {
@@ -616,11 +581,13 @@ export default {
         const staffFlag = user?.is_staff;
         this.userId = user?.id;
         this.isStaffUser = staffFlag === true;
+        this.paperlessApproval = user?.paperless_approval === false;
         if (this.isStaffUser) {
           this.fetchExportTemplates();
         }
+        this.refreshGroupHeaders();
       } catch (error) {
-        showNotification("Failed to fetch user details.", "error");
+        showNotification("User details fetch failed.", "error");
         this.isStaffUser = false;
       }
     },
@@ -721,12 +688,13 @@ export default {
         const groupsMap = new Map();
         const requestNamesSet = new Set();
         const allRows = [];
+        const requestsMeta = response.data?.requests || {};
 
         (response.data?.children || []).forEach((e) => {
           const row = {
             pk: e.pk ?? "",
             record_type: e.record_type ?? "",
-            request_id: e.request ?? "",
+            request_id: e.request_id ?? "",
             request_name: e.request_name ?? "",
             name: e.name ?? "",
             type: e.barcode?.[2] ?? "",
@@ -797,7 +765,16 @@ export default {
 
         if (exportOnly) {
           return allRows;
-        } else this.librariesSamplesList = allRows;
+        }
+
+        this.librariesSamplesList = allRows;
+        if (requestsMeta && Object.keys(requestsMeta).length) {
+          this.requestMetaById = {
+            ...this.requestMetaById,
+            ...requestsMeta
+          };
+          this.refreshGroupHeaders();
+        }
       } catch (error) {
         handleError(error);
       } finally {
@@ -807,7 +784,7 @@ export default {
     async getROCrateData({ barcodes = [], requestName = "" } = {}) {
       if (!Array.isArray(barcodes) || barcodes.length === 0) {
         showNotification(
-          "Select at least one library or sample to download RO-Crate.",
+          "Select records to download RO-Crate.",
           "warning"
         );
         return;
@@ -1068,7 +1045,7 @@ export default {
       const ed = new Date(`${eStr}T00:00:00`);
 
       if (sd.getTime() > ed.getTime()) {
-        showNotification("Start date cannot be after end date.", "warning");
+        showNotification("Start date must precede end date.", "warning");
         this.startDateValid = false;
         this.endDateValid = false;
       } else {
@@ -1166,13 +1143,97 @@ export default {
       });
     },
     openAddRequestModal() {
+      this.requestModalMode = "create";
+      this.requestModalRequestId = null;
+      this.activeRequestMeta = null;
       this.showAddRequestModal = true;
     },
     closeAddRequestModal() {
       this.showAddRequestModal = false;
+      this.requestModalMode = "create";
+      this.requestModalRequestId = null;
+      this.activeRequestMeta = null;
     },
     handleAddRequestSaved() {
       this.getLibrariesSamples(1);
+    },
+    openEditRequestModal(requestId) {
+      if (!requestId) return;
+      this.requestModalMode = "edit";
+      this.requestModalRequestId = requestId;
+      this.activeRequestMeta = this.requestMetaById?.[requestId] || null;
+      this.showAddRequestModal = true;
+    },
+    openRequestActionModal(action, context) {
+      this.activeRequestAction = action;
+      this.activeRequestContext = context;
+    },
+    closeRequestActionModal() {
+      this.activeRequestAction = null;
+      this.activeRequestContext = null;
+    },
+    handleRequestActionRefresh() {
+      this.requestMetaById = {};
+      this.getLibrariesSamples(this.pagination.currentPage || 1);
+    },
+    async fetchRequestMeta(requestId) {
+      if (!requestId) return null;
+      if (this.requestMetaById[requestId]) {
+        return this.requestMetaById[requestId];
+      }
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/requests/${requestId}/`
+        );
+        const data = response?.data || null;
+        if (data) {
+          this.requestMetaById = {
+            ...this.requestMetaById,
+            [requestId]: data
+          };
+        }
+        return data;
+      } catch (error) {
+        handleError(error);
+        return null;
+      }
+    },
+    triggerDownload(url, filename) {
+      const link = document.createElement("a");
+      link.href = url;
+      if (filename) {
+        link.setAttribute("download", filename);
+      }
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    async handleDownloadRequestForm(requestId) {
+      const meta = await this.fetchRequestMeta(requestId);
+      if (!meta || meta.deep_seq_request_path !== "") return;
+      const url = `${urlStringStart}/api/requests/${requestId}/download_deep_sequencing_request/`;
+      this.triggerDownload(url);
+      showNotification("Request form downloaded.", "success");
+    },
+    async handleUploadSignedRequest(requestId, requestName) {
+      const meta = await this.fetchRequestMeta(requestId);
+      if (!meta || meta.deep_seq_request_path !== "") return;
+      this.openRequestActionModal("uploadSigned", {
+        id: requestId,
+        name: requestName
+      });
+    },
+    async handleDownloadCompleteReport(requestId) {
+      const url = `${urlStringStart}/api/requests/${requestId}/download_complete_report/`;
+      this.triggerDownload(url);
+      showNotification("Complete report downloaded.", "success");
+    },
+    refreshGroupHeaders() {
+      const table = this.tabulatorInstance?.getTable?.();
+      const groups = table?.getGroups?.() || [];
+      groups.forEach((group) => {
+        group?._group?.generateGroupHeaderContents?.();
+      });
     },
     async handleGroupButtonClick(event, groupValue, action) {
       event.stopPropagation();
@@ -1181,11 +1242,20 @@ export default {
         .getTable()
         .getGroups()
         .find((g) => g.getKey() === groupValue);
+      if (!group) return;
       const groupRows = group.getRows();
+      if (!groupRows.length) return;
       const groupElement = group.getElement();
       const selectedRows = groupRows.filter((row) => row.getData().selected);
       const type = selectedRows[0] && selectedRows[0].getData().type;
       const requestName = group._group.key;
+      let requestId = groupRows[0]?.getData?.().request_id;
+      if (!requestId && requestName) {
+        const match = String(requestName).match(/^(\d+)_/);
+        if (match) {
+          requestId = Number(match[1]);
+        }
+      }
       const selectedNamesList = selectedRows.map((item) => {
         return { barcode: item.getData().barcode, name: item.getData().name };
       });
@@ -1219,10 +1289,79 @@ export default {
           });
           if (!group._group.visible) groupElement.click();
           break;
+        case "viewRequest":
+          this.openEditRequestModal(requestId);
+          break;
+        case "deleteRequest":
+          {
+            const meta = await this.fetchRequestMeta(requestId);
+            if (meta?.restrict_permissions) {
+              showNotification(
+                "You lack permission to delete requests.",
+                "warning"
+              );
+              break;
+            }
+          }
+          this.openRequestActionModal("deleteRequest", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "downloadRequestForm":
+          await this.handleDownloadRequestForm(requestId);
+          break;
+        case "uploadSignedRequest":
+          await this.handleUploadSignedRequest(requestId, requestName);
+          break;
+        case "downloadCompleteReport":
+          await this.handleDownloadCompleteReport(requestId);
+          break;
+        case "viewFilePaths":
+          if (!this.isStaffUser) {
+            showNotification("You lack permission to view file paths.", "warning");
+            break;
+          }
+          this.openRequestActionModal("filePaths", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "composeEmail":
+          if (!this.isStaffUser) {
+            showNotification("You lack permission to compose email.", "warning");
+            break;
+          }
+          this.openRequestActionModal("composeEmail", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "markComplete":
+          if (!this.isStaffUser) {
+            showNotification("You lack permission to mark complete.", "warning");
+            break;
+          }
+          this.openRequestActionModal("markComplete", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "solicitApproval":
+        case "requestApproval":
+          if (!this.paperlessApproval) {
+            showNotification("Email approval is not enabled.", "warning");
+            break;
+          }
+          this.openRequestActionModal("solicitApproval", {
+            id: requestId,
+            name: requestName
+          });
+          break;
         case "downloadROCrate": {
           if (!selectedRows.length) {
             showNotification(
-              "Select at least one library or sample to download RO-Crate.",
+              "Select records to download RO-Crate.",
               "warning"
             );
             if (!group._group.visible) groupElement.click();
@@ -1238,7 +1377,7 @@ export default {
           );
           if (!barcodes.length) {
             showNotification(
-              "Selected entries do not contain valid barcodes.",
+              "Selected entries lack valid barcodes.",
               "error"
             );
             if (!group._group.visible) groupElement.click();
@@ -1291,12 +1430,12 @@ export default {
           showNotification("File uploaded successfully.", "success");
           this.fetchExportTemplates();
         } catch (error) {
-          showNotification("Error uploading file: " + error, "error");
+          showNotification("File upload failed.", "error");
         } finally {
           this.selectedFile = "without-file";
         }
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX file.", "error");
       }
     },
     async downloadExportTemplate(file) {
@@ -1319,7 +1458,7 @@ export default {
         link.remove();
         window.URL.revokeObjectURL(url);
       } catch (error) {
-        showNotification("Error downloading file: " + error, "error");
+        showNotification("File download failed.", "error");
       }
     },
     async removeExportTemplate(index) {
@@ -1334,7 +1473,7 @@ export default {
         this.fetchedLibrariesAndSamplesTemplates.splice(index, 1);
         showNotification("File removed successfully.", "success");
       } catch (error) {
-        showNotification("Error removing file: " + error, "error");
+        showNotification("File removal failed.", "error");
       } finally {
         this.selectedFile = "without-file";
       }
@@ -1406,14 +1545,11 @@ export default {
         });
         saveAs(blob, filename);
       } catch (error) {
-        showNotification(
-          "Error during export. Please try again.\n" + error,
-          "error"
-        );
+        showNotification("Export failed. Please try again.", "error");
       } finally {
         if (this.exportLoading) {
           this.exportLoading = false;
-          showNotification("File has been exported successfully.", "success");
+          showNotification("Export completed successfully.", "success");
         }
         this.fakeLoadingStop();
         if (!this.exportSelection === "selected")
@@ -1460,7 +1596,7 @@ export default {
       const files = e.dataTransfer.files;
       if (files.length > 1) {
         showNotification(
-          "Please upload only one XLSX file at a time.",
+          "Upload only one XLSX file.",
           "error"
         );
       } else this.processUploadedFile(files[0]);
@@ -1481,7 +1617,7 @@ export default {
         };
         this.uploadExportTemplate(event);
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX file.", "error");
       }
     },
     changePage(page) {

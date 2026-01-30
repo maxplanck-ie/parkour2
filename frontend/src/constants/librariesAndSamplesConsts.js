@@ -3,6 +3,15 @@ import {
   ellipsisContainer
 } from "../utilities/utilityFunctions";
 import { statusMap, getStatusClass } from "./statusConsts";
+import iconEdit from "../assets/icons/action_edit.svg";
+import iconDelete from "../assets/icons/action_delete_request.svg";
+import iconSolicitApproval from "../assets/icons/action_solicit_approval.svg";
+import iconDownloadReport from "../assets/icons/action_download_report.svg";
+import iconFilePaths from "../assets/icons/action_view_file_paths.svg";
+import iconComposeEmail from "../assets/icons/action_compose_email.svg";
+import iconMarkComplete from "../assets/icons/action_mark_complete.svg";
+import iconSelectAll from "../assets/icons/action_select_all.svg";
+import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 
 const sortedStatusEntries = Object.entries(statusMap).sort(
   ([keyA], [keyB]) => Number(keyA) - Number(keyB)
@@ -72,46 +81,85 @@ function createStatusHeaderTooltip() {
   return template.firstElementChild;
 }
 
-export function librariesAndSamplesGroupHeader(value, count, totalDepth) {
+export function librariesAndSamplesGroupHeader(
+  value,
+  count,
+  totalDepth,
+  options = {}
+) {
+  const {
+    showStaffActions = false,
+    showSolicitApproval = false,
+    allowDelete = true,
+    showApprovalTag = false,
+  } = options;
+
+  const staffActions = showStaffActions
+    ? `
+      <div title="View File Paths" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'viewFilePaths')">
+        <img class="group-action-icon-img" src="${iconFilePaths}" alt="File Paths" />
+      </div>
+      <div title="Compose Email" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'composeEmail')">
+        <img class="group-action-icon-img" src="${iconComposeEmail}" alt="Compose Email" />
+      </div>
+      <div title="Mark as complete" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'markComplete')">
+        <img class="group-action-icon-img" src="${iconMarkComplete}" alt="Mark Complete" />
+      </div>
+    `
+    : "";
+
+  const approvalAction = showSolicitApproval
+    ? `
+      <div title="Solicit Approval via Email" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'solicitApproval')">
+        <img class="group-action-icon-img" src="${iconSolicitApproval}" alt="Solicit Approval" />
+      </div>
+    `
+    : "";
+
+  const deleteAction = allowDelete
+    ? `
+      <div title="Delete Request" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deleteRequest')">
+        <img class="group-action-icon-img" src="${iconDelete}" alt="Delete Request" />
+      </div>
+    `
+    : "";
+
+  const approvalTag = showApprovalTag
+    ? `
+      <button class="group-action-tag" title="Click here to Request Solicit Approval" onclick="handleGroupButtonClick(event, '${value}', 'requestApproval')">
+        <span>Approval Required</span>
+      </button>
+    `
+    : "";
+
   return `
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
-  <div>
-    <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-      (#: ${count}, Total Depth: ${totalDepth})
-    </span>
-  </div>
-</div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
+        <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
+          (#: ${count}, Total Depth: ${totalDepth})
+        </span>
+        ${approvalTag}
+      </div>
+    </div>
     <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
+      <div title="View / Edit Request" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'viewRequest')">
+        <img class="group-action-icon-img" src="${iconEdit}" alt="View / Edit Request" />
+      </div>
+      ${deleteAction}
+      ${approvalAction}
+      <div title="Download Complete Report" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadCompleteReport')">
+        <img class="group-action-icon-img" src="${iconDownloadReport}" alt="Download Complete Report" />
+      </div>
+      ${staffActions}
+      ${showStaffActions ? '<span class="group-action-separator"></span>' : ''}
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M21 12H12V3H15.024C19.9452 3 21 4.05476 21 8.976V12Z" fill="lightblue"/>
-            <path opacity="0.5" d="M3 15.024V12H12V21H8.976C4.05476 21 3 19.9452 3 15.024Z" fill="lightblue"/>
-            <path d="M3 8.976C3 4.05476 4.05476 3 8.976 3H15.024C19.9452 3 21 4.05476 21 8.976V15.024C21 19.9452 19.9452 21 15.024 21H8.976C4.05476 21 3 19.9452 3 15.024V8.976Z" stroke="#323232" stroke-width="1.8"/>
-            <path d="M12 3V21" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 12L3 12" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
+        <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
       </div>
       <div title="Deselect All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deselectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="lightblue"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
+        <img class="group-action-icon-img icon-24" src="${iconDeselectAll}" alt="Deselect All" />
       </div>
-      <!--
-      <div title="Download RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
-        <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M5 15L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L19 15H5Z" fill="lightblue"/>
-          <path d="M15.0486 4H8.95137C8.46527 4 8.31058 4.65529 8.74536 4.87268C8.90142 4.95071 9 5.11022 9 5.2847V10.1716C9 10.702 8.78929 11.2107 8.41421 11.5858L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L15.5858 11.5858C15.2107 11.2107 15 10.702 15 10.1716V5.2847C15 5.11022 15.0986 4.95071 15.2546 4.87268C15.6894 4.65529 15.5347 4 15.0486 4Z" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5 15H19" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      -->
     </div>
   </div>
 `;
@@ -687,4 +735,3 @@ export function librariesAndSamplesExportColumns() {
     { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
 }
-

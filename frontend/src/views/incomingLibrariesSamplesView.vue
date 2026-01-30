@@ -12,42 +12,13 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg
+        <img
+          :src="iconIncomingHeader"
+          alt="Incoming Libraries and Samples"
+          width="42"
+          height="42"
           style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <g>
-            <path
-              opacity="0.3"
-              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              fill="#333333"
-            />
-            <path
-              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              stroke="white"
-              stroke-width="1.5"
-            />
-            <path
-              d="M14.5 14.5L9 9"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M10 15H14.6717C14.853 15 15 14.853 15 14.6716V10"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </g>
-        </svg>
+        />
       </div>
       <div class="header-title" style="display: inline">
         Incoming Libraries and Samples
@@ -306,42 +277,13 @@
         }"
       >
         <div class="popup-header">
-          <svg
+          <img
+            :src="iconConfirmationAlert"
+            alt="Confirmation"
+            width="42"
+            height="42"
             style="display: block"
-            fill="none"
-            width="42px"
-            height="42px"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g>
-              <path
-                opacity="0.3"
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                fill="#323232"
-              />
-              <path
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12 8V13"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <path
-                d="M12 16V15.9888"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </g>
-          </svg>
+          />
           <span class="popup-title">{{ popupContents.popupTitle }}</span>
           <button class="popup-close-button" @click="showPopupWindow = false">
             &times;
@@ -485,29 +427,13 @@
             <div class="file-list-section">
               <div class="file-item">
                 <div class="file-info">
-                  <svg
+                  <img
+                    :src="iconExportTemplateFile"
+                    alt="Export without any additional sheets"
+                    width="24"
+                    height="24"
                     style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g>
-                      <path
-                        opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232"
-                      />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                    </g>
-                  </svg>
+                  />
                   <span>Export without any additional sheets</span>
                 </div>
                 <div class="file-actions">
@@ -532,146 +458,42 @@
                 :key="index"
                 class="file-item"
               >
-                <div class="file-info">
-                  <svg
-                    style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g>
-                      <path
-                        opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232"
-                      />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M9 6L11 6"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M10 9L12 9"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M9 12L11 12"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M10 15L12 15"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </g>
-                  </svg>
-                  <span>{{ file.name }}</span>
-                </div>
+              <div class="file-info">
+                <img
+                  :src="iconExportTemplateFileLines"
+                  :alt="file.name"
+                  width="24"
+                  height="24"
+                  style="display: block"
+                />
+                <span>{{ file.name }}</span>
+              </div>
                 <div class="file-actions">
                   <button
                     @click="downloadExportTemplate(file)"
                     class="download-button"
                     title="Download Original File"
                   >
-                    <svg
+                    <img
+                      :src="iconExportDownload"
+                      alt="Download"
+                      width="24"
+                      height="24"
                       style="display: block"
-                      fill="none"
-                      width="24px"
-                      height="24px"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <g>
-                        <path
-                          opacity="0.1"
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          fill="#323232"
-                        />
-                        <path
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12 16L12 11"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </g>
-                    </svg>
+                    />
                   </button>
                   <button
                     @click="removeExportTemplate(index)"
                     class="remove-button"
                     title="Remove File"
                   >
-                    <svg
+                    <img
+                      :src="iconExportRemove"
+                      alt="Remove"
+                      width="24"
+                      height="24"
                       style="display: block"
-                      fill="none"
-                      width="24px"
-                      height="24px"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <g>
-                        <path
-                          opacity="0.1"
-                          d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
-                          fill="#323232"
-                        />
-                        <path
-                          d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M3 3L21 21"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </g>
-                    </svg>
+                    />
                   </button>
                   <div class="file-actions-radio-button">
                     <input
@@ -694,43 +516,13 @@
               class="file-upload-label"
               title="Upload additional sheet to append to the exported sheet."
             >
-              <svg
+              <img
+                :src="iconExportUpload"
+                alt="Upload"
+                width="24"
+                height="24"
                 style="display: block; margin-right: 4px"
-                fill="none"
-                width="24px"
-                height="24px"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g>
-                  <path
-                    opacity="0.1"
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    fill="#323232"
-                  />
-                  <path
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12 11L12 16"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14.5 13.5L9.5 13.5"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </g>
-              </svg>
+              />
               <span>Upload</span>
             </label>
             <input
@@ -774,6 +566,13 @@ import {
   incomingLibrariesSamplesColumnDefs,
   incomingLibrariesSamplesExportColumns
 } from "../constants/incomingLibrariesSamplesConsts";
+import iconIncomingHeader from "../assets/icons/header_incoming.svg";
+import iconConfirmationAlert from "../assets/icons/alert_confirmation.svg";
+import iconExportTemplateFile from "../assets/icons/export_template.svg";
+import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
+import iconExportDownload from "../assets/icons/export_download.svg";
+import iconExportRemove from "../assets/icons/export_remove.svg";
+import iconExportUpload from "../assets/icons/export_upload.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
@@ -784,6 +583,13 @@ export default {
   },
   data() {
     return {
+      iconIncomingHeader,
+      iconConfirmationAlert,
+      iconExportTemplateFile,
+      iconExportTemplateFileLines,
+      iconExportDownload,
+      iconExportRemove,
+      iconExportUpload,
       tabulatorInstance: null,
       loading: true,
       fakeLoading: false,
@@ -1765,4 +1571,3 @@ body,
   }
 }
 </style>
-
