@@ -3174,7 +3174,9 @@ export default {
 }
 </style>
 <!--
-check files section in dev mode
+action icons spacing
+form links on dev
+check files section in dev mode, after scoll
 delete row shouldnt call an api in edit request
 after save behaviour
 reset width in incoming libraries and samples resets toggle of rows

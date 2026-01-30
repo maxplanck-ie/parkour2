@@ -581,7 +581,7 @@ export default {
         const staffFlag = user?.is_staff;
         this.userId = user?.id;
         this.isStaffUser = staffFlag === true;
-        this.paperlessApproval = user?.paperless_approval === false;
+        this.paperlessApproval = user?.paperless_approval === true;
         if (this.isStaffUser) {
           this.fetchExportTemplates();
         }
