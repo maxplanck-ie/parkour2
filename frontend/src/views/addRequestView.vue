@@ -3233,14 +3233,13 @@ export default {
 }
 </style>
 <!--
-reset width in incoming libraries and samples resets toggle of rows
-paste behaviour logs in new request
-name size in files appear different in Ulrike's computer (for empty table)
 index i5 auto select not working sometimes
 i5 i7 email behaviour
 
 refactor/simplify all the files
 unit test all the pages
 
+paste behaviour logs in new request
+name size in files appear different in Ulrike's computer (for empty table)
 is there any condition where we can hide request solicit approval icon
 -->
