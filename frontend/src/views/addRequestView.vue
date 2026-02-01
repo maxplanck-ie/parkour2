@@ -724,16 +724,45 @@ export default {
     },
     handlePasteApplied(rows = []) {
       if (!this.canEditRequest) return;
+      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
       const list = Array.isArray(rows) ? rows : [];
       list.forEach((row) => {
-        if (row?.index_type && (row?.index_i7 || row?.index_i5)) {
-          const typeKey = String(row.index_type);
+        const rowRef = row?.getData ? row : table?.getRow?.(row?.tempId) || null;
+        const rowData = rowRef?.getData ? rowRef.getData() : row;
+        if (!rowData?.index_type || (!rowData?.index_i7 && !rowData?.index_i5)) {
+          return;
+        }
+        const typeKey = String(rowData.index_type);
+        const reads = this.getIndexReadsCount(rowData);
+        if (reads >= 2) {
+          const hasI7 = this.fieldHasValue(rowData.index_i7);
+          const hasI5 = this.fieldHasValue(rowData.index_i5);
+          const optionsReady =
+            this.indexI7OptionsByType[typeKey] &&
+            this.indexI5OptionsByType[typeKey] &&
+            this.indexPairsByType[typeKey];
+
+          if (optionsReady && rowRef) {
+            if (hasI7) {
+              this.tryAutoSelectI5(rowRef, rowData);
+            } else if (hasI5) {
+              this.tryAutoSelectI7(rowRef, rowData);
+            }
+          } else if (rowData.index_type) {
+            this.fetchIndexOptionsForType(rowData.index_type, {
+              row: rowRef,
+              selectedI7: hasI7 ? rowData.index_i7 : null,
+              selectedI5: !hasI7 && hasI5 ? rowData.index_i5 : null
+            });
+          }
+        }
+        if (rowData.index_type) {
           const hasI7 = Boolean(this.indexI7OptionsByType[typeKey]);
           const hasI5 = Boolean(this.indexI5OptionsByType[typeKey]);
           if (hasI7 && hasI5) {
             this.refreshRowsForIndexType(typeKey);
           } else {
-            this.fetchIndexOptionsForType(row.index_type);
+            this.fetchIndexOptionsForType(rowData.index_type);
           }
         }
       });
@@ -3233,13 +3262,10 @@ export default {
 }
 </style>
 <!--
-index i5 auto select not working sometimes
-i5 i7 email behaviour
-
 refactor/simplify all the files
 unit test all the pages
 
-paste behaviour logs in new request
-name size in files appear different in Ulrike's computer (for empty table)
-is there any condition where we can hide request solicit approval icon
+question: i5 i7 Other Option, what to do if the index doest exist in any lists
+test: name size in files appear different in Ulrike's computer (for empty table)
+question: is there any condition where we can hide request solicit approval icon, like if the request is already approved
 -->

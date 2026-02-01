@@ -103,6 +103,8 @@ export default {
     return {
       iconPasteError,
       tabulatorInstance: null,
+      tableBuilt: false,
+      consoleWarnOriginal: null,
       previousData: null,
       preventEditorBlurHandler: null,
       tableFiltersState: {
@@ -168,13 +170,18 @@ export default {
         true
       );
     }
+    this.tableBuilt = false;
+    if (this.consoleWarnOriginal) {
+      console.warn = this.consoleWarnOriginal;
+      this.consoleWarnOriginal = null;
+    }
   },
   methods: {
     initializeTable() {
       if (this.rowData && this.columnDefs) {
         const options = {
           data: this.rowData,
-          columns: this.columnDefs,
+          columns: this.sanitizeColumnDefs(this.columnDefs),
           layout: "fitColumns",
           columnDefaults: {
             headerSort: false,
@@ -403,11 +410,26 @@ export default {
           ...this.tableOptions
         };
 
+        this.consoleWarnOriginal = console.warn;
+        console.warn = (...args) => {
+          const first = args?.[0];
+          if (
+            typeof first === "string" &&
+            first.includes(
+              "Using frozen columns that are not the range header"
+            )
+          ) {
+            return;
+          }
+          this.consoleWarnOriginal?.(...args);
+        };
+
         this.tabulatorInstance = markRaw(
           new Tabulator(`#${this.tableId}`, options)
         );
 
         this.tabulatorInstance.on("tableBuilt", () => {
+          this.tableBuilt = true;
           document.addEventListener("keydown", this.handleKeyDown);
 
           const tabulatorElement = this.getTabulatorElement();
@@ -628,20 +650,36 @@ export default {
     },
 
     updateTableData() {
-      if (this.tabulatorInstance) {
+      if (this.tabulatorInstance && this.tableBuilt) {
         this.tabulatorInstance.setData(this.rowData);
       }
     },
 
     updateTableColumns() {
+      if (!this.tabulatorInstance || !this.tableBuilt) return;
       this.tabulatorInstance.blockRedraw();
-      if (this.tabulatorInstance) {
-        this.tabulatorInstance.setColumns(this.columnDefs);
-        this.getTabulatorElement().classList.remove("no-group-by");
-        this.showAllGroups();
-        if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
-      }
+      this.tabulatorInstance.setColumns(
+        this.sanitizeColumnDefs(this.columnDefs)
+      );
+      this.getTabulatorElement().classList.remove("no-group-by");
+      this.showAllGroups();
+      if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
       this.tabulatorInstance.restoreRedraw();
+    },
+
+
+    sanitizeColumnDefs(columns = []) {
+      return columns.map((column) => {
+        const {
+          clipboardCopyValue,
+          pasteValueResolver,
+          ...rest
+        } = column || {};
+        if (Array.isArray(rest.columns)) {
+          rest.columns = this.sanitizeColumnDefs(rest.columns);
+        }
+        return rest;
+      });
     },
 
     // Make sure that records in rowData have "type" field, in order for these filters to work. Check the definition of "this.tableFiltersState" to get more context.

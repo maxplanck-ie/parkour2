@@ -248,6 +248,7 @@ const urlStringStart = urlStringStartsWith();
 
 export default {
   name: "RequestActionsPopups",
+  emits: ["close", "refresh"],
   props: {
     activeAction: {
       type: String,
