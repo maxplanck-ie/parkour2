@@ -1,7 +1,7 @@
 <template>
   <div class="parent-container">
     <!-- Loading overlay -->
-    <div v-if="(loading || fakeLoading) && !exportLoading" class="loading-overlay">
+    <div v-if="(loading || fakeLoading) && !exportLoading && !addRequestSyncing" class="loading-overlay">
       <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
         Loading <span style="font-weight: bold">Libraries & Samples</span>...
@@ -248,7 +248,9 @@
 
     <!-- Popup for Add Request -->
     <AddRequestView :show="showAddRequestModal" :mode="requestModalMode" :request-id="requestModalRequestId"
-      :request-meta="activeRequestMeta" :is-staff-user="isStaffUser" :user-id="userId" @close="closeAddRequestModal"
+      :request-meta="activeRequestMeta" :is-staff-user="isStaffUser" :user-id="userId"
+      :saving="addRequestSyncing" :close-on-save="false" :notify-on-save="false"
+      @close="closeAddRequestModal"
       @saved="handleAddRequestSaved" />
 
     <!-- Popup for Export Options -->
@@ -450,6 +452,7 @@ export default {
       iconExportUpload,
       tabulatorInstance: null,
       loading: true,
+      syncLoading: false,
       fakeLoading: false,
       exportLoading: false,
       isDragOver: false,
@@ -532,6 +535,10 @@ export default {
       activeRequestMeta: null,
       activeRequestAction: null,
       activeRequestContext: null,
+      addRequestSyncing: false,
+      addRequestSyncTimer: null,
+      pendingSavedRequestId: null,
+      pendingSavedMode: null,
       paperlessApproval: false,
       requestMetaById: {}
     };
@@ -552,6 +559,7 @@ export default {
   beforeDestroy() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
+    this.stopAddRequestSync();
   },
   computed: {
     statusMap() {
@@ -591,8 +599,13 @@ export default {
         this.isStaffUser = false;
       }
     },
-    async getLibrariesSamples(page = 1, exportOnly) {
-      this.loading = true;
+    async getLibrariesSamples(page = 1, exportOnly, silent = false) {
+      if (silent) {
+        if (this.syncLoading) return;
+        this.syncLoading = true;
+      } else {
+        this.loading = true;
+      }
       try {
         const params = {
           start_date: formatDisplayDate(this.startDate),
@@ -778,7 +791,11 @@ export default {
       } catch (error) {
         handleError(error);
       } finally {
-        this.loading = false;
+        if (silent) {
+          this.syncLoading = false;
+        } else {
+          this.loading = false;
+        }
       }
     },
     async getROCrateData({ barcodes = [], requestName = "" } = {}) {
@@ -1153,9 +1170,63 @@ export default {
       this.requestModalMode = "create";
       this.requestModalRequestId = null;
       this.activeRequestMeta = null;
+      this.stopAddRequestSync();
     },
-    handleAddRequestSaved() {
-      this.getLibrariesSamples(1);
+    handleAddRequestSaved(payload) {
+      const requestId =
+        payload?.pk ?? payload?.data?.pk ?? payload?.request_id ?? null;
+      this.pendingSavedMode = this.requestModalMode;
+      this.startAddRequestSync(requestId);
+    },
+    startAddRequestSync(requestId = null) {
+      if (this.addRequestSyncTimer) {
+        clearInterval(this.addRequestSyncTimer);
+        this.addRequestSyncTimer = null;
+      }
+      this.pendingSavedRequestId = requestId;
+      this.addRequestSyncing = true;
+
+      if (!this.pendingSavedRequestId) {
+        this.getLibrariesSamples(1, false, true).finally(() => {
+          this.finishAddRequestSync();
+        });
+        return;
+      }
+
+      const poll = async () => {
+        if (this.loading || this.syncLoading) return;
+        await this.getLibrariesSamples(1, false, true);
+        if (
+          this.pendingSavedRequestId &&
+          this.requestMetaById?.[this.pendingSavedRequestId]
+        ) {
+          this.finishAddRequestSync();
+        }
+      };
+
+      const initialDelayMs = 2000;
+      setTimeout(() => {
+        poll();
+        this.addRequestSyncTimer = setInterval(poll, 2000);
+      }, initialDelayMs);
+    },
+    stopAddRequestSync() {
+      if (this.addRequestSyncTimer) {
+        clearInterval(this.addRequestSyncTimer);
+        this.addRequestSyncTimer = null;
+      }
+      this.pendingSavedRequestId = null;
+      this.pendingSavedMode = null;
+      this.addRequestSyncing = false;
+    },
+    finishAddRequestSync() {
+      const message =
+        this.pendingSavedMode === "edit"
+          ? "Request updated successfully."
+          : "Request created successfully.";
+      showNotification(message, "success");
+      this.stopAddRequestSync();
+      this.closeAddRequestModal();
     },
     openEditRequestModal(requestId) {
       if (!requestId) return;

@@ -38,7 +38,7 @@
             <button class="help-button" type="button" @click="openHelpPage" title="Open MAX page on Intranet">
               ?
             </button>
-            <button class="popup-close-button" type="button" @click="requestCloseModal">
+            <button class="popup-close-button" type="button" @click="requestCloseModal" :disabled="saving">
               &times;
             </button>
           </div>
@@ -181,7 +181,7 @@
             <span>{{ footerLabel }}</span>
           </div>
           <div class="footer-actions">
-            <button class="popup-button secondary" type="button" @click="requestCloseModal">
+            <button class="popup-button secondary" type="button" @click="requestCloseModal" :disabled="saving">
               Cancel
             </button>
             <button class="popup-button yes-button" type="button"
@@ -190,6 +190,12 @@
               <span v-else>{{ primaryActionLabel }}</span>
             </button>
           </div>
+        </div>
+      </div>
+      <div v-if="saving" class="saving-overlay" aria-live="polite" aria-busy="true">
+        <div class="saving-card">
+          <div class="spinner"></div>
+          <p>Saving request, please wait...</p>
         </div>
       </div>
     </div>
@@ -310,6 +316,18 @@ export default {
     show: {
       type: Boolean,
       default: false
+    },
+    saving: {
+      type: Boolean,
+      default: false
+    },
+    closeOnSave: {
+      type: Boolean,
+      default: true
+    },
+    notifyOnSave: {
+      type: Boolean,
+      default: true
     },
     mode: {
       type: String,
@@ -785,6 +803,7 @@ export default {
       this.$emit("close");
     },
     requestCloseModal() {
+      if (this.saving) return;
       if (!this.hasUnsavedChanges()) {
         this.emitClose();
         return;
@@ -2233,9 +2252,13 @@ export default {
           }
         );
         if (response?.data?.success) {
-          showNotification("Request updated successfully.", "success");
+          if (this.notifyOnSave) {
+            showNotification("Request updated successfully.", "success");
+          }
           this.emitSaved(response.data);
-          this.emitClose();
+          if (this.closeOnSave) {
+            this.emitClose();
+          }
         } else {
           showNotification("Request update failed.", "error");
         }
@@ -2313,9 +2336,13 @@ export default {
           }
         );
         if (response?.data?.success) {
-          showNotification("Request created successfully.", "success");
+          if (this.notifyOnSave) {
+            showNotification("Request created successfully.", "success");
+          }
           this.emitSaved(response.data);
-          this.emitClose();
+          if (this.closeOnSave) {
+            this.emitClose();
+          }
         } else {
           showNotification("Request creation failed.", "error");
         }
@@ -2350,22 +2377,7 @@ export default {
         ids.has(row.tempId)
       );
       if (!rowsToDelete.length) return;
-      const endpoint =
-        this.addRequestMode === "sample" ? "samples" : "libraries";
       try {
-        const deleteCalls = rowsToDelete
-          .filter((row) => row.pk)
-          .map((row) =>
-            axiosRef.delete(`${urlStringStart}/api/${endpoint}/${row.pk}/`)
-          );
-        if (deleteCalls.length) {
-          await Promise.all(deleteCalls);
-        }
-        const removedLabel =
-          this.addRequestMode === "library"
-            ? "Libraries removed."
-            : "Samples removed.";
-        showNotification(removedLabel, "success");
       } catch (error) {
         handleError(error);
       } finally {
@@ -2496,6 +2508,30 @@ export default {
   overflow: hidden;
   position: relative;
   z-index: 1;
+}
+
+.saving-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.saving-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  color: #333;
 }
 
 .confirm-overlay {
@@ -2677,6 +2713,11 @@ export default {
   color: #0f5c84;
 }
 
+.add-request-header-right .popup-close-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .help-button {
   width: 32px;
   height: 32px;
@@ -2826,7 +2867,7 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 210px;
+  min-height: clamp(280px, 45vh, 420px);
 }
 
 .files-header {
@@ -2950,6 +2991,8 @@ export default {
   border: 1px solid #d0d0d0;
   border-radius: 6px;
   background: #f6f8fa;
+  width: 100%;
+  min-width: 0;
 }
 
 .download-button {
@@ -2967,12 +3010,23 @@ export default {
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .download-button:hover {
   background: #e8f2f7;
   border-color: #0a4a6a;
   color: #0a4a6a;
+}
+
+.download-button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .records-panel {
@@ -3147,6 +3201,11 @@ export default {
   gap: 10px;
 }
 
+.footer-actions .popup-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .header-button.ghost {
   background: #0f766e;
 }
@@ -3174,11 +3233,6 @@ export default {
 }
 </style>
 <!--
-action icons spacing
-form links on dev
-check files section in dev mode, after scoll
-delete row shouldnt call an api in edit request
-after save behaviour
 reset width in incoming libraries and samples resets toggle of rows
 paste behaviour logs in new request
 name size in files appear different in Ulrike's computer (for empty table)
@@ -3187,4 +3241,6 @@ i5 i7 email behaviour
 
 refactor/simplify all the files
 unit test all the pages
+
+is there any condition where we can hide request solicit approval icon
 -->
