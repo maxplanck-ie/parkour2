@@ -428,7 +428,7 @@
 </template>
 
 <script lang="jsx">
-import TabulatorTable from "../components/TabulatorTable.vue";
+import TabulatorTable from "../components/tabulatorTable.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,

@@ -1,6 +1,7 @@
 import {
   cellContextMenu,
   ellipsisContainer,
+  showNotification,
 } from "../utilities/utilityFunctions";
 
 export const LIBRARY_REQUIRED_FIELDS = new Set([
@@ -69,6 +70,15 @@ function formatDisplayValue(value, placeholder = EMPTY_PLACEHOLDER) {
     return placeholder;
   }
   return value;
+}
+
+function formatBarcodeValue(value, rowData) {
+  const barcode = value || EMPTY_PLACEHOLDER;
+  const barcodeSuffix = value?.[2] ?? "";
+  if (rowData?.record_type === "Sample" && barcodeSuffix === "L") {
+    return `${barcode}*`;
+  }
+  return barcode;
 }
 
 function findOptionLabel(options = [], value) {
@@ -222,7 +232,7 @@ function checkboxColumn(getTabulatorInstance, onSelectionChange) {
   };
 }
 
-export function getAddRequestLibraryColumns(
+export function getRequestEditorLibraryColumns(
   getTabulatorInstance,
   editors = {},
   onSelectionChange,
@@ -237,6 +247,7 @@ export function getAddRequestLibraryColumns(
     getIndexReadsCount,
     getIndexI7Options,
     getIndexI5Options,
+    showBarcode = false,
   } = editors;
 
   const libraryUnits =
@@ -337,6 +348,34 @@ export function getAddRequestLibraryColumns(
 
   const columns = [
     checkboxColumn(getTabulatorInstance, onSelectionChange),
+    ...(showBarcode
+      ? [
+          {
+            title: "Barcode",
+            field: "barcode",
+            width: 90,
+            resizable: false,
+            frozen: true,
+            headerVertical: false,
+            headerTooltip: "Barcode",
+            visible: true,
+            cssClass: "regular-column",
+            editor: false,
+            editable: false,
+            contextMenu: () =>
+              cellContextMenu(true, false, false, getTabulatorInstance),
+            cellDblClick: () => {
+              showNotification("Barcode is read-only.", "warning");
+            },
+            formatter: (cell) => {
+              const rowData = cell.getRow?.().getData?.() || {};
+              return ellipsisContainer(
+                formatBarcodeValue(cell.getValue(), rowData),
+              );
+            },
+          },
+        ]
+      : []),
     {
       title: "Name",
       field: "name",
@@ -344,8 +383,8 @@ export function getAddRequestLibraryColumns(
       widthGrow: 2,
       headerVertical: false,
       headerTooltip: "Enter a Unique Name",
-      frozen: true,
       visible: true,
+      frozen: true,
       cssClass: "regular-column right-border",
       editor: "input",
       validator: (value) =>
@@ -381,7 +420,7 @@ export function getAddRequestLibraryColumns(
     {
       title: "Comment Library",
       field: "comments",
-      minWidth: 130,
+      minWidth: 110,
       widthGrow: 2,
       headerVertical: false,
       headerTooltip:
@@ -437,7 +476,7 @@ export function getAddRequestLibraryColumns(
       clipboardCopyValue: createListClipboardValueGetter(libraryUnits),
     },
     {
-      title: "Amount",
+      title: "Value",
       field: "measured_value",
       width: 80,
       minWidth: 80,
@@ -634,7 +673,7 @@ export function getAddRequestLibraryColumns(
     },
   ];
   columns.forEach((column) => {
-    if (column.field !== "selected") {
+    if (column.field !== "selected" && !column.contextMenu) {
       column.contextMenu = () =>
         cellContextMenu(true, true, true, getTabulatorInstance);
     }
@@ -643,7 +682,7 @@ export function getAddRequestLibraryColumns(
   return columns;
 }
 
-export function getAddRequestSampleColumns(
+export function getRequestEditorSampleColumns(
   getTabulatorInstance,
   editors = {},
   onSelectionChange,
@@ -657,6 +696,7 @@ export function getAddRequestSampleColumns(
     organisms = [],
     biosafetyLevels = [],
     gmoOptions = [],
+    showBarcode = false,
   } = editors;
 
   const sampleUnits =
@@ -778,6 +818,34 @@ export function getAddRequestSampleColumns(
 
   const columns = [
     checkboxColumn(getTabulatorInstance, onSelectionChange),
+    ...(showBarcode
+      ? [
+          {
+            title: "Barcode",
+            field: "barcode",
+            width: 96,
+            resizable: false,
+            frozen: true,
+            headerVertical: false,
+            headerTooltip: "Barcode",
+            visible: true,
+            cssClass: "regular-column",
+            editor: false,
+            editable: false,
+            contextMenu: () =>
+              cellContextMenu(true, false, false, getTabulatorInstance),
+            cellDblClick: () => {
+              showNotification("Barcode is read-only.", "warning");
+            },
+            formatter: (cell) => {
+              const rowData = cell.getRow?.().getData?.() || {};
+              return ellipsisContainer(
+                formatBarcodeValue(cell.getValue(), rowData),
+              );
+            },
+          },
+        ]
+      : []),
     {
       title: "Name",
       field: "name",
@@ -786,6 +854,7 @@ export function getAddRequestSampleColumns(
       headerVertical: false,
       headerTooltip: "Enter a Unique Name",
       visible: true,
+      frozen: true,
       cssClass: "regular-column",
       editor: "input",
       validator: (value) =>
@@ -855,7 +924,7 @@ export function getAddRequestSampleColumns(
       clipboardCopyValue: createListClipboardValueGetter(sampleUnits),
     },
     {
-      title: "Amount",
+      title: "Value",
       field: "measured_value",
       width: 90,
       minWidth: 80,
@@ -1030,11 +1099,11 @@ export function getAddRequestSampleColumns(
     {
       title: "Propagable & GMO",
       field: "gmo",
-      width: 120,
-      minWidth: 70,
+      minWidth: 90,
+      widthGrow: 1,
       headerVertical: false,
       headerTooltip:
-        "Select 'Yes' if the material includes propagable, genetically modified organisms (e.g., viable genetically engineered cells).<br>In this case, complete and attach Formblatt S1 – Aufzeichnung weiterer genetischer Arbeiten. Documentation of all genetic engineering work is required under § 6 Gentechnikgesetz (GenTG).",
+        "Propagable & GMO:<br>Select 'Yes' if the material includes propagable, genetically modified organisms (e.g., viable genetically engineered cells).<br>In this case, complete and attach Formblatt S1 – Aufzeichnung weiterer genetischer Arbeiten. Documentation of all genetic engineering work is required under § 6 Gentechnikgesetz (GenTG).",
       visible: true,
       cssClass: "regular-column",
       editor: "input",
@@ -1049,7 +1118,7 @@ export function getAddRequestSampleColumns(
     },
   ];
   columns.forEach((column) => {
-    if (column.field !== "selected") {
+    if (column.field !== "selected" && !column.contextMenu) {
       column.contextMenu = () =>
         cellContextMenu(true, true, true, getTabulatorInstance);
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="parent-container">
     <!-- Loading overlay -->
-    <div v-if="(loading || fakeLoading) && !exportLoading && !addRequestSyncing" class="loading-overlay">
+    <div v-if="(loading || fakeLoading) && !exportLoading && !requestEditorSyncing" class="loading-overlay">
       <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
         Loading <span style="font-weight: bold">Libraries & Samples</span>...
@@ -178,7 +178,7 @@
           <span> Export to Excel </span>
         </button>
 
-        <button class="header-button" type="button" @click="openAddRequestModal">
+        <button class="header-button" type="button" @click="openRequestEditorModal">
           <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
           <span> Add Request </span>
         </button>
@@ -247,11 +247,11 @@
     </div>
 
     <!-- Popup for Add Request -->
-    <AddRequestView :show="showAddRequestModal" :mode="requestModalMode" :request-id="requestModalRequestId"
+    <RequestEditorView :show="showRequestEditorModal" :mode="requestModalMode" :request-id="requestModalRequestId"
       :request-meta="activeRequestMeta" :is-staff-user="isStaffUser" :user-id="userId"
-      :saving="addRequestSyncing" :close-on-save="false" :notify-on-save="false"
-      @close="closeAddRequestModal"
-      @saved="handleAddRequestSaved" />
+      :saving="requestEditorSyncing" :close-on-save="false" :notify-on-save="false"
+      @close="closeRequestEditorModal"
+      @saved="handleRequestEditorSaved" />
 
     <!-- Popup for Export Options -->
     <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
@@ -403,7 +403,7 @@
 </template>
 
 <script lang="jsx">
-import LiteTabulatorTable from "../components/LiteTabulatorTable.vue";
+import LiteTabulatorTable from "../components/liteTabulatorTable.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -421,8 +421,8 @@ import {
   librariesAndSamplesExportColumns
 } from "../constants/librariesAndSamplesConsts";
 import { statusMap } from "../constants/statusConsts";
-import AddRequestView from "./addRequestView.vue";
-import RequestActionsPopups from "../components/RequestActionsPopups.vue";
+import RequestEditorView from "./requestEditorView.vue";
+import RequestActionsPopups from "../components/requestActionsPopups.vue";
 import iconLibrariesHeader from "../assets/icons/header_libraries_samples.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
 import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
@@ -436,7 +436,7 @@ export default {
   name: "LibrariesAndSamples",
   components: {
     LiteTabulatorTable,
-    AddRequestView,
+    RequestEditorView,
     RequestActionsPopups
   },
   data() {
@@ -529,14 +529,14 @@ export default {
       showAdvancedFilters: false,
       showSelectColumns: false,
       inputColumnMode: "mode_user",
-      showAddRequestModal: false,
+      showRequestEditorModal: false,
       requestModalMode: "create",
       requestModalRequestId: null,
       activeRequestMeta: null,
       activeRequestAction: null,
       activeRequestContext: null,
-      addRequestSyncing: false,
-      addRequestSyncTimer: null,
+      requestEditorSyncing: false,
+      requestEditorSyncTimer: null,
       pendingSavedRequestId: null,
       pendingSavedMode: null,
       paperlessApproval: false,
@@ -559,7 +559,7 @@ export default {
   beforeDestroy() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
-    this.stopAddRequestSync();
+    this.stopRequestEditorSync();
   },
   computed: {
     statusMap() {
@@ -1159,36 +1159,36 @@ export default {
         row.input_display = row?.[sourceField] ?? "";
       });
     },
-    openAddRequestModal() {
+    openRequestEditorModal() {
       this.requestModalMode = "create";
       this.requestModalRequestId = null;
       this.activeRequestMeta = null;
-      this.showAddRequestModal = true;
+      this.showRequestEditorModal = true;
     },
-    closeAddRequestModal() {
-      this.showAddRequestModal = false;
+    closeRequestEditorModal() {
+      this.showRequestEditorModal = false;
       this.requestModalMode = "create";
       this.requestModalRequestId = null;
       this.activeRequestMeta = null;
-      this.stopAddRequestSync();
+      this.stopRequestEditorSync();
     },
-    handleAddRequestSaved(payload) {
+    handleRequestEditorSaved(payload) {
       const requestId =
         payload?.pk ?? payload?.data?.pk ?? payload?.request_id ?? null;
       this.pendingSavedMode = this.requestModalMode;
-      this.startAddRequestSync(requestId);
+      this.startRequestEditorSync(requestId);
     },
-    startAddRequestSync(requestId = null) {
-      if (this.addRequestSyncTimer) {
-        clearInterval(this.addRequestSyncTimer);
-        this.addRequestSyncTimer = null;
+    startRequestEditorSync(requestId = null) {
+      if (this.requestEditorSyncTimer) {
+        clearInterval(this.requestEditorSyncTimer);
+        this.requestEditorSyncTimer = null;
       }
       this.pendingSavedRequestId = requestId;
-      this.addRequestSyncing = true;
+      this.requestEditorSyncing = true;
 
       if (!this.pendingSavedRequestId) {
         this.getLibrariesSamples(1, false, true).finally(() => {
-          this.finishAddRequestSync();
+          this.finishRequestEditorSync();
         });
         return;
       }
@@ -1200,40 +1200,40 @@ export default {
           this.pendingSavedRequestId &&
           this.requestMetaById?.[this.pendingSavedRequestId]
         ) {
-          this.finishAddRequestSync();
+          this.finishRequestEditorSync();
         }
       };
 
       const initialDelayMs = 2000;
       setTimeout(() => {
         poll();
-        this.addRequestSyncTimer = setInterval(poll, 2000);
+        this.requestEditorSyncTimer = setInterval(poll, 2000);
       }, initialDelayMs);
     },
-    stopAddRequestSync() {
-      if (this.addRequestSyncTimer) {
-        clearInterval(this.addRequestSyncTimer);
-        this.addRequestSyncTimer = null;
+    stopRequestEditorSync() {
+      if (this.requestEditorSyncTimer) {
+        clearInterval(this.requestEditorSyncTimer);
+        this.requestEditorSyncTimer = null;
       }
       this.pendingSavedRequestId = null;
       this.pendingSavedMode = null;
-      this.addRequestSyncing = false;
+      this.requestEditorSyncing = false;
     },
-    finishAddRequestSync() {
+    finishRequestEditorSync() {
       const message =
         this.pendingSavedMode === "edit"
           ? "Request updated successfully."
           : "Request created successfully.";
       showNotification(message, "success");
-      this.stopAddRequestSync();
-      this.closeAddRequestModal();
+      this.stopRequestEditorSync();
+      this.closeRequestEditorModal();
     },
     openEditRequestModal(requestId) {
       if (!requestId) return;
       this.requestModalMode = "edit";
       this.requestModalRequestId = requestId;
       this.activeRequestMeta = this.requestMetaById?.[requestId] || null;
-      this.showAddRequestModal = true;
+      this.showRequestEditorModal = true;
     },
     openRequestActionModal(action, context) {
       this.activeRequestAction = action;

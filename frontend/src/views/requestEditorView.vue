@@ -1,5 +1,5 @@
 ﻿<template>
-  <div v-if="show" class="add-request-overlay popup-overlay" :class="{ 'drag-over': isDragOver }"
+  <div v-if="show" class="request-editor-overlay popup-overlay" :class="{ 'drag-over': isDragOver }"
     @dragover.prevent="handleDragOver" @dragenter.prevent="handleDragEnter" @dragleave.prevent="handleDragLeave"
     @drop.prevent="handleDrop">
     <div v-if="canEditRequest" class="drag-drop-indicator">
@@ -9,9 +9,15 @@
         </p>
       </div>
     </div>
-    <div class="add-request-modal">
-      <div class="add-request-content" :class="{ collapsed: isFormPanelCollapsed }">
-        <div class="add-request-header-left" :class="{ collapsed: isFormPanelCollapsed }">
+    <div class="request-editor-modal">
+      <div v-if="fakeLoading" class="request-editor-loading-overlay" aria-hidden="true"></div>
+      <div v-if="isEditMode && !requestDataReady" class="request-editor-loading-overlay" aria-live="polite"
+        aria-busy="true">
+        <div class="spinner"></div>
+        <p>Loading request details...</p>
+      </div>
+      <div class="request-editor-content" :class="{ collapsed: isFormPanelCollapsed }">
+        <div class="request-editor-header-left" :class="{ collapsed: isFormPanelCollapsed }">
           <span class="title-with-icon">
             <font-awesome-icon icon="fa-solid fa-file-lines" class="header-icon" />
             <span class="header-title-text" :title="headerTitle">{{ headerTitle }}</span>
@@ -21,7 +27,7 @@
           :aria-label="isFormPanelCollapsed ? 'Expand details panel' : 'Collapse details panel'">
           <font-awesome-icon :icon="isFormPanelCollapsed ? 'fa-solid fa-angle-right' : 'fa-solid fa-angle-left'" />
         </button>
-        <div class="add-request-header-right">
+        <div class="request-editor-header-right">
           <div class="header-table-actions" :class="{ hidden: !canEditRequest }">
             <button class="icon-button text-button" type="button" :title="addButtonTitle" :disabled="!canEditRequest"
               @click="addDraftRow">
@@ -44,25 +50,25 @@
           </div>
         </div>
 
-        <div class="add-request-body-left">
+        <div class="request-editor-body-left">
           <div class="request-panel-container" :class="{ collapsed: isFormPanelCollapsed }">
             <section class="request-form-panel" :class="{ collapsed: isFormPanelCollapsed }">
               <div class="request-form-actions">
                 <div class="controls-group" :class="{ 'view-only': isEditMode }">
                   <label class="record-type-switch" title="Switch between Library and Sample entry modes">
-                    <input type="checkbox" :checked="addRequestMode === 'sample'" :disabled="!canEditRequest"
+                    <input type="checkbox" :checked="requestEditorMode === 'sample'" :disabled="!canEditRequest"
                       @change="requestRecordTypeSwitch($event)" />
                     <span class="slider">
-                      <span class="option" :class="{ active: addRequestMode === 'library' }">
+                      <span class="option" :class="{ active: requestEditorMode === 'library' }">
                         Library
                       </span>
-                      <span class="option" :class="{ active: addRequestMode === 'sample' }">
+                      <span class="option" :class="{ active: requestEditorMode === 'sample' }">
                         Sample
                       </span>
                     </span>
                   </label>
                 </div>
-                <div v-if="addRequestMode === 'sample' && !isEditMode" class="download-buttons">
+                <div v-if="requestEditorMode === 'sample' && !isEditMode" class="download-buttons">
                   <a class="download-button" :href="gmoFormUrl" target="_blank" rel="noopener"
                     title="Download Formblatt S1 (GMO)">
                     <font-awesome-icon icon="fa-solid fa-download" />
@@ -165,18 +171,18 @@
           </div>
         </div>
 
-        <div class="add-request-body-right">
+        <div class="request-editor-body-right">
           <section class="records-panel" :class="{ expanded: isFormPanelCollapsed }">
             <div class="draft-table" ref="draftTableWrapper">
-              <TabulatorTable ref="addRequestDraftTableRef" tableId="addRequestDraftTable"
-                :rowData="addRequestDraftRows" :columnDefs="addRequestColumns"
-                :tableOptions="addRequestDraftTableOptions" :groupBy="null" :groupSort="null" :groupStartOpen="false"
+              <TabulatorTable ref="requestEditorDraftTableRef" tableId="requestEditorDraftTable"
+                :rowData="requestEditorDraftRows" :columnDefs="requestEditorColumns"
+                :tableOptions="requestEditorDraftTableOptions" :groupBy="null" :groupSort="null" :groupStartOpen="false"
                 :enableDefaultFilters="false" />
             </div>
           </section>
         </div>
 
-        <div class="add-request-footer">
+        <div class="request-editor-footer">
           <div class="footer-summary">
             <span>{{ footerLabel }}</span>
           </div>
@@ -290,7 +296,7 @@
 </template>
 
 <script>
-import TabulatorTable from "../components/TabulatorTable.vue";
+import TabulatorTable from "../components/tabulatorTable.vue";
 import {
   showNotification,
   handleError,
@@ -298,17 +304,17 @@ import {
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
 import {
-  getAddRequestLibraryColumns,
-  getAddRequestSampleColumns,
+  getRequestEditorLibraryColumns,
+  getRequestEditorSampleColumns,
   LIBRARY_REQUIRED_FIELDS,
   SAMPLE_REQUIRED_FIELDS
-} from "../constants/addRequestConsts";
+} from "../constants/requestEditorConsts";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
 export default {
-  name: "AddRequestView",
+  name: "RequestEditorView",
   components: {
     TabulatorTable
   },
@@ -352,9 +358,9 @@ export default {
   },
   data() {
     return {
-      addRequestMode: "library",
+      requestEditorMode: "library",
       isFormPanelCollapsed: false,
-      addRequestDraftRows: [],
+      requestEditorDraftRows: [],
       selectedDraftRowIds: [],
       draftValidationState: {},
       validDraftCount: 0,
@@ -431,12 +437,19 @@ export default {
       prepareTimer: null,
       isPreparingModal: false,
       indexTypesList: [],
+      fakeLoading: false,
+      fakeLoadingTimer: null,
+      requestDataReady: false,
     };
   },
   watch: {
     show(newVal) {
       if (newVal) {
-        this.schedulePrepareAddRequestModal();
+        if (this.isEditMode) {
+          this.isRequestLoading = true;
+          this.requestDataReady = false;
+        }
+        this.schedulePrepareRequestEditorModal();
       } else {
         if (this.prepareTimer) {
           clearTimeout(this.prepareTimer);
@@ -447,12 +460,12 @@ export default {
     },
     mode() {
       if (this.show) {
-        this.schedulePrepareAddRequestModal();
+        this.schedulePrepareRequestEditorModal();
       }
     },
     requestId() {
       if (this.show && this.isEditMode) {
-        this.schedulePrepareAddRequestModal();
+        this.schedulePrepareRequestEditorModal();
       }
     },
     showToggleConfirm(newVal) {
@@ -503,7 +516,7 @@ export default {
   },
   mounted() {
     if (this.show) {
-      this.schedulePrepareAddRequestModal();
+      this.schedulePrepareRequestEditorModal();
     }
   },
   computed: {
@@ -522,29 +535,29 @@ export default {
       if (this.isStaffUser) return true;
       return !this.restrictPermissions;
     },
-    addRequestModeLabel() {
-      return this.addRequestMode === "library" ? "Library" : "Sample";
+    requestEditorModeLabel() {
+      return this.requestEditorMode === "library" ? "Library" : "Sample";
     },
     recordLabelSet() {
-      return this.addRequestMode === "library"
+      return this.requestEditorMode === "library"
         ? { singular: "library", plural: "libraries" }
         : { singular: "sample", plural: "samples" };
     },
     addButtonLabel() {
-      return this.addRequestMode === "library" ? "Add Libraries" : "Add Samples";
+      return this.requestEditorMode === "library" ? "Add Libraries" : "Add Samples";
     },
     addButtonTitle() {
-      return this.addRequestMode === "library"
+      return this.requestEditorMode === "library"
         ? "Add new libraries"
         : "Add new samples";
     },
     deleteButtonTitle() {
-      return this.addRequestMode === "library"
+      return this.requestEditorMode === "library"
         ? "Delete selected libraries"
         : "Delete selected samples";
     },
     deleteConfirmTitle() {
-      return this.addRequestMode === "library"
+      return this.requestEditorMode === "library"
         ? "Delete selected libraries?"
         : "Delete selected samples?";
     },
@@ -555,7 +568,7 @@ export default {
     switchClearLabel() {
       return this.recordLabelSet.plural;
     },
-    addRequestColumns() {
+    requestEditorColumns() {
       const normalizeOptions = (list = []) =>
         list.map((item) => ({
           value: item.id ?? item.value ?? item.pk ?? item.name,
@@ -565,7 +578,7 @@ export default {
         }));
 
       const getInstance = () =>
-        this.$refs.addRequestDraftTableRef?.tabulatorInstance || null;
+        this.$refs.requestEditorDraftTableRef?.tabulatorInstance || null;
       const onSelectionChange = (table) => this.syncSelectedDraftRows(table);
       const applyReadOnly = (columns = []) =>
         columns.map((column) => {
@@ -596,7 +609,8 @@ export default {
         organisms: normalizeOptions(this.organismsList),
         getIndexReadsCount: (row) => this.getIndexReadsCount(row),
         getIndexI7Options: (row) => this.getLibraryIndexI7Options(row),
-        getIndexI5Options: (row) => this.getLibraryIndexI5Options(row)
+        getIndexI5Options: (row) => this.getLibraryIndexI5Options(row),
+        showBarcode: this.isEditMode
       };
 
       const sampleEditors = {
@@ -607,17 +621,18 @@ export default {
         organisms: normalizeOptions(this.organismsList),
         nucleicAcidTypes: normalizeOptions(this.nucleicAcidTypesList),
         biosafetyLevels: this.biosafetyLevelsOptions,
-        gmoOptions: this.gmoOptions
+        gmoOptions: this.gmoOptions,
+        showBarcode: this.isEditMode
       };
 
       const columns =
-        this.addRequestMode === "library"
-          ? getAddRequestLibraryColumns(
+        this.requestEditorMode === "library"
+          ? getRequestEditorLibraryColumns(
             getInstance,
             libraryEditors,
             onSelectionChange
           )
-          : getAddRequestSampleColumns(
+          : getRequestEditorSampleColumns(
             getInstance,
             sampleEditors,
             onSelectionChange
@@ -629,7 +644,7 @@ export default {
 
       return columns;
     },
-    addRequestDraftTableOptions() {
+    requestEditorDraftTableOptions() {
       const vm = this;
       const getPlaceholder = () =>
         "Use the + button to create libraries/samples.";
@@ -653,22 +668,24 @@ export default {
         },
         handlePasteApplied: (rows) => vm.handlePasteApplied(rows),
         handleDeleteApplied: () => {
-          const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+          const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
           const rows = table?.getRows?.() || [];
           rows.forEach((row) => row.reformat?.());
           this.revalidateDraftRows();
         },
         cellEditing: (cell) => vm.handleCellEditing(cell),
         handleCellEdited: (cell) => vm.handleCellEdited(cell),
-        handleRenderComplete: () => this.applyValidationStyling()
+        handleRenderComplete: () => this.applyValidationStyling(),
+        fakeLoadingStart: () => this.fakeLoadingStart(),
+        fakeLoadingStop: () => this.fakeLoadingStop()
       };
     },
     footerLabel() {
       if (this.isEditMode) {
         const count =
-          this.editRecordsByType?.[this.addRequestMode]?.length || 0;
+          this.editRecordsByType?.[this.requestEditorMode]?.length || 0;
         const labels =
-          this.addRequestMode === "library"
+          this.requestEditorMode === "library"
             ? { singular: "library", plural: "libraries" }
             : { singular: "sample", plural: "samples" };
         const noun = count === 1 ? labels.singular : labels.plural;
@@ -676,7 +693,7 @@ export default {
       }
       const count = this.validDraftCount;
       const labels =
-        this.addRequestMode === "library"
+        this.requestEditorMode === "library"
           ? { singular: "library", plural: "libraries" }
           : { singular: "sample", plural: "samples" };
       const noun = count === 1 ? labels.singular : labels.plural;
@@ -684,13 +701,16 @@ export default {
     }
   },
   methods: {
-    schedulePrepareAddRequestModal() {
+    schedulePrepareRequestEditorModal() {
       if (this.prepareTimer) {
         clearTimeout(this.prepareTimer);
       }
+      if (this.isEditMode) {
+        this.isRequestLoading = true;
+      }
       this.prepareTimer = setTimeout(() => {
         this.prepareTimer = null;
-        this.prepareAddRequestModal();
+        this.prepareRequestEditorModal();
       }, 0);
     },
     findIndexOptionByValue(options = [], value) {
@@ -714,7 +734,7 @@ export default {
       table?.redraw?.();
     },
     refreshRowsForIndexType(typeKey) {
-      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const rows = table?.getRows?.() || [];
       rows.forEach((row) => {
         const rowData = row?.getData?.() || {};
@@ -724,7 +744,7 @@ export default {
     },
     handlePasteApplied(rows = []) {
       if (!this.canEditRequest) return;
-      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const list = Array.isArray(rows) ? rows : [];
       list.forEach((row) => {
         const rowRef = row?.getData ? row : table?.getRow?.(row?.tempId) || null;
@@ -771,6 +791,22 @@ export default {
         this.applyValidationStyling();
       });
     },
+    fakeLoadingStart() {
+      if (this.fakeLoadingTimer) {
+        clearTimeout(this.fakeLoadingTimer);
+        this.fakeLoadingTimer = null;
+      }
+      this.fakeLoading = true;
+    },
+    fakeLoadingStop() {
+      if (this.fakeLoadingTimer) {
+        clearTimeout(this.fakeLoadingTimer);
+      }
+      this.fakeLoadingTimer = setTimeout(() => {
+        this.fakeLoading = false;
+        this.fakeLoadingTimer = null;
+      }, 300);
+    },
     hasMeasuredValueUnit(rowData) {
       const unit = rowData?.measuring_unit;
       return Boolean(unit) && unit !== "Unknown";
@@ -792,19 +828,19 @@ export default {
       return true;
     },
     isFieldEditable(field, rowData) {
-      if (this.addRequestMode === "library") {
+      if (this.requestEditorMode === "library") {
         return this.isLibraryFieldEditable(field, rowData);
       }
       return this.isSampleFieldEditable(field, rowData);
     },
     isFieldRequired(field, rowData) {
       if (field === "index_i7") {
-        return this.addRequestMode === "library"
+        return this.requestEditorMode === "library"
           ? this.getIndexReadsCount(rowData) >= 1
           : false;
       }
       if (field === "index_i5") {
-        return this.addRequestMode === "library"
+        return this.requestEditorMode === "library"
           ? this.getIndexReadsCount(rowData) >= 2
           : false;
       }
@@ -814,7 +850,7 @@ export default {
       if (field === "gmo") {
         return this.isGmoAllowedInputType(rowData.nucleic_acid_type);
       }
-      return this.addRequestMode === "library"
+      return this.requestEditorMode === "library"
         ? LIBRARY_REQUIRED_FIELDS.has(field)
         : SAMPLE_REQUIRED_FIELDS.has(field);
     },
@@ -889,9 +925,9 @@ export default {
       this.$emit("saved", payload);
     },
     resetState() {
-      this.addRequestMode = "library";
+      this.requestEditorMode = "library";
       this.isFormPanelCollapsed = false;
-      this.addRequestDraftRows = [];
+      this.requestEditorDraftRows = [];
       this.selectedDraftRowIds = [];
       this.draftValidationState = {};
       this.validDraftCount = 0;
@@ -933,7 +969,7 @@ export default {
       }
       this.$nextTick(() => this.applyValidationStyling());
     },
-    async prepareAddRequestModal() {
+    async prepareRequestEditorModal() {
       if (this.isPreparingModal) return;
       this.isPreparingModal = true;
       this.resetState();
@@ -1023,7 +1059,7 @@ export default {
             : this.editRecordTypesAvailable.sample
               ? "sample"
               : "library";
-        this.addRequestMode = initialMode;
+        this.requestEditorMode = initialMode;
         this.loadEditRecordsForMode(initialMode);
         const indexTypes = [
           ...new Set(
@@ -1074,6 +1110,7 @@ export default {
         handleError(error);
       } finally {
         this.isRequestLoading = false;
+        this.requestDataReady = true;
       }
     },
     async ensureModalOptionsLoaded() {
@@ -1096,6 +1133,9 @@ export default {
             tempId: `edit-${record.pk}`,
             pk: record.pk,
             selected: false,
+            record_type: "Library",
+            barcode: record.barcode || "",
+            barcode_original: record.barcode || "",
             name: record.name || "",
             library_protocol: record.library_protocol || null,
             library_type: record.library_type || null,
@@ -1117,6 +1157,9 @@ export default {
           tempId: `edit-${record.pk}`,
           pk: record.pk,
           selected: false,
+          record_type: "Sample",
+          barcode: record.barcode || "",
+          barcode_original: record.barcode || "",
           name: record.name || "",
           nucleic_acid_type: record.nucleic_acid_type || null,
           library_protocol: record.library_protocol || null,
@@ -1132,7 +1175,7 @@ export default {
           gmo: record.gmo
         };
       });
-      this.addRequestDraftRows = mapped;
+      this.requestEditorDraftRows = mapped;
       this.selectedDraftRowIds = [];
       this.draftRowCounter = mapped.length;
       this.$nextTick(() => this.revalidateDraftRows());
@@ -1160,8 +1203,8 @@ export default {
         name: ""
       };
       const row =
-        this.addRequestMode === "sample" ? { ...baseRow, gmo: null } : baseRow;
-      this.addRequestDraftRows = [...this.addRequestDraftRows, row];
+        this.requestEditorMode === "sample" ? { ...baseRow, gmo: null } : baseRow;
+      this.requestEditorDraftRows = [...this.requestEditorDraftRows, row];
       this.$nextTick(() => this.revalidateDraftRows());
     },
     requestDeleteSelectedDraftRows() {
@@ -1195,7 +1238,7 @@ export default {
         return;
       }
       const ids = new Set(this.selectedDraftRowIds);
-      this.addRequestDraftRows = this.addRequestDraftRows.filter(
+      this.requestEditorDraftRows = this.requestEditorDraftRows.filter(
         (row) => !ids.has(row.tempId)
       );
       this.selectedDraftRowIds = [];
@@ -1203,18 +1246,18 @@ export default {
     },
     handleRecordTypeSwitch(mode) {
       const normalized = mode === "sample" ? "sample" : "library";
-      if (this.addRequestMode === normalized) return;
-      this.addRequestMode = normalized;
+      if (this.requestEditorMode === normalized) return;
+      this.requestEditorMode = normalized;
       if (this.isEditMode) {
         this.loadEditRecordsForMode(normalized);
       } else {
-        this.addRequestDraftRows = [];
+        this.requestEditorDraftRows = [];
         this.selectedDraftRowIds = [];
         this.draftValidationState = {};
         this.validDraftCount = 0;
         this.draftRowCounter = 0;
         this.$nextTick(() => {
-          const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+          const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
           table?.clearData?.();
           this.applyValidationStyling();
         });
@@ -1235,22 +1278,22 @@ export default {
             "warning"
           );
           if (event?.target) {
-            event.target.checked = this.addRequestMode === "sample";
+            event.target.checked = this.requestEditorMode === "sample";
           }
           return;
         }
-        this.persistDraftRowsToEditRecords(this.addRequestMode);
+        this.persistDraftRowsToEditRecords(this.requestEditorMode);
         this.handleRecordTypeSwitch(normalized);
         return;
       }
       const nextMode = event?.target?.checked ? "sample" : "library";
       const normalized = nextMode === "sample" ? "sample" : "library";
-      if (this.addRequestMode === normalized) return;
-      if (this.addRequestDraftRows.length > 0) {
+      if (this.requestEditorMode === normalized) return;
+      if (this.requestEditorDraftRows.length > 0) {
         this.pendingToggleMode = normalized;
         this.showToggleConfirm = true;
         if (event?.target) {
-          event.target.checked = this.addRequestMode === "sample";
+          event.target.checked = this.requestEditorMode === "sample";
         }
         return;
       }
@@ -1297,9 +1340,9 @@ export default {
     syncSelectedDraftRows(tableOverride = null) {
       const table =
         tableOverride ||
-        this.$refs.addRequestDraftTableRef?.tabulatorInstance ||
+        this.$refs.requestEditorDraftTableRef?.tabulatorInstance ||
         null;
-      const rows = table?.getData?.() || this.addRequestDraftRows || [];
+      const rows = table?.getData?.() || this.requestEditorDraftRows || [];
       const ids = rows
         .filter((row) => row?.selected)
         .map((row) => row?.tempId)
@@ -1307,11 +1350,11 @@ export default {
       this.selectedDraftRowIds = ids;
     },
     revalidateDraftRows() {
-      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const tableRows = table?.getRows?.() || [];
       const rows = tableRows.length
         ? tableRows.map((row) => row.getData())
-        : this.addRequestDraftRows || [];
+        : this.requestEditorDraftRows || [];
       const nameCounts = {};
       rows.forEach((row) => {
         const name = (row?.name || "").trim();
@@ -1325,7 +1368,7 @@ export default {
           row.tempId = `row-${index + 1}-${Date.now()}`;
         }
         const errors =
-          this.addRequestMode === "library"
+          this.requestEditorMode === "library"
             ? this.validateLibraryRow(row, index, nameCounts)
             : this.validateSampleRow(row, index, nameCounts);
         validations[row.tempId || `row-${index}`] = errors;
@@ -1408,17 +1451,17 @@ export default {
       cells.forEach((cell) => this.applyCellStyling(cell));
     },
     applyValidationStyling() {
-      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       if (!table) return;
       const rows = table.getRows?.() || [];
       rows.forEach((row) => this.applyRowStyling(row));
     },
     getDraftTableRows() {
-      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       if (table?.getData) {
         return table.getData();
       }
-      return this.addRequestDraftRows;
+      return this.requestEditorDraftRows;
     },
     handleCellEditing(cell) {
       if (!this.canEditRequest) return false;
@@ -1426,6 +1469,10 @@ export default {
       const field = cell.getField?.();
       const rowData = cell.getRow?.()?.getData?.() || {};
       if (!field) return true;
+      if (field === "barcode") {
+        showNotification("Barcode is read-only.", "warning");
+        return false;
+      }
 
       if (field === "measured_value") {
         if (!rowData.measuring_unit) {
@@ -1441,7 +1488,7 @@ export default {
         }
       }
 
-      if (this.addRequestMode === "library") {
+      if (this.requestEditorMode === "library") {
         if (field === "index_i7") {
           if (this.getIndexReadsCount(rowData) < 1) {
             return false;
@@ -1490,9 +1537,9 @@ export default {
         this.revalidateDraftRows();
         return;
       }
-      if (this.addRequestMode === "library" && field) {
+      if (this.requestEditorMode === "library" && field) {
         this.handleLibraryCellEdited(field, row);
-      } else if (this.addRequestMode === "sample" && field) {
+      } else if (this.requestEditorMode === "sample" && field) {
         this.handleSampleCellEdited(field, row);
       }
       this.revalidateDraftRows();
@@ -1760,7 +1807,7 @@ export default {
       return true;
     },
     redrawDraftTable() {
-      const table = this.$refs.addRequestDraftTableRef?.tabulatorInstance;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       table?.redraw?.();
     },
     normalizeNumber(value) {
@@ -1874,7 +1921,7 @@ export default {
         row.measuring_unit !== "Unknown" &&
         this.normalizeNumber(row.measured_value) === null
       ) {
-        errors.measured_value = `${prefix}: Amount is required when a measuring unit is selected.`;
+        errors.measured_value = `${prefix}: Value is required when a measuring unit is selected.`;
       }
       return errors;
     },
@@ -2187,7 +2234,7 @@ export default {
         showNotification("You lack permission to edit requests.", "warning");
         return;
       }
-      this.persistDraftRowsToEditRecords(this.addRequestMode);
+      this.persistDraftRowsToEditRecords(this.requestEditorMode);
       if (this.isRequestSaving) return;
       if (!this.requestId) {
         showNotification("Request ID is missing.", "error");
@@ -2247,7 +2294,7 @@ export default {
                 ? this.buildSamplePayload(row)
                 : this.buildLibraryPayload(row)
             );
-            const created = await this.submitAddRequest(endpoint, payloads);
+            const created = await this.submitRequestEditor(endpoint, payloads);
             created.forEach((record, index) => {
               const row = newRows[index];
               if (row) {
@@ -2334,10 +2381,10 @@ export default {
       }
       const drafts = this.getDraftTableRows();
       const payloads =
-        this.addRequestMode === "library"
+        this.requestEditorMode === "library"
           ? drafts.map((row) => this.buildLibraryPayload(row))
           : drafts.map((row) => this.buildSamplePayload(row));
-      const recordTypeLabel = this.addRequestModeLabel;
+      const recordTypeLabel = this.requestEditorModeLabel;
       const payload = {
         cost_unit: this.newRequest.cost_unit || null,
         description,
@@ -2347,11 +2394,11 @@ export default {
       try {
         this.isRequestSaving = true;
         const endpoint =
-          this.addRequestMode === "library" ? "libraries" : "samples";
-        const created = await this.submitAddRequest(endpoint, payloads);
+          this.requestEditorMode === "library" ? "libraries" : "samples";
+        const created = await this.submitRequestEditor(endpoint, payloads);
         if (!created.length) {
           const emptyLabel =
-            this.addRequestMode === "library"
+            this.requestEditorMode === "library"
               ? "No libraries were created."
               : "No samples were created.";
           showNotification(emptyLabel, "error");
@@ -2393,7 +2440,7 @@ export default {
         this.isRequestSaving = false;
       }
     },
-    async submitAddRequest(endpoint, payloads) {
+    async submitRequestEditor(endpoint, payloads) {
       const formData = new FormData();
       formData.append("data", JSON.stringify(payloads));
       const response = await axiosRef.post(
@@ -2414,7 +2461,7 @@ export default {
     },
     async deleteSelectedEditRows() {
       const ids = new Set(this.selectedDraftRowIds);
-      const rowsToDelete = this.addRequestDraftRows.filter((row) =>
+      const rowsToDelete = this.requestEditorDraftRows.filter((row) =>
         ids.has(row.tempId)
       );
       if (!rowsToDelete.length) return;
@@ -2422,12 +2469,12 @@ export default {
       } catch (error) {
         handleError(error);
       } finally {
-        const remaining = this.addRequestDraftRows.filter(
+        const remaining = this.requestEditorDraftRows.filter(
           (row) => !ids.has(row.tempId)
         );
-        this.addRequestDraftRows = remaining;
+        this.requestEditorDraftRows = remaining;
         this.selectedDraftRowIds = [];
-        this.persistDraftRowsToEditRecords(this.addRequestMode);
+        this.persistDraftRowsToEditRecords(this.requestEditorMode);
         this.$nextTick(() => this.revalidateDraftRows());
       }
     },
@@ -2503,7 +2550,7 @@ export default {
 </script>
 
 <style scoped>
-.add-request-overlay {
+.request-editor-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
@@ -2512,15 +2559,15 @@ export default {
   justify-content: center;
   padding: 20px;
   z-index: 999;
-  animation: add-request-fade-in 0.18s ease-out;
+  animation: request-editor-fade-in 0.18s ease-out;
   overflow: hidden;
 }
 
-.add-request-overlay.drag-over {
+.request-editor-overlay.drag-over {
   border: none;
 }
 
-.add-request-overlay.drag-over::after {
+.request-editor-overlay.drag-over::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -2530,12 +2577,12 @@ export default {
   z-index: 2;
 }
 
-.add-request-overlay.drag-over .add-request-modal {
+.request-editor-overlay.drag-over .request-editor-modal {
   transform: scale(1.02);
   transition: transform 0.2s ease;
 }
 
-.add-request-modal {
+.request-editor-modal {
   background: white;
   border-radius: 8px;
   width: calc(100% - 20px);
@@ -2545,10 +2592,29 @@ export default {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
   transform: scale(0.98);
   opacity: 0;
-  animation: add-request-pop-in 0.22s ease-out forwards;
+  animation: request-editor-pop-in 0.22s ease-out forwards;
   overflow: hidden;
   position: relative;
   z-index: 1;
+}
+
+.request-editor-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in 0.15s ease-out forwards;
+}
+
+.request-editor-loading-overlay p {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 15px;
+  color: #555;
 }
 
 .saving-overlay {
@@ -2656,7 +2722,7 @@ export default {
   background: #e8f2f1;
 }
 
-.add-request-content {
+.request-editor-content {
   height: 100%;
   display: grid;
   grid-template-columns: var(--left-panel-width) var(--panel-toggle-width) 1fr;
@@ -2665,11 +2731,11 @@ export default {
   --panel-toggle-width: 34px;
 }
 
-.add-request-content.collapsed {
+.request-editor-content.collapsed {
   --left-panel-width: 0px;
 }
 
-.add-request-header-left {
+.request-editor-header-left {
   grid-column: 1;
   grid-row: 1;
   display: flex;
@@ -2683,7 +2749,7 @@ export default {
   min-width: 0;
 }
 
-.add-request-header-left.collapsed {
+.request-editor-header-left.collapsed {
   padding: 0;
   opacity: 0;
   pointer-events: none;
@@ -2710,7 +2776,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.add-request-header-right {
+.request-editor-header-right {
   grid-column: 3;
   grid-row: 1;
   display: flex;
@@ -2745,16 +2811,16 @@ export default {
   pointer-events: none;
 }
 
-.add-request-header-right .popup-close-button {
+.request-editor-header-right .popup-close-button {
   color: #13415b;
   font-size: 24px;
 }
 
-.add-request-header-right .popup-close-button:hover {
+.request-editor-header-right .popup-close-button:hover {
   color: #0f5c84;
 }
 
-.add-request-header-right .popup-close-button:disabled {
+.request-editor-header-right .popup-close-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -2778,7 +2844,7 @@ export default {
   color: #0f5c84;
 }
 
-.add-request-body-left {
+.request-editor-body-left {
   grid-column: 1;
   grid-row: 2;
   padding: 20px 12px 20px 24px;
@@ -2786,12 +2852,12 @@ export default {
   min-width: 0;
 }
 
-.add-request-content.collapsed .add-request-body-left {
+.request-editor-content.collapsed .request-editor-body-left {
   padding: 0;
   pointer-events: none;
 }
 
-.add-request-body-right {
+.request-editor-body-right {
   grid-column: 3;
   grid-row: 2;
   padding: 20px 24px 20px 12px;
@@ -3218,7 +3284,7 @@ export default {
   font-weight: 600;
 }
 
-.add-request-footer {
+.request-editor-footer {
   grid-column: 1 / -1;
   grid-row: 3;
   border-top: 1px solid #e5e7eb;
@@ -3251,7 +3317,7 @@ export default {
   background: #0f766e;
 }
 
-@keyframes add-request-fade-in {
+@keyframes request-editor-fade-in {
   from {
     opacity: 0;
   }
@@ -3261,7 +3327,7 @@ export default {
   }
 }
 
-@keyframes add-request-pop-in {
+@keyframes request-editor-pop-in {
   from {
     opacity: 0;
     transform: scale(0.98);
@@ -3277,6 +3343,8 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 
+add libraries/samples add number 
+Attachments shall be easier accessible. An attachment button shall show all attachments already uploaded and allow fast adding of them. Even more wonderful would be if the icon changes color if an attachment is there. His would help us in a way that we would spot immediately if user add attachments when creating the requests, instead of clicking multiple times.
 compose email for users
 question: i5 i7 Other Option, what to do if the index doest exist in any lists
 test: name size in files appear different in Ulrike's computer (for empty table)

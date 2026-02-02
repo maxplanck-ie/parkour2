@@ -250,6 +250,8 @@ export default {
             const pastedColumnCount = Math.max(
               ...pastedData.map((row) => row.length)
             );
+            const totalPastedCells = pastedData.length * pastedColumnCount;
+            const useFastPath = totalPastedCells > 200;
             const rangeColumns = visibleColumns.slice(
               colStart,
               colStart + pastedColumnCount
@@ -259,6 +261,8 @@ export default {
             let targetGroup = null;
             let changedRows = new Set();
             let changedCols = new Set();
+            let blockedPaste = false;
+            const blockedFields = new Set();
 
             if (isSingleCell) {
               const selectedRow = this.tabulatorInstance.getRowFromPosition(
@@ -292,6 +296,13 @@ export default {
                 const cell = tableRow.getCell(field);
                 const columnTitle =
                   columnDef?.title || field || `Cell ${cellNumber}`;
+                if (columnDef?.disablePaste === true) {
+                  blockedPaste = true;
+                  if (field) {
+                    blockedFields.add(field);
+                  }
+                  return;
+                }
                 const isEditable = (() => {
                   const shouldBlockDisabledCells =
                     this.tableOptions?.blockActionsOnDisabledCells === true;
@@ -352,32 +363,39 @@ export default {
 
             const updatedRowsArray = Array.from(batchUpdates.values());
             if (updatedRowsArray.length) {
-              this.tabulatorInstance.updateData(updatedRowsArray);
+              if (useFastPath) {
+                this.tabulatorInstance.blockRedraw();
+                this.tabulatorInstance.updateData(updatedRowsArray);
+                this.tabulatorInstance.restoreRedraw();
+                this.tabulatorInstance.redraw(true);
+              } else {
+                this.tabulatorInstance.updateData(updatedRowsArray);
 
-              if (changedRows.size) {
-                changedRows.forEach((rowPosition) => {
-                  const row = this.tabulatorInstance.getRowFromPosition(
-                    rowPosition
+                if (changedRows.size) {
+                  changedRows.forEach((rowPosition) => {
+                    const row = this.tabulatorInstance.getRowFromPosition(
+                      rowPosition
+                    );
+                    row?.reformat?.();
+                  });
+                }
+
+                if (changedRows.size && changedCols.size) {
+                  const startRow = this.tabulatorInstance.getRowFromPosition(
+                    Math.min(...changedRows)
                   );
-                  row?.reformat?.();
-                });
-              }
-
-              if (changedRows.size && changedCols.size) {
-                const startRow = this.tabulatorInstance.getRowFromPosition(
-                  Math.min(...changedRows)
-                );
-                const endRow = this.tabulatorInstance.getRowFromPosition(
-                  Math.max(...changedRows)
-                );
-                const startCol = visibleColumns[Math.min(...changedCols)];
-                const endCol = visibleColumns[Math.max(...changedCols)];
-
-                if (startRow && endRow && startCol && endCol) {
-                  this.tabulatorInstance.addRange(
-                    startRow.getCell(startCol.getField()),
-                    endRow.getCell(endCol.getField())
+                  const endRow = this.tabulatorInstance.getRowFromPosition(
+                    Math.max(...changedRows)
                   );
+                  const startCol = visibleColumns[Math.min(...changedCols)];
+                  const endCol = visibleColumns[Math.max(...changedCols)];
+
+                  if (startRow && endRow && startCol && endCol) {
+                    this.tabulatorInstance.addRange(
+                      startRow.getCell(startCol.getField()),
+                      endRow.getCell(endCol.getField())
+                    );
+                  }
                 }
               }
             }
@@ -396,6 +414,19 @@ export default {
                 errorsPopupWidth: 600
               };
               this.showErrorsWindow = true;
+            }
+            if (blockedPaste) {
+              if (blockedFields.has("barcode")) {
+                showNotification(
+                  "Barcode is read-only and cannot be pasted.",
+                  "warning"
+                );
+              } else {
+                showNotification(
+                  "Paste is disabled for some columns.",
+                  "warning"
+                );
+              }
             }
 
             return [];

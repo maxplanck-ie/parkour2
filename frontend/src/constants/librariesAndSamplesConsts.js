@@ -276,8 +276,8 @@ export function librariesAndSamplesColumnDefs(
     {
       title: "Barcode",
       field: "barcode",
-      width: 95,
-      minWidth: 95,
+      width: 96,
+      minWidth: 96,
       headerFilter: true,
       headerTooltip: "Barcode",
       visible: true,
@@ -406,7 +406,7 @@ export function librariesAndSamplesColumnDefs(
       minWidth: 85,
       width: "5%",
       headerVertical: false,
-      headerTooltip: "Measured Amount with Unit",
+      headerTooltip: "Measured Value with Unit",
       titleFormatter: (cell, formatterParams) =>
         createInputColumnHeader(cell, formatterParams),
       titleFormatterParams: {
