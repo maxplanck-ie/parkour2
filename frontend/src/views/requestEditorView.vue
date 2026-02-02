@@ -446,6 +446,7 @@ export default {
       hasEditedAddCount: false,
       allowDirtyTracking: false,
       suppressNextDirtyBatch: false,
+      pendingDirtyTrackingResume: false,
       dirtyFieldsByRowId: {},
       validationFieldsByRowId: {},
       showToggleConfirm: false,
@@ -747,12 +748,26 @@ export default {
           rows.forEach((row) => row.reformat?.());
           this.revalidateDraftRows();
         },
+        handleRangeCleared: (payload = []) => {
+          if (!this.isEditMode || !Array.isArray(payload)) return;
+          payload.forEach((entry) => {
+            const rowData = entry?.rowData || {};
+            const fields = entry?.fields || [];
+            if (!rowData?.tempId || !rowData?.pk || !fields.length) return;
+            this.markDirtyFields(rowData.tempId, fields);
+          });
+          this.$nextTick(() => this.revalidateDraftRows());
+        },
         cellEditing: (cell) => vm.handleCellEditing(cell),
         handleCellEdited: (cell) => vm.handleCellEdited(cell),
         handleRenderComplete: () => {
           this.applyValidationStyling();
           this.bindRangeSelectionListeners();
           this.updateRangeSelectionState();
+          if (this.isEditMode && this.pendingDirtyTrackingResume) {
+            this.pendingDirtyTrackingResume = false;
+            this.resumeDirtyTracking();
+          }
         },
         fakeLoadingStart: () => this.fakeLoadingStart(),
         fakeLoadingStop: () => this.fakeLoadingStop()
@@ -976,6 +991,12 @@ export default {
       const costUnitRaw = this.newRequest.cost_unit || "";
       const description = (this.newRequest.description || "").trim();
       if (this.isEditMode) {
+        const hasDirtyTableEdits = Object.values(this.dirtyFieldsByRowId || {}).some(
+          (fields) => fields instanceof Set ? fields.size > 0 : Boolean(fields)
+        );
+        if (hasDirtyTableEdits) {
+          return true;
+        }
         const snapshot = this.editSnapshot || {};
         const baseCostUnitRaw = snapshot.cost_unit || "";
         const costUnit =
@@ -998,6 +1019,80 @@ export default {
       if (this.uploadedRequestFiles.length || this.uploadedRequestFileIds.length)
         return true;
       return this.getDraftTableRows().length > 0;
+    },
+    handleApplyToAllIndexPairs(rows = []) {
+      if (!this.canEditRequest || !Array.isArray(rows)) return;
+      rows.forEach((row) => {
+        if (!row?.index_type) return;
+        const rowRef = row?.getData ? row : null;
+        const rowData = rowRef?.getData ? rowRef.getData() : row;
+        if (!rowData) return;
+        const typeKey = String(rowData.index_type);
+        const reads = this.getIndexReadsCount(rowData);
+        if (reads >= 2) {
+          const hasI7 = this.fieldHasValue(rowData.index_i7);
+          const hasI5 = this.fieldHasValue(rowData.index_i5);
+          const optionsReady =
+            this.indexI7OptionsByType[typeKey] &&
+            this.indexI5OptionsByType[typeKey] &&
+            this.indexPairsByType[typeKey];
+          if (optionsReady && rowRef) {
+            if (hasI7) {
+              this.tryAutoSelectI5(rowRef, rowData);
+            } else if (hasI5) {
+              this.tryAutoSelectI7(rowRef, rowData);
+            }
+          } else if (rowData.index_type) {
+            this.fetchIndexOptionsForType(rowData.index_type, {
+              row: rowRef,
+              selectedI7: hasI7 ? rowData.index_i7 : null,
+              selectedI5: !hasI7 && hasI5 ? rowData.index_i5 : null
+            });
+          }
+        }
+        if (rowData.index_type) {
+          const hasI7 = Boolean(this.indexI7OptionsByType[typeKey]);
+          const hasI5 = Boolean(this.indexI5OptionsByType[typeKey]);
+          if (hasI7 && hasI5) {
+            this.refreshRowsForIndexType(typeKey);
+          } else {
+            this.fetchIndexOptionsForType(rowData.index_type);
+          }
+        }
+      });
+    },
+    handleApplyToAllIndexPairing(cell, tableRef) {
+      if (!this.canEditRequest || this.requestEditorMode !== "library") return;
+      const field = cell?.getField?.();
+      if (field !== "index_i7" && field !== "index_i5") return;
+      const rows = tableRef?.getRows?.()?.map((row) => row.getData?.()) || [];
+      this.handleApplyToAllIndexPairs(rows);
+    },
+    applyToAllFromCell(cell, { tableRef, tabulatorInstance } = {}) {
+      if (!cell) return;
+      const table =
+        tabulatorInstance?.getTable?.() ||
+        tabulatorInstance?.tabulatorInstance ||
+        tabulatorInstance ||
+        tableRef?.getTable?.() ||
+        tableRef ||
+        this.$refs.requestEditorDraftTableRef?.tabulatorInstance ||
+        null;
+      if (!table) return;
+      applyValueToAllRows(cell, () => table, {
+        blockActionsOnDisabledCells: true
+      });
+      this.handleApplyToAllIndexPairing(cell, table);
+      this.$nextTick(() => {
+        this.revalidateDraftRows();
+        this.applyValidationStyling();
+      });
+    },
+    handleApplyToAllFromContext(payload = {}) {
+      this.applyToAllFromCell(payload?.cell, {
+        tableRef: payload?.tableRef,
+        tabulatorInstance: payload?.tabulatorInstance
+      });
     },
     emitSaved(payload) {
       this.$emit("saved", payload);
@@ -1054,6 +1149,7 @@ export default {
     resetDirtyTracking() {
       this.allowDirtyTracking = false;
       this.suppressNextDirtyBatch = false;
+      this.pendingDirtyTrackingResume = false;
       this.dirtyFieldsByRowId = {};
       this.validationFieldsByRowId = {};
     },
@@ -1237,6 +1333,7 @@ export default {
     loadEditRecordsForMode(mode) {
       const normalized = mode === "sample" ? "sample" : "library";
       this.pauseDirtyTracking({ suppressNextBatch: true });
+      this.pendingDirtyTrackingResume = true;
       const source =
         normalized === "library"
           ? this.editRecordsByType.library
@@ -1294,7 +1391,6 @@ export default {
       this.draftRowCounter = mapped.length;
       this.$nextTick(() => {
         this.revalidateDraftRows();
-        this.resumeDirtyTracking();
       });
     },
     persistDraftRowsToEditRecords(mode) {
@@ -1313,14 +1409,7 @@ export default {
     triggerApplyToAll() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const cell = table?.getRanges?.()?.[0]?.getCells?.()?.[0]?.[0];
-      if (!cell) return;
-      applyValueToAllRows(cell, () => table, {
-        blockActionsOnDisabledCells: true
-      });
-      this.$nextTick(() => {
-        this.revalidateDraftRows();
-        this.applyValidationStyling();
-      });
+      this.applyToAllFromCell(cell, { tabulatorInstance: table });
     },
 
     triggerTableCopy() {

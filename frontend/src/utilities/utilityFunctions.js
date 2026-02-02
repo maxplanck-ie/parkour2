@@ -137,6 +137,8 @@ export function cellContextMenu(
   const shouldBlockDisabledCells =
     options.blockActionsOnDisabledCells === true;
   const menuCell = options.cell || null;
+  const onApplyToAll =
+    typeof options.onApplyToAll === "function" ? options.onApplyToAll : null;
   const tabulatorInstance = getTabulatorInstance();
   const tableRef =
     typeof tabulatorInstance?.getTable === "function"
@@ -173,71 +175,19 @@ export function cellContextMenu(
     operations.push({
       label: "Apply to All",
       action: (e, cell) => {
-        const value = cell.getValue();
-        const field = cell.getField();
-        const rowData = cell.getRow().getData();
-        const groupByField =
-          tabulatorInstance?.tableGroupsConfig?.groupBy ||
-          tabulatorInstance?.groupBy ||
-          null;
-        const requestId = rowData.request_id;
-        const requestName = rowData.request_name;
-        const protocolName = rowData.library_protocol_name;
-        const applyToAllRows =
-          !groupByField && !requestId && !requestName && !protocolName;
-        const tableRows = tableRef?.getRows?.() || [];
-
-        tableRows.forEach((row) => {
-          const data = row.getData();
-          let sameGroup = false;
-
-          // Incoming Libraries & Samples: apply within the same request
-          if (groupByField === "request_name") {
-            sameGroup =
-              (requestId && data.request_id === requestId) ||
-              (!requestId && data.request_name === requestName);
-          }
-          // Library Preparation: apply within the same library protocol
-          else if (groupByField === "library_protocol_name") {
-            sameGroup = data.library_protocol_name === protocolName;
-          } else {
-            sameGroup =
-              (requestId && data.request_id === requestId) ||
-              (protocolName && data.library_protocol_name === protocolName) ||
-              data.request_name === requestName;
-          }
-
-          if (applyToAllRows) {
-            sameGroup = true;
-          }
-          if (!sameGroup) return;
-
-          const targetCell = row.getCell(field);
-          if (!targetCell) return;
-          const targetCellEl = targetCell.getElement?.();
-          if (
-            shouldBlockDisabledCells &&
-            targetCellEl?.classList?.contains("disable-editing")
-          ) {
-            return;
-          }
-          const columnDef = targetCell.getColumn().getDefinition();
-          const targetRowData = targetCell.getRow().getData();
-          const isEditable = (() => {
-            if (columnDef.editor === false) return false;
-            if (typeof columnDef.editable === "function") {
-              return columnDef.editable({
-                getRow: () => ({ getData: () => targetRowData }),
-              });
-            }
-            if (typeof columnDef.editable === "boolean") {
-              return columnDef.editable;
-            }
-            return Boolean(columnDef.editor);
-          })();
-          if (isEditable) {
-            targetCell.setValue(value);
-          }
+        if (onApplyToAll) {
+          onApplyToAll({
+            cell,
+            field: cell?.getField?.(),
+            value: cell?.getValue?.(),
+            tableRef,
+            tabulatorInstance,
+            blockActionsOnDisabledCells: shouldBlockDisabledCells,
+          });
+          return;
+        }
+        applyValueToAllRows(cell, getTabulatorInstance, {
+          blockActionsOnDisabledCells: shouldBlockDisabledCells,
         });
       },
     });
@@ -268,6 +218,47 @@ export function cellContextMenu(
   }
 
   return operations.length ? operations : [];
+}
+
+export function applyContextMenuToColumns(
+  columns = [],
+  getTabulatorInstance,
+  options = {},
+) {
+  const {
+    allowCopy = true,
+    allowPaste = false,
+    allowApplyToAll = false,
+    blockActionsOnDisabledCells = false,
+    overrideExisting = false,
+    skipFields = new Set(),
+    onApplyToAll = null,
+  } = options;
+
+  const applyToColumn = (column) => {
+    if (!column || typeof column !== "object") return;
+    if (Array.isArray(column.columns)) {
+      column.columns.forEach(applyToColumn);
+      return;
+    }
+    if (column.field && skipFields.has(column.field)) return;
+    if (!overrideExisting && column.contextMenu) return;
+    column.contextMenu = (e, cell) =>
+      cellContextMenu(
+        allowCopy,
+        allowPaste,
+        allowApplyToAll,
+        getTabulatorInstance,
+        {
+          blockActionsOnDisabledCells,
+          cell,
+          onApplyToAll,
+        },
+      );
+  };
+
+  columns.forEach(applyToColumn);
+  return columns;
 }
 
 export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {

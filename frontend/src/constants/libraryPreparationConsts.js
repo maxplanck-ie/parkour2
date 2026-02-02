@@ -1,4 +1,5 @@
 import {
+  applyContextMenuToColumns,
   cellContextMenu,
   ellipsisContainer,
   showNotification,
@@ -38,7 +39,7 @@ export function libraryPreparationGroupHeader(value, count) {
 }
 
 export function libraryPreparationColumnDefs(getTabulatorInstance) {
-  return [
+  const columns = [
     {
       field: "selected",
       visible: true,
@@ -545,6 +546,15 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       },
     },
   ];
+
+  return applyContextMenuToColumns(columns, getTabulatorInstance, {
+    allowCopy: true,
+    allowPaste: false,
+    allowApplyToAll: false,
+    blockActionsOnDisabledCells: true,
+    overrideExisting: true,
+    skipFields: new Set(["selected"]),
+  });
 }
 
 export function libraryPreparationExportColumns() {

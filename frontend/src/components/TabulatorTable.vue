@@ -982,6 +982,7 @@ export default {
         }
         const rowOriginals = new Map();
         const rowUpdates = new Map();
+        const clearedFieldsByRow = new Map();
         rangeCells.forEach((row) => {
           row.forEach((cell) => {
             const rowComp = cell.getRow?.();
@@ -998,6 +999,12 @@ export default {
               typeof overrideFn === "function" ? overrideFn(fieldName) : "";
             const base = rowUpdates.get(rowComp) || { ...rowData };
             rowUpdates.set(rowComp, { ...base, [fieldName]: clearVal });
+            if (fieldName) {
+              if (!clearedFieldsByRow.has(rowComp)) {
+                clearedFieldsByRow.set(rowComp, new Set());
+              }
+              clearedFieldsByRow.get(rowComp).add(fieldName);
+            }
           });
         });
         rowUpdates.forEach((data, rowComp) => {
@@ -1011,6 +1018,18 @@ export default {
             Array.from(rowUpdates.values())
           );
         }
+        if (
+          clearedFieldsByRow.size &&
+          typeof this.tableOptions.handleRangeCleared === "function"
+        ) {
+          const payload = Array.from(clearedFieldsByRow.entries()).map(
+            ([rowComp, fields]) => ({
+              rowData: rowComp?.getData?.() || {},
+              fields: Array.from(fields)
+            })
+          );
+          this.tableOptions.handleRangeCleared(payload);
+        }
         if (this.tableOptions.fakeLoadingStop) {
           this.tableOptions.fakeLoadingStop();
         }
@@ -1022,7 +1041,6 @@ export default {
         if (firstCell) {
           const rowData = firstCell.getRow?.().getData?.() || {};
           if (!getIsEditable(firstCell, rowData)) {
-            showNotification("Editing is disabled for this field.", "warning");
             return;
           }
           firstCell.edit();

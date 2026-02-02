@@ -1,4 +1,5 @@
 import {
+  applyContextMenuToColumns,
   cellContextMenu,
   ellipsisContainer
 } from "../utilities/utilityFunctions";
@@ -164,7 +165,7 @@ export function librariesAndSamplesColumnDefs(
   const { inputColumnMode = "mode_user", onInputColumnModeChange = () => {} } =
     columnOptions;
 
-  return [
+  const columns = [
     {
       field: "selected",
       visible: true,
@@ -694,6 +695,15 @@ export function librariesAndSamplesColumnDefs(
       }
     }
   ];
+
+  return applyContextMenuToColumns(columns, getTabulatorInstance, {
+    allowCopy: true,
+    allowPaste: false,
+    allowApplyToAll: false,
+    blockActionsOnDisabledCells: true,
+    overrideExisting: true,
+    skipFields: new Set(["selected"]),
+  });
 }
 
 export function librariesAndSamplesExportColumns() {
