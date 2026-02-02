@@ -677,18 +677,26 @@ export function getRequestEditorLibraryColumns(
   ];
   columns.forEach((column) => {
     if (column.field !== "selected" && !column.contextMenu) {
-          column.contextMenu = (e, cell) =>
-            cellContextMenu(true, true, true, getTabulatorInstance, {
-              blockActionsOnDisabledCells: true,
-              cell,
-              onApplyToAll: (payload) => {
-                const handler =
-                  getTabulatorInstance?.()?.handleApplyToAllFromContext;
-                if (typeof handler === "function") {
-                  handler(payload);
-                }
-              }
-            });
+      column.contextMenu = (e, cell) =>
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+          cell,
+          allowCut: true,
+          allowClear: true,
+          onApplyToAll: (payload) => {
+            const handler =
+              getTabulatorInstance?.()?.handleApplyToAllFromContext;
+            if (typeof handler === "function") {
+              handler(payload);
+            }
+          },
+          onCut: () => {
+            getTabulatorInstance?.()?.triggerTableCut?.();
+          },
+          onClear: () => {
+            getTabulatorInstance?.()?.triggerTableClear?.();
+          },
+        });
     }
   });
 
@@ -1135,18 +1143,26 @@ export function getRequestEditorSampleColumns(
   ];
   columns.forEach((column) => {
     if (column.field !== "selected" && !column.contextMenu) {
-          column.contextMenu = (e, cell) =>
-            cellContextMenu(true, true, true, getTabulatorInstance, {
-              blockActionsOnDisabledCells: true,
-              cell,
-              onApplyToAll: (payload) => {
-                const handler =
-                  getTabulatorInstance?.()?.handleApplyToAllFromContext;
-                if (typeof handler === "function") {
-                  handler(payload);
-                }
-              }
-            });
+      column.contextMenu = (e, cell) =>
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+          cell,
+          allowCut: true,
+          allowClear: true,
+          onApplyToAll: (payload) => {
+            const handler =
+              getTabulatorInstance?.()?.handleApplyToAllFromContext;
+            if (typeof handler === "function") {
+              handler(payload);
+            }
+          },
+          onCut: () => {
+            getTabulatorInstance?.()?.triggerTableCut?.();
+          },
+          onClear: () => {
+            getTabulatorInstance?.()?.triggerTableClear?.();
+          },
+        });
     }
   });
 

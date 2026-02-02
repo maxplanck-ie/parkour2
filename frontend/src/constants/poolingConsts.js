@@ -363,7 +363,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
 
   return applyContextMenuToColumns(columns, getTabulatorInstance, {
     allowCopy: true,
-    allowPaste: false,
+    allowEdit: false,
     allowApplyToAll: false,
     blockActionsOnDisabledCells: true,
     overrideExisting: true,

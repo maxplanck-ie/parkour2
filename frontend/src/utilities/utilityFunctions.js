@@ -129,25 +129,71 @@ export function ellipsisContainer(text, boldText) {
 
 export function cellContextMenu(
   allowCopy,
-  allowPaste,
+  allowEdit,
   allowApplyToAll,
   getTabulatorInstance,
   options = {},
 ) {
-  const shouldBlockDisabledCells =
-    options.blockActionsOnDisabledCells === true;
+  const shouldBlockDisabledCells = options.blockActionsOnDisabledCells === true;
   const menuCell = options.cell || null;
   const onApplyToAll =
     typeof options.onApplyToAll === "function" ? options.onApplyToAll : null;
+  const onCut = typeof options.onCut === "function" ? options.onCut : null;
+  const onClear =
+    typeof options.onClear === "function" ? options.onClear : null;
+  const allowCut =
+    options.allowCut === undefined ? allowEdit : options.allowCut === true;
+  const allowClear =
+    options.allowClear === undefined ? allowEdit : options.allowClear === true;
   const tabulatorInstance = getTabulatorInstance();
   const tableRef =
     typeof tabulatorInstance?.getTable === "function"
       ? tabulatorInstance.getTable()
       : tabulatorInstance;
+  const isCellEditable = (cell) => {
+    if (!cell) return false;
+    const cellEl = cell.getElement?.();
+    if (
+      shouldBlockDisabledCells &&
+      cellEl?.classList?.contains("disable-editing")
+    ) {
+      return false;
+    }
+    const columnDef = cell.getColumn?.().getDefinition?.() || {};
+    if (columnDef.editor === false) return false;
+    if (typeof columnDef.editable === "function") {
+      const rowData = cell.getRow?.().getData?.() || {};
+      return columnDef.editable({
+        getRow: () => ({ getData: () => rowData }),
+      });
+    }
+    if (typeof columnDef.editable === "boolean") {
+      return columnDef.editable;
+    }
+    return true;
+  };
+  const ranges = tableRef?.getRanges?.() || [];
+  const hasSelection = ranges.length > 0;
+  let hasEditableSelection = false;
+  let singleCellSelected = false;
+  if (hasSelection) {
+    const cells = ranges[0]?.getCells?.() || [];
+    singleCellSelected = cells.length === 1 && (cells[0]?.length || 0) === 1;
+    cells.forEach((row) => {
+      row.forEach((cell) => {
+        if (isCellEditable(cell)) {
+          hasEditableSelection = true;
+        }
+      });
+    });
+  }
+  const menuCellEditable = isCellEditable(menuCell);
+  if (!hasSelection && menuCell) {
+    singleCellSelected = true;
+  }
   const operations = [];
   if (shouldBlockDisabledCells && menuCell) {
-    const cellEl = menuCell.getElement?.();
-    if (cellEl?.classList?.contains("disable-editing")) {
+    if (!menuCellEditable && !hasEditableSelection) {
       if (allowCopy) {
         return [
           {
@@ -171,7 +217,7 @@ export function cellContextMenu(
     }
   };
 
-  if (allowApplyToAll) {
+  if (allowApplyToAll && menuCellEditable && singleCellSelected) {
     operations.push({
       label: "Apply to All",
       action: (e, cell) => {
@@ -193,6 +239,26 @@ export function cellContextMenu(
     });
   }
 
+  if (allowCut && (menuCellEditable || hasEditableSelection)) {
+    operations.push({
+      label: "Cut",
+      action: (e, cell) => {
+        const targetCell = cell || menuCell;
+        ensureRangeSelection(targetCell);
+        if (onCut) {
+          onCut({ cell: targetCell, tableRef, tabulatorInstance });
+          return;
+        }
+        tableRef?.copyToClipboard?.();
+        const keyEvent = new KeyboardEvent("keydown", {
+          key: "Delete",
+          bubbles: true,
+        });
+        tableRef?.element?.dispatchEvent?.(keyEvent);
+      },
+    });
+  }
+
   if (allowCopy) {
     operations.push({
       label: "Copy",
@@ -203,7 +269,7 @@ export function cellContextMenu(
     });
   }
 
-  if (allowPaste) {
+  if (allowEdit && (menuCellEditable || hasEditableSelection)) {
     operations.push({
       label: "Paste",
       action: (e, cell) => {
@@ -213,6 +279,25 @@ export function cellContextMenu(
         } else {
           tableRef?.pasteFromClipboard?.();
         }
+      },
+    });
+  }
+
+  if (allowClear && (menuCellEditable || hasEditableSelection)) {
+    operations.push({
+      label: "Clear",
+      action: (e, cell) => {
+        const targetCell = cell || menuCell;
+        ensureRangeSelection(targetCell);
+        if (onClear) {
+          onClear({ cell: targetCell, tableRef, tabulatorInstance });
+          return;
+        }
+        const keyEvent = new KeyboardEvent("keydown", {
+          key: "Delete",
+          bubbles: true,
+        });
+        tableRef?.element?.dispatchEvent?.(keyEvent);
       },
     });
   }
@@ -227,13 +312,19 @@ export function applyContextMenuToColumns(
 ) {
   const {
     allowCopy = true,
-    allowPaste = false,
+    allowEdit = false,
     allowApplyToAll = false,
     blockActionsOnDisabledCells = false,
     overrideExisting = false,
     skipFields = new Set(),
     onApplyToAll = null,
+    allowCut,
+    allowClear,
+    onCut = null,
+    onClear = null,
   } = options;
+  const resolvedAllowCut = allowCut === undefined ? allowEdit : allowCut;
+  const resolvedAllowClear = allowClear === undefined ? allowEdit : allowClear;
 
   const applyToColumn = (column) => {
     if (!column || typeof column !== "object") return;
@@ -246,13 +337,17 @@ export function applyContextMenuToColumns(
     column.contextMenu = (e, cell) =>
       cellContextMenu(
         allowCopy,
-        allowPaste,
+        allowEdit,
         allowApplyToAll,
         getTabulatorInstance,
         {
           blockActionsOnDisabledCells,
           cell,
           onApplyToAll,
+          allowCut: resolvedAllowCut,
+          allowClear: resolvedAllowClear,
+          onCut,
+          onClear,
         },
       );
   };
@@ -281,8 +376,7 @@ export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {
   const protocolName = rowData.library_protocol_name;
   const applyToAllRows =
     !groupByField && !requestId && !requestName && !protocolName;
-  const shouldBlockDisabledCells =
-    options.blockActionsOnDisabledCells === true;
+  const shouldBlockDisabledCells = options.blockActionsOnDisabledCells === true;
   const tableRows = tableRef?.getRows?.() || [];
   tableRows.forEach((row) => {
     const data = row.getData();
@@ -318,7 +412,7 @@ export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {
       if (columnDef.editor === false) return false;
       if (typeof columnDef.editable === "function") {
         return columnDef.editable({
-          getRow: () => ({ getData: () => targetRowData })
+          getRow: () => ({ getData: () => targetRowData }),
         });
       }
       if (typeof columnDef.editable === "boolean") {

@@ -30,16 +30,9 @@
         <div class="request-editor-header-right">
           <div class="header-table-actions" :class="{ hidden: !canEditRequest }">
             <div class="add-count-group">
-              <input
-                id="add-count-input"
-                v-model.number="addRowCount"
-                type="number"
-                min="0"
+              <input id="add-count-input" v-model.number="addRowCount" type="number" min="0"
                 :class="['add-count-input', { 'input-error': hasEditedAddCount && !addRowCount }]"
-                :disabled="!canEditRequest"
-                @input="hasEditedAddCount = true"
-                @blur="hasEditedAddCount = true"
-              />
+                :disabled="!canEditRequest" @input="hasEditedAddCount = true" @blur="hasEditedAddCount = true" />
               <button class="icon-button text-button add-count-button" type="button" :title="addButtonTitle"
                 :disabled="!canEditRequest" @click="addDraftRow(addRowCount)">
                 <font-awesome-icon icon="fa-solid fa-square-plus" />
@@ -52,14 +45,11 @@
               <span>Delete Selected</span>
             </button>
           </div>
-          <div
-            class="header-table-actions utility-actions"
-            :class="{ hidden: !canEditRequest }"
-            title="Clipboard Actions"
-          >
+          <div class="header-table-actions utility-actions" :class="{ hidden: !canEditRequest }"
+            title="Clipboard Actions">
             <button class="icon-button text-button clipboard-button" type="button"
-              title="Cut the selected range to the clipboard"
-              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTableCut">
+              title="Cut the selected range to the clipboard" :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTableCut">
               <font-awesome-icon icon="fa-solid fa-scissors" />
               <span>Cut</span>
             </button>
@@ -76,18 +66,14 @@
               <span>Paste</span>
             </button>
             <button class="icon-button text-button clipboard-button" type="button"
-              title="Clear values in the selected range"
-              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTableClear">
+              title="Clear values in the selected range" :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTableClear">
               <font-awesome-icon icon="fa-solid fa-eraser" />
               <span>Clear</span>
             </button>
-            <button
-              class="icon-button text-button clipboard-button"
-              type="button"
+            <button class="icon-button text-button clipboard-button" type="button"
               title="Apply the selected cell value to this column for all rows in this request"
-              :disabled="!canEditRequest || !isSingleCellSelected"
-              @click="triggerApplyToAll"
-            >
+              :disabled="!canEditRequest || !isSingleCellSelected" @click="triggerApplyToAll">
               <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
               <span>Apply to All</span>
             </button>
@@ -649,8 +635,7 @@ export default {
           library_protocol: item.library_protocol
         }));
 
-      const getInstance = () =>
-        this.$refs.requestEditorDraftTableRef || null;
+      const getInstance = () => this;
       const onSelectionChange = (table) => this.syncSelectedDraftRows(table);
       const applyReadOnly = (columns = []) =>
         columns.map((column) => {
@@ -794,6 +779,12 @@ export default {
     }
   },
   methods: {
+    getTable() {
+      return this.$refs.requestEditorDraftTableRef?.tabulatorInstance || null;
+    },
+    triggerClipboardPaste() {
+      this.$refs.requestEditorDraftTableRef?.triggerClipboardPaste?.();
+    },
     schedulePrepareRequestEditorModal() {
       if (this.prepareTimer) {
         clearTimeout(this.prepareTimer);
@@ -1070,6 +1061,7 @@ export default {
     },
     applyToAllFromCell(cell, { tableRef, tabulatorInstance } = {}) {
       if (!cell) return;
+      this.fakeLoadingStart();
       const table =
         tabulatorInstance?.getTable?.() ||
         tabulatorInstance?.tabulatorInstance ||
@@ -1078,7 +1070,10 @@ export default {
         tableRef ||
         this.$refs.requestEditorDraftTableRef?.tabulatorInstance ||
         null;
-      if (!table) return;
+      if (!table) {
+        this.fakeLoadingStop();
+        return;
+      }
       applyValueToAllRows(cell, () => table, {
         blockActionsOnDisabledCells: true
       });
@@ -1086,6 +1081,7 @@ export default {
       this.$nextTick(() => {
         this.revalidateDraftRows();
         this.applyValidationStyling();
+        this.fakeLoadingStop();
       });
     },
     handleApplyToAllFromContext(payload = {}) {
