@@ -27,11 +27,11 @@ attrs==25.4.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.30
+boto3==1.42.39
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.30
+botocore==1.42.39
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
@@ -60,9 +60,9 @@ contourpy==1.3.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   matplotlib
-coverage==7.13.1
+coverage==7.13.2
     # via pytest-cov
-cryptography==46.0.3
+cryptography==46.0.4
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django-cryptography-django5
@@ -131,7 +131,7 @@ django-cryptography-django5==2.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django-sql-explorer
-django-debug-toolbar==6.1.0
+django-debug-toolbar==6.2.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -195,9 +195,9 @@ fpdf2==2.8.5
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.3.0
+greenlet==3.3.1
     # via playwright
-gunicorn==23.0.0
+gunicorn==25.0.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -245,7 +245,7 @@ jiter==0.12.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
-jmespath==1.0.1
+jmespath==1.1.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
@@ -293,14 +293,14 @@ numpy==1.25.2 ; python_full_version < '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-numpy==2.4.1 ; python_full_version >= '3.12'
+numpy==2.4.2 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.15.0
+openai==2.16.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -308,13 +308,18 @@ openpyxl==3.1.5
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-packaging==25.0
+packaging==26.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   gunicorn
     #   matplotlib
     #   pytest
-pandas==2.3.3
+pandas==2.3.3 ; python_full_version < '3.12'
+    # via
+    #   -c backend/requirements/3.11/dev.txt
+    #   -r backend/requirements/base.in
+    #   -r backend/requirements/dev.in
+pandas==3.0.0 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -332,7 +337,7 @@ pillow==12.1.0
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.57.0
+playwright==1.58.0
     # via pytest-playwright
 pluggy==1.6.0
     # via
@@ -354,7 +359,7 @@ pure-eval==0.2.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   stack-data
-pycparser==2.23 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
+pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   cffi
@@ -375,7 +380,7 @@ pygments==2.19.2
     #   ipython-pygments-lexers
     #   pytest
     #   rich
-pyparsing==3.3.1
+pyparsing==3.3.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   matplotlib
@@ -410,7 +415,7 @@ python-docx==1.2.0
     #   -r backend/requirements/base.in
 python-slugify==8.0.4
     # via pytest-playwright
-pytz==2025.2
+pytz==2025.2 ; python_full_version < '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pandas
@@ -437,7 +442,7 @@ requests==2.32.5
     #   django-sql-explorer
     #   pytest-base-url
     #   tiktoken
-rich==14.2.0
+rich==14.3.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -493,7 +498,7 @@ toml==0.10.2
     #   django-migration-linter
 tomli==2.4.0 ; python_full_version <= '3.11'
     # via coverage
-tqdm==4.67.1
+tqdm==4.67.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
@@ -518,7 +523,7 @@ typing-inspection==0.4.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pydantic
-tzdata==2025.3
+tzdata==2025.3 ; python_full_version < '3.12' or sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   django
@@ -532,7 +537,7 @@ urllib3==2.6.3
     #   -c backend/requirements/3.11/dev.txt
     #   botocore
     #   requests
-wcwidth==0.2.14
+wcwidth==0.5.3
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   prompt-toolkit
