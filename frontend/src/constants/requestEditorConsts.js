@@ -362,8 +362,11 @@ export function getRequestEditorLibraryColumns(
             cssClass: "regular-column",
             editor: false,
             editable: false,
-            contextMenu: () =>
-              cellContextMenu(true, false, false, getTabulatorInstance),
+            contextMenu: (e, cell) =>
+              cellContextMenu(true, false, false, getTabulatorInstance, {
+                blockActionsOnDisabledCells: true,
+                cell,
+              }),
             cellDblClick: () => {
               showNotification("Barcode is read-only.", "warning");
             },
@@ -674,8 +677,11 @@ export function getRequestEditorLibraryColumns(
   ];
   columns.forEach((column) => {
     if (column.field !== "selected" && !column.contextMenu) {
-      column.contextMenu = () =>
-        cellContextMenu(true, true, true, getTabulatorInstance);
+      column.contextMenu = (e, cell) =>
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+          cell,
+        });
     }
   });
 
@@ -832,8 +838,11 @@ export function getRequestEditorSampleColumns(
             cssClass: "regular-column",
             editor: false,
             editable: false,
-            contextMenu: () =>
-              cellContextMenu(true, false, false, getTabulatorInstance),
+            contextMenu: (e, cell) =>
+              cellContextMenu(true, false, false, getTabulatorInstance, {
+                blockActionsOnDisabledCells: true,
+                cell,
+              }),
             cellDblClick: () => {
               showNotification("Barcode is read-only.", "warning");
             },
@@ -1119,8 +1128,11 @@ export function getRequestEditorSampleColumns(
   ];
   columns.forEach((column) => {
     if (column.field !== "selected" && !column.contextMenu) {
-      column.contextMenu = () =>
-        cellContextMenu(true, true, true, getTabulatorInstance);
+      column.contextMenu = (e, cell) =>
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+          cell,
+        });
     }
   });
 

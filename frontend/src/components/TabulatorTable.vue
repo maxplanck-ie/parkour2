@@ -128,7 +128,8 @@ export default {
         errorsPopupHeight: 220,
         errorsPopupWidth: 600
       },
-      clipboardPasteParser: null
+      clipboardPasteParser: null,
+      clipboardCopyValueByField: {}
     };
   },
   watch: {
@@ -460,6 +461,8 @@ export default {
           new Tabulator(`#${this.tableId}`, options)
         );
         this.clipboardPasteParser = options.clipboardPasteParser;
+        this.clipboardCopyValueByField =
+          this.buildClipboardValueLookup(this.columnDefs);
 
         this.tabulatorInstance.on("tableBuilt", () => {
           this.tableBuilt = true;
@@ -580,6 +583,7 @@ export default {
             if (Object.keys(changedFields).length > 0) {
               batchChanges.push({
                 pk: row.pk,
+                tempId: row.tempId,
                 record_type: row.record_type,
                 ...changedFields
               });
@@ -617,13 +621,14 @@ export default {
         });
 
         this.tabulatorInstance.on("clipboardPasted", () => {
-          if (this.errorsPopupContents.errorsList.length == 0) {
-            if (this.tableOptions.fakeLoadingStart) {
-              this.tableOptions.fakeLoadingStart();
-            }
-            if (this.tableOptions.fakeLoadingStop) {
-              this.tableOptions.fakeLoadingStop();
-            }
+          if (this.errorsPopupContents.errorsList.length !== 0) {
+            return;
+          }
+          if (this.tableOptions.fakeLoadingStart) {
+            this.tableOptions.fakeLoadingStart();
+          }
+          if (this.tableOptions.fakeLoadingStop) {
+            this.tableOptions.fakeLoadingStop();
           }
         });
 
@@ -690,6 +695,8 @@ export default {
 
     updateTableColumns() {
       if (!this.tabulatorInstance || !this.tableBuilt) return;
+      this.clipboardCopyValueByField =
+        this.buildClipboardValueLookup(this.columnDefs);
       this.tabulatorInstance.blockRedraw();
       this.tabulatorInstance.setColumns(
         this.sanitizeColumnDefs(this.columnDefs)
@@ -716,6 +723,14 @@ export default {
           return;
         }
         await this.clipboardPasteParser(text);
+        if (this.errorsPopupContents.errorsList.length === 0) {
+          if (this.tableOptions.fakeLoadingStart) {
+            this.tableOptions.fakeLoadingStart();
+          }
+          if (this.tableOptions.fakeLoadingStop) {
+            this.tableOptions.fakeLoadingStop();
+          }
+        }
       } catch (error) {
         this.tabulatorInstance?.pasteFromClipboard?.();
       }
@@ -962,6 +977,9 @@ export default {
       };
       if (isDeleteOrBackspace) {
         if (!rangeCells.length) return;
+        if (this.tableOptions.fakeLoadingStart) {
+          this.tableOptions.fakeLoadingStart();
+        }
         const rowOriginals = new Map();
         const rowUpdates = new Map();
         rangeCells.forEach((row) => {
@@ -992,6 +1010,9 @@ export default {
           this.tableOptions.handleDeleteApplied(
             Array.from(rowUpdates.values())
           );
+        }
+        if (this.tableOptions.fakeLoadingStop) {
+          this.tableOptions.fakeLoadingStop();
         }
         event.preventDefault();
         return;
@@ -1027,9 +1048,13 @@ export default {
       const rows = cells.map((rowCells) =>
         rowCells.map((cell) => {
           const columnDef = cell.getColumn?.().getDefinition?.() || {};
-          if (typeof columnDef.clipboardCopyValue === "function") {
+          const field = cell.getField?.();
+          const customGetter =
+            columnDef.clipboardCopyValue ||
+            (field ? this.clipboardCopyValueByField[field] : null);
+          if (typeof customGetter === "function") {
             usedCustom = true;
-            const custom = columnDef.clipboardCopyValue(cell);
+            const custom = customGetter(cell);
             if (custom === undefined || custom === null) return "";
             return String(custom);
           }
@@ -1040,6 +1065,18 @@ export default {
       );
       const output = rows.map((row) => row.join("\t")).join("\n");
       return { output, usedCustom };
+    },
+
+    buildClipboardValueLookup(columns = [], map = {}) {
+      columns.forEach((column) => {
+        if (!column) return;
+        if (Array.isArray(column.columns)) {
+          this.buildClipboardValueLookup(column.columns, map);
+        } else if (column.field && column.clipboardCopyValue) {
+          map[column.field] = column.clipboardCopyValue;
+        }
+      });
+      return map;
     },
 
     validateCellValue(value, columnDef, rowData) {

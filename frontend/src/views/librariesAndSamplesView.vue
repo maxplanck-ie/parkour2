@@ -1159,6 +1159,99 @@ export default {
         row.input_display = row?.[sourceField] ?? "";
       });
     },
+    buildOptionMap(options = []) {
+      const map = new Map();
+      options.forEach((option) => {
+        if (!option) return;
+        const key =
+          option.id ??
+          option.pk ??
+          option.value ??
+          option.name ??
+          option.label;
+        const label =
+          option.name ?? option.label ?? option.text ?? option.value ?? "";
+        if (key !== undefined && key !== null) {
+          map.set(String(key), String(label));
+        }
+      });
+      return map;
+    },
+    applyRequestEditorUpdate(payload) {
+      if (!payload?.request_id || !Array.isArray(this.librariesSamplesList)) {
+        return;
+      }
+      const protocolMap = this.buildOptionMap(this.protocolsList);
+      const analysisMap = this.buildOptionMap(this.analysisTypesList);
+      const readLengthMap = this.buildOptionMap(this.readLengthsList);
+      const formatInputValue = (measuredValueRaw, measuredUnitRaw) => {
+        const measuredValueEmpty =
+          measuredValueRaw === null ||
+          measuredValueRaw === undefined ||
+          measuredValueRaw === "";
+        const measuredUnitEmpty =
+          measuredUnitRaw === null ||
+          measuredUnitRaw === undefined ||
+          measuredUnitRaw === "";
+        if (measuredValueEmpty && measuredUnitEmpty) {
+          return "";
+        }
+        const measuredValue = measuredValueRaw === 0 ? 0 : measuredValueRaw || "";
+        const measuredUnit = measuredUnitRaw || "";
+        if (measuredValue === -1 && measuredUnit === "Unknown") return "Unknown";
+        if (measuredValueEmpty && !measuredUnitEmpty) {
+          return measuredUnit;
+        }
+        if (measuredUnit !== "") return `${measuredValue} ${measuredUnit}`;
+        return `${measuredValue}`;
+      };
+      const rowByBarcode = new Map(
+        this.librariesSamplesList.map((row) => [row.barcode, row])
+      );
+      const allRecords = [
+        ...(payload.records?.library || []),
+        ...(payload.records?.sample || [])
+      ];
+      allRecords.forEach((record) => {
+        const row = rowByBarcode.get(record.barcode);
+        if (!row) return;
+        if (record.name !== undefined) row.name = record.name;
+        if (record.read_length !== undefined) {
+          row.read_length_name =
+            readLengthMap.get(String(record.read_length)) || row.read_length_name;
+        }
+        if (record.library_protocol !== undefined) {
+          row.library_protocol_name =
+            protocolMap.get(String(record.library_protocol)) ||
+            row.library_protocol_name;
+        }
+        if (record.library_type !== undefined) {
+          row.analysis_type_name =
+            analysisMap.get(String(record.library_type)) ||
+            row.analysis_type_name;
+        }
+        if (record.sequencing_depth !== undefined) {
+          row.sequencing_depth = record.sequencing_depth;
+        }
+        if (record.index_i7 !== undefined) row.index_i7 = record.index_i7 || "";
+        if (record.index_i5 !== undefined) row.index_i5 = record.index_i5 || "";
+        if (
+          record.measured_value !== undefined ||
+          record.measuring_unit !== undefined
+        ) {
+          row.input = formatInputValue(
+            record.measured_value,
+            record.measuring_unit
+          );
+        }
+        if (record.gmo !== undefined && record.record_type === "Sample") {
+          row.gmo = record.gmo === null ? "" : record.gmo ? "Yes" : "No";
+        }
+      });
+      this.applyInputColumnMode(this.librariesSamplesList);
+      this.hasSelectedRows = this.librariesSamplesList.some((row) => row.selected);
+      this.tabulatorInstance?.getTable?.().replaceData(this.librariesSamplesList);
+    },
     openRequestEditorModal() {
       this.requestModalMode = "create";
       this.requestModalRequestId = null;
@@ -1173,8 +1266,13 @@ export default {
       this.stopRequestEditorSync();
     },
     handleRequestEditorSaved(payload) {
-      const requestId =
-        payload?.pk ?? payload?.data?.pk ?? payload?.request_id ?? null;
+      if (payload?.mode === "edit" && payload?.request_id) {
+        this.pendingSavedMode = "edit";
+        this.applyRequestEditorUpdate(payload);
+        this.finishRequestEditorSync();
+        return;
+      }
+      const requestId = payload?.pk ?? null;
       this.pendingSavedMode = this.requestModalMode;
       this.startRequestEditorSync(requestId);
     },

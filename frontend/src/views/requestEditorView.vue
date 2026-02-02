@@ -35,8 +35,10 @@
                 v-model.number="addRowCount"
                 type="number"
                 min="0"
-                class="add-count-input"
+                :class="['add-count-input', { 'input-error': hasEditedAddCount && !addRowCount }]"
                 :disabled="!canEditRequest"
+                @input="hasEditedAddCount = true"
+                @blur="hasEditedAddCount = true"
               />
               <button class="icon-button text-button add-count-button" type="button" :title="addButtonTitle"
                 :disabled="!canEditRequest" @click="addDraftRow(addRowCount)">
@@ -55,27 +57,17 @@
             :class="{ hidden: !canEditRequest }"
             title="Clipboard Actions"
           >
-            <button
-              class="icon-button text-button clipboard-button"
-              type="button"
-              title="Apply the selected cell value to this column for all rows in this request"
-              :disabled="!canEditRequest || !isSingleCellSelected"
-              @click="triggerApplyToAll"
-            >
-              <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
-              <span>Apply to All</span>
+            <button class="icon-button text-button clipboard-button" type="button"
+              title="Cut the selected range to the clipboard"
+              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTableCut">
+              <font-awesome-icon icon="fa-solid fa-scissors" />
+              <span>Cut</span>
             </button>
             <button class="icon-button text-button clipboard-button" type="button"
               title="Copy the selected range to the clipboard"
               :disabled="!requestEditorDraftRows.length || !hasRangeSelection" @click="triggerTableCopy">
               <font-awesome-icon icon="fa-solid fa-copy" />
               <span>Copy</span>
-            </button>
-            <button class="icon-button text-button clipboard-button" type="button"
-              title="Cut the selected range to the clipboard"
-              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTableCut">
-              <font-awesome-icon icon="fa-solid fa-scissors" />
-              <span>Cut</span>
             </button>
             <button class="icon-button text-button clipboard-button" type="button"
               title="Paste clipboard data into the selected range"
@@ -88,6 +80,16 @@
               :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTableClear">
               <font-awesome-icon icon="fa-solid fa-eraser" />
               <span>Clear</span>
+            </button>
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
+              title="Apply the selected cell value to this column for all rows in this request"
+              :disabled="!canEditRequest || !isSingleCellSelected"
+              @click="triggerApplyToAll"
+            >
+              <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
+              <span>Apply to All</span>
             </button>
           </div>
           <div class="header-actions">
@@ -441,6 +443,11 @@ export default {
       indexI5OptionsByType: {},
       indexPairsByType: {},
       indexOptionsLoading: {},
+      hasEditedAddCount: false,
+      allowDirtyTracking: false,
+      suppressNextDirtyBatch: false,
+      dirtyFieldsByRowId: {},
+      validationFieldsByRowId: {},
       showToggleConfirm: false,
       showDeleteConfirm: false,
       showCloseConfirm: false,
@@ -642,7 +649,7 @@ export default {
         }));
 
       const getInstance = () =>
-        this.$refs.requestEditorDraftTableRef?.tabulatorInstance || null;
+        this.$refs.requestEditorDraftTableRef || null;
       const onSelectionChange = (table) => this.syncSelectedDraftRows(table);
       const applyReadOnly = (columns = []) =>
         columns.map((column) => {
@@ -729,6 +736,9 @@ export default {
         dataChanged: () => {
           handleSelection();
           this.revalidateDraftRows();
+        },
+        onBatchCellValueChanged: (changes) => {
+          this.handleDraftBatchChanges(changes);
         },
         handlePasteApplied: (rows) => vm.handlePasteApplied(rows),
         handleDeleteApplied: () => {
@@ -1023,6 +1033,7 @@ export default {
       this.restrictPermissions = false;
       this.isRequestLoading = false;
       this.requestOwnerId = null;
+      this.resetDirtyTracking();
       this.editRecordsByType = {
         library: [],
         sample: []
@@ -1039,6 +1050,21 @@ export default {
         this.$refs.requestFileInput.value = "";
       }
       this.$nextTick(() => this.applyValidationStyling());
+    },
+    resetDirtyTracking() {
+      this.allowDirtyTracking = false;
+      this.suppressNextDirtyBatch = false;
+      this.dirtyFieldsByRowId = {};
+      this.validationFieldsByRowId = {};
+    },
+    pauseDirtyTracking({ suppressNextBatch = false } = {}) {
+      this.allowDirtyTracking = false;
+      if (suppressNextBatch) {
+        this.suppressNextDirtyBatch = true;
+      }
+    },
+    resumeDirtyTracking() {
+      this.allowDirtyTracking = true;
     },
     handleKeyDown(event) {
       if (!this.show) return;
@@ -1210,6 +1236,7 @@ export default {
     },
     loadEditRecordsForMode(mode) {
       const normalized = mode === "sample" ? "sample" : "library";
+      this.pauseDirtyTracking({ suppressNextBatch: true });
       const source =
         normalized === "library"
           ? this.editRecordsByType.library
@@ -1265,7 +1292,10 @@ export default {
       this.requestEditorDraftRows = mapped;
       this.selectedDraftRowIds = [];
       this.draftRowCounter = mapped.length;
-      this.$nextTick(() => this.revalidateDraftRows());
+      this.$nextTick(() => {
+        this.revalidateDraftRows();
+        this.resumeDirtyTracking();
+      });
     },
     persistDraftRowsToEditRecords(mode) {
       const normalized = mode === "sample" ? "sample" : "library";
@@ -1563,34 +1593,153 @@ export default {
         .filter((id) => id !== undefined && id !== null);
       this.selectedDraftRowIds = ids;
     },
+    handleDraftBatchChanges(batchChanges = []) {
+      if (!this.isEditMode || !this.allowDirtyTracking || !Array.isArray(batchChanges)) {
+        return;
+      }
+      if (this.suppressNextDirtyBatch) {
+        this.suppressNextDirtyBatch = false;
+        return;
+      }
+      const tableRows = this.getDraftTableRows() || [];
+      const rowByPk = new Map(
+        tableRows
+          .filter((row) => row?.pk)
+          .map((row) => [String(row.pk), row])
+      );
+      let hasDirtyUpdates = false;
+      batchChanges.forEach((change) => {
+        const rowId =
+          change?.tempId ||
+          rowByPk.get(String(change?.pk ?? ""))?.tempId ||
+          null;
+        if (!rowId) return;
+        const fields = Object.keys(change || {}).filter(
+          (key) => !["pk", "record_type", "tempId"].includes(key)
+        );
+        if (!fields.length) return;
+        this.markDirtyFields(rowId, fields);
+        hasDirtyUpdates = true;
+      });
+      if (hasDirtyUpdates) {
+        this.$nextTick(() => this.revalidateDraftRows());
+      }
+    },
+    markDirtyFields(rowId, fields = []) {
+      if (!rowId) return;
+      if (!this.dirtyFieldsByRowId[rowId]) {
+        this.dirtyFieldsByRowId[rowId] = new Set();
+      }
+      const target = this.dirtyFieldsByRowId[rowId];
+      fields.forEach((field) => {
+        if (field) target.add(field);
+      });
+    },
+    getValidationFieldsForRow(rowData, dirtyFields, mode) {
+      const fields = new Set(dirtyFields || []);
+      const normalizedMode = mode === "sample" ? "sample" : "library";
+      if (normalizedMode === "library") {
+        if (fields.has("library_protocol")) fields.add("library_type");
+        if (fields.has("library_type")) fields.add("library_protocol");
+        if (fields.has("index_type")) {
+          const reads = this.getIndexReadsCount(rowData);
+          if (reads >= 1) fields.add("index_i7");
+          if (reads >= 2) fields.add("index_i5");
+        }
+        if (fields.has("index_i7") || fields.has("index_i5")) {
+          fields.add("index_type");
+        }
+        if (fields.has("measuring_unit") || fields.has("measured_value")) {
+          fields.add("measured_value");
+        }
+      } else {
+        if (fields.has("nucleic_acid_type")) fields.add("library_protocol");
+        if (fields.has("library_protocol")) {
+          fields.add("library_type");
+          fields.add("nucleic_acid_type");
+        }
+        if (fields.has("library_type")) fields.add("library_protocol");
+        if (fields.has("measuring_unit") || fields.has("measured_value")) {
+          fields.add("measured_value");
+        }
+      }
+      return fields;
+    },
+    computeValidationState(rows = [], mode, options = {}) {
+      const validations = {};
+      const validationFieldsByRowId = {};
+      const nameCounts = {};
+      const normalizedMode = mode === "sample" ? "sample" : "library";
+      const useDirtyValidation = options.useDirtyValidation === true;
+
+      rows.forEach((row) => {
+        const name = (row?.name || "").trim();
+        if (!name) return;
+        nameCounts[name] = (nameCounts[name] || 0) + 1;
+      });
+
+      let validCount = 0;
+      rows.forEach((row, index) => {
+        if (!row.tempId) {
+          row.tempId = `row-${index + 1}-${Date.now()}`;
+        }
+        const rowId = row.tempId || `row-${index}`;
+        const isNewRow = useDirtyValidation && !row.pk;
+        let validationFields = null;
+        if (useDirtyValidation && !isNewRow) {
+          const dirtyFields = this.dirtyFieldsByRowId[rowId];
+          if (!dirtyFields || dirtyFields.size === 0) {
+            validations[rowId] = {};
+            validationFieldsByRowId[rowId] = new Set();
+            validCount += 1;
+            return;
+          }
+          validationFields = this.getValidationFieldsForRow(
+            row,
+            dirtyFields,
+            normalizedMode
+          );
+          validationFieldsByRowId[rowId] = validationFields;
+        }
+
+        const allErrors =
+          normalizedMode === "library"
+            ? this.validateLibraryRow(row, index, nameCounts)
+            : this.validateSampleRow(row, index, nameCounts);
+        let filteredErrors = allErrors;
+        if (useDirtyValidation && validationFields instanceof Set) {
+          filteredErrors = {};
+          validationFields.forEach((field) => {
+            if (allErrors[field]) {
+              filteredErrors[field] = allErrors[field];
+            }
+          });
+        }
+        validations[rowId] = filteredErrors;
+        if (!Object.keys(filteredErrors).length) {
+          validCount += 1;
+        }
+      });
+
+      return { validations, validationFieldsByRowId, validCount };
+    },
     revalidateDraftRows() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const tableRows = table?.getRows?.() || [];
       const rows = tableRows.length
         ? tableRows.map((row) => row.getData())
         : this.requestEditorDraftRows || [];
-      const nameCounts = {};
-      rows.forEach((row) => {
-        const name = (row?.name || "").trim();
-        if (!name) return;
-        nameCounts[name] = (nameCounts[name] || 0) + 1;
-      });
-      const validations = {};
-      let validCount = 0;
-      rows.forEach((row, index) => {
-        if (!row.tempId) {
-          row.tempId = `row-${index + 1}-${Date.now()}`;
-        }
-        const errors =
-          this.requestEditorMode === "library"
-            ? this.validateLibraryRow(row, index, nameCounts)
-            : this.validateSampleRow(row, index, nameCounts);
-        validations[row.tempId || `row-${index}`] = errors;
-        if (!Object.keys(errors).length) {
-          validCount += 1;
-        }
-      });
+      const { validations, validationFieldsByRowId, validCount } =
+        this.computeValidationState(rows, this.requestEditorMode, {
+          useDirtyValidation: this.isEditMode
+        });
       this.draftValidationState = validations;
+      if (this.isEditMode) {
+        this.validationFieldsByRowId = {
+          ...this.validationFieldsByRowId,
+          ...validationFieldsByRowId
+        };
+      }
       this.validDraftCount = validCount;
       this.$nextTick(() => this.applyValidationStyling());
       const result = {
@@ -1622,12 +1771,37 @@ export default {
       const rowData = cell.getRow?.()?.getData?.();
       const field = cell.getField?.();
       if (!rowData || !field || field === "selected") return;
+      const rowId = rowData.tempId;
+      const isExistingRow = this.isEditMode && rowData?.pk;
+      const dirtyFields = rowId ? this.dirtyFieldsByRowId[rowId] : null;
+      const hasDirtyFields =
+        dirtyFields instanceof Set ? dirtyFields.size > 0 : Boolean(dirtyFields);
+      const hasScope =
+        this.isEditMode &&
+        rowId &&
+        Object.prototype.hasOwnProperty.call(
+          this.validationFieldsByRowId,
+          rowId
+        );
+      const scope =
+        hasScope && rowId ? this.validationFieldsByRowId[rowId] : null;
+      const shouldValidateField =
+        (!hasScope || !(scope instanceof Set) || scope.has(field)) &&
+        !(isExistingRow && !hasDirtyFields);
       const errors = this.draftValidationState[rowData.tempId] || {};
       const cellValue = cell.getValue?.();
       const valuePresent = this.fieldHasValue(cellValue);
       const required = this.isFieldRequired(field, rowData);
       const disabledTooltip = el.getAttribute("data-disabled-tooltip");
       const isDisabled = el.classList.contains("disable-editing");
+      if (!shouldValidateField) {
+        if (isDisabled && disabledTooltip) {
+          el.setAttribute("data-tooltip-original", disabledTooltip);
+        } else if (valuePresent) {
+          el.classList.add("cell-valid");
+        }
+        return;
+      }
       if (required) {
         el.classList.add(valuePresent ? "required-filled" : "required-empty");
       }
@@ -1654,8 +1828,14 @@ export default {
     applyRowStyling(row) {
       const rowData = row?.getData?.();
       const rowId = rowData?.tempId;
+      const isExistingRow = this.isEditMode && rowData?.pk;
+      const dirtyFields = rowId ? this.dirtyFieldsByRowId[rowId] : null;
+      const hasDirtyFields =
+        dirtyFields instanceof Set ? dirtyFields.size > 0 : Boolean(dirtyFields);
       const rowErrors = (rowId && this.draftValidationState[rowId]) || {};
-      const hasErrors = Object.keys(rowErrors).length > 0;
+      const hasErrors =
+        !(isExistingRow && !hasDirtyFields) &&
+        Object.keys(rowErrors).length > 0;
       const rowEl = row?.getElement?.();
       if (rowEl) {
         rowEl.classList.toggle("row-has-errors", hasErrors);
@@ -1750,6 +1930,12 @@ export default {
       if (!row) {
         this.revalidateDraftRows();
         return;
+      }
+      if (this.isEditMode && this.allowDirtyTracking && field) {
+        const rowData = row.getData?.() || {};
+        if (rowData?.tempId && rowData?.pk) {
+          this.markDirtyFields(rowData.tempId, [field]);
+        }
       }
       if (this.requestEditorMode === "library" && field) {
         this.handleLibraryCellEdited(field, row);
@@ -2443,6 +2629,49 @@ export default {
       }
       return this.saveNewRequest();
     },
+    validateEditRecordsForSave() {
+      const results = {};
+      ["library", "sample"].forEach((mode) => {
+        const rows =
+          mode === "library"
+            ? this.editRecordsByType.library || []
+            : this.editRecordsByType.sample || [];
+        if (!rows.length) return;
+        results[mode] = {
+          rows,
+          ...this.computeValidationState(rows, mode, {
+            useDirtyValidation: true
+          })
+        };
+      });
+
+      const currentMode = this.requestEditorMode === "sample" ? "sample" : "library";
+      const currentResult = results[currentMode];
+      if (currentResult) {
+        this.draftValidationState = currentResult.validations;
+        this.validationFieldsByRowId = {
+          ...this.validationFieldsByRowId,
+          ...currentResult.validationFieldsByRowId
+        };
+        this.validDraftCount = currentResult.validCount;
+        this.$nextTick(() => this.applyValidationStyling());
+      }
+
+      const modeHasErrors = (mode) => {
+        const result = results[mode];
+        if (!result) return false;
+        return result.validCount !== result.rows.length;
+      };
+
+      return {
+        hasErrors: modeHasErrors("library") || modeHasErrors("sample"),
+        currentModeHasErrors: modeHasErrors(currentMode),
+        otherModeHasErrors:
+          currentMode === "library"
+            ? modeHasErrors("sample")
+            : modeHasErrors("library")
+      };
+    },
     async saveExistingRequest() {
       if (!this.canEditRequest) {
         showNotification("You lack permission to edit requests.", "warning");
@@ -2472,6 +2701,23 @@ export default {
       if (!totalRecords) {
         showNotification(
           "Request has no libraries or samples.",
+          "warning"
+        );
+        return;
+      }
+      const validationStatus = this.validateEditRecordsForSave();
+      if (validationStatus.currentModeHasErrors) {
+        showNotification(
+          "Resolve validation errors before updating this request.",
+          "warning"
+        );
+        return;
+      }
+      if (validationStatus.otherModeHasErrors) {
+        const otherModeLabel =
+          this.requestEditorMode === "library" ? "Sample" : "Library";
+        showNotification(
+          `Resolve validation errors in ${otherModeLabel} records before updating.`,
           "warning"
         );
         return;
@@ -2557,7 +2803,15 @@ export default {
           if (this.notifyOnSave) {
             showNotification("Request updated successfully.", "success");
           }
-          this.emitSaved(response.data);
+          this.emitSaved({
+            success: true,
+            mode: "edit",
+            request_id: this.requestId,
+            records: {
+              library: this.editRecordsByType.library || [],
+              sample: this.editRecordsByType.sample || []
+            }
+          });
           if (this.closeOnSave) {
             this.emitClose();
           }
@@ -3059,6 +3313,14 @@ export default {
 .add-count-input:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.2);
+}
+
+.add-count-input.input-error {
+  border-color: #d14343;
+}
+
+.add-count-input.input-error:focus {
+  box-shadow: 0 0 0 2px rgba(209, 67, 67, 0.2);
 }
 
 .add-count-button {
@@ -3617,7 +3879,7 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 
-Attachments shall be easier accessible. An attachment button shall show all attachments already uploaded and allow fast adding of them. Even more wonderful would be if the icon changes color if an attachment is there. His would help us in a way that we would spot immediately if user add attachments when creating the requests, instead of clicking multiple times.
+attachments shall be easier accessible. An attachment button shall show all attachments already uploaded and allow fast adding of them. Even more wonderful would be if the icon changes color if an attachment is there. This would help us in a way that we would spot immediately if user add attachments when creating the requests, instead of clicking multiple times.
 compose email for users
 question: i5 i7 Other Option, what to do if the index doest exist in any lists
 test: name size in files appear different in Ulrike's computer (for empty table)

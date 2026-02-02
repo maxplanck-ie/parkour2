@@ -136,128 +136,98 @@ export function cellContextMenu(
 ) {
   const shouldBlockDisabledCells =
     options.blockActionsOnDisabledCells === true;
+  const menuCell = options.cell || null;
   const tabulatorInstance = getTabulatorInstance();
   const tableRef =
     typeof tabulatorInstance?.getTable === "function"
       ? tabulatorInstance.getTable()
       : tabulatorInstance;
   const operations = [];
-  let isRangeSelected = false;
-  let selectedRangesData = tableRef?.getRangesData?.() || [];
-  if (selectedRangesData.length > 0) {
-    let firstRangeFields = Object.keys(selectedRangesData[0][0]);
-    isRangeSelected =
-      selectedRangesData[0].length > 1 || firstRangeFields.length > 1;
+  if (shouldBlockDisabledCells && menuCell) {
+    const cellEl = menuCell.getElement?.();
+    if (cellEl?.classList?.contains("disable-editing")) {
+      if (allowCopy) {
+        return [
+          {
+            label: "Copy",
+            action: (e, cell) => {
+              const targetCell = cell || menuCell;
+              ensureRangeSelection(targetCell);
+              tableRef?.copyToClipboard?.();
+            },
+          },
+        ];
+      }
+      return [];
+    }
   }
-
-  if (isRangeSelected) {
-    showNotification(
-      "Please use Ctrl+C to copy, and Ctrl+V to paste in a range selection.",
-      "info",
-    );
-  } else {
-    if (allowApplyToAll) {
-      operations.push({
-        label: "Apply to All",
-        action: (e, cell) => {
-          const value = cell.getValue();
-          const field = cell.getField();
-          const rowData = cell.getRow().getData();
-          const groupByField =
-            tabulatorInstance?.tableGroupsConfig?.groupBy ||
-            tabulatorInstance?.groupBy ||
-            null;
-          const requestId = rowData.request_id;
-          const requestName = rowData.request_name;
-          const protocolName = rowData.library_protocol_name;
-          const applyToAllRows =
-            !groupByField && !requestId && !requestName && !protocolName;
-          const tableRows = tableRef?.getRows?.() || [];
-
-          tableRows.forEach((row) => {
-            const data = row.getData();
-            let sameGroup = false;
-
-            // Incoming Libraries & Samples: apply within the same request
-            if (groupByField === "request_name") {
-              sameGroup =
-                (requestId && data.request_id === requestId) ||
-                (!requestId && data.request_name === requestName);
-            }
-            // Library Preparation: apply within the same library protocol
-            else if (groupByField === "library_protocol_name") {
-              sameGroup = data.library_protocol_name === protocolName;
-            } else {
-              sameGroup =
-                (requestId && data.request_id === requestId) ||
-                (protocolName && data.library_protocol_name === protocolName) ||
-                data.request_name === requestName;
-            }
-
-            if (applyToAllRows) {
-              sameGroup = true;
-            }
-            if (!sameGroup) return;
-
-            const targetCell = row.getCell(field);
-            if (!targetCell) return;
-            const targetCellEl = targetCell.getElement?.();
-            if (
-              shouldBlockDisabledCells &&
-              targetCellEl?.classList?.contains("disable-editing")
-            ) {
-              return;
-            }
-            const columnDef = targetCell.getColumn().getDefinition();
-            const targetRowData = targetCell.getRow().getData();
-            const isEditable = (() => {
-              if (columnDef.editor === false) return false;
-              if (typeof columnDef.editable === "function") {
-                return columnDef.editable({
-                  getRow: () => ({ getData: () => targetRowData }),
-                });
-              }
-              if (typeof columnDef.editable === "boolean") {
-                return columnDef.editable;
-              }
-              return Boolean(columnDef.editor);
-            })();
-            if (isEditable) {
-              targetCell.setValue(value);
-            }
-          });
-        },
-      });
+  const ensureRangeSelection = (cell) => {
+    if (!tableRef || !cell) return;
+    const ranges = tableRef.getRanges?.() || [];
+    if (!ranges.length && typeof tableRef.addRange === "function") {
+      tableRef.addRange(cell, cell);
     }
+  };
 
-    if (allowCopy) {
-      operations.push({
-        label: "Copy",
-        action: (e, cell) => {
-          const value = cell.getValue();
-          navigator.clipboard.writeText(value);
-        },
-      });
-    }
+  if (allowApplyToAll) {
+    operations.push({
+      label: "Apply to All",
+      action: (e, cell) => {
+        const value = cell.getValue();
+        const field = cell.getField();
+        const rowData = cell.getRow().getData();
+        const groupByField =
+          tabulatorInstance?.tableGroupsConfig?.groupBy ||
+          tabulatorInstance?.groupBy ||
+          null;
+        const requestId = rowData.request_id;
+        const requestName = rowData.request_name;
+        const protocolName = rowData.library_protocol_name;
+        const applyToAllRows =
+          !groupByField && !requestId && !requestName && !protocolName;
+        const tableRows = tableRef?.getRows?.() || [];
 
-    if (allowPaste) {
-      operations.push({
-        label: "Paste",
-        action: (e, cell) => {
-          const cellEl = cell.getElement?.();
+        tableRows.forEach((row) => {
+          const data = row.getData();
+          let sameGroup = false;
+
+          // Incoming Libraries & Samples: apply within the same request
+          if (groupByField === "request_name") {
+            sameGroup =
+              (requestId && data.request_id === requestId) ||
+              (!requestId && data.request_name === requestName);
+          }
+          // Library Preparation: apply within the same library protocol
+          else if (groupByField === "library_protocol_name") {
+            sameGroup = data.library_protocol_name === protocolName;
+          } else {
+            sameGroup =
+              (requestId && data.request_id === requestId) ||
+              (protocolName && data.library_protocol_name === protocolName) ||
+              data.request_name === requestName;
+          }
+
+          if (applyToAllRows) {
+            sameGroup = true;
+          }
+          if (!sameGroup) return;
+
+          const targetCell = row.getCell(field);
+          if (!targetCell) return;
+          const targetCellEl = targetCell.getElement?.();
           if (
             shouldBlockDisabledCells &&
-            cellEl?.classList?.contains("disable-editing")
+            targetCellEl?.classList?.contains("disable-editing")
           ) {
             return;
           }
-          const columnDef = cell.getColumn().getDefinition();
-          const rowData = cell.getRow().getData();
+          const columnDef = targetCell.getColumn().getDefinition();
+          const targetRowData = targetCell.getRow().getData();
           const isEditable = (() => {
             if (columnDef.editor === false) return false;
             if (typeof columnDef.editable === "function") {
               return columnDef.editable({
-                getRow: () => ({ getData: () => rowData }),
+                getRow: () => ({ getData: () => targetRowData }),
               });
             }
             if (typeof columnDef.editable === "boolean") {
@@ -265,24 +235,36 @@ export function cellContextMenu(
             }
             return Boolean(columnDef.editor);
           })();
-          if (!isEditable) {
-            return;
+          if (isEditable) {
+            targetCell.setValue(value);
           }
-          navigator.clipboard.readText().then((text) => {
-            try {
-              const validatedValue = tabulatorInstance.validateCellValue(
-                text,
-                columnDef,
-                rowData,
-              );
-              cell.setValue(validatedValue);
-            } catch (error) {
-              showNotification(error.message, "error");
-            }
-          });
-        },
-      });
-    }
+        });
+      },
+    });
+  }
+
+  if (allowCopy) {
+    operations.push({
+      label: "Copy",
+      action: (e, cell) => {
+        ensureRangeSelection(cell);
+        tableRef?.copyToClipboard?.();
+      },
+    });
+  }
+
+  if (allowPaste) {
+    operations.push({
+      label: "Paste",
+      action: (e, cell) => {
+        ensureRangeSelection(cell);
+        if (typeof tabulatorInstance?.triggerClipboardPaste === "function") {
+          tabulatorInstance.triggerClipboardPaste();
+        } else {
+          tableRef?.pasteFromClipboard?.();
+        }
+      },
+    });
   }
 
   return operations.length ? operations : [];
