@@ -1025,6 +1025,18 @@ export default {
               : "library";
         this.addRequestMode = initialMode;
         this.loadEditRecordsForMode(initialMode);
+        const indexTypes = [
+          ...new Set(
+            libraries
+              .map((record) => record?.index_type)
+              .filter((value) => value !== null && value !== undefined && value !== "")
+              .map((value) => String(value))
+          )
+        ];
+        await Promise.all(
+          indexTypes.map((typeId) => this.fetchIndexOptionsForType(typeId))
+        );
+        indexTypes.forEach((typeId) => this.refreshRowsForIndexType(typeId));
 
         this.existingRecords = [
           ...libraries.map((record) => ({
@@ -3265,7 +3277,7 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 
+compose email for users
 question: i5 i7 Other Option, what to do if the index doest exist in any lists
 test: name size in files appear different in Ulrike's computer (for empty table)
-question: is there any condition where we can hide request solicit approval icon, like if the request is already approved
 -->

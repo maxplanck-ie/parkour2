@@ -6,10 +6,8 @@ import { statusMap, getStatusClass } from "./statusConsts";
 import iconEdit from "../assets/icons/action_edit.svg";
 import iconDelete from "../assets/icons/action_delete_request.svg";
 import iconSolicitApproval from "../assets/icons/action_solicit_approval.svg";
-import iconDownloadReport from "../assets/icons/action_download_report.svg";
 import iconFilePaths from "../assets/icons/action_view_file_paths.svg";
 import iconComposeEmail from "../assets/icons/action_compose_email.svg";
-import iconMarkComplete from "../assets/icons/action_mark_complete.svg";
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 
@@ -102,9 +100,6 @@ export function librariesAndSamplesGroupHeader(
       <div title="Compose Email" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'composeEmail')">
         <img class="group-action-icon-img" src="${iconComposeEmail}" alt="Compose Email" />
       </div>
-      <div title="Mark as complete" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'markComplete')">
-        <img class="group-action-icon-img" src="${iconMarkComplete}" alt="Mark Complete" />
-      </div>
     `
     : "";
 
@@ -149,9 +144,6 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${approvalAction}
-      <div title="Download Complete Report" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadCompleteReport')">
-        <img class="group-action-icon-img" src="${iconDownloadReport}" alt="Download Complete Report" />
-      </div>
       ${staffActions}
       ${showStaffActions ? '<span class="group-action-separator"></span>' : ''}
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">

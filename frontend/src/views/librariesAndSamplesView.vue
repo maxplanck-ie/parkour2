@@ -499,7 +499,7 @@ export default {
 
           return librariesAndSamplesGroupHeader(value, count, totalDepth, {
             showStaffActions: this.isStaffUser,
-            showSolicitApproval: this.paperlessApproval,
+            showSolicitApproval: requiresApproval && this.paperlessApproval,
             allowDelete,
             showApprovalTag: requiresApproval && this.paperlessApproval,
             canDownloadRequestForm: canDownloadUpload,
@@ -1294,11 +1294,6 @@ export default {
         name: requestName
       });
     },
-    async handleDownloadCompleteReport(requestId) {
-      const url = `${urlStringStart}/api/requests/${requestId}/download_complete_report/`;
-      this.triggerDownload(url);
-      showNotification("Complete report downloaded.", "success");
-    },
     refreshGroupHeaders() {
       const table = this.tabulatorInstance?.getTable?.();
       const groups = table?.getGroups?.() || [];
@@ -1385,9 +1380,6 @@ export default {
         case "uploadSignedRequest":
           await this.handleUploadSignedRequest(requestId, requestName);
           break;
-        case "downloadCompleteReport":
-          await this.handleDownloadCompleteReport(requestId);
-          break;
         case "viewFilePaths":
           if (!this.isStaffUser) {
             showNotification("You lack permission to view file paths.", "warning");
@@ -1404,16 +1396,6 @@ export default {
             break;
           }
           this.openRequestActionModal("composeEmail", {
-            id: requestId,
-            name: requestName
-          });
-          break;
-        case "markComplete":
-          if (!this.isStaffUser) {
-            showNotification("You lack permission to mark complete.", "warning");
-            break;
-          }
-          this.openRequestActionModal("markComplete", {
             id: requestId,
             name: requestName
           });

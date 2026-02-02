@@ -71,6 +71,7 @@ def get_navigation_tree(request):
             "iconCls": "x-fa fa-file-text",
             "viewType": "requests",
             "leaf": True,
+            "hidden": True,
         },
         {
             "text": "Libraries & Samples",

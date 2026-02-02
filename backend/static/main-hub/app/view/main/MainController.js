@@ -24,7 +24,7 @@ Ext.define("MainHub.view.main.MainController", {
     Ext.getStore("NavigationTree").on("load", function (store) {
       me.buildTopNavigation(store);
       if (!window.location.hash) {
-        me.redirectTo("requests");
+        me.redirectTo("libraries-vue");
       }
     });
 

@@ -186,29 +186,6 @@
     </div>
   </div>
 
-  <div v-if="activeAction === 'markComplete'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
-    <div class="popup-container request-action-modal" :style="{ width: '460px' }">
-      <div class="popup-header">
-        <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_mark_complete.svg" alt="" />
-          <span>Mark request as complete</span>
-        </div>
-        <button class="popup-close-button" type="button" @click="close">&times;</button>
-      </div>
-      <div class="popup-body">
-        <div class="confirm-message">{{ markCompleteMessage }}</div>
-      </div>
-      <div class="popup-footer">
-        <button ref="defaultMarkCompleteButton" class="popup-button yes-button" type="button"
-          :disabled="markCompleteBusy" @click="confirmMarkComplete">
-          <span v-if="markCompleteBusy">Working...</span>
-          <span v-else>{{ markCompleteButtonLabel }}</span>
-        </button>
-        <button class="popup-button secondary" type="button" @click="close">Cancel</button>
-      </div>
-    </div>
-  </div>
-
   <div v-if="activeAction === 'deleteRequest'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
     <div class="popup-container request-action-modal" :style="{ width: '420px' }">
       <div class="popup-header">
@@ -294,8 +271,6 @@ export default {
       },
       emailBusy: false,
       approvalBusy: false,
-      markCompleteBusy: false,
-      markCompleteOverride: false,
       deleteBusy: false
     };
   },
@@ -326,16 +301,6 @@ export default {
     },
     canSaveUserPath() {
       return Boolean(this.userPathForm.name && this.userPathForm.value);
-    },
-    markCompleteMessage() {
-      if (this.markCompleteOverride) {
-        return "There are unsequenced libraries/samples related to this request. Do you want to mark it as complete anyway?";
-      }
-      return `Are you sure that you want to mark request "${this.requestContext?.name || ""
-        }" as complete?`;
-    },
-    markCompleteButtonLabel() {
-      return this.markCompleteOverride ? "Still Continue" : "Yes";
     }
   },
   watch: {
@@ -360,7 +325,6 @@ export default {
         const focusMap = {
           uploadSigned: "defaultUploadButton",
           filePaths: "defaultFilepathsButton",
-          markComplete: "defaultMarkCompleteButton",
           deleteRequest: "defaultDeleteButton"
         };
         const refName = focusMap[newVal];
@@ -394,10 +358,6 @@ export default {
           if (!this.uploadBusy) this.submitSignedRequest();
           return;
         }
-        if (this.activeAction === "markComplete") {
-          if (!this.markCompleteBusy) this.confirmMarkComplete();
-          return;
-        }
         if (this.activeAction === "deleteRequest") {
           if (!this.deleteBusy) this.confirmDelete();
           return;
@@ -420,8 +380,6 @@ export default {
       this.userPathForm = { mode: "add", id: null, name: "", value: "" };
       this.emailBusy = false;
       this.approvalBusy = false;
-      this.markCompleteBusy = false;
-      this.markCompleteOverride = false;
       this.deleteBusy = false;
       if (action === "filePaths") {
         this.selectedOS = this.detectOS(navigator.userAgent);
@@ -677,33 +635,6 @@ export default {
         handleError(error);
       } finally {
         this.approvalBusy = false;
-      }
-    },
-    async confirmMarkComplete() {
-      if (!this.requestContext?.id) return;
-      try {
-        this.markCompleteBusy = true;
-        const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/mark_as_complete/`,
-          {
-            data: JSON.stringify({
-              override: this.markCompleteOverride ? "True" : "False"
-            })
-          }
-        );
-        if (response?.data?.success) {
-          showNotification("Request marked as complete.", "success");
-          this.$emit("refresh");
-          this.close();
-        } else if (response?.data?.noncomplete && !this.markCompleteOverride) {
-          this.markCompleteOverride = true;
-        } else {
-          showNotification("Request update failed.", "error");
-        }
-      } catch (error) {
-        handleError(error);
-      } finally {
-        this.markCompleteBusy = false;
       }
     },
     async confirmDelete() {
