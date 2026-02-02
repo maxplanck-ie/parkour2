@@ -26,8 +26,13 @@ import {
   faCircleInfo,
   faCircleCheck,
   faCircleExclamation,
+  faEraser,
   faFileLines,
+  faCopy,
   faDownload,
+  faPaste,
+  faScissors,
+  faWandMagicSparkles,
   faXmark,
   faDesktop
 } from "@fortawesome/free-solid-svg-icons";
@@ -62,8 +67,13 @@ library.add(
   faCircleInfo,
   faCircleCheck,
   faCircleExclamation,
+  faEraser,
   faFileLines,
+  faCopy,
   faDownload,
+  faPaste,
+  faScissors,
+  faWandMagicSparkles,
   faXmark,
   faDesktop
 );

@@ -29,15 +29,65 @@
         </button>
         <div class="request-editor-header-right">
           <div class="header-table-actions" :class="{ hidden: !canEditRequest }">
-            <button class="icon-button text-button" type="button" :title="addButtonTitle" :disabled="!canEditRequest"
-              @click="addDraftRow">
-              <font-awesome-icon icon="fa-solid fa-square-plus" />
-              <span>{{ addButtonLabel }}</span>
-            </button>
+            <div class="add-count-group">
+              <input
+                id="add-count-input"
+                v-model.number="addRowCount"
+                type="number"
+                min="0"
+                class="add-count-input"
+                :disabled="!canEditRequest"
+              />
+              <button class="icon-button text-button add-count-button" type="button" :title="addButtonTitle"
+                :disabled="!canEditRequest" @click="addDraftRow(addRowCount)">
+                <font-awesome-icon icon="fa-solid fa-square-plus" />
+                <span>{{ addButtonLabel }}</span>
+              </button>
+            </div>
             <button class="icon-button text-button" type="button" :title="deleteButtonTitle"
               :disabled="!canEditRequest || !selectedDraftRowIds.length" @click="requestDeleteSelectedDraftRows">
               <font-awesome-icon icon="fa-solid fa-trash" />
               <span>Delete Selected</span>
+            </button>
+          </div>
+          <div
+            class="header-table-actions utility-actions"
+            :class="{ hidden: !canEditRequest }"
+            title="Clipboard Actions"
+          >
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
+              title="Apply the selected cell value to this column for all rows in this request"
+              :disabled="!canEditRequest || !isSingleCellSelected"
+              @click="triggerApplyToAll"
+            >
+              <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
+              <span>Apply to All</span>
+            </button>
+            <button class="icon-button text-button clipboard-button" type="button"
+              title="Copy the selected range to the clipboard"
+              :disabled="!requestEditorDraftRows.length || !hasRangeSelection" @click="triggerTableCopy">
+              <font-awesome-icon icon="fa-solid fa-copy" />
+              <span>Copy</span>
+            </button>
+            <button class="icon-button text-button clipboard-button" type="button"
+              title="Cut the selected range to the clipboard"
+              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTableCut">
+              <font-awesome-icon icon="fa-solid fa-scissors" />
+              <span>Cut</span>
+            </button>
+            <button class="icon-button text-button clipboard-button" type="button"
+              title="Paste clipboard data into the selected range"
+              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTablePaste">
+              <font-awesome-icon icon="fa-solid fa-paste" />
+              <span>Paste</span>
+            </button>
+            <button class="icon-button text-button clipboard-button" type="button"
+              title="Clear values in the selected range"
+              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTableClear">
+              <font-awesome-icon icon="fa-solid fa-eraser" />
+              <span>Clear</span>
             </button>
           </div>
           <div class="header-actions">
@@ -298,6 +348,7 @@
 <script>
 import TabulatorTable from "../components/tabulatorTable.vue";
 import {
+  applyValueToAllRows,
   showNotification,
   handleError,
   createAxiosObject,
@@ -440,6 +491,13 @@ export default {
       fakeLoading: false,
       fakeLoadingTimer: null,
       requestDataReady: false,
+      addRowCount: 1,
+      hasRangeSelection: false,
+      hasEditableRangeSelection: false,
+      isSingleCellSelected: false,
+      rangeListenersAttached: false,
+      rangeSelectionHandler: null,
+      rangeSelectionElement: null,
     };
   },
   watch: {
@@ -449,6 +507,7 @@ export default {
           this.isRequestLoading = true;
           this.requestDataReady = false;
         }
+        this.addRowCount = this.isEditMode ? 0 : 1;
         this.schedulePrepareRequestEditorModal();
       } else {
         if (this.prepareTimer) {
@@ -518,6 +577,11 @@ export default {
     if (this.show) {
       this.schedulePrepareRequestEditorModal();
     }
+    document.addEventListener("keydown", this.handleKeyDown);
+  },
+  beforeDestroy() {
+    this.unbindRangeSelectionListeners();
+    document.removeEventListener("keydown", this.handleKeyDown);
   },
   computed: {
     isEditMode() {
@@ -675,7 +739,11 @@ export default {
         },
         cellEditing: (cell) => vm.handleCellEditing(cell),
         handleCellEdited: (cell) => vm.handleCellEdited(cell),
-        handleRenderComplete: () => this.applyValidationStyling(),
+        handleRenderComplete: () => {
+          this.applyValidationStyling();
+          this.bindRangeSelectionListeners();
+          this.updateRangeSelectionState();
+        },
         fakeLoadingStart: () => this.fakeLoadingStart(),
         fakeLoadingStop: () => this.fakeLoadingStop()
       };
@@ -964,10 +1032,29 @@ export default {
         sample: false
       };
       this.pendingFileDelete = null;
+      this.addRowCount = this.isEditMode ? 0 : 1;
+      this.hasRangeSelection = false;
+      this.unbindRangeSelectionListeners();
       if (this.$refs.requestFileInput) {
         this.$refs.requestFileInput.value = "";
       }
       this.$nextTick(() => this.applyValidationStyling());
+    },
+    handleKeyDown(event) {
+      if (!this.show) return;
+      const key = event.key?.toLowerCase?.();
+      const isCtrl = event.ctrlKey || event.metaKey;
+      if (!isCtrl || key !== "x") return;
+      const target = event.target;
+      const isInput =
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable);
+      if (isInput) return;
+      if (!this.hasEditableRangeSelection || !this.canEditRequest) return;
+      event.preventDefault();
+      this.triggerTableCut();
     },
     async prepareRequestEditorModal() {
       if (this.isPreparingModal) return;
@@ -1193,19 +1280,146 @@ export default {
       if (!this.canEditRequest) return;
       this.$refs.requestFileInput?.click?.();
     },
-    addDraftRow() {
-      if (this.isEditMode && !this.canEditRequest) return;
-      this.draftRowCounter += 1;
-      const tempId = `draft-${Date.now()}-${this.draftRowCounter}`;
-      const baseRow = {
-        tempId,
-        selected: false,
-        name: ""
+    triggerApplyToAll() {
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+      const cell = table?.getRanges?.()?.[0]?.getCells?.()?.[0]?.[0];
+      if (!cell) return;
+      applyValueToAllRows(cell, () => table, {
+        blockActionsOnDisabledCells: true
+      });
+      this.$nextTick(() => {
+        this.revalidateDraftRows();
+        this.applyValidationStyling();
+      });
+    },
+
+    triggerTableCopy() {
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+      const element = document.activeElement;
+      if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA")) {
+        element.blur();
+      }
+      table?.copyToClipboard?.();
+    },
+    triggerTableCut() {
+      if (!this.hasEditableRangeSelection || !this.canEditRequest) return;
+      this.triggerTableCopy();
+      this.triggerTableClear();
+    },
+    triggerTablePaste() {
+      const tableComponent = this.$refs.requestEditorDraftTableRef;
+      const element = document.activeElement;
+      if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA")) {
+        element.blur();
+      }
+      tableComponent?.triggerClipboardPaste?.();
+    },
+    triggerTableClear() {
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+      const element = document.activeElement;
+      if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA")) {
+        element.blur();
+      }
+      const keyEvent = new KeyboardEvent("keydown", { key: "Delete", bubbles: true });
+      table?.element?.dispatchEvent?.(keyEvent);
+    },
+    updateRangeSelectionState() {
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+      const ranges = table?.getRanges?.() || [];
+      let hasSelection = false;
+      let singleCell = false;
+      let hasEditableCell = false;
+      let singleCellEditable = false;
+      if (ranges.length) {
+        const cells = ranges[0]?.getCells?.() || [];
+        hasSelection = cells.length > 0 && (cells[0]?.length || 0) > 0;
+        singleCell = cells.length === 1 && (cells[0]?.length || 0) === 1;
+        cells.forEach((row) => {
+          row.forEach((cell) => {
+            if (this.isEditableRangeCell(cell)) {
+              hasEditableCell = true;
+            }
+          });
+        });
+        if (singleCell) {
+          const cell = cells[0]?.[0] || null;
+          singleCellEditable = this.isEditableRangeCell(cell);
+        }
+      }
+      this.hasRangeSelection = hasSelection;
+      this.hasEditableRangeSelection = hasSelection && hasEditableCell;
+      this.isSingleCellSelected =
+        hasSelection && singleCell && singleCellEditable;
+    },
+    isEditableRangeCell(cell) {
+      if (!cell) return false;
+      const field = cell.getField?.();
+      if (!field || field === "selected") return false;
+      const columnDef = cell.getColumn?.().getDefinition?.() || {};
+      if (columnDef.editor === false) return false;
+      if (typeof columnDef.editable === "function") {
+        const rowData = cell.getRow?.().getData?.() || {};
+        return columnDef.editable({
+          getRow: () => ({ getData: () => rowData })
+        });
+      }
+      if (typeof columnDef.editable === "boolean") {
+        return columnDef.editable;
+      }
+      return true;
+    },
+    bindRangeSelectionListeners() {
+      const element = document.getElementById("requestEditorDraftTable");
+      if (!element || this.rangeListenersAttached) {
+        return;
+      }
+      this.rangeSelectionHandler = () => {
+        requestAnimationFrame(() => this.updateRangeSelectionState());
       };
-      const row =
-        this.requestEditorMode === "sample" ? { ...baseRow, gmo: null } : baseRow;
-      this.requestEditorDraftRows = [...this.requestEditorDraftRows, row];
+      element.addEventListener("mouseup", this.rangeSelectionHandler, true);
+      element.addEventListener("keyup", this.rangeSelectionHandler, true);
+      element.addEventListener("keydown", this.rangeSelectionHandler, true);
+      element.addEventListener("click", this.rangeSelectionHandler, true);
+      this.rangeSelectionElement = element;
+      this.rangeListenersAttached = true;
+    },
+    unbindRangeSelectionListeners() {
+      if (!this.rangeListenersAttached || !this.rangeSelectionElement || !this.rangeSelectionHandler) {
+        this.rangeListenersAttached = false;
+        return;
+      }
+      const element = this.rangeSelectionElement;
+      const handler = this.rangeSelectionHandler;
+      element.removeEventListener("mouseup", handler, true);
+      element.removeEventListener("keyup", handler, true);
+      element.removeEventListener("keydown", handler, true);
+      element.removeEventListener("click", handler, true);
+      this.rangeSelectionElement = null;
+      this.rangeSelectionHandler = null;
+      this.rangeListenersAttached = false;
+    },
+    addDraftRow(count = 1) {
+      if (this.isEditMode && !this.canEditRequest) return;
+      const total = Number(count);
+      if (!Number.isFinite(total) || total <= 0) return;
+      const newRows = [];
+      for (let i = 0; i < total; i += 1) {
+        this.draftRowCounter += 1;
+        const tempId = `draft-${Date.now()}-${this.draftRowCounter}-${i}`;
+        const baseRow = {
+          tempId,
+          selected: false,
+          name: ""
+        };
+        const row =
+          this.requestEditorMode === "sample" ? { ...baseRow, gmo: null } : baseRow;
+        newRows.push(row);
+      }
+      this.requestEditorDraftRows = [...this.requestEditorDraftRows, ...newRows];
       this.$nextTick(() => this.revalidateDraftRows());
+      if (total > 5) {
+        this.addRowCount = 0;
+      }
     },
     requestDeleteSelectedDraftRows() {
       if (this.isEditMode && !this.canEditRequest) return;
@@ -2799,11 +3013,71 @@ export default {
 .header-table-actions {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px;
+  gap: 10px;
+  padding: 6px 8px;
   border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  background: #f8fafb;
+  box-shadow: inset 0 1px 0 #ffffff;
+}
+
+.header-table-actions.utility-actions {
+  padding: 6px 8px;
+  margin-right: auto;
+  border: 1px solid #d7dee3;
+  background: #f3f6f7;
+  box-shadow: inset 0 1px 0 #ffffff;
+  border-radius: 10px;
+}
+
+.clipboard-button {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.add-count-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #eef2f3;
+  border: 1px solid #d7dee3;
+}
+
+.add-count-input {
+  width: 40px;
+  height: 28px;
+  border: 1px solid #0f766e;
   border-radius: 6px;
-  background: #f6f8fa;
+  padding: 2px 6px;
+  font-size: 12px;
+  text-align: right;
+
+}
+
+.add-count-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.2);
+}
+
+.add-count-button {
+  padding-left: 10px;
+  padding-right: 12px;
+}
+
+.add-count-input::-webkit-outer-spin-button,
+.add-count-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.add-count-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.header-table-actions .icon-button.text-button {
+  height: 32px;
 }
 
 .header-table-actions.hidden {
@@ -3343,7 +3617,6 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 
-add libraries/samples add number 
 Attachments shall be easier accessible. An attachment button shall show all attachments already uploaded and allow fast adding of them. Even more wonderful would be if the icon changes color if an attachment is there. His would help us in a way that we would spot immediately if user add attachments when creating the requests, instead of clicking multiple times.
 compose email for users
 question: i5 i7 Other Option, what to do if the index doest exist in any lists

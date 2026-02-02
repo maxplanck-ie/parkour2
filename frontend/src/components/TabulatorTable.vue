@@ -127,7 +127,8 @@ export default {
         errorsList: [],
         errorsPopupHeight: 220,
         errorsPopupWidth: 600
-      }
+      },
+      clipboardPasteParser: null
     };
   },
   watch: {
@@ -458,6 +459,7 @@ export default {
         this.tabulatorInstance = markRaw(
           new Tabulator(`#${this.tableId}`, options)
         );
+        this.clipboardPasteParser = options.clipboardPasteParser;
 
         this.tabulatorInstance.on("tableBuilt", () => {
           this.tableBuilt = true;
@@ -698,6 +700,26 @@ export default {
       this.tabulatorInstance.restoreRedraw();
     },
 
+    async triggerClipboardPaste() {
+      if (!this.clipboardPasteParser) {
+        this.tabulatorInstance?.pasteFromClipboard?.();
+        return;
+      }
+      try {
+        if (!navigator?.clipboard?.readText) {
+          this.tabulatorInstance?.pasteFromClipboard?.();
+          return;
+        }
+        const text = await navigator.clipboard.readText();
+        if (!text) {
+          showNotification("Clipboard is empty.", "warning");
+          return;
+        }
+        await this.clipboardPasteParser(text);
+      } catch (error) {
+        this.tabulatorInstance?.pasteFromClipboard?.();
+      }
+    },
 
     sanitizeColumnDefs(columns = []) {
       return columns.map((column) => {

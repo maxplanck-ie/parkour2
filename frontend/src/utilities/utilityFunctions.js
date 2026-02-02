@@ -288,6 +288,76 @@ export function cellContextMenu(
   return operations.length ? operations : [];
 }
 
+export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {
+  const tabulatorInstance = getTabulatorInstance?.();
+  const tableRef =
+    typeof tabulatorInstance?.getTable === "function"
+      ? tabulatorInstance.getTable()
+      : tabulatorInstance;
+  if (!cell || !tableRef) return;
+  const value = cell.getValue?.();
+  const field = cell.getField?.();
+  if (!field) return;
+  const rowData = cell.getRow?.().getData?.() || {};
+  const groupByField =
+    tabulatorInstance?.tableGroupsConfig?.groupBy ||
+    tabulatorInstance?.groupBy ||
+    null;
+  const requestId = rowData.request_id;
+  const requestName = rowData.request_name;
+  const protocolName = rowData.library_protocol_name;
+  const applyToAllRows =
+    !groupByField && !requestId && !requestName && !protocolName;
+  const shouldBlockDisabledCells =
+    options.blockActionsOnDisabledCells === true;
+  const tableRows = tableRef?.getRows?.() || [];
+  tableRows.forEach((row) => {
+    const data = row.getData();
+    let sameGroup = false;
+    if (groupByField === "request_name") {
+      sameGroup =
+        (requestId && data.request_id === requestId) ||
+        (!requestId && data.request_name === requestName);
+    } else if (groupByField === "library_protocol_name") {
+      sameGroup = data.library_protocol_name === protocolName;
+    } else {
+      sameGroup =
+        (requestId && data.request_id === requestId) ||
+        (protocolName && data.library_protocol_name === protocolName) ||
+        data.request_name === requestName;
+    }
+    if (applyToAllRows) {
+      sameGroup = true;
+    }
+    if (!sameGroup) return;
+    const targetCell = row.getCell(field);
+    if (!targetCell) return;
+    const targetCellEl = targetCell.getElement?.();
+    if (
+      shouldBlockDisabledCells &&
+      targetCellEl?.classList?.contains("disable-editing")
+    ) {
+      return;
+    }
+    const columnDef = targetCell.getColumn().getDefinition();
+    const targetRowData = targetCell.getRow().getData();
+    const isEditable = (() => {
+      if (columnDef.editor === false) return false;
+      if (typeof columnDef.editable === "function") {
+        return columnDef.editable({
+          getRow: () => ({ getData: () => targetRowData })
+        });
+      }
+      if (typeof columnDef.editable === "boolean") {
+        return columnDef.editable;
+      }
+      return true;
+    })();
+    if (!isEditable) return;
+    row.update({ [field]: value });
+  });
+}
+
 export async function validateAndFixExcelBuffer(buffer) {
   try {
     const zip = await JSZip.loadAsync(buffer);
