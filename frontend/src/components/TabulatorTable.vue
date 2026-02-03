@@ -938,6 +938,9 @@ export default {
       const isDeleteOrBackspace =
         event.key === "Delete" || event.key === "Backspace";
       const isEscape = event.key === "Escape";
+      const key = event.key?.toLowerCase?.();
+      const isCtrl = event.ctrlKey || event.metaKey;
+      const isCut = isCtrl && key === "x";
       const isPrintableKey =
         event.key.length === 1 &&
         !event.ctrlKey &&
@@ -960,9 +963,9 @@ export default {
         const shouldBlockDisabledCells =
           this.tableOptions?.blockActionsOnDisabledCells === true;
         const cellEl = cell.getElement?.();
-        if (shouldBlockDisabledCells && cellEl?.classList?.contains("disable-editing")) {
-          return false;
-        }
+      if (shouldBlockDisabledCells && cellEl?.classList?.contains("disable-editing")) {
+        return false;
+      }
         const columnDef = cell.getColumn?.().getDefinition?.() || {};
         if (columnDef.editor === false) return false;
         if (typeof columnDef.editable === "function") {
@@ -970,16 +973,13 @@ export default {
             getRow: () => ({ getData: () => rowData })
           });
         }
-        if (typeof columnDef.editable === "boolean") {
-          return columnDef.editable;
-        }
-        return Boolean(columnDef.editor);
-      };
-      if (isDeleteOrBackspace) {
+      if (typeof columnDef.editable === "boolean") {
+        return columnDef.editable;
+      }
+      return Boolean(columnDef.editor);
+    };
+      const clearSelectedRange = () => {
         if (!rangeCells.length) return;
-        if (this.tableOptions.fakeLoadingStart) {
-          this.tableOptions.fakeLoadingStart();
-        }
         const rowOriginals = new Map();
         const rowUpdates = new Map();
         const clearedFieldsByRow = new Map();
@@ -1007,6 +1007,12 @@ export default {
             }
           });
         });
+        if (rowUpdates.size === 0) {
+          return;
+        }
+        if (this.tableOptions.fakeLoadingStart) {
+          this.tableOptions.fakeLoadingStart();
+        }
         rowUpdates.forEach((data, rowComp) => {
           rowComp?.update?.(data);
         });
@@ -1033,6 +1039,26 @@ export default {
         if (this.tableOptions.fakeLoadingStop) {
           this.tableOptions.fakeLoadingStop();
         }
+      };
+
+      if (isCut) {
+        if (!rangeCells.length) return;
+        const hasEditable = rangeCells.some((row) =>
+          row.some((cell) => {
+            const rowData = cell.getRow?.().getData?.() || {};
+            return getIsEditable(cell, rowData);
+          })
+        );
+        if (!hasEditable) return;
+        event.preventDefault();
+        this.tabulatorInstance?.copyToClipboard?.();
+        clearSelectedRange();
+        return;
+      }
+
+      if (isDeleteOrBackspace) {
+        if (!rangeCells.length) return;
+        clearSelectedRange();
         event.preventDefault();
         return;
       }
@@ -1138,7 +1164,12 @@ export default {
       switch (editorType) {
         case "number": {
           const str = String(value).trim();
-          if (str === "") return "";
+          if (str === "") {
+            if (columnDef.defaultOnEmptyPaste !== undefined) {
+              return columnDef.defaultOnEmptyPaste;
+            }
+            return "";
+          }
           const numValue = Number(str);
           if (Number.isNaN(numValue))
             throw new Error("Entered number format is invalid.");

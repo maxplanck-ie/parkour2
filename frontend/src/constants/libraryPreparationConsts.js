@@ -542,6 +542,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "4%",
       editor: "number",
+      defaultOnEmptyPaste: 100,
       headerVertical: false,
       headerTooltip: "Smear Analysis (% Total)",
       visible: true,
@@ -591,8 +592,8 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
 
   return applyContextMenuToColumns(columns, getTabulatorInstance, {
     allowCopy: true,
-    allowEdit: false,
-    allowApplyToAll: false,
+    allowEdit: true,
+    allowApplyToAll: true,
     blockActionsOnDisabledCells: true,
     overrideExisting: true,
     skipFields: new Set(["selected"]),

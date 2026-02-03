@@ -642,8 +642,8 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
 
   return applyContextMenuToColumns(columns, getTabulatorInstance, {
     allowCopy: true,
-    allowEdit: false,
-    allowApplyToAll: false,
+    allowEdit: true,
+    allowApplyToAll: true,
     blockActionsOnDisabledCells: true,
     overrideExisting: true,
     skipFields: new Set(["selected"]),

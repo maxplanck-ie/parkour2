@@ -232,9 +232,17 @@ export function cellContextMenu(
           });
           return;
         }
+        const fakeLoadingStart = tabulatorInstance?.tableOptions?.fakeLoadingStart;
+        const fakeLoadingStop = tabulatorInstance?.tableOptions?.fakeLoadingStop;
+        if (typeof fakeLoadingStart === "function") {
+          fakeLoadingStart();
+        }
         applyValueToAllRows(cell, getTabulatorInstance, {
           blockActionsOnDisabledCells: shouldBlockDisabledCells,
         });
+        if (typeof fakeLoadingStop === "function") {
+          setTimeout(() => fakeLoadingStop(), 0);
+        }
       },
     });
   }
@@ -350,6 +358,33 @@ export function applyContextMenuToColumns(
           onClear,
         },
       );
+  };
+
+  columns.forEach(applyToColumn);
+  return columns;
+}
+
+export function applyPreserveOnEmptyPasteToColumns(
+  columns = [],
+  options = {},
+) {
+  const {
+    editorTypes = new Set(["number", "list"]),
+    skipFields = new Set(),
+    overrideExisting = false,
+  } = options;
+
+  const applyToColumn = (column) => {
+    if (!column || typeof column !== "object") return;
+    if (Array.isArray(column.columns)) {
+      column.columns.forEach(applyToColumn);
+      return;
+    }
+    if (column.field && skipFields.has(column.field)) return;
+    if (column.preserveOnEmptyPaste && !overrideExisting) return;
+    if (editorTypes.has(column.editor)) {
+      column.preserveOnEmptyPaste = true;
+    }
   };
 
   columns.forEach(applyToColumn);
