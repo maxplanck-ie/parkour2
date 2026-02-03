@@ -334,7 +334,7 @@
 </template>
 
 <script>
-import TabulatorTable from "../components/tabulatorTable.vue";
+import TabulatorTable from "../components/TabulatorTableFull.vue";
 import {
   applyValueToAllRows,
   showNotification,

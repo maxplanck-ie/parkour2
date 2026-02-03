@@ -403,7 +403,7 @@
 </template>
 
 <script lang="jsx">
-import LiteTabulatorTable from "../components/liteTabulatorTable.vue";
+import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -422,7 +422,7 @@ import {
 } from "../constants/librariesAndSamplesConsts";
 import { statusMap } from "../constants/statusConsts";
 import RequestEditorView from "./requestEditorView.vue";
-import RequestActionsPopups from "../components/requestActionsPopups.vue";
+import RequestActionsPopups from "../components/RequestActionsPopups.vue";
 import iconLibrariesHeader from "../assets/icons/header_libraries_samples.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
 import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
