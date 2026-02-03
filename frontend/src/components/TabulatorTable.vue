@@ -129,7 +129,8 @@ export default {
         errorsPopupWidth: 600
       },
       clipboardPasteParser: null,
-      clipboardCopyValueByField: {}
+      clipboardCopyValueByField: {},
+      pasteDefaultsByField: {}
     };
   },
   watch: {
@@ -181,6 +182,7 @@ export default {
   methods: {
     initializeTable() {
       if (this.rowData && this.columnDefs) {
+        this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
         const options = {
           data: this.rowData,
           columns: this.sanitizeColumnDefs(this.columnDefs),
@@ -697,6 +699,7 @@ export default {
       if (!this.tabulatorInstance || !this.tableBuilt) return;
       this.clipboardCopyValueByField =
         this.buildClipboardValueLookup(this.columnDefs);
+      this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
       this.tabulatorInstance.blockRedraw();
       this.tabulatorInstance.setColumns(
         this.sanitizeColumnDefs(this.columnDefs)
@@ -750,6 +753,21 @@ export default {
         }
         return rest;
       });
+    },
+    buildPasteDefaults(columns = []) {
+      const map = {};
+      const walk = (col) => {
+        if (!col || typeof col !== "object") return;
+        if (Array.isArray(col.columns)) {
+          col.columns.forEach(walk);
+          return;
+        }
+        if (col.field && col.defaultOnEmptyPaste !== undefined) {
+          map[col.field] = col.defaultOnEmptyPaste;
+        }
+      };
+      columns.forEach(walk);
+      return map;
     },
 
     // Make sure that records in rowData have "type" field, in order for these filters to work. Check the definition of "this.tableFiltersState" to get more context.
@@ -1172,8 +1190,12 @@ export default {
         case "number": {
           const str = String(value).trim();
           if (str === "") {
-            if (columnDef.defaultOnEmptyPaste !== undefined) {
-              return columnDef.defaultOnEmptyPaste;
+            const fieldName = columnDef.field;
+            const defaultValue =
+              columnDef.defaultOnEmptyPaste ??
+              (fieldName ? this.pasteDefaultsByField[fieldName] : undefined);
+            if (defaultValue !== undefined) {
+              return defaultValue;
             }
             return "";
           }
@@ -1202,6 +1224,13 @@ export default {
         }
         case "list": {
           if (value === "" || value === undefined || value === null) {
+            const fieldName = columnDef.field;
+            const defaultValue =
+              columnDef.defaultOnEmptyPaste ??
+              (fieldName ? this.pasteDefaultsByField[fieldName] : undefined);
+            if (defaultValue !== undefined) {
+              return defaultValue;
+            }
             return "";
           }
           const editorParamsList =
