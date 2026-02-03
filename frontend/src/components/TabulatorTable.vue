@@ -107,6 +107,8 @@ export default {
       consoleWarnOriginal: null,
       previousData: null,
       preventEditorBlurHandler: null,
+      preserveScrollOnGroupToggleHandler: null,
+      pendingGroupScrollRestore: null,
       tableFiltersState: {
         typesIn: [
           { field: "type", type: "=", value: "L" },
@@ -172,6 +174,14 @@ export default {
         this.preventEditorBlurHandler,
         true
       );
+    }
+    if (tabulatorElement && this.preserveScrollOnGroupToggleHandler) {
+      tabulatorElement.removeEventListener(
+        "click",
+        this.preserveScrollOnGroupToggleHandler,
+        true
+      );
+      this.preserveScrollOnGroupToggleHandler = null;
     }
     this.tableBuilt = false;
     if (this.consoleWarnOriginal) {
@@ -514,6 +524,34 @@ export default {
             this.preventEditorBlurHandler,
             true
           );
+          if (this.tableOptions.preserveScrollOnGroupToggle) {
+            if (this.preserveScrollOnGroupToggleHandler) {
+              tabulatorElement.removeEventListener(
+                "click",
+                this.preserveScrollOnGroupToggleHandler,
+                true
+              );
+            }
+            this.preserveScrollOnGroupToggleHandler = (event) => {
+              const groupRow = event.target.closest(
+                ".tabulator-row.tabulator-group"
+              );
+              if (!groupRow) return;
+              const holder = tabulatorElement.querySelector(
+                ".tabulator-tableholder"
+              );
+              const outer = tabulatorElement.closest(".table-container");
+              this.pendingGroupScrollRestore = {
+                holderScrollTop: holder ? holder.scrollTop : null,
+                outerScrollTop: outer ? outer.scrollTop : null
+              };
+            };
+            tabulatorElement.addEventListener(
+              "click",
+              this.preserveScrollOnGroupToggleHandler,
+              true
+            );
+          }
           if (this.tableGroupsConfig.noGroupByClass) {
             tabulatorElement.classList.add("no-group-by");
           } else {
@@ -604,6 +642,27 @@ export default {
           this.updateGroupValuesFromRows(rows);
           if (this.tableOptions.handleRenderComplete) {
             this.tableOptions.handleRenderComplete();
+          }
+          if (this.pendingGroupScrollRestore) {
+            const tabulatorEl = this.getTabulatorElement();
+            const holder =
+              tabulatorEl?.querySelector(".tabulator-tableholder") || null;
+            const outer = tabulatorEl?.closest?.(".table-container") || null;
+            const { holderScrollTop, outerScrollTop } =
+              this.pendingGroupScrollRestore;
+            this.pendingGroupScrollRestore = null;
+            const restore = () => {
+              if (holder && holderScrollTop !== null) {
+                holder.scrollTop = holderScrollTop;
+              }
+              if (outer && outerScrollTop !== null) {
+                outer.scrollTop = outerScrollTop;
+              }
+            };
+            requestAnimationFrame(() => {
+              restore();
+              requestAnimationFrame(restore);
+            });
           }
         });
 

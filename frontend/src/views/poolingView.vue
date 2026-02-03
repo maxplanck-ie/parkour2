@@ -168,6 +168,7 @@
         :groupStartOpen="false"
         :tableOptions="{
           ...tableOptions,
+          preserveScrollOnGroupToggle: true,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
