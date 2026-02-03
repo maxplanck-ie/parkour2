@@ -741,6 +741,8 @@ export default {
         const {
           clipboardCopyValue,
           pasteValueResolver,
+          defaultOnEmptyPaste,
+          preserveOnEmptyPaste,
           ...rest
         } = column || {};
         if (Array.isArray(rest.columns)) {
@@ -788,6 +790,11 @@ export default {
                 { field: "name", type: "like", value: keyword },
                 { field: "request_name", type: "like", value: keyword },
                 { field: "barcode", type: "like", value: keyword },
+                {
+                  field: "library_protocol_name",
+                  type: "like",
+                  value: keyword
+                },
                 {
                   field: "comments_library_sample",
                   type: "like",
