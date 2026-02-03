@@ -1082,6 +1082,7 @@ export default {
         this.revalidateDraftRows();
         this.applyValidationStyling();
         this.fakeLoadingStop();
+        this.$refs.requestEditorDraftTableRef?.restoreLastFocusedCell?.();
       });
     },
     handleApplyToAllFromContext(payload = {}) {
@@ -1415,6 +1416,7 @@ export default {
         element.blur();
       }
       table?.copyToClipboard?.();
+      this.$refs.requestEditorDraftTableRef?.restoreLastFocusedCell?.();
     },
     triggerTableCut() {
       if (!this.hasEditableRangeSelection || !this.canEditRequest) return;
@@ -1428,6 +1430,7 @@ export default {
         element.blur();
       }
       tableComponent?.triggerClipboardPaste?.();
+      tableComponent?.restoreLastFocusedCell?.();
     },
     triggerTableClear() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
@@ -1437,6 +1440,7 @@ export default {
       }
       const keyEvent = new KeyboardEvent("keydown", { key: "Delete", bubbles: true });
       table?.element?.dispatchEvent?.(keyEvent);
+      this.$refs.requestEditorDraftTableRef?.restoreLastFocusedCell?.();
     },
     updateRangeSelectionState() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
@@ -2892,6 +2896,10 @@ export default {
             success: true,
             mode: "edit",
             request_id: this.requestId,
+            cost_unit: this.newRequest.cost_unit || null,
+            description,
+            files: this.uploadedRequestFiles || [],
+            fileIds: this.uploadedRequestFileIds || [],
             records: {
               library: this.editRecordsByType.library || [],
               sample: this.editRecordsByType.sample || []

@@ -216,6 +216,13 @@ export function cellContextMenu(
       tableRef.addRange(cell, cell);
     }
   };
+  const restoreFocus = () => {
+    if (typeof tabulatorInstance?.restoreLastFocusedCell === "function") {
+      tabulatorInstance.restoreLastFocusedCell();
+      return;
+    }
+    tableRef?.element?.focus?.();
+  };
 
   if (allowApplyToAll && menuCellEditable && singleCellSelected) {
     operations.push({
@@ -230,6 +237,7 @@ export function cellContextMenu(
             tabulatorInstance,
             blockActionsOnDisabledCells: shouldBlockDisabledCells,
           });
+          restoreFocus();
           return;
         }
         const fakeLoadingStart = tabulatorInstance?.tableOptions?.fakeLoadingStart;
@@ -243,6 +251,7 @@ export function cellContextMenu(
         if (typeof fakeLoadingStop === "function") {
           setTimeout(() => fakeLoadingStop(), 0);
         }
+        restoreFocus();
       },
     });
   }
@@ -255,6 +264,7 @@ export function cellContextMenu(
         ensureRangeSelection(targetCell);
         if (onCut) {
           onCut({ cell: targetCell, tableRef, tabulatorInstance });
+          restoreFocus();
           return;
         }
         tableRef?.copyToClipboard?.();
@@ -263,6 +273,7 @@ export function cellContextMenu(
           bubbles: true,
         });
         tableRef?.element?.dispatchEvent?.(keyEvent);
+        restoreFocus();
       },
     });
   }
@@ -273,6 +284,7 @@ export function cellContextMenu(
       action: (e, cell) => {
         ensureRangeSelection(cell);
         tableRef?.copyToClipboard?.();
+        restoreFocus();
       },
     });
   }
@@ -287,6 +299,7 @@ export function cellContextMenu(
         } else {
           tableRef?.pasteFromClipboard?.();
         }
+        restoreFocus();
       },
     });
   }
@@ -299,6 +312,7 @@ export function cellContextMenu(
         ensureRangeSelection(targetCell);
         if (onClear) {
           onClear({ cell: targetCell, tableRef, tabulatorInstance });
+          restoreFocus();
           return;
         }
         const keyEvent = new KeyboardEvent("keydown", {
@@ -306,6 +320,7 @@ export function cellContextMenu(
           bubbles: true,
         });
         tableRef?.element?.dispatchEvent?.(keyEvent);
+        restoreFocus();
       },
     });
   }

@@ -1269,6 +1269,21 @@ export default {
       if (payload?.mode === "edit" && payload?.request_id) {
         this.pendingSavedMode = "edit";
         this.applyRequestEditorUpdate(payload);
+        const requestId = payload.request_id;
+        const existing = this.requestMetaById?.[requestId] || {};
+        const nextMeta = {
+          ...existing,
+          cost_unit: payload.cost_unit ?? existing.cost_unit ?? "",
+          description: payload.description ?? existing.description ?? "",
+          files: Array.isArray(payload.files) ? payload.files : existing.files
+        };
+        this.requestMetaById = {
+          ...this.requestMetaById,
+          [requestId]: nextMeta
+        };
+        if (this.activeRequestMeta && this.requestModalRequestId === requestId) {
+          this.activeRequestMeta = nextMeta;
+        }
         this.finishRequestEditorSync();
         return;
       }

@@ -124,6 +124,7 @@ export default {
       tableEachGroupsToggleState: [],
       lastGroupValues: [],
       tableColumnWidths: {},
+      lastFocusedCell: null,
       showErrorsWindow: false,
       errorsPopupContents: {
         errorsList: [],
@@ -672,6 +673,13 @@ export default {
           }
         });
 
+        this.tabulatorInstance.on("cellClick", (cell) => {
+          this.lastFocusedCell = cell;
+        });
+        this.tabulatorInstance.on("cellFocused", (cell) => {
+          this.lastFocusedCell = cell;
+        });
+
         this.tabulatorInstance.on("clipboardCopied", () => {
           if (this.tableOptions.fakeLoadingStart) {
             this.tableOptions.fakeLoadingStart();
@@ -679,6 +687,7 @@ export default {
           if (this.tableOptions.fakeLoadingStop) {
             this.tableOptions.fakeLoadingStop();
           }
+          this.restoreLastFocusedCell();
         });
 
         this.tabulatorInstance.on("clipboardPasted", () => {
@@ -691,6 +700,7 @@ export default {
           if (this.tableOptions.fakeLoadingStop) {
             this.tableOptions.fakeLoadingStop();
           }
+          this.restoreLastFocusedCell();
         });
 
         this.tabulatorInstance.on("columnResized", (column) => {
@@ -793,6 +803,7 @@ export default {
             this.tableOptions.fakeLoadingStop();
           }
         }
+        this.restoreLastFocusedCell();
       } catch (error) {
         this.tabulatorInstance?.pasteFromClipboard?.();
       }
@@ -1018,6 +1029,54 @@ export default {
       return this.tabulatorInstance;
     },
 
+    getFocusCandidateCell() {
+      const table = this.tabulatorInstance;
+      const ranges = table?.getRanges?.() || [];
+      const rangeCell = ranges[0]?.getCells?.()?.[0]?.[0] || null;
+      return this.lastFocusedCell || rangeCell || null;
+    },
+
+    restoreLastFocusedCell() {
+      const table = this.tabulatorInstance;
+      const cell = this.getFocusCandidateCell();
+      if (!table) return;
+      const tableEl =
+        table.element || this.getTabulatorElement?.() || null;
+      if (!cell) {
+        if (tableEl) {
+          if (!tableEl.hasAttribute("tabindex")) {
+            tableEl.setAttribute("tabindex", "-1");
+          }
+          try {
+            tableEl.focus({ preventScroll: true });
+          } catch (error) {
+            tableEl.focus();
+          }
+        }
+        return;
+      }
+      const el = cell.getElement?.();
+      if (el) {
+        if (!el.hasAttribute("tabindex")) {
+          el.setAttribute("tabindex", "-1");
+        }
+        try {
+          el.focus({ preventScroll: true });
+        } catch (error) {
+          el.focus();
+        }
+      }
+      if (typeof cell.select === "function") {
+        cell.select();
+      }
+      if (typeof table.addRange === "function") {
+        const ranges = table.getRanges?.() || [];
+        if (!ranges.length) {
+          table.addRange(cell, cell);
+        }
+      }
+    },
+
     handleKeyDown(event) {
       const isDeleteOrBackspace =
         event.key === "Delete" || event.key === "Backspace";
@@ -1025,6 +1084,8 @@ export default {
       const key = event.key?.toLowerCase?.();
       const isCtrl = event.ctrlKey || event.metaKey;
       const isCut = isCtrl && key === "x";
+      const isCopy = isCtrl && key === "c";
+      const isPaste = isCtrl && key === "v";
       const isPrintableKey =
         event.key.length === 1 &&
         !event.ctrlKey &&
@@ -1137,13 +1198,23 @@ export default {
         event.preventDefault();
         this.tabulatorInstance?.copyToClipboard?.();
         clearSelectedRange();
+        this.restoreLastFocusedCell();
         return;
+      }
+
+      if (isCopy) {
+        requestAnimationFrame(() => this.restoreLastFocusedCell());
+      }
+
+      if (isPaste) {
+        requestAnimationFrame(() => this.restoreLastFocusedCell());
       }
 
       if (isDeleteOrBackspace) {
         if (!rangeCells.length) return;
         clearSelectedRange();
         event.preventDefault();
+        this.restoreLastFocusedCell();
         return;
       }
       if (isPrintableKey) {
