@@ -3972,6 +3972,10 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 
+finsh request editor testing
+when i do ctrl+x ctrl+c or ctrl+v or use any right click context options like apply all clear cut copy paste, or i use buttons in requesteditors for any of the list editor cells, reset the dependent cells too, currently only the cell is updated, but dependent cells are not updated, for example if i change index type, indices are not reset, or if i change library protocol, read length and analysis type are not reset.
+when i do ctrl+x ctrl+c or ctrl+v or use any right click context options like apply all clear cut copy paste, or i use buttons in requesteditors for these, make sure that we focus on the current cell back, sometimes the focus is lost and i have to click on cell again (and after that i can use arrow keys, but with clicking i arrow keys dont work)
+when there is an error in an error popup, focus should be on ok button, so that i can press enter to close it, instead of using mouse to click ok button in request editor
 attachments shall be easier accessible. An attachment button shall show all attachments already uploaded and allow fast adding of them. Even more wonderful would be if the icon changes color if an attachment is there. This would help us in a way that we would spot immediately if user add attachments when creating the requests, instead of clicking multiple times.
 compose email for users
 question: i5 i7 Other Option, what to do if the index doest exist in any lists
