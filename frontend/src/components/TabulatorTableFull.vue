@@ -196,7 +196,7 @@ export default {
         this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
         const options = {
           data: this.rowData,
-          columns: this.sanitizeColumnDefs(this.columnDefs),
+          columns: this.columnDefs,
           layout: "fitColumns",
           columnDefaults: {
             headerSort: false,
@@ -453,6 +453,7 @@ export default {
           groupContextMenu: [],
           groupBy: this.tableGroupsConfig.groupBy || false,
           groupStartOpen: this.groupStartOpen,
+          debugInvalidOptions: false,
           ...this.tableOptions
         };
 
@@ -770,9 +771,7 @@ export default {
         this.buildClipboardValueLookup(this.columnDefs);
       this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
       this.tabulatorInstance.blockRedraw();
-      this.tabulatorInstance.setColumns(
-        this.sanitizeColumnDefs(this.columnDefs)
-      );
+      this.tabulatorInstance.setColumns(this.columnDefs);
       this.getTabulatorElement().classList.remove("no-group-by");
       this.showAllGroups();
       if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
@@ -809,21 +808,6 @@ export default {
       }
     },
 
-    sanitizeColumnDefs(columns = []) {
-      return columns.map((column) => {
-        const {
-          clipboardCopyValue,
-          pasteValueResolver,
-          defaultOnEmptyPaste,
-          preserveOnEmptyPaste,
-          ...rest
-        } = column || {};
-        if (Array.isArray(rest.columns)) {
-          rest.columns = this.sanitizeColumnDefs(rest.columns);
-        }
-        return rest;
-      });
-    },
     buildPasteDefaults(columns = []) {
       const map = {};
       const walk = (col) => {

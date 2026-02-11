@@ -210,6 +210,77 @@
       </div>
     </div>
   </div>
+
+  <div v-if="activeAction === 'attachments'" class="popup-overlay" :class="{ 'drag-over': isAttachmentsDragOver }"
+    tabindex="0" @keydown="handlePopupKeydown" @dragover.prevent="handleAttachmentsDragOver"
+    @dragenter.prevent="handleAttachmentsDragEnter" @dragleave.prevent="handleAttachmentsDragLeave"
+    @drop.prevent="handleAttachmentsDrop">
+    <div class="popup-container request-action-modal attachments-modal">
+      <div class="popup-header">
+        <div class="popup-title">
+          <img class="popup-title-icon" src="@/assets/icons/action_attachments.svg" alt="" />
+          <span>Attachments</span>
+        </div>
+        <button class="popup-close-button" type="button" @click="close">&times;</button>
+      </div>
+      <div class="popup-body attachments-body">
+        <div class="files-section">
+          <div class="files-header">
+            <div>
+              <span>Files</span>
+              <small>Upload request related documents.</small>
+            </div>
+            <button v-if="canEditAttachments" class="header-button ghost" type="button"
+              :disabled="attachmentsBusy" @click="triggerAttachmentsUpload">
+              <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+              <span>Add Files</span>
+            </button>
+            <input ref="attachmentsFileInput" type="file" multiple @change="handleAttachmentsSelection"
+              style="display: none" />
+          </div>
+          <div class="files-table-wrapper">
+            <table class="files-table" :class="{ 'files-table-empty': !attachmentsFiles.length }">
+              <thead>
+                <tr>
+                  <th style="width: 60%">Name</th>
+                  <th style="width: 14%">Size</th>
+                  <th style="width: 26%"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="!attachmentsFiles.length">
+                  <td colspan="3" class="empty-cell">No files uploaded yet.</td>
+                </tr>
+                <tr v-for="file in attachmentsFiles" :key="file.id">
+                  <td class="file-name-cell">
+                    <span class="file-name-text" :title="file.name">{{ file.name }}</span>
+                  </td>
+                  <td class="file-size-cell" :title="formatFileSize(file.size)">
+                    {{ formatFileSize(file.size) }}
+                  </td>
+                  <td class="actions-cell">
+                    <button type="button" class="icon-action"
+                      :title="file.path ? `Download ${file.name}` : 'Download unavailable'" :disabled="!file.path"
+                      @click="downloadAttachment(file)">
+                      <font-awesome-icon icon="fa-solid fa-download" />
+                    </button>
+                    <button v-if="canEditAttachments" type="button" class="icon-action danger"
+                      :title="`Remove ${file.name}`" :disabled="attachmentsBusy" @click="removeAttachment(file)">
+                      <font-awesome-icon icon="fa-solid fa-xmark" />
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="popup-footer">
+        <button ref="defaultAttachmentsButton" class="popup-button yes-button" type="button"
+          :disabled="attachmentsBusy" @click="close">Close</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -271,7 +342,16 @@ export default {
       },
       emailBusy: false,
       approvalBusy: false,
-      deleteBusy: false
+      deleteBusy: false,
+      attachmentsFiles: [],
+      attachmentsFileIds: [],
+      attachmentsBusy: false,
+      isAttachmentsDragOver: false,
+      attachmentsRequestDetails: {
+        cost_unit: null,
+        description: ""
+      },
+      attachmentsRecords: []
     };
   },
   computed: {
@@ -301,7 +381,17 @@ export default {
     },
     canSaveUserPath() {
       return Boolean(this.userPathForm.name && this.userPathForm.value);
+    },
+    canEditAttachments() {
+      const canEdit = this.requestContext?.canEditRequest;
+      return canEdit === undefined ? true : Boolean(canEdit);
     }
+  },
+  mounted() {
+    document.addEventListener("keydown", this.handleGlobalKeydown);
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.handleGlobalKeydown);
   },
   watch: {
     activeAction(newVal) {
@@ -320,12 +410,16 @@ export default {
         this.approvalForm.message = "";
         this.approvalForm.includeRecords = true;
       }
+      if (newVal === "attachments") {
+        this.loadAttachments();
+      }
 
       this.$nextTick(() => {
         const focusMap = {
           uploadSigned: "defaultUploadButton",
           filePaths: "defaultFilepathsButton",
-          deleteRequest: "defaultDeleteButton"
+          deleteRequest: "defaultDeleteButton",
+          attachments: "defaultAttachmentsButton"
         };
         const refName = focusMap[newVal];
         if (refName && this.$refs[refName]?.focus) {
@@ -343,6 +437,12 @@ export default {
     }
   },
   methods: {
+    handleGlobalKeydown(event) {
+      if (!this.activeAction) return;
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      this.close();
+    },
     handlePopupKeydown(event) {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -381,6 +481,12 @@ export default {
       this.emailBusy = false;
       this.approvalBusy = false;
       this.deleteBusy = false;
+      this.attachmentsFiles = [];
+      this.attachmentsFileIds = [];
+      this.attachmentsBusy = false;
+      this.isAttachmentsDragOver = false;
+      this.attachmentsRequestDetails = { cost_unit: null, description: "" };
+      this.attachmentsRecords = [];
       if (action === "filePaths") {
         this.selectedOS = this.detectOS(navigator.userAgent);
       }
@@ -656,6 +762,284 @@ export default {
       } finally {
         this.deleteBusy = false;
       }
+    },
+    formatFileSize(size) {
+      if (size === undefined || size === null) return "-";
+      const value = Number(size);
+      if (Number.isNaN(value)) return "-";
+      if (value >= 1024 * 1024) {
+        return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+      }
+      if (value >= 1024) {
+        return `${(value / 1024).toFixed(1)} KB`;
+      }
+      return `${value} B`;
+    },
+    async loadAttachments() {
+      if (!this.requestContext?.id) return;
+      const meta = this.requestContext?.meta || null;
+      const records = Array.isArray(this.requestContext?.records)
+        ? this.requestContext.records
+        : [];
+
+      if (meta) {
+        const filesList = Array.isArray(meta?.files) ? meta.files : [];
+        this.attachmentsFiles = filesList.map((file) => ({
+          id: file?.id ?? file?.pk,
+          name: file?.name,
+          size: file?.size,
+          path: file?.path
+        }));
+        this.attachmentsFileIds = this.attachmentsFiles
+          .map((file) => file?.id)
+          .filter((id) => id !== undefined && id !== null);
+
+        this.attachmentsRequestDetails = {
+          cost_unit: meta?.cost_unit ?? null,
+          description: meta?.description ?? ""
+        };
+      }
+
+      if (records.length) {
+        this.attachmentsRecords = records
+          .filter((record) => record?.pk && record?.record_type)
+          .map((record) => ({
+            pk: record.pk,
+            record_type: record.record_type
+          }));
+      }
+
+      const needsRequest =
+        !meta ||
+        this.attachmentsRequestDetails.cost_unit === null ||
+        this.attachmentsRequestDetails.description === "";
+      const needsRecords = !this.attachmentsRecords.length;
+
+      if (!needsRequest && !needsRecords) {
+        return;
+      }
+
+      this.attachmentsBusy = true;
+      try {
+        const requestId = this.requestContext.id;
+        const [requestRes, recordsRes] = await Promise.allSettled([
+          needsRequest
+            ? axiosRef.get(`${urlStringStart}/api/requests/${requestId}/`)
+            : Promise.resolve({ data: meta }),
+          needsRecords
+            ? axiosRef.get(`${urlStringStart}/api/requests/${requestId}/get_records/`)
+            : Promise.resolve({ data: records })
+        ]);
+
+        const requestData =
+          requestRes.status === "fulfilled" ? requestRes.value?.data || {} : {};
+        if (needsRequest) {
+          const filesList = Array.isArray(requestData?.files)
+            ? requestData.files
+            : [];
+          this.attachmentsFiles = filesList.map((file) => ({
+            id: file?.id ?? file?.pk,
+            name: file?.name,
+            size: file?.size,
+            path: file?.path
+          }));
+          this.attachmentsFileIds = this.attachmentsFiles
+            .map((file) => file?.id)
+            .filter((id) => id !== undefined && id !== null);
+          this.attachmentsRequestDetails = {
+            cost_unit: requestData?.cost_unit ?? null,
+            description: requestData?.description ?? ""
+          };
+        }
+
+        if (needsRecords) {
+          const recordsData =
+            recordsRes.status === "fulfilled" ? recordsRes.value?.data || [] : [];
+          this.attachmentsRecords = Array.isArray(recordsData)
+            ? recordsData
+              .filter((record) => record?.pk && record?.record_type)
+              .map((record) => ({
+                pk: record.pk,
+                record_type: record.record_type
+              }))
+            : [];
+        }
+      } catch (error) {
+        handleError(error);
+      } finally {
+        this.attachmentsBusy = false;
+      }
+    },
+    triggerAttachmentsUpload() {
+      this.$refs.attachmentsFileInput?.click?.();
+    },
+    async handleAttachmentsSelection(event) {
+      const files = Array.from(event.target.files || []);
+      try {
+        await this.uploadAttachments(files);
+      } catch (error) {
+        handleError(error);
+      } finally {
+        if (event?.target) {
+          event.target.value = "";
+        }
+      }
+    },
+    handleAttachmentsDragOver() {
+      if (!this.canEditAttachments) {
+        this.isAttachmentsDragOver = false;
+        return;
+      }
+      this.isAttachmentsDragOver = true;
+    },
+    handleAttachmentsDragEnter() {
+      if (!this.canEditAttachments) {
+        this.isAttachmentsDragOver = false;
+        return;
+      }
+      this.isAttachmentsDragOver = true;
+    },
+    handleAttachmentsDragLeave(event) {
+      if (!event.currentTarget.contains(event.relatedTarget)) {
+        this.isAttachmentsDragOver = false;
+      }
+    },
+    handleAttachmentsDrop(event) {
+      this.isAttachmentsDragOver = false;
+      if (!this.canEditAttachments) {
+        showNotification("You lack permission to upload files.", "warning");
+        return;
+      }
+      const files = Array.from(event.dataTransfer?.files || []);
+      if (!files.length) {
+        showNotification("No files selected.", "warning");
+        return;
+      }
+      this.uploadAttachments(files);
+    },
+    async uploadAttachments(files = []) {
+      if (!files.length) {
+        showNotification("No files selected.", "warning");
+        return;
+      }
+      const formData = new FormData();
+      files.forEach((file) => formData.append("files", file));
+      try {
+        this.attachmentsBusy = true;
+        const response = await axiosRef.post(
+          `${urlStringStart}/api/requests/upload_files/`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        if (response?.data?.success) {
+          const ids = response.data.fileIds || [];
+          this.attachmentsFileIds = [...this.attachmentsFileIds, ...ids];
+          await this.fetchUploadedFilesDetails();
+          await this.saveAttachmentsToRequest();
+          showNotification("Files uploaded successfully.", "success");
+        } else {
+          showNotification("File upload failed.", "error");
+        }
+      } catch (error) {
+        handleError(error);
+      } finally {
+        this.attachmentsBusy = false;
+      }
+    },
+    async fetchUploadedFilesDetails() {
+      if (!this.attachmentsFileIds.length) {
+        this.attachmentsFiles = [];
+        return;
+      }
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/requests/get_files_after_upload/`,
+          {
+            params: {
+              file_ids: JSON.stringify(this.attachmentsFileIds)
+            }
+          }
+        );
+        if (response?.data?.success) {
+          const data = response.data.data || [];
+          this.attachmentsFiles = data.map((file) => ({
+            id: file?.id,
+            name: file?.name,
+            size: file?.size,
+            path: file?.path
+          }));
+        }
+      } catch (error) {
+        handleError(error);
+      }
+    },
+    removeAttachment(file) {
+      if (!file?.id) return;
+      if (!this.canEditAttachments) return;
+      this.attachmentsFileIds = this.attachmentsFileIds.filter(
+        (id) => id !== file.id
+      );
+      this.attachmentsFiles = this.attachmentsFiles.filter(
+        (entry) => entry.id !== file.id
+      );
+      this.saveAttachmentsToRequest();
+    },
+    async saveAttachmentsToRequest() {
+      if (!this.requestContext?.id) return;
+      const requestId = this.requestContext.id;
+      const payload = {
+        cost_unit: this.attachmentsRequestDetails?.cost_unit ?? null,
+        description: (this.attachmentsRequestDetails?.description || "").trim(),
+        records: this.attachmentsRecords,
+        files: this.attachmentsFileIds
+      };
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(payload));
+      try {
+        this.attachmentsBusy = true;
+        const response = await axiosRef.post(
+          `${urlStringStart}/api/requests/${requestId}/edit/`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        if (response?.data?.success) {
+          this.$emit("refresh");
+        } else {
+          showNotification("Request update failed.", "error");
+        }
+      } catch (error) {
+        handleError(error);
+      } finally {
+        this.attachmentsBusy = false;
+      }
+    },
+    downloadAttachment(file) {
+      if (!file?.path) {
+        showNotification("Download link unavailable for this file.", "warning");
+        return;
+      }
+      const path = String(file.path || "");
+      const url = path.startsWith("http") ? path : `${urlStringStart}${path}`;
+      axiosRef
+        .get(url, { responseType: "blob" })
+        .then((response) => {
+          const blob = response?.data;
+          if (!blob || blob.size === 0) {
+            showNotification("Downloaded file is empty.", "warning");
+            return;
+          }
+          const objectUrl = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = file.name || "request-file";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(objectUrl);
+        })
+        .catch((error) => {
+          handleError(error);
+        });
     }
   }
 };
@@ -664,6 +1048,153 @@ export default {
 <style scoped>
 .request-action-modal {
   overflow: hidden;
+}
+
+.popup-overlay.drag-over::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 118, 110, 0.08);
+  border: 2px dashed #0f766e;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.request-action-modal.attachments-modal {
+  width: min(760px, 92vw);
+  height: min(520px, 90vh);
+  display: flex;
+  flex-direction: column;
+}
+
+.attachments-body {
+  padding: 16px;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.files-section {
+  border: 1px solid #d0d0d0;
+  background: #f6f8fa;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.files-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.files-header small {
+  display: block;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.files-table-wrapper {
+  width: 100%;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 8px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 12px;
+}
+
+.files-table.files-table-empty {
+  height: 100%;
+}
+
+.files-table th,
+.files-table td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+
+.files-table th {
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.files-table .empty-cell {
+  text-align: center;
+  color: #7b7f89;
+}
+
+.files-table td.actions-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.files-table td.actions-cell button+button {
+  margin-left: 4px;
+}
+
+.file-name-cell {
+  max-width: 220px;
+  display: flex;
+  align-items: center;
+}
+
+.file-name-text {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size-cell {
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon-action {
+  border: none;
+  background: #e6eaef;
+  color: #13415b;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon-action.danger {
+  background: #f3d6d6;
+  color: #a3272b;
 }
 
 .hidden-input {

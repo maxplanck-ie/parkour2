@@ -118,6 +118,7 @@ export default {
           groupContextMenu: [],
           groupBy: this.tableGroupsConfig.groupBy || false,
           groupStartOpen: this.groupStartOpen,
+          debugInvalidOptions: false,
 
           ...this.tableOptions
         };

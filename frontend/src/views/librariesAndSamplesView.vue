@@ -496,12 +496,15 @@ export default {
           const allowDelete = meta ? !meta.restrict_permissions : false;
           const canDownloadUpload =
             meta ? meta.deep_seq_request_path === "" : false;
+          const hasAttachments =
+            Array.isArray(meta?.files) && meta.files.length > 0;
 
           return librariesAndSamplesGroupHeader(value, count, totalDepth, {
             showStaffActions: this.isStaffUser,
             showSolicitApproval: requiresApproval && this.paperlessApproval,
             allowDelete,
             showApprovalTag: requiresApproval && this.paperlessApproval,
+            hasAttachments,
             canDownloadRequestForm: canDownloadUpload,
             canUploadSignedRequest: canDownloadUpload
           });
@@ -1471,6 +1474,25 @@ export default {
         case "viewRequest":
           this.openEditRequestModal(requestId);
           break;
+        case "attachments": {
+          const meta = await this.fetchRequestMeta(requestId);
+          const canEditRequest = this.isStaffUser || !meta?.restrict_permissions;
+          const records = groupRows
+            .map((row) => row.getData?.() || {})
+            .filter((row) => row?.pk && row?.record_type)
+            .map((row) => ({
+              pk: row.pk,
+              record_type: row.record_type
+            }));
+          this.openRequestActionModal("attachments", {
+            id: requestId,
+            name: requestName,
+            canEditRequest,
+            meta,
+            records
+          });
+          break;
+        }
         case "deleteRequest":
           {
             const meta = await this.fetchRequestMeta(requestId);

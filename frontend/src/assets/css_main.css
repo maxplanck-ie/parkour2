@@ -604,6 +604,7 @@ input[type="radio"]:checked::after {
   height: 24px;
 }
 
+
 .group-action-separator {
   display: inline-block;
   width: 1px;

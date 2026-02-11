@@ -64,10 +64,19 @@ class RequestSerializer(ModelSerializer):
         )
 
     def get_files(self, obj):
+        def safe_file_size(file_field):
+            if not file_field:
+                return None
+            try:
+                return file_field.size
+            except (OSError, ValueError):
+                return None
+
         files = [
             {
                 "pk": file.pk,
                 "name": file.name.split("/")[-1],
+                "size": safe_file_size(file.file),
                 "path": settings.MEDIA_URL + file.file.name,
             }
             for file in obj.files.all()

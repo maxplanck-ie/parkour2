@@ -11,6 +11,8 @@ import iconFilePaths from "../assets/icons/action_view_file_paths.svg";
 import iconComposeEmail from "../assets/icons/action_compose_email.svg";
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import iconAttachmentsAvailable from "../assets/icons/action_attachments_available.svg";
+import iconAttachmentsUnavailable from "../assets/icons/action_attachments_unavailable.svg";
 
 const sortedStatusEntries = Object.entries(statusMap).sort(
   ([keyA], [keyB]) => Number(keyA) - Number(keyB)
@@ -91,6 +93,7 @@ export function librariesAndSamplesGroupHeader(
     showSolicitApproval = false,
     allowDelete = true,
     showApprovalTag = false,
+    hasAttachments = false
   } = options;
 
   const staffActions = showStaffActions
@@ -128,6 +131,7 @@ export function librariesAndSamplesGroupHeader(
     `
     : "";
 
+
   return `
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -146,6 +150,9 @@ export function librariesAndSamplesGroupHeader(
       ${deleteAction}
       ${approvalAction}
       ${staffActions}
+      <div title="Attachments" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'attachments')">
+        <img class="group-action-icon-img icon-24" src="${hasAttachments ? iconAttachmentsAvailable : iconAttachmentsUnavailable}" alt="Attachments" />
+      </div>
       ${showStaffActions ? '<span class="group-action-separator"></span>' : ''}
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
