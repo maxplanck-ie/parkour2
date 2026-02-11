@@ -1475,8 +1475,9 @@ export default {
           this.openEditRequestModal(requestId);
           break;
         case "attachments": {
-          const meta = await this.fetchRequestMeta(requestId);
-          const canEditRequest = this.isStaffUser || !meta?.restrict_permissions;
+          const cachedMeta = this.requestMetaById?.[requestId] || null;
+          const canEditRequest =
+            this.isStaffUser || !cachedMeta?.restrict_permissions;
           const records = groupRows
             .map((row) => row.getData?.() || {})
             .filter((row) => row?.pk && row?.record_type)
@@ -1488,9 +1489,26 @@ export default {
             id: requestId,
             name: requestName,
             canEditRequest,
-            meta,
+            meta: cachedMeta,
             records
           });
+          if (!cachedMeta) {
+            this.fetchRequestMeta(requestId).then((meta) => {
+              if (!meta) return;
+              if (
+                this.activeRequestAction !== "attachments" ||
+                this.activeRequestContext?.id !== requestId
+              ) {
+                return;
+              }
+              this.activeRequestContext = {
+                ...this.activeRequestContext,
+                meta,
+                canEditRequest:
+                  this.isStaffUser || !meta?.restrict_permissions
+              };
+            });
+          }
           break;
         }
         case "deleteRequest":
