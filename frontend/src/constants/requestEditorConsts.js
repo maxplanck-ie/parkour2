@@ -112,6 +112,9 @@ const createListClipboardValueGetter =
   (options = [], placeholder = SELECT_PLACEHOLDER) =>
   (cell) => {
     const value = cell?.getValue?.();
+    if (value === "" || value === undefined || value === null) {
+      return "";
+    }
     const label = findOptionLabel(options, value);
     if (label !== null && label !== undefined) {
       return String(label);
@@ -122,12 +125,15 @@ const createListClipboardValueGetter =
 const createDynamicListClipboardValueGetter =
   (getOptionsFn, getRowData, placeholder = SELECT_PLACEHOLDER) =>
   (cell) => {
+    const rawValue = cell.getValue();
+    if (rawValue === "" || rawValue === undefined || rawValue === null) {
+      return "";
+    }
     const options = getOptionsFn(getRowData(cell));
     const label = findOptionLabel(options, cell.getValue());
     if (label !== null && label !== undefined) {
       return String(label);
     }
-    const rawValue = cell.getValue();
     return formatDisplayValue(rawValue, placeholder);
   };
 
@@ -216,6 +222,7 @@ function checkboxColumn(getTabulatorInstance, onSelectionChange) {
     width: 30,
     minWidth: 30,
     cssClass: "checkbox-column right-border",
+    clipboardCopyValue: () => "",
     contextMenu: () =>
       cellContextMenu(false, false, false, getTabulatorInstance),
     cellClick: function (e, cell) {

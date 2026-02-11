@@ -79,6 +79,59 @@
             </button>
           </div>
           <div class="header-actions">
+            <div class="shortcut-help">
+              <button class="help-button shortcut-help-button" type="button" @click="toggleShortcutHelp"
+                title="Keyboard shortcuts" :aria-expanded="showShortcutHelp.toString()"
+                aria-controls="shortcut-help-panel" aria-haspopup="dialog">
+                <font-awesome-icon icon="fa-solid fa-keyboard" />
+              </button>
+              <div v-if="showShortcutHelp" id="shortcut-help-panel" class="shortcut-help-panel" role="dialog"
+                aria-label="Keyboard shortcuts">
+                <div class="shortcut-help-title">Keyboard Shortcuts</div>
+                <ul class="shortcut-help-list">
+                  <li>
+                    <span>Select all</span>
+                    <span class="shortcut-keys">
+                      <kbd>Ctrl</kbd>
+                      <span class="shortcut-plus">+</span>
+                      <kbd>A</kbd>
+                    </span>
+                  </li>
+                  <li>
+                    <span>Copy</span>
+                    <span class="shortcut-keys">
+                      <kbd>Ctrl</kbd>
+                      <span class="shortcut-plus">+</span>
+                      <kbd>C</kbd>
+                    </span>
+                  </li>
+                  <li>
+                    <span>Paste</span>
+                    <span class="shortcut-keys">
+                      <kbd>Ctrl</kbd>
+                      <span class="shortcut-plus">+</span>
+                      <kbd>V</kbd>
+                    </span>
+                  </li>
+                  <li>
+                    <span>Cut</span>
+                    <span class="shortcut-keys">
+                      <kbd>Ctrl</kbd>
+                      <span class="shortcut-plus">+</span>
+                      <kbd>X</kbd>
+                    </span>
+                  </li>
+                  <li>
+                    <span>Clear</span>
+                    <span class="shortcut-keys">
+                      <kbd>Del</kbd>
+                      <span class="shortcut-plus">/</span>
+                      <kbd>Backspace</kbd>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <button class="help-button" type="button" @click="openHelpPage" title="Open MAX page on Intranet">
               ?
             </button>
@@ -439,6 +492,7 @@ export default {
       showDeleteConfirm: false,
       showCloseConfirm: false,
       showFileDeleteConfirm: false,
+      showShortcutHelp: false,
       pendingToggleMode: null,
       existingRecords: [],
       isDragOver: false,
@@ -572,10 +626,12 @@ export default {
       this.schedulePrepareRequestEditorModal();
     }
     document.addEventListener("keydown", this.handleKeyDown);
+    document.addEventListener("click", this.handleShortcutHelpOutsideClick);
   },
   beforeDestroy() {
     this.unbindRangeSelectionListeners();
     document.removeEventListener("keydown", this.handleKeyDown);
+    document.removeEventListener("click", this.handleShortcutHelpOutsideClick);
   },
   computed: {
     isEditMode() {
@@ -717,6 +773,7 @@ export default {
         showPasteErrorRowNumber: true,
         editTriggerEvent: vm.canEditRequest ? "dblclick" : "manual",
         clipboard: vm.canEditRequest,
+        enableSelectAllRange: true,
         rowFormatter: (row) => vm.applyRowStyling(row),
         rowSelectionChanged: () => handleSelection(),
         dataChanged: () => {
@@ -941,6 +998,15 @@ export default {
     toggleFormPanel() {
       this.isFormPanelCollapsed = !this.isFormPanelCollapsed;
     },
+    toggleShortcutHelp() {
+      this.showShortcutHelp = !this.showShortcutHelp;
+    },
+    handleShortcutHelpOutsideClick(event) {
+      if (!this.showShortcutHelp) return;
+      const container = this.$el?.querySelector?.(".shortcut-help");
+      if (container && container.contains(event.target)) return;
+      this.showShortcutHelp = false;
+    },
     openHelpPage() {
       window.open(
         "https://max.mpg.de/sites/mpi-ie/Facilities/Deep-Sequencing-Facility/Pages/Parkour-Help.aspx",
@@ -1161,6 +1227,10 @@ export default {
     },
     handleKeyDown(event) {
       if (!this.show) return;
+      if (this.showShortcutHelp && event.key === "Escape") {
+        this.showShortcutHelp = false;
+        return;
+      }
       const key = event.key?.toLowerCase?.();
       const isCtrl = event.ctrlKey || event.metaKey;
       if (!isCtrl || key !== "x") return;
@@ -3473,6 +3543,96 @@ export default {
   color: #0f5c84;
 }
 
+.shortcut-help {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.shortcut-help-button {
+  font-size: 14px;
+}
+
+.shortcut-help-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #d7dee3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.16);
+  z-index: 6;
+}
+
+.shortcut-help-panel::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 12px;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-left: 1px solid #d7dee3;
+  border-top: 1px solid #d7dee3;
+  transform: rotate(45deg);
+}
+
+.shortcut-help-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #13415b;
+  margin-bottom: 8px;
+}
+
+.shortcut-help-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.shortcut-help-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.shortcut-keys {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 88px;
+}
+
+.shortcut-plus {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0 2px;
+}
+
+.shortcut-help-list kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  background: #f3f6f7;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1f2937;
+  box-shadow: inset 0 -1px 0 #e5e7eb;
+}
+
 .request-editor-body-left {
   grid-column: 1;
   grid-row: 2;
@@ -3973,12 +4133,10 @@ refactor/simplify all the files
 unit test all the pages
 
 finsh request editor testing
-keyboard shortcuts icon + ctrl+a
 when i do ctrl+x ctrl+c or ctrl+v or use any right click context options like apply all clear cut copy paste, or i use buttons in requesteditors for any of the list editor cells, reset the dependent cells too, currently only the cell is updated, but dependent cells are not updated, for example if i change index type, indices are not reset, or if i change library protocol, read length and analysis type are not reset.
 when i do ctrl+x ctrl+c or ctrl+v or use any right click context options like apply all clear cut copy paste, or i use buttons in requesteditors for these, make sure that we focus on the current cell back, sometimes the focus is lost and i have to click on cell again (and after that i can use arrow keys, but with clicking i arrow keys dont work)
 when there is an error in an error popup, focus should be on ok button, so that i can press enter to close it, instead of using mouse to click ok button in request editor
 attachments shall be easier accessible. An attachment button shall show all attachments already uploaded and allow fast adding of them. Even more wonderful would be if the icon changes color if an attachment is there. This would help us in a way that we would spot immediately if user add attachments when creating the requests, instead of clicking multiple times.
 compose email for users
-question: i5 i7 Other Option, what to do if the index doest exist in any lists
-test: name size in files appear different in Ulrike's computer (for empty table)
+i5 i7 Other Option, what to do if the index doest exist in any lists
 -->

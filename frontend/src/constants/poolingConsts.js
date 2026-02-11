@@ -85,6 +85,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       width: 30,
       minWidth: 30,
       cssClass: "checkbox-column right-border",
+      clipboardCopyValue: () => "",
       contextMenu: () =>
         cellContextMenu(false, false, false, getTabulatorInstance),
       cellClick: function (e, cell) {

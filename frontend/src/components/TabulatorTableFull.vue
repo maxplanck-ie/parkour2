@@ -1086,6 +1086,7 @@ export default {
       const isCut = isCtrl && key === "x";
       const isCopy = isCtrl && key === "c";
       const isPaste = isCtrl && key === "v";
+      const isSelectAll = isCtrl && key === "a";
       const isPrintableKey =
         event.key.length === 1 &&
         !event.ctrlKey &&
@@ -1100,6 +1101,29 @@ export default {
         (document.activeElement.tagName === "INPUT" ||
           document.activeElement.tagName === "TEXTAREA")
       ) {
+        return;
+      }
+
+      if (isSelectAll) {
+        if (!this.tableOptions?.enableSelectAllRange) {
+          return;
+        }
+        const rows = this.tabulatorInstance?.getRows?.() || [];
+        const columns = this.tabulatorInstance?.getColumns?.() || [];
+        const visibleColumns = columns.filter((col) => col?._column?.visible);
+        const firstRow = rows[0];
+        const lastRow = rows[rows.length - 1];
+        const firstCol = visibleColumns[0];
+        const lastCol = visibleColumns[visibleColumns.length - 1];
+        if (firstRow && lastRow && firstCol && lastCol) {
+          const startCell = firstRow.getCell(firstCol.getField());
+          const endCell = lastRow.getCell(lastCol.getField());
+          if (startCell && endCell) {
+            event.preventDefault();
+            this.tabulatorInstance?.addRange?.(startCell, endCell);
+            this.restoreLastFocusedCell();
+          }
+        }
         return;
       }
       const selectedRanges = this.tabulatorInstance.getRanges?.() || [];

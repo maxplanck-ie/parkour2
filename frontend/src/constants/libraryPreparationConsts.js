@@ -59,6 +59,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 30,
       minWidth: 30,
       cssClass: "checkbox-column right-border",
+      clipboardCopyValue: () => "",
       contextMenu: () =>
         cellContextMenu(false, false, false, getTabulatorInstance, {
           blockActionsOnDisabledCells: true,
