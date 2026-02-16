@@ -42,7 +42,7 @@ function createValuesMap(options = []) {
     const label =
       option?.label ?? option?.name ?? option?.text ?? option?.value ?? "";
     if (key !== undefined && key !== null) {
-      values.push({ label: String(label), value: String(key) });
+      values.push({ label: String(label), value: key });
     }
   });
   return values;

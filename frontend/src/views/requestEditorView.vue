@@ -792,11 +792,16 @@ export default {
         },
         handleRangeCleared: (payload = []) => {
           if (!this.isEditMode || !Array.isArray(payload)) return;
+          const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
           payload.forEach((entry) => {
             const rowData = entry?.rowData || {};
             const fields = entry?.fields || [];
             if (!rowData?.tempId || !rowData?.pk || !fields.length) return;
             this.markDirtyFields(rowData.tempId, fields);
+            const rowComp = table?.getRow?.(rowData.tempId) || null;
+            if (rowComp) {
+              this.applyDependentResetsForChangedFields(rowComp, fields);
+            }
           });
           this.$nextTick(() => this.revalidateDraftRows());
         },
@@ -1128,6 +1133,7 @@ export default {
     applyToAllFromCell(cell, { tableRef, tabulatorInstance } = {}) {
       if (!cell) return;
       this.fakeLoadingStart();
+      const changedField = cell.getField?.() || null;
       const table =
         tabulatorInstance?.getTable?.() ||
         tabulatorInstance?.tabulatorInstance ||
@@ -1140,15 +1146,44 @@ export default {
         this.fakeLoadingStop();
         return;
       }
+      const rows = table?.getRows?.() || [];
+      const previousValueByRowId = new Map();
+      if (changedField) {
+        rows.forEach((rowComp) => {
+          const rowData = rowComp?.getData?.() || {};
+          const rowKey = rowData?.tempId ?? rowData?.pk ?? rowComp;
+          previousValueByRowId.set(rowKey, rowData?.[changedField]);
+        });
+      }
       applyValueToAllRows(cell, () => table, {
         blockActionsOnDisabledCells: true
       });
+      const indexTypesToFetch = new Set();
+      if (changedField) {
+        rows.forEach((rowComp) => {
+          const rowData = rowComp?.getData?.() || {};
+          const rowKey = rowData?.tempId ?? rowData?.pk ?? rowComp;
+          const before = previousValueByRowId.get(rowKey);
+          const after = rowData?.[changedField];
+          if (before === after) return;
+          const resetResult = this.applyDependentResetsForChangedFields(rowComp, [changedField]);
+          if (resetResult?.indexTypeId) {
+            indexTypesToFetch.add(String(resetResult.indexTypeId));
+          }
+        });
+      }
+      if (this.requestEditorMode === "library" && indexTypesToFetch.size) {
+        indexTypesToFetch.forEach((typeId) => {
+          this.fetchIndexOptionsForType(typeId);
+        });
+      }
+      rows.forEach((rowComp) => this.refreshRowFormatting(rowComp));
       this.handleApplyToAllIndexPairing(cell, table);
       this.$nextTick(() => {
         this.revalidateDraftRows();
         this.applyValidationStyling();
         this.fakeLoadingStop();
-        this.$refs.requestEditorDraftTableRef?.restoreLastFocusedCell?.();
+        this.restoreDraftTableFocus();
       });
     },
     handleApplyToAllFromContext(payload = {}) {
@@ -1478,6 +1513,13 @@ export default {
       const cell = table?.getRanges?.()?.[0]?.getCells?.()?.[0]?.[0];
       this.applyToAllFromCell(cell, { tabulatorInstance: table });
     },
+    restoreDraftTableFocus() {
+      const tableComponent = this.$refs.requestEditorDraftTableRef;
+      if (!tableComponent) return;
+      this.$nextTick(() => {
+        tableComponent.restoreLastFocusedCell?.();
+      });
+    },
 
     triggerTableCopy() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
@@ -1486,7 +1528,7 @@ export default {
         element.blur();
       }
       table?.copyToClipboard?.();
-      this.$refs.requestEditorDraftTableRef?.restoreLastFocusedCell?.();
+      this.restoreDraftTableFocus();
     },
     triggerTableCut() {
       if (!this.hasEditableRangeSelection || !this.canEditRequest) return;
@@ -1500,7 +1542,7 @@ export default {
         element.blur();
       }
       tableComponent?.triggerClipboardPaste?.();
-      tableComponent?.restoreLastFocusedCell?.();
+      this.restoreDraftTableFocus();
     },
     triggerTableClear() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
@@ -1510,7 +1552,7 @@ export default {
       }
       const keyEvent = new KeyboardEvent("keydown", { key: "Delete", bubbles: true });
       table?.element?.dispatchEvent?.(keyEvent);
-      this.$refs.requestEditorDraftTableRef?.restoreLastFocusedCell?.();
+      this.restoreDraftTableFocus();
     },
     updateRangeSelectionState() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
@@ -1753,36 +1795,127 @@ export default {
       this.selectedDraftRowIds = ids;
     },
     handleDraftBatchChanges(batchChanges = []) {
-      if (!this.isEditMode || !this.allowDirtyTracking || !Array.isArray(batchChanges)) {
+      if (!Array.isArray(batchChanges)) {
         return;
       }
       if (this.suppressNextDirtyBatch) {
         this.suppressNextDirtyBatch = false;
         return;
       }
-      const tableRows = this.getDraftTableRows() || [];
-      const rowByPk = new Map(
-        tableRows
-          .filter((row) => row?.pk)
-          .map((row) => [String(row.pk), row])
-      );
-      let hasDirtyUpdates = false;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+      const rowComponents = table?.getRows?.() || [];
+      const rowByTempId = new Map();
+      const rowByPk = new Map();
+      rowComponents.forEach((rowComp) => {
+        const rowData = rowComp?.getData?.() || {};
+        if (rowData?.tempId) {
+          rowByTempId.set(String(rowData.tempId), rowComp);
+        }
+        if (rowData?.pk !== undefined && rowData?.pk !== null) {
+          rowByPk.set(String(rowData.pk), rowComp);
+        }
+      });
+      let hasAnyUpdates = false;
+      const indexTypesToFetch = new Set();
       batchChanges.forEach((change) => {
-        const rowId =
-          change?.tempId ||
-          rowByPk.get(String(change?.pk ?? ""))?.tempId ||
-          null;
-        if (!rowId) return;
         const fields = Object.keys(change || {}).filter(
           (key) => !["pk", "record_type", "tempId"].includes(key)
         );
         if (!fields.length) return;
-        this.markDirtyFields(rowId, fields);
-        hasDirtyUpdates = true;
+        const rowComp =
+          (change?.tempId && rowByTempId.get(String(change.tempId))) ||
+          (change?.pk !== undefined && change?.pk !== null
+            ? rowByPk.get(String(change.pk))
+            : null) ||
+          null;
+        if (!rowComp) return;
+        const rowData = rowComp.getData?.() || {};
+        const rowId = rowData?.tempId || null;
+        if (this.isEditMode && this.allowDirtyTracking && rowId && rowData?.pk) {
+          this.markDirtyFields(rowId, fields);
+          hasAnyUpdates = true;
+        }
+        const resetResult = this.applyDependentResetsForChangedFields(rowComp, fields);
+        if (resetResult?.updated) {
+          hasAnyUpdates = true;
+        }
+        if (resetResult?.indexTypeId) {
+          indexTypesToFetch.add(String(resetResult.indexTypeId));
+        }
       });
-      if (hasDirtyUpdates) {
+      if (this.requestEditorMode === "library" && indexTypesToFetch.size) {
+        indexTypesToFetch.forEach((typeId) => {
+          this.fetchIndexOptionsForType(typeId);
+        });
+      }
+      if (hasAnyUpdates) {
         this.$nextTick(() => this.revalidateDraftRows());
       }
+    },
+    applyDependentResetsForChangedFields(rowComp, changedFields = []) {
+      if (!rowComp || !Array.isArray(changedFields) || !changedFields.length) {
+        return { updated: false, indexTypeId: null };
+      }
+      const rowData = rowComp.getData?.() || {};
+      const rowId = rowData?.tempId || null;
+      const normalizedFields = new Set(changedFields);
+      const updates = {};
+      const dependentFields = [];
+      let indexTypeId = null;
+      const assignIfChanged = (field, value) => {
+        if (rowData?.[field] !== value) {
+          updates[field] = value;
+          dependentFields.push(field);
+        }
+      };
+
+      if (this.requestEditorMode === "library") {
+        if (normalizedFields.has("index_type")) {
+          assignIfChanged("index_i7", "");
+          assignIfChanged("index_i5", "");
+          if (rowData?.index_type) {
+            indexTypeId = rowData.index_type;
+          }
+        }
+        if (normalizedFields.has("library_protocol")) {
+          assignIfChanged("library_type", "");
+        }
+      } else {
+        if (normalizedFields.has("nucleic_acid_type")) {
+          assignIfChanged("library_protocol", "");
+          assignIfChanged("library_type", "");
+          assignIfChanged("gmo", null);
+        }
+        if (normalizedFields.has("library_protocol")) {
+          assignIfChanged("library_type", "");
+        }
+      }
+
+      if (normalizedFields.has("measuring_unit")) {
+        const working = { ...rowData, ...updates };
+        this.applyMeasuringUnitSideEffects(working);
+        if (working.measured_value !== rowData.measured_value) {
+          updates.measured_value = working.measured_value;
+          dependentFields.push("measured_value");
+        }
+      } else if (
+        normalizedFields.has("measured_value") &&
+        rowData.measuring_unit === "Unknown" &&
+        rowData.measured_value !== -1
+      ) {
+        updates.measured_value = -1;
+        dependentFields.push("measured_value");
+      }
+
+      if (!Object.keys(updates).length) {
+        return { updated: false, indexTypeId };
+      }
+      rowComp.update({ ...rowData, ...updates });
+      this.refreshRowFormatting(rowComp);
+      if (this.isEditMode && this.allowDirtyTracking && rowId && rowData?.pk) {
+        this.markDirtyFields(rowId, dependentFields);
+      }
+      return { updated: true, indexTypeId };
     },
     markDirtyFields(rowId, fields = []) {
       if (!rowId) return;
@@ -4133,10 +4266,9 @@ refactor/simplify all the files
 unit test all the pages
 
 finsh request editor testing
-when i do ctrl+x ctrl+c or ctrl+v or use any right click context options like apply all clear cut copy paste, or i use buttons in requesteditors for any of the list editor cells, reset the dependent cells too, currently only the cell is updated, but dependent cells are not updated, for example if i change index type, indices are not reset, or if i change library protocol, read length and analysis type are not reset.
-when i do ctrl+x ctrl+c or ctrl+v or use any right click context options like apply all clear cut copy paste, or i use buttons in requesteditors for these, make sure that we focus on the current cell back, sometimes the focus is lost and i have to click on cell again (and after that i can use arrow keys, but with clicking i arrow keys dont work)
-when there is an error in an error popup, focus should be on ok button, so that i can press enter to close it, instead of using mouse to click ok button in request editor
-attachments shall be easier accessible. An attachment button shall show all attachments already uploaded and allow fast adding of them. Even more wonderful would be if the icon changes color if an attachment is there. This would help us in a way that we would spot immediately if user add attachments when creating the requests, instead of clicking multiple times.
-compose email for users
-i5 i7 Other Option, what to do if the index doest exist in any lists
+3 email tasks
+
+atcg copy paste validation
+then if indices dont belong to any index type show error
+test other option
 -->

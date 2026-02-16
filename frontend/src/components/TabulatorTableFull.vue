@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button class="popup-button" @click="showErrorsWindow = false">
+        <button ref="pasteErrorOkButton" class="popup-button" @click="showErrorsWindow = false">
           OK
         </button>
       </div>
@@ -125,6 +125,7 @@ export default {
       lastGroupValues: [],
       tableColumnWidths: {},
       lastFocusedCell: null,
+      lastFocusedCellRef: null,
       showErrorsWindow: false,
       errorsPopupContents: {
         errorsList: [],
@@ -149,10 +150,7 @@ export default {
     },
     showErrorsWindow(newVal) {
       if (newVal) {
-        this.$nextTick(() => {
-          const okButton = document.querySelector(".popup-button");
-          okButton.focus();
-        });
+        this.focusErrorsPopupOkButton();
       } else {
         document.getElementsByClassName("tabulator-range-selected")[0]?.click();
       }
@@ -191,6 +189,38 @@ export default {
     }
   },
   methods: {
+    focusErrorsPopupOkButton() {
+      this.$nextTick(() => {
+        this.$refs?.pasteErrorOkButton?.focus?.();
+      });
+    },
+
+    setLastFocusedCell(cell) {
+      this.lastFocusedCell = cell || null;
+      if (!cell) {
+        this.lastFocusedCellRef = null;
+        return;
+      }
+      const row = cell.getRow?.();
+      const rowData = row?.getData?.() || {};
+      const field = cell.getField?.() || null;
+      const rowKeyRaw =
+        rowData?.tempId ??
+        rowData?.pk ??
+        rowData?.id ??
+        rowData?.barcode ??
+        null;
+      const rowPositionRaw = row?.getPosition?.(true);
+      const rowPosition = Number.isFinite(rowPositionRaw)
+        ? rowPositionRaw
+        : null;
+      this.lastFocusedCellRef = {
+        field,
+        rowKey: rowKeyRaw === null || rowKeyRaw === undefined ? null : rowKeyRaw,
+        rowPosition
+      };
+    },
+
     initializeTable() {
       if (this.rowData && this.columnDefs) {
         this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
@@ -675,10 +705,13 @@ export default {
         });
 
         this.tabulatorInstance.on("cellClick", (cell) => {
-          this.lastFocusedCell = cell;
+          this.setLastFocusedCell(cell);
         });
         this.tabulatorInstance.on("cellFocused", (cell) => {
-          this.lastFocusedCell = cell;
+          this.setLastFocusedCell(cell);
+        });
+        this.tabulatorInstance.on("cellContext", (e, cell) => {
+          this.setLastFocusedCell(cell);
         });
 
         this.tabulatorInstance.on("clipboardCopied", () => {
@@ -801,6 +834,8 @@ export default {
           if (this.tableOptions.fakeLoadingStop) {
             this.tableOptions.fakeLoadingStop();
           }
+        } else {
+          this.focusErrorsPopupOkButton();
         }
         this.restoreLastFocusedCell();
       } catch (error) {
@@ -1017,30 +1052,61 @@ export default {
       const table = this.tabulatorInstance;
       const ranges = table?.getRanges?.() || [];
       const rangeCell = ranges[0]?.getCells?.()?.[0]?.[0] || null;
-      return this.lastFocusedCell || rangeCell || null;
+      const isCellUsable = (cell) => {
+        const el = cell?.getElement?.();
+        return Boolean(el && el.isConnected);
+      };
+      if (isCellUsable(this.lastFocusedCell)) {
+        return this.lastFocusedCell;
+      }
+      const ref = this.lastFocusedCellRef;
+      if (table && ref?.field) {
+        let row = null;
+        if (ref.rowKey !== null && ref.rowKey !== undefined) {
+          row = table.getRow?.(ref.rowKey) || null;
+        }
+        if (!row && Number.isFinite(ref.rowPosition)) {
+          row = table.getRowFromPosition?.(ref.rowPosition) || null;
+        }
+        const resolved = row?.getCell?.(ref.field) || null;
+        if (isCellUsable(resolved)) {
+          this.lastFocusedCell = resolved;
+          return resolved;
+        }
+      }
+      return rangeCell || this.lastFocusedCell || null;
     },
 
     restoreLastFocusedCell() {
       const table = this.tabulatorInstance;
-      const cell = this.getFocusCandidateCell();
       if (!table) return;
-      const tableEl =
-        table.element || this.getTabulatorElement?.() || null;
-      if (!cell) {
-        if (tableEl) {
-          if (!tableEl.hasAttribute("tabindex")) {
-            tableEl.setAttribute("tabindex", "-1");
-          }
-          try {
-            tableEl.focus({ preventScroll: true });
-          } catch (error) {
-            tableEl.focus();
-          }
-        }
+      if (this.showErrorsWindow) {
+        this.focusErrorsPopupOkButton();
         return;
       }
-      const el = cell.getElement?.();
-      if (el) {
+      const tableEl = table.element || this.getTabulatorElement?.() || null;
+      const focusTableElement = () => {
+        if (!tableEl) return;
+        if (!tableEl.hasAttribute("tabindex")) {
+          tableEl.setAttribute("tabindex", "-1");
+        }
+        try {
+          tableEl.focus({ preventScroll: true });
+        } catch (error) {
+          tableEl.focus();
+        }
+      };
+      const attemptRestore = () => {
+        const cell = this.getFocusCandidateCell();
+        if (!cell) {
+          focusTableElement();
+          return false;
+        }
+        const el = cell.getElement?.();
+        if (!el || !el.isConnected) {
+          focusTableElement();
+          return false;
+        }
         if (!el.hasAttribute("tabindex")) {
           el.setAttribute("tabindex", "-1");
         }
@@ -1049,15 +1115,24 @@ export default {
         } catch (error) {
           el.focus();
         }
-      }
-      if (typeof cell.select === "function") {
-        cell.select();
-      }
-      if (typeof table.addRange === "function") {
-        const ranges = table.getRanges?.() || [];
-        if (!ranges.length) {
-          table.addRange(cell, cell);
+        this.setLastFocusedCell(cell);
+        if (typeof cell.select === "function") {
+          cell.select();
         }
+        if (typeof table.addRange === "function") {
+          const ranges = table.getRanges?.() || [];
+          if (!ranges.length) {
+            table.addRange(cell, cell);
+          }
+        }
+        return true;
+      };
+
+      if (!attemptRestore()) {
+        requestAnimationFrame(() => {
+          attemptRestore();
+        });
+        return;
       }
     },
 
