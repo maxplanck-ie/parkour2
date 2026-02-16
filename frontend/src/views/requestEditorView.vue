@@ -1135,6 +1135,7 @@ export default {
       if (!cell) return;
       this.fakeLoadingStart();
       const changedField = cell.getField?.() || null;
+      const sourceValue = cell.getValue?.();
       const table =
         tabulatorInstance?.getTable?.() ||
         tabulatorInstance?.tabulatorInstance ||
@@ -1156,9 +1157,34 @@ export default {
           previousValueByRowId.set(rowKey, rowData?.[changedField]);
         });
       }
-      applyValueToAllRows(cell, () => table, {
-        blockActionsOnDisabledCells: true
-      });
+      const isIndexApplyAll =
+        this.requestEditorMode === "library" &&
+        (changedField === "index_i7" || changedField === "index_i5");
+      let skippedIncompatibleRows = 0;
+      if (isIndexApplyAll) {
+        rows.forEach((rowComp) => {
+          const targetCell = rowComp?.getCell?.(changedField);
+          if (!targetCell || !this.isEditableRangeCell(targetCell)) return;
+          const rowData = rowComp?.getData?.() || {};
+          const isFormatValid = this.isValidIndexSequence(sourceValue);
+          const isAllowedForType = this.isIndexValueAllowedForType(
+            changedField,
+            rowData,
+            sourceValue
+          );
+          if (!isFormatValid || !isAllowedForType) {
+            skippedIncompatibleRows += 1;
+            return;
+          }
+          if (rowData?.[changedField] !== sourceValue) {
+            rowComp.update({ ...rowData, [changedField]: sourceValue });
+          }
+        });
+      } else {
+        applyValueToAllRows(cell, () => table, {
+          blockActionsOnDisabledCells: true
+        });
+      }
       const indexTypesToFetch = new Set();
       if (changedField) {
         rows.forEach((rowComp) => {
@@ -1177,6 +1203,12 @@ export default {
         indexTypesToFetch.forEach((typeId) => {
           this.fetchIndexOptionsForType(typeId);
         });
+      }
+      if (isIndexApplyAll && skippedIncompatibleRows > 0) {
+        showNotification(
+          `${skippedIncompatibleRows} row(s) skipped: index is not valid for their selected Index Type. Use "Other" for custom indices.`,
+          "warning"
+        );
       }
       rows.forEach((rowComp) => this.refreshRowFormatting(rowComp));
       this.handleApplyToAllIndexPairing(cell, table);
@@ -2273,6 +2305,16 @@ export default {
         return;
       }
       if (field === "index_i7") {
+        if (!this.isValidIndexSequence(data.index_i7)) {
+          data.index_i7 = "";
+          row.update(data);
+          this.refreshRowFormatting(row);
+          showNotification(
+            "Only uppercase A/T/C/G indices with length 6, 8, 10, 12, or 24 are allowed.",
+            "warning"
+          );
+          return;
+        }
         if (!this.isIndexValueAllowedForType("index_i7", data, data.index_i7)) {
           data.index_i7 = "";
           row.update(data);
@@ -2295,6 +2337,16 @@ export default {
         }
       }
       if (field === "index_i5") {
+        if (!this.isValidIndexSequence(data.index_i5)) {
+          data.index_i5 = "";
+          row.update(data);
+          this.refreshRowFormatting(row);
+          showNotification(
+            "Only uppercase A/T/C/G indices with length 6, 8, 10, 12, or 24 are allowed.",
+            "warning"
+          );
+          return;
+        }
         if (!this.isIndexValueAllowedForType("index_i5", data, data.index_i5)) {
           data.index_i5 = "";
           row.update(data);
@@ -2390,6 +2442,13 @@ export default {
           : this.getLibraryIndexI7Options(rowData);
       const target = String(value);
       return options.some((option) => String(option?.value) === target);
+    },
+    isValidIndexSequence(value) {
+      if (value === null || value === undefined || value === "") return true;
+      const text = String(value);
+      const validPattern = /^[ATCG]{6,}$/;
+      const validLengths = new Set([6, 8, 10, 12, 24]);
+      return validPattern.test(text) && validLengths.has(text.length);
     },
     async fetchIndexOptionsForType(typeId, autoSelect = null) {
       if (!typeId) return;
@@ -4308,10 +4367,4 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 3 email tasks
-
-finsh request editor testing
-
-atcg copy paste validation
-then if indices dont belong to any index type show error
-test other option
 -->
