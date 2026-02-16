@@ -723,6 +723,7 @@ export default {
         getIndexReadsCount: (row) => this.getIndexReadsCount(row),
         getIndexI7Options: (row) => this.getLibraryIndexI7Options(row),
         getIndexI5Options: (row) => this.getLibraryIndexI5Options(row),
+        isOtherIndexType: (row) => this.isOtherIndexType(row),
         showBarcode: this.isEditMode
       };
 
@@ -2272,6 +2273,16 @@ export default {
         return;
       }
       if (field === "index_i7") {
+        if (!this.isIndexValueAllowedForType("index_i7", data, data.index_i7)) {
+          data.index_i7 = "";
+          row.update(data);
+          this.refreshRowFormatting(row);
+          showNotification(
+            'Index I7 does not belong to selected Index Type. Select "Other" Index Type for custom indices.',
+            "warning"
+          );
+          return;
+        }
         const reads = this.getIndexReadsCount(data);
         if (reads >= 2) {
           const matched = this.tryAutoSelectI5(row, data);
@@ -2284,6 +2295,16 @@ export default {
         }
       }
       if (field === "index_i5") {
+        if (!this.isIndexValueAllowedForType("index_i5", data, data.index_i5)) {
+          data.index_i5 = "";
+          row.update(data);
+          this.refreshRowFormatting(row);
+          showNotification(
+            'Index I5 does not belong to selected Index Type. Select "Other" Index Type for custom indices.',
+            "warning"
+          );
+          return;
+        }
         const reads = this.getIndexReadsCount(data);
         if (reads >= 2) {
           const matched = this.tryAutoSelectI7(row, data);
@@ -2347,6 +2368,28 @@ export default {
       const typeKey = rowData?.index_type ? String(rowData.index_type) : "";
       if (!typeKey) return [];
       return this.indexI5OptionsByType[typeKey] || [];
+    },
+    isOtherIndexType(rowData = {}) {
+      const typeId = rowData?.index_type;
+      if (typeId === null || typeId === undefined || typeId === "") return false;
+      const typeKey = String(typeId);
+      const match = this.indexTypesList.find((item) => {
+        const key =
+          item?.id ?? item?.value ?? item?.pk ?? item?.name ?? item?.label;
+        return String(key) === typeKey;
+      });
+      const typeName = String(match?.name ?? match?.label ?? "").trim().toLowerCase();
+      return typeName === "other";
+    },
+    isIndexValueAllowedForType(field, rowData = {}, value) {
+      if (value === null || value === undefined || value === "") return true;
+      if (this.isOtherIndexType(rowData)) return true;
+      const options =
+        field === "index_i5"
+          ? this.getLibraryIndexI5Options(rowData)
+          : this.getLibraryIndexI7Options(rowData);
+      const target = String(value);
+      return options.some((option) => String(option?.value) === target);
     },
     async fetchIndexOptionsForType(typeId, autoSelect = null) {
       if (!typeId) return;
@@ -4264,9 +4307,9 @@ export default {
 <!--
 refactor/simplify all the files
 unit test all the pages
+3 email tasks
 
 finsh request editor testing
-3 email tasks
 
 atcg copy paste validation
 then if indices dont belong to any index type show error

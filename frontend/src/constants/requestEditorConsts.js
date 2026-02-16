@@ -254,6 +254,7 @@ export function getRequestEditorLibraryColumns(
     getIndexReadsCount,
     getIndexI7Options,
     getIndexI5Options,
+    isOtherIndexType,
     showBarcode = false,
   } = editors;
 
@@ -269,6 +270,8 @@ export function getRequestEditorLibraryColumns(
     i7: typeof getIndexI7Options === "function" ? getIndexI7Options : () => [],
     i5: typeof getIndexI5Options === "function" ? getIndexI5Options : () => [],
   };
+  const isOtherType =
+    typeof isOtherIndexType === "function" ? isOtherIndexType : () => false;
   const resolveIndexReadsCount =
     typeof getIndexReadsCount === "function" ? getIndexReadsCount : () => 0;
 
@@ -294,6 +297,37 @@ export function getRequestEditorLibraryColumns(
       listOnEmpty: true,
       placeholder: "Select",
     };
+  };
+  const dynamicIndexEditorParams = (getOptionsFn) => (cell) => {
+    const rowData = getRowData(cell);
+    const options = getOptionsFn(rowData);
+    return {
+      values: createValuesMap(options),
+      clearable: false,
+      emptyValue: "",
+      allowEmpty: true,
+      autocomplete: true,
+      listOnEmpty: true,
+      freetext: isOtherType(rowData),
+      placeholder: "Select",
+    };
+  };
+
+  const createIndexPasteValueResolver = () => (value, context = {}) => {
+    const resolved = extractIndexSequence(value);
+    if (!resolved) return resolved;
+    const rowData = context?.rowData || {};
+    if (isOtherType(rowData)) {
+      return resolved;
+    }
+    const options = Array.isArray(context?.options) ? context.options : [];
+    const allowed = options.map((opt) => String(opt));
+    if (allowed.includes(String(resolved))) {
+      return resolved;
+    }
+    throw new Error(
+      'Index does not belong to selected Index Type. Select "Other" Index Type for custom indices.'
+    );
   };
 
   const getLibraryTypeOptions = (rowData) =>
@@ -625,7 +659,7 @@ export function getRequestEditorLibraryColumns(
       visible: true,
       cssClass: "regular-column",
       editor: "list",
-      editorParams: dynamicEditorParams(dynamicOptions.i7),
+      editorParams: dynamicIndexEditorParams(dynamicOptions.i7),
       validator: indexSequenceValidator,
       editable: libraryEditable("index_i7"),
       formatter: decorateFormatter(
@@ -637,7 +671,7 @@ export function getRequestEditorLibraryColumns(
         dynamicOptions.i7,
         getRowData,
       ),
-      pasteValueResolver: (value) => extractIndexSequence(value),
+      pasteValueResolver: createIndexPasteValueResolver(),
     },
     {
       title: "Index I5",
@@ -649,7 +683,7 @@ export function getRequestEditorLibraryColumns(
       visible: true,
       cssClass: "regular-column",
       editor: "list",
-      editorParams: dynamicEditorParams(dynamicOptions.i5),
+      editorParams: dynamicIndexEditorParams(dynamicOptions.i5),
       validator: indexSequenceValidator,
       editable: libraryEditable("index_i5"),
       formatter: decorateFormatter(
@@ -661,7 +695,7 @@ export function getRequestEditorLibraryColumns(
         dynamicOptions.i5,
         getRowData,
       ),
-      pasteValueResolver: (value) => extractIndexSequence(value),
+      pasteValueResolver: createIndexPasteValueResolver(),
     },
     {
       title: "Organism",
