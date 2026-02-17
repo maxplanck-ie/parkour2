@@ -793,18 +793,42 @@ export default {
           this.revalidateDraftRows();
         },
         handleRangeCleared: (payload = []) => {
-          if (!this.isEditMode || !Array.isArray(payload)) return;
+          if (!Array.isArray(payload)) return;
           const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+          const indexTypesToFetch = new Set();
           payload.forEach((entry) => {
             const rowData = entry?.rowData || {};
             const fields = entry?.fields || [];
-            if (!rowData?.tempId || !rowData?.pk || !fields.length) return;
-            this.markDirtyFields(rowData.tempId, fields);
-            const rowComp = table?.getRow?.(rowData.tempId) || null;
+            if (!fields.length) return;
+            const rowComp =
+              table?.getRow?.(rowData?.tempId) ||
+              (rowData?.pk !== undefined && rowData?.pk !== null
+                ? table?.getRow?.(rowData.pk)
+                : null) ||
+              null;
             if (rowComp) {
-              this.applyDependentResetsForChangedFields(rowComp, fields);
+              const liveRowData = rowComp?.getData?.() || {};
+              if (
+                this.isEditMode &&
+                liveRowData?.tempId &&
+                liveRowData?.pk
+              ) {
+                this.markDirtyFields(liveRowData.tempId, fields);
+              }
+              const resetResult = this.applyDependentResetsForChangedFields(
+                rowComp,
+                fields
+              );
+              if (resetResult?.indexTypeId) {
+                indexTypesToFetch.add(String(resetResult.indexTypeId));
+              }
             }
           });
+          if (this.requestEditorMode === "library" && indexTypesToFetch.size) {
+            indexTypesToFetch.forEach((typeId) => {
+              this.fetchIndexOptionsForType(typeId);
+            });
+          }
           this.$nextTick(() => this.revalidateDraftRows());
         },
         handleRangeClearStart: () => {
@@ -1910,6 +1934,7 @@ export default {
       const updates = {};
       const dependentFields = [];
       let indexTypeId = null;
+      const shouldResetDependent = (field) => !normalizedFields.has(field);
       const assignIfChanged = (field, value) => {
         if (rowData?.[field] !== value) {
           updates[field] = value;
@@ -1919,23 +1944,33 @@ export default {
 
       if (this.requestEditorMode === "library") {
         if (normalizedFields.has("index_type")) {
-          assignIfChanged("index_i7", "");
-          assignIfChanged("index_i5", "");
+          if (shouldResetDependent("index_i7")) assignIfChanged("index_i7", "");
+          if (shouldResetDependent("index_i5")) assignIfChanged("index_i5", "");
           if (rowData?.index_type) {
             indexTypeId = rowData.index_type;
           }
         }
         if (normalizedFields.has("library_protocol")) {
-          assignIfChanged("library_type", "");
+          if (shouldResetDependent("library_type")) {
+            assignIfChanged("library_type", "");
+          }
         }
       } else {
         if (normalizedFields.has("nucleic_acid_type")) {
-          assignIfChanged("library_protocol", "");
-          assignIfChanged("library_type", "");
-          assignIfChanged("gmo", null);
+          if (shouldResetDependent("library_protocol")) {
+            assignIfChanged("library_protocol", "");
+          }
+          if (shouldResetDependent("library_type")) {
+            assignIfChanged("library_type", "");
+          }
+          if (shouldResetDependent("gmo")) {
+            assignIfChanged("gmo", null);
+          }
         }
         if (normalizedFields.has("library_protocol")) {
-          assignIfChanged("library_type", "");
+          if (shouldResetDependent("library_type")) {
+            assignIfChanged("library_type", "");
+          }
         }
       }
 
