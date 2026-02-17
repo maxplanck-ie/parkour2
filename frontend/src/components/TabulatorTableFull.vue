@@ -1116,9 +1116,6 @@ export default {
           el.focus();
         }
         this.setLastFocusedCell(cell);
-        if (typeof cell.select === "function") {
-          cell.select();
-        }
         if (typeof table.addRange === "function") {
           const ranges = table.getRanges?.() || [];
           if (!ranges.length) {
@@ -1241,6 +1238,9 @@ export default {
         if (this.tableOptions.fakeLoadingStart) {
           this.tableOptions.fakeLoadingStart();
         }
+        if (typeof this.tableOptions.handleRangeClearStart === "function") {
+          this.tableOptions.handleRangeClearStart();
+        }
         rowUpdates.forEach((data, rowComp) => {
           rowComp?.update?.(data);
         });
@@ -1266,6 +1266,9 @@ export default {
         }
         if (this.tableOptions.fakeLoadingStop) {
           this.tableOptions.fakeLoadingStop();
+        }
+        if (typeof this.tableOptions.handleRangeClearEnd === "function") {
+          this.tableOptions.handleRangeClearEnd();
         }
       };
 

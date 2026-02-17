@@ -486,6 +486,7 @@ export default {
       allowDirtyTracking: false,
       suppressNextDirtyBatch: false,
       pendingDirtyTrackingResume: false,
+      isProcessingRangeClear: false,
       dirtyFieldsByRowId: {},
       validationFieldsByRowId: {},
       showToggleConfirm: false,
@@ -805,6 +806,14 @@ export default {
             }
           });
           this.$nextTick(() => this.revalidateDraftRows());
+        },
+        handleRangeClearStart: () => {
+          this.isProcessingRangeClear = true;
+        },
+        handleRangeClearEnd: () => {
+          this.$nextTick(() => {
+            this.isProcessingRangeClear = false;
+          });
         },
         cellEditing: (cell) => vm.handleCellEditing(cell),
         handleCellEdited: (cell) => vm.handleCellEdited(cell),
@@ -1157,22 +1166,19 @@ export default {
           previousValueByRowId.set(rowKey, rowData?.[changedField]);
         });
       }
-      const isIndexApplyAll =
-        this.requestEditorMode === "library" &&
-        (changedField === "index_i7" || changedField === "index_i5");
       let skippedIncompatibleRows = 0;
-      if (isIndexApplyAll) {
+      if (changedField) {
         rows.forEach((rowComp) => {
           const targetCell = rowComp?.getCell?.(changedField);
           if (!targetCell || !this.isEditableRangeCell(targetCell)) return;
           const rowData = rowComp?.getData?.() || {};
-          const isFormatValid = this.isValidIndexSequence(sourceValue);
-          const isAllowedForType = this.isIndexValueAllowedForType(
+          const isAllowed = this.isValueAllowedForApplyAll(
+            targetCell,
             changedField,
             rowData,
             sourceValue
           );
-          if (!isFormatValid || !isAllowedForType) {
+          if (!isAllowed) {
             skippedIncompatibleRows += 1;
             return;
           }
@@ -1204,9 +1210,9 @@ export default {
           this.fetchIndexOptionsForType(typeId);
         });
       }
-      if (isIndexApplyAll && skippedIncompatibleRows > 0) {
+      if (skippedIncompatibleRows > 0) {
         showNotification(
-          `${skippedIncompatibleRows} row(s) skipped: index is not valid for their selected Index Type. Use "Other" for custom indices.`,
+          `${skippedIncompatibleRows} row(s) skipped: value is not valid for their current dependent selections.`,
           "warning"
         );
       }
@@ -1831,6 +1837,9 @@ export default {
       if (!Array.isArray(batchChanges)) {
         return;
       }
+      if (this.isProcessingRangeClear) {
+        return;
+      }
       if (this.suppressNextDirtyBatch) {
         this.suppressNextDirtyBatch = false;
         return;
@@ -2442,6 +2451,41 @@ export default {
           : this.getLibraryIndexI7Options(rowData);
       const target = String(value);
       return options.some((option) => String(option?.value) === target);
+    },
+    isListValueAllowedForRow(targetCell, rowData = {}, value) {
+      if (!targetCell) return false;
+      if (value === null || value === undefined || value === "") return true;
+      const columnDef = targetCell.getColumn?.().getDefinition?.() || {};
+      if (columnDef.editor !== "list") return true;
+      const editorParams =
+        typeof columnDef.editorParams === "function"
+          ? columnDef.editorParams({
+            getRow: () => ({ getData: () => rowData })
+          })
+          : columnDef.editorParams || {};
+      let options = [];
+      if (Array.isArray(editorParams?.values)) {
+        options = editorParams.values.map((opt) =>
+          opt && typeof opt === "object" ? opt.value : opt
+        );
+      } else if (
+        editorParams?.values &&
+        typeof editorParams.values === "object"
+      ) {
+        options = Object.keys(editorParams.values);
+      }
+      if (!options.length) return false;
+      const target = String(value);
+      return options.some((option) => String(option) === target);
+    },
+    isValueAllowedForApplyAll(targetCell, field, rowData = {}, value) {
+      if (value === null || value === undefined || value === "") return true;
+      if (field === "index_i7" || field === "index_i5") {
+        if (!this.isValidIndexSequence(value)) return false;
+        if (this.isOtherIndexType(rowData)) return true;
+        return this.isIndexValueAllowedForType(field, rowData, value);
+      }
+      return this.isListValueAllowedForRow(targetCell, rowData, value);
     },
     isValidIndexSequence(value) {
       if (value === null || value === undefined || value === "") return true;
