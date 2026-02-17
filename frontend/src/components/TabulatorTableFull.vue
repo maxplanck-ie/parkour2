@@ -134,7 +134,8 @@ export default {
       },
       clipboardPasteParser: null,
       clipboardCopyValueByField: {},
-      pasteDefaultsByField: {}
+      pasteDefaultsByField: {},
+      suppressDataChangedProcessing: false
     };
   },
   watch: {
@@ -619,6 +620,9 @@ export default {
         this.previousData = JSON.stringify(this.rowData);
 
         this.tabulatorInstance.on("dataChanged", (updatedData) => {
+          if (this.suppressDataChangedProcessing) {
+            return;
+          }
           if (typeof this.tableOptions.onBatchCellValueChanged !== "function") {
             this.previousData = JSON.stringify(updatedData);
             return;
@@ -815,6 +819,19 @@ export default {
       this.showAllGroups();
       if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
       this.tabulatorInstance.restoreRedraw();
+    },
+
+    refreshPreviousDataSnapshot() {
+      this.previousData = JSON.stringify(this.tabulatorInstance?.getData?.() || []);
+    },
+
+    beginBulkMutation() {
+      this.suppressDataChangedProcessing = true;
+    },
+
+    endBulkMutation() {
+      this.suppressDataChangedProcessing = false;
+      this.refreshPreviousDataSnapshot();
     },
 
     async triggerClipboardPaste() {
@@ -1247,9 +1264,14 @@ export default {
         if (typeof this.tableOptions.handleRangeClearStart === "function") {
           this.tableOptions.handleRangeClearStart();
         }
-        rowUpdates.forEach((data, rowComp) => {
-          rowComp?.update?.(data);
-        });
+        this.beginBulkMutation();
+        try {
+          rowUpdates.forEach((data, rowComp) => {
+            rowComp?.update?.(data);
+          });
+        } finally {
+          this.endBulkMutation();
+        }
         if (
           rowUpdates.size &&
           typeof this.tableOptions.handleDeleteApplied === "function"

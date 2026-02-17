@@ -779,6 +779,7 @@ export default {
         rowFormatter: (row) => vm.applyRowStyling(row),
         rowSelectionChanged: () => handleSelection(),
         dataChanged: () => {
+          if (this.isProcessingRangeClear) return;
           handleSelection();
           this.revalidateDraftRows();
         },
@@ -795,35 +796,41 @@ export default {
         handleRangeCleared: (payload = []) => {
           if (!Array.isArray(payload)) return;
           const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+          const tableComponent = this.$refs.requestEditorDraftTableRef;
           const indexTypesToFetch = new Set();
-          payload.forEach((entry) => {
-            const rowData = entry?.rowData || {};
-            const fields = entry?.fields || [];
-            if (!fields.length) return;
-            const rowComp =
-              table?.getRow?.(rowData?.tempId) ||
-              (rowData?.pk !== undefined && rowData?.pk !== null
-                ? table?.getRow?.(rowData.pk)
-                : null) ||
-              null;
-            if (rowComp) {
-              const liveRowData = rowComp?.getData?.() || {};
-              if (
-                this.isEditMode &&
-                liveRowData?.tempId &&
-                liveRowData?.pk
-              ) {
-                this.markDirtyFields(liveRowData.tempId, fields);
+          tableComponent?.beginBulkMutation?.();
+          try {
+            payload.forEach((entry) => {
+              const rowData = entry?.rowData || {};
+              const fields = entry?.fields || [];
+              if (!fields.length) return;
+              const rowComp =
+                table?.getRow?.(rowData?.tempId) ||
+                (rowData?.pk !== undefined && rowData?.pk !== null
+                  ? table?.getRow?.(rowData.pk)
+                  : null) ||
+                null;
+              if (rowComp) {
+                const liveRowData = rowComp?.getData?.() || {};
+                if (
+                  this.isEditMode &&
+                  liveRowData?.tempId &&
+                  liveRowData?.pk
+                ) {
+                  this.markDirtyFields(liveRowData.tempId, fields);
+                }
+                const resetResult = this.applyDependentResetsForChangedFields(
+                  rowComp,
+                  fields
+                );
+                if (resetResult?.indexTypeId) {
+                  indexTypesToFetch.add(String(resetResult.indexTypeId));
+                }
               }
-              const resetResult = this.applyDependentResetsForChangedFields(
-                rowComp,
-                fields
-              );
-              if (resetResult?.indexTypeId) {
-                indexTypesToFetch.add(String(resetResult.indexTypeId));
-              }
-            }
-          });
+            });
+          } finally {
+            tableComponent?.endBulkMutation?.();
+          }
           if (this.requestEditorMode === "library" && indexTypesToFetch.size) {
             indexTypesToFetch.forEach((typeId) => {
               this.fetchIndexOptionsForType(typeId);
