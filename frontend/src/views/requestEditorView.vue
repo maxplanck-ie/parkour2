@@ -1094,11 +1094,17 @@ export default {
     },
     handleApplyToAllIndexPairs(rows = []) {
       if (!this.canEditRequest || !Array.isArray(rows)) return;
+      const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       rows.forEach((row) => {
-        if (!row?.index_type) return;
-        const rowRef = row?.getData ? row : null;
+        let rowRef = row?.getData ? row : null;
+        if (!rowRef && table) {
+          const rowKey = row?.tempId ?? row?.pk;
+          if (rowKey !== undefined && rowKey !== null) {
+            rowRef = table.getRow?.(rowKey) || null;
+          }
+        }
         const rowData = rowRef?.getData ? rowRef.getData() : row;
-        if (!rowData) return;
+        if (!rowData?.index_type) return;
         const typeKey = String(rowData.index_type);
         const reads = this.getIndexReadsCount(rowData);
         if (reads >= 2) {
@@ -1137,7 +1143,7 @@ export default {
       if (!this.canEditRequest || this.requestEditorMode !== "library") return;
       const field = cell?.getField?.();
       if (field !== "index_i7" && field !== "index_i5") return;
-      const rows = tableRef?.getRows?.()?.map((row) => row.getData?.()) || [];
+      const rows = tableRef?.getRows?.() || [];
       this.handleApplyToAllIndexPairs(rows);
     },
     applyToAllFromCell(cell, { tableRef, tabulatorInstance } = {}) {
@@ -2098,7 +2104,6 @@ export default {
       );
       tooltipNodes.forEach((node) => {
         if (node !== el) {
-          node.removeAttribute("title");
           node.removeAttribute("data-tooltip-original");
         }
       });
@@ -2133,6 +2138,13 @@ export default {
           el.setAttribute("data-tooltip-original", disabledTooltip);
         } else if (valuePresent) {
           el.classList.add("cell-valid");
+        }
+        const hasValidationTooltip = el.getAttribute("data-tooltip-original");
+        if (!hasValidationTooltip) {
+          const displayText = (el.textContent || "").trim();
+          if (displayText) {
+            el.setAttribute("title", displayText);
+          }
         }
         return;
       }
@@ -4411,4 +4423,6 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 3 email tasks
+
+search something and create reqeust
 -->

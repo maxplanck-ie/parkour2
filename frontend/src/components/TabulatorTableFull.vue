@@ -19,7 +19,7 @@
           style="display: block"
         />
         <span class="popup-title">Paste Error</span>
-        <button class="popup-close-button" @click="showErrorsWindow = false">
+        <button class="popup-close-button" @click="closeErrorsWindow">
           &times;
         </button>
       </div>
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="pasteErrorOkButton" class="popup-button" @click="showErrorsWindow = false">
+        <button ref="pasteErrorOkButton" class="popup-button" @click="closeErrorsWindow">
           OK
         </button>
       </div>
@@ -152,7 +152,9 @@ export default {
       if (newVal) {
         this.focusErrorsPopupOkButton();
       } else {
-        document.getElementsByClassName("tabulator-range-selected")[0]?.click();
+        this.$nextTick(() => {
+          this.restoreLastFocusedCell();
+        });
       }
     }
   },
@@ -189,6 +191,10 @@ export default {
     }
   },
   methods: {
+    closeErrorsWindow() {
+      this.showErrorsWindow = false;
+    },
+
     focusErrorsPopupOkButton() {
       this.$nextTick(() => {
         this.$refs?.pasteErrorOkButton?.focus?.();
@@ -1149,7 +1155,7 @@ export default {
         !event.metaKey &&
         !event.altKey;
       if (isEscape && this.showErrorsWindow) {
-        this.showErrorsWindow = false;
+        this.closeErrorsWindow();
         return;
       }
       if (

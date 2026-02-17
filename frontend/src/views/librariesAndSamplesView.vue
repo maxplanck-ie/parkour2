@@ -1290,6 +1290,15 @@ export default {
         this.finishRequestEditorSync();
         return;
       }
+      // New requests may be hidden by active search/filters; clear them so sync polling can detect the saved request.
+      this.searchQuery = "";
+      this.filters = {
+        status: null,
+        protocol: null,
+        analysisType: null,
+        sequencer: null,
+        readLength: null
+      };
       const requestId = payload?.pk ?? null;
       this.pendingSavedMode = this.requestModalMode;
       this.startRequestEditorSync(requestId);
