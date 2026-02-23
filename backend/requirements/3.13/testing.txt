@@ -13,7 +13,7 @@ appdirs==1.4.4
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django-migration-linter
-asgiref==3.11.0
+asgiref==3.11.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django
@@ -27,11 +27,11 @@ attrs==25.4.0
     #   -c backend/requirements/3.13/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.30
+boto3==1.42.54
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.30
+botocore==1.42.54
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   boto3
@@ -60,9 +60,9 @@ contourpy==1.3.3
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   matplotlib
-coverage==7.13.1
+coverage==7.13.4
     # via pytest-cov
-cryptography==46.0.3
+cryptography==46.0.5
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django-cryptography-django5
@@ -88,11 +88,11 @@ distro==1.9.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   openai
-dj-database-url==3.1.0
+dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
-django==5.2.10
+django==5.2.11
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
@@ -131,7 +131,7 @@ django-cryptography-django5==2.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django-sql-explorer
-django-debug-toolbar==6.1.0
+django-debug-toolbar==6.2.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
@@ -191,13 +191,13 @@ fonttools==4.61.1
     #   -c backend/requirements/3.13/dev.txt
     #   fpdf2
     #   matplotlib
-fpdf2==2.8.5
+fpdf2==2.8.6
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.3.0
+greenlet==3.3.2
     # via playwright
-gunicorn==23.0.0
+gunicorn==25.1.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
@@ -229,7 +229,7 @@ ipdb==0.13.13
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
-ipython==9.9.0
+ipython==9.10.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   ipdb
@@ -241,11 +241,11 @@ jedi==0.19.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   ipython
-jiter==0.12.0
+jiter==0.13.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   openai
-jmespath==1.0.1
+jmespath==1.1.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   boto3
@@ -286,14 +286,14 @@ mdurl==0.1.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   markdown-it-py
-numpy==2.4.1
+numpy==2.4.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.15.0
+openai==2.21.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
@@ -301,18 +301,18 @@ openpyxl==3.1.5
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
-packaging==25.0
+packaging==26.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   gunicorn
     #   matplotlib
     #   pytest
-pandas==2.3.3
+pandas==3.0.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
     #   -r backend/requirements/dev.in
-parso==0.8.5
+parso==0.8.6
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   jedi
@@ -320,12 +320,12 @@ pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   ipython
-pillow==12.1.0
+pillow==12.1.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.57.0
+playwright==1.58.0
     # via pytest-playwright
 pluggy==1.6.0
     # via
@@ -347,7 +347,7 @@ pure-eval==0.2.3
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   stack-data
-pycparser==2.23 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
+pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   cffi
@@ -359,7 +359,7 @@ pydantic-core==2.41.5
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   pydantic
-pyee==13.0.0
+pyee==13.0.1
     # via playwright
 pygments==2.19.2
     # via
@@ -368,7 +368,7 @@ pygments==2.19.2
     #   ipython-pygments-lexers
     #   pytest
     #   rich
-pyparsing==3.3.1
+pyparsing==3.3.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   matplotlib
@@ -383,7 +383,7 @@ pytest-base-url==2.1.0
     # via pytest-playwright
 pytest-cov==7.0.0
     # via -r backend/requirements/testing.in
-pytest-django==4.11.1
+pytest-django==4.12.0
     # via -r backend/requirements/testing.in
 pytest-playwright==0.7.2
     # via -r backend/requirements/testing.in
@@ -403,10 +403,6 @@ python-docx==1.2.0
     #   -r backend/requirements/base.in
 python-slugify==8.0.4
     # via pytest-playwright
-pytz==2025.2
-    # via
-    #   -c backend/requirements/3.13/dev.txt
-    #   pandas
 pywatchman==3.0.0
     # via
     #   -c backend/requirements/3.13/dev.txt
@@ -420,7 +416,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.13/dev.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.1.15
+regex==2026.2.19
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   tiktoken
@@ -430,7 +426,7 @@ requests==2.32.5
     #   django-sql-explorer
     #   pytest-base-url
     #   tiktoken
-rich==14.2.0
+rich==14.3.3
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
@@ -484,7 +480,7 @@ toml==0.10.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django-migration-linter
-tqdm==4.67.1
+tqdm==4.67.3
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   openai
@@ -506,7 +502,7 @@ typing-inspection==0.4.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   pydantic
-tzdata==2025.3
+tzdata==2025.3 ; sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django
@@ -520,11 +516,11 @@ urllib3==2.6.3
     #   -c backend/requirements/3.13/dev.txt
     #   botocore
     #   requests
-wcwidth==0.2.14
+wcwidth==0.6.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   prompt-toolkit
-werkzeug==3.1.5
+werkzeug==3.1.6
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
