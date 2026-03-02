@@ -20,13 +20,13 @@ attrs==25.4.0
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   referencing
-boto3==1.42.54
+boto3==1.42.59
     # via -r backend/requirements/dev.in
-botocore==1.42.54
+botocore==1.42.59
     # via
     #   boto3
     #   s3transfer
-certifi==2026.1.4
+certifi==2026.2.25
     # via
     #   httpcore
     #   httpx
@@ -146,7 +146,7 @@ fonttools==4.61.1
     #   -c backend/requirements/3.12/base.txt
     #   fpdf2
     #   matplotlib
-fpdf2==2.8.6
+fpdf2==2.8.7
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
@@ -214,7 +214,7 @@ numpy==2.4.2
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.21.0
+openai==2.24.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -285,7 +285,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.2.19
+regex==2026.2.28
     # via tiktoken
 requests==2.32.5
     # via
