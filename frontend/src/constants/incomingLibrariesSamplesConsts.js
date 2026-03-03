@@ -17,6 +17,7 @@ import iconQualityCompromised from "../assets/icons/status_quality_compromised.s
 export function incomingLibrariesSamplesGroupHeader(
   value,
   count,
+  countLabel,
   samplesSubmitted,
   gmo,
   totalDepth,
@@ -47,7 +48,7 @@ export function incomingLibrariesSamplesGroupHeader(
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
     <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-      (#: ${count}, Total Depth: ${totalDepth}M, Read Lengths: ${
+      (#: ${count} ${countLabel}, Total Depth: ${totalDepth}M, Read Lengths: ${
         readLengthDisplay || "No Read Length"
       }, ${biosafetyLevel})
     </span>

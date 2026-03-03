@@ -481,6 +481,19 @@ export default {
           { column: "barcode", dir: "asc" }
         ],
         groupHeader: (value, count, data) => {
+          const uniqueTypes = [
+            ...new Set(
+              data
+                .map((item) => String(item.type || "").trim().toUpperCase())
+                .filter((type) => type === "L" || type === "S")
+            )
+          ];
+          const countLabel =
+            uniqueTypes.length === 1
+              ? uniqueTypes[0] === "L"
+                ? "Libraries"
+                : "Samples"
+              : "Libraries/Samples";
           let totalDepth = data.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
             0
@@ -499,7 +512,7 @@ export default {
           const hasAttachments =
             Array.isArray(meta?.files) && meta.files.length > 0;
 
-          return librariesAndSamplesGroupHeader(value, count, totalDepth, {
+          return librariesAndSamplesGroupHeader(value, count, countLabel, totalDepth, {
             showStaffActions: this.isStaffUser,
             showSolicitApproval: requiresApproval && this.paperlessApproval,
             allowDelete,

@@ -85,6 +85,7 @@ function createStatusHeaderTooltip() {
 export function librariesAndSamplesGroupHeader(
   value,
   count,
+  countLabel,
   totalDepth,
   options = {}
 ) {
@@ -129,7 +130,7 @@ export function librariesAndSamplesGroupHeader(
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
         <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-          (#: ${count}, Total Depth: ${totalDepth})
+          (#: ${count} ${countLabel}, Total Depth: ${totalDepth})
         </span>
         ${approvalTag}
         <div title="Attachments" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'attachments')">

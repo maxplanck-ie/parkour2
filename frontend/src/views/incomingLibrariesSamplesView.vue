@@ -623,6 +623,19 @@ export default {
           { column: "name", dir: "desc" }
         ],
         groupHeader: (value, count, data) => {
+          const uniqueTypes = [
+            ...new Set(
+              data
+                .map((item) => String(item.type || "").trim().toUpperCase())
+                .filter((type) => type === "L" || type === "S")
+            )
+          ];
+          const countLabel =
+            uniqueTypes.length === 1
+              ? uniqueTypes[0] === "L"
+                ? "Libraries"
+                : "Samples"
+              : "Libraries/Samples";
           const samplesSubmitted = data.some(
             (item) => item.samples_submitted === true
           );
@@ -660,6 +673,7 @@ export default {
           return incomingLibrariesSamplesGroupHeader(
             value,
             count,
+            countLabel,
             samplesSubmitted,
             gmo,
             totalDepth,
