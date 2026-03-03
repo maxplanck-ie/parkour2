@@ -135,7 +135,10 @@ export default {
       clipboardPasteParser: null,
       clipboardCopyValueByField: {},
       pasteDefaultsByField: {},
-      suppressDataChangedProcessing: false
+      suppressDataChangedProcessing: false,
+      pendingEditClick: null,
+      useExtendedDoubleClickEdit: false,
+      doubleClickEditDelayMs: 1000
     };
   },
   watch: {
@@ -230,6 +233,16 @@ export default {
 
     initializeTable() {
       if (this.rowData && this.columnDefs) {
+        const rawDelay = Number(this.tableOptions?.doubleClickEditDelayMs);
+        this.doubleClickEditDelayMs =
+          Number.isFinite(rawDelay) && rawDelay > 0 ? rawDelay : 1000;
+        const requestedEditTriggerEvent =
+          this.tableOptions?.editTriggerEvent || "dblclick";
+        this.useExtendedDoubleClickEdit =
+          requestedEditTriggerEvent === "dblclick";
+        const forwardedTableOptions = { ...(this.tableOptions || {}) };
+        delete forwardedTableOptions.doubleClickEditDelayMs;
+
         this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
         const options = {
           data: this.rowData,
@@ -251,7 +264,9 @@ export default {
           selectableRangeColumns: false,
           selectableRangeRows: false,
           selectableRangeClearCells: false,
-          editTriggerEvent: "dblclick",
+          editTriggerEvent: this.useExtendedDoubleClickEdit
+            ? "manual"
+            : requestedEditTriggerEvent,
           clipboard: true,
           clipboardCopyStyled: false,
           clipboardCopyConfig: {
@@ -491,7 +506,7 @@ export default {
           groupBy: this.tableGroupsConfig.groupBy || false,
           groupStartOpen: this.groupStartOpen,
           debugInvalidOptions: false,
-          ...this.tableOptions
+          ...forwardedTableOptions
         };
 
         this.consoleWarnOriginal = console.warn;
@@ -714,8 +729,15 @@ export default {
           }
         });
 
-        this.tabulatorInstance.on("cellClick", (cell) => {
-          this.setLastFocusedCell(cell);
+        this.tabulatorInstance.on("cellClick", (e, cell) => {
+          const clickedCell =
+            (cell && typeof cell.getField === "function" ? cell : null) ||
+            (e && typeof e.getField === "function" ? e : null);
+          if (!clickedCell) return;
+          this.setLastFocusedCell(clickedCell);
+          if (this.useExtendedDoubleClickEdit) {
+            this.handleExtendedDoubleClickEdit(clickedCell);
+          }
         });
         this.tabulatorInstance.on("cellFocused", (cell) => {
           this.setLastFocusedCell(cell);
@@ -1069,6 +1091,133 @@ export default {
 
     getTable() {
       return this.tabulatorInstance;
+    },
+
+    getCellIdentity(cell) {
+      if (!cell) return null;
+      const row = cell.getRow?.();
+      const rowData = cell.getRow?.().getData?.() || {};
+      const field = cell.getField?.() || null;
+      const fallbackPosition = row?.getPosition?.(true);
+      const rowKeyRaw =
+        rowData?.tempId ??
+        rowData?.pk ??
+        rowData?.id ??
+        rowData?.barcode ??
+        null;
+      const rowKey =
+        rowKeyRaw !== null && rowKeyRaw !== undefined
+          ? rowKeyRaw
+          : Number.isFinite(fallbackPosition)
+            ? `pos:${fallbackPosition}`
+            : null;
+      if (field === null || rowKey === null || rowKey === undefined) {
+        return null;
+      }
+      return { rowKey, field };
+    },
+
+    isCellEditableForManualEdit(cell) {
+      if (!cell) return false;
+      const columnDef = cell.getColumn?.().getDefinition?.() || {};
+      if (columnDef.editor === false) return false;
+      const shouldBlockDisabledCells =
+        this.tableOptions?.blockActionsOnDisabledCells === true;
+      const cellEl = cell.getElement?.();
+      if (
+        shouldBlockDisabledCells &&
+        cellEl?.classList?.contains("disable-editing")
+      ) {
+        return false;
+      }
+      if (typeof columnDef.editable === "boolean") {
+        return columnDef.editable;
+      }
+      if (typeof columnDef.editable === "function") {
+        const rowData = cell.getRow?.().getData?.() || {};
+        return Boolean(
+          columnDef.editable({
+            getRow: () => ({ getData: () => rowData })
+          })
+        );
+      }
+      return Boolean(columnDef.editor);
+    },
+
+    openDropdownEditorIfNeeded(cell) {
+      const columnDef = cell?.getColumn?.().getDefinition?.() || {};
+      const editorType = columnDef?.editor;
+      const isDropdownEditor =
+        editorType === "list" || editorType === "select";
+      if (!isDropdownEditor) return;
+      const maxAttempts = 8;
+      const tryOpen = (attempt = 0) => {
+        const cellEl = cell?.getElement?.() || null;
+        const active = document.activeElement;
+        const editorEl =
+          (cellEl &&
+            cellEl.querySelector(
+              "input, select, textarea, [contenteditable='true']"
+            )) ||
+          (active && cellEl?.contains?.(active) ? active : null);
+        if (!editorEl) {
+          if (attempt < maxAttempts) {
+            setTimeout(() => tryOpen(attempt + 1), 16);
+          }
+          return;
+        }
+        editorEl.focus?.();
+        try {
+          editorEl.dispatchEvent(
+            new KeyboardEvent("keydown", {
+              key: "ArrowDown",
+              bubbles: true
+            })
+          );
+        } catch (error) {
+          // no-op
+        }
+        editorEl.dispatchEvent(
+          new MouseEvent("mousedown", { bubbles: true, cancelable: true })
+        );
+        editorEl.dispatchEvent(
+          new MouseEvent("mouseup", { bubbles: true, cancelable: true })
+        );
+        if (typeof editorEl.click === "function") {
+          editorEl.click();
+        }
+      };
+      setTimeout(() => tryOpen(0), 0);
+    },
+
+    handleExtendedDoubleClickEdit(cell) {
+      if (!cell || !this.tabulatorInstance) return;
+      const identity = this.getCellIdentity(cell);
+      if (!identity) return;
+      const now = Date.now();
+      const previous = this.pendingEditClick;
+      const isSecondClickSameCell =
+        previous &&
+        previous.field === identity.field &&
+        previous.rowKey === identity.rowKey &&
+        now - previous.timestamp <= this.doubleClickEditDelayMs;
+
+      if (isSecondClickSameCell) {
+        this.pendingEditClick = null;
+        const editable = this.isCellEditableForManualEdit(cell);
+        if (editable) {
+          requestAnimationFrame(() => {
+            cell.edit?.();
+            this.openDropdownEditorIfNeeded(cell);
+          });
+        }
+        return;
+      }
+
+      this.pendingEditClick = {
+        ...identity,
+        timestamp: now
+      };
     },
 
     getFocusCandidateCell() {
