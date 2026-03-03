@@ -90,7 +90,6 @@ export function librariesAndSamplesGroupHeader(
 ) {
   const {
     showStaffActions = false,
-    showSolicitApproval = false,
     allowDelete = true,
     showApprovalTag = false,
     hasAttachments = false
@@ -107,14 +106,6 @@ export function librariesAndSamplesGroupHeader(
     `
     : "";
 
-  const approvalAction = showSolicitApproval
-    ? `
-      <div title="Solicit Approval via Email" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'solicitApproval')">
-        <img class="group-action-icon-img" src="${iconSolicitApproval}" alt="Solicit Approval" />
-      </div>
-    `
-    : "";
-
   const deleteAction = allowDelete
     ? `
       <div title="Delete Request" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deleteRequest')">
@@ -125,9 +116,9 @@ export function librariesAndSamplesGroupHeader(
 
   const approvalTag = showApprovalTag
     ? `
-      <button class="group-action-tag" title="Click here to Request Solicit Approval" onclick="handleGroupButtonClick(event, '${value}', 'requestApproval')">
-        <span>Approval Required</span>
-      </button>
+      <div title="Solicit Approval via Email" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'requestApproval')">
+        <img class="group-action-icon-img" src="${iconSolicitApproval}" alt="Solicit Approval" />
+      </div>
     `
     : "";
 
@@ -141,18 +132,17 @@ export function librariesAndSamplesGroupHeader(
           (#: ${count}, Total Depth: ${totalDepth})
         </span>
         ${approvalTag}
+        <div title="Attachments" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'attachments')">
+          <img class="group-action-icon-img icon-24" src="${hasAttachments ? iconAttachmentsAvailable : iconAttachmentsUnavailable}" alt="Attachments" />
+        </div>
       </div>
     </div>
-    <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
+    <div class="group-action-buttons-container" style="position: sticky; gap: 6px; margin-left: 16px; padding: 0 16px;">
       <div title="View / Edit Request" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'viewRequest')">
         <img class="group-action-icon-img" src="${iconEdit}" alt="View / Edit Request" />
       </div>
       ${deleteAction}
-      ${approvalAction}
       ${staffActions}
-      <div title="Attachments" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'attachments')">
-        <img class="group-action-icon-img icon-24" src="${hasAttachments ? iconAttachmentsAvailable : iconAttachmentsUnavailable}" alt="Attachments" />
-      </div>
       ${showStaffActions ? '<span class="group-action-separator"></span>' : ''}
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
