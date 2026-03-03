@@ -4466,5 +4466,7 @@ refactor/simplify all the files
 unit test all the pages
 3 email tasks
 
+lag usability check for opening request editor with large requests, and expanding request by clicking on the header
+layout check for attachments window and file upload check in edit request mode
 table edit performance for large requests
 -->

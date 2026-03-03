@@ -765,6 +765,13 @@ export default {
     },
     formatFileSize(size) {
       if (size === undefined || size === null) return "-";
+      if (typeof size === "string") {
+        const trimmed = size.trim();
+        if (!trimmed.length) return "-";
+        const numericValue = Number(trimmed);
+        if (Number.isNaN(numericValue)) return trimmed;
+        size = numericValue;
+      }
       const value = Number(size);
       if (Number.isNaN(value)) return "-";
       if (value >= 1024 * 1024) {
@@ -787,7 +794,7 @@ export default {
         this.attachmentsFiles = filesList.map((file) => ({
           id: file?.id ?? file?.pk,
           name: file?.name,
-          size: file?.size,
+          size: file?.size ?? null,
           path: file?.path
         }));
         this.attachmentsFileIds = this.attachmentsFiles
@@ -840,7 +847,7 @@ export default {
           this.attachmentsFiles = filesList.map((file) => ({
             id: file?.id ?? file?.pk,
             name: file?.name,
-            size: file?.size,
+            size: file?.size ?? null,
             path: file?.path
           }));
           this.attachmentsFileIds = this.attachmentsFiles
@@ -965,7 +972,7 @@ export default {
           this.attachmentsFiles = data.map((file) => ({
             id: file?.id,
             name: file?.name,
-            size: file?.size,
+            size: file?.size ?? null,
             path: file?.path
           }));
         }
