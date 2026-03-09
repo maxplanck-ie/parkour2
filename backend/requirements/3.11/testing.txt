@@ -27,16 +27,16 @@ attrs==25.4.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.54
+boto3==1.42.63
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.54
+botocore==1.42.63
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
     #   s3transfer
-certifi==2026.1.4
+certifi==2026.2.25
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   httpcore
@@ -46,7 +46,7 @@ cffi==2.0.0 ; platform_python_implementation != 'PyPy'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   cryptography
-charset-normalizer==3.4.4
+charset-normalizer==3.4.5
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   requests
@@ -92,7 +92,7 @@ dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-django==5.2.11
+django==5.2.12
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -191,7 +191,7 @@ fonttools==4.61.1
     #   -c backend/requirements/3.11/dev.txt
     #   fpdf2
     #   matplotlib
-fpdf2==2.8.6
+fpdf2==2.8.7
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
@@ -229,7 +229,11 @@ ipdb==0.13.13
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-ipython==9.10.0
+ipython==9.10.0 ; python_full_version < '3.12'
+    # via
+    #   -c backend/requirements/3.11/dev.txt
+    #   ipdb
+ipython==9.11.0 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   ipdb
@@ -300,7 +304,7 @@ numpy==2.4.2 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.21.0
+openai==2.26.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -415,7 +419,7 @@ python-docx==1.2.0
     #   -r backend/requirements/base.in
 python-slugify==8.0.4
     # via pytest-playwright
-pytz==2025.2 ; python_full_version < '3.12'
+pytz==2026.1.post1 ; python_full_version < '3.12'
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pandas
@@ -432,7 +436,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.2.19
+regex==2026.2.28
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   tiktoken
@@ -463,7 +467,7 @@ sniffio==1.3.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
-sql-metadata==2.19.0
+sql-metadata==2.20.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
