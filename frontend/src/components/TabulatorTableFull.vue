@@ -279,10 +279,14 @@ export default {
           clipboardCopyFormatter: (type, output) => {
             if (type !== "plain") return output;
             const customCopy = this.buildClipboardOutputFromSelection();
+            const withExcelLikeTerminator = (text) => {
+              const isMultiCell = text.includes("\t") || text.includes("\n");
+              return isMultiCell ? `${text}\n` : text;
+            };
             if (customCopy?.usedCustom) {
-              return `${customCopy.output}\n`;
+              return withExcelLikeTerminator(customCopy.output);
             }
-            return `${output}\n`;
+            return withExcelLikeTerminator(output);
           },
           clipboardPasteParser: async (clipboard) => {
             this.errorsPopupContents.errorsList = [];

@@ -105,10 +105,11 @@ export default {
           },
           clipboardCopyRowRange: "range",
           clipboardCopyFormatter: function (type, output) {
-            if (type == "plain") {
-              output += "\n";
+            if (type !== "plain") {
+              return output;
             }
-            return output;
+            const isMultiCell = output.includes("\t") || output.includes("\n");
+            return isMultiCell ? `${output}\n` : output;
           },
           dependencies: {
             XLSX: XLSX
