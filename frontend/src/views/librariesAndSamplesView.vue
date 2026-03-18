@@ -1,7 +1,10 @@
 <template>
   <div class="parent-container">
     <!-- Loading overlay -->
-    <div v-if="(loading || fakeLoading) && !exportLoading && !requestEditorSyncing" class="loading-overlay">
+    <div
+      v-if="(loading || fakeLoading) && !exportLoading && !requestEditorSyncing"
+      class="loading-overlay"
+    >
       <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
         Loading <span style="font-weight: bold">Libraries & Samples</span>...
@@ -17,45 +20,85 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <img :src="iconLibrariesHeader" alt="Libraries & Samples" width="42" height="42" style="display: block" />
+        <img
+          :src="iconLibrariesHeader"
+          alt="Libraries & Samples"
+          width="42"
+          height="42"
+          style="display: block"
+        />
       </div>
-      <div class="header-title" style="display: inline">
+      <div
+        class="header-title"
+        style="display: inline"
+        data-testid="libraries-header-title"
+      >
         Libraries & Samples
       </div>
 
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input ref="searchInput" v-model="searchQuery" @keyup.enter="handleSearchAction" type="text"
-            placeholder="Search" />
-          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey; cursor: pointer"
-            @click="handleSearchAction" />
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            @keyup.enter="handleSearchAction"
+            type="text"
+            placeholder="Search"
+          />
+          <font-awesome-icon
+            icon="fa-solid fa-magnifying-glass"
+            style="color: darkgrey; cursor: pointer"
+            @click="handleSearchAction"
+          />
         </div>
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input type="date" id="startDate" :class="{ 'invalid-date': !startDateValid }" v-model="startDateString"
-              required />
+            <input
+              type="date"
+              id="startDate"
+              :class="{ 'invalid-date': !startDateValid }"
+              v-model="startDateString"
+              required
+            />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input type="date" id="endDate" :class="{ 'invalid-date': !endDateValid }" v-model="endDateString"
-              required />
+            <input
+              type="date"
+              id="endDate"
+              :class="{ 'invalid-date': !endDateValid }"
+              v-model="endDateString"
+              required
+            />
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
+          <button
+            class="header-button"
+            id="toggleAdvancedFiltersButton"
+            @click="toggleAdvancedFilters"
+          >
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
-            style="height: 473px; width: 250px; left: -50px">
+          <div
+            id="advancedFiltersPopup"
+            v-if="showAdvancedFilters"
+            class="button-popup-container"
+            style="height: 473px; width: 250px; left: -50px"
+          >
             <!-- Status Filter -->
             <div class="filter-item">
               <label>Status</label>
               <select v-model="filters.status" @change="getLibrariesSamples(1)">
                 <option :value="null">All Statuses</option>
-                <option v-for="(text, num) in statusMap" :key="num" :value="num">
+                <option
+                  v-for="(text, num) in statusMap"
+                  :key="num"
+                  :value="num"
+                >
                   {{ text }}
                 </option>
               </select>
@@ -64,9 +107,16 @@
             <!-- Protocol Filter -->
             <div class="filter-item">
               <label>Protocol</label>
-              <select v-model="filters.protocol" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.protocol"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Protocols</option>
-                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.id">
+                <option
+                  v-for="protocol in protocolsList"
+                  :key="protocol.id"
+                  :value="protocol.id"
+                >
                   {{ protocol.name }}
                 </option>
               </select>
@@ -75,9 +125,16 @@
             <!-- Analysis Type Filter -->
             <div class="filter-item">
               <label>Analysis Type</label>
-              <select v-model="filters.analysisType" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.analysisType"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Analysis Types</option>
-                <option v-for="type in analysisTypesList" :key="type.id" :value="type.id">
+                <option
+                  v-for="type in analysisTypesList"
+                  :key="type.id"
+                  :value="type.id"
+                >
                   {{ type.name }}
                 </option>
               </select>
@@ -86,9 +143,16 @@
             <!-- Sequencer Filter -->
             <div class="filter-item">
               <label>Sequencer</label>
-              <select v-model="filters.sequencer" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.sequencer"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Sequencers</option>
-                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.id">
+                <option
+                  v-for="sequencer in sequencersList"
+                  :key="sequencer.id"
+                  :value="sequencer.id"
+                >
                   {{ sequencer.name }}
                 </option>
               </select>
@@ -97,9 +161,16 @@
             <!-- Read Length Filter -->
             <div class="filter-item">
               <label>Read Length</label>
-              <select v-model="filters.readLength" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.readLength"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Read Lengths</option>
-                <option v-for="length in readLengthsList" :key="length.id" :value="length.id">
+                <option
+                  v-for="length in readLengthsList"
+                  :key="length.id"
+                  :value="length.id"
+                >
                   {{ length.name }}
                 </option>
               </select>
@@ -112,36 +183,65 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
-            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
+          <button
+            class="header-button"
+            id="toggleSelectColumnsButton"
+            @click="toggleSelectColumns"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-columns"
+              style="color: white"
+            />
             <span> Select Columns </span>
           </button>
-          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
+          <div
+            id="selectColumnsPopup"
+            v-if="showSelectColumns"
+            class="button-popup-container"
+            style="
               left: -50px;
               width: 250px;
               max-height: 473px;
               display: flex;
               flex-direction: column;
               padding: 10px 10px 5px 10px;
-            ">
-            <ul style="
+            "
+          >
+            <ul
+              style="
                 padding: 5px 7px 7px;
                 margin: 0;
                 flex-grow: 1;
                 overflow-y: auto;
-              ">
-              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
-                <template v-if="
-                  column.field !== 'selected' ||
-                  (column.field === 'selected' && column.visible == false)
-                ">
-                  <label :style="{
-                    backgroundColor: column.columns ? '#33333310' : 'white',
-                    cursor: column.columns ? 'default' : 'pointer'
-                  }">
-                    <input v-if="!column.columns" type="checkbox" v-model="column.visible"
-                      @change="toggleColumnVisibility(column)" />
-                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
+              "
+            >
+              <li
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
+              >
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label
+                    :style="{
+                      backgroundColor: column.columns ? '#33333310' : 'white',
+                      cursor: column.columns ? 'default' : 'pointer'
+                    }"
+                  >
+                    <input
+                      v-if="!column.columns"
+                      type="checkbox"
+                      v-model="column.visible"
+                      @change="toggleColumnVisibility(column)"
+                    />
+                    <font-awesome-icon
+                      v-if="column.columns"
+                      icon="fa-solid fa-caret-down"
+                      style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -152,34 +252,56 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      " />
+                      "
+                    />
                     <span>{{ column.title }}</span>
                   </label>
                 </template>
               </li>
             </ul>
-            <div style="
+            <div
+              style="
                 padding-top: 8px;
                 border-top: 1px solid #eee;
                 display: flex;
                 flex-direction: column;
-              ">
+              "
+            >
               <button @click="resetColumnVisibility" class="reset-button">
                 Reset Visibility Settings
               </button>
-              <button style="margin-bottom: 5px" @click="resetColumnWidths" class="reset-button">
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
                 Reset Width Settings
               </button>
             </div>
           </div>
         </div>
-        <button class="header-button" id="openExportPopupButton" @click="handleExportClick">
-          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
+        <button
+          class="header-button"
+          id="openExportPopupButton"
+          @click="handleExportClick"
+        >
+          <font-awesome-icon
+            icon="fa-solid fa-file-excel"
+            style="color: white"
+          />
           <span> Export to Excel </span>
         </button>
 
-        <button class="header-button" type="button" @click="openRequestEditorModal">
-          <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+        <button
+          class="header-button"
+          type="button"
+          data-testid="add-request-button"
+          @click="openRequestEditorModal"
+        >
+          <font-awesome-icon
+            icon="fa-solid fa-square-plus"
+            style="color: white"
+          />
           <span> Add Request </span>
         </button>
       </div>
@@ -187,15 +309,22 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
-        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
-        :groupStartOpen="false" :tableOptions="{
+      <LiteTabulatorTable
+        v-if="!loading"
+        ref="tabulatorTableRef"
+        :rowData="librariesSamplesList"
+        :columnDefs="columnsList"
+        groupBy="request_name"
+        :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="false"
+        :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
           handleColumnVisibilityChanged
-        }" />
+        }"
+      />
     </div>
 
     <!-- Pagination controls -->
@@ -208,28 +337,47 @@
       </div>
 
       <div class="pagination-buttons">
-        <button class="pagination-button" @click="changePage(1)" :disabled="pagination.currentPage === 1">
+        <button
+          class="pagination-button"
+          @click="changePage(1)"
+          :disabled="pagination.currentPage === 1"
+        >
           &laquo; First
         </button>
 
-        <button class="pagination-button" @click="changePage(pagination.currentPage - 1)"
-          :disabled="pagination.currentPage === 1">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.currentPage - 1)"
+          :disabled="pagination.currentPage === 1"
+        >
           &lsaquo; Prev
         </button>
 
         <div class="page-input">
-          <input type="number" v-model.number="pageInput" min="1" :max="pagination.totalPages" @keyup.enter="goToPage"
-            @blur="validatePageInput" />
+          <input
+            type="number"
+            v-model.number="pageInput"
+            min="1"
+            :max="pagination.totalPages"
+            @keyup.enter="goToPage"
+            @blur="validatePageInput"
+          />
           <span>of {{ pagination.totalPages }}</span>
         </div>
 
-        <button class="pagination-button" @click="changePage(pagination.currentPage + 1)"
-          :disabled="pagination.currentPage === pagination.totalPages">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.currentPage + 1)"
+          :disabled="pagination.currentPage === pagination.totalPages"
+        >
           Next &rsaquo;
         </button>
 
-        <button class="pagination-button" @click="changePage(pagination.totalPages)"
-          :disabled="pagination.currentPage === pagination.totalPages">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.totalPages)"
+          :disabled="pagination.currentPage === pagination.totalPages"
+        >
           Last &raquo;
         </button>
       </div>
@@ -247,33 +395,57 @@
     </div>
 
     <!-- Popup for Add Request -->
-    <RequestEditorView :show="showRequestEditorModal" :mode="requestModalMode" :request-id="requestModalRequestId"
-      :request-meta="activeRequestMeta" :is-staff-user="isStaffUser" :user-id="userId"
-      :saving="requestEditorSyncing" :close-on-save="false" :notify-on-save="false"
+    <RequestEditorView
+      :show="showRequestEditorModal"
+      :mode="requestModalMode"
+      :request-id="requestModalRequestId"
+      :request-meta="activeRequestMeta"
+      :is-staff-user="isStaffUser"
+      :user-id="userId"
+      :saving="requestEditorSyncing"
+      :close-on-save="false"
+      :notify-on-save="false"
       @close="closeRequestEditorModal"
-      @saved="handleRequestEditorSaved" />
+      @saved="handleRequestEditorSaved"
+    />
 
     <!-- Popup for Export Options -->
-    <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
-      @dragenter="handleDragEnter" @dragleave="handleDragLeave" :class="{ 'drag-over': isDragOver }">
+    <div
+      v-if="showExportPopup"
+      class="popup-overlay"
+      @dragover.prevent="handleDragOver"
+      @drop="handleDrop"
+      @dragenter="handleDragEnter"
+      @dragleave="handleDragLeave"
+      :class="{ 'drag-over': isDragOver }"
+    >
       <div v-if="isStaffUser" class="drag-drop-indicator">
-        <div style="
+        <div
+          style="
             display: flex;
             justify-content: center;
             align-items: center;
             height: 200px;
-          ">
+          "
+        >
           <p>
             Drop <span style="font-weight: bold">XLSX file</span> here to upload
             as <span style="font-weight: bold">template</span>
           </p>
         </div>
       </div>
-      <div v-if="!isDragOver" class="popup-container" :style="{ width: '670px', height: '500px' }">
+      <div
+        v-if="!isDragOver"
+        class="popup-container"
+        :style="{ width: '670px', height: '500px' }"
+      >
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
-          <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
-            @mouseleave="showExportHelpTooltip = false">
+          <span
+            class="popup-info-button"
+            @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false"
+          >
             ?
             <div v-if="showExportHelpTooltip" class="tooltip-box">
               <span style="font-weight: bold">INSTRUCTIONS:</span>
@@ -282,7 +454,9 @@
                   To create custom templates, export the original sheet named
                   <span style="font-weight: bold">'Parkour'</span> by selecting
                   the
-                  <span style="font-weight: bold">'Export without any additional sheets'</span>
+                  <span style="font-weight: bold"
+                    >'Export without any additional sheets'</span
+                  >
                   option.
                 </li>
                 <li>
@@ -315,14 +489,27 @@
               Export Options:
             </div>
             <div class="export-selection-radio-option">
-              <input type="radio" id="export-selected" value="selected" v-model="exportSelection"
-                :disabled="!hasSelectedRows" />
-              <label for="export-selected" :class="{ disabled: !hasSelectedRows }">
+              <input
+                type="radio"
+                id="export-selected"
+                value="selected"
+                v-model="exportSelection"
+                :disabled="!hasSelectedRows"
+              />
+              <label
+                for="export-selected"
+                :class="{ disabled: !hasSelectedRows }"
+              >
                 Export selected libraries & samples
               </label>
             </div>
             <div class="export-selection-radio-option">
-              <input type="radio" id="export-all" value="all" v-model="exportSelection" />
+              <input
+                type="radio"
+                id="export-all"
+                value="all"
+                v-model="exportSelection"
+              />
               <label for="export-all"> Export all libraries & samples </label>
             </div>
           </div>
@@ -333,32 +520,80 @@
             <div class="file-list-section">
               <div class="file-item">
                 <div class="file-info">
-                  <img :src="iconExportTemplateFile" alt="Export without any additional sheets" width="24" height="24"
-                    style="display: block" />
+                  <img
+                    :src="iconExportTemplateFile"
+                    alt="Export without any additional sheets"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
                   <span>Export without any additional sheets</span>
                 </div>
                 <div class="file-actions">
-                  <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
-                    <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
+                  <div
+                    class="file-actions-radio-button"
+                    style="border: none; margin-right: 5px"
+                  >
+                    <input
+                      type="radio"
+                      title="Select"
+                      id="without-file"
+                      value="without-file"
+                      v-model="selectedFile"
+                    />
                   </div>
                 </div>
               </div>
-              <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
+              <div
+                v-for="(file, index) in fetchedLibrariesAndSamplesTemplates"
+                :key="index"
+                class="file-item"
+              >
                 <div class="file-info">
-                  <img :src="iconExportTemplateFileLines" :alt="file.name" width="24" height="24"
-                    style="display: block" />
+                  <img
+                    :src="iconExportTemplateFileLines"
+                    :alt="file.name"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
                   <span>{{ file.name }}</span>
                 </div>
                 <div class="file-actions">
-                  <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
-                    <img :src="iconExportDownload" alt="Download" width="24" height="24" style="display: block" />
+                  <button
+                    @click="downloadExportTemplate(file)"
+                    class="download-button"
+                    title="Download Original File"
+                  >
+                    <img
+                      :src="iconExportDownload"
+                      alt="Download"
+                      width="24"
+                      height="24"
+                      style="display: block"
+                    />
                   </button>
-                  <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
-                    <img :src="iconExportRemove" alt="Remove" width="24" height="24" style="display: block" />
+                  <button
+                    @click="removeExportTemplate(index)"
+                    class="remove-button"
+                    title="Remove File"
+                  >
+                    <img
+                      :src="iconExportRemove"
+                      alt="Remove"
+                      width="24"
+                      height="24"
+                      style="display: block"
+                    />
                   </button>
                   <div class="file-actions-radio-button">
-                    <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
-                      v-model="selectedFile" />
+                    <input
+                      type="radio"
+                      title="Select File"
+                      :id="'file-radio-' + index"
+                      :value="file"
+                      v-model="selectedFile"
+                    />
                   </div>
                 </div>
               </div>
@@ -375,30 +610,52 @@
         </div>
         <div class="popup-footer">
           <div v-if="isStaffUser" class="file-upload-section">
-            <label for="file-upload" class="file-upload-label"
-              title="Upload additional sheet to append to the exported sheet.">
-              <img :src="iconExportUpload" alt="Upload" width="24" height="24"
-                style="display: block; margin-right: 4px" />
+            <label
+              for="file-upload"
+              class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet."
+            >
+              <img
+                :src="iconExportUpload"
+                alt="Upload"
+                width="24"
+                height="24"
+                style="display: block; margin-right: 4px"
+              />
               <span>Upload</span>
             </label>
-            <input id="file-upload" type="file" accept=".xlsx" @change="uploadExportTemplate" style="display: none" />
+            <input
+              id="file-upload"
+              type="file"
+              accept=".xlsx"
+              @change="uploadExportTemplate"
+              style="display: none"
+            />
           </div>
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button class="popup-button" @click="
-            showExportPopup = false;
-          selectedFile = 'without-file';
-          ">
+          <button
+            class="popup-button"
+            @click="
+              showExportPopup = false;
+              selectedFile = 'without-file';
+            "
+          >
             Cancel
           </button>
         </div>
       </div>
     </div>
 
-    <RequestActionsPopups :active-action="activeRequestAction" :request-context="activeRequestContext"
-      :is-staff-user="isStaffUser" :paperless-approval="paperlessApproval" @close="closeRequestActionModal"
-      @refresh="handleRequestActionRefresh" />
+    <RequestActionsPopups
+      :active-action="activeRequestAction"
+      :request-context="activeRequestContext"
+      :is-staff-user="isStaffUser"
+      :paperless-approval="paperlessApproval"
+      @close="closeRequestActionModal"
+      @refresh="handleRequestActionRefresh"
+    />
   </div>
 </template>
 
@@ -484,7 +741,11 @@ export default {
           const uniqueTypes = [
             ...new Set(
               data
-                .map((item) => String(item.type || "").trim().toUpperCase())
+                .map((item) =>
+                  String(item.type || "")
+                    .trim()
+                    .toUpperCase()
+                )
                 .filter((type) => type === "L" || type === "S")
             )
           ];
@@ -507,20 +768,27 @@ export default {
           const requestId = rows[0]?.request_id;
           const meta = requestId ? this.requestMetaById[requestId] : null;
           const allowDelete = meta ? !meta.restrict_permissions : false;
-          const canDownloadUpload =
-            meta ? meta.deep_seq_request_path === "" : false;
+          const canDownloadUpload = meta
+            ? meta.deep_seq_request_path === ""
+            : false;
           const hasAttachments =
             Array.isArray(meta?.files) && meta.files.length > 0;
 
-          return librariesAndSamplesGroupHeader(value, count, countLabel, totalDepth, {
-            showStaffActions: this.isStaffUser,
-            showSolicitApproval: requiresApproval && this.paperlessApproval,
-            allowDelete,
-            showApprovalTag: requiresApproval && this.paperlessApproval,
-            hasAttachments,
-            canDownloadRequestForm: canDownloadUpload,
-            canUploadSignedRequest: canDownloadUpload
-          });
+          return librariesAndSamplesGroupHeader(
+            value,
+            count,
+            countLabel,
+            totalDepth,
+            {
+              showStaffActions: this.isStaffUser,
+              showSolicitApproval: requiresApproval && this.paperlessApproval,
+              allowDelete,
+              showApprovalTag: requiresApproval && this.paperlessApproval,
+              hasAttachments,
+              canDownloadRequestForm: canDownloadUpload,
+              canUploadSignedRequest: canDownloadUpload
+            }
+          );
         }
       },
       searchQuery: "",
@@ -816,10 +1084,7 @@ export default {
     },
     async getROCrateData({ barcodes = [], requestName = "" } = {}) {
       if (!Array.isArray(barcodes) || barcodes.length === 0) {
-        showNotification(
-          "Select records to download RO-Crate.",
-          "warning"
-        );
+        showNotification("Select records to download RO-Crate.", "warning");
         return;
       }
 
@@ -1180,11 +1445,7 @@ export default {
       options.forEach((option) => {
         if (!option) return;
         const key =
-          option.id ??
-          option.pk ??
-          option.value ??
-          option.name ??
-          option.label;
+          option.id ?? option.pk ?? option.value ?? option.name ?? option.label;
         const label =
           option.name ?? option.label ?? option.text ?? option.value ?? "";
         if (key !== undefined && key !== null) {
@@ -1212,9 +1473,11 @@ export default {
         if (measuredValueEmpty && measuredUnitEmpty) {
           return "";
         }
-        const measuredValue = measuredValueRaw === 0 ? 0 : measuredValueRaw || "";
+        const measuredValue =
+          measuredValueRaw === 0 ? 0 : measuredValueRaw || "";
         const measuredUnit = measuredUnitRaw || "";
-        if (measuredValue === -1 && measuredUnit === "Unknown") return "Unknown";
+        if (measuredValue === -1 && measuredUnit === "Unknown")
+          return "Unknown";
         if (measuredValueEmpty && !measuredUnitEmpty) {
           return measuredUnit;
         }
@@ -1234,7 +1497,8 @@ export default {
         if (record.name !== undefined) row.name = record.name;
         if (record.read_length !== undefined) {
           row.read_length_name =
-            readLengthMap.get(String(record.read_length)) || row.read_length_name;
+            readLengthMap.get(String(record.read_length)) ||
+            row.read_length_name;
         }
         if (record.library_protocol !== undefined) {
           row.library_protocol_name =
@@ -1265,8 +1529,12 @@ export default {
         }
       });
       this.applyInputColumnMode(this.librariesSamplesList);
-      this.hasSelectedRows = this.librariesSamplesList.some((row) => row.selected);
-      this.tabulatorInstance?.getTable?.().replaceData(this.librariesSamplesList);
+      this.hasSelectedRows = this.librariesSamplesList.some(
+        (row) => row.selected
+      );
+      this.tabulatorInstance
+        ?.getTable?.()
+        .replaceData(this.librariesSamplesList);
     },
     openRequestEditorModal() {
       this.requestModalMode = "create";
@@ -1297,7 +1565,10 @@ export default {
           ...this.requestMetaById,
           [requestId]: nextMeta
         };
-        if (this.activeRequestMeta && this.requestModalRequestId === requestId) {
+        if (
+          this.activeRequestMeta &&
+          this.requestModalRequestId === requestId
+        ) {
           this.activeRequestMeta = nextMeta;
         }
         this.finishRequestEditorSync();
@@ -1526,8 +1797,7 @@ export default {
               this.activeRequestContext = {
                 ...this.activeRequestContext,
                 meta,
-                canEditRequest:
-                  this.isStaffUser || !meta?.restrict_permissions
+                canEditRequest: this.isStaffUser || !meta?.restrict_permissions
               };
             });
           }
@@ -1557,7 +1827,10 @@ export default {
           break;
         case "viewFilePaths":
           if (!this.isStaffUser) {
-            showNotification("You lack permission to view file paths.", "warning");
+            showNotification(
+              "You lack permission to view file paths.",
+              "warning"
+            );
             break;
           }
           this.openRequestActionModal("filePaths", {
@@ -1567,7 +1840,10 @@ export default {
           break;
         case "composeEmail":
           if (!this.isStaffUser) {
-            showNotification("You lack permission to compose email.", "warning");
+            showNotification(
+              "You lack permission to compose email.",
+              "warning"
+            );
             break;
           }
           this.openRequestActionModal("composeEmail", {
@@ -1588,10 +1864,7 @@ export default {
           break;
         case "downloadROCrate": {
           if (!selectedRows.length) {
-            showNotification(
-              "Select records to download RO-Crate.",
-              "warning"
-            );
+            showNotification("Select records to download RO-Crate.", "warning");
             if (!group._group.visible) groupElement.click();
             break;
           }
@@ -1604,10 +1877,7 @@ export default {
             )
           );
           if (!barcodes.length) {
-            showNotification(
-              "Selected entries lack valid barcodes.",
-              "error"
-            );
+            showNotification("Selected entries lack valid barcodes.", "error");
             if (!group._group.visible) groupElement.click();
             break;
           }
@@ -1641,7 +1911,7 @@ export default {
       if (
         file &&
         file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
         const formData = new FormData();
         formData.append("file", file);
@@ -1823,10 +2093,7 @@ export default {
 
       const files = e.dataTransfer.files;
       if (files.length > 1) {
-        showNotification(
-          "Upload only one XLSX file.",
-          "error"
-        );
+        showNotification("Upload only one XLSX file.", "error");
       } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
@@ -1836,7 +2103,7 @@ export default {
       if (
         file &&
         file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
         const event = {
           target: {
@@ -1924,7 +2191,6 @@ body.input-dropdown-open .tabulator-tooltip {
   border: 1px solid #333;
   border-radius: 8px;
 }
-
 
 @media (max-width: 1550px) {
   .header-title {

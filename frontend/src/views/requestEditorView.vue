@@ -4181,6 +4181,7 @@ export default {
 }
 
 .add-count-input[type="number"] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 

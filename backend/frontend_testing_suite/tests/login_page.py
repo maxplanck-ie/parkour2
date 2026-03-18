@@ -1,8 +1,9 @@
 import re
 
 import pytest
-import utilities
 from playwright.sync_api import Page, expect
+
+from . import utilities
 
 
 @pytest.fixture(scope="session")
@@ -57,5 +58,8 @@ def test_login_page(page: Page):
     emailInput.fill(correctEmailId)
     passwordInput.fill(correctPassword)
     loginButton.click()
-    expect(page.get_by_text("Requests").nth(0)).to_be_visible()
-    expect(page.get_by_text("Libraries & Samples")).to_be_visible()
+    utilities.visit_vue_page(page, "libraries_and_samples")
+    expect(page.get_by_test_id("libraries-header-title")).to_have_text(
+        "Libraries & Samples"
+    )
+    expect(page.get_by_role("button", name="Add Request")).to_be_visible()

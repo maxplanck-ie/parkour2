@@ -1,8 +1,9 @@
 import datetime
 
 import pytest
-import utilities
 from playwright.sync_api import Page, expect
+
+from . import utilities
 
 
 @pytest.fixture(scope="session")
@@ -17,8 +18,7 @@ def browser_context_args(browser_context_args):
 def test_duties_page(page: Page):
     utilities.pretest_login(page)
 
-    host_name = utilities.get_host_name()
-    page.goto(f"http://{host_name}:9980/vue/duties")
+    utilities.visit_vue_page(page, "duties")
     page.bring_to_front()
 
     expect(page.get_by_text("Manage Duties")).to_be_visible()

@@ -1,6 +1,7 @@
 import pytest
-import utilities
 from playwright.sync_api import Page, expect
+
+from . import utilities
 
 
 @pytest.fixture(scope="session")
@@ -14,35 +15,32 @@ def browser_context_args(browser_context_args):
 
 def _open_batch_add_modal(page: Page):
     utilities.pretest_login(page)
+    utilities.visit_vue_page(page, "libraries_and_samples")
 
-    add_request_button = page.locator("a.pl-add-request-button")
-    description_textarea = page.locator("div.pl-description textarea")
-    add_batch_button = page.locator("a.pl-batch-add-button")
+    expect(page.get_by_test_id("libraries-header-title")).to_be_visible()
 
+    add_request_button = page.get_by_test_id("add-request-button")
     add_request_button.click()
-    expect(page.get_by_text("New Request")).to_be_visible()
-    description_textarea.fill("Automated UI smoke test")
-    add_batch_button.click()
-    expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
+    expect(page.get_by_test_id("request-editor-title")).to_have_text("New Request")
 
 
 def _close_batch_add_modal(page: Page):
-    page.locator("a.pl-close-batch-button").click()
-    page.get_by_text("Close").click()
+    page.get_by_test_id("close-request-editor-button").click()
+    confirm_modal = page.locator(".confirm-modal", has_text="Discard new request?")
+    expect(confirm_modal).to_be_visible()
+    confirm_modal.get_by_role("button", name="OK").click()
+    expect(confirm_modal).not_to_be_visible()
 
 
 def test_requests_page(page: Page):
     _open_batch_add_modal(page)
+    description_textarea = page.get_by_test_id("request-description-input")
+    description_textarea.fill("Automated UI smoke test")
 
-    # Verify libraries grid allows creating empty records
-    page.locator("a.pl-library-card-button").click()
-    expect(page.get_by_text("Add Libraries")).to_be_visible()
+    add_records_button = page.get_by_test_id("add-records-button")
+    add_records_button.click()
 
-    create_records_button = page.locator("a.pl-create-empty-records-button")
-    create_records_button.click()
-    rows = page.locator("#batch-add-grid .x-grid-row")
+    rows = page.locator("#requestEditorDraftTable .tabulator-row")
     expect(rows).to_have_count(1)
 
-    # Close the batch window and the parent request window
-    page.keyboard.press("Escape")
-    page.keyboard.press("Escape")
+    _close_batch_add_modal(page)
