@@ -1,92 +1,197 @@
 ﻿<template>
-  <div v-if="show" class="request-editor-overlay popup-overlay" :class="{ 'drag-over': isDragOver }"
-    @dragover.prevent="handleDragOver" @dragenter.prevent="handleDragEnter" @dragleave.prevent="handleDragLeave"
-    @drop.prevent="handleDrop">
+  <div
+    v-if="show"
+    class="request-editor-overlay popup-overlay"
+    :class="{ 'drag-over': isDragOver }"
+    @dragover.prevent="handleDragOver"
+    @dragenter.prevent="handleDragEnter"
+    @dragleave.prevent="handleDragLeave"
+    @drop.prevent="handleDrop"
+  >
     <div v-if="canEditRequest" class="drag-drop-indicator">
-      <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 200px;
+        "
+      >
         <p>
-          Drop <span style="font-weight: bold">files</span> here to upload
+          Drop
+          <span style="font-weight: bold">request related documents</span> here
+          to upload
         </p>
       </div>
     </div>
     <div class="request-editor-modal">
-      <div v-if="fakeLoading" class="request-editor-loading-overlay" aria-hidden="true"></div>
-      <div v-if="isEditMode && !requestDataReady" class="request-editor-loading-overlay" aria-live="polite"
-        aria-busy="true">
+      <div
+        v-if="fakeLoading"
+        class="request-editor-loading-overlay"
+        aria-hidden="true"
+      ></div>
+      <div
+        v-if="isEditMode && !requestDataReady"
+        class="request-editor-loading-overlay"
+        aria-live="polite"
+        aria-busy="true"
+      >
         <div class="spinner"></div>
         <p>Loading request details...</p>
       </div>
-      <div class="request-editor-content" :class="{ collapsed: isFormPanelCollapsed }">
-        <div class="request-editor-header-left" :class="{ collapsed: isFormPanelCollapsed }">
+      <div
+        class="request-editor-content"
+        :class="{ collapsed: isFormPanelCollapsed }"
+      >
+        <div
+          class="request-editor-header-left"
+          :class="{ collapsed: isFormPanelCollapsed }"
+        >
           <span class="title-with-icon">
-            <font-awesome-icon icon="fa-solid fa-file-lines" class="header-icon" />
-            <span class="header-title-text" :title="headerTitle">{{ headerTitle }}</span>
+            <font-awesome-icon
+              icon="fa-solid fa-file-lines"
+              class="header-icon"
+            />
+            <span class="header-title-text" :title="headerTitle">{{
+              headerTitle
+            }}</span>
           </span>
         </div>
-        <button class="panel-toggle-button vertical-toggle" type="button" @click="toggleFormPanel"
-          :aria-label="isFormPanelCollapsed ? 'Expand details panel' : 'Collapse details panel'">
-          <font-awesome-icon :icon="isFormPanelCollapsed ? 'fa-solid fa-angle-right' : 'fa-solid fa-angle-left'" />
+        <button
+          class="panel-toggle-button vertical-toggle"
+          type="button"
+          @click="toggleFormPanel"
+          :aria-label="
+            isFormPanelCollapsed
+              ? 'Expand details panel'
+              : 'Collapse details panel'
+          "
+        >
+          <font-awesome-icon
+            :icon="
+              isFormPanelCollapsed
+                ? 'fa-solid fa-angle-right'
+                : 'fa-solid fa-angle-left'
+            "
+          />
         </button>
         <div class="request-editor-header-right">
-          <div class="header-table-actions" :class="{ hidden: !canEditRequest }">
+          <div
+            class="header-table-actions"
+            :class="{ hidden: !canEditRequest }"
+          >
             <div class="add-count-group">
-              <input id="add-count-input" v-model.number="addRowCount" type="number" min="0"
-                :class="['add-count-input', { 'input-error': hasEditedAddCount && !addRowCount }]"
-                :disabled="!canEditRequest" @input="hasEditedAddCount = true" @blur="hasEditedAddCount = true" />
-              <button class="icon-button text-button add-count-button" type="button" :title="addButtonTitle"
-                :disabled="!canEditRequest" @click="addDraftRow(addRowCount)">
+              <input
+                id="add-count-input"
+                v-model.number="addRowCount"
+                type="number"
+                min="0"
+                :class="[
+                  'add-count-input',
+                  { 'input-error': hasEditedAddCount && !addRowCount }
+                ]"
+                :disabled="!canEditRequest"
+                @input="hasEditedAddCount = true"
+                @blur="hasEditedAddCount = true"
+              />
+              <button
+                class="icon-button text-button add-count-button"
+                type="button"
+                :title="addButtonTitle"
+                :disabled="!canEditRequest"
+                @click="addDraftRow(addRowCount)"
+              >
                 <font-awesome-icon icon="fa-solid fa-square-plus" />
                 <span>{{ addButtonLabel }}</span>
               </button>
             </div>
-            <button class="icon-button text-button" type="button" :title="deleteButtonTitle"
-              :disabled="!canEditRequest || !selectedDraftRowIds.length" @click="requestDeleteSelectedDraftRows">
+            <button
+              class="icon-button text-button"
+              type="button"
+              :title="deleteButtonTitle"
+              :disabled="!canEditRequest || !selectedDraftRowIds.length"
+              @click="requestDeleteSelectedDraftRows"
+            >
               <font-awesome-icon icon="fa-solid fa-trash" />
               <span>Delete Selected</span>
             </button>
           </div>
-          <div class="header-table-actions utility-actions" :class="{ hidden: !canEditRequest }"
-            title="Clipboard Actions">
-            <button class="icon-button text-button clipboard-button" type="button"
-              title="Cut the selected range to the clipboard" :disabled="!canEditRequest || !hasEditableRangeSelection"
-              @click="triggerTableCut">
+          <div
+            class="header-table-actions utility-actions"
+            :class="{ hidden: !canEditRequest }"
+            title="Clipboard Actions"
+          >
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
+              title="Cut the selected range to the clipboard"
+              :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTableCut"
+            >
               <font-awesome-icon icon="fa-solid fa-scissors" />
               <span>Cut</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
               title="Copy the selected range to the clipboard"
-              :disabled="!requestEditorDraftRows.length || !hasRangeSelection" @click="triggerTableCopy">
+              :disabled="!requestEditorDraftRows.length || !hasRangeSelection"
+              @click="triggerTableCopy"
+            >
               <font-awesome-icon icon="fa-solid fa-copy" />
               <span>Copy</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
               title="Paste clipboard data into the selected range"
-              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTablePaste">
+              :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTablePaste"
+            >
               <font-awesome-icon icon="fa-solid fa-paste" />
               <span>Paste</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
-              title="Clear values in the selected range" :disabled="!canEditRequest || !hasEditableRangeSelection"
-              @click="triggerTableClear">
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
+              title="Clear values in the selected range"
+              :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTableClear"
+            >
               <font-awesome-icon icon="fa-solid fa-eraser" />
               <span>Clear</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
               title="Apply the selected cell value to this column for all rows in this request"
-              :disabled="!canEditRequest || !isSingleCellSelected" @click="triggerApplyToAll">
+              :disabled="!canEditRequest || !isSingleCellSelected"
+              @click="triggerApplyToAll"
+            >
               <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
               <span>Apply to All</span>
             </button>
           </div>
           <div class="header-actions">
             <div class="shortcut-help">
-              <button class="help-button shortcut-help-button" type="button" @click="toggleShortcutHelp"
-                title="Keyboard shortcuts" :aria-expanded="showShortcutHelp.toString()"
-                aria-controls="shortcut-help-panel" aria-haspopup="dialog">
+              <button
+                class="help-button shortcut-help-button"
+                type="button"
+                @click="toggleShortcutHelp"
+                title="Keyboard shortcuts"
+                :aria-expanded="showShortcutHelp.toString()"
+                aria-controls="shortcut-help-panel"
+                aria-haspopup="dialog"
+              >
                 <font-awesome-icon icon="fa-solid fa-keyboard" />
               </button>
-              <div v-if="showShortcutHelp" id="shortcut-help-panel" class="shortcut-help-panel" role="dialog"
-                aria-label="Keyboard shortcuts">
+              <div
+                v-if="showShortcutHelp"
+                id="shortcut-help-panel"
+                class="shortcut-help-panel"
+                role="dialog"
+                aria-label="Keyboard shortcuts"
+              >
                 <div class="shortcut-help-title">Keyboard Shortcuts</div>
                 <ul class="shortcut-help-list">
                   <li>
@@ -132,41 +237,86 @@
                 </ul>
               </div>
             </div>
-            <button class="help-button" type="button" @click="openHelpPage" title="Open MAX page on Intranet">
+            <button
+              class="help-button"
+              type="button"
+              @click="openHelpPage"
+              title="Open MAX page on Intranet"
+            >
               ?
             </button>
-            <button class="popup-close-button" type="button" @click="requestCloseModal" :disabled="saving">
+            <button
+              class="popup-close-button"
+              type="button"
+              @click="requestCloseModal"
+              :disabled="saving"
+            >
               &times;
             </button>
           </div>
         </div>
 
         <div class="request-editor-body-left">
-          <div class="request-panel-container" :class="{ collapsed: isFormPanelCollapsed }">
-            <section class="request-form-panel" :class="{ collapsed: isFormPanelCollapsed }">
+          <div
+            class="request-panel-container"
+            :class="{ collapsed: isFormPanelCollapsed }"
+          >
+            <section
+              class="request-form-panel"
+              :class="{ collapsed: isFormPanelCollapsed }"
+            >
               <div class="request-form-actions">
-                <div class="controls-group" :class="{ 'view-only': isEditMode }">
-                  <label class="record-type-switch" title="Switch between Library and Sample entry modes">
-                    <input type="checkbox" :checked="requestEditorMode === 'sample'" :disabled="!canEditRequest"
-                      @change="requestRecordTypeSwitch($event)" />
+                <div
+                  class="controls-group"
+                  :class="{ 'view-only': isEditMode }"
+                >
+                  <label
+                    class="record-type-switch"
+                    title="Switch between Library and Sample entry modes"
+                  >
+                    <input
+                      type="checkbox"
+                      :checked="requestEditorMode === 'sample'"
+                      :disabled="!canEditRequest"
+                      @change="requestRecordTypeSwitch($event)"
+                    />
                     <span class="slider">
-                      <span class="option" :class="{ active: requestEditorMode === 'library' }">
+                      <span
+                        class="option"
+                        :class="{ active: requestEditorMode === 'library' }"
+                      >
                         Library
                       </span>
-                      <span class="option" :class="{ active: requestEditorMode === 'sample' }">
+                      <span
+                        class="option"
+                        :class="{ active: requestEditorMode === 'sample' }"
+                      >
                         Sample
                       </span>
                     </span>
                   </label>
                 </div>
-                <div v-if="requestEditorMode === 'sample' && !isEditMode" class="download-buttons">
-                  <a class="download-button" :href="gmoFormUrl" target="_blank" rel="noopener"
-                    title="Download Formblatt S1 (GMO)">
+                <div
+                  v-if="requestEditorMode === 'sample' && !isEditMode"
+                  class="download-buttons"
+                >
+                  <a
+                    class="download-button"
+                    :href="gmoFormUrl"
+                    target="_blank"
+                    rel="noopener"
+                    title="Download Formblatt S1 (GMO)"
+                  >
                     <font-awesome-icon icon="fa-solid fa-download" />
                     <span>Formblatt S1</span>
                   </a>
-                  <a class="download-button" :href="relacsDownloadUrl" target="_blank" rel="noopener"
-                    title="Download RELACS Pellets Abs form">
+                  <a
+                    class="download-button"
+                    :href="relacsDownloadUrl"
+                    target="_blank"
+                    rel="noopener"
+                    title="Download RELACS Pellets Abs form"
+                  >
                     <font-awesome-icon icon="fa-solid fa-download" />
                     <span>RELACS Pellets Abs</span>
                   </a>
@@ -177,10 +327,14 @@
                 <span>
                   Cost Unit<span v-if="!isStaffUser" class="required">*</span>
                 </span>
-                <select v-model="newRequest.cost_unit" :disabled="!canEditRequest" :class="[
-                  costUnitError ? 'input-error' : '',
-                  !newRequest.cost_unit ? 'placeholder' : ''
-                ]">
+                <select
+                  v-model="newRequest.cost_unit"
+                  :disabled="!canEditRequest"
+                  :class="[
+                    costUnitError ? 'input-error' : '',
+                    !newRequest.cost_unit ? 'placeholder' : ''
+                  ]"
+                >
                   <option value="" disabled>Select Cost Unit</option>
                   <option v-for="cu in costUnits" :key="cu.id" :value="cu.id">
                     {{ cu.name }}
@@ -192,14 +346,19 @@
               </label>
 
               <label class="field-block">
-                <span>
-                  Description<span class="required">*</span>
-                </span>
-                <textarea v-model="newRequest.description" class="description-textarea" rows="6"
-                  :placeholder="isEditMode
-                    ? 'Description not provided'
-                    : 'Provide a brief description of your project, including any details important for handling and documentation. Indicate whether you have a backup of your study material (Yes/No).'"
-                  :class="{ 'input-error': descriptionError }" :readonly="!canEditRequest"></textarea>
+                <span> Description<span class="required">*</span> </span>
+                <textarea
+                  v-model="newRequest.description"
+                  class="description-textarea"
+                  rows="6"
+                  :placeholder="
+                    isEditMode
+                      ? 'Description not provided'
+                      : 'Provide a brief description of your project, including any details important for handling and documentation. Indicate whether you have a backup of your study material (Yes/No).'
+                  "
+                  :class="{ 'input-error': descriptionError }"
+                  :readonly="!canEditRequest"
+                ></textarea>
                 <div v-if="descriptionError" class="field-error">
                   {{ descriptionError }}
                 </div>
@@ -211,16 +370,34 @@
                     <span>Files</span>
                     <small>Upload request related documents.</small>
                   </div>
-                  <button v-if="canEditRequest" class="header-button ghost" type="button" :disabled="!canEditRequest"
-                    @click="triggerRequestFileUpload">
-                    <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+                  <button
+                    v-if="canEditRequest"
+                    class="header-button ghost"
+                    type="button"
+                    :disabled="!canEditRequest"
+                    @click="triggerRequestFileUpload"
+                  >
+                    <font-awesome-icon
+                      icon="fa-solid fa-square-plus"
+                      style="color: white"
+                    />
                     <span>Add Files</span>
                   </button>
-                  <input ref="requestFileInput" type="file" multiple @change="handleRequestFileUpload"
-                    style="display: none" />
+                  <input
+                    ref="requestFileInput"
+                    type="file"
+                    multiple
+                    @change="handleRequestFileUpload"
+                    style="display: none"
+                  />
                 </div>
                 <div class="files-table-wrapper">
-                  <table class="files-table" :class="{ 'files-table-empty': !uploadedRequestFiles.length }">
+                  <table
+                    class="files-table"
+                    :class="{
+                      'files-table-empty': !uploadedRequestFiles.length
+                    }"
+                  >
                     <thead>
                       <tr>
                         <th style="width: 46%">Name</th>
@@ -230,24 +407,44 @@
                     </thead>
                     <tbody>
                       <tr v-if="!uploadedRequestFiles.length">
-                        <td colspan="3" class="empty-cell">No files uploaded yet.</td>
+                        <td colspan="3" class="empty-cell">
+                          No files uploaded yet.
+                        </td>
                       </tr>
                       <tr v-for="file in uploadedRequestFiles" :key="file.id">
                         <td class="file-name-cell">
-                          <span class="file-name-text" :title="file.name">{{ file.name }}</span>
+                          <span class="file-name-text" :title="file.name">{{
+                            file.name
+                          }}</span>
                         </td>
-                        <td class="file-size-cell" :title="formatFileSize(file.size)">
+                        <td
+                          class="file-size-cell"
+                          :title="formatFileSize(file.size)"
+                        >
                           {{ formatFileSize(file.size) }}
                         </td>
                         <td class="actions-cell">
-                          <button type="button" class="icon-action"
-                            :title="file.path ? `Download ${file.name}` : 'Download unavailable'" :disabled="!file.path"
-                            @click="downloadUploadedFile(file)">
+                          <button
+                            type="button"
+                            class="icon-action"
+                            :title="
+                              file.path
+                                ? `Download ${file.name}`
+                                : 'Download unavailable'
+                            "
+                            :disabled="!file.path"
+                            @click="downloadUploadedFile(file)"
+                          >
                             <font-awesome-icon icon="fa-solid fa-download" />
                           </button>
-                          <button v-if="canEditRequest" type="button" class="icon-action danger"
-                            :title="`Remove ${file.name}`" :disabled="!canEditRequest"
-                            @click="requestRemoveUploadedFile(file)">
+                          <button
+                            v-if="canEditRequest"
+                            type="button"
+                            class="icon-action danger"
+                            :title="`Remove ${file.name}`"
+                            :disabled="!canEditRequest"
+                            @click="requestRemoveUploadedFile(file)"
+                          >
                             <font-awesome-icon icon="fa-solid fa-xmark" />
                           </button>
                         </td>
@@ -256,19 +453,27 @@
                   </table>
                 </div>
               </div>
-
-
             </section>
           </div>
         </div>
 
         <div class="request-editor-body-right">
-          <section class="records-panel" :class="{ expanded: isFormPanelCollapsed }">
+          <section
+            class="records-panel"
+            :class="{ expanded: isFormPanelCollapsed }"
+          >
             <div class="draft-table" ref="draftTableWrapper">
-              <TabulatorTable ref="requestEditorDraftTableRef" tableId="requestEditorDraftTable"
-                :rowData="requestEditorDraftRows" :columnDefs="requestEditorColumns"
-                :tableOptions="requestEditorDraftTableOptions" :groupBy="null" :groupSort="null" :groupStartOpen="false"
-                :enableDefaultFilters="false" />
+              <TabulatorTable
+                ref="requestEditorDraftTableRef"
+                tableId="requestEditorDraftTable"
+                :rowData="requestEditorDraftRows"
+                :columnDefs="requestEditorColumns"
+                :tableOptions="requestEditorDraftTableOptions"
+                :groupBy="null"
+                :groupSort="null"
+                :groupStartOpen="false"
+                :enableDefaultFilters="false"
+              />
             </div>
           </section>
         </div>
@@ -278,18 +483,36 @@
             <span>{{ footerLabel }}</span>
           </div>
           <div class="footer-actions">
-            <button class="popup-button secondary" type="button" @click="requestCloseModal" :disabled="saving">
+            <button
+              class="popup-button secondary"
+              type="button"
+              @click="requestCloseModal"
+              :disabled="saving"
+            >
               Cancel
             </button>
-            <button class="popup-button yes-button" type="button"
-              :disabled="isRequestSaving || (isEditMode && isRequestLoading) || !canEditRequest" @click="saveRequest">
+            <button
+              class="popup-button yes-button"
+              type="button"
+              :disabled="
+                isRequestSaving ||
+                (isEditMode && isRequestLoading) ||
+                !canEditRequest
+              "
+              @click="saveRequest"
+            >
               <span v-if="isRequestSaving">Saving...</span>
               <span v-else>{{ primaryActionLabel }}</span>
             </button>
           </div>
         </div>
       </div>
-      <div v-if="saving" class="saving-overlay" aria-live="polite" aria-busy="true">
+      <div
+        v-if="saving"
+        class="saving-overlay"
+        aria-live="polite"
+        aria-busy="true"
+      >
         <div class="saving-card">
           <div class="spinner"></div>
           <p>Saving request, please wait...</p>
@@ -297,55 +520,98 @@
       </div>
     </div>
 
-    <div v-if="showToggleConfirm" class="confirm-overlay" @keydown="handleConfirmKeydown" tabindex="0">
+    <div
+      v-if="showToggleConfirm"
+      class="confirm-overlay"
+      @keydown="handleConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">Switch record type?</span>
-          <button class="popup-close-button" type="button" @click="cancelToggleSwitch">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelToggleSwitch"
+          >
             &times;
           </button>
         </div>
         <div class="confirm-body">
-          Switching between Library and Sample will clear all {{ switchClearLabel }} you have added.
-          Do you want to continue?
+          Switching between Library and Sample will clear all
+          {{ switchClearLabel }} you have added. Do you want to continue?
         </div>
         <div class="confirm-footer">
-          <button class="popup-button" type="button" @click="cancelToggleSwitch">
+          <button
+            class="popup-button"
+            type="button"
+            @click="cancelToggleSwitch"
+          >
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmToggleSwitch">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmToggleSwitch"
+          >
             OK
           </button>
         </div>
       </div>
     </div>
-    <div v-if="showDeleteConfirm" class="confirm-overlay" @keydown="handleDeleteConfirmKeydown" tabindex="0">
+    <div
+      v-if="showDeleteConfirm"
+      class="confirm-overlay"
+      @keydown="handleDeleteConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">{{ deleteConfirmTitle }}</span>
-          <button class="popup-close-button" type="button" @click="cancelDeleteSelectedRows">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelDeleteSelectedRows"
+          >
             &times;
           </button>
         </div>
         <div class="confirm-body">
-          This will permanently remove {{ selectedDraftRowIds.length }} {{ deleteConfirmNoun }}.
-          Do you want to continue?
+          This will permanently remove {{ selectedDraftRowIds.length }}
+          {{ deleteConfirmNoun }}. Do you want to continue?
         </div>
         <div class="confirm-footer">
-          <button class="popup-button" type="button" @click="cancelDeleteSelectedRows">
+          <button
+            class="popup-button"
+            type="button"
+            @click="cancelDeleteSelectedRows"
+          >
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmDeleteSelectedRows">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmDeleteSelectedRows"
+          >
             OK
           </button>
         </div>
       </div>
     </div>
-    <div v-if="showCloseConfirm" class="confirm-overlay" @keydown="handleCloseConfirmKeydown" tabindex="0">
+    <div
+      v-if="showCloseConfirm"
+      class="confirm-overlay"
+      @keydown="handleCloseConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">Discard new request?</span>
-          <button class="popup-close-button" type="button" @click="cancelCloseModal">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelCloseModal"
+          >
             &times;
           </button>
         </div>
@@ -356,28 +622,50 @@
           <button class="popup-button" type="button" @click="cancelCloseModal">
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmCloseModal">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmCloseModal"
+          >
             OK
           </button>
         </div>
       </div>
     </div>
-    <div v-if="showFileDeleteConfirm" class="confirm-overlay" @keydown="handleFileDeleteConfirmKeydown" tabindex="0">
+    <div
+      v-if="showFileDeleteConfirm"
+      class="confirm-overlay"
+      @keydown="handleFileDeleteConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">Delete file?</span>
-          <button class="popup-close-button" type="button" @click="cancelFileDelete">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelFileDelete"
+          >
             &times;
           </button>
         </div>
         <div class="confirm-body">
-          Are you sure you want to remove "{{ pendingFileDelete?.name }}" from this request?
+          Are you sure you want to remove "{{ pendingFileDelete?.name }}" from
+          this request?
         </div>
         <div class="confirm-footer">
-          <button class="popup-button secondary" type="button" @click="cancelFileDelete">
+          <button
+            class="popup-button secondary"
+            type="button"
+            @click="cancelFileDelete"
+          >
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmFileDelete">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmFileDelete"
+          >
             Remove
           </button>
         </div>
@@ -546,7 +834,7 @@ export default {
       isSingleCellSelected: false,
       rangeListenersAttached: false,
       rangeSelectionHandler: null,
-      rangeSelectionElement: null,
+      rangeSelectionElement: null
     };
   },
   watch: {
@@ -659,7 +947,9 @@ export default {
         : { singular: "sample", plural: "samples" };
     },
     addButtonLabel() {
-      return this.requestEditorMode === "library" ? "Add Libraries" : "Add Samples";
+      return this.requestEditorMode === "library"
+        ? "Add Libraries"
+        : "Add Samples";
     },
     addButtonTitle() {
       return this.requestEditorMode === "library"
@@ -678,7 +968,9 @@ export default {
     },
     deleteConfirmNoun() {
       const count = this.selectedDraftRowIds.length;
-      return count === 1 ? this.recordLabelSet.singular : this.recordLabelSet.plural;
+      return count === 1
+        ? this.recordLabelSet.singular
+        : this.recordLabelSet.plural;
     },
     switchClearLabel() {
       return this.recordLabelSet.plural;
@@ -743,15 +1035,15 @@ export default {
       const columns =
         this.requestEditorMode === "library"
           ? getRequestEditorLibraryColumns(
-            getInstance,
-            libraryEditors,
-            onSelectionChange
-          )
+              getInstance,
+              libraryEditors,
+              onSelectionChange
+            )
           : getRequestEditorSampleColumns(
-            getInstance,
-            sampleEditors,
-            onSelectionChange
-          );
+              getInstance,
+              sampleEditors,
+              onSelectionChange
+            );
 
       if (!this.canEditRequest) {
         return applyReadOnly(columns);
@@ -788,14 +1080,16 @@ export default {
         },
         handlePasteApplied: (rows) => vm.handlePasteApplied(rows),
         handleDeleteApplied: () => {
-          const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+          const table =
+            this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
           const rows = table?.getRows?.() || [];
           rows.forEach((row) => row.reformat?.());
           this.revalidateDraftRows();
         },
         handleRangeCleared: (payload = []) => {
           if (!Array.isArray(payload)) return;
-          const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+          const table =
+            this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
           const tableComponent = this.$refs.requestEditorDraftTableRef;
           const indexTypesToFetch = new Set();
           tableComponent?.beginBulkMutation?.();
@@ -812,11 +1106,7 @@ export default {
                 null;
               if (rowComp) {
                 const liveRowData = rowComp?.getData?.() || {};
-                if (
-                  this.isEditMode &&
-                  liveRowData?.tempId &&
-                  liveRowData?.pk
-                ) {
+                if (this.isEditMode && liveRowData?.tempId && liveRowData?.pk) {
                   this.markDirtyFields(liveRowData.tempId, fields);
                 }
                 const resetResult = this.applyDependentResetsForChangedFields(
@@ -903,9 +1193,7 @@ export default {
     findIndexOptionByValue(options = [], value) {
       if (value === "" || value === undefined || value === null) return null;
       const match = String(value);
-      return (
-        options.find((option) => String(option.value) === match) || null
-      );
+      return options.find((option) => String(option.value) === match) || null;
     },
     fieldHasValue(value) {
       if (value === null || value === undefined) return false;
@@ -934,9 +1222,14 @@ export default {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const list = Array.isArray(rows) ? rows : [];
       list.forEach((row) => {
-        const rowRef = row?.getData ? row : table?.getRow?.(row?.tempId) || null;
+        const rowRef = row?.getData
+          ? row
+          : table?.getRow?.(row?.tempId) || null;
         const rowData = rowRef?.getData ? rowRef.getData() : row;
-        if (!rowData?.index_type || (!rowData?.index_i7 && !rowData?.index_i5)) {
+        if (
+          !rowData?.index_type ||
+          (!rowData?.index_i7 && !rowData?.index_i5)
+        ) {
           return;
         }
         const typeKey = String(rowData.index_type);
@@ -1094,16 +1387,17 @@ export default {
       const costUnitRaw = this.newRequest.cost_unit || "";
       const description = (this.newRequest.description || "").trim();
       if (this.isEditMode) {
-        const hasDirtyTableEdits = Object.values(this.dirtyFieldsByRowId || {}).some(
-          (fields) => fields instanceof Set ? fields.size > 0 : Boolean(fields)
+        const hasDirtyTableEdits = Object.values(
+          this.dirtyFieldsByRowId || {}
+        ).some((fields) =>
+          fields instanceof Set ? fields.size > 0 : Boolean(fields)
         );
         if (hasDirtyTableEdits) {
           return true;
         }
         const snapshot = this.editSnapshot || {};
         const baseCostUnitRaw = snapshot.cost_unit || "";
-        const costUnit =
-          costUnitRaw === "" ? "" : String(costUnitRaw);
+        const costUnit = costUnitRaw === "" ? "" : String(costUnitRaw);
         const baseCostUnit =
           baseCostUnitRaw === "" ? "" : String(baseCostUnitRaw);
         const baseDescription = (snapshot.description || "").trim();
@@ -1119,7 +1413,10 @@ export default {
         );
       }
       if (costUnitRaw || description) return true;
-      if (this.uploadedRequestFiles.length || this.uploadedRequestFileIds.length)
+      if (
+        this.uploadedRequestFiles.length ||
+        this.uploadedRequestFileIds.length
+      )
         return true;
       return this.getDraftTableRows().length > 0;
     },
@@ -1236,7 +1533,10 @@ export default {
           const before = previousValueByRowId.get(rowKey);
           const after = rowData?.[changedField];
           if (before === after) return;
-          const resetResult = this.applyDependentResetsForChangedFields(rowComp, [changedField]);
+          const resetResult = this.applyDependentResetsForChangedFields(
+            rowComp,
+            [changedField]
+          );
           if (resetResult?.indexTypeId) {
             indexTypesToFetch.add(String(resetResult.indexTypeId));
           }
@@ -1381,9 +1681,7 @@ export default {
           !metaFiles.length ||
           metaFiles.some(
             (file) =>
-              !file?.path ||
-              file?.size === undefined ||
-              file?.size === null
+              !file?.path || file?.size === undefined || file?.size === null
           );
         const fetchFiles = needsFileDetails;
 
@@ -1393,8 +1691,8 @@ export default {
             : Promise.resolve({ data: meta }),
           fetchFiles
             ? axiosRef.get(
-              `${urlStringStart}/api/requests/${this.requestId}/get_files/`
-            )
+                `${urlStringStart}/api/requests/${this.requestId}/get_files/`
+              )
             : Promise.resolve({ data: meta?.files || [] }),
           axiosRef.get(`${urlStringStart}/api/libraries/`, {
             params: { request_id: this.requestId }
@@ -1440,19 +1738,20 @@ export default {
           library: libraries.length > 0,
           sample: samples.length > 0
         };
-        const initialMode =
-          this.editRecordTypesAvailable.library
-            ? "library"
-            : this.editRecordTypesAvailable.sample
-              ? "sample"
-              : "library";
+        const initialMode = this.editRecordTypesAvailable.library
+          ? "library"
+          : this.editRecordTypesAvailable.sample
+            ? "sample"
+            : "library";
         this.requestEditorMode = initialMode;
         this.loadEditRecordsForMode(initialMode);
         const indexTypes = [
           ...new Set(
             libraries
               .map((record) => record?.index_type)
-              .filter((value) => value !== null && value !== undefined && value !== "")
+              .filter(
+                (value) => value !== null && value !== undefined && value !== ""
+              )
               .map((value) => String(value))
           )
         ];
@@ -1600,7 +1899,10 @@ export default {
     triggerTableCopy() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const element = document.activeElement;
-      if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA")) {
+      if (
+        element &&
+        (element.tagName === "INPUT" || element.tagName === "TEXTAREA")
+      ) {
         element.blur();
       }
       table?.copyToClipboard?.();
@@ -1614,7 +1916,10 @@ export default {
     triggerTablePaste() {
       const tableComponent = this.$refs.requestEditorDraftTableRef;
       const element = document.activeElement;
-      if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA")) {
+      if (
+        element &&
+        (element.tagName === "INPUT" || element.tagName === "TEXTAREA")
+      ) {
         element.blur();
       }
       tableComponent?.triggerClipboardPaste?.();
@@ -1623,10 +1928,16 @@ export default {
     triggerTableClear() {
       const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
       const element = document.activeElement;
-      if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA")) {
+      if (
+        element &&
+        (element.tagName === "INPUT" || element.tagName === "TEXTAREA")
+      ) {
         element.blur();
       }
-      const keyEvent = new KeyboardEvent("keydown", { key: "Delete", bubbles: true });
+      const keyEvent = new KeyboardEvent("keydown", {
+        key: "Delete",
+        bubbles: true
+      });
       table?.element?.dispatchEvent?.(keyEvent);
       this.restoreDraftTableFocus();
     },
@@ -1691,7 +2002,11 @@ export default {
       this.rangeListenersAttached = true;
     },
     unbindRangeSelectionListeners() {
-      if (!this.rangeListenersAttached || !this.rangeSelectionElement || !this.rangeSelectionHandler) {
+      if (
+        !this.rangeListenersAttached ||
+        !this.rangeSelectionElement ||
+        !this.rangeSelectionHandler
+      ) {
         this.rangeListenersAttached = false;
         return;
       }
@@ -1719,10 +2034,15 @@ export default {
           name: ""
         };
         const row =
-          this.requestEditorMode === "sample" ? { ...baseRow, gmo: null } : baseRow;
+          this.requestEditorMode === "sample"
+            ? { ...baseRow, gmo: null }
+            : baseRow;
         newRows.push(row);
       }
-      this.requestEditorDraftRows = [...this.requestEditorDraftRows, ...newRows];
+      this.requestEditorDraftRows = [
+        ...this.requestEditorDraftRows,
+        ...newRows
+      ];
       this.$nextTick(() => this.revalidateDraftRows());
       if (total > 5) {
         this.addRowCount = 0;
@@ -1778,7 +2098,8 @@ export default {
         this.validDraftCount = 0;
         this.draftRowCounter = 0;
         this.$nextTick(() => {
-          const table = this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
+          const table =
+            this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
           table?.clearData?.();
           this.applyValidationStyling();
         });
@@ -1910,11 +2231,19 @@ export default {
         if (!rowComp) return;
         const rowData = rowComp.getData?.() || {};
         const rowId = rowData?.tempId || null;
-        if (this.isEditMode && this.allowDirtyTracking && rowId && rowData?.pk) {
+        if (
+          this.isEditMode &&
+          this.allowDirtyTracking &&
+          rowId &&
+          rowData?.pk
+        ) {
           this.markDirtyFields(rowId, fields);
           hasAnyUpdates = true;
         }
-        const resetResult = this.applyDependentResetsForChangedFields(rowComp, fields);
+        const resetResult = this.applyDependentResetsForChangedFields(
+          rowComp,
+          fields
+        );
         if (resetResult?.updated) {
           hasAnyUpdates = true;
         }
@@ -2156,7 +2485,9 @@ export default {
       const isExistingRow = this.isEditMode && rowData?.pk;
       const dirtyFields = rowId ? this.dirtyFieldsByRowId[rowId] : null;
       const hasDirtyFields =
-        dirtyFields instanceof Set ? dirtyFields.size > 0 : Boolean(dirtyFields);
+        dirtyFields instanceof Set
+          ? dirtyFields.size > 0
+          : Boolean(dirtyFields);
       const hasScope =
         this.isEditMode &&
         rowId &&
@@ -2219,7 +2550,9 @@ export default {
       const isExistingRow = this.isEditMode && rowData?.pk;
       const dirtyFields = rowId ? this.dirtyFieldsByRowId[rowId] : null;
       const hasDirtyFields =
-        dirtyFields instanceof Set ? dirtyFields.size > 0 : Boolean(dirtyFields);
+        dirtyFields instanceof Set
+          ? dirtyFields.size > 0
+          : Boolean(dirtyFields);
       const rowErrors = (rowId && this.draftValidationState[rowId]) || {};
       const hasErrors =
         !(isExistingRow && !hasDirtyFields) &&
@@ -2300,10 +2633,7 @@ export default {
         field === "gmo" &&
         !this.isGmoAllowedInputType(rowData.nucleic_acid_type)
       ) {
-        showNotification(
-          "GMO only editable for Cell Suspension.",
-          "warning"
-        );
+        showNotification("GMO only editable for Cell Suspension.", "warning");
         return false;
       }
       return true;
@@ -2486,14 +2816,17 @@ export default {
     },
     isOtherIndexType(rowData = {}) {
       const typeId = rowData?.index_type;
-      if (typeId === null || typeId === undefined || typeId === "") return false;
+      if (typeId === null || typeId === undefined || typeId === "")
+        return false;
       const typeKey = String(typeId);
       const match = this.indexTypesList.find((item) => {
         const key =
           item?.id ?? item?.value ?? item?.pk ?? item?.name ?? item?.label;
         return String(key) === typeKey;
       });
-      const typeName = String(match?.name ?? match?.label ?? "").trim().toLowerCase();
+      const typeName = String(match?.name ?? match?.label ?? "")
+        .trim()
+        .toLowerCase();
       return typeName === "other";
     },
     isIndexValueAllowedForType(field, rowData = {}, value) {
@@ -2514,8 +2847,8 @@ export default {
       const editorParams =
         typeof columnDef.editorParams === "function"
           ? columnDef.editorParams({
-            getRow: () => ({ getData: () => rowData })
-          })
+              getRow: () => ({ getData: () => rowData })
+            })
           : columnDef.editorParams || {};
       let options = [];
       if (Array.isArray(editorParams?.values)) {
@@ -2582,14 +2915,22 @@ export default {
           }));
         };
         const i7Options = formatOptions(i7Res).sort((a, b) =>
-          String(a.label || "").localeCompare(String(b.label || ""), undefined, {
-            sensitivity: "base"
-          })
+          String(a.label || "").localeCompare(
+            String(b.label || ""),
+            undefined,
+            {
+              sensitivity: "base"
+            }
+          )
         );
         const i5Options = formatOptions(i5Res).sort((a, b) =>
-          String(a.label || "").localeCompare(String(b.label || ""), undefined, {
-            sensitivity: "base"
-          })
+          String(a.label || "").localeCompare(
+            String(b.label || ""),
+            undefined,
+            {
+              sensitivity: "base"
+            }
+          )
         );
         const pairsList = pairsRes?.data?.data || pairsRes?.data || [];
         const pairsMap = {};
@@ -2993,10 +3334,7 @@ export default {
     },
     downloadUploadedFile(file) {
       if (!file?.path) {
-        showNotification(
-          "Download link unavailable for this file.",
-          "warning"
-        );
+        showNotification("Download link unavailable for this file.", "warning");
         return;
       }
       const path = String(file.path || "");
@@ -3075,7 +3413,10 @@ export default {
         );
         if (response?.data?.success) {
           const ids = response.data.fileIds || [];
-          this.uploadedRequestFileIds = [...this.uploadedRequestFileIds, ...ids];
+          this.uploadedRequestFileIds = [
+            ...this.uploadedRequestFileIds,
+            ...ids
+          ];
           await this.fetchUploadedFilesDetails();
           showNotification("Files uploaded successfully.", "success");
         } else {
@@ -3100,9 +3441,12 @@ export default {
         const params = {
           user_id: targetUserId
         };
-        const response = await axiosRef.get(`${urlStringStart}/api/cost_units/`, {
-          params
-        });
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/cost_units/`,
+          {
+            params
+          }
+        );
         this.costUnits = (response.data || []).sort((a, b) =>
           String(a.name || "").localeCompare(String(b.name || ""), undefined, {
             sensitivity: "base"
@@ -3137,7 +3481,8 @@ export default {
         };
       });
 
-      const currentMode = this.requestEditorMode === "sample" ? "sample" : "library";
+      const currentMode =
+        this.requestEditorMode === "sample" ? "sample" : "library";
       const currentResult = results[currentMode];
       if (currentResult) {
         this.draftValidationState = currentResult.validations;
@@ -3191,10 +3536,7 @@ export default {
         (this.editRecordsByType.library || []).length +
         (this.editRecordsByType.sample || []).length;
       if (!totalRecords) {
-        showNotification(
-          "Request has no libraries or samples.",
-          "warning"
-        );
+        showNotification("Request has no libraries or samples.", "warning");
         return;
       }
       const validationStatus = this.validateEditRecordsForSave();
@@ -3235,9 +3577,13 @@ export default {
             }));
             const formData = new FormData();
             formData.append("data", JSON.stringify(payloads));
-            await axiosRef.post(`${urlStringStart}/api/${endpoint}/edit/`, formData, {
-              headers: { "Content-Type": "multipart/form-data" }
-            });
+            await axiosRef.post(
+              `${urlStringStart}/api/${endpoint}/edit/`,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" }
+              }
+            );
           }
 
           if (newRows.length) {
@@ -3251,7 +3597,9 @@ export default {
               const row = newRows[index];
               if (row) {
                 row.pk = record.pk;
-                row.record_type = record.record_type || (mode === "sample" ? "Sample" : "Library");
+                row.record_type =
+                  record.record_type ||
+                  (mode === "sample" ? "Sample" : "Library");
                 row.barcode = record.barcode;
               }
             });
@@ -3340,7 +3688,10 @@ export default {
         return;
       }
       if (this.validDraftCount !== rowCount) {
-        showNotification("Resolve all validation errors before saving.", "warning");
+        showNotification(
+          "Resolve all validation errors before saving.",
+          "warning"
+        );
         return;
       }
       const drafts = this.getDraftTableRows();
@@ -3803,7 +4154,6 @@ export default {
   padding: 2px 6px;
   font-size: 12px;
   text-align: right;
-
 }
 
 .add-count-input:focus {
@@ -3999,7 +4349,10 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
-  transition: width 0.25s ease, padding 0.25s ease, opacity 0.25s ease;
+  transition:
+    width 0.25s ease,
+    padding 0.25s ease,
+    opacity 0.25s ease;
 }
 
 .request-panel-container {
@@ -4162,7 +4515,7 @@ export default {
   gap: 3px;
 }
 
-.files-table td.actions-cell button+button {
+.files-table td.actions-cell button + button {
   margin-left: 4px;
 }
 
@@ -4210,8 +4563,6 @@ export default {
   color: #a3272b;
 }
 
-
-
 .download-buttons {
   display: inline-flex;
   align-items: center;
@@ -4238,7 +4589,10 @@ export default {
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
   flex: 1 1 0;
   min-width: 0;
   max-width: 100%;
@@ -4294,7 +4648,6 @@ export default {
   border-right: 1px solid #e5e7eb;
   z-index: 3;
 }
-
 
 .request-form-actions {
   display: flex;
@@ -4354,7 +4707,7 @@ export default {
   z-index: 0;
 }
 
-.record-type-switch input:checked+.slider::before {
+.record-type-switch input:checked + .slider::before {
   transform: translateX(100%);
 }
 
@@ -4464,9 +4817,10 @@ export default {
 <!--
 refactor/simplify all the files
 unit test all the pages
-3 email tasks
 
 lag usability check for opening request editor with large requests, and expanding request by clicking on the header
-layout check for attachments window and file upload check in edit request mode
 table edit performance for large requests
+new help section on hover in add/edit request window
+add request window/edit request window: move the library and sample toggle to right plane, on left to the input of add number of libraries/samples
+when editing a request, uploading a file should show the file after file uploaded successfully. the file shows when a file is uploaded in add request popup.
 -->

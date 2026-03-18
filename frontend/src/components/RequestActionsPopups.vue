@@ -413,6 +413,21 @@
     @dragleave.prevent="handleAttachmentsDragLeave"
     @drop.prevent="handleAttachmentsDrop"
   >
+    <div v-if="canEditAttachments" class="drag-drop-indicator">
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 200px;
+        "
+      >
+        <p>
+          Drop <span style="font-weight: bold">request related documents</span>
+          here to upload
+        </p>
+      </div>
+    </div>
     <div class="popup-container request-action-modal attachments-modal">
       <div class="popup-header">
         <div class="popup-title">
@@ -1316,16 +1331,22 @@ export default {
 <style scoped>
 .request-action-modal {
   overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.popup-overlay.drag-over {
+  border: none;
 }
 
 .popup-overlay.drag-over::after {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
-  background: rgba(15, 118, 110, 0.08);
-  border: 2px dashed #0f766e;
+  background-color: #00bfff36;
+  border: 2px dashed #2196f3;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .request-action-modal.attachments-modal {
