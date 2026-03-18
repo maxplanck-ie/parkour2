@@ -4820,7 +4820,9 @@ unit test all the pages
 
 lag usability check for opening request editor with large requests, and expanding request by clicking on the header
 table edit performance for large requests
+
 new help section on hover in add/edit request window
-add request window/edit request window: move the library and sample toggle to right plane, on left to the input of add number of libraries/samples
-when editing a request, uploading a file should show the file after file uploaded successfully. the file shows when a file is uploaded in add request popup.
+in add request window/edit request window: move the library and sample toggle to right plane, on left to the input of add number of libraries/samples
+in add request window/edit request window: when we upload a file or delete a files and save the header of request does not change the icon of attachments from green/red
+when editing a request, uploading a file should show the file after file uploaded successfully. the file shows when a file is uploaded in add request popup
 -->
