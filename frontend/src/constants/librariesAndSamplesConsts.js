@@ -117,12 +117,11 @@ export function librariesAndSamplesGroupHeader(
 
   const approvalTag = showApprovalTag
     ? `
-      <div title="Solicit Approval via Email" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'requestApproval')">
+      <div title="Approval Required: Solicit Approval via Email" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'requestApproval')">
         <img class="group-action-icon-img" src="${iconSolicitApproval}" alt="Solicit Approval" />
       </div>
     `
     : "";
-
 
   return `
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
@@ -144,7 +143,7 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${staffActions}
-      ${showStaffActions ? '<span class="group-action-separator"></span>' : ''}
+      ${showStaffActions ? '<span class="group-action-separator"></span>' : ""}
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
       </div>
@@ -701,7 +700,7 @@ export function librariesAndSamplesColumnDefs(
     allowApplyToAll: false,
     blockActionsOnDisabledCells: true,
     overrideExisting: true,
-    skipFields: new Set(["selected"]),
+    skipFields: new Set(["selected"])
   });
 }
 
