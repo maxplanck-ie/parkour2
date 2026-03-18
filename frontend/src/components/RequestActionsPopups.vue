@@ -1,22 +1,55 @@
 <template>
-  <div v-if="activeAction === 'uploadSigned'" class="popup-overlay" :class="{ 'drag-over': isUploadDragOver }"
-    tabindex="0" @keydown="handlePopupKeydown" @dragover.prevent="handleUploadDragOver"
-    @dragenter.prevent="handleUploadDragEnter" @dragleave.prevent="handleUploadDragLeave"
-    @drop.prevent="handleUploadDrop">
-    <div class="popup-container request-action-modal" :style="{ width: '520px' }">
+  <div
+    v-if="activeAction === 'uploadSigned'"
+    class="popup-overlay"
+    :class="{ 'drag-over': isUploadDragOver }"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+    @dragover.prevent="handleUploadDragOver"
+    @dragenter.prevent="handleUploadDragEnter"
+    @dragleave.prevent="handleUploadDragLeave"
+    @drop.prevent="handleUploadDrop"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '520px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_upload_signed_request.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_upload_signed_request.svg"
+            alt=""
+          />
           <span>Upload file</span>
         </div>
-        <button class="popup-close-button" type="button" @click="close">&times;</button>
+        <button class="popup-close-button" type="button" @click="close">
+          &times;
+        </button>
       </div>
       <div class="popup-body">
         <div class="upload-row">
           <label class="upload-label">File:</label>
-          <input class="upload-input" type="text" :value="uploadFileName" readonly placeholder="Select a file" />
-          <button class="popup-button secondary" type="button" @click="triggerUploadInput">Select</button>
-          <input ref="uploadInput" type="file" class="hidden-input" @change="handleUploadSelection" />
+          <input
+            class="upload-input"
+            type="text"
+            :value="uploadFileName"
+            readonly
+            placeholder="Select a file"
+          />
+          <button
+            class="popup-button secondary"
+            type="button"
+            @click="triggerUploadInput"
+          >
+            Select
+          </button>
+          <input
+            ref="uploadInput"
+            type="file"
+            class="hidden-input"
+            @change="handleUploadSelection"
+          />
         </div>
         <div class="upload-drop-zone" :class="{ active: isUploadDragOver }">
           <div class="drop-title">Drag &amp; drop the signed request here</div>
@@ -24,36 +57,60 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultUploadButton" class="popup-button yes-button" type="button" :disabled="uploadBusy"
-          @click="submitSignedRequest">
+        <button
+          ref="defaultUploadButton"
+          class="popup-button yes-button"
+          type="button"
+          :disabled="uploadBusy"
+          @click="submitSignedRequest"
+        >
           <span v-if="uploadBusy">Uploading...</span>
           <span v-else>Upload</span>
         </button>
-        <button class="popup-button secondary" type="button" @click="close">Cancel</button>
+        <button class="popup-button secondary" type="button" @click="close">
+          Cancel
+        </button>
       </div>
     </div>
   </div>
 
-  <div v-if="activeAction === 'filePaths'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
+  <div
+    v-if="activeAction === 'filePaths'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
     <div class="popup-container request-action-modal filepaths-modal">
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_view_file_paths.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_view_file_paths.svg"
+            alt=""
+          />
           <span>File Paths</span>
         </div>
-        <button class="popup-close-button" type="button" @click="close">&times;</button>
+        <button class="popup-close-button" type="button" @click="close">
+          &times;
+        </button>
       </div>
       <div class="popup-body filepaths-body">
         <div class="filepaths-request-name">
           <span class="label">Request Name:</span>
-          <span class="value">{{ requestContext?.name || '-' }}</span>
+          <span class="value">{{ requestContext?.name || "-" }}</span>
         </div>
         <div class="filepaths-columns">
           <div class="filepaths-column filepaths-left">
             <div class="filepaths-header">
               <span>Request File Paths:</span>
-              <div class="filepaths-os-select" title="Change OS to format file paths">
-                <font-awesome-icon class="filepaths-os-icon" icon="fa-solid fa-desktop" />
+              <div
+                class="filepaths-os-select"
+                title="Change OS to format file paths"
+              >
+                <font-awesome-icon
+                  class="filepaths-os-icon"
+                  icon="fa-solid fa-desktop"
+                />
                 <select v-model="selectedOS" class="filepaths-select">
                   <option value="Linux">Linux</option>
                   <option value="macOS">macOS</option>
@@ -63,10 +120,18 @@
             </div>
             <div class="filepaths-list filepaths-list-box">
               <div class="filepaths-scroll">
-                <div v-for="entry in formattedFilepaths" :key="entry.key" class="filepaths-row">
+                <div
+                  v-for="entry in formattedFilepaths"
+                  :key="entry.key"
+                  class="filepaths-row"
+                >
                   <div class="filepaths-key">{{ entry.key }}</div>
-                  <button class="filepaths-value filepaths-input" type="button" @click="copyText(entry.value)">
-                    {{ entry.value || 'Empty' }}
+                  <button
+                    class="filepaths-value filepaths-input"
+                    type="button"
+                    @click="copyText(entry.value)"
+                  >
+                    {{ entry.value || "Empty" }}
                   </button>
                 </div>
               </div>
@@ -75,8 +140,12 @@
           <div class="filepaths-column filepaths-right">
             <div class="filepaths-header">
               <span>Request User Paths:</span>
-              <button class="popup-button secondary small" type="button" @click="startAddUserPath"
-                title="Add User Path">
+              <button
+                class="popup-button secondary small"
+                type="button"
+                @click="startAddUserPath"
+                title="Add User Path"
+              >
                 <font-awesome-icon icon="fa-solid fa-square-plus" />
                 <span>Add</span>
               </button>
@@ -84,27 +153,65 @@
             <div class="filepaths-list filepaths-list-box">
               <div class="userpaths-scroll">
                 <div v-if="showUserPathForm" class="userpath-form">
-                  <input v-model.trim="userPathForm.name" type="text" placeholder="Name" />
-                  <input v-model.trim="userPathForm.value" type="text" placeholder="Path" />
+                  <input
+                    v-model.trim="userPathForm.name"
+                    type="text"
+                    placeholder="Name"
+                  />
+                  <input
+                    v-model.trim="userPathForm.value"
+                    type="text"
+                    placeholder="Path"
+                  />
                   <div class="userpath-actions">
-                    <button class="popup-button yes-button small" type="button" :disabled="!canSaveUserPath"
-                      @click="saveUserPath">Save</button>
-                    <button class="popup-button small" type="button" @click="cancelUserPath">Cancel</button>
+                    <button
+                      class="popup-button yes-button small"
+                      type="button"
+                      :disabled="!canSaveUserPath"
+                      @click="saveUserPath"
+                    >
+                      Save
+                    </button>
+                    <button
+                      class="popup-button small"
+                      type="button"
+                      @click="cancelUserPath"
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
-                <div v-if="!hasUserPaths" class="empty-state">No User Paths</div>
-                <div v-for="path in displayUserPaths" :key="path.id" class="filepaths-row userpath-row">
+                <div v-if="!hasUserPaths" class="empty-state">
+                  No User Paths
+                </div>
+                <div
+                  v-for="path in displayUserPaths"
+                  :key="path.id"
+                  class="filepaths-row userpath-row"
+                >
                   <div class="filepaths-key">{{ path.name }}</div>
-                  <button class="filepaths-value filepaths-input userpath-value" type="button"
-                    @click="copyText(path.value || 'Empty')">
-                    {{ path.value || 'Empty' }}
+                  <button
+                    class="filepaths-value filepaths-input userpath-value"
+                    type="button"
+                    @click="copyText(path.value || 'Empty')"
+                  >
+                    {{ path.value || "Empty" }}
                   </button>
                   <div class="userpath-icons">
-                    <button class="icon-button" type="button" title="Edit" @click="startEditUserPath(path)">
+                    <button
+                      class="icon-button"
+                      type="button"
+                      title="Edit"
+                      @click="startEditUserPath(path)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-pen" />
                     </button>
-                    <button class="icon-button danger" type="button" title="Delete"
-                      @click="confirmDeleteUserPath(path)">
+                    <button
+                      class="icon-button danger"
+                      type="button"
+                      title="Delete"
+                      @click="confirmDeleteUserPath(path)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-trash" />
                     </button>
                   </div>
@@ -115,28 +222,57 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultFilepathsButton" class="popup-button yes-button" type="button" @click="close">Close</button>
+        <button
+          ref="defaultFilepathsButton"
+          class="popup-button yes-button"
+          type="button"
+          @click="close"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>
 
-  <div v-if="activeAction === 'composeEmail'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
-    <div class="popup-container request-action-modal" :style="{ width: '520px', height: '400px' }">
+  <div
+    v-if="activeAction === 'composeEmail'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '520px', height: '400px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_compose_email.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_compose_email.svg"
+            alt=""
+          />
           <span>New Email</span>
         </div>
-        <button class="popup-close-button" type="button" @click="close">&times;</button>
+        <button class="popup-close-button" type="button" @click="close">
+          &times;
+        </button>
       </div>
       <div class="popup-body email-body">
         <label class="email-field">
           <span>Subject:</span>
-          <input v-model="emailForm.subject" type="text" placeholder="Subject" />
+          <input
+            v-model="emailForm.subject"
+            type="text"
+            placeholder="Subject"
+          />
         </label>
         <label class="email-field">
           <span>Message:</span>
-          <textarea v-model="emailForm.message" rows="6" placeholder="Message"></textarea>
+          <textarea
+            v-model="emailForm.message"
+            rows="6"
+            placeholder="Message"
+          ></textarea>
         </label>
         <label class="email-checkbox">
           <input type="checkbox" v-model="emailForm.includeFailed" />
@@ -144,32 +280,59 @@
         </label>
       </div>
       <div class="popup-footer">
-        <button ref="defaultComposeButton" class="popup-button yes-button with-icon" type="button" :disabled="emailBusy"
-          @click="sendEmail">
+        <button
+          ref="defaultComposeButton"
+          class="popup-button yes-button with-icon"
+          type="button"
+          :disabled="emailBusy"
+          @click="sendEmail"
+        >
           <font-awesome-icon icon="fa-solid fa-paper-plane" />
-          <span>{{ emailBusy ? 'Sending...' : 'Send' }}</span>
+          <span>{{ emailBusy ? "Sending..." : "Send" }}</span>
         </button>
       </div>
     </div>
   </div>
 
-  <div v-if="activeAction === 'solicitApproval'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
-    <div class="popup-container request-action-modal" :style="{ width: '520px', height: '400px' }">
+  <div
+    v-if="activeAction === 'solicitApproval'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '520px', height: '400px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_solicit_approval.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_solicit_approval.svg"
+            alt=""
+          />
           <span>New Email for Approval Solicitation</span>
         </div>
-        <button class="popup-close-button" type="button" @click="close">&times;</button>
+        <button class="popup-close-button" type="button" @click="close">
+          &times;
+        </button>
       </div>
       <div class="popup-body email-body">
         <label class="email-field">
           <span>Subject:</span>
-          <input v-model="approvalForm.subject" type="text" placeholder="Subject" />
+          <input
+            v-model="approvalForm.subject"
+            type="text"
+            placeholder="Subject"
+          />
         </label>
         <label class="email-field">
           <span>Message:</span>
-          <textarea v-model="approvalForm.message" rows="6" placeholder="Message"></textarea>
+          <textarea
+            v-model="approvalForm.message"
+            rows="6"
+            placeholder="Message"
+          ></textarea>
         </label>
         <label class="email-checkbox">
           <input type="checkbox" v-model="approvalForm.includeRecords" />
@@ -177,51 +340,92 @@
         </label>
       </div>
       <div class="popup-footer">
-        <button ref="defaultApprovalButton" class="popup-button yes-button with-icon" type="button"
-          :disabled="approvalBusy" @click="sendApprovalEmail">
+        <button
+          ref="defaultApprovalButton"
+          class="popup-button yes-button with-icon"
+          type="button"
+          :disabled="approvalBusy"
+          @click="sendApprovalEmail"
+        >
           <font-awesome-icon icon="fa-solid fa-paper-plane" />
-          <span>{{ approvalBusy ? 'Sending...' : 'Send' }}</span>
+          <span>{{ approvalBusy ? "Sending..." : "Send" }}</span>
         </button>
       </div>
     </div>
   </div>
 
-  <div v-if="activeAction === 'deleteRequest'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
-    <div class="popup-container request-action-modal" :style="{ width: '420px' }">
+  <div
+    v-if="activeAction === 'deleteRequest'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '420px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_delete_request.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_delete_request.svg"
+            alt=""
+          />
           <span>Delete Request</span>
         </div>
-        <button class="popup-close-button" type="button" @click="close">&times;</button>
+        <button class="popup-close-button" type="button" @click="close">
+          &times;
+        </button>
       </div>
       <div class="popup-body">
         <div class="confirm-message">
-          Are you sure that you want to delete the request "{{ requestContext?.name }}"?
+          Are you sure that you want to delete the request "{{
+            requestContext?.name
+          }}"?
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultDeleteButton" class="popup-button yes-button" type="button" :disabled="deleteBusy"
-          @click="confirmDelete">
+        <button
+          ref="defaultDeleteButton"
+          class="popup-button yes-button"
+          type="button"
+          :disabled="deleteBusy"
+          @click="confirmDelete"
+        >
           <span v-if="deleteBusy">Deleting...</span>
           <span v-else>Delete</span>
         </button>
-        <button class="popup-button secondary" type="button" @click="close">Cancel</button>
+        <button class="popup-button secondary" type="button" @click="close">
+          Cancel
+        </button>
       </div>
     </div>
   </div>
 
-  <div v-if="activeAction === 'attachments'" class="popup-overlay" :class="{ 'drag-over': isAttachmentsDragOver }"
-    tabindex="0" @keydown="handlePopupKeydown" @dragover.prevent="handleAttachmentsDragOver"
-    @dragenter.prevent="handleAttachmentsDragEnter" @dragleave.prevent="handleAttachmentsDragLeave"
-    @drop.prevent="handleAttachmentsDrop">
+  <div
+    v-if="activeAction === 'attachments'"
+    class="popup-overlay"
+    :class="{ 'drag-over': isAttachmentsDragOver }"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+    @dragover.prevent="handleAttachmentsDragOver"
+    @dragenter.prevent="handleAttachmentsDragEnter"
+    @dragleave.prevent="handleAttachmentsDragLeave"
+    @drop.prevent="handleAttachmentsDrop"
+  >
     <div class="popup-container request-action-modal attachments-modal">
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_attachments.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_attachments.svg"
+            alt=""
+          />
           <span>Attachments</span>
         </div>
-        <button class="popup-close-button" type="button" @click="close">&times;</button>
+        <button class="popup-close-button" type="button" @click="close">
+          &times;
+        </button>
       </div>
       <div class="popup-body attachments-body">
         <div class="files-section">
@@ -230,16 +434,32 @@
               <span>Files</span>
               <small>Upload request related documents.</small>
             </div>
-            <button v-if="canEditAttachments" class="header-button ghost" type="button"
-              :disabled="attachmentsBusy" @click="triggerAttachmentsUpload">
-              <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+            <button
+              v-if="canEditAttachments"
+              class="header-button ghost"
+              type="button"
+              :disabled="attachmentsBusy"
+              @click="triggerAttachmentsUpload"
+            >
+              <font-awesome-icon
+                icon="fa-solid fa-square-plus"
+                style="color: white"
+              />
               <span>Add Files</span>
             </button>
-            <input ref="attachmentsFileInput" type="file" multiple @change="handleAttachmentsSelection"
-              style="display: none" />
+            <input
+              ref="attachmentsFileInput"
+              type="file"
+              multiple
+              @change="handleAttachmentsSelection"
+              style="display: none"
+            />
           </div>
           <div class="files-table-wrapper">
-            <table class="files-table" :class="{ 'files-table-empty': !attachmentsFiles.length }">
+            <table
+              class="files-table"
+              :class="{ 'files-table-empty': !attachmentsFiles.length }"
+            >
               <thead>
                 <tr>
                   <th style="width: 60%">Name</th>
@@ -253,19 +473,35 @@
                 </tr>
                 <tr v-for="file in attachmentsFiles" :key="file.id">
                   <td class="file-name-cell">
-                    <span class="file-name-text" :title="file.name">{{ file.name }}</span>
+                    <span class="file-name-text" :title="file.name">{{
+                      file.name
+                    }}</span>
                   </td>
                   <td class="file-size-cell" :title="formatFileSize(file.size)">
                     {{ formatFileSize(file.size) }}
                   </td>
                   <td class="actions-cell">
-                    <button type="button" class="icon-action"
-                      :title="file.path ? `Download ${file.name}` : 'Download unavailable'" :disabled="!file.path"
-                      @click="downloadAttachment(file)">
+                    <button
+                      type="button"
+                      class="icon-action"
+                      :title="
+                        file.path
+                          ? `Download ${file.name}`
+                          : 'Download unavailable'
+                      "
+                      :disabled="!file.path"
+                      @click="downloadAttachment(file)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-download" />
                     </button>
-                    <button v-if="canEditAttachments" type="button" class="icon-action danger"
-                      :title="`Remove ${file.name}`" :disabled="attachmentsBusy" @click="removeAttachment(file)">
+                    <button
+                      v-if="canEditAttachments"
+                      type="button"
+                      class="icon-action danger"
+                      :title="`Remove ${file.name}`"
+                      :disabled="attachmentsBusy"
+                      @click="removeAttachment(file)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-xmark" />
                     </button>
                   </td>
@@ -276,8 +512,15 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultAttachmentsButton" class="popup-button yes-button" type="button"
-          :disabled="attachmentsBusy" @click="close">Close</button>
+        <button
+          ref="defaultAttachmentsButton"
+          class="popup-button yes-button"
+          type="button"
+          :disabled="attachmentsBusy"
+          @click="close"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>
@@ -434,6 +677,9 @@ export default {
       if (this.activeAction === "solicitApproval") {
         this.approvalForm.subject = this.requestContext?.name || "";
       }
+      if (this.activeAction === "attachments") {
+        this.loadAttachments();
+      }
     }
   },
   methods: {
@@ -450,7 +696,10 @@ export default {
         return;
       }
       if (event.key === "Enter") {
-        if (this.activeAction === "composeEmail" || this.activeAction === "solicitApproval") {
+        if (
+          this.activeAction === "composeEmail" ||
+          this.activeAction === "solicitApproval"
+        ) {
           return;
         }
         event.preventDefault();
@@ -533,10 +782,7 @@ export default {
           { headers: { "Content-Type": "multipart/form-data" } }
         );
         if (response?.data?.success) {
-          showNotification(
-            "Signed request uploaded successfully.",
-            "success"
-          );
+          showNotification("Signed request uploaded successfully.", "success");
           this.$emit("refresh");
           this.close();
         } else {
@@ -557,11 +803,13 @@ export default {
         const data = response?.data || {};
         this.filepaths = data.filepaths || {};
         const metapaths = data.metapaths || {};
-        this.userPaths = Object.entries(metapaths).map(([name, value], index) => ({
-          id: index + 1,
-          name,
-          value
-        }));
+        this.userPaths = Object.entries(metapaths).map(
+          ([name, value], index) => ({
+            id: index + 1,
+            name,
+            value
+          })
+        );
       } catch (error) {
         handleError(error);
       }
@@ -631,10 +879,7 @@ export default {
 
       if (this.userPathForm.mode === "add") {
         if (current.some((item) => item.name === newName)) {
-          showNotification(
-            "User path name already exists.",
-            "warning"
-          );
+          showNotification("User path name already exists.", "warning");
           return;
         }
         map.set(newName, newValue);
@@ -676,11 +921,13 @@ export default {
         );
         if (response?.data?.success) {
           showNotification("User path saved successfully.", "success");
-          this.userPaths = Object.entries(userpaths).map(([name, value], index) => ({
-            id: index + 1,
-            name,
-            value
-          }));
+          this.userPaths = Object.entries(userpaths).map(
+            ([name, value], index) => ({
+              id: index + 1,
+              name,
+              value
+            })
+          );
           this.showUserPathForm = false;
         } else {
           showNotification("User path save failed.", "error");
@@ -698,7 +945,10 @@ export default {
       const formData = new FormData();
       formData.append("subject", this.emailForm.subject);
       formData.append("message", this.emailForm.message);
-      formData.append("include_failed_records", String(this.emailForm.includeFailed));
+      formData.append(
+        "include_failed_records",
+        String(this.emailForm.includeFailed)
+      );
       try {
         this.emailBusy = true;
         await axiosRef.post(
@@ -723,7 +973,10 @@ export default {
       const formData = new FormData();
       formData.append("subject", this.approvalForm.subject);
       formData.append("message", this.approvalForm.message);
-      formData.append("include_records", String(this.approvalForm.includeRecords));
+      formData.append(
+        "include_records",
+        String(this.approvalForm.includeRecords)
+      );
       try {
         this.approvalBusy = true;
         const response = await axiosRef.post(
@@ -782,9 +1035,9 @@ export default {
       }
       return `${value} B`;
     },
-    async loadAttachments() {
+    async loadAttachments({ force = false } = {}) {
       if (!this.requestContext?.id) return;
-      const meta = this.requestContext?.meta || null;
+      const meta = force ? null : this.requestContext?.meta || null;
       const records = Array.isArray(this.requestContext?.records)
         ? this.requestContext.records
         : [];
@@ -817,10 +1070,13 @@ export default {
       }
 
       const needsRequest =
+        force ||
         !meta ||
         this.attachmentsRequestDetails.cost_unit === null ||
         this.attachmentsRequestDetails.description === "";
-      const needsRecords = !this.attachmentsRecords.length;
+      const needsRecords = force
+        ? !records.length
+        : !this.attachmentsRecords.length;
 
       if (!needsRequest && !needsRecords) {
         return;
@@ -834,7 +1090,9 @@ export default {
             ? axiosRef.get(`${urlStringStart}/api/requests/${requestId}/`)
             : Promise.resolve({ data: meta }),
           needsRecords
-            ? axiosRef.get(`${urlStringStart}/api/requests/${requestId}/get_records/`)
+            ? axiosRef.get(
+                `${urlStringStart}/api/requests/${requestId}/get_records/`
+              )
             : Promise.resolve({ data: records })
         ]);
 
@@ -861,14 +1119,16 @@ export default {
 
         if (needsRecords) {
           const recordsData =
-            recordsRes.status === "fulfilled" ? recordsRes.value?.data || [] : [];
+            recordsRes.status === "fulfilled"
+              ? recordsRes.value?.data || []
+              : [];
           this.attachmentsRecords = Array.isArray(recordsData)
             ? recordsData
-              .filter((record) => record?.pk && record?.record_type)
-              .map((record) => ({
-                pk: record.pk,
-                record_type: record.record_type
-              }))
+                .filter((record) => record?.pk && record?.record_type)
+                .map((record) => ({
+                  pk: record.pk,
+                  record_type: record.record_type
+                }))
             : [];
         }
       } catch (error) {
@@ -943,6 +1203,7 @@ export default {
           this.attachmentsFileIds = [...this.attachmentsFileIds, ...ids];
           await this.fetchUploadedFilesDetails();
           await this.saveAttachmentsToRequest();
+          await this.loadAttachments({ force: true });
           showNotification("Files uploaded successfully.", "success");
         } else {
           showNotification("File upload failed.", "error");
@@ -1156,7 +1417,7 @@ export default {
   gap: 3px;
 }
 
-.files-table td.actions-cell button+button {
+.files-table td.actions-cell button + button {
   margin-left: 4px;
 }
 
@@ -1237,7 +1498,9 @@ export default {
   text-align: center;
   color: #4b5563;
   background: #f8fbfb;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .upload-drop-zone.active {
@@ -1488,7 +1751,6 @@ export default {
   width: 14px;
   height: 14px;
 }
-
 
 .icon-button.danger {
   background: #f3d6d6;
