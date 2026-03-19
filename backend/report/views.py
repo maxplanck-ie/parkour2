@@ -511,9 +511,10 @@ def report_xlsx(request):
         flowcell_dates = set()
 
         for obj in records:
-            protocol = getattr(getattr(obj, "library_protocol", None), "name", None)
-            if protocol:
-                protocol_counter[protocol] += 1
+            protocol = getattr(obj, "library_protocol", None)
+            protocol_name = getattr(protocol, "name", None)
+            if protocol_name:
+                protocol_counter[protocol_name] += 1
 
             record_key = (obj._meta.model_name, obj.id)
             for pool_id in record_pool_map.get(record_key, set()):
