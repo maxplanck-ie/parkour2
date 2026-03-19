@@ -124,18 +124,19 @@ class Report:
 
         for req in self.requests:
             # Extract Library Protocols
-            library_protocols = [
-                x.library_protocol.name
-                for x in req.fetched_libraries
-                if getattr(x, "library_protocol", None)
-                and getattr(x.library_protocol, "name", None)
-            ]
-            sample_protocols = [
-                x.library_protocol.name
-                for x in req.fetched_samples
-                if getattr(x, "library_protocol", None)
-                and getattr(x.library_protocol, "name", None)
-            ]
+            library_protocols = []
+            for record in req.fetched_libraries:
+                protocol = getattr(record, "library_protocol", None)
+                name = getattr(protocol, "name", None)
+                if name:
+                    library_protocols.append(name)
+
+            sample_protocols = []
+            for record in req.fetched_samples:
+                protocol = getattr(record, "library_protocol", None)
+                name = getattr(protocol, "name", None)
+                if name:
+                    sample_protocols.append(name)
 
             # Merge the counts
             library_cnt = {
