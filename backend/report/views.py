@@ -535,6 +535,7 @@ def report_xlsx(request):
         rows.append(
             {
                 "Request ID": req.id,
+                "Request Name": getattr(req, "name", "") or "",
                 "Submission Date": submission_date,
                 "Sequencing Date": sequencing_date,
                 "Number of records": record_count,
@@ -547,6 +548,7 @@ def report_xlsx(request):
 
     columns = [
         "Request ID",
+        "Request Name",
         "Submission Date",
         "Sequencing Date",
         "Number of records",
