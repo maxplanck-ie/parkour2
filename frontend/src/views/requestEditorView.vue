@@ -52,9 +52,12 @@
               icon="fa-solid fa-file-lines"
               class="header-icon"
             />
-            <span class="header-title-text" :title="headerTitle">{{
-              headerTitle
-            }}</span>
+            <span
+              class="header-title-text"
+              :title="headerTitle"
+              data-testid="request-editor-title"
+              >{{ headerTitle }}</span
+            >
           </span>
         </div>
         <button
@@ -97,6 +100,7 @@
               <button
                 class="icon-button text-button add-count-button"
                 type="button"
+                data-testid="add-records-button"
                 :title="addButtonTitle"
                 :disabled="!canEditRequest"
                 @click="addDraftRow(addRowCount)"
@@ -248,6 +252,7 @@
             <button
               class="popup-close-button"
               type="button"
+              data-testid="close-request-editor-button"
               @click="requestCloseModal"
               :disabled="saving"
             >
@@ -350,6 +355,7 @@
                 <textarea
                   v-model="newRequest.description"
                   class="description-textarea"
+                  data-testid="request-description-input"
                   rows="6"
                   :placeholder="
                     isEditMode

@@ -25,8 +25,14 @@ def test_duties_page(page: Page):
 
     # Pick the first available options; these are always present in fixtures.
     page.locator("select#facility").select_option(index=1)
-    page.locator("select#main_name").select_option(index=1)
-    page.locator("select#backup_name").select_option(index=1)
+
+    main_select = page.locator("select#main_name")
+    backup_select = page.locator("select#backup_name")
+    expect(main_select).to_be_enabled()
+    expect(backup_select).to_be_enabled()
+
+    main_select.select_option(index=1)
+    backup_select.select_option(index=1)
     today = datetime.date.today()
     page.locator("input#start_date").fill(today.strftime("%Y-%m-%d"))
     page.locator("input#end_date").fill(
