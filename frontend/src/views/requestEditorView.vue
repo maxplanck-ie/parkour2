@@ -81,8 +81,34 @@
         <div class="request-editor-header-right">
           <div
             class="header-table-actions"
-            :class="{ hidden: !canEditRequest }"
           >
+            <div class="controls-group record-type-toggle-group">
+              <label
+                class="record-type-switch"
+                title="Switch between Library and Sample entry modes"
+              >
+                <input
+                  type="checkbox"
+                  :checked="requestEditorMode === 'sample'"
+                  :disabled="!canEditRequest"
+                  @change="requestRecordTypeSwitch($event)"
+                />
+                <span class="slider">
+                  <span
+                    class="option"
+                    :class="{ active: requestEditorMode === 'library' }"
+                  >
+                    Library
+                  </span>
+                  <span
+                    class="option"
+                    :class="{ active: requestEditorMode === 'sample' }"
+                  >
+                    Sample
+                  </span>
+                </span>
+              </label>
+            </div>
             <div class="add-count-group">
               <input
                 id="add-count-input"
@@ -267,44 +293,16 @@
             :class="{ collapsed: isFormPanelCollapsed }"
           >
             <section
+              ref="requestFormPanel"
               class="request-form-panel"
               :class="{ collapsed: isFormPanelCollapsed }"
             >
-              <div class="request-form-actions">
-                <div
-                  class="controls-group"
-                  :class="{ 'view-only': isEditMode }"
-                >
-                  <label
-                    class="record-type-switch"
-                    title="Switch between Library and Sample entry modes"
-                  >
-                    <input
-                      type="checkbox"
-                      :checked="requestEditorMode === 'sample'"
-                      :disabled="!canEditRequest"
-                      @change="requestRecordTypeSwitch($event)"
-                    />
-                    <span class="slider">
-                      <span
-                        class="option"
-                        :class="{ active: requestEditorMode === 'library' }"
-                      >
-                        Library
-                      </span>
-                      <span
-                        class="option"
-                        :class="{ active: requestEditorMode === 'sample' }"
-                      >
-                        Sample
-                      </span>
-                    </span>
-                  </label>
-                </div>
-                <div
-                  v-if="requestEditorMode === 'sample' && !isEditMode"
-                  class="download-buttons"
-                >
+              <div
+                v-if="requestEditorMode === 'sample' && !isEditMode"
+                class="request-form-actions"
+              >
+                <div class="request-form-actions-title">Sample Forms</div>
+                <div class="download-buttons">
                   <a
                     class="download-button"
                     :href="gmoFormUrl"
@@ -2097,6 +2095,7 @@ export default {
       this.requestEditorMode = normalized;
       if (this.isEditMode) {
         this.loadEditRecordsForMode(normalized);
+        this.$nextTick(() => this.scrollRequestFormPanelToTop());
       } else {
         this.requestEditorDraftRows = [];
         this.selectedDraftRowIds = [];
@@ -2108,8 +2107,15 @@ export default {
             this.$refs.requestEditorDraftTableRef?.tabulatorInstance;
           table?.clearData?.();
           this.applyValidationStyling();
+          this.scrollRequestFormPanelToTop();
         });
       }
+    },
+    scrollRequestFormPanelToTop() {
+      const panel = this.$refs.requestFormPanel;
+      if (!panel) return;
+      panel.scrollTo?.({ top: 0, behavior: "auto" });
+      panel.scrollTop = 0;
     },
     requestRecordTypeSwitch(event) {
       if (!this.canEditRequest) return;
@@ -4121,9 +4127,10 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 8px;
+  flex-wrap: wrap;
+  padding: 7px 9px;
   border: 1px solid #d0d0d0;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #f8fafb;
   box-shadow: inset 0 1px 0 #ffffff;
 }
@@ -4145,20 +4152,22 @@ export default {
 .add-count-group {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 4px;
-  border-radius: 10px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 8px;
   background: #eef2f3;
   border: 1px solid #d7dee3;
 }
 
 .add-count-input {
-  width: 40px;
-  height: 28px;
+  width: 46px;
+  height: 30px;
   border: 1px solid #0f766e;
-  border-radius: 6px;
-  padding: 2px 6px;
-  font-size: 12px;
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-size: 13px;
   text-align: right;
 }
 
@@ -4176,8 +4185,10 @@ export default {
 }
 
 .add-count-button {
-  padding-left: 10px;
-  padding-right: 12px;
+  height: 30px !important;
+  border-radius: 8px !important;
+  padding-left: 14px;
+  padding-right: 16px;
 }
 
 .add-count-input::-webkit-outer-spin-button,
@@ -4192,7 +4203,10 @@ export default {
 }
 
 .header-table-actions .icon-button.text-button {
-  height: 32px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 13px;
 }
 
 .header-table-actions.hidden {
@@ -4574,11 +4588,13 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px;
+  padding: 4px;
   border: 1px solid #d0d0d0;
   border-radius: 6px;
   background: #f6f8fa;
   width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
   min-width: 0;
 }
 
@@ -4587,7 +4603,8 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 5px 12px;
+  min-height: 32px;
+  padding: 4px 10px;
   border: 1px solid #0f5c84;
   border-radius: 6px;
   background: #ffffff;
@@ -4659,8 +4676,15 @@ export default {
 .request-form-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 6px;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.request-form-actions-title {
+  font-size: 13px;
+  font-weight: 400;
+  color: #333;
+  line-height: 1.4;
 }
 
 .controls-group {
@@ -4673,10 +4697,17 @@ export default {
   background: #f6f8fa;
 }
 
+.record-type-toggle-group {
+  padding: 0;
+  border: none;
+  background: transparent;
+  min-width: 188px;
+}
+
 .record-type-switch {
   position: relative;
-  width: 100%;
-  height: 36px;
+  width: 188px;
+  height: 40px;
   border-radius: 8px;
   background: #e1e6ea;
   border: 1px solid #d0d0d0;
@@ -4708,7 +4739,7 @@ export default {
   left: 0;
   width: 50%;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 7px;
   background: #0f766e;
   transition: transform 0.25s ease;
   z-index: 0;
@@ -4758,12 +4789,6 @@ export default {
 .draft-table {
   flex: 1;
   min-height: 260px;
-}
-
-.controls-group.view-only {
-  background: #f6f8fa;
-  color: #4b5563;
-  font-weight: 600;
 }
 
 .request-editor-footer {
