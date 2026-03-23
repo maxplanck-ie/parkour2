@@ -14,7 +14,9 @@ ENV \
     PIP_ROOT_USER_ACTION=ignore \
     UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    UV_SYSTEM_PYTHON=1
+    UV_SYSTEM_PYTHON=1 \
+    PYTHONIOENCODING="UTF-8" \
+    PYTHONUTF8=1
 
 RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
@@ -40,7 +42,7 @@ COPY ./backend .
 EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
 CMD ["gunicorn", "wui.wsgi:application", "--bind=0.0.0.0:8000", "--name=pk2", "--timeout=600", \
-     "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
+    "--worker-class=gthread", "--worker-tmp-dir=/dev/shm", "--workers=4", "--threads=6"]
 
 # ----------------------
 FROM pk2_base AS pk2_dev

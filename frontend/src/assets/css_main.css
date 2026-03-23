@@ -28,6 +28,28 @@
   }
 }
 
+.app-tooltip {
+  position: fixed;
+  z-index: 3000;
+  max-width: 260px;
+  padding: 6px 8px;
+  background: #404a57;
+  color: #ffffff;
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-line;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity 0.12s ease;
+}
+
+.app-tooltip.is-visible {
+  opacity: 1;
+}
+
 /* Toast */
 .Vue-Toastification__toast {
   position: relative;
@@ -212,10 +234,11 @@ input[type="radio"]:checked::after {
 .popup-container {
   background-color: white;
   margin: 40px;
-  border-radius: 4px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   overflow: visible;
+  box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: scale(0.8);
   opacity: 0;
@@ -232,8 +255,8 @@ input[type="radio"]:checked::after {
   padding: 14px;
   font-size: 18px;
   font-weight: bold;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
 }
 
 .popup-header svg {
@@ -264,13 +287,20 @@ input[type="radio"]:checked::after {
 
 .popup-scrollable-content {
   flex-grow: 1;
-  overflow-y: scroll;
   height: 0px;
-  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
   background-color: #f9f9f9;
+  overflow: hidden;
 }
+
+.popup-scrollable-content-inner {
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px 14px 10px 10px;
+  scrollbar-gutter: stable both-edges;
+}
+
 
 .popup-footer {
   display: flex;
@@ -284,7 +314,7 @@ input[type="radio"]:checked::after {
   background-color: #006c66;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 10px 20px;
   cursor: pointer;
   font-size: 14px;
@@ -296,7 +326,34 @@ input[type="radio"]:checked::after {
 }
 
 .popup-button:focus {
-  outline: 2px solid #333333;
+  outline: none;
+}
+
+.popup-button.secondary {
+  background-color: #ffffff;
+  color: #006c66;
+  border: 1px solid #006c66;
+}
+
+.popup-button.secondary:hover {
+  background-color: #e8f2f1;
+}
+
+.popup-button.secondary.small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popup-button.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popup-button.secondary.small svg {
+  width: 16px;
+  height: 16px;
 }
 
 .popup-overlay.drag-over {
@@ -336,8 +393,8 @@ input[type="radio"]:checked::after {
   height: 70px;
   margin-bottom: 10px;
   padding: 16px 16px 16px 14px;
-  border-radius: 4px;
-  background: #006c66;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0a8a82 0%, #006c66 50%, #00504c 100%);
 }
 
 .header-title {
@@ -361,49 +418,79 @@ input[type="radio"]:checked::after {
 .search-bar {
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  background-color: #ffffff;
   width: 550px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .search-bar input {
   border: none;
   outline: none;
-  color: #555;
-  padding: 10px;
+  color: #333;
+  padding: 10px 6px;
   font-size: 14px;
   flex-grow: 1;
   background: none;
 }
 
 .search-bar input::placeholder {
-  color: #888;
+  color: #9aa0a6;
 }
 
 .search-bar i {
   cursor: pointer;
   font-size: 16px;
-  color: #aaa;
+  color: #8b8f97;
+}
+
+.search-bar:focus-within {
+  border-color: #0b7f78;
+  background-color: #f8fbfb;
+}
+
+.search-bar:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  background-color: #f4f8f8;
 }
 
 .header-button {
   display: flex;
   align-items: center;
-  padding: 10px 15px;
+  padding: 9px 14px;
   font-size: 14px;
-  background-color: #006c66;
-  border: 1px solid white;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  background: linear-gradient(180deg, #0b7f78 0%, #006c66 100%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   color: white;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   gap: 8px;
-  transition: background-color 0.3s ease;
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease,
+    box-shadow 0.2s ease;
 }
 
 .header-button:hover {
-  background-color: #005b59;
+  background: linear-gradient(180deg, #0f8a82 0%, #05736d 100%);
+  border-color: rgba(255, 255, 255, 0.75);
+  transform: translateY(-1px);
+}
+
+.header-button:active {
+  transform: translateY(0);
+}
+
+.header-button:focus-visible {
+  outline: none;
 }
 
 .header-button span {
@@ -425,7 +512,7 @@ input[type="radio"]:checked::after {
   padding: 15px 15px 8px 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
-  border-radius: 4px;
+  border-radius: 8px;
   width: 200px;
 }
 
@@ -439,7 +526,7 @@ input[type="radio"]:checked::after {
   cursor: pointer;
   padding: 5px 7px;
   border: 2px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.3s ease;
   width: 100%;
 }
@@ -456,7 +543,7 @@ input[type="radio"]:checked::after {
   background-color: #006c66;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 10px 20px;
   cursor: pointer;
   font-size: 14px;
@@ -470,10 +557,21 @@ input[type="radio"]:checked::after {
 .group-action-buttons-container {
   display: none;
   align-items: center;
-  height: 15px;
-  margin-left: 10px;
-  padding: 0 10px;
-  border-left: 1px solid grey;
+  height: 24px;
+  margin-left: 16px;
+  padding: 0 14px;
+  position: relative;
+}
+
+.group-action-buttons-container::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  background: grey;
+  transform: translateY(-50%);
 }
 
 .group-action-button {
@@ -483,13 +581,65 @@ input[type="radio"]:checked::after {
   font-size: 16px;
   padding: 0px;
   height: 24px;
-  width: 22px;
+  width: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.group-action-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.group-action-icon-img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.group-action-icon-img.icon-24 {
+  width: 24px;
+  height: 24px;
+}
+
+
+.group-action-separator {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: grey;
+  margin-right: 8px;
+}
+
+.group-action-tag {
+  background: #257beb;
+  border: 1px solid #1d4ed8;
+  color: #ffffff !important;
+  border-radius: 8px;
+  padding: 1px px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.group-action-tag span {
+  margin: 0px !important;
+  color: #ffffff !important;
+}
+
+.group-action-tag:hover {
+  background-color: #2765b6;
 }
 
 .export-section {
   border: 1px solid #ddd;
   padding: 12px;
-  border-radius: 4px;
+  border-radius: 8px;
   background-color: #f9f9f9;
 }
 
@@ -513,7 +663,7 @@ input[type="radio"]:checked::after {
   align-items: center;
   padding: 8px 12px 8px 8px;
   background-color: #f0f0f0;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -523,9 +673,9 @@ input[type="radio"]:checked::after {
 
 .file-list-section {
   height: 150px;
-  overflow-y: scroll;
+  overflow-y: auto;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 7px;
 }
 
@@ -598,7 +748,7 @@ input[type="radio"]:checked::after {
   width: 400px;
   background: white;
   border: 1px solid lightgrey;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 10px;
   font-size: 14px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
@@ -667,30 +817,42 @@ input[type="radio"]:checked::after {
 .date-filter {
   display: flex;
   flex-direction: row;
-  border: 1px solid white;
-  border-radius: 4px;
-  padding: 5px;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  padding: 4px 4px;
+  background: linear-gradient(180deg, #0b7f78 0%, #006c66 100%);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
 }
 
 .date-filter label {
   font-size: 14px;
   color: white;
-  margin: auto;
-  margin-right: 5px;
+  margin: 0 4px 0 2px;
 }
 
 .date-filter input[type="date"] {
-  padding: 6px;
-  border: none;
-  border-radius: 2px;
-  height: 26px;
-  width: 115px;
-  color: #555;
-  font-family: sans-serif;
+  padding: 6px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 5px;
+  height: 28px;
+  width: 130px;
+  color: #333;
+  font-family: var(--app-font-family);
   font-size: 13px;
   background: #ffffff;
   text-transform: uppercase;
   outline: none;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.date-filter:hover {
+  background: linear-gradient(180deg, #0f8a82 0%, #05736d 100%);
+  border-color: rgba(255, 255, 255, 0.75);
+  transform: translateY(-1px);
 }
 
 .date-filters input[type="date"]:not(:valid) {
@@ -723,8 +885,8 @@ input[type="radio"]:checked::after {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
-  border-end-start-radius: 4px;
-  border-end-end-radius: 4px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
   background-color: white;
 }
 
@@ -733,7 +895,7 @@ input[type="radio"]:checked::after {
   padding: 8px;
   background-color: #f0f0f0;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 4px;
   margin-bottom: 8px;
@@ -754,7 +916,7 @@ input[type="radio"]:checked::after {
   padding: 6px 12px;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
 }
@@ -772,7 +934,7 @@ input[type="radio"]:checked::after {
   background-color: #f5f5f5;
   border: 1px solid #d0d0d0;
   border-top: none;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 8px 8px;
 }
 
 .pagination-info {
@@ -789,7 +951,7 @@ input[type="radio"]:checked::after {
   width: 50px;
   padding: 6px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   text-align: center;
   margin: 0 5px;
 }
@@ -813,5 +975,6 @@ input[type="radio"]:checked::after {
 .page-size-selector select {
   padding: 6px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
 }
+

@@ -1,7 +1,14 @@
 import {
+  applyContextMenuToColumns,
   cellContextMenu,
   ellipsisContainer
 } from "../utilities/utilityFunctions";
+import iconSelectAll from "../assets/icons/action_select_all.svg";
+import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
+import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
+import iconEditComment from "../assets/icons/action_pool_edit_comment.svg";
+import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
 
 export function poolingGroupHeader(
   value,
@@ -25,65 +32,22 @@ export function poolingGroupHeader(
 </div>
     <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M21 12H12V3H15.024C19.9452 3 21 4.05476 21 8.976V12Z" fill="lightblue"/>
-            <path opacity="0.5" d="M3 15.024V12H12V21H8.976C4.05476 21 3 19.9452 3 15.024Z" fill="lightblue"/>
-            <path d="M3 8.976C3 4.05476 4.05476 3 8.976 3H15.024C19.9452 3 21 4.05476 21 8.976V15.024C21 19.9452 19.9452 21 15.024 21H8.976C4.05476 21 3 19.9452 3 15.024V8.976Z" stroke="#323232" stroke-width="1.8"/>
-            <path d="M12 3V21" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 12L3 12" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
+        <img src="${iconSelectAll}" alt="Select All" width="24" height="24" />
       </div>
       <div title="Deselect All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deselectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="lightblue"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
+        <img src="${iconDeselectAll}" alt="Deselect All" width="24" height="24" />
       </div>
       <div title="Mark selected as Quality Checked: Passed" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityPassed')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="green"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-            <path d="M9 12L10.6828 13.6828V13.6828C10.858 13.858 11.142 13.858 11.3172 13.6828V13.6828L15 10" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
+        <img src="${iconQualityPassed}" alt="Quality Passed" width="24" height="24" />
       </div>
       <div title="Mark selected as Quality Checked: Failed" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityFailed')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
-            <path d="M9 9L15 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M15 9L9 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
+        <img src="${iconQualityFailed}" alt="Quality Failed" width="24" height="24" />
       </div>
       <div title="Edit Comment" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'editComment')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.3" d="M21 13V7C21 5.11438 21 4.17157 20.4142 3.58579C19.8284 3 18.8856 3 17 3H7C5.11438 3 4.17157 3 3.58579 3.58579C3 4.17157 3 5.11438 3 7V13C3 14.8856 3 15.8284 3.58579 16.4142C4.17157 17 5.11438 17 7 17H9H9.02322C9.31982 17 9.5955 17.1528 9.75269 17.4043L11.864 20.7824C11.9268 20.8829 12.0732 20.8829 12.136 20.7824L14.2945 17.3288C14.4223 17.1242 14.6465 17 14.8877 17H15H17C18.8856 17 19.8284 17 20.4142 16.4142C21 15.8284 21 14.8856 21 13Z" fill="orange"/>
-            <path d="M7 9L17 9" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M7 12L13 12" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M21 13V7C21 5.11438 21 4.17157 20.4142 3.58579C19.8284 3 18.8856 3 17 3H7C5.11438 3 4.17157 3 3.58579 3.58579C3 4.17157 3 5.11438 3 7V13C3 14.8856 3 15.8284 3.58579 16.4142C4.17157 17 5.11438 17 7 17H9H9.02322C9.31982 17 9.5955 17.1528 9.75269 17.4043L11.864 20.7824C11.9268 20.8829 12.0732 20.8829 12.136 20.7824L14.2945 17.3288C14.4223 17.1242 14.6465 17 14.8877 17H15H17C18.8856 17 19.8284 17 20.4142 16.4142C21 15.8284 21 14.8856 21 13Z" stroke="#323232" stroke-width="1.8" stroke-linejoin="round"/>
-          </g>
-        </svg>
+        <img src="${iconEditComment}" alt="Edit Comment" width="24" height="24" />
       </div>
       <div title="Destroy Pool" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'destroyPool')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g> 
-            <path opacity="0.3" d="M9 8H15L14 18H10L9 8Z" fill="#323232"/>
-            <path d="M9 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M15 10V15" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M6 8H18" stroke="#323232" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M8 8L9 18H15L16 8" stroke="#323232" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
+        <img src="${iconDestroyPool}" alt="Destroy Pool" width="24" height="24" />
       </div>
     </div>
   </div>
@@ -91,7 +55,7 @@ export function poolingGroupHeader(
 }
 
 export function poolingColumnDefs(getTabulatorInstance) {
-  return [
+  const columns = [
     {
       field: "selected",
       visible: true,
@@ -121,6 +85,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
       width: 30,
       minWidth: 30,
       cssClass: "checkbox-column right-border",
+      clipboardCopyValue: () => "",
       contextMenu: () =>
         cellContextMenu(false, false, false, getTabulatorInstance),
       cellClick: function (e, cell) {
@@ -396,6 +361,15 @@ export function poolingColumnDefs(getTabulatorInstance) {
       }
     }
   ];
+
+  return applyContextMenuToColumns(columns, getTabulatorInstance, {
+    allowCopy: true,
+    allowEdit: true,
+    allowApplyToAll: true,
+    blockActionsOnDisabledCells: true,
+    overrideExisting: true,
+    skipFields: new Set(["selected"]),
+  });
 }
 
 export function poolingExportColumns() {

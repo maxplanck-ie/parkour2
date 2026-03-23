@@ -2,7 +2,7 @@
   <!-- This Tabulator table is specially optimized for handling large numbers of records. -->
   <!-- Table Element -->
   <div class="lite-tabulator-table" style="height: 100%">
-    <div id="tabulatorTable" ref="tabulatorTableRef"></div>
+    <div :id="tableId" ref="tabulatorTableRef"></div>
   </div>
 </template>
 
@@ -18,17 +18,23 @@ export default {
     rowData: {
       type: Array
     },
+    tableId: {
+      type: String,
+      default: "tabulatorTable"
+    },
     columnDefs: {
       type: Array,
       required: true
     },
     groupBy: {
-      type: String,
-      required: true
+      type: [String, Function, Boolean],
+      required: false,
+      default: null
     },
     groupSort: {
       type: Object,
-      required: false
+      required: false,
+      default: null
     },
     groupStartOpen: {
       type: Boolean,
@@ -44,7 +50,7 @@ export default {
     return {
       tabulatorInstance: null,
       tableGroupsConfig: {
-        groupBy: this.groupBy,
+        groupBy: this.groupBy ?? false,
         noGroupByClass: false
       },
       scrollPosition: 0,
@@ -99,10 +105,11 @@ export default {
           },
           clipboardCopyRowRange: "range",
           clipboardCopyFormatter: function (type, output) {
-            if (type == "plain") {
-              output += "\n";
+            if (type !== "plain") {
+              return output;
             }
-            return output;
+            const isMultiCell = output.includes("\t") || output.includes("\n");
+            return isMultiCell ? `${output}\n` : output;
           },
           dependencies: {
             XLSX: XLSX
@@ -110,14 +117,15 @@ export default {
           downloadConfig: {},
           groupToggleElement: "header",
           groupContextMenu: [],
-          groupBy: this.tableGroupsConfig.groupBy,
+          groupBy: this.tableGroupsConfig.groupBy || false,
           groupStartOpen: this.groupStartOpen,
+          debugInvalidOptions: false,
 
           ...this.tableOptions
         };
 
         this.tabulatorInstance = markRaw(
-          new Tabulator("#tabulatorTable", options)
+          new Tabulator(`#${this.tableId}`, options)
         );
 
         this.tabulatorInstance.on("tableBuilt", () => {
@@ -134,6 +142,9 @@ export default {
         this.tabulatorInstance.on("renderComplete", () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
           this.updateGroupValuesFromRows(rows);
+          if (this.tableOptions.handleRenderComplete) {
+            this.tableOptions.handleRenderComplete();
+          }
         });
 
         this.tabulatorInstance.on("columnResized", (column) => {
@@ -181,7 +192,7 @@ export default {
     },
 
     getTabulatorElement() {
-      return document.getElementById("tabulatorTable");
+      return document.getElementById(this.tableId);
     },
 
     updateGroupValuesFromRows(rows) {
@@ -214,7 +225,7 @@ export default {
     updateTableColumns() {
       if (this.tabulatorInstance) {
         this.tabulatorInstance.setColumns(this.columnDefs);
-        if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
+        this.tabulatorInstance.setGroupBy(this.groupBy || false);
         this.refreshTable();
       }
     },
@@ -237,7 +248,9 @@ export default {
   height: 100%;
   font-size: 12px;
   border: 1px solid #d0d0d0;
-  border-radius: 4px !important;
+  border-radius: 8px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 
 .lite-tabulator-table .tabulator-table {
@@ -301,20 +314,6 @@ export default {
 
 .lite-tabulator-table .tabulator-cell.tabulator-frozen {
   z-index: 1 !important;
-}
-
-.lite-tabulator-table .tabulator-cell.user-entry-column {
-  background-color: #ffebee;
-  color: #c62828;
-}
-
-.lite-tabulator-table .tabulator-cell.facility-entry-column {
-  background-color: #c4ecc2;
-  color: #388e3c;
-}
-
-.lite-tabulator-table .tabulator-cell.facility-entry-column.disable-editing {
-  background-color: #b6dbb4;
 }
 
 .lite-tabulator-table .tabulator-col {
@@ -403,3 +402,4 @@ export default {
 Add VirtualDOM support
 Allow opening only 3 groups at a time
 -->
+

@@ -9,7 +9,7 @@ const toast = useToast();
 export function showNotification(content, type) {
   let options = {
     timeout: 5000,
-    position: "top-left"
+    position: "top-left",
   };
 
   if (type === "info") toast.info(content, options);
@@ -28,9 +28,9 @@ function notifyParentAuthRequired() {
       window.parent.postMessage(
         {
           source: "mainhub-vue",
-          type: "auth-required"
+          type: "auth-required",
         },
-        window.location.origin
+        window.location.origin,
       );
     }
   } catch (error) {
@@ -53,7 +53,7 @@ export function handleError(error) {
   } else {
     showNotification(
       "An error occurred while processing your request.\nPlease contact the BioInfo department for assistance.",
-      "error"
+      "error",
     );
   }
 }
@@ -81,8 +81,8 @@ export function createAxiosObject() {
     withCredentials: true,
     headers: {
       "content-type": "application/json",
-      "X-CSRFToken": Cookies.get("csrftoken")
-    }
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
   });
 }
 
@@ -129,120 +129,357 @@ export function ellipsisContainer(text, boldText) {
 
 export function cellContextMenu(
   allowCopy,
-  allowPaste,
+  allowEdit,
   allowApplyToAll,
-  getTabulatorInstance
+  getTabulatorInstance,
+  options = {},
 ) {
+  const shouldBlockDisabledCells = options.blockActionsOnDisabledCells === true;
+  const menuCell = options.cell || null;
+  const onApplyToAll =
+    typeof options.onApplyToAll === "function" ? options.onApplyToAll : null;
+  const onCut = typeof options.onCut === "function" ? options.onCut : null;
+  const onClear =
+    typeof options.onClear === "function" ? options.onClear : null;
+  const allowCut =
+    options.allowCut === undefined ? allowEdit : options.allowCut === true;
+  const allowClear =
+    options.allowClear === undefined ? allowEdit : options.allowClear === true;
   const tabulatorInstance = getTabulatorInstance();
+  const tableRef =
+    typeof tabulatorInstance?.getTable === "function"
+      ? tabulatorInstance.getTable()
+      : tabulatorInstance;
+  const isCellEditable = (cell) => {
+    if (!cell) return false;
+    const cellEl = cell.getElement?.();
+    if (
+      shouldBlockDisabledCells &&
+      cellEl?.classList?.contains("disable-editing")
+    ) {
+      return false;
+    }
+    const columnDef = cell.getColumn?.().getDefinition?.() || {};
+    if (columnDef.editor === false) return false;
+    if (typeof columnDef.editable === "function") {
+      const rowData = cell.getRow?.().getData?.() || {};
+      return columnDef.editable({
+        getRow: () => ({ getData: () => rowData }),
+      });
+    }
+    if (typeof columnDef.editable === "boolean") {
+      return columnDef.editable;
+    }
+    return true;
+  };
+  const ranges = tableRef?.getRanges?.() || [];
+  const hasSelection = ranges.length > 0;
+  let hasEditableSelection = false;
+  let singleCellSelected = false;
+  if (hasSelection) {
+    const cells = ranges[0]?.getCells?.() || [];
+    singleCellSelected = cells.length === 1 && (cells[0]?.length || 0) === 1;
+    cells.forEach((row) => {
+      row.forEach((cell) => {
+        if (isCellEditable(cell)) {
+          hasEditableSelection = true;
+        }
+      });
+    });
+  }
+  const menuCellEditable = isCellEditable(menuCell);
+  if (!hasSelection && menuCell) {
+    singleCellSelected = true;
+  }
   const operations = [];
-  let isRangeSelected = false;
-  let selectedRangesData = tabulatorInstance.getTable().getRangesData();
-  if (selectedRangesData.length > 0) {
-    let firstRangeFields = Object.keys(selectedRangesData[0][0]);
-    isRangeSelected =
-      selectedRangesData[0].length > 1 || firstRangeFields.length > 1;
+  if (shouldBlockDisabledCells && menuCell) {
+    if (!menuCellEditable && !hasEditableSelection) {
+      if (allowCopy) {
+        return [
+          {
+            label: "Copy",
+            action: (e, cell) => {
+              const targetCell = cell || menuCell;
+              ensureRangeSelection(targetCell);
+              tableRef?.copyToClipboard?.();
+            },
+          },
+        ];
+      }
+      return [];
+    }
+  }
+  const ensureRangeSelection = (cell) => {
+    if (!tableRef || !cell) return;
+    const ranges = tableRef.getRanges?.() || [];
+    if (!ranges.length && typeof tableRef.addRange === "function") {
+      tableRef.addRange(cell, cell);
+    }
+  };
+  const restoreFocus = () => {
+    if (typeof tabulatorInstance?.restoreLastFocusedCell === "function") {
+      tabulatorInstance.restoreLastFocusedCell();
+      return;
+    }
+    tableRef?.element?.focus?.();
+  };
+
+  if (allowApplyToAll && menuCellEditable && singleCellSelected) {
+    operations.push({
+      label: "Apply to All",
+      action: (e, cell) => {
+        if (onApplyToAll) {
+          onApplyToAll({
+            cell,
+            field: cell?.getField?.(),
+            value: cell?.getValue?.(),
+            tableRef,
+            tabulatorInstance,
+            blockActionsOnDisabledCells: shouldBlockDisabledCells,
+          });
+          restoreFocus();
+          return;
+        }
+        const fakeLoadingStart = tabulatorInstance?.tableOptions?.fakeLoadingStart;
+        const fakeLoadingStop = tabulatorInstance?.tableOptions?.fakeLoadingStop;
+        if (typeof fakeLoadingStart === "function") {
+          fakeLoadingStart();
+        }
+        applyValueToAllRows(cell, getTabulatorInstance, {
+          blockActionsOnDisabledCells: shouldBlockDisabledCells,
+        });
+        if (typeof fakeLoadingStop === "function") {
+          setTimeout(() => fakeLoadingStop(), 0);
+        }
+        restoreFocus();
+      },
+    });
   }
 
-  if (isRangeSelected) {
-    showNotification(
-      "Please use Ctrl+C to copy, and Ctrl+V to paste in a range selection.",
-      "info"
-    );
-  } else {
-    if (allowApplyToAll) {
-      operations.push({
-        label: "Apply to All",
-        action: (e, cell) => {
-          const value = cell.getValue();
-          const field = cell.getField();
-          const rowData = cell.getRow().getData();
-          const groupByField =
-            tabulatorInstance?.tableGroupsConfig?.groupBy ||
-            tabulatorInstance?.groupBy ||
-            null;
-          const requestId = rowData.request_id;
-          const requestName = rowData.request_name;
-          const protocolName = rowData.library_protocol_name;
-          const tableRows = tabulatorInstance.getTable().getRows();
-
-          tableRows.forEach((row) => {
-            const data = row.getData();
-            let sameGroup = false;
-
-            // Incoming Libraries & Samples: apply within the same request
-            if (groupByField === "request_name") {
-              sameGroup =
-                (requestId && data.request_id === requestId) ||
-                (!requestId && data.request_name === requestName);
-            }
-            // Library Preparation: apply within the same library protocol
-            else if (groupByField === "library_protocol_name") {
-              sameGroup = data.library_protocol_name === protocolName;
-            } else {
-              sameGroup =
-                (requestId && data.request_id === requestId) ||
-                (protocolName && data.library_protocol_name === protocolName) ||
-                data.request_name === requestName;
-            }
-
-            if (!sameGroup) return;
-
-            const targetCell = row.getCell(field);
-            if (
-              targetCell &&
-              !targetCell.getElement().classList.contains("disable-editing")
-            ) {
-              targetCell.setValue(value);
-            }
-          });
+  if (allowCut && (menuCellEditable || hasEditableSelection)) {
+    operations.push({
+      label: "Cut",
+      action: (e, cell) => {
+        const targetCell = cell || menuCell;
+        ensureRangeSelection(targetCell);
+        if (onCut) {
+          onCut({ cell: targetCell, tableRef, tabulatorInstance });
+          restoreFocus();
+          return;
         }
-      });
-    }
+        tableRef?.copyToClipboard?.();
+        const keyEvent = new KeyboardEvent("keydown", {
+          key: "Delete",
+          bubbles: true,
+        });
+        tableRef?.element?.dispatchEvent?.(keyEvent);
+        restoreFocus();
+      },
+    });
+  }
 
-    if (allowCopy) {
-      operations.push({
-        label: "Copy",
-        action: (e, cell) => {
-          const value = cell.getValue();
-          navigator.clipboard.writeText(value);
-        }
-      });
-    }
+  if (allowCopy) {
+    operations.push({
+      label: "Copy",
+      action: (e, cell) => {
+        ensureRangeSelection(cell);
+        tableRef?.copyToClipboard?.();
+        restoreFocus();
+      },
+    });
+  }
 
-    if (allowPaste) {
-      operations.push({
-        label: "Paste",
-        action: (e, cell) => {
-          if (cell.getElement().classList.contains("disable-editing")) {
-            return;
-          }
-          navigator.clipboard.readText().then((text) => {
-            try {
-              const columnDef = cell.getColumn().getDefinition();
-              const rowData = cell.getRow().getData();
-              const validatedValue = tabulatorInstance.validateCellValue(
-                text,
-                columnDef,
-                rowData
-              );
-              cell.setValue(validatedValue);
-            } catch (error) {
-              showNotification(error.message, "error");
-            }
-          });
+  if (allowEdit && (menuCellEditable || hasEditableSelection)) {
+    operations.push({
+      label: "Paste",
+      action: (e, cell) => {
+        ensureRangeSelection(cell);
+        if (typeof tabulatorInstance?.triggerClipboardPaste === "function") {
+          tabulatorInstance.triggerClipboardPaste();
+        } else {
+          tableRef?.pasteFromClipboard?.();
         }
-      });
-    }
+        restoreFocus();
+      },
+    });
+  }
+
+  if (allowClear && (menuCellEditable || hasEditableSelection)) {
+    operations.push({
+      label: "Clear",
+      action: (e, cell) => {
+        const targetCell = cell || menuCell;
+        ensureRangeSelection(targetCell);
+        if (onClear) {
+          onClear({ cell: targetCell, tableRef, tabulatorInstance });
+          restoreFocus();
+          return;
+        }
+        const keyEvent = new KeyboardEvent("keydown", {
+          key: "Delete",
+          bubbles: true,
+        });
+        tableRef?.element?.dispatchEvent?.(keyEvent);
+        restoreFocus();
+      },
+    });
   }
 
   return operations.length ? operations : [];
+}
+
+export function applyContextMenuToColumns(
+  columns = [],
+  getTabulatorInstance,
+  options = {},
+) {
+  const {
+    allowCopy = true,
+    allowEdit = false,
+    allowApplyToAll = false,
+    blockActionsOnDisabledCells = false,
+    overrideExisting = false,
+    skipFields = new Set(),
+    onApplyToAll = null,
+    allowCut,
+    allowClear,
+    onCut = null,
+    onClear = null,
+  } = options;
+  const resolvedAllowCut = allowCut === undefined ? allowEdit : allowCut;
+  const resolvedAllowClear = allowClear === undefined ? allowEdit : allowClear;
+
+  const applyToColumn = (column) => {
+    if (!column || typeof column !== "object") return;
+    if (Array.isArray(column.columns)) {
+      column.columns.forEach(applyToColumn);
+      return;
+    }
+    if (column.field && skipFields.has(column.field)) return;
+    if (!overrideExisting && column.contextMenu) return;
+    column.contextMenu = (e, cell) =>
+      cellContextMenu(
+        allowCopy,
+        allowEdit,
+        allowApplyToAll,
+        getTabulatorInstance,
+        {
+          blockActionsOnDisabledCells,
+          cell,
+          onApplyToAll,
+          allowCut: resolvedAllowCut,
+          allowClear: resolvedAllowClear,
+          onCut,
+          onClear,
+        },
+      );
+  };
+
+  columns.forEach(applyToColumn);
+  return columns;
+}
+
+export function applyPreserveOnEmptyPasteToColumns(
+  columns = [],
+  options = {},
+) {
+  const {
+    editorTypes = new Set(["number", "list"]),
+    skipFields = new Set(),
+    overrideExisting = false,
+  } = options;
+
+  const applyToColumn = (column) => {
+    if (!column || typeof column !== "object") return;
+    if (Array.isArray(column.columns)) {
+      column.columns.forEach(applyToColumn);
+      return;
+    }
+    if (column.field && skipFields.has(column.field)) return;
+    if (column.preserveOnEmptyPaste && !overrideExisting) return;
+    if (editorTypes.has(column.editor)) {
+      column.preserveOnEmptyPaste = true;
+    }
+  };
+
+  columns.forEach(applyToColumn);
+  return columns;
+}
+
+export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {
+  const tabulatorInstance = getTabulatorInstance?.();
+  const tableRef =
+    typeof tabulatorInstance?.getTable === "function"
+      ? tabulatorInstance.getTable()
+      : tabulatorInstance;
+  if (!cell || !tableRef) return;
+  const value = cell.getValue?.();
+  const field = cell.getField?.();
+  if (!field) return;
+  const rowData = cell.getRow?.().getData?.() || {};
+  const groupByField =
+    tabulatorInstance?.tableGroupsConfig?.groupBy ||
+    tabulatorInstance?.groupBy ||
+    null;
+  const requestId = rowData.request_id;
+  const requestName = rowData.request_name;
+  const protocolName = rowData.library_protocol_name;
+  const applyToAllRows =
+    !groupByField && !requestId && !requestName && !protocolName;
+  const shouldBlockDisabledCells = options.blockActionsOnDisabledCells === true;
+  const tableRows = tableRef?.getRows?.() || [];
+  tableRows.forEach((row) => {
+    const data = row.getData();
+    let sameGroup = false;
+    if (groupByField === "request_name") {
+      sameGroup =
+        (requestId && data.request_id === requestId) ||
+        (!requestId && data.request_name === requestName);
+    } else if (groupByField === "library_protocol_name") {
+      sameGroup = data.library_protocol_name === protocolName;
+    } else {
+      sameGroup =
+        (requestId && data.request_id === requestId) ||
+        (protocolName && data.library_protocol_name === protocolName) ||
+        data.request_name === requestName;
+    }
+    if (applyToAllRows) {
+      sameGroup = true;
+    }
+    if (!sameGroup) return;
+    const targetCell = row.getCell(field);
+    if (!targetCell) return;
+    const targetCellEl = targetCell.getElement?.();
+    if (
+      shouldBlockDisabledCells &&
+      targetCellEl?.classList?.contains("disable-editing")
+    ) {
+      return;
+    }
+    const columnDef = targetCell.getColumn().getDefinition();
+    const targetRowData = targetCell.getRow().getData();
+    const isEditable = (() => {
+      if (columnDef.editor === false) return false;
+      if (typeof columnDef.editable === "function") {
+        return columnDef.editable({
+          getRow: () => ({ getData: () => targetRowData }),
+        });
+      }
+      if (typeof columnDef.editable === "boolean") {
+        return columnDef.editable;
+      }
+      return true;
+    })();
+    if (!isEditable) return;
+    row.update({ [field]: value });
+  });
 }
 
 export async function validateAndFixExcelBuffer(buffer) {
   try {
     const zip = await JSZip.loadAsync(buffer);
     const sheetFiles = Object.keys(zip.files).filter(
-      (f) => f.startsWith("xl/worksheets/") && f.endsWith(".xml")
+      (f) => f.startsWith("xl/worksheets/") && f.endsWith(".xml"),
     );
     for (const file of sheetFiles) {
       let xmlText = await zip.files[file].async("string");
@@ -261,7 +498,7 @@ export async function validateAndFixExcelBuffer(buffer) {
     }
     const fixedBuffer = await zip.generateAsync({
       type: "arraybuffer",
-      compression: "DEFLATE"
+      compression: "DEFLATE",
     });
 
     return fixedBuffer;
@@ -288,7 +525,7 @@ function parseDataValidations(snippet, namespaces) {
     xr: "http://schemas.microsoft.com/office/spreadsheetml/2014/revision",
     xr2: "http://schemas.microsoft.com/office/spreadsheetml/2015/revision2",
     xr3: "http://schemas.microsoft.com/office/spreadsheetml/2016/revision3",
-    xm: "http://schemas.microsoft.com/office/excel/2006/main"
+    xm: "http://schemas.microsoft.com/office/excel/2006/main",
   };
   Object.entries(KNOWN_NAMESPACE_URIS).forEach(([prefix, uri]) => {
     if (prefix === "main") return;
@@ -387,7 +624,7 @@ function parseDataValidations(snippet, namespaces) {
       errorTitle,
       error,
       errorStyle,
-      formulae
+      formulae,
     });
   }
 
@@ -467,7 +704,7 @@ async function extractDataValidationSnippets(buffer) {
     const endIndex = closeIndex + closeMatch[0].length;
     return {
       snippet: xml.slice(openMatch.index, endIndex),
-      kind: "regular"
+      kind: "regular",
     };
   };
   if (!buffer) return new Map();
@@ -485,7 +722,7 @@ async function extractDataValidationSnippets(buffer) {
     }
     const parsedValidations = parseDataValidations(
       found.snippet,
-      sheetNamespaces
+      sheetNamespaces,
     );
     if (parsedValidations.length) {
       validationsBySheet.set(sheetName, parsedValidations);
@@ -514,7 +751,7 @@ function applyTemplateValidations(workbook, validationsBySheet) {
         errorTitle,
         error,
         errorStyle,
-        formulae
+        formulae,
       }) => {
         if (!addresses || !addresses.length) return;
         addresses.forEach((address) => {
@@ -535,7 +772,7 @@ function applyTemplateValidations(workbook, validationsBySheet) {
           if (formulae && formulae.length) options.formulae = [...formulae];
           dataValidations.add(address, options);
         });
-      }
+      },
     );
   });
 }
@@ -546,14 +783,14 @@ export async function createExcelExportBlob({
   axiosInstance,
   templateDownloadUrl,
   sheetName = "Parkour",
-  minMatchedHeaders = 6
+  minMatchedHeaders = 6,
 } = {}) {
   const workbook = new ExcelJS.Workbook();
   let validationsBySheet = null;
 
   if (templateDownloadUrl) {
     const response = await axiosInstance.get(templateDownloadUrl, {
-      responseType: "arraybuffer"
+      responseType: "arraybuffer",
     });
     const templateBuffer = response.data;
     validationsBySheet = await extractDataValidationSnippets(templateBuffer);
@@ -646,7 +883,7 @@ export async function createExcelExportBlob({
   }
 
   const sortedSheets = [...workbook.worksheets].sort(
-    (a, b) => a.orderNo - b.orderNo
+    (a, b) => a.orderNo - b.orderNo,
   );
   const targetSheet = worksheet;
   const otherSheets = sortedSheets.filter((sheet) => sheet !== targetSheet);
@@ -681,6 +918,6 @@ export async function createExcelExportBlob({
 
   const buffer = await workbook.xlsx.writeBuffer();
   return new Blob([buffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 }

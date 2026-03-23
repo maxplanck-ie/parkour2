@@ -28,7 +28,6 @@ class SampleSerializer(LibrarySampleBaseSerializer):
             "pk",
             "record_type",
             "is_converted",
-            "rna_quality",
             "measuring_unit",
             "measured_value",
             "gmo",

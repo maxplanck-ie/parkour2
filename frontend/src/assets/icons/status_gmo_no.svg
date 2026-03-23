@@ -1,0 +1,6 @@
+<svg fill="none" width="24px" height="24px" style="cursor: auto;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <path d="M21 12 L18.36 18.36 L12 21 L5.64 18.36 L3 12 L5.64 5.64 L12 3 L18.36 5.64 Z" fill="#B2D8B2" stroke="#323232" stroke-width="1.8" stroke-linejoin="round" transform="rotate(-22.5 12 12)"/>
+    <text x="12" y="13" text-anchor="middle" fill="#333333" font-size="10.5" style="font-family: var(--app-font-family, Arial, sans-serif);" dominant-baseline="middle" stroke="#323232" stroke-width="0.8" paint-order="stroke">G</text>
+  </g>
+</svg>

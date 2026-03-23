@@ -124,18 +124,19 @@ class Report:
 
         for req in self.requests:
             # Extract Library Protocols
-            library_protocols = [
-                x.library_protocol.name
-                for x in req.fetched_libraries
-                if getattr(x, "library_protocol", None)
-                and getattr(x.library_protocol, "name", None)
-            ]
-            sample_protocols = [
-                x.library_protocol.name
-                for x in req.fetched_samples
-                if getattr(x, "library_protocol", None)
-                and getattr(x.library_protocol, "name", None)
-            ]
+            library_protocols = []
+            for record in req.fetched_libraries:
+                protocol = getattr(record, "library_protocol", None)
+                name = getattr(protocol, "name", None)
+                if name:
+                    library_protocols.append(name)
+
+            sample_protocols = []
+            for record in req.fetched_samples:
+                protocol = getattr(record, "library_protocol", None)
+                name = getattr(protocol, "name", None)
+                if name:
+                    sample_protocols.append(name)
 
             # Merge the counts
             library_cnt = {
@@ -510,9 +511,10 @@ def report_xlsx(request):
         flowcell_dates = set()
 
         for obj in records:
-            protocol = getattr(getattr(obj, "library_protocol", None), "name", None)
-            if protocol:
-                protocol_counter[protocol] += 1
+            protocol = getattr(obj, "library_protocol", None)
+            protocol_name = getattr(protocol, "name", None)
+            if protocol_name:
+                protocol_counter[protocol_name] += 1
 
             record_key = (obj._meta.model_name, obj.id)
             for pool_id in record_pool_map.get(record_key, set()):
@@ -533,6 +535,7 @@ def report_xlsx(request):
         rows.append(
             {
                 "Request ID": req.id,
+                "Request Name": getattr(req, "name", "") or "",
                 "Submission Date": submission_date,
                 "Sequencing Date": sequencing_date,
                 "Number of records": record_count,
@@ -545,6 +548,7 @@ def report_xlsx(request):
 
     columns = [
         "Request ID",
+        "Request Name",
         "Submission Date",
         "Sequencing Date",
         "Number of records",

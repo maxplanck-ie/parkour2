@@ -10,6 +10,9 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.response import Response
 
+from request.models import Request
+from request.serializers import RequestSerializer
+
 from library_sample_shared.views import LibrarySampleBaseViewSet
 
 from .serializers import LibrarySerializer
@@ -227,6 +230,21 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         combined_data.sort(key=lambda x: x["create_time"], reverse=True)
 
+        request_ids = {
+            record.get("request_id")
+            for record in combined_data
+            if record.get("request_id") is not None
+        }
+        requests_meta = {}
+        if request_ids:
+            requests_qs = (
+                Request.objects.filter(id__in=request_ids)
+                .select_related("user", "cost_unit", "user__pi")
+                .prefetch_related("files", "libraries", "samples")
+            )
+            serialized = RequestSerializer(requests_qs, many=True).data
+            requests_meta = {item["pk"]: item for item in serialized}
+
         return Response(
             {
                 "success": True,
@@ -235,6 +253,7 @@ class LibrarySampleTree(viewsets.ViewSet):
                 "page_size": page_size if page_size else total_requests,
                 "total_pages": total_pages,
                 "children": combined_data,
+                "requests": requests_meta,
             }
         )
 

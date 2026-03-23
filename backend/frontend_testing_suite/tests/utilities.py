@@ -31,3 +31,13 @@ def pretest_login(page: Page):
     inputEmail.fill(testEmailID)
     inputPassword.fill(testPassword)
     loginButton.click()
+    page.wait_for_url("**/#libraries-vue", timeout=15000)
+
+
+def visit_vue_page(page: Page, relative_path: str):
+    """Navigate to a Vue view using the authenticated session."""
+    hostName = get_host_name()
+    # Ensure we never end up with double slashes when callers include them.
+    relative_path = relative_path.lstrip("/")
+    page.goto(f"http://{hostName}:9980/vue/{relative_path}")
+    page.wait_for_load_state("load")

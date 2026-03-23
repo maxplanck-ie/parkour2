@@ -55,7 +55,7 @@ class Sample(GenericLibrarySample):
         blank=True,
     )
 
-    rna_quality = models.FloatField(
+    removed_rna_quality = models.FloatField(
         "RNA Quality",
         validators=[MinValueValidator(0.0), MaxValueValidator(11.0)],
         null=True,

@@ -1,8 +1,13 @@
 import {
+  applyContextMenuToColumns,
   cellContextMenu,
   ellipsisContainer,
-  showNotification
+  showNotification,
 } from "../utilities/utilityFunctions";
+import iconSelectAll from "../assets/icons/action_select_all.svg";
+import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import iconQualityPassed from "../assets/icons/status_quality_passed.svg";
+import iconQualityFailed from "../assets/icons/status_quality_failed.svg";
 
 export function libraryPreparationGroupHeader(value, count) {
   return `
@@ -17,42 +22,16 @@ export function libraryPreparationGroupHeader(value, count) {
 </div>
     <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M21 12H12V3H15.024C19.9452 3 21 4.05476 21 8.976V12Z" fill="lightblue"/>
-            <path opacity="0.5" d="M3 15.024V12H12V21H8.976C4.05476 21 3 19.9452 3 15.024Z" fill="lightblue"/>
-            <path d="M3 8.976C3 4.05476 4.05476 3 8.976 3H15.024C19.9452 3 21 4.05476 21 8.976V15.024C21 19.9452 19.9452 21 15.024 21H8.976C4.05476 21 3 19.9452 3 15.024V8.976Z" stroke="#323232" stroke-width="1.8"/>
-            <path d="M12 3V21" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M21 12L3 12" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
+        <img src="${iconSelectAll}" alt="Select All" width="24" height="24" />
       </div>
       <div title="Deselect All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deselectAll')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.5" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="lightblue"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
+        <img src="${iconDeselectAll}" alt="Deselect All" width="24" height="24" />
       </div>
       <div title="Mark selected as Quality Checked: Passed" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityPassed')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="green"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-            <path d="M9 12L10.6828 13.6828V13.6828C10.858 13.858 11.142 13.858 11.3172 13.6828V13.6828L15 10" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
+        <img src="${iconQualityPassed}" alt="Quality Passed" width="24" height="24" />
       </div>
       <div title="Mark selected as Quality Checked: Failed" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'qualityFailed')">
-        <svg fill="none" width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <path opacity="0.3" d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" fill="red"/>
-            <path d="M9 9L15 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M15 9L9 15" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="1.8"/>
-          </g>
-        </svg>
+        <img src="${iconQualityFailed}" alt="Quality Failed" width="24" height="24" />
       </div>
     </div>
   </div>
@@ -60,7 +39,7 @@ export function libraryPreparationGroupHeader(value, count) {
 }
 
 export function libraryPreparationColumnDefs(getTabulatorInstance) {
-  return [
+  const columns = [
     {
       field: "selected",
       visible: true,
@@ -80,14 +59,17 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       width: 30,
       minWidth: 30,
       cssClass: "checkbox-column right-border",
+      clipboardCopyValue: () => "",
       contextMenu: () =>
-        cellContextMenu(false, false, false, getTabulatorInstance),
+        cellContextMenu(false, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       cellClick: function (e, cell) {
         const clickedRow = cell.getRow();
         const rowData = clickedRow.getData();
         const checkbox = e.target;
         rowData.selected = checkbox.checked;
-      }
+      },
     },
     {
       title: "Request",
@@ -99,7 +81,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       frozen: true,
       cssClass: "right-border",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -107,7 +91,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString, false);
-      }
+      },
     },
     {
       title: "Barcode",
@@ -120,7 +104,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       frozen: true,
       cssClass: "right-border",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -128,7 +114,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value + "*" || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Name",
@@ -139,7 +125,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       headerTooltip: "Sample Name",
       visible: true,
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -147,7 +135,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString, false);
-      }
+      },
     },
     {
       title: "Date",
@@ -159,7 +147,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -167,7 +157,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "-";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Protocol",
@@ -178,7 +168,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       headerTooltip: "Library Preparation Protocol",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
       },
@@ -186,7 +178,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         const value = cell.getValue();
         const finalString = value || "No Protocol";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Comment Library/Input",
@@ -198,14 +190,16 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      }
+      },
     },
     {
       title: "Pool",
@@ -217,14 +211,16 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      }
+      },
     },
     {
       title: "Index Type",
@@ -236,14 +232,16 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      }
+      },
     },
     {
       title: "I7 ID",
@@ -255,14 +253,16 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      }
+      },
     },
     {
       title: "I5 ID",
@@ -274,14 +274,16 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      }
+      },
     },
     {
       title: "Coordinate",
@@ -292,14 +294,16 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, false, false, getTabulatorInstance),
+        cellContextMenu(true, false, false, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const finalString = cell.getValue() || "-";
         return ellipsisContainer(finalString);
       },
       cellDblClick: function (e, cell) {
         showNotification("This field is not editable.", "warning");
-      }
+      },
     },
     {
       title: "Value",
@@ -313,11 +317,13 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       editorParams: {
         min: 0,
-        step: 0.1
+        step: 0.1,
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -327,11 +333,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
           isNaN(value) ||
           value === -1
             ? "-"
-            : value === 0
-              ? "0.0"
-              : value.toFixed(1);
+            : value.toFixed(2);
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Unit",
@@ -345,27 +349,34 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
           { label: "ng/µl (Concentration)", value: "ng/µl" },
           { label: "M (Cells)", value: "M" },
           { label: "k (Cells)", value: "k" },
-          { label: "Unknown", value: "Unknown" }
+          { label: "Unknown", value: "Unknown" },
         ];
-        return { values: options };
+        return {
+          values: options,
+          autocomplete: true,
+          listOnEmpty: true,
+          freetext: false,
+        };
       },
       headerVertical: false,
       headerTooltip: "Measurement Unit",
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const value = cell.getValue();
         const options = {
           "ng/µl": "ng/µl (Concentration)",
           M: "M (Cells)",
           k: "k (Cells)",
-          Unknown: "Unknown"
+          Unknown: "Unknown",
         };
         const finalString = options[value] || value || "Select";
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "bp Sample",
@@ -379,11 +390,13 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       editorParams: {
         min: 0,
-        step: 1
+        step: 1,
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -396,7 +409,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         }
 
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Starting Amount",
@@ -410,22 +423,22 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       editorParams: {
         min: 0,
-        step: 0.1
+        step: 0.1,
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
         const finalString =
           rawValue === "" || rawValue === undefined || isNaN(value)
             ? "-"
-            : value === 0
-              ? "0.0"
-              : value.toFixed(1);
+            : value.toFixed(1);
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Cycles",
@@ -439,11 +452,13 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       editorParams: {
         min: 0,
-        step: 1
+        step: 1,
       },
       validator: ["integer", "min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -456,7 +471,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         }
 
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "ng/µl",
@@ -470,11 +485,13 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       editorParams: {
         min: 0,
-        step: 0.1
+        step: 0.1,
       },
       validator: ["min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -483,9 +500,9 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
             ? "-"
             : value === 0
               ? "0.0"
-              : value.toFixed(1);
+              : value.toFixed(2);
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "bp Library",
@@ -499,11 +516,13 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       cssClass: "regular-column",
       editorParams: {
         min: 0,
-        step: 1
+        step: 1,
       },
       validator: ["integer", "min:0"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -516,7 +535,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
         }
 
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "% Total",
@@ -524,6 +543,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       minWidth: 60,
       width: "4%",
       editor: "number",
+      defaultOnEmptyPaste: 100,
       headerVertical: false,
       headerTooltip: "Smear Analysis (% Total)",
       visible: true,
@@ -531,11 +551,13 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       editorParams: {
         min: 0,
         max: 100,
-        step: 0.1
+        step: 0.1,
       },
       validator: ["min:0", "max:100"],
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
@@ -546,7 +568,7 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
               ? "0.0"
               : value.toFixed(1);
         return ellipsisContainer(finalString);
-      }
+      },
     },
     {
       title: "Comment",
@@ -559,13 +581,24 @@ export function libraryPreparationColumnDefs(getTabulatorInstance) {
       visible: true,
       cssClass: "regular-column",
       contextMenu: () =>
-        cellContextMenu(true, true, true, getTabulatorInstance),
+        cellContextMenu(true, true, true, getTabulatorInstance, {
+          blockActionsOnDisabledCells: true,
+        }),
       formatter: (cell) => {
         const value = cell.getValue() || "-";
         return ellipsisContainer(value);
-      }
-    }
+      },
+    },
   ];
+
+  return applyContextMenuToColumns(columns, getTabulatorInstance, {
+    allowCopy: true,
+    allowEdit: true,
+    allowApplyToAll: true,
+    blockActionsOnDisabledCells: true,
+    overrideExisting: true,
+    skipFields: new Set(["selected"]),
+  });
 }
 
 export function libraryPreparationExportColumns() {
@@ -578,7 +611,7 @@ export function libraryPreparationExportColumns() {
     {
       header: "Comment Library/Sample",
       key: "comments_library_sample",
-      width: 25
+      width: 25,
     },
     { header: "Pool", key: "pool_name", width: 10 },
     { header: "Index Type", key: "index_type", width: 20 },
@@ -587,6 +620,6 @@ export function libraryPreparationExportColumns() {
     { header: "Coordinate", key: "coordinate", width: 10 },
     { header: "Value", key: "measured_value_facility", width: 15 },
     { header: "Unit", key: "measuring_unit_facility", width: 15 },
-    { header: "bp Sample", key: "size_distribution_facility", width: 15 }
+    { header: "bp Sample", key: "size_distribution_facility", width: 15 },
   ];
 }

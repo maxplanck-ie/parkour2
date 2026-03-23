@@ -5,7 +5,6 @@ record.qpcr_result_facility AS "qPCR Result (Facility)"
 """
 
 SAMPLE_SELECT = """
-record.rna_quality AS "RNA Quality",
 record.rna_quality_facility AS "RNA Quality (Facility)",
 nat.name AS "Nucleic Acid Type",
 lprep.starting_amount AS "Starting Amount",

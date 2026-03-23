@@ -111,23 +111,9 @@ class User(AbstractEmailUser):
     @property
     def paperless_approval(self):
         """
-        This will return 'True' if both PI and User email addresses share the same host
-        We'll be using email spoofing from within VM, the MTA was set by IT.
+        Deprecated. Paperless approval is the only way from now on.
         """
-        result_user = False
-        result_pi = False
-        if self.pi is not None and self.pi.email != "Unset":
-            if (
-                not ('"' in self.pi.email)
-                and self.pi.email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]
-            ):
-                result_pi = True
-            if (
-                not ('"' in self.email)
-                and self.email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]
-            ):
-                result_user = True
-        return result_user and result_pi  # and not self.is_pi
+        return True
 
     def __str__(self):
         this_user_email = self.email

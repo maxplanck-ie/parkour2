@@ -18,10 +18,13 @@ Ext.define("MainHub.view.main.MainController", {
 
   onMainViewRender: function () {
     var me = this;
+    me.ensureTopNavStyles();
+    me.bindHeaderLayoutFix();
 
-    Ext.getStore("NavigationTree").on("load", function () {
+    Ext.getStore("NavigationTree").on("load", function (store) {
+      me.buildTopNavigation(store);
       if (!window.location.hash) {
-        me.redirectTo("requests");
+        me.redirectTo("libraries-vue");
       }
     });
 
@@ -31,69 +34,234 @@ Ext.define("MainHub.view.main.MainController", {
     }
   },
 
-  onNavigationTreeSelectionChange: function (tree, node) {
-    var to = node && (node.get("routeId") || node.get("viewType"));
-
-    if (to) {
-      this.redirectTo(to);
+  ensureTopNavStyles: function () {
+    if (Ext.get("top-nav-styles")) {
+      return;
     }
+
+    Ext.util.CSS.createStyleSheet(
+      [
+        ".header-nav-toolbar {",
+        "  padding: 6px 10px;",
+        "  margin-left: 14px;",
+        "  border-radius: 14px;",
+        "  background: rgba(255, 255, 255, 0.9);",
+        "  border: 1px solid #d8d8d8;",
+        "  display: flex;",
+        "  flex: 1 1 auto;",
+        "  width: auto;",
+        "  min-width: 0;",
+        "  overflow: hidden;",
+        "  gap: 8px;",
+        "}",
+        ".header-nav-toolbar .header-nav-button {",
+        "  margin-left: 0;",
+        "  border-radius: 12px;",
+        "  background: rgba(255, 255, 255, 0.92);",
+        "  border: 1px solid #d8d8d8;",
+        "  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);",
+        "  height: 30px;",
+        "  padding: 0 9px;",
+        "  height: 32px;",
+        "  padding: 0 9px;",
+        "}",
+        ".header-nav-toolbar .header-nav-button .x-btn-inner {",
+        "  color: #4d5b63;",
+        "  font-weight: 600;",
+        "  margin-left: 6px;",
+        "}",
+        ".header-nav-toolbar .header-nav-button .x-btn-icon-el {",
+        "  color: #4d5b63;",
+        "}",
+        ".header-nav-toolbar .header-nav-button .x-btn-arrow-right,",
+        ".header-nav-toolbar .header-nav-button .x-btn-arrow-bottom {",
+        "  filter: brightness(0.2);",
+        "}",
+        ".header-nav-toolbar .header-nav-button:hover {",
+        "  background: #eef3f3;",
+        "  border-color: #bfc9c9;",
+        "}",
+        ".header-nav-toolbar .header-nav-button-active,",
+        ".header-nav-toolbar .x-btn-pressed.header-nav-button {",
+        "  background: #d9efed;",
+        "  border-color: #0b7f78;",
+        "}",
+        ".header-nav-toolbar .header-nav-button-active .x-btn-icon-el,",
+        ".header-nav-toolbar .x-btn-pressed.header-nav-button .x-btn-icon-el {",
+        "  color: #0b7f78;",
+        "}",
+        ".main-logo {",
+        "  width: 200px !important;",
+        "  height: 68px;",
+        "  padding: 0 20px 0 0;",
+        "  margin-left: 10px;",
+        "  margin-right: 6px;",
+        "}"
+        ,
+        ".main-logo .logo {",
+        "  display: flex;",
+        "  align-items: center;",
+        "  height: 68px;",
+        "  line-height: 68px;",
+        "  position: static;",
+        "}",
+        ".main-logo .logo img {",
+        "  position: static;",
+        "  margin: 0 14px 0 10px;",
+        "}",
+        ".main-logo .logo .title {",
+        "  margin-left: 0;",
+        "}"
+        ,
+        ".header-user-actions {",
+        "  display: flex;",
+        "  align-items: center;",
+        "  padding: 5px 10px;",
+        "  border: 1px solid #d8d8d8;",
+        "  border-radius: 12px;",
+        "  background: rgba(255, 255, 255, 0.92);",
+        "  flex: 0 0 auto;",
+        "}",
+        ".header-user-actions .header-username {",
+        "  margin-right: 6px;",
+        "  max-width: 140px;",
+        "  overflow: hidden;",
+        "  text-overflow: ellipsis;",
+        "  white-space: nowrap;",
+        "}",
+        ".header-user-actions .x-btn {",
+        "  margin-left: 6px;",
+        "}",
+        "@media (max-width: 1919px) {",
+        "  .header-nav-toolbar .header-nav-button .x-btn-inner {",
+        "    display: none;",
+        "  }",
+        "  .header-nav-toolbar .header-nav-button {",
+        "    padding: 0 6px;",
+        "  }",
+        "}"
+      ].join("\n"),
+      "top-nav-styles"
+    );
   },
 
-  onToggleNavigationSize: function () {
+  bindHeaderLayoutFix: function () {
     var me = this,
       refs = me.getReferences(),
-      navigationList = refs.navigationTreeList,
-      wrapContainer = refs.mainContainerWrap,
-      collapsing = !navigationList.getMicro(),
-      new_width = collapsing ? 64 : 300;
+      headerBar = Ext.getCmp("headerBar"),
+      logoCmp = refs && refs.logo;
 
-    if (Ext.isIE9m || !Ext.os.is.Desktop) {
-      Ext.suspendLayouts();
-
-      refs.logo.setWidth(new_width);
-
-      navigationList.setWidth(new_width);
-      navigationList.setMicro(collapsing);
-
-      Ext.resumeLayouts(); // do not flush the layout here...
-
-      // No animation for IE9 or lower...
-      wrapContainer.layout.animatePolicy = wrapContainer.layout.animate = null;
-      wrapContainer.updateLayout(); // ... since this will flush them
-    } else {
-      if (!collapsing) {
-        Ext.select("#header-title").removeCls("display-none");
-        // If we are leaving micro mode (expanding), we do that first so that the
-        // text of the items in the navlist will be revealed by the animation.
-        navigationList.setMicro(false);
-      }
-
-      // Start this layout first since it does not require a layout
-      refs.logo.animate({ dynamic: true, to: { width: new_width } });
-      refs.logo.el.removeCls("logo-collapsed");
-
-      // Directly adjust the width config and then run the main wrap container layout
-      // as the root layout (it and its chidren). This will cause the adjusted size to
-      // be flushed to the element and animate to that new size.
-      navigationList.width = new_width;
-      wrapContainer.updateLayout({ isRoot: true });
-      navigationList.el.addCls("nav-tree-animating");
-
-      // We need to switch to micro mode on the navlist *after* the animation (this
-      // allows the "sweep" to leave the item text in place until it is no longer
-      // visible.
-      if (collapsing) {
-        Ext.select("#header-title").addCls("display-none");
-        navigationList.on({
-          afterlayoutanimation: function () {
-            refs.logo.el.addCls("logo-collapsed");
-            navigationList.setMicro(true);
-            navigationList.el.removeCls("nav-tree-animating");
-          },
-          single: true
-        });
-      }
+    if (!headerBar || !logoCmp) {
+      return;
     }
+
+    var scheduleLayout = function () {
+      Ext.defer(function () {
+        if (!headerBar.destroyed) {
+          headerBar.updateLayout();
+        }
+      }, 0);
+    };
+
+    var bindLogoLoad = function () {
+      var imgEl = logoCmp.getEl() && logoCmp.getEl().down("img");
+      if (imgEl) {
+        imgEl.on("load", scheduleLayout, null, { single: true });
+      }
+    };
+
+    if (logoCmp.rendered) {
+      bindLogoLoad();
+    } else {
+      logoCmp.on("afterrender", bindLogoLoad, null, { single: true });
+    }
+
+    scheduleLayout();
+  },
+
+  buildTopNavigation: function (store) {
+    var me = this,
+      refs = me.getReferences(),
+      toolbar = refs.topNavToolbar,
+      root = store && store.getRoot();
+
+    if (!toolbar || !root) {
+      return;
+    }
+
+    toolbar.removeAll();
+
+    root.eachChild(function (node) {
+      if (node.get("hidden")) {
+        return;
+      }
+
+      var menu = me.buildMenuForNode(node);
+      var route = node.get("routeId") || node.get("viewType");
+
+      toolbar.add({
+        xtype: "button",
+        ui: "header",
+        cls: "header-nav-button",
+        iconCls: node.get("iconCls"),
+        text: node.get("text"),
+        iconAlign: "left",
+        tooltip: node.get("text"),
+        navNodeId: node.getId(),
+        navRouteId: route,
+        menu: menu,
+        handler: !menu
+          ? function () {
+              if (route) {
+                me.redirectTo(route);
+              }
+            }
+          : null
+      });
+    });
+
+    Ext.defer(function () {
+      toolbar.updateLayout();
+      var headerBar = toolbar.up("toolbar");
+      if (headerBar) {
+        headerBar.updateLayout();
+      }
+    }, 0);
+  },
+
+  buildMenuForNode: function (node) {
+    var me = this,
+      items = [];
+
+    node.eachChild(function (child) {
+      if (child.get("hidden")) {
+        return;
+      }
+
+      var childRoute = child.get("routeId") || child.get("viewType");
+      var childMenu = me.buildMenuForNode(child);
+
+      items.push({
+        text: child.get("text"),
+        iconCls: child.get("iconCls"),
+        menu: childMenu,
+        handler: !childMenu
+          ? function () {
+              if (childRoute) {
+                me.redirectTo(childRoute);
+              }
+            }
+          : null
+      });
+    });
+
+    if (!items.length) {
+      return null;
+    }
+
+    return Ext.create("Ext.menu.Menu", {
+      items: items
+    });
   },
 
   setCurrentView: function (hashTag) {
@@ -103,11 +271,12 @@ Ext.define("MainHub.view.main.MainController", {
       refs = me.getReferences(),
       mainCard = refs.mainCardPanel,
       mainLayout = mainCard.getLayout(),
-      navigationList = refs.navigationTreeList,
-      store = navigationList.getStore(),
+      store = Ext.getStore("NavigationTree"),
       node =
-        store.findNode("routeId", hashTag) ||
-        store.findNode("viewType", hashTag),
+        (store &&
+          (store.findNode("routeId", hashTag) ||
+            store.findNode("viewType", hashTag))) ||
+        null,
       view = (node && node.get("viewType")) || "page404",
       lastView = me.lastView,
       existingItem = mainCard.child("component[routeId=" + hashTag + "]"),
@@ -115,7 +284,9 @@ Ext.define("MainHub.view.main.MainController", {
       newView;
 
     // Set Page Title
-    document.title = baseTitle + " | " + node.data.text;
+    document.title = node
+      ? baseTitle + " | " + node.data.text
+      : baseTitle;
 
     // Kill any previously routed window
     if (lastView && lastView.isWindow) {
@@ -150,7 +321,7 @@ Ext.define("MainHub.view.main.MainController", {
       }
     }
 
-    navigationList.setSelection(node);
+    me.updateTopNavSelection(node, store);
 
     if (newView.isFocusable(true)) {
       newView.focus();
@@ -172,5 +343,35 @@ Ext.define("MainHub.view.main.MainController", {
     if (store.getCount() > 0) {
       me.setCurrentView(id);
     }
+  },
+  updateTopNavSelection: function (node, store) {
+    var me = this,
+      refs = me.getReferences(),
+      toolbar = refs.topNavToolbar;
+
+    if (!toolbar) {
+      return;
+    }
+
+    toolbar.items.each(function (item) {
+      if (item && item.removeCls) {
+        item.removeCls("header-nav-button-active");
+      }
+    });
+
+    if (!node || !store) {
+      return;
+    }
+
+    var topNode = node;
+    while (topNode.parentNode && topNode.parentNode !== store.getRoot()) {
+      topNode = topNode.parentNode;
+    }
+
+    toolbar.items.each(function (item) {
+      if (item && item.navNodeId && item.navNodeId === topNode.getId()) {
+        item.addCls("header-nav-button-active");
+      }
+    });
   }
 });

@@ -2,117 +2,46 @@
   <div class="parent-container">
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg
+        <img
+          :src="iconDutiesHeader"
+          alt="Manage Duties"
+          width="42"
+          height="42"
           style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <g>
-            <path
-              opacity="0.3"
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 16.3106 20.4627 18.6515 18.5549 19.8557L18.2395 18.878C17.9043 17.6699 17.2931 16.8681 16.262 16.3834C15.2532 15.9092 13.8644 15.75 12 15.75C10.134 15.75 8.74481 15.922 7.73554 16.4097C6.70593 16.9073 6.09582 17.7207 5.7608 18.927L5.45019 19.8589C3.53829 18.6556 3 16.3144 3 12ZM8.75 10C8.75 8.20507 10.2051 6.75 12 6.75C13.7949 6.75 15.25 8.20507 15.25 10C15.25 11.7949 13.7949 13.25 12 13.25C10.2051 13.25 8.75 11.7949 8.75 10Z"
-              fill="#333333"
-            />
-            <path
-              d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z"
-              stroke="white"
-              stroke-width="1.5"
-            />
-            <path
-              d="M15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z"
-              stroke="white"
-              stroke-width="1.5"
-            />
-            <path
-              d="M6 19C6.63819 16.6928 8.27998 16 12 16C15.72 16 17.3618 16.6425 18 18.9497"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-          </g>
-        </svg>
+        />
       </div>
       <div class="header-title" style="display: inline">Manage Duties</div>
     </div>
-    <div style="width: 100%; display: flex; flex-direction: row">
-      <div class="table-container" style="width: 100%">
-        <div
-          style="
-            margin-right: 12px;
-            border: 1px solid black;
-            border-radius: 4px;
-          "
-        >
-          <div
-            style="
-              padding: 7px 15px;
-              height: 70px;
-              background: #ecebe5;
-              display: flex;
-              border-radius: 4px;
-              align-items: center;
-            "
-          >
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                flex-grow: 1;
-                overflow: hidden;
-                white-space: nowrap;
-              "
-            >
-              <div
-                style="
-                  background: grey;
-                  width: 35px;
-                  height: 35px;
-                  text-align: center;
-                  border-top-left-radius: 4px;
-                  border-bottom-left-radius: 4px;
-                "
-              >
+    <div class="duties-body">
+      <div class="table-container duties-table-panel">
+        <div class="duties-card">
+          <div class="duties-toolbar">
+            <div class="duties-search">
+              <div class="duties-icon-box">
                 <font-awesome-icon
                   icon="fa-solid fa-magnifying-glass"
-                  style="color: white; margin-top: 10px"
-                ></font-awesome-icon>
+                  class="duties-icon"
+                />
               </div>
               <input
                 id="search-bar"
-                style="outline: none; width: 450px; font-size: 14px"
-                class="styled-box"
+                class="duties-input"
                 type="text"
                 placeholder="Search..."
                 @input="searchDuties"
               />
             </div>
 
-            <div style="display: flex; align-items: center; margin-left: 10px">
-              <div
-                style="
-                  background: grey;
-                  width: 35px;
-                  height: 35px;
-                  text-align: center;
-                  border-top-left-radius: 4px;
-                  border-bottom-left-radius: 4px;
-                "
-              >
+            <div class="duties-filter">
+              <div class="duties-icon-box">
                 <font-awesome-icon
                   icon="fa-regular fa-calendar-days"
-                  style="color: white; margin-top: 10px"
-                ></font-awesome-icon>
+                  class="duties-icon"
+                />
               </div>
               <select
                 id="period-filter"
-                class="styled-box"
-                style="width: 200px; font-size: 14px"
+                class="duties-select"
                 v-model="selectedFilter"
               >
                 <option value="all">All</option>
@@ -125,61 +54,41 @@
               </select>
             </div>
           </div>
-          <ag-grid-vue
-            ref="dutiesGrid"
-            class="ag-theme-alpine"
-            style="margin: 15px; height: 669px"
-            theme="legacy"
-            :rowSelection="{
-              mode: 'multiRow',
-              checkboxes: false,
-              headerCheckbox: false
-            }"
-            :animateRows="true"
-            :rowDragManaged="true"
-            :stopEditingWhenCellsLoseFocus="true"
-            :columnDefs="columnsList"
-            :rowData="dutiesList"
-            :gridOptions="gridOptions"
-            @cellValueChanged="editDuty"
-            @first-data-rendered="updateGridDataObject"
-            @grid-ready="onGridReady"
-          />
+          <div class="duties-grid-wrapper">
+            <ag-grid-vue
+              ref="dutiesGrid"
+              class="ag-theme-alpine"
+              style="height: 100%"
+              theme="legacy"
+              :rowSelection="{
+                mode: 'multiRow',
+                checkboxes: false,
+                headerCheckbox: false
+              }"
+              :animateRows="true"
+              :rowDragManaged="true"
+              :stopEditingWhenCellsLoseFocus="true"
+              :columnDefs="columnsList"
+              :rowData="dutiesList"
+              :gridOptions="gridOptions"
+              @cellValueChanged="editDuty"
+              @first-data-rendered="updateGridDataObject"
+              @grid-ready="onGridReady"
+            />
+          </div>
         </div>
       </div>
-      <div
-        class="add-duty-container"
-        style="
-          background: #ecebe5;
-          width: 100%;
-          height: 771px;
-          max-width: 20%;
-          border: 1px solid #006c66;
-          border-radius: 4px;
-        "
-      >
-        <div
-          style="
-            background: #006c66;
-            padding: 10px;
-            color: white;
-            margin-bottom: 8px;
-            height: 42px;
-          "
-        >
+      <div class="add-duty-container">
+        <div class="add-duty-header">
           <font-awesome-icon
             icon="fa-regular fa-calendar-plus"
-            style="height: 18px; width: 18px"
+            class="add-duty-icon"
           />
-          <span class="text-medium" style="margin-left: 8px; font-size: 16px"
-            >Add Duty</span
-          >
+          <span class="add-duty-title">Add Duty</span>
         </div>
-        <div style="padding-top: 6px">
-          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-            Facility:
-          </div>
-          <div style="padding-left: 30px; padding-right: 30px">
+        <div class="add-duty-body">
+          <div class="duty-field">
+            <div class="text-medium duty-label">Facility:</div>
             <select
               class="dropdown-select"
               name="facility"
@@ -191,12 +100,8 @@
               <option value="DeepSeq">DeepSeq</option>
             </select>
           </div>
-        </div>
-        <div style="padding-top: 6px">
-          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-            Responsible Person:
-          </div>
-          <div style="padding-left: 30px; padding-right: 30px">
+          <div class="duty-field">
+            <div class="text-medium duty-label">Responsible Person:</div>
             <select
               class="dropdown-select"
               name="main_name"
@@ -210,12 +115,8 @@
               </option>
             </select>
           </div>
-        </div>
-        <div style="padding-top: 6px">
-          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-            Backup Person:
-          </div>
-          <div style="padding-left: 30px; padding-right: 30px">
+          <div class="duty-field">
+            <div class="text-medium duty-label">Backup Person:</div>
             <select
               class="dropdown-select"
               name="backup_name"
@@ -229,12 +130,8 @@
               </option>
             </select>
           </div>
-        </div>
-        <div style="padding-top: 6px">
-          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-            Start Date:
-          </div>
-          <div style="padding-left: 30px; padding-right: 30px">
+          <div class="duty-field">
+            <div class="text-medium duty-label">Start Date:</div>
             <input
               class="date-selector"
               type="date"
@@ -246,12 +143,8 @@
               @change="updateDutyObject"
             />
           </div>
-        </div>
-        <div style="padding-top: 6px">
-          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-            End Date:
-          </div>
-          <div style="padding-left: 30px; padding-right: 30px">
+          <div class="duty-field">
+            <div class="text-medium duty-label">End Date:</div>
             <input
               class="date-selector"
               type="date"
@@ -263,12 +156,8 @@
               @change="updateDutyObject"
             />
           </div>
-        </div>
-        <div style="padding-top: 6px">
-          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-            Platform:
-          </div>
-          <div style="padding-left: 30px; padding-right: 30px">
+          <div class="duty-field">
+            <div class="text-medium duty-label">Platform:</div>
             <select
               class="dropdown-select"
               name="platform"
@@ -281,14 +170,8 @@
               <option value="shortlong">Short + Long</option>
             </select>
           </div>
-        </div>
-        <div style="padding-top: 6px">
-          <div class="text-medium" style="padding-left: 8px; font-weight: bold">
-            Comments:
-          </div>
-          <div
-            style="padding-left: 30px; padding-right: 30px; padding-right: 30px"
-          >
+          <div class="duty-field">
+            <div class="text-medium duty-label">Comments:</div>
             <textarea
               class="comment-textarea"
               id="comment"
@@ -296,11 +179,7 @@
             />
           </div>
         </div>
-        <button
-          class="text-medium green-button"
-          style="margin: 15px"
-          @click="saveDuty()"
-        >
+        <button class="text-medium green-button duty-save" @click="saveDuty()">
           Save
         </button>
       </div>
@@ -320,6 +199,7 @@ import { toRaw } from "vue";
 import axios from "axios";
 import moment from "moment";
 import Cookies from "js-cookie";
+import iconDutiesHeader from "../assets/icons/header_duties.svg";
 
 const axiosRef = axios.create({
   withCredentials: true,
@@ -338,6 +218,7 @@ export default {
   },
   data() {
     return {
+      iconDutiesHeader,
       dutiesList: null,
       dutiesListBackup: null,
       newDuty: {},
@@ -792,9 +673,17 @@ export default {
 <style>
 .parent-container {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 10px;
+}
+
+.duties-body {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
 }
 
 .styled-box {
@@ -803,8 +692,85 @@ export default {
   border: 1px solid grey;
   background: whitesmoke;
   outline: none;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.duties-table-panel {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.duties-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #c7cbd1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.duties-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #f3f1e9;
+  border-bottom: 1px solid #d9d6cc;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.duties-search,
+.duties-filter {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #ffffff;
+  border: 1px solid #c7cbd1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.duties-search {
+  flex: 1;
+  max-width: 460px;
+}
+
+.duties-filter {
+  width: 220px;
+}
+
+.duties-icon-box {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #6b7280;
+}
+
+.duties-icon {
+  color: #ffffff;
+}
+
+.duties-input,
+.duties-select {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 6px 10px;
+  background: #ffffff;
+  color: #333;
+  width: 100%;
+}
+
+.duties-grid-wrapper {
+  flex: 1;
+  min-height: 0;
+  margin: 12px;
 }
 
 .dropdown-select,
@@ -816,7 +782,7 @@ export default {
 
 .comment-textarea {
   width: 100%;
-  height: 250px;
+  height: 220px;
   background: whitesmoke;
 }
 
@@ -824,12 +790,12 @@ export default {
 .date-selector,
 .comment-textarea {
   border: 1px solid grey;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 12px;
   outline: none;
   font-size: 14px;
   padding: 4px;
-  font-family: sans-serif;
+  font-family: var(--app-font-family);
 }
 
 .date-selector {
@@ -841,6 +807,61 @@ export default {
 .comment-textarea {
   padding: 7px;
   resize: none;
+}
+
+.add-duty-container {
+  width: 360px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f1efe8;
+  border: 1px solid #006c66;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.add-duty-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #006c66;
+  color: white;
+  padding: 10px 12px;
+  border-bottom: 1px solid #0b5f59;
+}
+
+.add-duty-icon {
+  height: 18px;
+  width: 18px;
+}
+
+.add-duty-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.add-duty-body {
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.duty-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.duty-label {
+  padding-left: 0;
+  font-weight: 600;
+}
+
+.duty-save {
+  margin: 12px 14px 14px;
+  align-self: flex-start;
 }
 
 select:disabled {

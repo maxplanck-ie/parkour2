@@ -1,10 +1,7 @@
 <template>
   <div class="parent-container">
     <!-- Loading overlay -->
-    <div
-      v-if="(loading || fakeLoading) && !exportLoading"
-      class="loading-overlay"
-    >
+    <div v-if="(loading || fakeLoading) && !exportLoading && !requestEditorSyncing" class="loading-overlay">
       <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
         Loading <span style="font-weight: bold">Libraries & Samples</span>...
@@ -20,105 +17,45 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg
-          style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path
-            opacity="0.3"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M5 15L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L19 15H5Z"
-            fill="#323232"
-          />
-          <path
-            d="M15.0486 4H8.95137C8.46527 4 8.31058 4.65529 8.74536 4.87268C8.90142 4.95071 9 5.11022 9 5.2847V10.1716C9 10.702 8.78929 11.2107 8.41421 11.5858L3.58579 16.4142C3.21071 16.7893 3 17.298 3 17.8284V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V17.8284C21 17.298 20.7893 16.7893 20.4142 16.4142L15.5858 11.5858C15.2107 11.2107 15 10.702 15 10.1716V5.2847C15 5.11022 15.0986 4.95071 15.2546 4.87268C15.6894 4.65529 15.5347 4 15.0486 4Z"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M5 15H19"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <img :src="iconLibrariesHeader" alt="Libraries & Samples" width="42" height="42" style="display: block" />
       </div>
-      <div class="header-title" style="display: inline">
+      <div class="header-title" style="display: inline" data-testid="libraries-header-title">
         Libraries & Samples
       </div>
 
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input
-            ref="searchInput"
-            v-model="searchQuery"
-            @keyup.enter="handleSearchAction"
-            type="text"
-            placeholder="Search"
-          />
-          <font-awesome-icon
-            icon="fa-solid fa-magnifying-glass"
-            style="color: darkgrey; cursor: pointer"
-            @click="handleSearchAction"
-          />
+          <input ref="searchInput" v-model="searchQuery" @keyup.enter="handleSearchAction" type="text"
+            placeholder="Search" />
+          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey; cursor: pointer"
+            @click="handleSearchAction" />
         </div>
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input
-              type="date"
-              id="startDate"
-              :class="{ 'invalid-date': !startDateValid }"
-              v-model="startDateString"
-              required
-            />
+            <input type="date" id="startDate" :class="{ 'invalid-date': !startDateValid }" v-model="startDateString"
+              required />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input
-              type="date"
-              id="endDate"
-              :class="{ 'invalid-date': !endDateValid }"
-              v-model="endDateString"
-              required
-            />
+            <input type="date" id="endDate" :class="{ 'invalid-date': !endDateValid }" v-model="endDateString"
+              required />
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleAdvancedFiltersButton"
-            @click="toggleAdvancedFilters"
-          >
+          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div
-            id="advancedFiltersPopup"
-            v-if="showAdvancedFilters"
-            class="button-popup-container"
-            style="height: 473px; width: 250px; left: -50px"
-          >
+          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
+            style="height: 473px; width: 250px; left: -50px">
             <!-- Status Filter -->
             <div class="filter-item">
               <label>Status</label>
               <select v-model="filters.status" @change="getLibrariesSamples(1)">
                 <option :value="null">All Statuses</option>
-                <option
-                  v-for="(text, num) in statusMap"
-                  :key="num"
-                  :value="num"
-                >
+                <option v-for="(text, num) in statusMap" :key="num" :value="num">
                   {{ text }}
                 </option>
               </select>
@@ -127,16 +64,9 @@
             <!-- Protocol Filter -->
             <div class="filter-item">
               <label>Protocol</label>
-              <select
-                v-model="filters.protocol"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.protocol" @change="getLibrariesSamples(1)">
                 <option :value="null">All Protocols</option>
-                <option
-                  v-for="protocol in protocolsList"
-                  :key="protocol.id"
-                  :value="protocol.id"
-                >
+                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.id">
                   {{ protocol.name }}
                 </option>
               </select>
@@ -145,16 +75,9 @@
             <!-- Analysis Type Filter -->
             <div class="filter-item">
               <label>Analysis Type</label>
-              <select
-                v-model="filters.analysisType"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.analysisType" @change="getLibrariesSamples(1)">
                 <option :value="null">All Analysis Types</option>
-                <option
-                  v-for="type in analysisTypesList"
-                  :key="type.id"
-                  :value="type.id"
-                >
+                <option v-for="type in analysisTypesList" :key="type.id" :value="type.id">
                   {{ type.name }}
                 </option>
               </select>
@@ -163,16 +86,9 @@
             <!-- Sequencer Filter -->
             <div class="filter-item">
               <label>Sequencer</label>
-              <select
-                v-model="filters.sequencer"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.sequencer" @change="getLibrariesSamples(1)">
                 <option :value="null">All Sequencers</option>
-                <option
-                  v-for="sequencer in sequencersList"
-                  :key="sequencer.id"
-                  :value="sequencer.id"
-                >
+                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.id">
                   {{ sequencer.name }}
                 </option>
               </select>
@@ -181,16 +97,9 @@
             <!-- Read Length Filter -->
             <div class="filter-item">
               <label>Read Length</label>
-              <select
-                v-model="filters.readLength"
-                @change="getLibrariesSamples(1)"
-              >
+              <select v-model="filters.readLength" @change="getLibrariesSamples(1)">
                 <option :value="null">All Read Lengths</option>
-                <option
-                  v-for="length in readLengthsList"
-                  :key="length.id"
-                  :value="length.id"
-                >
+                <option v-for="length in readLengthsList" :key="length.id" :value="length.id">
                   {{ length.name }}
                 </option>
               </select>
@@ -203,65 +112,36 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button
-            class="header-button"
-            id="toggleSelectColumnsButton"
-            @click="toggleSelectColumns"
-          >
-            <font-awesome-icon
-              icon="fa-solid fa-columns"
-              style="color: white"
-            />
+          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
+            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
             <span> Select Columns </span>
           </button>
-          <div
-            id="selectColumnsPopup"
-            v-if="showSelectColumns"
-            class="button-popup-container"
-            style="
+          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
               left: -50px;
               width: 250px;
               max-height: 473px;
               display: flex;
               flex-direction: column;
               padding: 10px 10px 5px 10px;
-            "
-          >
-            <ul
-              style="
+            ">
+            <ul style="
                 padding: 5px 7px 7px;
                 margin: 0;
                 flex-grow: 1;
                 overflow-y: auto;
-              "
-            >
-              <li
-                v-for="(column, index) in columnsList"
-                :key="index"
-                style="list-style: none"
-              >
-                <template
-                  v-if="
-                    column.field !== 'selected' ||
-                    (column.field === 'selected' && column.visible == false)
-                  "
-                >
-                  <label
-                    :style="{
-                      backgroundColor: column.columns ? '#33333310' : 'white',
-                      cursor: column.columns ? 'default' : 'pointer'
-                    }"
-                  >
-                    <input
-                      v-if="!column.columns"
-                      type="checkbox"
-                      v-model="column.visible"
-                      @change="toggleColumnVisibility(column)"
-                    />
-                    <font-awesome-icon
-                      v-if="column.columns"
-                      icon="fa-solid fa-caret-down"
-                      style="
+              ">
+              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
+                <template v-if="
+                  column.field !== 'selected' ||
+                  (column.field === 'selected' && column.visible == false)
+                ">
+                  <label :style="{
+                    backgroundColor: column.columns ? '#33333310' : 'white',
+                    cursor: column.columns ? 'default' : 'pointer'
+                  }">
+                    <input v-if="!column.columns" type="checkbox" v-model="column.visible"
+                      @change="toggleColumnVisibility(column)" />
+                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -272,66 +152,344 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      "
-                    />
+                      " />
                     <span>{{ column.title }}</span>
                   </label>
                 </template>
               </li>
             </ul>
-            <div
-              style="
+            <div style="
                 padding-top: 8px;
                 border-top: 1px solid #eee;
                 display: flex;
                 flex-direction: column;
-              "
-            >
+              ">
               <button @click="resetColumnVisibility" class="reset-button">
                 Reset Visibility Settings
               </button>
-              <button
-                style="margin-bottom: 5px"
-                @click="resetColumnWidths"
-                class="reset-button"
-              >
+              <button style="margin-bottom: 5px" @click="resetColumnWidths" class="reset-button">
                 Reset Width Settings
               </button>
             </div>
           </div>
         </div>
-        <button
-          class="header-button"
-          id="openExportPopupButton"
-          @click="handleExportClick"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-file-excel"
-            style="color: white"
-          />
+        <button class="header-button" id="openExportPopupButton" @click="handleExportClick">
+          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
           <span> Export to Excel </span>
         </button>
+
+        <button class="header-button" type="button" data-testid="add-request-button" @click="openRequestEditorModal">
+          <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+          <span> Add Request </span>
+        </button>
+        <div class="button-popup-wrapper help-popup-wrapper">
+          <button class="header-button help-header-button" id="togglePageHelpButton" type="button"
+            @click="togglePageHelp">
+            <font-awesome-icon icon="fa-solid fa-circle-info" style="color: white" />
+            <span> Help </span>
+          </button>
+          <div v-if="showPageHelp" id="pageHelpPopup" class="page-help-popup">
+            <div class="page-help-scroll">
+              <div class="page-help-header">
+                <div>
+                  <div class="page-help-title">
+                    Libraries &amp; Samples Guide
+                  </div>
+                  <p class="page-help-intro">
+                    This page is your main overview page for tracking requests
+                    and understanding what has already been submitted to the
+                    sequencing facility. A request is the main container in Parkour.
+                    Inside one request, you can have one or more samples, one or more
+                    libraries, attached files, and a running history of
+                    progress. Use this page to find requests, open them, check
+                    where their items are in the process, and start a new
+                    request when you want to submit new work.
+                  </p>
+                </div>
+                <button class="popup-close-button page-help-close" type="button" @click="showPageHelp = false">
+                  &times;
+                </button>
+              </div>
+
+              <div class="page-help-grid">
+                <section class="page-help-section">
+                  <div class="page-help-section-title">
+                    <font-awesome-icon icon="fa-solid fa-circle-info" />
+                    <span>What You See On This Page</span>
+                  </div>
+                  <ul class="page-help-list">
+                    <li>
+                      Each collapsed row is one request. Think of a request as a
+                      folder that keeps together everything related to one
+                      submission: the samples or libraries, the request details,
+                      the files, and the progress information.
+                    </li>
+                    <li>
+                      When you click a request row, it opens and shows the
+                      individual libraries or samples inside that request.
+                    </li>
+                    <li>
+                      The header at the top is your control area. From there you
+                      can search, narrow the list with filters, choose which
+                      columns are visible, export data, or create a new request.
+                    </li>
+                    <li>
+                      The table below shows all matching libraries and samples
+                      for the current search, date range, and filters.
+                    </li>
+                  </ul>
+                  <div class="page-help-visual request-row-visual">
+                    <div class="visual-request-line">
+                      <span class="visual-request-name">3805_Example_Request</span>
+                      <span class="visual-request-meta">
+                        (#: 4 Samples, Total Depth: 240)
+                      </span>
+                    </div>
+                    <div class="visual-request-icons">
+                      <span class="visual-icon-chip">Edit</span>
+                      <span class="visual-icon-chip">Files</span>
+                      <span class="visual-icon-chip">Select</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="page-help-section">
+                  <div class="page-help-section-title">
+                    <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+                    <span>How To Find The Right Request</span>
+                  </div>
+                  <ul class="page-help-list">
+                    <li>
+                      Use the search box when you know part of a request name,
+                      barcode, sample name, or library name. Parkour searches the
+                      visible table data and helps you quickly narrow the page.
+                    </li>
+                    <li>
+                      Use the date range if the page contains too many requests.
+                      This is often the fastest way to focus on recent work or on
+                      a specific time period.
+                    </li>
+                    <li>
+                      Use <strong>Advanced Filters</strong> if you want to narrow
+                      the page by status, protocol, analysis type, sequencer, or
+                      read length. These filters are useful when you know what
+                      stage or processing setup you are looking for.
+                    </li>
+                    <li>
+                      If the table looks too crowded, use
+                      <strong>Select Columns</strong> to hide information that is
+                      not important for your current task.
+                    </li>
+                  </ul>
+                  <div class="page-help-visual search-visual">
+                    <div class="visual-search-bar">Search by request, name, barcode...</div>
+                    <div class="visual-filter-row">
+                      <span class="visual-filter-chip">Date</span>
+                      <span class="visual-filter-chip">Status</span>
+                      <span class="visual-filter-chip">Protocol</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="page-help-section">
+                  <div class="page-help-section-title">
+                    <font-awesome-icon icon="fa-solid fa-square-plus" />
+                    <span>How To Create A New Request</span>
+                  </div>
+                  <ul class="page-help-list">
+                    <li>
+                      Click <strong>Add Request</strong> in the header when you
+                      want to create a brand-new request.
+                    </li>
+                    <li>
+                      In the request editor, begin with the request details on the
+                      left side. This usually includes the cost unit, a
+                      description, and any supporting files.
+                    </li>
+                    <li>
+                      Then decide whether you want to enter libraries or samples,
+                      create the needed number of rows, and complete the table on
+                      the right side.
+                    </li>
+                    <li>
+                      Use <strong>Samples</strong> when you are submitting input
+                      material that still needs library preparation. Use
+                      <strong>Libraries</strong> when the material is already in
+                      library form.
+                    </li>
+                    <li>
+                      If you have supporting documents, upload them in the request
+                      editor so the request stays complete in one place.
+                    </li>
+                    <li>
+                      Save the request after all required fields are complete and
+                      the highlighted validation issues, if any, have been fixed.
+                    </li>
+                    <li>
+                      After saving, the new request will appear on this page and
+                      can then be tracked here over time.
+                    </li>
+                  </ul>
+                  <div class="page-help-visual flow-visual">
+                    <span class="visual-step">1. Add Request</span>
+                    <span class="visual-step">2. Fill Details</span>
+                    <span class="visual-step">3. Add Rows</span>
+                    <span class="visual-step">4. Save</span>
+                  </div>
+                </section>
+
+                <section class="page-help-section">
+                  <div class="page-help-section-title">
+                    <font-awesome-icon icon="fa-solid fa-circle-check" />
+                    <span>Request Status And Progress</span>
+                  </div>
+                  <p class="page-help-copy">
+                    Parkour tracks progress separately for each library or sample.
+                    This means one request can contain entries at different
+                    stages. The status column is therefore one of the most
+                    important columns on this page: it tells you where each
+                    individual item currently is in the sequencing process.
+                  </p>
+                  <div class="status-help-list">
+                    <div v-for="(label, key) in statusMap" :key="`status-help-${key}`" class="status-help-row">
+                      <span class="status-help-code">{{ key }}</span>
+                      <span class="status-help-text">{{ label }}</span>
+                    </div>
+                  </div>
+                  <div class="page-help-callout">
+                    <font-awesome-icon icon="fa-solid fa-lightbulb" />
+                    <span>
+                      Requests highlighted in very light blue are waiting for
+                      approval. In practice, this means the request still needs
+                      the approval step before it can move forward in the normal
+                      workflow.
+                    </span>
+                  </div>
+                </section>
+
+                <section class="page-help-section">
+                  <div class="page-help-section-title">
+                    <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                    <span>What The Request Action Icons Do</span>
+                  </div>
+                  <ul class="page-help-list">
+                    <li>
+                      <strong>View / Edit Request:</strong> Open the request
+                      editor. There you can review or change the request details,
+                      the attached files, and the libraries or samples inside the
+                      request.
+                    </li>
+                    <li>
+                      <strong>Attachments:</strong> Open the request files window,
+                      where you can check attached files, add new ones, download
+                      existing ones, or remove files that are no longer needed.
+                    </li>
+                    <li>
+                      <strong>Select All / Deselect All:</strong> Select or clear
+                      all rows inside the currently opened request. This is useful
+                      before export or other actions that work on selected rows.
+                    </li>
+                    <li>
+                      <strong>Delete Request:</strong> Remove the whole request if
+                      your permissions allow it. Because this removes the whole
+                      request, use it carefully.
+                    </li>
+                    <li v-if="isStaffUser">
+                      <strong>View File Paths / Compose Email:</strong> Extra
+                      staff-only actions used for file location review and email
+                      drafting.
+                    </li>
+                  </ul>
+                </section>
+
+                <section class="page-help-section">
+                  <div class="page-help-section-title">
+                    <font-awesome-icon icon="fa-solid fa-file-excel" />
+                    <span>Export And Reporting</span>
+                  </div>
+                  <ul class="page-help-list">
+                    <li>
+                      Use <strong>Export to Excel</strong> when you want to
+                      download the current data from the page into an Excel file.
+                      You can export either selected rows or all rows that match
+                      your current filters.
+                    </li>
+                    <li>
+                      If nothing is selected, you can still export the full
+                      filtered result list.
+                    </li>
+                    <li v-if="isStaffUser">
+                      Staff users can also upload Excel templates so exports can
+                      include additional custom sheets.
+                    </li>
+                    <li>
+                      Export is useful when you want to review data offline, make
+                      a report, or share a snapshot of the current request data
+                      with other people.
+                    </li>
+                  </ul>
+                </section>
+
+                <section class="page-help-section page-help-section-wide">
+                  <div class="page-help-section-title">
+                    <font-awesome-icon icon="fa-solid fa-folder-open" />
+                    <span>Suggested First-Time Workflow</span>
+                  </div>
+                  <ol class="page-help-steps">
+                    <li>
+                      Start by choosing a date range that roughly matches the time
+                      period you care about. This makes the page much easier to
+                      read if many requests exist.
+                    </li>
+                    <li>
+                      Use the search box to look for a request name, barcode, or
+                      sample/library name if you already know what you want to
+                      find.
+                    </li>
+                    <li>
+                      Open the request row to inspect what is inside the request.
+                    </li>
+                    <li>
+                      Check the Status column to understand how far each item has
+                      progressed.
+                    </li>
+                    <li>
+                      Use the row icons to open attachments or edit the request if
+                      you need more details or need to make changes.
+                    </li>
+                    <li>
+                      If you are starting new work, use <strong>Add Request</strong>
+                      and complete the request editor step by step.
+                    </li>
+                  </ol>
+                  <div class="page-help-callout">
+                    <font-awesome-icon icon="fa-solid fa-circle-info" />
+                    <span>
+                      If you are unsure where to begin in Parkour, come back to
+                      this page first. It is the best overview page for checking
+                      what has already been submitted, what still needs attention,
+                      and what stage each item has reached.
+                    </span>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <LiteTabulatorTable
-        v-if="!loading"
-        ref="tabulatorTableRef"
-        :rowData="librariesSamplesList"
-        :columnDefs="columnsList"
-        groupBy="request_name"
-        :groupSort="{ field: 'request_name', order: 'desc' }"
-        :groupStartOpen="false"
-        :tableOptions="{
+      <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
+        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="false" :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
           handleColumnVisibilityChanged
-        }"
-      />
+        }" />
     </div>
 
     <!-- Pagination controls -->
@@ -344,47 +502,28 @@
       </div>
 
       <div class="pagination-buttons">
-        <button
-          class="pagination-button"
-          @click="changePage(1)"
-          :disabled="pagination.currentPage === 1"
-        >
+        <button class="pagination-button" @click="changePage(1)" :disabled="pagination.currentPage === 1">
           &laquo; First
         </button>
 
-        <button
-          class="pagination-button"
-          @click="changePage(pagination.currentPage - 1)"
-          :disabled="pagination.currentPage === 1"
-        >
+        <button class="pagination-button" @click="changePage(pagination.currentPage - 1)"
+          :disabled="pagination.currentPage === 1">
           &lsaquo; Prev
         </button>
 
         <div class="page-input">
-          <input
-            type="number"
-            v-model.number="pageInput"
-            min="1"
-            :max="pagination.totalPages"
-            @keyup.enter="goToPage"
-            @blur="validatePageInput"
-          />
+          <input type="number" v-model.number="pageInput" min="1" :max="pagination.totalPages" @keyup.enter="goToPage"
+            @blur="validatePageInput" />
           <span>of {{ pagination.totalPages }}</span>
         </div>
 
-        <button
-          class="pagination-button"
-          @click="changePage(pagination.currentPage + 1)"
-          :disabled="pagination.currentPage === pagination.totalPages"
-        >
+        <button class="pagination-button" @click="changePage(pagination.currentPage + 1)"
+          :disabled="pagination.currentPage === pagination.totalPages">
           Next &rsaquo;
         </button>
 
-        <button
-          class="pagination-button"
-          @click="changePage(pagination.totalPages)"
-          :disabled="pagination.currentPage === pagination.totalPages"
-        >
+        <button class="pagination-button" @click="changePage(pagination.totalPages)"
+          :disabled="pagination.currentPage === pagination.totalPages">
           Last &raquo;
         </button>
       </div>
@@ -401,43 +540,33 @@
       </div>
     </div>
 
+    <!-- Popup for Add Request -->
+    <RequestEditorView :show="showRequestEditorModal" :mode="requestModalMode" :request-id="requestModalRequestId"
+      :request-meta="activeRequestMeta" :is-staff-user="isStaffUser" :user-id="userId" :saving="requestEditorSyncing"
+      :close-on-save="false" :notify-on-save="false" @close="closeRequestEditorModal"
+      @saved="handleRequestEditorSaved" />
+
     <!-- Popup for Export Options -->
-    <div
-      v-if="showExportPopup"
-      class="popup-overlay"
-      @dragover.prevent="handleDragOver"
-      @drop="handleDrop"
-      @dragenter="handleDragEnter"
-      @dragleave="handleDragLeave"
-      :class="{ 'drag-over': isDragOver }"
-    >
+    <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
+      @dragenter="handleDragEnter" @dragleave="handleDragLeave" :class="{ 'drag-over': isDragOver }">
       <div v-if="isStaffUser" class="drag-drop-indicator">
-        <div
-          style="
+        <div style="
             display: flex;
             justify-content: center;
             align-items: center;
             height: 200px;
-          "
-        >
+          ">
           <p>
             Drop <span style="font-weight: bold">XLSX file</span> here to upload
             as <span style="font-weight: bold">template</span>
           </p>
         </div>
       </div>
-      <div
-        v-if="!isDragOver"
-        class="popup-container"
-        :style="{ width: '670px', height: '500px' }"
-      >
+      <div v-if="!isDragOver" class="popup-container" :style="{ width: '670px', height: '500px' }">
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
-          <span
-            class="popup-info-button"
-            @mouseover="showExportHelpTooltip = true"
-            @mouseleave="showExportHelpTooltip = false"
-          >
+          <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false">
             ?
             <div v-if="showExportHelpTooltip" class="tooltip-box">
               <span style="font-weight: bold">INSTRUCTIONS:</span>
@@ -446,9 +575,7 @@
                   To create custom templates, export the original sheet named
                   <span style="font-weight: bold">'Parkour'</span> by selecting
                   the
-                  <span style="font-weight: bold"
-                    >'Export without any additional sheets'</span
-                  >
+                  <span style="font-weight: bold">'Export without any additional sheets'</span>
                   option.
                 </li>
                 <li>
@@ -481,27 +608,14 @@
               Export Options:
             </div>
             <div class="export-selection-radio-option">
-              <input
-                type="radio"
-                id="export-selected"
-                value="selected"
-                v-model="exportSelection"
-                :disabled="!hasSelectedRows"
-              />
-              <label
-                for="export-selected"
-                :class="{ disabled: !hasSelectedRows }"
-              >
+              <input type="radio" id="export-selected" value="selected" v-model="exportSelection"
+                :disabled="!hasSelectedRows" />
+              <label for="export-selected" :class="{ disabled: !hasSelectedRows }">
                 Export selected libraries & samples
               </label>
             </div>
             <div class="export-selection-radio-option">
-              <input
-                type="radio"
-                id="export-all"
-                value="all"
-                v-model="exportSelection"
-              />
+              <input type="radio" id="export-all" value="all" v-model="exportSelection" />
               <label for="export-all"> Export all libraries & samples </label>
             </div>
           </div>
@@ -512,200 +626,32 @@
             <div class="file-list-section">
               <div class="file-item">
                 <div class="file-info">
-                  <svg
-                    style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g>
-                      <path
-                        opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232"
-                      />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                    </g>
-                  </svg>
+                  <img :src="iconExportTemplateFile" alt="Export without any additional sheets" width="24" height="24"
+                    style="display: block" />
                   <span>Export without any additional sheets</span>
                 </div>
                 <div class="file-actions">
-                  <div
-                    class="file-actions-radio-button"
-                    style="border: none; margin-right: 5px"
-                  >
-                    <input
-                      type="radio"
-                      title="Select"
-                      id="without-file"
-                      value="without-file"
-                      v-model="selectedFile"
-                    />
+                  <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
+                    <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
                   </div>
                 </div>
               </div>
-              <div
-                v-for="(file, index) in fetchedLibrariesAndSamplesTemplates"
-                :key="index"
-                class="file-item"
-              >
+              <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
                 <div class="file-info">
-                  <svg
-                    style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g>
-                      <path
-                        opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232"
-                      />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M9 6L11 6"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M10 9L12 9"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M9 12L11 12"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M10 15L12 15"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </g>
-                  </svg>
+                  <img :src="iconExportTemplateFileLines" :alt="file.name" width="24" height="24"
+                    style="display: block" />
                   <span>{{ file.name }}</span>
                 </div>
                 <div class="file-actions">
-                  <button
-                    @click="downloadExportTemplate(file)"
-                    class="download-button"
-                    title="Download Original File"
-                  >
-                    <svg
-                      style="display: block"
-                      fill="none"
-                      width="24px"
-                      height="24px"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <g>
-                        <path
-                          opacity="0.1"
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          fill="#323232"
-                        />
-                        <path
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12 16L12 11"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </g>
-                    </svg>
+                  <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
+                    <img :src="iconExportDownload" alt="Download" width="24" height="24" style="display: block" />
                   </button>
-                  <button
-                    @click="removeExportTemplate(index)"
-                    class="remove-button"
-                    title="Remove File"
-                  >
-                    <svg
-                      style="display: block"
-                      fill="none"
-                      width="24px"
-                      height="24px"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <g>
-                        <path
-                          opacity="0.1"
-                          d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
-                          fill="#323232"
-                        />
-                        <path
-                          d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M3 3L21 21"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </g>
-                    </svg>
+                  <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
+                    <img :src="iconExportRemove" alt="Remove" width="24" height="24" style="display: block" />
                   </button>
                   <div class="file-actions-radio-button">
-                    <input
-                      type="radio"
-                      title="Select File"
-                      :id="'file-radio-' + index"
-                      :value="file"
-                      v-model="selectedFile"
-                    />
+                    <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
+                      v-model="selectedFile" />
                   </div>
                 </div>
               </div>
@@ -722,78 +668,35 @@
         </div>
         <div class="popup-footer">
           <div v-if="isStaffUser" class="file-upload-section">
-            <label
-              for="file-upload"
-              class="file-upload-label"
-              title="Upload additional sheet to append to the exported sheet."
-            >
-              <svg
-                style="display: block; margin-right: 4px"
-                fill="none"
-                width="24px"
-                height="24px"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g>
-                  <path
-                    opacity="0.1"
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    fill="#323232"
-                  />
-                  <path
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12 11L12 16"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14.5 13.5L9.5 13.5"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </g>
-              </svg>
+            <label for="file-upload" class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet.">
+              <img :src="iconExportUpload" alt="Upload" width="24" height="24"
+                style="display: block; margin-right: 4px" />
               <span>Upload</span>
             </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".xlsx"
-              @change="uploadExportTemplate"
-              style="display: none"
-            />
+            <input id="file-upload" type="file" accept=".xlsx" @change="uploadExportTemplate" style="display: none" />
           </div>
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button
-            class="popup-button"
-            @click="
-              showExportPopup = false;
-              selectedFile = 'without-file';
-            "
-          >
+          <button class="popup-button" @click="
+            showExportPopup = false;
+          selectedFile = 'without-file';
+          ">
             Cancel
           </button>
         </div>
       </div>
     </div>
+
+    <RequestActionsPopups :active-action="activeRequestAction" :request-context="activeRequestContext"
+      :is-staff-user="isStaffUser" :paperless-approval="paperlessApproval" @close="closeRequestActionModal"
+      @refresh="handleRequestActionRefresh" />
   </div>
 </template>
 
 <script lang="jsx">
-import LiteTabulatorTable from "../components/LiteTabulatorTable.vue";
+import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -811,21 +714,38 @@ import {
   librariesAndSamplesExportColumns
 } from "../constants/librariesAndSamplesConsts";
 import { statusMap } from "../constants/statusConsts";
+import RequestEditorView from "./requestEditorView.vue";
+import RequestActionsPopups from "../components/RequestActionsPopups.vue";
+import iconLibrariesHeader from "../assets/icons/header_libraries_samples.svg";
+import iconExportTemplateFile from "../assets/icons/export_template.svg";
+import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
+import iconExportDownload from "../assets/icons/export_download.svg";
+import iconExportRemove from "../assets/icons/export_remove.svg";
+import iconExportUpload from "../assets/icons/export_upload.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
 export default {
   name: "LibrariesAndSamples",
   components: {
-    LiteTabulatorTable
+    LiteTabulatorTable,
+    RequestEditorView,
+    RequestActionsPopups
   },
   data() {
     const today = new Date();
     const initialStartDate = new Date();
     initialStartDate.setFullYear(today.getFullYear() - 10);
     return {
+      iconLibrariesHeader,
+      iconExportTemplateFile,
+      iconExportTemplateFileLines,
+      iconExportDownload,
+      iconExportRemove,
+      iconExportUpload,
       tabulatorInstance: null,
       loading: true,
+      syncLoading: false,
       fakeLoading: false,
       exportLoading: false,
       isDragOver: false,
@@ -838,6 +758,7 @@ export default {
       exportSelection: "selected",
       hasSelectedRows: false,
       isStaffUser: false,
+      userId: null,
       pagination: {
         currentPage: 1,
         pageSize: 300,
@@ -853,6 +774,23 @@ export default {
           { column: "barcode", dir: "asc" }
         ],
         groupHeader: (value, count, data) => {
+          const uniqueTypes = [
+            ...new Set(
+              data
+                .map((item) =>
+                  String(item.type || "")
+                    .trim()
+                    .toUpperCase()
+                )
+                .filter((type) => type === "L" || type === "S")
+            )
+          ];
+          const countLabel =
+            uniqueTypes.length === 1
+              ? uniqueTypes[0] === "L"
+                ? "Libraries"
+                : "Samples"
+              : "Libraries/Samples";
           let totalDepth = data.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
             0
@@ -860,7 +798,33 @@ export default {
 
           totalDepth = Number(totalDepth.toFixed(1));
 
-          return librariesAndSamplesGroupHeader(value, count, totalDepth);
+          const rows = Array.isArray(data) ? data : [];
+          const requiresApproval =
+            rows.length > 0 && rows.every((row) => Number(row.status) === 0);
+          const requestId = rows[0]?.request_id;
+          const meta = requestId ? this.requestMetaById[requestId] : null;
+          const allowDelete = meta ? !meta.restrict_permissions : false;
+          const canDownloadUpload = meta
+            ? meta.deep_seq_request_path === ""
+            : false;
+          const hasAttachments =
+            Array.isArray(meta?.files) && meta.files.length > 0;
+
+          return librariesAndSamplesGroupHeader(
+            value,
+            count,
+            countLabel,
+            totalDepth,
+            {
+              showStaffActions: this.isStaffUser,
+              showSolicitApproval: requiresApproval && this.paperlessApproval,
+              allowDelete,
+              showApprovalTag: requiresApproval && this.paperlessApproval,
+              hasAttachments,
+              canDownloadRequestForm: canDownloadUpload,
+              canUploadSignedRequest: canDownloadUpload
+            }
+          );
         }
       },
       searchQuery: "",
@@ -884,7 +848,20 @@ export default {
       dateChangeTimer: null,
       showAdvancedFilters: false,
       showSelectColumns: false,
-      inputColumnMode: "mode_user"
+      showPageHelp: false,
+      inputColumnMode: "mode_user",
+      showRequestEditorModal: false,
+      requestModalMode: "create",
+      requestModalRequestId: null,
+      activeRequestMeta: null,
+      activeRequestAction: null,
+      activeRequestContext: null,
+      requestEditorSyncing: false,
+      requestEditorSyncTimer: null,
+      pendingSavedRequestId: null,
+      pendingSavedMode: null,
+      paperlessApproval: false,
+      requestMetaById: {}
     };
   },
   mounted() {
@@ -903,6 +880,7 @@ export default {
   beforeDestroy() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
+    this.stopRequestEditorSync();
   },
   computed: {
     statusMap() {
@@ -930,17 +908,25 @@ export default {
         const user =
           typeof payload === "string" ? JSON.parse(payload) : payload;
         const staffFlag = user?.is_staff;
+        this.userId = user?.id;
         this.isStaffUser = staffFlag === true;
+        this.paperlessApproval = user?.paperless_approval === true;
         if (this.isStaffUser) {
           this.fetchExportTemplates();
         }
+        this.refreshGroupHeaders();
       } catch (error) {
-        showNotification("Failed to fetch user details.", "error");
+        showNotification("User details fetch failed.", "error");
         this.isStaffUser = false;
       }
     },
-    async getLibrariesSamples(page = 1, exportOnly) {
-      this.loading = true;
+    async getLibrariesSamples(page = 1, exportOnly, silent = false) {
+      if (silent) {
+        if (this.syncLoading) return;
+        this.syncLoading = true;
+      } else {
+        this.loading = true;
+      }
       try {
         const params = {
           start_date: formatDisplayDate(this.startDate),
@@ -1036,12 +1022,13 @@ export default {
         const groupsMap = new Map();
         const requestNamesSet = new Set();
         const allRows = [];
+        const requestsMeta = response.data?.requests || {};
 
         (response.data?.children || []).forEach((e) => {
           const row = {
             pk: e.pk ?? "",
             record_type: e.record_type ?? "",
-            request_id: e.request ?? "",
+            request_id: e.request_id ?? "",
             request_name: e.request_name ?? "",
             name: e.name ?? "",
             type: e.barcode?.[2] ?? "",
@@ -1112,19 +1099,29 @@ export default {
 
         if (exportOnly) {
           return allRows;
-        } else this.librariesSamplesList = allRows;
+        }
+
+        this.librariesSamplesList = allRows;
+        if (requestsMeta && Object.keys(requestsMeta).length) {
+          this.requestMetaById = {
+            ...this.requestMetaById,
+            ...requestsMeta
+          };
+          this.refreshGroupHeaders();
+        }
       } catch (error) {
         handleError(error);
       } finally {
-        this.loading = false;
+        if (silent) {
+          this.syncLoading = false;
+        } else {
+          this.loading = false;
+        }
       }
     },
     async getROCrateData({ barcodes = [], requestName = "" } = {}) {
       if (!Array.isArray(barcodes) || barcodes.length === 0) {
-        showNotification(
-          "Select at least one library or sample to download RO-Crate.",
-          "warning"
-        );
+        showNotification("Select records to download RO-Crate.", "warning");
         return;
       }
 
@@ -1334,9 +1331,25 @@ export default {
       ) {
         this.showExportPopup = false;
       }
+
+      const pageHelpPopup = this.$el.querySelector("#pageHelpPopup");
+      const pageHelpButton = this.$el.querySelector("#togglePageHelpButton");
+      if (
+        this.showPageHelp &&
+        pageHelpPopup &&
+        !pageHelpPopup.contains(event.target) &&
+        pageHelpButton !== event.target &&
+        !pageHelpButton.contains(event.target)
+      ) {
+        this.showPageHelp = false;
+      }
     },
     handleKeyDown(event) {
       const isEscape = event.key === "Escape";
+      if (isEscape && this.showPageHelp) {
+        this.showPageHelp = false;
+        return;
+      }
       if (isEscape && this.showExportPopup) {
         this.showExportPopup = false;
         return;
@@ -1383,7 +1396,7 @@ export default {
       const ed = new Date(`${eStr}T00:00:00`);
 
       if (sd.getTime() > ed.getTime()) {
-        showNotification("Start date cannot be after end date.", "warning");
+        showNotification("Start date must precede end date.", "warning");
         this.startDateValid = false;
         this.endDateValid = false;
       } else {
@@ -1399,6 +1412,15 @@ export default {
     },
     toggleSelectColumns() {
       this.showSelectColumns = !this.showSelectColumns;
+    },
+    togglePageHelp() {
+      const nextValue = !this.showPageHelp;
+      if (nextValue) {
+        this.showAdvancedFilters = false;
+        this.showSelectColumns = false;
+        this.showExportPopup = false;
+      }
+      this.showPageHelp = nextValue;
     },
     handleColumnResized(column) {
       const field = column.getField();
@@ -1480,6 +1502,278 @@ export default {
         row.input_display = row?.[sourceField] ?? "";
       });
     },
+    buildOptionMap(options = []) {
+      const map = new Map();
+      options.forEach((option) => {
+        if (!option) return;
+        const key =
+          option.id ?? option.pk ?? option.value ?? option.name ?? option.label;
+        const label =
+          option.name ?? option.label ?? option.text ?? option.value ?? "";
+        if (key !== undefined && key !== null) {
+          map.set(String(key), String(label));
+        }
+      });
+      return map;
+    },
+    applyRequestEditorUpdate(payload) {
+      if (!payload?.request_id || !Array.isArray(this.librariesSamplesList)) {
+        return;
+      }
+      const protocolMap = this.buildOptionMap(this.protocolsList);
+      const analysisMap = this.buildOptionMap(this.analysisTypesList);
+      const readLengthMap = this.buildOptionMap(this.readLengthsList);
+      const formatInputValue = (measuredValueRaw, measuredUnitRaw) => {
+        const measuredValueEmpty =
+          measuredValueRaw === null ||
+          measuredValueRaw === undefined ||
+          measuredValueRaw === "";
+        const measuredUnitEmpty =
+          measuredUnitRaw === null ||
+          measuredUnitRaw === undefined ||
+          measuredUnitRaw === "";
+        if (measuredValueEmpty && measuredUnitEmpty) {
+          return "";
+        }
+        const measuredValue =
+          measuredValueRaw === 0 ? 0 : measuredValueRaw || "";
+        const measuredUnit = measuredUnitRaw || "";
+        if (measuredValue === -1 && measuredUnit === "Unknown")
+          return "Unknown";
+        if (measuredValueEmpty && !measuredUnitEmpty) {
+          return measuredUnit;
+        }
+        if (measuredUnit !== "") return `${measuredValue} ${measuredUnit}`;
+        return `${measuredValue}`;
+      };
+      const rowByBarcode = new Map(
+        this.librariesSamplesList.map((row) => [row.barcode, row])
+      );
+      const allRecords = [
+        ...(payload.records?.library || []),
+        ...(payload.records?.sample || [])
+      ];
+      allRecords.forEach((record) => {
+        const row = rowByBarcode.get(record.barcode);
+        if (!row) return;
+        if (record.name !== undefined) row.name = record.name;
+        if (record.read_length !== undefined) {
+          row.read_length_name =
+            readLengthMap.get(String(record.read_length)) ||
+            row.read_length_name;
+        }
+        if (record.library_protocol !== undefined) {
+          row.library_protocol_name =
+            protocolMap.get(String(record.library_protocol)) ||
+            row.library_protocol_name;
+        }
+        if (record.library_type !== undefined) {
+          row.analysis_type_name =
+            analysisMap.get(String(record.library_type)) ||
+            row.analysis_type_name;
+        }
+        if (record.sequencing_depth !== undefined) {
+          row.sequencing_depth = record.sequencing_depth;
+        }
+        if (record.index_i7 !== undefined) row.index_i7 = record.index_i7 || "";
+        if (record.index_i5 !== undefined) row.index_i5 = record.index_i5 || "";
+        if (
+          record.measured_value !== undefined ||
+          record.measuring_unit !== undefined
+        ) {
+          row.input = formatInputValue(
+            record.measured_value,
+            record.measuring_unit
+          );
+        }
+        if (record.gmo !== undefined && record.record_type === "Sample") {
+          row.gmo = record.gmo === null ? "" : record.gmo ? "Yes" : "No";
+        }
+      });
+      this.applyInputColumnMode(this.librariesSamplesList);
+      this.hasSelectedRows = this.librariesSamplesList.some(
+        (row) => row.selected
+      );
+      this.tabulatorInstance
+        ?.getTable?.()
+        .replaceData(this.librariesSamplesList);
+      this.$nextTick(() => this.refreshGroupHeaders());
+    },
+    openRequestEditorModal() {
+      this.requestModalMode = "create";
+      this.requestModalRequestId = null;
+      this.activeRequestMeta = null;
+      this.showRequestEditorModal = true;
+    },
+    closeRequestEditorModal() {
+      this.showRequestEditorModal = false;
+      this.requestModalMode = "create";
+      this.requestModalRequestId = null;
+      this.activeRequestMeta = null;
+      this.stopRequestEditorSync();
+    },
+    handleRequestEditorSaved(payload) {
+      if (payload?.mode === "edit" && payload?.request_id) {
+        this.pendingSavedMode = "edit";
+        this.applyRequestEditorUpdate(payload);
+        const requestId = payload.request_id;
+        const existing = this.requestMetaById?.[requestId] || {};
+        const nextMeta = {
+          ...existing,
+          cost_unit: payload.cost_unit ?? existing.cost_unit ?? "",
+          description: payload.description ?? existing.description ?? "",
+          files: Array.isArray(payload.files) ? payload.files : existing.files
+        };
+        this.requestMetaById = {
+          ...this.requestMetaById,
+          [requestId]: nextMeta
+        };
+        if (
+          this.activeRequestMeta &&
+          this.requestModalRequestId === requestId
+        ) {
+          this.activeRequestMeta = nextMeta;
+        }
+        this.$nextTick(() => this.refreshGroupHeaders());
+        this.finishRequestEditorSync();
+        return;
+      }
+      // New requests may be hidden by active search/filters; clear them so sync polling can detect the saved request.
+      this.searchQuery = "";
+      this.filters = {
+        status: null,
+        protocol: null,
+        analysisType: null,
+        sequencer: null,
+        readLength: null
+      };
+      const requestId = payload?.pk ?? null;
+      this.pendingSavedMode = this.requestModalMode;
+      this.startRequestEditorSync(requestId);
+    },
+    startRequestEditorSync(requestId = null) {
+      if (this.requestEditorSyncTimer) {
+        clearInterval(this.requestEditorSyncTimer);
+        this.requestEditorSyncTimer = null;
+      }
+      this.pendingSavedRequestId = requestId;
+      this.requestEditorSyncing = true;
+
+      if (!this.pendingSavedRequestId) {
+        this.getLibrariesSamples(1, false, true).finally(() => {
+          this.finishRequestEditorSync();
+        });
+        return;
+      }
+
+      const poll = async () => {
+        if (this.loading || this.syncLoading) return;
+        await this.getLibrariesSamples(1, false, true);
+        if (
+          this.pendingSavedRequestId &&
+          this.requestMetaById?.[this.pendingSavedRequestId]
+        ) {
+          this.finishRequestEditorSync();
+        }
+      };
+
+      const initialDelayMs = 2000;
+      setTimeout(() => {
+        poll();
+        this.requestEditorSyncTimer = setInterval(poll, 2000);
+      }, initialDelayMs);
+    },
+    stopRequestEditorSync() {
+      if (this.requestEditorSyncTimer) {
+        clearInterval(this.requestEditorSyncTimer);
+        this.requestEditorSyncTimer = null;
+      }
+      this.pendingSavedRequestId = null;
+      this.pendingSavedMode = null;
+      this.requestEditorSyncing = false;
+    },
+    finishRequestEditorSync() {
+      const message =
+        this.pendingSavedMode === "edit"
+          ? "Request updated successfully."
+          : "Request created successfully.";
+      showNotification(message, "success");
+      this.stopRequestEditorSync();
+      this.closeRequestEditorModal();
+    },
+    openEditRequestModal(requestId) {
+      if (!requestId) return;
+      this.requestModalMode = "edit";
+      this.requestModalRequestId = requestId;
+      this.activeRequestMeta = this.requestMetaById?.[requestId] || null;
+      this.showRequestEditorModal = true;
+    },
+    openRequestActionModal(action, context) {
+      this.activeRequestAction = action;
+      this.activeRequestContext = context;
+    },
+    closeRequestActionModal() {
+      this.activeRequestAction = null;
+      this.activeRequestContext = null;
+    },
+    handleRequestActionRefresh() {
+      this.requestMetaById = {};
+      this.getLibrariesSamples(this.pagination.currentPage || 1);
+    },
+    async fetchRequestMeta(requestId) {
+      if (!requestId) return null;
+      if (this.requestMetaById[requestId]) {
+        return this.requestMetaById[requestId];
+      }
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/requests/${requestId}/`
+        );
+        const data = response?.data || null;
+        if (data) {
+          this.requestMetaById = {
+            ...this.requestMetaById,
+            [requestId]: data
+          };
+        }
+        return data;
+      } catch (error) {
+        handleError(error);
+        return null;
+      }
+    },
+    triggerDownload(url, filename) {
+      const link = document.createElement("a");
+      link.href = url;
+      if (filename) {
+        link.setAttribute("download", filename);
+      }
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    async handleDownloadRequestForm(requestId) {
+      const meta = await this.fetchRequestMeta(requestId);
+      if (!meta || meta.deep_seq_request_path !== "") return;
+      const url = `${urlStringStart}/api/requests/${requestId}/download_deep_sequencing_request/`;
+      this.triggerDownload(url);
+      showNotification("Request form downloaded.", "success");
+    },
+    async handleUploadSignedRequest(requestId, requestName) {
+      const meta = await this.fetchRequestMeta(requestId);
+      if (!meta || meta.deep_seq_request_path !== "") return;
+      this.openRequestActionModal("uploadSigned", {
+        id: requestId,
+        name: requestName
+      });
+    },
+    refreshGroupHeaders() {
+      const table = this.tabulatorInstance?.getTable?.();
+      const groups = table?.getGroups?.() || [];
+      groups.forEach((group) => {
+        group?._group?.generateGroupHeaderContents?.();
+      });
+    },
     async handleGroupButtonClick(event, groupValue, action) {
       event.stopPropagation();
 
@@ -1487,11 +1781,20 @@ export default {
         .getTable()
         .getGroups()
         .find((g) => g.getKey() === groupValue);
+      if (!group) return;
       const groupRows = group.getRows();
+      if (!groupRows.length) return;
       const groupElement = group.getElement();
       const selectedRows = groupRows.filter((row) => row.getData().selected);
       const type = selectedRows[0] && selectedRows[0].getData().type;
       const requestName = group._group.key;
+      let requestId = groupRows[0]?.getData?.().request_id;
+      if (!requestId && requestName) {
+        const match = String(requestName).match(/^(\d+)_/);
+        if (match) {
+          requestId = Number(match[1]);
+        }
+      }
       const selectedNamesList = selectedRows.map((item) => {
         return { barcode: item.getData().barcode, name: item.getData().name };
       });
@@ -1525,12 +1828,107 @@ export default {
           });
           if (!group._group.visible) groupElement.click();
           break;
-        case "downloadROCrate": {
-          if (!selectedRows.length) {
+        case "viewRequest":
+          this.openEditRequestModal(requestId);
+          break;
+        case "attachments": {
+          const cachedMeta = this.requestMetaById?.[requestId] || null;
+          const canEditRequest =
+            this.isStaffUser || !cachedMeta?.restrict_permissions;
+          const records = groupRows
+            .map((row) => row.getData?.() || {})
+            .filter((row) => row?.pk && row?.record_type)
+            .map((row) => ({
+              pk: row.pk,
+              record_type: row.record_type
+            }));
+          this.openRequestActionModal("attachments", {
+            id: requestId,
+            name: requestName,
+            canEditRequest,
+            meta: cachedMeta,
+            records
+          });
+          if (!cachedMeta) {
+            this.fetchRequestMeta(requestId).then((meta) => {
+              if (!meta) return;
+              if (
+                this.activeRequestAction !== "attachments" ||
+                this.activeRequestContext?.id !== requestId
+              ) {
+                return;
+              }
+              this.activeRequestContext = {
+                ...this.activeRequestContext,
+                meta,
+                canEditRequest: this.isStaffUser || !meta?.restrict_permissions
+              };
+            });
+          }
+          break;
+        }
+        case "deleteRequest":
+          {
+            const meta = await this.fetchRequestMeta(requestId);
+            if (meta?.restrict_permissions) {
+              showNotification(
+                "You lack permission to delete requests.",
+                "warning"
+              );
+              break;
+            }
+          }
+          this.openRequestActionModal("deleteRequest", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "downloadRequestForm":
+          await this.handleDownloadRequestForm(requestId);
+          break;
+        case "uploadSignedRequest":
+          await this.handleUploadSignedRequest(requestId, requestName);
+          break;
+        case "viewFilePaths":
+          if (!this.isStaffUser) {
             showNotification(
-              "Select at least one library or sample to download RO-Crate.",
+              "You lack permission to view file paths.",
               "warning"
             );
+            break;
+          }
+          this.openRequestActionModal("filePaths", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "composeEmail":
+          if (!this.isStaffUser) {
+            showNotification(
+              "You lack permission to compose email.",
+              "warning"
+            );
+            break;
+          }
+          this.openRequestActionModal("composeEmail", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "solicitApproval":
+        case "requestApproval":
+          if (!this.paperlessApproval) {
+            showNotification("Email approval is not enabled.", "warning");
+            break;
+          }
+          this.openRequestActionModal("solicitApproval", {
+            id: requestId,
+            name: requestName
+          });
+          break;
+        case "downloadROCrate": {
+          if (!selectedRows.length) {
+            showNotification("Select records to download RO-Crate.", "warning");
             if (!group._group.visible) groupElement.click();
             break;
           }
@@ -1543,10 +1941,7 @@ export default {
             )
           );
           if (!barcodes.length) {
-            showNotification(
-              "Selected entries do not contain valid barcodes.",
-              "error"
-            );
+            showNotification("Selected entries lack valid barcodes.", "error");
             if (!group._group.visible) groupElement.click();
             break;
           }
@@ -1580,7 +1975,7 @@ export default {
       if (
         file &&
         file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
         const formData = new FormData();
         formData.append("file", file);
@@ -1597,12 +1992,12 @@ export default {
           showNotification("File uploaded successfully.", "success");
           this.fetchExportTemplates();
         } catch (error) {
-          showNotification("Error uploading file: " + error, "error");
+          showNotification("File upload failed.", "error");
         } finally {
           this.selectedFile = "without-file";
         }
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX file.", "error");
       }
     },
     async downloadExportTemplate(file) {
@@ -1625,7 +2020,7 @@ export default {
         link.remove();
         window.URL.revokeObjectURL(url);
       } catch (error) {
-        showNotification("Error downloading file: " + error, "error");
+        showNotification("File download failed.", "error");
       }
     },
     async removeExportTemplate(index) {
@@ -1640,7 +2035,7 @@ export default {
         this.fetchedLibrariesAndSamplesTemplates.splice(index, 1);
         showNotification("File removed successfully.", "success");
       } catch (error) {
-        showNotification("Error removing file: " + error, "error");
+        showNotification("File removal failed.", "error");
       } finally {
         this.selectedFile = "without-file";
       }
@@ -1712,14 +2107,11 @@ export default {
         });
         saveAs(blob, filename);
       } catch (error) {
-        showNotification(
-          "Error during export. Please try again.\n" + error,
-          "error"
-        );
+        showNotification("Export failed. Please try again.", "error");
       } finally {
         if (this.exportLoading) {
           this.exportLoading = false;
-          showNotification("File has been exported successfully.", "success");
+          showNotification("Export completed successfully.", "success");
         }
         this.fakeLoadingStop();
         if (!this.exportSelection === "selected")
@@ -1765,10 +2157,7 @@ export default {
 
       const files = e.dataTransfer.files;
       if (files.length > 1) {
-        showNotification(
-          "Please upload only one XLSX file at a time.",
-          "error"
-        );
+        showNotification("Upload only one XLSX file.", "error");
       } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
@@ -1778,7 +2167,7 @@ export default {
       if (
         file &&
         file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
         const event = {
           target: {
@@ -1787,7 +2176,7 @@ export default {
         };
         this.uploadExportTemplate(event);
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX file.", "error");
       }
     },
     changePage(page) {
@@ -1839,14 +2228,312 @@ body,
   padding: 10px;
 }
 
+.header {
+  justify-content: flex-start;
+}
+
+.header-title {
+  width: auto;
+  flex: 1 1 260px;
+  min-width: 0;
+  margin-right: 16px;
+}
+
+.sticky-actions {
+  margin-left: auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
 .table-container {
   flex: 1;
   overflow: auto;
   position: relative;
 }
 
+html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
+  background-color: #eef7ff !important;
+}
+
+html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
+  background-color: #e6f2ff !important;
+}
+
 .search-bar {
-  width: 400px;
+  width: 330px;
+  flex: 0 1 330px;
+}
+
+.help-popup-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.help-header-button {
+  min-width: 0;
+}
+
+.page-help-popup {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: min(860px, calc(100vw - 40px));
+  max-height: min(78vh, 820px);
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #d7dee3;
+  border-radius: 14px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
+  z-index: 30;
+}
+
+.page-help-popup::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 34px;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-left: 1px solid #d7dee3;
+  border-top: 1px solid #d7dee3;
+  transform: rotate(45deg);
+}
+
+.page-help-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.page-help-scroll {
+  max-height: min(78vh, 820px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px;
+  scrollbar-gutter: stable;
+}
+
+.page-help-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #13415b;
+  margin-bottom: 6px;
+}
+
+.page-help-intro {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.page-help-close {
+  color: #13415b;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.page-help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.page-help-section {
+  border: 1px solid #dbe4ea;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f9fbfc 0%, #f4f7f8 100%);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.page-help-section-wide {
+  grid-column: 1 / -1;
+}
+
+.page-help-section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #13415b;
+}
+
+.page-help-copy {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #44505f;
+}
+
+.page-help-list,
+.page-help-steps {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #44505f;
+}
+
+.page-help-list strong,
+.page-help-steps strong {
+  color: #13415b;
+}
+
+.page-help-visual {
+  border: 1px solid #d5dde4;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  min-height: 110px;
+}
+
+.visual-request-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.visual-request-name {
+  font-weight: 700;
+  color: #333;
+}
+
+.visual-request-meta {
+  color: #4b5563;
+}
+
+.visual-request-icons,
+.visual-filter-row,
+.flow-visual {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.flow-visual {
+  align-items: stretch;
+}
+
+.visual-icon-chip,
+.visual-filter-chip,
+.visual-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #d5dde4;
+  background: #f6f9fb;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: #335067;
+  box-sizing: border-box;
+}
+
+.visual-icon-chip {
+  min-width: 48px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.visual-step {
+  min-width: 94px;
+}
+
+.visual-search-bar {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid #d5dde4;
+  border-radius: 8px;
+  background: #fbfcfd;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.status-help-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 8px;
+}
+
+.status-help-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid #dbe4ea;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.status-help-code {
+  font-weight: 700;
+  color: #13415b;
+  text-align: center;
+}
+
+.status-help-text {
+  font-size: 12px;
+  color: #44505f;
+  line-height: 1.35;
+}
+
+.visual-table-head-row,
+.visual-table-data-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  font-size: 11px;
+}
+
+.visual-table-head-row span,
+.visual-table-data-row span {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+  background: #fbfcfd;
+  color: #44505f;
+}
+
+.visual-table-head-row span {
+  background: #eef2f5;
+  font-weight: 700;
+}
+
+.page-help-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #eef7f6;
+  border: 1px solid #c7e2de;
+  color: #275c56;
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 body.input-dropdown-open .tabulator-tooltip {
@@ -1864,16 +2551,13 @@ body.input-dropdown-open .tabulator-tooltip {
   background-color: white;
   padding: 20px;
   border: 1px solid #333;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
-@media (max-width: 1500px) {
+/* Header and help popup responsiveness */
+@media (max-width: 1550px) {
   .header-title {
-    min-width: 80px;
-  }
-
-  .search-bar {
-    width: 280px;
+    flex-basis: 220px;
   }
 
   .search-bar input {
@@ -1885,13 +2569,14 @@ body.input-dropdown-open .tabulator-tooltip {
   }
 }
 
-@media (max-width: 1400px) {
-  .search-bar {
-    width: 250px;
+@media (max-width: 1700px) {
+  .sticky-actions {
+    gap: 8px;
   }
 
-  .search-bar input {
-    padding: 6px;
+  .search-bar {
+    width: 260px;
+    flex-basis: 260px;
   }
 
   .date-filter {
@@ -1902,32 +2587,130 @@ body.input-dropdown-open .tabulator-tooltip {
     display: none;
   }
 
+  .header-button {
+    min-width: 46px;
+    justify-content: center;
+    padding: 8px 10px;
+    gap: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
   .header-button span {
     display: none;
   }
+
+  .date-filter input[type="date"] {
+    width: 120px;
+  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1220px) {
+  .header {
+    height: auto;
+    min-height: 70px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
   .header-title {
-    font-size: 16px;
+    flex: 1 1 100%;
+    min-width: 0;
+    margin-right: 0;
+  }
+
+  .sticky-actions {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+    row-gap: 10px;
+    max-width: 100%;
+    margin-left: 0;
   }
 
   .search-bar {
-    width: 130px;
+    width: 260px;
+    flex: 1 1 260px;
+    max-width: 100%;
+  }
+
+  .page-help-popup {
+    right: 0;
+    width: min(760px, calc(100vw - 28px));
+  }
+}
+
+@media (max-width: 950px) {
+  .header-title {
+    font-size: 16px;
+    flex-basis: 100%;
+  }
+
+  .search-bar {
+    width: 100%;
+    flex: 1 1 260px;
+    min-width: 200px;
   }
 
   .search-bar input {
-    width: 85px;
+    width: 100%;
+    padding-right: 25px;
   }
 
   .date-filters {
     display: none;
   }
+
+  .sticky-actions {
+    gap: 8px;
+  }
+
+  .page-help-popup {
+    right: 0;
+    width: min(720px, calc(100vw - 24px));
+  }
+
+  .page-help-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-help-section-wide {
+    grid-column: auto;
+  }
+
+  .status-help-list {
+    grid-template-columns: 1fr;
+  }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 820px) {
+  .pagination-controls {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
   .header-logo {
     display: none !important;
+  }
+
+  .header {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .header-title {
+    width: 100%;
+    min-width: 0;
+    margin-right: 0;
+    flex-basis: 100%;
+  }
+
+  .sticky-actions {
+    width: 100%;
+    gap: 8px;
   }
 
   .search-bar {
@@ -1940,6 +2723,40 @@ body.input-dropdown-open .tabulator-tooltip {
 
   .header-button {
     display: none;
+  }
+
+  .help-popup-wrapper {
+    display: inline-flex !important;
+  }
+
+  .help-header-button {
+    display: inline-flex;
+    min-width: 44px;
+    padding: 8px 12px;
+  }
+
+  .page-help-popup {
+    right: 0;
+    width: min(96vw, 96vw);
+    max-height: 75vh;
+  }
+
+  .page-help-scroll {
+    max-height: 75vh;
+    padding: 14px;
+  }
+
+  .page-help-popup::before {
+    right: 20px;
+  }
+
+  .page-help-header {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .page-help-title {
+    font-size: 16px;
   }
 }
 </style>

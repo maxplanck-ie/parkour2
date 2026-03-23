@@ -11,60 +11,13 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <svg
+        <img
+          :src="iconLibraryPrepHeader"
+          alt="Library Preparation"
+          width="42"
+          height="42"
           style="display: block"
-          fill="none"
-          width="42px"
-          height="42px"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path
-            opacity="0.3"
-            d="M14 17.5C14 16.0955 14 15.3933 14.3371 14.8889C14.483 14.6705 14.6705 14.483 14.8889 14.3371C15.3933 14 16.0955 14 17.5 14V14V14C18.9045 14 19.6067 14 20.1111 14.3371C20.3295 14.483 20.517 14.6705 20.6629 14.8889C21 15.3933 21 16.0955 21 17.5V17.5V17.5C21 18.9045 21 19.6067 20.6629 20.1111C20.517 20.3295 20.3295 20.517 20.1111 20.6629C19.6067 21 18.9045 21 17.5 21V21V21C16.0955 21 15.3933 21 14.8889 20.6629C14.6705 20.517 14.483 20.3295 14.3371 20.1111C14 19.6067 14 18.9045 14 17.5V17.5V17.5Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.3"
-            d="M3 17.5C3 16.0955 3 15.3933 3.33706 14.8889C3.48298 14.6705 3.67048 14.483 3.88886 14.3371C4.39331 14 5.09554 14 6.5 14V14V14C7.90446 14 8.60669 14 9.11114 14.3371C9.32952 14.483 9.51702 14.6705 9.66294 14.8889C10 15.3933 10 16.0955 10 17.5V17.5V17.5C10 18.9045 10 19.6067 9.66294 20.1111C9.51702 20.3295 9.32952 20.517 9.11114 20.6629C8.60669 21 7.90446 21 6.5 21V21V21C5.09554 21 4.39331 21 3.88886 20.6629C3.67048 20.517 3.48298 20.3295 3.33706 20.1111C3 19.6067 3 18.9045 3 17.5V17.5V17.5Z"
-            fill="#333333"
-          />
-          <path
-            opacity="0.3"
-            d="M3 6.5C3 5.09554 3 4.39331 3.33706 3.88886C3.48298 3.67048 3.67048 3.48298 3.88886 3.33706C4.39331 3 5.09554 3 6.5 3V3V3C7.90446 3 8.60669 3 9.11114 3.33706C9.32952 3.48298 9.51702 3.67048 9.66294 3.88886C10 4.39331 10 5.09554 10 6.5V6.5V6.5C10 7.90446 10 8.60669 9.66294 9.11114C9.51702 9.32952 9.32952 9.51702 9.11114 9.66294C8.60669 10 7.90446 10 6.5 10V10V10C5.09554 10 4.39331 10 3.88886 9.66294C3.67048 9.51702 3.48298 9.32952 3.33706 9.11114C3 8.60669 3 7.90446 3 6.5V6.5V6.5Z"
-            fill="#333333"
-          />
-          <path
-            d="M14 17.5C14 16.0955 14 15.3933 14.3371 14.8889C14.483 14.6705 14.6705 14.483 14.8889 14.3371C15.3933 14 16.0955 14 17.5 14V14V14C18.9045 14 19.6067 14 20.1111 14.3371C20.3295 14.483 20.517 14.6705 20.6629 14.8889C21 15.3933 21 16.0955 21 17.5V17.5V17.5C21 18.9045 21 19.6067 20.6629 20.1111C20.517 20.3295 20.3295 20.517 20.1111 20.6629C19.6067 21 18.9045 21 17.5 21V21V21C16.0955 21 15.3933 21 14.8889 20.6629C14.6705 20.517 14.483 20.3295 14.3371 20.1111C14 19.6067 14 18.9045 14 17.5V17.5V17.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
-          <path
-            d="M3 17.5C3 16.0955 3 15.3933 3.33706 14.8889C3.48298 14.6705 3.67048 14.483 3.88886 14.3371C4.39331 14 5.09554 14 6.5 14V14V14C7.90446 14 8.60669 14 9.11114 14.3371C9.32952 14.483 9.51702 14.6705 9.66294 14.8889C10 15.3933 10 16.0955 10 17.5V17.5V17.5C10 18.9045 10 19.6067 9.66294 20.1111C9.51702 20.3295 9.32952 20.517 9.11114 20.6629C8.60669 21 7.90446 21 6.5 21V21V21C5.09554 21 4.39331 21 3.88886 20.6629C3.67048 20.517 3.48298 20.3295 3.33706 20.1111C3 19.6067 3 18.9045 3 17.5V17.5V17.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
-          <path
-            d="M3 6.5C3 5.09554 3 4.39331 3.33706 3.88886C3.48298 3.67048 3.67048 3.48298 3.88886 3.33706C4.39331 3 5.09554 3 6.5 3V3V3C7.90446 3 8.60669 3 9.11114 3.33706C9.32952 3.48298 9.51702 3.67048 9.66294 3.88886C10 4.39331 10 5.09554 10 6.5V6.5V6.5C10 7.90446 10 8.60669 9.66294 9.11114C9.51702 9.32952 9.32952 9.51702 9.11114 9.66294C8.60669 10 7.90446 10 6.5 10V10V10C5.09554 10 4.39331 10 3.88886 9.66294C3.67048 9.51702 3.48298 9.32952 3.33706 9.11114C3 8.60669 3 7.90446 3 6.5V6.5V6.5Z"
-            stroke="white"
-            stroke-width="1.5"
-          />
-          <path
-            d="M14 6.5H21"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M17.5 3V10"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        />
       </div>
       <div class="header-title" style="display: inline">
         Library Preparation
@@ -236,42 +189,13 @@
         }"
       >
         <div class="popup-header">
-          <svg
+          <img
+            :src="iconConfirmationAlert"
+            alt="Confirmation"
+            width="42"
+            height="42"
             style="display: block"
-            fill="none"
-            width="42px"
-            height="42px"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g>
-              <path
-                opacity="0.3"
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                fill="#323232"
-              />
-              <path
-                d="M3 9.22843V14.7716C3 15.302 3.21071 15.8107 3.58579 16.1858L7.81421 20.4142C8.18929 20.7893 8.69799 21 9.22843 21H14.7716C15.302 21 15.8107 20.7893 16.1858 20.4142L20.4142 16.1858C20.7893 15.8107 21 15.302 21 14.7716V9.22843C21 8.69799 20.7893 8.18929 20.4142 7.81421L16.1858 3.58579C15.8107 3.21071 15.302 3 14.7716 3H9.22843C8.69799 3 8.18929 3.21071 7.81421 3.58579L3.58579 7.81421C3.21071 8.18929 3 8.69799 3 9.22843Z"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12 8V13"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-              <path
-                d="M12 16V15.9888"
-                stroke="white"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </g>
-          </svg>
+          />
           <span class="popup-title">{{ popupContents.popupTitle }}</span>
           <button class="popup-close-button" @click="showPopupWindow = false">
             &times;
@@ -283,12 +207,14 @@
             v-if="popupContents.popupList && popupContents.popupList.length > 0"
             class="popup-scrollable-content"
           >
-            <ol style="padding-left: 25px">
-              <li v-for="item in popupContents.popupList" :key="item">
-                <span style="font-weight: bold">{{ item.barcode }}</span>
-                <span>{{ " - " + item.name }}</span>
-              </li>
-            </ol>
+            <div class="popup-scrollable-content-inner">
+              <ol style="padding-left: 25px">
+                <li v-for="item in popupContents.popupList" :key="item">
+                  <span style="font-weight: bold">{{ item.barcode }}</span>
+                  <span>{{ " - " + item.name }}</span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
         <div class="popup-footer">
@@ -382,29 +308,13 @@
             <div class="file-list-section" style="height: 280px">
               <div class="file-item">
                 <div class="file-info">
-                  <svg
+                  <img
+                    :src="iconExportTemplateFile"
+                    alt="Export without any additional sheets"
+                    width="24"
+                    height="24"
                     style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g>
-                      <path
-                        opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232"
-                      />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                    </g>
-                  </svg>
+                  />
                   <span>Export without any additional sheets</span>
                 </div>
                 <div class="file-actions">
@@ -428,57 +338,13 @@
                 class="file-item"
               >
                 <div class="file-info">
-                  <svg
+                  <img
+                    :src="iconExportTemplateFileLines"
+                    :alt="file.name"
+                    width="24"
+                    height="24"
                     style="display: block"
-                    fill="none"
-                    width="24px"
-                    height="24px"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g>
-                      <path
-                        opacity="0.1"
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        fill="#323232"
-                      />
-                      <path
-                        d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M9 6L11 6"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M10 9L12 9"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M9 12L11 12"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M10 15L12 15"
-                        stroke="#323232"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </g>
-                  </svg>
+                  />
                   <span>{{ file.name }}</span>
                 </div>
                 <div class="file-actions">
@@ -487,86 +353,26 @@
                     class="download-button"
                     title="Download Original File"
                   >
-                    <svg
+                    <img
+                      :src="iconExportDownload"
+                      alt="Download"
+                      width="24"
+                      height="24"
                       style="display: block"
-                      fill="none"
-                      width="24px"
-                      height="24px"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <g>
-                        <path
-                          opacity="0.1"
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          fill="#323232"
-                        />
-                        <path
-                          d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12 16L12 11"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M9.5 14L11.5 16V16C11.7761 16.2761 12.2239 16.2761 12.5 16V16L14.5 14"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </g>
-                    </svg>
+                    />
                   </button>
                   <button
                     @click="removeExportTemplate(index)"
                     class="remove-button"
                     title="Remove File"
                   >
-                    <svg
+                    <img
+                      :src="iconExportRemove"
+                      alt="Remove"
+                      width="24"
+                      height="24"
                       style="display: block"
-                      fill="none"
-                      width="24px"
-                      height="24px"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <g>
-                        <path
-                          opacity="0.1"
-                          d="M5.02322 5.37683C5 5.82377 5 6.35711 5 7.00006V17.0001C5 18.8857 5 19.8285 5.58579 20.4143C6.17157 21.0001 7.11438 21.0001 9 21.0001H15C16.8856 21.0001 17.8284 21.0001 18.4142 20.4143C18.6935 20.135 18.8396 19.7746 18.9161 19.2697L5.02322 5.37683Z"
-                          fill="#323232"
-                        />
-                        <path
-                          d="M8 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 14"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M5 5V17C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 21 7.11438 21 9 21H17C17 21 17 21 17 21C18.1046 21 19 20.1046 19 19C19 19 19 19 19 19V19"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M3 3L21 21"
-                          stroke="#323232"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </g>
-                    </svg>
+                    />
                   </button>
                   <div class="file-actions-radio-button">
                     <input
@@ -589,43 +395,13 @@
               class="file-upload-label"
               title="Upload additional sheet to append to the exported sheet."
             >
-              <svg
+              <img
+                :src="iconExportUpload"
+                alt="Upload"
+                width="24"
+                height="24"
                 style="display: block; margin-right: 4px"
-                fill="none"
-                width="24px"
-                height="24px"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g>
-                  <path
-                    opacity="0.1"
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    fill="#323232"
-                  />
-                  <path
-                    d="M17.8284 6.82843C18.4065 7.40649 18.6955 7.69552 18.8478 8.06306C19 8.4306 19 8.83935 19 9.65685L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21H9C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 7C5 5.11438 5 4.17157 5.58579 3.58579C6.17157 3 7.11438 3 9 3H12.3431C13.1606 3 13.5694 3 13.9369 3.15224C14.3045 3.30448 14.5935 3.59351 15.1716 4.17157L17.8284 6.82843Z"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12 11L12 16"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14.5 13.5L9.5 13.5"
-                    stroke="#323232"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </g>
-              </svg>
+              />
               <span>Upload</span>
             </label>
             <input
@@ -655,7 +431,7 @@
 </template>
 
 <script lang="jsx">
-import TabulatorTable from "../components/TabulatorTable.vue";
+import TabulatorTable from "../components/TabulatorTableFull.vue";
 import { saveAs } from "file-saver";
 import {
   showNotification,
@@ -669,6 +445,13 @@ import {
   libraryPreparationExportColumns,
   libraryPreparationGroupHeader
 } from "../constants/libraryPreparationConsts";
+import iconLibraryPrepHeader from "../assets/icons/header_library_prep.svg";
+import iconConfirmationAlert from "../assets/icons/alert_confirmation.svg";
+import iconExportTemplateFile from "../assets/icons/export_template.svg";
+import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
+import iconExportDownload from "../assets/icons/export_download.svg";
+import iconExportRemove from "../assets/icons/export_remove.svg";
+import iconExportUpload from "../assets/icons/export_upload.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
@@ -679,6 +462,13 @@ export default {
   },
   data() {
     return {
+      iconLibraryPrepHeader,
+      iconConfirmationAlert,
+      iconExportTemplateFile,
+      iconExportTemplateFileLines,
+      iconExportDownload,
+      iconExportRemove,
+      iconExportUpload,
       tabulatorInstance: null,
       loading: true,
       fakeLoading: false,
@@ -690,6 +480,9 @@ export default {
       showExportHelpTooltip: false,
       fetchedLibraryPreparationTemplates: [],
       selectedFile: "without-file",
+      pendingEditChanges: {},
+      pendingEditTimer: null,
+      isSavingEdits: false,
       popupContents: {
         popupTitle: "Are you sure?",
         popupDescription: "",
@@ -723,7 +516,8 @@ export default {
         getClearValueForField: (field) => {
           if (field === "smear_analysis") return 100;
           return "";
-        }
+        },
+        blockActionsOnDisabledCells: true
       },
       searchQuery: "",
       showSelectColumns: false
@@ -744,6 +538,9 @@ export default {
   beforeDestroy() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
+    if (this.pendingEditTimer) {
+      clearTimeout(this.pendingEditTimer);
+    }
   },
   watch: {
     searchQuery(newValue, oldValue) {
@@ -1094,17 +891,59 @@ export default {
           break;
       }
     },
-    async onBatchCellValueChanged(batchChanges) {
+    onBatchCellValueChanged(batchChanges) {
+      this.queueBatchChanges(batchChanges);
+      this.scheduleBatchSave();
+    },
+    queueBatchChanges(batchChanges) {
+      batchChanges.forEach((change) => {
+        const key = `${change.record_type}:${change.pk}`;
+        if (!this.pendingEditChanges[key]) {
+          this.pendingEditChanges[key] = {
+            pk: change.pk,
+            record_type: change.record_type
+          };
+        }
+        Object.keys(change).forEach((field) => {
+          if (field !== "pk" && field !== "record_type") {
+            this.pendingEditChanges[key][field] = change[field];
+          }
+        });
+      });
+    },
+    scheduleBatchSave() {
+      if (this.pendingEditTimer) {
+        clearTimeout(this.pendingEditTimer);
+      }
+      this.pendingEditTimer = setTimeout(() => {
+        this.flushPendingEdits();
+      }, 300);
+    },
+    async flushPendingEdits() {
+      if (this.isSavingEdits) {
+        return;
+      }
+      const pending = Object.values(this.pendingEditChanges);
+      if (pending.length === 0) return;
+
+      this.pendingEditChanges = {};
+      this.isSavingEdits = true;
       try {
         const payload = {
-          data: JSON.stringify(batchChanges)
+          data: JSON.stringify(pending)
         };
         await axiosRef.post(
           `${urlStringStart}/api/library_preparation/edit/`,
           payload
         );
       } catch (error) {
+        this.queueBatchChanges(pending);
         handleError(error);
+      } finally {
+        this.isSavingEdits = false;
+        if (Object.keys(this.pendingEditChanges).length > 0) {
+          this.flushPendingEdits();
+        }
       }
     },
     async qualityCheckChange(groupRows, qualityCheck) {

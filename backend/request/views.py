@@ -31,9 +31,6 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import dateformat, timezone
 from django.utils.crypto import get_random_string
-from docx import Document
-from docx.enum.text import WD_BREAK
-from docx.shared import Cm, Pt
 from fpdf import FPDF, HTMLMixin
 from fpdf.errors import FPDFUnicodeEncodingException
 from library_sample_shared.models import LibraryProtocol
@@ -52,7 +49,6 @@ from .serializers import RequestFileSerializer, RequestSerializer
 User = get_user_model()
 Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
-LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 
 logger = logging.getLogger("db")
 
@@ -311,49 +307,6 @@ class RequestViewSet(viewsets.ModelViewSet):
                 },
                 400,
             )
-
-    @action(methods=["post"], detail=True)
-    def mark_as_complete(self, request, pk=None):
-        """Mark request as complete, set sequenced to true"""
-
-        instance = Request.objects.filter(archived=False, pk=pk)
-
-        post_data = self._get_post_data(request)
-        override = post_data["override"]
-
-        if post_data["override"] == "False":
-            override = False
-        else:
-            override = True
-
-        def checkifcomplete(element):
-            if element == 5:
-                return True
-            else:
-                return False
-
-        if override:
-            # print("Override is true")
-            instance.update(sequenced=True)
-            return Response({"success": True})
-
-        else:
-            # print("Override is false")
-            # print(instance.statuses)
-            # check if all libraries/samples related to this requested have been sequenced
-            statuses = [status for x in instance for status in x.statuses]
-
-            complete = all([checkifcomplete(x) for x in statuses])
-
-            if complete:
-                # print("all statuses are complete")
-                instance.update(sequenced=True)
-                return Response({"success": True})
-            elif not complete:
-                # print("there are incomplete statuses")
-                return Response({"noncomplete": True})
-            else:
-                return Response({"error": "error"})
 
     @action(methods=["post"], detail=True)
     def samples_submitted(self, request, pk=None):
@@ -749,286 +702,6 @@ class RequestViewSet(viewsets.ModelViewSet):
         return JsonResponse({"success": not error, "error": error})
 
     @action(methods=["get"], detail=True)
-    def download_complete_report(self, request, pk=None):
-        def add_table(document, header, data, contains_comments=True):
-            if contains_comments:
-                # Create table
-                # table = document.add_table(rows=1, cols=len(header))
-                table = document.add_table(rows=1, cols=len(header) - 1)
-                hdr_cells = table.rows[0].cells
-                # for i, h in enumerate(header):
-                for i, h in enumerate(header[:-1]):
-                    hdr_cells[i].text = h
-                for row in data:
-                    row_cells = table.add_row().cells
-                    # for i, value in enumerate(row):
-                    for i, value in enumerate(row[:-1]):
-                        row_cells[i].text = str(value)
-                    # add comment row
-                    comment_cells = table.add_row().cells
-                    comment_cells[0].merge(comment_cells[-1])
-                    comment_cells[0].text = "Comments: " + str(row[-1])
-
-                # Change font size for all cells
-                for row in table.rows:
-                    row.height = Cm(0.7)
-                    for cell in row.cells:
-                        paragraphs = cell.paragraphs
-                        for paragraph in paragraphs:
-                            for run in paragraph.runs:
-                                font = run.font
-                                font.size = Pt(9)
-            else:
-                # Create table
-                table = document.add_table(rows=1, cols=len(header))
-                hdr_cells = table.rows[0].cells
-                for i, h in enumerate(header):
-                    hdr_cells[i].text = h
-                for row in data:
-                    row_cells = table.add_row().cells
-                    # for i, value in enumerate(row):
-                    for i, value in enumerate(row[:-1]):
-                        row_cells[i].text = str(value)
-
-                # Change font size for all cells
-                for row in table.rows:
-                    row.height = Cm(0.7)
-                    for cell in row.cells:
-                        paragraphs = cell.paragraphs
-                        for paragraph in paragraphs:
-                            for run in paragraph.runs:
-                                font = run.font
-                                font.size = Pt(9)
-
-        f_name = "QC Complete Report.docx"
-        response = HttpResponse(
-            content_type="application/vnd.openxmlformats"
-            + "-officedocument.wordprocessingml.document"
-        )
-        response["Content-Disposition"] = f'attachment; filename="{f_name}"'
-
-        instance = self.get_object()
-        records = sorted(
-            list(
-                itertools.chain(
-                    instance.libraries.all(),
-                    instance.samples.all(),
-                )
-            ),
-            key=lambda x: x.barcode[3:],
-        )
-
-        # Create DOCX document and set default font family
-        doc = Document()
-        font = doc.styles["Normal"].font
-        font.name = "Arial"
-
-        # Page 1
-        doc.add_heading("Complete Report", 0)
-        p = doc.add_paragraph("")
-        p.add_run("Date, Request ID").bold = True
-
-        doc.add_paragraph("")
-
-        p = doc.add_paragraph("")
-        p.add_run("Table of Contents").bold = True
-        doc.add_paragraph("Summary")
-        doc.add_paragraph("Quality Control of received samples")
-        doc.add_paragraph("Library Construction")
-        doc.add_paragraph("Cluster Generation and Sequencing")
-        doc.add_paragraph("Acknowledgements")
-        doc.add_paragraph("Appendix")
-        doc.add_page_break()
-
-        # Page 2
-        doc.add_heading("General Summary of Workflow", 1)
-        doc.add_paragraph()
-        doc.add_paragraph(
-            "Submitted samples or libraries undergo an "
-            + "incoming quality control using appropriate "
-            + "analytical instruments (Fluorometer, Capillary "
-            + "Electrophoresis, qPCR etc). All samples that "
-            + "pass international quality standards are "
-            + "subjected to appropriate library preparation "
-            + "methods. Qualified libraries are pooled for "
-            + "multiplex sequencing. An Index Generator "
-            + "Software assures suitable index design. Pooled "
-            + "libraries are sequenced to reach desired "
-            + "depth/coverage using installed sequencing "
-            + "instruments. Immediately after the sequencing "
-            + "run bcl to fastq conversion and demultiplexing "
-            + "is done and the user informed."
-        )
-        doc.add_page_break()
-
-        # Page 3
-        doc.add_heading("Quality Control of received samples/libraries", 1)
-        doc.add_paragraph()
-        doc.add_paragraph(
-            "All documented measurements were conducted by "
-            + "the deep sequencing facility, MPI-IE Freiburg. "
-            + "Raw data and reports of fluorometric "
-            + "quantification (Qubit) and size distribution "
-            + "measurements (Fragment Analyzer) can be found as "
-            + "attachment to each request in Parkour "
-            + "(parkour.ie-freiburg.mpg.de)."
-        )
-        header = [
-            "Date",
-            "ID",
-            "Name",
-            "L/S",
-            "Nuc.Type",
-            "ng/µl",
-            "bp",
-            "Comments",
-        ]
-        data = []
-        for r in records:
-            rtype = r.__class__.__name__
-            row = [
-                r.create_time.strftime("%d.%m.%Y"),
-                r.barcode,
-                r.name,
-                rtype[0],
-                r.nucleic_acid_type.name if rtype == "Sample" else "-",
-                r.measured_value_facility,
-                r.mean_fragment_size if rtype == "Library" else "-",
-                r.comments,
-            ]
-            data.append(row)
-        add_table(doc, header, data)
-        doc.add_page_break()
-
-        # Page 4
-        doc.add_heading("Library Construction", 1)
-        doc.add_paragraph()
-        doc.add_paragraph(
-            "Documentation is only possible if libraries were "
-            + "constructed in the deep sequencing facility, "
-            + "MPI-IE Freiburg. Raw data and reports of "
-            + "fluorometric quantification (Qubit) and size "
-            + "distribution measurements (Fragment Analyzer) "
-            + "can be found as attachment to each request in "
-            + "Parkour (parkour.ie-freiburg.mpg.de). Given "
-            + "Library Preparation Methods are detailed in the "
-            + "appendix."
-        )
-        lib_prep_objects = LibraryPreparation.objects.filter(
-            archived=False, sample__in=instance.samples.all()
-        )
-        header = [
-            "Date",
-            "ID",
-            "Name",
-            "Protocol",
-            "Index I7",
-            "Index I5",
-            "PCR",
-            "ng/µl",
-            "bp",
-            "nM",
-            "Comments",
-        ]
-        data = []
-        for r in lib_prep_objects:
-            row = [
-                r.create_time.strftime("%d.%m.%Y"),
-                r.sample.barcode,
-                r.sample.name,
-                r.sample.library_protocol.name,
-                r.sample.index_i7,
-                r.sample.index_i5,
-                r.pcr_cycles,
-                r.concentration_library,
-                r.mean_fragment_size,
-                r.nM,
-                r.comments,
-            ]
-            data.append(row)
-        add_table(doc, header, data)
-        doc.add_page_break()
-
-        # Page 5
-        doc.add_heading("Cluster Generation and Sequencing", 1)
-        doc.add_paragraph()
-        header = [
-            "Date",
-            "ID",
-            "Name",
-            "Pool ID",
-            "Flowcell ID",
-            "Sequencer",
-            "Depth (M)",
-            "% Confident off species reads",
-        ]
-        data = []
-        try:
-            flowcell = instance.flowcell.get()
-        except Exception:
-            flowcell = None
-        if flowcell:
-            pool_ids = ", ".join(
-                sorted(set(flowcell.lanes.values_list("pool__name", flat=True)))
-            )
-            sequences = flowcell.sequences if flowcell.sequences else []
-            conf_reads = {s["barcode"]: s.get("confident_reads", "") for s in sequences}
-            for r in records:
-                row = [
-                    flowcell.create_time.strftime("%d.%m.%Y"),
-                    r.barcode,
-                    r.name,
-                    pool_ids,
-                    flowcell.flowcell_id,
-                    flowcell.sequencer.name,
-                    r.sequencing_depth,
-                    conf_reads.get(r.barcode, ""),
-                ]
-                data.append(row)
-        add_table(doc, header, data, contains_comments=False)
-        doc.add_page_break()
-
-        # Page 6
-        doc.add_heading("Acknowledgements", 1)
-        doc.add_paragraph()
-        doc.add_paragraph(
-            "If data produced in the Deep Sequencing Facility "
-            + "at MPI-IE, Freiburg is published, include an "
-            + "acknowledgement in your paper. Also, review if "
-            + "contributions are substantial and should lead to "
-            + "an authorship of staff of the facility. "
-        )
-        doc.add_paragraph()
-        doc.add_paragraph(
-            "Additionally, let us know of any publications "
-            + "involving the facility. Tracking citations and "
-            + "publications demonstrate the usefulness of the "
-            + "facility as a research resource which is needed "
-            + "to obtain further funding."
-        )
-        doc.add_paragraph()
-        doc.add_paragraph("Example acknowledgement")
-        doc.add_paragraph()
-        doc.add_paragraph(
-            "We thank the Deep Sequencing Facility @ MPI-IE "
-            + "Freiburg, for performance of quality controls, "
-            + "library construction and Illumina sequencing."
-        )
-        doc.add_page_break()
-
-        # Page 7
-        doc.add_heading("Appendix", 1)
-        doc.add_paragraph()
-        doc.add_paragraph(
-            "Detailed list of different library preparation "
-            + "protocols, sequencing devices and installed "
-            + "software"
-        )
-
-        doc.save(response)
-        return response
-
-    @action(methods=["get"], detail=True)
     def get_filepaths(self, request, *args, **kwargs):
         filepaths = self.get_object().filepaths
         return JsonResponse({"success": True, "filepaths": filepaths})
@@ -1120,12 +793,24 @@ def export_request(request):
             "index_reads",  # libraries
             "index_i7",  # libraries
             "index_i5",  # libraries
-            "rna_quality",  # samples
             "read_length",
             "sequencing_depth",
             "organism",
             "comments",
         )
+
+        def get_concentration_value(record):
+            for attr in (
+                "measured_value",
+                "measured_value_facility",
+                "concentration_library",
+            ):
+                if hasattr(record, attr):
+                    value = getattr(record, attr)
+                    if value is not None and value != "":
+                        return value
+            return ""
+
         records = req.records
         for r in records:
             r_type = r.__class__.__name__
@@ -1138,13 +823,12 @@ def export_request(request):
                         r.nucleic_acid_type,
                         r.library_protocol,
                         r.library_type,
-                        r.concentration,
+                        get_concentration_value(r),
                         "_",  # mean_fragment_size
                         "_",  # index_type
                         "_",  # index_reads
                         "_",  # index_i7
                         "_",  # index_i5
-                        r.rna_quality,
                         r.read_length,
                         r.sequencing_depth,
                         r.organism,
@@ -1160,13 +844,12 @@ def export_request(request):
                         "_",  # nucleic_acid_type
                         r.library_protocol,
                         r.library_type,
-                        r.concentration,
+                        get_concentration_value(r),
                         r.mean_fragment_size,
                         r.index_type,
                         r.index_reads,
                         r.index_i7,
                         r.index_i5,
-                        "_",  # rna_quality
                         r.read_length,
                         r.sequencing_depth,
                         r.organism,
@@ -1305,8 +988,7 @@ class ApproveViewSet(viewsets.ModelViewSet):
             ),
             from_email=settings.SERVER_EMAIL,
             recipient_list=_recipient_list_with_sender_copy(
-                instance.user.email,
-                instance.user.pi.email,
+                instance.user.email, instance.user.pi.email
             ),
         )
         return HttpResponseRedirect("/danke")
