@@ -203,15 +203,18 @@
             </button>
           </div>
           <div class="header-actions">
-            <div class="shortcut-help">
+            <div
+              class="shortcut-help"
+              @mouseenter="openShortcutHelp"
+              @mouseleave="scheduleShortcutHelpClose"
+            >
               <button
                 class="help-button shortcut-help-button"
                 type="button"
-                @click="toggleShortcutHelp"
-                title="Keyboard shortcuts"
                 :aria-expanded="showShortcutHelp.toString()"
                 aria-controls="shortcut-help-panel"
                 aria-haspopup="dialog"
+                @focus="openShortcutHelp"
               >
                 <font-awesome-icon icon="fa-solid fa-keyboard" />
               </button>
@@ -221,11 +224,13 @@
                 class="shortcut-help-panel"
                 role="dialog"
                 aria-label="Keyboard shortcuts"
+                @mouseenter="cancelShortcutHelpClose"
+                @mouseleave="scheduleShortcutHelpClose"
               >
                 <div class="shortcut-help-title">Keyboard Shortcuts</div>
                 <ul class="shortcut-help-list">
                   <li>
-                    <span>Select all</span>
+                    <span>Select everything in the current table</span>
                     <span class="shortcut-keys">
                       <kbd>Ctrl</kbd>
                       <span class="shortcut-plus">+</span>
@@ -233,7 +238,7 @@
                     </span>
                   </li>
                   <li>
-                    <span>Copy</span>
+                    <span>Copy the selected cells</span>
                     <span class="shortcut-keys">
                       <kbd>Ctrl</kbd>
                       <span class="shortcut-plus">+</span>
@@ -241,7 +246,7 @@
                     </span>
                   </li>
                   <li>
-                    <span>Paste</span>
+                    <span>Paste into the selected cells</span>
                     <span class="shortcut-keys">
                       <kbd>Ctrl</kbd>
                       <span class="shortcut-plus">+</span>
@@ -249,7 +254,7 @@
                     </span>
                   </li>
                   <li>
-                    <span>Cut</span>
+                    <span>Cut the selected cells</span>
                     <span class="shortcut-keys">
                       <kbd>Ctrl</kbd>
                       <span class="shortcut-plus">+</span>
@@ -257,7 +262,7 @@
                     </span>
                   </li>
                   <li>
-                    <span>Clear</span>
+                    <span>Clear the selected cells</span>
                     <span class="shortcut-keys">
                       <kbd>Del</kbd>
                       <span class="shortcut-plus">/</span>
@@ -267,14 +272,243 @@
                 </ul>
               </div>
             </div>
-            <button
-              class="help-button"
-              type="button"
-              @click="openHelpPage"
-              title="Open MAX page on Intranet"
+            <div
+              class="feature-help"
+              @mouseenter="openFeatureHelp"
+              @mouseleave="scheduleFeatureHelpClose"
             >
-              ?
-            </button>
+              <button
+                class="help-button"
+                type="button"
+                :aria-expanded="showFeatureHelp.toString()"
+                aria-controls="feature-help-panel"
+                aria-haspopup="dialog"
+                @focus="openFeatureHelp"
+              >
+                ?
+              </button>
+              <div
+                v-if="showFeatureHelp"
+                id="feature-help-panel"
+                class="feature-help-panel"
+                role="dialog"
+                aria-label="Request editor help"
+                @mouseenter="cancelFeatureHelpClose"
+                @mouseleave="scheduleFeatureHelpClose"
+              >
+                <div class="feature-help-header">
+                  <div>
+                    <div class="feature-help-title">Request Editor Guide</div>
+                    <p>
+                      This window helps you create or update a request from
+                      start to finish. Fill in the basic request details, add
+                      your libraries or samples, attach any needed files, then
+                      save everything together.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="feature-help-grid">
+                  <section class="feature-help-section">
+                    <div class="feature-help-section-head">
+                      <font-awesome-icon icon="fa-solid fa-folder-open" />
+                      <span>Request Details And Files</span>
+                    </div>
+                    <ul class="feature-help-points">
+                      <li>
+                        Start on the left side. Choose a Cost Unit and write a
+                        short Description of the request.
+                      </li>
+                      <li>
+                        Add request files with <strong>Add Files</strong>, or
+                        drag files into this window.
+                      </li>
+                      <li>
+                        After upload, you can check the file list, download a
+                        file again, or remove a file before saving.
+                      </li>
+                      <li>
+                        If you are working with Samples, this area also shows
+                        helpful sample forms you can download.
+                      </li>
+                    </ul>
+                    <div class="feature-help-visual file-help-visual">
+                      <div class="visual-header">Request Files</div>
+                      <div class="visual-dropzone">
+                        <font-awesome-icon icon="fa-solid fa-cloud-arrow-up" />
+                        <span>Drag files here</span>
+                      </div>
+                      <div class="visual-file-row">
+                        <span class="visual-file-name">project_notes.pdf</span>
+                        <font-awesome-icon icon="fa-solid fa-download" />
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="feature-help-section">
+                    <div class="feature-help-section-head">
+                      <font-awesome-icon icon="fa-solid fa-table-cells" />
+                      <span>Mode Switch And Row Setup</span>
+                    </div>
+                    <ul class="feature-help-points">
+                      <li>
+                        At the top, choose whether you are entering
+                        <strong>Libraries</strong> or <strong>Samples</strong>.
+                      </li>
+                      <li>
+                        Type how many rows you want to add, then click
+                        <strong>Add Libraries</strong> or
+                        <strong>Add Samples</strong>.
+                      </li>
+                      <li>
+                        If you no longer need some rows, select them and click
+                        <strong>Delete Selected</strong>.
+                      </li>
+                      <li>
+                        If you switch between Library and Sample while creating
+                        a new request, the current draft rows will be cleared
+                        after confirmation.
+                      </li>
+                    </ul>
+                    <div class="feature-help-visual toggle-help-visual">
+                      <div class="visual-toggle">
+                        <span class="visual-toggle-active">Library</span>
+                        <span>Sample</span>
+                      </div>
+                      <div class="visual-add-strip">
+                        <span class="visual-count-box">3</span>
+                        <span class="visual-add-button">+ Add Rows</span>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="feature-help-section">
+                    <div class="feature-help-section-head">
+                      <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                      <span>Table Editing</span>
+                    </div>
+                    <ul class="feature-help-points">
+                      <li>
+                        Enter information directly in the table on the right.
+                        The columns change depending on whether you selected
+                        Libraries or Samples.
+                      </li>
+                      <li>
+                        Some cells let you type, some give you a dropdown list,
+                        and some update automatically based on what you chose
+                        earlier.
+                      </li>
+                      <li>
+                        Required or incorrect values are highlighted so you can
+                        see what still needs attention.
+                      </li>
+                      <li>
+                        Some fields are read-only until other required choices
+                        are filled in.
+                      </li>
+                    </ul>
+                    <div class="feature-help-visual table-help-visual">
+                      <div class="visual-table-row visual-table-head">
+                        <span>Name</span>
+                        <span>Protocol</span>
+                        <span>Depth</span>
+                      </div>
+                      <div class="visual-table-row">
+                        <span>Lib_01</span>
+                        <span>RNA</span>
+                        <span class="visual-valid-cell">20</span>
+                      </div>
+                      <div class="visual-table-row">
+                        <span class="visual-invalid-cell">Required</span>
+                        <span>DNA</span>
+                        <span>10</span>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="feature-help-section">
+                    <div class="feature-help-section-head">
+                      <font-awesome-icon icon="fa-solid fa-copy" />
+                      <span>Range Selection And Clipboard</span>
+                    </div>
+                    <ul class="feature-help-points">
+                      <li>
+                        You can select a block of cells and then
+                        <strong>Cut</strong>, <strong>Copy</strong>,
+                        <strong>Paste</strong>, or <strong>Clear</strong> many
+                        values at once.
+                      </li>
+                      <li>
+                        <strong>Apply to All</strong> takes one value from the
+                        current cell and fills the same column for all rows in
+                        the request.
+                      </li>
+                      <li>
+                        When you paste, the editor tries to keep the data in the
+                        correct place and follow the field rules.
+                      </li>
+                      <li>
+                        Use the keyboard icon for a quick list of shortcuts.
+                      </li>
+                    </ul>
+                    <div class="feature-help-visual range-help-visual">
+                      <div class="visual-table-row visual-table-head">
+                        <span>Name</span>
+                        <span>Type</span>
+                        <span>Depth</span>
+                      </div>
+                      <div class="visual-table-row">
+                        <span>Row 1</span>
+                        <span class="visual-range-cell">RNA</span>
+                        <span class="visual-range-cell">15</span>
+                      </div>
+                      <div class="visual-table-row">
+                        <span>Row 2</span>
+                        <span class="visual-range-cell">RNA</span>
+                        <span class="visual-range-cell">15</span>
+                      </div>
+                      <div class="visual-shortcuts-inline">
+                        <kbd>Ctrl</kbd><span>+</span><kbd>C</kbd>
+                        <kbd>Ctrl</kbd><span>+</span><kbd>V</kbd>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="feature-help-section feature-help-section-wide">
+                    <div class="feature-help-section-head">
+                      <font-awesome-icon icon="fa-solid fa-circle-check" />
+                      <span>Save Flow And Validation</span>
+                    </div>
+                    <ul class="feature-help-points">
+                      <li>
+                        You can save only after the required request details and
+                        required table values are filled in correctly.
+                      </li>
+                      <li>
+                        In edit mode, the system checks all changed Library and
+                        Sample data before updating the request.
+                      </li>
+                      <li>
+                        Your table changes, file changes, and request details
+                        are saved together as one update.
+                      </li>
+                      <li>
+                        The keyboard icon next to this help button shows only
+                        the shortcut list if you want a faster reference.
+                      </li>
+                    </ul>
+                    <div class="feature-help-callout">
+                      <font-awesome-icon icon="fa-solid fa-lightbulb" />
+                      <span>
+                        Tip: keep the left side open while you work on request
+                        details and files. Collapse it when you want more space
+                        for the table.
+                      </span>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
             <button
               class="popup-close-button"
               type="button"
@@ -786,6 +1020,7 @@ export default {
       showCloseConfirm: false,
       showFileDeleteConfirm: false,
       showShortcutHelp: false,
+      showFeatureHelp: false,
       pendingToggleMode: null,
       existingRecords: [],
       isDragOver: false,
@@ -797,6 +1032,8 @@ export default {
         library: false,
         sample: false
       },
+      shortcutHelpCloseTimer: null,
+      featureHelpCloseTimer: null,
       pendingFileDelete: null,
       editSnapshot: {
         cost_unit: "",
@@ -920,11 +1157,15 @@ export default {
     }
     document.addEventListener("keydown", this.handleKeyDown);
     document.addEventListener("click", this.handleShortcutHelpOutsideClick);
+    document.addEventListener("click", this.handleFeatureHelpOutsideClick);
   },
   beforeDestroy() {
     this.unbindRangeSelectionListeners();
     document.removeEventListener("keydown", this.handleKeyDown);
     document.removeEventListener("click", this.handleShortcutHelpOutsideClick);
+    document.removeEventListener("click", this.handleFeatureHelpOutsideClick);
+    this.cancelShortcutHelpClose();
+    this.cancelFeatureHelpClose();
   },
   computed: {
     isEditMode() {
@@ -1341,21 +1582,51 @@ export default {
     toggleFormPanel() {
       this.isFormPanelCollapsed = !this.isFormPanelCollapsed;
     },
-    toggleShortcutHelp() {
-      this.showShortcutHelp = !this.showShortcutHelp;
+    openShortcutHelp() {
+      this.cancelShortcutHelpClose();
+      this.showShortcutHelp = true;
+    },
+    scheduleShortcutHelpClose() {
+      this.cancelShortcutHelpClose();
+      this.shortcutHelpCloseTimer = setTimeout(() => {
+        this.showShortcutHelp = false;
+        this.shortcutHelpCloseTimer = null;
+      }, 120);
+    },
+    cancelShortcutHelpClose() {
+      if (!this.shortcutHelpCloseTimer) return;
+      clearTimeout(this.shortcutHelpCloseTimer);
+      this.shortcutHelpCloseTimer = null;
+    },
+    openFeatureHelp() {
+      this.cancelFeatureHelpClose();
+      this.showFeatureHelp = true;
+    },
+    scheduleFeatureHelpClose() {
+      this.cancelFeatureHelpClose();
+      this.featureHelpCloseTimer = setTimeout(() => {
+        this.showFeatureHelp = false;
+        this.featureHelpCloseTimer = null;
+      }, 120);
+    },
+    cancelFeatureHelpClose() {
+      if (!this.featureHelpCloseTimer) return;
+      clearTimeout(this.featureHelpCloseTimer);
+      this.featureHelpCloseTimer = null;
     },
     handleShortcutHelpOutsideClick(event) {
       if (!this.showShortcutHelp) return;
       const container = this.$el?.querySelector?.(".shortcut-help");
       if (container && container.contains(event.target)) return;
+      this.cancelShortcutHelpClose();
       this.showShortcutHelp = false;
     },
-    openHelpPage() {
-      window.open(
-        "https://max.mpg.de/sites/mpi-ie/Facilities/Deep-Sequencing-Facility/Pages/Parkour-Help.aspx",
-        "_blank",
-        "noopener,noreferrer"
-      );
+    handleFeatureHelpOutsideClick(event) {
+      if (!this.showFeatureHelp) return;
+      const container = this.$el?.querySelector?.(".feature-help");
+      if (container && container.contains(event.target)) return;
+      this.cancelFeatureHelpClose();
+      this.showFeatureHelp = false;
     },
     emitClose() {
       this.$emit("close");
@@ -1595,6 +1866,8 @@ export default {
       this.showDeleteConfirm = false;
       this.showCloseConfirm = false;
       this.showFileDeleteConfirm = false;
+      this.showShortcutHelp = false;
+      this.showFeatureHelp = false;
       this.pendingToggleMode = null;
       this.existingRecords = [];
       this.editSnapshot = {
@@ -1643,7 +1916,13 @@ export default {
     handleKeyDown(event) {
       if (!this.show) return;
       if (this.showShortcutHelp && event.key === "Escape") {
+        this.cancelShortcutHelpClose();
         this.showShortcutHelp = false;
+        return;
+      }
+      if (this.showFeatureHelp && event.key === "Escape") {
+        this.cancelFeatureHelpClose();
+        this.showFeatureHelp = false;
         return;
       }
       const key = event.key?.toLowerCase?.();
@@ -4253,6 +4532,12 @@ export default {
   align-items: center;
 }
 
+.feature-help {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .shortcut-help-button {
   font-size: 14px;
 }
@@ -4261,7 +4546,8 @@ export default {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  min-width: 220px;
+  width: 290px;
+  max-width: min(290px, calc(100vw - 24px));
   background: #ffffff;
   border: 1px solid #d7dee3;
   border-radius: 10px;
@@ -4295,16 +4581,17 @@ export default {
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 6px;
+  gap: 8px;
   font-size: 12px;
   color: #4b5563;
 }
 
 .shortcut-help-list li {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  column-gap: 14px;
+  row-gap: 4px;
 }
 
 .shortcut-keys {
@@ -4312,7 +4599,8 @@ export default {
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-  min-width: 88px;
+  min-width: 96px;
+  white-space: nowrap;
 }
 
 .shortcut-plus {
@@ -4335,6 +4623,277 @@ export default {
   font-weight: 600;
   color: #1f2937;
   box-shadow: inset 0 -1px 0 #e5e7eb;
+}
+
+.feature-help-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: -28px;
+  width: min(760px, calc(100vw - 72px));
+  max-height: min(72vh, 760px);
+  overflow: auto;
+  background: #ffffff;
+  border: 1px solid #d7dee3;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+  z-index: 8;
+}
+
+.feature-help-panel::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 36px;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-left: 1px solid #d7dee3;
+  border-top: 1px solid #d7dee3;
+  transform: rotate(45deg);
+}
+
+.feature-help-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.feature-help-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #13415b;
+  margin-bottom: 4px;
+}
+
+.feature-help-header p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.feature-help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.feature-help-section {
+  border: 1px solid #dbe4ea;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f9fbfc 0%, #f4f7f8 100%);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feature-help-section-wide {
+  grid-column: 1 / -1;
+}
+
+.feature-help-section-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #13415b;
+}
+
+.feature-help-points {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #44505f;
+}
+
+.feature-help-points strong {
+  color: #13415b;
+}
+
+.feature-help-visual {
+  border: 1px solid #d5dde4;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  min-height: 118px;
+}
+
+.visual-header {
+  font-size: 11px;
+  font-weight: 700;
+  color: #5b6878;
+}
+
+.visual-dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 1px dashed #7fa8c0;
+  border-radius: 8px;
+  background: #eef7fb;
+  color: #0f5c84;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.visual-file-row,
+.visual-table-row,
+.visual-add-strip {
+  display: grid;
+  align-items: center;
+  gap: 8px;
+}
+
+.visual-file-row {
+  grid-template-columns: 1fr auto;
+  font-size: 11px;
+  color: #44505f;
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
+.visual-file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visual-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #d5dde4;
+  border-radius: 9px;
+  background: #e8edf1;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 700;
+  color: #556171;
+}
+
+.visual-toggle span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+}
+
+.visual-toggle-active {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.visual-add-strip {
+  grid-template-columns: 46px 1fr;
+}
+
+.visual-count-box,
+.visual-add-button {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.visual-count-box {
+  border: 1px solid #0f766e;
+  color: #13415b;
+  background: #ffffff;
+}
+
+.visual-add-button {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.visual-table-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  font-size: 11px;
+  color: #44505f;
+}
+
+.visual-table-row span {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+  background: #fbfcfd;
+}
+
+.visual-table-head span {
+  background: #eef2f5;
+  color: #44505f;
+  font-weight: 700;
+}
+
+.visual-valid-cell {
+  background: #edf9f4 !important;
+  border-color: #a7d7bf !important;
+}
+
+.visual-invalid-cell {
+  background: #fff3f2 !important;
+  border-color: #efb6b0 !important;
+  color: #b42318;
+}
+
+.visual-range-cell {
+  background: #edf5ff !important;
+  border-color: #95bdf6 !important;
+}
+
+.visual-shortcuts-inline {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.visual-shortcuts-inline kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  background: #f3f6f7;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.feature-help-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #eef7f6;
+  border: 1px solid #c7e2de;
+  color: #275c56;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .request-editor-body-left {
@@ -4845,6 +5404,28 @@ export default {
     transform: scale(1);
   }
 }
+
+@media (max-width: 1180px) {
+  .feature-help-panel {
+    right: -96px;
+    width: min(700px, calc(100vw - 40px));
+  }
+}
+
+@media (max-width: 920px) {
+  .feature-help-panel {
+    right: -140px;
+    width: min(640px, calc(100vw - 28px));
+  }
+
+  .feature-help-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-help-section-wide {
+    grid-column: auto;
+  }
+}
 </style>
 <!--
 refactor/simplify all the files
@@ -4854,7 +5435,4 @@ lag usability check for opening request editor with large requests, and expandin
 table edit performance for large requests
 
 new help section on hover in add/edit request window
-in add request window/edit request window: move the library and sample toggle to right plane, on left to the input of add number of libraries/samples
-in add request window/edit request window: when we upload a file or delete a files and save the header of request does not change the icon of attachments from green/red
-when editing a request, uploading a file should show the file after file uploaded successfully. the file shows when a file is uploaded in add request popup
 -->

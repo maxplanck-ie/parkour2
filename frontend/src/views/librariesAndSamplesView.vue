@@ -1535,6 +1535,7 @@ export default {
       this.tabulatorInstance
         ?.getTable?.()
         .replaceData(this.librariesSamplesList);
+      this.$nextTick(() => this.refreshGroupHeaders());
     },
     openRequestEditorModal() {
       this.requestModalMode = "create";
@@ -1571,6 +1572,7 @@ export default {
         ) {
           this.activeRequestMeta = nextMeta;
         }
+        this.$nextTick(() => this.refreshGroupHeaders());
         this.finishRequestEditorSync();
         return;
       }
