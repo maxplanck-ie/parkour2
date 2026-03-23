@@ -124,7 +124,7 @@ export function librariesAndSamplesGroupHeader(
     : "";
 
   const approvalRowMarker = showApprovalTag
-    ? '<span class="request-approval-pending-marker" aria-hidden="true"></span>'
+    ? '<span class="request-approval-pending-marker" aria-hidden="true" style="display:none;"></span>'
     : "";
 
   return `
