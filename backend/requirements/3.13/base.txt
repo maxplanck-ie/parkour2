@@ -2,7 +2,7 @@
 #    uv pip compile --universal --python-version 3.13 backend/requirements/base.in -o backend/requirements/3.13/base.txt
 asgiref==3.11.1
     # via django
-attrs==25.4.0
+attrs==26.1.0
     # via
     #   jsonschema
     #   referencing
@@ -37,7 +37,7 @@ django-monthfield==0.1.4
     # via -r backend/requirements/base.in
 django-simple-history==3.11.0
     # via -r backend/requirements/base.in
-djangorestframework==3.16.1
+djangorestframework==3.17.0
     # via
     #   -r backend/requirements/base.in
     #   drf-spectacular
