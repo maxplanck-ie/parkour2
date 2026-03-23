@@ -5433,6 +5433,4 @@ unit test all the pages
 
 lag usability check for opening request editor with large requests, and expanding request by clicking on the header
 table edit performance for large requests
-
-new help section on hover in add/edit request window
 -->

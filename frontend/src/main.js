@@ -35,7 +35,12 @@ import {
   faWandMagicSparkles,
   faXmark,
   faDesktop,
-  faKeyboard
+  faKeyboard,
+  faFolderOpen,
+  faTableCells,
+  faPenToSquare,
+  faCloudArrowUp,
+  faLightbulb
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -77,7 +82,12 @@ library.add(
   faWandMagicSparkles,
   faXmark,
   faDesktop,
-  faKeyboard
+  faKeyboard,
+  faFolderOpen,
+  faTableCells,
+  faPenToSquare,
+  faCloudArrowUp,
+  faLightbulb
 );
 
 app.use(router);

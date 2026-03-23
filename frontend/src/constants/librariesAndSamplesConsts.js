@@ -123,10 +123,15 @@ export function librariesAndSamplesGroupHeader(
     `
     : "";
 
+  const approvalRowMarker = showApprovalTag
+    ? '<span class="request-approval-pending-marker" aria-hidden="true"></span>'
+    : "";
+
   return `
   <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <div style="display: flex; align-items: center; gap: 8px;">
+        ${approvalRowMarker}
         <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
         <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
           (#: ${count} ${countLabel}, Total Depth: ${totalDepth})

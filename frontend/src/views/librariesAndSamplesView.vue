@@ -2172,6 +2172,14 @@ body,
   position: relative;
 }
 
+html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
+  background-color: #eef7ff !important;
+}
+
+html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
+  background-color: #e6f2ff !important;
+}
+
 .search-bar {
   width: 330px;
 }
