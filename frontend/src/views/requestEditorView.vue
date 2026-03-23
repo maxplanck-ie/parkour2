@@ -185,7 +185,7 @@
                   <section class="feature-help-section">
                     <div class="feature-help-section-head">
                       <font-awesome-icon icon="fa-solid fa-folder-open" />
-                      <span>Request Details And Files</span>
+                      <span>Request Details and Files</span>
                     </div>
                     <ul class="feature-help-points">
                       <li>
@@ -221,7 +221,7 @@
                   <section class="feature-help-section">
                     <div class="feature-help-section-head">
                       <font-awesome-icon icon="fa-solid fa-table-cells" />
-                      <span>Mode Switch And Row Setup</span>
+                      <span>Mode Switch and Row Setup</span>
                     </div>
                     <ul class="feature-help-points">
                       <li>
@@ -302,7 +302,7 @@
                   <section class="feature-help-section">
                     <div class="feature-help-section-head">
                       <font-awesome-icon icon="fa-solid fa-copy" />
-                      <span>Range Selection And Clipboard</span>
+                      <span>Range Selection and Clipboard</span>
                     </div>
                     <ul class="feature-help-points">
                       <li>
@@ -350,7 +350,7 @@
                   <section class="feature-help-section feature-help-section-wide">
                     <div class="feature-help-section-head">
                       <font-awesome-icon icon="fa-solid fa-circle-check" />
-                      <span>Save Flow And Validation</span>
+                      <span>Save Flow and Validation</span>
                     </div>
                     <ul class="feature-help-points">
                       <li>

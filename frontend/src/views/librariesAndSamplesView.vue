@@ -214,8 +214,8 @@
               <div class="page-help-grid">
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                    <font-awesome-icon icon="fa-solid fa-circle-info" />
-                    <span>What You See On This Page</span>
+                  <font-awesome-icon icon="fa-solid fa-circle-info" />
+                  <span>What You See on This Page</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -255,8 +255,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                    <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-                    <span>How To Find The Right Request</span>
+                  <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+                  <span>How to Find the Right Request</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -293,8 +293,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                    <font-awesome-icon icon="fa-solid fa-square-plus" />
-                    <span>How To Create A New Request</span>
+                  <font-awesome-icon icon="fa-solid fa-square-plus" />
+                  <span>How to Create a New Request</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -340,8 +340,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                    <font-awesome-icon icon="fa-solid fa-circle-check" />
-                    <span>Request Status And Progress</span>
+                  <font-awesome-icon icon="fa-solid fa-circle-check" />
+                  <span>Request Status and Progress</span>
                   </div>
                   <p class="page-help-copy">
                     Parkour tracks progress separately for each library or sample.
@@ -369,8 +369,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                    <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-                    <span>What The Request Action Icons Do</span>
+                  <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                  <span>What the Request Action Icons Do</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -404,8 +404,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                    <font-awesome-icon icon="fa-solid fa-file-excel" />
-                    <span>Export And Reporting</span>
+                  <font-awesome-icon icon="fa-solid fa-file-excel" />
+                  <span>Export and Reporting</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -432,8 +432,8 @@
 
                 <section class="page-help-section page-help-section-wide">
                   <div class="page-help-section-title">
-                    <font-awesome-icon icon="fa-solid fa-folder-open" />
-                    <span>Suggested First-Time Workflow</span>
+                  <font-awesome-icon icon="fa-solid fa-folder-open" />
+                  <span>Suggested First-Time Workflow</span>
                   </div>
                   <ol class="page-help-steps">
                     <li>
