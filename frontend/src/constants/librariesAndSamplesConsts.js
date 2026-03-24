@@ -149,9 +149,9 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${staffActions}
-      <div title="Export RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
+      <!--<div title="Export RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
         <img class="group-action-icon-img icon-24" src="${iconDownloadROCrate}" alt="Export RO-Crate" />
-      </div>
+      </div> -->
       <span class="group-action-separator"></span>
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />

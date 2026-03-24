@@ -2485,6 +2485,7 @@ export default {
       );
       tooltipNodes.forEach((node) => {
         if (node !== el) {
+          node.removeAttribute("title");
           node.removeAttribute("data-tooltip-original");
         }
       });
@@ -2516,19 +2517,20 @@ export default {
       const required = this.isFieldRequired(field, rowData);
       const disabledTooltip = el.getAttribute("data-disabled-tooltip");
       const isDisabled = el.classList.contains("disable-editing");
+      const displayText = (el.textContent || "").trim();
+      const setTooltipText = (text) => {
+        const tooltipText = String(text || "").trim();
+        el.removeAttribute("title");
+        el.removeAttribute("data-tooltip-original");
+        if (tooltipText) {
+          el.setAttribute("data-tooltip-original", tooltipText);
+        }
+      };
       if (!shouldValidateField) {
-        if (isDisabled && disabledTooltip) {
-          el.setAttribute("data-tooltip-original", disabledTooltip);
-        } else if (valuePresent) {
+        if (valuePresent) {
           el.classList.add("cell-valid");
         }
-        const hasValidationTooltip = el.getAttribute("data-tooltip-original");
-        if (!hasValidationTooltip) {
-          const displayText = (el.textContent || "").trim();
-          if (displayText) {
-            el.setAttribute("title", displayText);
-          }
-        }
+        setTooltipText(displayText || disabledTooltip);
         return;
       }
       if (required) {
@@ -2536,22 +2538,14 @@ export default {
       }
       if (errors[field]) {
         el.classList.add("cell-invalid");
-        if (disabledTooltip) {
-          el.setAttribute("data-tooltip-original", disabledTooltip);
-        } else {
-          el.setAttribute("data-tooltip-original", errors[field]);
-        }
-      } else if (isDisabled && disabledTooltip) {
-        el.setAttribute("data-tooltip-original", disabledTooltip);
+        setTooltipText(errors[field]);
       } else if (valuePresent) {
         el.classList.add("cell-valid");
-      }
-      const hasValidationTooltip = el.getAttribute("data-tooltip-original");
-      if (!hasValidationTooltip) {
-        const displayText = (el.textContent || "").trim();
-        if (displayText) {
-          el.setAttribute("title", displayText);
-        }
+        setTooltipText(displayText || disabledTooltip);
+      } else if (isDisabled && disabledTooltip) {
+        setTooltipText(disabledTooltip);
+      } else {
+        setTooltipText(displayText);
       }
     },
     applyRowStyling(row) {
@@ -5157,7 +5151,6 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 
-edit/add request validations show select or - instead of the error message on the field
 lag usability check for opening request editor with large requests, and expanding request by clicking on the header
 table edit performance for large requests
 -->
