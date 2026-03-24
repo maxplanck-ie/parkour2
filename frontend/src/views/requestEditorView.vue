@@ -169,216 +169,220 @@
               <div v-if="showFeatureHelp" id="feature-help-panel" class="feature-help-panel" role="dialog"
                 aria-label="Request editor help" @mouseenter="cancelFeatureHelpClose"
                 @mouseleave="scheduleFeatureHelpClose">
-                <div class="feature-help-header">
-                  <div>
-                    <div class="feature-help-title">Request Editor Guide</div>
-                    <p>
-                      This window helps you create or update a request from
-                      start to finish. Fill in the basic request details, add
-                      your libraries or samples, attach any needed files, then
-                      save everything together.
-                    </p>
+                <div class="feature-help-scroll">
+                  <div class="feature-help-header">
+                    <div>
+                      <div>
+                        <div class="feature-help-title">Request Editor Guide</div>
+                        <p>
+                          This window helps you create or update a request from
+                          start to finish. Fill in the basic request details, add
+                          your libraries or samples, attach any needed files, then
+                          save everything together.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                <div class="feature-help-grid">
-                  <section class="feature-help-section">
-                    <div class="feature-help-section-head">
-                      <font-awesome-icon icon="fa-solid fa-folder-open" />
-                      <span>Request Details and Files</span>
-                    </div>
-                    <ul class="feature-help-points">
-                      <li>
-                        Start on the left side. Choose a Cost Unit and write a
-                        short Description of the request.
-                      </li>
-                      <li>
-                        Add request files with <strong>Add Files</strong>, or
-                        drag files into this window.
-                      </li>
-                      <li>
-                        After upload, you can check the file list, download a
-                        file again, or remove a file before saving.
-                      </li>
-                      <li>
-                        If you are working with Samples, this area also shows
-                        helpful sample forms you can download.
-                      </li>
-                    </ul>
-                    <div class="feature-help-visual file-help-visual">
-                      <div class="visual-header">Request Files</div>
-                      <div class="visual-dropzone">
-                        <font-awesome-icon icon="fa-solid fa-cloud-arrow-up" />
-                        <span>Drag files here</span>
+                  <div class="feature-help-grid">
+                    <section class="feature-help-section">
+                      <div class="feature-help-section-head">
+                        <font-awesome-icon icon="fa-solid fa-folder-open" />
+                        <span>Request Details and Files</span>
                       </div>
-                      <div class="visual-file-row">
-                        <span class="visual-file-name">project_notes.pdf</span>
-                        <font-awesome-icon icon="fa-solid fa-download" />
+                      <ul class="feature-help-points">
+                        <li>
+                          Start on the left side. Choose a Cost Unit and write a
+                          short Description of the request.
+                        </li>
+                        <li>
+                          Add request files with <strong>Add Files</strong>, or
+                          drag files into this window.
+                        </li>
+                        <li>
+                          After upload, you can check the file list, download a
+                          file again, or remove a file before saving.
+                        </li>
+                        <li>
+                          If you are working with Samples, this area also shows
+                          helpful sample forms you can download.
+                        </li>
+                      </ul>
+                      <div class="feature-help-visual file-help-visual">
+                        <div class="visual-header">Request Files</div>
+                        <div class="visual-dropzone">
+                          <font-awesome-icon icon="fa-solid fa-cloud-arrow-up" />
+                          <span>Drag files here</span>
+                        </div>
+                        <div class="visual-file-row">
+                          <span class="visual-file-name">project_notes.pdf</span>
+                          <font-awesome-icon icon="fa-solid fa-download" />
+                        </div>
                       </div>
-                    </div>
-                  </section>
+                    </section>
 
-                  <section class="feature-help-section">
-                    <div class="feature-help-section-head">
-                      <font-awesome-icon icon="fa-solid fa-table-cells" />
-                      <span>Mode Switch and Row Setup</span>
-                    </div>
-                    <ul class="feature-help-points">
-                      <li>
-                        At the top, choose whether you are entering
-                        <strong>Libraries</strong> or <strong>Samples</strong>.
-                      </li>
-                      <li>
-                        Type how many rows you want to add, then click
-                        <strong>Add Libraries</strong> or
-                        <strong>Add Samples</strong>.
-                      </li>
-                      <li>
-                        If you no longer need some rows, select them and click
-                        <strong>Delete Selected</strong>.
-                      </li>
-                      <li>
-                        If you switch between Library and Sample while creating
-                        a new request, the current draft rows will be cleared
-                        after confirmation.
-                      </li>
-                    </ul>
-                    <div class="feature-help-visual toggle-help-visual">
-                      <div class="visual-toggle">
-                        <span class="visual-toggle-active">Library</span>
-                        <span>Sample</span>
+                    <section class="feature-help-section">
+                      <div class="feature-help-section-head">
+                        <font-awesome-icon icon="fa-solid fa-table-cells" />
+                        <span>Mode Switch and Row Setup</span>
                       </div>
-                      <div class="visual-add-strip">
-                        <span class="visual-count-box">3</span>
-                        <span class="visual-add-button">+ Add Rows</span>
+                      <ul class="feature-help-points">
+                        <li>
+                          At the top, choose whether you are entering
+                          <strong>Libraries</strong> or <strong>Samples</strong>.
+                        </li>
+                        <li>
+                          Type how many rows you want to add, then click
+                          <strong>Add Libraries</strong> or
+                          <strong>Add Samples</strong>.
+                        </li>
+                        <li>
+                          If you no longer need some rows, select them and click
+                          <strong>Delete Selected</strong>.
+                        </li>
+                        <li>
+                          If you switch between Library and Sample while creating
+                          a new request, the current draft rows will be cleared
+                          after confirmation.
+                        </li>
+                      </ul>
+                      <div class="feature-help-visual toggle-help-visual">
+                        <div class="visual-toggle">
+                          <span class="visual-toggle-active">Library</span>
+                          <span>Sample</span>
+                        </div>
+                        <div class="visual-add-strip">
+                          <span class="visual-count-box">3</span>
+                          <span class="visual-add-button">+ Add Rows</span>
+                        </div>
                       </div>
-                    </div>
-                  </section>
+                    </section>
 
-                  <section class="feature-help-section">
-                    <div class="feature-help-section-head">
-                      <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-                      <span>Table Editing</span>
-                    </div>
-                    <ul class="feature-help-points">
-                      <li>
-                        Enter information directly in the table on the right.
-                        The columns change depending on whether you selected
-                        Libraries or Samples.
-                      </li>
-                      <li>
-                        Some cells let you type, some give you a dropdown list,
-                        and some update automatically based on what you chose
-                        earlier.
-                      </li>
-                      <li>
-                        Required or incorrect values are highlighted so you can
-                        see what still needs attention.
-                      </li>
-                      <li>
-                        Some fields are read-only until other required choices
-                        are filled in.
-                      </li>
-                    </ul>
-                    <div class="feature-help-visual table-help-visual">
-                      <div class="visual-table-row visual-table-head">
-                        <span>Name</span>
-                        <span>Protocol</span>
-                        <span>Depth</span>
+                    <section class="feature-help-section">
+                      <div class="feature-help-section-head">
+                        <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                        <span>Table Editing</span>
                       </div>
-                      <div class="visual-table-row">
-                        <span>Lib_01</span>
-                        <span>RNA</span>
-                        <span class="visual-valid-cell">20</span>
+                      <ul class="feature-help-points">
+                        <li>
+                          Enter information directly in the table on the right.
+                          The columns change depending on whether you selected
+                          Libraries or Samples.
+                        </li>
+                        <li>
+                          Some cells let you type, some give you a dropdown list,
+                          and some update automatically based on what you chose
+                          earlier.
+                        </li>
+                        <li>
+                          Required or incorrect values are highlighted so you can
+                          see what still needs attention.
+                        </li>
+                        <li>
+                          Some fields are read-only until other required choices
+                          are filled in.
+                        </li>
+                      </ul>
+                      <div class="feature-help-visual table-help-visual">
+                        <div class="visual-table-row visual-table-head">
+                          <span>Name</span>
+                          <span>Protocol</span>
+                          <span>Depth</span>
+                        </div>
+                        <div class="visual-table-row">
+                          <span>Lib_01</span>
+                          <span>RNA</span>
+                          <span class="visual-valid-cell">20</span>
+                        </div>
+                        <div class="visual-table-row">
+                          <span class="visual-invalid-cell">Required</span>
+                          <span>DNA</span>
+                          <span>10</span>
+                        </div>
                       </div>
-                      <div class="visual-table-row">
-                        <span class="visual-invalid-cell">Required</span>
-                        <span>DNA</span>
-                        <span>10</span>
-                      </div>
-                    </div>
-                  </section>
+                    </section>
 
-                  <section class="feature-help-section">
-                    <div class="feature-help-section-head">
-                      <font-awesome-icon icon="fa-solid fa-copy" />
-                      <span>Range Selection and Clipboard</span>
-                    </div>
-                    <ul class="feature-help-points">
-                      <li>
-                        You can select a block of cells and then
-                        <strong>Cut</strong>, <strong>Copy</strong>,
-                        <strong>Paste</strong>, or <strong>Clear</strong> many
-                        values at once.
-                      </li>
-                      <li>
-                        <strong>Apply to All</strong> takes one value from the
-                        current cell and fills the same column for all rows in
-                        the request.
-                      </li>
-                      <li>
-                        When you paste, the editor tries to keep the data in the
-                        correct place and follow the field rules.
-                      </li>
-                      <li>
-                        Use the keyboard icon for a quick list of shortcuts.
-                      </li>
-                    </ul>
-                    <div class="feature-help-visual range-help-visual">
-                      <div class="visual-table-row visual-table-head">
-                        <span>Name</span>
-                        <span>Type</span>
-                        <span>Depth</span>
+                    <section class="feature-help-section">
+                      <div class="feature-help-section-head">
+                        <font-awesome-icon icon="fa-solid fa-copy" />
+                        <span>Range Selection and Clipboard</span>
                       </div>
-                      <div class="visual-table-row">
-                        <span>Row 1</span>
-                        <span class="visual-range-cell">RNA</span>
-                        <span class="visual-range-cell">15</span>
+                      <ul class="feature-help-points">
+                        <li>
+                          You can select a block of cells and then
+                          <strong>Cut</strong>, <strong>Copy</strong>,
+                          <strong>Paste</strong>, or <strong>Clear</strong> many
+                          values at once.
+                        </li>
+                        <li>
+                          <strong>Apply to All</strong> takes one value from the
+                          current cell and fills the same column for all rows in
+                          the request.
+                        </li>
+                        <li>
+                          When you paste, the editor tries to keep the data in the
+                          correct place and follow the field rules.
+                        </li>
+                        <li>
+                          Use the keyboard icon for a quick list of shortcuts.
+                        </li>
+                      </ul>
+                      <div class="feature-help-visual range-help-visual">
+                        <div class="visual-table-row visual-table-head">
+                          <span>Name</span>
+                          <span>Type</span>
+                          <span>Depth</span>
+                        </div>
+                        <div class="visual-table-row">
+                          <span>Row 1</span>
+                          <span class="visual-range-cell">RNA</span>
+                          <span class="visual-range-cell">15</span>
+                        </div>
+                        <div class="visual-table-row">
+                          <span>Row 2</span>
+                          <span class="visual-range-cell">RNA</span>
+                          <span class="visual-range-cell">15</span>
+                        </div>
+                        <div class="visual-shortcuts-inline">
+                          <kbd>Ctrl</kbd><span>+</span><kbd>C</kbd>
+                          <kbd>Ctrl</kbd><span>+</span><kbd>V</kbd>
+                        </div>
                       </div>
-                      <div class="visual-table-row">
-                        <span>Row 2</span>
-                        <span class="visual-range-cell">RNA</span>
-                        <span class="visual-range-cell">15</span>
-                      </div>
-                      <div class="visual-shortcuts-inline">
-                        <kbd>Ctrl</kbd><span>+</span><kbd>C</kbd>
-                        <kbd>Ctrl</kbd><span>+</span><kbd>V</kbd>
-                      </div>
-                    </div>
-                  </section>
+                    </section>
 
-                  <section class="feature-help-section feature-help-section-wide">
-                    <div class="feature-help-section-head">
-                      <font-awesome-icon icon="fa-solid fa-circle-check" />
-                      <span>Save Flow and Validation</span>
-                    </div>
-                    <ul class="feature-help-points">
-                      <li>
-                        You can save only after the required request details and
-                        required table values are filled in correctly.
-                      </li>
-                      <li>
-                        In edit mode, the system checks all changed Library and
-                        Sample data before updating the request.
-                      </li>
-                      <li>
-                        Your table changes, file changes, and request details
-                        are saved together as one update.
-                      </li>
-                      <li>
-                        The keyboard icon next to this help button shows only
-                        the shortcut list if you want a faster reference.
-                      </li>
-                    </ul>
-                    <div class="feature-help-callout">
-                      <font-awesome-icon icon="fa-solid fa-lightbulb" />
-                      <span>
-                        Tip: keep the left side open while you work on request
-                        details and files. Collapse it when you want more space
-                        for the table.
-                      </span>
-                    </div>
-                  </section>
+                    <section class="feature-help-section feature-help-section-wide">
+                      <div class="feature-help-section-head">
+                        <font-awesome-icon icon="fa-solid fa-circle-check" />
+                        <span>Save Flow and Validation</span>
+                      </div>
+                      <ul class="feature-help-points">
+                        <li>
+                          You can save only after the required request details and
+                          required table values are filled in correctly.
+                        </li>
+                        <li>
+                          In edit mode, the system checks all changed Library and
+                          Sample data before updating the request.
+                        </li>
+                        <li>
+                          Your table changes, file changes, and request details
+                          are saved together as one update.
+                        </li>
+                        <li>
+                          The keyboard icon next to this help button shows only
+                          the shortcut list if you want a faster reference.
+                        </li>
+                      </ul>
+                      <div class="feature-help-callout">
+                        <font-awesome-icon icon="fa-solid fa-lightbulb" />
+                        <span>
+                          Tip: keep the left side open while you work on request
+                          details and files. Collapse it when you want more space
+                          for the table.
+                        </span>
+                      </div>
+                    </section>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4346,11 +4350,10 @@ export default {
   right: -28px;
   width: min(760px, calc(100vw - 72px));
   max-height: min(72vh, 760px);
-  overflow: auto;
+  overflow: hidden;
   background: #ffffff;
   border: 1px solid #d7dee3;
   border-radius: 14px;
-  padding: 18px;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
   z-index: 8;
 }
@@ -4374,6 +4377,14 @@ export default {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 14px;
+}
+
+.feature-help-scroll {
+  max-height: min(72vh, 760px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px;
+  scrollbar-gutter: stable;
 }
 
 .feature-help-title {
@@ -5146,6 +5157,7 @@ export default {
 refactor/simplify all the files
 unit test all the pages
 
+edit/add request validations show select or - instead of the error message on the field
 lag usability check for opening request editor with large requests, and expanding request by clicking on the header
 table edit performance for large requests
 -->

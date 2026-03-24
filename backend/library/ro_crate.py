@@ -1,14 +1,20 @@
 import json
+import mimetypes
+import os
+import re
 import uuid
+from io import BytesIO
+from zipfile import ZIP_DEFLATED, ZipFile
 from collections import defaultdict
 from datetime import date, datetime, time
 from decimal import Decimal
 from itertools import chain
 
 from django.apps import apps
+from django.conf import settings
 from django.db.models import Q, Prefetch
 from django.db.models.fields.files import FieldFile
-from django.http import JsonResponse
+from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -24,6 +30,53 @@ LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 Flowcell = apps.get_model("flowcell", "Flowcell")
 Lane = apps.get_model("flowcell", "Lane")
 IndexPool = apps.get_model("index_generator", "Pool")
+
+RO_CRATE_VERSION = "1.2"
+RO_CRATE_SPEC_URI = f"https://w3id.org/ro/crate/{RO_CRATE_VERSION}"
+RO_CRATE_CONTEXT_URI = f"{RO_CRATE_SPEC_URI}/context"
+NFDI4PLANTS_ISA_PROFILE_URI = (
+    "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile"
+)
+BIOSCHEMAS_SAMPLE_URI = "https://bioschemas.org/Sample"
+BIOSCHEMAS_LAB_PROTOCOL_URI = "https://bioschemas.org/LabProtocol"
+BIOSCHEMAS_LAB_PROCESS_URI = "https://bioschemas.org/LabProcess"
+PARKOUR_ORGANIZATION_ID = "#parkour-organization"
+RO_CRATE_LICENSE_ID = "#parkour-ro-crate-license"
+RO_CRATE_LICENSE_NAME = "Parkour metadata export terms"
+RO_CRATE_LICENSE_DESCRIPTION = (
+    "This RO-Crate is generated from Parkour and reflects the request metadata "
+    "available to the exporting user at the time of export. Reuse of the "
+    "metadata and any linked underlying data remains subject to the access "
+    "controls, policies, and agreements of the originating Parkour system and "
+    "the contributing organizations."
+)
+PARKOUR_SOFTWARE_ID = "#parkour-software"
+RO_CRATE_EXPORT_ACTION_ID = "#ro-crate-export-action"
+
+
+def _parkour_identifier(entity_type, value):
+    if value in (None, ""):
+        return None
+    return f"urn:parkour:{entity_type}:{value}"
+
+
+def _guess_encoding_format(filename):
+    if not filename:
+        return "application/octet-stream"
+    guessed_type, _ = mimetypes.guess_type(filename)
+    return guessed_type or "application/octet-stream"
+
+
+def _safe_archive_component(value, fallback):
+    cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", str(value or "")).strip("._")
+    return cleaned or fallback
+
+
+def _build_request_file_archive_path(file_obj):
+    original_name = getattr(getattr(file_obj, "file", None), "name", None)
+    base_name = os.path.basename(original_name or file_obj.name or "")
+    safe_name = _safe_archive_component(base_name, f"request_file_{file_obj.id}")
+    return f"request-files/{file_obj.id}_{safe_name}"
 
 
 def _parse_csv_values(raw_value):
@@ -96,30 +149,37 @@ def _extract_model_fields(instance, prefix=""):
     return data
 
 
-def _build_property_values(data):
-    properties = []
+def _normalise_comment_value(value):
+    normalised = _normalise_property_value(value)
+    if normalised in (None, "", [], {}):
+        return None
+    if isinstance(normalised, str):
+        return normalised
+    if isinstance(normalised, (int, float, bool)):
+        return str(normalised)
+    try:
+        return json.dumps(normalised, sort_keys=True, default=str)
+    except TypeError:
+        return str(normalised)
+
+
+def _build_comments(data):
+    comments = []
     for key, value in data.items():
         if value in (None, "", [], {}):
             continue
-        normalised = _normalise_property_value(value)
-        if normalised in (None, "", [], {}):
+        comment_value = _normalise_comment_value(value)
+        if comment_value in (None, ""):
             continue
-        properties.append(
-            {
-                "@type": "PropertyValue",
-                "name": key,
-                "value": normalised,
-            }
-        )
-    return properties
+        comments.append({"name": key, "value": comment_value})
+    return comments
 
 
-def _extend_properties_from_instance(properties, instance, prefix):
-    if instance is None:
+def _append_comment(comments, name, value):
+    comment_value = _normalise_comment_value(value)
+    if comment_value in (None, ""):
         return
-    properties.extend(
-        _build_property_values(_extract_model_fields(instance, prefix=prefix))
-    )
+    comments.append({"name": name, "value": comment_value})
 
 
 def _append_property(properties, name, value):
@@ -153,10 +213,631 @@ def _deduplicate_properties(properties):
     return deduped
 
 
+def _deduplicate_comments(comments):
+    deduped = []
+    seen = set()
+    for comment in comments:
+        key = (comment.get("name"), comment.get("value"))
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(comment)
+    return deduped
+
+
+def _deduplicate_ref_list(refs):
+    deduped = []
+    seen = set()
+    for ref in refs or []:
+        ref_id = ref.get("@id") if isinstance(ref, dict) else None
+        if not ref_id or ref_id in seen:
+            continue
+        seen.add(ref_id)
+        deduped.append({"@id": ref_id})
+    return deduped
+
+
+def _ontology_annotation(value):
+    if value in (None, ""):
+        return None
+    return {"annotationValue": str(value)}
+
+
+def _apply_additional_types(entity, *type_uris):
+    refs = [{"@id": type_uri} for type_uri in type_uris if type_uri]
+    if not refs:
+        return
+    entity["additionalType"] = refs[0] if len(refs) == 1 else refs
+
+
+def _additional_type_ids(entity):
+    values = entity.get("additionalType")
+    if isinstance(values, dict):
+        values = [values]
+    if not isinstance(values, list):
+        return set()
+    return {
+        value.get("@id")
+        for value in values
+        if isinstance(value, dict) and value.get("@id")
+    }
+
+
+def _set_additional_type_ids(entity, *type_uris):
+    refs = [{"@id": type_uri} for type_uri in type_uris if type_uri]
+    if not refs:
+        entity.pop("additionalType", None)
+        return
+    entity["additionalType"] = refs[0] if len(refs) == 1 else refs
+
+
+def _set_ref_property(entity, key, refs):
+    deduped_refs = _deduplicate_ref_list(refs)
+    if not deduped_refs:
+        entity.pop(key, None)
+        return
+    entity[key] = deduped_refs[0] if len(deduped_refs) == 1 else deduped_refs
+
+
+def _merge_ref_property(entity, key, refs):
+    existing = entity.get(key)
+    existing_refs = []
+    if isinstance(existing, dict):
+        existing_refs = [existing]
+    elif isinstance(existing, list):
+        existing_refs = existing
+    _set_ref_property(entity, key, existing_refs + (refs or []))
+
+
+def _annotation_to_schema_value(value):
+    if isinstance(value, dict):
+        if value.get("annotationValue"):
+            return value.get("annotationValue")
+        if value.get("name"):
+            return value.get("name")
+    return value
+
+
+def _format_comment_string(comment):
+    name = str(comment.get("name") or "").replace('"', '\\"')
+    value = str(comment.get("value") or "").replace('"', '\\"')
+    return f'Comment {{Name = "{name}", Value = "{value}"}}'
+
+
+def _comment_strings(comments):
+    return [_format_comment_string(comment) for comment in comments or [] if comment]
+
+
+def _comments_to_additional_properties(comments, value_type=None):
+    properties = []
+    for comment in comments or []:
+        name = comment.get("name")
+        value = _normalise_property_value(comment.get("value"))
+        if name in (None, "") or value in (None, "", [], {}):
+            continue
+        entry = {
+            "@type": "PropertyValue",
+            "name": name,
+            "value": value,
+        }
+        if value_type:
+            entry["additionalType"] = value_type
+        properties.append(entry)
+    return _deduplicate_properties(properties)
+
+
+def _merge_property_values(entity, property_name, property_values):
+    existing = entity.get(property_name, [])
+    if isinstance(existing, dict):
+        existing = [existing]
+    merged = _deduplicate_properties((existing or []) + (property_values or []))
+    if merged:
+        entity[property_name] = merged
+    else:
+        entity.pop(property_name, None)
+
+
+def _move_comments_to_additional_properties(entity, value_type=None):
+    comments = entity.pop("comments", [])
+    if not comments:
+        return
+    _merge_property_values(
+        entity,
+        "additionalProperty",
+        _comments_to_additional_properties(comments, value_type=value_type),
+    )
+
+
+def _align_to_nfdi4plants_profile(ro_crate):
+    graph = ro_crate.get("@graph", [])
+    profile_present = any(
+        entity.get("@id") == NFDI4PLANTS_ISA_PROFILE_URI for entity in graph
+    )
+    if not profile_present:
+        graph.append(
+            {
+                "@id": NFDI4PLANTS_ISA_PROFILE_URI,
+                "@type": "CreativeWork",
+                "name": "NFDI4Plants ISA RO-Crate profile",
+                "url": NFDI4PLANTS_ISA_PROFILE_URI,
+            }
+        )
+
+    publisher_present = any(
+        entity.get("@id") == PARKOUR_ORGANIZATION_ID for entity in graph
+    )
+    if not publisher_present:
+        graph.append(
+            {
+                "@id": PARKOUR_ORGANIZATION_ID,
+                "@type": "Organization",
+                "name": "Parkour",
+                "url": "https://github.com/maxplanck-ie/parkour2",
+            }
+        )
+
+    for entity in graph:
+        entity_id = str(entity.get("@id") or "")
+        additional_types = _additional_type_ids(entity)
+
+        if entity_id == "./":
+            if entity.get("creator") == {"@id": PARKOUR_SOFTWARE_ID}:
+                entity["publisher"] = {"@id": PARKOUR_ORGANIZATION_ID}
+            creators = entity.pop("people", [])
+            if creators:
+                _set_ref_property(entity, "creator", creators)
+            if entity.get("studies"):
+                _merge_ref_property(entity, "hasPart", entity.pop("studies"))
+            _move_comments_to_additional_properties(entity)
+            continue
+
+        if "https://w3id.org/isa/Study" in additional_types:
+            creators = entity.pop("people", [])
+            if creators:
+                _set_ref_property(entity, "creator", creators)
+            if entity.get("processSequence"):
+                _set_ref_property(entity, "about", entity.pop("processSequence"))
+            if entity.get("assays"):
+                _merge_ref_property(entity, "hasPart", entity.pop("assays"))
+            entity.pop("protocols", None)
+            entity.pop("materials", None)
+            _move_comments_to_additional_properties(entity)
+            continue
+
+        if "https://w3id.org/isa/Assay" in additional_types:
+            if entity.get("processSequence"):
+                _set_ref_property(entity, "about", entity.pop("processSequence"))
+            if entity.get("dataFiles"):
+                _merge_ref_property(entity, "hasPart", entity.pop("dataFiles"))
+            if "measurementType" in entity:
+                entity["variableMeasured"] = _annotation_to_schema_value(
+                    entity.pop("measurementType")
+                )
+            if "technologyType" in entity:
+                entity["measurementMethod"] = _annotation_to_schema_value(
+                    entity.pop("technologyType")
+                )
+            if "technologyPlatform" in entity:
+                entity["measurementTechnique"] = entity.pop("technologyPlatform")
+            comments = entity.pop("comments", [])
+            if comments:
+                entity["comment"] = _comment_strings(comments)
+            continue
+
+        if "https://w3id.org/isa/Process" in additional_types:
+            _set_additional_type_ids(entity, BIOSCHEMAS_LAB_PROCESS_URI)
+            if entity.get("inputs"):
+                _set_ref_property(entity, "object", entity.pop("inputs"))
+            if entity.get("outputs"):
+                _set_ref_property(entity, "result", entity.pop("outputs"))
+            if entity.get("executesProtocol"):
+                entity["executesLabProtocol"] = entity.pop("executesProtocol")
+            comments = entity.pop("comments", [])
+            if comments:
+                entity["disambiguatingDescription"] = "\n".join(
+                    _comment_strings(comments)
+                )
+                _merge_property_values(
+                    entity,
+                    "parameterValue",
+                    _comments_to_additional_properties(
+                        comments, value_type="ParameterValue"
+                    ),
+                )
+            continue
+
+        if "https://w3id.org/isa/Protocol" in additional_types:
+            entity["@type"] = "HowTo"
+            _set_additional_type_ids(entity, BIOSCHEMAS_LAB_PROTOCOL_URI)
+            _move_comments_to_additional_properties(entity)
+            continue
+
+        if entity_id.startswith("#sample-material-") or entity_id.startswith(
+            "#source-sample-"
+        ):
+            _set_additional_type_ids(entity, BIOSCHEMAS_SAMPLE_URI)
+            _move_comments_to_additional_properties(
+                entity, value_type="CharacteristicValue"
+            )
+            continue
+
+        if "https://w3id.org/isa/Data" in additional_types:
+            entity["@type"] = "MediaObject"
+            entity.setdefault("encodingFormat", "application/json")
+            _move_comments_to_additional_properties(entity)
+            continue
+
+        if entity.get("@type") == "Person":
+            comments = entity.pop("comments", [])
+            remaining_comments = []
+            for comment in comments:
+                if comment.get("name") == "user_phone" and comment.get("value"):
+                    entity["telephone"] = comment.get("value")
+                else:
+                    remaining_comments.append(comment)
+            if "affiliatedOrganization" in entity:
+                entity["affiliation"] = entity.pop("affiliatedOrganization")
+            if remaining_comments:
+                _merge_property_values(
+                    entity,
+                    "additionalProperty",
+                    _comments_to_additional_properties(remaining_comments),
+                )
+            continue
+
+        if "affiliatedOrganization" in entity and entity.get("@type") == "Organization":
+            entity["affiliation"] = entity.pop("affiliatedOrganization")
+
+        _move_comments_to_additional_properties(entity)
+
+    ro_crate["@graph"] = graph
+    return ro_crate
+
+
+RO_CRATE_SECTION_IDS = {
+    "request",
+    "request_user",
+    "organizations",
+    "principal_investigators",
+    "cost_units",
+    "samples",
+    "libraries",
+    "library_preparation",
+    "pooling",
+    "protocols",
+    "organisms",
+    "library_types",
+    "read_lengths",
+    "index_types",
+    "nucleic_acid_types",
+    "index_pools",
+    "flowcells",
+    "sequencers",
+    "lanes",
+}
+
+
+def _normalise_selected_sections(raw_sections):
+    requested_sections = _parse_csv_values(raw_sections)
+    if not requested_sections:
+        return set(RO_CRATE_SECTION_IDS)
+    selected_sections = {
+        section for section in requested_sections if section in RO_CRATE_SECTION_IDS
+    }
+    return selected_sections or set(RO_CRATE_SECTION_IDS)
+
+
+def _entity_section(entity):
+    entity_id = str(entity.get("@id") or "")
+    if entity_id in {"ro-crate-metadata.json", "./"}:
+        return None
+    if entity_id.startswith("#person-"):
+        return "request_user"
+    if entity_id.startswith("#organization-"):
+        return "organizations"
+    if entity_id.startswith("#principal-investigator-"):
+        return "principal_investigators"
+    if entity_id.startswith("#cost-unit-"):
+        return "cost_units"
+    if entity_id.startswith("#protocol-"):
+        return "protocols"
+    if entity_id.startswith("#organism-"):
+        return "organisms"
+    if entity_id.startswith("#library-type-"):
+        return "library_types"
+    if entity_id.startswith("#read-length-"):
+        return "read_lengths"
+    if entity_id.startswith("#index-type-"):
+        return "index_types"
+    if entity_id.startswith("#nucleic-acid-type-"):
+        return "nucleic_acid_types"
+    if entity_id.startswith("#index-pool-"):
+        return "index_pools"
+    if entity_id.startswith("#sequencer-"):
+        return "sequencers"
+    if entity_id.startswith("#lane-"):
+        return "lanes"
+    if entity_id.startswith("#request-file-"):
+        return "request"
+    if (
+        entity_id.startswith("#source-sample-")
+        or entity_id.startswith("#sample-process-")
+        or entity_id.startswith("#sample-data-")
+    ):
+        return "samples"
+    if entity_id.startswith("#library-process-") or entity_id.startswith(
+        "#library-data-"
+    ):
+        return "libraries"
+    if entity_id.startswith("#flowcell-process-") or entity_id.startswith(
+        "#flowcell-data-"
+    ):
+        return "flowcells"
+    if entity_id.startswith("#sample-material-"):
+        return "samples"
+    if entity_id.startswith("#library-material-") or entity_id.startswith(
+        "#library-assay-"
+    ):
+        return "libraries"
+    if entity_id.startswith("#flowcell-assay-"):
+        return "flowcells"
+    return None
+
+
+def _property_section(entity_id, property_name):
+    entity_id = str(entity_id or "")
+    property_name = str(property_name or "")
+
+    if entity_id == "./":
+        if property_name.startswith("request_"):
+            return "request"
+        if property_name == "costUnit":
+            return "cost_units"
+        if property_name == "affiliatedOrganization":
+            return "organizations"
+        if property_name == "principalInvestigator":
+            return "principal_investigators"
+        return None
+
+    if entity_id.startswith("#study-"):
+        if property_name == "study_request_identifier":
+            return "request"
+        if property_name == "study_samples_count":
+            return "samples"
+        if property_name == "study_libraries_count":
+            return "libraries"
+        if property_name == "flowcell_assays":
+            return "flowcells"
+        return None
+
+    if entity_id.startswith("#person-"):
+        if property_name.startswith("user_"):
+            return "request_user"
+        if property_name == "affiliatedOrganization":
+            return "organizations"
+        if property_name == "principalInvestigator":
+            return "principal_investigators"
+        return None
+
+    if entity_id.startswith("#principal-investigator-"):
+        if property_name.startswith("principal_investigator_"):
+            return "principal_investigators"
+        if property_name == "affiliatedOrganization":
+            return "organizations"
+        return None
+
+    if entity_id.startswith("#cost-unit-"):
+        if property_name.startswith("cost_unit_"):
+            return "cost_units"
+        if property_name == "principalInvestigator":
+            return "principal_investigators"
+        return None
+
+    if entity_id.startswith("#protocol-") and property_name.startswith("protocol_"):
+        return "protocols"
+    if entity_id.startswith("#organism-") and property_name.startswith("organism_"):
+        return "organisms"
+    if entity_id.startswith("#library-type-") and property_name.startswith(
+        "library_type_"
+    ):
+        return "library_types"
+    if entity_id.startswith("#read-length-") and property_name.startswith(
+        "read_length_"
+    ):
+        return "read_lengths"
+    if entity_id.startswith("#index-type-") and property_name.startswith("index_type_"):
+        return "index_types"
+    if entity_id.startswith("#nucleic-acid-type-") and property_name.startswith(
+        "nucleic_acid_type_"
+    ):
+        return "nucleic_acid_types"
+    if entity_id.startswith("#index-pool-") and property_name.startswith("index_pool_"):
+        return "index_pools"
+    if entity_id.startswith("#sequencer-") and property_name.startswith("sequencer_"):
+        return "sequencers"
+
+    if entity_id.startswith("#lane-"):
+        if property_name.startswith("lane_"):
+            return "lanes"
+        if property_name == "associatedPool":
+            return "index_pools"
+        return None
+
+    if entity_id.startswith("#request-file-"):
+        if property_name.startswith("request_file_"):
+            return "request"
+        return None
+
+    if entity_id.startswith("#sample-material-"):
+        if property_name.startswith("sample_db_") or property_name.startswith(
+            "sample_mv_"
+        ):
+            return "samples"
+        if property_name.startswith("library_preparation_"):
+            return "library_preparation"
+        if property_name.startswith("pooling_"):
+            return "pooling"
+        if property_name == "associatedPool":
+            return "index_pools"
+        return None
+
+    if entity_id.startswith("#library-material-"):
+        if property_name.startswith("library_db_"):
+            return "libraries"
+        if property_name.startswith("pooling_"):
+            return "pooling"
+        if property_name == "associatedPool":
+            return "index_pools"
+        return None
+
+    if entity_id.startswith("#library-assay-") and property_name.startswith(
+        "library_mv_"
+    ):
+        return "libraries"
+
+    if entity_id.startswith("#flowcell-assay-"):
+        if property_name.startswith("flowcell_"):
+            return "flowcells"
+        return None
+
+    return None
+
+
+def _filter_internal_refs(value, kept_ids):
+    if isinstance(value, list):
+        filtered = []
+        for item in value:
+            filtered_item = _filter_internal_refs(item, kept_ids)
+            if filtered_item in (None, {}):
+                continue
+            filtered.append(filtered_item)
+        return filtered
+
+    if isinstance(value, dict):
+        ref_id = value.get("@id")
+        if ref_id and str(ref_id).startswith("#") and ref_id not in kept_ids:
+            return None
+        filtered_dict = {}
+        for key, nested_value in value.items():
+            filtered_value = _filter_internal_refs(nested_value, kept_ids)
+            if filtered_value is None:
+                continue
+            filtered_dict[key] = filtered_value
+        return filtered_dict
+
+    return value
+
+
+def _filter_additional_properties(entity, selected_sections, kept_ids):
+    entity_id = entity.get("@id")
+    filtered_properties = []
+    for prop in entity.get("additionalProperty", []):
+        section = _property_section(entity_id, prop.get("name"))
+        if section and section not in selected_sections:
+            continue
+        filtered_value = _filter_internal_refs(prop.get("value"), kept_ids)
+        if filtered_value in (None, "", {}):
+            continue
+        if isinstance(filtered_value, list) and not filtered_value:
+            continue
+        filtered_properties.append(
+            {
+                "@type": prop.get("@type", "PropertyValue"),
+                "name": prop.get("name"),
+                "value": filtered_value,
+            }
+        )
+    return filtered_properties
+
+
+def _filter_comments(entity, selected_sections):
+    entity_id = entity.get("@id")
+    filtered_comments = []
+    for comment in entity.get("comments", []):
+        section = _property_section(entity_id, comment.get("name"))
+        if section and section not in selected_sections:
+            continue
+        comment_value = _normalise_comment_value(comment.get("value"))
+        if comment_value in (None, ""):
+            continue
+        filtered_comments.append(
+            {
+                "name": comment.get("name"),
+                "value": comment_value,
+            }
+        )
+    return filtered_comments
+
+
+def _filter_ro_crate_sections(ro_crate, selected_sections):
+    graph = ro_crate.get("@graph", [])
+    filtered_graph = []
+
+    for entity in graph:
+        section = _entity_section(entity)
+        if section and section not in selected_sections:
+            continue
+        filtered_graph.append(dict(entity))
+
+    kept_ids = {
+        entity.get("@id")
+        for entity in filtered_graph
+        if entity.get("@id") not in (None, "")
+    }
+
+    sanitised_graph = []
+    for entity in filtered_graph:
+        cleaned_entity = {}
+        for key, value in entity.items():
+            if key in {"additionalProperty", "comments"}:
+                continue
+            filtered_value = _filter_internal_refs(value, kept_ids)
+            if filtered_value is None:
+                continue
+            cleaned_entity[key] = filtered_value
+
+        if "additionalProperty" in entity:
+            cleaned_entity["additionalProperty"] = _filter_additional_properties(
+                entity, selected_sections, kept_ids
+            )
+        if "comments" in entity:
+            cleaned_entity["comments"] = _filter_comments(entity, selected_sections)
+
+        sanitised_graph.append(cleaned_entity)
+
+    ro_crate["@graph"] = sanitised_graph
+    return ro_crate
+
+
+def _build_ro_crate_zip_response(ro_crate_payload, archive_name, file_entries):
+    buffer = BytesIO()
+    with ZipFile(buffer, "w", compression=ZIP_DEFLATED) as zip_file:
+        zip_file.writestr(
+            "ro-crate-metadata.json",
+            json.dumps(ro_crate_payload, indent=2, ensure_ascii=False),
+        )
+
+        for archive_path, source_path in file_entries:
+            if not archive_path or not source_path:
+                continue
+            try:
+                with open(source_path, "rb") as handle:
+                    zip_file.writestr(archive_path, handle.read())
+            except OSError:
+                continue
+
+    response = HttpResponse(buffer.getvalue(), content_type="application/zip")
+    response["Content-Disposition"] = f'attachment; filename="{archive_name}"'
+    return response
+
+
 class GenerateROCrate(viewsets.ViewSet):
     def list(self, request):
         barcode_values = _parse_csv_values(request.query_params.get("barcodes"))
         request_values = _parse_csv_values(request.query_params.get("requests"))
+        selected_sections = _normalise_selected_sections(
+            request.query_params.get("sections")
+        )
 
         if not barcode_values and not request_values:
             return Response(
@@ -207,35 +888,81 @@ class GenerateROCrate(viewsets.ViewSet):
             {name for name in request_values if name not in found_request_names}
         )
 
-        target_request_ids = request_ids_from_data.union(request_ids_from_names)
-        if not target_request_ids:
-            timestamp = timezone.now().isoformat()
+        target_request_id_set = request_ids_from_data.union(request_ids_from_names)
+        if len(target_request_id_set) > 1:
             return Response(
                 {
-                    "@context": [
-                        "https://w3id.org/ro/crate/1.1/context",
-                        {"@base": "./"},
-                    ],
-                    "@graph": [
-                        {
-                            "@id": "ro-crate-metadata.json",
-                            "@type": "CreativeWork",
-                            "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"},
-                            "about": {"@id": "./"},
+                    "error": (
+                        "RO-Crate export currently supports records from exactly one "
+                        "request at a time. Narrow your selection so all chosen "
+                        "libraries or samples belong to the same request."
+                    )
+                },
+                status=400,
+            )
+        if not target_request_id_set:
+            timestamp = timezone.now().isoformat()
+            published_date = timezone.now().date().isoformat()
+            empty_ro_crate = {
+                "@context": [
+                    RO_CRATE_CONTEXT_URI,
+                    {"@base": "./"},
+                ],
+                "@graph": [
+                    {
+                        "@id": "ro-crate-metadata.json",
+                        "@type": "CreativeWork",
+                        "conformsTo": {"@id": RO_CRATE_SPEC_URI},
+                        "about": {"@id": "./"},
+                    },
+                    {
+                        "@id": "./",
+                        "@type": "Dataset",
+                        "name": "Parkour RO-Crate export",
+                        "identifier": _parkour_identifier("ro-crate-export", timestamp),
+                        "dateCreated": timestamp,
+                        "datePublished": published_date,
+                        "description": "No matching barcodes or requests were found.",
+                        "license": {"@id": RO_CRATE_LICENSE_ID},
+                        "creator": {"@id": PARKOUR_SOFTWARE_ID},
+                    },
+                    {
+                        "@id": PARKOUR_SOFTWARE_ID,
+                        "@type": "SoftwareApplication",
+                        "name": "Parkour",
+                        "identifier": _parkour_identifier("software", "parkour2"),
+                        "softwareVersion": str(getattr(settings, "VERSION", ""))
+                        or None,
+                        "url": "https://github.com/maxplanck-ie/parkour2",
+                    },
+                    {
+                        "@id": RO_CRATE_LICENSE_ID,
+                        "@type": "CreativeWork",
+                        "name": RO_CRATE_LICENSE_NAME,
+                        "description": RO_CRATE_LICENSE_DESCRIPTION,
+                    },
+                    {
+                        "@id": RO_CRATE_EXPORT_ACTION_ID,
+                        "@type": "CreateAction",
+                        "name": "Parkour RO-Crate export generation",
+                        "instrument": {"@id": PARKOUR_SOFTWARE_ID},
+                        "result": {"@id": "./"},
+                        "endTime": timestamp,
+                        "actionStatus": {
+                            "@id": "https://schema.org/CompletedActionStatus"
                         },
-                        {
-                            "@id": "./",
-                            "@type": "Dataset",
-                            "name": "RO-Crate export",
-                            "dateCreated": timestamp,
-                            "description": "No matching barcodes or requests were found.",
-                        },
-                    ],
-                }
+                    },
+                ],
+            }
+            return _build_ro_crate_zip_response(
+                empty_ro_crate,
+                "parkour_ro_crate.zip",
+                [],
             )
 
+        single_request_id = next(iter(sorted(target_request_id_set)))
         requests_qs = (
-            accessible_requests.filter(id__in=target_request_ids)
+            accessible_requests.filter(id=single_request_id)
             .select_related(
                 "user",
                 "cost_unit",
@@ -248,6 +975,11 @@ class GenerateROCrate(viewsets.ViewSet):
             .prefetch_related("files")
         )
         requests_by_id = {req.id: req for req in requests_qs}
+        root_request = requests_by_id.get(single_request_id)
+        if root_request is None:
+            return Response(
+                {"error": "The selected request is no longer accessible."}, status=404
+            )
 
         organization_entities = {}
         organism_entities = {}
@@ -261,14 +993,20 @@ class GenerateROCrate(viewsets.ViewSet):
         index_pool_entities = {}
         sequencer_entities = {}
         lane_entities = {}
+        request_file_entities = {}
+        request_file_archives = {}
+        source_entities = {}
+        process_entities = {}
+        data_file_entities = {}
+        user_entities = {}
 
         def register_organization(organization):
             if organization is None:
                 return None
             entity_id = f"#organization-{organization.id}"
             if entity_id not in organization_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
+                comments = _deduplicate_comments(
+                    _build_comments(
                         _extract_model_fields(organization, prefix="organization_")
                     )
                 )
@@ -276,7 +1014,9 @@ class GenerateROCrate(viewsets.ViewSet):
                     "@id": entity_id,
                     "@type": "Organization",
                     "name": organization.name or str(organization),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("organization", organization.id),
+                    "description": getattr(organization, "comment", None) or None,
+                    "comments": comments,
                 }
             return entity_id
 
@@ -285,20 +1025,22 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#principal-investigator-{pi_obj.id}"
             if entity_id not in pi_entities:
-                properties = _build_property_values(
+                comments = _build_comments(
                     _extract_model_fields(pi_obj, prefix="principal_investigator_")
                 )
-                org_id = register_organization(pi_obj.organization)
-                if org_id:
-                    _append_property(
-                        properties, "affiliatedOrganization", {"@id": org_id}
-                    )
                 pi_entities[entity_id] = {
                     "@id": entity_id,
                     "@type": "Person",
                     "name": pi_obj.name or str(pi_obj),
-                    "additionalProperty": _deduplicate_properties(properties),
+                    "identifier": _parkour_identifier(
+                        "principal-investigator", pi_obj.id
+                    ),
+                    "comments": _deduplicate_comments(comments),
                 }
+                if pi_obj.organization:
+                    pi_entities[entity_id]["affiliatedOrganization"] = {
+                        "@id": f"#organization-{pi_obj.organization.id}"
+                    }
             return entity_id
 
         def register_organism(organism):
@@ -306,17 +1048,19 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#organism-{organism.id}"
             if entity_id not in organism_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
-                        _extract_model_fields(organism, prefix="organism_")
-                    )
+                comments = _deduplicate_comments(
+                    _build_comments(_extract_model_fields(organism, prefix="organism_"))
                 )
                 organism_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "Organism",
+                    "@type": "Thing",
                     "name": organism.name or str(organism),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("organism", organism.id),
+                    "comments": comments,
                 }
+                _apply_additional_types(
+                    organism_entities[entity_id], "https://w3id.org/isa/Organism"
+                )
             return entity_id
 
         def register_cost_unit(cost_unit):
@@ -324,20 +1068,20 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#cost-unit-{cost_unit.id}"
             if entity_id not in cost_unit_entities:
-                properties = _build_property_values(
+                comments = _build_comments(
                     _extract_model_fields(cost_unit, prefix="cost_unit_")
                 )
-                pi_id = register_principal_investigator(cost_unit.pi)
-                if pi_id:
-                    _append_property(
-                        properties, "principalInvestigator", {"@id": pi_id}
-                    )
                 cost_unit_entities[entity_id] = {
                     "@id": entity_id,
                     "@type": "Thing",
                     "name": cost_unit.name or str(cost_unit),
-                    "additionalProperty": _deduplicate_properties(properties),
+                    "identifier": _parkour_identifier("cost-unit", cost_unit.id),
+                    "comments": _deduplicate_comments(comments),
                 }
+                if cost_unit.pi:
+                    cost_unit_entities[entity_id]["principalInvestigator"] = {
+                        "@id": f"#principal-investigator-{cost_unit.pi.id}"
+                    }
             return entity_id
 
         def register_protocol(protocol):
@@ -345,17 +1089,20 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#protocol-{protocol.id}"
             if entity_id not in protocol_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
-                        _extract_model_fields(protocol, prefix="protocol_")
-                    )
+                comments = _deduplicate_comments(
+                    _build_comments(_extract_model_fields(protocol, prefix="protocol_"))
                 )
                 protocol_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "Protocol",
+                    "@type": "CreativeWork",
                     "name": protocol.name or str(protocol),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("protocol", protocol.id),
+                    "description": getattr(protocol, "comment", None) or None,
+                    "comments": comments,
                 }
+                _apply_additional_types(
+                    protocol_entities[entity_id], "https://w3id.org/isa/Protocol"
+                )
             return entity_id
 
         def register_library_type(library_type):
@@ -363,17 +1110,21 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#library-type-{library_type.id}"
             if entity_id not in library_type_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
+                comments = _deduplicate_comments(
+                    _build_comments(
                         _extract_model_fields(library_type, prefix="library_type_")
                     )
                 )
                 library_type_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "Material",
+                    "@type": "Thing",
                     "name": library_type.name or str(library_type),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("library-type", library_type.id),
+                    "comments": comments,
                 }
+                _apply_additional_types(
+                    library_type_entities[entity_id], "https://w3id.org/isa/Material"
+                )
             return entity_id
 
         def register_read_length(read_length):
@@ -381,8 +1132,8 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#read-length-{read_length.id}"
             if entity_id not in read_length_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
+                comments = _deduplicate_comments(
+                    _build_comments(
                         _extract_model_fields(read_length, prefix="read_length_")
                     )
                 )
@@ -390,7 +1141,8 @@ class GenerateROCrate(viewsets.ViewSet):
                     "@id": entity_id,
                     "@type": "Thing",
                     "name": read_length.name or str(read_length),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("read-length", read_length.id),
+                    "comments": comments,
                 }
             return entity_id
 
@@ -399,8 +1151,8 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#index-type-{index_type.id}"
             if entity_id not in index_type_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
+                comments = _deduplicate_comments(
+                    _build_comments(
                         _extract_model_fields(index_type, prefix="index_type_")
                     )
                 )
@@ -408,7 +1160,8 @@ class GenerateROCrate(viewsets.ViewSet):
                     "@id": entity_id,
                     "@type": "Thing",
                     "name": index_type.name or str(index_type),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("index-type", index_type.id),
+                    "comments": comments,
                 }
             return entity_id
 
@@ -417,17 +1170,23 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#nucleic-acid-type-{nucleic_acid.id}"
             if entity_id not in nucleic_acid_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
+                comments = _deduplicate_comments(
+                    _build_comments(
                         _extract_model_fields(nucleic_acid, prefix="nucleic_acid_type_")
                     )
                 )
                 nucleic_acid_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "Material",
+                    "@type": "Thing",
                     "name": nucleic_acid.name or str(nucleic_acid),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier(
+                        "nucleic-acid-type", nucleic_acid.id
+                    ),
+                    "comments": comments,
                 }
+                _apply_additional_types(
+                    nucleic_acid_entities[entity_id], "https://w3id.org/isa/Material"
+                )
             return entity_id
 
         def register_index_pool(pool):
@@ -435,15 +1194,15 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#index-pool-{pool.id}"
             if entity_id not in index_pool_entities:
-                properties = _build_property_values(
+                comments = _build_comments(
                     {
                         "index_pool_loaded": pool.loaded,
                         "index_pool_comment": pool.comment,
                     }
                 )
                 if pool.size:
-                    properties.extend(
-                        _build_property_values(
+                    comments.extend(
+                        _build_comments(
                             _extract_model_fields(pool.size, prefix="index_pool_size_")
                         )
                     )
@@ -452,31 +1211,31 @@ class GenerateROCrate(viewsets.ViewSet):
                         f"{pool.user.first_name} {pool.user.last_name}".strip()
                         or pool.user.email
                     )
-                    _append_property(properties, "index_pool_user_name", user_name)
-                    _append_property(
-                        properties, "index_pool_user_email", pool.user.email
-                    )
-                library_barcodes = [library.barcode for library in pool.libraries.all()]
-                sample_barcodes = [sample.barcode for sample in pool.samples.all()]
-                if library_barcodes:
-                    _append_property(
-                        properties,
-                        "index_pool_library_barcodes",
-                        library_barcodes,
-                    )
-                if sample_barcodes:
-                    _append_property(
-                        properties,
-                        "index_pool_sample_barcodes",
-                        sample_barcodes,
-                    )
-                properties = _deduplicate_properties(properties)
+                    _append_comment(comments, "index_pool_user_name", user_name)
+                    _append_comment(comments, "index_pool_user_email", pool.user.email)
                 index_pool_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "Pool",
+                    "@type": "Thing",
                     "name": pool.name or f"Pool {pool.id}",
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("index-pool", pool.id),
+                    "comments": _deduplicate_comments(comments),
                 }
+                _apply_additional_types(
+                    index_pool_entities[entity_id], "https://w3id.org/isa/Pool"
+                )
+                pool_member_refs = [
+                    {"@id": f"#library-material-{library.id}"}
+                    for library in pool.libraries.all()
+                    if library.id in library_id_set
+                ] + [
+                    {"@id": f"#sample-material-{sample.id}"}
+                    for sample in pool.samples.all()
+                    if sample.id in sample_id_set
+                ]
+                if pool_member_refs:
+                    index_pool_entities[entity_id]["member"] = _deduplicate_ref_list(
+                        pool_member_refs
+                    )
             return entity_id
 
         def register_sequencer(sequencer):
@@ -484,17 +1243,21 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#sequencer-{sequencer.id}"
             if entity_id not in sequencer_entities:
-                properties = _deduplicate_properties(
-                    _build_property_values(
+                comments = _deduplicate_comments(
+                    _build_comments(
                         _extract_model_fields(sequencer, prefix="sequencer_")
                     )
                 )
                 sequencer_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "Instrument",
+                    "@type": "Thing",
                     "name": sequencer.name or str(sequencer),
-                    "additionalProperty": properties,
+                    "identifier": _parkour_identifier("sequencer", sequencer.id),
+                    "comments": comments,
                 }
+                _apply_additional_types(
+                    sequencer_entities[entity_id], "https://w3id.org/isa/Instrument"
+                )
             return entity_id
 
         def register_lane(lane):
@@ -502,7 +1265,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 return None
             entity_id = f"#lane-{lane.id}"
             if entity_id not in lane_entities:
-                properties = _build_property_values(
+                comments = _build_comments(
                     {
                         "lane_loading_concentration": lane.loading_concentration,
                         "lane_phix": lane.phix,
@@ -512,13 +1275,93 @@ class GenerateROCrate(viewsets.ViewSet):
                 )
                 if lane.pool:
                     pool_id = register_index_pool(lane.pool)
-                    if pool_id:
-                        _append_property(properties, "associatedPool", {"@id": pool_id})
                 lane_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "Lane",
+                    "@type": "Thing",
                     "name": lane.name or f"Lane {lane.id}",
-                    "additionalProperty": _deduplicate_properties(properties),
+                    "identifier": _parkour_identifier("lane", lane.id),
+                    "comments": _deduplicate_comments(comments),
+                }
+                _apply_additional_types(
+                    lane_entities[entity_id], "https://w3id.org/isa/Lane"
+                )
+                if lane.pool and pool_id:
+                    lane_entities[entity_id]["associatedPool"] = {"@id": pool_id}
+            return entity_id
+
+        def register_user_entity(user_obj):
+            if user_obj is None:
+                return None
+            if user_obj.id in user_entities:
+                return user_entities[user_obj.id]["@id"]
+
+            user_comments = _build_comments(
+                {
+                    "user_email": user_obj.email,
+                    "user_phone": user_obj.phone,
+                    "user_is_pi": getattr(user_obj, "is_pi", False),
+                    "user_is_staff": getattr(user_obj, "is_staff", False),
+                }
+            )
+
+            entity_id = f"#person-{user_obj.id}"
+            user_entities[user_obj.id] = {
+                "@id": entity_id,
+                "@type": "Person",
+                "name": user_obj.full_name,
+                "identifier": _parkour_identifier("user", user_obj.id),
+                "givenName": user_obj.first_name or None,
+                "familyName": user_obj.last_name or None,
+                "email": user_obj.email or None,
+                "comments": _deduplicate_comments(user_comments),
+            }
+            if user_obj.organization:
+                org_id = register_organization(user_obj.organization)
+                if org_id:
+                    user_entities[user_obj.id]["affiliatedOrganization"] = {
+                        "@id": org_id
+                    }
+            if user_obj.pi:
+                pi_id = register_principal_investigator(user_obj.pi)
+                if pi_id:
+                    user_entities[user_obj.id]["principalInvestigator"] = {"@id": pi_id}
+
+            return entity_id
+
+        def register_request_file(file_obj, request_obj):
+            if file_obj is None:
+                return None
+            archive_path = _build_request_file_archive_path(file_obj)
+            entity_id = archive_path
+            if entity_id not in request_file_entities:
+                file_field = getattr(file_obj, "file", None)
+                file_storage_path = getattr(file_field, "name", None)
+                try:
+                    file_disk_path = file_field.path if file_field else None
+                except Exception:
+                    file_disk_path = None
+                if not file_disk_path or not os.path.exists(file_disk_path):
+                    return None
+                request_file_archives[entity_id] = file_disk_path
+                request_file_entities[entity_id] = {
+                    "@id": entity_id,
+                    "@type": "MediaObject",
+                    "name": file_obj.name
+                    or (file_storage_path or f"Request file {file_obj.id}"),
+                    "identifier": _parkour_identifier("request-file", file_obj.id),
+                    "encodingFormat": _guess_encoding_format(
+                        file_storage_path or file_obj.name
+                    ),
+                    "isPartOf": {"@id": "./"},
+                    "about": {"@id": f"#study-{request_obj.id}"},
+                    "comments": _deduplicate_comments(
+                        _build_comments(
+                            {
+                                "request_file_name": file_obj.name,
+                                "request_file_storage_path": file_storage_path,
+                            }
+                        )
+                    ),
                 }
             return entity_id
 
@@ -622,90 +1465,129 @@ class GenerateROCrate(viewsets.ViewSet):
 
         flowcell_entities = {}
         flowcells_by_request = defaultdict(list)
-        if target_request_ids:
-            lane_queryset = (
-                Lane.objects.select_related("pool", "pool__size")
-                .prefetch_related("pool__libraries", "pool__samples")
-                .only(
-                    "id",
-                    "name",
-                    "loading_concentration",
-                    "phix",
-                    "completed",
-                    "pool_id",
-                )
+        lane_queryset = (
+            Lane.objects.select_related("pool", "pool__size")
+            .prefetch_related("pool__libraries", "pool__samples")
+            .only(
+                "id",
+                "name",
+                "loading_concentration",
+                "phix",
+                "completed",
+                "pool_id",
             )
-            flowcells_qs = (
-                Flowcell.objects.filter(requests__id__in=target_request_ids)
-                .select_related("sequencer")
-                .prefetch_related(
-                    Prefetch(
-                        "requests",
-                        queryset=accessible_requests.filter(
-                            id__in=target_request_ids
-                        ).only("id", "name"),
+        )
+        flowcells_qs = (
+            Flowcell.objects.filter(requests__id=single_request_id)
+            .select_related("sequencer")
+            .prefetch_related(
+                Prefetch(
+                    "requests",
+                    queryset=accessible_requests.filter(id=single_request_id).only(
+                        "id", "name"
                     ),
-                    Prefetch("lanes", queryset=lane_queryset),
-                )
-                .distinct()
+                ),
+                Prefetch("lanes", queryset=lane_queryset),
+            )
+            .distinct()
+        )
+
+        for flowcell in flowcells_qs:
+            associated_requests = [
+                req.id for req in flowcell.requests.all() if req.id in requests_by_id
+            ]
+            if not associated_requests:
+                continue
+
+            flowcell_base_data = _extract_model_fields(flowcell, prefix="flowcell_")
+            flowcell_comments = _build_comments(flowcell_base_data)
+
+            sequencer_id = register_sequencer(flowcell.sequencer)
+
+            current_flowcell_lane_refs = []
+            for lane in flowcell.lanes.all():
+                lane_entity_id = register_lane(lane)
+                if lane_entity_id:
+                    current_flowcell_lane_refs.append({"@id": lane_entity_id})
+
+            _append_comment(
+                flowcell_comments,
+                "flowcell_associated_requests",
+                [
+                    requests_by_id[req_id].name
+                    for req_id in associated_requests
+                    if req_id in requests_by_id
+                ],
             )
 
-            for flowcell in flowcells_qs:
-                associated_requests = [
-                    req.id
-                    for req in flowcell.requests.all()
-                    if req.id in requests_by_id
-                ]
-                if not associated_requests:
-                    continue
-
-                flowcell_base_data = _extract_model_fields(flowcell, prefix="flowcell_")
-                flowcell_properties = _build_property_values(flowcell_base_data)
-
-                sequencer_id = register_sequencer(flowcell.sequencer)
-                if sequencer_id:
-                    _append_property(
-                        flowcell_properties, "hasInstrument", {"@id": sequencer_id}
-                    )
-
-                lane_refs = []
-                for lane in flowcell.lanes.all():
-                    lane_entity_id = register_lane(lane)
-                    if lane_entity_id:
-                        lane_refs.append({"@id": lane_entity_id})
-                if lane_refs:
-                    _append_property(flowcell_properties, "hasLane", lane_refs)
-
-                _append_property(
-                    flowcell_properties,
-                    "flowcell_associated_requests",
-                    [
-                        requests_by_id[req_id].name
-                        for req_id in associated_requests
-                        if req_id in requests_by_id
-                    ],
-                )
-
-                flowcell_entity_id = f"#flowcell-assay-{flowcell.id}"
-                flowcell_entities[flowcell_entity_id] = {
-                    "@id": flowcell_entity_id,
-                    "@type": "Assay",
-                    "name": f"Flowcell {flowcell.flowcell_id}",
-                    "additionalProperty": _deduplicate_properties(flowcell_properties),
+            flowcell_entity_id = f"#flowcell-assay-{flowcell.id}"
+            flowcell_data_id = f"#flowcell-data-{flowcell.id}"
+            flowcell_process_id = f"#flowcell-process-{flowcell.id}"
+            data_file_entities[flowcell_data_id] = {
+                "@id": flowcell_data_id,
+                "@type": "Dataset",
+                "name": f"Flowcell export metadata for {flowcell.flowcell_id}",
+                "identifier": _parkour_identifier("flowcell-data", flowcell.id),
+                "comments": _deduplicate_comments(flowcell_comments),
+            }
+            _apply_additional_types(
+                data_file_entities[flowcell_data_id], "https://w3id.org/isa/Data"
+            )
+            process_entities[flowcell_process_id] = {
+                "@id": flowcell_process_id,
+                "@type": "CreateAction",
+                "name": f"Sequencing metadata capture for flowcell {flowcell.flowcell_id}",
+                "identifier": _parkour_identifier("flowcell-process", flowcell.id),
+                "inputs": current_flowcell_lane_refs,
+                "outputs": [{"@id": flowcell_data_id}],
+                "comments": _deduplicate_comments(flowcell_comments),
+            }
+            _apply_additional_types(
+                process_entities[flowcell_process_id],
+                "https://w3id.org/isa/Process",
+            )
+            if sequencer_id:
+                process_entities[flowcell_process_id]["hasInstrument"] = {
+                    "@id": sequencer_id
                 }
+            flowcell_entities[flowcell_entity_id] = {
+                "@id": flowcell_entity_id,
+                "@type": "Dataset",
+                "name": f"Flowcell {flowcell.flowcell_id}",
+                "identifier": _parkour_identifier("flowcell-assay", flowcell.id),
+                "measurementType": _ontology_annotation("sequencing"),
+                "technologyType": _ontology_annotation("sequencing"),
+                "technologyPlatform": (
+                    flowcell.sequencer.name if flowcell.sequencer else None
+                ),
+                "dataFiles": [{"@id": flowcell_data_id}],
+                "processSequence": [{"@id": flowcell_process_id}],
+            }
+            _apply_additional_types(
+                flowcell_entities[flowcell_entity_id], "https://w3id.org/isa/Assay"
+            )
+            if sequencer_id:
+                flowcell_entities[flowcell_entity_id]["hasInstrument"] = {
+                    "@id": sequencer_id
+                }
+            if current_flowcell_lane_refs:
+                flowcell_entities[flowcell_entity_id][
+                    "hasLane"
+                ] = current_flowcell_lane_refs
 
-                for req_id in associated_requests:
-                    flowcells_by_request[req_id].append(flowcell_entity_id)
+            for req_id in associated_requests:
+                flowcells_by_request[req_id].append(flowcell_entity_id)
 
-        samples_by_request = defaultdict(list)
-        for entry in sample_data:
-            samples_by_request[entry.request_id].append(entry)
+        samples_for_request = [
+            entry for entry in sample_data if entry.request_id == single_request_id
+        ]
+        libraries_for_request = [
+            entry for entry in library_data if entry.request_id == single_request_id
+        ]
 
-        libraries_by_request = defaultdict(list)
-        for entry in library_data:
-            libraries_by_request[entry.request_id].append(entry)
-
-        now_iso = timezone.now().isoformat()
+        now = timezone.now()
+        now_iso = now.isoformat()
+        published_date = now.date().isoformat()
         graph = []
 
         context_extensions = {
@@ -713,23 +1595,76 @@ class GenerateROCrate(viewsets.ViewSet):
             "Investigation": "https://w3id.org/isa/Investigation",
             "Study": "https://w3id.org/isa/Study",
             "Assay": "https://w3id.org/isa/Assay",
+            "Process": "https://w3id.org/isa/Process",
+            "Data": "https://w3id.org/isa/Data",
             "Material": "https://w3id.org/isa/Material",
             "Sample": "https://w3id.org/isa/Sample",
             "Library": "https://w3id.org/isa/Library",
+            "File": "https://schema.org/File",
+            "MediaObject": "https://schema.org/MediaObject",
             "Organism": "https://w3id.org/isa/Organism",
             "Protocol": "https://w3id.org/isa/Protocol",
             "Instrument": "https://w3id.org/isa/Instrument",
             "Pool": "https://w3id.org/isa/Pool",
             "Lane": "https://w3id.org/isa/Lane",
+            "SoftwareApplication": "https://schema.org/SoftwareApplication",
+            "CreateAction": "https://schema.org/CreateAction",
             "Thing": "https://schema.org/Thing",
+            "HowTo": "https://schema.org/HowTo",
             "PropertyValue": "https://schema.org/PropertyValue",
             "Person": "https://schema.org/Person",
             "Organization": "https://schema.org/Organization",
+            "additionalType": {
+                "@id": "https://schema.org/additionalType",
+                "@type": "@id",
+            },
             "hasPart": {"@id": "https://schema.org/hasPart", "@type": "@id"},
             "hasAssay": {"@id": "https://w3id.org/isa/hasAssay", "@type": "@id"},
             "hasInput": {"@id": "https://w3id.org/isa/hasInput", "@type": "@id"},
             "hasOutput": {"@id": "https://w3id.org/isa/hasOutput", "@type": "@id"},
+            "studies": {"@id": "https://w3id.org/isa/studies", "@type": "@id"},
+            "people": {"@id": "https://w3id.org/isa/people", "@type": "@id"},
+            "materials": {"@id": "https://w3id.org/isa/materials"},
+            "sources": {"@id": "https://w3id.org/isa/sources", "@type": "@id"},
+            "samples": {"@id": "https://w3id.org/isa/samples", "@type": "@id"},
+            "otherMaterials": {
+                "@id": "https://w3id.org/isa/otherMaterials",
+                "@type": "@id",
+            },
+            "processSequence": {
+                "@id": "https://w3id.org/isa/processSequence",
+                "@type": "@id",
+            },
+            "assays": {"@id": "https://w3id.org/isa/assays", "@type": "@id"},
+            "dataFiles": {"@id": "https://w3id.org/isa/dataFiles", "@type": "@id"},
+            "executesProtocol": {
+                "@id": "https://w3id.org/isa/executesProtocol",
+                "@type": "@id",
+            },
+            "inputs": {"@id": "https://w3id.org/isa/inputs", "@type": "@id"},
+            "outputs": {"@id": "https://w3id.org/isa/outputs", "@type": "@id"},
+            "comments": {"@id": "https://w3id.org/isa/comments"},
+            "measurementType": {"@id": "https://w3id.org/isa/measurementType"},
+            "technologyType": {"@id": "https://w3id.org/isa/technologyType"},
+            "technologyPlatform": {"@id": "https://w3id.org/isa/technologyPlatform"},
+            "protocols": {"@id": "https://w3id.org/isa/protocols", "@type": "@id"},
+            "executesLabProtocol": {
+                "@id": "https://bioschemas.org/executesLabProtocol",
+                "@type": "@id",
+            },
+            "parameterValue": {"@id": "https://bioschemas.org/parameterValue"},
+            "organism": {"@id": "https://schema.org/taxonomicRange", "@type": "@id"},
+            "libraryType": {"@id": "https://schema.org/additionalType", "@type": "@id"},
+            "readLength": {
+                "@id": "https://schema.org/measurementTechnique",
+                "@type": "@id",
+            },
+            "indexType": {"@id": "https://schema.org/category", "@type": "@id"},
+            "nucleicAcidType": {"@id": "https://schema.org/material", "@type": "@id"},
+            "derivedFrom": {"@id": "https://w3id.org/isa/derivesFrom", "@type": "@id"},
             "creator": {"@id": "https://schema.org/creator", "@type": "@id"},
+            "mentions": {"@id": "https://schema.org/mentions", "@type": "@id"},
+            "member": {"@id": "https://schema.org/member", "@type": "@id"},
             "affiliatedOrganization": {
                 "@id": "https://schema.org/affiliation",
                 "@type": "@id",
@@ -749,14 +1684,30 @@ class GenerateROCrate(viewsets.ViewSet):
             },
             "hasLane": {"@id": "https://w3id.org/isa/hasPart", "@type": "@id"},
             "costUnit": {"@id": "https://schema.org/identifier", "@type": "@id"},
+            "instrument": {"@id": "https://schema.org/instrument", "@type": "@id"},
+            "result": {"@id": "https://schema.org/result", "@type": "@id"},
+            "object": {"@id": "https://schema.org/object", "@type": "@id"},
+            "agent": {"@id": "https://schema.org/agent", "@type": "@id"},
+            "isPartOf": {"@id": "https://schema.org/isPartOf", "@type": "@id"},
+            "about": {"@id": "https://schema.org/about", "@type": "@id"},
         }
 
         graph.append(
             {
                 "@id": "ro-crate-metadata.json",
                 "@type": "CreativeWork",
-                "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"},
+                "conformsTo": {"@id": RO_CRATE_SPEC_URI},
                 "about": {"@id": "./"},
+            }
+        )
+        graph.append(
+            {
+                "@id": PARKOUR_SOFTWARE_ID,
+                "@type": "SoftwareApplication",
+                "name": "Parkour",
+                "identifier": _parkour_identifier("software", "parkour2"),
+                "softwareVersion": str(getattr(settings, "VERSION", "")) or None,
+                "url": "https://github.com/maxplanck-ie/parkour2",
             }
         )
 
@@ -786,144 +1737,157 @@ class GenerateROCrate(viewsets.ViewSet):
                 "missing_requests",
                 ", ".join(missing_requests),
             )
+        if selected_sections:
+            _append_property(
+                dataset_additional_properties,
+                "requested_sections",
+                sorted(selected_sections),
+            )
+
+        request_display_name = root_request.name or f"Request {single_request_id}"
+        request_timestamp = _normalise_property_value(
+            getattr(root_request, "create_time", None)
+        )
+        request_data = _extract_model_fields(root_request, prefix="request_")
+        request_data.update(
+            {
+                "request_deep_seq_request": (
+                    root_request.deep_seq_request.name
+                    if root_request.deep_seq_request
+                    else None
+                ),
+            }
+        )
 
         dataset_entity = {
             "@id": "./",
             "@type": "Dataset",
-            "name": "RO-Crate export for library preparation data",
-            "dateCreated": now_iso,
-            "conformsTo": {"@id": "https://w3id.org/isa/isa-model"},
+            "name": request_display_name,
+            "identifier": _parkour_identifier("request", single_request_id),
+            "description": root_request.description or "",
+            "dateCreated": request_timestamp or now_iso,
+            "datePublished": published_date,
+            "conformsTo": [{"@id": NFDI4PLANTS_ISA_PROFILE_URI}],
+            "license": {"@id": RO_CRATE_LICENSE_ID},
+            "creator": {"@id": PARKOUR_SOFTWARE_ID},
+            "studies": [{"@id": f"#study-{single_request_id}"}],
+            "people": [],
+            "mentions": [],
             "hasPart": [],
+            "comments": _deduplicate_comments(_build_comments(request_data)),
             "additionalProperty": _deduplicate_properties(
                 dataset_additional_properties
             ),
         }
+        _apply_additional_types(dataset_entity, "https://w3id.org/isa/Investigation")
 
-        user_entities = {}
+        request_id = single_request_id
+        request_obj = root_request
 
-        for request_id in sorted(target_request_ids):
-            request_obj = requests_by_id.get(request_id)
-            if request_obj is None:
-                continue
+        study_id = f"#study-{request_id}"
+        dataset_entity["mentions"].append({"@id": study_id})
+        dataset_entity["hasPart"].append({"@id": study_id})
 
-            investigation_id = f"#investigation-{request_id}"
-            study_id = f"#study-{request_id}"
-            dataset_entity["hasPart"].append({"@id": investigation_id})
-            request_display_name = request_obj.name or f"Request {request_id}"
+        investigation_people = []
+        cost_unit_id = register_cost_unit(request_obj.cost_unit)
+        if cost_unit_id:
+            dataset_entity["mentions"].append({"@id": cost_unit_id})
 
-            request_data = _extract_model_fields(request_obj, prefix="request_")
-            request_data.update(
-                {
-                    "request_user_full_name": request_obj.user.full_name
-                    if request_obj.user
-                    else None,
-                    "request_user_email": request_obj.user.email
-                    if request_obj.user
-                    else None,
-                    "request_cost_unit_name": request_obj.cost_unit.name
-                    if request_obj.cost_unit
-                    else None,
-                    "request_pi_name": request_obj.user.pi.name
-                    if getattr(request_obj.user, "pi", None)
-                    else None,
-                    "request_files": [
-                        {"name": file.name, "path": file.file.name}
-                        for file in request_obj.files.all()
-                    ],
-                    "request_deep_seq_request": request_obj.deep_seq_request.name
-                    if request_obj.deep_seq_request
-                    else None,
-                }
+        user_org_id = None
+        if request_obj.user and request_obj.user.organization:
+            user_org_id = register_organization(request_obj.user.organization)
+            if user_org_id:
+                dataset_entity["mentions"].append({"@id": user_org_id})
+
+        user_pi_id = None
+        if request_obj.user:
+            user_pi_id = register_principal_investigator(
+                getattr(request_obj.user, "pi", None)
             )
+            if user_pi_id:
+                dataset_entity["mentions"].append({"@id": user_pi_id})
+                investigation_people.append({"@id": user_pi_id})
 
-            investigation_properties = _build_property_values(request_data)
-            cost_unit_id = register_cost_unit(request_obj.cost_unit)
-            if cost_unit_id:
-                _append_property(
-                    investigation_properties, "costUnit", {"@id": cost_unit_id}
-                )
-            if request_obj.user:
-                user_org_id = register_organization(request_obj.user.organization)
-                if user_org_id:
-                    _append_property(
-                        investigation_properties,
-                        "affiliatedOrganization",
-                        {"@id": user_org_id},
-                    )
-                user_pi_id = register_principal_investigator(
-                    getattr(request_obj.user, "pi", None)
-                )
-                if user_pi_id:
-                    _append_property(
-                        investigation_properties,
-                        "principalInvestigator",
-                        {"@id": user_pi_id},
-                    )
-            investigation_properties = _deduplicate_properties(investigation_properties)
-            investigation_entity = {
-                "@id": investigation_id,
-                "@type": "Investigation",
-                "name": request_display_name,
-                "description": request_obj.description or "",
-                "identifier": str(request_id),
-                "dateCreated": _normalise_property_value(
-                    getattr(request_obj, "create_time", None)
-                ),
-                "hasPart": [{"@id": study_id}],
-                "additionalProperty": investigation_properties,
-            }
+        user_obj = getattr(request_obj, "user", None)
+        if user_obj:
+            exporting_user_id = register_user_entity(user_obj)
+            investigation_people.insert(0, {"@id": exporting_user_id})
+            dataset_entity["mentions"].append({"@id": exporting_user_id})
+        dataset_entity["people"] = _deduplicate_ref_list(investigation_people)
+        if cost_unit_id:
+            dataset_entity["costUnit"] = {"@id": cost_unit_id}
+        if user_org_id:
+            dataset_entity["affiliatedOrganization"] = {"@id": user_org_id}
+        if user_pi_id:
+            dataset_entity["principalInvestigator"] = {"@id": user_pi_id}
 
-            user_obj = getattr(request_obj, "user", None)
-            if user_obj and user_obj.id not in user_entities:
-                user_data = {
-                    "user_first_name": user_obj.first_name,
-                    "user_last_name": user_obj.last_name,
-                    "user_email": user_obj.email,
-                    "user_phone": user_obj.phone,
-                    "user_is_pi": getattr(user_obj, "is_pi", False),
-                    "user_is_staff": getattr(user_obj, "is_staff", False),
-                }
-                user_properties = _build_property_values(user_data)
-                org_id = register_organization(user_obj.organization)
-                if org_id:
-                    _append_property(
-                        user_properties, "affiliatedOrganization", {"@id": org_id}
-                    )
-                pi_id = register_principal_investigator(user_obj.pi)
-                if pi_id:
-                    _append_property(
-                        user_properties, "principalInvestigator", {"@id": pi_id}
-                    )
-                user_properties = _deduplicate_properties(user_properties)
+        study_properties = {
+            "study_request_identifier": request_display_name,
+            "study_samples_count": len(samples_for_request),
+            "study_libraries_count": len(libraries_for_request),
+        }
 
-                user_entities[user_obj.id] = {
-                    "@id": f"#person-{user_obj.id}",
-                    "@type": "Person",
-                    "name": user_obj.full_name,
-                    "additionalProperty": user_properties,
-                }
+        study_protocol_refs = []
+        study_source_refs = []
+        study_sample_refs = []
+        study_other_material_refs = []
+        study_process_refs = []
+        study_assay_refs = []
+        study_people = _deduplicate_ref_list(investigation_people)
 
-                investigation_entity["creator"] = {"@id": f"#person-{user_obj.id}"}
+        study_entity = {
+            "@id": study_id,
+            "@type": "Dataset",
+            "identifier": _parkour_identifier("study", request_id),
+            "name": f"Study for {request_display_name}",
+            "description": request_obj.description or "",
+            "dateCreated": request_timestamp,
+            "datePublished": published_date,
+            "people": study_people,
+            "protocols": [],
+            "materials": {
+                "sources": [],
+                "samples": [],
+                "otherMaterials": [],
+            },
+            "processSequence": [],
+            "assays": [],
+            "comments": _build_comments(study_properties),
+        }
+        _apply_additional_types(study_entity, "https://w3id.org/isa/Study")
 
-            study_properties = {
-                "study_request_identifier": request_display_name,
-                "study_samples_count": len(samples_by_request.get(request_id, [])),
-                "study_libraries_count": len(libraries_by_request.get(request_id, [])),
-            }
+        request_file_refs = []
+        for request_file in request_obj.files.all():
+            request_file_id = register_request_file(request_file, request_obj)
+            if not request_file_id:
+                continue
+            request_file_refs.append({"@id": request_file_id})
+            dataset_entity["mentions"].append({"@id": request_file_id})
+        if request_file_refs:
+            deduped_request_file_refs = _deduplicate_ref_list(request_file_refs)
+            study_entity["hasPart"] = deduped_request_file_refs
+            dataset_entity["hasPart"].extend(deduped_request_file_refs)
 
-            study_entity = {
-                "@id": study_id,
-                "@type": "Study",
-                "name": f"Study for {request_display_name}",
-                "hasInput": [],
-                "hasOutput": [],
-                "hasAssay": [],
-                "additionalProperty": _build_property_values(study_properties),
-            }
-
-            for sample_entry in samples_by_request.get(request_id, []):
+        for sample_entry in samples_for_request:
+                source_id = f"#source-sample-{sample_entry.sample_id}"
                 sample_material_id = f"#sample-material-{sample_entry.sample_id}"
-                study_entity["hasInput"].append({"@id": sample_material_id})
+                sample_process_id = f"#sample-process-{sample_entry.sample_id}"
+                sample_assay_id = f"#sample-assay-{sample_entry.sample_id}"
+                sample_data_id = f"#sample-data-{sample_entry.sample_id}"
+
+                study_source_refs.append({"@id": source_id})
+                study_sample_refs.append({"@id": sample_material_id})
+                study_process_refs.append({"@id": sample_process_id})
+                study_assay_refs.append({"@id": sample_assay_id})
+                dataset_entity["mentions"].extend(
+                    [
+                        {"@id": source_id},
+                        {"@id": sample_material_id},
+                        {"@id": sample_process_id},
+                        {"@id": sample_assay_id},
+                        {"@id": sample_data_id},
+                    ]
+                )
 
                 sample_model = samples_by_id.get(sample_entry.sample_id)
                 sample_data = {}
@@ -934,56 +1898,37 @@ class GenerateROCrate(viewsets.ViewSet):
                 sample_data.update(
                     _extract_model_fields(sample_entry, prefix="sample_mv_")
                 )
-                sample_properties = _build_property_values(sample_data)
+                sample_comments = _build_comments(sample_data)
 
                 if sample_model:
                     organism_id = register_organism(sample_model.organism)
                     if organism_id:
-                        _append_property(
-                            sample_properties, "sample_organism", {"@id": organism_id}
-                        )
+                        dataset_entity["mentions"].append({"@id": organism_id})
                     protocol_id = register_protocol(sample_model.library_protocol)
                     if protocol_id:
-                        _append_property(
-                            sample_properties, "usesProtocol", {"@id": protocol_id}
-                        )
+                        study_protocol_refs.append({"@id": protocol_id})
+                        dataset_entity["mentions"].append({"@id": protocol_id})
                     library_type_id = register_library_type(sample_model.library_type)
                     if library_type_id:
-                        _append_property(
-                            sample_properties,
-                            "sample_library_type",
-                            {"@id": library_type_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": library_type_id})
                     read_length_id = register_read_length(sample_model.read_length)
                     if read_length_id:
-                        _append_property(
-                            sample_properties,
-                            "sample_read_length",
-                            {"@id": read_length_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": read_length_id})
                     index_type_id = register_index_type(sample_model.index_type)
                     if index_type_id:
-                        _append_property(
-                            sample_properties,
-                            "sample_index_type",
-                            {"@id": index_type_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": index_type_id})
                     nucleic_acid_id = register_nucleic_acid(
                         sample_model.nucleic_acid_type
                     )
                     if nucleic_acid_id:
-                        _append_property(
-                            sample_properties,
-                            "sample_nucleic_acid_type",
-                            {"@id": nucleic_acid_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": nucleic_acid_id})
 
                 library_prep = library_preparations_by_sample.get(
                     sample_entry.sample_id
                 )
                 if library_prep:
-                    sample_properties.extend(
-                        _build_property_values(
+                    sample_comments.extend(
+                        _build_comments(
                             _extract_model_fields(
                                 library_prep, prefix="library_preparation_"
                             )
@@ -992,35 +1937,142 @@ class GenerateROCrate(viewsets.ViewSet):
 
                 sample_pooling = pooling_by_sample.get(sample_entry.sample_id)
                 if sample_pooling:
-                    sample_properties.extend(
-                        _build_property_values(
+                    sample_comments.extend(
+                        _build_comments(
                             _extract_model_fields(sample_pooling, prefix="pooling_")
                         )
                     )
 
                 sample_pool_refs = sample_to_index_pools.get(sample_entry.sample_id, [])
                 if sample_pool_refs:
-                    _append_property(
-                        sample_properties,
-                        "associatedPool",
-                        sample_pool_refs,
-                    )
-                sample_properties = _deduplicate_properties(sample_properties)
+                    dataset_entity["mentions"].extend(sample_pool_refs)
+                sample_comments = _deduplicate_comments(sample_comments)
+
+                source_entities[source_id] = {
+                    "@id": source_id,
+                    "@type": "Thing",
+                    "name": f"Source for {sample_entry.name}",
+                    "identifier": _parkour_identifier(
+                        "source-sample", sample_entry.sample_id
+                    ),
+                    "comments": _deduplicate_comments(
+                        [
+                            {
+                                "name": "source_request_identifier",
+                                "value": request_display_name,
+                            }
+                        ]
+                    ),
+                }
+                _apply_additional_types(
+                    source_entities[source_id], "https://w3id.org/isa/Material"
+                )
                 sample_entity = {
                     "@id": sample_material_id,
-                    "@type": ["Material", "Sample"],
+                    "@type": "Thing",
                     "name": sample_entry.name,
                     "identifier": sample_entry.barcode,
-                    "additionalProperty": sample_properties,
+                    "comments": sample_comments,
+                    "derivedFrom": [{"@id": source_id}],
                 }
+                _apply_additional_types(
+                    sample_entity,
+                    "https://w3id.org/isa/Material",
+                    "https://w3id.org/isa/Sample",
+                )
+                if sample_model and sample_model.library_type:
+                    sample_entity["libraryType"] = {
+                        "@id": f"#library-type-{sample_model.library_type.id}"
+                    }
+                if sample_model and sample_model.read_length:
+                    sample_entity["readLength"] = {
+                        "@id": f"#read-length-{sample_model.read_length.id}"
+                    }
+                if sample_model and sample_model.index_type:
+                    sample_entity["indexType"] = {
+                        "@id": f"#index-type-{sample_model.index_type.id}"
+                    }
+                if sample_model and sample_model.organism:
+                    sample_entity["organism"] = {
+                        "@id": f"#organism-{sample_model.organism.id}"
+                    }
+                if sample_model and sample_model.nucleic_acid_type:
+                    sample_entity["nucleicAcidType"] = {
+                        "@id": f"#nucleic-acid-type-{sample_model.nucleic_acid_type.id}"
+                    }
+                if sample_pool_refs:
+                    sample_entity["associatedPool"] = _deduplicate_ref_list(
+                        sample_pool_refs
+                    )
+                process_entities[sample_process_id] = {
+                    "@id": sample_process_id,
+                    "@type": "CreateAction",
+                    "name": f"Sample metadata capture for {sample_entry.name}",
+                    "identifier": _parkour_identifier(
+                        "sample-process", sample_entry.sample_id
+                    ),
+                    "inputs": [{"@id": source_id}],
+                    "outputs": [{"@id": sample_material_id}, {"@id": sample_data_id}],
+                }
+                _apply_additional_types(
+                    process_entities[sample_process_id], "https://w3id.org/isa/Process"
+                )
+                if sample_model and sample_model.library_protocol:
+                    process_entities[sample_process_id]["executesProtocol"] = {
+                        "@id": f"#protocol-{sample_model.library_protocol.id}"
+                    }
+                data_file_entities[sample_data_id] = {
+                    "@id": sample_data_id,
+                    "@type": "Dataset",
+                    "name": f"Sample export metadata for {sample_entry.name}",
+                    "identifier": _parkour_identifier(
+                        "sample-data", sample_entry.sample_id
+                    ),
+                    "comments": _build_comments(
+                        {
+                            "sample_export_identifier": sample_entry.barcode,
+                            "sample_export_request": request_display_name,
+                        }
+                    ),
+                }
+                _apply_additional_types(
+                    data_file_entities[sample_data_id], "https://w3id.org/isa/Data"
+                )
+                sample_assay_entity = {
+                    "@id": sample_assay_id,
+                    "@type": "Dataset",
+                    "identifier": _parkour_identifier(
+                        "sample-assay", sample_entry.sample_id
+                    ),
+                    "measurementType": _ontology_annotation("sample metadata export"),
+                    "technologyType": _ontology_annotation("metadata capture"),
+                    "materials": {"samples": [{"@id": sample_material_id}]},
+                    "dataFiles": [{"@id": sample_data_id}],
+                    "processSequence": [{"@id": sample_process_id}],
+                }
+                _apply_additional_types(
+                    sample_assay_entity, "https://w3id.org/isa/Assay"
+                )
                 graph.append(sample_entity)
+                graph.append(sample_assay_entity)
 
-            for library_entry in libraries_by_request.get(request_id, []):
+        for library_entry in libraries_for_request:
                 library_material_id = f"#library-material-{library_entry.library_id}"
+                library_process_id = f"#library-process-{library_entry.library_id}"
                 assay_id = f"#library-assay-{library_entry.library_id}"
+                library_data_id = f"#library-data-{library_entry.library_id}"
 
-                study_entity["hasOutput"].append({"@id": library_material_id})
-                study_entity["hasAssay"].append({"@id": assay_id})
+                study_other_material_refs.append({"@id": library_material_id})
+                study_process_refs.append({"@id": library_process_id})
+                study_assay_refs.append({"@id": assay_id})
+                dataset_entity["mentions"].extend(
+                    [
+                        {"@id": library_material_id},
+                        {"@id": library_process_id},
+                        {"@id": assay_id},
+                        {"@id": library_data_id},
+                    ]
+                )
 
                 library_model = libraries_by_id.get(library_entry.library_id)
                 library_material_data = {}
@@ -1029,47 +2081,30 @@ class GenerateROCrate(viewsets.ViewSet):
                         _extract_model_fields(library_model, prefix="library_db_")
                     )
 
-                library_properties = _build_property_values(library_material_data)
+                library_comments = _build_comments(library_material_data)
 
                 if library_model:
                     organism_id = register_organism(library_model.organism)
                     if organism_id:
-                        _append_property(
-                            library_properties,
-                            "library_organism",
-                            {"@id": organism_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": organism_id})
                     protocol_id = register_protocol(library_model.library_protocol)
                     if protocol_id:
-                        _append_property(
-                            library_properties, "usesProtocol", {"@id": protocol_id}
-                        )
+                        study_protocol_refs.append({"@id": protocol_id})
+                        dataset_entity["mentions"].append({"@id": protocol_id})
                     library_type_id = register_library_type(library_model.library_type)
                     if library_type_id:
-                        _append_property(
-                            library_properties,
-                            "library_library_type",
-                            {"@id": library_type_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": library_type_id})
                     read_length_id = register_read_length(library_model.read_length)
                     if read_length_id:
-                        _append_property(
-                            library_properties,
-                            "library_read_length",
-                            {"@id": read_length_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": read_length_id})
                     index_type_id = register_index_type(library_model.index_type)
                     if index_type_id:
-                        _append_property(
-                            library_properties,
-                            "library_index_type",
-                            {"@id": index_type_id},
-                        )
+                        dataset_entity["mentions"].append({"@id": index_type_id})
 
                 library_pooling = pooling_by_library.get(library_entry.library_id)
                 if library_pooling:
-                    library_properties.extend(
-                        _build_property_values(
+                    library_comments.extend(
+                        _build_comments(
                             _extract_model_fields(library_pooling, prefix="pooling_")
                         )
                     )
@@ -1078,52 +2113,158 @@ class GenerateROCrate(viewsets.ViewSet):
                     library_entry.library_id, []
                 )
                 if library_pool_refs:
-                    _append_property(
-                        library_properties,
-                        "associatedPool",
-                        library_pool_refs,
-                    )
-                library_properties = _deduplicate_properties(library_properties)
+                    dataset_entity["mentions"].extend(library_pool_refs)
+                library_comments = _deduplicate_comments(library_comments)
 
                 library_entity = {
                     "@id": library_material_id,
-                    "@type": ["Material", "Library"],
+                    "@type": "Thing",
                     "name": library_entry.name,
                     "identifier": library_entry.barcode,
-                    "additionalProperty": library_properties,
+                    "comments": library_comments,
                 }
+                _apply_additional_types(
+                    library_entity,
+                    "https://w3id.org/isa/Material",
+                    "https://w3id.org/isa/Library",
+                )
+                if library_model and library_model.organism:
+                    library_entity["organism"] = {
+                        "@id": f"#organism-{library_model.organism.id}"
+                    }
+                if library_model and library_model.library_type:
+                    library_entity["libraryType"] = {
+                        "@id": f"#library-type-{library_model.library_type.id}"
+                    }
+                if library_model and library_model.read_length:
+                    library_entity["readLength"] = {
+                        "@id": f"#read-length-{library_model.read_length.id}"
+                    }
+                if library_model and library_model.index_type:
+                    library_entity["indexType"] = {
+                        "@id": f"#index-type-{library_model.index_type.id}"
+                    }
+                if library_pool_refs:
+                    library_entity["associatedPool"] = _deduplicate_ref_list(
+                        library_pool_refs
+                    )
 
-                assay_data = _extract_model_fields(library_entry, prefix="library_mv_")
+                assay_comments = _deduplicate_comments(
+                    _build_comments(
+                        _extract_model_fields(library_entry, prefix="library_mv_")
+                    )
+                )
+                process_entities[library_process_id] = {
+                    "@id": library_process_id,
+                    "@type": "CreateAction",
+                    "name": f"Library metadata capture for {library_entry.name}",
+                    "identifier": _parkour_identifier(
+                        "library-process", library_entry.library_id
+                    ),
+                    "inputs": [{"@id": library_material_id}],
+                    "outputs": [{"@id": library_data_id}],
+                    "comments": assay_comments,
+                }
+                _apply_additional_types(
+                    process_entities[library_process_id], "https://w3id.org/isa/Process"
+                )
+                if library_model and library_model.library_protocol:
+                    process_entities[library_process_id]["executesProtocol"] = {
+                        "@id": f"#protocol-{library_model.library_protocol.id}"
+                    }
+                data_file_entities[library_data_id] = {
+                    "@id": library_data_id,
+                    "@type": "Dataset",
+                    "name": f"Library export metadata for {library_entry.name}",
+                    "identifier": _parkour_identifier(
+                        "library-data", library_entry.library_id
+                    ),
+                    "comments": _build_comments(
+                        {
+                            "library_export_identifier": library_entry.barcode,
+                            "library_export_request": request_display_name,
+                        }
+                    ),
+                }
+                _apply_additional_types(
+                    data_file_entities[library_data_id], "https://w3id.org/isa/Data"
+                )
                 assay_entity = {
                     "@id": assay_id,
-                    "@type": "Assay",
+                    "@type": "Dataset",
+                    "identifier": _parkour_identifier(
+                        "library-assay", library_entry.library_id
+                    ),
                     "name": f"Assay for library {library_entry.name}",
-                    "hasOutput": {"@id": library_material_id},
-                    "additionalProperty": _build_property_values(assay_data),
+                    "measurementType": _ontology_annotation("library metadata export"),
+                    "technologyType": _ontology_annotation("metadata capture"),
+                    "materials": {"otherMaterials": [{"@id": library_material_id}]},
+                    "dataFiles": [{"@id": library_data_id}],
+                    "processSequence": [{"@id": library_process_id}],
                 }
+                _apply_additional_types(assay_entity, "https://w3id.org/isa/Assay")
 
                 graph.append(library_entity)
                 graph.append(assay_entity)
 
-            flowcell_ids_for_request = flowcells_by_request.get(request_id, [])
-            if flowcell_ids_for_request:
-                seen_flowcells = set()
-                for flowcell_entity_id in flowcell_ids_for_request:
-                    if flowcell_entity_id in seen_flowcells:
-                        continue
-                    seen_flowcells.add(flowcell_entity_id)
-                    study_entity["hasAssay"].append({"@id": flowcell_entity_id})
-                _append_property(
-                    study_entity["additionalProperty"],
-                    "flowcell_assays",
-                    [{"@id": flowcell_id} for flowcell_id in sorted(seen_flowcells)],
+        flowcell_ids_for_request = flowcells_by_request.get(single_request_id, [])
+        if flowcell_ids_for_request:
+            seen_flowcells = set()
+            for flowcell_entity_id in flowcell_ids_for_request:
+                if flowcell_entity_id in seen_flowcells:
+                    continue
+                seen_flowcells.add(flowcell_entity_id)
+                study_assay_refs.append({"@id": flowcell_entity_id})
+                dataset_entity["mentions"].append({"@id": flowcell_entity_id})
+                flowcell_suffix = flowcell_entity_id.replace("#flowcell-assay-", "")
+                dataset_entity["mentions"].append(
+                    {"@id": f"#flowcell-data-{flowcell_suffix}"}
                 )
-            study_entity["additionalProperty"] = _deduplicate_properties(
-                study_entity["additionalProperty"]
+                dataset_entity["mentions"].append(
+                    {"@id": f"#flowcell-process-{flowcell_suffix}"}
+                )
+            _append_comment(
+                study_entity["comments"],
+                "flowcell_assays",
+                sorted(seen_flowcells),
             )
 
-            graph.append(investigation_entity)
-            graph.append(study_entity)
+        study_entity["protocols"] = _deduplicate_ref_list(study_protocol_refs)
+        study_entity["materials"]["sources"] = _deduplicate_ref_list(
+            study_source_refs
+        )
+        study_entity["materials"]["samples"] = _deduplicate_ref_list(
+            study_sample_refs
+        )
+        study_entity["materials"]["otherMaterials"] = _deduplicate_ref_list(
+            study_other_material_refs
+        )
+        study_entity["processSequence"] = _deduplicate_ref_list(study_process_refs)
+        study_entity["assays"] = _deduplicate_ref_list(study_assay_refs)
+        study_entity["comments"] = _deduplicate_comments(study_entity["comments"])
+
+        graph.append(study_entity)
+
+        exporter_entity_id = None
+        exporting_user = getattr(request, "user", None)
+        if getattr(exporting_user, "is_authenticated", False):
+            exporter_entity_id = register_user_entity(exporting_user)
+            if exporter_entity_id:
+                dataset_entity["mentions"].append({"@id": exporter_entity_id})
+
+        export_action_entity = {
+            "@id": RO_CRATE_EXPORT_ACTION_ID,
+            "@type": "CreateAction",
+            "name": "Parkour RO-Crate export generation",
+            "instrument": {"@id": PARKOUR_SOFTWARE_ID},
+            "result": {"@id": "./"},
+            "object": _deduplicate_ref_list(dataset_entity.get("mentions", [])),
+            "endTime": now_iso,
+            "actionStatus": {"@id": "https://schema.org/CompletedActionStatus"},
+        }
+        if exporter_entity_id:
+            export_action_entity["agent"] = {"@id": exporter_entity_id}
+        dataset_entity["mentions"].append({"@id": RO_CRATE_EXPORT_ACTION_ID})
 
         graph.extend(organization_entities.values())
         graph.extend(organism_entities.values())
@@ -1138,27 +2279,56 @@ class GenerateROCrate(viewsets.ViewSet):
         graph.extend(flowcell_entities.values())
         graph.extend(sequencer_entities.values())
         graph.extend(lane_entities.values())
+        graph.extend(request_file_entities.values())
+        graph.extend(source_entities.values())
+        graph.extend(process_entities.values())
+        graph.extend(data_file_entities.values())
+        graph.extend(user_entities.values())
+
+        dataset_entity["mentions"] = _deduplicate_ref_list(dataset_entity["mentions"])
+        dataset_entity["hasPart"] = _deduplicate_ref_list(dataset_entity["hasPart"])
 
         graph.insert(
             1,
             dataset_entity,
         )
 
-        graph.extend(user_entities.values())
+        graph.insert(
+            2,
+            {
+                "@id": RO_CRATE_LICENSE_ID,
+                "@type": "CreativeWork",
+                "name": RO_CRATE_LICENSE_NAME,
+                "description": RO_CRATE_LICENSE_DESCRIPTION,
+            },
+        )
+        graph.insert(3, export_action_entity)
 
         ro_crate = {
             "@context": [
-                "https://w3id.org/ro/crate/1.1/context",
+                RO_CRATE_CONTEXT_URI,
                 context_extensions,
             ],
             "@graph": graph,
         }
+        ro_crate = _align_to_nfdi4plants_profile(ro_crate)
+        ro_crate = _filter_ro_crate_sections(ro_crate, selected_sections)
+        archive_stub = _safe_archive_component(request_display_name, "parkour")
+        archive_name = f"{archive_stub}_ro_crate.zip"
+        file_entries = [
+            (archive_path, source_path)
+            for archive_path, source_path in request_file_archives.items()
+            if archive_path
+            and source_path
+            and any(
+                entry.get("@id") == archive_path for entry in ro_crate.get("@graph", [])
+            )
+        ]
 
-        return JsonResponse(
+        return _build_ro_crate_zip_response(
             ro_crate,
-            json_dumps_params={"indent": 2},
-            content_type="application/ld+json",
-            safe=True,
+            archive_name,
+            file_entries,
         )
 
 

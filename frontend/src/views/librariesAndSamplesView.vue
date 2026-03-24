@@ -206,16 +206,13 @@
                     request when you want to submit new work.
                   </p>
                 </div>
-                <button class="popup-close-button page-help-close" type="button" @click="showPageHelp = false">
-                  &times;
-                </button>
               </div>
 
               <div class="page-help-grid">
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                  <font-awesome-icon icon="fa-solid fa-circle-info" />
-                  <span>What You See on This Page</span>
+                    <font-awesome-icon icon="fa-solid fa-circle-info" />
+                    <span>What You See on This Page</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -255,8 +252,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                  <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-                  <span>How to Find the Right Request</span>
+                    <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+                    <span>How to Find the Right Request</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -293,8 +290,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                  <font-awesome-icon icon="fa-solid fa-square-plus" />
-                  <span>How to Create a New Request</span>
+                    <font-awesome-icon icon="fa-solid fa-square-plus" />
+                    <span>How to Create a New Request</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -340,8 +337,8 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                  <font-awesome-icon icon="fa-solid fa-circle-check" />
-                  <span>Request Status and Progress</span>
+                    <font-awesome-icon icon="fa-solid fa-circle-check" />
+                    <span>Request Status and Progress</span>
                   </div>
                   <p class="page-help-copy">
                     Parkour tracks progress separately for each library or sample.
@@ -352,7 +349,9 @@
                   </p>
                   <div class="status-help-list">
                     <div v-for="(label, key) in statusMap" :key="`status-help-${key}`" class="status-help-row">
-                      <span class="status-help-code">{{ key }}</span>
+                      <span class="status-help-indicator" :title="`${key}: ${label}`">
+                        <span :class="['status', getStatusClass(key)]"></span>
+                      </span>
                       <span class="status-help-text">{{ label }}</span>
                     </div>
                   </div>
@@ -369,25 +368,20 @@
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                  <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-                  <span>What the Request Action Icons Do</span>
+                    <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                    <span>What the Request Action Icons Do</span>
                   </div>
                   <ul class="page-help-list">
-                    <li>
-                      <strong>View / Edit Request:</strong> Open the request
-                      editor. There you can review or change the request details,
-                      the attached files, and the libraries or samples inside the
-                      request.
-                    </li>
                     <li>
                       <strong>Attachments:</strong> Open the request files window,
                       where you can check attached files, add new ones, download
                       existing ones, or remove files that are no longer needed.
                     </li>
                     <li>
-                      <strong>Select All / Deselect All:</strong> Select or clear
-                      all rows inside the currently opened request. This is useful
-                      before export or other actions that work on selected rows.
+                      <strong>View / Edit Request:</strong> Open the request
+                      editor. There you can review or change the request details,
+                      the attached files, and the libraries or samples inside the
+                      request.
                     </li>
                     <li>
                       <strong>Delete Request:</strong> Remove the whole request if
@@ -399,13 +393,27 @@
                       staff-only actions used for file location review and email
                       drafting.
                     </li>
+                    <li>
+                      <strong>Export RO-Crate:</strong> Download a structured
+                      <strong>.zip</strong> package for the selected records in
+                      the currently opened request. The package contains a
+                      <strong>ro-crate-metadata.json</strong> file with linked
+                      metadata and can also include attached request files. This
+                      is useful when metadata needs to be shared with other
+                      systems or reused in a standardized ISA-aligned format.
+                    </li>
+                    <li>
+                      <strong>Select All / Deselect All:</strong> Select or clear
+                      all rows inside the currently opened request. This is useful
+                      before export or other actions that work on selected rows.
+                    </li>
                   </ul>
                 </section>
 
                 <section class="page-help-section">
                   <div class="page-help-section-title">
-                  <font-awesome-icon icon="fa-solid fa-file-excel" />
-                  <span>Export and Reporting</span>
+                    <font-awesome-icon icon="fa-solid fa-file-excel" />
+                    <span>Export and Reporting</span>
                   </div>
                   <ul class="page-help-list">
                     <li>
@@ -432,8 +440,8 @@
 
                 <section class="page-help-section page-help-section-wide">
                   <div class="page-help-section-title">
-                  <font-awesome-icon icon="fa-solid fa-folder-open" />
-                  <span>Suggested First-Time Workflow</span>
+                    <font-awesome-icon icon="fa-solid fa-folder-open" />
+                    <span>Suggested First-Time Workflow</span>
                   </div>
                   <ol class="page-help-steps">
                     <li>
@@ -569,33 +577,48 @@
             @mouseleave="showExportHelpTooltip = false">
             ?
             <div v-if="showExportHelpTooltip" class="tooltip-box">
-              <span style="font-weight: bold">INSTRUCTIONS:</span>
-              <ol>
-                <li>
-                  To create custom templates, export the original sheet named
-                  <span style="font-weight: bold">'Parkour'</span> by selecting
-                  the
-                  <span style="font-weight: bold">'Export without any additional sheets'</span>
-                  option.
-                </li>
-                <li>
-                  Add new custom sheets to this exported file, which will serve
-                  as templates.
-                </li>
-                <li>
-                  Upload the modified file, containing both the original
-                  <span style="font-weight: bold">'Parkour'</span> sheet and
-                  newly added
-                  <span style="font-weight: bold">custom sheets</span>. After
-                  uploading the file will appear in the list.
-                </li>
-                <li>
-                  The template is now ready! When you select this modified file
-                  from the list, the system will replace the
-                  <span style="font-weight: bold">'Parkour'</span> sheet with
-                  updated data while keeping all additional sheets intact.
-                </li>
-              </ol>
+              <div class="tooltip-scroll">
+                <div class="tooltip-title">Export Guide</div>
+                <p class="tooltip-intro">
+                  Use export when you want to download the table data to Excel.
+                  You can export only the rows you selected, or the full filtered
+                  result set for the current page.
+                </p>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">Basic export choices</div>
+                  <ul class="tooltip-list">
+                    <li><strong>Export selected</strong> downloads only the rows you selected in the table.</li>
+                    <li><strong>Export all</strong> downloads the full result set for the current export view, based on
+                      the
+                      active search, date range, and filters.</li>
+                  </ul>
+                </section>
+                <section v-if="isStaffUser" class="tooltip-section">
+                  <div class="tooltip-section-title">How template files work</div>
+                  <ol class="tooltip-list tooltip-steps">
+                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the
+                      base
+                      Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
+                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or reporting.
+                    </li>
+                    <li>Upload the edited file here as a reusable template. It will appear in the list of available
+                      templates.</li>
+                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong>
+                      sheet
+                      with fresh data and keeps your extra sheets unchanged.</li>
+                  </ol>
+                </section>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">When to use this</div>
+                  <ul class="tooltip-list">
+                    <li>Download a snapshot of the current request data for sharing or offline review.</li>
+                    <li>Create staff-specific reporting templates with additional custom sheets.</li>
+                    <li>Reuse the same export structure whenever you need updated Parkour data in a familiar Excel
+                      layout.
+                    </li>
+                  </ul>
+                </section>
+              </div>
             </div>
           </span>
           <button class="popup-close-button" @click="showExportPopup = false">
@@ -713,7 +736,7 @@ import {
   librariesAndSamplesColumnDefs,
   librariesAndSamplesExportColumns
 } from "../constants/librariesAndSamplesConsts";
-import { statusMap } from "../constants/statusConsts";
+import { statusMap, getStatusClass } from "../constants/statusConsts";
 import RequestEditorView from "./requestEditorView.vue";
 import RequestActionsPopups from "../components/RequestActionsPopups.vue";
 import iconLibrariesHeader from "../assets/icons/header_libraries_samples.svg";
@@ -899,6 +922,7 @@ export default {
     }
   },
   methods: {
+    getStatusClass,
     async fetchStaffStatus() {
       try {
         const response = await axiosRef.get(
@@ -1121,7 +1145,7 @@ export default {
     },
     async getROCrateData({ barcodes = [], requestName = "" } = {}) {
       if (!Array.isArray(barcodes) || barcodes.length === 0) {
-        showNotification("Select records to download RO-Crate.", "warning");
+        showNotification("Select libraries/samples to download RO-Crate.", "warning");
         return;
       }
 
@@ -1134,15 +1158,11 @@ export default {
 
         const response = await axiosRef.get(
           `${urlStringStart}/api/generate_ro_crate/`,
-          { params }
+          {
+            params,
+            responseType: "blob"
+          }
         );
-
-        const dataStr = JSON.stringify(response.data, null, 2);
-        const blob = new Blob([dataStr], { type: "application/ld+json" });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = url;
         const sanitize = (value) =>
           String(value || "")
             .replace(/[^a-z0-9-_.]+/gi, "_")
@@ -1150,14 +1170,9 @@ export default {
             .replace(/^_|_$/g, "");
         const safeBarcodeName = sanitize(barcodes.join("_"));
         const filename = safeBarcodeName
-          ? `${safeBarcodeName}_ro_crate.jsonld`
-          : "ro_crate.jsonld";
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+          ? `${safeBarcodeName}_ro_crate.zip`
+          : "ro_crate.zip";
+        saveAs(response.data, filename);
 
         showNotification("RO-Crate downloaded successfully.", "success");
       } catch (error) {
@@ -1945,9 +1960,11 @@ export default {
             if (!group._group.visible) groupElement.click();
             break;
           }
-          await this.getROCrateData({
-            barcodes,
-            requestName
+          this.openRequestActionModal("downloadROCrate", {
+            id: requestId,
+            name: requestName,
+            selectedBarcodes: barcodes,
+            selectedType: type
           });
           if (!group._group.visible) groupElement.click();
           break;
@@ -2252,14 +2269,6 @@ body,
   position: relative;
 }
 
-html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
-  background-color: #eef7ff !important;
-}
-
-html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
-  background-color: #e6f2ff !important;
-}
-
 .search-bar {
   width: 330px;
   flex: 0 1 330px;
@@ -2331,12 +2340,6 @@ html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-appr
   font-size: 13px;
   line-height: 1.6;
   color: #4b5563;
-}
-
-.page-help-close {
-  color: #13415b;
-  font-size: 24px;
-  flex-shrink: 0;
 }
 
 .page-help-grid {
@@ -2487,10 +2490,15 @@ html body .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-appr
   background: #ffffff;
 }
 
-.status-help-code {
-  font-weight: 700;
-  color: #13415b;
-  text-align: center;
+.status-help-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-help-indicator .status {
+  width: 14px;
+  height: 14px;
 }
 
 .status-help-text {

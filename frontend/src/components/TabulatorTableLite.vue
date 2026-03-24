@@ -353,14 +353,22 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: white;
+  background-color: white !important;
   border-top: 1px solid #d0d0d0 !important;
   border-bottom: 1px solid #d0d0d0 !important;
   z-index: 20;
 }
 
 .lite-tabulator-table .tabulator-row.tabulator-group:hover {
-  background-color: white;
+  background-color: white !important;
+}
+
+.lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
+  background-color: #eef7ff !important;
+}
+
+.lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
+  background-color: #eef7ff !important;
 }
 
 .lite-tabulator-table .tabulator-row:hover .group-action-buttons-container {

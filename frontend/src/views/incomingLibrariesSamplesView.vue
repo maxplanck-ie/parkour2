@@ -355,35 +355,39 @@
           >
             ?
             <div v-if="showExportHelpTooltip" class="tooltip-box">
-              <span style="font-weight: bold">INSTRUCTIONS:</span>
-              <ol>
-                <li>
-                  To create custom templates, export the original sheet named
-                  <span style="font-weight: bold">'Parkour'</span> by selecting
-                  the
-                  <span style="font-weight: bold"
-                    >'Export without any additional sheets'</span
-                  >
-                  option.
-                </li>
-                <li>
-                  Add new custom sheets to this exported file, which will serve
-                  as templates.
-                </li>
-                <li>
-                  Upload the modified file, containing both the original
-                  <span style="font-weight: bold">'Parkour'</span> sheet and
-                  newly added
-                  <span style="font-weight: bold">custom sheets</span>. After
-                  uploading the file will appear in the list.
-                </li>
-                <li>
-                  The template is now ready! When you select this modified file
-                  from the list, the system will replace the
-                  <span style="font-weight: bold">'Parkour'</span> sheet with
-                  updated data while keeping all additional sheets intact.
-                </li>
-              </ol>
+              <div class="tooltip-scroll">
+                <div class="tooltip-title">Export Guide</div>
+                <p class="tooltip-intro">
+                  Use export when you want to download the table data to Excel.
+                  You can export only the rows you selected, or the full filtered
+                  result set for the current page.
+                </p>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">Basic export choices</div>
+                  <ul class="tooltip-list">
+                    <li><strong>Export selected</strong> downloads only the rows you selected in the table.</li>
+                    <li><strong>Export all</strong> downloads the full result set for the current export view.</li>
+                    <li>Use search and filters first if you want to narrow the exported dataset.</li>
+                  </ul>
+                </section>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">How template files work</div>
+                  <ol class="tooltip-list tooltip-steps">
+                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the base Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
+                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or reporting.</li>
+                    <li>Upload the edited file here as a reusable template. It will appear in the list of available templates.</li>
+                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong> sheet with fresh data and keeps your extra sheets unchanged.</li>
+                  </ol>
+                </section>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">When to use this</div>
+                  <ul class="tooltip-list">
+                    <li>Download a snapshot of the current data for review or sharing.</li>
+                    <li>Reuse a prepared Excel layout with additional custom sheets.</li>
+                    <li>Keep Parkour data up to date inside your existing reporting workbook.</li>
+                  </ul>
+                </section>
+              </div>
             </div>
           </span>
           <button class="popup-close-button" @click="showExportPopup = false">

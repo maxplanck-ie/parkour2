@@ -13,6 +13,7 @@ import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconAttachmentsAvailable from "../assets/icons/action_attachments_available.svg";
 import iconAttachmentsUnavailable from "../assets/icons/action_attachments_unavailable.svg";
+import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 
 const sortedStatusEntries = Object.entries(statusMap).sort(
   ([keyA], [keyB]) => Number(keyA) - Number(keyB)
@@ -148,7 +149,10 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${staffActions}
-      ${showStaffActions ? '<span class="group-action-separator"></span>' : ""}
+      <div title="Export RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
+        <img class="group-action-icon-img icon-24" src="${iconDownloadROCrate}" alt="Export RO-Crate" />
+      </div>
+      <span class="group-action-separator"></span>
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
       </div>

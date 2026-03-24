@@ -1,12 +1,17 @@
 import json
+from io import BytesIO
+from zipfile import ZipFile
 from unittest.mock import patch
+from django.core.files.base import ContentFile
+from request.models import FileRequest
 
 from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name, timezone
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from library.models import Library
+from library.models import CompleteLibraryData, Library
+from library_preparation.models import LibraryPreparation
 from library_sample_shared.models import (
     BarcodeCounter,
     IndexType,
@@ -15,7 +20,9 @@ from library_sample_shared.models import (
     Organism,
     ReadLength,
 )
+from pooling.models import Pooling
 from request.models import Request
+from sample.models import CompleteSampleData
 from sample.tests import create_sample
 
 User = get_user_model()
@@ -434,6 +441,45 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             return response.data
         return json.loads(response.content.decode("utf-8"))
 
+    def _graph_entry(self, payload, entity_id):
+        return next(
+            (entry for entry in payload["@graph"] if entry.get("@id") == entity_id),
+            {},
+        )
+
+    def _comment_names(self, entry):
+        names = {comment.get("name") for comment in entry.get("comments", [])}
+        names.update(
+            {
+                prop.get("name")
+                for prop in entry.get("additionalProperty", [])
+                if isinstance(prop, dict)
+            }
+        )
+        names.update(
+            {
+                prop.get("name")
+                for prop in entry.get("parameterValue", [])
+                if isinstance(prop, dict)
+            }
+        )
+        return names
+
+    def _ref_ids(self, value):
+        if isinstance(value, list):
+            return {item.get("@id") for item in value if isinstance(item, dict)}
+        if isinstance(value, dict):
+            return {value.get("@id")}
+        return set()
+
+    def _extract_zip_payload(self, response):
+        self.assertEqual(response["Content-Type"], "application/zip")
+        zip_buffer = BytesIO(response.content)
+        with ZipFile(zip_buffer, "r") as zip_file:
+            payload = json.loads(zip_file.read("ro-crate-metadata.json").decode("utf-8"))
+            archive_names = set(zip_file.namelist())
+        return payload, archive_names
+
     def test_requires_identifier_parameters(self):
         """Request must provide barcodes or request names."""
         response = self.client.get(reverse("generate-ro-crate-list"))
@@ -454,8 +500,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             reverse("generate-ro-crate-list"), {"barcodes": "UNKNOWN123"}
         )
         self.assertEqual(response.status_code, 200)
-        payload = self._parse_payload(response)
+        payload, archive_names = self._extract_zip_payload(response)
         self.assertIn("@graph", payload)
+        self.assertIn("ro-crate-metadata.json", archive_names)
 
         dataset_entry = next(
             (entry for entry in payload["@graph"] if entry.get("@id") == "./"), {}
@@ -478,17 +525,248 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             reverse("generate-ro-crate-list"), {"requests": self.request.name}
         )
         self.assertEqual(response.status_code, 200)
-        payload = self._parse_payload(response)
+        payload, archive_names = self._extract_zip_payload(response)
         self.assertIn("@graph", payload)
+        self.assertIn("ro-crate-metadata.json", archive_names)
 
         graph_ids = {entry.get("@id") for entry in payload["@graph"]}
         self.assertIn("./", graph_ids)
-        self.assertIn(f"#investigation-{self.request.id}", graph_ids)
+        self.assertIn(f"#study-{self.request.id}", graph_ids)
 
         dataset_entry = next(
             (entry for entry in payload["@graph"] if entry.get("@id") == "./"), {}
         )
+        self.assertEqual(dataset_entry.get("name"), self.request.name)
+        self.assertEqual(
+            dataset_entry.get("conformsTo"),
+            [
+                {
+                    "@id": "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile"
+                }
+            ],
+        )
         self.assertIn(
-            {"@id": f"#investigation-{self.request.id}"},
+            {"@id": f"#study-{self.request.id}"},
             dataset_entry.get("hasPart", []),
+        )
+        self.assertEqual(dataset_entry.get("creator"), {"@id": f"#person-{self.user.id}"})
+        self.assertEqual(dataset_entry.get("publisher"), {"@id": "#parkour-organization"})
+        self.assertIn(
+            "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile",
+            graph_ids,
+        )
+        self.assertIn("#ro-crate-export-action", {entry.get("@id") for entry in payload["@graph"]})
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_sample_export_keeps_model_and_mv_fields(self, mock_library_objects, mock_sample_objects):
+        mock_library_objects.filter.return_value = _MockQuerySet()
+        sample = create_sample("crate-sample")
+        self.request.samples.add(sample)
+        request_file = FileRequest.objects.create(name="req.txt")
+        request_file.file.save("req.txt", ContentFile(b"ro-crate test file"), save=True)
+        self.request.files.add(request_file)
+        LibraryPreparation.objects.create(
+            sample=sample,
+            starting_amount=12.5,
+            pcr_cycles=9,
+            concentration_library=3.2,
+            mean_fragment_size=280,
+        )
+        Pooling.objects.create(sample=sample, concentration_c1=4.4, comment="sample pool")
+
+        sample_mv = CompleteSampleData(
+            sample_id=sample.pk,
+            barcode=sample.barcode,
+            name=sample.name,
+            status=sample.status,
+            sequencing_depth=sample.sequencing_depth,
+            nucleic_acid_type_id=sample.nucleic_acid_type_id,
+            nucleic_acid_type_name=sample.nucleic_acid_type.name,
+            measuring_unit=sample.measuring_unit or "",
+            measured_value=sample.measured_value or 0,
+            measuring_unit_facility=sample.measuring_unit_facility or "",
+            measured_value_facility=sample.measured_value_facility or 0,
+            concentration_library=1.5,
+            gmo=False,
+            library_protocol_id=sample.library_protocol_id,
+            library_protocol_name=sample.library_protocol.name,
+            analysis_type_id=1,
+            analysis_type_name="RNA-seq",
+            read_length_id=sample.read_length_id,
+            read_length_name=sample.read_length.name,
+            average_fragment_size=250.0,
+            starting_amount=5.0,
+            pcr_cycles=8,
+            index_type_name=sample.index_type.name if sample.index_type else None,
+            coordinate="A1",
+            index_i7="ACGT",
+            i7_id="IDX7",
+            index_i5="TGCA",
+            i5_id="IDX5",
+            request_id=self.request.id,
+            request_name=self.request.name,
+            create_time=self.request.create_time,
+            pool_names=["Pool1"],
+            flowcell_ids=["FC1"],
+            sequencer_ids=[1],
+            sequencer_names=["Seq1"],
+        )
+        mock_sample_objects.filter.return_value = _MockQuerySet([sample_mv])
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"barcodes": sample.barcode}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload, archive_names = self._extract_zip_payload(response)
+
+        sample_entry = self._graph_entry(payload, f"#sample-material-{sample.pk}")
+        self.assertEqual(sample_entry.get("identifier"), sample.barcode)
+        self.assertIn({"@id": f"#source-sample-{sample.pk}"}, sample_entry.get("derivedFrom", []))
+        comment_names = self._comment_names(sample_entry)
+        self.assertIn("sample_db_name", comment_names)
+        self.assertIn("sample_db_barcode", comment_names)
+        self.assertIn("sample_mv_analysis_type_name", comment_names)
+        self.assertIn("sample_mv_pool_names", comment_names)
+        self.assertIn("sample_mv_sequencer_names", comment_names)
+        self.assertIn("sample_mv_flowcell_ids", comment_names)
+        self.assertIn("sample_mv_starting_amount", comment_names)
+        self.assertIn("sample_mv_pcr_cycles", comment_names)
+        self.assertIn("library_preparation_starting_amount", comment_names)
+        self.assertEqual(
+            sample_entry.get("nucleicAcidType"),
+            {"@id": f"#nucleic-acid-type-{sample.nucleic_acid_type_id}"},
+        )
+        self.assertEqual(
+            sample_entry.get("organism"),
+            {"@id": f"#organism-{sample.organism_id}"},
+        )
+        self.assertEqual(
+            sample_entry.get("libraryType"),
+            {"@id": f"#library-type-{sample.library_type_id}"},
+        )
+        process_entry = self._graph_entry(payload, f"#sample-process-{sample.pk}")
+        self.assertEqual(
+            process_entry.get("executesLabProtocol"),
+            {"@id": f"#protocol-{sample.library_protocol_id}"},
+        )
+        request_file_entity_id = next(
+            (
+                entry.get("@id")
+                for entry in payload["@graph"]
+                if entry.get("identifier") == f"urn:parkour:request-file:{request_file.pk}"
+            ),
+            None,
+        )
+        self.assertIsNotNone(request_file_entity_id)
+        request_file_entry = self._graph_entry(payload, request_file_entity_id)
+        self.assertEqual(request_file_entry.get("@type"), "MediaObject")
+        self.assertEqual(
+            request_file_entry.get("isPartOf"),
+            {"@id": "./"},
+        )
+        self.assertIn(request_file_entity_id, archive_names)
+        dataset_entry = self._graph_entry(payload, "./")
+        self.assertIn(
+            {"@id": request_file_entity_id},
+            dataset_entry.get("hasPart", []),
+        )
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_rejects_multi_request_selection(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        other_request = Request.objects.create(user=self.user)
+        mock_library_objects.filter.return_value = _MockQuerySet()
+        mock_sample_objects.filter.return_value = _MockQuerySet()
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"requests": f"{self.request.name},{other_request.name}"},
+        )
+        self.assertEqual(response.status_code, 400)
+        payload = self._parse_payload(response)
+        self.assertIn("exactly one request", payload.get("error", ""))
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_library_export_keeps_model_and_mv_fields(self, mock_library_objects, mock_sample_objects):
+        mock_sample_objects.filter.return_value = _MockQuerySet()
+        library = create_library("crate-library")
+        self.request.libraries.add(library)
+        Pooling.objects.create(library=library, concentration_c1=6.6, comment="library pool")
+
+        library_mv = CompleteLibraryData(
+            library_id=library.pk,
+            barcode=library.barcode,
+            name=library.name,
+            status=library.status,
+            sequencing_depth=library.sequencing_depth,
+            measuring_unit=library.measuring_unit or "",
+            measured_value=library.measured_value or 0,
+            measuring_unit_facility=library.measuring_unit_facility or "",
+            measured_value_facility=library.measured_value_facility or 0,
+            concentration_library=2.5,
+            percent_total=library.percent_total,
+            library_protocol_id=library.library_protocol_id,
+            library_protocol_name=library.library_protocol.name,
+            analysis_type_id=2,
+            analysis_type_name="WGS",
+            read_length_id=library.read_length_id,
+            read_length_name=library.read_length.name,
+            average_fragment_size=300.0,
+            index_type_name=library.index_type.name if library.index_type else None,
+            coordinate="B2",
+            index_i7="AAAA",
+            i7_id="LIDX7",
+            index_i5="CCCC",
+            i5_id="LIDX5",
+            request_id=self.request.id,
+            request_name=self.request.name,
+            create_time=self.request.create_time,
+            pool_names=["PoolA"],
+            flowcell_ids=["FC9"],
+            sequencer_ids=[9],
+            sequencer_names=["NovaSeq"],
+        )
+        mock_library_objects.filter.return_value = _MockQuerySet([library_mv])
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"barcodes": library.barcode}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload, _ = self._extract_zip_payload(response)
+
+        library_entry = self._graph_entry(payload, f"#library-material-{library.pk}")
+        self.assertEqual(library_entry.get("identifier"), library.barcode)
+        self.assertIn("library_db_name", self._comment_names(library_entry))
+
+        process_entry = self._graph_entry(payload, f"#library-process-{library.pk}")
+        process_comment_names = self._comment_names(process_entry)
+        self.assertIn("library_mv_status", process_comment_names)
+        self.assertIn("library_mv_analysis_type_name", process_comment_names)
+        self.assertIn("library_mv_pool_names", process_comment_names)
+        self.assertIn("library_mv_flowcell_ids", process_comment_names)
+        self.assertIn("library_mv_sequencer_names", process_comment_names)
+        self.assertIn("library_mv_percent_total", process_comment_names)
+        self.assertIn("library_mv_coordinate", process_comment_names)
+        self.assertIn("library_mv_i7_id", process_comment_names)
+        self.assertIn("library_mv_i5_id", process_comment_names)
+        self.assertIn("executesLabProtocol", process_entry)
+        self.assertEqual(
+            library_entry.get("organism"),
+            {"@id": f"#organism-{library.organism_id}"},
+        )
+        self.assertEqual(
+            library_entry.get("libraryType"),
+            {"@id": f"#library-type-{library.library_type_id}"},
+        )
+        self.assertEqual(
+            library_entry.get("readLength"),
+            {"@id": f"#read-length-{library.read_length_id}"},
+        )
+        self.assertEqual(
+            library_entry.get("indexType"),
+            {"@id": f"#index-type-{library.index_type_id}"},
         )
