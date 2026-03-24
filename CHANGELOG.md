@@ -4,6 +4,11 @@
 ========
 
 - ...
+
+26.03.23
+========
+
+- New UX, now Tabulator (and many of the features we added) will be facing all users. Including "Add Request" page.
 - Updated backend and frontend dependencies. Also, frontend container now uses node version 25 instead of 20, and is based on debian bullseye instead of bookworm.
 - Small bugfixes for old concentration field rename (at invoicing, report, and requestviewset!)
 - Meaningful read lengths for the new "Incoming" frontend.
