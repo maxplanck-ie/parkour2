@@ -11,8 +11,10 @@ from django.db.models.signals import (
     post_delete,
     post_save,
     pre_delete,
+    pre_save,
 )
 from django.dispatch import receiver
+from django.utils import timezone
 
 from common.mviews import refresh_batched
 
@@ -36,6 +38,9 @@ LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 Pooling = apps.get_model("pooling", "Pooling")
 
 DEFAULT_REFRESH_DELAY = 0.5
+
+QC_APPROVED_STATUS = 2
+FLOWCELL_LOADED_STATUS = 5
 
 
 def _normalize_ids(values: Iterable[int] | None) -> tuple[int, ...]:
@@ -85,6 +90,54 @@ def _queue_refresh(
         )
 
     transaction.on_commit(_callback)
+
+
+def _cache_previous_status(sender, instance) -> None:
+    if not instance.pk:
+        instance._previous_status = None
+        return
+
+    previous_status = (
+        sender.objects.filter(pk=instance.pk).values_list("status", flat=True).first()
+    )
+
+    instance._previous_status = previous_status
+
+
+@receiver(pre_save, sender=Library)
+@receiver(pre_save, sender=Sample)
+def cache_status_before_save(sender, instance, **kwargs):
+    _cache_previous_status(sender, instance)
+
+
+def _maybe_update_request_milestones(instance) -> None:
+    previous_status = getattr(instance, "_previous_status", None)
+    current_status = getattr(instance, "status", None)
+
+    if current_status not in (QC_APPROVED_STATUS, FLOWCELL_LOADED_STATUS):
+        return
+
+    if previous_status == current_status:
+        return
+
+    timestamp_field = (
+        "qc_completed_at"
+        if current_status == QC_APPROVED_STATUS
+        else "flowcell_loaded_at"
+    )
+
+    requests = list(
+        instance.request.all().only("id", "qc_completed_at", "flowcell_loaded_at")
+    )
+    if not requests:
+        return
+
+    event_time = timezone.now()
+    for request_obj in requests:
+        if getattr(request_obj, timestamp_field) is not None:
+            continue
+        setattr(request_obj, timestamp_field, event_time)
+        request_obj.save(update_fields=[timestamp_field])
 
 
 def _collect_request_dependencies(
@@ -292,6 +345,7 @@ def on_request_delete(sender, instance, **kwargs):
 @receiver(post_save, sender=Library)
 def on_library_save(sender, instance, **kwargs):
     _queue_refresh(library_ids=[instance.pk])
+    _maybe_update_request_milestones(instance)
 
 
 @receiver(post_delete, sender=Library)
@@ -303,6 +357,7 @@ def on_library_delete(sender, instance, **kwargs):
 @receiver(post_save, sender=Sample)
 def on_sample_save(sender, instance, **kwargs):
     _queue_refresh(sample_ids=[instance.pk])
+    _maybe_update_request_milestones(instance)
 
 
 @receiver(post_delete, sender=Sample)
