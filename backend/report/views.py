@@ -56,6 +56,10 @@ class Report:
             )
             .only(
                 "id",
+                "name",
+                "create_time",
+                "qc_completed_at",
+                "flowcell_loaded_at",
                 "libraries",
                 "samples",
                 "user__organization__name",
@@ -358,6 +362,20 @@ class Report:
         return sorted(data, key=lambda x: x["name"])
 
 
+def format_turnaround(delta):
+    """Return turnaround as hours (float) rounded to two decimals."""
+
+    if not delta:
+        return None
+
+    total_seconds = delta.total_seconds()
+    if total_seconds <= 0:
+        return None
+
+    hours = total_seconds / 3600
+    return round(hours, 2)
+
+
 @login_required
 @staff_member_required
 def report(request):
@@ -410,8 +428,6 @@ def report(request):
     data["libraries_on_sequencers_count"] = report.get_pi_sequencer_counts()
 
     # Count days
-    # data["turnaround"] = report.get_turnaround()
-
     return render(request, "report.html", data)
 
 
@@ -532,18 +548,29 @@ def report_xlsx(request):
         if sequencing_date:
             sequencing_date = timezone.localtime(sequencing_date).replace(tzinfo=None)
 
+        qc_completed_at = getattr(req, "qc_completed_at", None)
+        flowcell_loaded_at = getattr(req, "flowcell_loaded_at", None)
+        turnaround_value = np.nan
+        if qc_completed_at and flowcell_loaded_at:
+            formatted_turnaround = format_turnaround(
+                flowcell_loaded_at - qc_completed_at
+            )
+            if formatted_turnaround is not None:
+                turnaround_value = formatted_turnaround
+
         rows.append(
             {
                 "Request ID": req.id,
                 "Request Name": getattr(req, "name", "") or "",
                 "Submission Date": submission_date,
                 "Sequencing Date": sequencing_date,
+                "Turnaround": turnaround_value,
                 "Number of records": record_count,
                 "Library Preparation Protocol": serialize_counter(protocol_counter),
                 "Sequencing depth (per request)": sequencing_depth,
                 "Pool ID": serialize_counter(pool_counter),
                 "Sequencing device": serialize_counter(sequencer_counter),
-            }
+            },
         )
 
     columns = [
@@ -551,6 +578,7 @@ def report_xlsx(request):
         "Request Name",
         "Submission Date",
         "Sequencing Date",
+        "Turnaround",
         "Number of records",
         "Library Preparation Protocol",
         "Sequencing depth (per request)",
