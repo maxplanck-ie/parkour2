@@ -286,7 +286,11 @@ def _merge_ref_property(entity, key, refs):
         existing_refs = [existing]
     elif isinstance(existing, list):
         existing_refs = existing
-    _set_ref_property(entity, key, existing_refs + (refs or []))
+    deduped_refs = _deduplicate_ref_list(existing_refs + (refs or []))
+    if not deduped_refs:
+        entity.pop(key, None)
+        return
+    entity[key] = deduped_refs
 
 
 def _annotation_to_schema_value(value):
