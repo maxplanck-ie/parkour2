@@ -1,5 +1,7 @@
 import json
 import tempfile
+from datetime import timedelta
+from unittest.mock import patch
 
 from common.models import Organization, PrincipalInvestigator
 from common.tests import BaseTestCase
@@ -8,6 +10,7 @@ from django.contrib.auth import get_user_model
 
 # from django.core.files.base import ContentFile
 from django.test import TestCase
+from django.utils import timezone
 from library.tests import create_library
 from sample.tests import create_sample
 
@@ -103,6 +106,67 @@ class FileRequestTest(TestCase):
     def test_file_name(self):
         self.assertTrue(isinstance(self.file, FileRequest))
         self.assertEqual(self.file.__str__(), self.file.name)
+
+
+class RequestMilestoneSignalsTest(TestCase):
+    def setUp(self):
+        self.org = Organization(name=get_random_name())
+        self.org.save()
+
+        self.pi = PrincipalInvestigator(
+            name=get_random_name(),
+            organization=self.org,
+        )
+        self.pi.save()
+
+        self.user = User.objects.create_user(
+            first_name="Foo",
+            last_name="Bar",
+            email="foo@bar.io",
+            password="foo-foo",
+            organization=self.org,
+            pi=self.pi,
+        )
+
+        self.request = Request(user=self.user)
+        self.request.save()
+
+        self.library = create_library(get_random_name())
+        self.sample = create_sample(get_random_name())
+        self.request.libraries.add(self.library)
+        self.request.samples.add(self.sample)
+
+    def test_qc_timestamp_set_once(self):
+        first_event_time = timezone.now()
+
+        with patch("request.signals.timezone.now", return_value=first_event_time):
+            self.library.status = 2
+            self.library.save()
+
+        self.request.refresh_from_db()
+        self.assertEqual(self.request.qc_completed_at, first_event_time)
+
+        later_event_time = first_event_time + timedelta(hours=1)
+        with patch("request.signals.timezone.now", return_value=later_event_time):
+            self.sample.status = 2
+            self.sample.save()
+
+        self.request.refresh_from_db()
+        self.assertEqual(
+            self.request.qc_completed_at,
+            first_event_time,
+            "QC milestone should only be set by the first record reaching status 2",
+        )
+
+    def test_flowcell_timestamp_from_status_five(self):
+        sequencing_time = timezone.now()
+
+        with patch("request.signals.timezone.now", return_value=sequencing_time):
+            self.sample.status = 5
+            self.sample.save()
+
+        self.request.refresh_from_db()
+        self.assertEqual(self.request.flowcell_loaded_at, sequencing_time)
 
 
 # Views

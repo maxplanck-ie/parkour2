@@ -8,6 +8,7 @@ misc/ollama/
 *_dumps/
 rsnapshot/
 *.swp
+.venv/
 env/
 env_*/
 sencha-error-*.log
