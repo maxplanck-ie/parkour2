@@ -823,13 +823,19 @@ export default {
           totalDepth = Number(totalDepth.toFixed(1));
 
           const requestDate = rows[0]?.create_time ?? "";
-          const protocolLabel = [
+          const protocolNames = [
             ...new Set(
               rows
                 .map((row) => String(row.library_protocol_name || "").trim())
                 .filter(Boolean)
             )
-          ].join(" / ");
+          ];
+          const protocolLabel =
+            protocolNames.length === 1
+              ? `Protocol: ${protocolNames[0]}`
+              : protocolNames.length > 1
+                ? `${protocolNames.length} Protocols`
+                : "";
           const requiresApproval =
             rows.length > 0 && rows.every((row) => Number(row.status) === 0);
           const requestId = rows[0]?.request_id;
