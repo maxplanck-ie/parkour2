@@ -797,9 +797,10 @@ export default {
           { column: "barcode", dir: "asc" }
         ],
         groupHeader: (value, count, data) => {
+          const rows = Array.isArray(data) ? data : [];
           const uniqueTypes = [
             ...new Set(
-              data
+              rows
                 .map((item) =>
                   String(item.type || "")
                     .trim()
@@ -814,14 +815,21 @@ export default {
                 ? "Libraries"
                 : "Samples"
               : "Libraries/Samples";
-          let totalDepth = data.reduce(
+          let totalDepth = rows.reduce(
             (sum, row) => sum + (row.sequencing_depth || 0),
             0
           );
 
           totalDepth = Number(totalDepth.toFixed(1));
 
-          const rows = Array.isArray(data) ? data : [];
+          const requestDate = rows[0]?.create_time ?? "";
+          const protocolLabel = [
+            ...new Set(
+              rows
+                .map((row) => String(row.library_protocol_name || "").trim())
+                .filter(Boolean)
+            )
+          ].join(" / ");
           const requiresApproval =
             rows.length > 0 && rows.every((row) => Number(row.status) === 0);
           const requestId = rows[0]?.request_id;
@@ -839,6 +847,8 @@ export default {
             countLabel,
             totalDepth,
             {
+              requestDate,
+              protocolLabel,
               showStaffActions: this.isStaffUser,
               showSolicitApproval: requiresApproval && this.paperlessApproval,
               allowDelete,

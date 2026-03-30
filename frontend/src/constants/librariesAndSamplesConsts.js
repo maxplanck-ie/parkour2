@@ -91,11 +91,18 @@ export function librariesAndSamplesGroupHeader(
   options = {}
 ) {
   const {
+    requestDate = "",
+    protocolLabel = "",
     showStaffActions = false,
     allowDelete = true,
     showApprovalTag = false,
     hasAttachments = false
   } = options;
+
+  const headerValue = requestDate ? `${requestDate} | ${value}` : value;
+  const metadata = `#: ${count} ${countLabel}, Total Depth: ${totalDepth}${
+    protocolLabel ? `, ${protocolLabel}` : ""
+  }`;
 
   const staffActions = showStaffActions
     ? `
@@ -133,9 +140,9 @@ export function librariesAndSamplesGroupHeader(
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <div style="display: flex; align-items: center; gap: 8px;">
         ${approvalRowMarker}
-        <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
+        <span style="font-weight: bold; font-size: 12px; color: #333;">${headerValue}</span>
         <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-          (#: ${count} ${countLabel}, Total Depth: ${totalDepth})
+          (${metadata})
         </span>
         ${approvalTag}
         <div title="Attachments" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'attachments')">
