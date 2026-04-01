@@ -6,6 +6,7 @@ Ext.define("MainHub.view.main.Main", {
     "Ext.tab.Panel",
     "MainHub.view.main.MainController",
     "MainHub.view.main.MainContainerWrap",
+    "MainHub.view.notfoundvue.NotFoundVue",
     "MainHub.view.librariesvue.LibrariesVue",
     "MainHub.view.incominglibrariesvue.IncomingLibrariesVue",
     "MainHub.view.indexgenerator.IndexGenerator",

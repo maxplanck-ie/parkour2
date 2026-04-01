@@ -303,14 +303,14 @@ Ext.define("MainHub.view.main.MainController", {
         (store.findNode("routeId", hashTag) ||
           store.findNode("viewType", hashTag))) ||
       null;
-    view = (node && node.get("viewType")) || "page404";
+    view = (node && node.get("viewType")) || "not-found-vue";
     lastView = me.lastView;
     existingItem = mainCard.child("component[routeId=" + hashTag + "]");
 
     // Set Page Title
     document.title = node
       ? baseTitle + " | " + node.data.text
-      : baseTitle;
+      : baseTitle + " | 404";
 
     // Kill any previously routed window
     if (lastView && lastView.isWindow) {
@@ -322,6 +322,7 @@ Ext.define("MainHub.view.main.MainController", {
     if (!existingItem) {
       newView = Ext.create({
         xtype: view,
+        missingRoute: "#" + hashTag,
         routeId: hashTag, // for existingItem search later
         hideMode: "offsets"
       });

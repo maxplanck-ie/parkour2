@@ -5,6 +5,7 @@ import librariesAndSamples from "../views/librariesAndSamplesView.vue";
 import IncomingLibrariesSamples from "../views/incomingLibrariesSamplesView.vue";
 import libraryPreparation from "../views/libraryPreparationView.vue";
 import pooling from "../views/poolingView.vue";
+import notFoundView from "../views/notFoundView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,18 @@ const router = createRouter({
           path: "Pooling",
           name: "Pooling",
           component: pooling
+        },
+        {
+          path: "not-found",
+          name: "Page Not Found",
+          component: notFoundView
+        },
+        {
+          path: ":pathMatch(.*)*",
+          meta: {
+            title: "Page Not Found"
+          },
+          component: notFoundView
         }
       ]
     }
@@ -44,7 +57,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = "Parkour LIMS | " + to.name;
+  document.title = "Parkour LIMS | " + (to.name || to.meta.title || "Page");
   next();
 });
 
