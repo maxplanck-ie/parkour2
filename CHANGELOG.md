@@ -5,6 +5,16 @@
 
 - ...
 
+
+26.04.01
+========
+
+- If anything goes wrong with this version we'll just pretend it was an April's Fool joke.
+- Improvements, bugfixes and refined UX for the new frontend.
+- L/S page now shows date of Request creation, among other cosmetic changes in the header (e.g. showing Creation Date and Protocols.)
+- Requests now track when their first S/L was approved on QC, or loaded on a Flowcell.
+
+
 26.03.23
 ========
 
@@ -16,6 +26,7 @@
 - Updated fixtures.
 - Support for any number of cells (e.g. Morula)
 - All emails sent by Django have a copy to `settings.SENDER_EMAIL` so that their webmail app has a copy. It is highly recommended that such account has a filter to messages with the subject "[ Parkour2 | x ]" where `x` can be: "pending approval", "request approved", or "new message".
+
 
 25.12.02
 ========
