@@ -67,13 +67,6 @@ def get_navigation_tree(request):
 
     data = [
         {
-            "text": "Requests",
-            "iconCls": "x-fa fa-file-text",
-            "viewType": "requests",
-            "leaf": True,
-            "hidden": True,
-        },
-        {
             "text": "Libraries & Samples",
             "iconCls": "x-fa fa-flask",
             "viewType": "libraries-vue",

@@ -16,6 +16,15 @@ Ext.define("MainHub.view.main.MainController", {
 
   lastView: null,
 
+  disabledRoutes: {
+    requests: "libraries-vue",
+    libraries: "libraries-vue",
+    "incoming-libraries": "incoming-libraries-vue",
+    preparation: "library-preparation-vue",
+    "library-preparation": "library-preparation-vue",
+    pooling: "pooling-vue"
+  },
+
   onMainViewRender: function () {
     var me = this;
     me.ensureTopNavStyles();
@@ -268,20 +277,35 @@ Ext.define("MainHub.view.main.MainController", {
     hashTag = (hashTag || "").toLowerCase();
 
     var me = this,
-      refs = me.getReferences(),
-      mainCard = refs.mainCardPanel,
-      mainLayout = mainCard.getLayout(),
-      store = Ext.getStore("NavigationTree"),
-      node =
-        (store &&
-          (store.findNode("routeId", hashTag) ||
-            store.findNode("viewType", hashTag))) ||
-        null,
-      view = (node && node.get("viewType")) || "page404",
-      lastView = me.lastView,
-      existingItem = mainCard.child("component[routeId=" + hashTag + "]"),
+      fallbackRoute = me.disabledRoutes[hashTag],
+      refs,
+      mainCard,
+      mainLayout,
+      store,
+      node,
+      view,
+      lastView,
+      existingItem,
       baseTitle = "Parkour LIMS",
       newView;
+
+    if (fallbackRoute) {
+      me.redirectTo(fallbackRoute);
+      return;
+    }
+
+    refs = me.getReferences();
+    mainCard = refs.mainCardPanel;
+    mainLayout = mainCard.getLayout();
+    store = Ext.getStore("NavigationTree");
+    node =
+      (store &&
+        (store.findNode("routeId", hashTag) ||
+          store.findNode("viewType", hashTag))) ||
+      null;
+    view = (node && node.get("viewType")) || "page404";
+    lastView = me.lastView;
+    existingItem = mainCard.child("component[routeId=" + hashTag + "]");
 
     // Set Page Title
     document.title = node

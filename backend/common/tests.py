@@ -126,4 +126,4 @@ class NavigationTreeTest(TestCase):
         ]
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(tabs, ["Requests", "Libraries & Samples"])
+        self.assertEqual(tabs, ["Libraries & Samples"])
