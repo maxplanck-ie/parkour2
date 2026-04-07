@@ -1,5 +1,6 @@
 import json
 from collections import Counter, OrderedDict, defaultdict
+from decimal import Decimal
 
 import numpy as np
 from django.apps import apps
@@ -611,6 +612,24 @@ def database(request):
 @login_required
 @staff_member_required
 def database_data(request):
+    def stringify_measurement_value(value):
+        if value is None:
+            return ""
+        if isinstance(value, Decimal):
+            normalized = value.normalize()
+            value_str = format(normalized, "f").rstrip("0").rstrip(".")
+            return value_str or "0"
+        if isinstance(value, (int, float)):
+            return f"{value:g}"
+        return str(value)
+
+    def format_measurement(value, unit):
+        value_part = stringify_measurement_value(value)
+        unit_part = unit or ""
+        if value_part and unit_part:
+            return f"{value_part} {unit_part}"
+        return value_part or unit_part
+
     with connection.cursor() as c:
         query = QUERY.format(
             table_name="library",
@@ -632,6 +651,26 @@ def database_data(request):
         columns = [col[0] for col in c.description]
         samples = [dict(zip(columns, row)) for row in c.fetchall()]
 
+    for record in libraries:
+        record["Concentration"] = format_measurement(
+            record.pop("Measured Value", None),
+            record.pop("Measuring Unit", None),
+        )
+        record["Concentration (Facility)"] = format_measurement(
+            record.pop("Measured Value (Facility)", None),
+            record.pop("Measuring Unit (Facility)", None),
+        )
+
+    for record in samples:
+        record["Concentration"] = format_measurement(
+            record.pop("Measured Value", None),
+            record.pop("Measuring Unit", None),
+        )
+        record["Concentration (Facility)"] = format_measurement(
+            record.pop("Measured Value (Facility)", None),
+            record.pop("Measuring Unit (Facility)", None),
+        )
+
     data = sorted(
         libraries + samples,
         key=lambda x: (
@@ -651,7 +690,6 @@ def database_data(request):
         "Concentration",
         "Sequencing Depth",
         "Read Length",
-        "Concentration Method",
         "Equal Representation of Nucleotides",
         "Index Type",
         "Index Reads",
@@ -665,7 +703,6 @@ def database_data(request):
         "Sample Volume (Facility)",
         "Amount (Facility)",
         "Size Distribution (Facility)",
-        "Concentration Method (Facility)",
         "RNA Quality (Facility)",
         "Organism",
         "Concentration C1",

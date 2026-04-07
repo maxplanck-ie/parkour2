@@ -29,16 +29,18 @@ FROM (
     SELECT record.id AS t1_id,
         record.name AS "Name",
         record.barcode AS "Barcode",
-        record.status AS "Status",
-        record.concentration AS "Concentration",
-        record.sequencing_depth AS "Sequencing Depth",
-        record.equal_representation_nucleotides AS "Equal Representation of Nucleotides",
+    record.status AS "Status",
+    record.measured_value AS "Measured Value",
+    record.measuring_unit AS "Measuring Unit",
+    record.sequencing_depth AS "Sequencing Depth",
+    record.removed_equal_representation_nucleotides AS "Equal Representation of Nucleotides",
         record.index_reads AS "Index Reads",
         record.index_i7 AS "Index I7",
         record.index_i5 AS "Index I5",
-        record.amplification_cycles AS "Amplification Cycles",
-        record.dilution_factor AS "Dilution Factor",
-        record.concentration_facility AS "Concentration (Facility)",
+    record.removed_amplification_cycles AS "Amplification Cycles",
+    record.removed_dilution_factor AS "Dilution Factor",
+    record.measured_value_facility AS "Measured Value (Facility)",
+    record.measuring_unit_facility AS "Measuring Unit (Facility)",
         record.sample_volume_facility AS "Sample Volume (Facility)",
         record.amount_facility AS "Amount (Facility)",
         record.size_distribution_facility AS "Size Distribution (Facility)",
@@ -72,9 +74,7 @@ FROM (
         lt.name AS "Library Type",
         o.name AS "Organism",
         rl.name AS "Read Length",
-        cm.name AS "Concentration Method",
         it.name AS "Index Type",
-        cmf.name AS "Concentration Method (Facility)",
         pooling.concentration_c1 AS "Concentration C1",
         p.name AS "Pool",
         concat(psize.multiplier, 'x', psize.size) AS "Pool Size",
@@ -105,12 +105,6 @@ FROM (
 
     LEFT JOIN library_sample_shared_readlength as rl
         ON record.read_length_id = rl.id
-
-    LEFT JOIN library_sample_shared_concentrationmethod as cm
-        ON record.concentration_method_id = cm.id
-
-    LEFT JOIN library_sample_shared_concentrationmethod as cmf
-        ON record.concentration_method_facility_id = cmf.id
 
     LEFT JOIN library_sample_shared_indextype as it
         ON record.index_type_id = it.id
