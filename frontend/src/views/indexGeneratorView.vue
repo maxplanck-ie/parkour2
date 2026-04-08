@@ -144,7 +144,7 @@
       ></div>
 
       <section class="panel right-panel">
-        <h3>Pool (total size: {{ totalDepth }} M)</h3>
+        <h3>Pool (total size: {{ totalDepthRounded }} M)</h3>
         <div class="table-scroll">
           <table>
             <thead>
@@ -178,7 +178,7 @@
         </div>
 
         <div class="balance-block">
-          <h4>Color Balance (I7)</h4>
+          <h4>Color Balance (i7)</h4>
           <div class="balance-grid">
             <span
               v-for="item in i7Balance"
@@ -191,7 +191,7 @@
         </div>
 
         <div class="balance-block">
-          <h4>Color Balance (I5)</h4>
+          <h4>Color Balance (i5)</h4>
           <div class="balance-grid">
             <span
               v-for="item in i5Balance"
@@ -258,6 +258,9 @@ export default {
         (sum, row) => sum + Number(row.sequencing_depth || 0),
         0
       );
+    },
+    totalDepthRounded() {
+      return (Math.round(this.totalDepth * 10) / 10).toFixed(1);
     },
     i7Balance() {
       return this.computeColorBalance("index_i7", 12);
