@@ -286,9 +286,9 @@ class TestRecordsList(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         records = [x["name"] for x in response.json()]
         self.assertIn(library1.name, records)
+        self.assertIn(library3.name, records)
         self.assertIn(sample1.name, records)
         self.assertNotIn(library2.name, records)
-        self.assertNotIn(library3.name, records)
         self.assertNotIn(sample2.name, records)
 
     def test_get_libraries_and_samples_list_non_staff(self):
@@ -1258,11 +1258,11 @@ class TestIndexGenerator(BaseTestCase):
         self.assertFalse(data["success"])
         self.assertEqual(data["message"], "Invalid Pool Size id.")
 
-    def test_save_pool_missing_index_i7(self):
+    def test_save_pool_single_record_missing_indices_allowed(self):
         sample = create_sample(
             get_random_name(),
             read_length=self.read_length,
-            index_type=self.index_type1,
+            index_type=self.index_type2,
         )
 
         response = self.client.post(
@@ -1282,12 +1282,54 @@ class TestIndexGenerator(BaseTestCase):
         )
 
         data = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
+
+    def test_save_pool_multiple_records_missing_index_i7(self):
+        sample1 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type1,
+        )
+        sample2 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type1,
+        )
+
+        response = self.client.post(
+            "/api/index_generator/save_pool/",
+            {
+                "pool_size_id": self.pool_size.pk,
+                "samples": json.dumps(
+                    [
+                        {
+                            "pk": sample1.pk,
+                            "index_i7": "",
+                            "index_i5": "",
+                        },
+                        {
+                            "pk": sample2.pk,
+                            "index_i7": INDICES_1[0].index,
+                            "index_i5": "",
+                        },
+                    ]
+                ),
+            },
+        )
+
+        data = response.json()
         self.assertEqual(response.status_code, 400)
         self.assertFalse(data["success"])
-        self.assertEqual(data["message"], f'Index I7 is not set for "{sample.name}".')
+        self.assertEqual(data["message"], f'Index I7 is not set for "{sample1.name}".')
 
-    def test_save_pool_missing_index_i5(self):
-        sample = create_sample(
+    def test_save_pool_multiple_records_missing_index_i5(self):
+        sample1 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
+        )
+        sample2 = create_sample(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type2,
@@ -1300,10 +1342,15 @@ class TestIndexGenerator(BaseTestCase):
                 "samples": json.dumps(
                     [
                         {
-                            "pk": sample.pk,
+                            "pk": sample1.pk,
                             "index_i7": INDICES_2[0].index,
                             "index_i5": "",
-                        }
+                        },
+                        {
+                            "pk": sample2.pk,
+                            "index_i7": INDICES_2[1].index,
+                            "index_i5": INDICES_3[1].index,
+                        },
                     ]
                 ),
             },
@@ -1312,7 +1359,34 @@ class TestIndexGenerator(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 400)
         self.assertFalse(data["success"])
-        self.assertEqual(data["message"], f'Index I5 is not set for "{sample.name}".')
+        self.assertEqual(data["message"], f'Index I5 is not set for "{sample1.name}".')
+
+    def test_save_pool_single_library_missing_index_allowed(self):
+        library = create_library(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type1,
+        )
+
+        response = self.client.post(
+            "/api/index_generator/save_pool/",
+            {
+                "pool_size_id": self.pool_size.pk,
+                "libraries": json.dumps(
+                    [
+                        {
+                            "pk": library.pk,
+                            "index_i7": "",
+                            "index_i5": "",
+                        }
+                    ]
+                ),
+            },
+        )
+
+        data = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data["success"])
 
     # Test data validation
 

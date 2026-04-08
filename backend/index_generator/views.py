@@ -94,11 +94,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                 "index_type__indices_i7",
                 "index_type__indices_i5",
             )
-            .filter(
-                Q(is_pooled=False)
-                & Q(index_i7__isnull=False)
-                & (Q(status=2) | Q(status=-2))
-            )
+            .filter(Q(is_pooled=False) & (Q(status=2) | Q(status=-2)))
             .only(
                 "id",
                 "name",
@@ -197,6 +193,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
 
             library_ids = [x["pk"] for x in libraries]
             sample_ids = [x["pk"] for x in samples]
+            total_records = len(libraries) + len(samples)
 
             # Check all indices on uniqueness
             pairs = list(
@@ -206,16 +203,33 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                 raise ValueError("Some of the indices are not unique.")
 
             try:
+                for l in libraries:
+                    library = Library.objects.get(pk=l["pk"])
+                    dual = library.index_type and library.index_type.is_dual
+                    index_i7 = l["index_i7"]
+                    index_i5 = l["index_i5"]
+
+                    if total_records > 1 and index_i7 == "":
+                        raise ValueError(f'Index I7 is not set for "{library.name}".')
+
+                    if total_records > 1 and dual and index_i5 == "":
+                        raise ValueError(f'Index I5 is not set for "{library.name}".')
+
+                    # Update library fields
+                    library.index_i7 = index_i7
+                    library.index_i5 = index_i5
+                    library.save(update_fields=["index_i7", "index_i5"])
+
                 for s in samples:
                     sample = Sample.objects.get(pk=s["pk"])
                     dual = sample.index_type.is_dual
                     index_i7 = s["index_i7"]
                     index_i5 = s["index_i5"]
 
-                    if index_i7 == "":
+                    if total_records > 1 and index_i7 == "":
                         raise ValueError(f'Index I7 is not set for "{sample.name}".')
 
-                    if dual and index_i5 == "":
+                    if total_records > 1 and dual and index_i5 == "":
                         raise ValueError(f'Index I5 is not set for "{sample.name}".')
 
                     # Update sample fields
