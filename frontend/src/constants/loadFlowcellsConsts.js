@@ -114,7 +114,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
     {
-      title: "Length",
+      title: "Read Length",
       field: "read_length_name",
       minWidth: 100,
       headerFilter: true,
@@ -146,7 +146,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
     {
-      title: "Library protocol",
+      title: "Library Protocol",
       field: "protocol",
       minWidth: 150,
       headerFilter: true,
@@ -154,7 +154,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       formatter: (cell) => ellipsisContainer(cell.getValue() || "-")
     },
     {
-      title: "Loading Conc.",
+      title: "Loading Concentration",
       field: "loading_concentration",
       minWidth: 110,
       width: 120,
@@ -217,7 +217,7 @@ export const loadFlowcellsExportColumns = [
   { header: "Index I7", key: "index_i7_show", width: 14 },
   { header: "Index I5", key: "index_i5_show", width: 14 },
   { header: "Sequencer", key: "sequencer_name", width: 16 },
-  { header: "Library protocol", key: "protocol", width: 24 },
+  { header: "Library Protocol", key: "protocol", width: 24 },
   { header: "Loading Concentration", key: "loading_concentration", width: 18 },
   { header: "PhiX %", key: "phix", width: 10 }
 ];

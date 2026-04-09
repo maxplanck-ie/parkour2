@@ -1,10 +1,42 @@
 <svg fill="none" width="42px" height="42px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <path opacity="0.3" d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V8H4V6Z" fill="#323232" />
-  <path opacity="0.3" d="M4 10H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V10Z" fill="#323232" />
-  <path d="M4 8H20" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-  <path d="M8 4V20" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-  <path d="M16 4V20" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-  <path d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-  <path d="M12 11V16" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-  <path d="M10 14L12 16L14 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path
+    opacity="0.3"
+    d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V19C19 20.1046 18.1046 21 17 21H7C5.89543 21 5 20.1046 5 19V5Z"
+    fill="#323232"
+  />
+  <rect
+    x="5"
+    y="3"
+    width="14"
+    height="18"
+    rx="2"
+    stroke="white"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M8 8H16"
+    stroke="white"
+    stroke-width="1.5"
+    stroke-linecap="round"
+  />
+  <path
+    d="M8 12H16"
+    stroke="white"
+    stroke-width="1.5"
+    stroke-linecap="round"
+  />
+  <path
+    d="M12 15V18"
+    stroke="white"
+    stroke-width="1.5"
+    stroke-linecap="round"
+  />
+  <path
+    d="M10.5 16.5L12 18L13.5 16.5"
+    stroke="white"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
 </svg>

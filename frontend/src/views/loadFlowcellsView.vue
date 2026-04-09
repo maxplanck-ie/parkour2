@@ -100,17 +100,6 @@
       <button class="header-button secondary-action" @click="downloadSampleSheet">
         Download Sample Sheet
       </button>
-      <div style="flex: 1"></div>
-      <button class="header-button secondary-action" @click="cancelPendingChanges">
-        Cancel
-      </button>
-      <button
-        class="header-button"
-        :disabled="pendingLaneChangesCount === 0"
-        @click="savePendingChanges"
-      >
-        Save
-      </button>
     </div>
 
     <div
@@ -636,6 +625,8 @@ export default {
         groupHeader: (value, count, data) => loadFlowcellsGroupHeader(value, data)
       },
       pendingLaneChanges: {},
+      pendingEditTimer: null,
+      isSavingEdits: false,
       originalLaneStateByPk: {},
       showPageHelp: false,
       showExportPopup: false,
@@ -695,9 +686,6 @@ export default {
     selectedRows() {
       return this.flowcellsList.filter((row) => row.selected);
     },
-    pendingLaneChangesCount() {
-      return Object.keys(this.pendingLaneChanges).length;
-    },
     currentLoadSequencer() {
       return (
         this.sequencersList.find(
@@ -742,6 +730,9 @@ export default {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
   beforeDestroy() {
+    if (this.pendingEditTimer) {
+      clearTimeout(this.pendingEditTimer);
+    }
     window.handleGroupButtonClick = null;
   },
   methods: {
@@ -983,30 +974,57 @@ export default {
       if (Object.keys(this.pendingLaneChanges[pk]).length === 1) {
         delete this.pendingLaneChanges[pk];
       }
+      this.scheduleBatchSave();
     },
-    async savePendingChanges() {
-      const payloadRows = Object.values(this.pendingLaneChanges);
-      if (payloadRows.length === 0) {
-        showNotification("There are no pending changes to save.", "info");
+    scheduleBatchSave() {
+      if (this.pendingEditTimer) {
+        clearTimeout(this.pendingEditTimer);
+      }
+      this.pendingEditTimer = setTimeout(() => {
+        this.flushPendingEdits();
+      }, 300);
+    },
+    async flushPendingEdits() {
+      if (this.isSavingEdits) {
         return;
       }
+      const pending = Object.values(this.pendingLaneChanges);
+      if (pending.length === 0) return;
 
-      this.fakeLoadingStart();
+      this.pendingLaneChanges = {};
+      this.isSavingEdits = true;
+
       try {
         await axiosRef.post(`${urlStringStart}/api/flowcells/edit/`, {
-          data: JSON.stringify(payloadRows)
+          data: JSON.stringify(pending)
         });
-        showNotification("Flowcell lanes updated successfully.", "success");
-        await this.getFlowcells();
+
+        pending.forEach((change) => {
+          const original = this.originalLaneStateByPk[change.pk] || {};
+          Object.keys(change).forEach((field) => {
+            if (field !== "pk") {
+              original[field] = change[field];
+            }
+          });
+          this.originalLaneStateByPk[change.pk] = original;
+        });
       } catch (error) {
+        pending.forEach((change) => {
+          const existing = this.pendingLaneChanges[change.pk] || { pk: change.pk };
+          Object.keys(change).forEach((field) => {
+            if (field !== "pk") {
+              existing[field] = change[field];
+            }
+          });
+          this.pendingLaneChanges[change.pk] = existing;
+        });
         handleError(error);
       } finally {
-        this.fakeLoadingStop();
+        this.isSavingEdits = false;
+        if (Object.keys(this.pendingLaneChanges).length > 0) {
+          this.flushPendingEdits();
+        }
       }
-    },
-    async cancelPendingChanges() {
-      await this.getFlowcells();
-      showNotification("Unsaved lane changes were discarded.", "info");
     },
     async downloadBlob(url, payload, fallbackFilename) {
       const response = await axiosRef.post(url, payload, {
