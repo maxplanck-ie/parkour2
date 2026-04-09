@@ -27,11 +27,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.83
+boto3==1.42.86
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.83
+botocore==1.42.86
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
@@ -66,7 +66,7 @@ contourpy==1.3.3 ; python_full_version >= '3.11'
     #   matplotlib
 coverage==7.13.5
     # via pytest-cov
-cryptography==46.0.6
+cryptography==46.0.7
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   django-cryptography-django5
@@ -96,7 +96,7 @@ dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-django==5.2.12
+django==5.2.13
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
@@ -106,6 +106,7 @@ django==5.2.12
     #   django-cors-headers
     #   django-cryptography-django5
     #   django-debug-toolbar
+    #   django-error-mail-dedup
     #   django-extensions
     #   django-import-export
     #   django-linear-migrations
@@ -139,6 +140,10 @@ django-debug-toolbar==6.3.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
+django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@2e9be2bb1056ca6ed7a5dc606af38e3c9d594482
+    # via
+    #   -c backend/requirements/3.10/dev.txt
+    #   -r backend/requirements/base.in
 django-extensions==4.1
     # via
     #   -c backend/requirements/3.10/dev.txt
@@ -205,7 +210,7 @@ fpdf2==2.8.7
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.3.2
+greenlet==3.4.0
     # via playwright
 gunicorn==25.3.0
     # via
@@ -318,7 +323,7 @@ numpy==2.4.4 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.30.0
+openai==2.31.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
@@ -402,7 +407,7 @@ pyparsing==3.3.2
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   matplotlib
-pytest==9.0.2
+pytest==9.0.3
     # via
     #   pytest-base-url
     #   pytest-cov
