@@ -187,6 +187,16 @@ LOGGING = {
             "filters": ["require_debug_false"],
             # 'class': 'django.utils.log.AdminEmailHandler'
             "class": "common.logger.CustomAdminEmailHandler",
+            "dedup_window_seconds": int(
+                os.environ.get("ERROR_EMAIL_DEDUP_WINDOW_SECONDS", "180"),
+            ),
+            "summary_email_every_seconds": int(
+                os.environ.get("ERROR_EMAIL_DEDUP_SUMMARY_EVERY_SECONDS", "60"),
+            ),
+            "state_file_path": os.environ.get(
+                "ERROR_EMAIL_DEDUP_STATE_FILE",
+                os.path.join(LOG_DIR, "error_email_dedup_state.json"),
+            ),
         },
         "console": {
             "level": "INFO",
