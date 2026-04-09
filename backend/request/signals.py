@@ -23,6 +23,7 @@ Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
 
 ReadLength = apps.get_model("library_sample_shared", "ReadLength")
+Organism = apps.get_model("library_sample_shared", "Organism")
 LibraryProtocol = apps.get_model("library_sample_shared", "LibraryProtocol")
 LibraryType = apps.get_model("library_sample_shared", "LibraryType")
 IndexType = apps.get_model("library_sample_shared", "IndexType")
@@ -151,6 +152,12 @@ def _collect_request_dependencies(
 def _collect_read_length(instance: ReadLength) -> tuple[Sequence[int], Sequence[int]]:
     libs = _query_ids(Library.objects.filter(read_length_id=instance.pk))
     samples = _query_ids(Sample.objects.filter(read_length_id=instance.pk))
+    return libs, samples
+
+
+def _collect_organism(instance: Organism) -> tuple[Sequence[int], Sequence[int]]:
+    libs = _query_ids(Library.objects.filter(organism_id=instance.pk))
+    samples = _query_ids(Sample.objects.filter(organism_id=instance.pk))
     return libs, samples
 
 
@@ -299,6 +306,7 @@ def _collect_pooling(instance: Pooling) -> tuple[Sequence[int], Sequence[int]]:
 
 RELATED_COLLECTORS: dict[type, Callable] = {
     ReadLength: _collect_read_length,
+    Organism: _collect_organism,
     LibraryProtocol: _collect_library_protocol,
     LibraryType: _collect_library_type,
     IndexType: _collect_index_type,
@@ -407,6 +415,7 @@ def on_request_samples_m2m(sender, instance, action, pk_set, **kwargs):
     pre_delete,
     sender=ReadLength,
 )
+@receiver(pre_delete, sender=Organism)
 @receiver(pre_delete, sender=LibraryProtocol)
 @receiver(pre_delete, sender=LibraryType)
 @receiver(pre_delete, sender=IndexType)
@@ -430,6 +439,7 @@ def cache_related_model_before_delete(sender, instance, **kwargs):
     post_save,
     sender=ReadLength,
 )
+@receiver(post_save, sender=Organism)
 @receiver(post_save, sender=LibraryProtocol)
 @receiver(post_save, sender=LibraryType)
 @receiver(post_save, sender=IndexType)
@@ -455,6 +465,7 @@ def on_related_model_save(sender, instance, **kwargs):
     post_delete,
     sender=ReadLength,
 )
+@receiver(post_delete, sender=Organism)
 @receiver(post_delete, sender=LibraryProtocol)
 @receiver(post_delete, sender=LibraryType)
 @receiver(post_delete, sender=IndexType)
