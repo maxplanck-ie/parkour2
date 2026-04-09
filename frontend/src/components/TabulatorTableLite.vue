@@ -364,11 +364,11 @@ export default {
 }
 
 .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
-  background-color: #eef7ff !important;
+  background-color: #fff1f1 !important;
 }
 
 .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
-  background-color: #eef7ff !important;
+  background-color: #fff1f1 !important;
 }
 
 .lite-tabulator-table .tabulator-row:hover .group-action-buttons-container {
