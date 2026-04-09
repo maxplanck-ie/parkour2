@@ -247,6 +247,7 @@ export default {
 .lite-tabulator-table .tabulator {
   height: 100%;
   font-size: 12px;
+  font-family: var(--app-font-family);
   border: 1px solid #d0d0d0;
   border-radius: 8px !important;
   border-bottom-left-radius: 0px !important;

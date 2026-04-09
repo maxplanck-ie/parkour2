@@ -20,26 +20,6 @@
       <div class="header-title" style="display: inline">Load Flowcells</div>
 
       <div class="sticky-actions">
-        <div class="date-filters">
-          <div class="date-filter">
-            <label for="startDate">From</label>
-            <input
-              id="startDate"
-              v-model="startDateString"
-              type="date"
-              @change="handleDateFilterChange"
-            />
-          </div>
-          <div class="date-filter">
-            <label for="endDate">To</label>
-            <input
-              id="endDate"
-              v-model="endDateString"
-              type="date"
-              @change="handleDateFilterChange"
-            />
-          </div>
-        </div>
         <div class="search-bar">
           <input
             ref="searchInput"
@@ -52,13 +32,35 @@
             style="color: darkgrey"
           />
         </div>
-        <button class="header-button" @click="toggleGroups">
-          <font-awesome-icon
-            icon="fa-solid fa-layer-group"
-            style="color: white"
-          />
-          <span> Toggle Views </span>
-        </button>
+        <div class="date-filters">
+          <div class="date-filter">
+            <label for="startDate">From</label>
+            <input
+              id="startDate"
+              v-model="startDateString"
+              type="date"
+              :class="{ 'invalid-date': !startDateValid }"
+            />
+          </div>
+          <div class="date-filter">
+            <label for="endDate">To</label>
+            <input
+              id="endDate"
+              v-model="endDateString"
+              type="date"
+              :class="{ 'invalid-date': !endDateValid }"
+            />
+          </div>
+        </div>
+        <div class="button-popup-wrapper">
+          <button class="header-button" @click="toggleGroups">
+            <font-awesome-icon
+              icon="fa-solid fa-layer-group"
+              style="color: white"
+            />
+            <span> Toggle Views </span>
+          </button>
+        </div>
         <button class="header-button" @click="handleExportClick">
           <font-awesome-icon
             icon="fa-solid fa-file-excel"
@@ -79,9 +81,11 @@
     <div class="table-container">
       <TabulatorTable
         v-if="!loading"
+        :key="tableRenderKey"
         ref="tabulatorTableRef"
         :rowData="filteredFlowcellsList"
         :columnDefs="columnsList"
+        :enableDefaultFilters="false"
         groupBy="flowcell_id"
         :groupStartOpen="false"
         :tableOptions="{
@@ -91,15 +95,6 @@
           handleCellEdited
         }"
       />
-    </div>
-
-    <div v-if="!loading" class="flowcell-actions-bar">
-      <button class="header-button secondary-action" @click="downloadBenchtopProtocol">
-        Download Benchtop Protocol
-      </button>
-      <button class="header-button secondary-action" @click="downloadSampleSheet">
-        Download Sample Sheet
-      </button>
     </div>
 
     <div
@@ -350,7 +345,7 @@
     </div>
 
     <div v-if="showPoolInfoPopup" class="popup-overlay">
-      <div class="popup-container" style="width: 720px; height: 580px">
+      <div class="popup-container pool-info-popup" style="width: 720px; height: 580px">
         <div class="popup-header">
           <span class="popup-title">{{ poolInfoTitle }}</span>
           <button class="popup-close-button" @click="closePoolInfoPopup">
@@ -390,63 +385,81 @@
     <div v-if="showLoadPopup" class="popup-overlay">
       <div class="popup-container load-flowcell-popup">
         <div class="popup-header">
+          <img
+            :src="iconLoadFlowcellsHeader"
+            alt="Load Flowcell"
+            width="42"
+            height="42"
+            style="display: block"
+          />
           <span class="popup-title">Load Flowcell</span>
-          <span
-            class="popup-info-button"
-            @mouseover="showPageHelp = true"
-            @mouseleave="showPageHelp = false"
-          >
-            ?
-            <div v-if="showPageHelp" class="tooltip-box load-flowcell-help-tooltip">
-              <div class="tooltip-scroll">
-                <div class="tooltip-title">Load Flowcells Guide</div>
-                <p class="tooltip-intro">
-                  Use this window to place pools onto a flowcell, review lane setup,
-                  and save the full load in one step.
-                </p>
-                <section class="tooltip-section">
-                  <div class="tooltip-section-title">Loading a flowcell</div>
-                  <ul class="tooltip-list">
-                    <li>Choose a sequencer and enter the Flowcell ID first.</li>
-                    <li>Drag ready pools from the Available Pools panel onto the lane cards.</li>
-                    <li>All lanes must be filled before the new flowcell can be saved.</li>
-                  </ul>
-                </section>
-                <section class="tooltip-section">
-                  <div class="tooltip-section-title">Available pools</div>
-                  <ul class="tooltip-list">
-                    <li>Green pools are ready to load.</li>
-                    <li>Disabled pools cannot be placed yet or have no remaining loads.</li>
-                    <li>Read length must stay compatible across the same flowcell.</li>
-                  </ul>
-                </section>
-                <section class="tooltip-section">
-                  <div class="tooltip-section-title">Unload and destroy</div>
-                  <ul class="tooltip-list">
-                    <li>Use the flowcell group actions in the main table to destroy a loaded flowcell.</li>
-                    <li>Destroying a flowcell unloads its pools and makes them available again in Pooling.</li>
-                    <li>Libraries and samples move back from sequencing to pooled status when appropriate.</li>
-                  </ul>
-                </section>
+          <div class="load-popup-header-actions">
+            <span
+              class="popup-info-button"
+              @mouseover="showPageHelp = true"
+              @mouseleave="showPageHelp = false"
+            >
+              ?
+              <div v-if="showPageHelp" class="tooltip-box load-flowcell-help-tooltip">
+                <div class="tooltip-scroll">
+                  <div class="tooltip-title">Load Flowcells Guide</div>
+                  <p class="tooltip-intro">
+                    Use this window to create a new flowcell load by assigning pooled libraries
+                    to the lanes of a selected sequencer. The load is saved only after the
+                    required fields are filled and every lane has a valid pool assignment.
+                  </p>
+                  <section class="tooltip-section">
+                    <div class="tooltip-section-title">Loading a Flowcell</div>
+                    <ul class="tooltip-list">
+                      <li>Start by choosing a sequencer. The sequencer defines how many lanes are available in the lane assignment area.</li>
+                      <li>Enter a Flowcell ID. This is required before the new flowcell can be created.</li>
+                      <li>Drag ready pools from the Available Pools panel onto the lane cards on the right.</li>
+                      <li>A pool can be placed only when it still has remaining loads and its read length is compatible with the other pools already assigned to the same flowcell.</li>
+                      <li>All lanes must be filled before the new flowcell can be saved.</li>
+                    </ul>
+                  </section>
+                  <section class="tooltip-section">
+                    <div class="tooltip-section-title">Available Pools</div>
+                    <ul class="tooltip-list">
+                      <li>Green pool cards are ready to load and can be dragged to open lanes.</li>
+                      <li>Each pool shows its read length and the remaining number of times it can still be loaded.</li>
+                      <li>Disabled pools cannot be placed yet, are already fully used, or do not match the current lane assignment rules.</li>
+                      <li>Clicking a pool name in the main table opens a detail view of the libraries and samples currently inside that pool.</li>
+                    </ul>
+                  </section>
+                  <section class="tooltip-section">
+                    <div class="tooltip-section-title">Unload and Destroy</div>
+                    <ul class="tooltip-list">
+                      <li>After a flowcell has been created, it appears in the main Load Flowcells table grouped by Flowcell ID.</li>
+                      <li>Use the group actions in that table to select lanes, download the sample sheet, or destroy the flowcell.</li>
+                      <li>Destroying a flowcell unloads its pools, removes the flowcell from the Load Flowcells view, and makes the pools available again in Pooling.</li>
+                      <li>When the destroyed flowcell was the last active sequencing load for a request, the related libraries and samples move back from sequencing status to pooled status.</li>
+                    </ul>
+                  </section>
+                </div>
               </div>
-            </div>
-          </span>
-          <button class="popup-close-button" @click="closeLoadPopup">
-            &times;
-          </button>
+            </span>
+            <button class="popup-close-button" @click="closeLoadPopup">
+              &times;
+            </button>
+          </div>
         </div>
         <div class="popup-body">
           <div class="load-flowcell-layout">
             <div class="load-flowcell-left">
-              <div class="load-panel">
+              <div class="load-panel load-flowcell-setup-panel">
                 <div class="load-panel-header">
                   <span>Flowcell Setup</span>
                 </div>
                 <div class="load-panel-body">
                   <div class="load-form-grid">
-                    <div class="filter-item" style="margin-bottom: 0">
+                    <div class="filter-item load-form-field" style="margin-bottom: 0">
                       <label>Sequencer</label>
-                      <select v-model="loadForm.sequencerId">
+                      <select
+                        v-model="loadForm.sequencerId"
+                        :class="{ 'input-error': loadSequencerError }"
+                        @change="handleSequencerChange"
+                      >
                         <option :value="null">Select Sequencer</option>
                         <option
                           v-for="sequencer in sequencersList"
@@ -457,24 +470,67 @@
                         </option>
                       </select>
                     </div>
-                    <div class="filter-item" style="margin-bottom: 0">
+                    <div class="filter-item load-form-field" style="margin-bottom: 0">
                       <label>Flowcell ID</label>
                       <input
                         v-model.trim="loadForm.flowcellId"
                         type="text"
                         placeholder="Flowcell ID"
+                        :class="{ 'input-error': flowcellIdError }"
+                        @input="flowcellIdError = false"
                       />
                     </div>
                   </div>
                 </div>
               </div>
 
+              <div class="load-panel load-pools-panel">
+                <div class="load-panel-header">
+                  <span>Available Pools</span>
+                  <span class="load-panel-subtitle">
+                    Ready pools can be dragged into open lanes.
+                  </span>
+                </div>
+                <div class="load-pools-list">
+                  <div v-if="!loadModalAvailablePools.length" class="load-empty-state">
+                    No pools are currently available for loading.
+                  </div>
+                  <template v-else>
+                  <div
+                    v-for="pool in loadModalAvailablePools"
+                    :key="pool.pk"
+                    class="load-pool-row"
+                    :class="{
+                      ready: pool.ready,
+                      disabled: !pool.ready || pool.remainingLoads <= 0,
+                      dragging: draggedPoolId === pool.pk
+                    }"
+                    :draggable="pool.ready && pool.remainingLoads > 0"
+                    @dragstart="startPoolDrag(pool)"
+                    @dragend="handlePoolDragEnd"
+                  >
+                      <div class="load-pool-main">
+                        <span class="load-pool-name">{{ pool.name }}</span>
+                        <span class="load-pool-read-length">
+                          {{ pool.read_length_name || "-" }}
+                        </span>
+                      </div>
+                      <div class="load-pool-meta">
+                        {{ pool.remainingLoadsLabel }}
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+
+            <div class="load-flowcell-right">
               <div class="load-panel lane-board">
                 <div class="lane-board-header">
                   <div class="lane-board-title-block">
                     <span class="lane-board-title">Assign Pools to Lanes</span>
                     <span class="lane-board-subtitle">
-                      Drag a ready pool from the right side onto each lane card.
+                      Drag a ready pool from the left side onto each lane card.
                     </span>
                   </div>
                   <span v-if="currentLoadSequencer" class="lane-board-capacity">
@@ -489,69 +545,47 @@
                     v-for="laneName in loadModalLaneNames"
                     :key="laneName"
                     class="lane-drop-card"
-                    :class="{ loaded: !!loadAssignments[laneName] }"
-                    @dragover.prevent
+                    :class="{
+                      loaded: !!loadAssignments[laneName],
+                      droppable: isLaneDropAllowed(laneName),
+                      'drop-hover': hoveredLaneName === laneName && isLaneDropAllowed(laneName)
+                    }"
+                    @dragover.prevent="handleLaneDragOver(laneName)"
                     @drop="handleLaneDrop(laneName)"
                   >
                     <div class="lane-drop-card-title">{{ laneName }}</div>
-                    <template v-if="loadAssignments[laneName]">
-                      <div class="lane-drop-card-pool">
-                        {{ loadAssignments[laneName].name }}
-                      </div>
-                      <div class="lane-drop-card-meta">
-                        {{ loadAssignments[laneName].read_length_name || "-" }}
-                      </div>
-                      <button
-                        class="lane-remove-button"
-                        @click="unassignLane(laneName)"
+                    <div class="lane-drop-card-content">
+                      <div
+                        class="lane-drop-card-pool"
+                        :class="{ 'lane-drop-card-hidden': !loadAssignments[laneName] }"
                       >
-                        Remove
-                      </button>
-                    </template>
-                    <template v-else>
-                      <div class="lane-drop-placeholder">Drop Pool Here</div>
-                    </template>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="load-flowcell-right">
-              <div class="load-panel load-pools-panel">
-                <div class="load-panel-header">
-                  <span>Available Pools</span>
-                  <span class="load-panel-subtitle">
-                    Ready pools can be dragged into open lanes.
-                  </span>
-                </div>
-                <div class="load-pools-list">
-                  <div v-if="!loadModalAvailablePools.length" class="load-empty-state">
-                    No pools are currently available for loading.
-                  </div>
-                  <template v-else>
-                    <div
-                      v-for="pool in loadModalAvailablePools"
-                      :key="pool.pk"
-                      class="load-pool-row"
-                      :class="{
-                        ready: pool.ready,
-                        disabled: !pool.ready || pool.remainingLoads <= 0
-                      }"
-                      :draggable="pool.ready && pool.remainingLoads > 0"
-                      @dragstart="startPoolDrag(pool)"
-                      @dragend="draggedPoolId = null"
-                    >
-                      <div class="load-pool-main">
-                        <span class="load-pool-name">{{ pool.name }}</span>
-                        <span class="load-pool-read-length">
-                          {{ pool.read_length_name || "-" }}
-                        </span>
+                        {{ loadAssignments[laneName]?.name || "-" }}
                       </div>
-                      <div class="load-pool-meta">
-                        {{ pool.remainingLoadsLabel }}
+                      <div
+                        class="lane-drop-card-meta"
+                        :class="{ 'lane-drop-card-hidden': !loadAssignments[laneName] }"
+                      >
+                        {{ loadAssignments[laneName]?.read_length_name || "-" }}
+                      </div>
+                      <div
+                        class="lane-drop-placeholder"
+                        :class="{
+                          'lane-drop-card-hidden': !!loadAssignments[laneName],
+                          'lane-drop-placeholder-empty': !loadAssignments[laneName]
+                        }"
+                      >
+                        Drop Pool Here
                       </div>
                     </div>
-                  </template>
+                    <button
+                      class="lane-remove-button"
+                      :class="{ 'lane-remove-button-hidden': !loadAssignments[laneName] }"
+                      :disabled="!loadAssignments[laneName]"
+                      @click="unassignLane(laneName)"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -577,7 +611,8 @@ import {
   createAxiosObject,
   urlStringStartsWith,
   createExcelExportBlob,
-  formatDisplayDate
+  formatDisplayDate,
+  isValidDate
 } from "../utilities/utilityFunctions";
 import {
   loadFlowcellsGroupHeader,
@@ -614,11 +649,15 @@ export default {
       loading: true,
       fakeLoading: false,
       tabulatorInstance: null,
+      tableRenderKey: 0,
       flowcellsList: [],
       columnsList: [],
       searchQuery: "",
       startDateString: currentDate,
       endDateString: currentDate,
+      startDateValid: true,
+      endDateValid: true,
+      dateChangeTimer: null,
       tableOptions: {
         index: "pk",
         placeholder: "No loaded flowcells to show.",
@@ -651,6 +690,9 @@ export default {
       poolSizesById: {},
       availablePoolsList: [],
       draggedPoolId: null,
+      hoveredLaneName: null,
+      loadSequencerError: false,
+      flowcellIdError: false,
       loadForm: {
         sequencerId: null,
         flowcellId: ""
@@ -729,9 +771,20 @@ export default {
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
+  watch: {
+    startDateString(newVal) {
+      this.handleDateChange("start", newVal);
+    },
+    endDateString(newVal) {
+      this.handleDateChange("end", newVal);
+    }
+  },
   beforeDestroy() {
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
+    }
+    if (this.dateChangeTimer) {
+      clearTimeout(this.dateChangeTimer);
     }
     window.handleGroupButtonClick = null;
   },
@@ -749,6 +802,35 @@ export default {
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "";
       return formatDisplayDate(date);
+    },
+    handleDateChange(type, value) {
+      clearTimeout(this.dateChangeTimer);
+      this[`${type}DateValid`] = isValidDate(value);
+      if (!this[`${type}DateValid`]) return;
+
+      this.dateChangeTimer = setTimeout(() => {
+        if (!this.validateDateRange()) return;
+        this.getFlowcells();
+      }, 500);
+    },
+    validateDateRange() {
+      const sStr = this.startDateString;
+      const eStr = this.endDateString;
+      if (!isValidDate(sStr) || !isValidDate(eStr)) return false;
+
+      const sd = new Date(`${sStr}T00:00:00`);
+      const ed = new Date(`${eStr}T00:00:00`);
+
+      if (sd.getTime() > ed.getTime()) {
+        showNotification("Start date must precede end date.", "warning");
+        this.startDateValid = false;
+        this.endDateValid = false;
+        return false;
+      }
+
+      this.startDateValid = true;
+      this.endDateValid = true;
+      return true;
     },
     setColumns() {
       this.columnsList = loadFlowcellsColumnDefs(
@@ -781,6 +863,7 @@ export default {
           create_time_raw: item.create_time,
           create_time: this.formatApiDate(item.create_time)
         }));
+        this.tableRenderKey += 1;
 
         this.originalLaneStateByPk = this.flowcellsList.reduce((acc, row) => {
           acc[row.pk] = {
@@ -795,14 +878,6 @@ export default {
       } finally {
         this.loading = false;
       }
-    },
-    handleDateFilterChange() {
-      if (!this.startDateString || !this.endDateString) return;
-      if (this.startDateString > this.endDateString) {
-        showNotification("'From' date cannot be after 'To' date.", "warning");
-        return;
-      }
-      this.getFlowcells();
     },
     toggleGroups(goToInitial) {
       if (!this.tabulatorInstance) return;
@@ -877,9 +952,27 @@ export default {
         case "deselectAll":
           await this.setGroupSelection(groupValue, false);
           break;
+        case "downloadSampleSheet":
+          await this.downloadSampleSheetForFlowcell(groupValue);
+          break;
         case "destroyFlowcell":
           this.confirmDestroyFlowcell(groupValue);
           break;
+      }
+    },
+    async downloadSampleSheetForFlowcell(flowcellId) {
+      const flowcellRows = this.flowcellsList.filter(
+        (row) => row.flowcell_id === flowcellId
+      );
+      if (flowcellRows.length === 0) {
+        showNotification("Flowcell was not found.", "warning");
+        return;
+      }
+
+      try {
+        await this.downloadSampleSheetForRows(flowcellRows);
+      } catch (error) {
+        handleError(error);
       }
     },
     confirmDestroyFlowcell(flowcellId) {
@@ -1032,7 +1125,7 @@ export default {
       });
       saveAs(response.data, fallbackFilename);
     },
-    async downloadBenchtopProtocol() {
+    async downloadSampleSheet() {
       const selectedRows = this.getSelectedRowsFromAllData();
       if (selectedRows.length === 0) {
         showNotification("You did not select any lanes.", "warning");
@@ -1040,19 +1133,13 @@ export default {
       }
 
       try {
-        await this.downloadBlob(
-          `${urlStringStart}/api/flowcells/download_benchtop_protocol/`,
-          {
-            ids: JSON.stringify(selectedRows.map((row) => row.pk))
-          },
-          "FC_Loading_Benchtop_Protocol.xls"
-        );
+        await this.downloadSampleSheetForRows(selectedRows);
       } catch (error) {
         handleError(error);
       }
     },
-    async downloadSampleSheet() {
-      const selectedRows = this.getSelectedRowsFromAllData();
+    async downloadSampleSheetForRows(rows) {
+      const selectedRows = rows || [];
       if (selectedRows.length === 0) {
         showNotification("You did not select any lanes.", "warning");
         return;
@@ -1064,18 +1151,22 @@ export default {
         return;
       }
 
-      try {
-        await this.downloadBlob(
-          `${urlStringStart}/api/flowcells/download_sample_sheet/`,
-          {
-            ids: JSON.stringify(selectedRows.map((row) => row.pk)),
-            flowcell_id: flowcellPk
-          },
-          `${selectedRows[0].flowcell_id || "flowcell"}_SampleSheet.csv`
+      if (selectedRows.some((row) => row.flowcell !== flowcellPk)) {
+        showNotification(
+          "Select lanes from the same flowcell to download a sample sheet.",
+          "warning"
         );
-      } catch (error) {
-        handleError(error);
+        return;
       }
+
+      await this.downloadBlob(
+        `${urlStringStart}/api/flowcells/download_sample_sheet/`,
+        {
+          ids: JSON.stringify(selectedRows.map((row) => row.pk)),
+          flowcell_id: flowcellPk
+        },
+        `${selectedRows[0].flowcell_id || "flowcell"}_SampleSheet.csv`
+      );
     },
     async fetchExportTemplates() {
       try {
@@ -1159,6 +1250,11 @@ export default {
     async handleExport() {
       try {
         this.fakeLoadingStart();
+        const today = new Date();
+        const formattedDate = `${today.getFullYear()}${String(
+          today.getMonth() + 1
+        ).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`;
+
         const exportRows =
           this.exportSelection === "selected"
             ? this.getSelectedRowsFromAllData()
@@ -1169,18 +1265,47 @@ export default {
           return;
         }
 
+        const sortedExportRows = [...exportRows].sort((a, b) => {
+          const flowcellCompare = String(a.flowcell_id || "").localeCompare(
+            String(b.flowcell_id || "")
+          );
+          if (flowcellCompare !== 0) return flowcellCompare;
+
+          const getLaneNumber = (laneName) => {
+            const match = String(laneName || "").match(/(\d+)/);
+            return match ? parseInt(match[1], 10) : 0;
+          };
+
+          return getLaneNumber(a.name) - getLaneNumber(b.name);
+        });
+
+        const uniqueFlowcellIDs = [
+          ...new Set(
+            sortedExportRows.map((row) => row.flowcell_id).filter(Boolean)
+          )
+        ]
+          .sort()
+          .join("_");
+
+        let filename = "";
+        if (this.exportSelection === "selected") {
+          filename = `${formattedDate}_${uniqueFlowcellIDs}_load_flowcells`;
+        } else {
+          filename = `${formattedDate}_load_flowcells`;
+        }
+
         const templateDownloadUrl =
           this.selectedFile !== "without-file"
             ? `${urlStringStart}/api/load-flowcells-templates/${this.selectedFile.id}/download/`
             : null;
 
         const blob = await createExcelExportBlob({
-          rows: exportRows,
+          rows: sortedExportRows,
           exportColumns: loadFlowcellsExportColumns,
           axiosInstance: axiosRef,
           templateDownloadUrl
         });
-        saveAs(blob, "Load_Flowcells.xlsx");
+        saveAs(blob, filename);
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,
@@ -1237,6 +1362,8 @@ export default {
     },
     async openLoadPopup() {
       this.showLoadPopup = true;
+      this.loadSequencerError = false;
+      this.flowcellIdError = false;
       this.loadForm = {
         sequencerId: null,
         flowcellId: ""
@@ -1264,51 +1391,70 @@ export default {
     },
     closeLoadPopup() {
       this.showLoadPopup = false;
+      this.loadSequencerError = false;
+      this.flowcellIdError = false;
       this.sequencersList = [];
       this.poolSizesById = {};
       this.availablePoolsList = [];
       this.loadAssignments = {};
       this.draggedPoolId = null;
     },
+    handleSequencerChange() {
+      this.loadSequencerError = false;
+      this.loadAssignments = {};
+      this.draggedPoolId = null;
+      this.hoveredLaneName = null;
+    },
     startPoolDrag(pool) {
       this.draggedPoolId = pool.pk;
+      this.hoveredLaneName = null;
+    },
+    handlePoolDragEnd() {
+      this.draggedPoolId = null;
+      this.hoveredLaneName = null;
     },
     unassignLane(laneName) {
       const nextAssignments = { ...this.loadAssignments };
       delete nextAssignments[laneName];
       this.loadAssignments = nextAssignments;
     },
-    handleLaneDrop(laneName) {
-      if (!this.draggedPoolId) return;
-      const pool = this.loadModalAvailablePools.find(
-        (item) => item.pk === this.draggedPoolId
+    getDraggedPool() {
+      if (!this.draggedPoolId) return null;
+      return (
+        this.loadModalAvailablePools.find((item) => item.pk === this.draggedPoolId) ||
+        null
       );
-      this.draggedPoolId = null;
-      if (!pool) return;
-      this.assignPoolToLane(pool, laneName);
     },
-    assignPoolToLane(pool, laneName) {
+    canAssignPoolToLane(pool, laneName, notify = false) {
       if (!this.currentLoadSequencer) {
-        showNotification("Please select a sequencer first.", "warning");
-        return;
+        if (notify) {
+          showNotification("Please select a sequencer first.", "warning");
+        }
+        return false;
       }
 
       if (this.loadAssignments[laneName]) {
-        showNotification(
-          `${laneName} is already loaded. Remove the assigned pool first.`,
-          "warning"
-        );
-        return;
+        if (notify) {
+          showNotification(
+            `${laneName} is already loaded. Remove the assigned pool first.`,
+            "warning"
+          );
+        }
+        return false;
       }
 
       if (!pool.ready) {
-        showNotification("Only ready pools can be loaded on a flowcell.", "warning");
-        return;
+        if (notify) {
+          showNotification("Only ready pools can be loaded on a flowcell.", "warning");
+        }
+        return false;
       }
 
       if (pool.remainingLoads <= 0) {
-        showNotification("This pool is already fully assigned.", "warning");
-        return;
+        if (notify) {
+          showNotification("This pool is already fully assigned.", "warning");
+        }
+        return false;
       }
 
       const poolSize = this.poolSizesById[pool.pool_size_id];
@@ -1316,11 +1462,13 @@ export default {
         poolSize &&
         Number(poolSize.size) > Number(this.currentLoadSequencer.lane_capacity)
       ) {
-        showNotification(
-          `Pool with size ${poolSize.size} cannot fit on a lane with capacity ${this.currentLoadSequencer.lane_capacity}.`,
-          "warning"
-        );
-        return;
+        if (notify) {
+          showNotification(
+            `Pool with size ${poolSize.size} cannot fit on a lane with capacity ${this.currentLoadSequencer.lane_capacity}.`,
+            "warning"
+          );
+        }
+        return false;
       }
 
       const assignedPools = Object.values(this.loadAssignments).filter(Boolean);
@@ -1328,10 +1476,37 @@ export default {
         assignedPools.length > 0 &&
         assignedPools[0].read_length !== pool.read_length
       ) {
-        showNotification(
-          "Read Length must be the same for all pools on a flowcell.",
-          "warning"
-        );
+        if (notify) {
+          showNotification(
+            "Read Length must be the same for all pools on a flowcell.",
+            "warning"
+          );
+        }
+        return false;
+      }
+
+      return true;
+    },
+    isLaneDropAllowed(laneName) {
+      const pool = this.getDraggedPool();
+      if (!pool) return false;
+      return this.canAssignPoolToLane(pool, laneName, false);
+    },
+    handleLaneDragOver(laneName) {
+      if (this.hoveredLaneName !== laneName) {
+        this.hoveredLaneName = laneName;
+      }
+    },
+    handleLaneDrop(laneName) {
+      if (!this.draggedPoolId) return;
+      const pool = this.getDraggedPool();
+      this.hoveredLaneName = null;
+      this.draggedPoolId = null;
+      if (!pool) return;
+      this.assignPoolToLane(pool, laneName);
+    },
+    assignPoolToLane(pool, laneName) {
+      if (!this.canAssignPoolToLane(pool, laneName, true)) {
         return;
       }
 
@@ -1341,8 +1516,17 @@ export default {
       };
     },
     async saveNewFlowcell() {
-      if (!this.loadForm.sequencerId || !this.loadForm.flowcellId) {
-        showNotification("Sequencer and Flowcell ID are required.", "warning");
+      const flowcellIdValue = String(this.loadForm.flowcellId || "").trim();
+      this.loadSequencerError = !this.loadForm.sequencerId;
+      this.flowcellIdError = !flowcellIdValue;
+
+      if (this.loadSequencerError) {
+        showNotification("Sequencer is required.", "warning");
+        return;
+      }
+
+      if (this.flowcellIdError) {
+        showNotification("Flowcell ID is required.", "warning");
         return;
       }
 
@@ -1355,7 +1539,7 @@ export default {
       }
 
       const payload = {
-        flowcell_id: this.loadForm.flowcellId,
+        flowcell_id: flowcellIdValue,
         sequencer: this.loadForm.sequencerId,
         lanes: this.loadModalLaneNames.map((laneName) => ({
           name: laneName,
@@ -1400,6 +1584,18 @@ export default {
   padding: 18px 0;
 }
 
+.pool-info-popup {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pool-info-popup .popup-body {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
 .pool-info-table-wrapper {
   height: 100%;
   overflow: auto;
@@ -1424,13 +1620,35 @@ export default {
 .load-flowcell-popup {
   width: 1040px;
   height: 760px;
+  max-height: calc(100vh - 32px);
+  overflow: hidden;
+}
+
+.load-flowcell-popup .popup-body {
+  background: #fbfcfd;
+  padding: 14px 14px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.load-popup-header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 14px;
+  flex-shrink: 0;
+}
+
+.load-popup-header-actions .popup-info-button {
+  margin-right: 0;
 }
 
 .load-flowcell-layout {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 18px;
+  grid-template-columns: 0.8fr 1.3fr;
+  gap: 14px;
   height: 100%;
+  min-height: 0;
 }
 
 .load-flowcell-left,
@@ -1438,13 +1656,52 @@ export default {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
+}
+
+.load-flowcell-left {
+  overflow: hidden;
 }
 
 .load-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.load-form-field label {
+  padding: 0 0 5px;
+  margin-bottom: 0;
+  border: none;
+  background: transparent;
+  color: #244a60;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.load-form-field select,
+.load-form-field input[type="text"] {
+  width: 100%;
+  height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #ccd9df;
+  border-radius: 10px;
+  background: #fff;
+  color: #2d4048;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.load-form-field .input-error {
+  border-color: #d14343 !important;
+  background: #fff8f8;
+}
+
+.load-form-field select:focus,
+.load-form-field input[type="text"]:focus {
+  outline: none;
+  border-color: #0b7f78;
+  box-shadow: 0 0 0 3px rgba(11, 127, 120, 0.12);
 }
 
 .load-panel,
@@ -1453,26 +1710,33 @@ export default {
   border: 1px solid #dce3e6;
   border-radius: 14px;
   background: #fff;
+  box-shadow: 0 10px 24px rgba(20, 52, 62, 0.06);
+}
+
+.load-panel,
+.load-pools-panel,
+.lane-board {
+  min-height: 0;
 }
 
 .load-panel-header {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 14px 16px;
+  gap: 3px;
+  padding: 10px 14px;
   border-bottom: 1px solid #e5ecef;
   font-weight: 700;
   color: #244a60;
 }
 
 .load-panel-subtitle {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: #5c7480;
 }
 
 .load-panel-body {
-  padding: 14px 16px 16px;
+  padding: 10px 14px 12px;
 }
 
 .lane-board {
@@ -1487,7 +1751,7 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 10px 14px;
   border-bottom: 1px solid #e5ecef;
 }
 
@@ -1503,25 +1767,29 @@ export default {
 }
 
 .lane-board-subtitle {
-  font-size: 12px;
+  font-size: 11px;
   color: #5c7480;
 }
 
 .lane-board-capacity {
-  padding: 6px 10px;
+  padding: 5px 9px;
   border-radius: 999px;
   background: #eef6f7;
   color: #0b7f78;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
 .lane-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
-  gap: 12px;
-  padding: 16px;
+  grid-auto-rows: minmax(134px, auto);
+  gap: 10px;
+  padding: 12px;
+  flex: 1;
+  min-height: 0;
   overflow: auto;
+  align-content: start;
 }
 
 .load-empty-state {
@@ -1546,13 +1814,31 @@ export default {
   background: #f8fbfc;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease,
+    background 0.18s ease;
 }
 
 .lane-drop-card.loaded {
   border-style: solid;
   border-color: #0b7f78;
   background: #e9f7f4;
+}
+
+.lane-drop-card.droppable:not(.loaded) {
+  border-color: #51a89d;
+  background: linear-gradient(180deg, #fafdfe 0%, #eff8f6 100%);
+  animation: lane-drop-pulse 1.2s ease-in-out infinite;
+  cursor: grabbing;
+}
+
+.lane-drop-card.drop-hover:not(.loaded) {
+  transform: translateY(-2px) scale(1.01);
+  border-color: #0b7f78;
+  box-shadow: 0 10px 26px rgba(11, 127, 120, 0.18);
+  background: linear-gradient(180deg, #ebfbf5 0%, #d7f2e6 100%);
+  animation: none;
+  cursor: grabbing;
 }
 
 .lane-drop-card-title {
@@ -1565,15 +1851,44 @@ export default {
   font-size: 12px;
 }
 
+.lane-drop-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 52px;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.lane-drop-card-hidden {
+  visibility: hidden;
+}
+
 .lane-drop-card-pool {
   font-weight: 700;
   color: #0b7f78;
   word-break: break-word;
+  min-height: 20px;
+  line-height: 20px;
 }
 
 .lane-drop-card-meta {
   color: #59737f;
   font-size: 12px;
+  min-height: 18px;
+  line-height: 18px;
+}
+
+.lane-drop-placeholder {
+  min-height: 20px;
+  line-height: 20px;
+}
+
+.lane-drop-placeholder-empty {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .lane-remove-button {
@@ -1583,6 +1898,11 @@ export default {
   background: white;
   padding: 8px 10px;
   cursor: pointer;
+}
+
+.lane-remove-button-hidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .lane-remove-button:hover {
@@ -1600,7 +1920,10 @@ export default {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: 12px;
+  padding: 10px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
 }
 
 .load-pool-row {
@@ -1608,12 +1931,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
+  padding: 9px 12px;
   border: 1px solid #dde5e8;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfc 100%);
   cursor: grab;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease,
+    background 0.18s ease;
 }
 
 .load-pool-row.ready .load-pool-name,
@@ -1623,7 +1948,7 @@ export default {
 
 .load-pool-row.disabled {
   cursor: not-allowed;
-  background: #fbf4f4;
+  background: linear-gradient(180deg, #fff7f7 0%, #fcf1f1 100%);
 }
 
 .load-pool-row.disabled .load-pool-name,
@@ -1631,10 +1956,18 @@ export default {
   color: #c63b32;
 }
 
+.load-pool-row.dragging {
+  opacity: 0.55;
+  transform: scale(0.98);
+  box-shadow: 0 14px 30px rgba(11, 127, 120, 0.18);
+  background: linear-gradient(180deg, #f1faf8 0%, #e4f4f0 100%);
+  cursor: grabbing;
+}
+
 .load-pool-main {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -1645,13 +1978,33 @@ export default {
 
 .load-pool-read-length,
 .load-pool-meta {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .load-flowcell-help-tooltip {
-  top: calc(100% + 10px);
-  right: -8px;
-  width: min(460px, calc(100vw - 40px));
+  left: auto;
+  right: 0;
+  top: calc(100% + 12px);
+  transform: none;
+  width: min(420px, calc(100vw - 48px));
+  max-height: min(62vh, calc(100vh - 140px));
+  z-index: 30;
+}
+
+.load-flowcell-help-tooltip .tooltip-scroll {
+  max-height: min(62vh, calc(100vh - 140px));
+}
+
+@keyframes lane-drop-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(81, 168, 157, 0.16);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(81, 168, 157, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(81, 168, 157, 0);
+  }
 }
 
 @media (max-width: 1180px) {
@@ -1663,6 +2016,123 @@ export default {
   .load-flowcell-layout {
     grid-template-columns: 1fr;
   }
+}
 
+@media (max-width: 1220px) {
+  .header {
+    height: auto;
+    min-height: 70px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
+  .header-title {
+    flex: 1 1 100%;
+    min-width: 0;
+    margin-right: 0;
+  }
+
+  .sticky-actions {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+    row-gap: 10px;
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .search-bar {
+    width: 260px;
+    flex: 1 1 260px;
+    max-width: 100%;
+  }
+
+  .date-filters {
+    flex-wrap: wrap;
+  }
+
+  .flowcell-actions-bar {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .load-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 950px) {
+  .header-title {
+    font-size: 16px;
+    flex-basis: 100%;
+  }
+
+  .search-bar {
+    width: 100%;
+    flex: 1 1 260px;
+    min-width: 200px;
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding-right: 25px;
+  }
+
+  .date-filters {
+    display: none;
+  }
+
+  .sticky-actions {
+    gap: 8px;
+  }
+
+  .flowcell-actions-bar {
+    padding: 10px 12px 14px;
+  }
+
+  .flowcell-actions-bar .header-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .load-flowcell-popup {
+    width: 96vw;
+    height: 90vh;
+    max-height: calc(100vh - 20px);
+  }
+
+  .load-flowcell-popup .popup-body {
+    padding: 14px 12px;
+  }
+
+  .lane-board-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lane-board-capacity {
+    align-self: flex-start;
+  }
+
+  .load-popup-header-actions {
+    gap: 8px;
+    margin-left: 10px;
+  }
+
+  .load-flowcell-help-tooltip {
+    right: -6px;
+    width: min(360px, calc(100vw - 28px));
+    max-height: min(58vh, calc(100vh - 120px));
+  }
+
+  .load-flowcell-help-tooltip .tooltip-scroll {
+    max-height: min(58vh, calc(100vh - 120px));
+  }
+
+  .lane-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

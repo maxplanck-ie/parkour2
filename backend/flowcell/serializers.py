@@ -90,10 +90,13 @@ class LaneSerializer(ModelSerializer):
         for record in records:
             for req in record.request.all():
                 requests.append(req.name)
-        if len(requests) == 1 or len(set(requests)) == 1:
-            return requests[0]
-        else:
-            return ";".join(requests)
+
+        unique_requests = list(dict.fromkeys(requests))
+        if not unique_requests:
+            return None
+        if len(unique_requests) == 1:
+            return unique_requests[0]
+        return ", ".join(unique_requests)
 
     def get_protocol(self, obj):
         protocols = []
