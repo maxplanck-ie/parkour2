@@ -5,6 +5,7 @@ import librariesAndSamples from "../views/librariesAndSamplesView.vue";
 import IncomingLibrariesSamples from "../views/incomingLibrariesSamplesView.vue";
 import libraryPreparation from "../views/libraryPreparationView.vue";
 import pooling from "../views/poolingView.vue";
+import loadFlowcells from "../views/loadFlowcellsView.vue";
 import notFoundView from "../views/notFoundView.vue";
 
 const router = createRouter({
@@ -38,6 +39,11 @@ const router = createRouter({
           path: "Pooling",
           name: "Pooling",
           component: pooling
+        },
+        {
+          path: "load_flowcells",
+          name: "Load Flowcells",
+          component: loadFlowcells
         },
         {
           path: "not-found",

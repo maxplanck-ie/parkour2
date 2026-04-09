@@ -23,6 +23,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .models import (
     CostUnit,
     Duty,
+    LoadFlowcellsTemplate,
     LibrariesAndSamplesTemplate,
     IncomingLibrariesSamplesTemplate,
     LibraryPreparationTemplate,
@@ -32,6 +33,7 @@ from .serializers import (
     CostUnitSerializer,
     DutySerializer,
     UserSerializer,
+    LoadFlowcellsTemplateSerializer,
     LibrariesAndSamplesTemplateSerializer,
     IncomingLibrariesSamplesTemplateSerializer,
     LibraryPreparationTemplateSerializer,
@@ -103,7 +105,7 @@ def get_navigation_tree(request):
             {
                 "text": "Load Flowcells",
                 "iconCls": "x-fa fa-level-down",
-                "viewType": "flowcells",
+                "viewType": "flowcells-vue",
                 "leaf": True,
             },
             {
@@ -405,3 +407,8 @@ class LibraryPreparationTemplateViewSet(BaseTemplateViewSet):
 class PoolingTemplateViewSet(BaseTemplateViewSet):
     model = PoolingTemplate
     serializer_class = PoolingTemplateSerializer
+
+
+class LoadFlowcellsTemplateViewSet(BaseTemplateViewSet):
+    model = LoadFlowcellsTemplate
+    serializer_class = LoadFlowcellsTemplateSerializer

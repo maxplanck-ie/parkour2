@@ -912,7 +912,8 @@ input[type="radio"]:checked::after {
   margin: 0 4px 0 2px;
 }
 
-.date-filter input[type="date"] {
+.date-filter input[type="date"],
+.date-filter input[type="month"] {
   padding: 6px 8px;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 5px;
@@ -935,7 +936,8 @@ input[type="radio"]:checked::after {
   transform: translateY(-1px);
 }
 
-.date-filters input[type="date"]:not(:valid) {
+.date-filters input[type="date"]:not(:valid),
+.date-filters input[type="month"]:not(:valid) {
   font-size: 12px;
 }
 
