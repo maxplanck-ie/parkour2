@@ -276,9 +276,6 @@ export default {
   },
   mounted() {
     this.loadInitialData();
-    this.$nextTick(() => {
-      this.initResizableTables();
-    });
   },
   beforeUnmount() {
     document.removeEventListener("mousemove", this.onColumnResizeMove);
@@ -308,11 +305,12 @@ export default {
         this.poolSizes = poolSizesResponse.data || [];
         this.generatorIndexTypes = indexTypesResponse.data || [];
         this.syncCollapsedRequests();
+      } catch (error) {
+        handleError(error);
+      } finally {
         this.$nextTick(() => {
           this.initResizableTables();
         });
-      } catch (error) {
-        handleError(error);
       }
     },
     initResizableTables() {
@@ -527,6 +525,48 @@ export default {
         handleError(error);
       }
     },
+    splitPoolRowsByType() {
+      return this.poolRows.reduce(
+        (acc, row) => {
+          const key = row.record_type === "Library" ? "libraries" : "samples";
+          acc[key].push(row);
+          return acc;
+        },
+        { libraries: [], samples: [] }
+      );
+    },
+    buildPoolRowIndexPayload(rows) {
+      return rows.map((row) => ({
+        pk: row.pk,
+        index_i7: row.index_i7 || "",
+        index_i5: row.index_i5 || ""
+      }));
+    },
+    validateSelectedRowsBeforeSave() {
+      if (this.poolRows.length <= 1) {
+        return true;
+      }
+
+      for (const row of this.poolRows) {
+        if (!row.index_i7) {
+          showNotification(
+            `Index I7 is not set for \"${row.name}\".`,
+            "warning"
+          );
+          return false;
+        }
+        const indexMeta = this.indexTypeMeta(row.index_type);
+        if (indexMeta?.is_dual && !row.index_i5) {
+          showNotification(
+            `Index I5 is not set for \"${row.name}\".`,
+            "warning"
+          );
+          return false;
+        }
+      }
+
+      return true;
+    },
     toggleSelection(row, event) {
       const checked = event.target.checked;
 
@@ -582,12 +622,10 @@ export default {
       return true;
     },
     async generateIndices() {
-      const libraries = this.poolRows
-        .filter((row) => row.record_type === "Library")
-        .map((row) => row.pk);
-      const samples = this.poolRows
-        .filter((row) => row.record_type === "Sample")
-        .map((row) => row.pk);
+      const { libraries: libraryRows, samples: sampleRows } =
+        this.splitPoolRowsByType();
+      const libraries = libraryRows.map((row) => row.pk);
+      const samples = sampleRows.map((row) => row.pk);
 
       try {
         const response = await axiosRef.post(
@@ -609,14 +647,14 @@ export default {
         const generatedRows = (response.data.data || []).map((row) =>
           this.normalizePoolRow(row)
         );
-        const selectedKeys = new Set(generatedRows.map((row) => row.rowKey));
+        const generatedByKey = new Map(
+          generatedRows.map((generated) => [generated.rowKey, generated])
+        );
 
         this.poolRows = generatedRows;
         this.records = this.records.map((record) => {
-          if (!selectedKeys.has(record.rowKey)) return record;
-          const generated = generatedRows.find(
-            (row) => row.rowKey === record.rowKey
-          );
+          const generated = generatedByKey.get(record.rowKey);
+          if (!generated) return record;
           return {
             ...record,
             index_i7: generated?.index_i7 || "",
@@ -628,42 +666,14 @@ export default {
       }
     },
     async savePool() {
-      const poolCount = this.poolRows.length;
-
-      if (poolCount > 1) {
-        for (const row of this.poolRows) {
-          if (!row.index_i7) {
-            showNotification(
-              `Index I7 is not set for \"${row.name}\".`,
-              "warning"
-            );
-            return;
-          }
-          const indexMeta = this.indexTypeMeta(row.index_type);
-          if (indexMeta?.is_dual && !row.index_i5) {
-            showNotification(
-              `Index I5 is not set for \"${row.name}\".`,
-              "warning"
-            );
-            return;
-          }
-        }
+      if (!this.validateSelectedRowsBeforeSave()) {
+        return;
       }
 
-      const libraries = this.poolRows
-        .filter((row) => row.record_type === "Library")
-        .map((row) => ({
-          pk: row.pk,
-          index_i7: row.index_i7 || "",
-          index_i5: row.index_i5 || ""
-        }));
-      const samples = this.poolRows
-        .filter((row) => row.record_type === "Sample")
-        .map((row) => ({
-          pk: row.pk,
-          index_i7: row.index_i7 || "",
-          index_i5: row.index_i5 || ""
-        }));
+      const { libraries: libraryRows, samples: sampleRows } =
+        this.splitPoolRowsByType();
+      const libraries = this.buildPoolRowIndexPayload(libraryRows);
+      const samples = this.buildPoolRowIndexPayload(sampleRows);
 
       try {
         const response = await axiosRef.post(

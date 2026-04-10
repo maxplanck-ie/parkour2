@@ -6,10 +6,13 @@
 
   <!-- Errors window -->
   <div v-if="showErrorsWindow" class="popup-overlay">
-    <div class="popup-container" :style="{
-      height: errorsPopupContents.errorsPopupHeight + 'px',
-      width: errorsPopupContents.errorsPopupWidth + 'px'
-    }">
+    <div
+      class="popup-container"
+      :style="{
+        height: errorsPopupContents.errorsPopupHeight + 'px',
+        width: errorsPopupContents.errorsPopupWidth + 'px'
+      }"
+    >
       <div class="popup-header">
         <img
           :src="iconPasteError"
@@ -28,11 +31,23 @@
           Following errors occurred while pasting, please try again after
           fixing:
         </div>
-        <div v-if="errorsPopupContents.errorsList?.length" class="popup-scrollable-content">
+        <div
+          v-if="errorsPopupContents.errorsList?.length"
+          class="popup-scrollable-content"
+        >
           <div class="popup-scrollable-content-inner">
             <ol style="padding-left: 25px">
-              <li v-for="(item, index) in errorsPopupContents.errorsList" :key="index">
-                <span v-if="tableOptions && tableOptions.showPasteErrorRowNumber && item.rowNumber">
+              <li
+                v-for="(item, index) in errorsPopupContents.errorsList"
+                :key="index"
+              >
+                <span
+                  v-if="
+                    tableOptions &&
+                    tableOptions.showPasteErrorRowNumber &&
+                    item.rowNumber
+                  "
+                >
                   {{ "Row " + item.rowNumber + " ➜ " }}
                 </span>
                 <span v-else-if="item.barcode">
@@ -45,7 +60,11 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="pasteErrorOkButton" class="popup-button" @click="closeErrorsWindow">
+        <button
+          ref="pasteErrorOkButton"
+          class="popup-button"
+          @click="closeErrorsWindow"
+        >
           OK
         </button>
       </div>
@@ -165,7 +184,7 @@ export default {
   mounted() {
     this.initializeTable();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("keydown", this.handleKeyDown);
     const tabulatorElement = this.getTabulatorElement();
     if (tabulatorElement && this.preventEditorBlurHandler) {
@@ -226,7 +245,8 @@ export default {
         : null;
       this.lastFocusedCellRef = {
         field,
-        rowKey: rowKeyRaw === null || rowKeyRaw === undefined ? null : rowKeyRaw,
+        rowKey:
+          rowKeyRaw === null || rowKeyRaw === undefined ? null : rowKeyRaw,
         rowPosition
       };
     },
@@ -444,9 +464,8 @@ export default {
 
                 if (changedRows.size) {
                   changedRows.forEach((rowPosition) => {
-                    const row = this.tabulatorInstance.getRowFromPosition(
-                      rowPosition
-                    );
+                    const row =
+                      this.tabulatorInstance.getRowFromPosition(rowPosition);
                     row?.reformat?.();
                   });
                 }
@@ -518,9 +537,7 @@ export default {
           const first = args?.[0];
           if (
             typeof first === "string" &&
-            first.includes(
-              "Using frozen columns that are not the range header"
-            )
+            first.includes("Using frozen columns that are not the range header")
           ) {
             return;
           }
@@ -531,8 +548,9 @@ export default {
           new Tabulator(`#${this.tableId}`, options)
         );
         this.clipboardPasteParser = options.clipboardPasteParser;
-        this.clipboardCopyValueByField =
-          this.buildClipboardValueLookup(this.columnDefs);
+        this.clipboardCopyValueByField = this.buildClipboardValueLookup(
+          this.columnDefs
+        );
 
         this.tabulatorInstance.on("tableBuilt", () => {
           this.tableBuilt = true;
@@ -836,8 +854,9 @@ export default {
 
     updateTableColumns() {
       if (!this.tabulatorInstance || !this.tableBuilt) return;
-      this.clipboardCopyValueByField =
-        this.buildClipboardValueLookup(this.columnDefs);
+      this.clipboardCopyValueByField = this.buildClipboardValueLookup(
+        this.columnDefs
+      );
       this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
       this.tabulatorInstance.blockRedraw();
       this.tabulatorInstance.setColumns(this.columnDefs);
@@ -848,7 +867,9 @@ export default {
     },
 
     refreshPreviousDataSnapshot() {
-      this.previousData = JSON.stringify(this.tabulatorInstance?.getData?.() || []);
+      this.previousData = JSON.stringify(
+        this.tabulatorInstance?.getData?.() || []
+      );
     },
 
     beginBulkMutation() {
@@ -1151,8 +1172,7 @@ export default {
     openDropdownEditorIfNeeded(cell) {
       const columnDef = cell?.getColumn?.().getDefinition?.() || {};
       const editorType = columnDef?.editor;
-      const isDropdownEditor =
-        editorType === "list" || editorType === "select";
+      const isDropdownEditor = editorType === "list" || editorType === "select";
       if (!isDropdownEditor) return;
       const maxAttempts = 8;
       const tryOpen = (attempt = 0) => {
@@ -1364,9 +1384,12 @@ export default {
         const shouldBlockDisabledCells =
           this.tableOptions?.blockActionsOnDisabledCells === true;
         const cellEl = cell.getElement?.();
-      if (shouldBlockDisabledCells && cellEl?.classList?.contains("disable-editing")) {
-        return false;
-      }
+        if (
+          shouldBlockDisabledCells &&
+          cellEl?.classList?.contains("disable-editing")
+        ) {
+          return false;
+        }
         const columnDef = cell.getColumn?.().getDefinition?.() || {};
         if (columnDef.editor === false) return false;
         if (typeof columnDef.editable === "function") {
@@ -1374,11 +1397,11 @@ export default {
             getRow: () => ({ getData: () => rowData })
           });
         }
-      if (typeof columnDef.editable === "boolean") {
-        return columnDef.editable;
-      }
-      return Boolean(columnDef.editor);
-    };
+        if (typeof columnDef.editable === "boolean") {
+          return columnDef.editable;
+        }
+        return Boolean(columnDef.editor);
+      };
       const clearSelectedRange = () => {
         if (!rangeCells.length) return;
         const rowOriginals = new Map();
@@ -1550,8 +1573,8 @@ export default {
       const resolveEditorParams = () =>
         typeof columnDef.editorParams === "function"
           ? columnDef.editorParams({
-            getRow: () => ({ getData: () => rowData })
-          })
+              getRow: () => ({ getData: () => rowData })
+            })
           : columnDef.editorParams || {};
       const applyValidators = (val) => {
         if (!columnDef.validator) return;
@@ -1561,7 +1584,8 @@ export default {
         for (const rule of validators) {
           if (typeof rule === "function") {
             const res = rule(val);
-            if (res !== true) throw new Error(res || "Entered value is invalid.");
+            if (res !== true)
+              throw new Error(res || "Entered value is invalid.");
           } else if (typeof rule === "string") {
             const trimmed = rule.trim().toLowerCase();
             if (trimmed === "integer") {
@@ -1613,7 +1637,8 @@ export default {
             let message;
             if (hasMin && hasMax)
               message = `Entered value must be between ${minStr} and ${maxStr}.`;
-            else if (hasMin) message = `Entered value should be more than ${minStr}.`;
+            else if (hasMin)
+              message = `Entered value should be more than ${minStr}.`;
             else message = `Entered value should be less than ${maxStr}.`;
             throw new Error(message);
           }
@@ -1633,8 +1658,8 @@ export default {
           const editorParamsList =
             typeof columnDef.editorParams === "function"
               ? columnDef.editorParams({
-                getRow: () => ({ getData: () => rowData })
-              })
+                  getRow: () => ({ getData: () => rowData })
+                })
               : columnDef.editorParams;
           let options = [];
           let optionLabels = [];
@@ -1663,7 +1688,8 @@ export default {
               }
               const normalizedLower = normalized.toLowerCase();
               const ciIndex = optionLabels.findIndex(
-                (label) => String(label).trim().toLowerCase() === normalizedLower
+                (label) =>
+                  String(label).trim().toLowerCase() === normalizedLower
               );
               if (ciIndex !== -1) {
                 return options[ciIndex];
@@ -1675,7 +1701,11 @@ export default {
                 optionLabels,
                 rowData
               });
-              if (resolved !== undefined && resolved !== null && resolved !== "") {
+              if (
+                resolved !== undefined &&
+                resolved !== null &&
+                resolved !== ""
+              ) {
                 applyValidators(resolved);
                 return resolved;
               }
@@ -1684,9 +1714,7 @@ export default {
               applyValidators(value);
               return value;
             }
-            throw new Error(
-              "Entered value must be from the dropdown list."
-            );
+            throw new Error("Entered value must be from the dropdown list.");
           }
           return value;
         }
@@ -1853,7 +1881,10 @@ export default {
   margin-top: 5px;
 }
 
-.normal-tabulator-table .no-group-by .tabulator-row-odd:nth-child(1) .tabulator-cell {
+.normal-tabulator-table
+  .no-group-by
+  .tabulator-row-odd:nth-child(1)
+  .tabulator-cell {
   border-top: 1px solid #d0d0d0 !important;
 }
 
@@ -1861,7 +1892,11 @@ export default {
   padding: 10px 0px !important;
 }
 
-.normal-tabulator-table .title-field-group>.tabulator-col-content>div>div {
+.normal-tabulator-table
+  .title-field-group
+  > .tabulator-col-content
+  > div
+  > div {
   font-weight: 600 !important;
   color: rgb(99, 99, 99) !important;
 }
@@ -1885,8 +1920,12 @@ export default {
 
 .tabulator-edit-list .tabulator-edit-list-item.active,
 .tabulator-edit-list .tabulator-edit-list-item.focused,
-.tabulator-edit-list .tabulator-edit-list-item.active .tabulator-edit-list-item-label,
-.tabulator-edit-list .tabulator-edit-list-item.focused .tabulator-edit-list-item-label {
+.tabulator-edit-list
+  .tabulator-edit-list-item.active
+  .tabulator-edit-list-item-label,
+.tabulator-edit-list
+  .tabulator-edit-list-item.focused
+  .tabulator-edit-list-item-label {
   background-color: #2967c5;
   color: #fff !important;
   outline: none;
@@ -1896,37 +1935,60 @@ export default {
   background-color: #f5bcbc;
 }
 
-.normal-tabulator-table .tabulator-cell.cell-invalid:not(.tabulator-range-selected) {
+.normal-tabulator-table
+  .tabulator-cell.cell-invalid:not(.tabulator-range-selected) {
   background-color: #f5bcbc !important;
 }
 
-.normal-tabulator-table .tabulator-row.row-has-errors .tabulator-cell.required-filled:not(.disable-editing) {
+.normal-tabulator-table
+  .tabulator-row.row-has-errors
+  .tabulator-cell.required-filled:not(.disable-editing) {
   background-color: #f9e5e5;
 }
 
-.normal-tabulator-table .tabulator-row.row-has-errors .tabulator-cell:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected):not(.disable-editing) {
+.normal-tabulator-table
+  .tabulator-row.row-has-errors
+  .tabulator-cell:not(.required-empty):not(.cell-invalid):not(
+    .tabulator-range-selected
+  ):not(.disable-editing) {
   background-color: #f9e5e5;
 }
 
-.normal-tabulator-table .tabulator-row.row-has-errors .tabulator-cell.disable-editing:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected) {
+.normal-tabulator-table
+  .tabulator-row.row-has-errors
+  .tabulator-cell.disable-editing:not(.required-empty):not(.cell-invalid):not(
+    .tabulator-range-selected
+  ) {
   background-color: #f9e5e5;
 }
 
-.normal-tabulator-table .tabulator-row.row-all-valid .tabulator-cell.required-filled:not(.disable-editing),
-.normal-tabulator-table .tabulator-row.row-all-valid .tabulator-cell:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected):not(.disable-editing) {
+.normal-tabulator-table
+  .tabulator-row.row-all-valid
+  .tabulator-cell.required-filled:not(.disable-editing),
+.normal-tabulator-table
+  .tabulator-row.row-all-valid
+  .tabulator-cell:not(.required-empty):not(.cell-invalid):not(
+    .tabulator-range-selected
+  ):not(.disable-editing) {
   background-color: #e4fae3;
 }
 
-.normal-tabulator-table .tabulator-row.row-all-valid .tabulator-cell.disable-editing:not(.required-empty):not(.cell-invalid):not(.tabulator-range-selected) {
+.normal-tabulator-table
+  .tabulator-row.row-all-valid
+  .tabulator-cell.disable-editing:not(.required-empty):not(.cell-invalid):not(
+    .tabulator-range-selected
+  ) {
   background-color: #e4fae3;
 }
 
 .normal-tabulator-table .tabulator-cell.disable-editing {
-  background-image: repeating-linear-gradient(135deg,
-      rgba(156, 163, 175, 0.3),
-      rgba(156, 163, 175, 0.3) 6px,
-      rgba(255, 255, 255, 0) 6px,
-      rgba(255, 255, 255, 0) 12px) !important;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(156, 163, 175, 0.3),
+    rgba(156, 163, 175, 0.3) 6px,
+    rgba(255, 255, 255, 0) 6px,
+    rgba(255, 255, 255, 0) 12px
+  ) !important;
   color: #6f7680 !important;
   cursor: not-allowed;
 }

@@ -103,7 +103,8 @@
                 <input type="checkbox" v-model="filters.onlyGmo" />
               </div>
               <div>
-                <span style="font-weight: bold">Filter Requests</span> with Propagable &amp; GMO ➜ Yes
+                <span style="font-weight: bold">Filter Requests</span> with
+                Propagable &amp; GMO ➜ Yes
               </div>
             </label>
           </div>
@@ -359,32 +360,67 @@
                 <div class="tooltip-title">Export Guide</div>
                 <p class="tooltip-intro">
                   Use export when you want to download the table data to Excel.
-                  You can export only the rows you selected, or the full filtered
-                  result set for the current page.
+                  You can export only the rows you selected, or the full
+                  filtered result set for the current page.
                 </p>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">Basic export choices</div>
                   <ul class="tooltip-list">
-                    <li><strong>Export selected</strong> downloads only the rows you selected in the table.</li>
-                    <li><strong>Export all</strong> downloads the full result set for the current export view.</li>
-                    <li>Use search and filters first if you want to narrow the exported dataset.</li>
+                    <li>
+                      <strong>Export selected</strong> downloads only the rows
+                      you selected in the table.
+                    </li>
+                    <li>
+                      <strong>Export all</strong> downloads the full result set
+                      for the current export view.
+                    </li>
+                    <li>
+                      Use search and filters first if you want to narrow the
+                      exported dataset.
+                    </li>
                   </ul>
                 </section>
                 <section class="tooltip-section">
-                  <div class="tooltip-section-title">How template files work</div>
+                  <div class="tooltip-section-title">
+                    How template files work
+                  </div>
                   <ol class="tooltip-list tooltip-steps">
-                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the base Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
-                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or reporting.</li>
-                    <li>Upload the edited file here as a reusable template. It will appear in the list of available templates.</li>
-                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong> sheet with fresh data and keeps your extra sheets unchanged.</li>
+                    <li>
+                      Start by exporting with
+                      <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
+                    </li>
+                    <li>
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or reporting.
+                    </li>
+                    <li>
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
+                    </li>
+                    <li>
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
+                    </li>
                   </ol>
                 </section>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">When to use this</div>
                   <ul class="tooltip-list">
-                    <li>Download a snapshot of the current data for review or sharing.</li>
-                    <li>Reuse a prepared Excel layout with additional custom sheets.</li>
-                    <li>Keep Parkour data up to date inside your existing reporting workbook.</li>
+                    <li>
+                      Download a snapshot of the current data for review or
+                      sharing.
+                    </li>
+                    <li>
+                      Reuse a prepared Excel layout with additional custom
+                      sheets.
+                    </li>
+                    <li>
+                      Keep Parkour data up to date inside your existing
+                      reporting workbook.
+                    </li>
                   </ul>
                 </section>
               </div>
@@ -462,16 +498,16 @@
                 :key="index"
                 class="file-item"
               >
-              <div class="file-info">
-                <img
-                  :src="iconExportTemplateFileLines"
-                  :alt="file.name"
-                  width="24"
-                  height="24"
-                  style="display: block"
-                />
-                <span>{{ file.name }}</span>
-              </div>
+                <div class="file-info">
+                  <img
+                    :src="iconExportTemplateFileLines"
+                    :alt="file.name"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
+                  <span>{{ file.name }}</span>
+                </div>
                 <div class="file-actions">
                   <button
                     @click="downloadExportTemplate(file)"
@@ -630,7 +666,11 @@ export default {
           const uniqueTypes = [
             ...new Set(
               data
-                .map((item) => String(item.type || "").trim().toUpperCase())
+                .map((item) =>
+                  String(item.type || "")
+                    .trim()
+                    .toUpperCase()
+                )
                 .filter((type) => type === "L" || type === "S")
             )
           ];
@@ -714,7 +754,7 @@ export default {
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
     if (this.pendingEditTimer) {
@@ -783,7 +823,8 @@ export default {
           nucleic_acid_type_name: element.nucleic_acid_type_name || "",
           library_protocol_name: element.library_protocol_name || "",
           biosafety_level:
-            element.record_type === "Library" ? "BSL1"
+            element.record_type === "Library"
+              ? "BSL1"
               : element.biosafety_level || "",
           percent_total:
             element.percent_total === 0 ? 0 : element.percent_total || "",
