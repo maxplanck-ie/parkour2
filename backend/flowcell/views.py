@@ -242,18 +242,24 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         with transaction.atomic():
             affected_pools = {}
+            pool_unload_counts = {}
             requests_to_update = list(flowcell.requests.all())
             lanes = list(flowcell.lanes.select_related("pool", "pool__size").all())
 
             for lane in lanes:
                 pool = lane.pool
                 if pool:
-                    pool.loaded = max(0, pool.loaded - 1)
-                    pool.save(update_fields=["loaded"])
                     affected_pools[pool.pk] = pool
+                    pool_unload_counts[pool.pk] = pool_unload_counts.get(pool.pk, 0) + 1
 
                 flowcell.lanes.remove(lane)
                 lane.delete()
+
+            for pool_pk, pool in affected_pools.items():
+                unload_count = pool_unload_counts.get(pool_pk, 0)
+                if unload_count:
+                    pool.loaded = max(0, pool.loaded - unload_count)
+                    pool.save(update_fields=["loaded"])
 
             for pool in affected_pools.values():
                 pool_size = pool.size.multiplier if pool.size else None
@@ -262,9 +268,9 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                     pool.samples.all().filter(status=5).update(status=4)
 
             for req in requests_to_update:
-                has_other_flowcells = req.flowcell.filter(archived=False).exclude(
-                    pk=flowcell.pk
-                ).exists()
+                has_other_flowcells = (
+                    req.flowcell.filter(archived=False).exclude(pk=flowcell.pk).exists()
+                )
                 if not has_other_flowcells:
                     req.sequenced = False
                     req.flowcell_loaded_at = None
