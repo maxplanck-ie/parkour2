@@ -87,7 +87,7 @@ def get_navigation_tree(request):
             {
                 "text": "Index Generator",
                 "iconCls": "x-fa fa-cogs",
-                "viewType": "index-generator",
+                "viewType": "index-generator-vue",
                 "leaf": True,
             },
             {

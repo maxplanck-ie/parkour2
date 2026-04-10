@@ -10,6 +10,7 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.librariesvue.LibrariesVue",
     "MainHub.view.incominglibrariesvue.IncomingLibrariesVue",
     "MainHub.view.indexgenerator.IndexGenerator",
+    "MainHub.view.indexgeneratorvue.IndexGeneratorVue",
     "MainHub.view.librarypreparationvue.LibraryPreparationVue",
     "MainHub.view.poolingvue.PoolingVue",
     "MainHub.view.flowcellvue.FlowcellsVue",
@@ -42,7 +43,6 @@ Ext.define("MainHub.view.main.Main", {
       height: 68,
       padding: 0,
       enableOverflow: true,
-      overflowHandler: "scroller",
       items: [
         {
           xtype: "component",
