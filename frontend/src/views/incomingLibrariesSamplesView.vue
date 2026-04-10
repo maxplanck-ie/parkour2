@@ -606,6 +606,7 @@ import {
   incomingLibrariesSamplesColumnDefs,
   incomingLibrariesSamplesExportColumns
 } from "../constants/incomingLibrariesSamplesConsts";
+import { buildRequestGroupSummary } from "../constants/requestGroupingConsts";
 import iconIncomingHeader from "../assets/icons/header_incoming.svg";
 import iconConfirmationAlert from "../assets/icons/alert_confirmation.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
@@ -663,57 +664,14 @@ export default {
           { column: "name", dir: "desc" }
         ],
         groupHeader: (value, count, data) => {
-          const uniqueTypes = [
-            ...new Set(
-              data
-                .map((item) =>
-                  String(item.type || "")
-                    .trim()
-                    .toUpperCase()
-                )
-                .filter((type) => type === "L" || type === "S")
-            )
-          ];
-          const countLabel =
-            uniqueTypes.length === 1
-              ? uniqueTypes[0] === "L"
-                ? "Libraries"
-                : "Samples"
-              : "Libraries/Samples";
-          const samplesSubmitted = data.some(
-            (item) => item.samples_submitted === true
-          );
-          const gmo = data.some((item) => item.gmo === true);
-          let totalDepth = data.reduce(
-            (sum, row) => sum + (row.sequencing_depth || 0),
-            0
-          );
-          totalDepth = Number(totalDepth.toFixed(1));
-          const readLengthLabels = [
-            ...new Set(
-              data
-                .map((row) =>
-                  row.read_length_name !== undefined
-                    ? row.read_length_name
-                    : row.read_length
-                )
-                .filter((value) => {
-                  if (value === null || value === undefined) {
-                    return false;
-                  }
-                  const trimmedValue = String(value).trim();
-                  return trimmedValue.length > 0;
-                })
-                .map((value) => String(value).trim())
-            )
-          ];
-          const readLengthDisplay = readLengthLabels.length
-            ? readLengthLabels.join(", ")
-            : "No Read Length";
-          const biosafetyLevel =
-            [...new Set(data.map((item) => item.biosafety_level))]
-              .map((level) => level && level.toUpperCase())
-              .join(" and ") || "No BSL";
+          const {
+            countLabel,
+            samplesSubmitted,
+            gmo,
+            totalDepth,
+            readLengthDisplay,
+            biosafetyLevel
+          } = buildRequestGroupSummary(data);
           return incomingLibrariesSamplesGroupHeader(
             value,
             count,

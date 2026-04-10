@@ -66,14 +66,57 @@
             >
               <tr class="group-row" @click="toggleRequestGroup(requestName)">
                 <td colspan="9">
-                  <button
-                    class="group-toggle-button"
-                    type="button"
-                    :aria-expanded="!isRequestCollapsed(requestName)"
-                  >
-                    {{ isRequestCollapsed(requestName) ? "▸" : "▾" }}
-                  </button>
-                  {{ requestName }} ({{ groupRows.length }})
+                  <div class="group-row-content">
+                    <div class="group-row-main">
+                      <button
+                        class="group-toggle-button"
+                        type="button"
+                        :aria-expanded="!isRequestCollapsed(requestName)"
+                      >
+                        {{ isRequestCollapsed(requestName) ? "▸" : "▾" }}
+                      </button>
+                      <div>
+                        <span class="group-row-title">{{ requestName }}</span>
+                        <span class="group-row-summary">
+                          (#: {{ groupRows.length }}
+                          {{ requestGroupSummary(requestName).countLabel }},
+                          Total Depth:
+                          {{ requestGroupSummary(requestName).totalDepth }}M,
+                          Read Lengths:
+                          {{
+                            requestGroupSummary(requestName).readLengthDisplay
+                          }},
+                          {{ requestGroupSummary(requestName).biosafetyLevel }})
+                        </span>
+                      </div>
+                    </div>
+                    <div class="group-action-buttons-container" @click.stop>
+                      <div
+                        title="Select All"
+                        class="group-action-button"
+                        @click="selectAllInGroup(groupRows)"
+                      >
+                        <img
+                          :src="iconSelectAll"
+                          alt="Select All"
+                          width="24"
+                          height="24"
+                        />
+                      </div>
+                      <div
+                        title="Deselect All"
+                        class="group-action-button"
+                        @click="deselectAllInGroup(groupRows)"
+                      >
+                        <img
+                          :src="iconDeselectAll"
+                          alt="Deselect All"
+                          width="24"
+                          height="24"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr
@@ -215,6 +258,9 @@ import {
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
 import iconIndexGeneratorHeader from "../assets/icons/header_index_generator.svg";
+import iconSelectAll from "../assets/icons/action_select_all.svg";
+import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import { buildRequestGroupSummary } from "../constants/requestGroupingConsts";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
@@ -224,6 +270,8 @@ export default {
   data() {
     return {
       iconIndexGeneratorHeader,
+      iconSelectAll,
+      iconDeselectAll,
       records: [],
       poolRows: [],
       readLengths: [],
@@ -272,6 +320,15 @@ export default {
       return {
         "--left-panel-width": `${this.leftPanelWidth}%`
       };
+    },
+    requestGroupSummaries() {
+      return Object.entries(this.groupedRecords).reduce(
+        (acc, [requestName, rows]) => {
+          acc[requestName] = buildRequestGroupSummary(rows);
+          return acc;
+        },
+        {}
+      );
     }
   },
   mounted() {
@@ -465,6 +522,70 @@ export default {
         [requestName]: !this.isRequestCollapsed(requestName)
       };
     },
+    requestGroupSummary(requestName) {
+      return (
+        this.requestGroupSummaries[requestName] || buildRequestGroupSummary([])
+      );
+    },
+    setRowSelection(row, checked) {
+      if (checked && !this.selectedPoolSizeId) {
+        return false;
+      }
+
+      if (checked && row.type === "S" && !row.index_type) {
+        return false;
+      }
+
+      if (checked && !this.isCompatibleWithPool(row)) {
+        return false;
+      }
+
+      row.selected = checked;
+
+      if (checked) {
+        const candidate = this.normalizePoolRow(row);
+        const alreadySelected = this.poolRows.some(
+          (item) => item.rowKey === candidate.rowKey
+        );
+        if (!alreadySelected) {
+          this.poolRows.push(candidate);
+        }
+      } else {
+        this.poolRows = this.poolRows.filter(
+          (item) => item.rowKey !== row.rowKey
+        );
+      }
+
+      return true;
+    },
+    selectAllInGroup(groupRows) {
+      if (!this.selectedPoolSizeId) {
+        showNotification("Pool Size must be set.", "warning");
+        return;
+      }
+
+      for (const row of groupRows) {
+        if (row.selected) {
+          continue;
+        }
+
+        if (row.type === "S" && !row.index_type) {
+          showNotification("Index Type must be set.", "warning");
+          return;
+        }
+
+        if (!this.setRowSelection(row, true)) {
+          return;
+        }
+      }
+    },
+    deselectAllInGroup(groupRows) {
+      groupRows.forEach((row) => {
+        if (row.selected) {
+          this.setRowSelection(row, false);
+        }
+      });
+    },
     normalizeRecord(row) {
       const type = row.barcode?.[2] || "";
       return {
@@ -590,15 +711,7 @@ export default {
         return;
       }
 
-      row.selected = checked;
-      if (checked) {
-        const candidate = this.normalizePoolRow(row);
-        this.poolRows.push(candidate);
-      } else {
-        this.poolRows = this.poolRows.filter(
-          (item) => item.rowKey !== row.rowKey
-        );
-      }
+      this.setRowSelection(row, checked);
     },
     isCompatibleWithPool(row) {
       if (!this.poolRows.length) return true;
@@ -911,6 +1024,32 @@ th {
   cursor: pointer;
 }
 
+.group-row-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-row-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.group-row-title {
+  font-weight: bold;
+  font-size: 12px;
+  color: #333;
+}
+
+.group-row-summary {
+  font-weight: normal;
+  font-size: 12px;
+  margin-left: 2px;
+  color: black;
+}
+
 .group-toggle-button {
   border: none;
   background: transparent;
@@ -921,6 +1060,18 @@ th {
   color: #0b7f78;
   font-size: 12px;
   font-weight: 700;
+}
+
+.group-action-buttons-container {
+  position: sticky;
+  display: flex;
+  gap: 5px;
+}
+
+.group-action-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .protocol-column {
