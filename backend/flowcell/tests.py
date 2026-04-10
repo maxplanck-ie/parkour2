@@ -3,8 +3,10 @@ import json
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.urls import reverse
+from django.utils import timezone
 from index_generator.tests import create_pool
 from library.tests import create_library
+from request.tests import create_request
 from sample.tests import create_sample
 
 from .models import Flowcell, Lane, Sequencer
@@ -483,3 +485,51 @@ class TestFlowcell(BaseTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertFalse(data["success"])
         self.assertIn("Invalid payload.", data["message"])
+
+    def test_destroy_flowcell(self):
+        """Ensure destroying a flowcell unloads pools and restores statuses."""
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        request = create_request(self.user)
+        request.sequenced = True
+        request.flowcell_loaded_at = timezone.now()
+        request.save()
+
+        library = create_library(get_random_name(), 5)
+        sample = create_sample(get_random_name(), 5)
+        request.libraries.add(library)
+        request.samples.add(sample)
+
+        pool = create_pool(self.user, multiplier=2)
+        pool.libraries.add(library)
+        pool.samples.add(sample)
+
+        sequencer = create_sequencer(get_random_name(), lanes=2)
+        flowcell = create_flowcell(get_random_name(), sequencer)
+        flowcell.requests.add(request)
+
+        lane1 = Lane(name="Lane 1", pool=pool)
+        lane1.save()
+        lane2 = Lane(name="Lane 2", pool=pool)
+        lane2.save()
+        flowcell.lanes.add(lane1, lane2)
+
+        response = self.client.post(
+            reverse("flowcells-destroy-flowcell", kwargs={"pk": flowcell.pk})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        self.assertFalse(Flowcell.objects.filter(pk=flowcell.pk).exists())
+        self.assertEqual(Lane.objects.filter(pool=pool).count(), 0)
+
+        pool.refresh_from_db()
+        request.refresh_from_db()
+        library.refresh_from_db()
+        sample.refresh_from_db()
+
+        self.assertEqual(pool.loaded, 0)
+        self.assertEqual(library.status, 4)
+        self.assertEqual(sample.status, 4)
+        self.assertFalse(request.sequenced)
+        self.assertIsNone(request.flowcell_loaded_at)

@@ -247,6 +247,7 @@ export default {
 .lite-tabulator-table .tabulator {
   height: 100%;
   font-size: 12px;
+  font-family: var(--app-font-family);
   border: 1px solid #d0d0d0;
   border-radius: 8px !important;
   border-bottom-left-radius: 0px !important;
@@ -364,11 +365,11 @@ export default {
 }
 
 .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
-  background-color: #eef7ff !important;
+  background-color: #fff1f1 !important;
 }
 
 .lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
-  background-color: #eef7ff !important;
+  background-color: #fff1f1 !important;
 }
 
 .lite-tabulator-table .tabulator-row:hover .group-action-buttons-container {
