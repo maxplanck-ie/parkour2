@@ -333,7 +333,6 @@ open-pr:
 # 	&& echo "-- Pull Request MERGED" \
 # 	&& git checkout $$CURRENT_BRANCH
 
-## DO NOT USE WITH PRODUCTION DATA, BarcodeCounter bug is still in place!
 # check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
 save-db-json:
 	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
