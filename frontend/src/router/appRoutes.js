@@ -46,6 +46,7 @@ const router = createRouter({
           name: "Load Flowcells",
           component: loadFlowcells
         },
+        {
           path: "indexgenerator",
           name: "Index Generator",
           component: IndexGeneratorView
