@@ -8,6 +8,8 @@
 - Added django-error-mail-dedup extension to avoid frontend retry storms.
 - Added a first draft of porting Index Generator to VueJS.
 - Fixed both db_data/ and report/ URLs that were broken since we renamed to removed_ some fields.
+- Added django-error-mail-dedup extension to avoid frontend retry storms.
+- Added a first draft of porting Index Generator to VueJS.
 
 
 26.04.01
