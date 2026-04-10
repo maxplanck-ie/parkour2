@@ -274,25 +274,53 @@
                   <div class="tooltip-section-title">What this export does</div>
                   <ul class="tooltip-list">
                     <li>This screen exports the selected pooling rows only.</li>
-                    <li>All selected rows must belong to a single Pool before export can continue.</li>
-                    <li>If you need a different result, change the row selection in the table first and then reopen export.</li>
+                    <li>
+                      All selected rows must belong to a single Pool before
+                      export can continue.
+                    </li>
+                    <li>
+                      If you need a different result, change the row selection
+                      in the table first and then reopen export.
+                    </li>
                   </ul>
                 </section>
                 <section class="tooltip-section">
-                  <div class="tooltip-section-title">How template files work</div>
+                  <div class="tooltip-section-title">
+                    How template files work
+                  </div>
                   <ol class="tooltip-list tooltip-steps">
-                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the base Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
-                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or reporting.</li>
-                    <li>Upload the edited file here as a reusable template. It will appear in the list of available templates.</li>
-                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong> sheet with fresh data and keeps your extra sheets unchanged.</li>
+                    <li>
+                      Start by exporting with
+                      <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
+                    </li>
+                    <li>
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or reporting.
+                    </li>
+                    <li>
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
+                    </li>
+                    <li>
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
+                    </li>
                   </ol>
                 </section>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">When to use this</div>
                   <ul class="tooltip-list">
                     <li>Share pooling-specific results in Excel format.</li>
-                    <li>Keep a reusable workbook for one pool-based workflow.</li>
-                    <li>Reuse the same export format whenever you need updated pooling data.</li>
+                    <li>
+                      Keep a reusable workbook for one pool-based workflow.
+                    </li>
+                    <li>
+                      Reuse the same export format whenever you need updated
+                      pooling data.
+                    </li>
                   </ul>
                 </section>
               </div>
@@ -549,7 +577,7 @@ export default {
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
   },
