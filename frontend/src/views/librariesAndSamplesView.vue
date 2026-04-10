@@ -1074,6 +1074,8 @@ export default {
             type: e.barcode?.[2] ?? "",
             barcode: e.barcode ?? "",
             nucleic_acid_type_name: e.nucleic_acid_type_name ?? "",
+            comment_input: e.comment_input ?? "",
+            organism_name: e.organism_name ?? "",
             library_protocol_name: e.library_protocol_name ?? "",
             analysis_type_name: e.analysis_type_name ?? "",
             starting_amount: getValue(e.starting_amount),

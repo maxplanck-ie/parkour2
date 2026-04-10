@@ -12,11 +12,12 @@ diff-match-patch==20241021
     # via django-import-export
 dj-database-url==3.1.2
     # via -r backend/requirements/base.in
-django==5.2.12
+django==5.2.13
     # via
     #   -r backend/requirements/base.in
     #   dj-database-url
     #   django-authtools
+    #   django-error-mail-dedup
     #   django-extensions
     #   django-import-export
     #   django-linear-migrations
@@ -26,6 +27,8 @@ django==5.2.12
 django-admin-list-filter-dropdown==1.0.3
     # via -r backend/requirements/base.in
 django-authtools @ git+https://github.com/adRn-s/django-authtools@a3284c976719bd26f085fdac9951009acda804dc
+    # via -r backend/requirements/base.in
+django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@2e9be2bb1056ca6ed7a5dc606af38e3c9d594482
     # via -r backend/requirements/base.in
 django-extensions==4.1
     # via -r backend/requirements/base.in

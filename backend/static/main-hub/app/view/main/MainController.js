@@ -24,7 +24,8 @@ Ext.define("MainHub.view.main.MainController", {
     indexgenerator: "index-generator-vue",
     preparation: "library-preparation-vue",
     "library-preparation": "library-preparation-vue",
-    pooling: "pooling-vue"
+    pooling: "pooling-vue",
+    flowcells: "flowcells-vue"
   },
 
   onMainViewRender: function () {

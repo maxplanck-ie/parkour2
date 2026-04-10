@@ -4,6 +4,8 @@
 ========
 
 - ...
+- Added django-error-mail-dedup extension to avoid frontend retry storms.
+- Added a first draft of porting Index Generator to VueJS.
 
 
 26.04.01

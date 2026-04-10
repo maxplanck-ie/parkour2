@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from .models import (
+    LoadFlowcellsTemplate,
     LibrariesAndSamplesTemplate,
     IncomingLibrariesSamplesTemplate,
     LibraryPreparationTemplate,
@@ -48,4 +49,10 @@ class LibraryPreparationTemplateSerializer(ModelSerializer):
 class PoolingTemplateSerializer(ModelSerializer):
     class Meta:
         model = PoolingTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+
+class LoadFlowcellsTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = LoadFlowcellsTemplate
         fields = ["id", "name", "file", "uploaded_at"]

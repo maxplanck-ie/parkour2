@@ -1,6 +1,7 @@
 Django~=5.2  # remember to update pre-heat cache @ Dockerfile too
 backports-zoneinfo ; python_version < "3.9"  # hardcoded conditional to avoid issues on latest Py
 django-authtools @ git+https://github.com/adRn-s/django-authtools@dev_adRn
+django-error-mail-dedup @ git+https://github.com/adRn-s/django-error-mail-dedup@main
 djangorestframework
 drf-spectacular
 django-admin-list-filter-dropdown

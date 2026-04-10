@@ -5,6 +5,7 @@ import librariesAndSamples from "../views/librariesAndSamplesView.vue";
 import IncomingLibrariesSamples from "../views/incomingLibrariesSamplesView.vue";
 import libraryPreparation from "../views/libraryPreparationView.vue";
 import pooling from "../views/poolingView.vue";
+import loadFlowcells from "../views/loadFlowcellsView.vue";
 import IndexGeneratorView from "../views/indexGeneratorView.vue";
 import notFoundView from "../views/notFoundView.vue";
 
@@ -41,6 +42,10 @@ const router = createRouter({
           component: pooling
         },
         {
+          path: "load_flowcells",
+          name: "Load Flowcells",
+          component: loadFlowcells
+        },
           path: "indexgenerator",
           name: "Index Generator",
           component: IndexGeneratorView

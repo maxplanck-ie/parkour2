@@ -350,7 +350,39 @@
                       </div>
                     </section>
 
-                    <section class="feature-help-section feature-help-section-wide">
+                    <section class="feature-help-section">
+                      <div class="feature-help-section-head">
+                        <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
+                        <span>Auto-Population and Smart Fill</span>
+                      </div>
+                      <ul class="feature-help-points">
+                        <li>
+                          Some fields depend on earlier choices. For example,
+                          selecting an <strong>Input Type</strong> can narrow
+                          the protocol options to the ones that fit that input.
+                        </li>
+                        <li>
+                          <strong>Index Type</strong> controls related index
+                          fields. When a valid <strong>Index I7</strong> is
+                          selected or pasted, the editor can automatically fill
+                          the paired <strong>Index I5</strong> and keep the
+                          index combination consistent.
+                        </li>
+                        <li>
+                          Paste actions are handled intelligently. The editor
+                          tries to place values in the correct columns, keep row
+                          alignment, and apply the same validation rules as
+                          manual entry.
+                        </li>
+                        <li>
+                          Some values are reformatted or completed
+                          automatically, while other cells stay read-only until
+                          the required upstream fields have been filled in.
+                        </li>
+                      </ul>
+                    </section>
+
+                    <section class="feature-help-section">
                       <div class="feature-help-section-head">
                         <font-awesome-icon icon="fa-solid fa-circle-check" />
                         <span>Save Flow and Validation</span>
