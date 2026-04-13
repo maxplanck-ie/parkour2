@@ -27,11 +27,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.13/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.86
+boto3==1.42.88
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.86
+botocore==1.42.88
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   boto3
@@ -246,7 +246,7 @@ jedi==0.19.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   ipython
-jiter==0.13.0
+jiter==0.14.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   openai
@@ -267,7 +267,7 @@ kiwisolver==1.5.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   matplotlib
-lxml==6.0.2
+lxml==6.0.4
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   python-docx
@@ -431,7 +431,7 @@ requests==2.33.1
     #   django-sql-explorer
     #   pytest-base-url
     #   tiktoken
-rich==14.3.3
+rich==15.0.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
