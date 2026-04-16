@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="table-container tables-wrap" :style="tablesWrapStyle">
+    <div class="table-container tables-wrap">
       <section class="panel left-panel">
         <div class="panel-heading">
           <h3>Libraries and Samples for Pooling</h3>
@@ -178,14 +178,6 @@
         </div>
       </section>
 
-      <div
-        class="panel-splitter"
-        role="separator"
-        aria-orientation="vertical"
-        aria-label="Resize left and right tables"
-        @mousedown="startPanelResize"
-      ></div>
-
       <section class="panel right-panel">
         <h3>Pool (total size: {{ totalDepthRounded }} M)</h3>
         <div class="table-scroll">
@@ -279,9 +271,7 @@ export default {
       generatorIndexTypes: [],
       selectedPoolSizeId: null,
       collapsedRequests: {},
-      activeResize: null,
-      leftPanelWidth: 50,
-      activePanelResize: false
+      activeResize: null
     };
   },
   computed: {
@@ -316,11 +306,6 @@ export default {
     i5Balance() {
       return this.computeColorBalance("index_i5", 12);
     },
-    tablesWrapStyle() {
-      return {
-        "--left-panel-width": `${this.leftPanelWidth}%`
-      };
-    },
     requestGroupSummaries() {
       return Object.entries(this.groupedRecords).reduce(
         (acc, [requestName, rows]) => {
@@ -337,8 +322,6 @@ export default {
   beforeUnmount() {
     document.removeEventListener("mousemove", this.onColumnResizeMove);
     document.removeEventListener("mouseup", this.onColumnResizeEnd);
-    document.removeEventListener("mousemove", this.onPanelResizeMove);
-    document.removeEventListener("mouseup", this.onPanelResizeEnd);
   },
   methods: {
     async loadInitialData() {
@@ -459,43 +442,6 @@ export default {
           cell.style.minWidth = px;
         }
       });
-    },
-    startPanelResize(event) {
-      if (window.innerWidth <= 980) {
-        return;
-      }
-
-      event.preventDefault();
-      this.activePanelResize = true;
-      document.body.style.cursor = "col-resize";
-
-      document.addEventListener("mousemove", this.onPanelResizeMove);
-      document.addEventListener("mouseup", this.onPanelResizeEnd);
-    },
-    onPanelResizeMove(event) {
-      if (!this.activePanelResize) {
-        return;
-      }
-
-      const wrap = this.$el.querySelector(".tables-wrap");
-      if (!wrap) {
-        return;
-      }
-
-      const rect = wrap.getBoundingClientRect();
-      if (rect.width <= 0) {
-        return;
-      }
-
-      const relativeX = event.clientX - rect.left;
-      const pct = (relativeX / rect.width) * 100;
-      this.leftPanelWidth = Math.max(28, Math.min(72, pct));
-    },
-    onPanelResizeEnd() {
-      this.activePanelResize = false;
-      document.body.style.cursor = "";
-      document.removeEventListener("mousemove", this.onPanelResizeMove);
-      document.removeEventListener("mouseup", this.onPanelResizeEnd);
     },
     syncCollapsedRequests() {
       const updated = {};
@@ -930,27 +876,11 @@ export default {
 
 .tables-wrap {
   margin-top: 10px;
-  display: grid;
-  grid-template-columns: minmax(380px, var(--left-panel-width)) 10px minmax(
-      380px,
-      calc(100% - var(--left-panel-width))
-    );
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   min-height: 0;
   flex: 1;
-}
-
-.panel-splitter {
-  width: 10px;
-  border-radius: 5px;
-  background: linear-gradient(180deg, #d8dfdf 0%, #b8c2c2 100%);
-  cursor: col-resize;
-  align-self: stretch;
-  transition: background 0.2s ease;
-}
-
-.panel-splitter:hover {
-  background: linear-gradient(180deg, #8fa2a2 0%, #0b7f78 100%);
 }
 
 .panel {
@@ -1121,14 +1051,6 @@ th {
 @media (max-width: 980px) {
   .pool-size-select {
     min-width: 120px;
-  }
-
-  .tables-wrap {
-    grid-template-columns: 1fr;
-  }
-
-  .panel-splitter {
-    display: none;
   }
 }
 
