@@ -4,7 +4,6 @@ services:
     hostname: parkour2-vite
     build:
       dockerfile: ./frontend.Dockerfile
-      target: pk2_dev
     restart: always
     volumes:
       - ./frontend:/usr/src/app

@@ -21,8 +21,8 @@ check-rootdir:
 		exit 1; }
 
 set-prod:
-	@sed -i -e '/parkour2-django:/,/env_file:/ s#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
-	@sed -i -e '/parkour2-vite:/,/restart:/ s#\(target:\) pk2_.*#\1 pk2_prod#' docker-compose.yml
+	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
+	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 deploy-webapp:
@@ -77,8 +77,7 @@ down: clean  ## Turn off running instance (persisting media & staticfiles' volum
 	@docker network rm -f parkour2
 
 set-base:
-	@sed -i -e '/parkour2-django:/,/env_file:/ s#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
-	@sed -i -e '/parkour2-vite:/,/restart:/ s#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
+	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 
 clean:
 	@#docker compose exec parkour2-django rm -f backend/logs/*.log
@@ -112,8 +111,8 @@ dev-easy: down set-dev deploy-webapp deploy-caddy collect-static clean  ## Deplo
 dev: down set-dev deploy-webapp deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev: hardreset-caddyfile
-	@sed -i -e '/parkour2-django:/,/env_file:/ s#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
-	@sed -i -e '/parkour2-vite:/,/restart:/ s#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
+	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
+	# @sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 hardreset-caddyfile:
@@ -214,12 +213,10 @@ djtest: down set-testing deploy-webapp clean  ## Re-deploy and run Backend tests
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing:
-	@sed -i -e '/parkour2-django:/,/env_file:/ s#\(target:\) pk2_.*#\1 pk2_testing#' docker-compose.yml
-	@sed -i -e '/parkour2-vite:/,/restart:/ s#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
+	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_testing#' docker-compose.yml
 
 set-playwright:
-	@sed -i -e '/parkour2-django:/,/env_file:/ s#\(target:\) pk2_.*#\1 pk2_playwright#' docker-compose.yml
-	@sed -i -e '/parkour2-vite:/,/restart:/ s#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
+	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_playwright#' docker-compose.yml
 
 # pytest: down set-testing deploy-webapp
 # 	@docker compose exec parkour2-django pytest -n auto
