@@ -13,6 +13,40 @@
       <div class="header-title">Index Generator</div>
 
       <div class="sticky-actions">
+        <div class="header-pool-size-controls">
+          <select
+            id="index-generator-pool-multiplier"
+            class="pool-size-select"
+            :value="selectedPoolMultiplier"
+            @change="onPoolMultiplierChange($event.target.value)"
+          >
+            <option :value="''">Multiplier</option>
+            <option
+              v-for="multiplier in poolMultiplierOptions"
+              :key="`multiplier-${multiplier}`"
+              :value="multiplier"
+            >
+              {{ multiplier }}
+            </option>
+          </select>
+
+          <select
+            id="index-generator-pool-size"
+            class="pool-size-select"
+            :value="selectedPoolActualSize"
+            :disabled="!selectedPoolMultiplier"
+            @change="onPoolActualSizeChange($event.target.value)"
+          >
+            <option :value="''">Size</option>
+            <option
+              v-for="size in filteredPoolSizeOptions"
+              :key="`size-${size}`"
+              :value="size"
+            >
+              {{ size }}
+            </option>
+          </select>
+        </div>
         <button
           class="header-button"
           :disabled="!canGenerate"
@@ -34,26 +68,16 @@
       <section class="panel left-panel">
         <div class="panel-heading">
           <h3>Libraries and Samples for Pooling</h3>
-          <select
-            id="index-generator-pool-size"
-            class="pool-size-select"
-            v-model="selectedPoolSizeId"
-          >
-            <option :value="null">Select Pool Size</option>
-            <option v-for="size in poolSizes" :key="size.id" :value="size.id">
-              {{ size.name }}
-            </option>
-          </select>
         </div>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Barcode</th>
-                <th>Depth (M)</th>
-                <th>Length</th>
+                <th class="checkbox-column"></th>
+                <th class="name-column">Name</th>
+                <th class="barcode-column">Barcode</th>
+                <th class="depth-column">Depth (M)</th>
+                <th class="length-column">Length</th>
                 <th class="protocol-column">Protocol</th>
                 <th class="index-type-column">Index Type</th>
                 <th class="sequence-column">Index I7</th>
@@ -124,17 +148,17 @@
                 v-show="!isRequestCollapsed(requestName)"
                 :key="row.rowKey"
               >
-                <td>
+                <td class="checkbox-column">
                   <input
                     type="checkbox"
                     :checked="row.selected"
                     @change="toggleSelection(row, $event)"
                   />
                 </td>
-                <td>{{ row.name }}</td>
-                <td>{{ row.barcode }}</td>
-                <td>{{ row.sequencing_depth }}</td>
-                <td>
+                <td class="name-column">{{ row.name }}</td>
+                <td class="barcode-column barcode-text">{{ row.barcode }}</td>
+                <td class="depth-column">{{ row.sequencing_depth }}</td>
+                <td class="length-column">
                   <select
                     :value="row.read_length"
                     @change="
@@ -170,8 +194,12 @@
                     </option>
                   </select>
                 </td>
-                <td class="sequence-column">{{ row.index_i7 || "-" }}</td>
-                <td class="sequence-column">{{ row.index_i5 || "-" }}</td>
+                <td class="sequence-column sequence-text">
+                  {{ row.index_i7 || "-" }}
+                </td>
+                <td class="sequence-column sequence-text">
+                  {{ row.index_i5 || "-" }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -184,26 +212,30 @@
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Depth (M)</th>
-                <th>Coord</th>
-                <th>Index I7 ID</th>
-                <th>Index I7</th>
-                <th>Index I5 ID</th>
-                <th>Index I5</th>
+                <th class="name-column">Name</th>
+                <th class="type-column">Type</th>
+                <th class="depth-column">Depth (M)</th>
+                <th class="coord-column">Coord</th>
+                <th class="index-id-column">Index I7 ID</th>
+                <th class="sequence-column">Index I7</th>
+                <th class="index-id-column">Index I5 ID</th>
+                <th class="sequence-column">Index I5</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="row in poolRows" :key="row.rowKey">
-                <td>{{ row.name }}</td>
-                <td>{{ row.type }}</td>
-                <td>{{ row.sequencing_depth }}</td>
-                <td>{{ row.coordinate || "-" }}</td>
-                <td>{{ row.index_i7_id || "-" }}</td>
-                <td>{{ row.index_i7 || "-" }}</td>
-                <td>{{ row.index_i5_id || "-" }}</td>
-                <td>{{ row.index_i5 || "-" }}</td>
+                <td class="name-column">{{ row.name }}</td>
+                <td class="type-column">{{ row.type }}</td>
+                <td class="depth-column">{{ row.sequencing_depth }}</td>
+                <td class="coord-column">{{ row.coordinate || "-" }}</td>
+                <td class="index-id-column">{{ row.index_i7_id || "-" }}</td>
+                <td class="sequence-column sequence-text">
+                  {{ row.index_i7 || "-" }}
+                </td>
+                <td class="index-id-column">{{ row.index_i5_id || "-" }}</td>
+                <td class="sequence-column sequence-text">
+                  {{ row.index_i5 || "-" }}
+                </td>
               </tr>
               <tr v-if="poolRows.length === 0">
                 <td colspan="8">No records selected.</td>
@@ -270,6 +302,8 @@ export default {
       poolSizes: [],
       generatorIndexTypes: [],
       selectedPoolSizeId: null,
+      selectedPoolMultiplier: "",
+      selectedPoolActualSize: "",
       collapsedRequests: {},
       activeResize: null
     };
@@ -305,6 +339,52 @@ export default {
     },
     i5Balance() {
       return this.computeColorBalance("index_i5", 12);
+    },
+    parsedPoolSizes() {
+      return (this.poolSizes || []).map((size) => {
+        const parsed = this.parsePoolSizeName(size.name);
+        return {
+          ...size,
+          multiplier: parsed.multiplier,
+          actualSize: parsed.actualSize
+        };
+      });
+    },
+    poolMultiplierOptions() {
+      const unique = new Set(
+        this.parsedPoolSizes
+          .map((item) => item.multiplier)
+          .filter((value) => value)
+      );
+
+      return Array.from(unique).sort((a, b) => {
+        const aNum = Number(a);
+        const bNum = Number(b);
+        const bothNumeric = Number.isFinite(aNum) && Number.isFinite(bNum);
+        return bothNumeric ? aNum - bNum : String(a).localeCompare(String(b));
+      });
+    },
+    filteredPoolSizeOptions() {
+      if (!this.selectedPoolMultiplier) {
+        return [];
+      }
+
+      const unique = new Set(
+        this.parsedPoolSizes
+          .filter(
+            (item) =>
+              String(item.multiplier) === String(this.selectedPoolMultiplier)
+          )
+          .map((item) => item.actualSize)
+          .filter((value) => value)
+      );
+
+      return Array.from(unique).sort((a, b) => {
+        const aNum = Number(a);
+        const bNum = Number(b);
+        const bothNumeric = Number.isFinite(aNum) && Number.isFinite(bNum);
+        return bothNumeric ? aNum - bNum : String(a).localeCompare(String(b));
+      });
     },
     requestGroupSummaries() {
       return Object.entries(this.groupedRecords).reduce(
@@ -343,6 +423,7 @@ export default {
         );
         this.readLengths = readLengthsResponse.data || [];
         this.poolSizes = poolSizesResponse.data || [];
+        this.syncSelectedPoolSizeId();
         this.generatorIndexTypes = indexTypesResponse.data || [];
         this.syncCollapsedRequests();
       } catch (error) {
@@ -567,6 +648,44 @@ export default {
         (item) => String(item.id) === String(indexTypeId)
       );
     },
+    parsePoolSizeName(value) {
+      const raw = String(value || "").trim();
+      const parsed = raw.match(/^(\d+)\s*[xX]\s*(.+)$/);
+      if (parsed) {
+        return {
+          multiplier: parsed[1],
+          actualSize: parsed[2].trim()
+        };
+      }
+
+      return {
+        multiplier: "",
+        actualSize: raw
+      };
+    },
+    onPoolMultiplierChange(value) {
+      this.selectedPoolMultiplier = value || "";
+      this.selectedPoolActualSize = "";
+      this.syncSelectedPoolSizeId();
+    },
+    onPoolActualSizeChange(value) {
+      this.selectedPoolActualSize = value || "";
+      this.syncSelectedPoolSizeId();
+    },
+    syncSelectedPoolSizeId() {
+      if (!this.selectedPoolMultiplier || !this.selectedPoolActualSize) {
+        this.selectedPoolSizeId = null;
+        return;
+      }
+
+      const selectedPoolSize = this.parsedPoolSizes.find(
+        (item) =>
+          String(item.multiplier) === String(this.selectedPoolMultiplier) &&
+          String(item.actualSize) === String(this.selectedPoolActualSize)
+      );
+
+      this.selectedPoolSizeId = selectedPoolSize ? selectedPoolSize.id : null;
+    },
     isNanoporeProtocol(row) {
       const protocol = String(row.library_protocol_name || "").toLowerCase();
       return /oxford\s*nanopore|nanopore|\bont\b/.test(protocol);
@@ -616,18 +735,12 @@ export default {
 
       for (const row of this.poolRows) {
         if (!row.index_i7) {
-          showNotification(
-            `Index I7 is not set for \"${row.name}\".`,
-            "warning"
-          );
+          showNotification(`Index I7 is not set for "${row.name}".`, "warning");
           return false;
         }
         const indexMeta = this.indexTypeMeta(row.index_type);
         if (indexMeta?.is_dual && !row.index_i5) {
-          showNotification(
-            `Index I5 is not set for \"${row.name}\".`,
-            "warning"
-          );
+          showNotification(`Index I5 is not set for "${row.name}".`, "warning");
           return false;
         }
       }
@@ -755,6 +868,8 @@ export default {
         showNotification("Pool has been saved!", "success");
         this.poolRows = [];
         this.selectedPoolSizeId = null;
+        this.selectedPoolMultiplier = "";
+        this.selectedPoolActualSize = "";
         await this.loadInitialData();
       } catch (error) {
         handleError(error);
@@ -832,8 +947,15 @@ export default {
 }
 
 .sticky-actions {
+  display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.header-pool-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .panel-heading {
@@ -845,7 +967,7 @@ export default {
 }
 
 .pool-size-select {
-  min-width: 150px;
+  min-width: 90px;
   height: 33px;
   border: 1px solid #cfd8dc;
   border-radius: 7px;
@@ -909,7 +1031,11 @@ table {
 }
 
 .left-panel table {
-  min-width: 1080px;
+  min-width: 1150px;
+}
+
+.right-panel table {
+  min-width: 980px;
 }
 
 th,
@@ -1005,19 +1131,56 @@ th {
 }
 
 .protocol-column {
-  min-width: 260px;
-  width: 260px;
+  min-width: 230px;
+  width: 230px;
   max-width: 360px;
 }
 
 .index-type-column {
-  min-width: 120px;
-  width: 120px;
+  min-width: 110px;
+  width: 110px;
+}
+
+.checkbox-column {
+  min-width: 40px;
+  width: 40px;
+  text-align: center;
+}
+
+.name-column {
+  min-width: 220px;
+  width: 220px;
+}
+
+.barcode-column,
+.coord-column {
+  min-width: 110px;
+  width: 110px;
+}
+
+.depth-column,
+.length-column {
+  min-width: 90px;
+  width: 90px;
+}
+
+.type-column {
+  min-width: 68px;
+  width: 68px;
+}
+
+.index-id-column {
+  min-width: 104px;
+  width: 104px;
 }
 
 .sequence-column {
-  min-width: 140px;
-  width: 140px;
+  min-width: 130px;
+  width: 130px;
+}
+
+.barcode-text,
+.sequence-text {
   font-family: "Courier New", Courier, monospace;
 }
 
