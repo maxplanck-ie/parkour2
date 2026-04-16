@@ -18,7 +18,7 @@
     "@fortawesome/vue-fontawesome": "3.1.3",
     "ag-grid-community": "34.1.2",
     "ag-grid-vue3": "34.1.2",
-    "axios": "1.14.0",
+    "axios": "1.15.0",
     "bootstrap": "5.3.8",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
@@ -35,8 +35,8 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "6.0.5",
+    "@vitejs/plugin-vue": "6.0.6",
     "@vitejs/plugin-vue-jsx": "5.1.5",
-    "vite": "8.0.3"
+    "vite": "8.0.8"
   }
 }
