@@ -145,18 +145,44 @@
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">Basic export choices</div>
                   <ul class="tooltip-list">
-                    <li><strong>Export selected</strong> downloads only the selected lanes from one flowcell.</li>
-                    <li><strong>Export all</strong> downloads the full visible lane list for the current filters.</li>
-                    <li>Use the month range and search first if you want to narrow the exported dataset.</li>
+                    <li>
+                      <strong>Export selected</strong> downloads only the
+                      selected lanes from one flowcell.
+                    </li>
+                    <li>
+                      <strong>Export all</strong> downloads the full visible
+                      lane list for the current filters.
+                    </li>
+                    <li>
+                      Use the month range and search first if you want to narrow
+                      the exported dataset.
+                    </li>
                   </ul>
                 </section>
                 <section class="tooltip-section">
-                  <div class="tooltip-section-title">How template files work</div>
+                  <div class="tooltip-section-title">
+                    How template files work
+                  </div>
                   <ol class="tooltip-list tooltip-steps">
-                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the base Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
-                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or run tracking.</li>
-                    <li>Upload the edited file here as a reusable template. It will appear in the list of available templates.</li>
-                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong> sheet with fresh data and keeps your extra sheets unchanged.</li>
+                    <li>
+                      Start by exporting with
+                      <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
+                    </li>
+                    <li>
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or run tracking.
+                    </li>
+                    <li>
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
+                    </li>
+                    <li>
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
+                    </li>
                   </ol>
                 </section>
               </div>
@@ -193,7 +219,9 @@
                 type="radio"
                 value="all"
               />
-              <label for="flowcells-export-all">Export all visible flowcell lanes</label>
+              <label for="flowcells-export-all"
+                >Export all visible flowcell lanes</label
+              >
             </div>
           </div>
           <div class="export-section" style="height: 100%">
@@ -323,7 +351,10 @@
     </div>
 
     <div v-if="showConfirmPopup" class="popup-overlay">
-      <div class="popup-container confirmation-popup" style="width: 620px; height: 240px">
+      <div
+        class="popup-container confirmation-popup"
+        style="width: 620px; height: 240px"
+      >
         <div class="popup-header">
           <span class="popup-title">{{ confirmPopup.title }}</span>
           <button class="popup-close-button" @click="closeConfirmPopup">
@@ -334,7 +365,10 @@
           <div v-html="confirmPopup.description"></div>
         </div>
         <div class="popup-footer">
-          <button class="popup-button yes-button" @click="runConfirmPopupAction">
+          <button
+            class="popup-button yes-button"
+            @click="runConfirmPopupAction"
+          >
             Confirm
           </button>
           <button class="popup-button" @click="closeConfirmPopup">
@@ -345,7 +379,10 @@
     </div>
 
     <div v-if="showPoolInfoPopup" class="popup-overlay">
-      <div class="popup-container pool-info-popup" style="width: 720px; height: 580px">
+      <div
+        class="popup-container pool-info-popup"
+        style="width: 720px; height: 580px"
+      >
         <div class="popup-header">
           <span class="popup-title">{{ poolInfoTitle }}</span>
           <button class="popup-close-button" @click="closePoolInfoPopup">
@@ -357,26 +394,39 @@
             Loading pool details...
           </div>
           <div v-else class="pool-info-table-wrapper">
-            <table class="simple-data-table">
-              <thead>
-                <tr>
-                  <th>Request</th>
-                  <th>Type</th>
-                  <th>Name</th>
-                  <th>Barcode</th>
-                  <th>Protocol</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in poolInfoRecords" :key="`${item.record_type}-${item.barcode}`">
-                  <td>{{ item.request_name || "-" }}</td>
-                  <td>{{ item.record_type || "-" }}</td>
-                  <td>{{ item.name || "-" }}</td>
-                  <td>{{ item.barcode || "-" }}</td>
-                  <td>{{ item.protocol_name || "-" }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div v-if="!poolInfoGroupedRecords.length" class="load-empty-state">
+              No pool details available.
+            </div>
+            <div v-else class="pool-info-groups">
+              <div
+                v-for="group in poolInfoGroupedRecords"
+                :key="group.requestName"
+                class="pool-request-block"
+              >
+                <div class="pool-request-header">
+                  Request: {{ group.requestName }}
+                </div>
+                <table class="simple-data-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Barcode</th>
+                      <th>Protocol</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="(item, index) in group.items"
+                      :key="`${group.requestName}-${item.name || 'unknown'}-${item.barcode || 'none'}-${index}`"
+                    >
+                      <td>{{ item.name || "-" }}</td>
+                      <td>{{ item.barcode || "-" }}</td>
+                      <td>{{ item.protocol_name || "-" }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -400,40 +450,88 @@
               @mouseleave="showPageHelp = false"
             >
               ?
-              <div v-if="showPageHelp" class="tooltip-box load-flowcell-help-tooltip">
+              <div
+                v-if="showPageHelp"
+                class="tooltip-box load-flowcell-help-tooltip"
+              >
                 <div class="tooltip-scroll">
                   <div class="tooltip-title">Load Flowcells Guide</div>
                   <p class="tooltip-intro">
-                    Use this window to create a new flowcell load by assigning pooled libraries
-                    to the lanes of a selected sequencer. The load is saved only after the
-                    required fields are filled and every lane has a valid pool assignment.
+                    Use this window to create a new flowcell load by assigning
+                    pooled libraries to the lanes of a selected sequencer. The
+                    load is saved only after the required fields are filled and
+                    every lane has a valid pool assignment.
                   </p>
                   <section class="tooltip-section">
                     <div class="tooltip-section-title">Loading a Flowcell</div>
                     <ul class="tooltip-list">
-                      <li>Start by choosing a sequencer. The sequencer defines how many lanes are available in the lane assignment area.</li>
-                      <li>Enter a Flowcell ID. This is required before the new flowcell can be created.</li>
-                      <li>Drag ready pools from the Available Pools panel onto the lane cards on the right.</li>
-                      <li>A pool can be placed only when it still has remaining loads and its read length is compatible with the other pools already assigned to the same flowcell.</li>
-                      <li>All lanes must be filled before the new flowcell can be saved.</li>
+                      <li>
+                        Start by choosing a sequencer. The sequencer defines how
+                        many lanes are available in the lane assignment area.
+                      </li>
+                      <li>
+                        Enter a Flowcell ID. This is required before the new
+                        flowcell can be created.
+                      </li>
+                      <li>
+                        Drag ready pools from the Available Pools panel onto the
+                        lane cards on the right.
+                      </li>
+                      <li>
+                        A pool can be placed only when it still has remaining
+                        loads and its read length is compatible with the other
+                        pools already assigned to the same flowcell.
+                      </li>
+                      <li>
+                        All lanes must be filled before the new flowcell can be
+                        saved.
+                      </li>
                     </ul>
                   </section>
                   <section class="tooltip-section">
                     <div class="tooltip-section-title">Available Pools</div>
                     <ul class="tooltip-list">
-                      <li>Green pool cards are ready to load and can be dragged to open lanes.</li>
-                      <li>Each pool shows its read length and the remaining number of times it can still be loaded.</li>
-                      <li>Disabled pools cannot be placed yet, are already fully used, or do not match the current lane assignment rules.</li>
-                      <li>Clicking a pool name in the main table opens a detail view of the libraries and samples currently inside that pool.</li>
+                      <li>
+                        Green pool cards are ready to load and can be dragged to
+                        open lanes.
+                      </li>
+                      <li>
+                        Each pool shows its read length and the remaining number
+                        of times it can still be loaded.
+                      </li>
+                      <li>
+                        Disabled pools cannot be placed yet, are already fully
+                        used, or do not match the current lane assignment rules.
+                      </li>
+                      <li>
+                        Clicking a pool name in the main table opens a detail
+                        view of the libraries and samples currently inside that
+                        pool.
+                      </li>
                     </ul>
                   </section>
                   <section class="tooltip-section">
                     <div class="tooltip-section-title">Unload and Destroy</div>
                     <ul class="tooltip-list">
-                      <li>After a flowcell has been created, it appears in the main Load Flowcells table grouped by Flowcell ID.</li>
-                      <li>Use the group actions in that table to select lanes, download the sample sheet, or destroy the flowcell.</li>
-                      <li>Destroying a flowcell unloads its pools, removes the flowcell from the Load Flowcells view, and makes the pools available again in Pooling.</li>
-                      <li>When the destroyed flowcell was the last active sequencing load for a request, the related libraries and samples move back from sequencing status to pooled status.</li>
+                      <li>
+                        After a flowcell has been created, it appears in the
+                        main Load Flowcells table grouped by Flowcell ID.
+                      </li>
+                      <li>
+                        Use the group actions in that table to select lanes,
+                        download the sample sheet, or destroy the flowcell.
+                      </li>
+                      <li>
+                        Destroying a flowcell unloads its pools, removes the
+                        flowcell from the Load Flowcells view, and makes the
+                        pools available again in Pooling.
+                      </li>
+                      <li>
+                        When the destroyed flowcell was the last active
+                        sequencing load for a request, the related libraries and
+                        samples move back from sequencing status to pooled
+                        status.
+                      </li>
                     </ul>
                   </section>
                 </div>
@@ -453,7 +551,10 @@
                 </div>
                 <div class="load-panel-body">
                   <div class="load-form-grid">
-                    <div class="filter-item load-form-field" style="margin-bottom: 0">
+                    <div
+                      class="filter-item load-form-field"
+                      style="margin-bottom: 0"
+                    >
                       <label>Sequencer</label>
                       <select
                         v-model="loadForm.sequencerId"
@@ -470,7 +571,10 @@
                         </option>
                       </select>
                     </div>
-                    <div class="filter-item load-form-field" style="margin-bottom: 0">
+                    <div
+                      class="filter-item load-form-field"
+                      style="margin-bottom: 0"
+                    >
                       <label>Flowcell ID</label>
                       <input
                         v-model.trim="loadForm.flowcellId"
@@ -492,25 +596,33 @@
                   </span>
                 </div>
                 <div class="load-pools-list">
-                  <div v-if="!loadModalAvailablePools.length" class="load-empty-state">
+                  <div
+                    v-if="!loadModalAvailablePools.length"
+                    class="load-empty-state"
+                  >
                     No pools are currently available for loading.
                   </div>
                   <template v-else>
-                  <div
-                    v-for="pool in loadModalAvailablePools"
-                    :key="pool.pk"
-                    class="load-pool-row"
-                    :class="{
-                      ready: pool.ready,
-                      disabled: !pool.ready || pool.remainingLoads <= 0,
-                      dragging: draggedPoolId === pool.pk
-                    }"
-                    :draggable="pool.ready && pool.remainingLoads > 0"
-                    @dragstart="startPoolDrag(pool)"
-                    @dragend="handlePoolDragEnd"
-                  >
+                    <div
+                      v-for="pool in loadModalAvailablePools"
+                      :key="pool.pk"
+                      class="load-pool-row"
+                      :class="{
+                        ready: pool.ready,
+                        disabled: !pool.ready || pool.remainingLoads <= 0,
+                        dragging: draggedPoolId === pool.pk
+                      }"
+                      :draggable="pool.ready && pool.remainingLoads > 0"
+                      @dragstart="startPoolDrag(pool)"
+                      @dragend="handlePoolDragEnd"
+                    >
                       <div class="load-pool-main">
-                        <span class="load-pool-name">{{ pool.name }}</span>
+                        <span
+                          class="load-pool-name load-pool-link"
+                          @click.stop="openPoolInfoPopupByPool(pool)"
+                        >
+                          {{ pool.name }}
+                        </span>
                         <span class="load-pool-read-length">
                           {{ pool.read_length_name || "-" }}
                         </span>
@@ -534,7 +646,7 @@
                     </span>
                   </div>
                   <span v-if="currentLoadSequencer" class="lane-board-capacity">
-                    Capacity {{ currentLoadSequencer.lane_capacity }}
+                    Lane Capacity (M) {{ currentLoadSequencer.lane_capacity }}
                   </span>
                 </div>
                 <div v-if="!currentLoadSequencer" class="load-empty-state">
@@ -548,7 +660,9 @@
                     :class="{
                       loaded: !!loadAssignments[laneName],
                       droppable: isLaneDropAllowed(laneName),
-                      'drop-hover': hoveredLaneName === laneName && isLaneDropAllowed(laneName)
+                      'drop-hover':
+                        hoveredLaneName === laneName &&
+                        isLaneDropAllowed(laneName)
                     }"
                     @dragover.prevent="handleLaneDragOver(laneName)"
                     @drop="handleLaneDrop(laneName)"
@@ -557,13 +671,23 @@
                     <div class="lane-drop-card-content">
                       <div
                         class="lane-drop-card-pool"
-                        :class="{ 'lane-drop-card-hidden': !loadAssignments[laneName] }"
+                        :class="{
+                          'lane-drop-card-hidden': !loadAssignments[laneName],
+                          'lane-drop-card-pool-clickable':
+                            !!loadAssignments[laneName]
+                        }"
+                        @click="
+                          loadAssignments[laneName] &&
+                          openPoolInfoPopupByPool(loadAssignments[laneName])
+                        "
                       >
                         {{ loadAssignments[laneName]?.name || "-" }}
                       </div>
                       <div
                         class="lane-drop-card-meta"
-                        :class="{ 'lane-drop-card-hidden': !loadAssignments[laneName] }"
+                        :class="{
+                          'lane-drop-card-hidden': !loadAssignments[laneName]
+                        }"
                       >
                         {{ loadAssignments[laneName]?.read_length_name || "-" }}
                       </div>
@@ -571,7 +695,8 @@
                         class="lane-drop-placeholder"
                         :class="{
                           'lane-drop-card-hidden': !!loadAssignments[laneName],
-                          'lane-drop-placeholder-empty': !loadAssignments[laneName]
+                          'lane-drop-placeholder-empty':
+                            !loadAssignments[laneName]
                         }"
                       >
                         Drop Pool Here
@@ -579,7 +704,9 @@
                     </div>
                     <button
                       class="lane-remove-button"
-                      :class="{ 'lane-remove-button-hidden': !loadAssignments[laneName] }"
+                      :class="{
+                        'lane-remove-button-hidden': !loadAssignments[laneName]
+                      }"
                       :disabled="!loadAssignments[laneName]"
                       @click="unassignLane(laneName)"
                     >
@@ -661,7 +788,8 @@ export default {
       tableOptions: {
         index: "pk",
         placeholder: "No loaded flowcells to show.",
-        groupHeader: (value, count, data) => loadFlowcellsGroupHeader(value, data)
+        groupHeader: (value, count, data) =>
+          loadFlowcellsGroupHeader(value, data)
       },
       pendingLaneChanges: {},
       pendingEditTimer: null,
@@ -702,7 +830,9 @@ export default {
   },
   computed: {
     filteredFlowcellsList() {
-      const query = String(this.searchQuery || "").trim().toLowerCase();
+      const query = String(this.searchQuery || "")
+        .trim()
+        .toLowerCase();
       if (!query) {
         return this.flowcellsList;
       }
@@ -760,6 +890,21 @@ export default {
             : String(remainingLoads)
         };
       });
+    },
+    poolInfoGroupedRecords() {
+      const grouped = this.poolInfoRecords.reduce((acc, item) => {
+        const requestName = item.request_name || "-";
+        if (!acc[requestName]) {
+          acc[requestName] = [];
+        }
+        acc[requestName].push(item);
+        return acc;
+      }, {});
+
+      return Object.keys(grouped).map((requestName) => ({
+        requestName,
+        items: grouped[requestName]
+      }));
     }
   },
   mounted() {
@@ -833,13 +978,10 @@ export default {
       return true;
     },
     setColumns() {
-      this.columnsList = loadFlowcellsColumnDefs(
-        () => this.tabulatorInstance,
-        {
-          onToggleSelected: this.handleRowSelectionToggle,
-          onPoolClick: this.openPoolInfoPopup
-        }
-      );
+      this.columnsList = loadFlowcellsColumnDefs(() => this.tabulatorInstance, {
+        onToggleSelected: this.handleRowSelectionToggle,
+        onPoolClick: this.openPoolInfoPopup
+      });
     },
     fakeLoadingStart() {
       this.fakeLoading = true;
@@ -850,12 +992,15 @@ export default {
     async getFlowcells() {
       this.loading = true;
       try {
-        const response = await axiosRef.get(`${urlStringStart}/api/flowcells/`, {
-          params: {
-            start: this.formatMonthString(this.startDateString),
-            end: this.formatMonthString(this.endDateString)
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/flowcells/`,
+          {
+            params: {
+              start: this.formatMonthString(this.startDateString),
+              end: this.formatMonthString(this.endDateString)
+            }
           }
-        });
+        );
 
         this.flowcellsList = (response.data || []).map((item) => ({
           ...item,
@@ -1018,12 +1163,26 @@ export default {
       }
     },
     openPoolInfoPopup(rowData) {
+      this.openPoolInfoPopupByPoolId(
+        rowData?.pool,
+        rowData?.pool_name || "Pool"
+      );
+    },
+    openPoolInfoPopupByPool(pool) {
+      this.openPoolInfoPopupByPoolId(pool?.pk, pool?.name || "Pool");
+    },
+    openPoolInfoPopupByPoolId(poolId, title = "Pool") {
+      if (!poolId) {
+        showNotification("Pool was not found.", "warning");
+        return;
+      }
+
       this.showPoolInfoPopup = true;
-      this.poolInfoTitle = rowData.pool_name || "Pool";
+      this.poolInfoTitle = title;
       this.poolInfoRecords = [];
       this.poolInfoLoading = true;
       axiosRef
-        .get(`${urlStringStart}/api/pools/${rowData.pool}/`)
+        .get(`${urlStringStart}/api/pools/${poolId}/`)
         .then((response) => {
           this.poolInfoRecords = response.data || [];
         })
@@ -1103,7 +1262,9 @@ export default {
         });
       } catch (error) {
         pending.forEach((change) => {
-          const existing = this.pendingLaneChanges[change.pk] || { pk: change.pk };
+          const existing = this.pendingLaneChanges[change.pk] || {
+            pk: change.pk
+          };
           Object.keys(change).forEach((field) => {
             if (field !== "pk") {
               existing[field] = change[field];
@@ -1421,8 +1582,9 @@ export default {
     getDraggedPool() {
       if (!this.draggedPoolId) return null;
       return (
-        this.loadModalAvailablePools.find((item) => item.pk === this.draggedPoolId) ||
-        null
+        this.loadModalAvailablePools.find(
+          (item) => item.pk === this.draggedPoolId
+        ) || null
       );
     },
     canAssignPoolToLane(pool, laneName, notify = false) {
@@ -1445,7 +1607,10 @@ export default {
 
       if (!pool.ready) {
         if (notify) {
-          showNotification("Only ready pools can be loaded on a flowcell.", "warning");
+          showNotification(
+            "Only ready pools can be loaded on a flowcell.",
+            "warning"
+          );
         }
         return false;
       }
@@ -1532,7 +1697,9 @@ export default {
 
       if (
         this.loadModalLaneNames.length === 0 ||
-        this.loadModalLaneNames.some((laneName) => !this.loadAssignments[laneName])
+        this.loadModalLaneNames.some(
+          (laneName) => !this.loadAssignments[laneName]
+        )
       ) {
         showNotification("All lanes must be loaded.", "warning");
         return;
@@ -1599,6 +1766,26 @@ export default {
 .pool-info-table-wrapper {
   height: 100%;
   overflow: auto;
+}
+
+.pool-info-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pool-request-block {
+  border: 1px solid #dce3e6;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pool-request-header {
+  padding: 8px 12px;
+  background: #f4f8f9;
+  color: #294856;
+  font-weight: 700;
+  border-bottom: 1px solid #dce3e6;
 }
 
 .simple-data-table {
@@ -1815,7 +2002,10 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease,
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
     background 0.18s ease;
 }
 
@@ -1870,6 +2060,16 @@ export default {
   word-break: break-word;
   min-height: 20px;
   line-height: 20px;
+}
+
+.lane-drop-card-pool-clickable {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.lane-drop-card-pool-clickable:hover {
+  color: #086e67;
 }
 
 .lane-drop-card-meta {
@@ -1937,7 +2137,10 @@ export default {
   margin-bottom: 8px;
   background: linear-gradient(180deg, #ffffff 0%, #f9fbfc 100%);
   cursor: grab;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease,
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease,
     background 0.18s ease;
 }
 
@@ -1974,6 +2177,16 @@ export default {
 .load-pool-name {
   font-weight: 700;
   word-break: break-word;
+}
+
+.load-pool-link {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.load-pool-link:hover {
+  color: #1f6f41;
 }
 
 .load-pool-read-length,

@@ -1,6 +1,6 @@
 <template>
   <div class="parent-container index-generator-page">
-    <div class="header">
+    <div v-if="!isHorizontalSplit" class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
         <img
           :src="iconIndexGeneratorHeader"
@@ -104,50 +104,31 @@
         >
           <span>Save Pool</span>
         </button>
+        <button
+          type="button"
+          class="header-button split-layout-button"
+          @click="toggleSplitOrientation"
+        >
+          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
+        </button>
       </div>
     </div>
 
-    <div class="table-container tables-wrap">
-      <section class="panel left-panel">
-        <div class="panel-heading">
-          <h3>Libraries and Samples for Pooling</h3>
-          <div class="panel-heading-actions">
-            <div class="apply-all-controls">
-              <label class="apply-all-label">Apply to all</label>
-              <select
-                :value="applyAllScope"
-                @change="applyAllScope = $event.target.value"
-              >
-                <option value="all">All records</option>
-                <option value="selected">Selected only</option>
-              </select>
-              <select
-                :value="applyAllReadLength"
-                @change="applyFieldToAll('read_length', $event.target.value)"
-              >
-                <option :value="''">Length</option>
-                <option
-                  v-for="readLength in readLengths"
-                  :key="`apply-read-length-${readLength.id}`"
-                  :value="readLength.id"
-                >
-                  {{ readLength.name }}
-                </option>
-              </select>
-              <select
-                :value="applyAllIndexType"
-                @change="applyFieldToAll('index_type', $event.target.value)"
-              >
-                <option :value="''">Index Type</option>
-                <option
-                  v-for="indexType in generatorIndexTypes"
-                  :key="`apply-index-type-${indexType.id}`"
-                  :value="indexType.id"
-                >
-                  {{ indexType.name }}
-                </option>
-              </select>
-            </div>
+    <div
+      class="table-container tables-wrap"
+      :class="{ 'horizontal-split': isHorizontalSplit }"
+    >
+      <section
+        class="panel left-panel"
+        :class="{ 'left-panel-collapsed': isLeftPanelCollapsed }"
+        :style="leftPanelInlineStyle"
+      >
+        <div
+          class="panel-heading"
+          :class="{ 'panel-heading-stacked': isLeftPanelNarrow }"
+        >
+          <div class="panel-heading-primary">
+            <h3>Libraries and Samples for Pooling</h3>
             <div class="panel-selection-actions">
               <button
                 class="group-action-button compact"
@@ -175,6 +156,49 @@
                   height="20"
                 />
               </button>
+            </div>
+          </div>
+          <div class="panel-heading-actions">
+            <span class="panel-controls-separator" aria-hidden="true">|</span>
+            <div
+              class="apply-all-controls"
+              :class="{ compact: isLeftPanelNarrow }"
+            >
+              <label class="apply-all-label">Apply to all</label>
+              <select
+                :value="applyAllScope"
+                @change="applyAllScope = $event.target.value"
+              >
+                <option value="all">All records</option>
+                <option value="selected">Selected only</option>
+              </select>
+              <select
+                :value="applyAllReadLength"
+                @change="applyFieldToAll('read_length', $event.target.value)"
+              >
+                <option :value="''">Length</option>
+                <option
+                  v-for="readLength in readLengths"
+                  :key="`apply-read-length-${readLength.id}`"
+                  :value="readLength.id"
+                >
+                  {{ readLength.name }}
+                </option>
+              </select>
+              <select
+                class="apply-index-type-select"
+                :value="applyAllIndexType"
+                @change="applyFieldToAll('index_type', $event.target.value)"
+              >
+                <option :value="''">Index Type</option>
+                <option
+                  v-for="indexType in generatorIndexTypes"
+                  :key="`apply-index-type-${indexType.id}`"
+                  :value="indexType.id"
+                >
+                  {{ indexType.name }}
+                </option>
+              </select>
             </div>
           </div>
         </div>
@@ -222,31 +246,31 @@
                           {{ requestGroupSummary(requestName).biosafetyLevel }})
                         </span>
                       </div>
-                    </div>
-                    <div class="group-action-buttons-container" @click.stop>
-                      <div
-                        title="Select All"
-                        class="group-action-button"
-                        @click="selectAllInGroup(groupRows)"
-                      >
-                        <img
-                          :src="iconSelectAll"
-                          alt="Select All"
-                          width="24"
-                          height="24"
-                        />
-                      </div>
-                      <div
-                        title="Deselect All"
-                        class="group-action-button"
-                        @click="deselectAllInGroup(groupRows)"
-                      >
-                        <img
-                          :src="iconDeselectAll"
-                          alt="Deselect All"
-                          width="24"
-                          height="24"
-                        />
+                      <div class="group-action-buttons-container" @click.stop>
+                        <div
+                          title="Select All"
+                          class="group-action-button"
+                          @click="selectAllInGroup(groupRows)"
+                        >
+                          <img
+                            :src="iconSelectAll"
+                            alt="Select All"
+                            width="24"
+                            height="24"
+                          />
+                        </div>
+                        <div
+                          title="Deselect All"
+                          class="group-action-button"
+                          @click="deselectAllInGroup(groupRows)"
+                        >
+                          <img
+                            :src="iconDeselectAll"
+                            alt="Deselect All"
+                            width="24"
+                            height="24"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -336,7 +360,27 @@
         </div>
       </section>
 
-      <section class="panel right-panel">
+      <div
+        class="panel-splitter"
+        :class="{ 'is-collapsed': isLeftPanelCollapsed }"
+        @mousedown="startPanelResize"
+      >
+        <button
+          type="button"
+          class="splitter-toggle-button"
+          :aria-label="
+            isLeftPanelCollapsed ? 'Expand left panel' : 'Collapse left panel'
+          "
+          :title="
+            isLeftPanelCollapsed ? 'Expand left panel' : 'Collapse left panel'
+          "
+          @click.stop="toggleLeftPanelCollapse"
+        >
+          {{ isLeftPanelCollapsed ? "❯" : "❮" }}
+        </button>
+      </div>
+
+      <section class="panel right-panel" :style="rightPanelInlineStyle">
         <h3>
           Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
           {{ totalDepthRounded }} M)
@@ -437,6 +481,30 @@
           </div>
         </div>
       </section>
+
+      <div v-if="isHorizontalSplit" class="split-mode-floating-actions">
+        <button
+          class="header-button"
+          :disabled="!canGenerate"
+          @click="generateIndices"
+        >
+          <span>Generate Indices</span>
+        </button>
+        <button
+          class="header-button save-pool-button"
+          :disabled="!canSave"
+          @click="savePool"
+        >
+          <span>Save Pool</span>
+        </button>
+        <button
+          type="button"
+          class="header-button split-layout-button"
+          @click="toggleSplitOrientation"
+        >
+          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -474,9 +542,14 @@ export default {
       selectedPoolActualSize: "",
       collapsedRequests: {},
       activeResize: null,
+      activePanelResize: null,
       applyAllReadLength: "",
       applyAllIndexType: "",
       applyAllScope: "all",
+      isLeftPanelCollapsed: false,
+      isHorizontalSplit: false,
+      defaultLeftPanelWidthPercent: 50,
+      leftPanelWidthPercent: 50,
       selectedStartCoordinate: "A1",
       selectedDirection: "right",
       startCoordinateOptions: [],
@@ -622,6 +695,39 @@ export default {
     },
     requiresStrictStartCoordinate() {
       return this.platePoolIndexTypeIds.length > 0;
+    },
+    leftPanelInlineStyle() {
+      if (this.isHorizontalSplit) {
+        return {};
+      }
+
+      if (this.isLeftPanelCollapsed) {
+        return {};
+      }
+
+      const width = `${this.leftPanelWidthPercent}%`;
+      return {
+        flex: `0 0 ${width}`,
+        width
+      };
+    },
+    rightPanelInlineStyle() {
+      if (this.isHorizontalSplit) {
+        return {};
+      }
+
+      if (this.isLeftPanelCollapsed) {
+        return { flex: "1 1 auto" };
+      }
+
+      const width = `${100 - this.leftPanelWidthPercent}%`;
+      return {
+        flex: `0 0 ${width}`,
+        width
+      };
+    },
+    isLeftPanelNarrow() {
+      return !this.isLeftPanelCollapsed && this.leftPanelWidthPercent <= 42;
     }
   },
   watch: {
@@ -646,6 +752,9 @@ export default {
   beforeUnmount() {
     document.removeEventListener("mousemove", this.onColumnResizeMove);
     document.removeEventListener("mouseup", this.onColumnResizeEnd);
+    document.removeEventListener("mousemove", this.onPanelResizeMove);
+    document.removeEventListener("mouseup", this.onPanelResizeEnd);
+    document.body.classList.remove("index-generator-resizing");
   },
   methods: {
     async loadInitialData() {
@@ -792,6 +901,65 @@ export default {
         ...this.collapsedRequests,
         [requestName]: !this.isRequestCollapsed(requestName)
       };
+    },
+    toggleLeftPanelCollapse() {
+      if (this.isLeftPanelCollapsed) {
+        this.leftPanelWidthPercent = this.defaultLeftPanelWidthPercent;
+        this.isLeftPanelCollapsed = false;
+        return;
+      }
+
+      this.isLeftPanelCollapsed = true;
+    },
+    toggleSplitOrientation() {
+      this.isHorizontalSplit = !this.isHorizontalSplit;
+      this.isLeftPanelCollapsed = false;
+      this.leftPanelWidthPercent = this.defaultLeftPanelWidthPercent;
+      this.onPanelResizeEnd();
+    },
+    startPanelResize(event) {
+      if (this.isLeftPanelCollapsed || this.isHorizontalSplit) {
+        return;
+      }
+
+      if (event.target.closest(".splitter-toggle-button")) {
+        return;
+      }
+
+      const container = this.$el?.querySelector(".tables-wrap");
+      if (!container) {
+        return;
+      }
+
+      const rect = container.getBoundingClientRect();
+      this.activePanelResize = {
+        containerLeft: rect.left,
+        containerWidth: rect.width
+      };
+
+      document.addEventListener("mousemove", this.onPanelResizeMove);
+      document.addEventListener("mouseup", this.onPanelResizeEnd);
+      document.body.classList.add("index-generator-resizing");
+    },
+    onPanelResizeMove(event) {
+      if (!this.activePanelResize || this.isLeftPanelCollapsed) {
+        return;
+      }
+
+      const { containerLeft, containerWidth } = this.activePanelResize;
+      if (!containerWidth) {
+        return;
+      }
+
+      const nextPercent =
+        ((event.clientX - containerLeft) / containerWidth) * 100;
+      this.leftPanelWidthPercent = Math.max(22, Math.min(78, nextPercent));
+    },
+    onPanelResizeEnd() {
+      document.removeEventListener("mousemove", this.onPanelResizeMove);
+      document.removeEventListener("mouseup", this.onPanelResizeEnd);
+      this.activePanelResize = null;
+      document.body.classList.remove("index-generator-resizing");
     },
     requestGroupSummary(requestName) {
       return (
@@ -1610,7 +1778,7 @@ export default {
 .index-generator-page {
   height: 100%;
   font-family: var(--app-font-family);
-  font-size: 12px;
+  font-size: inherit;
 }
 
 .parent-container {
@@ -1653,6 +1821,15 @@ export default {
   margin-bottom: 8px;
 }
 
+.panel-heading-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .panel-heading-actions {
   display: flex;
   align-items: center;
@@ -1663,15 +1840,79 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
+  min-width: 0;
 }
 
 .apply-all-controls select {
   height: 28px;
   border: 1px solid #cfd8dc;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 13px;
   padding: 0 8px;
   background: #fff;
+}
+
+.apply-index-type-select {
+  width: 208px;
+}
+
+.left-panel .panel-heading {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.left-panel .panel-heading-actions {
+  min-width: 0;
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.left-panel .panel-heading.panel-heading-stacked .panel-heading-primary,
+.left-panel .panel-heading.panel-heading-stacked .panel-heading-actions {
+  flex: 1 1 100%;
+}
+
+.panel-controls-separator {
+  color: #98a4a9;
+  font-size: 12px;
+  line-height: 1;
+  align-self: center;
+}
+
+.apply-all-controls.compact {
+  display: grid;
+  grid-template-columns: auto minmax(72px, 1fr) minmax(72px, 1fr);
+  grid-template-areas:
+    "label scope length"
+    "index index index";
+  align-items: center;
+  column-gap: 5px;
+  row-gap: 4px;
+}
+
+.apply-all-controls.compact .apply-all-label {
+  grid-area: label;
+}
+
+.apply-all-controls.compact select:nth-of-type(1) {
+  grid-area: scope;
+  min-width: 0;
+}
+
+.apply-all-controls.compact select:nth-of-type(2) {
+  grid-area: length;
+  min-width: 0;
+}
+
+.apply-all-controls.compact select:nth-of-type(3) {
+  grid-area: index;
+  min-width: 0;
+  width: 100%;
+}
+
+.apply-all-controls.compact .apply-index-type-select {
+  max-width: none;
 }
 
 .apply-all-label {
@@ -1699,13 +1940,17 @@ export default {
   border-radius: 7px;
   background-color: #ffffff;
   padding: 0 10px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .pool-size-select:focus {
   outline: none;
   border-color: #0b7f78;
   box-shadow: 0 0 0 2px rgba(11, 127, 120, 0.15);
+}
+
+.split-layout-button {
+  min-width: 138px;
 }
 
 .save-pool-button {
@@ -1726,9 +1971,108 @@ export default {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
-  gap: 12px;
+  gap: 4px;
   min-height: 0;
   flex: 1;
+}
+
+.tables-wrap.horizontal-split {
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.tables-wrap.horizontal-split .panel-splitter {
+  display: none;
+}
+
+.tables-wrap.horizontal-split .right-panel {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+}
+
+.tables-wrap.horizontal-split .left-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: min(62%, calc(100% - 170px));
+  transform: translateY(calc(-100% + 26px));
+  opacity: 1;
+  background: #eeeeee;
+  border: 3px solid #000;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease;
+  overflow: hidden;
+}
+
+.split-mode-floating-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tables-wrap.horizontal-split .left-panel:hover,
+.tables-wrap.horizontal-split .left-panel:focus-within {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.panel-splitter {
+  width: 8px;
+  min-width: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+  cursor: col-resize;
+}
+
+.panel-splitter::before {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background: #d9d9d9;
+}
+
+.panel-splitter.is-collapsed {
+  cursor: default;
+}
+
+.splitter-toggle-button {
+  width: 12px;
+  height: 56px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: #f7f9f9;
+  color: #0b7f78;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.splitter-toggle-button:hover {
+  background: #eef5f4;
 }
 
 .panel {
@@ -1739,6 +2083,26 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 1;
+  transition:
+    flex-basis 0.22s ease,
+    width 0.22s ease,
+    opacity 0.2s ease,
+    padding 0.22s ease,
+    border-width 0.22s ease,
+    margin 0.22s ease;
+}
+
+.left-panel.left-panel-collapsed {
+  flex: 0 0 0;
+  width: 0;
+  min-width: 0;
+  opacity: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  margin: 0;
+  overflow: hidden;
 }
 
 .panel h3 {
@@ -1753,7 +2117,7 @@ export default {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 13px;
   table-layout: fixed;
 }
 
@@ -1809,7 +2173,7 @@ th {
 
 .group-row-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: 8px;
 }
@@ -1817,18 +2181,19 @@ th {
 .group-row-main {
   display: flex;
   align-items: center;
+  gap: 8px;
   min-width: 0;
 }
 
 .group-row-title {
   font-weight: bold;
-  font-size: 12px;
+  font-size: 13px;
   color: #333;
 }
 
 .group-row-summary {
   font-weight: normal;
-  font-size: 12px;
+  font-size: 13px;
   margin-left: 2px;
   color: black;
 }
@@ -1841,12 +2206,11 @@ th {
   padding: 0;
   width: 16px;
   color: #0b7f78;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 
 .group-action-buttons-container {
-  position: sticky;
   display: flex;
   gap: 5px;
 }
@@ -1910,7 +2274,10 @@ th {
   min-width: 122px;
 }
 
-.barcode-text,
+.barcode-text {
+  font-family: var(--app-font-family);
+}
+
 .sequence-text {
   font-family: "Courier New", Courier, monospace;
 }
@@ -1975,6 +2342,10 @@ th {
 @media (max-width: 980px) {
   .tables-wrap {
     flex-direction: column;
+  }
+
+  .panel-splitter {
+    display: none;
   }
 
   .pool-size-select {
