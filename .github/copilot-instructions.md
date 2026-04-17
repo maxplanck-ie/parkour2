@@ -22,6 +22,9 @@ based on the file you are editing (see [GitHub docs](https://docs.github.com/en/
 
 - Run backend tests: `python manage.py test --parallel`
 - Build frontend: `npm run build`
+- If a command fails with a permission error (e.g. build output files are owned by root), the app is likely running inside Docker. Run the command inside the appropriate container instead:
+  - Backend: `docker exec -it parkour2-django python manage.py test --parallel`
+  - Frontend: `docker exec -it parkour2-vite npm run build`
 
 ## Security
 
