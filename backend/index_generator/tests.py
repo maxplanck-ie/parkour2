@@ -375,6 +375,16 @@ class TestRecordsList(BaseTestCase):
         self.assertEqual(updated_library.index_type, library.index_type)
         self.assertEqual(updated_sample.index_type, index_type)
 
+    def test_start_coordinates_non_staff(self):
+        """Ensure non-staff users cannot query start coordinates."""
+        self.create_user("non-staff@test.io", "test", False)
+        self.login("non-staff@test.io", "test")
+        response = self.client.post(
+            "/api/index_generator/start_coordinates/",
+            {"index_type_ids": json.dumps([])},
+        )
+        self.assertEqual(response.status_code, 403)
+
 
 class TestIndexRegistry(BaseTestCase):
     def setUp(self):
@@ -487,6 +497,50 @@ class TestIndexGenerator(BaseTestCase):
             index_pair.save()
 
         self.index_type7 = create_index_type(INDICES_10, INDICES_11, "plate")
+
+    def test_start_coordinates_non_plate(self):
+        response = self.client.post(
+            "/api/index_generator/start_coordinates/",
+            {
+                "index_type_ids": json.dumps([self.index_type1.pk]),
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertFalse(data["requires_plate_start"])
+        self.assertEqual(data["coordinates"], [])
+
+    def test_start_coordinates_plate_intersection(self):
+        response = self.client.post(
+            "/api/index_generator/start_coordinates/",
+            {
+                "index_type_ids": json.dumps(
+                    [self.index_type5.pk, self.index_type6.pk]
+                ),
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data["success"])
+        self.assertTrue(data["requires_plate_start"])
+        self.assertEqual(data["coordinates"], ["A1", "A2", "A3", "B1", "B2", "B3"])
+        self.assertEqual(data["default_start_coord"], "A1")
+
+    def test_start_coordinates_invalid_payload(self):
+        response = self.client.post(
+            "/api/index_generator/start_coordinates/",
+            {
+                "index_type_ids": "not-json",
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Invalid index_type_ids payload.")
 
     # Test valid data
 

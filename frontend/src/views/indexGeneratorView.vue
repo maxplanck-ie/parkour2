@@ -13,6 +13,49 @@
       <div class="header-title">Index Generator</div>
 
       <div class="sticky-actions">
+        <div class="header-generate-controls">
+          <select
+            v-if="requiresStrictStartCoordinate"
+            id="index-generator-start-coordinate"
+            class="pool-size-select coordinate-input"
+            :value="selectedStartCoordinate"
+            :disabled="
+              startCoordinatesLoading || !startCoordinateOptions.length
+            "
+            @change="onStartCoordinateSelect($event.target.value)"
+          >
+            <option :value="''">Start coordinate</option>
+            <option
+              v-for="coordinate in startCoordinateOptions"
+              :key="`start-coord-${coordinate}`"
+              :value="coordinate"
+            >
+              {{ coordinate }}
+            </option>
+          </select>
+          <input
+            v-else
+            id="index-generator-start-coordinate"
+            class="pool-size-select coordinate-input"
+            :value="selectedStartCoordinate"
+            placeholder="Start (e.g. A1)"
+            @change="onStartCoordinateChange($event.target.value)"
+          />
+          <select
+            id="index-generator-direction"
+            class="pool-size-select"
+            :value="selectedDirection"
+            @change="onDirectionChange($event.target.value)"
+          >
+            <option
+              v-for="directionOption in directionOptions"
+              :key="`direction-${directionOption.value}`"
+              :value="directionOption.value"
+            >
+              {{ directionOption.label }}
+            </option>
+          </select>
+        </div>
         <div class="header-pool-size-controls">
           <select
             id="index-generator-pool-multiplier"
@@ -68,6 +111,72 @@
       <section class="panel left-panel">
         <div class="panel-heading">
           <h3>Libraries and Samples for Pooling</h3>
+          <div class="panel-heading-actions">
+            <div class="apply-all-controls">
+              <label class="apply-all-label">Apply to all</label>
+              <select
+                :value="applyAllScope"
+                @change="applyAllScope = $event.target.value"
+              >
+                <option value="all">All records</option>
+                <option value="selected">Selected only</option>
+              </select>
+              <select
+                :value="applyAllReadLength"
+                @change="applyFieldToAll('read_length', $event.target.value)"
+              >
+                <option :value="''">Length</option>
+                <option
+                  v-for="readLength in readLengths"
+                  :key="`apply-read-length-${readLength.id}`"
+                  :value="readLength.id"
+                >
+                  {{ readLength.name }}
+                </option>
+              </select>
+              <select
+                :value="applyAllIndexType"
+                @change="applyFieldToAll('index_type', $event.target.value)"
+              >
+                <option :value="''">Index Type</option>
+                <option
+                  v-for="indexType in generatorIndexTypes"
+                  :key="`apply-index-type-${indexType.id}`"
+                  :value="indexType.id"
+                >
+                  {{ indexType.name }}
+                </option>
+              </select>
+            </div>
+            <div class="panel-selection-actions">
+              <button
+                class="group-action-button compact"
+                type="button"
+                title="Select All"
+                @click="selectAllRecords"
+              >
+                <img
+                  :src="iconSelectAll"
+                  alt="Select All"
+                  width="20"
+                  height="20"
+                />
+              </button>
+              <button
+                class="group-action-button compact"
+                type="button"
+                title="Deselect All"
+                @click="deselectAllRecords"
+              >
+                <img
+                  :src="iconDeselectAll"
+                  alt="Deselect All"
+                  width="20"
+                  height="20"
+                />
+              </button>
+            </div>
+          </div>
         </div>
         <div class="table-scroll">
           <table>
@@ -147,6 +256,9 @@
                 v-for="row in groupRows"
                 v-show="!isRequestCollapsed(requestName)"
                 :key="row.rowKey"
+                :class="{
+                  'duplicate-index-row': isRowDuplicateInPool(row.rowKey)
+                }"
               >
                 <td class="checkbox-column">
                   <input
@@ -195,10 +307,28 @@
                   </select>
                 </td>
                 <td class="sequence-column sequence-text">
-                  {{ row.index_i7 || "-" }}
+                  <span v-if="row.index_i7" class="sequence-colored">
+                    <span
+                      v-for="(item, idx) in colorizeIndex(row.index_i7)"
+                      :key="`${row.rowKey}-i7-${idx}`"
+                      :class="['nt', item.className]"
+                    >
+                      {{ item.base }}
+                    </span>
+                  </span>
+                  <span v-else>-</span>
                 </td>
                 <td class="sequence-column sequence-text">
-                  {{ row.index_i5 || "-" }}
+                  <span v-if="row.index_i5" class="sequence-colored">
+                    <span
+                      v-for="(item, idx) in colorizeIndex(row.index_i5)"
+                      :key="`${row.rowKey}-i5-${idx}`"
+                      :class="['nt', item.className]"
+                    >
+                      {{ item.base }}
+                    </span>
+                  </span>
+                  <span v-else>-</span>
                 </td>
               </tr>
             </tbody>
@@ -207,13 +337,17 @@
       </section>
 
       <section class="panel right-panel">
-        <h3>Pool (total size: {{ totalDepthRounded }} M)</h3>
+        <h3>
+          Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
+          {{ totalDepthRounded }} M)
+        </h3>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
                 <th class="name-column">Name</th>
-                <th class="type-column">Type</th>
+                <th class="barcode-column">Barcode</th>
+                <th class="type-column">L/S</th>
                 <th class="depth-column">Depth (M)</th>
                 <th class="coord-column">Coord</th>
                 <th class="index-id-column">Index I7 ID</th>
@@ -223,29 +357,58 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in poolRows" :key="row.rowKey">
+              <tr
+                v-for="row in poolRows"
+                :key="row.rowKey"
+                :class="{
+                  'duplicate-index-row': isRowDuplicateInPool(row.rowKey)
+                }"
+              >
                 <td class="name-column">{{ row.name }}</td>
+                <td class="barcode-column barcode-text">{{ row.barcode }}</td>
                 <td class="type-column">{{ row.type }}</td>
                 <td class="depth-column">{{ row.sequencing_depth }}</td>
                 <td class="coord-column">{{ row.coordinate || "-" }}</td>
                 <td class="index-id-column">{{ row.index_i7_id || "-" }}</td>
                 <td class="sequence-column sequence-text">
-                  {{ row.index_i7 || "-" }}
+                  <span v-if="row.index_i7" class="sequence-colored">
+                    <span
+                      v-for="(item, idx) in colorizeIndex(row.index_i7)"
+                      :key="`${row.rowKey}-pool-i7-${idx}`"
+                      :class="['nt', item.className]"
+                    >
+                      {{ item.base }}
+                    </span>
+                  </span>
+                  <span v-else>-</span>
                 </td>
                 <td class="index-id-column">{{ row.index_i5_id || "-" }}</td>
                 <td class="sequence-column sequence-text">
-                  {{ row.index_i5 || "-" }}
+                  <span v-if="row.index_i5" class="sequence-colored">
+                    <span
+                      v-for="(item, idx) in colorizeIndex(row.index_i5)"
+                      :key="`${row.rowKey}-pool-i5-${idx}`"
+                      :class="['nt', item.className]"
+                    >
+                      {{ item.base }}
+                    </span>
+                  </span>
+                  <span v-else>-</span>
                 </td>
               </tr>
               <tr v-if="poolRows.length === 0">
-                <td colspan="8">No records selected.</td>
+                <td colspan="9">No records selected.</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="balance-block">
-          <h4>Color Balance (i7)</h4>
+          <h4>Color Balance (i7, R/G)</h4>
+          <p class="balance-description">
+            Proportion shown as Red/Green percentages per cycle (Red = A/C,
+            Green = G/T), weighted by sequencing depth.
+          </p>
           <div class="balance-grid">
             <span
               v-for="item in i7Balance"
@@ -258,7 +421,11 @@
         </div>
 
         <div class="balance-block">
-          <h4>Color Balance (i5)</h4>
+          <h4>Color Balance (i5, R/G)</h4>
+          <p class="balance-description">
+            Proportion shown as Red/Green percentages per cycle (Red = A/C,
+            Green = G/T), weighted by sequencing depth.
+          </p>
           <div class="balance-grid">
             <span
               v-for="item in i5Balance"
@@ -305,7 +472,19 @@ export default {
       selectedPoolMultiplier: "",
       selectedPoolActualSize: "",
       collapsedRequests: {},
-      activeResize: null
+      activeResize: null,
+      applyAllReadLength: "",
+      applyAllIndexType: "",
+      applyAllScope: "all",
+      selectedStartCoordinate: "A1",
+      selectedDirection: "right",
+      startCoordinateOptions: [],
+      startCoordinatesLoading: false,
+      directionOptions: [
+        { value: "right", label: "Row-wise" },
+        { value: "down", label: "Column-wise" },
+        { value: "diagonal", label: "Diagonal" }
+      ]
     };
   },
   computed: {
@@ -325,6 +504,11 @@ export default {
     canSave() {
       return this.poolRows.length > 0 && !!this.selectedPoolSizeId;
     },
+    poolCountLabel() {
+      return this.poolRows.length === 1
+        ? "library/sample"
+        : "libraries/samples";
+    },
     totalDepth() {
       return this.poolRows.reduce(
         (sum, row) => sum + Number(row.sequencing_depth || 0),
@@ -339,6 +523,12 @@ export default {
     },
     i5Balance() {
       return this.computeColorBalance("index_i5", 12);
+    },
+    readLengthNameMap() {
+      return (this.readLengths || []).reduce((acc, item) => {
+        acc[String(item.id)] = item.name;
+        return acc;
+      }, {});
     },
     parsedPoolSizes() {
       return (this.poolSizes || []).map((size) => {
@@ -394,6 +584,59 @@ export default {
         },
         {}
       );
+    },
+    duplicatePoolRowKeys() {
+      const pairToKeys = this.poolRows.reduce((acc, row) => {
+        const pairKey = this.getIndexPairKey(row);
+        if (!pairKey) {
+          return acc;
+        }
+        if (!acc[pairKey]) {
+          acc[pairKey] = [];
+        }
+        acc[pairKey].push(row.rowKey);
+        return acc;
+      }, {});
+
+      return Object.values(pairToKeys).reduce((set, keys) => {
+        if (keys.length > 1) {
+          keys.forEach((key) => set.add(key));
+        }
+        return set;
+      }, new Set());
+    },
+    selectedPoolIndexTypeIds() {
+      const unique = new Set(
+        this.poolRows
+          .map((row) => Number(row.index_type) || 0)
+          .filter((id) => id > 0)
+      );
+      return Array.from(unique);
+    },
+    platePoolIndexTypeIds() {
+      return this.selectedPoolIndexTypeIds.filter((id) => {
+        const meta = this.indexTypeMeta(id);
+        return meta?.format === "plate";
+      });
+    },
+    requiresStrictStartCoordinate() {
+      return this.platePoolIndexTypeIds.length > 0;
+    }
+  },
+  watch: {
+    "$route.name"(name) {
+      if (name === "Index Generator") {
+        this.loadInitialData();
+      }
+    },
+    poolRows: {
+      deep: true,
+      handler() {
+        this.refreshStartCoordinateOptions();
+      }
+    },
+    generatorIndexTypes() {
+      this.refreshStartCoordinateOptions();
     }
   },
   mounted() {
@@ -418,10 +661,10 @@ export default {
           axiosRef.get(`${urlStringStart}/api/generator_index_types/`)
         ]);
 
+        this.readLengths = readLengthsResponse.data || [];
         this.records = (recordsResponse.data || []).map((row) =>
           this.normalizeRecord(row)
         );
-        this.readLengths = readLengthsResponse.data || [];
         this.poolSizes = poolSizesResponse.data || [];
         this.syncSelectedPoolSizeId();
         this.generatorIndexTypes = indexTypesResponse.data || [];
@@ -554,6 +797,295 @@ export default {
         this.requestGroupSummaries[requestName] || buildRequestGroupSummary([])
       );
     },
+    colorizeIndex(index) {
+      return String(index || "")
+        .split("")
+        .map((base) => {
+          const upper = String(base).toUpperCase();
+          if (upper === "A" || upper === "C") {
+            return { base, className: "nt-red" };
+          }
+          if (upper === "G" || upper === "T") {
+            return { base, className: "nt-green" };
+          }
+          return { base, className: "nt-other" };
+        });
+    },
+    resolveReadLengthName(readLengthId) {
+      return this.readLengthNameMap[String(readLengthId)] || "";
+    },
+    getIndexPairKey(row) {
+      const i7 = String(row.index_i7 || "").trim();
+      const i5 = String(row.index_i5 || "").trim();
+      if (!i7) {
+        return "";
+      }
+      return `${i7}::${i5}`;
+    },
+    isRowDuplicateInPool(rowKey) {
+      return this.duplicatePoolRowKeys.has(rowKey);
+    },
+    getDuplicateGroups(rows = this.poolRows) {
+      const grouped = rows.reduce((acc, row) => {
+        const pairKey = this.getIndexPairKey(row);
+        if (!pairKey) {
+          return acc;
+        }
+        if (!acc[pairKey]) {
+          acc[pairKey] = [];
+        }
+        acc[pairKey].push(row);
+        return acc;
+      }, {});
+
+      return Object.values(grouped).filter((group) => group.length > 1);
+    },
+    notifyDuplicateGroups(groups, prefix = "Duplicate indices detected") {
+      if (!groups.length) {
+        return;
+      }
+
+      const details = groups
+        .map((group) => group.map((row) => row.name).join(", "))
+        .join(" | ");
+      showNotification(`${prefix}: ${details}`, "warning");
+    },
+    rowPairCompatibility(first, row) {
+      if (String(first.read_length || "") !== String(row.read_length || "")) {
+        return false;
+      }
+
+      const firstMeta = this.indexTypeMeta(first.index_type);
+      const rowMeta = this.indexTypeMeta(row.index_type);
+      if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
+        return false;
+      }
+
+      return true;
+    },
+    syncPoolRowFromRecord(row) {
+      const index = this.poolRows.findIndex(
+        (item) => item.rowKey === row.rowKey
+      );
+      if (index < 0) {
+        return;
+      }
+
+      const updated = {
+        ...this.poolRows[index],
+        ...this.normalizePoolRow(row)
+      };
+      this.poolRows.splice(index, 1, updated);
+    },
+    reconcilePoolCompatibility() {
+      if (this.poolRows.length <= 1) {
+        return;
+      }
+
+      const first = this.poolRows[0];
+      const removed = [];
+      const next = [];
+
+      this.poolRows.forEach((row, idx) => {
+        if (idx === 0 || this.rowPairCompatibility(first, row)) {
+          next.push(row);
+          return;
+        }
+        removed.push(row.rowKey);
+      });
+
+      if (!removed.length) {
+        return;
+      }
+
+      this.poolRows = next;
+      this.records = this.records.map((row) =>
+        removed.includes(row.rowKey) ? { ...row, selected: false } : row
+      );
+      showNotification(
+        "Some selected records were deselected because their read length/index mode became incompatible.",
+        "warning"
+      );
+    },
+    onStartCoordinateChange(value) {
+      this.selectedStartCoordinate = String(value || "")
+        .trim()
+        .toUpperCase();
+    },
+    onStartCoordinateSelect(value) {
+      this.selectedStartCoordinate = String(value || "")
+        .trim()
+        .toUpperCase();
+    },
+    onDirectionChange(value) {
+      this.selectedDirection = value || "right";
+    },
+    async refreshStartCoordinateOptions() {
+      if (!this.requiresStrictStartCoordinate) {
+        this.startCoordinateOptions = [];
+        if (!this.selectedStartCoordinate) {
+          this.selectedStartCoordinate = "A1";
+        }
+        return;
+      }
+
+      this.startCoordinatesLoading = true;
+      try {
+        const response = await axiosRef.post(
+          `${urlStringStart}/api/index_generator/start_coordinates/`,
+          {
+            index_type_ids: JSON.stringify(this.platePoolIndexTypeIds)
+          }
+        );
+
+        if (!response.data?.success) {
+          showNotification(
+            response.data?.message || "Failed to load start coordinates.",
+            "error"
+          );
+          this.startCoordinateOptions = [];
+          return;
+        }
+
+        this.startCoordinateOptions = response.data?.coordinates || [];
+
+        if (Array.isArray(response.data?.direction_options)) {
+          this.directionOptions = response.data.direction_options;
+        }
+
+        if (!this.startCoordinateOptions.length) {
+          this.selectedStartCoordinate = "";
+          return;
+        }
+
+        if (
+          !this.startCoordinateOptions.includes(this.selectedStartCoordinate)
+        ) {
+          this.selectedStartCoordinate =
+            response.data?.default_start_coord ||
+            this.startCoordinateOptions[0];
+        }
+
+        const allowedDirections = this.directionOptions.map(
+          (item) => item.value
+        );
+        if (!allowedDirections.includes(this.selectedDirection)) {
+          this.selectedDirection = allowedDirections[0] || "right";
+        }
+      } catch (error) {
+        this.startCoordinateOptions = [];
+        this.handleApiError(error, "Failed to load start coordinates.");
+      } finally {
+        this.startCoordinatesLoading = false;
+      }
+    },
+    async applyFieldToAll(field, value) {
+      const normalizedValue = Number(value) || 0;
+
+      if (!normalizedValue) {
+        if (field === "read_length") {
+          this.applyAllReadLength = "";
+        } else if (field === "index_type") {
+          this.applyAllIndexType = "";
+        }
+        return;
+      }
+
+      const targetRows = this.records.filter((row) => {
+        if (this.applyAllScope === "selected" && !row.selected) {
+          return false;
+        }
+
+        if (field === "index_type") {
+          return row.type === "S";
+        }
+        return true;
+      });
+
+      if (!targetRows.length) {
+        showNotification(
+          this.applyAllScope === "selected"
+            ? "No selected records available for this field."
+            : "No records available for this field.",
+          "warning"
+        );
+        return;
+      }
+
+      targetRows.forEach((row) => {
+        row[field] = normalizedValue;
+        if (field === "read_length") {
+          row.read_length_name = this.resolveReadLengthName(normalizedValue);
+        }
+        if (field === "index_type") {
+          row.index_i7 = "";
+          row.index_i5 = "";
+        }
+        this.syncPoolRowFromRecord(row);
+      });
+
+      this.reconcilePoolCompatibility();
+      await this.refreshStartCoordinateOptions();
+
+      try {
+        await axiosRef.post(`${urlStringStart}/api/index_generator/edit/`, {
+          data: JSON.stringify(
+            targetRows.map((row) => ({
+              pk: row.pk,
+              record_type: row.record_type,
+              [field]: normalizedValue
+            }))
+          )
+        });
+        showNotification("Values applied to all records.", "success");
+      } catch (error) {
+        this.handleApiError(error, `Failed to apply ${field}.`);
+      }
+
+      if (field === "read_length") {
+        this.applyAllReadLength = String(normalizedValue);
+      } else if (field === "index_type") {
+        this.applyAllIndexType = String(normalizedValue);
+      }
+    },
+    handleApiError(error, fallbackMessage) {
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data?.detail ||
+        fallbackMessage;
+      if (message) {
+        showNotification(message, "error");
+      }
+      handleError(error);
+    },
+    selectAllRecords() {
+      if (!this.selectedPoolSizeId) {
+        showNotification("Pool Size must be set.", "warning");
+        return;
+      }
+
+      for (const row of this.records) {
+        if (row.selected) {
+          continue;
+        }
+
+        if (row.type === "S" && !row.index_type) {
+          showNotification("Index Type must be set.", "warning");
+          return;
+        }
+
+        if (!this.setRowSelection(row, true)) {
+          return;
+        }
+      }
+    },
+    deselectAllRecords() {
+      this.records.forEach((row) => {
+        if (row.selected) {
+          this.setRowSelection(row, false);
+        }
+      });
+    },
     setRowSelection(row, checked) {
       if (checked && !this.selectedPoolSizeId) {
         return false;
@@ -621,6 +1153,8 @@ export default {
         type,
         selected: false,
         read_length: row.read_length || "",
+        read_length_name:
+          row.read_length_name || this.resolveReadLengthName(row.read_length),
         index_type: row.index_type || 0,
         index_i7: row.index_i7 || "",
         index_i5: row.index_i5 || ""
@@ -697,6 +1231,18 @@ export default {
           : value;
       row[field] = normalizedValue;
 
+      if (field === "read_length") {
+        row.read_length_name = this.resolveReadLengthName(normalizedValue);
+      }
+
+      if (field === "index_type") {
+        row.index_i7 = "";
+        row.index_i5 = "";
+      }
+
+      this.syncPoolRowFromRecord(row);
+      this.reconcilePoolCompatibility();
+
       try {
         await axiosRef.post(`${urlStringStart}/api/index_generator/edit/`, {
           data: JSON.stringify([
@@ -708,7 +1254,7 @@ export default {
           ])
         });
       } catch (error) {
-        handleError(error);
+        this.handleApiError(error, `Failed to update ${field}.`);
       }
     },
     splitPoolRowsByType() {
@@ -776,24 +1322,46 @@ export default {
       if (!this.poolRows.length) return true;
 
       const first = this.poolRows[0];
-      if (String(first.read_length || "") !== String(row.read_length || "")) {
-        showNotification("Read lengths must be the same.", "warning");
-        return false;
-      }
+      if (!this.rowPairCompatibility(first, row)) {
+        if (String(first.read_length || "") !== String(row.read_length || "")) {
+          showNotification("Read lengths must be the same.", "warning");
+          return false;
+        }
 
-      const firstMeta = this.indexTypeMeta(first.index_type);
-      const rowMeta = this.indexTypeMeta(row.index_type);
-      if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
-        showNotification(
-          "Pooling of dual and single indices is not allowed.",
-          "warning"
-        );
+        const firstMeta = this.indexTypeMeta(first.index_type);
+        const rowMeta = this.indexTypeMeta(row.index_type);
+        if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
+          showNotification(
+            "Pooling of dual and single indices is not allowed.",
+            "warning"
+          );
+        }
         return false;
       }
 
       return true;
     },
     async generateIndices() {
+      const normalizedStart = String(this.selectedStartCoordinate || "")
+        .trim()
+        .toUpperCase();
+
+      if (this.requiresStrictStartCoordinate) {
+        if (!this.startCoordinateOptions.includes(normalizedStart)) {
+          showNotification(
+            "Please select a valid start coordinate from the dropdown.",
+            "warning"
+          );
+          return;
+        }
+      } else if (!/^([A-Z]+)(\d+)$/.test(normalizedStart)) {
+        showNotification(
+          "Invalid start coordinate. Use format like A1.",
+          "warning"
+        );
+        return;
+      }
+
       const { libraries: libraryRows, samples: sampleRows } =
         this.splitPoolRowsByType();
       const libraries = libraryRows.map((row) => row.pk);
@@ -804,7 +1372,9 @@ export default {
           `${urlStringStart}/api/index_generator/generate_indices/`,
           {
             libraries: JSON.stringify(libraries),
-            samples: JSON.stringify(samples)
+            samples: JSON.stringify(samples),
+            start_coord: normalizedStart,
+            direction: this.selectedDirection || "right"
           }
         );
 
@@ -829,16 +1399,33 @@ export default {
           if (!generated) return record;
           return {
             ...record,
+            selected: this.poolRows.some((row) => row.rowKey === record.rowKey),
             index_i7: generated?.index_i7 || "",
             index_i5: generated?.index_i5 || ""
           };
         });
       } catch (error) {
-        handleError(error);
+        const duplicateGroups = this.getDuplicateGroups();
+        if (duplicateGroups.length) {
+          this.notifyDuplicateGroups(
+            duplicateGroups,
+            "Potential overlap in fixed/selected index pairs"
+          );
+        }
+        this.handleApiError(error, "Index generation failed.");
       }
     },
     async savePool() {
       if (!this.validateSelectedRowsBeforeSave()) {
+        return;
+      }
+
+      const duplicateGroups = this.getDuplicateGroups();
+      if (duplicateGroups.length) {
+        this.notifyDuplicateGroups(
+          duplicateGroups,
+          "Duplicate index pairs in pool"
+        );
         return;
       }
 
@@ -872,7 +1459,7 @@ export default {
         this.selectedPoolActualSize = "";
         await this.loadInitialData();
       } catch (error) {
-        handleError(error);
+        this.handleApiError(error, "Saving pool failed.");
       }
     },
     computeColorBalance(field, maxCycles) {
@@ -917,7 +1504,7 @@ export default {
 
         result.push({
           cycle: cycle + 1,
-          label: `C${cycle + 1}: ${greenPct}%/${redPct}%`,
+          label: `C${cycle + 1}: ${redPct}%/${greenPct}%`,
           problematic
         });
       }
@@ -930,6 +1517,8 @@ export default {
 <style scoped>
 .index-generator-page {
   height: 100%;
+  font-family: var(--app-font-family);
+  font-size: 12px;
 }
 
 .parent-container {
@@ -958,12 +1547,57 @@ export default {
   gap: 6px;
 }
 
+.header-generate-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .panel-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+}
+
+.panel-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.apply-all-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.apply-all-controls select {
+  height: 28px;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0 8px;
+  background: #fff;
+}
+
+.apply-all-label {
+  font-size: 11px;
+  color: #4b5557;
+}
+
+.panel-selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.group-action-button.compact {
+  border: 1px solid #d3d9dd;
+  border-radius: 6px;
+  padding: 2px;
+  background: #fff;
 }
 
 .pool-size-select {
@@ -999,7 +1633,7 @@ export default {
 .tables-wrap {
   margin-top: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 12px;
   min-height: 0;
   flex: 1;
@@ -1012,6 +1646,7 @@ export default {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .panel h3 {
@@ -1035,7 +1670,7 @@ table {
 }
 
 .right-panel table {
-  min-width: 980px;
+  min-width: 1100px;
 }
 
 th,
@@ -1179,9 +1814,37 @@ th {
   width: 130px;
 }
 
+.coordinate-input {
+  min-width: 122px;
+}
+
 .barcode-text,
 .sequence-text {
   font-family: "Courier New", Courier, monospace;
+}
+
+.sequence-colored {
+  letter-spacing: 0.4px;
+}
+
+.nt {
+  font-weight: 700;
+}
+
+.nt-red {
+  color: #c53030;
+}
+
+.nt-green {
+  color: #2f855a;
+}
+
+.nt-other {
+  color: #5c6670;
+}
+
+.duplicate-index-row td {
+  background: #ffe7e7;
 }
 
 .balance-block {
@@ -1194,8 +1857,14 @@ th {
 
 .balance-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 4px;
+}
+
+.balance-description {
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  color: #4c5457;
 }
 
 .balance-grid span {
@@ -1212,6 +1881,10 @@ th {
 }
 
 @media (max-width: 980px) {
+  .tables-wrap {
+    flex-direction: column;
+  }
+
   .pool-size-select {
     min-width: 120px;
   }
