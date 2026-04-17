@@ -446,6 +446,7 @@ import {
   createAxiosObject,
   handleError,
   showNotification,
+  showUndoNotification,
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
 import iconIndexGeneratorHeader from "../assets/icons/header_index_generator.svg";
@@ -1012,6 +1013,11 @@ export default {
         return;
       }
 
+      const readLengthUndoEntries =
+        field === "read_length"
+          ? this.buildReadLengthUndoEntries(targetRows)
+          : [];
+
       targetRows.forEach((row) => {
         row[field] = normalizedValue;
         if (field === "read_length") {
@@ -1037,7 +1043,21 @@ export default {
             }))
           )
         });
-        showNotification("Values applied to all records.", "success");
+        if (field === "read_length") {
+          const affectedLabel =
+            targetRows.length === 1
+              ? "1 record"
+              : `${targetRows.length} records`;
+          showUndoNotification(
+            `Read length updated for ${affectedLabel}.`,
+            async () => {
+              await this.undoReadLengthChanges(readLengthUndoEntries);
+            },
+            { type: "success", timeout: 10000 }
+          );
+        } else {
+          showNotification("Values applied to all records.", "success");
+        }
       } catch (error) {
         this.handleApiError(error, `Failed to apply ${field}.`);
       }
@@ -1057,6 +1077,59 @@ export default {
         showNotification(message, "error");
       }
       handleError(error);
+    },
+    buildReadLengthUndoEntries(rows) {
+      return rows.map((row) => ({
+        rowKey: row.rowKey,
+        pk: row.pk,
+        record_type: row.record_type,
+        read_length: Number(row.read_length) || 0
+      }));
+    },
+    async undoReadLengthChanges(undoEntries) {
+      if (!Array.isArray(undoEntries) || !undoEntries.length) {
+        return;
+      }
+
+      const payload = [];
+      undoEntries.forEach((entry) => {
+        const row = this.records.find(
+          (record) => record.rowKey === entry.rowKey
+        );
+        if (!row) {
+          return;
+        }
+
+        row.read_length = entry.read_length;
+        row.read_length_name = this.resolveReadLengthName(entry.read_length);
+        this.syncPoolRowFromRecord(row);
+
+        payload.push({
+          pk: entry.pk,
+          record_type: entry.record_type,
+          read_length: entry.read_length
+        });
+      });
+
+      this.reconcilePoolCompatibility();
+      await this.refreshStartCoordinateOptions();
+
+      if (!payload.length) {
+        showNotification(
+          "Undo skipped because records are no longer available.",
+          "warning"
+        );
+        return;
+      }
+
+      try {
+        await axiosRef.post(`${urlStringStart}/api/index_generator/edit/`, {
+          data: JSON.stringify(payload)
+        });
+        showNotification("Undo applied.", "success");
+      } catch (error) {
+        this.handleApiError(error, "Failed to undo read length changes.");
+      }
     },
     selectAllRecords() {
       if (!this.selectedPoolSizeId) {
@@ -1225,6 +1298,7 @@ export default {
       return /oxford\s*nanopore|nanopore|\bont\b/.test(protocol);
     },
     async updateRecordField(row, field, value) {
+      const previousReadLength = Number(row.read_length) || 0;
       const normalizedValue =
         field === "read_length" || field === "index_type"
           ? Number(value) || 0
@@ -1253,6 +1327,24 @@ export default {
             }
           ])
         });
+
+        if (field === "read_length" && normalizedValue !== previousReadLength) {
+          const undoEntry = [
+            {
+              rowKey: row.rowKey,
+              pk: row.pk,
+              record_type: row.record_type,
+              read_length: previousReadLength
+            }
+          ];
+          showUndoNotification(
+            `Read length updated for ${row.name}.`,
+            async () => {
+              await this.undoReadLengthChanges(undoEntry);
+            },
+            { type: "success", timeout: 10000 }
+          );
+        }
       } catch (error) {
         this.handleApiError(error, `Failed to update ${field}.`);
       }
