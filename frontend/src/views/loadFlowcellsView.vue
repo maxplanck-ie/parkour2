@@ -627,8 +627,22 @@
                           {{ pool.read_length_name || "-" }}
                         </span>
                       </div>
-                      <div class="load-pool-meta">
-                        {{ pool.remainingLoadsLabel }}
+                      <div class="load-pool-right">
+                        <div class="load-pool-meta">
+                          {{ pool.remainingLoadsLabel }}
+                        </div>
+                        <button
+                          class="load-pool-return-button"
+                          :disabled="!pool.ready"
+                          :title="
+                            pool.ready
+                              ? 'Return pool to Pooling'
+                              : 'Only ready pools can be returned'
+                          "
+                          @click.stop="confirmReturnPoolToPooling(pool)"
+                        >
+                          Return to Pooling
+                        </button>
                       </div>
                     </div>
                   </template>
@@ -1533,20 +1547,69 @@ export default {
       this.draggedPoolId = null;
 
       try {
-        const [sequencersRes, poolSizesRes, poolsRes] = await Promise.all([
-          axiosRef.get(`${urlStringStart}/api/sequencers/`),
-          axiosRef.get(`${urlStringStart}/api/pool_sizes/`),
-          axiosRef.get(`${urlStringStart}/api/flowcells/pool_list/`)
-        ]);
-
-        this.sequencersList = sequencersRes.data || [];
-        this.poolSizesById = (poolSizesRes.data || []).reduce((acc, item) => {
-          acc[item.id] = item;
-          return acc;
-        }, {});
-        this.availablePoolsList = poolsRes.data || [];
+        await this.fetchLoadModalData();
       } catch (error) {
         this.closeLoadPopup();
+        handleError(error);
+      }
+    },
+    async fetchLoadModalData() {
+      const [sequencersRes, poolSizesRes, poolsRes] = await Promise.all([
+        axiosRef.get(`${urlStringStart}/api/sequencers/`),
+        axiosRef.get(`${urlStringStart}/api/pool_sizes/`),
+        axiosRef.get(`${urlStringStart}/api/flowcells/pool_list/`)
+      ]);
+
+      this.sequencersList = sequencersRes.data || [];
+      this.poolSizesById = (poolSizesRes.data || []).reduce((acc, item) => {
+        acc[item.id] = item;
+        return acc;
+      }, {});
+      this.availablePoolsList = poolsRes.data || [];
+    },
+    confirmReturnPoolToPooling(pool) {
+      if (!pool?.pk) {
+        showNotification("Pool was not found.", "error");
+        return;
+      }
+
+      if (!pool.ready) {
+        showNotification("Only ready pools can be returned.", "warning");
+        return;
+      }
+
+      this.confirmPopup = {
+        title: "Return Pool to Pooling",
+        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This draft action currently destroys the pool and reverts its records back to Pooling state.`,
+        onConfirm: async () => {
+          await this.returnPoolToPooling(pool);
+        }
+      };
+      this.showConfirmPopup = true;
+    },
+    removePoolAssignments(poolPk) {
+      const nextAssignments = { ...this.loadAssignments };
+      Object.keys(nextAssignments).forEach((laneName) => {
+        if (nextAssignments[laneName]?.pk === poolPk) {
+          delete nextAssignments[laneName];
+        }
+      });
+      this.loadAssignments = nextAssignments;
+    },
+    async returnPoolToPooling(pool) {
+      try {
+        await axiosRef.post(
+          `${urlStringStart}/api/pooling/${pool.pk}/destroy_pool/`
+        );
+        this.removePoolAssignments(pool.pk);
+        this.closeConfirmPopup();
+        showNotification(
+          `Pool '${pool.name}' was returned to Pooling.`,
+          "success"
+        );
+        await this.fetchLoadModalData();
+      } catch (error) {
+        this.closeConfirmPopup();
         handleError(error);
       }
     },
@@ -2174,6 +2237,13 @@ export default {
   min-width: 0;
 }
 
+.load-pool-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
 .load-pool-name {
   font-weight: 700;
   word-break: break-word;
@@ -2192,6 +2262,26 @@ export default {
 .load-pool-read-length,
 .load-pool-meta {
   font-size: 11px;
+}
+
+.load-pool-return-button {
+  border: 1px solid #d4dce0;
+  border-radius: 8px;
+  background: #fff;
+  color: #33515d;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.load-pool-return-button:hover:not(:disabled) {
+  background: #f6f8f9;
+}
+
+.load-pool-return-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .load-flowcell-help-tooltip {
