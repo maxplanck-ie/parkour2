@@ -27,11 +27,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.88
+boto3==1.42.91
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.88
+botocore==1.42.91
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   boto3
@@ -271,7 +271,7 @@ kiwisolver==1.5.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   matplotlib
-lxml==6.0.4
+lxml==6.1.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   python-docx
@@ -309,7 +309,7 @@ numpy==2.4.4 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.31.0
+openai==2.32.0
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/dev.in
@@ -317,7 +317,7 @@ openpyxl==3.1.5
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   -r backend/requirements/base.in
-packaging==26.0
+packaging==26.1
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   gunicorn
@@ -372,11 +372,11 @@ pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementatio
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   cffi
-pydantic==2.12.5
+pydantic==2.13.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   openai
-pydantic-core==2.41.5
+pydantic-core==2.46.2
     # via
     #   -c backend/requirements/3.11/dev.txt
     #   pydantic
