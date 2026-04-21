@@ -91,6 +91,13 @@
           </select>
         </div>
         <button
+          type="button"
+          class="header-button split-layout-button"
+          @click="toggleSplitOrientation"
+        >
+          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
+        </button>
+        <button
           class="header-button"
           :disabled="!canGenerate"
           @click="generateIndices"
@@ -103,13 +110,6 @@
           @click="savePool"
         >
           <span>Save Pool</span>
-        </button>
-        <button
-          type="button"
-          class="header-button split-layout-button"
-          @click="toggleSplitOrientation"
-        >
-          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
         </button>
       </div>
     </div>
@@ -484,6 +484,13 @@
 
       <div v-if="isHorizontalSplit" class="split-mode-floating-actions">
         <button
+          type="button"
+          class="header-button split-layout-button"
+          @click="toggleSplitOrientation"
+        >
+          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
+        </button>
+        <button
           class="header-button"
           :disabled="!canGenerate"
           @click="generateIndices"
@@ -496,13 +503,6 @@
           @click="savePool"
         >
           <span>Save Pool</span>
-        </button>
-        <button
-          type="button"
-          class="header-button split-layout-button"
-          @click="toggleSplitOrientation"
-        >
-          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
         </button>
       </div>
     </div>
@@ -1995,6 +1995,10 @@ export default {
   margin-top: 0;
 }
 
+.tables-wrap.horizontal-split .right-panel h3 {
+  margin-top: 34px;
+}
+
 .tables-wrap.horizontal-split .left-panel {
   position: absolute;
   top: 0;
@@ -2020,9 +2024,22 @@ export default {
   top: 8px;
   right: 8px;
   z-index: 40;
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.split-mode-floating-actions .header-button {
+  position: relative;
+  z-index: 41;
+}
+
+.split-mode-floating-actions .header-button:disabled,
+.split-mode-floating-actions .save-pool-button:disabled {
+  opacity: 1;
+  background: linear-gradient(180deg, #7f9190 0%, #6f8180 100%);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .tables-wrap.horizontal-split .left-panel:hover,
