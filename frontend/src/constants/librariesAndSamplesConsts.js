@@ -541,7 +541,7 @@ export function librariesAndSamplesColumnDefs(
             ? "-"
             : value === 0
               ? "0.0"
-              : value.toFixed(1);
+              : value.toFixed(3);
         return ellipsisContainer(finalString);
       }
     },
