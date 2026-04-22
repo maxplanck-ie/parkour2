@@ -29,9 +29,9 @@ class NucleicAcidType(models.Model):
 class Sample(GenericLibrarySample):
     MEASURING_UNIT_CHOICES = [
         ("ng/µl (Concentration)", "ng/µl", "Concentration"),
-        ("M (Cells)", "M", "Cells"),
-        ("k (Cells)", "k", "Cells"),
         ("Cells", "Cells", "Cells"),
+        ("k (Cells)", "k", "Cells"),
+        ("M (Cells)", "M", "Cells"),
         ("Unknown", "Unknown", "Unknown"),
     ]
 
