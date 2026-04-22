@@ -249,7 +249,12 @@ reload-code:  ## Gracefully ship small code updates into production Backend
 	@docker compose exec -it parkour2-django kill -1 1
 
 reload-ux:  ## Gracefully ship small code updates into production Frontend
-	@docker compose restart parkour2-vite
+	@if docker compose ps --status running --services | grep -q '^parkour2-vite$$'; then \
+		docker compose exec parkour2-vite sh -lc "npm run build"; \
+	else \
+		echo "Info: parkour2-vite was not running, restarting container instead."; \
+		docker compose restart parkour2-vite; \
+	fi
 
 ## This should be a cronjob on your host VM/ production deployment machine.
 clearsessions:

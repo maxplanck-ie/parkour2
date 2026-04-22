@@ -1,3 +1,4 @@
+import { h } from "vue";
 import { useToast } from "vue-toastification";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -16,16 +17,72 @@ const SUPPORTED_EXCEL_MIME_TYPES = new Set([
   "application/octet-stream",
 ]);
 
-export function showNotification(content, type) {
+export function showNotification(content, type, customOptions = {}) {
   let options = {
     timeout: 5000,
     position: "top-left",
+    ...customOptions
   };
 
   if (type === "info") toast.info(content, options);
   else if (type === "success") toast.success(content, options);
   else if (type === "error") toast.error(content, options);
   else if (type === "warning") toast.warning(content, options);
+}
+
+export function showUndoNotification(content, onUndo, options = {}) {
+  if (typeof onUndo !== "function") {
+    showNotification(content, options.type || "success", options);
+    return null;
+  }
+
+  const notificationOptions = {
+    timeout: 10000,
+    position: "top-left",
+    closeOnClick: false,
+    draggable: false,
+    type: options.type || "success",
+    ...options
+  };
+
+  let toastId = null;
+  let undoInProgress = false;
+  const onUndoClick = async (event) => {
+    event?.stopPropagation?.();
+    if (undoInProgress) {
+      return;
+    }
+    undoInProgress = true;
+
+    if (toastId !== null && toastId !== undefined) {
+      toast.dismiss(toastId);
+      toastId = null;
+    }
+
+    try {
+      await onUndo();
+    } finally {
+      undoInProgress = false;
+    }
+  };
+
+  toastId = toast(
+    h("div", { class: "undo-toast-content" }, [
+      h("span", { class: "undo-toast-message" }, content),
+      h(
+        "button",
+        {
+          type: "button",
+          class: "undo-toast-button",
+          onClick: onUndoClick
+        },
+        "Undo"
+      )
+    ]),
+    notificationOptions
+  );
+
+  return toastId;
 }
 
 function notifyParentAuthRequired() {
@@ -38,9 +95,9 @@ function notifyParentAuthRequired() {
       window.parent.postMessage(
         {
           source: "mainhub-vue",
-          type: "auth-required",
+          type: "auth-required"
         },
-        window.location.origin,
+        window.location.origin
       );
     }
   } catch (error) {
@@ -63,7 +120,7 @@ export function handleError(error) {
   } else {
     showNotification(
       "An error occurred while processing your request.\nPlease contact the BioInfo department for assistance.",
-      "error",
+      "error"
     );
   }
 }
@@ -91,8 +148,8 @@ export function createAxiosObject() {
     withCredentials: true,
     headers: {
       "content-type": "application/json",
-      "X-CSRFToken": Cookies.get("csrftoken"),
-    },
+      "X-CSRFToken": Cookies.get("csrftoken")
+    }
   });
 }
 
@@ -192,7 +249,7 @@ export function cellContextMenu(
   allowEdit,
   allowApplyToAll,
   getTabulatorInstance,
-  options = {},
+  options = {}
 ) {
   const shouldBlockDisabledCells = options.blockActionsOnDisabledCells === true;
   const menuCell = options.cell || null;
@@ -224,7 +281,7 @@ export function cellContextMenu(
     if (typeof columnDef.editable === "function") {
       const rowData = cell.getRow?.().getData?.() || {};
       return columnDef.editable({
-        getRow: () => ({ getData: () => rowData }),
+        getRow: () => ({ getData: () => rowData })
       });
     }
     if (typeof columnDef.editable === "boolean") {
@@ -262,8 +319,8 @@ export function cellContextMenu(
               const targetCell = cell || menuCell;
               ensureRangeSelection(targetCell);
               tableRef?.copyToClipboard?.();
-            },
-          },
+            }
+          }
         ];
       }
       return [];
@@ -295,24 +352,26 @@ export function cellContextMenu(
             value: cell?.getValue?.(),
             tableRef,
             tabulatorInstance,
-            blockActionsOnDisabledCells: shouldBlockDisabledCells,
+            blockActionsOnDisabledCells: shouldBlockDisabledCells
           });
           restoreFocus();
           return;
         }
-        const fakeLoadingStart = tabulatorInstance?.tableOptions?.fakeLoadingStart;
-        const fakeLoadingStop = tabulatorInstance?.tableOptions?.fakeLoadingStop;
+        const fakeLoadingStart =
+          tabulatorInstance?.tableOptions?.fakeLoadingStart;
+        const fakeLoadingStop =
+          tabulatorInstance?.tableOptions?.fakeLoadingStop;
         if (typeof fakeLoadingStart === "function") {
           fakeLoadingStart();
         }
         applyValueToAllRows(cell, getTabulatorInstance, {
-          blockActionsOnDisabledCells: shouldBlockDisabledCells,
+          blockActionsOnDisabledCells: shouldBlockDisabledCells
         });
         if (typeof fakeLoadingStop === "function") {
           setTimeout(() => fakeLoadingStop(), 0);
         }
         restoreFocus();
-      },
+      }
     });
   }
 
@@ -330,11 +389,11 @@ export function cellContextMenu(
         tableRef?.copyToClipboard?.();
         const keyEvent = new KeyboardEvent("keydown", {
           key: "Delete",
-          bubbles: true,
+          bubbles: true
         });
         tableRef?.element?.dispatchEvent?.(keyEvent);
         restoreFocus();
-      },
+      }
     });
   }
 
@@ -345,7 +404,7 @@ export function cellContextMenu(
         ensureRangeSelection(cell);
         tableRef?.copyToClipboard?.();
         restoreFocus();
-      },
+      }
     });
   }
 
@@ -360,7 +419,7 @@ export function cellContextMenu(
           tableRef?.pasteFromClipboard?.();
         }
         restoreFocus();
-      },
+      }
     });
   }
 
@@ -377,11 +436,11 @@ export function cellContextMenu(
         }
         const keyEvent = new KeyboardEvent("keydown", {
           key: "Delete",
-          bubbles: true,
+          bubbles: true
         });
         tableRef?.element?.dispatchEvent?.(keyEvent);
         restoreFocus();
-      },
+      }
     });
   }
 
@@ -391,7 +450,7 @@ export function cellContextMenu(
 export function applyContextMenuToColumns(
   columns = [],
   getTabulatorInstance,
-  options = {},
+  options = {}
 ) {
   const {
     allowCopy = true,
@@ -404,7 +463,7 @@ export function applyContextMenuToColumns(
     allowCut,
     allowClear,
     onCut = null,
-    onClear = null,
+    onClear = null
   } = options;
   const resolvedAllowCut = allowCut === undefined ? allowEdit : allowCut;
   const resolvedAllowClear = allowClear === undefined ? allowEdit : allowClear;
@@ -430,8 +489,8 @@ export function applyContextMenuToColumns(
           allowCut: resolvedAllowCut,
           allowClear: resolvedAllowClear,
           onCut,
-          onClear,
-        },
+          onClear
+        }
       );
   };
 
@@ -439,14 +498,11 @@ export function applyContextMenuToColumns(
   return columns;
 }
 
-export function applyPreserveOnEmptyPasteToColumns(
-  columns = [],
-  options = {},
-) {
+export function applyPreserveOnEmptyPasteToColumns(columns = [], options = {}) {
   const {
     editorTypes = new Set(["number", "list"]),
     skipFields = new Set(),
-    overrideExisting = false,
+    overrideExisting = false
   } = options;
 
   const applyToColumn = (column) => {
@@ -522,7 +578,7 @@ export function applyValueToAllRows(cell, getTabulatorInstance, options = {}) {
       if (columnDef.editor === false) return false;
       if (typeof columnDef.editable === "function") {
         return columnDef.editable({
-          getRow: () => ({ getData: () => targetRowData }),
+          getRow: () => ({ getData: () => targetRowData })
         });
       }
       if (typeof columnDef.editable === "boolean") {
@@ -539,7 +595,7 @@ export async function validateAndFixExcelBuffer(buffer) {
   try {
     const zip = await JSZip.loadAsync(buffer);
     const sheetFiles = Object.keys(zip.files).filter(
-      (f) => f.startsWith("xl/worksheets/") && f.endsWith(".xml"),
+      (f) => f.startsWith("xl/worksheets/") && f.endsWith(".xml")
     );
     for (const file of sheetFiles) {
       let xmlText = await zip.files[file].async("string");
@@ -558,7 +614,7 @@ export async function validateAndFixExcelBuffer(buffer) {
     }
     const fixedBuffer = await zip.generateAsync({
       type: "arraybuffer",
-      compression: "DEFLATE",
+      compression: "DEFLATE"
     });
 
     return fixedBuffer;
@@ -585,7 +641,7 @@ function parseDataValidations(snippet, namespaces) {
     xr: "http://schemas.microsoft.com/office/spreadsheetml/2014/revision",
     xr2: "http://schemas.microsoft.com/office/spreadsheetml/2015/revision2",
     xr3: "http://schemas.microsoft.com/office/spreadsheetml/2016/revision3",
-    xm: "http://schemas.microsoft.com/office/excel/2006/main",
+    xm: "http://schemas.microsoft.com/office/excel/2006/main"
   };
   Object.entries(KNOWN_NAMESPACE_URIS).forEach(([prefix, uri]) => {
     if (prefix === "main") return;
@@ -684,7 +740,7 @@ function parseDataValidations(snippet, namespaces) {
       errorTitle,
       error,
       errorStyle,
-      formulae,
+      formulae
     });
   }
 
@@ -765,7 +821,7 @@ async function extractDataValidationSnippets(buffer) {
     const endIndex = closeIndex + closeMatch[0].length;
     return {
       snippet: xml.slice(openMatch.index, endIndex),
-      kind: "regular",
+      kind: "regular"
     };
   };
   if (!buffer) return new Map();
@@ -783,7 +839,7 @@ async function extractDataValidationSnippets(buffer) {
     }
     const parsedValidations = parseDataValidations(
       found.snippet,
-      sheetNamespaces,
+      sheetNamespaces
     );
     if (parsedValidations.length) {
       validationsBySheet.set(sheetName, parsedValidations);
@@ -812,7 +868,7 @@ function applyTemplateValidations(workbook, validationsBySheet) {
         errorTitle,
         error,
         errorStyle,
-        formulae,
+        formulae
       }) => {
         if (!addresses || !addresses.length) return;
         addresses.forEach((address) => {
@@ -833,7 +889,7 @@ function applyTemplateValidations(workbook, validationsBySheet) {
           if (formulae && formulae.length) options.formulae = [...formulae];
           dataValidations.add(address, options);
         });
-      },
+      }
     );
   });
 }
@@ -988,7 +1044,7 @@ export async function createExcelExportBlob({
   templateDownloadUrl,
   templateFileName = "",
   sheetName = "Parkour",
-  minMatchedHeaders = 6,
+  minMatchedHeaders = 6
 } = {}) {
   const workbook = new ExcelJS.Workbook();
   let validationsBySheet = null;
@@ -997,7 +1053,7 @@ export async function createExcelExportBlob({
 
   if (templateDownloadUrl) {
     const response = await axiosInstance.get(templateDownloadUrl, {
-      responseType: "arraybuffer",
+      responseType: "arraybuffer"
     });
     templateBuffer = response.data;
     if (workbookExtension === "xlsx") {
@@ -1104,7 +1160,7 @@ export async function createExcelExportBlob({
   }
 
   const sortedSheets = [...workbook.worksheets].sort(
-    (a, b) => a.orderNo - b.orderNo,
+    (a, b) => a.orderNo - b.orderNo
   );
   const targetSheet = worksheet;
   const otherSheets = sortedSheets.filter((sheet) => sheet !== targetSheet);

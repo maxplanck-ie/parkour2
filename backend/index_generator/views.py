@@ -24,6 +24,7 @@ from .serializers import (
 Request = apps.get_model("request", "Request")
 IndexI7 = apps.get_model("library_sample_shared", "IndexI7")
 IndexI5 = apps.get_model("library_sample_shared", "IndexI5")
+IndexPair = apps.get_model("library_sample_shared", "IndexPair")
 Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
 IndexType = apps.get_model("library_sample_shared", "IndexType")
@@ -80,6 +81,15 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
     sample_model = Sample
     library_serializer = IndexGeneratorLibrarySerializer
     sample_serializer = IndexGeneratorSampleSerializer
+
+    @staticmethod
+    def _sorted_coordinates(coords):
+        def sort_key(coord):
+            letters = "".join(ch for ch in coord if ch.isalpha())
+            digits = "".join(ch for ch in coord if ch.isdigit())
+            return (letters, int(digits) if digits else 0)
+
+        return sorted(coords, key=sort_key)
 
     def list(self, request):
         """Get the list of libraries and samples ready for pooling."""
@@ -147,6 +157,86 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         data = list(itertools.chain(*serializer.data))
         data = sorted(data, key=lambda x: x["barcode"][3:])
         return Response(data)
+
+    @action(methods=["post"], detail=False)
+    def start_coordinates(self, request):
+        """
+        Return allowed start coordinates for selected plate index types.
+        If no plate index type is provided, coordinate dropdown is not required.
+        """
+        raw_index_type_ids = request.data.get("index_type_ids", [])
+
+        try:
+            if isinstance(raw_index_type_ids, str):
+                index_type_ids = json.loads(raw_index_type_ids or "[]")
+            else:
+                index_type_ids = raw_index_type_ids
+            index_type_ids = [int(x) for x in index_type_ids]
+        except (TypeError, ValueError, json.JSONDecodeError):
+            return Response(
+                {
+                    "success": False,
+                    "message": "Invalid index_type_ids payload.",
+                },
+                400,
+            )
+
+        plate_types = IndexType.objects.filter(
+            archived=False,
+            format="plate",
+            pk__in=index_type_ids,
+        )
+
+        direction_options = [
+            {"value": "right", "label": "Row-wise"},
+            {"value": "down", "label": "Column-wise"},
+            {"value": "diagonal", "label": "Diagonal"},
+        ]
+
+        if not plate_types.exists():
+            return Response(
+                {
+                    "success": True,
+                    "requires_plate_start": False,
+                    "coordinates": [],
+                    "direction_options": direction_options,
+                    "default_start_coord": None,
+                }
+            )
+
+        common_coordinates = None
+
+        for index_type in plate_types:
+            index_pairs = IndexPair.objects.filter(
+                archived=False,
+                index_type=index_type,
+                index1__isnull=False,
+            )
+
+            if index_type.is_dual:
+                index_pairs = index_pairs.filter(index2__isnull=False)
+
+            coordinates = {
+                f"{char}{num}"
+                for char, num in index_pairs.values_list("char_coord", "num_coord")
+            }
+
+            if common_coordinates is None:
+                common_coordinates = coordinates
+            else:
+                common_coordinates &= coordinates
+
+        coordinates = self._sorted_coordinates(common_coordinates or set())
+
+        return Response(
+            {
+                "success": True,
+                "requires_plate_start": True,
+                "coordinates": coordinates,
+                "direction_options": direction_options,
+                "default_start_coord": coordinates[0] if coordinates else None,
+            }
+        )
 
     @action(methods=["post"], detail=False)
     def generate_indices(self, request):
