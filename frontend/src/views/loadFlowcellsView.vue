@@ -92,7 +92,8 @@
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
-          handleCellEdited
+          handleCellEdited,
+          handleRangeCleared
         }"
       />
     </div>
@@ -785,6 +786,8 @@ export default {
   beforeDestroy() {
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
+      this.pendingEditTimer = null;
+      this.flushPendingEdits();
     }
     if (this.dateChangeTimer) {
       clearTimeout(this.dateChangeTimer);
@@ -1046,13 +1049,20 @@ export default {
     handleCellEdited(cell) {
       const rowData = cell.getRow().getData();
       const field = cell.getField();
+      this.queueLaneFieldChange(rowData, field);
+      this.scheduleBatchSave();
+    },
+    queueLaneFieldChange(rowData, field) {
       if (!["loading_concentration", "phix"].includes(field)) {
         return;
       }
 
       const pk = rowData.pk;
       const original = this.originalLaneStateByPk[pk] || {};
-      const nextValue = rowData[field];
+      const nextValue =
+        rowData[field] === "" || rowData[field] === undefined
+          ? null
+          : rowData[field];
       const normalizedOriginal =
         original[field] === undefined ? null : original[field];
       const normalizedNext = nextValue === undefined ? null : nextValue;
@@ -1070,7 +1080,20 @@ export default {
       if (Object.keys(this.pendingLaneChanges[pk]).length === 1) {
         delete this.pendingLaneChanges[pk];
       }
-      this.scheduleBatchSave();
+    },
+    handleRangeCleared(payload = []) {
+      payload.forEach((entry) => {
+        const rowData = entry?.rowData || {};
+        const fields = entry?.fields || [];
+        fields.forEach((field) => {
+          this.queueLaneFieldChange(rowData, field);
+        });
+      });
+      if (this.pendingEditTimer) {
+        clearTimeout(this.pendingEditTimer);
+        this.pendingEditTimer = null;
+      }
+      this.flushPendingEdits();
     },
     scheduleBatchSave() {
       if (this.pendingEditTimer) {

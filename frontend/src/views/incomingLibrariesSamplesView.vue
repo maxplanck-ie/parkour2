@@ -260,6 +260,7 @@
         :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
+          handleRangeCleared,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
@@ -720,6 +721,8 @@ export default {
     document.removeEventListener("keydown", this.handleKeyDown);
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
+      this.pendingEditTimer = null;
+      this.flushPendingEdits();
     }
   },
   watch: {
@@ -1227,6 +1230,33 @@ export default {
           }
         });
       });
+    },
+    handleRangeCleared(payload = []) {
+      const clearedChanges = payload
+        .map((entry) => {
+          const rowData = entry?.rowData || {};
+          const fields = entry?.fields || [];
+          if (!rowData.pk || !rowData.record_type || fields.length === 0) {
+            return null;
+          }
+          const change = {
+            pk: rowData.pk,
+            record_type: rowData.record_type
+          };
+          fields.forEach((field) => {
+            change[field] = rowData[field];
+          });
+          return change;
+        })
+        .filter(Boolean);
+
+      if (!clearedChanges.length) return;
+      this.queueBatchChanges(clearedChanges);
+      if (this.pendingEditTimer) {
+        clearTimeout(this.pendingEditTimer);
+        this.pendingEditTimer = null;
+      }
+      this.flushPendingEdits();
     },
     scheduleBatchSave() {
       if (this.pendingEditTimer) {
