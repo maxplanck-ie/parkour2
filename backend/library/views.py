@@ -77,6 +77,8 @@ class LibrarySampleTree(viewsets.ViewSet):
                 for term in terms:
                     search_fields = [
                         "name__icontains",
+                        "comment_input__icontains",
+                        "organism_name__icontains",
                         "barcode__icontains",
                         "request_name__icontains",
                         "flowcell_ids__icontains",

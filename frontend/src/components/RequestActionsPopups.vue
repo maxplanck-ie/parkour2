@@ -1,12 +1,26 @@
 <template>
-  <div v-if="activeAction === 'uploadSigned'" class="popup-overlay" :class="{ 'drag-over': isUploadDragOver }"
-    tabindex="0" @keydown="handlePopupKeydown" @dragover.prevent="handleUploadDragOver"
-    @dragenter.prevent="handleUploadDragEnter" @dragleave.prevent="handleUploadDragLeave"
-    @drop.prevent="handleUploadDrop">
-    <div class="popup-container request-action-modal" :style="{ width: '520px' }">
+  <div
+    v-if="activeAction === 'uploadSigned'"
+    class="popup-overlay"
+    :class="{ 'drag-over': isUploadDragOver }"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+    @dragover.prevent="handleUploadDragOver"
+    @dragenter.prevent="handleUploadDragEnter"
+    @dragleave.prevent="handleUploadDragLeave"
+    @drop.prevent="handleUploadDrop"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '520px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_upload_signed_request.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_upload_signed_request.svg"
+            alt=""
+          />
           <span>Upload file</span>
         </div>
         <button class="popup-close-button" type="button" @click="close">
@@ -16,11 +30,26 @@
       <div class="popup-body">
         <div class="upload-row">
           <label class="upload-label">File:</label>
-          <input class="upload-input" type="text" :value="uploadFileName" readonly placeholder="Select a file" />
-          <button class="popup-button secondary" type="button" @click="triggerUploadInput">
+          <input
+            class="upload-input"
+            type="text"
+            :value="uploadFileName"
+            readonly
+            placeholder="Select a file"
+          />
+          <button
+            class="popup-button secondary"
+            type="button"
+            @click="triggerUploadInput"
+          >
             Select
           </button>
-          <input ref="uploadInput" type="file" class="hidden-input" @change="handleUploadSelection" />
+          <input
+            ref="uploadInput"
+            type="file"
+            class="hidden-input"
+            @change="handleUploadSelection"
+          />
         </div>
         <div class="upload-drop-zone" :class="{ active: isUploadDragOver }">
           <div class="drop-title">Drag &amp; drop the signed request here</div>
@@ -28,8 +57,13 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultUploadButton" class="popup-button yes-button" type="button" :disabled="uploadBusy"
-          @click="submitSignedRequest">
+        <button
+          ref="defaultUploadButton"
+          class="popup-button yes-button"
+          type="button"
+          :disabled="uploadBusy"
+          @click="submitSignedRequest"
+        >
           <span v-if="uploadBusy">Uploading...</span>
           <span v-else>Upload</span>
         </button>
@@ -40,11 +74,20 @@
     </div>
   </div>
 
-  <div v-if="activeAction === 'filePaths'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
+  <div
+    v-if="activeAction === 'filePaths'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
     <div class="popup-container request-action-modal filepaths-modal">
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_view_file_paths.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_view_file_paths.svg"
+            alt=""
+          />
           <span>File Paths</span>
         </div>
         <button class="popup-close-button" type="button" @click="close">
@@ -60,8 +103,14 @@
           <div class="filepaths-column filepaths-left">
             <div class="filepaths-header">
               <span>Request File Paths:</span>
-              <div class="filepaths-os-select" title="Change OS to format file paths">
-                <font-awesome-icon class="filepaths-os-icon" icon="fa-solid fa-desktop" />
+              <div
+                class="filepaths-os-select"
+                title="Change OS to format file paths"
+              >
+                <font-awesome-icon
+                  class="filepaths-os-icon"
+                  icon="fa-solid fa-desktop"
+                />
                 <select v-model="selectedOS" class="filepaths-select">
                   <option value="Linux">Linux</option>
                   <option value="macOS">macOS</option>
@@ -71,9 +120,17 @@
             </div>
             <div class="filepaths-list filepaths-list-box">
               <div class="filepaths-scroll">
-                <div v-for="entry in formattedFilepaths" :key="entry.key" class="filepaths-row">
+                <div
+                  v-for="entry in formattedFilepaths"
+                  :key="entry.key"
+                  class="filepaths-row"
+                >
                   <div class="filepaths-key">{{ entry.key }}</div>
-                  <button class="filepaths-value filepaths-input" type="button" @click="copyText(entry.value)">
+                  <button
+                    class="filepaths-value filepaths-input"
+                    type="button"
+                    @click="copyText(entry.value)"
+                  >
                     {{ entry.value || "Empty" }}
                   </button>
                 </div>
@@ -83,8 +140,12 @@
           <div class="filepaths-column filepaths-right">
             <div class="filepaths-header">
               <span>Request User Paths:</span>
-              <button class="popup-button secondary small" type="button" @click="startAddUserPath"
-                title="Add User Path">
+              <button
+                class="popup-button secondary small"
+                type="button"
+                @click="startAddUserPath"
+                title="Add User Path"
+              >
                 <font-awesome-icon icon="fa-solid fa-square-plus" />
                 <span>Add</span>
               </button>
@@ -92,14 +153,30 @@
             <div class="filepaths-list filepaths-list-box">
               <div class="userpaths-scroll">
                 <div v-if="showUserPathForm" class="userpath-form">
-                  <input v-model.trim="userPathForm.name" type="text" placeholder="Name" />
-                  <input v-model.trim="userPathForm.value" type="text" placeholder="Path" />
+                  <input
+                    v-model.trim="userPathForm.name"
+                    type="text"
+                    placeholder="Name"
+                  />
+                  <input
+                    v-model.trim="userPathForm.value"
+                    type="text"
+                    placeholder="Path"
+                  />
                   <div class="userpath-actions">
-                    <button class="popup-button yes-button small" type="button" :disabled="!canSaveUserPath"
-                      @click="saveUserPath">
+                    <button
+                      class="popup-button yes-button small"
+                      type="button"
+                      :disabled="!canSaveUserPath"
+                      @click="saveUserPath"
+                    >
                       Save
                     </button>
-                    <button class="popup-button small" type="button" @click="cancelUserPath">
+                    <button
+                      class="popup-button small"
+                      type="button"
+                      @click="cancelUserPath"
+                    >
                       Cancel
                     </button>
                   </div>
@@ -107,18 +184,34 @@
                 <div v-if="!hasUserPaths" class="empty-state">
                   No User Paths
                 </div>
-                <div v-for="path in displayUserPaths" :key="path.id" class="filepaths-row userpath-row">
+                <div
+                  v-for="path in displayUserPaths"
+                  :key="path.id"
+                  class="filepaths-row userpath-row"
+                >
                   <div class="filepaths-key">{{ path.name }}</div>
-                  <button class="filepaths-value filepaths-input userpath-value" type="button"
-                    @click="copyText(path.value || 'Empty')">
+                  <button
+                    class="filepaths-value filepaths-input userpath-value"
+                    type="button"
+                    @click="copyText(path.value || 'Empty')"
+                  >
                     {{ path.value || "Empty" }}
                   </button>
                   <div class="userpath-icons">
-                    <button class="icon-button" type="button" title="Edit" @click="startEditUserPath(path)">
+                    <button
+                      class="icon-button"
+                      type="button"
+                      title="Edit"
+                      @click="startEditUserPath(path)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-pen" />
                     </button>
-                    <button class="icon-button danger" type="button" title="Delete"
-                      @click="confirmDeleteUserPath(path)">
+                    <button
+                      class="icon-button danger"
+                      type="button"
+                      title="Delete"
+                      @click="confirmDeleteUserPath(path)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-trash" />
                     </button>
                   </div>
@@ -129,18 +222,35 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultFilepathsButton" class="popup-button yes-button" type="button" @click="close">
+        <button
+          ref="defaultFilepathsButton"
+          class="popup-button yes-button"
+          type="button"
+          @click="close"
+        >
           Close
         </button>
       </div>
     </div>
   </div>
 
-  <div v-if="activeAction === 'composeEmail'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
-    <div class="popup-container request-action-modal" :style="{ width: '520px', height: '400px' }">
+  <div
+    v-if="activeAction === 'composeEmail'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '520px', height: '400px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_compose_email.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_compose_email.svg"
+            alt=""
+          />
           <span>New Email</span>
         </div>
         <button class="popup-close-button" type="button" @click="close">
@@ -150,11 +260,19 @@
       <div class="popup-body email-body">
         <label class="email-field">
           <span>Subject:</span>
-          <input v-model="emailForm.subject" type="text" placeholder="Subject" />
+          <input
+            v-model="emailForm.subject"
+            type="text"
+            placeholder="Subject"
+          />
         </label>
         <label class="email-field">
           <span>Message:</span>
-          <textarea v-model="emailForm.message" rows="6" placeholder="Message"></textarea>
+          <textarea
+            v-model="emailForm.message"
+            rows="6"
+            placeholder="Message"
+          ></textarea>
         </label>
         <label class="email-checkbox">
           <input type="checkbox" v-model="emailForm.includeFailed" />
@@ -162,8 +280,13 @@
         </label>
       </div>
       <div class="popup-footer">
-        <button ref="defaultComposeButton" class="popup-button yes-button with-icon" type="button" :disabled="emailBusy"
-          @click="sendEmail">
+        <button
+          ref="defaultComposeButton"
+          class="popup-button yes-button with-icon"
+          type="button"
+          :disabled="emailBusy"
+          @click="sendEmail"
+        >
           <font-awesome-icon icon="fa-solid fa-paper-plane" />
           <span>{{ emailBusy ? "Sending..." : "Send" }}</span>
         </button>
@@ -171,11 +294,23 @@
     </div>
   </div>
 
-  <div v-if="activeAction === 'solicitApproval'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
-    <div class="popup-container request-action-modal" :style="{ width: '520px', height: '400px' }">
+  <div
+    v-if="activeAction === 'solicitApproval'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '520px', height: '400px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_solicit_approval.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_solicit_approval.svg"
+            alt=""
+          />
           <span>New Email for Approval Solicitation</span>
         </div>
         <button class="popup-close-button" type="button" @click="close">
@@ -185,11 +320,19 @@
       <div class="popup-body email-body">
         <label class="email-field">
           <span>Subject:</span>
-          <input v-model="approvalForm.subject" type="text" placeholder="Subject" />
+          <input
+            v-model="approvalForm.subject"
+            type="text"
+            placeholder="Subject"
+          />
         </label>
         <label class="email-field">
           <span>Message:</span>
-          <textarea v-model="approvalForm.message" rows="6" placeholder="Message"></textarea>
+          <textarea
+            v-model="approvalForm.message"
+            rows="6"
+            placeholder="Message"
+          ></textarea>
         </label>
         <label class="email-checkbox">
           <input type="checkbox" v-model="approvalForm.includeRecords" />
@@ -197,8 +340,13 @@
         </label>
       </div>
       <div class="popup-footer">
-        <button ref="defaultApprovalButton" class="popup-button yes-button with-icon" type="button"
-          :disabled="approvalBusy" @click="sendApprovalEmail">
+        <button
+          ref="defaultApprovalButton"
+          class="popup-button yes-button with-icon"
+          type="button"
+          :disabled="approvalBusy"
+          @click="sendApprovalEmail"
+        >
           <font-awesome-icon icon="fa-solid fa-paper-plane" />
           <span>{{ approvalBusy ? "Sending..." : "Send" }}</span>
         </button>
@@ -206,11 +354,23 @@
     </div>
   </div>
 
-  <div v-if="activeAction === 'deleteRequest'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
-    <div class="popup-container request-action-modal" :style="{ width: '420px' }">
+  <div
+    v-if="activeAction === 'deleteRequest'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
+    <div
+      class="popup-container request-action-modal"
+      :style="{ width: '420px' }"
+    >
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_delete_request.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_delete_request.svg"
+            alt=""
+          />
           <span>Delete Request</span>
         </div>
         <button class="popup-close-button" type="button" @click="close">
@@ -225,8 +385,13 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultDeleteButton" class="popup-button yes-button" type="button" :disabled="deleteBusy"
-          @click="confirmDelete">
+        <button
+          ref="defaultDeleteButton"
+          class="popup-button yes-button"
+          type="button"
+          :disabled="deleteBusy"
+          @click="confirmDelete"
+        >
           <span v-if="deleteBusy">Deleting...</span>
           <span v-else>Delete</span>
         </button>
@@ -237,17 +402,26 @@
     </div>
   </div>
 
-  <div v-if="activeAction === 'attachments'" class="popup-overlay" :class="{ 'drag-over': isAttachmentsDragOver }"
-    tabindex="0" @keydown="handlePopupKeydown" @dragover.prevent="handleAttachmentsDragOver"
-    @dragenter.prevent="handleAttachmentsDragEnter" @dragleave.prevent="handleAttachmentsDragLeave"
-    @drop.prevent="handleAttachmentsDrop">
+  <div
+    v-if="activeAction === 'attachments'"
+    class="popup-overlay"
+    :class="{ 'drag-over': isAttachmentsDragOver }"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+    @dragover.prevent="handleAttachmentsDragOver"
+    @dragenter.prevent="handleAttachmentsDragEnter"
+    @dragleave.prevent="handleAttachmentsDragLeave"
+    @drop.prevent="handleAttachmentsDrop"
+  >
     <div v-if="canEditAttachments" class="drag-drop-indicator">
-      <div style="
+      <div
+        style="
           display: flex;
           justify-content: center;
           align-items: center;
           height: 200px;
-        ">
+        "
+      >
         <p>
           Drop <span style="font-weight: bold">request related documents</span>
           here to upload
@@ -257,7 +431,11 @@
     <div class="popup-container request-action-modal attachments-modal">
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_attachments.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_attachments.svg"
+            alt=""
+          />
           <span>Attachments</span>
         </div>
         <button class="popup-close-button" type="button" @click="close">
@@ -271,16 +449,32 @@
               <span>Files</span>
               <small>Upload request related documents.</small>
             </div>
-            <button v-if="canEditAttachments" class="header-button ghost" type="button" :disabled="attachmentsBusy"
-              @click="triggerAttachmentsUpload">
-              <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+            <button
+              v-if="canEditAttachments"
+              class="header-button ghost"
+              type="button"
+              :disabled="attachmentsBusy"
+              @click="triggerAttachmentsUpload"
+            >
+              <font-awesome-icon
+                icon="fa-solid fa-square-plus"
+                style="color: white"
+              />
               <span>Add Files</span>
             </button>
-            <input ref="attachmentsFileInput" type="file" multiple @change="handleAttachmentsSelection"
-              style="display: none" />
+            <input
+              ref="attachmentsFileInput"
+              type="file"
+              multiple
+              @change="handleAttachmentsSelection"
+              style="display: none"
+            />
           </div>
           <div class="files-table-wrapper">
-            <table class="files-table" :class="{ 'files-table-empty': !attachmentsFiles.length }">
+            <table
+              class="files-table"
+              :class="{ 'files-table-empty': !attachmentsFiles.length }"
+            >
               <thead>
                 <tr>
                   <th style="width: 60%">Name</th>
@@ -302,14 +496,27 @@
                     {{ formatFileSize(file.size) }}
                   </td>
                   <td class="actions-cell">
-                    <button type="button" class="icon-action" :title="file.path
-                      ? `Download ${file.name}`
-                      : 'Download unavailable'
-                      " :disabled="!file.path" @click="downloadAttachment(file)">
+                    <button
+                      type="button"
+                      class="icon-action"
+                      :title="
+                        file.path
+                          ? `Download ${file.name}`
+                          : 'Download unavailable'
+                      "
+                      :disabled="!file.path"
+                      @click="downloadAttachment(file)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-download" />
                     </button>
-                    <button v-if="canEditAttachments" type="button" class="icon-action danger"
-                      :title="`Remove ${file.name}`" :disabled="attachmentsBusy" @click="removeAttachment(file)">
+                    <button
+                      v-if="canEditAttachments"
+                      type="button"
+                      class="icon-action danger"
+                      :title="`Remove ${file.name}`"
+                      :disabled="attachmentsBusy"
+                      @click="removeAttachment(file)"
+                    >
                       <font-awesome-icon icon="fa-solid fa-xmark" />
                     </button>
                   </td>
@@ -320,23 +527,41 @@
         </div>
       </div>
       <div class="popup-footer">
-        <button ref="defaultAttachmentsButton" class="popup-button yes-button" type="button" :disabled="attachmentsBusy"
-          @click="close">
+        <button
+          ref="defaultAttachmentsButton"
+          class="popup-button yes-button"
+          type="button"
+          :disabled="attachmentsBusy"
+          @click="close"
+        >
           Close
         </button>
       </div>
     </div>
   </div>
 
-  <div v-if="activeAction === 'downloadROCrate'" class="popup-overlay" tabindex="0" @keydown="handlePopupKeydown">
+  <div
+    v-if="activeAction === 'downloadROCrate'"
+    class="popup-overlay"
+    tabindex="0"
+    @keydown="handlePopupKeydown"
+  >
     <div class="popup-container request-action-modal rocrate-modal">
       <div class="popup-header">
         <div class="popup-title">
-          <img class="popup-title-icon" src="@/assets/icons/action_rocrate.svg" alt="" />
+          <img
+            class="popup-title-icon"
+            src="@/assets/icons/action_rocrate.svg"
+            alt=""
+          />
           <span>Export RO-Crate</span>
         </div>
         <div class="rocrate-help-wrapper">
-          <button class="rocrate-help-button" type="button" aria-label="RO-Crate help">
+          <button
+            class="rocrate-help-button"
+            type="button"
+            aria-label="RO-Crate help"
+          >
             ?
           </button>
           <div class="rocrate-help-popup">
@@ -346,55 +571,109 @@
                   <div class="rocrate-help-title">Export RO-Crate Guide</div>
                   <p class="rocrate-help-intro">
                     RO-Crate gives you one structured export package for the
-                    libraries or samples you selected in one Parkour request. When you
-                    download it, Parkour creates a <strong>.zip</strong> file
-                    that contains <strong>ro-crate-metadata.json</strong> and,
-                    if available, the attached files from that request.
-                    This is useful when you want to review metadata outside
-                    Parkour, share it with other people, keep an archive copy,
-                    or use it in another tool that understands RO-Crate. The
-                    metadata graph is organized as a single-request,
-                    ISA-profile-aligned RO-Crate package.
+                    libraries or samples you selected in one Parkour request.
+                    When you download it, Parkour creates a
+                    <strong>.zip</strong> file that contains
+                    <strong>ro-crate-metadata.json</strong> and, if available,
+                    the attached files from that request. This is useful when
+                    you want to review metadata outside Parkour, share it with
+                    other people, keep an archive copy, or use it in another
+                    tool that understands RO-Crate. The metadata graph is
+                    organized as a single-request, ISA-profile-aligned RO-Crate
+                    package.
                   </p>
                 </div>
               </div>
               <div class="rocrate-help-grid">
                 <section class="rocrate-help-section">
-                  <div class="rocrate-help-section-title">What this export contains</div>
+                  <div class="rocrate-help-section-title">
+                    What this export contains
+                  </div>
                   <ul class="rocrate-help-list">
-                    <li>The selected <strong>Sample Metadata</strong> or <strong>Library Metadata</strong> becomes the
-                      core of the export, because those are the records you chose in the table.</li>
-                    <li>If the related requests already have attached files in Parkour, those files are added to the
-                      same zip package and linked from the metadata graph.</li>
-                    <li>If you select several libraries or samples at once, Parkour creates <strong>one shared
-                        RO-Crate</strong>. It does not create one separate export per row.</li>
-                    <li>The export is created for <strong>one request at a time</strong>. All selected records in this
-                      window must belong to the same request, so the metadata graph stays aligned to one
-                      investigation-style package.</li>
-                    <li>Keep a box checked when you want that part of the metadata to appear in the export. Clear a box
-                      when you want a smaller package with fewer linked details.</li>
-                    <li>If you are unsure, keep everything selected. That gives you the most complete export and
-                      preserves the relationships between the selected records and their linked metadata.</li>
+                    <li>
+                      The selected <strong>Sample Metadata</strong> or
+                      <strong>Library Metadata</strong> becomes the core of the
+                      export, because those are the records you chose in the
+                      table.
+                    </li>
+                    <li>
+                      If the related requests already have attached files in
+                      Parkour, those files are added to the same zip package and
+                      linked from the metadata graph.
+                    </li>
+                    <li>
+                      If you select several libraries or samples at once,
+                      Parkour creates <strong>one shared RO-Crate</strong>. It
+                      does not create one separate export per row.
+                    </li>
+                    <li>
+                      The export is created for
+                      <strong>one request at a time</strong>. All selected
+                      records in this window must belong to the same request, so
+                      the metadata graph stays aligned to one
+                      investigation-style package.
+                    </li>
+                    <li>
+                      Keep a box checked when you want that part of the metadata
+                      to appear in the export. Clear a box when you want a
+                      smaller package with fewer linked details.
+                    </li>
+                    <li>
+                      If you are unsure, keep everything selected. That gives
+                      you the most complete export and preserves the
+                      relationships between the selected records and their
+                      linked metadata.
+                    </li>
                   </ul>
                 </section>
                 <section class="rocrate-help-section">
-                  <div class="rocrate-help-section-title">How to use the exported file</div>
+                  <div class="rocrate-help-section-title">
+                    How to use the exported file
+                  </div>
                   <ul class="rocrate-help-list">
-                    <li>Click <strong>Download</strong> to create one <strong>.zip</strong> file for the current
-                      selection.</li>
-                    <li>Open the zip and look for <strong>ro-crate-metadata.json</strong>. That file contains the linked
-                      metadata graph for the export.</li>
-                    <li>Use <a href="https://novacrate.datamanager.kit.edu/" target="_blank"
-                        rel="noopener noreferrer"><strong>RO-Crate Viewer</strong></a> if you want to inspect the
-                      JSON-LD in a visual tool instead of reading the raw file directly.</li>
-                    <li>Use <a href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
-                        target="_blank" rel="noopener noreferrer"><strong>RO-Crate Documentation</strong></a> if you
-                      want to understand the general standard behind the file format.</li>
-                    <li>This export is useful when you want to share metadata with collaborators, inspect relationships
-                      between records, keep a portable metadata snapshot, or hand structured data to another system.
+                    <li>
+                      Click <strong>Download</strong> to create one
+                      <strong>.zip</strong> file for the current selection.
                     </li>
-                    <li>The exported package does not replace Parkour. Parkour remains the working system, while the
-                      RO-Crate export is a standards-based package for inspection, sharing, and downstream reuse.</li>
+                    <li>
+                      Open the zip and look for
+                      <strong>ro-crate-metadata.json</strong>. That file
+                      contains the linked metadata graph for the export.
+                    </li>
+                    <li>
+                      Use
+                      <a
+                        href="https://novacrate.datamanager.kit.edu/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>RO-Crate Viewer</strong></a
+                      >
+                      if you want to inspect the JSON-LD in a visual tool
+                      instead of reading the raw file directly.
+                    </li>
+                    <li>
+                      Use
+                      <a
+                        href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        ><strong>RO-Crate Documentation</strong></a
+                      >
+                      if you want to understand the general standard behind the
+                      file format.
+                    </li>
+                    <li>
+                      This export is useful when you want to share metadata with
+                      collaborators, inspect relationships between records, keep
+                      a portable metadata snapshot, or hand structured data to
+                      another system.
+                    </li>
+                    <li>
+                      The exported package does not replace Parkour. Parkour
+                      remains the working system, while the RO-Crate export is a
+                      standards-based package for inspection, sharing, and
+                      downstream reuse.
+                    </li>
                   </ul>
                 </section>
               </div>
@@ -413,25 +692,43 @@
           </div>
           <div class="rocrate-summary-card">
             <span class="label">{{ roCrateSelectedLabel }}</span>
-            <span class="value rocrate-summary-count">{{ roCrateSelectedCount }}</span>
+            <span class="value rocrate-summary-count">{{
+              roCrateSelectedCount
+            }}</span>
           </div>
         </div>
 
         <div class="rocrate-toolbar">
-          <div style="font-weight: bold;">Choose information to include:</div>
+          <div style="font-weight: bold">Choose information to include:</div>
           <div class="rocrate-toolbar-actions">
-            <button class="popup-button secondary small" type="button" @click="selectAllROCrateSections">
+            <button
+              class="popup-button secondary small"
+              type="button"
+              @click="selectAllROCrateSections"
+            >
               Select All
             </button>
-            <button class="popup-button secondary small" type="button" @click="clearAllROCrateSections">
+            <button
+              class="popup-button secondary small"
+              type="button"
+              @click="clearAllROCrateSections"
+            >
               Clear All
             </button>
           </div>
         </div>
 
         <div class="rocrate-options-grid">
-          <label v-for="option in roCrateSectionOptions" :key="option.id" class="rocrate-option">
-            <input v-model="roCrateSelectedSections" type="checkbox" :value="option.id" />
+          <label
+            v-for="option in roCrateSectionOptions"
+            :key="option.id"
+            class="rocrate-option"
+          >
+            <input
+              v-model="roCrateSelectedSections"
+              type="checkbox"
+              :value="option.id"
+            />
             <div class="rocrate-option-content">
               <div class="rocrate-option-title">{{ option.label }}</div>
               <div class="rocrate-option-description">
@@ -444,25 +741,36 @@
         <div v-if="roCrateValidationMessage" class="rocrate-validation">
           {{ roCrateValidationMessage }}
         </div>
-
       </div>
       <div class="popup-footer rocrate-footer">
         <div class="rocrate-footer-links">
-          <a class="file-upload-label rocrate-footer-link" href="https://novacrate.datamanager.kit.edu/" target="_blank"
-            rel="noopener noreferrer">
+          <a
+            class="file-upload-label rocrate-footer-link"
+            href="https://novacrate.datamanager.kit.edu/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <font-awesome-icon icon="fa-solid fa-desktop" />
             RO-Crate Viewer
           </a>
-          <a class="file-upload-label rocrate-footer-link"
-            href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html" target="_blank"
-            rel="noopener noreferrer">
+          <a
+            class="file-upload-label rocrate-footer-link"
+            href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <font-awesome-icon icon="fa-solid fa-file-lines" />
             RO-Crate Documentation
           </a>
         </div>
         <div class="rocrate-footer-actions">
-          <button ref="defaultROCrateButton" class="popup-button yes-button" type="button" :disabled="roCrateBusy"
-            @click="downloadROCrate">
+          <button
+            ref="defaultROCrateButton"
+            class="popup-button yes-button"
+            type="button"
+            :disabled="roCrateBusy"
+            @click="downloadROCrate"
+          >
             <span v-if="roCrateBusy">Downloading...</span>
             <span v-else>Download</span>
           </button>
@@ -497,8 +805,7 @@ const RO_CRATE_SECTION_OPTIONS = [
   {
     id: "request_user",
     label: "Request User",
-    description:
-      "Details about the person who submitted the request."
+    description: "Details about the person who submitted the request."
   },
   {
     id: "organizations",
@@ -515,8 +822,7 @@ const RO_CRATE_SECTION_OPTIONS = [
   {
     id: "cost_units",
     label: "Cost Units",
-    description:
-      "Billing or funding information assigned to the request."
+    description: "Billing or funding information assigned to the request."
   },
   {
     id: "samples",
@@ -545,8 +851,7 @@ const RO_CRATE_SECTION_OPTIONS = [
   {
     id: "protocols",
     label: "Protocols",
-    description:
-      "Protocols used for the selected libraries or samples."
+    description: "Protocols used for the selected libraries or samples."
   },
   {
     id: "organisms",
@@ -557,8 +862,7 @@ const RO_CRATE_SECTION_OPTIONS = [
   {
     id: "library_types",
     label: "Library Types",
-    description:
-      "Library type definitions used by the selected records."
+    description: "Library type definitions used by the selected records."
   },
   {
     id: "read_lengths",
@@ -569,8 +873,7 @@ const RO_CRATE_SECTION_OPTIONS = [
   {
     id: "index_types",
     label: "Index Types",
-    description:
-      "Index type settings used for the selected records."
+    description: "Index type settings used for the selected records."
   },
   {
     id: "nucleic_acid_types",
@@ -599,8 +902,7 @@ const RO_CRATE_SECTION_OPTIONS = [
   {
     id: "lanes",
     label: "Lanes",
-    description:
-      "Lane information linked to the exported flowcells."
+    description: "Lane information linked to the exported flowcells."
   }
 ];
 
@@ -663,7 +965,9 @@ export default {
       },
       attachmentsRecords: [],
       roCrateBusy: false,
-      roCrateSelectedSections: [...RO_CRATE_SECTION_OPTIONS.map((option) => option.id)]
+      roCrateSelectedSections: [
+        ...RO_CRATE_SECTION_OPTIONS.map((option) => option.id)
+      ]
     };
   },
   computed: {
@@ -710,7 +1014,9 @@ export default {
       return this.roCrateSelectedBarcodes.length;
     },
     roCrateSelectedLabel() {
-      const type = String(this.requestContext?.selectedType || "").trim().toUpperCase();
+      const type = String(this.requestContext?.selectedType || "")
+        .trim()
+        .toUpperCase();
       if (type === "L") return "Selected Libraries";
       if (type === "S") return "Selected Samples";
       return "Selected Libraries or Samples";
@@ -728,7 +1034,7 @@ export default {
   mounted() {
     document.addEventListener("keydown", this.handleGlobalKeydown);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("keydown", this.handleGlobalKeydown);
   },
   watch: {
@@ -854,7 +1160,10 @@ export default {
     },
     async downloadROCrate() {
       if (!this.roCrateSelectedBarcodes.length) {
-        showNotification("Select records with valid barcodes to download RO-Crate.", "warning");
+        showNotification(
+          "Select records with valid barcodes to download RO-Crate.",
+          "warning"
+        );
         return;
       }
       if (!this.roCrateSelectedSections.length) {
@@ -881,7 +1190,9 @@ export default {
             .replace(/_+/g, "_")
             .replace(/^_|_$/g, "");
 
-        const safeBarcodeName = sanitize(this.roCrateSelectedBarcodes.join("_"));
+        const safeBarcodeName = sanitize(
+          this.roCrateSelectedBarcodes.join("_")
+        );
         const blob = response?.data;
         const filename = safeBarcodeName
           ? `${safeBarcodeName}_ro_crate.zip`
@@ -1248,8 +1559,8 @@ export default {
             : Promise.resolve({ data: meta }),
           needsRecords
             ? axiosRef.get(
-              `${urlStringStart}/api/requests/${requestId}/get_records/`
-            )
+                `${urlStringStart}/api/requests/${requestId}/get_records/`
+              )
             : Promise.resolve({ data: records })
         ]);
 
@@ -1281,11 +1592,11 @@ export default {
               : [];
           this.attachmentsRecords = Array.isArray(recordsData)
             ? recordsData
-              .filter((record) => record?.pk && record?.record_type)
-              .map((record) => ({
-                pk: record.pk,
-                record_type: record.record_type
-              }))
+                .filter((record) => record?.pk && record?.record_type)
+                .map((record) => ({
+                  pk: record.pk,
+                  record_type: record.record_type
+                }))
             : [];
         }
       } catch (error) {
@@ -1580,7 +1891,7 @@ export default {
   gap: 3px;
 }
 
-.files-table td.actions-cell button+button {
+.files-table td.actions-cell button + button {
   margin-left: 4px;
 }
 

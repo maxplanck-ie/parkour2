@@ -9,6 +9,7 @@ from common.views import CsrfExemptSessionAuthentication
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from django.apps import apps
+from django.db import transaction
 from django.db.models import F, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -226,6 +227,58 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         data = sorted(data, key=lambda x: x["ready"], reverse=True)
 
         return Response(data)
+
+    @action(methods=["post"], detail=True)
+    def destroy_flowcell(self, request, pk=None):
+        flowcell = get_object_or_404(
+            Flowcell.objects.prefetch_related(
+                "lanes__pool__size",
+                "lanes__pool__libraries",
+                "lanes__pool__samples",
+                "requests",
+            ).filter(archived=False),
+            pk=pk,
+        )
+
+        with transaction.atomic():
+            affected_pools = {}
+            pool_unload_counts = {}
+            requests_to_update = list(flowcell.requests.all())
+            lanes = list(flowcell.lanes.select_related("pool", "pool__size").all())
+
+            for lane in lanes:
+                pool = lane.pool
+                if pool:
+                    affected_pools[pool.pk] = pool
+                    pool_unload_counts[pool.pk] = pool_unload_counts.get(pool.pk, 0) + 1
+
+                flowcell.lanes.remove(lane)
+                lane.delete()
+
+            for pool_pk, pool in affected_pools.items():
+                unload_count = pool_unload_counts.get(pool_pk, 0)
+                if unload_count:
+                    pool.loaded = max(0, pool.loaded - unload_count)
+                    pool.save(update_fields=["loaded"])
+
+            for pool in affected_pools.values():
+                pool_size = pool.size.multiplier if pool.size else None
+                if pool_size is None or pool.loaded < pool_size:
+                    pool.libraries.all().filter(status=5).update(status=4)
+                    pool.samples.all().filter(status=5).update(status=4)
+
+            for req in requests_to_update:
+                has_other_flowcells = (
+                    req.flowcell.filter(archived=False).exclude(pk=flowcell.pk).exists()
+                )
+                if not has_other_flowcells:
+                    req.sequenced = False
+                    req.flowcell_loaded_at = None
+                    req.save(update_fields=["sequenced", "flowcell_loaded_at"])
+
+            flowcell.delete()
+
+        return Response({"success": True})
 
     @action(
         methods=["post"],

@@ -1,14 +1,22 @@
 ﻿<template>
-  <div v-if="show" class="request-editor-overlay popup-overlay" :class="{ 'drag-over': isDragOver }"
-    @dragover.prevent="handleDragOver" @dragenter.prevent="handleDragEnter" @dragleave.prevent="handleDragLeave"
-    @drop.prevent="handleDrop">
+  <div
+    v-if="show"
+    class="request-editor-overlay popup-overlay"
+    :class="{ 'drag-over': isDragOver }"
+    @dragover.prevent="handleDragOver"
+    @dragenter.prevent="handleDragEnter"
+    @dragleave.prevent="handleDragLeave"
+    @drop.prevent="handleDrop"
+  >
     <div v-if="canEditRequest" class="drag-drop-indicator">
-      <div style="
+      <div
+        style="
           display: flex;
           justify-content: center;
           align-items: center;
           height: 200px;
-        ">
+        "
+      >
         <p>
           Drop
           <span style="font-weight: bold">request related documents</span> here
@@ -17,105 +25,206 @@
       </div>
     </div>
     <div class="request-editor-modal">
-      <div v-if="fakeLoading" class="request-editor-loading-overlay" aria-hidden="true"></div>
-      <div v-if="isEditMode && !requestDataReady" class="request-editor-loading-overlay" aria-live="polite"
-        aria-busy="true">
+      <div
+        v-if="fakeLoading"
+        class="request-editor-loading-overlay"
+        aria-hidden="true"
+      ></div>
+      <div
+        v-if="isEditMode && !requestDataReady"
+        class="request-editor-loading-overlay"
+        aria-live="polite"
+        aria-busy="true"
+      >
         <div class="spinner"></div>
         <p>Loading request details...</p>
       </div>
-      <div class="request-editor-content" :class="{ collapsed: isFormPanelCollapsed }">
-        <div class="request-editor-header-left" :class="{ collapsed: isFormPanelCollapsed }">
+      <div
+        class="request-editor-content"
+        :class="{ collapsed: isFormPanelCollapsed }"
+      >
+        <div
+          class="request-editor-header-left"
+          :class="{ collapsed: isFormPanelCollapsed }"
+        >
           <span class="title-with-icon">
-            <font-awesome-icon icon="fa-solid fa-file-lines" class="header-icon" />
-            <span class="header-title-text" :title="headerTitle" data-testid="request-editor-title">{{ headerTitle
-              }}</span>
+            <font-awesome-icon
+              icon="fa-solid fa-file-lines"
+              class="header-icon"
+            />
+            <span
+              class="header-title-text"
+              :title="headerTitle"
+              data-testid="request-editor-title"
+              >{{ headerTitle }}</span
+            >
           </span>
         </div>
-        <button class="panel-toggle-button vertical-toggle" type="button" @click="toggleFormPanel" :aria-label="isFormPanelCollapsed
-            ? 'Expand details panel'
-            : 'Collapse details panel'
-          ">
-          <font-awesome-icon :icon="isFormPanelCollapsed
-              ? 'fa-solid fa-angle-right'
-              : 'fa-solid fa-angle-left'
-            " />
+        <button
+          class="panel-toggle-button vertical-toggle"
+          type="button"
+          @click="toggleFormPanel"
+          :aria-label="
+            isFormPanelCollapsed
+              ? 'Expand details panel'
+              : 'Collapse details panel'
+          "
+        >
+          <font-awesome-icon
+            :icon="
+              isFormPanelCollapsed
+                ? 'fa-solid fa-angle-right'
+                : 'fa-solid fa-angle-left'
+            "
+          />
         </button>
         <div class="request-editor-header-right">
           <div class="header-table-actions">
             <div class="controls-group record-type-toggle-group">
-              <label class="record-type-switch" title="Switch between Library and Sample entry modes">
-                <input type="checkbox" :checked="requestEditorMode === 'sample'" :disabled="!canEditRequest"
-                  @change="requestRecordTypeSwitch($event)" />
+              <label
+                class="record-type-switch"
+                title="Switch between Library and Sample entry modes"
+              >
+                <input
+                  type="checkbox"
+                  :checked="requestEditorMode === 'sample'"
+                  :disabled="!canEditRequest"
+                  @change="requestRecordTypeSwitch($event)"
+                />
                 <span class="slider">
-                  <span class="option" :class="{ active: requestEditorMode === 'library' }">
+                  <span
+                    class="option"
+                    :class="{ active: requestEditorMode === 'library' }"
+                  >
                     Library
                   </span>
-                  <span class="option" :class="{ active: requestEditorMode === 'sample' }">
+                  <span
+                    class="option"
+                    :class="{ active: requestEditorMode === 'sample' }"
+                  >
                     Sample
                   </span>
                 </span>
               </label>
             </div>
             <div class="add-count-group">
-              <input id="add-count-input" v-model.number="addRowCount" type="number" min="0" :class="[
-                'add-count-input',
-                { 'input-error': hasEditedAddCount && !addRowCount }
-              ]" :disabled="!canEditRequest" @input="hasEditedAddCount = true" @blur="hasEditedAddCount = true" />
-              <button class="icon-button text-button add-count-button" type="button" data-testid="add-records-button"
-                :title="addButtonTitle" :disabled="!canEditRequest" @click="addDraftRow(addRowCount)">
+              <input
+                id="add-count-input"
+                v-model.number="addRowCount"
+                type="number"
+                min="0"
+                :class="[
+                  'add-count-input',
+                  { 'input-error': hasEditedAddCount && !addRowCount }
+                ]"
+                :disabled="!canEditRequest"
+                @input="hasEditedAddCount = true"
+                @blur="hasEditedAddCount = true"
+              />
+              <button
+                class="icon-button text-button add-count-button"
+                type="button"
+                data-testid="add-records-button"
+                :title="addButtonTitle"
+                :disabled="!canEditRequest"
+                @click="addDraftRow(addRowCount)"
+              >
                 <font-awesome-icon icon="fa-solid fa-square-plus" />
                 <span>{{ addButtonLabel }}</span>
               </button>
             </div>
-            <button class="icon-button text-button" type="button" :title="deleteButtonTitle"
-              :disabled="!canEditRequest || !selectedDraftRowIds.length" @click="requestDeleteSelectedDraftRows">
+            <button
+              class="icon-button text-button"
+              type="button"
+              :title="deleteButtonTitle"
+              :disabled="!canEditRequest || !selectedDraftRowIds.length"
+              @click="requestDeleteSelectedDraftRows"
+            >
               <font-awesome-icon icon="fa-solid fa-trash" />
               <span>Delete Selected</span>
             </button>
           </div>
-          <div class="header-table-actions utility-actions" :class="{ hidden: !canEditRequest }"
-            title="Clipboard Actions">
-            <button class="icon-button text-button clipboard-button" type="button"
-              title="Cut the selected range to the clipboard" :disabled="!canEditRequest || !hasEditableRangeSelection"
-              @click="triggerTableCut">
+          <div
+            class="header-table-actions utility-actions"
+            :class="{ hidden: !canEditRequest }"
+            title="Clipboard Actions"
+          >
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
+              title="Cut the selected range to the clipboard"
+              :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTableCut"
+            >
               <font-awesome-icon icon="fa-solid fa-scissors" />
               <span>Cut</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
               title="Copy the selected range to the clipboard"
-              :disabled="!requestEditorDraftRows.length || !hasRangeSelection" @click="triggerTableCopy">
+              :disabled="!requestEditorDraftRows.length || !hasRangeSelection"
+              @click="triggerTableCopy"
+            >
               <font-awesome-icon icon="fa-solid fa-copy" />
               <span>Copy</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
               title="Paste clipboard data into the selected range"
-              :disabled="!canEditRequest || !hasEditableRangeSelection" @click="triggerTablePaste">
+              :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTablePaste"
+            >
               <font-awesome-icon icon="fa-solid fa-paste" />
               <span>Paste</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
-              title="Clear values in the selected range" :disabled="!canEditRequest || !hasEditableRangeSelection"
-              @click="triggerTableClear">
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
+              title="Clear values in the selected range"
+              :disabled="!canEditRequest || !hasEditableRangeSelection"
+              @click="triggerTableClear"
+            >
               <font-awesome-icon icon="fa-solid fa-eraser" />
               <span>Clear</span>
             </button>
-            <button class="icon-button text-button clipboard-button" type="button"
+            <button
+              class="icon-button text-button clipboard-button"
+              type="button"
               title="Apply the selected cell value to this column for all rows in this request"
-              :disabled="!canEditRequest || !isSingleCellSelected" @click="triggerApplyToAll">
+              :disabled="!canEditRequest || !isSingleCellSelected"
+              @click="triggerApplyToAll"
+            >
               <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
               <span>Apply to All</span>
             </button>
           </div>
           <div class="header-actions">
-            <div class="shortcut-help" @mouseenter="openShortcutHelp" @mouseleave="scheduleShortcutHelpClose">
-              <button class="help-button shortcut-help-button" type="button"
-                :aria-expanded="showShortcutHelp.toString()" aria-controls="shortcut-help-panel" aria-haspopup="dialog"
-                @focus="openShortcutHelp">
+            <div
+              class="shortcut-help"
+              @mouseenter="openShortcutHelp"
+              @mouseleave="scheduleShortcutHelpClose"
+            >
+              <button
+                class="help-button shortcut-help-button"
+                type="button"
+                :aria-expanded="showShortcutHelp.toString()"
+                aria-controls="shortcut-help-panel"
+                aria-haspopup="dialog"
+                @focus="openShortcutHelp"
+              >
                 <font-awesome-icon icon="fa-solid fa-keyboard" />
               </button>
-              <div v-if="showShortcutHelp" id="shortcut-help-panel" class="shortcut-help-panel" role="dialog"
-                aria-label="Keyboard shortcuts" @mouseenter="cancelShortcutHelpClose"
-                @mouseleave="scheduleShortcutHelpClose">
+              <div
+                v-if="showShortcutHelp"
+                id="shortcut-help-panel"
+                class="shortcut-help-panel"
+                role="dialog"
+                aria-label="Keyboard shortcuts"
+                @mouseenter="cancelShortcutHelpClose"
+                @mouseleave="scheduleShortcutHelpClose"
+              >
                 <div class="shortcut-help-title">Keyboard Shortcuts</div>
                 <ul class="shortcut-help-list">
                   <li>
@@ -161,24 +270,42 @@
                 </ul>
               </div>
             </div>
-            <div class="feature-help" @mouseenter="openFeatureHelp" @mouseleave="scheduleFeatureHelpClose">
-              <button class="help-button" type="button" :aria-expanded="showFeatureHelp.toString()"
-                aria-controls="feature-help-panel" aria-haspopup="dialog" @focus="openFeatureHelp">
+            <div
+              class="feature-help"
+              @mouseenter="openFeatureHelp"
+              @mouseleave="scheduleFeatureHelpClose"
+            >
+              <button
+                class="help-button"
+                type="button"
+                :aria-expanded="showFeatureHelp.toString()"
+                aria-controls="feature-help-panel"
+                aria-haspopup="dialog"
+                @focus="openFeatureHelp"
+              >
                 ?
               </button>
-              <div v-if="showFeatureHelp" id="feature-help-panel" class="feature-help-panel" role="dialog"
-                aria-label="Request editor help" @mouseenter="cancelFeatureHelpClose"
-                @mouseleave="scheduleFeatureHelpClose">
+              <div
+                v-if="showFeatureHelp"
+                id="feature-help-panel"
+                class="feature-help-panel"
+                role="dialog"
+                aria-label="Request editor help"
+                @mouseenter="cancelFeatureHelpClose"
+                @mouseleave="scheduleFeatureHelpClose"
+              >
                 <div class="feature-help-scroll">
                   <div class="feature-help-header">
                     <div>
                       <div>
-                        <div class="feature-help-title">Request Editor Guide</div>
+                        <div class="feature-help-title">
+                          Request Editor Guide
+                        </div>
                         <p>
                           This window helps you create or update a request from
-                          start to finish. Fill in the basic request details, add
-                          your libraries or samples, attach any needed files, then
-                          save everything together.
+                          start to finish. Fill in the basic request details,
+                          add your libraries or samples, attach any needed
+                          files, then save everything together.
                         </p>
                       </div>
                     </div>
@@ -211,11 +338,15 @@
                       <div class="feature-help-visual file-help-visual">
                         <div class="visual-header">Request Files</div>
                         <div class="visual-dropzone">
-                          <font-awesome-icon icon="fa-solid fa-cloud-arrow-up" />
+                          <font-awesome-icon
+                            icon="fa-solid fa-cloud-arrow-up"
+                          />
                           <span>Drag files here</span>
                         </div>
                         <div class="visual-file-row">
-                          <span class="visual-file-name">project_notes.pdf</span>
+                          <span class="visual-file-name"
+                            >project_notes.pdf</span
+                          >
                           <font-awesome-icon icon="fa-solid fa-download" />
                         </div>
                       </div>
@@ -229,7 +360,8 @@
                       <ul class="feature-help-points">
                         <li>
                           At the top, choose whether you are entering
-                          <strong>Libraries</strong> or <strong>Samples</strong>.
+                          <strong>Libraries</strong> or
+                          <strong>Samples</strong>.
                         </li>
                         <li>
                           Type how many rows you want to add, then click
@@ -241,9 +373,9 @@
                           <strong>Delete Selected</strong>.
                         </li>
                         <li>
-                          If you switch between Library and Sample while creating
-                          a new request, the current draft rows will be cleared
-                          after confirmation.
+                          If you switch between Library and Sample while
+                          creating a new request, the current draft rows will be
+                          cleared after confirmation.
                         </li>
                       </ul>
                       <div class="feature-help-visual toggle-help-visual">
@@ -270,13 +402,13 @@
                           Libraries or Samples.
                         </li>
                         <li>
-                          Some cells let you type, some give you a dropdown list,
-                          and some update automatically based on what you chose
-                          earlier.
+                          Some cells let you type, some give you a dropdown
+                          list, and some update automatically based on what you
+                          chose earlier.
                         </li>
                         <li>
-                          Required or incorrect values are highlighted so you can
-                          see what still needs attention.
+                          Required or incorrect values are highlighted so you
+                          can see what still needs attention.
                         </li>
                         <li>
                           Some fields are read-only until other required choices
@@ -320,8 +452,8 @@
                           the request.
                         </li>
                         <li>
-                          When you paste, the editor tries to keep the data in the
-                          correct place and follow the field rules.
+                          When you paste, the editor tries to keep the data in
+                          the correct place and follow the field rules.
                         </li>
                         <li>
                           Use the keyboard icon for a quick list of shortcuts.
@@ -350,19 +482,53 @@
                       </div>
                     </section>
 
-                    <section class="feature-help-section feature-help-section-wide">
+                    <section class="feature-help-section">
+                      <div class="feature-help-section-head">
+                        <font-awesome-icon
+                          icon="fa-solid fa-wand-magic-sparkles"
+                        />
+                        <span>Auto-Population and Smart Fill</span>
+                      </div>
+                      <ul class="feature-help-points">
+                        <li>
+                          Some fields depend on earlier choices. For example,
+                          selecting an <strong>Input Type</strong> can narrow
+                          the protocol options to the ones that fit that input.
+                        </li>
+                        <li>
+                          <strong>Index Type</strong> controls related index
+                          fields. When a valid <strong>Index I7</strong> is
+                          selected or pasted, the editor can automatically fill
+                          the paired <strong>Index I5</strong> and keep the
+                          index combination consistent.
+                        </li>
+                        <li>
+                          Paste actions are handled intelligently. The editor
+                          tries to place values in the correct columns, keep row
+                          alignment, and apply the same validation rules as
+                          manual entry.
+                        </li>
+                        <li>
+                          Some values are reformatted or completed
+                          automatically, while other cells stay read-only until
+                          the required upstream fields have been filled in.
+                        </li>
+                      </ul>
+                    </section>
+
+                    <section class="feature-help-section">
                       <div class="feature-help-section-head">
                         <font-awesome-icon icon="fa-solid fa-circle-check" />
                         <span>Save Flow and Validation</span>
                       </div>
                       <ul class="feature-help-points">
                         <li>
-                          You can save only after the required request details and
-                          required table values are filled in correctly.
+                          You can save only after the required request details
+                          and required table values are filled in correctly.
                         </li>
                         <li>
-                          In edit mode, the system checks all changed Library and
-                          Sample data before updating the request.
+                          In edit mode, the system checks all changed Library
+                          and Sample data before updating the request.
                         </li>
                         <li>
                           Your table changes, file changes, and request details
@@ -377,8 +543,8 @@
                         <font-awesome-icon icon="fa-solid fa-lightbulb" />
                         <span>
                           Tip: keep the left side open while you work on request
-                          details and files. Collapse it when you want more space
-                          for the table.
+                          details and files. Collapse it when you want more
+                          space for the table.
                         </span>
                       </div>
                     </section>
@@ -386,26 +552,51 @@
                 </div>
               </div>
             </div>
-            <button class="popup-close-button" type="button" data-testid="close-request-editor-button"
-              @click="requestCloseModal" :disabled="saving">
+            <button
+              class="popup-close-button"
+              type="button"
+              data-testid="close-request-editor-button"
+              @click="requestCloseModal"
+              :disabled="saving"
+            >
               &times;
             </button>
           </div>
         </div>
 
         <div class="request-editor-body-left">
-          <div class="request-panel-container" :class="{ collapsed: isFormPanelCollapsed }">
-            <section ref="requestFormPanel" class="request-form-panel" :class="{ collapsed: isFormPanelCollapsed }">
-              <div v-if="requestEditorMode === 'sample' && !isEditMode" class="request-form-actions">
+          <div
+            class="request-panel-container"
+            :class="{ collapsed: isFormPanelCollapsed }"
+          >
+            <section
+              ref="requestFormPanel"
+              class="request-form-panel"
+              :class="{ collapsed: isFormPanelCollapsed }"
+            >
+              <div
+                v-if="requestEditorMode === 'sample' && !isEditMode"
+                class="request-form-actions"
+              >
                 <div class="request-form-actions-title">Sample Forms</div>
                 <div class="download-buttons">
-                  <a class="download-button" :href="gmoFormUrl" target="_blank" rel="noopener"
-                    title="Download Formblatt S1 (GMO)">
+                  <a
+                    class="download-button"
+                    :href="gmoFormUrl"
+                    target="_blank"
+                    rel="noopener"
+                    title="Download Formblatt S1 (GMO)"
+                  >
                     <font-awesome-icon icon="fa-solid fa-download" />
                     <span>Formblatt S1</span>
                   </a>
-                  <a class="download-button" :href="relacsDownloadUrl" target="_blank" rel="noopener"
-                    title="Download RELACS Pellets Abs form">
+                  <a
+                    class="download-button"
+                    :href="relacsDownloadUrl"
+                    target="_blank"
+                    rel="noopener"
+                    title="Download RELACS Pellets Abs form"
+                  >
                     <font-awesome-icon icon="fa-solid fa-download" />
                     <span>RELACS Pellets Abs</span>
                   </a>
@@ -416,10 +607,14 @@
                 <span>
                   Cost Unit<span v-if="!isStaffUser" class="required">*</span>
                 </span>
-                <select v-model="newRequest.cost_unit" :disabled="!canEditRequest" :class="[
-                  costUnitError ? 'input-error' : '',
-                  !newRequest.cost_unit ? 'placeholder' : ''
-                ]">
+                <select
+                  v-model="newRequest.cost_unit"
+                  :disabled="!canEditRequest"
+                  :class="[
+                    costUnitError ? 'input-error' : '',
+                    !newRequest.cost_unit ? 'placeholder' : ''
+                  ]"
+                >
                   <option value="" disabled>Select Cost Unit</option>
                   <option v-for="cu in costUnits" :key="cu.id" :value="cu.id">
                     {{ cu.name }}
@@ -432,11 +627,19 @@
 
               <label class="field-block">
                 <span> Description<span class="required">*</span> </span>
-                <textarea v-model="newRequest.description" class="description-textarea"
-                  data-testid="request-description-input" rows="6" :placeholder="isEditMode
+                <textarea
+                  v-model="newRequest.description"
+                  class="description-textarea"
+                  data-testid="request-description-input"
+                  rows="6"
+                  :placeholder="
+                    isEditMode
                       ? 'Description not provided'
                       : 'Provide a brief description of your project, including any details important for handling and documentation. Indicate whether you have a backup of your study material (Yes/No).'
-                    " :class="{ 'input-error': descriptionError }" :readonly="!canEditRequest"></textarea>
+                  "
+                  :class="{ 'input-error': descriptionError }"
+                  :readonly="!canEditRequest"
+                ></textarea>
                 <div v-if="descriptionError" class="field-error">
                   {{ descriptionError }}
                 </div>
@@ -448,18 +651,34 @@
                     <span>Files</span>
                     <small>Upload request related documents.</small>
                   </div>
-                  <button v-if="canEditRequest" class="header-button ghost" type="button" :disabled="!canEditRequest"
-                    @click="triggerRequestFileUpload">
-                    <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+                  <button
+                    v-if="canEditRequest"
+                    class="header-button ghost"
+                    type="button"
+                    :disabled="!canEditRequest"
+                    @click="triggerRequestFileUpload"
+                  >
+                    <font-awesome-icon
+                      icon="fa-solid fa-square-plus"
+                      style="color: white"
+                    />
                     <span>Add Files</span>
                   </button>
-                  <input ref="requestFileInput" type="file" multiple @change="handleRequestFileUpload"
-                    style="display: none" />
+                  <input
+                    ref="requestFileInput"
+                    type="file"
+                    multiple
+                    @change="handleRequestFileUpload"
+                    style="display: none"
+                  />
                 </div>
                 <div class="files-table-wrapper">
-                  <table class="files-table" :class="{
-                    'files-table-empty': !uploadedRequestFiles.length
-                  }">
+                  <table
+                    class="files-table"
+                    :class="{
+                      'files-table-empty': !uploadedRequestFiles.length
+                    }"
+                  >
                     <thead>
                       <tr>
                         <th style="width: 46%">Name</th>
@@ -479,19 +698,34 @@
                             file.name
                           }}</span>
                         </td>
-                        <td class="file-size-cell" :title="formatFileSize(file.size)">
+                        <td
+                          class="file-size-cell"
+                          :title="formatFileSize(file.size)"
+                        >
                           {{ formatFileSize(file.size) }}
                         </td>
                         <td class="actions-cell">
-                          <button type="button" class="icon-action" :title="file.path
-                              ? `Download ${file.name}`
-                              : 'Download unavailable'
-                            " :disabled="!file.path" @click="downloadUploadedFile(file)">
+                          <button
+                            type="button"
+                            class="icon-action"
+                            :title="
+                              file.path
+                                ? `Download ${file.name}`
+                                : 'Download unavailable'
+                            "
+                            :disabled="!file.path"
+                            @click="downloadUploadedFile(file)"
+                          >
                             <font-awesome-icon icon="fa-solid fa-download" />
                           </button>
-                          <button v-if="canEditRequest" type="button" class="icon-action danger"
-                            :title="`Remove ${file.name}`" :disabled="!canEditRequest"
-                            @click="requestRemoveUploadedFile(file)">
+                          <button
+                            v-if="canEditRequest"
+                            type="button"
+                            class="icon-action danger"
+                            :title="`Remove ${file.name}`"
+                            :disabled="!canEditRequest"
+                            @click="requestRemoveUploadedFile(file)"
+                          >
                             <font-awesome-icon icon="fa-solid fa-xmark" />
                           </button>
                         </td>
@@ -505,12 +739,22 @@
         </div>
 
         <div class="request-editor-body-right">
-          <section class="records-panel" :class="{ expanded: isFormPanelCollapsed }">
+          <section
+            class="records-panel"
+            :class="{ expanded: isFormPanelCollapsed }"
+          >
             <div class="draft-table" ref="draftTableWrapper">
-              <TabulatorTable ref="requestEditorDraftTableRef" tableId="requestEditorDraftTable"
-                :rowData="requestEditorDraftRows" :columnDefs="requestEditorColumns"
-                :tableOptions="requestEditorDraftTableOptions" :groupBy="null" :groupSort="null" :groupStartOpen="false"
-                :enableDefaultFilters="false" />
+              <TabulatorTable
+                ref="requestEditorDraftTableRef"
+                tableId="requestEditorDraftTable"
+                :rowData="requestEditorDraftRows"
+                :columnDefs="requestEditorColumns"
+                :tableOptions="requestEditorDraftTableOptions"
+                :groupBy="null"
+                :groupSort="null"
+                :groupStartOpen="false"
+                :enableDefaultFilters="false"
+              />
             </div>
           </section>
         </div>
@@ -520,20 +764,36 @@
             <span>{{ footerLabel }}</span>
           </div>
           <div class="footer-actions">
-            <button class="popup-button secondary" type="button" @click="requestCloseModal" :disabled="saving">
+            <button
+              class="popup-button secondary"
+              type="button"
+              @click="requestCloseModal"
+              :disabled="saving"
+            >
               Cancel
             </button>
-            <button class="popup-button yes-button" type="button" :disabled="isRequestSaving ||
-              (isEditMode && isRequestLoading) ||
-              !canEditRequest
-              " @click="saveRequest">
+            <button
+              class="popup-button yes-button"
+              type="button"
+              :disabled="
+                isRequestSaving ||
+                (isEditMode && isRequestLoading) ||
+                !canEditRequest
+              "
+              @click="saveRequest"
+            >
               <span v-if="isRequestSaving">Saving...</span>
               <span v-else>{{ primaryActionLabel }}</span>
             </button>
           </div>
         </div>
       </div>
-      <div v-if="saving" class="saving-overlay" aria-live="polite" aria-busy="true">
+      <div
+        v-if="saving"
+        class="saving-overlay"
+        aria-live="polite"
+        aria-busy="true"
+      >
         <div class="saving-card">
           <div class="spinner"></div>
           <p>Saving request, please wait...</p>
@@ -541,11 +801,20 @@
       </div>
     </div>
 
-    <div v-if="showToggleConfirm" class="confirm-overlay" @keydown="handleConfirmKeydown" tabindex="0">
+    <div
+      v-if="showToggleConfirm"
+      class="confirm-overlay"
+      @keydown="handleConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">Switch record type?</span>
-          <button class="popup-close-button" type="button" @click="cancelToggleSwitch">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelToggleSwitch"
+          >
             &times;
           </button>
         </div>
@@ -554,20 +823,37 @@
           {{ switchClearLabel }} you have added. Do you want to continue?
         </div>
         <div class="confirm-footer">
-          <button class="popup-button" type="button" @click="cancelToggleSwitch">
+          <button
+            class="popup-button"
+            type="button"
+            @click="cancelToggleSwitch"
+          >
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmToggleSwitch">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmToggleSwitch"
+          >
             OK
           </button>
         </div>
       </div>
     </div>
-    <div v-if="showDeleteConfirm" class="confirm-overlay" @keydown="handleDeleteConfirmKeydown" tabindex="0">
+    <div
+      v-if="showDeleteConfirm"
+      class="confirm-overlay"
+      @keydown="handleDeleteConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">{{ deleteConfirmTitle }}</span>
-          <button class="popup-close-button" type="button" @click="cancelDeleteSelectedRows">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelDeleteSelectedRows"
+          >
             &times;
           </button>
         </div>
@@ -576,20 +862,37 @@
           {{ deleteConfirmNoun }}. Do you want to continue?
         </div>
         <div class="confirm-footer">
-          <button class="popup-button" type="button" @click="cancelDeleteSelectedRows">
+          <button
+            class="popup-button"
+            type="button"
+            @click="cancelDeleteSelectedRows"
+          >
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmDeleteSelectedRows">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmDeleteSelectedRows"
+          >
             OK
           </button>
         </div>
       </div>
     </div>
-    <div v-if="showCloseConfirm" class="confirm-overlay" @keydown="handleCloseConfirmKeydown" tabindex="0">
+    <div
+      v-if="showCloseConfirm"
+      class="confirm-overlay"
+      @keydown="handleCloseConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">Discard new request?</span>
-          <button class="popup-close-button" type="button" @click="cancelCloseModal">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelCloseModal"
+          >
             &times;
           </button>
         </div>
@@ -600,17 +903,30 @@
           <button class="popup-button" type="button" @click="cancelCloseModal">
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmCloseModal">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmCloseModal"
+          >
             OK
           </button>
         </div>
       </div>
     </div>
-    <div v-if="showFileDeleteConfirm" class="confirm-overlay" @keydown="handleFileDeleteConfirmKeydown" tabindex="0">
+    <div
+      v-if="showFileDeleteConfirm"
+      class="confirm-overlay"
+      @keydown="handleFileDeleteConfirmKeydown"
+      tabindex="0"
+    >
       <div class="confirm-modal">
         <div class="confirm-header">
           <span class="confirm-title">Delete file?</span>
-          <button class="popup-close-button" type="button" @click="cancelFileDelete">
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="cancelFileDelete"
+          >
             &times;
           </button>
         </div>
@@ -619,10 +935,18 @@
           this request?
         </div>
         <div class="confirm-footer">
-          <button class="popup-button secondary" type="button" @click="cancelFileDelete">
+          <button
+            class="popup-button secondary"
+            type="button"
+            @click="cancelFileDelete"
+          >
             Cancel
           </button>
-          <button class="popup-button yes-button" type="button" @click="confirmFileDelete">
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="confirmFileDelete"
+          >
             Remove
           </button>
         </div>
@@ -878,7 +1202,7 @@ export default {
     document.addEventListener("click", this.handleShortcutHelpOutsideClick);
     document.addEventListener("click", this.handleFeatureHelpOutsideClick);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.unbindRangeSelectionListeners();
     document.removeEventListener("keydown", this.handleKeyDown);
     document.removeEventListener("click", this.handleShortcutHelpOutsideClick);
@@ -999,15 +1323,15 @@ export default {
       const columns =
         this.requestEditorMode === "library"
           ? getRequestEditorLibraryColumns(
-            getInstance,
-            libraryEditors,
-            onSelectionChange
-          )
+              getInstance,
+              libraryEditors,
+              onSelectionChange
+            )
           : getRequestEditorSampleColumns(
-            getInstance,
-            sampleEditors,
-            onSelectionChange
-          );
+              getInstance,
+              sampleEditors,
+              onSelectionChange
+            );
 
       if (!this.canEditRequest) {
         return applyReadOnly(columns);
@@ -1693,8 +2017,8 @@ export default {
             : Promise.resolve({ data: meta }),
           fetchFiles
             ? axiosRef.get(
-              `${urlStringStart}/api/requests/${this.requestId}/get_files/`
-            )
+                `${urlStringStart}/api/requests/${this.requestId}/get_files/`
+              )
             : Promise.resolve({ data: meta?.files || [] }),
           axiosRef.get(`${urlStringStart}/api/libraries/`, {
             params: { request_id: this.requestId }
@@ -2851,8 +3175,8 @@ export default {
       const editorParams =
         typeof columnDef.editorParams === "function"
           ? columnDef.editorParams({
-            getRow: () => ({ getData: () => rowData })
-          })
+              getRow: () => ({ getData: () => rowData })
+            })
           : columnDef.editorParams || {};
       let options = [];
       if (Array.isArray(editorParams?.values)) {
@@ -4815,7 +5139,7 @@ export default {
   gap: 3px;
 }
 
-.files-table td.actions-cell button+button {
+.files-table td.actions-cell button + button {
   margin-left: 4px;
 }
 
@@ -5024,7 +5348,7 @@ export default {
   z-index: 0;
 }
 
-.record-type-switch input:checked+.slider::before {
+.record-type-switch input:checked + .slider::before {
   transform: translateX(100%);
 }
 
@@ -5150,6 +5474,7 @@ export default {
 <!--
 refactor/simplify all the files
 unit test all the pages
+DEL/Backspace test everywhere
 
 lag usability check for opening request editor with large requests, and expanding request by clicking on the header
 table edit performance for large requests

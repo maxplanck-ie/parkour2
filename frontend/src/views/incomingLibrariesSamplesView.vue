@@ -103,7 +103,8 @@
                 <input type="checkbox" v-model="filters.onlyGmo" />
               </div>
               <div>
-                <span style="font-weight: bold">Filter Requests</span> with Propagable &amp; GMO ➜ Yes
+                <span style="font-weight: bold">Filter Requests</span> with
+                Propagable &amp; GMO ➜ Yes
               </div>
             </label>
           </div>
@@ -259,6 +260,7 @@
         :tableOptions="{
           ...tableOptions,
           onBatchCellValueChanged,
+          handleRangeCleared,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
@@ -336,8 +338,8 @@
           "
         >
           <p>
-            Drop <span style="font-weight: bold">XLSX file</span> here to upload
-            as <span style="font-weight: bold">template</span>
+            Drop <span style="font-weight: bold">XLSX or XLSM file</span> here
+            to upload as <span style="font-weight: bold">template</span>
           </p>
         </div>
       </div>
@@ -359,32 +361,67 @@
                 <div class="tooltip-title">Export Guide</div>
                 <p class="tooltip-intro">
                   Use export when you want to download the table data to Excel.
-                  You can export only the rows you selected, or the full filtered
-                  result set for the current page.
+                  You can export only the rows you selected, or the full
+                  filtered result set for the current page.
                 </p>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">Basic export choices</div>
                   <ul class="tooltip-list">
-                    <li><strong>Export selected</strong> downloads only the rows you selected in the table.</li>
-                    <li><strong>Export all</strong> downloads the full result set for the current export view.</li>
-                    <li>Use search and filters first if you want to narrow the exported dataset.</li>
+                    <li>
+                      <strong>Export selected</strong> downloads only the rows
+                      you selected in the table.
+                    </li>
+                    <li>
+                      <strong>Export all</strong> downloads the full result set
+                      for the current export view.
+                    </li>
+                    <li>
+                      Use search and filters first if you want to narrow the
+                      exported dataset.
+                    </li>
                   </ul>
                 </section>
                 <section class="tooltip-section">
-                  <div class="tooltip-section-title">How template files work</div>
+                  <div class="tooltip-section-title">
+                    How template files work
+                  </div>
                   <ol class="tooltip-list tooltip-steps">
-                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the base Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
-                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or reporting.</li>
-                    <li>Upload the edited file here as a reusable template. It will appear in the list of available templates.</li>
-                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong> sheet with fresh data and keeps your extra sheets unchanged.</li>
+                    <li>
+                      Start by exporting with
+                      <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
+                    </li>
+                    <li>
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or reporting.
+                    </li>
+                    <li>
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
+                    </li>
+                    <li>
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
+                    </li>
                   </ol>
                 </section>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">When to use this</div>
                   <ul class="tooltip-list">
-                    <li>Download a snapshot of the current data for review or sharing.</li>
-                    <li>Reuse a prepared Excel layout with additional custom sheets.</li>
-                    <li>Keep Parkour data up to date inside your existing reporting workbook.</li>
+                    <li>
+                      Download a snapshot of the current data for review or
+                      sharing.
+                    </li>
+                    <li>
+                      Reuse a prepared Excel layout with additional custom
+                      sheets.
+                    </li>
+                    <li>
+                      Keep Parkour data up to date inside your existing
+                      reporting workbook.
+                    </li>
                   </ul>
                 </section>
               </div>
@@ -462,19 +499,19 @@
                 :key="index"
                 class="file-item"
               >
-              <div class="file-info">
-                <img
-                  :src="iconExportTemplateFileLines"
-                  :alt="file.name"
-                  width="24"
-                  height="24"
-                  style="display: block"
-                />
-                <span>{{ file.name }}</span>
-              </div>
+                <div class="file-info">
+                  <img
+                    :src="iconExportTemplateFileLines"
+                    :alt="file.name"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
+                  <span>{{ file.name }}</span>
+                </div>
                 <div class="file-actions">
                   <button
-                    @click="downloadExportTemplate(file)"
+                    @click.stop="downloadExportTemplate(file)"
                     class="download-button"
                     title="Download Original File"
                   >
@@ -487,7 +524,7 @@
                     />
                   </button>
                   <button
-                    @click="removeExportTemplate(index)"
+                    @click.stop="removeExportTemplate(index)"
                     class="remove-button"
                     title="Remove File"
                   >
@@ -532,7 +569,7 @@
             <input
               id="file-upload"
               type="file"
-              accept=".xlsx"
+              accept=".xlsx,.xlsm"
               @change="uploadExportTemplate"
               style="display: none"
             />
@@ -563,13 +600,17 @@ import {
   handleError,
   createAxiosObject,
   urlStringStartsWith,
-  createExcelExportBlob
+  createExcelExportBlob,
+  isSupportedExcelTemplateFile,
+  buildExcelExportFilename,
+  buildExcelDownloadFilename
 } from "../utilities/utilityFunctions";
 import {
   incomingLibrariesSamplesGroupHeader,
   incomingLibrariesSamplesColumnDefs,
   incomingLibrariesSamplesExportColumns
 } from "../constants/incomingLibrariesSamplesConsts";
+import { buildRequestGroupSummary } from "../constants/requestGroupingConsts";
 import iconIncomingHeader from "../assets/icons/header_incoming.svg";
 import iconConfirmationAlert from "../assets/icons/alert_confirmation.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
@@ -627,53 +668,14 @@ export default {
           { column: "name", dir: "desc" }
         ],
         groupHeader: (value, count, data) => {
-          const uniqueTypes = [
-            ...new Set(
-              data
-                .map((item) => String(item.type || "").trim().toUpperCase())
-                .filter((type) => type === "L" || type === "S")
-            )
-          ];
-          const countLabel =
-            uniqueTypes.length === 1
-              ? uniqueTypes[0] === "L"
-                ? "Libraries"
-                : "Samples"
-              : "Libraries/Samples";
-          const samplesSubmitted = data.some(
-            (item) => item.samples_submitted === true
-          );
-          const gmo = data.some((item) => item.gmo === true);
-          let totalDepth = data.reduce(
-            (sum, row) => sum + (row.sequencing_depth || 0),
-            0
-          );
-          totalDepth = Number(totalDepth.toFixed(1));
-          const readLengthLabels = [
-            ...new Set(
-              data
-                .map((row) =>
-                  row.read_length_name !== undefined
-                    ? row.read_length_name
-                    : row.read_length
-                )
-                .filter((value) => {
-                  if (value === null || value === undefined) {
-                    return false;
-                  }
-                  const trimmedValue = String(value).trim();
-                  return trimmedValue.length > 0;
-                })
-                .map((value) => String(value).trim())
-            )
-          ];
-          const readLengthDisplay = readLengthLabels.length
-            ? readLengthLabels.join(", ")
-            : "No Read Length";
-          const biosafetyLevel =
-            [...new Set(data.map((item) => item.biosafety_level))]
-              .map((level) => level && level.toUpperCase())
-              .join(" and ") || "No BSL";
+          const {
+            countLabel,
+            samplesSubmitted,
+            gmo,
+            totalDepth,
+            readLengthDisplay,
+            biosafetyLevel
+          } = buildRequestGroupSummary(data);
           return incomingLibrariesSamplesGroupHeader(
             value,
             count,
@@ -714,11 +716,13 @@ export default {
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
+      this.pendingEditTimer = null;
+      this.flushPendingEdits();
     }
   },
   watch: {
@@ -783,7 +787,8 @@ export default {
           nucleic_acid_type_name: element.nucleic_acid_type_name || "",
           library_protocol_name: element.library_protocol_name || "",
           biosafety_level:
-            element.record_type === "Library" ? "BSL1"
+            element.record_type === "Library"
+              ? "BSL1"
               : element.biosafety_level || "",
           percent_total:
             element.percent_total === 0 ? 0 : element.percent_total || "",
@@ -1226,6 +1231,69 @@ export default {
         });
       });
     },
+    handleRangeCleared(payload = []) {
+      const numericFields = new Set([
+        "measured_value_facility",
+        "sample_volume_facility",
+        "size_distribution_facility",
+        "percent_total",
+        "rna_quality_facility"
+      ]);
+      const clearedChanges = payload
+        .map((entry) => {
+          const rowData = entry?.rowData || {};
+          const fields = entry?.fields || [];
+          if (!rowData.pk || !rowData.record_type || fields.length === 0) {
+            return null;
+          }
+          const change = {
+            pk: rowData.pk,
+            record_type: rowData.record_type
+          };
+          fields.forEach((field) => {
+            if (field === "percent_total") {
+              change[field] = rowData[field] === "" ? 100 : rowData[field];
+            } else if (numericFields.has(field)) {
+              change[field] =
+                rowData[field] === "" || rowData[field] === undefined
+                  ? null
+                  : rowData[field];
+            } else if (field === "gmo_facility") {
+              if (
+                rowData[field] === "" ||
+                rowData[field] === undefined ||
+                rowData[field] === null
+              ) {
+                change[field] = null;
+              } else if (
+                rowData[field] === "Risk Assessment Done" ||
+                rowData[field] === true
+              ) {
+                change[field] = true;
+              } else if (
+                rowData[field] === "Not Needed" ||
+                rowData[field] === false
+              ) {
+                change[field] = false;
+              } else {
+                change[field] = rowData[field];
+              }
+            } else {
+              change[field] = rowData[field];
+            }
+          });
+          return change;
+        })
+        .filter(Boolean);
+
+      if (!clearedChanges.length) return;
+      this.queueBatchChanges(clearedChanges);
+      if (this.pendingEditTimer) {
+        clearTimeout(this.pendingEditTimer);
+        this.pendingEditTimer = null;
+      }
+      this.flushPendingEdits();
+    },
     scheduleBatchSave() {
       if (this.pendingEditTimer) {
         clearTimeout(this.pendingEditTimer);
@@ -1300,11 +1368,7 @@ export default {
     },
     async uploadExportTemplate(event) {
       const file = event.target.files[0];
-      if (
-        file &&
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const formData = new FormData();
         formData.append("file", file);
         try {
@@ -1325,7 +1389,7 @@ export default {
           this.selectedFile = "without-file";
         }
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Please upload a valid XLSX or XLSM file.", "error");
       }
     },
     async downloadExportTemplate(file) {
@@ -1336,17 +1400,14 @@ export default {
             responseType: "blob"
           }
         );
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute(
-          "download",
-          file.name || "IncomingLibrariesAndSamples.xlsx"
+        saveAs(
+          response.data,
+          buildExcelDownloadFilename(
+            "IncomingLibrariesAndSamples",
+            file.name,
+            response.data?.type
+          )
         );
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
       } catch (error) {
         showNotification("Error downloading file: " + error, "error");
       }
@@ -1427,9 +1488,17 @@ export default {
           rows: sortedExportRows,
           exportColumns,
           axiosInstance: axiosRef,
-          templateDownloadUrl
+          templateDownloadUrl,
+          templateFileName:
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
         });
-        saveAs(blob, filename);
+        saveAs(
+          blob,
+          buildExcelExportFilename(
+            filename,
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
+          )
+        );
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,
@@ -1461,17 +1530,13 @@ export default {
       const files = e.dataTransfer.files;
       if (files.length > 1) {
         showNotification(
-          "Please upload only one XLSX file at a time.",
+          "Please upload only one XLSX or XLSM file at a time.",
           "error"
         );
       } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
-      if (
-        file &&
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const event = {
           target: {
             files: [file]
@@ -1479,7 +1544,7 @@ export default {
         };
         this.uploadExportTemplate(event);
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Please upload a valid XLSX or XLSM file.", "error");
       }
     },
     createPopupWindow(

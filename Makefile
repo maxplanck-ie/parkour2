@@ -249,7 +249,12 @@ reload-code:  ## Gracefully ship small code updates into production Backend
 	@docker compose exec -it parkour2-django kill -1 1
 
 reload-ux:  ## Gracefully ship small code updates into production Frontend
-	@docker compose restart parkour2-vite
+	@if docker compose ps --status running --services | grep -q '^parkour2-vite$$'; then \
+		docker compose exec parkour2-vite sh -lc "npm run build"; \
+	else \
+		echo "Info: parkour2-vite was not running, restarting container instead."; \
+		docker compose restart parkour2-vite; \
+	fi
 
 ## This should be a cronjob on your host VM/ production deployment machine.
 clearsessions:
@@ -333,7 +338,6 @@ open-pr:
 # 	&& echo "-- Pull Request MERGED" \
 # 	&& git checkout $$CURRENT_BRANCH
 
-## DO NOT USE WITH PRODUCTION DATA, BarcodeCounter bug is still in place!
 # check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
 save-db-json:
 	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \

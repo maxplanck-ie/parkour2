@@ -1,7 +1,10 @@
 <template>
   <div class="parent-container">
     <!-- Loading overlay -->
-    <div v-if="(loading || fakeLoading) && !exportLoading && !requestEditorSyncing" class="loading-overlay">
+    <div
+      v-if="(loading || fakeLoading) && !exportLoading && !requestEditorSyncing"
+      class="loading-overlay"
+    >
       <div v-if="!fakeLoading" class="spinner"></div>
       <p v-if="!fakeLoading">
         Loading <span style="font-weight: bold">Libraries & Samples</span>...
@@ -17,45 +20,85 @@
     <!-- Header -->
     <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
-        <img :src="iconLibrariesHeader" alt="Libraries & Samples" width="42" height="42" style="display: block" />
+        <img
+          :src="iconLibrariesHeader"
+          alt="Libraries & Samples"
+          width="42"
+          height="42"
+          style="display: block"
+        />
       </div>
-      <div class="header-title" style="display: inline" data-testid="libraries-header-title">
+      <div
+        class="header-title"
+        style="display: inline"
+        data-testid="libraries-header-title"
+      >
         Libraries & Samples
       </div>
 
       <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
-          <input ref="searchInput" v-model="searchQuery" @keyup.enter="handleSearchAction" type="text"
-            placeholder="Search" />
-          <font-awesome-icon icon="fa-solid fa-magnifying-glass" style="color: darkgrey; cursor: pointer"
-            @click="handleSearchAction" />
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            @keyup.enter="handleSearchAction"
+            type="text"
+            placeholder="Search"
+          />
+          <font-awesome-icon
+            icon="fa-solid fa-magnifying-glass"
+            style="color: darkgrey; cursor: pointer"
+            @click="handleSearchAction"
+          />
         </div>
         <div class="date-filters">
           <div class="date-filter">
             <label for="startDate">From</label>
-            <input type="date" id="startDate" :class="{ 'invalid-date': !startDateValid }" v-model="startDateString"
-              required />
+            <input
+              type="date"
+              id="startDate"
+              :class="{ 'invalid-date': !startDateValid }"
+              v-model="startDateString"
+              required
+            />
           </div>
           <div class="date-filter">
             <label for="endDate">To</label>
-            <input type="date" id="endDate" :class="{ 'invalid-date': !endDateValid }" v-model="endDateString"
-              required />
+            <input
+              type="date"
+              id="endDate"
+              :class="{ 'invalid-date': !endDateValid }"
+              v-model="endDateString"
+              required
+            />
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleAdvancedFiltersButton" @click="toggleAdvancedFilters">
+          <button
+            class="header-button"
+            id="toggleAdvancedFiltersButton"
+            @click="toggleAdvancedFilters"
+          >
             <font-awesome-icon icon="fa-solid fa-filter" style="color: white" />
             <span> Advanced Filters </span>
           </button>
-          <div id="advancedFiltersPopup" v-if="showAdvancedFilters" class="button-popup-container"
-            style="height: 473px; width: 250px; left: -50px">
+          <div
+            id="advancedFiltersPopup"
+            v-if="showAdvancedFilters"
+            class="button-popup-container"
+            style="height: 473px; width: 250px; left: -50px"
+          >
             <!-- Status Filter -->
             <div class="filter-item">
               <label>Status</label>
               <select v-model="filters.status" @change="getLibrariesSamples(1)">
                 <option :value="null">All Statuses</option>
-                <option v-for="(text, num) in statusMap" :key="num" :value="num">
+                <option
+                  v-for="(text, num) in statusMap"
+                  :key="num"
+                  :value="num"
+                >
                   {{ text }}
                 </option>
               </select>
@@ -64,9 +107,16 @@
             <!-- Protocol Filter -->
             <div class="filter-item">
               <label>Protocol</label>
-              <select v-model="filters.protocol" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.protocol"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Protocols</option>
-                <option v-for="protocol in protocolsList" :key="protocol.id" :value="protocol.id">
+                <option
+                  v-for="protocol in protocolsList"
+                  :key="protocol.id"
+                  :value="protocol.id"
+                >
                   {{ protocol.name }}
                 </option>
               </select>
@@ -75,9 +125,16 @@
             <!-- Analysis Type Filter -->
             <div class="filter-item">
               <label>Analysis Type</label>
-              <select v-model="filters.analysisType" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.analysisType"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Analysis Types</option>
-                <option v-for="type in analysisTypesList" :key="type.id" :value="type.id">
+                <option
+                  v-for="type in analysisTypesList"
+                  :key="type.id"
+                  :value="type.id"
+                >
                   {{ type.name }}
                 </option>
               </select>
@@ -86,9 +143,16 @@
             <!-- Sequencer Filter -->
             <div class="filter-item">
               <label>Sequencer</label>
-              <select v-model="filters.sequencer" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.sequencer"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Sequencers</option>
-                <option v-for="sequencer in sequencersList" :key="sequencer.id" :value="sequencer.id">
+                <option
+                  v-for="sequencer in sequencersList"
+                  :key="sequencer.id"
+                  :value="sequencer.id"
+                >
                   {{ sequencer.name }}
                 </option>
               </select>
@@ -97,9 +161,16 @@
             <!-- Read Length Filter -->
             <div class="filter-item">
               <label>Read Length</label>
-              <select v-model="filters.readLength" @change="getLibrariesSamples(1)">
+              <select
+                v-model="filters.readLength"
+                @change="getLibrariesSamples(1)"
+              >
                 <option :value="null">All Read Lengths</option>
-                <option v-for="length in readLengthsList" :key="length.id" :value="length.id">
+                <option
+                  v-for="length in readLengthsList"
+                  :key="length.id"
+                  :value="length.id"
+                >
                   {{ length.name }}
                 </option>
               </select>
@@ -112,36 +183,65 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
-          <button class="header-button" id="toggleSelectColumnsButton" @click="toggleSelectColumns">
-            <font-awesome-icon icon="fa-solid fa-columns" style="color: white" />
+          <button
+            class="header-button"
+            id="toggleSelectColumnsButton"
+            @click="toggleSelectColumns"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-columns"
+              style="color: white"
+            />
             <span> Select Columns </span>
           </button>
-          <div id="selectColumnsPopup" v-if="showSelectColumns" class="button-popup-container" style="
+          <div
+            id="selectColumnsPopup"
+            v-if="showSelectColumns"
+            class="button-popup-container"
+            style="
               left: -50px;
               width: 250px;
               max-height: 473px;
               display: flex;
               flex-direction: column;
               padding: 10px 10px 5px 10px;
-            ">
-            <ul style="
+            "
+          >
+            <ul
+              style="
                 padding: 5px 7px 7px;
                 margin: 0;
                 flex-grow: 1;
                 overflow-y: auto;
-              ">
-              <li v-for="(column, index) in columnsList" :key="index" style="list-style: none">
-                <template v-if="
-                  column.field !== 'selected' ||
-                  (column.field === 'selected' && column.visible == false)
-                ">
-                  <label :style="{
-                    backgroundColor: column.columns ? '#33333310' : 'white',
-                    cursor: column.columns ? 'default' : 'pointer'
-                  }">
-                    <input v-if="!column.columns" type="checkbox" v-model="column.visible"
-                      @change="toggleColumnVisibility(column)" />
-                    <font-awesome-icon v-if="column.columns" icon="fa-solid fa-caret-down" style="
+              "
+            >
+              <li
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
+              >
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label
+                    :style="{
+                      backgroundColor: column.columns ? '#33333310' : 'white',
+                      cursor: column.columns ? 'default' : 'pointer'
+                    }"
+                  >
+                    <input
+                      v-if="!column.columns"
+                      type="checkbox"
+                      v-model="column.visible"
+                      @change="toggleColumnVisibility(column)"
+                    />
+                    <font-awesome-icon
+                      v-if="column.columns"
+                      icon="fa-solid fa-caret-down"
+                      style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -152,40 +252,69 @@
                         text-align: center;
                         background-color: orange;
                         color: white;
-                      " />
+                      "
+                    />
                     <span>{{ column.title }}</span>
                   </label>
                 </template>
               </li>
             </ul>
-            <div style="
+            <div
+              style="
                 padding-top: 8px;
                 border-top: 1px solid #eee;
                 display: flex;
                 flex-direction: column;
-              ">
+              "
+            >
               <button @click="resetColumnVisibility" class="reset-button">
                 Reset Visibility Settings
               </button>
-              <button style="margin-bottom: 5px" @click="resetColumnWidths" class="reset-button">
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
                 Reset Width Settings
               </button>
             </div>
           </div>
         </div>
-        <button class="header-button" id="openExportPopupButton" @click="handleExportClick">
-          <font-awesome-icon icon="fa-solid fa-file-excel" style="color: white" />
+        <button
+          class="header-button"
+          id="openExportPopupButton"
+          @click="handleExportClick"
+        >
+          <font-awesome-icon
+            icon="fa-solid fa-file-excel"
+            style="color: white"
+          />
           <span> Export to Excel </span>
         </button>
 
-        <button class="header-button" type="button" data-testid="add-request-button" @click="openRequestEditorModal">
-          <font-awesome-icon icon="fa-solid fa-square-plus" style="color: white" />
+        <button
+          class="header-button"
+          type="button"
+          data-testid="add-request-button"
+          @click="openRequestEditorModal"
+        >
+          <font-awesome-icon
+            icon="fa-solid fa-square-plus"
+            style="color: white"
+          />
           <span> Add Request </span>
         </button>
         <div class="button-popup-wrapper help-popup-wrapper">
-          <button class="header-button help-header-button" id="togglePageHelpButton" type="button"
-            @click="togglePageHelp">
-            <font-awesome-icon icon="fa-solid fa-circle-info" style="color: white" />
+          <button
+            class="header-button help-header-button"
+            id="togglePageHelpButton"
+            type="button"
+            @click="togglePageHelp"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-circle-info"
+              style="color: white"
+            />
             <span> Help </span>
           </button>
           <div v-if="showPageHelp" id="pageHelpPopup" class="page-help-popup">
@@ -198,12 +327,12 @@
                   <p class="page-help-intro">
                     This page is your main overview page for tracking requests
                     and understanding what has already been submitted to the
-                    sequencing facility. A request is the main container in Parkour.
-                    Inside one request, you can have one or more samples, one or more
-                    libraries, attached files, and a running history of
-                    progress. Use this page to find requests, open them, check
-                    where their items are in the process, and start a new
-                    request when you want to submit new work.
+                    sequencing facility. A request is the main container in
+                    Parkour. Inside one request, you can have one or more
+                    samples, one or more libraries, attached files, and a
+                    running history of progress. Use this page to find requests,
+                    open them, check where their items are in the process, and
+                    start a new request when you want to submit new work.
                   </p>
                 </div>
               </div>
@@ -237,7 +366,9 @@
                   </ul>
                   <div class="page-help-visual request-row-visual">
                     <div class="visual-request-line">
-                      <span class="visual-request-name">3805_Example_Request</span>
+                      <span class="visual-request-name"
+                        >3805_Example_Request</span
+                      >
                       <span class="visual-request-meta">
                         (#: 4 Samples, Total Depth: 240)
                       </span>
@@ -258,28 +389,32 @@
                   <ul class="page-help-list">
                     <li>
                       Use the search box when you know part of a request name,
-                      barcode, sample name, or library name. Parkour searches the
-                      visible table data and helps you quickly narrow the page.
+                      barcode, sample name, or library name. Parkour searches
+                      the visible table data and helps you quickly narrow the
+                      page.
                     </li>
                     <li>
                       Use the date range if the page contains too many requests.
-                      This is often the fastest way to focus on recent work or on
-                      a specific time period.
+                      This is often the fastest way to focus on recent work or
+                      on a specific time period.
                     </li>
                     <li>
-                      Use <strong>Advanced Filters</strong> if you want to narrow
-                      the page by status, protocol, analysis type, sequencer, or
-                      read length. These filters are useful when you know what
-                      stage or processing setup you are looking for.
+                      Use <strong>Advanced Filters</strong> if you want to
+                      narrow the page by status, protocol, analysis type,
+                      sequencer, or read length. These filters are useful when
+                      you know what stage or processing setup you are looking
+                      for.
                     </li>
                     <li>
                       If the table looks too crowded, use
-                      <strong>Select Columns</strong> to hide information that is
-                      not important for your current task.
+                      <strong>Select Columns</strong> to hide information that
+                      is not important for your current task.
                     </li>
                   </ul>
                   <div class="page-help-visual search-visual">
-                    <div class="visual-search-bar">Search by request, name, barcode...</div>
+                    <div class="visual-search-bar">
+                      Search by request, name, barcode...
+                    </div>
                     <div class="visual-filter-row">
                       <span class="visual-filter-chip">Date</span>
                       <span class="visual-filter-chip">Status</span>
@@ -299,14 +434,14 @@
                       want to create a brand-new request.
                     </li>
                     <li>
-                      In the request editor, begin with the request details on the
-                      left side. This usually includes the cost unit, a
+                      In the request editor, begin with the request details on
+                      the left side. This usually includes the cost unit, a
                       description, and any supporting files.
                     </li>
                     <li>
-                      Then decide whether you want to enter libraries or samples,
-                      create the needed number of rows, and complete the table on
-                      the right side.
+                      Then decide whether you want to enter libraries or
+                      samples, create the needed number of rows, and complete
+                      the table on the right side.
                     </li>
                     <li>
                       Use <strong>Samples</strong> when you are submitting input
@@ -315,12 +450,13 @@
                       library form.
                     </li>
                     <li>
-                      If you have supporting documents, upload them in the request
-                      editor so the request stays complete in one place.
+                      If you have supporting documents, upload them in the
+                      request editor so the request stays complete in one place.
                     </li>
                     <li>
-                      Save the request after all required fields are complete and
-                      the highlighted validation issues, if any, have been fixed.
+                      Save the request after all required fields are complete
+                      and the highlighted validation issues, if any, have been
+                      fixed.
                     </li>
                     <li>
                       After saving, the new request will appear on this page and
@@ -341,15 +477,22 @@
                     <span>Request Status and Progress</span>
                   </div>
                   <p class="page-help-copy">
-                    Parkour tracks progress separately for each library or sample.
-                    This means one request can contain entries at different
-                    stages. The status column is therefore one of the most
-                    important columns on this page: it tells you where each
+                    Parkour tracks progress separately for each library or
+                    sample. This means one request can contain entries at
+                    different stages. The status column is therefore one of the
+                    most important columns on this page: it tells you where each
                     individual item currently is in the sequencing process.
                   </p>
                   <div class="status-help-list">
-                    <div v-for="(label, key) in statusMap" :key="`status-help-${key}`" class="status-help-row">
-                      <span class="status-help-indicator" :title="`${key}: ${label}`">
+                    <div
+                      v-for="(label, key) in statusMap"
+                      :key="`status-help-${key}`"
+                      class="status-help-row"
+                    >
+                      <span
+                        class="status-help-indicator"
+                        :title="`${key}: ${label}`"
+                      >
                         <span :class="['status', getStatusClass(key)]"></span>
                       </span>
                       <span class="status-help-text">{{ label }}</span>
@@ -373,20 +516,21 @@
                   </div>
                   <ul class="page-help-list">
                     <li>
-                      <strong>Attachments:</strong> Open the request files window,
-                      where you can check attached files, add new ones, download
-                      existing ones, or remove files that are no longer needed.
+                      <strong>Attachments:</strong> Open the request files
+                      window, where you can check attached files, add new ones,
+                      download existing ones, or remove files that are no longer
+                      needed.
                     </li>
                     <li>
                       <strong>View / Edit Request:</strong> Open the request
-                      editor. There you can review or change the request details,
-                      the attached files, and the libraries or samples inside the
-                      request.
+                      editor. There you can review or change the request
+                      details, the attached files, and the libraries or samples
+                      inside the request.
                     </li>
                     <li>
-                      <strong>Delete Request:</strong> Remove the whole request if
-                      your permissions allow it. Because this removes the whole
-                      request, use it carefully.
+                      <strong>Delete Request:</strong> Remove the whole request
+                      if your permissions allow it. Because this removes the
+                      whole request, use it carefully.
                     </li>
                     <li v-if="isStaffUser">
                       <strong>View File Paths / Compose Email:</strong> Extra
@@ -403,9 +547,10 @@
                       systems or reused in a standardized ISA-aligned format.
                     </li>
                     <li>
-                      <strong>Select All / Deselect All:</strong> Select or clear
-                      all rows inside the currently opened request. This is useful
-                      before export or other actions that work on selected rows.
+                      <strong>Select All / Deselect All:</strong> Select or
+                      clear all rows inside the currently opened request. This
+                      is useful before export or other actions that work on
+                      selected rows.
                     </li>
                   </ul>
                 </section>
@@ -418,9 +563,9 @@
                   <ul class="page-help-list">
                     <li>
                       Use <strong>Export to Excel</strong> when you want to
-                      download the current data from the page into an Excel file.
-                      You can export either selected rows or all rows that match
-                      your current filters.
+                      download the current data from the page into an Excel
+                      file. You can export either selected rows or all rows that
+                      match your current filters.
                     </li>
                     <li>
                       If nothing is selected, you can still export the full
@@ -431,9 +576,9 @@
                       include additional custom sheets.
                     </li>
                     <li>
-                      Export is useful when you want to review data offline, make
-                      a report, or share a snapshot of the current request data
-                      with other people.
+                      Export is useful when you want to review data offline,
+                      make a report, or share a snapshot of the current request
+                      data with other people.
                     </li>
                   </ul>
                 </section>
@@ -445,9 +590,9 @@
                   </div>
                   <ol class="page-help-steps">
                     <li>
-                      Start by choosing a date range that roughly matches the time
-                      period you care about. This makes the page much easier to
-                      read if many requests exist.
+                      Start by choosing a date range that roughly matches the
+                      time period you care about. This makes the page much
+                      easier to read if many requests exist.
                     </li>
                     <li>
                       Use the search box to look for a request name, barcode, or
@@ -455,18 +600,20 @@
                       find.
                     </li>
                     <li>
-                      Open the request row to inspect what is inside the request.
+                      Open the request row to inspect what is inside the
+                      request.
                     </li>
                     <li>
-                      Check the Status column to understand how far each item has
-                      progressed.
+                      Check the Status column to understand how far each item
+                      has progressed.
                     </li>
                     <li>
-                      Use the row icons to open attachments or edit the request if
-                      you need more details or need to make changes.
+                      Use the row icons to open attachments or edit the request
+                      if you need more details or need to make changes.
                     </li>
                     <li>
-                      If you are starting new work, use <strong>Add Request</strong>
+                      If you are starting new work, use
+                      <strong>Add Request</strong>
                       and complete the request editor step by step.
                     </li>
                   </ol>
@@ -475,8 +622,8 @@
                     <span>
                       If you are unsure where to begin in Parkour, come back to
                       this page first. It is the best overview page for checking
-                      what has already been submitted, what still needs attention,
-                      and what stage each item has reached.
+                      what has already been submitted, what still needs
+                      attention, and what stage each item has reached.
                     </span>
                   </div>
                 </section>
@@ -489,15 +636,22 @@
 
     <!-- Main content section with table -->
     <div class="table-container">
-      <LiteTabulatorTable v-if="!loading" ref="tabulatorTableRef" :rowData="librariesSamplesList"
-        :columnDefs="columnsList" groupBy="request_name" :groupSort="{ field: 'request_name', order: 'desc' }"
-        :groupStartOpen="false" :tableOptions="{
+      <LiteTabulatorTable
+        v-if="!loading"
+        ref="tabulatorTableRef"
+        :rowData="librariesSamplesList"
+        :columnDefs="columnsList"
+        groupBy="request_name"
+        :groupSort="{ field: 'request_name', order: 'desc' }"
+        :groupStartOpen="false"
+        :tableOptions="{
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
           handleColumnResized,
           handleColumnVisibilityChanged
-        }" />
+        }"
+      />
     </div>
 
     <!-- Pagination controls -->
@@ -510,28 +664,47 @@
       </div>
 
       <div class="pagination-buttons">
-        <button class="pagination-button" @click="changePage(1)" :disabled="pagination.currentPage === 1">
+        <button
+          class="pagination-button"
+          @click="changePage(1)"
+          :disabled="pagination.currentPage === 1"
+        >
           &laquo; First
         </button>
 
-        <button class="pagination-button" @click="changePage(pagination.currentPage - 1)"
-          :disabled="pagination.currentPage === 1">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.currentPage - 1)"
+          :disabled="pagination.currentPage === 1"
+        >
           &lsaquo; Prev
         </button>
 
         <div class="page-input">
-          <input type="number" v-model.number="pageInput" min="1" :max="pagination.totalPages" @keyup.enter="goToPage"
-            @blur="validatePageInput" />
+          <input
+            type="number"
+            v-model.number="pageInput"
+            min="1"
+            :max="pagination.totalPages"
+            @keyup.enter="goToPage"
+            @blur="validatePageInput"
+          />
           <span>of {{ pagination.totalPages }}</span>
         </div>
 
-        <button class="pagination-button" @click="changePage(pagination.currentPage + 1)"
-          :disabled="pagination.currentPage === pagination.totalPages">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.currentPage + 1)"
+          :disabled="pagination.currentPage === pagination.totalPages"
+        >
           Next &rsaquo;
         </button>
 
-        <button class="pagination-button" @click="changePage(pagination.totalPages)"
-          :disabled="pagination.currentPage === pagination.totalPages">
+        <button
+          class="pagination-button"
+          @click="changePage(pagination.totalPages)"
+          :disabled="pagination.currentPage === pagination.totalPages"
+        >
           Last &raquo;
         </button>
       </div>
@@ -549,72 +722,120 @@
     </div>
 
     <!-- Popup for Add Request -->
-    <RequestEditorView :show="showRequestEditorModal" :mode="requestModalMode" :request-id="requestModalRequestId"
-      :request-meta="activeRequestMeta" :is-staff-user="isStaffUser" :user-id="userId" :saving="requestEditorSyncing"
-      :close-on-save="false" :notify-on-save="false" @close="closeRequestEditorModal"
-      @saved="handleRequestEditorSaved" />
+    <RequestEditorView
+      :show="showRequestEditorModal"
+      :mode="requestModalMode"
+      :request-id="requestModalRequestId"
+      :request-meta="activeRequestMeta"
+      :is-staff-user="isStaffUser"
+      :user-id="userId"
+      :saving="requestEditorSyncing"
+      :close-on-save="false"
+      :notify-on-save="false"
+      @close="closeRequestEditorModal"
+      @saved="handleRequestEditorSaved"
+    />
 
     <!-- Popup for Export Options -->
-    <div v-if="showExportPopup" class="popup-overlay" @dragover.prevent="handleDragOver" @drop="handleDrop"
-      @dragenter="handleDragEnter" @dragleave="handleDragLeave" :class="{ 'drag-over': isDragOver }">
+    <div
+      v-if="showExportPopup"
+      class="popup-overlay"
+      @dragover.prevent="handleDragOver"
+      @drop="handleDrop"
+      @dragenter="handleDragEnter"
+      @dragleave="handleDragLeave"
+      :class="{ 'drag-over': isDragOver }"
+    >
       <div v-if="isStaffUser" class="drag-drop-indicator">
-        <div style="
+        <div
+          style="
             display: flex;
             justify-content: center;
             align-items: center;
             height: 200px;
-          ">
+          "
+        >
           <p>
-            Drop <span style="font-weight: bold">XLSX file</span> here to upload
-            as <span style="font-weight: bold">template</span>
+            Drop <span style="font-weight: bold">XLSX or XLSM file</span> here
+            to upload as <span style="font-weight: bold">template</span>
           </p>
         </div>
       </div>
-      <div v-if="!isDragOver" class="popup-container" :style="{ width: '670px', height: '500px' }">
+      <div
+        v-if="!isDragOver"
+        class="popup-container"
+        :style="{ width: '670px', height: '500px' }"
+      >
         <div class="popup-header">
           <span class="popup-title">Export Options</span>
-          <span class="popup-info-button" @mouseover="showExportHelpTooltip = true"
-            @mouseleave="showExportHelpTooltip = false">
+          <span
+            class="popup-info-button"
+            @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false"
+          >
             ?
             <div v-if="showExportHelpTooltip" class="tooltip-box">
               <div class="tooltip-scroll">
                 <div class="tooltip-title">Export Guide</div>
                 <p class="tooltip-intro">
                   Use export when you want to download the table data to Excel.
-                  You can export only the rows you selected, or the full filtered
-                  result set for the current page.
+                  You can export only the rows you selected, or the full
+                  filtered result set for the current page.
                 </p>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">Basic export choices</div>
                   <ul class="tooltip-list">
-                    <li><strong>Export selected</strong> downloads only the rows you selected in the table.</li>
-                    <li><strong>Export all</strong> downloads the full result set for the current export view, based on
-                      the
-                      active search, date range, and filters.</li>
+                    <li>
+                      <strong>Export selected</strong> downloads only the rows
+                      you selected in the table.
+                    </li>
+                    <li>
+                      <strong>Export all</strong> downloads the full result set
+                      for the current export view, based on the active search,
+                      date range, and filters.
+                    </li>
                   </ul>
                 </section>
                 <section v-if="isStaffUser" class="tooltip-section">
-                  <div class="tooltip-section-title">How template files work</div>
+                  <div class="tooltip-section-title">
+                    How template files work
+                  </div>
                   <ol class="tooltip-list tooltip-steps">
-                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the
-                      base
-                      Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
-                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or reporting.
+                    <li>
+                      Start by exporting with
+                      <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
                     </li>
-                    <li>Upload the edited file here as a reusable template. It will appear in the list of available
-                      templates.</li>
-                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong>
-                      sheet
-                      with fresh data and keeps your extra sheets unchanged.</li>
+                    <li>
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or reporting.
+                    </li>
+                    <li>
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
+                    </li>
+                    <li>
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
+                    </li>
                   </ol>
                 </section>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">When to use this</div>
                   <ul class="tooltip-list">
-                    <li>Download a snapshot of the current request data for sharing or offline review.</li>
-                    <li>Create staff-specific reporting templates with additional custom sheets.</li>
-                    <li>Reuse the same export structure whenever you need updated Parkour data in a familiar Excel
-                      layout.
+                    <li>
+                      Download a snapshot of the current request data for
+                      sharing or offline review.
+                    </li>
+                    <li>
+                      Create staff-specific reporting templates with additional
+                      custom sheets.
+                    </li>
+                    <li>
+                      Reuse the same export structure whenever you need updated
+                      Parkour data in a familiar Excel layout.
                     </li>
                   </ul>
                 </section>
@@ -631,14 +852,27 @@
               Export Options:
             </div>
             <div class="export-selection-radio-option">
-              <input type="radio" id="export-selected" value="selected" v-model="exportSelection"
-                :disabled="!hasSelectedRows" />
-              <label for="export-selected" :class="{ disabled: !hasSelectedRows }">
+              <input
+                type="radio"
+                id="export-selected"
+                value="selected"
+                v-model="exportSelection"
+                :disabled="!hasSelectedRows"
+              />
+              <label
+                for="export-selected"
+                :class="{ disabled: !hasSelectedRows }"
+              >
                 Export selected libraries & samples
               </label>
             </div>
             <div class="export-selection-radio-option">
-              <input type="radio" id="export-all" value="all" v-model="exportSelection" />
+              <input
+                type="radio"
+                id="export-all"
+                value="all"
+                v-model="exportSelection"
+              />
               <label for="export-all"> Export all libraries & samples </label>
             </div>
           </div>
@@ -649,32 +883,80 @@
             <div class="file-list-section">
               <div class="file-item">
                 <div class="file-info">
-                  <img :src="iconExportTemplateFile" alt="Export without any additional sheets" width="24" height="24"
-                    style="display: block" />
+                  <img
+                    :src="iconExportTemplateFile"
+                    alt="Export without any additional sheets"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
                   <span>Export without any additional sheets</span>
                 </div>
                 <div class="file-actions">
-                  <div class="file-actions-radio-button" style="border: none; margin-right: 5px">
-                    <input type="radio" title="Select" id="without-file" value="without-file" v-model="selectedFile" />
+                  <div
+                    class="file-actions-radio-button"
+                    style="border: none; margin-right: 5px"
+                  >
+                    <input
+                      type="radio"
+                      title="Select"
+                      id="without-file"
+                      value="without-file"
+                      v-model="selectedFile"
+                    />
                   </div>
                 </div>
               </div>
-              <div v-for="(file, index) in fetchedLibrariesAndSamplesTemplates" :key="index" class="file-item">
+              <div
+                v-for="(file, index) in fetchedLibrariesAndSamplesTemplates"
+                :key="index"
+                class="file-item"
+              >
                 <div class="file-info">
-                  <img :src="iconExportTemplateFileLines" :alt="file.name" width="24" height="24"
-                    style="display: block" />
+                  <img
+                    :src="iconExportTemplateFileLines"
+                    :alt="file.name"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
                   <span>{{ file.name }}</span>
                 </div>
                 <div class="file-actions">
-                  <button @click="downloadExportTemplate(file)" class="download-button" title="Download Original File">
-                    <img :src="iconExportDownload" alt="Download" width="24" height="24" style="display: block" />
+                  <button
+                    @click.stop="downloadExportTemplate(file)"
+                    class="download-button"
+                    title="Download Original File"
+                  >
+                    <img
+                      :src="iconExportDownload"
+                      alt="Download"
+                      width="24"
+                      height="24"
+                      style="display: block"
+                    />
                   </button>
-                  <button @click="removeExportTemplate(index)" class="remove-button" title="Remove File">
-                    <img :src="iconExportRemove" alt="Remove" width="24" height="24" style="display: block" />
+                  <button
+                    @click.stop="removeExportTemplate(index)"
+                    class="remove-button"
+                    title="Remove File"
+                  >
+                    <img
+                      :src="iconExportRemove"
+                      alt="Remove"
+                      width="24"
+                      height="24"
+                      style="display: block"
+                    />
                   </button>
                   <div class="file-actions-radio-button">
-                    <input type="radio" title="Select File" :id="'file-radio-' + index" :value="file"
-                      v-model="selectedFile" />
+                    <input
+                      type="radio"
+                      title="Select File"
+                      :id="'file-radio-' + index"
+                      :value="file"
+                      v-model="selectedFile"
+                    />
                   </div>
                 </div>
               </div>
@@ -691,30 +973,52 @@
         </div>
         <div class="popup-footer">
           <div v-if="isStaffUser" class="file-upload-section">
-            <label for="file-upload" class="file-upload-label"
-              title="Upload additional sheet to append to the exported sheet.">
-              <img :src="iconExportUpload" alt="Upload" width="24" height="24"
-                style="display: block; margin-right: 4px" />
+            <label
+              for="file-upload"
+              class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet."
+            >
+              <img
+                :src="iconExportUpload"
+                alt="Upload"
+                width="24"
+                height="24"
+                style="display: block; margin-right: 4px"
+              />
               <span>Upload</span>
             </label>
-            <input id="file-upload" type="file" accept=".xlsx" @change="uploadExportTemplate" style="display: none" />
+            <input
+              id="file-upload"
+              type="file"
+              accept=".xlsx,.xlsm"
+              @change="uploadExportTemplate"
+              style="display: none"
+            />
           </div>
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button class="popup-button" @click="
-            showExportPopup = false;
-          selectedFile = 'without-file';
-          ">
+          <button
+            class="popup-button"
+            @click="
+              showExportPopup = false;
+              selectedFile = 'without-file';
+            "
+          >
             Cancel
           </button>
         </div>
       </div>
     </div>
 
-    <RequestActionsPopups :active-action="activeRequestAction" :request-context="activeRequestContext"
-      :is-staff-user="isStaffUser" :paperless-approval="paperlessApproval" @close="closeRequestActionModal"
-      @refresh="handleRequestActionRefresh" />
+    <RequestActionsPopups
+      :active-action="activeRequestAction"
+      :request-context="activeRequestContext"
+      :is-staff-user="isStaffUser"
+      :paperless-approval="paperlessApproval"
+      @close="closeRequestActionModal"
+      @refresh="handleRequestActionRefresh"
+    />
   </div>
 </template>
 
@@ -729,7 +1033,10 @@ import {
   isValidDate,
   formatDateForInput,
   formatDisplayDate,
-  createExcelExportBlob
+  createExcelExportBlob,
+  isSupportedExcelTemplateFile,
+  buildExcelExportFilename,
+  buildExcelDownloadFilename
 } from "../utilities/utilityFunctions";
 import {
   librariesAndSamplesGroupHeader,
@@ -916,7 +1223,7 @@ export default {
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
     this.stopRequestEditorSync();
@@ -1074,6 +1381,8 @@ export default {
             type: e.barcode?.[2] ?? "",
             barcode: e.barcode ?? "",
             nucleic_acid_type_name: e.nucleic_acid_type_name ?? "",
+            comment_input: e.comment_input ?? "",
+            organism_name: e.organism_name ?? "",
             library_protocol_name: e.library_protocol_name ?? "",
             analysis_type_name: e.analysis_type_name ?? "",
             starting_amount: getValue(e.starting_amount),
@@ -1161,7 +1470,10 @@ export default {
     },
     async getROCrateData({ barcodes = [], requestName = "" } = {}) {
       if (!Array.isArray(barcodes) || barcodes.length === 0) {
-        showNotification("Select libraries/samples to download RO-Crate.", "warning");
+        showNotification(
+          "Select libraries/samples to download RO-Crate.",
+          "warning"
+        );
         return;
       }
 
@@ -2005,11 +2317,7 @@ export default {
         return;
       }
       const file = event.target.files[0];
-      if (
-        file &&
-        file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const formData = new FormData();
         formData.append("file", file);
         try {
@@ -2030,7 +2338,7 @@ export default {
           this.selectedFile = "without-file";
         }
       } else {
-        showNotification("Upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX or XLSM file.", "error");
       }
     },
     async downloadExportTemplate(file) {
@@ -2044,14 +2352,14 @@ export default {
             responseType: "blob"
           }
         );
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", file.name || "LibrariesAndSamples.xlsx");
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+        saveAs(
+          response.data,
+          buildExcelDownloadFilename(
+            "LibrariesAndSamples",
+            file.name,
+            response.data?.type
+          )
+        );
       } catch (error) {
         showNotification("File download failed.", "error");
       }
@@ -2136,9 +2444,17 @@ export default {
           rows: sortedExportRows,
           exportColumns,
           axiosInstance: axiosRef,
-          templateDownloadUrl
+          templateDownloadUrl,
+          templateFileName:
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
         });
-        saveAs(blob, filename);
+        saveAs(
+          blob,
+          buildExcelExportFilename(
+            filename,
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
+          )
+        );
       } catch (error) {
         showNotification("Export failed. Please try again.", "error");
       } finally {
@@ -2190,18 +2506,14 @@ export default {
 
       const files = e.dataTransfer.files;
       if (files.length > 1) {
-        showNotification("Upload only one XLSX file.", "error");
+        showNotification("Upload only one XLSX or XLSM file.", "error");
       } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
       if (!this.isStaffUser) {
         return;
       }
-      if (
-        file &&
-        file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const event = {
           target: {
             files: [file]
@@ -2209,7 +2521,7 @@ export default {
         };
         this.uploadExportTemplate(event);
       } else {
-        showNotification("Upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX or XLSM file.", "error");
       }
     },
     changePage(page) {

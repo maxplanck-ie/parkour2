@@ -139,6 +139,8 @@ class TestLibrarySampleTree(BaseTestCase):
             self.assertIn("record_type", record)
             self.assertIn(record["record_type"], {"Library", "Sample"})
             self.assertIn("barcode", record)
+            self.assertIn("comment_input", record)
+            self.assertIn("organism_name", record)
             self.assertIn("measuring_unit_facility", record)
             self.assertIn("measured_value_facility", record)
 
@@ -476,7 +478,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertEqual(response["Content-Type"], "application/zip")
         zip_buffer = BytesIO(response.content)
         with ZipFile(zip_buffer, "r") as zip_file:
-            payload = json.loads(zip_file.read("ro-crate-metadata.json").decode("utf-8"))
+            payload = json.loads(
+                zip_file.read("ro-crate-metadata.json").decode("utf-8")
+            )
             archive_names = set(zip_file.namelist())
         return payload, archive_names
 
@@ -549,17 +553,25 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#study-{self.request.id}"},
             dataset_entry.get("hasPart", []),
         )
-        self.assertEqual(dataset_entry.get("creator"), {"@id": f"#person-{self.user.id}"})
-        self.assertEqual(dataset_entry.get("publisher"), {"@id": "#parkour-organization"})
+        self.assertEqual(
+            dataset_entry.get("creator"), {"@id": f"#person-{self.user.id}"}
+        )
+        self.assertEqual(
+            dataset_entry.get("publisher"), {"@id": "#parkour-organization"}
+        )
         self.assertIn(
             "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile",
             graph_ids,
         )
-        self.assertIn("#ro-crate-export-action", {entry.get("@id") for entry in payload["@graph"]})
+        self.assertIn(
+            "#ro-crate-export-action", {entry.get("@id") for entry in payload["@graph"]}
+        )
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
-    def test_sample_export_keeps_model_and_mv_fields(self, mock_library_objects, mock_sample_objects):
+    def test_sample_export_keeps_model_and_mv_fields(
+        self, mock_library_objects, mock_sample_objects
+    ):
         mock_library_objects.filter.return_value = _MockQuerySet()
         sample = create_sample("crate-sample")
         self.request.samples.add(sample)
@@ -573,7 +585,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             concentration_library=3.2,
             mean_fragment_size=280,
         )
-        Pooling.objects.create(sample=sample, concentration_c1=4.4, comment="sample pool")
+        Pooling.objects.create(
+            sample=sample, concentration_c1=4.4, comment="sample pool"
+        )
 
         sample_mv = CompleteSampleData(
             sample_id=sample.pk,
@@ -622,7 +636,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
         sample_entry = self._graph_entry(payload, f"#sample-material-{sample.pk}")
         self.assertEqual(sample_entry.get("identifier"), sample.barcode)
-        self.assertIn({"@id": f"#source-sample-{sample.pk}"}, sample_entry.get("derivedFrom", []))
+        self.assertIn(
+            {"@id": f"#source-sample-{sample.pk}"}, sample_entry.get("derivedFrom", [])
+        )
         comment_names = self._comment_names(sample_entry)
         self.assertIn("sample_db_name", comment_names)
         self.assertIn("sample_db_barcode", comment_names)
@@ -654,7 +670,8 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             (
                 entry.get("@id")
                 for entry in payload["@graph"]
-                if entry.get("identifier") == f"urn:parkour:request-file:{request_file.pk}"
+                if entry.get("identifier")
+                == f"urn:parkour:request-file:{request_file.pk}"
             ),
             None,
         )
@@ -691,11 +708,15 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
-    def test_library_export_keeps_model_and_mv_fields(self, mock_library_objects, mock_sample_objects):
+    def test_library_export_keeps_model_and_mv_fields(
+        self, mock_library_objects, mock_sample_objects
+    ):
         mock_sample_objects.filter.return_value = _MockQuerySet()
         library = create_library("crate-library")
         self.request.libraries.add(library)
-        Pooling.objects.create(library=library, concentration_c1=6.6, comment="library pool")
+        Pooling.objects.create(
+            library=library, concentration_c1=6.6, comment="library pool"
+        )
 
         library_mv = CompleteLibraryData(
             library_id=library.pk,
