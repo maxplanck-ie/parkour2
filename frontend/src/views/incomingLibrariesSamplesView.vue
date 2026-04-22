@@ -1232,6 +1232,13 @@ export default {
       });
     },
     handleRangeCleared(payload = []) {
+      const numericFields = new Set([
+        "measured_value_facility",
+        "sample_volume_facility",
+        "size_distribution_facility",
+        "percent_total",
+        "rna_quality_facility"
+      ]);
       const clearedChanges = payload
         .map((entry) => {
           const rowData = entry?.rowData || {};
@@ -1244,7 +1251,36 @@ export default {
             record_type: rowData.record_type
           };
           fields.forEach((field) => {
-            change[field] = rowData[field];
+            if (field === "percent_total") {
+              change[field] = rowData[field] === "" ? 100 : rowData[field];
+            } else if (numericFields.has(field)) {
+              change[field] =
+                rowData[field] === "" || rowData[field] === undefined
+                  ? null
+                  : rowData[field];
+            } else if (field === "gmo_facility") {
+              if (
+                rowData[field] === "" ||
+                rowData[field] === undefined ||
+                rowData[field] === null
+              ) {
+                change[field] = null;
+              } else if (
+                rowData[field] === "Risk Assessment Done" ||
+                rowData[field] === true
+              ) {
+                change[field] = true;
+              } else if (
+                rowData[field] === "Not Needed" ||
+                rowData[field] === false
+              ) {
+                change[field] = false;
+              } else {
+                change[field] = rowData[field];
+              }
+            } else {
+              change[field] = rowData[field];
+            }
           });
           return change;
         })

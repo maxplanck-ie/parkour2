@@ -940,12 +940,9 @@ export default {
     },
     queueBatchChanges(batchChanges) {
       batchChanges.forEach((change) => {
-        const key = `${change.record_type}:${change.pk}`;
+        const key = String(change.pk);
         if (!this.pendingEditChanges[key]) {
-          this.pendingEditChanges[key] = {
-            pk: change.pk,
-            record_type: change.record_type
-          };
+          this.pendingEditChanges[key] = { pk: change.pk };
         }
         Object.keys(change).forEach((field) => {
           if (field !== "pk" && field !== "record_type") {
@@ -955,19 +952,33 @@ export default {
       });
     },
     handleRangeCleared(payload = []) {
+      const numericFields = new Set([
+        "measured_value_facility",
+        "size_distribution_facility",
+        "starting_amount",
+        "pcr_cycles",
+        "concentration_library",
+        "mean_fragment_size"
+      ]);
       const clearedChanges = payload
         .map((entry) => {
           const rowData = entry?.rowData || {};
           const fields = entry?.fields || [];
-          if (!rowData.pk || !rowData.record_type || fields.length === 0) {
+          if (!rowData.pk || fields.length === 0) {
             return null;
           }
-          const change = {
-            pk: rowData.pk,
-            record_type: rowData.record_type
-          };
+          const change = { pk: rowData.pk };
           fields.forEach((field) => {
-            change[field] = rowData[field];
+            if (field === "smear_analysis") {
+              change[field] = rowData[field] === "" ? 100 : rowData[field];
+            } else if (numericFields.has(field)) {
+              change[field] =
+                rowData[field] === "" || rowData[field] === undefined
+                  ? null
+                  : rowData[field];
+            } else {
+              change[field] = rowData[field];
+            }
           });
           return change;
         })
