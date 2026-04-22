@@ -20,9 +20,12 @@ Ext.define("MainHub.view.main.MainController", {
     requests: "libraries-vue",
     libraries: "libraries-vue",
     "incoming-libraries": "incoming-libraries-vue",
+    "index-generator": "index-generator-vue",
+    indexgenerator: "index-generator-vue",
     preparation: "library-preparation-vue",
     "library-preparation": "library-preparation-vue",
-    pooling: "pooling-vue"
+    pooling: "pooling-vue",
+    flowcells: "flowcells-vue"
   },
 
   onMainViewRender: function () {
@@ -221,10 +224,10 @@ Ext.define("MainHub.view.main.MainController", {
         menu: menu,
         handler: !menu
           ? function () {
-              if (route) {
-                me.redirectTo(route);
-              }
+            if (route) {
+              me.redirectTo(route);
             }
+          }
           : null
       });
     });
@@ -256,10 +259,10 @@ Ext.define("MainHub.view.main.MainController", {
         menu: childMenu,
         handler: !childMenu
           ? function () {
-              if (childRoute) {
-                me.redirectTo(childRoute);
-              }
+            if (childRoute) {
+              me.redirectTo(childRoute);
             }
+          }
           : null
       });
     });
