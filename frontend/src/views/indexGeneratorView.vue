@@ -1,6 +1,6 @@
 <template>
   <div class="parent-container index-generator-page">
-    <div v-if="!isHorizontalSplit" class="header">
+    <div class="header">
       <div class="header-logo" style="display: inline; margin-right: 10px">
         <img
           :src="iconIndexGeneratorHeader"
@@ -91,13 +91,6 @@
           </select>
         </div>
         <button
-          type="button"
-          class="header-button split-layout-button"
-          @click="toggleSplitOrientation"
-        >
-          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
-        </button>
-        <button
           class="header-button"
           :disabled="!canGenerate"
           @click="generateIndices"
@@ -114,10 +107,7 @@
       </div>
     </div>
 
-    <div
-      class="table-container tables-wrap"
-      :class="{ 'horizontal-split': isHorizontalSplit }"
-    >
+    <div class="table-container tables-wrap">
       <section
         class="panel left-panel"
         :class="{ 'left-panel-collapsed': isLeftPanelCollapsed }"
@@ -481,30 +471,6 @@
           </div>
         </div>
       </section>
-
-      <div v-if="isHorizontalSplit" class="split-mode-floating-actions">
-        <button
-          type="button"
-          class="header-button split-layout-button"
-          @click="toggleSplitOrientation"
-        >
-          {{ isHorizontalSplit ? "Vertical Split" : "Horizontal Split" }}
-        </button>
-        <button
-          class="header-button"
-          :disabled="!canGenerate"
-          @click="generateIndices"
-        >
-          <span>Generate Indices</span>
-        </button>
-        <button
-          class="header-button save-pool-button"
-          :disabled="!canSave"
-          @click="savePool"
-        >
-          <span>Save Pool</span>
-        </button>
-      </div>
     </div>
   </div>
 </template>
@@ -547,7 +513,6 @@ export default {
       applyAllIndexType: "",
       applyAllScope: "all",
       isLeftPanelCollapsed: false,
-      isHorizontalSplit: false,
       defaultLeftPanelWidthPercent: 50,
       leftPanelWidthPercent: 50,
       selectedStartCoordinate: "A1",
@@ -697,10 +662,6 @@ export default {
       return this.platePoolIndexTypeIds.length > 0;
     },
     leftPanelInlineStyle() {
-      if (this.isHorizontalSplit) {
-        return {};
-      }
-
       if (this.isLeftPanelCollapsed) {
         return {};
       }
@@ -712,10 +673,6 @@ export default {
       };
     },
     rightPanelInlineStyle() {
-      if (this.isHorizontalSplit) {
-        return {};
-      }
-
       if (this.isLeftPanelCollapsed) {
         return { flex: "1 1 auto" };
       }
@@ -911,14 +868,8 @@ export default {
 
       this.isLeftPanelCollapsed = true;
     },
-    toggleSplitOrientation() {
-      this.isHorizontalSplit = !this.isHorizontalSplit;
-      this.isLeftPanelCollapsed = false;
-      this.leftPanelWidthPercent = this.defaultLeftPanelWidthPercent;
-      this.onPanelResizeEnd();
-    },
     startPanelResize(event) {
-      if (this.isLeftPanelCollapsed || this.isHorizontalSplit) {
+      if (this.isLeftPanelCollapsed) {
         return;
       }
 
@@ -1949,10 +1900,6 @@ export default {
   box-shadow: 0 0 0 2px rgba(11, 127, 120, 0.15);
 }
 
-.split-layout-button {
-  min-width: 138px;
-}
-
 .save-pool-button {
   background-color: #0b7f78;
 }
@@ -1974,78 +1921,6 @@ export default {
   gap: 4px;
   min-height: 0;
   flex: 1;
-}
-
-.tables-wrap.horizontal-split {
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.tables-wrap.horizontal-split .panel-splitter {
-  display: none;
-}
-
-.tables-wrap.horizontal-split .right-panel {
-  flex: 1 1 auto;
-  width: 100%;
-  min-height: 0;
-  position: relative;
-  z-index: 1;
-  margin-top: 0;
-}
-
-.tables-wrap.horizontal-split .right-panel h3 {
-  margin-top: 34px;
-}
-
-.tables-wrap.horizontal-split .left-panel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  height: min(62%, calc(100% - 170px));
-  transform: translateY(calc(-100% + 26px));
-  opacity: 1;
-  background: #eeeeee;
-  border: 3px solid #000;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  transition:
-    transform 0.22s ease,
-    opacity 0.22s ease;
-  overflow: hidden;
-}
-
-.split-mode-floating-actions {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 40;
-  isolation: isolate;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.split-mode-floating-actions .header-button {
-  position: relative;
-  z-index: 41;
-}
-
-.split-mode-floating-actions .header-button:disabled,
-.split-mode-floating-actions .save-pool-button:disabled {
-  opacity: 1;
-  background: linear-gradient(180deg, #7f9190 0%, #6f8180 100%);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-.tables-wrap.horizontal-split .left-panel:hover,
-.tables-wrap.horizontal-split .left-panel:focus-within {
-  transform: translateY(0);
-  opacity: 1;
 }
 
 .panel-splitter {
