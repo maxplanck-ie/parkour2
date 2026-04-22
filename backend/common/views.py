@@ -41,6 +41,12 @@ from .serializers import (
 )
 
 User = get_user_model()
+XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+XLSM_MIME_TYPE = "application/vnd.ms-excel.sheet.macroEnabled.12"
+
+
+def get_excel_content_type(file_name):
+    return XLSM_MIME_TYPE if str(file_name).lower().endswith(".xlsm") else XLSX_MIME_TYPE
 
 
 @login_required
@@ -337,16 +343,16 @@ class BaseTemplateViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["post"])
     def upload(self, request):
-        """Upload a new XLSX file (replaces old if exists)."""
+        """Upload a new XLSX or XLSM file (replaces old if exists)."""
         file = request.FILES.get("file")
         if not file:
             return Response(
                 {"success": False, "message": "No file provided."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        if not file.name.endswith(".xlsx"):
+        if not str(file.name).lower().endswith((".xlsx", ".xlsm")):
             return Response(
-                {"success": False, "message": "Only XLSX files are allowed."},
+                {"success": False, "message": "Only XLSX and XLSM files are allowed."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         old_template = self.model.objects.first()
@@ -362,7 +368,7 @@ class BaseTemplateViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["delete"])
     def remove(self, request, pk=None):
-        """Remove an XLSX file."""
+        """Remove an XLSX or XLSM file."""
         template = self.get_object()
         template.file.delete()
         template.delete()
@@ -373,7 +379,7 @@ class BaseTemplateViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["get"])
     def download(self, request, pk=None):
-        """Download an XLSX file."""
+        """Download an XLSX or XLSM file."""
         try:
             template = self.get_object()
             file_path = template.file.path
@@ -381,7 +387,7 @@ class BaseTemplateViewSet(viewsets.ModelViewSet):
                 return Response({"error": "File not found"}, status=404)
             response = FileResponse(
                 open(file_path, "rb"),
-                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                content_type=get_excel_content_type(template.name),
             )
             response["Content-Disposition"] = f'attachment; filename="{template.name}"'
             return response

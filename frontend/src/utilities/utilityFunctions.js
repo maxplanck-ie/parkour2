@@ -5,6 +5,16 @@ import JSZip from "jszip";
 import ExcelJS from "exceljs";
 
 const toast = useToast();
+export const XLSX_MIME_TYPE =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+export const XLSM_MIME_TYPE =
+  "application/vnd.ms-excel.sheet.macroEnabled.12";
+const SUPPORTED_EXCEL_EXTENSIONS = new Set(["xlsx", "xlsm"]);
+const SUPPORTED_EXCEL_MIME_TYPES = new Set([
+  XLSX_MIME_TYPE,
+  XLSM_MIME_TYPE,
+  "application/octet-stream",
+]);
 
 export function showNotification(content, type) {
   let options = {
@@ -84,6 +94,56 @@ export function createAxiosObject() {
       "X-CSRFToken": Cookies.get("csrftoken"),
     },
   });
+}
+
+export function getExcelTemplateExtension(fileName = "") {
+  const normalizedName = String(fileName || "").trim().toLowerCase();
+  const match = normalizedName.match(/\.([a-z0-9]+)$/i);
+  const extension = match?.[1];
+  return SUPPORTED_EXCEL_EXTENSIONS.has(extension) ? extension : "xlsx";
+}
+
+export function getExcelMimeTypeForExtension(extension = "xlsx") {
+  return String(extension).toLowerCase() === "xlsm"
+    ? XLSM_MIME_TYPE
+    : XLSX_MIME_TYPE;
+}
+
+export function isSupportedExcelTemplateFile(fileOrName) {
+  if (!fileOrName) return false;
+  const fileName =
+    typeof fileOrName === "string" ? fileOrName : fileOrName?.name || "";
+  if (/\.(xlsx|xlsm)$/i.test(fileName)) {
+    return /\.(xlsx|xlsm)$/i.test(fileName);
+  }
+  const mimeType =
+    typeof fileOrName === "object" ? String(fileOrName?.type || "") : "";
+  return SUPPORTED_EXCEL_MIME_TYPES.has(mimeType);
+}
+
+export function buildExcelExportFilename(baseName, templateFileName = "") {
+  const extension = getExcelTemplateExtension(templateFileName);
+  const normalizedBase = String(baseName || "").replace(/\.(xlsx|xlsm)$/i, "");
+  return `${normalizedBase}.${extension}`;
+}
+
+export function buildExcelDownloadFilename(
+  baseName,
+  fileName = "",
+  contentType = "",
+) {
+  if (fileName && /\.(xlsx|xlsm)$/i.test(fileName)) {
+    return fileName;
+  }
+  const extension =
+    String(contentType).toLowerCase() === XLSM_MIME_TYPE.toLowerCase()
+      ? "xlsm"
+      : "xlsx";
+  const normalizedBase = String(baseName || "download").replace(
+    /\.(xlsx|xlsm)$/i,
+    "",
+  );
+  return `${normalizedBase}.${extension}`;
 }
 
 export function isValidDate(dateString) {
@@ -631,45 +691,46 @@ function parseDataValidations(snippet, namespaces) {
   return validations;
 }
 
-async function extractDataValidationSnippets(buffer) {
-  async function getSheetPathMapFromZip(zip) {
-    const sheetNameToPath = new Map();
-    const workbookFile = zip.file("xl/workbook.xml");
-    const relsFile = zip.file("xl/_rels/workbook.xml.rels");
-    const relationshipRegex =
-      /<Relationship[^>]*Id="([^"]+)"[^>]*Target="([^"]+)"/g;
-    const sheetPathRegex = /<sheet[^>]*name="([^"]+)"[^>]*r:id="([^"]+)"/g;
-    const normalizeSheetTargetPath = (target) => {
-      if (!target) return null;
-      let normalized = target.replace(/\\/g, "/");
-      while (normalized.startsWith("../")) {
-        normalized = normalized.slice(3);
-      }
-      normalized = normalized.replace(/^\/+/, "");
-      if (!normalized.startsWith("xl/")) {
-        normalized = `xl/${normalized}`;
-      }
-      return normalized;
-    };
-    if (!workbookFile || !relsFile) return sheetNameToPath;
-    const workbookXml = await workbookFile.async("string");
-    const relsXml = await relsFile.async("string");
-    const sheetToRelId = new Map();
-    let sheetMatch;
-    while ((sheetMatch = sheetPathRegex.exec(workbookXml)) !== null) {
-      sheetToRelId.set(sheetMatch[1], sheetMatch[2]);
+async function getSheetPathMapFromZip(zip) {
+  const sheetNameToPath = new Map();
+  const workbookFile = zip.file("xl/workbook.xml");
+  const relsFile = zip.file("xl/_rels/workbook.xml.rels");
+  const relationshipRegex =
+    /<Relationship[^>]*Id="([^"]+)"[^>]*Target="([^"]+)"/g;
+  const sheetPathRegex = /<sheet[^>]*name="([^"]+)"[^>]*r:id="([^"]+)"/g;
+  const normalizeSheetTargetPath = (target) => {
+    if (!target) return null;
+    let normalized = target.replace(/\\/g, "/");
+    while (normalized.startsWith("../")) {
+      normalized = normalized.slice(3);
     }
-    const relIdToTarget = new Map();
-    let relMatch;
-    while ((relMatch = relationshipRegex.exec(relsXml)) !== null) {
-      relIdToTarget.set(relMatch[1], normalizeSheetTargetPath(relMatch[2]));
+    normalized = normalized.replace(/^\/+/, "");
+    if (!normalized.startsWith("xl/")) {
+      normalized = `xl/${normalized}`;
     }
-    sheetToRelId.forEach((relId, sheetName) => {
-      const path = relIdToTarget.get(relId);
-      if (path) sheetNameToPath.set(sheetName, path);
-    });
-    return sheetNameToPath;
+    return normalized;
+  };
+  if (!workbookFile || !relsFile) return sheetNameToPath;
+  const workbookXml = await workbookFile.async("string");
+  const relsXml = await relsFile.async("string");
+  const sheetToRelId = new Map();
+  let sheetMatch;
+  while ((sheetMatch = sheetPathRegex.exec(workbookXml)) !== null) {
+    sheetToRelId.set(sheetMatch[1], sheetMatch[2]);
   }
+  const relIdToTarget = new Map();
+  let relMatch;
+  while ((relMatch = relationshipRegex.exec(relsXml)) !== null) {
+    relIdToTarget.set(relMatch[1], normalizeSheetTargetPath(relMatch[2]));
+  }
+  sheetToRelId.forEach((relId, sheetName) => {
+    const path = relIdToTarget.get(relId);
+    if (path) sheetNameToPath.set(sheetName, path);
+  });
+  return sheetNameToPath;
+}
+
+async function extractDataValidationSnippets(buffer) {
   const extractSheetNamespaces = (xml) => {
     const namespaces = new Map();
     if (!xml) return namespaces;
@@ -777,28 +838,188 @@ function applyTemplateValidations(workbook, validationsBySheet) {
   });
 }
 
+function buildExportSheetRows(rows = [], exportColumns = []) {
+  const headerRow = exportColumns.map((column) => column.header);
+  const dataRows = rows.map((row) =>
+    exportColumns.map((column) => row?.[column.key] ?? null),
+  );
+  return [headerRow, ...dataRows];
+}
+
+function columnNumberToLetters(columnNumber) {
+  let current = Number(columnNumber) || 0;
+  let output = "";
+  while (current > 0) {
+    const remainder = (current - 1) % 26;
+    output = String.fromCharCode(65 + remainder) + output;
+    current = Math.floor((current - 1) / 26);
+  }
+  return output || "A";
+}
+
+function escapeXmlText(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function buildTemplateWorksheetXml(rows = [], exportColumns = []) {
+  const sheetRows = buildExportSheetRows(rows, exportColumns);
+  const lastColumn = Math.max(exportColumns.length, 1);
+  const lastRow = Math.max(sheetRows.length, 1);
+  const dimensionRef = `A1:${columnNumberToLetters(lastColumn)}${lastRow}`;
+  const colsXml = exportColumns.length
+    ? `<cols>${exportColumns
+        .map((column, index) => {
+          const width = Number(column.width) > 0 ? Number(column.width) : 20;
+          const colIndex = index + 1;
+          return `<col min="${colIndex}" max="${colIndex}" width="${width}" customWidth="1"/>`;
+        })
+        .join("")}</cols>`
+    : "";
+  const rowsXml = sheetRows
+    .map((rowValues, rowIndex) => {
+      const rowNumber = rowIndex + 1;
+      const cellsXml = rowValues
+        .map((value, colIndex) => {
+          if (value === null || value === undefined || value === "") {
+            return "";
+          }
+          const cellRef = `${columnNumberToLetters(colIndex + 1)}${rowNumber}`;
+          if (typeof value === "number" && Number.isFinite(value)) {
+            return `<c r="${cellRef}"><v>${value}</v></c>`;
+          }
+          if (typeof value === "boolean") {
+            return `<c r="${cellRef}" t="b"><v>${value ? 1 : 0}</v></c>`;
+          }
+          const escapedText = escapeXmlText(value);
+          return `<c r="${cellRef}" t="inlineStr"><is><t xml:space="preserve">${escapedText}</t></is></c>`;
+        })
+        .join("");
+      return `<row r="${rowNumber}">${cellsXml}</row>`;
+    })
+    .join("");
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <dimension ref="${dimensionRef}"/>
+  <sheetViews><sheetView workbookViewId="0"/></sheetViews>
+  <sheetFormatPr defaultRowHeight="15"/>
+  ${colsXml}
+  <sheetData>${rowsXml}</sheetData>
+</worksheet>`;
+}
+
+function markWorkbookForFullRecalculation(workbookXml = "") {
+  if (!workbookXml) return workbookXml;
+  const calcPrRegex = /<calcPr\b[^>]*\/>/i;
+  if (calcPrRegex.test(workbookXml)) {
+    return workbookXml.replace(
+      calcPrRegex,
+      '<calcPr calcId="0" fullCalcOnLoad="1" forceFullCalc="1"/>',
+    );
+  }
+  return workbookXml.replace(
+    /<\/workbook>\s*$/i,
+    '<calcPr calcId="0" fullCalcOnLoad="1" forceFullCalc="1"/></workbook>',
+  );
+}
+
+async function createTemplateBasedExportBuffer({
+  templateBuffer,
+  rows = [],
+  exportColumns = [],
+  targetSheetName = "Parkour",
+}) {
+  const zip = await JSZip.loadAsync(templateBuffer);
+  const sheetPathMap = await getSheetPathMapFromZip(zip);
+  const targetSheetPath = sheetPathMap.get(targetSheetName);
+
+  if (!targetSheetPath || !zip.file(targetSheetPath)) {
+    throw new Error(
+      `Template sheet "${targetSheetName}" was not found in the workbook.`,
+    );
+  }
+
+  zip.file(targetSheetPath, buildTemplateWorksheetXml(rows, exportColumns));
+
+  if (zip.file("xl/calcChain.xml")) {
+    zip.remove("xl/calcChain.xml");
+  }
+  if (zip.file("xl/_rels/workbook.xml.rels")) {
+    const workbookRelsXml = await zip
+      .file("xl/_rels/workbook.xml.rels")
+      .async("string");
+    zip.file(
+      "xl/_rels/workbook.xml.rels",
+      workbookRelsXml.replace(
+        /<Relationship[^>]*Target="calcChain\.xml"[^>]*\/>/i,
+        "",
+      ),
+    );
+  }
+  if (zip.file("[Content_Types].xml")) {
+    const contentTypesXml = await zip.file("[Content_Types].xml").async("string");
+    zip.file(
+      "[Content_Types].xml",
+      contentTypesXml.replace(
+        /<Override[^>]*PartName="\/xl\/calcChain\.xml"[^>]*\/>/i,
+        "",
+      ),
+    );
+  }
+  if (zip.file("xl/workbook.xml")) {
+    const workbookXml = await zip.file("xl/workbook.xml").async("string");
+    zip.file("xl/workbook.xml", markWorkbookForFullRecalculation(workbookXml));
+  }
+
+  return zip.generateAsync({
+    type: "arraybuffer",
+    compression: "DEFLATE",
+  });
+}
+
 export async function createExcelExportBlob({
   rows = [],
   exportColumns = [],
   axiosInstance,
   templateDownloadUrl,
+  templateFileName = "",
   sheetName = "Parkour",
   minMatchedHeaders = 6,
 } = {}) {
   const workbook = new ExcelJS.Workbook();
   let validationsBySheet = null;
+  let templateBuffer = null;
+  const workbookExtension = getExcelTemplateExtension(templateFileName);
 
   if (templateDownloadUrl) {
     const response = await axiosInstance.get(templateDownloadUrl, {
       responseType: "arraybuffer",
     });
-    const templateBuffer = response.data;
-    validationsBySheet = await extractDataValidationSnippets(templateBuffer);
-    const fixedBuffer = await validateAndFixExcelBuffer(templateBuffer);
-    await workbook.xlsx.load(fixedBuffer);
+    templateBuffer = response.data;
+    if (workbookExtension === "xlsx") {
+      validationsBySheet = await extractDataValidationSnippets(templateBuffer);
+      const fixedBuffer = await validateAndFixExcelBuffer(templateBuffer);
+      await workbook.xlsx.load(fixedBuffer);
+    }
   }
 
   const targetSheetName = sheetName || "Parkour";
+  if (templateBuffer && workbookExtension === "xlsm") {
+    const buffer = await createTemplateBasedExportBuffer({
+      templateBuffer,
+      rows,
+      exportColumns,
+      targetSheetName,
+    });
+    return new Blob([buffer], {
+      type: getExcelMimeTypeForExtension(workbookExtension),
+    });
+  }
+
   let worksheet = workbook.getWorksheet(targetSheetName);
   const normalizedRows = Array.isArray(rows) ? rows : [];
 
@@ -917,7 +1138,8 @@ export async function createExcelExportBlob({
   }
 
   const buffer = await workbook.xlsx.writeBuffer();
+
   return new Blob([buffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    type: getExcelMimeTypeForExtension(workbookExtension),
   });
 }

@@ -756,8 +756,8 @@
           "
         >
           <p>
-            Drop <span style="font-weight: bold">XLSX file</span> here to upload
-            as <span style="font-weight: bold">template</span>
+            Drop <span style="font-weight: bold">XLSX or XLSM file</span> here
+            to upload as <span style="font-weight: bold">template</span>
           </p>
         </div>
       </div>
@@ -924,7 +924,7 @@
                 </div>
                 <div class="file-actions">
                   <button
-                    @click="downloadExportTemplate(file)"
+                    @click.stop="downloadExportTemplate(file)"
                     class="download-button"
                     title="Download Original File"
                   >
@@ -937,7 +937,7 @@
                     />
                   </button>
                   <button
-                    @click="removeExportTemplate(index)"
+                    @click.stop="removeExportTemplate(index)"
                     class="remove-button"
                     title="Remove File"
                   >
@@ -990,7 +990,7 @@
             <input
               id="file-upload"
               type="file"
-              accept=".xlsx"
+              accept=".xlsx,.xlsm"
               @change="uploadExportTemplate"
               style="display: none"
             />
@@ -1033,7 +1033,10 @@ import {
   isValidDate,
   formatDateForInput,
   formatDisplayDate,
-  createExcelExportBlob
+  createExcelExportBlob,
+  isSupportedExcelTemplateFile,
+  buildExcelExportFilename,
+  buildExcelDownloadFilename
 } from "../utilities/utilityFunctions";
 import {
   librariesAndSamplesGroupHeader,
@@ -2314,11 +2317,7 @@ export default {
         return;
       }
       const file = event.target.files[0];
-      if (
-        file &&
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const formData = new FormData();
         formData.append("file", file);
         try {
@@ -2339,7 +2338,7 @@ export default {
           this.selectedFile = "without-file";
         }
       } else {
-        showNotification("Upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX or XLSM file.", "error");
       }
     },
     async downloadExportTemplate(file) {
@@ -2353,14 +2352,14 @@ export default {
             responseType: "blob"
           }
         );
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", file.name || "LibrariesAndSamples.xlsx");
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+        saveAs(
+          response.data,
+          buildExcelDownloadFilename(
+            "LibrariesAndSamples",
+            file.name,
+            response.data?.type
+          )
+        );
       } catch (error) {
         showNotification("File download failed.", "error");
       }
@@ -2445,9 +2444,17 @@ export default {
           rows: sortedExportRows,
           exportColumns,
           axiosInstance: axiosRef,
-          templateDownloadUrl
+          templateDownloadUrl,
+          templateFileName:
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
         });
-        saveAs(blob, filename);
+        saveAs(
+          blob,
+          buildExcelExportFilename(
+            filename,
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
+          )
+        );
       } catch (error) {
         showNotification("Export failed. Please try again.", "error");
       } finally {
@@ -2499,18 +2506,14 @@ export default {
 
       const files = e.dataTransfer.files;
       if (files.length > 1) {
-        showNotification("Upload only one XLSX file.", "error");
+        showNotification("Upload only one XLSX or XLSM file.", "error");
       } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
       if (!this.isStaffUser) {
         return;
       }
-      if (
-        file &&
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const event = {
           target: {
             files: [file]
@@ -2518,7 +2521,7 @@ export default {
         };
         this.uploadExportTemplate(event);
       } else {
-        showNotification("Upload a valid XLSX file.", "error");
+        showNotification("Upload a valid XLSX or XLSM file.", "error");
       }
     },
     changePage(page) {
