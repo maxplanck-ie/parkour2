@@ -1,5 +1,10 @@
 <template>
   <div class="parent-container index-generator-page">
+    <div v-if="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Loading <span style="font-weight: bold">Index Generator</span>...</p>
+    </div>
+
     <div class="header">
       <div class="header-left">
         <div class="header-logo" style="display: inline; margin-right: 10px">
@@ -486,6 +491,7 @@ export default {
       selectedStartCoordinate: "A1",
       selectedDirection: "down",
       startCoordinateOptions: [],
+      loading: true,
       startCoordinatesLoading: false,
       directionOptions: [
         { value: "down", label: "Column-wise" },
@@ -683,6 +689,7 @@ export default {
   },
   methods: {
     async loadInitialData() {
+      this.loading = true;
       try {
         const [
           recordsResponse,
@@ -707,6 +714,7 @@ export default {
       } catch (error) {
         handleError(error);
       } finally {
+        this.loading = false;
         this.$nextTick(() => {
           this.initResizableTables();
         });
@@ -1562,6 +1570,7 @@ export default {
       const libraries = libraryRows.map((row) => row.pk);
       const samples = sampleRows.map((row) => row.pk);
 
+      this.loading = true;
       try {
         const response = await axiosRef.post(
           `${urlStringStart}/api/index_generator/generate_indices/`,
@@ -1610,6 +1619,8 @@ export default {
         }
 
         this.handleApiError(error, "Index generation failed.");
+      } finally {
+        this.loading = false;
       }
     },
     async savePool() {
@@ -1631,6 +1642,7 @@ export default {
       const libraries = this.buildPoolRowIndexPayload(libraryRows);
       const samples = this.buildPoolRowIndexPayload(sampleRows);
 
+      this.loading = true;
       try {
         const response = await axiosRef.post(
           `${urlStringStart}/api/index_generator/save_pool/`,
@@ -1657,6 +1669,8 @@ export default {
         await this.loadInitialData();
       } catch (error) {
         this.handleApiError(error, "Saving pool failed.");
+      } finally {
+        this.loading = false;
       }
     },
     computeColorBalance(field, maxCycles) {
