@@ -29,9 +29,9 @@ class NucleicAcidType(models.Model):
 class Sample(GenericLibrarySample):
     MEASURING_UNIT_CHOICES = [
         ("ng/µl (Concentration)", "ng/µl", "Concentration"),
-        ("M (Cells)", "M", "Cells"),
-        ("k (Cells)", "k", "Cells"),
         ("Cells", "Cells", "Cells"),
+        ("k (Cells)", "k", "Cells"),
+        ("M (Cells)", "M", "Cells"),
         ("Unknown", "Unknown", "Unknown"),
     ]
 
@@ -132,6 +132,8 @@ class CompleteSampleData(models.Model):
     sample_id = models.IntegerField(primary_key=True)
     barcode = models.CharField(max_length=100)
     name = models.CharField(max_length=255)
+    comment_input = models.TextField(null=True)
+    organism_name = models.CharField(max_length=100, null=True)
     status = models.IntegerField()
     sequencing_depth = models.FloatField()
     nucleic_acid_type_id = models.IntegerField()

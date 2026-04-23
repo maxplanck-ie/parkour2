@@ -864,8 +864,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             fields: ["id", "name"],
             data: [
               { id: "ng/µl", name: "ng/µl (Concentration)" },
-              { id: "M", name: "M (Cells)" },
+              { id: "Cells", name: "Cells" },
               { id: "k", name: "k (Cells)" },
+              { id: "M", name: "M (Cells)" },
               { id: "Unknown", name: "Unknown" }
             ]
           },

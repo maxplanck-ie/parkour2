@@ -156,9 +156,9 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${staffActions}
-      <!--<div title="Export RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
+      <div title="Export RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
         <img class="group-action-icon-img icon-24" src="${iconDownloadROCrate}" alt="Export RO-Crate" />
-      </div> -->
+      </div>
       <span class="group-action-separator"></span>
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
@@ -382,6 +382,42 @@ export function librariesAndSamplesColumnDefs(
       }
     },
     {
+      title: "Comment Input",
+      field: "comment_input",
+      minWidth: 120,
+      width: "7%",
+      headerVertical: false,
+      headerFilter: true,
+      headerTooltip: "Comment Input / Comment Library",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const value = cell.getValue();
+        const finalString = value || "-";
+        return ellipsisContainer(finalString);
+      }
+    },
+    {
+      title: "Organism",
+      field: "organism_name",
+      minWidth: 110,
+      width: "6%",
+      headerVertical: false,
+      headerFilter: true,
+      headerTooltip: "Organism",
+      visible: true,
+      cssClass: "regular-column",
+      contextMenu: () =>
+        cellContextMenu(true, false, false, getTabulatorInstance),
+      formatter: (cell) => {
+        const value = cell.getValue();
+        const finalString = value || "-";
+        return ellipsisContainer(finalString);
+      }
+    },
+    {
       title: "Protocol",
       field: "library_protocol_name",
       minWidth: 80,
@@ -505,7 +541,7 @@ export function librariesAndSamplesColumnDefs(
             ? "-"
             : value === 0
               ? "0.0"
-              : value.toFixed(1);
+              : value.toFixed(3);
         return ellipsisContainer(finalString);
       }
     },
@@ -732,6 +768,8 @@ export function librariesAndSamplesExportColumns() {
     { header: "Propagable & GMO", key: "gmo", width: 22 },
     { header: "Date", key: "create_time", width: 15 },
     { header: "Input Type", key: "nucleic_acid_type_name", width: 20 },
+    { header: "Comment Input", key: "comment_input", width: 28 },
+    { header: "Organism", key: "organism_name", width: 20 },
     { header: "Protocol", key: "library_protocol_name", width: 20 },
     { header: "Analysis Type", key: "analysis_type_name", width: 20 },
     { header: "Input", key: "input_display", width: 15 },

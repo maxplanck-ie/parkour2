@@ -29,6 +29,12 @@ router.register(
     basename="pooling_template",
 )
 
+router.register(
+    r"load-flowcells-templates",
+    views.LoadFlowcellsTemplateViewSet,
+    basename="load_flowcells_template",
+)
+
 urlpatterns = [
     path("", views.index, name="index"),
     path("get_navigation_tree/", views.get_navigation_tree, name="get_navigation_tree"),

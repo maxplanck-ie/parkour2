@@ -244,8 +244,8 @@
           "
         >
           <p>
-            Drop <span style="font-weight: bold">XLSX file</span> here to upload
-            as <span style="font-weight: bold">template</span>
+            Drop <span style="font-weight: bold">XLSX or XLSM file</span> here
+            to upload as <span style="font-weight: bold">template</span>
           </p>
         </div>
       </div>
@@ -274,25 +274,53 @@
                   <div class="tooltip-section-title">What this export does</div>
                   <ul class="tooltip-list">
                     <li>This screen exports the selected pooling rows only.</li>
-                    <li>All selected rows must belong to a single Pool before export can continue.</li>
-                    <li>If you need a different result, change the row selection in the table first and then reopen export.</li>
+                    <li>
+                      All selected rows must belong to a single Pool before
+                      export can continue.
+                    </li>
+                    <li>
+                      If you need a different result, change the row selection
+                      in the table first and then reopen export.
+                    </li>
                   </ul>
                 </section>
                 <section class="tooltip-section">
-                  <div class="tooltip-section-title">How template files work</div>
+                  <div class="tooltip-section-title">
+                    How template files work
+                  </div>
                   <ol class="tooltip-list tooltip-steps">
-                    <li>Start by exporting with <strong>Export without any additional sheets</strong>. This creates the base Excel file and keeps the original <strong>Parkour</strong> sheet.</li>
-                    <li>Open that file in Excel and add your own extra sheets for notes, calculations, or reporting.</li>
-                    <li>Upload the edited file here as a reusable template. It will appear in the list of available templates.</li>
-                    <li>Later, when you export using that template, Parkour replaces only the <strong>Parkour</strong> sheet with fresh data and keeps your extra sheets unchanged.</li>
+                    <li>
+                      Start by exporting with
+                      <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
+                    </li>
+                    <li>
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or reporting.
+                    </li>
+                    <li>
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
+                    </li>
+                    <li>
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
+                    </li>
                   </ol>
                 </section>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">When to use this</div>
                   <ul class="tooltip-list">
                     <li>Share pooling-specific results in Excel format.</li>
-                    <li>Keep a reusable workbook for one pool-based workflow.</li>
-                    <li>Reuse the same export format whenever you need updated pooling data.</li>
+                    <li>
+                      Keep a reusable workbook for one pool-based workflow.
+                    </li>
+                    <li>
+                      Reuse the same export format whenever you need updated
+                      pooling data.
+                    </li>
                   </ul>
                 </section>
               </div>
@@ -351,7 +379,7 @@
                 </div>
                 <div class="file-actions">
                   <button
-                    @click="downloadExportTemplate(file)"
+                    @click.stop="downloadExportTemplate(file)"
                     class="download-button"
                     title="Download Original File"
                   >
@@ -364,7 +392,7 @@
                     />
                   </button>
                   <button
-                    @click="removeExportTemplate(index)"
+                    @click.stop="removeExportTemplate(index)"
                     class="remove-button"
                     title="Remove File"
                   >
@@ -409,7 +437,7 @@
             <input
               id="file-upload"
               type="file"
-              accept=".xlsx"
+              accept=".xlsx,.xlsm"
               @change="uploadExportTemplate"
               style="display: none"
             />
@@ -440,7 +468,10 @@ import {
   handleError,
   createAxiosObject,
   urlStringStartsWith,
-  createExcelExportBlob
+  createExcelExportBlob,
+  isSupportedExcelTemplateFile,
+  buildExcelExportFilename,
+  buildExcelDownloadFilename
 } from "../utilities/utilityFunctions";
 import {
   poolingColumnDefs,
@@ -549,7 +580,7 @@ export default {
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
   },
@@ -1088,11 +1119,7 @@ export default {
     },
     async uploadExportTemplate(event) {
       const file = event.target.files[0];
-      if (
-        file &&
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const formData = new FormData();
         formData.append("file", file);
         try {
@@ -1113,7 +1140,7 @@ export default {
           this.selectedFile = "without-file";
         }
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Please upload a valid XLSX or XLSM file.", "error");
       }
     },
     async downloadExportTemplate(file) {
@@ -1124,14 +1151,14 @@ export default {
             responseType: "blob"
           }
         );
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", file.name || "Pooling.xlsx");
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+        saveAs(
+          response.data,
+          buildExcelDownloadFilename(
+            "Pooling",
+            file.name,
+            response.data?.type
+          )
+        );
       } catch (error) {
         showNotification("Error downloading file: " + error, "error");
       }
@@ -1212,9 +1239,17 @@ export default {
           rows: sortedExportRows,
           exportColumns,
           axiosInstance: axiosRef,
-          templateDownloadUrl
+          templateDownloadUrl,
+          templateFileName:
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
         });
-        saveAs(blob, filename);
+        saveAs(
+          blob,
+          buildExcelExportFilename(
+            filename,
+            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
+          )
+        );
       } finally {
         this.fakeLoadingStop();
         this.showExportPopup = false;
@@ -1241,17 +1276,13 @@ export default {
       const files = e.dataTransfer.files;
       if (files.length > 1) {
         showNotification(
-          "Please upload only one XLSX file at a time.",
+          "Please upload only one XLSX or XLSM file at a time.",
           "error"
         );
       } else this.processUploadedFile(files[0]);
     },
     processUploadedFile(file) {
-      if (
-        file &&
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ) {
+      if (isSupportedExcelTemplateFile(file)) {
         const event = {
           target: {
             files: [file]
@@ -1259,7 +1290,7 @@ export default {
         };
         this.uploadExportTemplate(event);
       } else {
-        showNotification("Please upload a valid XLSX file.", "error");
+        showNotification("Please upload a valid XLSX or XLSM file.", "error");
       }
     },
     createPopupWindow(

@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS complete_library_data_mv (
     library_id INTEGER PRIMARY KEY,
     barcode VARCHAR(100) NOT NULL,
     name VARCHAR(255) NOT NULL,
+    comment_input TEXT,
+    organism_name VARCHAR(100),
     status INTEGER NOT NULL,
     sequencing_depth DOUBLE PRECISION,
     measuring_unit VARCHAR(50),
@@ -53,6 +55,8 @@ CREATE TABLE IF NOT EXISTS complete_sample_data_mv (
     sample_id INTEGER PRIMARY KEY,
     barcode VARCHAR(100) NOT NULL,
     name VARCHAR(255) NOT NULL,
+    comment_input TEXT,
+    organism_name VARCHAR(100),
     status INTEGER NOT NULL,
     sequencing_depth DOUBLE PRECISION,
     nucleic_acid_type_id INTEGER,
@@ -94,6 +98,8 @@ SELECT DISTINCT ON (l.id, r.id)
     l.id AS library_id,
     l.barcode,
     l.name,
+    l.comments AS comment_input,
+    org.name AS organism_name,
     l.status,
     l.sequencing_depth,
     l.measuring_unit,
@@ -128,6 +134,8 @@ SELECT DISTINCT ON (l.id, r.id)
     fcids.sequencer_names,
     to_tsvector('simple',
         COALESCE(l.name,'') || ' ' ||
+        COALESCE(l.comments,'') || ' ' ||
+        COALESCE(org.name,'') || ' ' ||
         COALESCE(l.barcode,'') || ' ' ||
         COALESCE(r.name,'') || ' ' ||
         COALESCE(array_to_string(pools.pool_names,' '),'') || ' ' ||
@@ -136,6 +144,7 @@ SELECT DISTINCT ON (l.id, r.id)
 FROM library_library AS l
 JOIN request_request_libraries AS rrl ON l.id = rrl.library_id
 JOIN request_request AS r ON rrl.request_id = r.id
+LEFT JOIN library_sample_shared_organism AS org ON l.organism_id = org.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON l.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON l.library_type_id = lt.id
 LEFT JOIN library_sample_shared_indextype AS it ON l.index_type_id = it.id
@@ -186,6 +195,8 @@ SELECT DISTINCT ON (s.id, r.id)
     s.id AS sample_id,
     s.barcode,
     s.name,
+    s.comments AS comment_input,
+    org.name AS organism_name,
     s.status,
     s.sequencing_depth,
     nat.id AS nucleic_acid_type_id,
@@ -224,6 +235,8 @@ SELECT DISTINCT ON (s.id, r.id)
     fcids.sequencer_names,
     to_tsvector('simple',
         COALESCE(s.name,'') || ' ' ||
+        COALESCE(s.comments,'') || ' ' ||
+        COALESCE(org.name,'') || ' ' ||
         COALESCE(s.barcode,'') || ' ' ||
         COALESCE(r.name,'') || ' ' ||
         COALESCE(array_to_string(pools.pool_names,' '),'') || ' ' ||
@@ -232,6 +245,7 @@ SELECT DISTINCT ON (s.id, r.id)
 FROM sample_sample AS s
 JOIN request_request_samples AS rrs ON s.id = rrs.sample_id
 JOIN request_request AS r ON rrs.request_id = r.id
+LEFT JOIN library_sample_shared_organism AS org ON s.organism_id = org.id
 LEFT JOIN sample_nucleicacidtype AS nat ON s.nucleic_acid_type_id = nat.id
 LEFT JOIN library_sample_shared_libraryprotocol AS lp ON s.library_protocol_id = lp.id
 LEFT JOIN library_sample_shared_librarytype AS lt ON s.library_type_id = lt.id
@@ -284,6 +298,8 @@ INSERT INTO complete_library_data_mv (
     library_id,
     barcode,
     name,
+    comment_input,
+    organism_name,
     status,
     sequencing_depth,
     measuring_unit,
@@ -322,6 +338,8 @@ INSERT INTO complete_sample_data_mv (
     sample_id,
     barcode,
     name,
+    comment_input,
+    organism_name,
     status,
     sequencing_depth,
     nucleic_acid_type_id,

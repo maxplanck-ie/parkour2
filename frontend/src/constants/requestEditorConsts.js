@@ -766,8 +766,9 @@ export function getRequestEditorSampleColumns(
       ? measuringUnits
       : [
           { value: "ng/µl", label: "ng/µl (Concentration)" },
-          { value: "M", label: "M (Cells)" },
+          { value: "Cells", label: "Cells" },
           { value: "k", label: "k (Cells)" },
+          { value: "M", label: "M (Cells)" },
           { value: "Unknown", label: "Unknown" },
         ];
 

@@ -78,6 +78,31 @@
   padding: 3px 8px;
 }
 
+.undo-toast-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.undo-toast-message {
+  line-height: 1.2;
+}
+
+.undo-toast-button {
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.undo-toast-button:hover {
+  background: #ffffff;
+}
+
 /* Info Toast */
 .Vue-Toastification__toast--info {
   background-color: #369bff !important;
@@ -307,7 +332,6 @@ input[type="radio"]:checked::after {
   scrollbar-gutter: stable both-edges;
 }
 
-
 .popup-footer {
   display: flex;
   justify-content: flex-end;
@@ -429,7 +453,9 @@ input[type="radio"]:checked::after {
   border-radius: 8px;
   background-color: #ffffff;
   width: 550px;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .search-bar input {
@@ -609,7 +635,6 @@ input[type="radio"]:checked::after {
   width: 24px;
   height: 24px;
 }
-
 
 .group-action-separator {
   display: inline-block;
@@ -903,7 +928,10 @@ input[type="radio"]:checked::after {
   border-radius: 8px;
   padding: 4px 4px;
   background: linear-gradient(180deg, #0b7f78 0%, #006c66 100%);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.12s ease;
 }
 
 .date-filter label {
@@ -912,7 +940,8 @@ input[type="radio"]:checked::after {
   margin: 0 4px 0 2px;
 }
 
-.date-filter input[type="date"] {
+.date-filter input[type="date"],
+.date-filter input[type="month"] {
   padding: 6px 8px;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 5px;
@@ -935,7 +964,8 @@ input[type="radio"]:checked::after {
   transform: translateY(-1px);
 }
 
-.date-filters input[type="date"]:not(:valid) {
+.date-filters input[type="date"]:not(:valid),
+.date-filters input[type="month"]:not(:valid) {
   font-size: 12px;
 }
 
@@ -1057,4 +1087,3 @@ input[type="radio"]:checked::after {
   border: 1px solid #ddd;
   border-radius: 8px;
 }
-

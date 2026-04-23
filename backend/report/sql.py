@@ -1,19 +1,19 @@
 LIBRARY_SELECT = """
 record.mean_fragment_size AS "Mean Fragment Size",
-record.qpcr_result AS "qPCR Result",
-record.qpcr_result_facility AS "qPCR Result (Facility)"
+record.removed_qpcr_result AS "qPCR Result",
+record.removed_qpcr_result_facility AS "qPCR Result (Facility)"
 """
 
 SAMPLE_SELECT = """
 record.rna_quality_facility AS "RNA Quality (Facility)",
 nat.name AS "Nucleic Acid Type",
 lprep.starting_amount AS "Starting Amount",
-lprep.spike_in_volume AS "Spike-in Volume",
+lprep.removed_spike_in_volume AS "Spike-in Volume",
 lprep.pcr_cycles AS "PCR Cycles",
 lprep.concentration_library AS "Concentration Library",
 lprep.mean_fragment_size AS "Mean Fragment Size",
-lprep."nM" AS "nM",
-lprep.qpcr_result AS "qPCR Result"
+lprep."removed_nM" AS "nM",
+lprep.removed_qpcr_result AS "qPCR Result"
 """
 
 SAMPLE_JOINS = """

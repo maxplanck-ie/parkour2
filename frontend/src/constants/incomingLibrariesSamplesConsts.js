@@ -366,14 +366,18 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             const row = cell.getRow().getData();
             const options = [
               { label: "ng/µl (Concentration)", value: "ng/µl" },
-              { label: "M (Cells)", value: "M" },
+              { label: "Cells", value: "Cells" },
               { label: "k (Cells)", value: "k" },
+              { label: "M (Cells)", value: "M" },
               { label: "Unknown", value: "Unknown" },
             ];
             if (row.type === "L") {
               return {
                 values: options.filter(
-                  (option) => option.value !== "M" && option.value !== "k",
+                  (option) =>
+                    option.value !== "Cells" &&
+                    option.value !== "M" &&
+                    option.value !== "k",
                 ),
                 autocomplete: true,
                 listOnEmpty: true,
@@ -397,8 +401,9 @@ export function incomingLibrariesSamplesColumnDefs(getTabulatorInstance) {
             const value = cell.getValue();
             const options = {
               "ng/µl": "ng/µl (Concentration)",
-              M: "M (Cells)",
+              Cells: "Cells",
               k: "k (Cells)",
+              M: "M (Cells)",
               Unknown: "Unknown",
             };
             const finalString = options[value] || value || "Select";
