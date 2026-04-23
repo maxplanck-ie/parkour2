@@ -479,12 +479,12 @@ export default {
       defaultLeftPanelWidthPercent: 50,
       leftPanelWidthPercent: 50,
       selectedStartCoordinate: "A1",
-      selectedDirection: "right",
+      selectedDirection: "down",
       startCoordinateOptions: [],
       startCoordinatesLoading: false,
       directionOptions: [
-        { value: "right", label: "Row-wise" },
         { value: "down", label: "Column-wise" },
+        { value: "right", label: "Row-wise" },
         { value: "diagonal", label: "Diagonal" }
       ]
     };
@@ -1000,8 +1000,25 @@ export default {
         .trim()
         .toUpperCase();
     },
+    sortDirectionOptions(options) {
+      if (!Array.isArray(options)) {
+        return [];
+      }
+
+      const order = {
+        down: 0,
+        right: 1,
+        diagonal: 2
+      };
+
+      return [...options].sort((a, b) => {
+        const aOrder = order[a?.value] ?? Number.MAX_SAFE_INTEGER;
+        const bOrder = order[b?.value] ?? Number.MAX_SAFE_INTEGER;
+        return aOrder - bOrder;
+      });
+    },
     onDirectionChange(value) {
-      this.selectedDirection = value || "right";
+      this.selectedDirection = value || "down";
     },
     async refreshStartCoordinateOptions() {
       if (!this.requiresStrictStartCoordinate) {
@@ -1033,7 +1050,9 @@ export default {
         this.startCoordinateOptions = response.data?.coordinates || [];
 
         if (Array.isArray(response.data?.direction_options)) {
-          this.directionOptions = response.data.direction_options;
+          this.directionOptions = this.sortDirectionOptions(
+            response.data.direction_options
+          );
         }
 
         if (!this.startCoordinateOptions.length) {
@@ -1053,7 +1072,9 @@ export default {
           (item) => item.value
         );
         if (!allowedDirections.includes(this.selectedDirection)) {
-          this.selectedDirection = allowedDirections[0] || "right";
+          this.selectedDirection = allowedDirections.includes("down")
+            ? "down"
+            : allowedDirections[0] || "down";
         }
       } catch (error) {
         this.startCoordinateOptions = [];
@@ -1518,7 +1539,7 @@ export default {
             libraries: JSON.stringify(libraries),
             samples: JSON.stringify(samples),
             start_coord: normalizedStart,
-            direction: this.selectedDirection || "right"
+            direction: this.selectedDirection || "down"
           }
         );
 
