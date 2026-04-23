@@ -602,6 +602,12 @@ export default {
           editor: "list",
           editorParams: {
             values: ["Short", "Long", "Short + Long"]
+          },
+          formatter: (cell) => {
+            const v = cell.getValue();
+            if (!v) return "-";
+            if (v === "shortlong") return "Short + Long";
+            return v.charAt(0).toUpperCase() + v.slice(1);
           }
         },
         {
