@@ -13,6 +13,7 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.indexgeneratorvue.IndexGeneratorVue",
     "MainHub.view.librarypreparationvue.LibraryPreparationVue",
     "MainHub.view.poolingvue.PoolingVue",
+    "MainHub.view.flowcell.Flowcells",
     "MainHub.view.flowcellvue.FlowcellsVue",
     "MainHub.view.invoicing.Invoicing",
     "MainHub.view.usage.Usage",

@@ -46,7 +46,9 @@ XLSM_MIME_TYPE = "application/vnd.ms-excel.sheet.macroEnabled.12"
 
 
 def get_excel_content_type(file_name):
-    return XLSM_MIME_TYPE if str(file_name).lower().endswith(".xlsm") else XLSX_MIME_TYPE
+    return (
+        XLSM_MIME_TYPE if str(file_name).lower().endswith(".xlsm") else XLSX_MIME_TYPE
+    )
 
 
 @login_required
@@ -93,7 +95,7 @@ def get_navigation_tree(request):
             {
                 "text": "Index Generator",
                 "iconCls": "x-fa fa-cogs",
-                "viewType": "index-generator-vue",
+                "viewType": "index-generator",
                 "leaf": True,
             },
             {
@@ -111,7 +113,7 @@ def get_navigation_tree(request):
             {
                 "text": "Load Flowcells",
                 "iconCls": "x-fa fa-level-down",
-                "viewType": "flowcells-vue",
+                "viewType": "flowcells",
                 "leaf": True,
             },
             {
