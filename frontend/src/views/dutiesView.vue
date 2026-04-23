@@ -55,25 +55,16 @@
             </div>
           </div>
           <div class="duties-grid-wrapper">
-            <ag-grid-vue
-              ref="dutiesGrid"
-              class="ag-theme-alpine"
-              style="height: 100%"
-              theme="legacy"
-              :rowSelection="{
-                mode: 'multiRow',
-                checkboxes: false,
-                headerCheckbox: false
-              }"
-              :animateRows="true"
-              :rowDragManaged="true"
-              :stopEditingWhenCellsLoseFocus="true"
-              :columnDefs="columnsList"
+            <LiteTabulatorTable
+              ref="dutiesTableRef"
+              tableId="dutiesTable"
               :rowData="dutiesList"
-              :gridOptions="gridOptions"
-              @cellValueChanged="editDuty"
-              @first-data-rendered="updateGridDataObject"
-              @grid-ready="onGridReady"
+              :columnDefs="columnsList"
+              :tableOptions="{
+                handleCellEdited: editDuty,
+                movableRows: true,
+                initialSort: [{ column: 'start_date', dir: 'asc' }]
+              }"
             />
           </div>
         </div>
@@ -188,7 +179,7 @@
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue3";
+import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
 import {
   showNotification,
   handleError,
@@ -214,7 +205,7 @@ const urlStringStart = urlStringStartsWith();
 export default {
   name: "Duties",
   components: {
-    AgGridVue
+    LiteTabulatorTable
   },
   data() {
     return {
@@ -225,10 +216,7 @@ export default {
       userList: [],
       userListFiltered: [],
       columnsList: [],
-      gridOptions: {},
-      gridData: [],
-      selectedFilter: "ongoing",
-      gridApi: null
+      selectedFilter: "ongoing"
     };
   },
   setup() {},
@@ -244,9 +232,6 @@ export default {
   },
   computed: {},
   methods: {
-    onGridReady(params) {
-      this.gridApi = params.api;
-    },
     updateDutyObject(event) {
       let newDuty = toRaw(this.newDuty);
       if (event.target.id === "facility") {
@@ -411,20 +396,22 @@ export default {
       }
       this.getDuties(refresh, additionalUrl);
     },
-    async editDuty(rowData) {
-      let dutyId = rowData.data.duty_id;
-      let columnName = rowData.column.colId;
-      let oldValue = String(rowData.oldValue);
-      let newValue = String(rowData.newValue);
+    async editDuty(cell) {
+      const rowData = cell.getRow().getData();
+      const dutyId = rowData.duty_id;
+      const columnName = cell.getField();
+      const oldValue = String(cell.getOldValue());
+      let newValue = String(cell.getValue());
 
       if (
         (columnName !== "platform" && newValue.trim() !== oldValue.trim()) ||
         (columnName === "platform" &&
           newValue.toLowerCase() !== oldValue.toLowerCase())
       ) {
+        let valueToSend = newValue;
         switch (columnName) {
           case "main_name":
-            newValue = getProp(
+            valueToSend = getProp(
               toRaw(this.userList).find(
                 (user) => user["first_name"] === newValue
               ),
@@ -433,7 +420,7 @@ export default {
             );
             break;
           case "backup_name":
-            newValue = getProp(
+            valueToSend = getProp(
               toRaw(this.userList).find(
                 (user) => user["first_name"] === newValue
               ),
@@ -442,24 +429,24 @@ export default {
             );
             break;
           case "start_date":
-            newValue = moment(newValue);
+            valueToSend = moment(newValue);
             break;
           case "end_date":
-            newValue = moment(newValue);
+            valueToSend = moment(newValue);
             break;
           case "platform":
-            newValue =
+            valueToSend =
               newValue === "Short + Long"
                 ? "shortlong"
                 : String(newValue).toLowerCase();
             break;
           case "comment":
-            newValue = newValue.trim();
+            valueToSend = newValue.trim();
             break;
         }
         await axiosRef
           .patch(urlStringStart + "/api/duties/" + String(dutyId) + "/", {
-            [columnName]: newValue
+            [columnName]: valueToSend
           })
           .then(() => {
             this.getFilteredDuties(false, this.selectedFilter);
@@ -469,7 +456,6 @@ export default {
             this.getFilteredDuties(true, this.selectedFilter);
             handleError(error);
           });
-        this.updateGridDataObject();
       }
     },
     searchDuties(event) {
@@ -527,144 +513,105 @@ export default {
     },
     setColumns(userList) {
       this.columnsList = [
-        // {
-        //   headerName: "Select",
-        //   field: "select",
-        //   cellEditor: "agCheckboxCellEditor",
-        //   editable: true,
-        // },
         {
-          headerName: "Responsible Person",
+          title: "Responsible Person",
           field: "main_name",
-          minWidth: 200,
-          flex: 3,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: (params) => {
-            return {
-              values: userList
-                .filter((element) => element.facility === params.data.facility)
-                .map((element) => element.first_name),
-              valueListGap: 0
-            };
-          },
-          rowDrag: true
+          minWidth: 150,
+          widthGrow: 3,
+          headerFilter: true,
+          headerSort: true,
+          editor: "list",
+          editorParams: (cell) => ({
+            values: userList
+              .filter(
+                (element) =>
+                  element.facility === cell.getRow().getData().facility
+              )
+              .map((element) => element.first_name),
+            emptyValue: ""
+          }),
+          rowHandle: true
         },
         {
-          headerName: "Backup Person",
+          title: "Backup Person",
           field: "backup_name",
           minWidth: 150,
-          flex: 3,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: (params) => {
-            return {
-              values: userList
-                .filter((element) => element.facility === params.data.facility)
-                .map((element) => element.first_name),
-              valueListGap: 0
-            };
-          }
+          widthGrow: 3,
+          headerFilter: true,
+          headerSort: true,
+          editor: "list",
+          editorParams: (cell) => ({
+            values: userList
+              .filter(
+                (element) =>
+                  element.facility === cell.getRow().getData().facility
+              )
+              .map((element) => element.first_name),
+            emptyValue: ""
+          })
         },
         {
-          headerName: "Start Date",
+          title: "Start Date",
           field: "start_date",
-          cellEditor: "agDateStringCellEditor",
-          cellEditorParams: {
+          minWidth: 120,
+          widthGrow: 2,
+          headerFilter: true,
+          headerSort: true,
+          editor: "date",
+          editorParams: {
             min: "2015-01-01",
             max: "2099-12-31"
           },
-          cellRenderer: (data) => {
-            return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
-          },
-          minWidth: 120,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          sort: "asc"
+          formatter: (cell) => {
+            const v = cell.getValue();
+            return v ? moment(v).format("MM/DD/YYYY") : "-";
+          }
         },
         {
-          headerName: "End Date",
+          title: "End Date",
           field: "end_date",
-          cellEditor: "agDateStringCellEditor",
-          cellEditorParams: {
+          minWidth: 120,
+          widthGrow: 2,
+          headerFilter: true,
+          headerSort: true,
+          editor: "date",
+          editorParams: {
             min: "2015-01-01",
             max: "2099-12-31"
           },
-          cellRenderer: (data) => {
-            return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
-          },
-          minWidth: 120,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true
+          formatter: (cell) => {
+            const v = cell.getValue();
+            return v ? moment(v).format("MM/DD/YYYY") : "-";
+          }
         },
         {
-          headerName: "Facility",
+          title: "Facility",
           field: "facility",
-          minWidth: 150,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true
+          minWidth: 120,
+          widthGrow: 2,
+          headerFilter: true,
+          headerSort: true
         },
         {
-          headerName: "Platform",
+          title: "Platform",
           field: "platform",
-          minWidth: 150,
-          flex: 2,
-          filter: true,
-          sortable: true,
-          resizable: true,
-          editable: true,
-          cellEditor: "agSelectCellEditor",
-          cellEditorParams: {
-            values: ["Short", "Long", "Short + Long"],
-            valueListGap: 0
-          },
-          cellRenderer: (data) => {
-            if (data.value === "shortlong") return "Short + Long";
-            else return data.value[0].toUpperCase() + data.value.slice(1);
+          minWidth: 120,
+          widthGrow: 2,
+          headerFilter: true,
+          headerSort: true,
+          editor: "list",
+          editorParams: {
+            values: ["Short", "Long", "Short + Long"]
           }
         },
         {
-          headerName: "Comments",
+          title: "Comments",
           field: "comment",
-          minWidth: 300,
-          flex: 4,
-          resizable: true,
-          editable: true,
-          cellEditor: "agLargeTextCellEditor",
-          cellEditorPopup: true,
-          cellEditorParams: {
-            maxLength: 100,
-            rows: 10,
-            cols: 50
-          }
+          minWidth: 200,
+          widthGrow: 4,
+          editor: "textarea"
         }
       ];
-    },
-    updateGridDataObject() {
-      const api =
-        this.gridApi || (this.$refs.dutiesGrid && this.$refs.dutiesGrid.api);
-      if (!api) {
-        return;
-      }
-      const gridData = [];
-      api.forEachNode((rowNode) => {
-        gridData.push(rowNode.data);
-      });
-      this.gridData = gridData;
     }
   }
 };
@@ -684,16 +631,6 @@ export default {
   gap: 12px;
   flex: 1;
   min-height: 0;
-}
-
-.styled-box {
-  height: 35px;
-  padding: 0px 8px;
-  border: 1px solid grey;
-  background: whitesmoke;
-  outline: none;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
 }
 
 .duties-table-panel {
@@ -791,9 +728,8 @@ export default {
 .comment-textarea {
   border: 1px solid grey;
   border-radius: 8px;
-  font-size: 12px;
-  outline: none;
   font-size: 14px;
+  outline: none;
   padding: 4px;
   font-family: var(--app-font-family);
 }
@@ -866,21 +802,5 @@ export default {
 
 select:disabled {
   background: #dddddd;
-}
-
-@media (max-width: 1000px) {
-  .add-duty-container {
-    display: none;
-  }
-}
-
-@media (max-width: 800px) {
-  #search-bar {
-    width: 200px !important;
-  }
-
-  #period-filter {
-    width: 120px !important;
-  }
 }
 </style>
