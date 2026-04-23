@@ -119,54 +119,18 @@
         >
           <div class="panel-heading-primary">
             <h3>Libraries and Samples for Pooling</h3>
-            <div class="panel-selection-actions">
-              <button
-                class="group-action-button compact"
-                type="button"
-                title="Select All"
-                @click="selectAllRecords"
-              >
-                <img
-                  :src="iconSelectAll"
-                  alt="Select All"
-                  width="20"
-                  height="20"
-                />
-              </button>
-              <button
-                class="group-action-button compact"
-                type="button"
-                title="Deselect All"
-                @click="deselectAllRecords"
-              >
-                <img
-                  :src="iconDeselectAll"
-                  alt="Deselect All"
-                  width="20"
-                  height="20"
-                />
-              </button>
-            </div>
           </div>
           <div class="panel-heading-actions">
-            <span class="panel-controls-separator" aria-hidden="true">|</span>
             <div
               class="apply-all-controls"
               :class="{ compact: isLeftPanelNarrow }"
             >
-              <label class="apply-all-label">Apply to all</label>
-              <select
-                :value="applyAllScope"
-                @change="applyAllScope = $event.target.value"
-              >
-                <option value="all">All records</option>
-                <option value="selected">Selected only</option>
-              </select>
+              <label class="apply-all-label">Apply to selected records</label>
               <select
                 :value="applyAllReadLength"
                 @change="applyFieldToAll('read_length', $event.target.value)"
               >
-                <option :value="''">Length</option>
+                <option :value="''">Read Length</option>
                 <option
                   v-for="readLength in readLengths"
                   :key="`apply-read-length-${readLength.id}`"
@@ -511,7 +475,6 @@ export default {
       activePanelResize: null,
       applyAllReadLength: "",
       applyAllIndexType: "",
-      applyAllScope: "all",
       isLeftPanelCollapsed: false,
       defaultLeftPanelWidthPercent: 50,
       leftPanelWidthPercent: 50,
@@ -1112,7 +1075,7 @@ export default {
       }
 
       const targetRows = this.records.filter((row) => {
-        if (this.applyAllScope === "selected" && !row.selected) {
+        if (!row.selected) {
           return false;
         }
 
@@ -1124,9 +1087,7 @@ export default {
 
       if (!targetRows.length) {
         showNotification(
-          this.applyAllScope === "selected"
-            ? "No selected records available for this field."
-            : "No records available for this field.",
+          "No selected records available for this field.",
           "warning"
         );
         return;
@@ -1175,7 +1136,7 @@ export default {
             { type: "success", timeout: 10000 }
           );
         } else {
-          showNotification("Values applied to all records.", "success");
+          showNotification("Values applied to selected records.", "success");
         }
       } catch (error) {
         this.handleApiError(error, `Failed to apply ${field}.`);
@@ -1249,34 +1210,6 @@ export default {
       } catch (error) {
         this.handleApiError(error, "Failed to undo read length changes.");
       }
-    },
-    selectAllRecords() {
-      if (!this.selectedPoolSizeId) {
-        showNotification("Pool Size must be set.", "warning");
-        return;
-      }
-
-      for (const row of this.records) {
-        if (row.selected) {
-          continue;
-        }
-
-        if (row.type === "S" && !row.index_type) {
-          showNotification("Index Type must be set.", "warning");
-          return;
-        }
-
-        if (!this.setRowSelection(row, true)) {
-          return;
-        }
-      }
-    },
-    deselectAllRecords() {
-      this.records.forEach((row) => {
-        if (row.selected) {
-          this.setRowSelection(row, false);
-        }
-      });
     },
     setRowSelection(row, checked) {
       if (checked && !this.selectedPoolSizeId) {
@@ -1792,6 +1725,7 @@ export default {
   align-items: center;
   gap: 5px;
   min-width: 0;
+  flex-wrap: nowrap;
 }
 
 .apply-all-controls select {
@@ -1801,6 +1735,7 @@ export default {
   font-size: 13px;
   padding: 0 8px;
   background: #fff;
+  min-width: 0;
 }
 
 .apply-index-type-select {
@@ -1814,8 +1749,9 @@ export default {
 
 .left-panel .panel-heading-actions {
   min-width: 0;
-  flex: 1 1 auto;
-  justify-content: flex-start;
+  flex: 0 1 auto;
+  margin-left: auto;
+  justify-content: flex-end;
   flex-wrap: wrap;
 }
 
@@ -1824,42 +1760,23 @@ export default {
   flex: 1 1 100%;
 }
 
-.panel-controls-separator {
-  color: #98a4a9;
-  font-size: 12px;
-  line-height: 1;
-  align-self: center;
-}
-
 .apply-all-controls.compact {
-  display: grid;
-  grid-template-columns: auto minmax(72px, 1fr) minmax(72px, 1fr);
-  grid-template-areas:
-    "label scope length"
-    "index index index";
+  display: flex;
+  flex-wrap: nowrap;
   align-items: center;
-  column-gap: 5px;
-  row-gap: 4px;
+  gap: 5px;
 }
 
 .apply-all-controls.compact .apply-all-label {
-  grid-area: label;
+  flex: 0 0 auto;
 }
 
 .apply-all-controls.compact select:nth-of-type(1) {
-  grid-area: scope;
-  min-width: 0;
+  flex: 0 1 130px;
 }
 
 .apply-all-controls.compact select:nth-of-type(2) {
-  grid-area: length;
-  min-width: 0;
-}
-
-.apply-all-controls.compact select:nth-of-type(3) {
-  grid-area: index;
-  min-width: 0;
-  width: 100%;
+  flex: 0 1 180px;
 }
 
 .apply-all-controls.compact .apply-index-type-select {
@@ -1869,19 +1786,7 @@ export default {
 .apply-all-label {
   font-size: 11px;
   color: #4b5557;
-}
-
-.panel-selection-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.group-action-button.compact {
-  border: 1px solid #d3d9dd;
-  border-radius: 6px;
-  padding: 2px;
-  background: #fff;
+  white-space: nowrap;
 }
 
 .pool-size-select {
