@@ -135,7 +135,7 @@
               class="apply-all-controls"
               :class="{ compact: isLeftPanelNarrow }"
             >
-              <label class="apply-all-label">Apply to all records</label>
+              <label class="apply-all-label">Apply to selected records</label>
               <select
                 :value="applyAllReadLength"
                 @change="applyFieldToAll('read_length', $event.target.value)"
@@ -1159,20 +1159,22 @@ export default {
         return;
       }
 
-      const eligibleRows = this.records.filter((row) => {
+      const targetRows = this.records.filter((row) => {
+        if (!row.selected) {
+          return false;
+        }
+
         if (field === "index_type") {
           return row.type === "S";
         }
         return true;
       });
 
-      const selectedEligibleRows = eligibleRows.filter((row) => row.selected);
-      const targetRows = selectedEligibleRows.length
-        ? selectedEligibleRows
-        : eligibleRows;
-
       if (!targetRows.length) {
-        showNotification("No records available for this field.", "warning");
+        showNotification(
+          "No selected records available for this field.",
+          "warning"
+        );
         return;
       }
 
@@ -1219,10 +1221,7 @@ export default {
             { type: "success", timeout: 10000 }
           );
         } else {
-          const scopeLabel = selectedEligibleRows.length
-            ? "selected records"
-            : "all records";
-          showNotification(`Values applied to ${scopeLabel}.`, "success");
+          showNotification("Values applied to selected records.", "success");
         }
       } catch (error) {
         this.handleApiError(error, `Failed to apply ${field}.`);
