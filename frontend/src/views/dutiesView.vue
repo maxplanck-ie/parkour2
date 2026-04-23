@@ -10,7 +10,7 @@
           style="display: block"
         />
       </div>
-      <div class="header-title" style="display: inline">Manage Duties</div>
+      <div class="header-title" style="display: inline" data-testid="duties-page-title">Manage Duties</div>
     </div>
     <div class="duties-body">
       <div class="table-container duties-table-panel">

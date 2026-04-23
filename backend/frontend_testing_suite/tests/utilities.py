@@ -40,4 +40,4 @@ def visit_vue_page(page: Page, relative_path: str):
     # Ensure we never end up with double slashes when callers include them.
     relative_path = relative_path.lstrip("/")
     page.goto(f"http://{hostName}:9980/vue/{relative_path}")
-    page.wait_for_load_state("load")
+    page.wait_for_load_state("networkidle")
