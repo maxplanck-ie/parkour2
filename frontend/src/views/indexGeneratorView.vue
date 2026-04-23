@@ -938,6 +938,23 @@ export default {
         .join(" | ");
       showNotification(`${prefix}: ${details}`, "warning");
     },
+    isLikelyOverlapGenerationError(error, duplicateGroups = []) {
+      if (error?.response?.status !== 400 || !duplicateGroups.length) {
+        return false;
+      }
+
+      const serverMessage = String(
+        error?.response?.data?.message || error?.response?.data?.detail || ""
+      ).toLowerCase();
+
+      if (!serverMessage) {
+        return true;
+      }
+
+      return /overlap|duplicate|already\s*assigned|collision|conflict/.test(
+        serverMessage
+      );
+    },
     rowPairCompatibility(first, row) {
       if (String(first.read_length || "") !== String(row.read_length || "")) {
         return false;
@@ -1175,6 +1192,11 @@ export default {
       }
     },
     handleApiError(error, fallbackMessage) {
+      if (error?.response?.status === 403) {
+        handleError(error);
+        return;
+      }
+
       const message =
         error?.response?.data?.message ||
         error?.response?.data?.detail ||
@@ -1182,7 +1204,10 @@ export default {
       if (message) {
         showNotification(message, "error");
       }
-      handleError(error);
+
+      if (!error?.response) {
+        handleError(error);
+      }
     },
     buildReadLengthUndoEntries(rows) {
       return rows.map((row) => ({
@@ -1576,12 +1601,14 @@ export default {
         });
       } catch (error) {
         const duplicateGroups = this.getDuplicateGroups();
-        if (duplicateGroups.length) {
+        if (this.isLikelyOverlapGenerationError(error, duplicateGroups)) {
           this.notifyDuplicateGroups(
             duplicateGroups,
-            "Potential overlap in fixed/selected index pairs"
+            "Overlapping index pairs detected"
           );
+          return;
         }
+
         this.handleApiError(error, "Index generation failed.");
       }
     },
