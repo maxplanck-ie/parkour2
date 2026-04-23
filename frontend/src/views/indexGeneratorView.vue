@@ -1,16 +1,55 @@
 <template>
   <div class="parent-container index-generator-page">
     <div class="header">
-      <div class="header-logo" style="display: inline; margin-right: 10px">
-        <img
-          :src="iconIndexGeneratorHeader"
-          alt="Index Generator"
-          width="42"
-          height="42"
-          style="display: block"
-        />
+      <div class="header-left">
+        <div class="header-logo" style="display: inline; margin-right: 10px">
+          <img
+            :src="iconIndexGeneratorHeader"
+            alt="Index Generator"
+            width="42"
+            height="42"
+            style="display: block"
+          />
+        </div>
+        <div class="header-title">Index Generator</div>
       </div>
-      <div class="header-title">Index Generator</div>
+
+      <div class="header-center">
+        <div class="header-pool-size-controls">
+          <select
+            id="index-generator-pool-multiplier"
+            class="pool-size-select"
+            :value="selectedPoolMultiplier"
+            @change="onPoolMultiplierChange($event.target.value)"
+          >
+            <option :value="''">Multiplier</option>
+            <option
+              v-for="multiplier in poolMultiplierOptions"
+              :key="`multiplier-${multiplier}`"
+              :value="multiplier"
+            >
+              {{ multiplier }}
+            </option>
+          </select>
+
+          <select
+            id="index-generator-pool-size"
+            class="pool-size-select"
+            :value="selectedPoolActualSize"
+            :disabled="!selectedPoolMultiplier"
+            @change="onPoolActualSizeChange($event.target.value)"
+          >
+            <option :value="''">Size</option>
+            <option
+              v-for="size in filteredPoolSizeOptions"
+              :key="`size-${size}`"
+              :value="size"
+            >
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
 
       <div class="sticky-actions">
         <div class="header-generate-controls">
@@ -53,40 +92,6 @@
               :value="directionOption.value"
             >
               {{ directionOption.label }}
-            </option>
-          </select>
-        </div>
-        <div class="header-pool-size-controls">
-          <select
-            id="index-generator-pool-multiplier"
-            class="pool-size-select"
-            :value="selectedPoolMultiplier"
-            @change="onPoolMultiplierChange($event.target.value)"
-          >
-            <option :value="''">Multiplier</option>
-            <option
-              v-for="multiplier in poolMultiplierOptions"
-              :key="`multiplier-${multiplier}`"
-              :value="multiplier"
-            >
-              {{ multiplier }}
-            </option>
-          </select>
-
-          <select
-            id="index-generator-pool-size"
-            class="pool-size-select"
-            :value="selectedPoolActualSize"
-            :disabled="!selectedPoolMultiplier"
-            @change="onPoolActualSizeChange($event.target.value)"
-          >
-            <option :value="''">Size</option>
-            <option
-              v-for="size in filteredPoolSizeOptions"
-              :key="`size-${size}`"
-              :value="size"
-            >
-              {{ size }}
             </option>
           </select>
         </div>
@@ -1700,10 +1705,38 @@ export default {
   position: relative;
 }
 
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  height: 100%;
+  justify-self: start;
+  min-width: 0;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  height: 100%;
+  justify-self: center;
+}
+
 .sticky-actions {
   display: flex;
   align-items: center;
+  align-self: center;
+  height: 100%;
+  justify-self: end;
   gap: 8px;
+  padding: 0;
 }
 
 .header-pool-size-controls {
@@ -2158,6 +2191,21 @@ th {
 }
 
 @media (max-width: 980px) {
+  .header {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+  }
+
+  .header-left,
+  .header-center,
+  .sticky-actions {
+    justify-self: start;
+  }
+
+  .sticky-actions {
+    flex-wrap: wrap;
+  }
+
   .tables-wrap {
     flex-direction: column;
   }
