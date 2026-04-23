@@ -641,15 +641,9 @@
                       contains the linked metadata graph for the export.
                     </li>
                     <li>
-                      Use
-                      <a
-                        href="https://novacrate.datamanager.kit.edu/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        ><strong>RO-Crate Viewer</strong></a
-                      >
-                      if you want to inspect the JSON-LD in a visual tool
-                      instead of reading the raw file directly.
+                      Use the built-in <strong>RO-Crate Viewer</strong> button
+                      below if you want to inspect the ZIP in Parkour instead
+                      of reading the raw JSON-LD file directly.
                     </li>
                     <li>
                       Use
@@ -746,9 +740,10 @@
         <div class="rocrate-footer-links">
           <a
             class="file-upload-label rocrate-footer-link"
-            href="https://novacrate.datamanager.kit.edu/"
+            :href="roCrateViewerHref"
             target="_blank"
             rel="noopener noreferrer"
+            @click="close"
           >
             <font-awesome-icon icon="fa-solid fa-desktop" />
             RO-Crate Viewer
@@ -1029,6 +1024,9 @@ export default {
         return "Select at least one information section to include in the RO-Crate.";
       }
       return "";
+    },
+    roCrateViewerHref() {
+      return this.$router.resolve("/ro-crate-viewer").href;
     }
   },
   mounted() {
