@@ -5,8 +5,14 @@
 
 - ...
 - Support to unload pools from flowcells.
-- Added django-error-mail-dedup extension to avoid frontend retry storms.
 - Added a first draft of porting Index Generator to VueJS.
+
+
+26.04.23
+========
+
+- Many small fixes and changes, e.g. added Organism column in L/S view.
+- Added django-error-mail-dedup extension to avoid frontend retry storms.
 - Fixed both db_data/ and report/ URLs that were broken since we renamed to removed_ some fields.
 
 
