@@ -102,7 +102,7 @@ set-base:
 
 clean:
 	@#docker compose exec parkour2-django rm -f backend/logs/*.log
-	@$(MAKE) set-base hardreset-caddyfile-prod disable-explorer > /dev/null
+	@$(MAKE) set-base hardreset-caddyfile-prod hardreset-frontend-dockerfile disable-explorer > /dev/null
 	@test -e ./misc/parkour.env.ignore && git checkout ./misc/parkour.env || :
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
@@ -137,6 +137,9 @@ set-dev: hardreset-caddyfile-dev
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 hardreset-caddyfile: hardreset-caddyfile-prod
+
+hardreset-frontend-dockerfile:
+	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 
 hardreset-caddyfile-prod:
 	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue-assets/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
