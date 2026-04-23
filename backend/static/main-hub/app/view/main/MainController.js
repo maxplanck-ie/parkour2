@@ -20,12 +20,12 @@ Ext.define("MainHub.view.main.MainController", {
     requests: "libraries-vue",
     libraries: "libraries-vue",
     "incoming-libraries": "incoming-libraries-vue",
-    indexgenerator: "index-generator",
-    "index-generator-vue": "index-generator",
+    "index-generator": "index-generator-vue",
+    indexgenerator: "index-generator-vue",
     preparation: "library-preparation-vue",
     "library-preparation": "library-preparation-vue",
     pooling: "pooling-vue",
-    "flowcells-vue": "flowcells"
+    flowcells: "flowcells-vue"
   },
 
   onMainViewRender: function () {
