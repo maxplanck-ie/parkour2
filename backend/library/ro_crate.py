@@ -139,13 +139,19 @@ def _extract_model_fields(instance, prefix=""):
     data = {}
     for field in instance._meta.concrete_fields:
         field_name = field.name
-        if field_name.startswith("removed_") or field_name == "archived":
+        if field_name == "archived":
             continue
+        exported_field_name = (
+            field_name[len("removed_") :] if field_name.startswith("removed_") else field_name
+        )
         try:
             value = field.value_from_object(instance)
         except Exception:  # pragma: no cover - defensive
             continue
-        data[f"{prefix}{field_name}"] = value
+        target_key = f"{prefix}{exported_field_name}"
+        if target_key in data:
+            continue
+        data[target_key] = value
     return data
 
 

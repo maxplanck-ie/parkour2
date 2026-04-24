@@ -19,19 +19,6 @@ function normalizeTypes(value) {
     .filter(Boolean);
 }
 
-function entityLabel(entity) {
-  if (!entity) return "Unknown entity";
-  return (
-    entity.name ||
-    entity.title ||
-    entity.identifier ||
-    entity.alternateName ||
-    entity.description ||
-    entity["@id"] ||
-    "Unnamed entity"
-  );
-}
-
 function entityDescription(entity) {
   if (!entity) return "";
   const descriptionValue = entity.description;
@@ -92,15 +79,6 @@ function inferMimeType(name = "") {
   if (lower.endsWith(".svg")) return "image/svg+xml";
   if (lower.endsWith(".pdf")) return "application/pdf";
   return "application/octet-stream";
-}
-
-function isPreviewableMimeType(mimeType = "") {
-  return (
-    mimeType.startsWith("text/") ||
-    mimeType.startsWith("image/") ||
-    mimeType === "application/json" ||
-    mimeType === "application/pdf"
-  );
 }
 
 function isDataEntity(entity) {
@@ -239,7 +217,6 @@ function normalizeArchiveFiles(zip) {
         size: entry._data?.uncompressedSize || 0,
         sizeLabel: formatBytes(entry._data?.uncompressedSize || 0),
         mimeType,
-        previewable: isPreviewableMimeType(mimeType),
         zipEntry: entry
       };
     });
@@ -286,52 +263,16 @@ function createBacklinkIndex(graph) {
   return backlinkMap;
 }
 
-function createPropertyRows(entity, entityMap) {
-  return Object.entries(entity)
-    .filter(([key]) => key !== "@id" && key !== "@type")
-    .map(([key, value]) => {
-      const references = [...extractReferenceIds(value)];
-      const isReferenceOnly =
-        references.length > 0 &&
-        (Array.isArray(value) || isPlainObject(value)) &&
-        JSON.stringify(value).includes('"@id"');
-
-      if (references.length > 0 && isReferenceOnly) {
-        return {
-          key,
-          kind: references.length > 1 ? "reference-list" : "reference",
-          value: references.map((referenceId) => ({
-            id: referenceId,
-            label: entityLabel(entityMap[referenceId] || { "@id": referenceId })
-          }))
-        };
-      }
-
-      if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-        return { key, kind: "scalar", value };
-      }
-
-      if (Array.isArray(value) && value.every((item) => !isPlainObject(item))) {
-        return { key, kind: "list", value };
-      }
-
-      return { key, kind: "json", value };
-    });
-}
-
 function createStats(graph, sections, archiveFiles) {
   const rootDataset = graph.find((entity) => entity["@id"] === ROOT_DATASET_ID) || null;
-  const profileTarget = toArray(rootDataset?.conformsTo).find((entry) => entry?.["@id"]);
 
   return {
-    rootName: entityLabel(rootDataset),
     description: entityDescription(rootDataset),
     entityCount: graph.length,
     sectionCount: sections.length,
     archiveFileCount: archiveFiles.files.length,
     referencedFileCount: sections.find((section) => section.id === "data")?.entityIds
       .length || 0,
-    profileLabel: profileTarget?.["@id"] || "",
     rootDatasetId: rootDataset?.["@id"] || ROOT_DATASET_ID
   };
 }
@@ -340,7 +281,14 @@ export async function parseRoCrateSource(file) {
   const lowerName = String(file?.name || "").toLowerCase();
 
   if (lowerName.endsWith(".zip")) {
-    const zip = await JSZip.loadAsync(file);
+    let zip;
+    try {
+      zip = await JSZip.loadAsync(file);
+    } catch {
+      throw new Error(
+        "The uploaded ZIP file could not be opened. Upload a valid RO-Crate ZIP archive."
+      );
+    }
     const archiveFiles = normalizeArchiveFiles(zip);
     const metadataFile =
       archiveFiles.find((entry) => entry.path === METADATA_FILE_NAME) ||
@@ -353,7 +301,14 @@ export async function parseRoCrateSource(file) {
     }
 
     const metadataText = await metadataFile.zipEntry.async("string");
-    const roCrate = JSON.parse(metadataText);
+    let roCrate;
+    try {
+      roCrate = JSON.parse(metadataText);
+    } catch {
+      throw new Error(
+        "ro-crate-metadata.json inside the ZIP is not valid JSON."
+      );
+    }
     return buildRoCrateModel({
       file,
       roCrate,
@@ -364,7 +319,14 @@ export async function parseRoCrateSource(file) {
 
   if (lowerName.endsWith(".json") || lowerName.endsWith(".jsonld")) {
     const metadataText = await file.text();
-    const roCrate = JSON.parse(metadataText);
+    let roCrate;
+    try {
+      roCrate = JSON.parse(metadataText);
+    } catch {
+      throw new Error(
+        "The uploaded JSON-LD file is not valid JSON."
+      );
+    }
     return buildRoCrateModel({
       file,
       roCrate,
@@ -404,18 +366,6 @@ function buildRoCrateModel({ file, roCrate, archiveFiles, zip }) {
 
   const sections = buildSections(graph, archiveModel);
   const backlinkMap = createBacklinkIndex(graph);
-  const entityCards = {};
-  graph.forEach((entity) => {
-    entityCards[entity["@id"]] = {
-      id: entity["@id"],
-      label: entityLabel(entity),
-      description: entityDescription(entity),
-      types: normalizeTypes(entity["@type"]),
-      category: getCategoryKey(entity),
-      properties: createPropertyRows(entity, entityMap),
-      fileEntry: archiveFilesById[entity["@id"]] || null
-    };
-  });
 
   return {
     source: {
@@ -427,52 +377,9 @@ function buildRoCrateModel({ file, roCrate, archiveFiles, zip }) {
     roCrate,
     graph,
     entityMap,
-    entityCards,
     backlinkMap,
-    sections,
     stats: createStats(graph, sections, archiveModel),
     archive: archiveModel,
     zip
   };
 }
-
-export async function loadArchivePreview(model, archiveId) {
-  const archiveEntry = model?.archive?.byId?.[archiveId];
-  if (!archiveEntry?.zipEntry) {
-    throw new Error("This file is not available in the uploaded archive.");
-  }
-
-  const mimeType = archiveEntry.mimeType || inferMimeType(archiveEntry.path);
-  if (!isPreviewableMimeType(mimeType)) {
-    return {
-      mode: "download",
-      mimeType,
-      name: archiveEntry.name
-    };
-  }
-
-  if (mimeType.startsWith("image/") || mimeType === "application/pdf") {
-    const blob = await archiveEntry.zipEntry.async("blob");
-    return {
-      mode: mimeType === "application/pdf" ? "pdf" : "image",
-      mimeType,
-      name: archiveEntry.name,
-      objectUrl: URL.createObjectURL(blob)
-    };
-  }
-
-  const text = await archiveEntry.zipEntry.async("string");
-  return {
-    mode: "text",
-    mimeType,
-    name: archiveEntry.name,
-    text
-  };
-}
-
-export function cleanupArchivePreview(preview) {
-  if (preview?.objectUrl) {
-    URL.revokeObjectURL(preview.objectUrl);
-  }
-}
-

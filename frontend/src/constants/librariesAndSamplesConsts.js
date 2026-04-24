@@ -156,8 +156,8 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${staffActions}
-      <div title="Export RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
-        <img class="group-action-icon-img icon-24" src="${iconDownloadROCrate}" alt="Export RO-Crate" />
+      <div title="Export RO-Crate: Comprehensive Parkour metadata" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
+        <img class="group-action-icon-img icon-24" src="${iconDownloadROCrate}" alt="Export RO-Crate: Comprehensive Parkour metadata" />
       </div>
       <span class="group-action-separator"></span>
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">

@@ -564,6 +564,10 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
     def test_sample_export_keeps_model_and_mv_fields(self, mock_library_objects, mock_sample_objects):
         mock_library_objects.filter.return_value = _MockQuerySet()
         sample = create_sample("crate-sample")
+        sample.removed_amplification_cycles = 11
+        sample.removed_equal_representation_nucleotides = True
+        sample.removed_rna_quality = 7.3
+        sample.save()
         self.request.samples.add(sample)
         request_file = FileRequest.objects.create(name="req.txt")
         request_file.file.save("req.txt", ContentFile(b"ro-crate test file"), save=True)
@@ -628,6 +632,14 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         comment_names = self._comment_names(sample_entry)
         self.assertIn("sample_db_name", comment_names)
         self.assertIn("sample_db_barcode", comment_names)
+        self.assertIn("sample_db_amplification_cycles", comment_names)
+        self.assertIn("sample_db_equal_representation_nucleotides", comment_names)
+        self.assertIn("sample_db_rna_quality", comment_names)
+        self.assertNotIn("sample_db_removed_amplification_cycles", comment_names)
+        self.assertNotIn(
+            "sample_db_removed_equal_representation_nucleotides", comment_names
+        )
+        self.assertNotIn("sample_db_removed_rna_quality", comment_names)
         self.assertIn("sample_mv_analysis_type_name", comment_names)
         self.assertIn("sample_mv_pool_names", comment_names)
         self.assertIn("sample_mv_sequencer_names", comment_names)
@@ -696,6 +708,11 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
     def test_library_export_keeps_model_and_mv_fields(self, mock_library_objects, mock_sample_objects):
         mock_sample_objects.filter.return_value = _MockQuerySet()
         library = create_library("crate-library")
+        library.removed_amplification_cycles = 6
+        library.removed_equal_representation_nucleotides = True
+        library.removed_qpcr_result = 1.2
+        library.removed_qpcr_result_facility = 2.4
+        library.save()
         self.request.libraries.add(library)
         Pooling.objects.create(library=library, concentration_c1=6.6, comment="library pool")
 
@@ -742,7 +759,22 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
         library_entry = self._graph_entry(payload, f"#library-material-{library.pk}")
         self.assertEqual(library_entry.get("identifier"), library.barcode)
-        self.assertIn("library_db_name", self._comment_names(library_entry))
+        library_comment_names = self._comment_names(library_entry)
+        self.assertIn("library_db_name", library_comment_names)
+        self.assertIn("library_db_amplification_cycles", library_comment_names)
+        self.assertIn("library_db_equal_representation_nucleotides", library_comment_names)
+        self.assertIn("library_db_qpcr_result", library_comment_names)
+        self.assertIn("library_db_qpcr_result_facility", library_comment_names)
+        self.assertNotIn("library_db_removed_amplification_cycles", library_comment_names)
+        self.assertNotIn(
+            "library_db_removed_equal_representation_nucleotides",
+            library_comment_names,
+        )
+        self.assertNotIn("library_db_removed_qpcr_result", library_comment_names)
+        self.assertNotIn(
+            "library_db_removed_qpcr_result_facility",
+            library_comment_names,
+        )
 
         process_entry = self._graph_entry(payload, f"#library-process-{library.pk}")
         process_comment_names = self._comment_names(process_entry)
