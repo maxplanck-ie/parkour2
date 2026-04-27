@@ -122,7 +122,11 @@ clearpy:  ## Removes some files, created by 'prod' deployment and owned by root.
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 	@#docker compose exec parkour2-vite find . -type d -name "dist" -exec /bin/rm -rf {} +;
 
-prod: down set-prod deploy-webapp deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod check-prod-tls deploy-webapp deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+
+check-prod-tls:
+	@test -e ./misc/cert.pem || { echo "ERROR: Missing TLS certificate: ./misc/cert.pem (required for 'make prod')."; exit 1; }
+	@test -e ./misc/key.pem || { echo "ERROR: Missing TLS private key: ./misc/key.pem (required for 'make prod')."; exit 1; }
 
 prod-ci: down set-prod deploy-webapp collect-static apply-migrations clean
 	@docker exec parkour2-django python manage.py check
