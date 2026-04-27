@@ -5,6 +5,7 @@ from common.utils import get_random_name
 from django.urls import reverse
 from django.utils import timezone
 from index_generator.tests import create_pool
+from library_sample_shared.models import ReadLength
 from library.tests import create_library
 from request.tests import create_request
 from sample.tests import create_sample
@@ -366,6 +367,137 @@ class TestFlowcell(BaseTestCase):
         self.assertFalse(data["success"])
         self.assertEqual(data["message"], "Invalid payload.")
         self.assertIn("All lanes must be loaded.", data["errors"]["lanes"])
+
+    def test_create_flowcell_duplicate_lane_names_not_allowed(self):
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        library1 = create_library(get_random_name(), 4)
+        library2 = create_library(get_random_name(), 4)
+
+        pool1 = create_pool(self.user, multiplier=1)
+        pool2 = create_pool(self.user, multiplier=1)
+        pool1.libraries.add(library1)
+        pool2.libraries.add(library2)
+
+        sequencer = create_sequencer(get_random_name(), lanes=2)
+
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": get_random_name(),
+                        "sequencer": sequencer.pk,
+                        "lanes": [
+                            {"name": "Lane 1", "pool_id": pool1.pk},
+                            {"name": "Lane 1", "pool_id": pool2.pk},
+                        ],
+                    }
+                )
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("Lane names must be unique.", response.json()["errors"]["lanes"])
+
+    def test_create_flowcell_rejects_not_ready_pool(self):
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        # status=3 means pool is not ready for flowcell loading
+        library = create_library(get_random_name(), 3)
+        pool = create_pool(self.user, multiplier=1)
+        pool.libraries.add(library)
+
+        sequencer = create_sequencer(get_random_name(), lanes=1)
+
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": get_random_name(),
+                        "sequencer": sequencer.pk,
+                        "lanes": [{"name": "Lane 1", "pool_id": pool.pk}],
+                    }
+                )
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue(
+            any(
+                "is not ready" in message
+                for message in response.json()["errors"]["lanes"]
+            )
+        )
+
+    def test_create_flowcell_rejects_mixed_read_lengths(self):
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        read_length_1 = ReadLength.objects.create(name="RL-1")
+        read_length_2 = ReadLength.objects.create(name="RL-2")
+
+        library1 = create_library(get_random_name(), 4, read_length=read_length_1)
+        library2 = create_library(get_random_name(), 4, read_length=read_length_2)
+
+        pool1 = create_pool(self.user, multiplier=1)
+        pool2 = create_pool(self.user, multiplier=1)
+        pool1.libraries.add(library1)
+        pool2.libraries.add(library2)
+
+        sequencer = create_sequencer(get_random_name(), lanes=2)
+
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": get_random_name(),
+                        "sequencer": sequencer.pk,
+                        "lanes": [
+                            {"name": "Lane 1", "pool_id": pool1.pk},
+                            {"name": "Lane 2", "pool_id": pool2.pk},
+                        ],
+                    }
+                )
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(
+            "Read Length must be the same for all pools on a flowcell.",
+            response.json()["errors"]["lanes"],
+        )
+
+    def test_create_flowcell_rejects_pool_exceeding_lane_capacity(self):
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        library = create_library(get_random_name(), 4)
+        pool = create_pool(self.user, multiplier=1, size=300)
+        pool.libraries.add(library)
+
+        sequencer = create_sequencer(get_random_name(), lanes=1, lane_capacity=200)
+
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": get_random_name(),
+                        "sequencer": sequencer.pk,
+                        "lanes": [{"name": "Lane 1", "pool_id": pool.pk}],
+                    }
+                )
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertTrue(
+            any(
+                "cannot fit on a lane with capacity" in message
+                for message in response.json()["errors"]["lanes"]
+            )
+        )
 
     def test_update_lane(self):
         """Ensure update lanes behaves correctly."""

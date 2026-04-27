@@ -91,14 +91,14 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         }
       },
       {
-        text: "Destroy Pool",
+        text: "Return to Pooling",
         margin: "5px",
         handler: function () {
           var store = grid.getStore();
           Ext.Msg.show({
-            title: "Destroy Pool",
+            title: "Return Pool to Pooling",
             message: Ext.String.format(
-              "Are you sure that you want to destroy the pool \"Pool_{0}\"? This will also clear the library preparation data for the libraries which did't reach the status 'Library Prepared'.",
+              "Are you sure that you want to return the pool \"Pool_{0}\" to Pooling? This removes the pool and sets its records back to Pooling state.",
               groupId
             ),
             buttons: Ext.Msg.YESNO,
@@ -107,7 +107,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
               if (btn === "yes") {
                 Ext.Ajax.request({
                   url: Ext.String.format(
-                    "api/pooling/{0}/destroy_pool/",
+                    "api/pooling/{0}/return_to_pooling/",
                     groupId
                   ),
                   method: "POST",
@@ -115,13 +115,19 @@ Ext.define("MainHub.view.pooling.PoolingController", {
                   success: function (response) {
                     Ext.getStore("Pooling").reload();
                     new Noty({
-                      text: "The pool has been successfully destroyed.",
+                      text: "The pool has been returned to Pooling successfully.",
                       type: "success"
                     }).show();
                   },
                   failure: function (response) {
+                    var errorMessage =
+                      response && response.responseText
+                        ? Ext.JSON.decode(response.responseText, true)
+                        : null;
                     new Noty({
-                      text: "An error occurred while destroying the pool.",
+                      text:
+                        (errorMessage && errorMessage.message) ||
+                        "An error occurred while returning the pool to Pooling.",
                       type: "error"
                     }).show();
                     console.error(response);

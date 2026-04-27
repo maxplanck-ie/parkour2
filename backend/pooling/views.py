@@ -8,7 +8,7 @@ from common.views import CsrfExemptSessionAuthentication
 from django.apps import apps
 from django.db import transaction
 from django.db.models import Prefetch, Q
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -212,37 +212,34 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         return Response({"success": True})
 
     @action(methods=["post"], detail=True)
-    def destroy_pool(self, request, pk=None):
-        """Backward-compatible alias for returning a pool to Pooling."""
-        return self._return_pool_to_pooling(pk)
-
-    @action(methods=["post"], detail=True)
     def return_to_pooling(self, request, pk=None):
         """Return a ready pool back to Pooling and remove the pool."""
         return self._return_pool_to_pooling(pk)
 
     def _return_pool_to_pooling(self, pool_id):
-        pool = get_object_or_404(
-            Pool.objects.filter(archived=False).prefetch_related(
-                "libraries", "samples"
-            ),
-            pk=pool_id,
-        )
-
-        # Safety guard: do not allow deleting pools that are already loaded
-        # on one or more lanes.
-        has_linked_lanes = Lane.objects.filter(pool=pool).exists()
-        if pool.loaded > 0 or has_linked_lanes:
-            return Response(
-                {
-                    "success": False,
-                    "message": "Pool is already loaded on at least one flowcell lane and cannot be returned to Pooling.",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
         try:
             with transaction.atomic():
+                pool = get_object_or_404(
+                    Pool.objects.select_for_update()
+                    .filter(archived=False)
+                    .prefetch_related("libraries", "samples"),
+                    pk=pool_id,
+                )
+
+                # Safety guard: do not allow deleting pools that are already
+                # loaded on one or more lanes.
+                has_linked_lanes = (
+                    Lane.objects.select_for_update().filter(pool=pool).exists()
+                )
+                if pool.loaded > 0 or has_linked_lanes:
+                    return Response(
+                        {
+                            "success": False,
+                            "message": "Pool is already loaded on at least one flowcell lane and cannot be returned to Pooling.",
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+
                 for matching_sample in pool.samples.all():
                     matching_sample.is_pooled = False
 
@@ -276,6 +273,8 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 },
                 status=status.HTTP_200_OK,
             )
+        except Http404:
+            raise
 
         except Exception:
             logger.exception("Failed to return pool %s to pooling", pool_id)
