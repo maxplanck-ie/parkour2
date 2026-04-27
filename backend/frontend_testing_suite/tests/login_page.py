@@ -59,7 +59,9 @@ def test_login_page(page: Page):
     passwordInput.fill(correctPassword)
     loginButton.click()
     utilities.visit_vue_page(page, "libraries_and_samples")
-    expect(page.get_by_test_id("libraries-header-title")).to_have_text(
-        "Libraries & Samples"
+    utilities.expect_page_header(
+        page,
+        "Libraries & Samples",
+        preferred_test_id="libraries-header-title",
     )
     expect(page.get_by_role("button", name="Add Request")).to_be_visible()
