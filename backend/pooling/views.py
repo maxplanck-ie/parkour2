@@ -9,6 +9,7 @@ from django.apps import apps
 from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -28,6 +29,7 @@ Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
 Pool = apps.get_model("index_generator", "Pool")
 LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
+Lane = apps.get_model("flowcell", "Lane")
 
 logger = logging.getLogger("db")
 
@@ -211,17 +213,37 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True)
     def destroy_pool(self, request, pk=None):
+        """Backward-compatible alias for returning a pool to Pooling."""
+        return self._return_pool_to_pooling(pk)
+
+    @action(methods=["post"], detail=True)
+    def return_to_pooling(self, request, pk=None):
+        """Return a ready pool back to Pooling and remove the pool."""
+        return self._return_pool_to_pooling(pk)
+
+    def _return_pool_to_pooling(self, pool_id):
+        pool = get_object_or_404(
+            Pool.objects.filter(archived=False).prefetch_related(
+                "libraries", "samples"
+            ),
+            pk=pool_id,
+        )
+
+        # Safety guard: do not allow deleting pools that are already loaded
+        # on one or more lanes.
+        has_linked_lanes = Lane.objects.filter(pool=pool).exists()
+        if pool.loaded > 0 or has_linked_lanes:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Pool is already loaded on at least one flowcell lane and cannot be returned to Pooling.",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
-            pool = Pool.objects.filter(archived=False, pk=pk)
-            serializer = PoolSerializer(pool, many=True, context=self.get_context(pool))
-            pool_records = list(itertools.chain(*serializer.data))
-
-            for pool_record in pool_records:
-                barcode = pool_record["barcode"]
-                matching_sample = Sample.objects.filter(barcode=barcode).last()
-                matching_library = Library.objects.filter(barcode=barcode).last()
-
-                if matching_sample:
+            with transaction.atomic():
+                for matching_sample in pool.samples.all():
                     matching_sample.is_pooled = False
 
                     if matching_sample.status == 2:
@@ -240,21 +262,30 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                         matching_sample.status = 2
                         matching_sample.save()
 
-                elif matching_library:
+                for matching_library in pool.libraries.all():
                     matching_library.status = 2
                     matching_library.is_pooled = False
                     matching_library.save()
 
-                else:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
+                pool.delete()
 
-            pool.delete()
+            return Response(
+                {
+                    "success": True,
+                    "message": "Pool returned to Pooling.",
+                },
+                status=status.HTTP_200_OK,
+            )
 
-            return Response(status=status.HTTP_200_OK)
-
-        except Exception as e:
-            logger.exception("Failed to destroy pool %s", pk)
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception:
+            logger.exception("Failed to return pool %s to pooling", pool_id)
+            return Response(
+                {
+                    "success": False,
+                    "message": "Failed to return pool to Pooling.",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
     @action(
         methods=["post"],

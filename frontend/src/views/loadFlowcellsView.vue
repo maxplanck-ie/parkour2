@@ -1593,7 +1593,7 @@ export default {
 
       this.confirmPopup = {
         title: "Return Pool to Pooling",
-        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This draft action currently destroys the pool and reverts its records back to Pooling state.`,
+        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This removes the pool and sets its records back to Pooling state.`,
         onConfirm: async () => {
           await this.returnPoolToPooling(pool);
         }
@@ -1612,7 +1612,7 @@ export default {
     async returnPoolToPooling(pool) {
       try {
         await axiosRef.post(
-          `${urlStringStart}/api/pooling/${pool.pk}/destroy_pool/`
+          `${urlStringStart}/api/pooling/${pool.pk}/return_to_pooling/`
         );
         this.removePoolAssignments(pool.pk);
         this.closeConfirmPopup();

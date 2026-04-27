@@ -2,6 +2,8 @@ import json
 
 from common.tests import BaseTestCase
 from common.utils import get_random_name
+from django.urls import reverse
+from flowcell.models import Flowcell, Lane, Sequencer
 from index_generator.models import Pool
 from index_generator.tests import create_pool
 from library.tests import create_library
@@ -371,3 +373,55 @@ class TestPooling(BaseTestCase):
         self.assertFalse(library.is_pooled)
         self.assertFalse(library.pool.exists())
         self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
+
+    def test_return_pool_to_pooling_action(self):
+        pooling_object = create_pooling_object(self.user, add_library=True)
+        library = pooling_object.library.__class__.objects.get(
+            pk=pooling_object.library.pk
+        )
+        pool = library.pool.get()
+
+        response = self.client.post(
+            reverse("pooling-return-to-pooling", kwargs={"pk": pool.pk})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        library.refresh_from_db()
+        self.assertEqual(library.status, 2)
+        self.assertFalse(library.is_pooled)
+        self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
+
+    def test_return_pool_to_pooling_rejects_loaded_pool(self):
+        pooling_object = create_pooling_object(self.user, add_library=True)
+        library = pooling_object.library.__class__.objects.get(
+            pk=pooling_object.library.pk
+        )
+        pool = library.pool.get()
+
+        sequencer = Sequencer.objects.create(
+            name=get_random_name(),
+            lanes=1,
+            lane_capacity=200,
+        )
+        flowcell = Flowcell.objects.create(
+            flowcell_id=get_random_name(),
+            sequencer=sequencer,
+        )
+        lane = Lane.objects.create(name="Lane 1", pool=pool)
+        flowcell.lanes.add(lane)
+
+        response = self.client.post(
+            reverse("pooling-return-to-pooling", kwargs={"pk": pool.pk})
+        )
+
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertFalse(data["success"])
+        self.assertIn("already loaded", data["message"])
+
+        pool.refresh_from_db()
+        library.refresh_from_db()
+        self.assertEqual(pool.loaded, 1)
+        self.assertTrue(library.is_pooled)
+        self.assertTrue(Pool.objects.filter(pk=pool.pk).exists())
