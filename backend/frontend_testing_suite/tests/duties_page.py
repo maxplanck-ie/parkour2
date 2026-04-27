@@ -21,7 +21,7 @@ def test_duties_page(page: Page):
     utilities.visit_vue_page(page, "duties")
     page.bring_to_front()
 
-    expect(page.get_by_text("Manage Duties")).to_be_visible()
+    expect(page.get_by_test_id("duties-page-title")).to_have_text("Manage Duties")
 
     # Pick the first available options; these are always present in fixtures.
     page.locator("select#facility").select_option(index=1)
