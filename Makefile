@@ -18,8 +18,8 @@ help: check-rootdir
 check-deploy-matrix:
 	@set -euo pipefail; \
 	echo "[1/6] Checking Makefile wiring..."; \
-	grep -q '^set-prod: hardreset-caddyfile-prod$$' Makefile || { echo 'FAIL: set-prod must depend on hardreset-caddyfile-prod'; exit 1; }; \
-	grep -q '^set-dev: hardreset-caddyfile-dev$$' Makefile || { echo 'FAIL: set-dev must depend on hardreset-caddyfile-dev'; exit 1; }; \
+	grep -q '^set-prod: .*hardreset-caddyfile-prod.*hardreset-nginx-server-prod' Makefile || { echo 'FAIL: set-prod must depend on caddy+nginx prod hardreset targets'; exit 1; }; \
+	grep -q '^set-dev: .*hardreset-caddyfile-dev.*hardreset-nginx-server-dev' Makefile || { echo 'FAIL: set-dev must depend on caddy+nginx dev hardreset targets'; exit 1; }; \
 	grep -q '^set-playwright: hardreset-caddyfile-prod$$' Makefile || { echo 'FAIL: set-playwright must depend on hardreset-caddyfile-prod'; exit 1; }; \
 	echo "[2/6] Checking frontend command defaults..."; \
 	grep -q '^CMD \["npm", "run", "start-prod"\]$$' frontend.Dockerfile || { echo 'FAIL: frontend.Dockerfile default CMD must be start-prod'; exit 1; }; \
@@ -41,7 +41,7 @@ check-rootdir: check-deploy-matrix
 		{ echo 'Makefile, and the corresponding compose YAML files, only work if parent directory is named "parkour2"'; \
 		exit 1; }
 
-set-prod: hardreset-caddyfile-prod
+set-prod: hardreset-caddyfile-prod hardreset-nginx-server-prod
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
@@ -102,7 +102,7 @@ set-base:
 
 clean:
 	@#docker compose exec parkour2-django rm -f backend/logs/*.log
-	@$(MAKE) set-base hardreset-caddyfile-prod hardreset-frontend-dockerfile disable-explorer > /dev/null
+	@$(MAKE) set-base hardreset-caddyfile-prod hardreset-nginx-server-prod hardreset-frontend-dockerfile disable-explorer > /dev/null
 	@test -e ./misc/parkour.env.ignore && git checkout ./misc/parkour.env || :
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
@@ -131,12 +131,18 @@ dev-easy: down set-dev deploy-webapp deploy-caddy collect-static clean  ## Deplo
 
 dev: down set-dev deploy-webapp deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
-set-dev: hardreset-caddyfile-dev
+set-dev: hardreset-caddyfile-dev hardreset-nginx-server-dev
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 hardreset-caddyfile: hardreset-caddyfile-prod
+
+hardreset-nginx-server-prod:
+	@sed -i -e 's#\(server parkour2-vite:\).*#\15173;#' misc/nginx-server.conf
+
+hardreset-nginx-server-dev:
+	@sed -i -e 's#\(server parkour2-vite:\).*#\15174;#' misc/nginx-server.conf
 
 hardreset-frontend-dockerfile:
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
