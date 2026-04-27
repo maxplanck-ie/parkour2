@@ -212,11 +212,6 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         return Response({"success": True})
 
     @action(methods=["post"], detail=True)
-    def destroy_pool(self, request, pk=None):
-        """Backward-compatible alias for returning a pool to Pooling."""
-        return self._return_pool_to_pooling(pk)
-
-    @action(methods=["post"], detail=True)
     def return_to_pooling(self, request, pk=None):
         """Return a ready pool back to Pooling and remove the pool."""
         return self._return_pool_to_pooling(pk)
