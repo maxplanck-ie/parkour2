@@ -60,7 +60,7 @@ jsonschema==4.26.0
     # via drf-spectacular
 jsonschema-specifications==2025.9.1
     # via jsonschema
-lxml==6.0.4
+lxml==6.1.0
     # via python-docx
 numpy==1.25.2 ; python_full_version < '3.12'
     # via
@@ -72,7 +72,7 @@ numpy==2.4.4 ; python_full_version >= '3.12'
     #   pandas
 openpyxl==3.1.5
     # via -r backend/requirements/base.in
-packaging==26.0
+packaging==26.2
     # via gunicorn
 pandas==2.3.3 ; python_full_version < '3.12'
     # via -r backend/requirements/base.in
@@ -80,7 +80,7 @@ pandas==3.0.2 ; python_full_version >= '3.12'
     # via -r backend/requirements/base.in
 pillow==12.2.0
     # via fpdf2
-psycopg2==2.9.11
+psycopg2==2.9.12
     # via -r backend/requirements/base.in
 python-dateutil==2.9.0.post0
     # via
@@ -112,7 +112,7 @@ typing-extensions==4.15.0
     # via
     #   python-docx
     #   referencing
-tzdata==2026.1 ; python_full_version < '3.12' or sys_platform == 'emscripten' or sys_platform == 'win32'
+tzdata==2026.2 ; python_full_version < '3.12' or sys_platform == 'emscripten' or sys_platform == 'win32'
     # via
     #   django
     #   pandas
