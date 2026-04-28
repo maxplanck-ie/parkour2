@@ -63,6 +63,7 @@
               :tableOptions="{
                 handleCellEdited: editDuty,
                 movableRows: true,
+                placeholder: 'No duties found for the selected filter.',
                 initialSort: [{ column: 'start_date', dir: 'asc' }]
               }"
             />
@@ -210,13 +211,13 @@ export default {
   data() {
     return {
       iconDutiesHeader,
-      dutiesList: null,
-      dutiesListBackup: null,
+      dutiesList: [],
+      dutiesListBackup: [],
       newDuty: {},
       userList: [],
       userListFiltered: [],
       columnsList: [],
-      selectedFilter: "ongoing"
+      selectedFilter: "all"
     };
   },
   setup() {},
