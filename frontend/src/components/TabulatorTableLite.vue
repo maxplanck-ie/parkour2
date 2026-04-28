@@ -166,9 +166,13 @@ export default {
         );
 
         this.tabulatorInstance.on("clipboardCopied", () => {
-          this.tableOptions.fakeLoadingStart();
+          if (this.tableOptions.fakeLoadingStart) {
+            this.tableOptions.fakeLoadingStart();
+          }
           this.refreshTable();
-          this.tableOptions.fakeLoadingStop();
+          if (this.tableOptions.fakeLoadingStop) {
+            this.tableOptions.fakeLoadingStop();
+          }
         });
 
         this.tabulatorInstance.on("groupClick", (e, group) => {
@@ -411,4 +415,3 @@ export default {
 Add VirtualDOM support
 Allow opening only 3 groups at a time
 -->
-
