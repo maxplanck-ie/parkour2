@@ -88,7 +88,7 @@ python-dateutil==2.9.0.post0
     #   pandas
 python-docx==1.2.0
     # via -r backend/requirements/base.in
-pytz==2026.1.post1 ; python_full_version < '3.12'
+pytz==2026.2 ; python_full_version < '3.12'
     # via pandas
 pyyaml==6.0.3
     # via drf-spectacular

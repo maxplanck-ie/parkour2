@@ -20,7 +20,7 @@
     "@fortawesome/vue-fontawesome": "3.2.0",
     "ag-grid-community": "34.1.2",
     "ag-grid-vue3": "34.1.2",
-    "axios": "1.15.2",
+    "axios": "1.16.0",
     "bootstrap": "5.3.8",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
@@ -40,9 +40,9 @@
     "@eslint/js": "10.0.1",
     "@vitejs/plugin-vue": "6.0.6",
     "@vitejs/plugin-vue-jsx": "5.1.5",
-    "eslint": "10.2.1",
+    "eslint": "10.3.0",
     "eslint-plugin-vue": "10.9.0",
-    "globals": "17.5.0",
+    "globals": "17.6.0",
     "vue-eslint-parser": "10.4.0",
     "vite": "8.0.10"
   }
