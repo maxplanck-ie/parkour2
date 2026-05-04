@@ -27,11 +27,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.42.96
+boto3==1.43.2
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.42.96
+botocore==1.43.2
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
@@ -210,7 +210,7 @@ fpdf2==2.8.7
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.4.0
+greenlet==3.5.0
     # via playwright
 gunicorn==25.3.0
     # via
@@ -256,7 +256,7 @@ ipython-pygments-lexers==1.1.1 ; python_full_version >= '3.11'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   ipython
-jedi==0.19.2
+jedi==0.20.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   ipython
@@ -319,7 +319,7 @@ numpy==2.4.4 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.32.0
+openai==2.33.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
@@ -343,7 +343,7 @@ pandas==3.0.2 ; python_full_version >= '3.12'
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
     #   -r backend/requirements/dev.in
-parso==0.8.6
+parso==0.8.7
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   jedi
@@ -356,7 +356,7 @@ pillow==12.2.0
     #   -c backend/requirements/3.10/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.58.0
+playwright==1.59.0
     # via pytest-playwright
 pluggy==1.6.0
     # via
@@ -438,7 +438,7 @@ python-docx==1.2.0
     #   -r backend/requirements/base.in
 python-slugify==8.0.4
     # via pytest-playwright
-pytz==2026.1.post1 ; python_full_version < '3.12'
+pytz==2026.2 ; python_full_version < '3.12'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   pandas
@@ -474,7 +474,7 @@ rpds-py==0.30.0
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-s3transfer==0.16.1
+s3transfer==0.17.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
@@ -567,7 +567,7 @@ urllib3==2.6.3
     #   -c backend/requirements/3.10/dev.txt
     #   botocore
     #   requests
-wcwidth==0.6.0
+wcwidth==0.7.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   prompt-toolkit
