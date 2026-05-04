@@ -946,8 +946,8 @@ export default {
           this.editGroupComment(groupValue);
           break;
 
-        case "destroyPool":
-          this.destroyPool(groupValue);
+        case "returnPoolToPooling":
+          this.returnPoolToPooling(groupValue);
           break;
       }
     },
@@ -1014,7 +1014,7 @@ export default {
         }
       });
     },
-    async destroyPool(groupValue) {
+    async returnPoolToPooling(groupValue) {
       const group = this.tabulatorInstance
         .getTable()
         .getGroups()
@@ -1032,16 +1032,19 @@ export default {
       }
 
       this.createPopupWindow(
-        "Destroy Pool",
-        `Are you sure you want to destroy the pool <span style="font-weight: bold">'${poolName}'</span>? This will also clear the library preparation data for the libraries which didn't reach the status 'Library Prepared'.`,
+        "Return Pool to Pooling",
+        `Are you sure you want to return the pool <span style="font-weight: bold">'${poolName}'</span> to Pooling? This removes the pool and sets its records back to Pooling state.`,
         [],
         async () => {
           try {
             await axiosRef.post(
-              `${urlStringStart}/api/pooling/${poolId}/destroy_pool/`
+              `${urlStringStart}/api/pooling/${poolId}/return_to_pooling/`
             );
 
-            showNotification("Pool destroyed successfully.", "success");
+            showNotification(
+              "Pool returned to Pooling successfully.",
+              "success"
+            );
             this.showPopupWindow = false;
             await this.getLibrariesSamples();
           } catch (error) {
@@ -1153,11 +1156,7 @@ export default {
         );
         saveAs(
           response.data,
-          buildExcelDownloadFilename(
-            "Pooling",
-            file.name,
-            response.data?.type
-          )
+          buildExcelDownloadFilename("Pooling", file.name, response.data?.type)
         );
       } catch (error) {
         showNotification("Error downloading file: " + error, "error");

@@ -1,7 +1,9 @@
 import itertools
+from collections import Counter
 from pprint import pprint
 
 from django.apps import apps
+from django.db import transaction
 from django.db.models import Q
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import (
@@ -247,54 +249,139 @@ class FlowcellSerializer(ModelSerializer):
                 }
             )
 
+        lane_errors = self._validate_lanes_for_sequencer(lanes, sequencer)
+        if lane_errors:
+            raise ValidationError({"lanes": lane_errors})
+
         internal_value.update({"lanes": lanes})
 
         return internal_value
 
+    def _get_pool_read_length_name(self, pool):
+        library_read_lengths = list(
+            pool.libraries.values_list("read_length__name", flat=True).distinct()
+        )
+        sample_read_lengths = list(
+            pool.samples.values_list("read_length__name", flat=True).distinct()
+        )
+        read_lengths = {
+            read_length_name
+            for read_length_name in library_read_lengths + sample_read_lengths
+            if read_length_name
+        }
+        if not read_lengths:
+            return None
+        if len(read_lengths) == 1:
+            return next(iter(read_lengths))
+        return "mixed"
+
+    def _is_pool_ready(self, pool):
+        libraries_statuses = [x.status for x in pool.libraries.all()]
+        samples_statuses = [x.status for x in pool.samples.all()]
+        statuses = list(libraries_statuses) + list(samples_statuses)
+        return bool(statuses) and statuses.count(4) == len(statuses)
+
+    def _validate_lanes_for_sequencer(self, lanes, sequencer):
+        errors = []
+
+        lane_names = [lane.get("name") for lane in lanes]
+        if len(lane_names) != len(set(lane_names)):
+            errors.append("Lane names must be unique.")
+
+        pool_ids = [lane.get("pool_id") for lane in lanes if lane.get("pool_id")]
+        if len(pool_ids) != len(lanes):
+            errors.append("Each lane must reference a pool.")
+            return errors
+
+        pools_by_id = Pool.objects.filter(archived=False, pk__in=pool_ids).in_bulk()
+        missing_pool_ids = sorted(set(pool_ids) - set(pools_by_id.keys()))
+        if missing_pool_ids:
+            errors.append(
+                "Some selected pools were not found or are archived: "
+                + ", ".join(map(str, missing_pool_ids))
+                + "."
+            )
+            return errors
+
+        pool_assignment_counts = Counter(pool_ids)
+        read_length_names = set()
+
+        for pool_id, lane_count in pool_assignment_counts.items():
+            pool = pools_by_id[pool_id]
+
+            if pool.size and pool.loaded + lane_count > pool.size.multiplier:
+                errors.append(
+                    f"Pool '{pool.name}' does not have enough remaining loads for the selected lanes."
+                )
+
+            if not self._is_pool_ready(pool):
+                errors.append(
+                    f"Pool '{pool.name}' is not ready and cannot be loaded on a flowcell."
+                )
+
+            if pool.size and pool.size.size > sequencer.lane_capacity:
+                errors.append(
+                    f"Pool '{pool.name}' cannot fit on a lane with capacity {sequencer.lane_capacity}."
+                )
+
+            pool_read_length_name = self._get_pool_read_length_name(pool)
+            if pool_read_length_name in (None, "mixed"):
+                errors.append(
+                    f"Pool '{pool.name}' has invalid read length information."
+                )
+            else:
+                read_length_names.add(pool_read_length_name)
+
+        if len(read_length_names) > 1:
+            errors.append("Read Length must be the same for all pools on a flowcell.")
+
+        return errors
+
     def create(self, validated_data):
         lanes = validated_data.pop("lanes")
-        instance = super().create(validated_data)
+        with transaction.atomic():
+            instance = super().create(validated_data)
 
-        # Create Lane objects and add them to the flowcell
-        lane_ids = []
-        for lane_dict in lanes:
-            lane = Lane(name=lane_dict["name"], pool_id=lane_dict["pool_id"])
-            lane.save()
-            lane_ids.append(lane.pk)
-        instance.lanes.add(*lane_ids)
+            # Create Lane objects and add them to the flowcell
+            lane_ids = []
+            for lane_dict in lanes:
+                lane = Lane(name=lane_dict["name"], pool_id=lane_dict["pool_id"])
+                lane.save()
+                lane_ids.append(lane.pk)
+            instance.lanes.add(*lane_ids)
 
-        pool_ids = list(
-            Lane.objects.all()
-            .filter(pk__in=lane_ids)
-            .values_list(
-                "pool",
-                flat=True,
-            )
-            .distinct()
-        )
-        pools = Pool.objects.filter(archived=False, pk__in=pool_ids)
-
-        # After creating a flowcell, update all pool's libraries' and
-        # samples' statuses if the pool is fully loaded
-        for pool in pools:
-            if pool.loaded == pool.size.multiplier:
-                pool.libraries.all().filter(status=4).update(status=5)
-                pool.samples.all().filter(status=4).update(status=5)
-
-        # When a Flowcell is loaded, save the all corresponding requests
-        libraries = Library.objects.filter(pool__in=pools)
-        samples = Sample.objects.filter(pool__in=pools)
-        requests = Request.objects.filter(
-            archived=False,
-            pk__in=set(
-                itertools.chain(
-                    libraries.values_list("request", flat=True).distinct(),
-                    samples.values_list("request", flat=True).distinct(),
+            pool_ids = list(
+                Lane.objects.all()
+                .filter(pk__in=lane_ids)
+                .values_list(
+                    "pool",
+                    flat=True,
                 )
-            ),
-        )
-        requests.update(sequenced=True)
-        instance.requests.add(*requests)
+                .distinct()
+            )
+            pools = Pool.objects.filter(archived=False, pk__in=pool_ids)
+
+            # After creating a flowcell, update all pool's libraries' and
+            # samples' statuses if the pool is fully loaded
+            for pool in pools:
+                if pool.loaded == pool.size.multiplier:
+                    pool.libraries.all().filter(status=4).update(status=5)
+                    pool.samples.all().filter(status=4).update(status=5)
+
+            # When a Flowcell is loaded, save the all corresponding requests
+            libraries = Library.objects.filter(pool__in=pools)
+            samples = Sample.objects.filter(pool__in=pools)
+            requests = Request.objects.filter(
+                archived=False,
+                pk__in=set(
+                    itertools.chain(
+                        libraries.values_list("request", flat=True).distinct(),
+                        samples.values_list("request", flat=True).distinct(),
+                    )
+                ),
+            )
+            requests.update(sequenced=True)
+            instance.requests.add(*requests)
 
         return instance
 

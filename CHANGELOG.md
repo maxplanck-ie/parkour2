@@ -4,8 +4,8 @@
 ========
 
 - ...
+- New VueJS user interface available for Index Generator and Load Flowcells. These two were the last submodules that were pending.
 - Support to unload pools from flowcells.
-- Added a first draft of porting Index Generator to VueJS.
 
 
 26.04.23

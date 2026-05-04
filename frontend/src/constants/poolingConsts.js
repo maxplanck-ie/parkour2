@@ -23,11 +23,11 @@ export function poolingGroupHeader(
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <div>
     <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
-    <span style="font-weight: normal; font-size: 12px; margin-left: 1px; color: black;">
-        | Pool Size: ${totalDepth}M reads (${pool_size}) ${
-          comment ? "| Comment: " + comment : ""
-        }
-    </span>
+  <span style="font-weight: normal; font-size: 12px; margin-left: 1px; color: black;">
+    | Pool Size: ${totalDepth}M reads (${pool_size}) ${
+      comment ? "| Comment: " + comment : ""
+    }
+  </span>
   </div>
 </div>
     <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
@@ -46,8 +46,8 @@ export function poolingGroupHeader(
       <div title="Edit Comment" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'editComment')">
         <img src="${iconEditComment}" alt="Edit Comment" width="24" height="24" />
       </div>
-      <div title="Destroy Pool" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'destroyPool')">
-        <img src="${iconDestroyPool}" alt="Destroy Pool" width="24" height="24" />
+      <div title="Return Pool to Pooling" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'returnPoolToPooling')">
+        <img src="${iconDestroyPool}" alt="Return Pool to Pooling" width="24" height="24" />
       </div>
     </div>
   </div>
@@ -368,7 +368,7 @@ export function poolingColumnDefs(getTabulatorInstance) {
     allowApplyToAll: true,
     blockActionsOnDisabledCells: true,
     overrideExisting: true,
-    skipFields: new Set(["selected"]),
+    skipFields: new Set(["selected"])
   });
 }
 

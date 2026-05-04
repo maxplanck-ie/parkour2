@@ -1,16 +1,60 @@
 <template>
   <div class="parent-container index-generator-page">
+    <div v-if="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Loading <span style="font-weight: bold">Index Generator</span>...</p>
+    </div>
+
     <div class="header">
-      <div class="header-logo" style="display: inline; margin-right: 10px">
-        <img
-          :src="iconIndexGeneratorHeader"
-          alt="Index Generator"
-          width="42"
-          height="42"
-          style="display: block"
-        />
+      <div class="header-left">
+        <div class="header-logo" style="display: inline; margin-right: 10px">
+          <img
+            :src="iconIndexGeneratorHeader"
+            alt="Index Generator"
+            width="42"
+            height="42"
+            style="display: block"
+          />
+        </div>
+        <div class="header-title">Index Generator</div>
       </div>
-      <div class="header-title">Index Generator</div>
+
+      <div class="header-center">
+        <div class="header-pool-size-controls">
+          <select
+            id="index-generator-pool-multiplier"
+            class="pool-size-select"
+            :value="selectedPoolMultiplier"
+            @change="onPoolMultiplierChange($event.target.value)"
+          >
+            <option :value="''">Multiplier</option>
+            <option
+              v-for="multiplier in poolMultiplierOptions"
+              :key="`multiplier-${multiplier}`"
+              :value="multiplier"
+            >
+              {{ multiplier }}
+            </option>
+          </select>
+
+          <select
+            id="index-generator-pool-size"
+            class="pool-size-select"
+            :value="selectedPoolActualSize"
+            :disabled="!selectedPoolMultiplier"
+            @change="onPoolActualSizeChange($event.target.value)"
+          >
+            <option :value="''">Size</option>
+            <option
+              v-for="size in filteredPoolSizeOptions"
+              :key="`size-${size}`"
+              :value="size"
+            >
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
 
       <div class="sticky-actions">
         <div class="header-generate-controls">
@@ -56,40 +100,6 @@
             </option>
           </select>
         </div>
-        <div class="header-pool-size-controls">
-          <select
-            id="index-generator-pool-multiplier"
-            class="pool-size-select"
-            :value="selectedPoolMultiplier"
-            @change="onPoolMultiplierChange($event.target.value)"
-          >
-            <option :value="''">Multiplier</option>
-            <option
-              v-for="multiplier in poolMultiplierOptions"
-              :key="`multiplier-${multiplier}`"
-              :value="multiplier"
-            >
-              {{ multiplier }}
-            </option>
-          </select>
-
-          <select
-            id="index-generator-pool-size"
-            class="pool-size-select"
-            :value="selectedPoolActualSize"
-            :disabled="!selectedPoolMultiplier"
-            @change="onPoolActualSizeChange($event.target.value)"
-          >
-            <option :value="''">Size</option>
-            <option
-              v-for="size in filteredPoolSizeOptions"
-              :key="`size-${size}`"
-              :value="size"
-            >
-              {{ size }}
-            </option>
-          </select>
-        </div>
         <button
           class="header-button"
           :disabled="!canGenerate"
@@ -119,54 +129,18 @@
         >
           <div class="panel-heading-primary">
             <h3>Libraries and Samples for Pooling</h3>
-            <div class="panel-selection-actions">
-              <button
-                class="group-action-button compact"
-                type="button"
-                title="Select All"
-                @click="selectAllRecords"
-              >
-                <img
-                  :src="iconSelectAll"
-                  alt="Select All"
-                  width="20"
-                  height="20"
-                />
-              </button>
-              <button
-                class="group-action-button compact"
-                type="button"
-                title="Deselect All"
-                @click="deselectAllRecords"
-              >
-                <img
-                  :src="iconDeselectAll"
-                  alt="Deselect All"
-                  width="20"
-                  height="20"
-                />
-              </button>
-            </div>
           </div>
           <div class="panel-heading-actions">
-            <span class="panel-controls-separator" aria-hidden="true">|</span>
             <div
               class="apply-all-controls"
               :class="{ compact: isLeftPanelNarrow }"
             >
-              <label class="apply-all-label">Apply to all</label>
-              <select
-                :value="applyAllScope"
-                @change="applyAllScope = $event.target.value"
-              >
-                <option value="all">All records</option>
-                <option value="selected">Selected only</option>
-              </select>
+              <label class="apply-all-label">Apply to selected records</label>
               <select
                 :value="applyAllReadLength"
                 @change="applyFieldToAll('read_length', $event.target.value)"
               >
-                <option :value="''">Length</option>
+                <option :value="''">Read Length</option>
                 <option
                   v-for="readLength in readLengths"
                   :key="`apply-read-length-${readLength.id}`"
@@ -511,17 +485,17 @@ export default {
       activePanelResize: null,
       applyAllReadLength: "",
       applyAllIndexType: "",
-      applyAllScope: "all",
       isLeftPanelCollapsed: false,
       defaultLeftPanelWidthPercent: 50,
       leftPanelWidthPercent: 50,
       selectedStartCoordinate: "A1",
-      selectedDirection: "right",
+      selectedDirection: "down",
       startCoordinateOptions: [],
+      loading: true,
       startCoordinatesLoading: false,
       directionOptions: [
-        { value: "right", label: "Row-wise" },
         { value: "down", label: "Column-wise" },
+        { value: "right", label: "Row-wise" },
         { value: "diagonal", label: "Diagonal" }
       ]
     };
@@ -715,6 +689,7 @@ export default {
   },
   methods: {
     async loadInitialData() {
+      this.loading = true;
       try {
         const [
           recordsResponse,
@@ -739,6 +714,7 @@ export default {
       } catch (error) {
         handleError(error);
       } finally {
+        this.loading = false;
         this.$nextTick(() => {
           this.initResizableTables();
         });
@@ -970,6 +946,23 @@ export default {
         .join(" | ");
       showNotification(`${prefix}: ${details}`, "warning");
     },
+    isLikelyOverlapGenerationError(error, duplicateGroups = []) {
+      if (error?.response?.status !== 400 || !duplicateGroups.length) {
+        return false;
+      }
+
+      const serverMessage = String(
+        error?.response?.data?.message || error?.response?.data?.detail || ""
+      ).toLowerCase();
+
+      if (!serverMessage) {
+        return true;
+      }
+
+      return /overlap|duplicate|already\s*assigned|collision|conflict/.test(
+        serverMessage
+      );
+    },
     rowPairCompatibility(first, row) {
       if (String(first.read_length || "") !== String(row.read_length || "")) {
         return false;
@@ -1037,8 +1030,25 @@ export default {
         .trim()
         .toUpperCase();
     },
+    sortDirectionOptions(options) {
+      if (!Array.isArray(options)) {
+        return [];
+      }
+
+      const order = {
+        down: 0,
+        right: 1,
+        diagonal: 2
+      };
+
+      return [...options].sort((a, b) => {
+        const aOrder = order[a?.value] ?? Number.MAX_SAFE_INTEGER;
+        const bOrder = order[b?.value] ?? Number.MAX_SAFE_INTEGER;
+        return aOrder - bOrder;
+      });
+    },
     onDirectionChange(value) {
-      this.selectedDirection = value || "right";
+      this.selectedDirection = value || "down";
     },
     async refreshStartCoordinateOptions() {
       if (!this.requiresStrictStartCoordinate) {
@@ -1070,7 +1080,9 @@ export default {
         this.startCoordinateOptions = response.data?.coordinates || [];
 
         if (Array.isArray(response.data?.direction_options)) {
-          this.directionOptions = response.data.direction_options;
+          this.directionOptions = this.sortDirectionOptions(
+            response.data.direction_options
+          );
         }
 
         if (!this.startCoordinateOptions.length) {
@@ -1090,7 +1102,9 @@ export default {
           (item) => item.value
         );
         if (!allowedDirections.includes(this.selectedDirection)) {
-          this.selectedDirection = allowedDirections[0] || "right";
+          this.selectedDirection = allowedDirections.includes("down")
+            ? "down"
+            : allowedDirections[0] || "down";
         }
       } catch (error) {
         this.startCoordinateOptions = [];
@@ -1112,7 +1126,7 @@ export default {
       }
 
       const targetRows = this.records.filter((row) => {
-        if (this.applyAllScope === "selected" && !row.selected) {
+        if (!row.selected) {
           return false;
         }
 
@@ -1124,9 +1138,7 @@ export default {
 
       if (!targetRows.length) {
         showNotification(
-          this.applyAllScope === "selected"
-            ? "No selected records available for this field."
-            : "No records available for this field.",
+          "No selected records available for this field.",
           "warning"
         );
         return;
@@ -1175,7 +1187,7 @@ export default {
             { type: "success", timeout: 10000 }
           );
         } else {
-          showNotification("Values applied to all records.", "success");
+          showNotification("Values applied to selected records.", "success");
         }
       } catch (error) {
         this.handleApiError(error, `Failed to apply ${field}.`);
@@ -1188,6 +1200,11 @@ export default {
       }
     },
     handleApiError(error, fallbackMessage) {
+      if (error?.response?.status === 403) {
+        handleError(error);
+        return;
+      }
+
       const message =
         error?.response?.data?.message ||
         error?.response?.data?.detail ||
@@ -1195,7 +1212,10 @@ export default {
       if (message) {
         showNotification(message, "error");
       }
-      handleError(error);
+
+      if (!error?.response) {
+        handleError(error);
+      }
     },
     buildReadLengthUndoEntries(rows) {
       return rows.map((row) => ({
@@ -1249,34 +1269,6 @@ export default {
       } catch (error) {
         this.handleApiError(error, "Failed to undo read length changes.");
       }
-    },
-    selectAllRecords() {
-      if (!this.selectedPoolSizeId) {
-        showNotification("Pool Size must be set.", "warning");
-        return;
-      }
-
-      for (const row of this.records) {
-        if (row.selected) {
-          continue;
-        }
-
-        if (row.type === "S" && !row.index_type) {
-          showNotification("Index Type must be set.", "warning");
-          return;
-        }
-
-        if (!this.setRowSelection(row, true)) {
-          return;
-        }
-      }
-    },
-    deselectAllRecords() {
-      this.records.forEach((row) => {
-        if (row.selected) {
-          this.setRowSelection(row, false);
-        }
-      });
     },
     setRowSelection(row, checked) {
       if (checked && !this.selectedPoolSizeId) {
@@ -1578,6 +1570,7 @@ export default {
       const libraries = libraryRows.map((row) => row.pk);
       const samples = sampleRows.map((row) => row.pk);
 
+      this.loading = true;
       try {
         const response = await axiosRef.post(
           `${urlStringStart}/api/index_generator/generate_indices/`,
@@ -1585,7 +1578,7 @@ export default {
             libraries: JSON.stringify(libraries),
             samples: JSON.stringify(samples),
             start_coord: normalizedStart,
-            direction: this.selectedDirection || "right"
+            direction: this.selectedDirection || "down"
           }
         );
 
@@ -1617,13 +1610,17 @@ export default {
         });
       } catch (error) {
         const duplicateGroups = this.getDuplicateGroups();
-        if (duplicateGroups.length) {
+        if (this.isLikelyOverlapGenerationError(error, duplicateGroups)) {
           this.notifyDuplicateGroups(
             duplicateGroups,
-            "Potential overlap in fixed/selected index pairs"
+            "Overlapping index pairs detected"
           );
+          return;
         }
+
         this.handleApiError(error, "Index generation failed.");
+      } finally {
+        this.loading = false;
       }
     },
     async savePool() {
@@ -1645,6 +1642,7 @@ export default {
       const libraries = this.buildPoolRowIndexPayload(libraryRows);
       const samples = this.buildPoolRowIndexPayload(sampleRows);
 
+      this.loading = true;
       try {
         const response = await axiosRef.post(
           `${urlStringStart}/api/index_generator/save_pool/`,
@@ -1671,6 +1669,8 @@ export default {
         await this.loadInitialData();
       } catch (error) {
         this.handleApiError(error, "Saving pool failed.");
+      } finally {
+        this.loading = false;
       }
     },
     computeColorBalance(field, maxCycles) {
@@ -1746,10 +1746,38 @@ export default {
   position: relative;
 }
 
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  height: 100%;
+  justify-self: start;
+  min-width: 0;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  height: 100%;
+  justify-self: center;
+}
+
 .sticky-actions {
   display: flex;
   align-items: center;
+  align-self: center;
+  height: 100%;
+  justify-self: end;
   gap: 8px;
+  padding: 0;
 }
 
 .header-pool-size-controls {
@@ -1792,6 +1820,7 @@ export default {
   align-items: center;
   gap: 5px;
   min-width: 0;
+  flex-wrap: nowrap;
 }
 
 .apply-all-controls select {
@@ -1801,6 +1830,7 @@ export default {
   font-size: 13px;
   padding: 0 8px;
   background: #fff;
+  min-width: 0;
 }
 
 .apply-index-type-select {
@@ -1814,8 +1844,9 @@ export default {
 
 .left-panel .panel-heading-actions {
   min-width: 0;
-  flex: 1 1 auto;
-  justify-content: flex-start;
+  flex: 0 1 auto;
+  margin-left: auto;
+  justify-content: flex-end;
   flex-wrap: wrap;
 }
 
@@ -1824,42 +1855,23 @@ export default {
   flex: 1 1 100%;
 }
 
-.panel-controls-separator {
-  color: #98a4a9;
-  font-size: 12px;
-  line-height: 1;
-  align-self: center;
-}
-
 .apply-all-controls.compact {
-  display: grid;
-  grid-template-columns: auto minmax(72px, 1fr) minmax(72px, 1fr);
-  grid-template-areas:
-    "label scope length"
-    "index index index";
+  display: flex;
+  flex-wrap: nowrap;
   align-items: center;
-  column-gap: 5px;
-  row-gap: 4px;
+  gap: 5px;
 }
 
 .apply-all-controls.compact .apply-all-label {
-  grid-area: label;
+  flex: 0 0 auto;
 }
 
 .apply-all-controls.compact select:nth-of-type(1) {
-  grid-area: scope;
-  min-width: 0;
+  flex: 0 1 130px;
 }
 
 .apply-all-controls.compact select:nth-of-type(2) {
-  grid-area: length;
-  min-width: 0;
-}
-
-.apply-all-controls.compact select:nth-of-type(3) {
-  grid-area: index;
-  min-width: 0;
-  width: 100%;
+  flex: 0 1 180px;
 }
 
 .apply-all-controls.compact .apply-index-type-select {
@@ -1869,19 +1881,7 @@ export default {
 .apply-all-label {
   font-size: 11px;
   color: #4b5557;
-}
-
-.panel-selection-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.group-action-button.compact {
-  border: 1px solid #d3d9dd;
-  border-radius: 6px;
-  padding: 2px;
-  background: #fff;
+  white-space: nowrap;
 }
 
 .pool-size-select {
@@ -2232,6 +2232,21 @@ th {
 }
 
 @media (max-width: 980px) {
+  .header {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+  }
+
+  .header-left,
+  .header-center,
+  .sticky-actions {
+    justify-self: start;
+  }
+
+  .sticky-actions {
+    flex-wrap: wrap;
+  }
+
   .tables-wrap {
     flex-direction: column;
   }

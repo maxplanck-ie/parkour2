@@ -13,7 +13,6 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.indexgeneratorvue.IndexGeneratorVue",
     "MainHub.view.librarypreparationvue.LibraryPreparationVue",
     "MainHub.view.poolingvue.PoolingVue",
-    "MainHub.view.flowcell.Flowcells",
     "MainHub.view.flowcellvue.FlowcellsVue",
     "MainHub.view.invoicing.Invoicing",
     "MainHub.view.usage.Usage",
@@ -79,22 +78,8 @@ Ext.define("MainHub.view.main.Main", {
             {
               xtype: "tbtext",
               cls: "header-username color-bluish-grey",
+              margin: "0 6 0 0",
               text: USER.name // from 'globals.html'
-            },
-            {
-              xtype: "button",
-              ui: "header",
-              id: "adminSiteBtn",
-              iconCls: "x-fa fa-cog color-bluish-grey",
-              href: "admin",
-              tooltip: "Site Administration"
-            },
-            {
-              xtype: "button",
-              ui: "header",
-              iconCls: "x-fa fa-book color-bluish-grey",
-              href: "https://github.com/maxplanck-ie/parkour2/wiki/Introduction",
-              tooltip: "Documentation"
             },
             {
               xtype: "button",
@@ -102,7 +87,23 @@ Ext.define("MainHub.view.main.Main", {
               id: "dutiesBtn",
               iconCls: "x-fa fa-calendar color-bluish-grey",
               href: "vue/duties",
+              margin: "0 2 0 0",
               tooltip: "Duties"
+            },
+            {
+              xtype: "button",
+              ui: "header",
+              id: "adminSiteBtn",
+              iconCls: "x-fa fa-cog color-bluish-grey",
+              href: "admin",
+              margin: "0 2 0 0",
+              tooltip: "Site Administration"
+            },
+            {
+              xtype: "tbtext",
+              cls: "color-bluish-grey",
+              margin: "0 6 0 4",
+              text: "|"
             },
             {
               xtype: "container",

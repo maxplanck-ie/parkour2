@@ -2,6 +2,8 @@ import json
 
 from common.tests import BaseTestCase
 from common.utils import get_random_name
+from django.urls import reverse
+from flowcell.models import Flowcell, Lane, Sequencer
 from index_generator.models import Pool
 from index_generator.tests import create_pool
 from library.tests import create_library
@@ -332,7 +334,7 @@ class TestPooling(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/ms-excel")
 
-    def test_destroy_pool_handles_negative_sample_status(self):
+    def test_return_to_pooling_handles_negative_sample_status(self):
         pooling_object = create_pooling_object(self.user, add_sample=True)
         sample = pooling_object.sample.__class__.objects.get(
             pk=pooling_object.sample.pk
@@ -343,7 +345,7 @@ class TestPooling(BaseTestCase):
         sample.is_pooled = True
         sample.save()
 
-        response = self.client.post(f"/api/pooling/{pool.pk}/destroy_pool/")
+        response = self.client.post(f"/api/pooling/{pool.pk}/return_to_pooling/")
 
         self.assertEqual(response.status_code, 200)
         sample.refresh_from_db()
@@ -352,7 +354,7 @@ class TestPooling(BaseTestCase):
         self.assertFalse(sample.pool.exists())
         self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
 
-    def test_destroy_pool_handles_negative_library_status(self):
+    def test_return_to_pooling_handles_negative_library_status(self):
         pooling_object = create_pooling_object(self.user, add_library=True)
         library = pooling_object.library.__class__.objects.get(
             pk=pooling_object.library.pk
@@ -363,7 +365,7 @@ class TestPooling(BaseTestCase):
         library.is_pooled = True
         library.save()
 
-        response = self.client.post(f"/api/pooling/{pool.pk}/destroy_pool/")
+        response = self.client.post(f"/api/pooling/{pool.pk}/return_to_pooling/")
 
         self.assertEqual(response.status_code, 200)
         library.refresh_from_db()
@@ -371,3 +373,77 @@ class TestPooling(BaseTestCase):
         self.assertFalse(library.is_pooled)
         self.assertFalse(library.pool.exists())
         self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
+
+    def test_return_pool_to_pooling_action(self):
+        pooling_object = create_pooling_object(self.user, add_library=True)
+        library = pooling_object.library.__class__.objects.get(
+            pk=pooling_object.library.pk
+        )
+        pool = library.pool.get()
+
+        response = self.client.post(
+            reverse("pooling-return-to-pooling", kwargs={"pk": pool.pk})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        library.refresh_from_db()
+        self.assertEqual(library.status, 2)
+        self.assertFalse(library.is_pooled)
+        self.assertFalse(Pool.objects.filter(pk=pool.pk).exists())
+
+    def test_return_pool_to_pooling_rejects_loaded_pool(self):
+        pooling_object = create_pooling_object(self.user, add_library=True)
+        library = pooling_object.library.__class__.objects.get(
+            pk=pooling_object.library.pk
+        )
+        pool = library.pool.get()
+
+        sequencer = Sequencer.objects.create(
+            name=get_random_name(),
+            lanes=1,
+            lane_capacity=200,
+        )
+        flowcell = Flowcell.objects.create(
+            flowcell_id=get_random_name(),
+            sequencer=sequencer,
+        )
+        lane = Lane.objects.create(name="Lane 1", pool=pool)
+        flowcell.lanes.add(lane)
+
+        response = self.client.post(
+            reverse("pooling-return-to-pooling", kwargs={"pk": pool.pk})
+        )
+
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertFalse(data["success"])
+        self.assertIn("already loaded", data["message"])
+
+        pool.refresh_from_db()
+        library.refresh_from_db()
+        self.assertEqual(pool.loaded, 1)
+        self.assertTrue(library.is_pooled)
+        self.assertTrue(Pool.objects.filter(pk=pool.pk).exists())
+
+    def test_return_pool_to_pooling_rejects_loaded_counter_without_lane(self):
+        pooling_object = create_pooling_object(self.user, add_library=True)
+        library = pooling_object.library.__class__.objects.get(
+            pk=pooling_object.library.pk
+        )
+        pool = library.pool.get()
+        pool.loaded = 1
+        pool.save(update_fields=["loaded"])
+
+        response = self.client.post(
+            reverse("pooling-return-to-pooling", kwargs={"pk": pool.pk})
+        )
+
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertFalse(data["success"])
+        self.assertIn("already loaded", data["message"])
+
+        pool.refresh_from_db()
+        self.assertEqual(pool.loaded, 1)
+        self.assertTrue(Pool.objects.filter(pk=pool.pk).exists())

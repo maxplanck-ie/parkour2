@@ -5,6 +5,11 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 
 export default defineConfig({
+  base: "/vue/",
+  server: {
+    host: true,
+    allowedHosts: true
+  },
   build: {
     assetsDir: "vue-assets"
   },

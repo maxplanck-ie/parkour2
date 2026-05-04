@@ -350,7 +350,7 @@
       </div>
     </div>
 
-    <div v-if="showConfirmPopup" class="popup-overlay">
+    <div v-if="showConfirmPopup" class="popup-overlay confirm-overlay">
       <div
         class="popup-container confirmation-popup"
         style="width: 620px; height: 240px"
@@ -378,7 +378,7 @@
       </div>
     </div>
 
-    <div v-if="showPoolInfoPopup" class="popup-overlay">
+    <div v-if="showPoolInfoPopup" class="popup-overlay pool-info-overlay">
       <div
         class="popup-container pool-info-popup"
         style="width: 720px; height: 580px"
@@ -432,7 +432,7 @@
       </div>
     </div>
 
-    <div v-if="showLoadPopup" class="popup-overlay">
+    <div v-if="showLoadPopup" class="popup-overlay load-flowcell-overlay">
       <div class="popup-container load-flowcell-popup">
         <div class="popup-header">
           <img
@@ -1593,7 +1593,7 @@ export default {
 
       this.confirmPopup = {
         title: "Return Pool to Pooling",
-        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This draft action currently destroys the pool and reverts its records back to Pooling state.`,
+        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This removes the pool and sets its records back to Pooling state.`,
         onConfirm: async () => {
           await this.returnPoolToPooling(pool);
         }
@@ -1612,7 +1612,7 @@ export default {
     async returnPoolToPooling(pool) {
       try {
         await axiosRef.post(
-          `${urlStringStart}/api/pooling/${pool.pk}/destroy_pool/`
+          `${urlStringStart}/api/pooling/${pool.pk}/return_to_pooling/`
         );
         this.removePoolAssignments(pool.pk);
         this.closeConfirmPopup();
@@ -1806,6 +1806,15 @@ export default {
 </script>
 
 <style scoped>
+.popup-overlay.load-flowcell-overlay {
+  z-index: 1000;
+}
+
+.popup-overlay.confirm-overlay,
+.popup-overlay.pool-info-overlay {
+  z-index: 1100;
+}
+
 .flowcell-actions-bar {
   display: flex;
   align-items: center;

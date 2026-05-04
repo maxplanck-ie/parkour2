@@ -1,7 +1,7 @@
 from os import getenv as getenvvar
 from platform import node as nodename
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 testEmailID = "parkour-staff@parkour-demo.ie-freiburg.mpg.de"
 testPassword = "parkour-staff"
@@ -40,4 +40,29 @@ def visit_vue_page(page: Page, relative_path: str):
     # Ensure we never end up with double slashes when callers include them.
     relative_path = relative_path.lstrip("/")
     page.goto(f"http://{hostName}:9980/vue/{relative_path}")
-    page.wait_for_load_state("load")
+    page.wait_for_load_state("networkidle")
+
+
+def expect_page_header(
+    page: Page,
+    header_text: str,
+    *,
+    preferred_test_id: str | None = None,
+    timeout: int = 15000,
+):
+    """Assert a page header is visible and has expected text.
+
+    Uses data-testid when available, and falls back to a stable text-based
+    selector for production bundles where explicit test IDs may be absent.
+    """
+    header_locator = None
+    if preferred_test_id:
+        by_test_id = page.get_by_test_id(preferred_test_id)
+        if by_test_id.count() > 0:
+            header_locator = by_test_id
+
+    if header_locator is None:
+        header_locator = page.locator(".header-title", has_text=header_text).first
+
+    expect(header_locator).to_be_visible(timeout=timeout)
+    expect(header_locator).to_have_text(header_text, timeout=timeout)

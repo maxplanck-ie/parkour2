@@ -17,7 +17,11 @@ def _open_batch_add_modal(page: Page):
     utilities.pretest_login(page)
     utilities.visit_vue_page(page, "libraries_and_samples")
 
-    expect(page.get_by_test_id("libraries-header-title")).to_be_visible()
+    utilities.expect_page_header(
+        page,
+        "Libraries & Samples",
+        preferred_test_id="libraries-header-title",
+    )
 
     add_request_button = page.get_by_test_id("add-request-button")
     add_request_button.click()
