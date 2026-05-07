@@ -1306,14 +1306,6 @@ export default {
       }
     },
     setRowSelection(row, checked) {
-      if (checked && !this.selectedPoolSizeId) {
-        return false;
-      }
-
-      if (checked && row.type === "S" && !row.index_type) {
-        return false;
-      }
-
       if (checked && !this.isCompatibleWithPool(row)) {
         return false;
       }
@@ -1345,11 +1337,6 @@ export default {
       for (const row of groupRows) {
         if (row.selected) {
           continue;
-        }
-
-        if (row.type === "S" && !row.index_type) {
-          showNotification("Index Type must be set.", "warning");
-          return;
         }
 
         if (!this.setRowSelection(row, true)) {
@@ -1534,22 +1521,30 @@ export default {
 
       return true;
     },
+    validateSelectedRowsBeforeGeneration() {
+      const missingIndexTypeRows = this.poolRows.filter(
+        (row) => row.type === "S" && !(Number(row.index_type) > 0)
+      );
+
+      if (!missingIndexTypeRows.length) {
+        return true;
+      }
+
+      const namesPreview = missingIndexTypeRows
+        .slice(0, 3)
+        .map((row) => row.name)
+        .join(", ");
+      const remaining = missingIndexTypeRows.length - 3;
+      const suffix = remaining > 0 ? ` (+${remaining} more)` : "";
+
+      showNotification(
+        `Index Type is missing for ${missingIndexTypeRows.length} selected sample(s): ${namesPreview}${suffix}. Set Index Type first.`,
+        "warning"
+      );
+      return false;
+    },
     toggleSelection(row, event) {
       const checked = event.target.checked;
-
-      if (checked && !this.selectedPoolSizeId) {
-        showNotification("Pool Size must be set.", "warning");
-        row.selected = false;
-        event.target.checked = false;
-        return;
-      }
-
-      if (checked && row.type === "S" && !row.index_type) {
-        showNotification("Index Type must be set.", "warning");
-        row.selected = false;
-        event.target.checked = false;
-        return;
-      }
 
       if (checked && !this.isCompatibleWithPool(row)) {
         row.selected = false;
@@ -1583,6 +1578,10 @@ export default {
       return true;
     },
     async generateIndices() {
+      if (!this.validateSelectedRowsBeforeGeneration()) {
+        return;
+      }
+
       const normalizedStart = String(this.selectedStartCoordinate || "")
         .trim()
         .toUpperCase();
