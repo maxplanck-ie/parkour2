@@ -347,7 +347,7 @@
       <section class="panel right-panel" :style="rightPanelInlineStyle">
         <h3>
           Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
-          {{ totalDepthRounded }} M)
+          {{ totalDepthRounded }} M, Fill: {{ poolFillPercentageDisplay }})
         </h3>
         <div class="table-scroll">
           <table>
@@ -530,6 +530,28 @@ export default {
     },
     totalDepthRounded() {
       return (Math.round(this.totalDepth * 10) / 10).toFixed(1);
+    },
+    selectedPoolCapacityM() {
+      const parsed = Number.parseFloat(
+        String(this.selectedPoolActualSize || "")
+          .replace(",", ".")
+          .match(/\d+(?:\.\d+)?/)?.[0] || ""
+      );
+      return Number.isFinite(parsed) ? parsed : 0;
+    },
+    poolFillPercentage() {
+      if (!this.selectedPoolCapacityM) {
+        return null;
+      }
+
+      return (this.totalDepth / this.selectedPoolCapacityM) * 100;
+    },
+    poolFillPercentageDisplay() {
+      if (this.poolFillPercentage === null) {
+        return "-";
+      }
+
+      return `${(Math.round(this.poolFillPercentage * 10) / 10).toFixed(1)}%`;
     },
     i7Balance() {
       return this.computeColorBalance("index_i7", 12);
