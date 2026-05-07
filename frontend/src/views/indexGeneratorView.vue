@@ -276,23 +276,35 @@
                   </select>
                 </td>
                 <td class="protocol-column">{{ row.library_protocol_name }}</td>
-                <td>
-                  <select
-                    :value="row.index_type"
-                    :disabled="row.type === 'L'"
-                    @change="
-                      updateRecordField(row, 'index_type', $event.target.value)
+                <td class="index-type-column">
+                  <div
+                    class="index-type-select-wrapper"
+                    :class="{ 'is-disabled': row.type === 'L' }"
+                    :title="
+                      row.type === 'L' ? getIndexTypeName(row.index_type) : ''
                     "
                   >
-                    <option :value="0">-</option>
-                    <option
-                      v-for="indexType in generatorIndexTypes"
-                      :key="indexType.id"
-                      :value="indexType.id"
+                    <select
+                      :value="row.index_type"
+                      :disabled="row.type === 'L'"
+                      @change="
+                        updateRecordField(
+                          row,
+                          'index_type',
+                          $event.target.value
+                        )
+                      "
                     >
-                      {{ indexType.name }}
-                    </option>
-                  </select>
+                      <option :value="0">-</option>
+                      <option
+                        v-for="indexType in generatorIndexTypes"
+                        :key="indexType.id"
+                        :value="indexType.id"
+                      >
+                        {{ indexType.name }}
+                      </option>
+                    </select>
+                  </div>
                 </td>
                 <td class="sequence-column sequence-text">
                   <span v-if="row.index_i7" class="sequence-colored">
@@ -1388,6 +1400,9 @@ export default {
         (item) => String(item.id) === String(indexTypeId)
       );
     },
+    getIndexTypeName(indexTypeId) {
+      return this.indexTypeMeta(indexTypeId)?.name || "";
+    },
     parsePoolSizeName(value) {
       const raw = String(value || "").trim();
       const parsed = raw.match(/^(\d+)\s*[xX]\s*(.+)$/);
@@ -2142,8 +2157,20 @@ th {
 }
 
 .index-type-column {
-  min-width: 110px;
-  width: 110px;
+  min-width: 190px;
+  width: 190px;
+}
+
+.index-type-select-wrapper {
+  width: 100%;
+}
+
+.index-type-select-wrapper.is-disabled {
+  cursor: not-allowed;
+}
+
+.index-type-select-wrapper.is-disabled select {
+  pointer-events: none;
 }
 
 .checkbox-column {
