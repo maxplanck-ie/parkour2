@@ -8,7 +8,7 @@
           accept=".zip,.json,.jsonld,application/zip,application/json" @change="handleFileSelection" />
         <div class="upload-content" :class="{ 'drag-hidden': isDragOver }">
           <h1 class="upload-title-main">
-            <img class="upload-title-icon" src="@/assets/favicon_32x32.png" alt="" />
+            <img class="upload-title-icon" src="@/assets/icons/parkour_32x32.png" alt="" />
             <span>Parkour RO-Crate Viewer</span>
           </h1>
           <div class="upload-title">Upload RO-Crate ZIP or JSON-LD file</div>
@@ -159,8 +159,52 @@
 </template>
 
 <script>
-import { parseRoCrateSource } from "../utilities/roCrateViewer";
+import {
+  RO_CRATE_INBUILT_HIDDEN_FIELDS,
+  RO_CRATE_VIEWER_FIELD_RULES,
+  USER_DEFINED_VARIABLE_HIDDEN_FIELDS
+} from "../constants/roCrateViewerConsts";
+import { parseRoCrateSource } from "../utilities/roCrateViewerUtils";
 import { showNotification } from "../utilities/utilityFunctions";
+
+const displayLabelForField = (field) =>
+  String(field || "")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+
+const roCrateInbuiltHiddenFieldSet = new Set(RO_CRATE_INBUILT_HIDDEN_FIELDS);
+const userDefinedVariableHiddenFieldSet = new Set(
+  USER_DEFINED_VARIABLE_HIDDEN_FIELDS
+);
+const userDefinedVariableHiddenLabelSet = new Set(
+  USER_DEFINED_VARIABLE_HIDDEN_FIELDS.map(displayLabelForField)
+);
+const visibleIdFieldSet = new Set(RO_CRATE_VIEWER_FIELD_RULES.visibleIdFields);
+const visibleIdLabelSet = new Set(
+  RO_CRATE_VIEWER_FIELD_RULES.visibleIdFields.map(displayLabelForField)
+);
+const visibleRequestFieldSet = new Set(
+  RO_CRATE_VIEWER_FIELD_RULES.visibleRequestFields
+);
+const hiddenSensitiveFieldPatterns =
+  RO_CRATE_VIEWER_FIELD_RULES.hiddenSensitiveFieldPatterns;
+const hiddenLinkedRecordLabelPatterns =
+  RO_CRATE_VIEWER_FIELD_RULES.hiddenLinkedRecordLabelPatterns;
+const entityFields = RO_CRATE_VIEWER_FIELD_RULES.entityFields;
+const entityIds = RO_CRATE_VIEWER_FIELD_RULES.entityIds;
+const recordEntityRules = RO_CRATE_VIEWER_FIELD_RULES.recordEntity;
+const attachmentEntityRules = RO_CRATE_VIEWER_FIELD_RULES.attachmentEntity;
+const sectionOptions = RO_CRATE_VIEWER_FIELD_RULES.sectionOptions;
+const hiddenContextEntityFieldSet = new Set(
+  RO_CRATE_VIEWER_FIELD_RULES.hiddenContextEntityFields
+);
+const hiddenBacklinkPropertySet = new Set(
+  RO_CRATE_VIEWER_FIELD_RULES.hiddenBacklinkProperties
+);
+const recordTypeLabel = displayLabelForField("recordType");
 
 export default {
   name: "ROCrateViewerView",
@@ -183,54 +227,14 @@ export default {
       if (!this.model) return [];
 
       const root = this.rootEntity || {};
-      const shouldHideSummaryLabel = (label) => {
-        const normalizedLabel = String(label || "").trim();
-        const lowerLabel = normalizedLabel.toLowerCase();
-        if (!normalizedLabel) return true;
-        if (
-          (/\bids?$/i.test(normalizedLabel) || /(^| )id$/i.test(normalizedLabel)) &&
-          !/^i7 id$/i.test(normalizedLabel) &&
-          !/^i5 id$/i.test(normalizedLabel)
-        ) {
-          return true;
-        }
-        if (/email/i.test(normalizedLabel) || /telephone/i.test(normalizedLabel)) {
-          return true;
-        }
-        if (
-          [
-            "status",
-            "is converted",
-            "is pooled",
-            "user is pi",
-            "user is staff",
-            "requested sections",
-            "create time",
-            "update time",
-            "token",
-            "user",
-            "cost unit",
-            "samples submitted",
-            "sequenced"
-          ].includes(lowerLabel)
-        ) {
-          return true;
-        }
-        return false;
-      };
       const directRows = Object.entries(root)
         .filter(([key]) => !this.isHiddenSimpleTableKey(key))
         .map(([key, value]) => ({
           key: this.formatPropertyLabel(key),
           value: this.formatSummaryValue(value)
         }))
-        .filter((row) => !shouldHideSummaryLabel(row.key))
-        .filter((item) => {
-          if (Array.isArray(item.value)) {
-            return item.value.length > 0;
-          }
-          return item.value !== "" && item.value !== null && item.value !== undefined;
-        })
+        .filter((row) => !this.shouldHideDisplayLabel(row.key))
+        .filter((row) => !this.isEmptyDisplayValue(row.value))
         .filter((row) => this.rowMatchesSearch(row));
 
       const seen = new Set();
@@ -241,7 +245,7 @@ export default {
         }))
         .filter((row) => {
           if (!this.rowMatchesSearch(row)) return false;
-          return !shouldHideSummaryLabel(row.key);
+          return !this.shouldHideDisplayLabel(row.key);
         })];
 
       return mergedRows.filter((row) => {
@@ -256,11 +260,14 @@ export default {
       return this.model.graph
         .filter((entity) => this.isAttachmentEntity(entity))
         .map((entity, index) => {
-          const fileEntry = this.model.archive?.byId?.[entity["@id"]] || null;
+          const entityId = entity[entityFields.id];
+          const fileEntry = this.model.archive?.byId?.[entityId] || null;
           return {
             key: `Attachment ${index + 1}`,
             value: [
-              entity.name || entity.identifier || entity["@id"],
+              entity[entityFields.name] ||
+                entity[entityFields.identifier] ||
+                entityId,
               fileEntry?.sizeLabel || "",
               fileEntry?.mimeType || ""
             ].filter(Boolean)
@@ -277,15 +284,16 @@ export default {
       return this.model.graph
         .filter((entity) => this.isRecordEntity(entity))
         .sort((left, right) =>
-          this.entityLabelById(left["@id"]).localeCompare(
-            this.entityLabelById(right["@id"])
+          this.entityLabelById(left[entityFields.id]).localeCompare(
+            this.entityLabelById(right[entityFields.id])
           )
         )
         .map((entity, index) => {
           const kind = this.recordKindLabel(entity);
+          const entityId = entity[entityFields.id];
           return {
-            id: entity["@id"],
-            title: `${kind} ${index + 1}: ${entity.name || entity.identifier || entity["@id"]
+            id: entityId,
+            title: `${kind} ${index + 1}: ${entity[entityFields.name] || entity[entityFields.identifier] || entityId
               }`,
             sections: this.buildRecordSections(entity)
               .map((section) => ({
@@ -313,56 +321,15 @@ export default {
   methods: {
     isHiddenSimpleTableKey(key) {
       const normalizedKey = String(key || "");
-      if (
-        /^request_/.test(normalizedKey) &&
-        !["request_filepaths", "request_metapaths"].includes(normalizedKey)
-      ) {
-        return true;
-      }
-      if (
-        /id$/i.test(normalizedKey) &&
-        !["i7_id", "i5_id", "indexI7Id", "indexI5Id"].includes(normalizedKey)
-      ) {
-        return true;
-      }
-      if (normalizedKey === "@id") {
-        return true;
-      }
-      if (/email/i.test(normalizedKey)) {
-        return true;
-      }
-      if (/telephone/i.test(normalizedKey)) {
-        return true;
-      }
-      if (
-        normalizedKey === "status" ||
-        normalizedKey === "isConverted" ||
-        normalizedKey === "isPooled" ||
-        normalizedKey === "userIsPi" ||
-        normalizedKey === "userIsStaff"
-      ) {
-        return true;
-      }
-
-      return [
-        "@id",
-        "@type",
-        "identifier",
-        "additionalType",
-        "additionalProperty",
-        "publisher",
-        "hasPart",
-        "mentions",
-        "requestedSections",
-        "sameAs",
-        "url",
-        "encodingFormat",
-        "contentSize",
-        "about",
-        "subjectOf",
-        "isPartOf",
-        "includedInDataCatalog"
-      ].includes(normalizedKey);
+      return (
+        (/^request_/.test(normalizedKey) &&
+          !visibleRequestFieldSet.has(normalizedKey)) ||
+        (/id$/i.test(normalizedKey) &&
+          !visibleIdFieldSet.has(normalizedKey)) ||
+        roCrateInbuiltHiddenFieldSet.has(normalizedKey) ||
+        this.shouldHideSensitiveField(normalizedKey) ||
+        userDefinedVariableHiddenFieldSet.has(normalizedKey)
+      );
     },
     validateSourceFile(file) {
       if (!file) {
@@ -518,39 +485,49 @@ export default {
     },
     entityLabelById(entityId) {
       const entity = this.entityById(entityId);
-      return entity?.name || entity?.title || entity?.identifier || entityId;
+      return (
+        entity?.[entityFields.name] ||
+        entity?.[entityFields.title] ||
+        entity?.[entityFields.identifier] ||
+        entityId
+      );
     },
     entityById(entityId) {
       return this.model?.entityMap?.[entityId] || null;
     },
     entityTypes(entity) {
-      return Array.isArray(entity?.["@type"])
-        ? entity["@type"]
-        : entity?.["@type"]
-          ? [entity["@type"]]
+      return Array.isArray(entity?.[entityFields.type])
+        ? entity[entityFields.type]
+        : entity?.[entityFields.type]
+          ? [entity[entityFields.type]]
           : [];
     },
     isRootEntity(entity) {
-      return String(entity?.["@id"] || "") === "./";
+      return String(entity?.[entityFields.id] || "") === entityIds.rootDataset;
     },
     isMetadataDescriptorEntity(entity) {
-      return String(entity?.["@id"] || "") === "ro-crate-metadata.json";
+      return (
+        String(entity?.[entityFields.id] || "") === entityIds.metadataDescriptor
+      );
     },
     isRecordEntity(entity) {
-      const entityId = String(entity?.["@id"] || "");
+      const entityId = String(entity?.[entityFields.id] || "");
       const types = this.entityTypes(entity);
       return (
-        entityId.startsWith("#sample-material-") ||
-        entityId.startsWith("#library-material-") ||
-        types.some((type) => String(type).includes("/Sample")) ||
-        types.some((type) => String(type).includes("/Library"))
+        recordEntityRules.idPrefixes.some((prefix) =>
+          entityId.startsWith(prefix)
+        ) ||
+        recordEntityRules.typeFragments.some((fragment) =>
+          types.some((type) => String(type).includes(fragment))
+        )
       );
     },
     isAttachmentEntity(entity) {
       return (
-        this.entityTypes(entity).includes("MediaObject") &&
-        entity?.isPartOf?.["@id"] === "./" &&
-        entity?.["@id"] !== "ro-crate-metadata.json"
+        this.entityTypes(entity).includes(attachmentEntityRules.type) &&
+        entity?.[entityFields.isPartOf]?.[entityFields.id] ===
+          entityIds.rootDataset &&
+        entity?.[entityFields.id] !== entityIds.metadataDescriptor
       );
     },
     isRequestOverviewEntity(entity) {
@@ -563,37 +540,23 @@ export default {
       return true;
     },
     shouldHideRequestOverviewEntity(entity) {
-      const id = String(entity?.["@id"] || "").toLowerCase();
-      const name = String(entity?.name || "").toLowerCase();
+      const id = String(entity?.[entityFields.id] || "").toLowerCase();
       const types = this.entityTypes(entity).map((type) => String(type).toLowerCase());
+      const overviewRules = RO_CRATE_VIEWER_FIELD_RULES.requestOverview;
 
       if (
-        id.includes("#study-") ||
-        id.includes("read-length") ||
-        id.includes("source-") ||
-        id.includes("sample-assay-") ||
-        id.includes("export-action") ||
-        id.includes("metadata-export-terms")
+        overviewRules.hiddenIdFragments.some((fragment) =>
+          id.includes(fragment)
+        )
       ) {
         return true;
       }
 
       if (
-        name.includes("parkour metadata export terms") ||
-        name.includes("parkour ro-crate export generation") ||
-        name.includes("sample metadata capture") ||
-        name.includes("sample export metadata") ||
-        name.startsWith("study for ") ||
-        name.startsWith("source for ") ||
-        name.includes("read length")
-      ) {
-        return true;
-      }
-
-      if (
-        types.includes("createaction") ||
-        types.some((type) => type.includes("/assay")) ||
-        types.includes("definedterm")
+        overviewRules.hiddenTypes.some((type) => types.includes(type)) ||
+        overviewRules.hiddenTypeFragments.some((fragment) =>
+          types.some((type) => type.includes(fragment))
+        )
       ) {
         return true;
       }
@@ -602,19 +565,16 @@ export default {
     },
     recordKindLabel(entity) {
       const types = this.entityTypes(entity).map((type) => String(type));
-      if (types.some((type) => type.includes("/Library"))) return "Library";
-      if (types.some((type) => type.includes("/Sample"))) return "Sample";
-      return "Record";
+      if (types.some((type) => type.includes(recordEntityRules.typeFragments[1]))) {
+        return recordEntityRules.typeLabels.library;
+      }
+      if (types.some((type) => type.includes(recordEntityRules.typeFragments[0]))) {
+        return recordEntityRules.typeLabels.sample;
+      }
+      return recordEntityRules.typeLabels.fallback;
     },
     formatPropertyLabel(key) {
-      const customLabels = {
-        dateCreated: "Date Created",
-        datePublished: "Date Published",
-        additionalProperty: "Additional Properties",
-        hasPart: "Has Part",
-        conformsTo: "Conforms To",
-        isPartOf: "Is Part Of"
-      };
+      const customLabels = RO_CRATE_VIEWER_FIELD_RULES.propertyLabels;
       if (customLabels[key]) return customLabels[key];
       return String(key)
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -645,12 +605,15 @@ export default {
           .filter((entry) => entry !== "-");
       }
 
-      if (value?.["@id"]) {
-        return this.entityLabelById(value["@id"]);
+      if (value?.[entityFields.id]) {
+        return this.entityLabelById(value[entityFields.id]);
       }
 
-      if (value?.name && typeof value.name === "string") {
-        return value.name;
+      if (
+        value?.[entityFields.name] &&
+        typeof value[entityFields.name] === "string"
+      ) {
+        return value[entityFields.name];
       }
 
       if (typeof value === "object") {
@@ -698,6 +661,51 @@ export default {
         )?.value || "/"
       );
     },
+    shouldHideIdLabel(label) {
+      const normalizedLabel = String(label || "").trim();
+      const lowerLabel = normalizedLabel.toLowerCase();
+      return (
+        (/\bids?$/i.test(normalizedLabel) || /(^| )id$/i.test(normalizedLabel)) &&
+        !visibleIdLabelSet.has(lowerLabel)
+      );
+    },
+    shouldHideSensitiveField(field) {
+      return hiddenSensitiveFieldPatterns.some((pattern) =>
+        pattern.test(String(field || ""))
+      );
+    },
+    isEmptyDisplayValue(value, options = {}) {
+      return (
+        value === "" ||
+        value === null ||
+        value === undefined ||
+        (options.hideDash && value === "-") ||
+        (Array.isArray(value) && value.length === 0)
+      );
+    },
+    shouldHideDisplayLabel(label, options = {}) {
+      const normalizedLabel = String(label || "").trim();
+      const lowerLabel = normalizedLabel.toLowerCase();
+      if (!normalizedLabel) return true;
+      if (this.shouldHideIdLabel(normalizedLabel)) return true;
+      if (this.shouldHideSensitiveField(normalizedLabel)) return true;
+      if (userDefinedVariableHiddenLabelSet.has(lowerLabel)) return true;
+      if (
+        options.hideRecordLabels &&
+        lowerLabel === recordTypeLabel
+      ) {
+        return true;
+      }
+      if (
+        options.hideLinkedRecordLabels &&
+        hiddenLinkedRecordLabelPatterns.some((pattern) =>
+          pattern.test(normalizedLabel)
+        )
+      ) {
+        return true;
+      }
+      return false;
+    },
     buildRequestOverviewSections() {
       const sections = [];
       const groupedEntities = {};
@@ -731,7 +739,7 @@ export default {
 
       if (this.requestAttachmentRows.length) {
         sections.push({
-          title: "Request Attachments",
+          title: sectionOptions.requestAttachments,
           rows: this.requestAttachmentRows
         });
       }
@@ -744,49 +752,8 @@ export default {
       const addRow = (key, value) => {
         const formattedValue = this.formatSummaryValue(value);
         const normalizedKey = String(key || "").trim();
-        const lowerKey = normalizedKey.toLowerCase();
-        if (!normalizedKey) return;
-        if (
-          (/\bids?$/i.test(normalizedKey) || /(^| )id$/i.test(normalizedKey)) &&
-          !/^i7 id$/i.test(normalizedKey) &&
-          !/^i5 id$/i.test(normalizedKey)
-        ) {
-          return;
-        }
-        if (/email/i.test(normalizedKey)) return;
-        if (/telephone/i.test(normalizedKey)) return;
-        if (
-          /^status$/i.test(normalizedKey) ||
-          /^is converted$/i.test(normalizedKey) ||
-          /^is pooled$/i.test(normalizedKey) ||
-          /^user is pi$/i.test(normalizedKey) ||
-          /^user is staff$/i.test(normalizedKey)
-        ) {
-          return;
-        }
-        if (
-          [
-            "requested sections",
-            "create time",
-            "update time",
-            "token",
-            "user",
-            "cost unit",
-            "samples submitted",
-            "sequenced"
-          ].includes(lowerKey)
-        ) {
-          return;
-        }
-        if (
-          formattedValue === "-" ||
-          formattedValue === "" ||
-          formattedValue === null ||
-          formattedValue === undefined ||
-          (Array.isArray(formattedValue) && formattedValue.length === 0)
-        ) {
-          return;
-        }
+        if (this.shouldHideDisplayLabel(normalizedKey)) return;
+        if (this.isEmptyDisplayValue(formattedValue, { hideDash: true })) return;
         const dedupeKey = `${normalizedKey}:${JSON.stringify(formattedValue)}`;
         if (seen.has(dedupeKey)) return;
         seen.add(dedupeKey);
@@ -794,7 +761,7 @@ export default {
       };
 
       Object.entries(entity)
-        .filter(([key]) => !["name", "comments"].includes(key))
+        .filter(([key]) => !hiddenContextEntityFieldSet.has(key))
         .filter(([key]) => !this.isHiddenSimpleTableKey(key))
         .forEach(([key, value]) => {
           addRow(this.formatPropertyLabel(key), value);
@@ -811,59 +778,13 @@ export default {
       const addRow = (sectionTitle, key, value) => {
         const formattedValue = this.formatSummaryValue(value);
         const normalizedKey = String(key || "").trim();
-        const lowerKey = normalizedKey.toLowerCase();
-        if (!normalizedKey) return;
         if (
-          (/\bids?$/i.test(normalizedKey) || /(^| )id$/i.test(normalizedKey)) &&
-          !/^i7 id$/i.test(normalizedKey) &&
-          !/^i5 id$/i.test(normalizedKey)
-        ) {
-          return;
-        }
-        if (/email/i.test(normalizedKey)) return;
-        if (/telephone/i.test(normalizedKey)) return;
-        if (
-          /^status$/i.test(normalizedKey) ||
-          /^is converted$/i.test(normalizedKey) ||
-          /^is pooled$/i.test(normalizedKey) ||
-          /^user is pi$/i.test(normalizedKey) ||
-          /^user is staff$/i.test(normalizedKey) ||
-          /^record type$/i.test(normalizedKey)
-        ) {
-          return;
-        }
-        if (
-          [
-            "requested sections",
-            "create time",
-            "update time",
-            "token",
-            "user",
-            "cost unit",
-            "samples submitted",
-            "sequenced"
-          ].includes(lowerKey)
-        ) {
-          return;
-        }
-        if (
-          /^#sample-assay-/i.test(normalizedKey) ||
-          /^related index /i.test(normalizedKey) ||
-          /^related linked /i.test(normalizedKey) ||
-          /^process linked by /i.test(normalizedKey) ||
-          /^assay linked by /i.test(normalizedKey)
-        ) {
-          return;
-        }
-        if (
-          formattedValue === "-" ||
-          formattedValue === "" ||
-          formattedValue === null ||
-          formattedValue === undefined ||
-          (Array.isArray(formattedValue) && formattedValue.length === 0)
-        ) {
-          return;
-        }
+          this.shouldHideDisplayLabel(normalizedKey, {
+            hideRecordLabels: true,
+            hideLinkedRecordLabels: true
+          })
+        ) return;
+        if (this.isEmptyDisplayValue(formattedValue, { hideDash: true })) return;
         const dedupeKey = `${sectionTitle}:${normalizedKey}:${JSON.stringify(
           formattedValue
         )}`;
@@ -882,12 +803,25 @@ export default {
         });
       };
 
-      addRow("Overview", "Name", entity.name || "-");
-      addRow("Overview", "Barcode", entity.identifier || "-");
-      addRow("Overview", "Record Type", this.recordKindLabel(entity));
+      const recordRows = RO_CRATE_VIEWER_FIELD_RULES.recordOverviewRows;
+      addRow(
+        recordRows.section,
+        recordRows.nameLabel,
+        entity[entityFields.name] || "-"
+      );
+      addRow(
+        recordRows.section,
+        recordRows.barcodeLabel,
+        entity[entityFields.identifier] || "-"
+      );
+      addRow(
+        recordRows.section,
+        recordRows.recordTypeLabel,
+        this.recordKindLabel(entity)
+      );
 
       Object.entries(entity)
-        .filter(([key]) => !["name", "comments"].includes(key))
+        .filter(([key]) => !hiddenContextEntityFieldSet.has(key))
         .filter(([key]) => !this.isHiddenSimpleTableKey(key))
         .forEach(([key, value]) => {
           const sectionTitle = this.groupEntityProperty(key);
@@ -898,23 +832,24 @@ export default {
         addRow(row.group, row.key, row.value)
       );
 
-      const incomingLinks = this.model?.backlinkMap?.[entity["@id"]] || [];
+      const incomingLinks =
+        this.model?.backlinkMap?.[entity[entityFields.id]] || [];
       incomingLinks.forEach((link) => {
         const sourceEntity = this.entityById(link.sourceId);
         if (!sourceEntity) return;
-        if (["about", "subjectOf", "isPartOf", "includedInDataCatalog"].includes(link.property)) {
+        if (hiddenBacklinkPropertySet.has(link.property)) {
           return;
         }
-        const sourceName = sourceEntity.name || link.sourceId;
+        const sourceName = sourceEntity[entityFields.name] || link.sourceId;
         const propertyLabel = this.formatPropertyLabel(link.property);
         const sourceKind = this.simplifyEntityKind(sourceEntity);
-        if (sourceKind === "Request") {
+        if (sourceKind === RO_CRATE_VIEWER_FIELD_RULES.entityKindRules[0].title) {
           return;
         }
-        const linkedGroup = "Linked Processes & Data";
+        const linkedGroup = RO_CRATE_VIEWER_FIELD_RULES.linkedRecordsSection;
         addRow(linkedGroup, `${sourceKind} linked by ${propertyLabel}`, sourceName);
 
-        ["variableMeasured", "measurementMethod"].forEach((key) => {
+        RO_CRATE_VIEWER_FIELD_RULES.linkedSourceFields.forEach((key) => {
           if (sourceEntity[key] !== undefined && sourceEntity[key] !== null) {
             addRow(
               linkedGroup,
@@ -958,126 +893,92 @@ export default {
     },
     extractCommentRows(entity) {
       const rows = [];
-      const comments = Array.isArray(entity?.comments) ? entity.comments : [];
+      const comments = Array.isArray(entity?.[entityFields.comments])
+        ? entity[entityFields.comments]
+        : [];
       comments.forEach((comment) => {
-        if (!comment?.name) return;
+        if (!comment?.[entityFields.name]) return;
         rows.push({
-          group: this.commentGroup(comment.name),
-          key: this.simplifyCommentLabel(comment.name),
-          value: comment.value
+          group: this.commentGroup(comment[entityFields.name]),
+          key: this.simplifyCommentLabel(comment[entityFields.name]),
+          value: comment[entityFields.value]
         });
       });
 
-      const additionalProperties = Array.isArray(entity?.additionalProperty)
-        ? entity.additionalProperty
+      const additionalProperties = Array.isArray(
+        entity?.[entityFields.additionalProperty]
+      )
+        ? entity[entityFields.additionalProperty]
         : [];
       additionalProperties.forEach((property) => {
-        if (!property?.name) return;
+        if (!property?.[entityFields.name]) return;
         rows.push({
-          group: this.commentGroup(property.name),
-          key: this.simplifyCommentLabel(property.name),
-          value: property.value
+          group: this.commentGroup(property[entityFields.name]),
+          key: this.simplifyCommentLabel(property[entityFields.name]),
+          value: property[entityFields.value]
         });
       });
 
       return rows;
     },
+    findRuleTitle(rules, matcher) {
+      return rules.find((rule) => matcher(rule))?.title || "";
+    },
+    matchesEntityRule(rule, entity) {
+      const id = String(entity?.[entityFields.id] || "");
+      const types = this.entityTypes(entity).map((type) => String(type));
+      return (
+        rule.idEquals?.includes(id) ||
+        rule.idFragments?.some((fragment) => id.includes(fragment)) ||
+        rule.types?.some((type) => types.includes(type)) ||
+        rule.typeFragments?.some((fragment) =>
+          types.some((type) => type.includes(fragment))
+        )
+      );
+    },
     simplifyCommentLabel(label) {
       return this.formatPropertyLabel(
         String(label).replace(
-          /^(sample_db_|sample_mv_|library_db_|library_mv_|library_preparation_|pooling_|sample_export_|library_export_|request_)/,
+          RO_CRATE_VIEWER_FIELD_RULES.commentLabelPrefixPattern,
           ""
         )
       );
     },
     commentGroup(label) {
       const value = String(label || "");
-      if (/^(sample_db_|library_db_)/.test(value)) return "Record Metadata";
-      if (/^(sample_mv_|library_mv_|sample_export_|library_export_)/.test(value)) {
-        return "Export Metadata";
-      }
-      if (/^(library_preparation_|pooling_)/.test(value)) {
-        return "Preparation & Pooling";
-      }
-      if (/^request_/.test(value)) return "Request Context";
-      return "Linked Processes & Data";
+      return (
+        this.findRuleTitle(
+          RO_CRATE_VIEWER_FIELD_RULES.commentGroups,
+          (rule) => rule.patterns.some((pattern) => pattern.test(value))
+        ) || sectionOptions.defaultCommentGroup
+      );
     },
     groupEntityProperty(key) {
       const value = String(key || "");
-      if (
-        [
-          "derivedFrom",
-          "organism",
-          "nucleicAcidType",
-          "libraryType",
-          "readLength",
-          "indexType"
-        ].includes(value)
-      ) {
-        return "Biology & Sequencing";
-      }
-      if (["associatedPool"].includes(value)) return "Preparation & Pooling";
-      return "Overview";
-    },
-    contextEntityGroup(entity) {
-      const id = String(entity?.["@id"] || "");
-      const types = this.entityTypes(entity).map((type) => String(type));
-
-      if (id.includes("protocol") || id.includes("type") || id.includes("organism")) {
-        return "Protocols, Types & Terms";
-      }
-      if (
-        id.includes("pool") ||
-        id.includes("flowcell") ||
-        id.includes("lane") ||
-        id.includes("sequencer")
-      ) {
-        return "Pooling, Flowcells & Instruments";
-      }
-      if (
-        types.includes("Person") ||
-        types.includes("Organization") ||
-        id.includes("person") ||
-        id.includes("organization") ||
-        id.includes("cost-unit")
-      ) {
-        return "People, Organizations & Request Roles";
-      }
-      if (
-        id.includes("process") ||
-        id.includes("data") ||
-        id.includes("assay") ||
-        id.includes("export-action") ||
-        types.includes("CreateAction")
-      ) {
-        return "Processes, Assays & Export Data";
-      }
-      return "Other Request Metadata";
+      return (
+        this.findRuleTitle(
+          RO_CRATE_VIEWER_FIELD_RULES.entityPropertyGroups,
+          (rule) => rule.fields.includes(value)
+        ) || sectionOptions.defaultEntityPropertyGroup
+      );
     },
     requestEntityGroupName(entity) {
       return (
-        entity?.name ||
-        entity?.title ||
-        entity?.identifier ||
-        entity?.alternateName ||
-        entity?.["@id"] ||
-        "Unnamed Group"
+        entity?.[entityFields.name] ||
+        entity?.[entityFields.title] ||
+        entity?.[entityFields.identifier] ||
+        entity?.[entityFields.alternateName] ||
+        entity?.[entityFields.id] ||
+        sectionOptions.unnamedGroup
       );
     },
     simplifyEntityKind(entity) {
-      if (!entity) return "Related";
-      const id = String(entity["@id"] || "");
-      if (id === "./" || id.includes("#study-")) return "Request";
-      if (id.includes("process")) return "Process";
-      if (id.includes("data")) return "Data";
-      if (id.includes("assay")) return "Assay";
-      if (id.includes("source")) return "Source";
-      if (this.entityTypes(entity).includes("MediaObject")) return "Attachment";
-      if (this.entityTypes(entity).includes("CreateAction")) return "Process";
-      if (this.entityTypes(entity).some((type) => String(type).includes("/Assay"))) {
-        return "Assay";
-      }
-      return "Related";
+      return (
+        this.findRuleTitle(
+          RO_CRATE_VIEWER_FIELD_RULES.entityKindRules,
+          (rule) => this.matchesEntityRule(rule, entity)
+        ) || sectionOptions.relatedEntityKind
+      );
     }
   }
 };

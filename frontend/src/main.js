@@ -1,4 +1,4 @@
-import "./assets/css_main.css";
+import "./assets/css/css_main.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "vue-toastification/dist/index.css";
@@ -48,7 +48,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { createPinia } from "pinia";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
-import { initParentMessageBridge } from "./utilities/iframeMessaging";
+import { initParentMessageBridge } from "./utilities/iframeMessagingUtils";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

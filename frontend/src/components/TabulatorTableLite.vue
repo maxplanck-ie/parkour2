@@ -12,6 +12,36 @@ import * as XLSX from "xlsx";
 import "tabulator-tables/dist/css/tabulator_bootstrap5.min.css";
 import { markRaw } from "vue";
 
+const TABULATOR_TABLE_DEFAULT_ID = "tabulatorTable";
+const TABULATOR_SELECTOR_PREFIX = "#";
+const GROUP_VALUE_SEPARATOR = "_";
+
+const TABULATOR_OPTIONS = {
+  layout: "fitColumns",
+  headerAlign: "center",
+  resizableHeader: "header",
+  renderVertical: "basic",
+  editTriggerEvent: "dblclick",
+  clipboardMode: "copy",
+  copyRowRange: "range",
+  copyPlainType: "plain",
+  groupToggleElement: "header"
+};
+
+const TABULATOR_EVENTS = {
+  tableBuilt: "tableBuilt",
+  renderComplete: "renderComplete",
+  columnResized: "columnResized",
+  columnVisibilityChanged: "columnVisibilityChanged",
+  clipboardCopied: "clipboardCopied",
+  groupClick: "groupClick",
+  groupVisibilityChanged: "groupVisibilityChanged"
+};
+
+const TABULATOR_CLASSES = {
+  noGroupBy: "no-group-by"
+};
+
 export default {
   name: "LiteTabulatorTable",
   props: {
@@ -20,7 +50,7 @@ export default {
     },
     tableId: {
       type: String,
-      default: "tabulatorTable"
+      default: TABULATOR_TABLE_DEFAULT_ID
     },
     columnDefs: {
       type: Array,
@@ -78,16 +108,16 @@ export default {
         let options = {
           data: this.rowData,
           columns: this.columnDefs,
-          layout: "fitColumns",
+          layout: TABULATOR_OPTIONS.layout,
           columnDefaults: {
             headerSort: false,
             headerFilter: false,
             editor: false,
-            headerHozAlign: "center",
-            resizable: "header",
+            headerHozAlign: TABULATOR_OPTIONS.headerAlign,
+            resizable: TABULATOR_OPTIONS.resizableHeader,
             headerContextMenu: []
           },
-          renderVertical: "basic",
+          renderVertical: TABULATOR_OPTIONS.renderVertical,
           tooltips: true,
           resizableColumns: true,
           selectable: true,
@@ -95,17 +125,17 @@ export default {
           selectableRangeColumns: false,
           selectableRangeRows: false,
           selectableRangeClearCells: false,
-          editTriggerEvent: "dblclick",
-          clipboard: "copy",
+          editTriggerEvent: TABULATOR_OPTIONS.editTriggerEvent,
+          clipboard: TABULATOR_OPTIONS.clipboardMode,
           clipboardCopyStyled: false,
           clipboardCopyConfig: {
             formatCells: false,
             rowHeaders: false,
             columnHeaders: false
           },
-          clipboardCopyRowRange: "range",
+          clipboardCopyRowRange: TABULATOR_OPTIONS.copyRowRange,
           clipboardCopyFormatter: function (type, output) {
-            if (type !== "plain") {
+            if (type !== TABULATOR_OPTIONS.copyPlainType) {
               return output;
             }
             const isMultiCell = output.includes("\t") || output.includes("\n");
@@ -115,7 +145,7 @@ export default {
             XLSX: XLSX
           },
           downloadConfig: {},
-          groupToggleElement: "header",
+          groupToggleElement: TABULATOR_OPTIONS.groupToggleElement,
           groupContextMenu: [],
           groupBy: this.tableGroupsConfig.groupBy || false,
           groupStartOpen: this.groupStartOpen,
@@ -125,21 +155,21 @@ export default {
         };
 
         this.tabulatorInstance = markRaw(
-          new Tabulator(`#${this.tableId}`, options)
+          new Tabulator(`${TABULATOR_SELECTOR_PREFIX}${this.tableId}`, options)
         );
 
-        this.tabulatorInstance.on("tableBuilt", () => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.tableBuilt, () => {
           this.tabulatorInstance.blockRedraw();
           const tabulatorElement = this.getTabulatorElement();
           if (this.tableGroupsConfig.noGroupByClass) {
-            tabulatorElement.classList.add("no-group-by");
+            tabulatorElement.classList.add(TABULATOR_CLASSES.noGroupBy);
           } else {
-            tabulatorElement.classList.remove("no-group-by");
+            tabulatorElement.classList.remove(TABULATOR_CLASSES.noGroupBy);
           }
           this.tabulatorInstance.restoreRedraw();
         });
 
-        this.tabulatorInstance.on("renderComplete", () => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.renderComplete, () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
           this.updateGroupValuesFromRows(rows);
           if (this.tableOptions.handleRenderComplete) {
@@ -147,14 +177,14 @@ export default {
           }
         });
 
-        this.tabulatorInstance.on("columnResized", (column) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.columnResized, (column) => {
           if (this.tableOptions.handleColumnResized) {
             this.tableOptions.handleColumnResized(column);
           }
         });
 
         this.tabulatorInstance.on(
-          "columnVisibilityChanged",
+          TABULATOR_EVENTS.columnVisibilityChanged,
           (column, visible) => {
             if (this.tableOptions.handleColumnVisibilityChanged) {
               this.tableOptions.handleColumnVisibilityChanged(
@@ -165,19 +195,19 @@ export default {
           }
         );
 
-        this.tabulatorInstance.on("clipboardCopied", () => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.clipboardCopied, () => {
           this.tableOptions.fakeLoadingStart();
           this.refreshTable();
           this.tableOptions.fakeLoadingStop();
         });
 
-        this.tabulatorInstance.on("groupClick", (e, group) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.groupClick, (e, group) => {
           const scrollElement = this.tabulatorInstance.rowManager.element;
           this.scrollPosition = scrollElement.scrollTop;
         });
 
         this.tabulatorInstance.on(
-          "groupVisibilityChanged",
+          TABULATOR_EVENTS.groupVisibilityChanged,
           (group, visible) => {
             requestAnimationFrame(() => {
               const scrollElement = this.tabulatorInstance.rowManager.element;
@@ -204,7 +234,8 @@ export default {
         if (val) uniqueGroups.add(val);
       });
       const sortedGroupValues = Array.from(uniqueGroups).sort((a, b) => {
-        const getNum = (val) => parseInt(val?.split("_")[0], 10) || 0;
+        const getNum = (val) =>
+          parseInt(val?.split(GROUP_VALUE_SEPARATOR)[0], 10) || 0;
         return getNum(b) - getNum(a);
       });
       const isSameOrder =

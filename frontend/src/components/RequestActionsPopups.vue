@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="activeAction === 'uploadSigned'"
+    v-if="activeAction === requestActions.uploadSigned"
     class="popup-overlay"
     :class="{ 'drag-over': isUploadDragOver }"
     tabindex="0"
@@ -75,7 +75,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'filePaths'"
+    v-if="activeAction === requestActions.filePaths"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -112,9 +112,9 @@
                   icon="fa-solid fa-desktop"
                 />
                 <select v-model="selectedOS" class="filepaths-select">
-                  <option value="Linux">Linux</option>
-                  <option value="macOS">macOS</option>
-                  <option value="Windows">Windows</option>
+                  <option :value="filepathOs.linux">Linux</option>
+                  <option :value="filepathOs.macOS">macOS</option>
+                  <option :value="filepathOs.windows">Windows</option>
                 </select>
               </div>
             </div>
@@ -235,7 +235,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'composeEmail'"
+    v-if="activeAction === requestActions.composeEmail"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -295,7 +295,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'solicitApproval'"
+    v-if="activeAction === requestActions.solicitApproval"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -355,7 +355,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'deleteRequest'"
+    v-if="activeAction === requestActions.deleteRequest"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -403,7 +403,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'attachments'"
+    v-if="activeAction === requestActions.attachments"
     class="popup-overlay"
     :class="{ 'drag-over': isAttachmentsDragOver }"
     tabindex="0"
@@ -541,7 +541,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'downloadROCrate'"
+    v-if="activeAction === requestActions.downloadROCrate"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -790,6 +790,93 @@ import {
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
+const REQUEST_ACTIONS = {
+  uploadSigned: "uploadSigned",
+  filePaths: "filePaths",
+  composeEmail: "composeEmail",
+  solicitApproval: "solicitApproval",
+  deleteRequest: "deleteRequest",
+  attachments: "attachments",
+  downloadROCrate: "downloadROCrate"
+};
+
+const REQUEST_ACTION_DEFAULT_REFS = {
+  [REQUEST_ACTIONS.uploadSigned]: "defaultUploadButton",
+  [REQUEST_ACTIONS.filePaths]: "defaultFilepathsButton",
+  [REQUEST_ACTIONS.deleteRequest]: "defaultDeleteButton",
+  [REQUEST_ACTIONS.attachments]: "defaultAttachmentsButton",
+  [REQUEST_ACTIONS.downloadROCrate]: "defaultROCrateButton"
+};
+
+const REQUEST_API_ENDPOINTS = {
+  request: (requestId) => `/api/requests/${requestId}/`,
+  requestRecords: (requestId) => `/api/requests/${requestId}/get_records/`,
+  requestEdit: (requestId) => `/api/requests/${requestId}/edit/`,
+  uploadSignedRequest: (requestId) =>
+    `/api/requests/${requestId}/upload_deep_sequencing_request/`,
+  putMetapaths: (requestId) => `/api/requests/${requestId}/put_metapaths/`,
+  sendEmail: (requestId) => `/api/requests/${requestId}/send_email/`,
+  solicitApproval: (requestId) =>
+    `/api/requests/${requestId}/solicit_approval/`,
+  generateROCrate: "/api/generate_ro_crate/",
+  uploadFiles: "/api/requests/upload_files/",
+  filesAfterUpload: "/api/requests/get_files_after_upload/"
+};
+
+const apiUrl = (endpoint) => `${urlStringStart}${endpoint}`;
+
+const FILEPATH_OS = {
+  linux: "Linux",
+  macOS: "macOS",
+  windows: "Windows"
+};
+
+const USER_PATH_MODES = {
+  add: "add",
+  edit: "edit"
+};
+
+const MULTIPART_FORM_HEADERS = {
+  headers: { "Content-Type": "multipart/form-data" }
+};
+
+const RESPONSE_TYPES = {
+  blob: "blob"
+};
+
+const NOTIFICATION_TYPES = {
+  success: "success",
+  warning: "warning",
+  error: "error"
+};
+
+const FORM_FIELDS = {
+  file: "file",
+  files: "files",
+  data: "data",
+  subject: "subject",
+  message: "message",
+  includeFailedRecords: "include_failed_records",
+  includeRecords: "include_records"
+};
+
+const REQUEST_DATA_FIELDS = {
+  filepathsData: "data",
+  filepathsMetadata: "metadata",
+  costUnit: "cost_unit",
+  description: "description",
+  recordType: "record_type"
+};
+
+const RO_CRATE_DOWNLOAD = {
+  defaultFilename: "ro_crate.zip",
+  filenameSuffix: "_ro_crate.zip",
+  params: {
+    barcodes: "barcodes",
+    sections: "sections"
+  }
+};
+
 const RO_CRATE_SECTION_OPTIONS = [
   {
     id: "request",
@@ -924,15 +1011,17 @@ export default {
   },
   data() {
     return {
+      requestActions: REQUEST_ACTIONS,
+      filepathOs: FILEPATH_OS,
       uploadFile: null,
       isUploadDragOver: false,
       uploadBusy: false,
       filepaths: {},
       userPaths: [],
-      selectedOS: "Linux",
+      selectedOS: FILEPATH_OS.linux,
       showUserPathForm: false,
       userPathForm: {
-        mode: "add",
+        mode: USER_PATH_MODES.add,
         id: null,
         name: "",
         value: ""
@@ -955,8 +1044,8 @@ export default {
       attachmentsBusy: false,
       isAttachmentsDragOver: false,
       attachmentsRequestDetails: {
-        cost_unit: null,
-        description: ""
+        [REQUEST_DATA_FIELDS.costUnit]: null,
+        [REQUEST_DATA_FIELDS.description]: ""
       },
       attachmentsRecords: [],
       roCrateBusy: false,
@@ -975,7 +1064,8 @@ export default {
       Object.keys(filepaths).forEach((key) => {
         const rawValue = filepaths[key];
         const formatted =
-          key === "data" || key === "metadata"
+          key === REQUEST_DATA_FIELDS.filepathsData ||
+          key === REQUEST_DATA_FIELDS.filepathsMetadata
             ? this.formatPathForOS(rawValue)
             : rawValue || "";
         entries.push({ key, value: formatted });
@@ -1039,45 +1129,38 @@ export default {
     activeAction(newVal) {
       if (!newVal) return;
       this.resetStateForAction(newVal);
-      if (newVal === "filePaths") {
+      if (newVal === REQUEST_ACTIONS.filePaths) {
         this.fetchFilepaths();
       }
-      if (newVal === "composeEmail") {
+      if (newVal === REQUEST_ACTIONS.composeEmail) {
         this.emailForm.subject = this.requestContext?.name || "";
         this.emailForm.message = "";
         this.emailForm.includeFailed = false;
       }
-      if (newVal === "solicitApproval") {
+      if (newVal === REQUEST_ACTIONS.solicitApproval) {
         this.approvalForm.subject = this.requestContext?.name || "";
         this.approvalForm.message = "";
         this.approvalForm.includeRecords = true;
       }
-      if (newVal === "attachments") {
+      if (newVal === REQUEST_ACTIONS.attachments) {
         this.loadAttachments();
       }
 
       this.$nextTick(() => {
-        const focusMap = {
-          uploadSigned: "defaultUploadButton",
-          filePaths: "defaultFilepathsButton",
-          deleteRequest: "defaultDeleteButton",
-          attachments: "defaultAttachmentsButton",
-          downloadROCrate: "defaultROCrateButton"
-        };
-        const refName = focusMap[newVal];
+        const refName = REQUEST_ACTION_DEFAULT_REFS[newVal];
         if (refName && this.$refs[refName]?.focus) {
           this.$refs[refName].focus();
         }
       });
     },
     requestContext() {
-      if (this.activeAction === "composeEmail") {
+      if (this.activeAction === REQUEST_ACTIONS.composeEmail) {
         this.emailForm.subject = this.requestContext?.name || "";
       }
-      if (this.activeAction === "solicitApproval") {
+      if (this.activeAction === REQUEST_ACTIONS.solicitApproval) {
         this.approvalForm.subject = this.requestContext?.name || "";
       }
-      if (this.activeAction === "attachments") {
+      if (this.activeAction === REQUEST_ACTIONS.attachments) {
         this.loadAttachments();
       }
     }
@@ -1097,25 +1180,25 @@ export default {
       }
       if (event.key === "Enter") {
         if (
-          this.activeAction === "composeEmail" ||
-          this.activeAction === "solicitApproval"
+          this.activeAction === REQUEST_ACTIONS.composeEmail ||
+          this.activeAction === REQUEST_ACTIONS.solicitApproval
         ) {
           return;
         }
         event.preventDefault();
-        if (this.activeAction === "uploadSigned") {
+        if (this.activeAction === REQUEST_ACTIONS.uploadSigned) {
           if (!this.uploadBusy) this.submitSignedRequest();
           return;
         }
-        if (this.activeAction === "downloadROCrate") {
+        if (this.activeAction === REQUEST_ACTIONS.downloadROCrate) {
           if (!this.roCrateBusy) this.downloadROCrate();
           return;
         }
-        if (this.activeAction === "deleteRequest") {
+        if (this.activeAction === REQUEST_ACTIONS.deleteRequest) {
           if (!this.deleteBusy) this.confirmDelete();
           return;
         }
-        if (this.activeAction === "filePaths") {
+        if (this.activeAction === REQUEST_ACTIONS.filePaths) {
           this.close();
         }
       }
@@ -1130,7 +1213,12 @@ export default {
       this.filepaths = {};
       this.userPaths = [];
       this.showUserPathForm = false;
-      this.userPathForm = { mode: "add", id: null, name: "", value: "" };
+      this.userPathForm = {
+        mode: USER_PATH_MODES.add,
+        id: null,
+        name: "",
+        value: ""
+      };
       this.emailBusy = false;
       this.approvalBusy = false;
       this.deleteBusy = false;
@@ -1138,13 +1226,16 @@ export default {
       this.attachmentsFileIds = [];
       this.attachmentsBusy = false;
       this.isAttachmentsDragOver = false;
-      this.attachmentsRequestDetails = { cost_unit: null, description: "" };
+      this.attachmentsRequestDetails = {
+        [REQUEST_DATA_FIELDS.costUnit]: null,
+        [REQUEST_DATA_FIELDS.description]: ""
+      };
       this.attachmentsRecords = [];
       this.roCrateBusy = false;
       this.roCrateSelectedSections = [
         ...RO_CRATE_SECTION_OPTIONS.map((option) => option.id)
       ];
-      if (action === "filePaths") {
+      if (action === REQUEST_ACTIONS.filePaths) {
         this.selectedOS = this.detectOS(navigator.userAgent);
       }
     },
@@ -1160,25 +1251,30 @@ export default {
       if (!this.roCrateSelectedBarcodes.length) {
         showNotification(
           "Select records with valid barcodes to download RO-Crate.",
-          "warning"
+          NOTIFICATION_TYPES.warning
         );
         return;
       }
       if (!this.roCrateSelectedSections.length) {
-        showNotification("Select at least one information section.", "warning");
+        showNotification(
+          "Select at least one information section.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
 
       try {
         this.roCrateBusy = true;
         const response = await axiosRef.get(
-          `${urlStringStart}/api/generate_ro_crate/`,
+          apiUrl(REQUEST_API_ENDPOINTS.generateROCrate),
           {
             params: {
-              barcodes: this.roCrateSelectedBarcodes.join(","),
-              sections: this.roCrateSelectedSections.join(",")
+              [RO_CRATE_DOWNLOAD.params.barcodes]:
+                this.roCrateSelectedBarcodes.join(","),
+              [RO_CRATE_DOWNLOAD.params.sections]:
+                this.roCrateSelectedSections.join(",")
             },
-            responseType: "blob"
+            responseType: RESPONSE_TYPES.blob
           }
         );
 
@@ -1193,12 +1289,15 @@ export default {
         );
         const blob = response?.data;
         const filename = safeBarcodeName
-          ? `${safeBarcodeName}_ro_crate.zip`
-          : "ro_crate.zip";
+          ? `${safeBarcodeName}${RO_CRATE_DOWNLOAD.filenameSuffix}`
+          : RO_CRATE_DOWNLOAD.defaultFilename;
 
         saveAs(blob, filename);
 
-        showNotification("RO-Crate downloaded successfully.", "success");
+        showNotification(
+          "RO-Crate downloaded successfully.",
+          NOTIFICATION_TYPES.success
+        );
         this.close();
       } catch (error) {
         handleError(error);
@@ -1235,24 +1334,32 @@ export default {
     async submitSignedRequest() {
       if (!this.requestContext?.id) return;
       if (!this.uploadFile) {
-        showNotification("No file selected.", "warning");
+        showNotification("No file selected.", NOTIFICATION_TYPES.warning);
         return;
       }
       const formData = new FormData();
-      formData.append("file", this.uploadFile);
+      formData.append(FORM_FIELDS.file, this.uploadFile);
       try {
         this.uploadBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/upload_deep_sequencing_request/`,
+          apiUrl(
+            REQUEST_API_ENDPOINTS.uploadSignedRequest(this.requestContext.id)
+          ),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
-          showNotification("Signed request uploaded successfully.", "success");
+          showNotification(
+            "Signed request uploaded successfully.",
+            NOTIFICATION_TYPES.success
+          );
           this.$emit("refresh");
           this.close();
         } else {
-          showNotification("Signed request upload failed.", "error");
+          showNotification(
+            "Signed request upload failed.",
+            NOTIFICATION_TYPES.error
+          );
         }
       } catch (error) {
         handleError(error);
@@ -1264,7 +1371,7 @@ export default {
       if (!this.requestContext?.id) return;
       try {
         const response = await axiosRef.get(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/`
+          apiUrl(REQUEST_API_ENDPOINTS.request(this.requestContext.id))
         );
         const data = response?.data || {};
         this.filepaths = data.filepaths || {};
@@ -1288,12 +1395,12 @@ export default {
       }
       if (filepathRegex.test(filepath)) {
         const filepathSplit = filepath.split("/").filter((item) => item !== "");
-        if (this.selectedOS === "Windows") {
+        if (this.selectedOS === FILEPATH_OS.windows) {
           return `\\\\${filepathSplit[0]}\\${filepathSplit[1]}-${filepathSplit[2]}\\${filepathSplit
             .slice(3)
             .join("\\")}`;
         }
-        if (this.selectedOS === "macOS") {
+        if (this.selectedOS === FILEPATH_OS.macOS) {
           return `smb://${filepathSplit[0]}/${filepathSplit[1]}-${filepathSplit[2]}/${filepathSplit
             .slice(3)
             .join("/")}`;
@@ -1304,29 +1411,37 @@ export default {
     },
     detectOS(userAgent) {
       if (/Mac OS X/.test(userAgent)) {
-        return "macOS";
+        return FILEPATH_OS.macOS;
       }
       if (/Windows NT/.test(userAgent)) {
-        return "Windows";
+        return FILEPATH_OS.windows;
       }
-      return "Linux";
+      return FILEPATH_OS.linux;
     },
     async copyText(text) {
       try {
         await navigator.clipboard.writeText(text || "");
-        showNotification("Path copied to clipboard.", "success");
+        showNotification(
+          "Path copied to clipboard.",
+          NOTIFICATION_TYPES.success
+        );
       } catch (error) {
-        showNotification("Path copy failed.", "error");
+        showNotification("Path copy failed.", NOTIFICATION_TYPES.error);
       }
     },
     startAddUserPath() {
       this.showUserPathForm = true;
-      this.userPathForm = { mode: "add", id: null, name: "", value: "" };
+      this.userPathForm = {
+        mode: USER_PATH_MODES.add,
+        id: null,
+        name: "",
+        value: ""
+      };
     },
     startEditUserPath(path) {
       this.showUserPathForm = true;
       this.userPathForm = {
-        mode: "edit",
+        mode: USER_PATH_MODES.edit,
         id: path.id,
         name: path.name,
         value: path.value
@@ -1334,7 +1449,12 @@ export default {
     },
     cancelUserPath() {
       this.showUserPathForm = false;
-      this.userPathForm = { mode: "add", id: null, name: "", value: "" };
+      this.userPathForm = {
+        mode: USER_PATH_MODES.add,
+        id: null,
+        name: "",
+        value: ""
+      };
     },
     async saveUserPath() {
       if (!this.canSaveUserPath) return;
@@ -1343,9 +1463,12 @@ export default {
       const current = this.userPaths.slice();
       const map = new Map();
 
-      if (this.userPathForm.mode === "add") {
+      if (this.userPathForm.mode === USER_PATH_MODES.add) {
         if (current.some((item) => item.name === newName)) {
-          showNotification("User path name already exists.", "warning");
+          showNotification(
+            "User path name already exists.",
+            NOTIFICATION_TYPES.warning
+          );
           return;
         }
         map.set(newName, newValue);
@@ -1382,11 +1505,14 @@ export default {
       if (!this.requestContext?.id) return;
       try {
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/put_metapaths/`,
+          apiUrl(REQUEST_API_ENDPOINTS.putMetapaths(this.requestContext.id)),
           userpaths
         );
         if (response?.data?.success) {
-          showNotification("User path saved successfully.", "success");
+          showNotification(
+            "User path saved successfully.",
+            NOTIFICATION_TYPES.success
+          );
           this.userPaths = Object.entries(userpaths).map(
             ([name, value], index) => ({
               id: index + 1,
@@ -1396,7 +1522,7 @@ export default {
           );
           this.showUserPathForm = false;
         } else {
-          showNotification("User path save failed.", "error");
+          showNotification("User path save failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
@@ -1405,24 +1531,27 @@ export default {
     async sendEmail() {
       if (!this.requestContext?.id) return;
       if (!this.emailForm.subject || !this.emailForm.message) {
-        showNotification("All fields are required.", "warning");
+        showNotification(
+          "All fields are required.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const formData = new FormData();
-      formData.append("subject", this.emailForm.subject);
-      formData.append("message", this.emailForm.message);
+      formData.append(FORM_FIELDS.subject, this.emailForm.subject);
+      formData.append(FORM_FIELDS.message, this.emailForm.message);
       formData.append(
-        "include_failed_records",
+        FORM_FIELDS.includeFailedRecords,
         String(this.emailForm.includeFailed)
       );
       try {
         this.emailBusy = true;
         await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/send_email/`,
+          apiUrl(REQUEST_API_ENDPOINTS.sendEmail(this.requestContext.id)),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
-        showNotification("Email sent successfully.", "success");
+        showNotification("Email sent successfully.", NOTIFICATION_TYPES.success);
         this.close();
       } catch (error) {
         handleError(error);
@@ -1433,28 +1562,37 @@ export default {
     async sendApprovalEmail() {
       if (!this.requestContext?.id) return;
       if (!this.approvalForm.subject || !this.approvalForm.message) {
-        showNotification("All fields are required.", "warning");
+        showNotification(
+          "All fields are required.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const formData = new FormData();
-      formData.append("subject", this.approvalForm.subject);
-      formData.append("message", this.approvalForm.message);
+      formData.append(FORM_FIELDS.subject, this.approvalForm.subject);
+      formData.append(FORM_FIELDS.message, this.approvalForm.message);
       formData.append(
-        "include_records",
+        FORM_FIELDS.includeRecords,
         String(this.approvalForm.includeRecords)
       );
       try {
         this.approvalBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/solicit_approval/`,
+          apiUrl(REQUEST_API_ENDPOINTS.solicitApproval(this.requestContext.id)),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
-          showNotification("Approval email sent to PI.", "success");
+          showNotification(
+            "Approval email sent to PI.",
+            NOTIFICATION_TYPES.success
+          );
           this.close();
         } else {
-          showNotification("Approval email failed.", "error");
+          showNotification(
+            "Approval email failed.",
+            NOTIFICATION_TYPES.error
+          );
         }
       } catch (error) {
         handleError(error);
@@ -1467,14 +1605,20 @@ export default {
       try {
         this.deleteBusy = true;
         const response = await axiosRef.delete(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/`
+          apiUrl(REQUEST_API_ENDPOINTS.request(this.requestContext.id))
         );
         if (response?.status === 204 || response?.data?.success) {
-          showNotification("Request deleted successfully.", "success");
+          showNotification(
+            "Request deleted successfully.",
+            NOTIFICATION_TYPES.success
+          );
           this.$emit("refresh");
           this.close();
         } else {
-          showNotification("Request deletion failed.", "error");
+          showNotification(
+            "Request deletion failed.",
+            NOTIFICATION_TYPES.error
+          );
         }
       } catch (error) {
         handleError(error);
@@ -1520,26 +1664,32 @@ export default {
           .map((file) => file?.id)
           .filter((id) => id !== undefined && id !== null);
 
-        this.attachmentsRequestDetails = {
-          cost_unit: meta?.cost_unit ?? null,
-          description: meta?.description ?? ""
-        };
+          this.attachmentsRequestDetails = {
+            [REQUEST_DATA_FIELDS.costUnit]:
+              meta?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
+            [REQUEST_DATA_FIELDS.description]:
+              meta?.[REQUEST_DATA_FIELDS.description] ?? ""
+          };
       }
 
       if (records.length) {
         this.attachmentsRecords = records
-          .filter((record) => record?.pk && record?.record_type)
+          .filter(
+            (record) => record?.pk && record?.[REQUEST_DATA_FIELDS.recordType]
+          )
           .map((record) => ({
             pk: record.pk,
-            record_type: record.record_type
+            [REQUEST_DATA_FIELDS.recordType]:
+              record[REQUEST_DATA_FIELDS.recordType]
           }));
       }
 
       const needsRequest =
         force ||
         !meta ||
-        this.attachmentsRequestDetails.cost_unit === null ||
-        this.attachmentsRequestDetails.description === "";
+        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.costUnit] ===
+          null ||
+        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.description] === "";
       const needsRecords = force
         ? !records.length
         : !this.attachmentsRecords.length;
@@ -1553,11 +1703,11 @@ export default {
         const requestId = this.requestContext.id;
         const [requestRes, recordsRes] = await Promise.allSettled([
           needsRequest
-            ? axiosRef.get(`${urlStringStart}/api/requests/${requestId}/`)
+            ? axiosRef.get(apiUrl(REQUEST_API_ENDPOINTS.request(requestId)))
             : Promise.resolve({ data: meta }),
           needsRecords
             ? axiosRef.get(
-                `${urlStringStart}/api/requests/${requestId}/get_records/`
+                apiUrl(REQUEST_API_ENDPOINTS.requestRecords(requestId))
               )
             : Promise.resolve({ data: records })
         ]);
@@ -1578,8 +1728,10 @@ export default {
             .map((file) => file?.id)
             .filter((id) => id !== undefined && id !== null);
           this.attachmentsRequestDetails = {
-            cost_unit: requestData?.cost_unit ?? null,
-            description: requestData?.description ?? ""
+            [REQUEST_DATA_FIELDS.costUnit]:
+              requestData?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
+            [REQUEST_DATA_FIELDS.description]:
+              requestData?.[REQUEST_DATA_FIELDS.description] ?? ""
           };
         }
 
@@ -1590,10 +1742,14 @@ export default {
               : [];
           this.attachmentsRecords = Array.isArray(recordsData)
             ? recordsData
-                .filter((record) => record?.pk && record?.record_type)
+                .filter(
+                  (record) =>
+                    record?.pk && record?.[REQUEST_DATA_FIELDS.recordType]
+                )
                 .map((record) => ({
                   pk: record.pk,
-                  record_type: record.record_type
+                  [REQUEST_DATA_FIELDS.recordType]:
+                    record[REQUEST_DATA_FIELDS.recordType]
                 }))
             : [];
         }
@@ -1640,29 +1796,32 @@ export default {
     handleAttachmentsDrop(event) {
       this.isAttachmentsDragOver = false;
       if (!this.canEditAttachments) {
-        showNotification("You lack permission to upload files.", "warning");
+        showNotification(
+          "You lack permission to upload files.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const files = Array.from(event.dataTransfer?.files || []);
       if (!files.length) {
-        showNotification("No files selected.", "warning");
+        showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
       this.uploadAttachments(files);
     },
     async uploadAttachments(files = []) {
       if (!files.length) {
-        showNotification("No files selected.", "warning");
+        showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
       const formData = new FormData();
-      files.forEach((file) => formData.append("files", file));
+      files.forEach((file) => formData.append(FORM_FIELDS.files, file));
       try {
         this.attachmentsBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/upload_files/`,
+          apiUrl(REQUEST_API_ENDPOINTS.uploadFiles),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
           const ids = response.data.fileIds || [];
@@ -1670,9 +1829,12 @@ export default {
           await this.fetchUploadedFilesDetails();
           await this.saveAttachmentsToRequest();
           await this.loadAttachments({ force: true });
-          showNotification("Files uploaded successfully.", "success");
+          showNotification(
+            "Files uploaded successfully.",
+            NOTIFICATION_TYPES.success
+          );
         } else {
-          showNotification("File upload failed.", "error");
+          showNotification("File upload failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
@@ -1687,7 +1849,7 @@ export default {
       }
       try {
         const response = await axiosRef.get(
-          `${urlStringStart}/api/requests/get_files_after_upload/`,
+          apiUrl(REQUEST_API_ENDPOINTS.filesAfterUpload),
           {
             params: {
               file_ids: JSON.stringify(this.attachmentsFileIds)
@@ -1722,24 +1884,29 @@ export default {
       if (!this.requestContext?.id) return;
       const requestId = this.requestContext.id;
       const payload = {
-        cost_unit: this.attachmentsRequestDetails?.cost_unit ?? null,
-        description: (this.attachmentsRequestDetails?.description || "").trim(),
+        [REQUEST_DATA_FIELDS.costUnit]:
+          this.attachmentsRequestDetails?.[REQUEST_DATA_FIELDS.costUnit] ??
+          null,
+        [REQUEST_DATA_FIELDS.description]: (
+          this.attachmentsRequestDetails?.[REQUEST_DATA_FIELDS.description] ||
+          ""
+        ).trim(),
         records: this.attachmentsRecords,
         files: this.attachmentsFileIds
       };
       const formData = new FormData();
-      formData.append("data", JSON.stringify(payload));
+      formData.append(FORM_FIELDS.data, JSON.stringify(payload));
       try {
         this.attachmentsBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${requestId}/edit/`,
+          apiUrl(REQUEST_API_ENDPOINTS.requestEdit(requestId)),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
           this.$emit("refresh");
         } else {
-          showNotification("Request update failed.", "error");
+          showNotification("Request update failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
@@ -1749,17 +1916,23 @@ export default {
     },
     downloadAttachment(file) {
       if (!file?.path) {
-        showNotification("Download link unavailable for this file.", "warning");
+        showNotification(
+          "Download link unavailable for this file.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const path = String(file.path || "");
       const url = path.startsWith("http") ? path : `${urlStringStart}${path}`;
       axiosRef
-        .get(url, { responseType: "blob" })
+        .get(url, { responseType: RESPONSE_TYPES.blob })
         .then((response) => {
           const blob = response?.data;
           if (!blob || blob.size === 0) {
-            showNotification("Downloaded file is empty.", "warning");
+            showNotification(
+              "Downloaded file is empty.",
+              NOTIFICATION_TYPES.warning
+            );
             return;
           }
           const objectUrl = URL.createObjectURL(blob);
