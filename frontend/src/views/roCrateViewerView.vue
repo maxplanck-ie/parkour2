@@ -23,6 +23,10 @@
               <font-awesome-icon icon="fa-solid fa-cloud-arrow-up" />
               {{ model ? "Choose Another File" : "Choose File" }}
             </button>
+            <button v-if="model" class="hero-button secondary pdf-export-button" type="button" @click="exportToPdf">
+              <font-awesome-icon icon="fa-solid fa-file-pdf" />
+              Export to PDF
+            </button>
           </div>
         </div>
         <div class="upload-watermark" :class="{ 'drag-hidden': isDragOver }" aria-hidden="true">
@@ -482,6 +486,13 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    exportToPdf() {
+      if (!this.model) {
+        showNotification("Load an RO-Crate before exporting to PDF.", "warning");
+        return;
+      }
+      window.print();
     },
     entityLabelById(entityId) {
       const entity = this.entityById(entityId);
@@ -1052,6 +1063,16 @@ export default {
   color: #fff;
 }
 
+.hero-button.secondary {
+  background: #e7f0f2;
+  color: #173948;
+  border: 1px solid rgba(16, 36, 47, 0.12);
+}
+
+.pdf-export-button {
+  white-space: nowrap;
+}
+
 .upload-stage {
   position: relative;
   display: grid;
@@ -1465,6 +1486,42 @@ export default {
 
   .quick-summary-row {
     grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .rocrate-viewer-page {
+    min-height: auto;
+    background: #fff;
+  }
+
+  .rocrate-viewer-shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  .upload-stage,
+  .table-search-inline,
+  .pdf-export-button {
+    display: none !important;
+  }
+
+  .viewer-workspace {
+    display: block;
+  }
+
+  .detail-card {
+    box-shadow: none;
+    border: 1px solid #d8e0e4;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .quick-summary-row,
+  .record-table-block,
+  .record-group {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
 </style>

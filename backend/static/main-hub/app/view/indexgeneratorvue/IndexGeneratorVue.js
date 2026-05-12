@@ -8,7 +8,7 @@ Ext.define('MainHub.view.indexgeneratorvue.IndexGeneratorVue', {
         listeners: {
             afterrender: function () {
                 var iframe = document.createElement('iframe');
-                iframe.src = '/vue/indexgenerator';
+                iframe.src = '/vue/index_generator';
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';
                 iframe.style.border = 'none';

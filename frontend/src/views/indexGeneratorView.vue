@@ -176,7 +176,7 @@
             </div>
           </div>
         </div>
-        <div class="table-scroll">
+        <div v-if="false" class="table-scroll">
           <table>
             <thead>
               <tr>
@@ -372,6 +372,19 @@
             </tbody>
           </table>
         </div>
+        <div class="table-scroll">
+          <TabulatorTable
+            v-if="!loading"
+            ref="sourceTabulatorTableRef"
+            tableId="indexGeneratorSourceTable"
+            :rowData="records"
+            :columnDefs="sourceColumnsList"
+            :enableDefaultFilters="false"
+            groupBy="request_name"
+            :groupStartOpen="false"
+            :tableOptions="sourceTableOptions"
+          />
+        </div>
       </section>
 
       <div
@@ -399,7 +412,7 @@
           Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
           {{ totalDepthRounded }} M, Fill: {{ poolFillPercentageDisplay }})
         </h3>
-        <div class="table-scroll">
+        <div v-if="false" class="table-scroll">
           <table>
             <thead>
               <tr>
@@ -478,6 +491,17 @@
             </tbody>
           </table>
         </div>
+        <div class="table-scroll">
+          <TabulatorTable
+            v-if="!loading"
+            ref="poolTabulatorTableRef"
+            tableId="indexGeneratorPoolTable"
+            :rowData="poolRows"
+            :columnDefs="poolColumnsList"
+            :enableDefaultFilters="false"
+            :tableOptions="poolTableOptions"
+          />
+        </div>
 
         <div class="balance-block">
           <h4>Color Balance (i7, R/G)</h4>
@@ -528,6 +552,7 @@ import {
 import iconIndexGeneratorHeader from "../assets/icons/header_index_generator.svg";
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import TabulatorTable from "../components/TabulatorTableFull.vue";
 import {
   INDEX_GENERATOR_API_ENDPOINTS,
   INDEX_GENERATOR_COLOR_BALANCE,
@@ -539,7 +564,10 @@ import {
   INDEX_GENERATOR_POOL_PAYLOAD_KEYS,
   INDEX_GENERATOR_PROTOCOL_PATTERNS,
   INDEX_GENERATOR_RESPONSE_KEYS,
-  INDEX_GENERATOR_RECORD_TYPES
+  INDEX_GENERATOR_RECORD_TYPES,
+  indexGeneratorPoolColumnDefs,
+  indexGeneratorSourceColumnDefs,
+  indexGeneratorSourceGroupHeader
 } from "../constants/indexGeneratorConsts";
 import { buildRequestGroupSummary } from "../constants/requestGroupingConsts";
 
@@ -550,6 +578,9 @@ const fields = INDEX_GENERATOR_FIELDS;
 
 export default {
   name: "IndexGenerator",
+  components: {
+    TabulatorTable
+  },
   data() {
     return {
       iconIndexGeneratorHeader,
@@ -559,6 +590,10 @@ export default {
       indexGeneratorRecordTypes: INDEX_GENERATOR_RECORD_TYPES,
       records: [],
       poolRows: [],
+      sourceColumnsList: [],
+      poolColumnsList: [],
+      sourceTabulatorInstance: null,
+      poolTabulatorInstance: null,
       readLengths: [],
       poolSizes: [],
       generatorIndexTypes: [],
@@ -566,7 +601,6 @@ export default {
       selectedPoolMultiplier: "",
       selectedPoolActualSize: "",
       collapsedRequests: {},
-      activeResize: null,
       activePanelResize: null,
       applyAllReadLength: "",
       applyAllIndexType: "",
@@ -772,6 +806,36 @@ export default {
     },
     isLeftPanelNarrow() {
       return !this.isLeftPanelCollapsed && this.leftPanelWidthPercent <= 42;
+    },
+    sourceTableOptions() {
+      return {
+        index: fields.rowKey,
+        layout: "fitDataStretch",
+        placeholder: "No libraries or samples to show.",
+        groupHeader: (value, count, data) =>
+          indexGeneratorSourceGroupHeader(
+            value,
+            count,
+            data,
+            this.requestGroupSummary,
+            this.selectAllInGroup,
+            this.deselectAllInGroup,
+            {
+              selectAll: this.iconSelectAll,
+              deselectAll: this.iconDeselectAll
+            }
+          ),
+        rowFormatter: this.formatTabulatorRow,
+        handleCellEdited: this.handleSourceCellEdited
+      };
+    },
+    poolTableOptions() {
+      return {
+        index: fields.rowKey,
+        layout: "fitDataStretch",
+        placeholder: "No records selected.",
+        rowFormatter: this.formatTabulatorRow
+      };
     }
   },
   watch: {
@@ -787,20 +851,37 @@ export default {
       }
     },
     generatorIndexTypes() {
+      this.setColumns();
       this.refreshStartCoordinateOptions();
+    },
+    readLengths() {
+      this.setColumns();
     }
   },
   mounted() {
+    this.setColumns();
     this.loadInitialData();
   },
+  updated() {
+    this.sourceTabulatorInstance = this.$refs.sourceTabulatorTableRef;
+    this.poolTabulatorInstance = this.$refs.poolTabulatorTableRef;
+  },
   beforeUnmount() {
-    document.removeEventListener("mousemove", this.onColumnResizeMove);
-    document.removeEventListener("mouseup", this.onColumnResizeEnd);
     document.removeEventListener("mousemove", this.onPanelResizeMove);
     document.removeEventListener("mouseup", this.onPanelResizeEnd);
     document.body.classList.remove("index-generator-resizing");
   },
   methods: {
+    setColumns() {
+      this.sourceColumnsList = indexGeneratorSourceColumnDefs({
+        readLengths: this.readLengths,
+        generatorIndexTypes: this.generatorIndexTypes,
+        onSelectionChange: this.handleSourceSelectionChange,
+        isCompatibleWithPool: this.isCompatibleWithPool,
+        getIndexTypeName: this.getIndexTypeName
+      });
+      this.poolColumnsList = indexGeneratorPoolColumnDefs();
+    },
     async loadInitialData() {
       this.loading = true;
       try {
@@ -828,100 +909,7 @@ export default {
         handleError(error);
       } finally {
         this.loading = false;
-        this.$nextTick(() => {
-          this.initResizableTables();
-        });
       }
-    },
-    initResizableTables() {
-      const tables = this.$el.querySelectorAll(".table-scroll table");
-      tables.forEach((table) => this.makeTableResizable(table));
-    },
-    makeTableResizable(table) {
-      const headers = table.querySelectorAll("thead th");
-      headers.forEach((th, columnIndex) => {
-        if (th.querySelector(".col-resizer")) {
-          return;
-        }
-
-        const currentWidth = th.getBoundingClientRect().width;
-        if (currentWidth > 0 && !th.style.width) {
-          this.applyColumnWidth(table, columnIndex, Math.round(currentWidth));
-        }
-
-        const resizer = document.createElement("span");
-        resizer.className = "col-resizer";
-        resizer.addEventListener("mousedown", (event) =>
-          this.startColumnResize(event, table, columnIndex)
-        );
-        th.appendChild(resizer);
-      });
-    },
-    startColumnResize(event, table, columnIndex) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const header = table.querySelectorAll("thead th")[columnIndex];
-      if (!header) {
-        return;
-      }
-
-      this.activeResize = {
-        table,
-        columnIndex,
-        startX: event.clientX,
-        startWidth: header.offsetWidth
-      };
-
-      document.addEventListener("mousemove", this.onColumnResizeMove);
-      document.addEventListener("mouseup", this.onColumnResizeEnd);
-    },
-    onColumnResizeMove(event) {
-      if (!this.activeResize) {
-        return;
-      }
-
-      const delta = event.clientX - this.activeResize.startX;
-      const nextWidth = Math.max(64, this.activeResize.startWidth + delta);
-      this.applyColumnWidth(
-        this.activeResize.table,
-        this.activeResize.columnIndex,
-        nextWidth
-      );
-    },
-    onColumnResizeEnd() {
-      document.removeEventListener("mousemove", this.onColumnResizeMove);
-      document.removeEventListener("mouseup", this.onColumnResizeEnd);
-      this.activeResize = null;
-    },
-    applyColumnWidth(table, columnIndex, width) {
-      const headers = table.querySelectorAll("thead th");
-      const header = headers[columnIndex];
-      if (!header) {
-        return;
-      }
-
-      const px = `${Math.round(width)}px`;
-      header.style.width = px;
-      header.style.minWidth = px;
-
-      const headerCount = headers.length;
-      const rows = table.querySelectorAll("tbody tr");
-      rows.forEach((row) => {
-        if (row.classList.contains("group-row")) {
-          return;
-        }
-
-        if (row.children.length !== headerCount) {
-          return;
-        }
-
-        const cell = row.children[columnIndex];
-        if (cell) {
-          cell.style.width = px;
-          cell.style.minWidth = px;
-        }
-      });
     },
     syncCollapsedRequests() {
       const updated = {};
@@ -1006,19 +994,32 @@ export default {
         this.requestGroupSummaries[requestName] || buildRequestGroupSummary([])
       );
     },
-    colorizeIndex(index) {
-      return String(index || "")
-        .split("")
-        .map((base) => {
-          const upper = String(base).toUpperCase();
-          if (upper === "A" || upper === "C") {
-            return { base, className: "nt-red" };
-          }
-          if (upper === "G" || upper === "T") {
-            return { base, className: "nt-green" };
-          }
-          return { base, className: "nt-other" };
-        });
+    formatTabulatorRow(row) {
+      const rowData = row.getData();
+      row
+        .getElement()
+        .classList.toggle(
+          "duplicate-index-row",
+          this.isRowDuplicateInPool(rowData[fields.rowKey])
+        );
+    },
+    refreshTabulatorTables() {
+      this.$nextTick(() => {
+        this.sourceTabulatorInstance?.getTable?.()?.redraw?.(true);
+        this.poolTabulatorInstance?.getTable?.()?.redraw?.(true);
+      });
+    },
+    handleSourceSelectionChange(row, checked) {
+      this.setRowSelection(row, checked);
+      this.refreshTabulatorTables();
+    },
+    handleSourceCellEdited(cell) {
+      const row = cell.getRow().getData();
+      const field = cell.getField();
+      if (![fields.readLength, fields.indexType].includes(field)) {
+        return;
+      }
+      this.updateRecordField(row, field, cell.getValue(), cell.getOldValue());
     },
     resolveReadLengthName(readLengthId) {
       return this.readLengthNameMap[String(readLengthId)] || "";
@@ -1106,7 +1107,9 @@ export default {
         ...this.poolRows[index],
         ...this.normalizePoolRow(row)
       };
-      this.poolRows.splice(index, 1, updated);
+      this.poolRows = this.poolRows.map((item, itemIndex) =>
+        itemIndex === index ? updated : item
+      );
     },
     reconcilePoolCompatibility() {
       if (this.poolRows.length <= 1) {
@@ -1133,6 +1136,7 @@ export default {
       this.records = this.records.map((row) =>
         removed.includes(row.rowKey) ? { ...row, selected: false } : row
       );
+      this.refreshTabulatorTables();
       showNotification(
         "Some selected records were deselected because their read length/index mode became incompatible.",
         "warning"
@@ -1412,7 +1416,7 @@ export default {
           (item) => item.rowKey === candidate.rowKey
         );
         if (!alreadySelected) {
-          this.poolRows.push(candidate);
+          this.poolRows = [...this.poolRows, candidate];
         }
       } else {
         this.poolRows = this.poolRows.filter(
@@ -1420,6 +1424,7 @@ export default {
         );
       }
 
+      this.refreshTabulatorTables();
       return true;
     },
     selectAllInGroup(groupRows) {
@@ -1450,6 +1455,8 @@ export default {
       return {
         ...row,
         [fields.rowKey]: `${row[fields.recordType]}:${row[fields.pk]}`,
+        [fields.requestName]:
+          row[fields.requestName] || INDEX_GENERATOR_DEFAULTS.emptyDisplay,
         [fields.type]: type,
         [fields.selected]: false,
         [fields.readLength]: row[fields.readLength] || "",
@@ -1528,8 +1535,11 @@ export default {
       const protocol = String(row[fields.libraryProtocolName] || "").toLowerCase();
       return INDEX_GENERATOR_PROTOCOL_PATTERNS.nanopore.test(protocol);
     },
-    async updateRecordField(row, field, value) {
-      const previousReadLength = Number(row[fields.readLength]) || 0;
+    async updateRecordField(row, field, value, previousValue = undefined) {
+      const previousReadLength =
+        previousValue === undefined
+          ? Number(row[fields.readLength]) || 0
+          : Number(previousValue) || 0;
       const normalizedValue =
         field === fields.readLength || field === fields.indexType
           ? Number(value) || 0
@@ -2175,93 +2185,37 @@ export default {
 .table-scroll {
   overflow: auto;
   flex: 1;
+  min-height: 0;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  table-layout: fixed;
-}
-
-.left-panel table {
-  min-width: 1150px;
-}
-
-.right-panel table {
-  min-width: 1100px;
-}
-
-th,
-td {
-  border: 1px solid #ececec;
-  padding: 6px;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-td select {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-th {
-  overflow: hidden;
-}
-
-.col-resizer {
-  position: absolute;
-  top: 0;
-  right: -3px;
-  width: 8px;
-  height: 100%;
-  cursor: col-resize;
-  user-select: none;
-  z-index: 3;
-}
-
-.col-resizer:hover {
-  background: rgba(11, 127, 120, 0.2);
-}
-
-.group-row td {
-  background: #f4f7f7;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.group-row-content {
+:deep(.group-row-content) {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
 }
 
-.group-row-main {
+:deep(.group-row-main) {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
 
-.group-row-title {
+:deep(.group-row-title) {
   font-weight: bold;
   font-size: 13px;
   color: #333;
 }
 
-.group-row-summary {
+:deep(.group-row-summary) {
   font-weight: normal;
   font-size: 13px;
   margin-left: 2px;
   color: black;
 }
 
-.group-toggle-button {
+:deep(.group-toggle-button) {
   border: none;
   background: transparent;
   cursor: pointer;
@@ -2273,14 +2227,17 @@ th {
   font-weight: 700;
 }
 
-.group-action-buttons-container {
+:deep(.group-action-buttons-container) {
   display: flex;
   gap: 5px;
 }
 
-.group-action-button {
+:deep(.group-action-button) {
   display: flex;
   align-items: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
   cursor: pointer;
 }
 
@@ -2353,31 +2310,31 @@ th {
   font-family: var(--app-font-family);
 }
 
-.sequence-text {
+:deep(.sequence-text) {
   font-family: "Courier New", Courier, monospace;
 }
 
-.sequence-colored {
+:deep(.sequence-colored) {
   letter-spacing: 0.4px;
 }
 
-.nt {
+:deep(.nt) {
   font-weight: 700;
 }
 
-.nt-red {
+:deep(.nt-red) {
   color: #c53030;
 }
 
-.nt-green {
+:deep(.nt-green) {
   color: #2f855a;
 }
 
-.nt-other {
+:deep(.nt-other) {
   color: #5c6670;
 }
 
-.duplicate-index-row td {
+:deep(.duplicate-index-row .tabulator-cell) {
   background: #ffe7e7;
 }
 

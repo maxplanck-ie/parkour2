@@ -151,7 +151,7 @@ function parseDataValidations(snippet, namespaces) {
     if (!node) continue;
     const isStandard =
       !node.namespaceURI || node.namespaceURI === mainNs || node.prefix === "";
-    let addresses = [];
+    let addresses;
     let type = node.getAttribute("type") || "list";
     let operator = undefined;
     let allowBlank;
@@ -365,9 +365,114 @@ function applyTemplateValidations(workbook, validationsBySheet) {
   });
 }
 
+const NUMERIC_EXPORT_KEY_PATTERNS = [
+  /volume/i,
+  /value/i,
+  /concentration/i,
+  /percentage/i,
+  /percent/i,
+  /depth/i,
+  /fragment/i,
+  /size/i,
+  /phix/i,
+  /rqn/i
+];
+const NUMERIC_EXPORT_HEADER_PATTERNS = [
+  /volume/i,
+  /value/i,
+  /concentration/i,
+  /^%$/,
+  /%/,
+  /percent/i,
+  /total/i,
+  /depth/i,
+  /\bbp\b/i,
+  /size/i,
+  /phix/i,
+  /rqn/i
+];
+const TEXT_EXPORT_KEY_PATTERNS = [
+  /barcode/i,
+  /(^|_)id$/i,
+  /request/i,
+  /date/i,
+  /time/i,
+  /name/i,
+  /coordinate/i,
+  /index/i,
+  /protocol/i,
+  /unit/i,
+  /comment/i,
+  /pool/i,
+  /lane/i,
+  /type/i
+];
+
+function shouldWriteExportValueAsNumber(column = {}) {
+  const key = String(column.key || "");
+  const header = String(column.header || "");
+  if (TEXT_EXPORT_KEY_PATTERNS.some((pattern) => pattern.test(key))) {
+    return false;
+  }
+  return (
+    NUMERIC_EXPORT_KEY_PATTERNS.some((pattern) => pattern.test(key)) ||
+    NUMERIC_EXPORT_HEADER_PATTERNS.some((pattern) => pattern.test(header))
+  );
+}
+
+function parseExportNumber(value) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const withoutPercent = trimmed.endsWith("%") ? trimmed.slice(0, -1) : trimmed;
+  const compact = withoutPercent.replace(/\s+/g, "");
+  if (!/^[+-]?(?:\d+|\d{1,3}(?:[.,]\d{3})+)(?:[.,]\d+)?$/.test(compact)) {
+    return null;
+  }
+
+  let normalized = compact;
+  const lastComma = compact.lastIndexOf(",");
+  const lastDot = compact.lastIndexOf(".");
+  if (lastComma >= 0 && lastDot >= 0) {
+    normalized =
+      lastComma > lastDot
+        ? compact.replace(/\./g, "").replace(",", ".")
+        : compact.replace(/,/g, "");
+  } else if (lastComma >= 0) {
+    normalized = compact.replace(",", ".");
+  }
+
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function normalizeExportCellValue(value, column = {}) {
+  if (value === null || value === undefined || value === "") return null;
+  if (!shouldWriteExportValueAsNumber(column)) return value;
+  const parsed = parseExportNumber(value);
+  return parsed === null ? value : parsed;
+}
+
+function normalizeExportRows(rows = [], exportColumns = []) {
+  return rows.map((row) => {
+    const normalizedRow = { ...row };
+    exportColumns.forEach((column) => {
+      normalizedRow[column.key] = normalizeExportCellValue(
+        row?.[column.key],
+        column
+      );
+    });
+    return normalizedRow;
+  });
+}
+
 function buildExportSheetRows(rows = [], exportColumns = []) {
   const headerRow = exportColumns.map((column) => column.header);
-  const dataRows = rows.map((row) =>
+  const normalizedRows = normalizeExportRows(rows, exportColumns);
+  const dataRows = normalizedRows.map((row) =>
     exportColumns.map((column) => row?.[column.key] ?? null)
   );
   return [headerRow, ...dataRows];
@@ -548,7 +653,10 @@ export async function createExcelExportBlob({
   }
 
   let worksheet = workbook.getWorksheet(targetSheetName);
-  const normalizedRows = Array.isArray(rows) ? rows : [];
+  const normalizedRows = normalizeExportRows(
+    Array.isArray(rows) ? rows : [],
+    exportColumns
+  );
 
   if (!worksheet) {
     worksheet = workbook.addWorksheet(targetSheetName);
@@ -623,7 +731,12 @@ export async function createExcelExportBlob({
       const row = worksheet.getRow(rIndex);
       exportColumns.forEach((col) => {
         const cIdx = keyToCol.get(col.key);
-        if (cIdx) row.getCell(cIdx).value = dataRow?.[col.key] ?? null;
+        if (cIdx) {
+          row.getCell(cIdx).value = normalizeExportCellValue(
+            dataRow?.[col.key],
+            col
+          );
+        }
       });
       if (row.commit) row.commit();
       rIndex++;

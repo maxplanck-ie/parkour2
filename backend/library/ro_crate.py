@@ -899,17 +899,6 @@ class GenerateROCrate(viewsets.ViewSet):
         )
 
         target_request_id_set = request_ids_from_data.union(request_ids_from_names)
-        if len(target_request_id_set) > 1:
-            return Response(
-                {
-                    "error": (
-                        "RO-Crate export currently supports records from exactly one "
-                        "request at a time. Narrow your selection so all chosen "
-                        "libraries or samples belong to the same request."
-                    )
-                },
-                status=400,
-            )
         if not target_request_id_set:
             timestamp = timezone.now().isoformat()
             published_date = timezone.now().date().isoformat()
@@ -970,9 +959,11 @@ class GenerateROCrate(viewsets.ViewSet):
                 [],
             )
 
-        single_request_id = next(iter(sorted(target_request_id_set)))
+        target_request_ids = sorted(target_request_id_set)
+        single_request_id = target_request_ids[0]
+        is_multi_request_export = len(target_request_ids) > 1
         requests_qs = (
-            accessible_requests.filter(id=single_request_id)
+            accessible_requests.filter(id__in=target_request_ids)
             .select_related(
                 "user",
                 "cost_unit",
@@ -1488,12 +1479,12 @@ class GenerateROCrate(viewsets.ViewSet):
             )
         )
         flowcells_qs = (
-            Flowcell.objects.filter(requests__id=single_request_id)
+            Flowcell.objects.filter(requests__id__in=target_request_ids)
             .select_related("sequencer")
             .prefetch_related(
                 Prefetch(
                     "requests",
-                    queryset=accessible_requests.filter(id=single_request_id).only(
+                    queryset=accessible_requests.filter(id__in=target_request_ids).only(
                         "id", "name"
                     ),
                 ),
@@ -1588,12 +1579,8 @@ class GenerateROCrate(viewsets.ViewSet):
             for req_id in associated_requests:
                 flowcells_by_request[req_id].append(flowcell_entity_id)
 
-        samples_for_request = [
-            entry for entry in sample_data if entry.request_id == single_request_id
-        ]
-        libraries_for_request = [
-            entry for entry in library_data if entry.request_id == single_request_id
-        ]
+        samples_for_request = list(sample_data)
+        libraries_for_request = list(library_data)
 
         now = timezone.now()
         now_iso = now.isoformat()
@@ -1753,8 +1740,18 @@ class GenerateROCrate(viewsets.ViewSet):
                 "requested_sections",
                 sorted(selected_sections),
             )
+        if is_multi_request_export:
+            _append_property(
+                dataset_additional_properties,
+                "requested_request_ids",
+                ", ".join(str(request_id) for request_id in target_request_ids),
+            )
 
-        request_display_name = root_request.name or f"Request {single_request_id}"
+        request_display_name = (
+            f"Parkour RO-Crate export ({len(target_request_ids)} requests)"
+            if is_multi_request_export
+            else root_request.name or f"Request {single_request_id}"
+        )
         request_timestamp = _normalise_property_value(
             getattr(root_request, "create_time", None)
         )
@@ -1773,8 +1770,18 @@ class GenerateROCrate(viewsets.ViewSet):
             "@id": "./",
             "@type": "Dataset",
             "name": request_display_name,
-            "identifier": _parkour_identifier("request", single_request_id),
-            "description": root_request.description or "",
+            "identifier": (
+                _parkour_identifier(
+                    "ro-crate-export", "-".join(str(pk) for pk in target_request_ids)
+                )
+                if is_multi_request_export
+                else _parkour_identifier("request", single_request_id)
+            ),
+            "description": (
+                f"Parkour metadata export for {len(target_request_ids)} selected requests."
+                if is_multi_request_export
+                else root_request.description or ""
+            ),
             "dateCreated": request_timestamp or now_iso,
             "datePublished": published_date,
             "conformsTo": [{"@id": NFDI4PLANTS_ISA_PROFILE_URI}],
@@ -1867,12 +1874,13 @@ class GenerateROCrate(viewsets.ViewSet):
         _apply_additional_types(study_entity, "https://w3id.org/isa/Study")
 
         request_file_refs = []
-        for request_file in request_obj.files.all():
-            request_file_id = register_request_file(request_file, request_obj)
-            if not request_file_id:
-                continue
-            request_file_refs.append({"@id": request_file_id})
-            dataset_entity["mentions"].append({"@id": request_file_id})
+        for current_request in requests_by_id.values():
+            for request_file in current_request.files.all():
+                request_file_id = register_request_file(request_file, current_request)
+                if not request_file_id:
+                    continue
+                request_file_refs.append({"@id": request_file_id})
+                dataset_entity["mentions"].append({"@id": request_file_id})
         if request_file_refs:
             deduped_request_file_refs = _deduplicate_ref_list(request_file_refs)
             study_entity["hasPart"] = deduped_request_file_refs
@@ -1969,7 +1977,7 @@ class GenerateROCrate(viewsets.ViewSet):
                         [
                             {
                                 "name": "source_request_identifier",
-                                "value": request_display_name,
+                                "value": sample_entry.request_name or request_display_name,
                             }
                         ]
                     ),
@@ -2041,7 +2049,8 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": _build_comments(
                         {
                             "sample_export_identifier": sample_entry.barcode,
-                            "sample_export_request": request_display_name,
+                            "sample_export_request": sample_entry.request_name
+                            or request_display_name,
                         }
                     ),
                 }
@@ -2192,7 +2201,8 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": _build_comments(
                         {
                             "library_export_identifier": library_entry.barcode,
-                            "library_export_request": request_display_name,
+                            "library_export_request": library_entry.request_name
+                            or request_display_name,
                         }
                     ),
                 }
@@ -2217,7 +2227,9 @@ class GenerateROCrate(viewsets.ViewSet):
                 graph.append(library_entity)
                 graph.append(assay_entity)
 
-        flowcell_ids_for_request = flowcells_by_request.get(single_request_id, [])
+        flowcell_ids_for_request = []
+        for request_id in target_request_ids:
+            flowcell_ids_for_request.extend(flowcells_by_request.get(request_id, []))
         if flowcell_ids_for_request:
             seen_flowcells = set()
             for flowcell_entity_id in flowcell_ids_for_request:

@@ -571,7 +571,7 @@
                   <div class="rocrate-help-title">Export RO-Crate Guide</div>
                   <p class="rocrate-help-intro">
                     RO-Crate gives you one structured export package for the
-                    libraries or samples you selected in one Parkour request.
+                    libraries or samples you selected in Parkour.
                     When you download it, Parkour creates a
                     <strong>.zip</strong> file that contains
                     <strong>ro-crate-metadata.json</strong> and, if available,
@@ -607,11 +607,9 @@
                       does not create one separate export per row.
                     </li>
                     <li>
-                      The export is created for
-                      <strong>one request at a time</strong>. All selected
-                      records in this window must belong to the same request, so
-                      the metadata graph stays aligned to one
-                      investigation-style package.
+                      The export can include records from one or more requests.
+                      Parkour keeps the selected records together in one shared
+                      metadata package.
                     </li>
                     <li>
                       Keep a box checked when you want that part of the metadata
@@ -681,8 +679,13 @@
       <div class="popup-body rocrate-body">
         <div class="rocrate-summary">
           <div class="rocrate-summary-card rocrate-summary-card-wide">
-            <span class="label">Request</span>
-            <span class="value">{{ requestContext?.name || "-" }}</span>
+            <span class="label">Selected Requests</span>
+            <span
+              class="value"
+              :class="{ 'rocrate-summary-count': roCrateRequestCount !== 1 }"
+            >
+              {{ requestContext?.name || "-" }}
+            </span>
           </div>
           <div class="rocrate-summary-card">
             <span class="label">{{ roCrateSelectedLabel }}</span>
@@ -698,6 +701,7 @@
             <button
               class="popup-button secondary small"
               type="button"
+              :disabled="!canConfigureROCrateExport"
               @click="selectAllROCrateSections"
             >
               Select All
@@ -705,6 +709,7 @@
             <button
               class="popup-button secondary small"
               type="button"
+              :disabled="!canConfigureROCrateExport"
               @click="clearAllROCrateSections"
             >
               Clear All
@@ -722,6 +727,7 @@
               v-model="roCrateSelectedSections"
               type="checkbox"
               :value="option.id"
+              :disabled="!canConfigureROCrateExport"
             />
             <div class="rocrate-option-content">
               <div class="rocrate-option-title">{{ option.label }}</div>
@@ -763,7 +769,12 @@
             ref="defaultROCrateButton"
             class="popup-button yes-button"
             type="button"
-            :disabled="roCrateBusy"
+            :disabled="roCrateBusy || !canDownloadROCrate"
+            :title="
+              canDownloadROCrate
+                ? ''
+                : 'Select at least one library or sample before exporting.'
+            "
             @click="downloadROCrate"
           >
             <span v-if="roCrateBusy">Downloading...</span>
@@ -1098,6 +1109,19 @@ export default {
     roCrateSelectedCount() {
       return this.roCrateSelectedBarcodes.length;
     },
+    roCrateRequestCount() {
+      const count = Number(this.requestContext?.selectedRequestCount || 0);
+      return Number.isFinite(count) && count > 0 ? count : 0;
+    },
+    canConfigureROCrateExport() {
+      return this.roCrateSelectedBarcodes.length > 0;
+    },
+    canDownloadROCrate() {
+      return (
+        this.canConfigureROCrateExport &&
+        this.roCrateSelectedSections.length > 0
+      );
+    },
     roCrateSelectedLabel() {
       const type = String(this.requestContext?.selectedType || "")
         .trim()
@@ -1108,7 +1132,7 @@ export default {
     },
     roCrateValidationMessage() {
       if (!this.roCrateSelectedBarcodes.length) {
-        return "Select at least one record with a valid barcode before downloading an RO-Crate.";
+        return "RO-Crate Viewer is available without a selection. To export an RO-Crate, select at least one library or sample with a valid barcode.";
       }
       if (!this.roCrateSelectedSections.length) {
         return "Select at least one information section to include in the RO-Crate.";
@@ -1116,7 +1140,7 @@ export default {
       return "";
     },
     roCrateViewerHref() {
-      return this.$router.resolve("/ro-crate-viewer").href;
+      return this.$router.resolve("/ro_crate_viewer").href;
     }
   },
   mounted() {

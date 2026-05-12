@@ -51,7 +51,7 @@ export default {
       return (
         this.$route.query.missingRoute ||
         this.$route.fullPath ||
-        "/vue/not-found"
+        "/vue/not_found"
       );
     }
   },

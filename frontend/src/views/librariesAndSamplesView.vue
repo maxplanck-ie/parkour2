@@ -36,7 +36,7 @@
         Libraries & Samples
       </div>
 
-      <!-- Sticky right section for search, date range, advanced filters, select columns and export-->
+      <!-- Sticky right section for search, filters, select columns and export-->
       <div class="sticky-actions">
         <div class="search-bar">
           <input
@@ -52,28 +52,6 @@
             @click="handleSearchAction"
           />
         </div>
-        <div class="date-filters">
-          <div class="date-filter">
-            <label for="startDate">From</label>
-            <input
-              type="date"
-              id="startDate"
-              :class="{ 'invalid-date': !startDateValid }"
-              v-model="startDateString"
-              required
-            />
-          </div>
-          <div class="date-filter">
-            <label for="endDate">To</label>
-            <input
-              type="date"
-              id="endDate"
-              :class="{ 'invalid-date': !endDateValid }"
-              v-model="endDateString"
-              required
-            />
-          </div>
-        </div>
         <div class="button-popup-wrapper">
           <button
             class="header-button"
@@ -86,9 +64,30 @@
           <div
             id="advancedFiltersPopup"
             v-if="showAdvancedFilters"
-            class="button-popup-container"
-            style="height: 473px; width: 250px; left: -50px"
+            class="button-popup-container advanced-filters-popup"
           >
+            <!-- Date Range Filters -->
+            <div class="filter-item date-filter-item">
+              <label for="startDate">From</label>
+              <input
+                type="date"
+                id="startDate"
+                :class="{ 'invalid-date': !startDateValid }"
+                v-model="startDateString"
+                required
+              />
+            </div>
+            <div class="filter-item date-filter-item">
+              <label for="endDate">To</label>
+              <input
+                type="date"
+                id="endDate"
+                :class="{ 'invalid-date': !endDateValid }"
+                v-model="endDateString"
+                required
+              />
+            </div>
+
             <!-- Status Filter -->
             <div class="filter-item">
               <label>Status</label>
@@ -280,6 +279,20 @@
             </div>
           </div>
         </div>
+        <button
+          class="header-button"
+          id="openROCratePopupButton"
+          type="button"
+          @click="handleROCrateClick"
+        >
+          <img
+            :src="iconDownloadROCrate"
+            alt=""
+            class="header-button-icon-img"
+          />
+          <span> RO-Crate </span>
+        </button>
+
         <button
           class="header-button"
           id="openExportPopupButton"
@@ -1052,6 +1065,7 @@ import iconExportTemplateFileLines from "../assets/icons/export_template_lines.s
 import iconExportDownload from "../assets/icons/export_download.svg";
 import iconExportRemove from "../assets/icons/export_remove.svg";
 import iconExportUpload from "../assets/icons/export_upload.svg";
+import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 
@@ -1073,6 +1087,7 @@ export default {
       iconExportDownload,
       iconExportRemove,
       iconExportUpload,
+      iconDownloadROCrate,
       tabulatorInstance: null,
       loading: true,
       syncLoading: false,
@@ -1751,10 +1766,17 @@ export default {
       this.showAdvancedFilters = !this.showAdvancedFilters;
       if (this.showAdvancedFilters) {
         this.showSelectColumns = false;
+        this.showExportPopup = false;
+        this.showPageHelp = false;
       }
     },
     toggleSelectColumns() {
       this.showSelectColumns = !this.showSelectColumns;
+      if (this.showSelectColumns) {
+        this.showAdvancedFilters = false;
+        this.showExportPopup = false;
+        this.showPageHelp = false;
+      }
     },
     togglePageHelp() {
       const nextValue = !this.showPageHelp;
@@ -2128,8 +2150,6 @@ export default {
       const groupRows = group.getRows();
       if (!groupRows.length) return;
       const groupElement = group.getElement();
-      const selectedRows = groupRows.filter((row) => row.getData().selected);
-      const type = selectedRows[0] && selectedRows[0].getData().type;
       const requestName = group._group.key;
       let requestId = groupRows[0]?.getData?.().request_id;
       if (!requestId && requestName) {
@@ -2138,10 +2158,6 @@ export default {
           requestId = Number(match[1]);
         }
       }
-      const selectedNamesList = selectedRows.map((item) => {
-        return { barcode: item.getData().barcode, name: item.getData().name };
-      });
-      const popupHeight = Math.min(420, 260 + selectedNamesList.length * 22);
 
       switch (action) {
         case "selectAll":
@@ -2269,35 +2285,10 @@ export default {
             name: requestName
           });
           break;
-        case "downloadROCrate": {
-          if (!selectedRows.length) {
-            showNotification("Select records to download RO-Crate.", "warning");
-            if (!group._group.visible) groupElement.click();
-            break;
-          }
-          const barcodes = Array.from(
-            new Set(
-              selectedRows
-                .map((row) => row.getData().barcode)
-                .map((barcode) => ((barcode ?? "") + "").trim())
-                .filter((barcode) => Boolean(barcode))
-            )
-          );
-          if (!barcodes.length) {
-            showNotification("Selected entries lack valid barcodes.", "error");
-            if (!group._group.visible) groupElement.click();
-            break;
-          }
-          this.openRequestActionModal("downloadROCrate", {
-            id: requestId,
-            name: requestName,
-            selectedBarcodes: barcodes,
-            selectedType: type
-          });
-          if (!group._group.visible) groupElement.click();
-          break;
-        }
       }
+      this.hasSelectedRows = this.librariesSamplesList.some(
+        (row) => row.selected
+      );
     },
     async fetchExportTemplates() {
       if (!this.isStaffUser) {
@@ -2387,6 +2378,51 @@ export default {
       );
       this.exportSelection = this.hasSelectedRows ? "selected" : "all";
       this.showExportPopup = true;
+    },
+    getSelectedLibrariesSamplesRows() {
+      return this.librariesSamplesList.filter((row) => row.selected);
+    },
+    handleROCrateClick() {
+      const selectedRows = this.getSelectedLibrariesSamplesRows();
+      const selectedBarcodes = Array.from(
+        new Set(
+          selectedRows
+            .map((row) => ((row?.barcode ?? "") + "").trim())
+            .filter(Boolean)
+        )
+      );
+
+      const selectedTypes = [
+        ...new Set(
+          selectedRows
+            .map((row) =>
+              String(row?.type || "")
+                .trim()
+                .toUpperCase()
+            )
+            .filter((type) => type === "L" || type === "S")
+        )
+      ];
+      const requestNames = [
+        ...new Set(
+          selectedRows.map((row) => row?.request_name).filter(Boolean)
+        )
+      ];
+      const requestIds = [
+        ...new Set(selectedRows.map((row) => row?.request_id).filter(Boolean))
+      ];
+      const requestLabel =
+        requestNames.length === 1
+          ? requestNames[0]
+          : `${requestNames.length} requests`;
+
+      this.openRequestActionModal("downloadROCrate", {
+        id: requestIds.length === 1 ? requestIds[0] : null,
+        name: requestLabel,
+        selectedBarcodes,
+        selectedType: selectedTypes.length === 1 ? selectedTypes[0] : "mixed",
+        selectedRequestCount: requestNames.length
+      });
     },
     async handleExport() {
       try {
@@ -2600,6 +2636,47 @@ body,
 .search-bar {
   width: 330px;
   flex: 0 1 330px;
+}
+
+.header-button-icon-img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+}
+
+.date-filter-item input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+  background-color: white;
+  color: #333;
+  font-family: var(--app-font-family);
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.advanced-filters-popup {
+  left: -50px;
+  width: min(520px, calc(100vw - 24px));
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.advanced-filters-popup .filter-item {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.advanced-filters-popup .reset-button {
+  grid-column: 1 / -1;
+  margin: 0 0 4px;
 }
 
 .help-popup-wrapper {
@@ -3028,6 +3105,10 @@ body.input-dropdown-open .tabulator-tooltip {
 }
 
 @media (max-width: 600px) {
+  .advanced-filters-popup {
+    grid-template-columns: 1fr;
+  }
+
   .header-logo {
     display: none !important;
   }

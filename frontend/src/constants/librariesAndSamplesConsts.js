@@ -13,7 +13,6 @@ import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconAttachmentsAvailable from "../assets/icons/action_attachments_available.svg";
 import iconAttachmentsUnavailable from "../assets/icons/action_attachments_unavailable.svg";
-import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 
 const sortedStatusEntries = Object.entries(statusMap).sort(
   ([keyA], [keyB]) => Number(keyA) - Number(keyB)
@@ -156,10 +155,6 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${staffActions}
-      <div title="Export RO-Crate: Comprehensive Parkour metadata" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
-        <img class="group-action-icon-img icon-24" src="${iconDownloadROCrate}" alt="Export RO-Crate: Comprehensive Parkour metadata" />
-      </div>
-      <span class="group-action-separator"></span>
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
       </div>
@@ -225,7 +220,6 @@ export function librariesAndSamplesColumnDefs(
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
-        const request_name = cell.getRow().getData().request_name;
         const name = cell.getValue();
         return `
                         <div style="padding: 4px 12px; display: flex; align-items: center;">
