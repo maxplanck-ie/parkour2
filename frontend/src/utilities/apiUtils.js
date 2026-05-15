@@ -32,6 +32,27 @@ export function handleError(error) {
     notifyParentAuthRequired();
     window.location.href =
       urlStringStartsWith() + "/login/?next=/vue/" + slices[1];
+  } else if (error.response?.data) {
+    const { data } = error.response;
+
+    if (typeof data === "string" && data.trim()) {
+      showNotification(`Error: ${data}`, "error");
+      return;
+    }
+
+    if (typeof data === "object" && data !== null) {
+      const message =
+        data.message ||
+        data.detail ||
+        data.error ||
+        data.non_field_errors?.[0] ||
+        data.errors?.[0];
+
+      if (typeof message === "string" && message.trim()) {
+        showNotification(`Error: ${message}`, "error");
+        return;
+      }
+    }
   } else if (error.message) {
     showNotification("Error: " + error.message, "error");
   } else {
