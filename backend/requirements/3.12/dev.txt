@@ -20,9 +20,9 @@ attrs==26.1.0
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   referencing
-boto3==1.43.6
+boto3==1.43.9
     # via -r backend/requirements/dev.in
-botocore==1.43.6
+botocore==1.43.9
     # via
     #   boto3
     #   s3transfer
@@ -47,7 +47,7 @@ cryptography==48.0.0
     #   django-sql-explorer
 cycler==0.12.1
     # via matplotlib
-decorator==5.2.1
+decorator==5.3.1
     # via
     #   ipdb
     #   ipython
@@ -146,7 +146,7 @@ et-xmlfile==2.0.0
     #   openpyxl
 executing==2.2.1
     # via stack-data
-fonttools==4.62.1
+fonttools==4.63.0
     # via
     #   -c backend/requirements/3.12/base.txt
     #   fpdf2
@@ -165,7 +165,7 @@ httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via openai
-idna==3.14
+idna==3.15
     # via
     #   anyio
     #   httpx
@@ -212,14 +212,14 @@ matplotlib-inline==0.2.2
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-numpy==2.4.4
+numpy==2.4.5
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.36.0
+openai==2.37.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -230,7 +230,7 @@ packaging==26.2
     #   -c backend/requirements/3.12/base.txt
     #   gunicorn
     #   matplotlib
-pandas==3.0.2
+pandas==3.0.3
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
@@ -294,7 +294,7 @@ referencing==0.37.0
     #   jsonschema-specifications
 regex==2026.5.9
     # via tiktoken
-requests==2.33.1
+requests==2.34.2
     # via
     #   django-sql-explorer
     #   tiktoken
@@ -332,7 +332,7 @@ tblib==3.2.2
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
-tiktoken==0.12.0
+tiktoken==0.13.0
     # via -r backend/requirements/dev.in
 toml==0.10.2
     # via django-migration-linter
