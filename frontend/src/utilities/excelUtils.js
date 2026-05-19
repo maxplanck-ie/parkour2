@@ -409,6 +409,14 @@ const TEXT_EXPORT_KEY_PATTERNS = [
 ];
 
 function shouldWriteExportValueAsNumber(column = {}) {
+  const explicitType = String(column.excelType || "").toLowerCase();
+  if (explicitType === "number") {
+    return true;
+  }
+  if (explicitType === "text") {
+    return false;
+  }
+
   const key = String(column.key || "");
   const header = String(column.header || "");
   if (TEXT_EXPORT_KEY_PATTERNS.some((pattern) => pattern.test(key))) {

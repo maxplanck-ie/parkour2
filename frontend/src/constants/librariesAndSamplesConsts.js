@@ -767,10 +767,20 @@ export function librariesAndSamplesExportColumns() {
     { header: "Protocol", key: "library_protocol_name", width: 20 },
     { header: "Analysis Type", key: "analysis_type_name", width: 20 },
     { header: "Input", key: "input_display", width: 15 },
-    { header: "Starting Amount", key: "starting_amount", width: 18 },
-    { header: "Cycles", key: "pcr_cycles", width: 12 },
-    { header: "ng/µl Library", key: "concentration_library", width: 15 },
-    { header: "bp", key: "average_fragment_size", width: 12 },
+    {
+      header: "Starting Amount",
+      key: "starting_amount",
+      width: 18,
+      excelType: "number"
+    },
+    { header: "Cycles", key: "pcr_cycles", width: 12, excelType: "number" },
+    {
+      header: "ng/µl Library",
+      key: "concentration_library",
+      width: 15,
+      excelType: "number"
+    },
+    { header: "bp", key: "average_fragment_size", width: 12, excelType: "number" },
     { header: "Index Type", key: "index_type_name", width: 15 },
     { header: "Coord", key: "coordinate", width: 12 },
     { header: "I7 ID", key: "i7_id", width: 15 },
@@ -778,7 +788,7 @@ export function librariesAndSamplesExportColumns() {
     { header: "I5 ID", key: "i5_id", width: 15 },
     { header: "Index I5", key: "index_i5", width: 15 },
     { header: "Length", key: "read_length_name", width: 12 },
-    { header: "Depth (M)", key: "sequencing_depth", width: 15 },
+    { header: "Depth (M)", key: "sequencing_depth", width: 15, excelType: "number" },
     { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
     { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
