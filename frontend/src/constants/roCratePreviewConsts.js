@@ -1,3 +1,5 @@
+import roCrateHiddenFields from "../../../shared/roCrateHiddenFields.json";
+
 export const RO_CRATE_INBUILT_HIDDEN_FIELDS = [
   "@id",
   "@type",
@@ -17,23 +19,12 @@ export const RO_CRATE_INBUILT_HIDDEN_FIELDS = [
   "url"
 ];
 
-export const USER_DEFINED_VARIABLE_HIDDEN_FIELDS = [
-  "costUnit",
-  "createTime",
-  "isConverted",
-  "isPooled",
-  "requestedSections",
-  "samplesSubmitted",
-  "sequenced",
-  "status",
-  "token",
-  "updateTime",
-  "user",
-  "userIsPi",
-  "userIsStaff"
-];
+// Shared with backend/library/ro_crate.py. Keep RO-Crate export field exclusions
+// in shared/roCrateHiddenFields.json so preview hiding and backend export filtering stay aligned.
+export const USER_DEFINED_VARIABLE_HIDDEN_FIELDS =
+  roCrateHiddenFields.userDefinedVariableHiddenFields;
 
-export const RO_CRATE_VIEWER_FIELD_RULES = {
+export const RO_CRATE_PREVIEW_FIELD_RULES = {
   entityFields: {
     id: "@id",
     type: "@type",
@@ -74,21 +65,24 @@ export const RO_CRATE_VIEWER_FIELD_RULES = {
   visibleRequestFields: ["request_filepaths", "request_metapaths"],
   hiddenSensitiveFieldPatterns: [/email/i, /telephone/i],
   hiddenLinkedRecordLabelPatterns: [
-    /^#sample-assay-/i,
-    /^related index /i,
-    /^related linked /i,
-    /^process linked by /i,
-    /^assay linked by /i
+    /^assay linked by /i,
+    /^data linked by /i
   ],
   requestOverview: {
+    // Hide low-level ISA helper entities from preview sections. They remain in
+    // the JSON-LD export; preview keeps the human-facing request/record summary.
     hiddenIdFragments: [
       "#study-",
+      "#sample-assay-",
+      "#library-assay-",
+      "#sample-data-",
+      "#library-data-",
       "source-",
       "export-action",
       "metadata-export-terms"
     ],
     hiddenTypes: ["createaction", "definedterm"],
-    hiddenTypeFragments: ["/assay"]
+    hiddenTypeFragments: []
   },
   commentGroups: [
     {

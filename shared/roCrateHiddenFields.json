@@ -1,0 +1,17 @@
+{
+  "userDefinedVariableHiddenFields": [
+    "costUnit",
+    "createTime",
+    "isConverted",
+    "isPooled",
+    "requestedSections",
+    "samplesSubmitted",
+    "sequenced",
+    "status",
+    "token",
+    "updateTime",
+    "user",
+    "userIsPi",
+    "userIsStaff"
+  ]
+}

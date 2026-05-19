@@ -281,6 +281,18 @@
         </div>
         <button
           class="header-button"
+          id="openExportPopupButton"
+          @click="handleExportClick"
+        >
+          <font-awesome-icon
+            icon="fa-solid fa-file-excel"
+            style="color: white"
+          />
+          <span> Export to Excel </span>
+        </button>
+
+        <button
+          class="header-button"
           id="openROCratePopupButton"
           type="button"
           @click="handleROCrateClick"
@@ -291,18 +303,6 @@
             class="header-button-icon-img"
           />
           <span> RO-Crate </span>
-        </button>
-
-        <button
-          class="header-button"
-          id="openExportPopupButton"
-          @click="handleExportClick"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-file-excel"
-            style="color: white"
-          />
-          <span> Export to Excel </span>
         </button>
 
         <button
@@ -749,6 +749,40 @@
       @saved="handleRequestEditorSaved"
     />
 
+    <div
+      v-if="showROCratePreviewModal"
+      class="rocrate-preview-overlay"
+      tabindex="0"
+      @keydown.esc.prevent="closeROCratePreviewModal"
+    >
+      <div class="rocrate-preview-modal">
+        <div class="rocrate-preview-modal-header">
+          <div class="rocrate-preview-modal-title">
+            <img
+              class="rocrate-preview-modal-icon"
+              src="@/assets/icons/parkour_32x32.png"
+              alt=""
+            />
+            <span>RO-Crate Preview</span>
+          </div>
+          <button
+            class="popup-close-button"
+            type="button"
+            aria-label="Close RO-Crate preview"
+            @click="closeROCratePreviewModal"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="rocrate-preview-modal-body">
+          <ROCratePreviewView
+            :preview-config="roCratePreviewConfig"
+            :embedded="true"
+          />
+        </div>
+      </div>
+    </div>
+
     <!-- Popup for Export Options -->
     <div
       v-if="showExportPopup"
@@ -1031,6 +1065,7 @@
       :paperless-approval="paperlessApproval"
       @close="closeRequestActionModal"
       @refresh="handleRequestActionRefresh"
+      @preview-ro-crate="openROCratePreviewModal"
     />
   </div>
 </template>
@@ -1058,6 +1093,7 @@ import {
 } from "../constants/librariesAndSamplesConsts";
 import { statusMap, getStatusClass } from "../constants/statusConsts";
 import RequestEditorView from "./requestEditorView.vue";
+import ROCratePreviewView from "./roCratePreviewView.vue";
 import RequestActionsPopups from "../components/RequestActionsPopups.vue";
 import iconLibrariesHeader from "../assets/icons/header_libraries_samples.svg";
 import iconExportTemplateFile from "../assets/icons/export_template.svg";
@@ -1068,12 +1104,14 @@ import iconExportUpload from "../assets/icons/export_upload.svg";
 import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const RO_CRATE_COMPLETED_STATUS = 6;
 
 export default {
   name: "LibrariesAndSamples",
   components: {
     LiteTabulatorTable,
     RequestEditorView,
+    ROCratePreviewView,
     RequestActionsPopups
   },
   data() {
@@ -1217,6 +1255,8 @@ export default {
       activeRequestMeta: null,
       activeRequestAction: null,
       activeRequestContext: null,
+      showROCratePreviewModal: false,
+      roCratePreviewConfig: null,
       requestEditorSyncing: false,
       requestEditorSyncTimer: null,
       pendingSavedRequestId: null,
@@ -2081,6 +2121,17 @@ export default {
       this.activeRequestAction = null;
       this.activeRequestContext = null;
     },
+    openROCratePreviewModal(previewConfig) {
+      this.roCratePreviewConfig = previewConfig || null;
+      this.showROCratePreviewModal = true;
+      this.$nextTick(() => {
+        document.querySelector(".rocrate-preview-overlay")?.focus?.();
+      });
+    },
+    closeROCratePreviewModal() {
+      this.showROCratePreviewModal = false;
+      this.roCratePreviewConfig = null;
+    },
     handleRequestActionRefresh() {
       this.requestMetaById = {};
       this.getLibrariesSamples(this.pagination.currentPage || 1);
@@ -2384,9 +2435,29 @@ export default {
     },
     handleROCrateClick() {
       const selectedRows = this.getSelectedLibrariesSamplesRows();
+      const completedRows = selectedRows.filter(
+        (row) => Number(row?.status) === RO_CRATE_COMPLETED_STATUS
+      );
+      const skippedCount = selectedRows.length - completedRows.length;
+
+      if (skippedCount > 0) {
+        showNotification(
+          `${skippedCount} selected ${skippedCount === 1 ? "record was" : "records were"} skipped because RO-Crate export requires Delivered status.`,
+          "warning"
+        );
+      }
+
+      if (!completedRows.length) {
+        showNotification(
+          "Select at least one delivered library or sample for RO-Crate export.",
+          "warning"
+        );
+        return;
+      }
+
       const selectedBarcodes = Array.from(
         new Set(
-          selectedRows
+          completedRows
             .map((row) => ((row?.barcode ?? "") + "").trim())
             .filter(Boolean)
         )
@@ -2394,7 +2465,7 @@ export default {
 
       const selectedTypes = [
         ...new Set(
-          selectedRows
+          completedRows
             .map((row) =>
               String(row?.type || "")
                 .trim()
@@ -2405,11 +2476,11 @@ export default {
       ];
       const requestNames = [
         ...new Set(
-          selectedRows.map((row) => row?.request_name).filter(Boolean)
+          completedRows.map((row) => row?.request_name).filter(Boolean)
         )
       ];
       const requestIds = [
-        ...new Set(selectedRows.map((row) => row?.request_id).filter(Boolean))
+        ...new Set(completedRows.map((row) => row?.request_id).filter(Boolean))
       ];
       const requestLabel =
         requestNames.length === 1
@@ -2420,6 +2491,7 @@ export default {
         id: requestIds.length === 1 ? requestIds[0] : null,
         name: requestLabel,
         selectedBarcodes,
+        selectedRequestNames: requestNames,
         selectedType: selectedTypes.length === 1 ? selectedTypes[0] : "mixed",
         selectedRequestCount: requestNames.length
       });
@@ -2631,6 +2703,113 @@ body,
   flex: 1;
   overflow: auto;
   position: relative;
+}
+
+.rocrate-preview-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.rocrate-preview-modal {
+  position: relative;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  overflow: hidden;
+  background: #f4fafb;
+  border-radius: 8px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.rocrate-preview-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #13415b;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.rocrate-preview-modal-header .popup-close-button {
+  color: #13415b;
+  border-radius: 4px;
+}
+
+.rocrate-preview-modal-header .popup-close-button:hover {
+  background: #edf3f5;
+}
+
+.rocrate-preview-modal-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rocrate-preview-modal-title span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rocrate-preview-modal-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.rocrate-preview-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media print {
+  :global(body.rocrate-printing .parent-container> :not(.rocrate-preview-overlay)) {
+    display: none !important;
+  }
+
+  :global(body.rocrate-printing .rocrate-preview-overlay) {
+    position: static;
+    inset: auto;
+    display: block;
+    padding: 0;
+    background: #ffffff;
+    overflow: visible;
+  }
+
+  :global(body.rocrate-printing .rocrate-preview-modal) {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    box-shadow: none;
+    border-radius: 0;
+    background: #ffffff;
+  }
+
+  :global(body.rocrate-printing .rocrate-preview-modal-header) {
+    display: none !important;
+  }
+
+  :global(body.rocrate-printing .rocrate-preview-modal-body) {
+    overflow: visible;
+  }
 }
 
 .search-bar {

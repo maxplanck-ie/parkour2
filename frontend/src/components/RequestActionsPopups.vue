@@ -579,8 +579,7 @@
                     you want to review metadata outside Parkour, share it with
                     other people, keep an archive copy, or use it in another
                     tool that understands RO-Crate. The metadata graph is
-                    organized as a single-request, ISA-profile-aligned RO-Crate
-                    package.
+                    organized as an ISA-profile-aligned RO-Crate package.
                   </p>
                 </div>
               </div>
@@ -630,8 +629,8 @@
                   </div>
                   <ul class="rocrate-help-list">
                     <li>
-                      Click <strong>Download</strong> to create one
-                      <strong>.zip</strong> file for the current selection.
+                      Click <strong>Preview</strong> to review the current
+                      selection before creating the final ZIP file.
                     </li>
                     <li>
                       Open the zip and look for
@@ -639,9 +638,8 @@
                       contains the linked metadata graph for the export.
                     </li>
                     <li>
-                      Use the built-in <strong>RO-Crate Viewer</strong> button
-                      below if you want to inspect the ZIP in Parkour instead
-                      of reading the raw JSON-LD file directly.
+                      Click <strong>Preview</strong> to inspect the selected
+                      metadata in Parkour before exporting the final ZIP.
                     </li>
                     <li>
                       Use
@@ -682,7 +680,10 @@
             <span class="label">Selected Requests</span>
             <span
               class="value"
-              :class="{ 'rocrate-summary-count': roCrateRequestCount !== 1 }"
+              :class="{
+                'rocrate-summary-count': roCrateRequestCount !== 1,
+                'rocrate-request-name': roCrateRequestCount === 1
+              }"
             >
               {{ requestContext?.name || "-" }}
             </span>
@@ -690,7 +691,7 @@
           <div class="rocrate-summary-card">
             <span class="label">{{ roCrateSelectedLabel }}</span>
             <span class="value rocrate-summary-count">{{
-              roCrateSelectedCount
+              roCrateSelectedDisplay
             }}</span>
           </div>
         </div>
@@ -746,16 +747,6 @@
         <div class="rocrate-footer-links">
           <a
             class="file-upload-label rocrate-footer-link"
-            :href="roCrateViewerHref"
-            target="_blank"
-            rel="noopener noreferrer"
-            @click="close"
-          >
-            <font-awesome-icon icon="fa-solid fa-desktop" />
-            RO-Crate Viewer
-          </a>
-          <a
-            class="file-upload-label rocrate-footer-link"
             href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
             target="_blank"
             rel="noopener noreferrer"
@@ -769,16 +760,16 @@
             ref="defaultROCrateButton"
             class="popup-button yes-button"
             type="button"
-            :disabled="roCrateBusy || !canDownloadROCrate"
+            :disabled="roCrateBusy || !canPreviewROCrate"
             :title="
-              canDownloadROCrate
+              canPreviewROCrate
                 ? ''
-                : 'Select at least one library or sample before exporting.'
+                : 'Select at least one library or sample before previewing.'
             "
-            @click="downloadROCrate"
+            @click="previewROCrate"
           >
-            <span v-if="roCrateBusy">Downloading...</span>
-            <span v-else>Download</span>
+            <span v-if="roCrateBusy">Opening...</span>
+            <span v-else>Preview</span>
           </button>
           <button class="popup-button secondary" type="button" @click="close">
             Cancel
@@ -790,7 +781,6 @@
 </template>
 
 <script>
-import { saveAs } from "file-saver";
 import {
   showNotification,
   handleError,
@@ -829,7 +819,6 @@ const REQUEST_API_ENDPOINTS = {
   sendEmail: (requestId) => `/api/requests/${requestId}/send_email/`,
   solicitApproval: (requestId) =>
     `/api/requests/${requestId}/solicit_approval/`,
-  generateROCrate: "/api/generate_ro_crate/",
   uploadFiles: "/api/requests/upload_files/",
   filesAfterUpload: "/api/requests/get_files_after_upload/"
 };
@@ -877,15 +866,6 @@ const REQUEST_DATA_FIELDS = {
   costUnit: "cost_unit",
   description: "description",
   recordType: "record_type"
-};
-
-const RO_CRATE_DOWNLOAD = {
-  defaultFilename: "ro_crate.zip",
-  filenameSuffix: "_ro_crate.zip",
-  params: {
-    barcodes: "barcodes",
-    sections: "sections"
-  }
 };
 
 const RO_CRATE_SECTION_OPTIONS = [
@@ -1001,7 +981,7 @@ const RO_CRATE_SECTION_OPTIONS = [
 
 export default {
   name: "RequestActionsPopups",
-  emits: ["close", "refresh"],
+  emits: ["close", "refresh", "preview-ro-crate"],
   props: {
     activeAction: {
       type: String,
@@ -1109,6 +1089,19 @@ export default {
     roCrateSelectedCount() {
       return this.roCrateSelectedBarcodes.length;
     },
+    roCrateSelectedDisplay() {
+      const count = this.roCrateSelectedCount;
+      const type = String(this.requestContext?.selectedType || "")
+        .trim()
+        .toUpperCase();
+      if (type === "L") {
+        return `${count} ${count === 1 ? "library" : "libraries"}`;
+      }
+      if (type === "S") {
+        return `${count} ${count === 1 ? "sample" : "samples"}`;
+      }
+      return `${count} ${count === 1 ? "library/sample" : "libraries/samples"}`;
+    },
     roCrateRequestCount() {
       const count = Number(this.requestContext?.selectedRequestCount || 0);
       return Number.isFinite(count) && count > 0 ? count : 0;
@@ -1116,7 +1109,7 @@ export default {
     canConfigureROCrateExport() {
       return this.roCrateSelectedBarcodes.length > 0;
     },
-    canDownloadROCrate() {
+    canPreviewROCrate() {
       return (
         this.canConfigureROCrateExport &&
         this.roCrateSelectedSections.length > 0
@@ -1132,15 +1125,12 @@ export default {
     },
     roCrateValidationMessage() {
       if (!this.roCrateSelectedBarcodes.length) {
-        return "RO-Crate Viewer is available without a selection. To export an RO-Crate, select at least one library or sample with a valid barcode.";
+        return "Select at least one library or sample with a valid barcode to preview an RO-Crate.";
       }
       if (!this.roCrateSelectedSections.length) {
         return "Select at least one information section to include in the RO-Crate.";
       }
       return "";
-    },
-    roCrateViewerHref() {
-      return this.$router.resolve("/ro_crate_viewer").href;
     }
   },
   mounted() {
@@ -1215,7 +1205,7 @@ export default {
           return;
         }
         if (this.activeAction === REQUEST_ACTIONS.downloadROCrate) {
-          if (!this.roCrateBusy) this.downloadROCrate();
+          if (!this.roCrateBusy) this.previewROCrate();
           return;
         }
         if (this.activeAction === REQUEST_ACTIONS.deleteRequest) {
@@ -1271,10 +1261,10 @@ export default {
     clearAllROCrateSections() {
       this.roCrateSelectedSections = [];
     },
-    async downloadROCrate() {
+    previewROCrate() {
       if (!this.roCrateSelectedBarcodes.length) {
         showNotification(
-          "Select records with valid barcodes to download RO-Crate.",
+          "Select records with valid barcodes to preview RO-Crate.",
           NOTIFICATION_TYPES.warning
         );
         return;
@@ -1289,39 +1279,17 @@ export default {
 
       try {
         this.roCrateBusy = true;
-        const response = await axiosRef.get(
-          apiUrl(REQUEST_API_ENDPOINTS.generateROCrate),
-          {
-            params: {
-              [RO_CRATE_DOWNLOAD.params.barcodes]:
-                this.roCrateSelectedBarcodes.join(","),
-              [RO_CRATE_DOWNLOAD.params.sections]:
-                this.roCrateSelectedSections.join(",")
-            },
-            responseType: RESPONSE_TYPES.blob
-          }
-        );
-
-        const sanitize = (value) =>
-          String(value || "")
-            .replace(/[^a-z0-9-_.]+/gi, "_")
-            .replace(/_+/g, "_")
-            .replace(/^_|_$/g, "");
-
-        const safeBarcodeName = sanitize(
-          this.roCrateSelectedBarcodes.join("_")
-        );
-        const blob = response?.data;
-        const filename = safeBarcodeName
-          ? `${safeBarcodeName}${RO_CRATE_DOWNLOAD.filenameSuffix}`
-          : RO_CRATE_DOWNLOAD.defaultFilename;
-
-        saveAs(blob, filename);
-
-        showNotification(
-          "RO-Crate downloaded successfully.",
-          NOTIFICATION_TYPES.success
-        );
+        this.$emit("preview-ro-crate", {
+          barcodes: this.roCrateSelectedBarcodes,
+          sections: this.roCrateSelectedSections,
+          requestName: this.requestContext?.name || "",
+          requestNames: Array.isArray(this.requestContext?.selectedRequestNames)
+            ? this.requestContext.selectedRequestNames
+            : [],
+          selectedType: this.requestContext?.selectedType || "",
+          selectedCount: this.roCrateSelectedCount,
+          selectedRequestCount: this.roCrateRequestCount
+        });
         this.close();
       } catch (error) {
         handleError(error);
@@ -1413,7 +1381,7 @@ export default {
     },
     formatPathForOS(filepath) {
       const filepathRegex =
-        /^\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_\/.]+$/;
+        /^\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_/.]+$/;
       if (!filepath) {
         return "Empty";
       }
@@ -1449,7 +1417,7 @@ export default {
           "Path copied to clipboard.",
           NOTIFICATION_TYPES.success
         );
-      } catch (error) {
+      } catch {
         showNotification("Path copy failed.", NOTIFICATION_TYPES.error);
       }
     },
@@ -2409,10 +2377,17 @@ export default {
 }
 
 .rocrate-summary-count {
-  font-size: 24px !important;
+  font-size: 20px !important;
   line-height: 1;
   font-weight: 700;
   color: #13415b !important;
+}
+
+.rocrate-request-name {
+  color: #13415b !important;
+  font-size: 20px !important;
+  font-weight: 600;
+  line-height: 1;
 }
 
 @media (max-width: 760px) {

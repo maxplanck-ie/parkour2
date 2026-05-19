@@ -1,27 +1,39 @@
 <template>
-  <div class="rocrate-viewer-page" :class="{ 'page-drag-over': isDragOver }">
-    <div class="rocrate-viewer-shell" :class="{ 'is-empty': !model && !loading && !errorMessage }">
-      <section class="upload-stage" :class="{ active: isDragOver, centered: !model && !loading && !errorMessage }"
-        @dragover.stop.prevent="handleDragOver" @dragenter.stop.prevent="handleDragEnter"
-        @dragleave.stop.prevent="handleDragLeave" @drop.stop.prevent="handleDrop">
-        <input ref="uploadInput" class="hidden-upload" type="file"
-          accept=".zip,.json,.jsonld,application/zip,application/json" @change="handleFileSelection" />
-        <div class="upload-content" :class="{ 'drag-hidden': isDragOver }">
+  <div class="rocrate-preview-page" :class="{ embedded }">
+    <div class="rocrate-preview-shell" :class="{ 'is-empty': !model && !loading && !errorMessage }">
+      <section class="upload-stage" :class="{ centered: !model && !loading && !errorMessage }">
+        <div class="upload-content">
           <h1 class="upload-title-main">
             <img class="upload-title-icon" src="@/assets/icons/parkour_32x32.png" alt="" />
-            <span>Parkour RO-Crate Viewer</span>
+            <span>Parkour RO-Crate Preview</span>
           </h1>
-          <div class="upload-title">Upload RO-Crate ZIP or JSON-LD file</div>
+          <div class="upload-title">
+            {{
+              activePreviewConfig
+                ? "Review selected RO-Crate metadata"
+                : "RO-Crate preview"
+            }}
+          </div>
           <div class="upload-subtitle">
-            You can drag and drop the file here, or choose it manually below.
+            {{
+              activePreviewConfig
+                ? "Inspect the selected Parkour records before exporting the final ZIP."
+                : "Select libraries or samples and open Preview from the RO-Crate export dialog."
+            }}
           </div>
           <div class="upload-actions">
             <div v-if="model?.source?.name" class="upload-current-file">
               {{ model.source.name }}
             </div>
-            <button class="hero-button primary" type="button" @click="triggerUpload">
-              <font-awesome-icon icon="fa-solid fa-cloud-arrow-up" />
-              {{ model ? "Choose Another File" : "Choose File" }}
+            <button
+              v-if="model"
+              class="hero-button primary rocrate-export-button"
+              type="button"
+              :disabled="exportBusy || !canExportPreview"
+              @click="exportROCrate"
+            >
+              <font-awesome-icon icon="fa-solid fa-box-archive" />
+              {{ exportBusy ? "Exporting..." : "Export RO-Crate" }}
             </button>
             <button v-if="model" class="hero-button secondary pdf-export-button" type="button" @click="exportToPdf">
               <font-awesome-icon icon="fa-solid fa-file-pdf" />
@@ -29,29 +41,34 @@
             </button>
           </div>
         </div>
-        <div class="upload-watermark" :class="{ 'drag-hidden': isDragOver }" aria-hidden="true">
+        <div class="upload-watermark" aria-hidden="true">
           <div class="upload-watermark-crop">
             <img src="@/assets/icons/ro-crate-wide.svg" alt="" />
           </div>
         </div>
-        <div v-if="isDragOver" class="page-drag-drop-indicator">
-          <div class="page-drag-drop-copy">
-            Drop <span>RO-Crate ZIP or JSON-LD file</span> here to upload
-          </div>
-        </div>
       </section>
 
-      <div v-if="loading" class="viewer-feedback loading">
+      <div v-if="loading" class="preview-feedback loading">
         <div class="loading-spinner"></div>
         <div>Parsing archive and indexing JSON-LD graph...</div>
       </div>
 
-      <div v-else-if="errorMessage" class="viewer-feedback error">
+      <div v-else-if="errorMessage" class="preview-feedback error">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
         <span>{{ errorMessage }}</span>
       </div>
 
-      <section v-if="model" class="viewer-workspace">
+      <div v-if="skippedRecords.length" class="preview-feedback warning">
+        <font-awesome-icon icon="fa-solid fa-triangle-exclamation" />
+        <span>
+          {{ skippedRecords.length }}
+          {{ skippedRecords.length === 1 ? "record was" : "records were" }}
+          skipped because RO-Crate export requires Delivered status:
+          {{ skippedRecords.join(", ") }}
+        </span>
+      </div>
+
+      <section v-if="model" class="preview-workspace">
         <section class="detail-card quick-summary-card">
           <div class="table-search-inline table-search-inline-top">
             <div class="table-search-input-wrap">
@@ -66,12 +83,14 @@
             </div>
           </div>
           <div class="quick-summary-table">
-            <div v-for="item in summaryKeyValuePairs" :key="item.key" class="quick-summary-row">
+            <div v-for="item in summaryKeyValuePairs" :key="item.key" class="quick-summary-row"
+              :class="{ 'wide-row': shouldUseWideRow(item) }">
               <div class="quick-summary-key">{{ item.key }}</div>
               <div class="quick-summary-value">
-                <template v-if="Array.isArray(item.value)">
-                  {{ item.value.join(", ") }}
-                </template>
+                <div
+                  v-if="isStructuredDisplayValue(item.value)"
+                  v-html="structuredValueHtml(item.value)"
+                ></div>
                 <template v-else>
                   {{ item.value }}
                 </template>
@@ -84,12 +103,13 @@
             <div class="record-group-title">{{ section.title }}</div>
             <div class="quick-summary-table record-group-table">
               <div v-for="item in section.rows" :key="`request-overview-${section.title}-${item.key}`"
-                class="quick-summary-row">
+                class="quick-summary-row" :class="{ 'wide-row': shouldUseWideRow(item) }">
                 <div class="quick-summary-key">{{ item.key }}</div>
                 <div class="quick-summary-value">
-                  <template v-if="Array.isArray(item.value)">
-                    {{ item.value.join(", ") }}
-                  </template>
+                  <div
+                    v-if="isStructuredDisplayValue(item.value)"
+                    v-html="structuredValueHtml(item.value)"
+                  ></div>
                   <template v-else>
                     {{ item.value }}
                   </template>
@@ -114,12 +134,14 @@
               </div>
             </div>
             <div class="quick-summary-table">
-              <div v-for="item in requestAttachmentRows" :key="item.key" class="quick-summary-row">
+              <div v-for="item in requestAttachmentRows" :key="item.key" class="quick-summary-row"
+                :class="{ 'wide-row': shouldUseWideRow(item) }">
                 <div class="quick-summary-key">{{ item.key }}</div>
                 <div class="quick-summary-value">
-                  <template v-if="Array.isArray(item.value)">
-                    {{ item.value.join(", ") }}
-                  </template>
+                  <div
+                    v-if="isStructuredDisplayValue(item.value)"
+                    v-html="structuredValueHtml(item.value)"
+                  ></div>
                   <template v-else>
                     {{ item.value }}
                   </template>
@@ -137,12 +159,13 @@
                 <div class="record-group-title">{{ section.title }}</div>
                 <div class="quick-summary-table record-group-table">
                   <div v-for="item in section.rows" :key="`${record.id}-${section.title}-${item.key}`"
-                    class="quick-summary-row">
+                    class="quick-summary-row" :class="{ 'wide-row': shouldUseWideRow(item) }">
                     <div class="quick-summary-key">{{ item.key }}</div>
                     <div class="quick-summary-value">
-                      <template v-if="Array.isArray(item.value)">
-                        {{ item.value.join(", ") }}
-                      </template>
+                      <div
+                        v-if="isStructuredDisplayValue(item.value)"
+                        v-html="structuredValueHtml(item.value)"
+                      ></div>
                       <template v-else>
                         {{ item.value }}
                       </template>
@@ -153,7 +176,7 @@
             </article>
           </div>
           <div v-else class="empty-inline">
-            No sample or library records were identified from the uploaded RO-Crate.
+            No sample or library records were identified from this RO-Crate.
           </div>
         </section>
 
@@ -165,11 +188,21 @@
 <script>
 import {
   RO_CRATE_INBUILT_HIDDEN_FIELDS,
-  RO_CRATE_VIEWER_FIELD_RULES,
+  RO_CRATE_PREVIEW_FIELD_RULES,
   USER_DEFINED_VARIABLE_HIDDEN_FIELDS
-} from "../constants/roCrateViewerConsts";
-import { parseRoCrateSource } from "../utilities/roCrateViewerUtils";
-import { showNotification } from "../utilities/utilityFunctions";
+} from "../constants/roCratePreviewConsts";
+import { saveAs } from "file-saver";
+import { parseRoCratePayload } from "../utilities/roCratePreviewUtils";
+import {
+  createAxiosObject,
+  handleError,
+  showNotification,
+  urlStringStartsWith
+} from "../utilities/utilityFunctions";
+
+const axiosRef = createAxiosObject();
+const urlStringStart = urlStringStartsWith();
+const RO_CRATE_ENDPOINT = "/api/generate_ro_crate/";
 
 const displayLabelForField = (field) =>
   String(field || "")
@@ -186,43 +219,57 @@ const userDefinedVariableHiddenFieldSet = new Set(
 const userDefinedVariableHiddenLabelSet = new Set(
   USER_DEFINED_VARIABLE_HIDDEN_FIELDS.map(displayLabelForField)
 );
-const visibleIdFieldSet = new Set(RO_CRATE_VIEWER_FIELD_RULES.visibleIdFields);
+const visibleIdFieldSet = new Set(RO_CRATE_PREVIEW_FIELD_RULES.visibleIdFields);
 const visibleIdLabelSet = new Set(
-  RO_CRATE_VIEWER_FIELD_RULES.visibleIdFields.map(displayLabelForField)
+  RO_CRATE_PREVIEW_FIELD_RULES.visibleIdFields.map(displayLabelForField)
 );
 const visibleRequestFieldSet = new Set(
-  RO_CRATE_VIEWER_FIELD_RULES.visibleRequestFields
+  RO_CRATE_PREVIEW_FIELD_RULES.visibleRequestFields
 );
 const hiddenSensitiveFieldPatterns =
-  RO_CRATE_VIEWER_FIELD_RULES.hiddenSensitiveFieldPatterns;
+  RO_CRATE_PREVIEW_FIELD_RULES.hiddenSensitiveFieldPatterns;
 const hiddenLinkedRecordLabelPatterns =
-  RO_CRATE_VIEWER_FIELD_RULES.hiddenLinkedRecordLabelPatterns;
-const entityFields = RO_CRATE_VIEWER_FIELD_RULES.entityFields;
-const entityIds = RO_CRATE_VIEWER_FIELD_RULES.entityIds;
-const recordEntityRules = RO_CRATE_VIEWER_FIELD_RULES.recordEntity;
-const attachmentEntityRules = RO_CRATE_VIEWER_FIELD_RULES.attachmentEntity;
-const sectionOptions = RO_CRATE_VIEWER_FIELD_RULES.sectionOptions;
+  RO_CRATE_PREVIEW_FIELD_RULES.hiddenLinkedRecordLabelPatterns;
+const entityFields = RO_CRATE_PREVIEW_FIELD_RULES.entityFields;
+const entityIds = RO_CRATE_PREVIEW_FIELD_RULES.entityIds;
+const recordEntityRules = RO_CRATE_PREVIEW_FIELD_RULES.recordEntity;
+const attachmentEntityRules = RO_CRATE_PREVIEW_FIELD_RULES.attachmentEntity;
+const sectionOptions = RO_CRATE_PREVIEW_FIELD_RULES.sectionOptions;
 const hiddenContextEntityFieldSet = new Set(
-  RO_CRATE_VIEWER_FIELD_RULES.hiddenContextEntityFields
+  RO_CRATE_PREVIEW_FIELD_RULES.hiddenContextEntityFields
 );
 const hiddenBacklinkPropertySet = new Set(
-  RO_CRATE_VIEWER_FIELD_RULES.hiddenBacklinkProperties
+  RO_CRATE_PREVIEW_FIELD_RULES.hiddenBacklinkProperties
 );
 const recordTypeLabel = displayLabelForField("recordType");
 
 export default {
-  name: "ROCrateViewerView",
+  name: "ROCratePreviewView",
+  props: {
+    previewConfig: {
+      type: Object,
+      default: null
+    },
+    embedded: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       loading: false,
       errorMessage: "",
       model: null,
       tableSearchTerm: "",
-      isDragOver: false,
-      dragDepth: 0
+      activePreviewConfig: null,
+      exportBusy: false,
+      skippedRecords: []
     };
   },
   computed: {
+    canExportPreview() {
+      return Array.isArray(this.activePreviewConfig?.barcodes) && this.activePreviewConfig.barcodes.length > 0;
+    },
     rootEntity() {
       if (!this.model) return null;
       return this.model.entityMap?.[this.model.stats.rootDatasetId] || null;
@@ -310,19 +357,70 @@ export default {
         .filter((record) => record.sections.length > 0);
     }
   },
-  beforeUnmount() {
-    window.removeEventListener("dragenter", this.handleWindowDragEnter);
-    window.removeEventListener("dragover", this.handleWindowDragOver);
-    window.removeEventListener("dragleave", this.handleWindowDragLeave);
-    window.removeEventListener("drop", this.handleWindowDrop);
-  },
-  mounted() {
-    window.addEventListener("dragenter", this.handleWindowDragEnter);
-    window.addEventListener("dragover", this.handleWindowDragOver);
-    window.addEventListener("dragleave", this.handleWindowDragLeave);
-    window.addEventListener("drop", this.handleWindowDrop);
+  watch: {
+    previewConfig: {
+      immediate: true,
+      deep: true,
+      handler(newConfig) {
+        if (newConfig) {
+          this.loadPreviewFromConfig(newConfig);
+        }
+      }
+    }
   },
   methods: {
+    roCrateRequestParams(extra = {}) {
+      return {
+        barcodes: (this.activePreviewConfig?.barcodes || []).join(","),
+        sections: (this.activePreviewConfig?.sections || []).join(","),
+        ...extra
+      };
+    },
+    sanitizeFilenamePart(value) {
+      return String(value || "")
+        .replace(/[^a-z0-9-_.]+/gi, "_")
+        .replace(/_+/g, "_")
+        .replace(/^_|_$/g, "");
+    },
+    parseContentDispositionFilename(header) {
+      const match = String(header || "").match(/filename="?([^"]+)"?/i);
+      return match?.[1] || "";
+    },
+    async loadPreviewFromConfig(previewConfig) {
+      if (!Array.isArray(previewConfig?.barcodes) || !previewConfig.barcodes.length) {
+        this.errorMessage = "Select at least one library or sample before previewing an RO-Crate.";
+        return;
+      }
+
+      this.activePreviewConfig = {
+        ...previewConfig,
+        sections: Array.isArray(previewConfig.sections) ? previewConfig.sections : []
+      };
+      this.loading = true;
+      this.errorMessage = "";
+
+      try {
+        const response = await axiosRef.get(`${urlStringStart}${RO_CRATE_ENDPOINT}`, {
+          params: this.roCrateRequestParams({ preview: "true" })
+        });
+        const payload = response?.data || {};
+        this.skippedRecords = Array.isArray(payload.skipped_records)
+          ? payload.skipped_records
+          : [];
+        this.model = parseRoCratePayload(payload.ro_crate || payload, {
+          name: payload.archive_name || "ro-crate-preview.jsonld"
+        });
+        showNotification("RO-Crate preview loaded successfully.", "success");
+      } catch (error) {
+        this.model = null;
+        this.errorMessage =
+          error?.response?.data?.error ||
+          error?.message ||
+          "The selected RO-Crate preview could not be loaded.";
+      } finally {
+        this.loading = false;
+      }
+    },
     isHiddenSimpleTableKey(key) {
       const normalizedKey = String(key || "");
       return (
@@ -335,164 +433,48 @@ export default {
         userDefinedVariableHiddenFieldSet.has(normalizedKey)
       );
     },
-    validateSourceFile(file) {
-      if (!file) {
-        return "No file was provided.";
-      }
-
-      const name = String(file.name || "").toLowerCase();
-      const acceptedExtensions = [".zip", ".json", ".jsonld"];
-      const hasAcceptedExtension = acceptedExtensions.some((extension) =>
-        name.endsWith(extension)
-      );
-
-      if (!hasAcceptedExtension) {
-        return "Upload a valid RO-Crate ZIP, JSON, or JSON-LD file.";
-      }
-
-      if (!Number.isFinite(file.size) || file.size <= 0) {
-        return "The selected file is empty.";
-      }
-
-      return "";
-    },
-    pickSingleFile(fileList) {
-      const files = Array.from(fileList || []).filter(Boolean);
-      if (!files.length) {
-        return { file: null, error: "No file was provided." };
-      }
-      if (files.length > 1) {
-        return {
-          file: null,
-          error: "Upload only one RO-Crate ZIP or JSON-LD file at a time."
-        };
-      }
-
-      const file = files[0];
-      const validationMessage = this.validateSourceFile(file);
-      if (validationMessage) {
-        return { file: null, error: validationMessage };
-      }
-
-      return { file, error: "" };
-    },
-    hasFileDrag(event) {
-      const types = event?.dataTransfer?.types;
-      if (!types) return false;
-      return Array.from(types).includes("Files");
-    },
-    triggerUpload() {
-      this.$refs.uploadInput?.click?.();
-    },
-    handleDragOver() {
-      this.isDragOver = true;
-    },
-    handleDragEnter(event) {
-      if (!this.hasFileDrag(event)) return;
-      this.dragDepth += 1;
-      this.isDragOver = true;
-    },
-    handleDragLeave(event) {
-      if (!this.hasFileDrag(event)) return;
-      this.dragDepth = Math.max(0, this.dragDepth - 1);
-      if (
-        this.dragDepth === 0 ||
-        !event.currentTarget?.contains?.(event.relatedTarget)
-      ) {
-        this.isDragOver = false;
-      }
-    },
-    handleDrop(event) {
-      if (!this.hasFileDrag(event)) return;
-      this.dragDepth = 0;
-      this.isDragOver = false;
-      const { file, error } = this.pickSingleFile(event.dataTransfer?.files);
-      if (error) {
-        this.errorMessage = error;
-        this.model = null;
-        showNotification(error, "warning");
-        return;
-      }
-      if (file) {
-        this.loadSource(file);
-      }
-    },
-    handleWindowDragEnter(event) {
-      if (!this.hasFileDrag(event)) return;
-      event.preventDefault();
-      this.dragDepth += 1;
-      this.isDragOver = true;
-    },
-    handleWindowDragOver(event) {
-      if (!this.hasFileDrag(event)) return;
-      event.preventDefault();
-      this.isDragOver = true;
-    },
-    handleWindowDragLeave(event) {
-      if (!this.hasFileDrag(event)) return;
-      this.dragDepth = Math.max(0, this.dragDepth - 1);
-      if (this.dragDepth === 0) {
-        this.isDragOver = false;
-      }
-    },
-    handleWindowDrop(event) {
-      if (!this.hasFileDrag(event)) return;
-      event.preventDefault();
-      this.dragDepth = 0;
-      this.isDragOver = false;
-      const { file, error } = this.pickSingleFile(event.dataTransfer?.files);
-      if (error) {
-        this.errorMessage = error;
-        this.model = null;
-        showNotification(error, "warning");
-        return;
-      }
-      if (file) {
-        this.loadSource(file);
-      }
-    },
-    handleFileSelection(event) {
-      const { file, error } = this.pickSingleFile(event.target.files);
-      if (error) {
-        this.errorMessage = error;
-        this.model = null;
-        showNotification(error, "warning");
-      }
-      if (file) {
-        this.loadSource(file);
-      }
-      event.target.value = "";
-    },
-    async loadSource(file) {
-      const validationMessage = this.validateSourceFile(file);
-      if (validationMessage) {
-        this.errorMessage = validationMessage;
-        this.model = null;
-        showNotification(validationMessage, "warning");
-        return;
-      }
-
-      this.loading = true;
-      this.errorMessage = "";
-
-      try {
-        const parsedModel = await parseRoCrateSource(file);
-        this.model = parsedModel;
-        showNotification("RO-Crate loaded successfully.", "success");
-      } catch (error) {
-        this.model = null;
-        this.errorMessage =
-          error?.message || "The selected file could not be read as an RO-Crate.";
-      } finally {
-        this.loading = false;
-      }
-    },
     exportToPdf() {
       if (!this.model) {
         showNotification("Load an RO-Crate before exporting to PDF.", "warning");
         return;
       }
+      document.body.classList.add("rocrate-printing");
+      const cleanupPrintClass = () => {
+        document.body.classList.remove("rocrate-printing");
+        window.removeEventListener("afterprint", cleanupPrintClass);
+      };
+      window.addEventListener("afterprint", cleanupPrintClass);
       window.print();
+    },
+    async exportROCrate() {
+      if (!this.canExportPreview) {
+        showNotification(
+          "Open a Parkour RO-Crate preview before exporting the ZIP.",
+          "warning"
+        );
+        return;
+      }
+
+      try {
+        this.exportBusy = true;
+        const response = await axiosRef.get(`${urlStringStart}${RO_CRATE_ENDPOINT}`, {
+          params: this.roCrateRequestParams(),
+          responseType: "blob"
+        });
+        const headerFilename = this.parseContentDispositionFilename(
+          response?.headers?.["content-disposition"]
+        );
+        const safeBarcodeName = this.sanitizeFilenamePart(
+          this.activePreviewConfig.barcodes.join("_")
+        );
+        const filename = headerFilename || `${safeBarcodeName || "ro_crate"}_ro_crate.zip`;
+        saveAs(response?.data, filename);
+        showNotification("RO-Crate exported successfully.", "success");
+      } catch (error) {
+        handleError(error);
+      } finally {
+        this.exportBusy = false;
+      }
     },
     entityLabelById(entityId) {
       const entity = this.entityById(entityId);
@@ -553,7 +535,7 @@ export default {
     shouldHideRequestOverviewEntity(entity) {
       const id = String(entity?.[entityFields.id] || "").toLowerCase();
       const types = this.entityTypes(entity).map((type) => String(type).toLowerCase());
-      const overviewRules = RO_CRATE_VIEWER_FIELD_RULES.requestOverview;
+      const overviewRules = RO_CRATE_PREVIEW_FIELD_RULES.requestOverview;
 
       if (
         overviewRules.hiddenIdFragments.some((fragment) =>
@@ -585,7 +567,7 @@ export default {
       return recordEntityRules.typeLabels.fallback;
     },
     formatPropertyLabel(key) {
-      const customLabels = RO_CRATE_VIEWER_FIELD_RULES.propertyLabels;
+      const customLabels = RO_CRATE_PREVIEW_FIELD_RULES.propertyLabels;
       if (customLabels[key]) return customLabels[key];
       return String(key)
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -601,6 +583,10 @@ export default {
 
       if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
         if (typeof value === "string") {
+          const structuredValue = this.parseStructuredStringValue(value);
+          if (structuredValue !== null) {
+            return this.formatSummaryValue(structuredValue);
+          }
           const formattedDate = this.formatDisplayDate(value);
           if (formattedDate) {
             return formattedDate;
@@ -610,10 +596,7 @@ export default {
       }
 
       if (Array.isArray(value)) {
-        return value
-          .map((entry) => this.formatSummaryValue(entry))
-          .flat()
-          .filter((entry) => entry !== "-");
+        return value.map((entry) => this.formatSummaryValue(entry)).filter((entry) => entry !== "-");
       }
 
       if (value?.[entityFields.id]) {
@@ -628,10 +611,97 @@ export default {
       }
 
       if (typeof value === "object") {
-        return JSON.stringify(value);
+        return Object.fromEntries(
+          Object.entries(value)
+            .map(([key, nestedValue]) => [this.formatPropertyLabel(key), this.formatSummaryValue(nestedValue)])
+            .filter(([, nestedValue]) => !this.isEmptyDisplayValue(nestedValue, { hideDash: true }))
+        );
       }
 
       return String(value);
+    },
+    parseStructuredStringValue(value) {
+      const text = String(value || "").trim();
+      if (!text || !["[", "{"].includes(text[0])) return null;
+      try {
+        const parsedValue = JSON.parse(text);
+        return typeof parsedValue === "object" && parsedValue !== null
+          ? parsedValue
+          : null;
+      } catch {
+        return null;
+      }
+    },
+    isStructuredDisplayValue(value) {
+      return (
+        (Array.isArray(value) && value.length > 0) ||
+        (value !== null &&
+          typeof value === "object" &&
+          !Array.isArray(value) &&
+          Object.keys(value).length > 0)
+      );
+    },
+    escapeDisplayHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    },
+    structuredValueHtml(value) {
+      if (Array.isArray(value)) {
+        if (!value.length) return "";
+        if (value.every((entry) => entry === null || typeof entry !== "object")) {
+          return `<ul class="structured-value-list">${value
+            .map((entry) => `<li>${this.escapeDisplayHtml(entry)}</li>`)
+            .join("")}</ul>`;
+        }
+
+        const rows = value.map((entry) =>
+          entry !== null && typeof entry === "object" && !Array.isArray(entry)
+            ? entry
+            : { Value: entry }
+        );
+        const columns = [
+          ...new Set(rows.flatMap((row) => Object.keys(row)))
+        ].slice(0, 12);
+
+        return `<div class="structured-value-scroll"><table class="structured-value-table"><thead><tr>${columns
+          .map((column) => `<th>${this.escapeDisplayHtml(column)}</th>`)
+          .join("")}</tr></thead><tbody>${rows
+          .map(
+            (row) =>
+              `<tr>${columns
+                .map((column) => `<td>${this.structuredCellHtml(row[column])}</td>`)
+                .join("")}</tr>`
+          )
+          .join("")}</tbody></table></div>`;
+      }
+
+      return `<div class="structured-value-scroll"><table class="structured-value-table key-value"><tbody>${Object.entries(
+        value
+      )
+        .map(
+          ([key, nestedValue]) =>
+            `<tr><th>${this.escapeDisplayHtml(key)}</th><td>${this.structuredCellHtml(nestedValue)}</td></tr>`
+        )
+        .join("")}</tbody></table></div>`;
+    },
+    structuredCellHtml(value) {
+      if (value === null || value === undefined || value === "") return "-";
+      if (Array.isArray(value)) {
+        return value
+          .map((entry) => this.structuredCellHtml(entry))
+          .join("<br>");
+      }
+      if (typeof value === "object") {
+        if (value[entityFields.id]) {
+          return this.escapeDisplayHtml(this.entityLabelById(value[entityFields.id]));
+        }
+        return this.escapeDisplayHtml(JSON.stringify(value));
+      }
+      return this.escapeDisplayHtml(value);
     },
     formatDisplayDate(value) {
       const text = String(value || "").trim();
@@ -693,6 +763,25 @@ export default {
         (options.hideDash && value === "-") ||
         (Array.isArray(value) && value.length === 0)
       );
+    },
+    shouldUseWideRow(row) {
+      const key = String(row?.key || "").toLowerCase();
+      const value = row?.value;
+      if (
+        key.includes("flowcell") ||
+        key.includes("filepath") ||
+        key.includes("metapath") ||
+        key.includes("requested barcode")
+      ) return true;
+      if (!this.isStructuredDisplayValue(value)) return false;
+      if (Array.isArray(value)) {
+        const objectRows = value.filter(
+          (entry) => entry !== null && typeof entry === "object" && !Array.isArray(entry)
+        );
+        const columnCount = new Set(objectRows.flatMap((entry) => Object.keys(entry))).size;
+        return columnCount > 4 || value.length > 6;
+      }
+      return Object.keys(value || {}).length > 4;
     },
     shouldHideDisplayLabel(label, options = {}) {
       const normalizedLabel = String(label || "").trim();
@@ -814,7 +903,7 @@ export default {
         });
       };
 
-      const recordRows = RO_CRATE_VIEWER_FIELD_RULES.recordOverviewRows;
+      const recordRows = RO_CRATE_PREVIEW_FIELD_RULES.recordOverviewRows;
       addRow(
         recordRows.section,
         recordRows.nameLabel,
@@ -854,13 +943,13 @@ export default {
         const sourceName = sourceEntity[entityFields.name] || link.sourceId;
         const propertyLabel = this.formatPropertyLabel(link.property);
         const sourceKind = this.simplifyEntityKind(sourceEntity);
-        if (sourceKind === RO_CRATE_VIEWER_FIELD_RULES.entityKindRules[0].title) {
+        if (sourceKind === RO_CRATE_PREVIEW_FIELD_RULES.entityKindRules[0].title) {
           return;
         }
-        const linkedGroup = RO_CRATE_VIEWER_FIELD_RULES.linkedRecordsSection;
+        const linkedGroup = RO_CRATE_PREVIEW_FIELD_RULES.linkedRecordsSection;
         addRow(linkedGroup, `${sourceKind} linked by ${propertyLabel}`, sourceName);
 
-        RO_CRATE_VIEWER_FIELD_RULES.linkedSourceFields.forEach((key) => {
+        RO_CRATE_PREVIEW_FIELD_RULES.linkedSourceFields.forEach((key) => {
           if (sourceEntity[key] !== undefined && sourceEntity[key] !== null) {
             addRow(
               linkedGroup,
@@ -950,7 +1039,7 @@ export default {
     simplifyCommentLabel(label) {
       return this.formatPropertyLabel(
         String(label).replace(
-          RO_CRATE_VIEWER_FIELD_RULES.commentLabelPrefixPattern,
+          RO_CRATE_PREVIEW_FIELD_RULES.commentLabelPrefixPattern,
           ""
         )
       );
@@ -959,7 +1048,7 @@ export default {
       const value = String(label || "");
       return (
         this.findRuleTitle(
-          RO_CRATE_VIEWER_FIELD_RULES.commentGroups,
+          RO_CRATE_PREVIEW_FIELD_RULES.commentGroups,
           (rule) => rule.patterns.some((pattern) => pattern.test(value))
         ) || sectionOptions.defaultCommentGroup
       );
@@ -968,7 +1057,7 @@ export default {
       const value = String(key || "");
       return (
         this.findRuleTitle(
-          RO_CRATE_VIEWER_FIELD_RULES.entityPropertyGroups,
+          RO_CRATE_PREVIEW_FIELD_RULES.entityPropertyGroups,
           (rule) => rule.fields.includes(value)
         ) || sectionOptions.defaultEntityPropertyGroup
       );
@@ -986,7 +1075,7 @@ export default {
     simplifyEntityKind(entity) {
       return (
         this.findRuleTitle(
-          RO_CRATE_VIEWER_FIELD_RULES.entityKindRules,
+          RO_CRATE_PREVIEW_FIELD_RULES.entityKindRules,
           (rule) => this.matchesEntityRule(rule, entity)
         ) || sectionOptions.relatedEntityKind
       );
@@ -996,7 +1085,7 @@ export default {
 </script>
 
 <style scoped>
-.rocrate-viewer-page {
+.rocrate-preview-page {
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, rgba(15, 95, 135, 0.18), transparent 32%),
@@ -1005,17 +1094,25 @@ export default {
   color: #10242f;
 }
 
-.rocrate-viewer-page.page-drag-over {
-  background-color: transparent;
+.rocrate-preview-page.embedded {
+  height: 100%;
+  min-height: 100%;
+  overflow: auto;
+  background: #f4fafb;
 }
 
-.rocrate-viewer-shell {
+.rocrate-preview-shell {
   max-width: 1520px;
   margin: 0 auto;
   padding: 32px 24px 56px;
 }
 
-.rocrate-viewer-shell.is-empty {
+.rocrate-preview-page.embedded .rocrate-preview-shell {
+  max-width: none;
+  padding: 16px 18px 28px;
+}
+
+.rocrate-preview-shell.is-empty {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -1088,6 +1185,11 @@ export default {
     background-color 0.2s ease;
 }
 
+.rocrate-preview-page.embedded .upload-stage {
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
 .upload-stage.centered {
   width: min(920px, 100%);
   min-height: 236px;
@@ -1099,62 +1201,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   min-height: 168px;
-}
-
-.upload-stage.active {
-  transform: none;
-  border-color: transparent;
-  background: transparent;
-}
-
-.page-drag-drop-indicator {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.94);
-  padding: 36px;
-  border-radius: 24px;
-  border: 2px dashed #2196f3;
-  text-align: center;
-  box-sizing: border-box;
-  z-index: 2;
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.12);
-  pointer-events: none;
-  animation: dragOverlayGrow 0.2s ease-out;
-}
-
-.page-drag-drop-copy {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 140px;
-  color: #173948;
-  font-size: 24px;
-  line-height: 1.5;
-}
-
-.page-drag-drop-copy span {
-  margin: 0 6px;
-  font-weight: 800;
-}
-
-@keyframes dragOverlayGrow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.drag-hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 
 .upload-title {
@@ -1235,11 +1281,7 @@ export default {
   transform-origin: left center;
 }
 
-.hidden-upload {
-  display: none;
-}
-
-.viewer-feedback {
+.preview-feedback {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1249,13 +1291,18 @@ export default {
   font-weight: 700;
 }
 
-.viewer-feedback.loading {
+.preview-feedback.loading {
   background: rgba(243, 249, 250, 0.9);
 }
 
-.viewer-feedback.error {
+.preview-feedback.error {
   background: rgba(255, 240, 240, 0.96);
   color: #7c2020;
+}
+
+.preview-feedback.warning {
+  background: rgba(255, 249, 229, 0.96);
+  color: #755300;
 }
 
 .loading-spinner {
@@ -1407,6 +1454,33 @@ export default {
   border: 1px solid rgba(16, 36, 47, 0.06);
 }
 
+.rocrate-preview-page.embedded .upload-title-main {
+  display: none;
+}
+
+.rocrate-preview-page.embedded .upload-content {
+  min-height: 112px;
+}
+
+.rocrate-preview-page.embedded .upload-watermark,
+.rocrate-preview-page.embedded .upload-watermark-crop {
+  min-height: 112px;
+  height: 112px;
+}
+
+.rocrate-preview-page.embedded .upload-watermark-crop {
+  width: 112px;
+}
+
+.rocrate-preview-page.embedded .upload-watermark img {
+  width: 270px;
+}
+
+.quick-summary-row.wide-row {
+  grid-column: 1 / -1;
+  grid-template-columns: 140px minmax(0, 1fr);
+}
+
 .quick-summary-key {
   font-size: 12px;
   font-weight: 800;
@@ -1418,7 +1492,49 @@ export default {
 .quick-summary-value {
   color: #173948;
   line-height: 1.55;
-  word-break: break-word;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.quick-summary-value :deep(.structured-value-scroll) {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.quick-summary-value :deep(.structured-value-table) {
+  width: 100%;
+  min-width: 360px;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.quick-summary-value :deep(.structured-value-table th),
+.quick-summary-value :deep(.structured-value-table td) {
+  border: 1px solid rgba(16, 36, 47, 0.12);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.quick-summary-value :deep(.structured-value-table th) {
+  background: rgba(231, 240, 242, 0.86);
+  color: #244858;
+  font-weight: 800;
+}
+
+.quick-summary-value :deep(.structured-value-table.key-value) {
+  min-width: 0;
+}
+
+.quick-summary-value :deep(.structured-value-table.key-value th) {
+  width: 180px;
+}
+
+.quick-summary-value :deep(.structured-value-list) {
+  margin: 0;
+  padding-left: 18px;
 }
 
 .detail-card {
@@ -1465,7 +1581,7 @@ export default {
 }
 
 @media (max-width: 760px) {
-  .rocrate-viewer-shell {
+  .rocrate-preview-shell {
     padding: 20px 14px 40px;
   }
 
@@ -1490,14 +1606,35 @@ export default {
 }
 
 @media print {
-  .rocrate-viewer-page {
-    min-height: auto;
-    background: #fff;
+  @page {
+    size: A4;
+    margin: 10mm;
   }
 
-  .rocrate-viewer-shell {
+  :global(html),
+  :global(body),
+  :global(#app) {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  .rocrate-preview-page {
+    min-height: auto;
+    height: auto;
+    overflow: visible;
+    background: #fff;
+    color: #10242f;
+    font-size: 9pt;
+  }
+
+  .rocrate-preview-shell {
     max-width: none;
     padding: 0;
+    margin: 0;
   }
 
   .upload-stage,
@@ -1506,22 +1643,93 @@ export default {
     display: none !important;
   }
 
-  .viewer-workspace {
+  .preview-workspace {
     display: block;
   }
 
+  .detail-kicker {
+    font-size: 12pt;
+    margin-bottom: 5mm;
+  }
+
   .detail-card {
+    padding: 5mm;
+    margin-bottom: 5mm;
+    border-radius: 4mm;
     box-shadow: none;
     border: 1px solid #d8e0e4;
+    background: #fff;
+  }
+
+  .record-table-title {
+    font-size: 11pt;
+  }
+
+  .record-group-title,
+  .quick-summary-key {
+    font-size: 7.5pt;
+    letter-spacing: 0.02em;
+  }
+
+  .quick-summary-table {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3mm;
+    margin-top: 3mm;
+  }
+
+  .quick-summary-row {
+    grid-template-columns: 28mm minmax(0, 1fr);
+    gap: 3mm;
+    padding: 3mm;
+    border-radius: 3mm;
+    background: #fff;
+  }
+
+  .quick-summary-row.wide-row {
+    grid-column: 1 / -1;
+    grid-template-columns: 30mm minmax(0, 1fr);
+  }
+
+  .quick-summary-value {
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .quick-summary-value :deep(.structured-value-scroll) {
+    overflow: visible;
+  }
+
+  .quick-summary-value :deep(.structured-value-table) {
+    min-width: 0;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 7.5pt;
+    line-height: 1.25;
+  }
+
+  .quick-summary-value :deep(.structured-value-table th),
+  .quick-summary-value :deep(.structured-value-table td) {
+    padding: 1.5mm;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .quick-summary-value :deep(.structured-value-table.key-value th) {
+    width: 24mm;
+  }
+
+  .quick-summary-row,
+  .record-table-block {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
-  .quick-summary-row,
-  .record-table-block,
   .record-group {
-    break-inside: avoid;
-    page-break-inside: avoid;
+    break-inside: auto;
+    page-break-inside: auto;
   }
 }
 </style>
+

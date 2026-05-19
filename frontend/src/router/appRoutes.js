@@ -7,7 +7,6 @@ import libraryPreparation from "../views/libraryPreparationView.vue";
 import pooling from "../views/poolingView.vue";
 import loadFlowcells from "../views/loadFlowcellsView.vue";
 import IndexGeneratorView from "../views/indexGeneratorView.vue";
-import ROCrateViewerView from "../views/roCrateViewerView.vue";
 import notFoundView from "../views/notFoundView.vue";
 
 const router = createRouter({
@@ -51,11 +50,6 @@ const router = createRouter({
           path: "index_generator",
           name: "Index Generator",
           component: IndexGeneratorView
-        },
-        {
-          path: "ro_crate_viewer",
-          name: "RO Crate Viewer",
-          component: ROCrateViewerView
         },
         {
           path: "not_found",
