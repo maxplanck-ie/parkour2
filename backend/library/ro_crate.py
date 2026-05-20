@@ -479,7 +479,9 @@ def _extract_request_metadata(request_obj):
             getattr(request_obj, source_field, None)
         )
         if normalised_paths not in (None, "", [], {}):
-            request_data[target_key] = normalised_paths
+            request_data[target_key] = json.dumps(
+                normalised_paths, sort_keys=True, default=str
+            )
     request_data.update(
         {"request_deep_seq_request": _request_deep_seq_name(request_obj)}
     )
