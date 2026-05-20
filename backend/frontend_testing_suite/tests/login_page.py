@@ -58,6 +58,8 @@ def test_login_page(page: Page):
     emailInput.fill(correctEmailId)
     passwordInput.fill(correctPassword)
     loginButton.click()
+    utilities.wait_until_authenticated(page)
+
     utilities.visit_vue_page(page, "libraries_and_samples")
     utilities.expect_page_header(
         page,
