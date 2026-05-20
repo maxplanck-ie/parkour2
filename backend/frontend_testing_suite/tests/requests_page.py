@@ -224,7 +224,7 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
 
     preview_overlay = page.get_by_test_id("ro-crate-preview-overlay")
     expect(preview_overlay).to_be_visible()
-    expect(preview_overlay.get_by_text("Delivered library")).to_be_visible()
+    expect(preview_overlay.get_by_text("Library 1: Delivered library")).to_be_visible()
     expect(preview_overlay.get_by_text("26L000501")).to_be_visible()
 
     assert seen_generate_requests
