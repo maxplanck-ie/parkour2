@@ -272,12 +272,14 @@ playwright:  ## Run Frontend tests (reuse running container when available)
 	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
 		if docker compose exec parkour2-django sh -lc 'command -v pytest > /dev/null && pytest --help | grep -q -- --browser && find /root/.cache/ms-playwright -path "*/firefox/firefox" -type f 2>/dev/null | grep -q .'; then \
 			echo "Info: Reusing running parkour2-django container for Playwright tests."; \
+			$(MAKE) load-fixtures; \
 			$(MAKE) e2e; \
 		else \
 			echo "Info: Testing runtime not ready in running container, installing testing requirements."; \
 			if docker compose exec parkour2-django sh -lc 'PY_VERSION=$$(python -c "import sys; print(f\"{sys.version_info.major}.{sys.version_info.minor}\")"); uv pip install -r requirements/$${PY_VERSION}/testing.txt && playwright install --with-deps firefox' \
 				&& docker compose exec parkour2-django sh -lc 'command -v pytest > /dev/null && pytest --help | grep -q -- --browser && find /root/.cache/ms-playwright -path "*/firefox/firefox" -type f 2>/dev/null | grep -q .'; then \
 				echo "Info: Testing dependencies installed, running Playwright tests."; \
+				$(MAKE) load-fixtures; \
 				$(MAKE) e2e; \
 			else \
 				echo "Info: Could not prepare running container for Playwright tests, redeploying stack first."; \
