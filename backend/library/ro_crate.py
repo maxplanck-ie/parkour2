@@ -328,6 +328,85 @@ def _normalise_property_value(value):
     return value
 
 
+PATH_REFERENCE_VALUE_KEYS = (
+    "path",
+    "filepath",
+    "file_path",
+    "contentUrl",
+    "url",
+    "value",
+)
+PATH_REFERENCE_MD5_KEYS = (
+    "md5",
+    "MD5",
+    "md5_hash",
+    "md5Hash",
+    "checksum_md5",
+    "checksumMd5",
+)
+
+
+def _first_mapping_value(mapping, keys):
+    for key in keys:
+        value = mapping.get(key)
+        if value not in (None, "", [], {}):
+            return value
+    return None
+
+
+def _normalise_path_metadata_value(value):
+    """Keep path metadata lightweight; never read or hash referenced files here."""
+    if value in (None, "", [], {}):
+        return None
+
+    if isinstance(value, dict):
+        path_value = _first_mapping_value(value, PATH_REFERENCE_VALUE_KEYS)
+        md5_value = _first_mapping_value(value, PATH_REFERENCE_MD5_KEYS)
+        checksum_value = value.get("checksum")
+        if isinstance(checksum_value, dict):
+            md5_value = md5_value or _first_mapping_value(
+                checksum_value, PATH_REFERENCE_MD5_KEYS
+            )
+
+        if path_value is not None or md5_value is not None:
+            normalised = {}
+            if path_value is not None:
+                normalised["path"] = _normalise_property_value(path_value)
+            if md5_value is not None:
+                normalised["md5"] = _normalise_property_value(md5_value)
+
+            skipped_keys = set(PATH_REFERENCE_VALUE_KEYS).union(
+                PATH_REFERENCE_MD5_KEYS,
+                {"checksum"},
+            )
+            for key, nested_value in value.items():
+                if key in skipped_keys:
+                    continue
+                normalised_value = _normalise_path_metadata_value(nested_value)
+                if normalised_value not in (None, "", [], {}):
+                    normalised[key] = normalised_value
+            return normalised or None
+
+        normalised = {}
+        for key, nested_value in value.items():
+            normalised_value = _normalise_path_metadata_value(nested_value)
+            if normalised_value not in (None, "", [], {}):
+                normalised[key] = normalised_value
+        return normalised or None
+
+    if isinstance(value, (list, tuple, set)):
+        normalised = [
+            normalised_value
+            for normalised_value in (
+                _normalise_path_metadata_value(item) for item in value
+            )
+            if normalised_value not in (None, "", [], {})
+        ]
+        return normalised or None
+
+    return _normalise_property_value(value)
+
+
 def _extract_model_fields(instance, prefix=""):
     if instance is None:
         return {}
@@ -359,6 +438,20 @@ def _request_deep_seq_name(request_obj):
 
 def _extract_request_metadata(request_obj):
     request_data = _extract_model_fields(request_obj, prefix="request_")
+    # Request file path JSON may include optional MD5 values supplied by external
+    # systems. RO-Crate records that metadata only; it does not read or package
+    # the referenced sequencing files because they can be very large.
+    for source_field, target_key in (
+        ("filepaths", "request_filepaths"),
+        ("metapaths", "request_metapaths"),
+    ):
+        if _is_hidden_export_field(source_field, target_key):
+            continue
+        normalised_paths = _normalise_path_metadata_value(
+            getattr(request_obj, source_field, None)
+        )
+        if normalised_paths not in (None, "", [], {}):
+            request_data[target_key] = normalised_paths
     request_data.update(
         {"request_deep_seq_request": _request_deep_seq_name(request_obj)}
     )
@@ -1593,7 +1686,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 request_file_archives[entity_id] = file_disk_path
                 request_file_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "MediaObject",
+                    "@type": ["File", "MediaObject"],
                     "name": file_obj.name
                     or (file_storage_path or f"Request file {file_obj.id}"),
                     "identifier": _parkour_identifier("request-file", file_obj.id),
@@ -1602,6 +1695,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     ),
                     "isPartOf": {"@id": "./"},
                     "about": {"@id": f"#study-{request_obj.id}"},
+                    "requestContext": {"@id": f"#request-context-{request_obj.id}"},
                     "comments": _deduplicate_comments(
                         _build_comments(
                             {
@@ -1908,6 +2002,10 @@ class GenerateROCrate(viewsets.ViewSet):
             "derivedFrom": {"@id": "https://w3id.org/isa/derivesFrom", "@type": "@id"},
             "creator": {"@id": "https://schema.org/creator", "@type": "@id"},
             "mentions": {"@id": "https://schema.org/mentions", "@type": "@id"},
+            "requestContext": {
+                "@id": "https://schema.org/isPartOf",
+                "@type": "@id",
+            },
             "member": {"@id": "https://schema.org/member", "@type": "@id"},
             "affiliatedOrganization": {
                 "@id": "https://schema.org/affiliation",
@@ -2666,7 +2764,6 @@ class GenerateROCrate(viewsets.ViewSet):
                 entry.get("@id") == archive_path for entry in ro_crate.get("@graph", [])
             )
         ]
-
         return _build_ro_crate_response(
             request,
             ro_crate,

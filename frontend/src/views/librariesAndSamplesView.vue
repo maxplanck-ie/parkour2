@@ -1551,10 +1551,22 @@ export default {
             .replace(/[^a-z0-9-_.]+/gi, "_")
             .replace(/_+/g, "_")
             .replace(/^_|_$/g, "");
+        const contentDisposition =
+          response?.headers?.get?.("content-disposition") ||
+          response?.headers?.["content-disposition"] ||
+          "";
+        const headerFilename =
+          String(contentDisposition).match(/filename="?([^";]+)"?/i)?.[1] ||
+          "";
+        const safeRequestName = sanitize(requestName);
         const safeBarcodeName = sanitize(barcodes.join("_"));
-        const filename = safeBarcodeName
-          ? `${safeBarcodeName}_ro_crate.zip`
-          : "ro_crate.zip";
+        const filename =
+          headerFilename ||
+          (safeRequestName
+            ? `${safeRequestName}_ro_crate.zip`
+            : safeBarcodeName
+              ? `${safeBarcodeName}_ro_crate.zip`
+              : "ro_crate.zip");
         saveAs(response.data, filename);
 
         showNotification("RO-Crate downloaded successfully.", "success");
@@ -2440,19 +2452,19 @@ export default {
       );
       const skippedCount = selectedRows.length - completedRows.length;
 
-      if (skippedCount > 0) {
-        showNotification(
-          `${skippedCount} selected ${skippedCount === 1 ? "record was" : "records were"} skipped because RO-Crate export requires Delivered status.`,
-          "warning"
-        );
-      }
-
       if (!completedRows.length) {
         showNotification(
           "Select at least one delivered library or sample for RO-Crate export.",
           "warning"
         );
         return;
+      }
+
+      if (skippedCount > 0) {
+        showNotification(
+          `${skippedCount} selected ${skippedCount === 1 ? "record was" : "records were"} skipped because RO-Crate export requires Delivered status.`,
+          "warning"
+        );
       }
 
       const selectedBarcodes = Array.from(
@@ -2780,35 +2792,66 @@ body,
 }
 
 @media print {
-  :global(body.rocrate-printing .parent-container> :not(.rocrate-preview-overlay)) {
+  body.rocrate-printing,
+  body:has(.rocrate-preview-overlay),
+  body.rocrate-printing #app,
+  body:has(.rocrate-preview-overlay) #app,
+  body:has(.rocrate-preview-overlay) .parent-container,
+  body.rocrate-printing .parent-container {
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  body:has(.rocrate-preview-overlay) .parent-container > :not(.rocrate-preview-overlay),
+  body.rocrate-printing .parent-container > :not(.rocrate-preview-overlay) {
     display: none !important;
   }
 
-  :global(body.rocrate-printing .rocrate-preview-overlay) {
+  body:has(.rocrate-preview-overlay) .rocrate-preview-overlay,
+  body.rocrate-printing .rocrate-preview-overlay {
     position: static;
     inset: auto;
     display: block;
-    padding: 0;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: #ffffff;
-    overflow: visible;
+    overflow: visible !important;
   }
 
-  :global(body.rocrate-printing .rocrate-preview-modal) {
-    width: 100%;
-    height: auto;
-    min-height: auto;
-    overflow: visible;
-    box-shadow: none;
-    border-radius: 0;
+  body:has(.rocrate-preview-overlay) .rocrate-preview-modal,
+  body.rocrate-printing .rocrate-preview-modal {
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
     background: #ffffff;
+    display: block;
   }
 
-  :global(body.rocrate-printing .rocrate-preview-modal-header) {
+  body:has(.rocrate-preview-overlay) .rocrate-preview-modal-header,
+  body.rocrate-printing .rocrate-preview-modal-header {
     display: none !important;
   }
 
-  :global(body.rocrate-printing .rocrate-preview-modal-body) {
-    overflow: visible;
+  body:has(.rocrate-preview-overlay) .rocrate-preview-modal-body,
+  body.rocrate-printing .rocrate-preview-modal-body {
+    display: block;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
 }
 

@@ -69,14 +69,84 @@
       </div>
 
       <section v-if="model" class="preview-workspace">
-        <section class="detail-card quick-summary-card">
-          <div class="table-search-inline table-search-inline-top">
+        <header class="print-report-header">
+          <div>
+            <div class="print-report-title">Parkour RO-Crate Preview</div>
+            <div class="print-report-subtitle">{{ printReportSubtitle }}</div>
+          </div>
+          <div class="print-report-meta">
+            <span>{{ printGeneratedAt }}</span>
+          </div>
+        </header>
+
+        <section v-if="attachedFileGroups.length" class="detail-card attached-files-card">
+          <div class="detail-header">
+            <div>
+              <div class="detail-kicker">Attached Files</div>
+            </div>
+          </div>
+          <div class="attached-file-groups">
+            <article
+              v-for="group in attachedFileGroups"
+              :key="group.requestId"
+              class="attached-file-group"
+            >
+              <div class="attached-file-request">{{ group.requestName }}</div>
+              <div class="attached-file-list">
+                <div
+                  v-for="file in group.files"
+                  :key="file.id"
+                  class="attached-file-item"
+                >
+                  <font-awesome-icon icon="fa-solid fa-file-lines" />
+                  <span :title="file.name">{{ file.name }}</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section v-if="zipContentRows.length" class="detail-card zip-contents-card">
+          <div class="detail-header">
+            <div>
+              <div class="detail-kicker">ZIP Contents</div>
+            </div>
+          </div>
+          <div class="zip-content-list">
+            <div
+              v-for="item in zipContentRows"
+              :key="item.path"
+              class="zip-content-row"
+            >
+              <font-awesome-icon icon="fa-solid fa-file-lines" />
+              <div class="zip-content-main">
+                <div class="zip-content-path" :title="item.path">{{ item.path }}</div>
+                <div class="zip-content-meta">{{ item.type }}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="preview-search-panel" aria-label="Search RO-Crate preview">
+          <div class="preview-search-copy">
+            <div class="preview-search-title">Search Preview</div>
+            <div class="preview-search-meta">{{ searchResultSummary }}</div>
+          </div>
+          <div class="table-search-inline">
             <div class="table-search-input-wrap">
-              <input v-model.trim="tableSearchTerm" class="table-search-input" type="search"
-                placeholder="Search by field name or value" />
+              <input
+                :value="tableSearchInput"
+                class="table-search-input"
+                type="search"
+                placeholder="Search by field name or value"
+                @input="handleSearchInput"
+              />
               <font-awesome-icon class="table-search-icon" icon="fa-solid fa-magnifying-glass" />
             </div>
           </div>
+        </section>
+
+        <section class="detail-card quick-summary-card">
           <div class="detail-header">
             <div>
               <div class="detail-kicker">Request Overview</div>
@@ -86,13 +156,13 @@
             <div v-for="item in summaryKeyValuePairs" :key="item.key" class="quick-summary-row"
               :class="{ 'wide-row': shouldUseWideRow(item) }">
               <div class="quick-summary-key">{{ item.key }}</div>
-              <div class="quick-summary-value">
+              <div class="quick-summary-value" :class="valueClassForRow(item)">
                 <div
                   v-if="isStructuredDisplayValue(item.value)"
                   v-html="structuredValueHtml(item.value)"
                 ></div>
                 <template v-else>
-                  {{ item.value }}
+                  {{ plainDisplayValue(item) }}
                 </template>
               </div>
             </div>
@@ -105,13 +175,13 @@
               <div v-for="item in section.rows" :key="`request-overview-${section.title}-${item.key}`"
                 class="quick-summary-row" :class="{ 'wide-row': shouldUseWideRow(item) }">
                 <div class="quick-summary-key">{{ item.key }}</div>
-                <div class="quick-summary-value">
+                <div class="quick-summary-value" :class="valueClassForRow(item)">
                   <div
                     v-if="isStructuredDisplayValue(item.value)"
                     v-html="structuredValueHtml(item.value)"
                   ></div>
                   <template v-else>
-                    {{ item.value }}
+                    {{ plainDisplayValue(item) }}
                   </template>
                 </div>
               </div>
@@ -126,30 +196,6 @@
             </div>
           </div>
 
-          <div v-if="requestAttachmentRows.length" class="record-table-block">
-            <div class="record-table-header">
-              <div class="record-table-title">Request attachments</div>
-              <div class="record-table-subtitle">
-                Files attached to the request and included in this RO-Crate.
-              </div>
-            </div>
-            <div class="quick-summary-table">
-              <div v-for="item in requestAttachmentRows" :key="item.key" class="quick-summary-row"
-                :class="{ 'wide-row': shouldUseWideRow(item) }">
-                <div class="quick-summary-key">{{ item.key }}</div>
-                <div class="quick-summary-value">
-                  <div
-                    v-if="isStructuredDisplayValue(item.value)"
-                    v-html="structuredValueHtml(item.value)"
-                  ></div>
-                  <template v-else>
-                    {{ item.value }}
-                  </template>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div v-if="recordTables.length" class="record-table-list">
             <article v-for="record in recordTables" :key="record.id" class="record-table-block">
               <div class="record-table-header">
@@ -161,13 +207,13 @@
                   <div v-for="item in section.rows" :key="`${record.id}-${section.title}-${item.key}`"
                     class="quick-summary-row" :class="{ 'wide-row': shouldUseWideRow(item) }">
                     <div class="quick-summary-key">{{ item.key }}</div>
-                    <div class="quick-summary-value">
+                    <div class="quick-summary-value" :class="valueClassForRow(item)">
                       <div
                         v-if="isStructuredDisplayValue(item.value)"
                         v-html="structuredValueHtml(item.value)"
                       ></div>
                       <template v-else>
-                        {{ item.value }}
+                        {{ plainDisplayValue(item) }}
                       </template>
                     </div>
                   </div>
@@ -180,6 +226,43 @@
           </div>
         </section>
 
+        <section v-if="sequencingSections.length" class="detail-card sequencing-summary-card">
+          <div class="detail-header">
+            <div>
+              <div class="detail-kicker">Flowcells & Sequencing</div>
+            </div>
+          </div>
+          <section
+            v-for="section in sequencingSections"
+            :key="`sequencing-${section.title}`"
+            class="record-group"
+          >
+            <div class="record-group-title">{{ section.title }}</div>
+            <div class="quick-summary-table record-group-table">
+              <div
+                v-for="item in section.rows"
+                :key="`sequencing-${section.title}-${item.key}`"
+                class="quick-summary-row"
+                :class="{ 'wide-row': shouldUseWideRow(item) }"
+              >
+                <div class="quick-summary-key">{{ item.key }}</div>
+                <div class="quick-summary-value" :class="valueClassForRow(item)">
+                  <div
+                    v-if="isStructuredDisplayValue(item.value)"
+                    v-html="structuredValueHtml(item.value)"
+                  ></div>
+                  <template v-else>
+                    {{ plainDisplayValue(item) }}
+                  </template>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <footer class="print-report-footer">
+          RO-Crate preview generated from Parkour metadata.
+        </footer>
       </section>
     </div>
   </div>
@@ -228,6 +311,8 @@ const visibleRequestFieldSet = new Set(
 );
 const hiddenSensitiveFieldPatterns =
   RO_CRATE_PREVIEW_FIELD_RULES.hiddenSensitiveFieldPatterns;
+const hiddenTechnicalDisplayLabelPatterns =
+  RO_CRATE_PREVIEW_FIELD_RULES.hiddenTechnicalDisplayLabelPatterns;
 const hiddenLinkedRecordLabelPatterns =
   RO_CRATE_PREVIEW_FIELD_RULES.hiddenLinkedRecordLabelPatterns;
 const entityFields = RO_CRATE_PREVIEW_FIELD_RULES.entityFields;
@@ -260,7 +345,10 @@ export default {
       loading: false,
       errorMessage: "",
       model: null,
+      tableSearchInput: "",
       tableSearchTerm: "",
+      tableSearchPending: false,
+      tableSearchDebounceTimer: null,
       activePreviewConfig: null,
       exportBusy: false,
       skippedRecords: []
@@ -269,6 +357,81 @@ export default {
   computed: {
     canExportPreview() {
       return Array.isArray(this.activePreviewConfig?.barcodes) && this.activePreviewConfig.barcodes.length > 0;
+    },
+    printRequestNames() {
+      if (!this.model) return [];
+      const requestNames = this.model.graph
+        .filter((entity) =>
+          String(entity?.[entityFields.id] || "").startsWith("#request-context-")
+        )
+        .map((entity) => entity?.[entityFields.name])
+        .filter(Boolean);
+      return [...new Set(requestNames)];
+    },
+    printGeneratedAt() {
+      return `Generated ${this.formatDisplayDate(new Date().toISOString())}`;
+    },
+    printReportSubtitle() {
+      const requestText = this.printRequestNames.length
+        ? this.printRequestNames.join(", ")
+        : this.model?.source?.name || "Selected records";
+      return `${requestText} | ${this.recordTables.length} records | ${this.attachedFileGroups.length} file groups`;
+    },
+    zipContentRows() {
+      if (!this.model) return [];
+      const rows = [
+        {
+          path: entityIds.metadataDescriptor,
+          type: "RO-Crate metadata"
+        }
+      ];
+      this.attachedFileGroups.forEach((group) => {
+        group.files.forEach((file) => {
+          rows.push({
+            path: file.id,
+            type: `${group.requestName} attachment`
+          });
+        });
+      });
+      return rows.filter((row) => this.rowMatchesSearch({
+        key: row.type,
+        value: row.path
+      }));
+    },
+    searchResultSummary() {
+      if (!this.model) return "";
+      const query = String(this.tableSearchInput || "").trim();
+      if (!query) {
+        return "Search all visible request, record, file, and sequencing metadata.";
+      }
+      if (this.tableSearchPending) {
+        return `Searching for "${query}"...`;
+      }
+      const rowCount =
+        this.summaryKeyValuePairs.length +
+        this.requestOverviewSections.reduce(
+          (count, section) => count + section.rows.length,
+          0
+        ) +
+        this.recordTables.reduce(
+          (count, record) =>
+            count +
+            record.sections.reduce(
+              (sectionCount, section) => sectionCount + section.rows.length,
+              0
+            ),
+          0
+        ) +
+        this.sequencingSections.reduce(
+          (count, section) => count + section.rows.length,
+          0
+        ) +
+        this.zipContentRows.length +
+        this.attachedFileGroups.reduce(
+          (count, group) => count + group.files.length,
+          0
+        );
+      return `${rowCount} ${rowCount === 1 ? "match" : "matches"} for "${query}"`;
     },
     rootEntity() {
       if (!this.model) return null;
@@ -306,29 +469,56 @@ export default {
         return true;
       });
     },
-    requestAttachmentRows() {
+    attachedFileGroups() {
       if (!this.model) return [];
-      return this.model.graph
+      const groupedFiles = {};
+      this.model.graph
         .filter((entity) => this.isAttachmentEntity(entity))
-        .map((entity, index) => {
+        .forEach((entity) => {
           const entityId = entity[entityFields.id];
-          const fileEntry = this.model.archive?.byId?.[entityId] || null;
-          return {
-            key: `Attachment ${index + 1}`,
-            value: [
-              entity[entityFields.name] ||
-                entity[entityFields.identifier] ||
-                entityId,
-              fileEntry?.sizeLabel || "",
-              fileEntry?.mimeType || ""
-            ].filter(Boolean)
+          const requestId = this.attachmentRequestContextId(entity);
+          const requestEntity = this.entityById(requestId);
+          const fallbackRequest = requestId || "request-attachments";
+          const groupKey = requestId || fallbackRequest;
+          const fileName =
+            entity[entityFields.name] ||
+            entity[entityFields.identifier] ||
+            entityId;
+          const file = {
+            id: entityId,
+            name: fileName
           };
-        })
-        .filter((row) => this.rowMatchesSearch(row));
+          if (!this.rowMatchesSearch({ key: requestEntity?.[entityFields.name] || "Attached Files", value: fileName })) {
+            return;
+          }
+          if (!groupedFiles[groupKey]) {
+            groupedFiles[groupKey] = {
+              requestId: groupKey,
+              requestName:
+                requestEntity?.[entityFields.name] ||
+                requestEntity?.[entityFields.identifier] ||
+                "Request attachments",
+              files: []
+            };
+          }
+          groupedFiles[groupKey].files.push(file);
+        });
+
+      return Object.values(groupedFiles).sort((left, right) =>
+        left.requestName.localeCompare(right.requestName)
+      );
     },
     requestOverviewSections() {
       if (!this.model) return [];
-      return this.buildRequestOverviewSections();
+      return this.buildRequestOverviewSections().filter(
+        (section) => !this.isSequencingSection(section)
+      );
+    },
+    sequencingSections() {
+      if (!this.model) return [];
+      return this.buildRequestOverviewSections().filter((section) =>
+        this.isSequencingSection(section)
+      );
     },
     recordTables() {
       if (!this.model) return [];
@@ -344,6 +534,7 @@ export default {
           const entityId = entity[entityFields.id];
           return {
             id: entityId,
+            kind,
             title: `${kind} ${index + 1}: ${entity[entityFields.name] || entity[entityFields.identifier] || entityId
               }`,
             sections: this.buildRecordSections(entity)
@@ -368,7 +559,27 @@ export default {
       }
     }
   },
+  beforeUnmount() {
+    window.clearTimeout(this.tableSearchDebounceTimer);
+  },
   methods: {
+    handleSearchInput(event) {
+      const nextTerm = String(event?.target?.value || "").trim();
+      window.clearTimeout(this.tableSearchDebounceTimer);
+
+      if (!nextTerm) {
+        this.tableSearchInput = "";
+        this.tableSearchTerm = "";
+        this.tableSearchPending = false;
+        return;
+      }
+
+      this.tableSearchDebounceTimer = window.setTimeout(() => {
+        this.tableSearchInput = nextTerm;
+        this.tableSearchTerm = nextTerm;
+        this.tableSearchPending = false;
+      }, 220);
+    },
     roCrateRequestParams(extra = {}) {
       return {
         barcodes: (this.activePreviewConfig?.barcodes || []).join(","),
@@ -383,8 +594,45 @@ export default {
         .replace(/^_|_$/g, "");
     },
     parseContentDispositionFilename(header) {
-      const match = String(header || "").match(/filename="?([^"]+)"?/i);
+      const headerValue = String(header || "");
+      const encodedMatch = headerValue.match(/filename\*=UTF-8''([^;]+)/i);
+      if (encodedMatch?.[1]) {
+        return decodeURIComponent(encodedMatch[1].replace(/^"|"$/g, ""));
+      }
+      const match = headerValue.match(/filename="?([^";]+)"?/i);
       return match?.[1] || "";
+    },
+    responseHeader(headers, key) {
+      return (
+        headers?.get?.(key) ||
+        headers?.[key] ||
+        headers?.[key.toLowerCase()] ||
+        headers?.[key.toUpperCase()] ||
+        ""
+      );
+    },
+    fallbackArchiveFilename() {
+      const previewName = this.model?.source?.name || "";
+      if (previewName.toLowerCase().endsWith(".zip")) {
+        return this.sanitizeFilenamePart(previewName);
+      }
+
+      const requestNames = Array.isArray(this.activePreviewConfig?.requestNames)
+        ? this.activePreviewConfig.requestNames
+        : [];
+      const requestName = this.activePreviewConfig?.requestName || "";
+      const requestStub = requestNames.length
+        ? requestNames.join("_")
+        : requestName;
+      const safeRequestName = this.sanitizeFilenamePart(requestStub);
+      if (safeRequestName) {
+        return `${safeRequestName}_ro_crate.zip`;
+      }
+
+      const safeBarcodeName = this.sanitizeFilenamePart(
+        (this.activePreviewConfig?.barcodes || []).join("_")
+      );
+      return `${safeBarcodeName || "ro_crate"}_ro_crate.zip`;
     },
     async loadPreviewFromConfig(previewConfig) {
       if (!Array.isArray(previewConfig?.barcodes) || !previewConfig.barcodes.length) {
@@ -410,7 +658,6 @@ export default {
         this.model = parseRoCratePayload(payload.ro_crate || payload, {
           name: payload.archive_name || "ro-crate-preview.jsonld"
         });
-        showNotification("RO-Crate preview loaded successfully.", "success");
       } catch (error) {
         this.model = null;
         this.errorMessage =
@@ -461,13 +708,13 @@ export default {
           params: this.roCrateRequestParams(),
           responseType: "blob"
         });
-        const headerFilename = this.parseContentDispositionFilename(
-          response?.headers?.["content-disposition"]
+        const contentDisposition = this.responseHeader(
+          response?.headers,
+          "content-disposition"
         );
-        const safeBarcodeName = this.sanitizeFilenamePart(
-          this.activePreviewConfig.barcodes.join("_")
-        );
-        const filename = headerFilename || `${safeBarcodeName || "ro_crate"}_ro_crate.zip`;
+        const headerFilename =
+          this.parseContentDispositionFilename(contentDisposition);
+        const filename = headerFilename || this.fallbackArchiveFilename();
         saveAs(response?.data, filename);
         showNotification("RO-Crate exported successfully.", "success");
       } catch (error) {
@@ -515,11 +762,28 @@ export default {
         )
       );
     },
+    entityReferenceIds(value) {
+      if (Array.isArray(value)) {
+        return value.flatMap((entry) => this.entityReferenceIds(entry));
+      }
+      if (value && typeof value === "object" && value[entityFields.id]) {
+        return [String(value[entityFields.id])];
+      }
+      return [];
+    },
+    attachmentRequestContextId(entity) {
+      return (
+        this.entityReferenceIds(entity?.[entityFields.requestContext]).find(
+          (entityId) => entityId.startsWith("#request-context-")
+        ) || ""
+      );
+    },
     isAttachmentEntity(entity) {
       return (
         this.entityTypes(entity).includes(attachmentEntityRules.type) &&
-        entity?.[entityFields.isPartOf]?.[entityFields.id] ===
-          entityIds.rootDataset &&
+        this.entityReferenceIds(entity?.[entityFields.isPartOf]).includes(
+          entityIds.rootDataset
+        ) &&
         entity?.[entityFields.id] !== entityIds.metadataDescriptor
       );
     },
@@ -557,7 +821,18 @@ export default {
       return false;
     },
     recordKindLabel(entity) {
-      const types = this.entityTypes(entity).map((type) => String(type));
+      const entityId = String(entity?.[entityFields.id] || "");
+      if (entityId.startsWith("#library-material-")) {
+        return recordEntityRules.typeLabels.library;
+      }
+      if (entityId.startsWith("#sample-material-")) {
+        return recordEntityRules.typeLabels.sample;
+      }
+
+      const types = [
+        ...this.entityTypes(entity),
+        ...this.entityReferenceIds(entity?.[entityFields.additionalType])
+      ].map((type) => String(type));
       if (types.some((type) => type.includes(recordEntityRules.typeFragments[1]))) {
         return recordEntityRules.typeLabels.library;
       }
@@ -755,6 +1030,11 @@ export default {
         pattern.test(String(field || ""))
       );
     },
+    shouldHideTechnicalDisplayLabel(label) {
+      return hiddenTechnicalDisplayLabelPatterns.some((pattern) =>
+        pattern.test(String(label || ""))
+      );
+    },
     isEmptyDisplayValue(value, options = {}) {
       return (
         value === "" ||
@@ -783,12 +1063,38 @@ export default {
       }
       return Object.keys(value || {}).length > 4;
     },
+    valueClassForRow(row) {
+      const key = String(row?.key || "").toLowerCase();
+      return {
+        "path-value":
+          key.includes("filepath") ||
+          key.includes("metapath") ||
+          key.includes("path"),
+        "barcode-value":
+          key.includes("barcode") ||
+          key.includes("requested barcode"),
+        "long-list-value":
+          Array.isArray(row?.value) && row.value.length > 5
+      };
+    },
+    plainDisplayValue(row) {
+      const value = String(row?.value ?? "");
+      const classes = this.valueClassForRow(row);
+      if (classes["path-value"]) {
+        return value.replace(/([/\\_-])/g, "$1\u200b");
+      }
+      if (classes["barcode-value"] || classes["long-list-value"]) {
+        return value.replace(/,\s*/g, ",\u200b ");
+      }
+      return value;
+    },
     shouldHideDisplayLabel(label, options = {}) {
       const normalizedLabel = String(label || "").trim();
       const lowerLabel = normalizedLabel.toLowerCase();
       if (!normalizedLabel) return true;
       if (this.shouldHideIdLabel(normalizedLabel)) return true;
       if (this.shouldHideSensitiveField(normalizedLabel)) return true;
+      if (this.shouldHideTechnicalDisplayLabel(normalizedLabel)) return true;
       if (userDefinedVariableHiddenLabelSet.has(lowerLabel)) return true;
       if (
         options.hideRecordLabels &&
@@ -805,6 +1111,22 @@ export default {
         return true;
       }
       return false;
+    },
+    isSequencingSection(section) {
+      const title = String(section?.title || "").toLowerCase();
+      return (
+        title.includes("flowcell") ||
+        title.includes("sequenc") ||
+        title.includes("lane ") ||
+        section?.rows?.some((row) => {
+          const key = String(row?.key || "").toLowerCase();
+          return (
+            key.includes("flowcell") ||
+            key.includes("sequencer") ||
+            key.includes("lane")
+          );
+        })
+      );
     },
     buildRequestOverviewSections() {
       const sections = [];
@@ -836,13 +1158,6 @@ export default {
           sections.push({ title, rows });
         }
       });
-
-      if (this.requestAttachmentRows.length) {
-        sections.push({
-          title: sectionOptions.requestAttachments,
-          rows: this.requestAttachmentRows
-        });
-      }
 
       return sections;
     },
@@ -1324,8 +1639,100 @@ export default {
   color: #173948;
 }
 
+.attached-files-card,
+.zip-contents-card,
+.sequencing-summary-card,
 .quick-summary-card {
   margin-bottom: 18px;
+}
+
+.zip-content-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.zip-content-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(16, 36, 47, 0.06);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
+  color: #173948;
+}
+
+.zip-content-row svg {
+  margin-top: 2px;
+  color: #0d6f73;
+  flex-shrink: 0;
+}
+
+.zip-content-main {
+  min-width: 0;
+}
+
+.zip-content-path {
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.zip-content-meta {
+  margin-top: 3px;
+  color: #5e7884;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.attached-file-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+  margin-top: 14px;
+}
+
+.attached-file-group {
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(16, 36, 47, 0.06);
+}
+
+.attached-file-request {
+  margin-bottom: 10px;
+  color: #173948;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.attached-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attached-file-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: #173948;
+  line-height: 1.35;
+}
+
+.attached-file-item svg {
+  color: #0d6f73;
+  flex-shrink: 0;
+}
+
+.attached-file-item span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .records-summary-card {
@@ -1340,13 +1747,41 @@ export default {
   color: #173948;
 }
 
-.table-search-inline {
-  margin-top: 14px;
+.preview-search-panel {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border: 1px solid rgba(13, 111, 115, 0.24);
+  border-radius: 14px;
+  background: rgba(243, 250, 251, 0.98);
+  box-shadow: 0 10px 24px rgba(16, 36, 47, 0.08);
+  backdrop-filter: blur(10px);
 }
 
-.table-search-inline-top {
-  margin-top: 0;
-  margin-bottom: 14px;
+.rocrate-preview-page.embedded .preview-search-panel {
+  top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.preview-search-title {
+  color: #173948;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.preview-search-meta {
+  margin-top: 3px;
+  color: #5e7884;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .table-search-input-wrap {
@@ -1355,12 +1790,21 @@ export default {
 
 .table-search-input {
   width: 100%;
-  border: 1px solid rgba(16, 36, 47, 0.12);
+  border: 2px solid rgba(13, 111, 115, 0.36);
   border-radius: 14px;
-  padding: 12px 44px 12px 14px;
+  padding: 13px 44px 13px 14px;
   font-size: 15px;
   color: #173948;
   background: rgba(255, 255, 255, 0.96);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.table-search-input:focus {
+  border-color: #0d6f73;
+  box-shadow:
+    0 0 0 3px rgba(13, 111, 115, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  outline: none;
 }
 
 .table-search-input::placeholder {
@@ -1372,7 +1816,7 @@ export default {
   top: 50%;
   right: 14px;
   transform: translateY(-50%);
-  color: #6a8591;
+  color: #0d6f73;
   pointer-events: none;
 }
 
@@ -1568,6 +2012,11 @@ export default {
   line-height: 1.6;
 }
 
+.print-report-header,
+.print-report-footer {
+  display: none;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -1592,8 +2041,15 @@ export default {
   }
 
   .upload-stage,
+  .attached-file-groups,
   .quick-summary-table {
     grid-template-columns: 1fr;
+  }
+
+  .preview-search-panel {
+    position: static;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .upload-watermark {
@@ -1608,7 +2064,7 @@ export default {
 @media print {
   @page {
     size: A4;
-    margin: 10mm;
+    margin: 12mm 9mm 11mm;
   }
 
   :global(html),
@@ -1631,87 +2087,223 @@ export default {
     font-size: 9pt;
   }
 
+  .rocrate-preview-page.embedded {
+    min-height: auto;
+    height: auto;
+    overflow: visible;
+    background: #fff;
+  }
+
   .rocrate-preview-shell {
     max-width: none;
     padding: 0;
     margin: 0;
   }
 
+  .rocrate-preview-page.embedded .rocrate-preview-shell {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
   .upload-stage,
-  .table-search-inline,
+  .preview-search-panel,
   .pdf-export-button {
     display: none !important;
   }
 
   .preview-workspace {
     display: block;
+    padding-top: 0;
+  }
+
+  .print-report-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 8mm;
+    margin-bottom: 3mm;
+    padding-bottom: 2mm;
+    border-bottom: 1px solid #d8e0e4;
+    background: #fff;
+    color: #173948;
+  }
+
+  .print-report-title {
+    font-size: 9pt;
+    font-weight: 800;
+  }
+
+  .print-report-subtitle,
+  .print-report-meta {
+    color: #5e7884;
+    font-size: 7pt;
+    line-height: 1.3;
+  }
+
+  .print-report-meta {
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .print-report-footer {
+    display: block;
+    margin-top: 4mm;
+    padding-top: 2mm;
+    border-top: 1px solid #d8e0e4;
+    background: #fff;
+    color: #6b818c;
+    font-size: 6.5pt;
+    line-height: 1.2;
+  }
+
+  .attached-file-groups {
+    display: block !important;
+    margin-top: 3mm;
+  }
+
+  .zip-content-list {
+    gap: 1.5mm;
+    margin-top: 2mm;
+  }
+
+  .zip-content-row {
+    padding: 1.8mm;
+    border-radius: 1.5mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .zip-content-path {
+    font-size: 7.2pt;
+    line-height: 1.25;
+  }
+
+  .zip-content-meta {
+    font-size: 6.6pt;
+  }
+
+  .attached-file-group {
+    margin-bottom: 2mm;
+    padding: 2mm;
+    border-radius: 3mm;
+    background: #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .attached-file-request {
+    font-size: 8pt;
+    margin-bottom: 2mm;
+  }
+
+  .attached-file-list {
+    gap: 1.5mm;
+  }
+
+  .attached-file-item {
+    font-size: 8pt;
+    align-items: flex-start;
   }
 
   .detail-kicker {
-    font-size: 12pt;
-    margin-bottom: 5mm;
+    font-size: 10pt;
+    margin-bottom: 2.5mm;
+  }
+
+  .detail-header,
+  .record-table-header,
+  .record-group-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .record-table-list,
+  .record-group-table {
+    break-before: avoid;
+    page-break-before: avoid;
   }
 
   .detail-card {
-    padding: 5mm;
-    margin-bottom: 5mm;
-    border-radius: 4mm;
+    padding: 2.5mm 0;
+    margin-bottom: 3mm;
+    border-radius: 0;
     box-shadow: none;
-    border: 1px solid #d8e0e4;
+    border: 0;
+    border-top: 1px solid #d8e0e4;
     background: #fff;
   }
 
   .record-table-title {
-    font-size: 11pt;
+    font-size: 9pt;
   }
 
   .record-group-title,
   .quick-summary-key {
-    font-size: 7.5pt;
+    font-size: 6.8pt;
     letter-spacing: 0.02em;
   }
 
   .quick-summary-table {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 3mm;
-    margin-top: 3mm;
+    display: block !important;
+    margin-top: 1.8mm;
   }
 
   .quick-summary-row {
-    grid-template-columns: 28mm minmax(0, 1fr);
-    gap: 3mm;
-    padding: 3mm;
-    border-radius: 3mm;
+    display: grid;
+    grid-template-columns: 25mm minmax(0, 1fr);
+    gap: 2mm;
+    margin-bottom: 1.4mm;
+    padding: 1.8mm;
+    border-radius: 1.5mm;
     background: #fff;
   }
 
   .quick-summary-row.wide-row {
-    grid-column: 1 / -1;
-    grid-template-columns: 30mm minmax(0, 1fr);
+    grid-template-columns: 28mm minmax(0, 1fr);
   }
 
   .quick-summary-value {
-    line-height: 1.35;
+    font-size: 7.6pt;
+    line-height: 1.28;
     overflow-wrap: anywhere;
     word-break: normal;
+  }
+
+  .quick-summary-value.path-value {
+    font-size: 6.8pt;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .quick-summary-value.barcode-value,
+  .quick-summary-value.long-list-value {
+    column-count: auto;
   }
 
   .quick-summary-value :deep(.structured-value-scroll) {
     overflow: visible;
   }
 
+  .quick-summary-value :deep(.structured-value-table thead) {
+    display: table-header-group;
+  }
+
+  .quick-summary-value :deep(.structured-value-table tr) {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
   .quick-summary-value :deep(.structured-value-table) {
     min-width: 0;
     width: 100%;
     table-layout: fixed;
-    font-size: 7.5pt;
-    line-height: 1.25;
+    font-size: 6.6pt;
+    line-height: 1.2;
   }
 
   .quick-summary-value :deep(.structured-value-table th),
   .quick-summary-value :deep(.structured-value-table td) {
-    padding: 1.5mm;
+    padding: 1mm;
     overflow-wrap: anywhere;
     word-break: normal;
   }
@@ -1720,8 +2312,7 @@ export default {
     width: 24mm;
   }
 
-  .quick-summary-row,
-  .record-table-block {
+  .quick-summary-row {
     break-inside: avoid;
     page-break-inside: avoid;
   }

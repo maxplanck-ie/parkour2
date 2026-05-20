@@ -514,6 +514,12 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         for name in names:
             self.assertNotIn(name, comment_names)
 
+    def _comment_value(self, entry, name):
+        for comment in entry.get("comments", []):
+            if comment.get("name") == name:
+                return comment.get("value")
+        return None
+
     def _sample_view_row(self, sample, **overrides):
         data = {
             "sample_id": sample.pk,
@@ -674,6 +680,51 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             graph_ids,
         )
         self.assertIn("#ro-crate-export-action", graph_ids)
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_request_path_metadata_preserves_optional_md5_without_packaging_paths(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        self.request.filepaths = {
+            "data": {
+                "path": "/data/project/huge.fastq.gz",
+                "md5": "d41d8cd98f00b204e9800998ecf8427e",
+            },
+            "metadata": "/data/project/report.html",
+        }
+        self.request.metapaths = {
+            "analysis": {
+                "path": "/data/project/analysis.tsv",
+                "checksum": {"md5": "0cc175b9c0f1b6a831c399e269772661"},
+            }
+        }
+        self.request.save(update_fields=["filepaths", "metapaths"])
+        self._set_ro_crate_complete_data_rows(mock_library_objects, mock_sample_objects)
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"requests": self.request.name}
+        )
+        self.assertEqual(response.status_code, 200)
+        payload, archive_names = self._extract_zip_payload(response)
+
+        dataset_entry = self._graph_entry(payload, "./")
+        filepaths = json.loads(
+            self._comment_value(dataset_entry, "request_filepaths")
+        )
+        metapaths = json.loads(
+            self._comment_value(dataset_entry, "request_metapaths")
+        )
+
+        self.assertEqual(
+            filepaths["data"]["md5"], "d41d8cd98f00b204e9800998ecf8427e"
+        )
+        self.assertEqual(filepaths["metadata"], "/data/project/report.html")
+        self.assertEqual(
+            metapaths["analysis"]["md5"], "0cc175b9c0f1b6a831c399e269772661"
+        )
+        self.assertNotIn("data/project/huge.fastq.gz", archive_names)
+        self.assertEqual(archive_names, {"ro-crate-metadata.json"})
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")

@@ -129,9 +129,12 @@
                   <button
                     class="filepaths-value filepaths-input"
                     type="button"
-                    @click="copyText(entry.value)"
+                    @click="copyText(entry.copyValue)"
                   >
-                    {{ entry.value || "Empty" }}
+                    <span>{{ entry.value || "Empty" }}</span>
+                    <span v-if="entry.md5" class="filepaths-md5">
+                      MD5: {{ entry.md5 }}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -163,6 +166,11 @@
                     type="text"
                     placeholder="Path"
                   />
+                  <input
+                    v-model.trim="userPathForm.md5"
+                    type="text"
+                    placeholder="MD5 (optional)"
+                  />
                   <div class="userpath-actions">
                     <button
                       class="popup-button yes-button small"
@@ -193,9 +201,12 @@
                   <button
                     class="filepaths-value filepaths-input userpath-value"
                     type="button"
-                    @click="copyText(path.value || 'Empty')"
+                    @click="copyText(path.copyValue || 'Empty')"
                   >
-                    {{ path.value || "Empty" }}
+                    <span>{{ path.value || "Empty" }}</span>
+                    <span v-if="path.md5" class="filepaths-md5">
+                      MD5: {{ path.md5 }}
+                    </span>
                   </button>
                   <div class="userpath-icons">
                     <button
@@ -1015,7 +1026,8 @@ export default {
         mode: USER_PATH_MODES.add,
         id: null,
         name: "",
-        value: ""
+        value: "",
+        md5: ""
       },
       emailForm: {
         subject: "",
@@ -1054,12 +1066,19 @@ export default {
       const filepaths = this.filepaths || {};
       Object.keys(filepaths).forEach((key) => {
         const rawValue = filepaths[key];
+        const pathValue = this.pathReferencePath(rawValue);
         const formatted =
           key === REQUEST_DATA_FIELDS.filepathsData ||
           key === REQUEST_DATA_FIELDS.filepathsMetadata
-            ? this.formatPathForOS(rawValue)
-            : rawValue || "";
-        entries.push({ key, value: formatted });
+            ? this.formatPathForOS(pathValue)
+            : pathValue || "";
+        const md5 = this.pathReferenceMd5(rawValue);
+        entries.push({
+          key,
+          value: formatted,
+          md5,
+          copyValue: this.pathReferenceCopyValue(formatted, md5)
+        });
       });
       return entries;
     },
@@ -1069,7 +1088,16 @@ export default {
       );
     },
     displayUserPaths() {
-      return this.hasUserPaths ? this.userPaths : [];
+      return this.hasUserPaths
+        ? this.userPaths.map((path) => {
+            const md5 = this.pathReferenceMd5(path.rawValue ?? path.value);
+            return {
+              ...path,
+              md5,
+              copyValue: this.pathReferenceCopyValue(path.value, md5)
+            };
+          })
+        : [];
     },
     canSaveUserPath() {
       return Boolean(this.userPathForm.name && this.userPathForm.value);
@@ -1231,7 +1259,8 @@ export default {
         mode: USER_PATH_MODES.add,
         id: null,
         name: "",
-        value: ""
+        value: "",
+        md5: ""
       };
       this.emailBusy = false;
       this.approvalBusy = false;
@@ -1372,12 +1401,71 @@ export default {
           ([name, value], index) => ({
             id: index + 1,
             name,
-            value
+            value: this.pathReferencePath(value),
+            rawValue: value
           })
         );
       } catch (error) {
         handleError(error);
       }
+    },
+    pathReferencePath(value) {
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        return (
+          value.path ||
+          value.filepath ||
+          value.file_path ||
+          value.contentUrl ||
+          value.url ||
+          value.value ||
+          JSON.stringify(value)
+        );
+      }
+      return value || "";
+    },
+    pathReferenceMd5(value) {
+      if (!value || typeof value !== "object" || Array.isArray(value)) {
+        return "";
+      }
+      const checksum = value.checksum;
+      if (checksum && typeof checksum === "object" && !Array.isArray(checksum)) {
+        return (
+          value.md5 ||
+          value.MD5 ||
+          value.md5_hash ||
+          value.md5Hash ||
+          value.checksum_md5 ||
+          value.checksumMd5 ||
+          checksum.md5 ||
+          checksum.MD5 ||
+          ""
+        );
+      }
+      return (
+        value.md5 ||
+        value.MD5 ||
+        value.md5_hash ||
+        value.md5Hash ||
+        value.checksum_md5 ||
+        value.checksumMd5 ||
+        ""
+      );
+    },
+    pathReferenceCopyValue(path, md5) {
+      const cleanPath = path || "Empty";
+      return md5 ? `${cleanPath}\nMD5: ${md5}` : cleanPath;
+    },
+    buildPathReferenceValue(path, md5, rawValue = null) {
+      if (!md5) return path;
+      const existing =
+        rawValue && typeof rawValue === "object" && !Array.isArray(rawValue)
+          ? { ...rawValue }
+          : {};
+      return {
+        ...existing,
+        path,
+        md5
+      };
     },
     formatPathForOS(filepath) {
       const filepathRegex =
@@ -1427,7 +1515,8 @@ export default {
         mode: USER_PATH_MODES.add,
         id: null,
         name: "",
-        value: ""
+        value: "",
+        md5: ""
       };
     },
     startEditUserPath(path) {
@@ -1436,7 +1525,8 @@ export default {
         mode: USER_PATH_MODES.edit,
         id: path.id,
         name: path.name,
-        value: path.value
+        value: path.value,
+        md5: path.md5 || this.pathReferenceMd5(path.rawValue) || ""
       };
     },
     cancelUserPath() {
@@ -1445,13 +1535,15 @@ export default {
         mode: USER_PATH_MODES.add,
         id: null,
         name: "",
-        value: ""
+        value: "",
+        md5: ""
       };
     },
     async saveUserPath() {
       if (!this.canSaveUserPath) return;
       const newName = this.userPathForm.name;
       const newValue = this.userPathForm.value;
+      const newMd5 = this.userPathForm.md5;
       const current = this.userPaths.slice();
       const map = new Map();
 
@@ -1463,16 +1555,19 @@ export default {
           );
           return;
         }
-        map.set(newName, newValue);
+        map.set(newName, this.buildPathReferenceValue(newValue, newMd5));
         current.forEach((item) => {
-          if (item.value !== null) map.set(item.name, item.value);
+          if (item.value !== null) map.set(item.name, item.rawValue ?? item.value);
         });
       } else {
         current.forEach((item) => {
           if (item.id === this.userPathForm.id) {
-            map.set(newName, newValue);
+            map.set(
+              newName,
+              this.buildPathReferenceValue(newValue, newMd5, item.rawValue)
+            );
           } else {
-            map.set(item.name, item.value);
+            map.set(item.name, item.rawValue ?? item.value);
           }
         });
       }
@@ -1509,7 +1604,8 @@ export default {
             ([name, value], index) => ({
               id: index + 1,
               name,
-              value
+              value: this.pathReferencePath(value),
+              rawValue: value
             })
           );
           this.showUserPathForm = false;
@@ -2649,6 +2745,14 @@ export default {
   cursor: copy;
   text-align: left;
   box-shadow: inset 0 1px 0 #f3f3f3;
+}
+
+.filepaths-md5 {
+  display: block;
+  margin-top: 4px;
+  color: #5d7480;
+  font-size: 11px;
+  word-break: break-all;
 }
 
 .userpath-row {

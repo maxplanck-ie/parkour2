@@ -1,5 +1,6 @@
 {
   "userDefinedVariableHiddenFields": [
+    "approval",
     "costUnit",
     "createTime",
     "isConverted",

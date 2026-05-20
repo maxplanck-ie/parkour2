@@ -32,10 +32,12 @@ export const RO_CRATE_PREVIEW_FIELD_RULES = {
     title: "title",
     identifier: "identifier",
     alternateName: "alternateName",
+    additionalType: "additionalType",
     comments: "comments",
     additionalProperty: "additionalProperty",
     value: "value",
-    isPartOf: "isPartOf"
+    isPartOf: "isPartOf",
+    requestContext: "requestContext"
   },
   entityIds: {
     rootDataset: "./",
@@ -64,6 +66,12 @@ export const RO_CRATE_PREVIEW_FIELD_RULES = {
   visibleIdFields: ["i7_id", "i5_id", "indexI7Id", "indexI5Id"],
   visibleRequestFields: ["request_filepaths", "request_metapaths"],
   hiddenSensitiveFieldPatterns: [/email/i, /telephone/i],
+  hiddenTechnicalDisplayLabelPatterns: [
+    /^http\b/i,
+    /^remote\b/i,
+    /^token$/i,
+    /^timestamp$/i
+  ],
   hiddenLinkedRecordLabelPatterns: [
     /^assay linked by /i,
     /^data linked by /i
@@ -166,7 +174,6 @@ export const RO_CRATE_PREVIEW_FIELD_RULES = {
   },
   linkedRecordsSection: "Linked Processes & Data",
   sectionOptions: {
-    requestAttachments: "Request Attachments",
     defaultCommentGroup: "Linked Processes & Data",
     defaultEntityPropertyGroup: "Overview",
     unnamedGroup: "Unnamed Group",
