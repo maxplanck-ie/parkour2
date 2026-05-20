@@ -54,6 +54,16 @@ def wait_until_authenticated(page: Page, *, timeout: int = 15000):
         )
         raise AssertionError(f"Login did not complete.{detail}") from exc
 
+    hostName = get_host_name()
+    page.goto(f"http://{hostName}:9980/api_user_details")
+    page.wait_for_load_state("networkidle")
+    if urlparse(page.url).path.startswith("/login"):
+        raise AssertionError(
+            "Login did not create an authenticated session. "
+            "Check that the frontend fixtures are loaded."
+        )
+    expect(page.locator("body")).to_contain_text("USER", timeout=timeout)
+
 
 def visit_vue_page(page: Page, relative_path: str):
     """Navigate to a Vue view using the authenticated session."""
