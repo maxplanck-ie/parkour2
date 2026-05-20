@@ -605,6 +605,33 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         payload = self._parse_payload(response)
         self.assertIn("error", payload)
 
+    def test_rejects_empty_sections_parameter(self):
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"requests": self.request.name, "sections": ""},
+        )
+        self.assertEqual(response.status_code, 400)
+        payload = self._parse_payload(response)
+        self.assertIn("Select at least one RO-Crate section", payload["error"])
+
+    def test_rejects_unknown_sections_parameter(self):
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"requests": self.request.name, "sections": "samples,unexpected"},
+        )
+        self.assertEqual(response.status_code, 400)
+        payload = self._parse_payload(response)
+        self.assertEqual(payload["invalid_sections"], ["unexpected"])
+
+    def test_rejects_unknown_preview_parameter_value(self):
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"requests": self.request.name, "preview": "yes"},
+        )
+        self.assertEqual(response.status_code, 400)
+        payload = self._parse_payload(response)
+        self.assertIn("preview", payload["error"])
+
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
     def test_returns_placeholder_when_no_matches(
@@ -690,13 +717,19 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             "data": {
                 "path": "/data/project/huge.fastq.gz",
                 "md5": "d41d8cd98f00b204e9800998ecf8427e",
+                "contentUrl": "/ignored/alias.fastq.gz",
+                "extra": "ignored",
             },
             "metadata": "/data/project/report.html",
+            "legacy_alias": {
+                "filepath": "/data/project/legacy.fastq.gz",
+                "MD5": "0cc175b9c0f1b6a831c399e269772662",
+            },
         }
         self.request.metapaths = {
             "analysis": {
                 "path": "/data/project/analysis.tsv",
-                "checksum": {"md5": "0cc175b9c0f1b6a831c399e269772661"},
+                "md5": "0cc175b9c0f1b6a831c399e269772661",
             }
         }
         self.request.save(update_fields=["filepaths", "metapaths"])
@@ -719,7 +752,15 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertEqual(
             filepaths["data"]["md5"], "d41d8cd98f00b204e9800998ecf8427e"
         )
+        self.assertEqual(
+            filepaths["data"],
+            {
+                "path": "/data/project/huge.fastq.gz",
+                "md5": "d41d8cd98f00b204e9800998ecf8427e",
+            },
+        )
         self.assertEqual(filepaths["metadata"], "/data/project/report.html")
+        self.assertNotIn("legacy_alias", filepaths)
         self.assertEqual(
             metapaths["analysis"]["md5"], "0cc175b9c0f1b6a831c399e269772661"
         )
@@ -833,6 +874,59 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": request_file_entity_id},
             dataset_entry.get("hasPart", []),
         )
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_selected_sections_remove_unselected_entities_refs_and_properties(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        sample = create_sample("section-filter-sample", status=6)
+        self.request.samples.add(sample)
+        LibraryPreparation.objects.create(
+            sample=sample,
+            starting_amount=12.5,
+            pcr_cycles=9,
+            concentration_library=3.2,
+            mean_fragment_size=280,
+        )
+        Pooling.objects.create(
+            sample=sample, concentration_c1=4.4, comment="sample pool"
+        )
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            samples=[self._sample_view_row(sample)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"barcodes": sample.barcode, "sections": "samples"},
+        )
+        self.assertEqual(response.status_code, 200)
+        payload, _ = self._extract_zip_payload(response)
+        graph_ids = self._graph_ids(payload)
+
+        self.assertIn(f"#sample-material-{sample.pk}", graph_ids)
+        self.assertIn(f"#sample-data-{sample.pk}", graph_ids)
+        self.assertNotIn(f"#protocol-{sample.library_protocol_id}", graph_ids)
+        self.assertNotIn(f"#organism-{sample.organism_id}", graph_ids)
+        self.assertNotIn(f"#index-type-{sample.index_type_id}", graph_ids)
+
+        sample_entry = self._graph_entry(payload, f"#sample-material-{sample.pk}")
+        self._assert_comment_names_include(
+            sample_entry,
+            ["sample_db_name", "sample_mv_analysis_type_name"],
+        )
+        self._assert_comment_names_exclude(
+            sample_entry,
+            ["library_preparation_starting_amount", "pooling_concentration_c1"],
+        )
+        self.assertNotIn("organism", sample_entry)
+        self.assertNotIn("indexType", sample_entry)
+        self.assertNotIn("associatedPool", sample_entry)
+
+        sample_process = self._graph_entry(payload, f"#sample-process-{sample.pk}")
+        self.assertNotIn("executesLabProtocol", sample_process)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")

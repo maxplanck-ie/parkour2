@@ -78,31 +78,61 @@ def _normalise_field_policy_key(value):
 
 
 def _load_shared_hidden_fields():
-    policy_path = os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "..",
-            "shared",
-            "roCrateHiddenFields.json",
+    module_dir = os.path.dirname(__file__)
+    policy_paths = [
+        os.path.abspath(
+            os.path.join(
+                module_dir,
+                "..",
+                "shared",
+                "roCrateHiddenFields.json",
+            )
+        ),
+        os.path.abspath(
+            os.path.join(
+                module_dir,
+                "..",
+                "..",
+                "shared",
+                "roCrateHiddenFields.json",
+            )
+        ),
+    ]
+    policy_path = next((path for path in policy_paths if os.path.exists(path)), None)
+    if policy_path is None:
+        searched_paths = ", ".join(policy_paths)
+        raise RuntimeError(
+            f"RO-Crate hidden field policy file could not be loaded. Searched: {searched_paths}"
         )
-    )
+
     try:
         with open(policy_path, encoding="utf-8") as handle:
             policy = json.load(handle)
-    except (OSError, ValueError):
-        return set()
+    except OSError as exc:
+        raise RuntimeError(
+            "RO-Crate hidden field policy file could not be loaded."
+        ) from exc
+    except ValueError as exc:
+        raise RuntimeError(
+            "RO-Crate hidden field policy file is not valid JSON."
+        ) from exc
+
+    hidden_fields = policy.get("userDefinedVariableHiddenFields")
+    if not isinstance(hidden_fields, list):
+        raise RuntimeError(
+            "RO-Crate hidden field policy must define userDefinedVariableHiddenFields."
+        )
 
     return {
         _normalise_field_policy_key(field)
-        for field in policy.get("userDefinedVariableHiddenFields", [])
+        for field in hidden_fields
         if field
     }
 
 
 # Shared with frontend/src/constants/roCratePreviewConsts.js through
-# shared/roCrateHiddenFields.json. Keep export exclusions there so preview
-# hiding and backend metadata generation do not drift apart.
+# shared/roCrateHiddenFields.json. Docker mounts the repo-level shared directory
+# at /usr/src/shared so backend and frontend use one policy source.
 RO_CRATE_HIDDEN_FIELD_KEYS = _load_shared_hidden_fields()
 
 
@@ -119,6 +149,7 @@ class ROCrateExportSelection:
     barcode_values: list
     request_values: list
     selected_sections: set
+    preview_requested: bool
     accessible_requests: object
     library_data: list
     sample_data: list
@@ -138,6 +169,13 @@ class ROCrateExportSelectionBuilder:
         selected_sections = _normalise_selected_sections(
             self.request.query_params.get("sections")
         )
+        if isinstance(selected_sections, Response):
+            return selected_sections
+        preview_requested = _normalise_preview_flag(
+            self.request.query_params.get("preview")
+        )
+        if isinstance(preview_requested, Response):
+            return preview_requested
 
         if not barcode_values and not request_values:
             return Response(
@@ -205,6 +243,7 @@ class ROCrateExportSelectionBuilder:
             barcode_values=barcode_values,
             request_values=request_values,
             selected_sections=selected_sections,
+            preview_requested=preview_requested,
             accessible_requests=accessible_requests,
             library_data=library_data,
             sample_data=sample_data,
@@ -330,20 +369,23 @@ def _normalise_property_value(value):
 
 PATH_REFERENCE_VALUE_KEYS = (
     "path",
+)
+PATH_REFERENCE_MD5_KEYS = (
+    "md5",
+)
+PATH_REFERENCE_IGNORED_ALIAS_KEYS = {
     "filepath",
     "file_path",
     "contentUrl",
     "url",
     "value",
-)
-PATH_REFERENCE_MD5_KEYS = (
-    "md5",
     "MD5",
     "md5_hash",
     "md5Hash",
     "checksum_md5",
     "checksumMd5",
-)
+    "checksum",
+}
 
 
 def _first_mapping_value(mapping, keys):
@@ -362,11 +404,6 @@ def _normalise_path_metadata_value(value):
     if isinstance(value, dict):
         path_value = _first_mapping_value(value, PATH_REFERENCE_VALUE_KEYS)
         md5_value = _first_mapping_value(value, PATH_REFERENCE_MD5_KEYS)
-        checksum_value = value.get("checksum")
-        if isinstance(checksum_value, dict):
-            md5_value = md5_value or _first_mapping_value(
-                checksum_value, PATH_REFERENCE_MD5_KEYS
-            )
 
         if path_value is not None or md5_value is not None:
             normalised = {}
@@ -374,21 +411,12 @@ def _normalise_path_metadata_value(value):
                 normalised["path"] = _normalise_property_value(path_value)
             if md5_value is not None:
                 normalised["md5"] = _normalise_property_value(md5_value)
-
-            skipped_keys = set(PATH_REFERENCE_VALUE_KEYS).union(
-                PATH_REFERENCE_MD5_KEYS,
-                {"checksum"},
-            )
-            for key, nested_value in value.items():
-                if key in skipped_keys:
-                    continue
-                normalised_value = _normalise_path_metadata_value(nested_value)
-                if normalised_value not in (None, "", [], {}):
-                    normalised[key] = normalised_value
             return normalised or None
 
         normalised = {}
         for key, nested_value in value.items():
+            if key in PATH_REFERENCE_IGNORED_ALIAS_KEYS:
+                continue
             normalised_value = _normalise_path_metadata_value(nested_value)
             if normalised_value not in (None, "", [], {}):
                 normalised[key] = normalised_value
@@ -846,13 +874,37 @@ RO_CRATE_SECTION_IDS = {
 
 
 def _normalise_selected_sections(raw_sections):
+    if raw_sections is None:
+        return set(RO_CRATE_SECTION_IDS)
+
     requested_sections = _parse_csv_values(raw_sections)
     if not requested_sections:
-        return set(RO_CRATE_SECTION_IDS)
-    selected_sections = {
-        section for section in requested_sections if section in RO_CRATE_SECTION_IDS
-    }
-    return selected_sections or set(RO_CRATE_SECTION_IDS)
+        return Response(
+            {"error": "Select at least one RO-Crate section."},
+            status=400,
+        )
+
+    invalid_sections = sorted(set(requested_sections) - RO_CRATE_SECTION_IDS)
+    if invalid_sections:
+        return Response(
+            {
+                "error": "Unknown RO-Crate section value.",
+                "invalid_sections": invalid_sections,
+            },
+            status=400,
+        )
+    return set(requested_sections)
+
+
+def _normalise_preview_flag(raw_preview):
+    if raw_preview is None:
+        return False
+    if raw_preview == "true":
+        return True
+    return Response(
+        {"error": "The 'preview' query parameter must be 'true' when provided."},
+        status=400,
+    )
 
 
 def _entity_section(entity):
@@ -1003,6 +1055,16 @@ def _property_section(entity_id, property_name):
             return "request"
         return None
 
+    if entity_id.startswith("#sample-process-"):
+        if property_name.startswith("sample_mv_"):
+            return "samples"
+        return None
+
+    if entity_id.startswith("#library-process-"):
+        if property_name.startswith("library_mv_"):
+            return "libraries"
+        return None
+
     if entity_id.startswith("#sample-material-"):
         if property_name.startswith("sample_db_") or property_name.startswith(
             "sample_mv_"
@@ -1063,10 +1125,15 @@ def _filter_internal_refs(value, kept_ids):
     return value
 
 
-def _filter_additional_properties(entity, selected_sections, kept_ids):
+def _filter_property_values(entity, selected_sections, kept_ids, property_name):
     entity_id = entity.get("@id")
+    properties = entity.get(property_name, [])
+    if isinstance(properties, dict):
+        properties = [properties]
     filtered_properties = []
-    for prop in entity.get("additionalProperty", []):
+    for prop in properties:
+        if not isinstance(prop, dict):
+            continue
         section = _property_section(entity_id, prop.get("name"))
         if section and section not in selected_sections:
             continue
@@ -1082,6 +1149,8 @@ def _filter_additional_properties(entity, selected_sections, kept_ids):
                 "value": filtered_value,
             }
         )
+        if prop.get("additionalType"):
+            filtered_properties[-1]["additionalType"] = prop.get("additionalType")
     return filtered_properties
 
 
@@ -1124,19 +1193,24 @@ def _filter_ro_crate_sections(ro_crate, selected_sections):
     for entity in filtered_graph:
         cleaned_entity = {}
         for key, value in entity.items():
-            if key in {"additionalProperty", "comments"}:
+            if key in {"additionalProperty", "comments", "parameterValue"}:
                 continue
             filtered_value = _filter_internal_refs(value, kept_ids)
-            if filtered_value is None:
+            if filtered_value in (None, [], {}):
                 continue
             cleaned_entity[key] = filtered_value
 
-        if "additionalProperty" in entity:
-            cleaned_entity["additionalProperty"] = _filter_additional_properties(
-                entity, selected_sections, kept_ids
-            )
+        for property_name in ("additionalProperty", "parameterValue"):
+            if property_name in entity:
+                filtered_values = _filter_property_values(
+                    entity, selected_sections, kept_ids, property_name
+                )
+                if filtered_values:
+                    cleaned_entity[property_name] = filtered_values
         if "comments" in entity:
-            cleaned_entity["comments"] = _filter_comments(entity, selected_sections)
+            filtered_comments = _filter_comments(entity, selected_sections)
+            if filtered_comments:
+                cleaned_entity["comments"] = filtered_comments
 
         sanitised_graph.append(cleaned_entity)
 
@@ -1166,18 +1240,14 @@ def _build_ro_crate_zip_response(ro_crate_payload, archive_name, file_entries):
     return response
 
 
-def _is_preview_response_requested(request):
-    return str(request.query_params.get("preview") or "").lower() in {
-        "1",
-        "true",
-        "yes",
-    }
-
-
 def _build_ro_crate_response(
-    request, ro_crate_payload, archive_name, file_entries, skipped_records=None
+    preview_requested,
+    ro_crate_payload,
+    archive_name,
+    file_entries,
+    skipped_records=None,
 ):
-    if _is_preview_response_requested(request):
+    if preview_requested:
         response = Response(
             {
                 "archive_name": archive_name,
@@ -1262,10 +1332,10 @@ def _empty_ro_crate_payload(timestamp, published_date):
     }
 
 
-def _empty_ro_crate_response(request):
+def _empty_ro_crate_response(preview_requested):
     now = timezone.now()
     return _build_ro_crate_response(
-        request,
+        preview_requested,
         _empty_ro_crate_payload(now.isoformat(), now.date().isoformat()),
         "parkour_ro_crate.zip",
         [],
@@ -1299,6 +1369,7 @@ class GenerateROCrate(viewsets.ViewSet):
         barcode_values = selection.barcode_values
         request_values = selection.request_values
         selected_sections = selection.selected_sections
+        preview_requested = selection.preview_requested
         accessible_requests = selection.accessible_requests
         library_data = selection.library_data
         sample_data = selection.sample_data
@@ -1307,7 +1378,7 @@ class GenerateROCrate(viewsets.ViewSet):
         non_completed_records = selection.non_completed_records
 
         if not selection.target_request_ids:
-            return _empty_ro_crate_response(request)
+            return _empty_ro_crate_response(preview_requested)
 
         target_request_ids = selection.target_request_ids
         single_request_id = target_request_ids[0]
@@ -2765,7 +2836,7 @@ class GenerateROCrate(viewsets.ViewSet):
             )
         ]
         return _build_ro_crate_response(
-            request,
+            preview_requested,
             ro_crate,
             archive_name,
             file_entries,

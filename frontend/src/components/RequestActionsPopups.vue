@@ -557,7 +557,10 @@
     tabindex="0"
     @keydown="handlePopupKeydown"
   >
-    <div class="popup-container request-action-modal rocrate-modal">
+    <div
+      class="popup-container request-action-modal rocrate-modal"
+      data-testid="ro-crate-export-modal"
+    >
       <div class="popup-header">
         <div class="popup-title">
           <img
@@ -713,6 +716,7 @@
             <button
               class="popup-button secondary small"
               type="button"
+              data-testid="ro-crate-select-all-sections-button"
               :disabled="!canConfigureROCrateExport"
               @click="selectAllROCrateSections"
             >
@@ -721,6 +725,7 @@
             <button
               class="popup-button secondary small"
               type="button"
+              data-testid="ro-crate-clear-sections-button"
               :disabled="!canConfigureROCrateExport"
               @click="clearAllROCrateSections"
             >
@@ -739,6 +744,7 @@
               v-model="roCrateSelectedSections"
               type="checkbox"
               :value="option.id"
+              :data-testid="`ro-crate-section-${option.id}`"
               :disabled="!canConfigureROCrateExport"
             />
             <div class="rocrate-option-content">
@@ -750,7 +756,11 @@
           </label>
         </div>
 
-        <div v-if="roCrateValidationMessage" class="rocrate-validation">
+        <div
+          v-if="roCrateValidationMessage"
+          class="rocrate-validation"
+          data-testid="ro-crate-validation-message"
+        >
           {{ roCrateValidationMessage }}
         </div>
       </div>
@@ -771,6 +781,7 @@
             ref="defaultROCrateButton"
             class="popup-button yes-button"
             type="button"
+            data-testid="preview-ro-crate-button"
             :disabled="roCrateBusy || !canPreviewROCrate"
             :title="
               canPreviewROCrate
@@ -1411,15 +1422,7 @@ export default {
     },
     pathReferencePath(value) {
       if (value && typeof value === "object" && !Array.isArray(value)) {
-        return (
-          value.path ||
-          value.filepath ||
-          value.file_path ||
-          value.contentUrl ||
-          value.url ||
-          value.value ||
-          JSON.stringify(value)
-        );
+        return value.path || "";
       }
       return value || "";
     },
@@ -1427,42 +1430,15 @@ export default {
       if (!value || typeof value !== "object" || Array.isArray(value)) {
         return "";
       }
-      const checksum = value.checksum;
-      if (checksum && typeof checksum === "object" && !Array.isArray(checksum)) {
-        return (
-          value.md5 ||
-          value.MD5 ||
-          value.md5_hash ||
-          value.md5Hash ||
-          value.checksum_md5 ||
-          value.checksumMd5 ||
-          checksum.md5 ||
-          checksum.MD5 ||
-          ""
-        );
-      }
-      return (
-        value.md5 ||
-        value.MD5 ||
-        value.md5_hash ||
-        value.md5Hash ||
-        value.checksum_md5 ||
-        value.checksumMd5 ||
-        ""
-      );
+      return value.md5 || "";
     },
     pathReferenceCopyValue(path, md5) {
       const cleanPath = path || "Empty";
       return md5 ? `${cleanPath}\nMD5: ${md5}` : cleanPath;
     },
-    buildPathReferenceValue(path, md5, rawValue = null) {
+    buildPathReferenceValue(path, md5) {
       if (!md5) return path;
-      const existing =
-        rawValue && typeof rawValue === "object" && !Array.isArray(rawValue)
-          ? { ...rawValue }
-          : {};
       return {
-        ...existing,
         path,
         md5
       };

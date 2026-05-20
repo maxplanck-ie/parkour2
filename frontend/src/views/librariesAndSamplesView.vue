@@ -295,6 +295,7 @@
           class="header-button"
           id="openROCratePopupButton"
           type="button"
+          data-testid="open-ro-crate-popup-button"
           @click="handleROCrateClick"
         >
           <img
@@ -752,6 +753,7 @@
     <div
       v-if="showROCratePreviewModal"
       class="rocrate-preview-overlay"
+      data-testid="ro-crate-preview-overlay"
       tabindex="0"
       @keydown.esc.prevent="closeROCratePreviewModal"
     >
@@ -769,6 +771,7 @@
             class="popup-close-button"
             type="button"
             aria-label="Close RO-Crate preview"
+            data-testid="close-ro-crate-preview-button"
             @click="closeROCratePreviewModal"
           >
             &times;

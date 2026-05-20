@@ -7,6 +7,7 @@ services:
     restart: always
     volumes:
       - ./frontend:/usr/src/app
+      - ./shared:/usr/src/shared:ro
 
   parkour2-postgres:
     container_name: parkour2-postgres
@@ -35,6 +36,7 @@ services:
     restart: always
     volumes:
       - ./backend:/usr/src/app
+      - ./shared:/usr/src/shared:ro
       - media:/usr/src/app/media
       - staticfiles:/usr/src/app/staticfiles
     depends_on:

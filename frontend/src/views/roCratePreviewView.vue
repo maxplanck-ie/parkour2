@@ -655,8 +655,14 @@ export default {
         this.skippedRecords = Array.isArray(payload.skipped_records)
           ? payload.skipped_records
           : [];
-        this.model = parseRoCratePayload(payload.ro_crate || payload, {
-          name: payload.archive_name || "ro-crate-preview.jsonld"
+        if (!payload.ro_crate) {
+          throw new Error("The RO-Crate preview response did not include ro_crate.");
+        }
+        if (!payload.archive_name) {
+          throw new Error("The RO-Crate preview response did not include archive_name.");
+        }
+        this.model = parseRoCratePayload(payload.ro_crate, {
+          name: payload.archive_name
         });
       } catch (error) {
         this.model = null;
