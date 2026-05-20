@@ -518,6 +518,13 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         for comment in entry.get("comments", []):
             if comment.get("name") == name:
                 return comment.get("value")
+        for property_name in ("additionalProperty", "parameterValue"):
+            properties = entry.get(property_name, [])
+            if isinstance(properties, dict):
+                properties = [properties]
+            for prop in properties:
+                if isinstance(prop, dict) and prop.get("name") == name:
+                    return prop.get("value")
         return None
 
     def _sample_view_row(self, sample, **overrides):
@@ -863,7 +870,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         )
         self.assertIsNotNone(request_file_entity_id)
         request_file_entry = self._graph_entry(payload, request_file_entity_id)
-        self.assertEqual(request_file_entry.get("@type"), "MediaObject")
+        self.assertIn("MediaObject", request_file_entry.get("@type", []))
         self.assertEqual(
             request_file_entry.get("isPartOf"),
             {"@id": "./"},
@@ -950,17 +957,13 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertIn("ro-crate-metadata.json", archive_names)
         dataset_entry = self._graph_entry(payload, "./")
         self.assertIn("2 requests", dataset_entry.get("name", ""))
-        self.assertEqual(
-            len(dataset_entry.get("studies", [])),
-            2,
-        )
         self.assertIn(
             {"@id": f"#study-{self.request.pk}"},
-            dataset_entry.get("studies", []),
+            dataset_entry.get("hasPart", []),
         )
         self.assertIn(
             {"@id": f"#study-{other_request.pk}"},
-            dataset_entry.get("studies", []),
+            dataset_entry.get("hasPart", []),
         )
         self.assertIn(
             {"@id": f"#request-context-{self.request.pk}"},
