@@ -27,16 +27,16 @@ attrs==26.1.0
     #   -c backend/requirements/3.10/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.9
+boto3==1.43.14
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.9
+botocore==1.43.14
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   boto3
     #   s3transfer
-certifi==2026.4.22
+certifi==2026.5.20
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   httpcore
@@ -210,7 +210,7 @@ fpdf2==2.8.7
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
-greenlet==3.5.0
+greenlet==3.5.1
     # via playwright
 gunicorn==26.0.0
     # via
@@ -228,7 +228,7 @@ httpx==0.28.1
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   openai
-idna==3.15
+idna==3.16
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   anyio
@@ -260,7 +260,7 @@ jedi==0.20.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   ipython
-jiter==0.14.0
+jiter==0.15.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   openai
@@ -281,7 +281,7 @@ kiwisolver==1.5.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   matplotlib
-lxml==6.1.0
+lxml==6.1.1
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   python-docx
@@ -312,14 +312,14 @@ numpy==1.25.2 ; python_full_version < '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-numpy==2.4.5 ; python_full_version >= '3.12'
+numpy==2.4.6 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.37.0
+openai==2.38.0
     # via
     #   -c backend/requirements/3.10/dev.txt
     #   -r backend/requirements/dev.in
@@ -356,7 +356,7 @@ pillow==12.2.0
     #   -c backend/requirements/3.10/dev.txt
     #   fpdf2
     #   matplotlib
-playwright==1.59.0
+playwright==1.60.0
     # via pytest-playwright
 pluggy==1.6.0
     # via
@@ -420,7 +420,7 @@ pytest-cov==7.1.0
     # via -r backend/requirements/testing.in
 pytest-django==4.12.0
     # via -r backend/requirements/testing.in
-pytest-playwright==0.7.2
+pytest-playwright==0.8.0
     # via -r backend/requirements/testing.in
 pytest-xdist==3.8.0
     # via -r backend/requirements/testing.in

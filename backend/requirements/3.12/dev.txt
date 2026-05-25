@@ -20,13 +20,13 @@ attrs==26.1.0
     #   -c backend/requirements/3.12/base.txt
     #   jsonschema
     #   referencing
-boto3==1.43.9
+boto3==1.43.14
     # via -r backend/requirements/dev.in
-botocore==1.43.9
+botocore==1.43.14
     # via
     #   boto3
     #   s3transfer
-certifi==2026.4.22
+certifi==2026.5.20
     # via
     #   httpcore
     #   httpx
@@ -165,7 +165,7 @@ httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via openai
-idna==3.15
+idna==3.16
     # via
     #   anyio
     #   httpx
@@ -182,7 +182,7 @@ ipython-pygments-lexers==1.1.1
     # via ipython
 jedi==0.20.0
     # via ipython
-jiter==0.14.0
+jiter==0.15.0
     # via openai
 jmespath==1.1.0
     # via
@@ -198,7 +198,7 @@ jsonschema-specifications==2025.9.1
     #   jsonschema
 kiwisolver==1.5.0
     # via matplotlib
-lxml==6.1.0
+lxml==6.1.1
     # via
     #   -c backend/requirements/3.12/base.txt
     #   python-docx
@@ -212,14 +212,14 @@ matplotlib-inline==0.2.2
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-numpy==2.4.5
+numpy==2.4.6
     # via
     #   -c backend/requirements/3.12/base.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.37.0
+openai==2.38.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via

@@ -28,7 +28,7 @@
     "jszip": "^3.10.1",
     "moment": "2.30.1",
     "pinia": "3.0.4",
-    "sass": "1.99.0",
+    "sass": "1.100.0",
     "serve": "14.2.6",
     "tabulator-tables": "6.4.0",
     "vue": "3.5.34",
@@ -44,6 +44,6 @@
     "eslint-plugin-vue": "10.9.1",
     "globals": "17.6.0",
     "vue-eslint-parser": "10.4.0",
-    "vite": "8.0.13"
+    "vite": "8.0.14"
   }
 }
