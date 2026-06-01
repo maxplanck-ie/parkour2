@@ -60,13 +60,13 @@ jsonschema==4.26.0
     # via drf-spectacular
 jsonschema-specifications==2025.9.1
     # via jsonschema
-lxml==6.1.0
+lxml==6.1.1
     # via python-docx
 numpy==1.25.2 ; python_full_version < '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
-numpy==2.4.5 ; python_full_version >= '3.12'
+numpy==2.4.6 ; python_full_version >= '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
@@ -96,7 +96,7 @@ referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
-rpds-py==0.30.0
+rpds-py==2026.5.1
     # via
     #   jsonschema
     #   referencing
