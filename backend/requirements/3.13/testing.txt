@@ -27,11 +27,11 @@ attrs==26.1.0
     #   -c backend/requirements/3.13/dev.txt
     #   jsonschema
     #   referencing
-boto3==1.43.18
+boto3==1.43.24
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
-botocore==1.43.18
+botocore==1.43.24
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   boto3
@@ -92,7 +92,7 @@ dj-database-url==3.1.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
-django==5.2.14
+django==5.2.15
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/base.in
@@ -218,7 +218,7 @@ httpx==0.28.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   openai
-idna==3.17
+idna==3.18
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   anyio
@@ -234,7 +234,7 @@ ipdb==0.13.13
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
-ipython==9.14.0
+ipython==9.14.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   ipdb
@@ -298,7 +298,7 @@ numpy==2.4.6
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.38.0
+openai==2.41.0
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   -r backend/requirements/dev.in
@@ -489,11 +489,11 @@ toml==0.10.2
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   django-migration-linter
-tqdm==4.67.3
+tqdm==4.68.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   openai
-traitlets==5.15.0
+traitlets==5.15.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   ipython
@@ -525,7 +525,7 @@ urllib3==2.7.0
     #   -c backend/requirements/3.13/dev.txt
     #   botocore
     #   requests
-wcwidth==0.7.0
+wcwidth==0.8.1
     # via
     #   -c backend/requirements/3.13/dev.txt
     #   prompt-toolkit
