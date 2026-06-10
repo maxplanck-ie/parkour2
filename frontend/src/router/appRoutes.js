@@ -37,7 +37,7 @@ const router = createRouter({
           component: libraryPreparation
         },
         {
-          path: "Pooling",
+          path: "pooling",
           name: "Pooling",
           component: pooling
         },
@@ -47,12 +47,12 @@ const router = createRouter({
           component: loadFlowcells
         },
         {
-          path: "indexgenerator",
+          path: "index_generator",
           name: "Index Generator",
           component: IndexGeneratorView
         },
         {
-          path: "not-found",
+          path: "not_found",
           name: "Page Not Found",
           component: notFoundView
         },

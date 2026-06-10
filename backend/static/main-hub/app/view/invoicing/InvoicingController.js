@@ -27,9 +27,6 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       },
       "#view-uploaded-reports": {
         click: "viewUploadedReports"
-      },
-      "#fixed-costs-grid,#preparation-costs-grid,#sequencing-costs-grid": {
-        edit: "editPrice"
       }
     }
   },
@@ -69,24 +66,6 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
 
   resize: function (el) {
     el.setHeight(Ext.Element.getViewportHeight() - 64);
-  },
-
-  editPrice: function (editor, context) {
-    var store = editor.grid.getStore();
-    var proxy = store.getProxy();
-
-    proxy.api.update = Ext.String.format(
-      "{0}{1}/",
-      proxy.api.read,
-      context.record.get("id")
-    );
-
-    store.sync({
-      success: function (batch) {
-        Ext.getCmp("invoicing-grid").getStore().reload();
-        new Noty({ text: "Changes have been saved successfully." }).show();
-      }
-    });
   },
 
   downloadReport: function (btn) {

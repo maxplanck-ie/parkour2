@@ -38,18 +38,7 @@ Ext.define("MainHub.view.invoicing.BaseCostGrid", {
       text: "Price",
       dataIndex: "price",
       renderer: Ext.util.Format.deMoney,
-      editor: {
-        xtype: "numberfield",
-        minValue: 0
-      },
       width: 100
-    }
-  ],
-
-  plugins: [
-    {
-      ptype: "rowediting",
-      clicksToEdit: 1
     }
   ]
 });

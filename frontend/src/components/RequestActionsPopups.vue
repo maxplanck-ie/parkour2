@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="activeAction === 'uploadSigned'"
+    v-if="activeAction === requestActions.uploadSigned"
     class="popup-overlay"
     :class="{ 'drag-over': isUploadDragOver }"
     tabindex="0"
@@ -75,7 +75,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'filePaths'"
+    v-if="activeAction === requestActions.filePaths"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -112,9 +112,9 @@
                   icon="fa-solid fa-desktop"
                 />
                 <select v-model="selectedOS" class="filepaths-select">
-                  <option value="Linux">Linux</option>
-                  <option value="macOS">macOS</option>
-                  <option value="Windows">Windows</option>
+                  <option :value="filepathOs.linux">Linux</option>
+                  <option :value="filepathOs.macOS">macOS</option>
+                  <option :value="filepathOs.windows">Windows</option>
                 </select>
               </div>
             </div>
@@ -129,9 +129,12 @@
                   <button
                     class="filepaths-value filepaths-input"
                     type="button"
-                    @click="copyText(entry.value)"
+                    @click="copyText(entry.copyValue)"
                   >
-                    {{ entry.value || "Empty" }}
+                    <span>{{ entry.value || "Empty" }}</span>
+                    <span v-if="entry.md5" class="filepaths-md5">
+                      MD5: {{ entry.md5 }}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -163,6 +166,11 @@
                     type="text"
                     placeholder="Path"
                   />
+                  <input
+                    v-model.trim="userPathForm.md5"
+                    type="text"
+                    placeholder="MD5 (optional)"
+                  />
                   <div class="userpath-actions">
                     <button
                       class="popup-button yes-button small"
@@ -193,9 +201,12 @@
                   <button
                     class="filepaths-value filepaths-input userpath-value"
                     type="button"
-                    @click="copyText(path.value || 'Empty')"
+                    @click="copyText(path.copyValue || 'Empty')"
                   >
-                    {{ path.value || "Empty" }}
+                    <span>{{ path.value || "Empty" }}</span>
+                    <span v-if="path.md5" class="filepaths-md5">
+                      MD5: {{ path.md5 }}
+                    </span>
                   </button>
                   <div class="userpath-icons">
                     <button
@@ -235,7 +246,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'composeEmail'"
+    v-if="activeAction === requestActions.composeEmail"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -295,7 +306,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'solicitApproval'"
+    v-if="activeAction === requestActions.solicitApproval"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -355,7 +366,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'deleteRequest'"
+    v-if="activeAction === requestActions.deleteRequest"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
@@ -403,7 +414,7 @@
   </div>
 
   <div
-    v-if="activeAction === 'attachments'"
+    v-if="activeAction === requestActions.attachments"
     class="popup-overlay"
     :class="{ 'drag-over': isAttachmentsDragOver }"
     tabindex="0"
@@ -541,12 +552,15 @@
   </div>
 
   <div
-    v-if="activeAction === 'downloadROCrate'"
+    v-if="activeAction === requestActions.downloadROCrate"
     class="popup-overlay"
     tabindex="0"
     @keydown="handlePopupKeydown"
   >
-    <div class="popup-container request-action-modal rocrate-modal">
+    <div
+      class="popup-container request-action-modal rocrate-modal"
+      data-testid="ro-crate-export-modal"
+    >
       <div class="popup-header">
         <div class="popup-title">
           <img
@@ -571,7 +585,7 @@
                   <div class="rocrate-help-title">Export RO-Crate Guide</div>
                   <p class="rocrate-help-intro">
                     RO-Crate gives you one structured export package for the
-                    libraries or samples you selected in one Parkour request.
+                    libraries or samples you selected in Parkour.
                     When you download it, Parkour creates a
                     <strong>.zip</strong> file that contains
                     <strong>ro-crate-metadata.json</strong> and, if available,
@@ -579,8 +593,7 @@
                     you want to review metadata outside Parkour, share it with
                     other people, keep an archive copy, or use it in another
                     tool that understands RO-Crate. The metadata graph is
-                    organized as a single-request, ISA-profile-aligned RO-Crate
-                    package.
+                    organized as an ISA-profile-aligned RO-Crate package.
                   </p>
                 </div>
               </div>
@@ -607,11 +620,9 @@
                       does not create one separate export per row.
                     </li>
                     <li>
-                      The export is created for
-                      <strong>one request at a time</strong>. All selected
-                      records in this window must belong to the same request, so
-                      the metadata graph stays aligned to one
-                      investigation-style package.
+                      The export can include records from one or more requests.
+                      Parkour keeps the selected records together in one shared
+                      metadata package.
                     </li>
                     <li>
                       Keep a box checked when you want that part of the metadata
@@ -632,8 +643,8 @@
                   </div>
                   <ul class="rocrate-help-list">
                     <li>
-                      Click <strong>Download</strong> to create one
-                      <strong>.zip</strong> file for the current selection.
+                      Click <strong>Preview</strong> to review the current
+                      selection before creating the final ZIP file.
                     </li>
                     <li>
                       Open the zip and look for
@@ -641,15 +652,8 @@
                       contains the linked metadata graph for the export.
                     </li>
                     <li>
-                      Use
-                      <a
-                        href="https://novacrate.datamanager.kit.edu/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        ><strong>RO-Crate Viewer</strong></a
-                      >
-                      if you want to inspect the JSON-LD in a visual tool
-                      instead of reading the raw file directly.
+                      Click <strong>Preview</strong> to inspect the selected
+                      metadata in Parkour before exporting the final ZIP.
                     </li>
                     <li>
                       Use
@@ -687,13 +691,21 @@
       <div class="popup-body rocrate-body">
         <div class="rocrate-summary">
           <div class="rocrate-summary-card rocrate-summary-card-wide">
-            <span class="label">Request</span>
-            <span class="value">{{ requestContext?.name || "-" }}</span>
+            <span class="label">Selected Requests</span>
+            <span
+              class="value"
+              :class="{
+                'rocrate-summary-count': roCrateRequestCount !== 1,
+                'rocrate-request-name': roCrateRequestCount === 1
+              }"
+            >
+              {{ requestContext?.name || "-" }}
+            </span>
           </div>
           <div class="rocrate-summary-card">
             <span class="label">{{ roCrateSelectedLabel }}</span>
             <span class="value rocrate-summary-count">{{
-              roCrateSelectedCount
+              roCrateSelectedDisplay
             }}</span>
           </div>
         </div>
@@ -704,6 +716,8 @@
             <button
               class="popup-button secondary small"
               type="button"
+              data-testid="ro-crate-select-all-sections-button"
+              :disabled="!canConfigureROCrateExport"
               @click="selectAllROCrateSections"
             >
               Select All
@@ -711,6 +725,8 @@
             <button
               class="popup-button secondary small"
               type="button"
+              data-testid="ro-crate-clear-sections-button"
+              :disabled="!canConfigureROCrateExport"
               @click="clearAllROCrateSections"
             >
               Clear All
@@ -728,6 +744,8 @@
               v-model="roCrateSelectedSections"
               type="checkbox"
               :value="option.id"
+              :data-testid="`ro-crate-section-${option.id}`"
+              :disabled="!canConfigureROCrateExport"
             />
             <div class="rocrate-option-content">
               <div class="rocrate-option-title">{{ option.label }}</div>
@@ -738,21 +756,16 @@
           </label>
         </div>
 
-        <div v-if="roCrateValidationMessage" class="rocrate-validation">
+        <div
+          v-if="roCrateValidationMessage"
+          class="rocrate-validation"
+          data-testid="ro-crate-validation-message"
+        >
           {{ roCrateValidationMessage }}
         </div>
       </div>
       <div class="popup-footer rocrate-footer">
         <div class="rocrate-footer-links">
-          <a
-            class="file-upload-label rocrate-footer-link"
-            href="https://novacrate.datamanager.kit.edu/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <font-awesome-icon icon="fa-solid fa-desktop" />
-            RO-Crate Viewer
-          </a>
           <a
             class="file-upload-label rocrate-footer-link"
             href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
@@ -768,11 +781,17 @@
             ref="defaultROCrateButton"
             class="popup-button yes-button"
             type="button"
-            :disabled="roCrateBusy"
-            @click="downloadROCrate"
+            data-testid="preview-ro-crate-button"
+            :disabled="roCrateBusy || !canPreviewROCrate"
+            :title="
+              canPreviewROCrate
+                ? ''
+                : 'Select at least one library or sample before previewing.'
+            "
+            @click="previewROCrate"
           >
-            <span v-if="roCrateBusy">Downloading...</span>
-            <span v-else>Download</span>
+            <span v-if="roCrateBusy">Opening...</span>
+            <span v-else>Preview</span>
           </button>
           <button class="popup-button secondary" type="button" @click="close">
             Cancel
@@ -784,7 +803,6 @@
 </template>
 
 <script>
-import { saveAs } from "file-saver";
 import {
   showNotification,
   handleError,
@@ -794,6 +812,83 @@ import {
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+
+const REQUEST_ACTIONS = {
+  uploadSigned: "uploadSigned",
+  filePaths: "filePaths",
+  composeEmail: "composeEmail",
+  solicitApproval: "solicitApproval",
+  deleteRequest: "deleteRequest",
+  attachments: "attachments",
+  downloadROCrate: "downloadROCrate"
+};
+
+const REQUEST_ACTION_DEFAULT_REFS = {
+  [REQUEST_ACTIONS.uploadSigned]: "defaultUploadButton",
+  [REQUEST_ACTIONS.filePaths]: "defaultFilepathsButton",
+  [REQUEST_ACTIONS.deleteRequest]: "defaultDeleteButton",
+  [REQUEST_ACTIONS.attachments]: "defaultAttachmentsButton",
+  [REQUEST_ACTIONS.downloadROCrate]: "defaultROCrateButton"
+};
+
+const REQUEST_API_ENDPOINTS = {
+  request: (requestId) => `/api/requests/${requestId}/`,
+  requestRecords: (requestId) => `/api/requests/${requestId}/get_records/`,
+  requestEdit: (requestId) => `/api/requests/${requestId}/edit/`,
+  uploadSignedRequest: (requestId) =>
+    `/api/requests/${requestId}/upload_deep_sequencing_request/`,
+  putMetapaths: (requestId) => `/api/requests/${requestId}/put_metapaths/`,
+  sendEmail: (requestId) => `/api/requests/${requestId}/send_email/`,
+  solicitApproval: (requestId) =>
+    `/api/requests/${requestId}/solicit_approval/`,
+  uploadFiles: "/api/requests/upload_files/",
+  filesAfterUpload: "/api/requests/get_files_after_upload/"
+};
+
+const apiUrl = (endpoint) => `${urlStringStart}${endpoint}`;
+
+const FILEPATH_OS = {
+  linux: "Linux",
+  macOS: "macOS",
+  windows: "Windows"
+};
+
+const USER_PATH_MODES = {
+  add: "add",
+  edit: "edit"
+};
+
+const MULTIPART_FORM_HEADERS = {
+  headers: { "Content-Type": "multipart/form-data" }
+};
+
+const RESPONSE_TYPES = {
+  blob: "blob"
+};
+
+const NOTIFICATION_TYPES = {
+  success: "success",
+  warning: "warning",
+  error: "error"
+};
+
+const FORM_FIELDS = {
+  file: "file",
+  files: "files",
+  data: "data",
+  subject: "subject",
+  message: "message",
+  includeFailedRecords: "include_failed_records",
+  includeRecords: "include_records"
+};
+
+const REQUEST_DATA_FIELDS = {
+  filepathsData: "data",
+  filepathsMetadata: "metadata",
+  costUnit: "cost_unit",
+  description: "description",
+  recordType: "record_type"
+};
 
 const RO_CRATE_SECTION_OPTIONS = [
   {
@@ -908,7 +1003,7 @@ const RO_CRATE_SECTION_OPTIONS = [
 
 export default {
   name: "RequestActionsPopups",
-  emits: ["close", "refresh"],
+  emits: ["close", "refresh", "preview-ro-crate"],
   props: {
     activeAction: {
       type: String,
@@ -929,18 +1024,21 @@ export default {
   },
   data() {
     return {
+      requestActions: REQUEST_ACTIONS,
+      filepathOs: FILEPATH_OS,
       uploadFile: null,
       isUploadDragOver: false,
       uploadBusy: false,
       filepaths: {},
       userPaths: [],
-      selectedOS: "Linux",
+      selectedOS: FILEPATH_OS.linux,
       showUserPathForm: false,
       userPathForm: {
-        mode: "add",
+        mode: USER_PATH_MODES.add,
         id: null,
         name: "",
-        value: ""
+        value: "",
+        md5: ""
       },
       emailForm: {
         subject: "",
@@ -960,8 +1058,8 @@ export default {
       attachmentsBusy: false,
       isAttachmentsDragOver: false,
       attachmentsRequestDetails: {
-        cost_unit: null,
-        description: ""
+        [REQUEST_DATA_FIELDS.costUnit]: null,
+        [REQUEST_DATA_FIELDS.description]: ""
       },
       attachmentsRecords: [],
       roCrateBusy: false,
@@ -979,11 +1077,19 @@ export default {
       const filepaths = this.filepaths || {};
       Object.keys(filepaths).forEach((key) => {
         const rawValue = filepaths[key];
+        const pathValue = this.pathReferencePath(rawValue);
         const formatted =
-          key === "data" || key === "metadata"
-            ? this.formatPathForOS(rawValue)
-            : rawValue || "";
-        entries.push({ key, value: formatted });
+          key === REQUEST_DATA_FIELDS.filepathsData ||
+          key === REQUEST_DATA_FIELDS.filepathsMetadata
+            ? this.formatPathForOS(pathValue)
+            : pathValue || "";
+        const md5 = this.pathReferenceMd5(rawValue);
+        entries.push({
+          key,
+          value: formatted,
+          md5,
+          copyValue: this.pathReferenceCopyValue(formatted, md5)
+        });
       });
       return entries;
     },
@@ -993,7 +1099,16 @@ export default {
       );
     },
     displayUserPaths() {
-      return this.hasUserPaths ? this.userPaths : [];
+      return this.hasUserPaths
+        ? this.userPaths.map((path) => {
+            const md5 = this.pathReferenceMd5(path.rawValue ?? path.value);
+            return {
+              ...path,
+              md5,
+              copyValue: this.pathReferenceCopyValue(path.value, md5)
+            };
+          })
+        : [];
     },
     canSaveUserPath() {
       return Boolean(this.userPathForm.name && this.userPathForm.value);
@@ -1013,6 +1128,32 @@ export default {
     roCrateSelectedCount() {
       return this.roCrateSelectedBarcodes.length;
     },
+    roCrateSelectedDisplay() {
+      const count = this.roCrateSelectedCount;
+      const type = String(this.requestContext?.selectedType || "")
+        .trim()
+        .toUpperCase();
+      if (type === "L") {
+        return `${count} ${count === 1 ? "library" : "libraries"}`;
+      }
+      if (type === "S") {
+        return `${count} ${count === 1 ? "sample" : "samples"}`;
+      }
+      return `${count} ${count === 1 ? "library/sample" : "libraries/samples"}`;
+    },
+    roCrateRequestCount() {
+      const count = Number(this.requestContext?.selectedRequestCount || 0);
+      return Number.isFinite(count) && count > 0 ? count : 0;
+    },
+    canConfigureROCrateExport() {
+      return this.roCrateSelectedBarcodes.length > 0;
+    },
+    canPreviewROCrate() {
+      return (
+        this.canConfigureROCrateExport &&
+        this.roCrateSelectedSections.length > 0
+      );
+    },
     roCrateSelectedLabel() {
       const type = String(this.requestContext?.selectedType || "")
         .trim()
@@ -1023,7 +1164,7 @@ export default {
     },
     roCrateValidationMessage() {
       if (!this.roCrateSelectedBarcodes.length) {
-        return "Select at least one record with a valid barcode before downloading an RO-Crate.";
+        return "Select at least one library or sample with a valid barcode to preview an RO-Crate.";
       }
       if (!this.roCrateSelectedSections.length) {
         return "Select at least one information section to include in the RO-Crate.";
@@ -1041,45 +1182,38 @@ export default {
     activeAction(newVal) {
       if (!newVal) return;
       this.resetStateForAction(newVal);
-      if (newVal === "filePaths") {
+      if (newVal === REQUEST_ACTIONS.filePaths) {
         this.fetchFilepaths();
       }
-      if (newVal === "composeEmail") {
+      if (newVal === REQUEST_ACTIONS.composeEmail) {
         this.emailForm.subject = this.requestContext?.name || "";
         this.emailForm.message = "";
         this.emailForm.includeFailed = false;
       }
-      if (newVal === "solicitApproval") {
+      if (newVal === REQUEST_ACTIONS.solicitApproval) {
         this.approvalForm.subject = this.requestContext?.name || "";
         this.approvalForm.message = "";
         this.approvalForm.includeRecords = true;
       }
-      if (newVal === "attachments") {
+      if (newVal === REQUEST_ACTIONS.attachments) {
         this.loadAttachments();
       }
 
       this.$nextTick(() => {
-        const focusMap = {
-          uploadSigned: "defaultUploadButton",
-          filePaths: "defaultFilepathsButton",
-          deleteRequest: "defaultDeleteButton",
-          attachments: "defaultAttachmentsButton",
-          downloadROCrate: "defaultROCrateButton"
-        };
-        const refName = focusMap[newVal];
+        const refName = REQUEST_ACTION_DEFAULT_REFS[newVal];
         if (refName && this.$refs[refName]?.focus) {
           this.$refs[refName].focus();
         }
       });
     },
     requestContext() {
-      if (this.activeAction === "composeEmail") {
+      if (this.activeAction === REQUEST_ACTIONS.composeEmail) {
         this.emailForm.subject = this.requestContext?.name || "";
       }
-      if (this.activeAction === "solicitApproval") {
+      if (this.activeAction === REQUEST_ACTIONS.solicitApproval) {
         this.approvalForm.subject = this.requestContext?.name || "";
       }
-      if (this.activeAction === "attachments") {
+      if (this.activeAction === REQUEST_ACTIONS.attachments) {
         this.loadAttachments();
       }
     }
@@ -1099,25 +1233,25 @@ export default {
       }
       if (event.key === "Enter") {
         if (
-          this.activeAction === "composeEmail" ||
-          this.activeAction === "solicitApproval"
+          this.activeAction === REQUEST_ACTIONS.composeEmail ||
+          this.activeAction === REQUEST_ACTIONS.solicitApproval
         ) {
           return;
         }
         event.preventDefault();
-        if (this.activeAction === "uploadSigned") {
+        if (this.activeAction === REQUEST_ACTIONS.uploadSigned) {
           if (!this.uploadBusy) this.submitSignedRequest();
           return;
         }
-        if (this.activeAction === "downloadROCrate") {
-          if (!this.roCrateBusy) this.downloadROCrate();
+        if (this.activeAction === REQUEST_ACTIONS.downloadROCrate) {
+          if (!this.roCrateBusy) this.previewROCrate();
           return;
         }
-        if (this.activeAction === "deleteRequest") {
+        if (this.activeAction === REQUEST_ACTIONS.deleteRequest) {
           if (!this.deleteBusy) this.confirmDelete();
           return;
         }
-        if (this.activeAction === "filePaths") {
+        if (this.activeAction === REQUEST_ACTIONS.filePaths) {
           this.close();
         }
       }
@@ -1132,7 +1266,13 @@ export default {
       this.filepaths = {};
       this.userPaths = [];
       this.showUserPathForm = false;
-      this.userPathForm = { mode: "add", id: null, name: "", value: "" };
+      this.userPathForm = {
+        mode: USER_PATH_MODES.add,
+        id: null,
+        name: "",
+        value: "",
+        md5: ""
+      };
       this.emailBusy = false;
       this.approvalBusy = false;
       this.deleteBusy = false;
@@ -1140,13 +1280,16 @@ export default {
       this.attachmentsFileIds = [];
       this.attachmentsBusy = false;
       this.isAttachmentsDragOver = false;
-      this.attachmentsRequestDetails = { cost_unit: null, description: "" };
+      this.attachmentsRequestDetails = {
+        [REQUEST_DATA_FIELDS.costUnit]: null,
+        [REQUEST_DATA_FIELDS.description]: ""
+      };
       this.attachmentsRecords = [];
       this.roCrateBusy = false;
       this.roCrateSelectedSections = [
         ...RO_CRATE_SECTION_OPTIONS.map((option) => option.id)
       ];
-      if (action === "filePaths") {
+      if (action === REQUEST_ACTIONS.filePaths) {
         this.selectedOS = this.detectOS(navigator.userAgent);
       }
     },
@@ -1158,49 +1301,35 @@ export default {
     clearAllROCrateSections() {
       this.roCrateSelectedSections = [];
     },
-    async downloadROCrate() {
+    previewROCrate() {
       if (!this.roCrateSelectedBarcodes.length) {
         showNotification(
-          "Select records with valid barcodes to download RO-Crate.",
-          "warning"
+          "Select records with valid barcodes to preview RO-Crate.",
+          NOTIFICATION_TYPES.warning
         );
         return;
       }
       if (!this.roCrateSelectedSections.length) {
-        showNotification("Select at least one information section.", "warning");
+        showNotification(
+          "Select at least one information section.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
 
       try {
         this.roCrateBusy = true;
-        const response = await axiosRef.get(
-          `${urlStringStart}/api/generate_ro_crate/`,
-          {
-            params: {
-              barcodes: this.roCrateSelectedBarcodes.join(","),
-              sections: this.roCrateSelectedSections.join(",")
-            },
-            responseType: "blob"
-          }
-        );
-
-        const sanitize = (value) =>
-          String(value || "")
-            .replace(/[^a-z0-9-_.]+/gi, "_")
-            .replace(/_+/g, "_")
-            .replace(/^_|_$/g, "");
-
-        const safeBarcodeName = sanitize(
-          this.roCrateSelectedBarcodes.join("_")
-        );
-        const blob = response?.data;
-        const filename = safeBarcodeName
-          ? `${safeBarcodeName}_ro_crate.zip`
-          : "ro_crate.zip";
-
-        saveAs(blob, filename);
-
-        showNotification("RO-Crate downloaded successfully.", "success");
+        this.$emit("preview-ro-crate", {
+          barcodes: this.roCrateSelectedBarcodes,
+          sections: this.roCrateSelectedSections,
+          requestName: this.requestContext?.name || "",
+          requestNames: Array.isArray(this.requestContext?.selectedRequestNames)
+            ? this.requestContext.selectedRequestNames
+            : [],
+          selectedType: this.requestContext?.selectedType || "",
+          selectedCount: this.roCrateSelectedCount,
+          selectedRequestCount: this.roCrateRequestCount
+        });
         this.close();
       } catch (error) {
         handleError(error);
@@ -1237,24 +1366,32 @@ export default {
     async submitSignedRequest() {
       if (!this.requestContext?.id) return;
       if (!this.uploadFile) {
-        showNotification("No file selected.", "warning");
+        showNotification("No file selected.", NOTIFICATION_TYPES.warning);
         return;
       }
       const formData = new FormData();
-      formData.append("file", this.uploadFile);
+      formData.append(FORM_FIELDS.file, this.uploadFile);
       try {
         this.uploadBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/upload_deep_sequencing_request/`,
+          apiUrl(
+            REQUEST_API_ENDPOINTS.uploadSignedRequest(this.requestContext.id)
+          ),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
-          showNotification("Signed request uploaded successfully.", "success");
+          showNotification(
+            "Signed request uploaded successfully.",
+            NOTIFICATION_TYPES.success
+          );
           this.$emit("refresh");
           this.close();
         } else {
-          showNotification("Signed request upload failed.", "error");
+          showNotification(
+            "Signed request upload failed.",
+            NOTIFICATION_TYPES.error
+          );
         }
       } catch (error) {
         handleError(error);
@@ -1266,7 +1403,7 @@ export default {
       if (!this.requestContext?.id) return;
       try {
         const response = await axiosRef.get(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/`
+          apiUrl(REQUEST_API_ENDPOINTS.request(this.requestContext.id))
         );
         const data = response?.data || {};
         this.filepaths = data.filepaths || {};
@@ -1275,27 +1412,51 @@ export default {
           ([name, value], index) => ({
             id: index + 1,
             name,
-            value
+            value: this.pathReferencePath(value),
+            rawValue: value
           })
         );
       } catch (error) {
         handleError(error);
       }
     },
+    pathReferencePath(value) {
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        return value.path || "";
+      }
+      return value || "";
+    },
+    pathReferenceMd5(value) {
+      if (!value || typeof value !== "object" || Array.isArray(value)) {
+        return "";
+      }
+      return value.md5 || "";
+    },
+    pathReferenceCopyValue(path, md5) {
+      const cleanPath = path || "Empty";
+      return md5 ? `${cleanPath}\nMD5: ${md5}` : cleanPath;
+    },
+    buildPathReferenceValue(path, md5) {
+      if (!md5) return path;
+      return {
+        path,
+        md5
+      };
+    },
     formatPathForOS(filepath) {
       const filepathRegex =
-        /^\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_\/.]+$/;
+        /^\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_/.]+$/;
       if (!filepath) {
         return "Empty";
       }
       if (filepathRegex.test(filepath)) {
         const filepathSplit = filepath.split("/").filter((item) => item !== "");
-        if (this.selectedOS === "Windows") {
+        if (this.selectedOS === FILEPATH_OS.windows) {
           return `\\\\${filepathSplit[0]}\\${filepathSplit[1]}-${filepathSplit[2]}\\${filepathSplit
             .slice(3)
             .join("\\")}`;
         }
-        if (this.selectedOS === "macOS") {
+        if (this.selectedOS === FILEPATH_OS.macOS) {
           return `smb://${filepathSplit[0]}/${filepathSplit[1]}-${filepathSplit[2]}/${filepathSplit
             .slice(3)
             .join("/")}`;
@@ -1306,60 +1467,83 @@ export default {
     },
     detectOS(userAgent) {
       if (/Mac OS X/.test(userAgent)) {
-        return "macOS";
+        return FILEPATH_OS.macOS;
       }
       if (/Windows NT/.test(userAgent)) {
-        return "Windows";
+        return FILEPATH_OS.windows;
       }
-      return "Linux";
+      return FILEPATH_OS.linux;
     },
     async copyText(text) {
       try {
         await navigator.clipboard.writeText(text || "");
-        showNotification("Path copied to clipboard.", "success");
-      } catch (error) {
-        showNotification("Path copy failed.", "error");
+        showNotification(
+          "Path copied to clipboard.",
+          NOTIFICATION_TYPES.success
+        );
+      } catch {
+        showNotification("Path copy failed.", NOTIFICATION_TYPES.error);
       }
     },
     startAddUserPath() {
       this.showUserPathForm = true;
-      this.userPathForm = { mode: "add", id: null, name: "", value: "" };
+      this.userPathForm = {
+        mode: USER_PATH_MODES.add,
+        id: null,
+        name: "",
+        value: "",
+        md5: ""
+      };
     },
     startEditUserPath(path) {
       this.showUserPathForm = true;
       this.userPathForm = {
-        mode: "edit",
+        mode: USER_PATH_MODES.edit,
         id: path.id,
         name: path.name,
-        value: path.value
+        value: path.value,
+        md5: path.md5 || this.pathReferenceMd5(path.rawValue) || ""
       };
     },
     cancelUserPath() {
       this.showUserPathForm = false;
-      this.userPathForm = { mode: "add", id: null, name: "", value: "" };
+      this.userPathForm = {
+        mode: USER_PATH_MODES.add,
+        id: null,
+        name: "",
+        value: "",
+        md5: ""
+      };
     },
     async saveUserPath() {
       if (!this.canSaveUserPath) return;
       const newName = this.userPathForm.name;
       const newValue = this.userPathForm.value;
+      const newMd5 = this.userPathForm.md5;
       const current = this.userPaths.slice();
       const map = new Map();
 
-      if (this.userPathForm.mode === "add") {
+      if (this.userPathForm.mode === USER_PATH_MODES.add) {
         if (current.some((item) => item.name === newName)) {
-          showNotification("User path name already exists.", "warning");
+          showNotification(
+            "User path name already exists.",
+            NOTIFICATION_TYPES.warning
+          );
           return;
         }
-        map.set(newName, newValue);
+        map.set(newName, this.buildPathReferenceValue(newValue, newMd5));
         current.forEach((item) => {
-          if (item.value !== null) map.set(item.name, item.value);
+          if (item.value !== null) map.set(item.name, item.rawValue ?? item.value);
         });
       } else {
         current.forEach((item) => {
           if (item.id === this.userPathForm.id) {
-            map.set(newName, newValue);
+            map.set(
+              newName,
+              this.buildPathReferenceValue(newValue, newMd5, item.rawValue)
+            );
           } else {
-            map.set(item.name, item.value);
+            map.set(item.name, item.rawValue ?? item.value);
           }
         });
       }
@@ -1384,21 +1568,25 @@ export default {
       if (!this.requestContext?.id) return;
       try {
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/put_metapaths/`,
+          apiUrl(REQUEST_API_ENDPOINTS.putMetapaths(this.requestContext.id)),
           userpaths
         );
         if (response?.data?.success) {
-          showNotification("User path saved successfully.", "success");
+          showNotification(
+            "User path saved successfully.",
+            NOTIFICATION_TYPES.success
+          );
           this.userPaths = Object.entries(userpaths).map(
             ([name, value], index) => ({
               id: index + 1,
               name,
-              value
+              value: this.pathReferencePath(value),
+              rawValue: value
             })
           );
           this.showUserPathForm = false;
         } else {
-          showNotification("User path save failed.", "error");
+          showNotification("User path save failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
@@ -1407,24 +1595,27 @@ export default {
     async sendEmail() {
       if (!this.requestContext?.id) return;
       if (!this.emailForm.subject || !this.emailForm.message) {
-        showNotification("All fields are required.", "warning");
+        showNotification(
+          "All fields are required.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const formData = new FormData();
-      formData.append("subject", this.emailForm.subject);
-      formData.append("message", this.emailForm.message);
+      formData.append(FORM_FIELDS.subject, this.emailForm.subject);
+      formData.append(FORM_FIELDS.message, this.emailForm.message);
       formData.append(
-        "include_failed_records",
+        FORM_FIELDS.includeFailedRecords,
         String(this.emailForm.includeFailed)
       );
       try {
         this.emailBusy = true;
         await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/send_email/`,
+          apiUrl(REQUEST_API_ENDPOINTS.sendEmail(this.requestContext.id)),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
-        showNotification("Email sent successfully.", "success");
+        showNotification("Email sent successfully.", NOTIFICATION_TYPES.success);
         this.close();
       } catch (error) {
         handleError(error);
@@ -1435,28 +1626,37 @@ export default {
     async sendApprovalEmail() {
       if (!this.requestContext?.id) return;
       if (!this.approvalForm.subject || !this.approvalForm.message) {
-        showNotification("All fields are required.", "warning");
+        showNotification(
+          "All fields are required.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const formData = new FormData();
-      formData.append("subject", this.approvalForm.subject);
-      formData.append("message", this.approvalForm.message);
+      formData.append(FORM_FIELDS.subject, this.approvalForm.subject);
+      formData.append(FORM_FIELDS.message, this.approvalForm.message);
       formData.append(
-        "include_records",
+        FORM_FIELDS.includeRecords,
         String(this.approvalForm.includeRecords)
       );
       try {
         this.approvalBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/solicit_approval/`,
+          apiUrl(REQUEST_API_ENDPOINTS.solicitApproval(this.requestContext.id)),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
-          showNotification("Approval email sent to PI.", "success");
+          showNotification(
+            "Approval email sent to PI.",
+            NOTIFICATION_TYPES.success
+          );
           this.close();
         } else {
-          showNotification("Approval email failed.", "error");
+          showNotification(
+            "Approval email failed.",
+            NOTIFICATION_TYPES.error
+          );
         }
       } catch (error) {
         handleError(error);
@@ -1469,14 +1669,20 @@ export default {
       try {
         this.deleteBusy = true;
         const response = await axiosRef.delete(
-          `${urlStringStart}/api/requests/${this.requestContext.id}/`
+          apiUrl(REQUEST_API_ENDPOINTS.request(this.requestContext.id))
         );
         if (response?.status === 204 || response?.data?.success) {
-          showNotification("Request deleted successfully.", "success");
+          showNotification(
+            "Request deleted successfully.",
+            NOTIFICATION_TYPES.success
+          );
           this.$emit("refresh");
           this.close();
         } else {
-          showNotification("Request deletion failed.", "error");
+          showNotification(
+            "Request deletion failed.",
+            NOTIFICATION_TYPES.error
+          );
         }
       } catch (error) {
         handleError(error);
@@ -1522,26 +1728,32 @@ export default {
           .map((file) => file?.id)
           .filter((id) => id !== undefined && id !== null);
 
-        this.attachmentsRequestDetails = {
-          cost_unit: meta?.cost_unit ?? null,
-          description: meta?.description ?? ""
-        };
+          this.attachmentsRequestDetails = {
+            [REQUEST_DATA_FIELDS.costUnit]:
+              meta?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
+            [REQUEST_DATA_FIELDS.description]:
+              meta?.[REQUEST_DATA_FIELDS.description] ?? ""
+          };
       }
 
       if (records.length) {
         this.attachmentsRecords = records
-          .filter((record) => record?.pk && record?.record_type)
+          .filter(
+            (record) => record?.pk && record?.[REQUEST_DATA_FIELDS.recordType]
+          )
           .map((record) => ({
             pk: record.pk,
-            record_type: record.record_type
+            [REQUEST_DATA_FIELDS.recordType]:
+              record[REQUEST_DATA_FIELDS.recordType]
           }));
       }
 
       const needsRequest =
         force ||
         !meta ||
-        this.attachmentsRequestDetails.cost_unit === null ||
-        this.attachmentsRequestDetails.description === "";
+        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.costUnit] ===
+          null ||
+        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.description] === "";
       const needsRecords = force
         ? !records.length
         : !this.attachmentsRecords.length;
@@ -1555,11 +1767,11 @@ export default {
         const requestId = this.requestContext.id;
         const [requestRes, recordsRes] = await Promise.allSettled([
           needsRequest
-            ? axiosRef.get(`${urlStringStart}/api/requests/${requestId}/`)
+            ? axiosRef.get(apiUrl(REQUEST_API_ENDPOINTS.request(requestId)))
             : Promise.resolve({ data: meta }),
           needsRecords
             ? axiosRef.get(
-                `${urlStringStart}/api/requests/${requestId}/get_records/`
+                apiUrl(REQUEST_API_ENDPOINTS.requestRecords(requestId))
               )
             : Promise.resolve({ data: records })
         ]);
@@ -1580,8 +1792,10 @@ export default {
             .map((file) => file?.id)
             .filter((id) => id !== undefined && id !== null);
           this.attachmentsRequestDetails = {
-            cost_unit: requestData?.cost_unit ?? null,
-            description: requestData?.description ?? ""
+            [REQUEST_DATA_FIELDS.costUnit]:
+              requestData?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
+            [REQUEST_DATA_FIELDS.description]:
+              requestData?.[REQUEST_DATA_FIELDS.description] ?? ""
           };
         }
 
@@ -1592,10 +1806,14 @@ export default {
               : [];
           this.attachmentsRecords = Array.isArray(recordsData)
             ? recordsData
-                .filter((record) => record?.pk && record?.record_type)
+                .filter(
+                  (record) =>
+                    record?.pk && record?.[REQUEST_DATA_FIELDS.recordType]
+                )
                 .map((record) => ({
                   pk: record.pk,
-                  record_type: record.record_type
+                  [REQUEST_DATA_FIELDS.recordType]:
+                    record[REQUEST_DATA_FIELDS.recordType]
                 }))
             : [];
         }
@@ -1642,29 +1860,32 @@ export default {
     handleAttachmentsDrop(event) {
       this.isAttachmentsDragOver = false;
       if (!this.canEditAttachments) {
-        showNotification("You lack permission to upload files.", "warning");
+        showNotification(
+          "You lack permission to upload files.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const files = Array.from(event.dataTransfer?.files || []);
       if (!files.length) {
-        showNotification("No files selected.", "warning");
+        showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
       this.uploadAttachments(files);
     },
     async uploadAttachments(files = []) {
       if (!files.length) {
-        showNotification("No files selected.", "warning");
+        showNotification("No files selected.", NOTIFICATION_TYPES.warning);
         return;
       }
       const formData = new FormData();
-      files.forEach((file) => formData.append("files", file));
+      files.forEach((file) => formData.append(FORM_FIELDS.files, file));
       try {
         this.attachmentsBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/upload_files/`,
+          apiUrl(REQUEST_API_ENDPOINTS.uploadFiles),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
           const ids = response.data.fileIds || [];
@@ -1672,9 +1893,12 @@ export default {
           await this.fetchUploadedFilesDetails();
           await this.saveAttachmentsToRequest();
           await this.loadAttachments({ force: true });
-          showNotification("Files uploaded successfully.", "success");
+          showNotification(
+            "Files uploaded successfully.",
+            NOTIFICATION_TYPES.success
+          );
         } else {
-          showNotification("File upload failed.", "error");
+          showNotification("File upload failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
@@ -1689,7 +1913,7 @@ export default {
       }
       try {
         const response = await axiosRef.get(
-          `${urlStringStart}/api/requests/get_files_after_upload/`,
+          apiUrl(REQUEST_API_ENDPOINTS.filesAfterUpload),
           {
             params: {
               file_ids: JSON.stringify(this.attachmentsFileIds)
@@ -1724,24 +1948,29 @@ export default {
       if (!this.requestContext?.id) return;
       const requestId = this.requestContext.id;
       const payload = {
-        cost_unit: this.attachmentsRequestDetails?.cost_unit ?? null,
-        description: (this.attachmentsRequestDetails?.description || "").trim(),
+        [REQUEST_DATA_FIELDS.costUnit]:
+          this.attachmentsRequestDetails?.[REQUEST_DATA_FIELDS.costUnit] ??
+          null,
+        [REQUEST_DATA_FIELDS.description]: (
+          this.attachmentsRequestDetails?.[REQUEST_DATA_FIELDS.description] ||
+          ""
+        ).trim(),
         records: this.attachmentsRecords,
         files: this.attachmentsFileIds
       };
       const formData = new FormData();
-      formData.append("data", JSON.stringify(payload));
+      formData.append(FORM_FIELDS.data, JSON.stringify(payload));
       try {
         this.attachmentsBusy = true;
         const response = await axiosRef.post(
-          `${urlStringStart}/api/requests/${requestId}/edit/`,
+          apiUrl(REQUEST_API_ENDPOINTS.requestEdit(requestId)),
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          MULTIPART_FORM_HEADERS
         );
         if (response?.data?.success) {
           this.$emit("refresh");
         } else {
-          showNotification("Request update failed.", "error");
+          showNotification("Request update failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
@@ -1751,17 +1980,23 @@ export default {
     },
     downloadAttachment(file) {
       if (!file?.path) {
-        showNotification("Download link unavailable for this file.", "warning");
+        showNotification(
+          "Download link unavailable for this file.",
+          NOTIFICATION_TYPES.warning
+        );
         return;
       }
       const path = String(file.path || "");
       const url = path.startsWith("http") ? path : `${urlStringStart}${path}`;
       axiosRef
-        .get(url, { responseType: "blob" })
+        .get(url, { responseType: RESPONSE_TYPES.blob })
         .then((response) => {
           const blob = response?.data;
           if (!blob || blob.size === 0) {
-            showNotification("Downloaded file is empty.", "warning");
+            showNotification(
+              "Downloaded file is empty.",
+              NOTIFICATION_TYPES.warning
+            );
             return;
           }
           const objectUrl = URL.createObjectURL(blob);
@@ -2214,10 +2449,17 @@ export default {
 }
 
 .rocrate-summary-count {
-  font-size: 24px !important;
+  font-size: 20px !important;
   line-height: 1;
   font-weight: 700;
   color: #13415b !important;
+}
+
+.rocrate-request-name {
+  color: #13415b !important;
+  font-size: 20px !important;
+  font-weight: 600;
+  line-height: 1;
 }
 
 @media (max-width: 760px) {
@@ -2479,6 +2721,14 @@ export default {
   cursor: copy;
   text-align: left;
   box-shadow: inset 0 1px 0 #f3f3f3;
+}
+
+.filepaths-md5 {
+  display: block;
+  margin-top: 4px;
+  color: #5d7480;
+  font-size: 11px;
+  word-break: break-all;
 }
 
 .userpath-row {

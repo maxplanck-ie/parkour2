@@ -620,8 +620,18 @@ export function libraryPreparationExportColumns() {
     { header: "I7 ID", key: "index_i7_id", width: 20 },
     { header: "I5 ID", key: "index_i5_id", width: 20 },
     { header: "Coordinate", key: "coordinate", width: 10 },
-    { header: "Value", key: "measured_value_facility", width: 15 },
+    {
+      header: "Value",
+      key: "measured_value_facility",
+      width: 15,
+      excelType: "number",
+    },
     { header: "Unit", key: "measuring_unit_facility", width: 15 },
-    { header: "bp Sample", key: "size_distribution_facility", width: 15 },
+    {
+      header: "bp Sample",
+      key: "size_distribution_facility",
+      width: 15,
+      excelType: "number",
+    },
   ];
 }

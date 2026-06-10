@@ -382,12 +382,23 @@ export function poolingExportColumns() {
     {
       header: "Concentration Library",
       key: "concentration_library",
-      width: 20
+      width: 20,
+      excelType: "number"
     },
-    { header: "% Total", key: "combined_smear_analysis", width: 20 },
-    { header: "bp", key: "mean_fragment_size", width: 20 },
-    { header: "Depth (M)", key: "sequencing_depth", width: 20 },
-    { header: "%", key: "percentage_library", width: 20 },
+    {
+      header: "% Total",
+      key: "combined_smear_analysis",
+      width: 20,
+      excelType: "number"
+    },
+    { header: "bp", key: "mean_fragment_size", width: 20, excelType: "number" },
+    {
+      header: "Depth (M)",
+      key: "sequencing_depth",
+      width: 20,
+      excelType: "number"
+    },
+    { header: "%", key: "percentage_library", width: 20, excelType: "number" },
     { header: "Coord", key: "coordinate", width: 10 },
     { header: "I7 ID", key: "index_i7_id", width: 20 },
     { header: "Index I7", key: "index_i7", width: 20 },

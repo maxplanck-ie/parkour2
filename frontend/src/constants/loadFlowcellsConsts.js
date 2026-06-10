@@ -222,6 +222,11 @@ export const loadFlowcellsExportColumns = [
   { header: "Index I5", key: "index_i5_show", width: 14 },
   { header: "Sequencer", key: "sequencer_name", width: 16 },
   { header: "Library Protocol", key: "protocol", width: 24 },
-  { header: "Loading Concentration", key: "loading_concentration", width: 18 },
-  { header: "PhiX %", key: "phix", width: 10 }
+  {
+    header: "Loading Concentration",
+    key: "loading_concentration",
+    width: 18,
+    excelType: "number"
+  },
+  { header: "PhiX %", key: "phix", width: 10, excelType: "number" }
 ];

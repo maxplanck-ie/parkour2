@@ -1,7 +1,8 @@
 from os import getenv as getenvvar
 from platform import node as nodename
+from urllib.parse import urlparse
 
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError, expect
 
 testEmailID = "parkour-staff@parkour-demo.ie-freiburg.mpg.de"
 testPassword = "parkour-staff"
@@ -31,7 +32,37 @@ def pretest_login(page: Page):
     inputEmail.fill(testEmailID)
     inputPassword.fill(testPassword)
     loginButton.click()
-    page.wait_for_url("**/#libraries-vue", timeout=15000)
+    wait_until_authenticated(page)
+
+
+def wait_until_authenticated(page: Page, *, timeout: int = 15000):
+    """Wait for Django's login POST to finish and leave the login page."""
+    try:
+        page.wait_for_function(
+            "!window.location.pathname.startsWith('/login')",
+            timeout=timeout,
+        )
+    except PlaywrightTimeoutError as exc:
+        login_error = page.get_by_text(
+            "Your username and password didn't match. Please try again."
+        )
+        visible_error = login_error.is_visible() if login_error.count() > 0 else False
+        detail = (
+            " Check that the frontend fixtures are loaded."
+            if visible_error
+            else f" Current URL: {page.url}"
+        )
+        raise AssertionError(f"Login did not complete.{detail}") from exc
+
+    hostName = get_host_name()
+    page.goto(f"http://{hostName}:9980/api_user_details")
+    page.wait_for_load_state("networkidle")
+    if urlparse(page.url).path.startswith("/login"):
+        raise AssertionError(
+            "Login did not create an authenticated session. "
+            "Check that the frontend fixtures are loaded."
+        )
+    expect(page.locator("body")).to_contain_text("USER", timeout=timeout)
 
 
 def visit_vue_page(page: Page, relative_path: str):
@@ -41,6 +72,11 @@ def visit_vue_page(page: Page, relative_path: str):
     relative_path = relative_path.lstrip("/")
     page.goto(f"http://{hostName}:9980/vue/{relative_path}")
     page.wait_for_load_state("networkidle")
+    if urlparse(page.url).path.startswith("/login"):
+        raise AssertionError(
+            f"Vue route /vue/{relative_path} redirected to login. "
+            "Check that the login completed and frontend fixtures are loaded."
+        )
 
 
 def expect_page_header(

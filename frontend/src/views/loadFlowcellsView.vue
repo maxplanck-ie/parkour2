@@ -1593,7 +1593,7 @@ export default {
 
       this.confirmPopup = {
         title: "Return Pool to Pooling",
-        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This removes the pool and sets its records back to Pooling state.`,
+        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This destroys the pool and sets its records back to Pooling state.`,
         onConfirm: async () => {
           await this.returnPoolToPooling(pool);
         }
@@ -2119,6 +2119,8 @@ export default {
 .lane-drop-card-title {
   font-weight: 700;
   color: #294856;
+  font-size: 16px;
+  line-height: 1.2;
 }
 
 .lane-drop-placeholder {
@@ -2144,7 +2146,8 @@ export default {
   color: #0b7f78;
   word-break: break-word;
   min-height: 20px;
-  line-height: 20px;
+  line-height: 22px;
+  font-size: 14px;
 }
 
 .lane-drop-card-pool-clickable {
@@ -2158,8 +2161,9 @@ export default {
 }
 
 .lane-drop-card-meta {
-  color: #59737f;
-  font-size: 12px;
+  color: #33515d;
+  font-size: 14px;
+  font-weight: 700;
   min-height: 18px;
   line-height: 18px;
 }
@@ -2281,9 +2285,15 @@ export default {
   color: #1f6f41;
 }
 
-.load-pool-read-length,
+.load-pool-read-length {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #214c5f;
+}
+
 .load-pool-meta {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .load-pool-return-button {

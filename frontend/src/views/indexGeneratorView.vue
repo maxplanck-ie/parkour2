@@ -135,10 +135,15 @@
               class="apply-all-controls"
               :class="{ compact: isLeftPanelNarrow }"
             >
-              <label class="apply-all-label">Apply to all records</label>
+              <label class="apply-all-label">Apply to selected records</label>
               <select
                 :value="applyAllReadLength"
-                @change="applyFieldToAll('read_length', $event.target.value)"
+                @change="
+                  applyFieldToAll(
+                    indexGeneratorFields.readLength,
+                    $event.target.value
+                  )
+                "
               >
                 <option :value="''">Read Length</option>
                 <option
@@ -152,7 +157,12 @@
               <select
                 class="apply-index-type-select"
                 :value="applyAllIndexType"
-                @change="applyFieldToAll('index_type', $event.target.value)"
+                @change="
+                  applyFieldToAll(
+                    indexGeneratorFields.indexType,
+                    $event.target.value
+                  )
+                "
               >
                 <option :value="''">Index Type</option>
                 <option
@@ -166,7 +176,7 @@
             </div>
           </div>
         </div>
-        <div class="table-scroll">
+        <div v-if="false" class="table-scroll">
           <table>
             <thead>
               <tr>
@@ -257,12 +267,18 @@
                 </td>
                 <td class="name-column">{{ row.name }}</td>
                 <td class="barcode-column barcode-text">{{ row.barcode }}</td>
-                <td class="depth-column">{{ row.sequencing_depth }}</td>
+                <td class="depth-column">
+                  {{ row[indexGeneratorFields.sequencingDepth] }}
+                </td>
                 <td class="length-column">
                   <select
-                    :value="row.read_length"
+                    :value="row[indexGeneratorFields.readLength]"
                     @change="
-                      updateRecordField(row, 'read_length', $event.target.value)
+                      updateRecordField(
+                        row,
+                        indexGeneratorFields.readLength,
+                        $event.target.value
+                      )
                     "
                   >
                     <option :value="''">-</option>
@@ -275,22 +291,34 @@
                     </option>
                   </select>
                 </td>
-                <td class="protocol-column">{{ row.library_protocol_name }}</td>
+                <td class="protocol-column">
+                  {{ row[indexGeneratorFields.libraryProtocolName] }}
+                </td>
                 <td class="index-type-column">
                   <div
                     class="index-type-select-wrapper"
-                    :class="{ 'is-disabled': row.type === 'L' }"
+                    :class="{
+                      'is-disabled':
+                        row[indexGeneratorFields.type] ===
+                        indexGeneratorRecordTypes.libraryCode
+                    }"
                     :title="
-                      row.type === 'L' ? getIndexTypeName(row.index_type) : ''
+                      row[indexGeneratorFields.type] ===
+                      indexGeneratorRecordTypes.libraryCode
+                        ? getIndexTypeName(row[indexGeneratorFields.indexType])
+                        : ''
                     "
                   >
                     <select
-                      :value="row.index_type"
-                      :disabled="row.type === 'L'"
+                      :value="row[indexGeneratorFields.indexType]"
+                      :disabled="
+                        row[indexGeneratorFields.type] ===
+                        indexGeneratorRecordTypes.libraryCode
+                      "
                       @change="
                         updateRecordField(
                           row,
-                          'index_type',
+                          indexGeneratorFields.indexType,
                           $event.target.value
                         )
                       "
@@ -307,9 +335,14 @@
                   </div>
                 </td>
                 <td class="sequence-column sequence-text">
-                  <span v-if="row.index_i7" class="sequence-colored">
+                  <span
+                    v-if="row[indexGeneratorFields.indexI7]"
+                    class="sequence-colored"
+                  >
                     <span
-                      v-for="(item, idx) in colorizeIndex(row.index_i7)"
+                      v-for="(item, idx) in colorizeIndex(
+                        row[indexGeneratorFields.indexI7]
+                      )"
                       :key="`${row.rowKey}-i7-${idx}`"
                       :class="['nt', item.className]"
                     >
@@ -319,9 +352,14 @@
                   <span v-else>-</span>
                 </td>
                 <td class="sequence-column sequence-text">
-                  <span v-if="row.index_i5" class="sequence-colored">
+                  <span
+                    v-if="row[indexGeneratorFields.indexI5]"
+                    class="sequence-colored"
+                  >
                     <span
-                      v-for="(item, idx) in colorizeIndex(row.index_i5)"
+                      v-for="(item, idx) in colorizeIndex(
+                        row[indexGeneratorFields.indexI5]
+                      )"
                       :key="`${row.rowKey}-i5-${idx}`"
                       :class="['nt', item.className]"
                     >
@@ -333,6 +371,19 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="table-scroll">
+          <TabulatorTable
+            v-if="!loading"
+            ref="sourceTabulatorTableRef"
+            tableId="indexGeneratorSourceTable"
+            :rowData="records"
+            :columnDefs="sourceColumnsList"
+            :enableDefaultFilters="false"
+            groupBy="request_name"
+            :groupStartOpen="false"
+            :tableOptions="sourceTableOptions"
+          />
         </div>
       </section>
 
@@ -361,7 +412,7 @@
           Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
           {{ totalDepthRounded }} M, Fill: {{ poolFillPercentageDisplay }})
         </h3>
-        <div class="table-scroll">
+        <div v-if="false" class="table-scroll">
           <table>
             <thead>
               <tr>
@@ -386,14 +437,27 @@
               >
                 <td class="name-column">{{ row.name }}</td>
                 <td class="barcode-column barcode-text">{{ row.barcode }}</td>
-                <td class="type-column">{{ row.type }}</td>
-                <td class="depth-column">{{ row.sequencing_depth }}</td>
-                <td class="coord-column">{{ row.coordinate || "-" }}</td>
-                <td class="index-id-column">{{ row.index_i7_id || "-" }}</td>
+                <td class="type-column">
+                  {{ row[indexGeneratorFields.type] }}
+                </td>
+                <td class="depth-column">
+                  {{ row[indexGeneratorFields.sequencingDepth] }}
+                </td>
+                <td class="coord-column">
+                  {{ row[indexGeneratorFields.coordinate] || "-" }}
+                </td>
+                <td class="index-id-column">
+                  {{ row[indexGeneratorFields.indexI7Id] || "-" }}
+                </td>
                 <td class="sequence-column sequence-text">
-                  <span v-if="row.index_i7" class="sequence-colored">
+                  <span
+                    v-if="row[indexGeneratorFields.indexI7]"
+                    class="sequence-colored"
+                  >
                     <span
-                      v-for="(item, idx) in colorizeIndex(row.index_i7)"
+                      v-for="(item, idx) in colorizeIndex(
+                        row[indexGeneratorFields.indexI7]
+                      )"
                       :key="`${row.rowKey}-pool-i7-${idx}`"
                       :class="['nt', item.className]"
                     >
@@ -402,11 +466,18 @@
                   </span>
                   <span v-else>-</span>
                 </td>
-                <td class="index-id-column">{{ row.index_i5_id || "-" }}</td>
+                <td class="index-id-column">
+                  {{ row[indexGeneratorFields.indexI5Id] || "-" }}
+                </td>
                 <td class="sequence-column sequence-text">
-                  <span v-if="row.index_i5" class="sequence-colored">
+                  <span
+                    v-if="row[indexGeneratorFields.indexI5]"
+                    class="sequence-colored"
+                  >
                     <span
-                      v-for="(item, idx) in colorizeIndex(row.index_i5)"
+                      v-for="(item, idx) in colorizeIndex(
+                        row[indexGeneratorFields.indexI5]
+                      )"
                       :key="`${row.rowKey}-pool-i5-${idx}`"
                       :class="['nt', item.className]"
                     >
@@ -421,6 +492,17 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="table-scroll">
+          <TabulatorTable
+            v-if="!loading"
+            ref="poolTabulatorTableRef"
+            tableId="indexGeneratorPoolTable"
+            :rowData="poolRows"
+            :columnDefs="poolColumnsList"
+            :enableDefaultFilters="false"
+            :tableOptions="poolTableOptions"
+          />
         </div>
 
         <div class="balance-block">
@@ -472,20 +554,48 @@ import {
 import iconIndexGeneratorHeader from "../assets/icons/header_index_generator.svg";
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+import TabulatorTable from "../components/TabulatorTableFull.vue";
+import {
+  INDEX_GENERATOR_API_ENDPOINTS,
+  INDEX_GENERATOR_COLOR_BALANCE,
+  INDEX_GENERATOR_DEFAULTS,
+  INDEX_GENERATOR_DIRECTION_OPTIONS,
+  INDEX_GENERATOR_DIRECTION_ORDER,
+  INDEX_GENERATOR_FIELDS,
+  INDEX_GENERATOR_INDEX_FIELDS,
+  INDEX_GENERATOR_POOL_PAYLOAD_KEYS,
+  INDEX_GENERATOR_PROTOCOL_PATTERNS,
+  INDEX_GENERATOR_RESPONSE_KEYS,
+  INDEX_GENERATOR_RECORD_TYPES,
+  indexGeneratorPoolColumnDefs,
+  indexGeneratorSourceColumnDefs,
+  indexGeneratorSourceGroupHeader
+} from "../constants/indexGeneratorConsts";
 import { buildRequestGroupSummary } from "../constants/requestGroupingConsts";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const apiUrl = (endpoint) => `${urlStringStart}${endpoint}`;
+const fields = INDEX_GENERATOR_FIELDS;
 
 export default {
   name: "IndexGenerator",
+  components: {
+    TabulatorTable
+  },
   data() {
     return {
       iconIndexGeneratorHeader,
       iconSelectAll,
       iconDeselectAll,
+      indexGeneratorFields: INDEX_GENERATOR_FIELDS,
+      indexGeneratorRecordTypes: INDEX_GENERATOR_RECORD_TYPES,
       records: [],
       poolRows: [],
+      sourceColumnsList: [],
+      poolColumnsList: [],
+      sourceTabulatorInstance: null,
+      poolTabulatorInstance: null,
       readLengths: [],
       poolSizes: [],
       generatorIndexTypes: [],
@@ -493,29 +603,26 @@ export default {
       selectedPoolMultiplier: "",
       selectedPoolActualSize: "",
       collapsedRequests: {},
-      activeResize: null,
       activePanelResize: null,
       applyAllReadLength: "",
       applyAllIndexType: "",
       isLeftPanelCollapsed: false,
-      defaultLeftPanelWidthPercent: 50,
-      leftPanelWidthPercent: 50,
-      selectedStartCoordinate: "A1",
-      selectedDirection: "down",
+      defaultLeftPanelWidthPercent:
+        INDEX_GENERATOR_DEFAULTS.leftPanelWidthPercent,
+      leftPanelWidthPercent: INDEX_GENERATOR_DEFAULTS.leftPanelWidthPercent,
+      selectedStartCoordinate: INDEX_GENERATOR_DEFAULTS.startCoordinate,
+      selectedDirection: INDEX_GENERATOR_DEFAULTS.direction,
       startCoordinateOptions: [],
       loading: true,
       startCoordinatesLoading: false,
-      directionOptions: [
-        { value: "down", label: "Column-wise" },
-        { value: "right", label: "Row-wise" },
-        { value: "diagonal", label: "Diagonal" }
-      ]
+      directionOptions: [...INDEX_GENERATOR_DIRECTION_OPTIONS]
     };
   },
   computed: {
     groupedRecords() {
       return this.records.reduce((acc, row) => {
-        const key = row.request_name || "-";
+        const key =
+          row[fields.requestName] || INDEX_GENERATOR_DEFAULTS.emptyDisplay;
         if (!acc[key]) {
           acc[key] = [];
         }
@@ -524,7 +631,9 @@ export default {
       }, {});
     },
     canGenerate() {
-      return this.poolRows.some((row) => row.type === "S");
+      return this.poolRows.some(
+        (row) => row[fields.type] === INDEX_GENERATOR_RECORD_TYPES.sampleCode
+      );
     },
     canSave() {
       return this.poolRows.length > 0 && !!this.selectedPoolSizeId;
@@ -536,7 +645,7 @@ export default {
     },
     totalDepth() {
       return this.poolRows.reduce(
-        (sum, row) => sum + Number(row.sequencing_depth || 0),
+        (sum, row) => sum + Number(row[fields.sequencingDepth] || 0),
         0
       );
     },
@@ -544,12 +653,26 @@ export default {
       return (Math.round(this.totalDepth * 10) / 10).toFixed(1);
     },
     selectedPoolCapacityM() {
-      const parsed = Number.parseFloat(
+      const parsedActualSize = Number.parseFloat(
         String(this.selectedPoolActualSize || "")
           .replace(",", ".")
           .match(/\d+(?:\.\d+)?/)?.[0] || ""
       );
-      return Number.isFinite(parsed) ? parsed : 0;
+      const parsedMultiplier = Number.parseFloat(
+        String(this.selectedPoolMultiplier || "")
+          .replace(",", ".")
+          .match(/\d+(?:\.\d+)?/)?.[0] || ""
+      );
+
+      if (!Number.isFinite(parsedActualSize) || parsedActualSize <= 0) {
+        return 0;
+      }
+
+      const multiplier =
+        Number.isFinite(parsedMultiplier) && parsedMultiplier > 0
+          ? parsedMultiplier
+          : 1;
+      return parsedActualSize * multiplier;
     },
     poolFillPercentage() {
       if (!this.selectedPoolCapacityM) {
@@ -566,10 +689,16 @@ export default {
       return `${(Math.round(this.poolFillPercentage * 10) / 10).toFixed(1)}%`;
     },
     i7Balance() {
-      return this.computeColorBalance("index_i7", 12);
+      return this.computeColorBalance(
+        INDEX_GENERATOR_INDEX_FIELDS.i7,
+        INDEX_GENERATOR_DEFAULTS.maxColorBalanceCycles
+      );
     },
     i5Balance() {
-      return this.computeColorBalance("index_i5", 12);
+      return this.computeColorBalance(
+        INDEX_GENERATOR_INDEX_FIELDS.i5,
+        INDEX_GENERATOR_DEFAULTS.maxColorBalanceCycles
+      );
     },
     readLengthNameMap() {
       return (this.readLengths || []).reduce((acc, item) => {
@@ -655,7 +784,7 @@ export default {
     selectedPoolIndexTypeIds() {
       const unique = new Set(
         this.poolRows
-          .map((row) => Number(row.index_type) || 0)
+          .map((row) => Number(row[fields.indexType]) || 0)
           .filter((id) => id > 0)
       );
       return Array.from(unique);
@@ -693,6 +822,36 @@ export default {
     },
     isLeftPanelNarrow() {
       return !this.isLeftPanelCollapsed && this.leftPanelWidthPercent <= 42;
+    },
+    sourceTableOptions() {
+      return {
+        index: fields.rowKey,
+        layout: "fitDataStretch",
+        placeholder: "No libraries or samples to show.",
+        groupHeader: (value, count, data) =>
+          indexGeneratorSourceGroupHeader(
+            value,
+            count,
+            data,
+            this.requestGroupSummary,
+            this.selectAllInGroup,
+            this.deselectAllInGroup,
+            {
+              selectAll: this.iconSelectAll,
+              deselectAll: this.iconDeselectAll
+            }
+          ),
+        rowFormatter: this.formatTabulatorRow,
+        handleCellEdited: this.handleSourceCellEdited
+      };
+    },
+    poolTableOptions() {
+      return {
+        index: fields.rowKey,
+        layout: "fitDataStretch",
+        placeholder: "No records selected.",
+        rowFormatter: this.formatTabulatorRow
+      };
     }
   },
   watch: {
@@ -708,20 +867,37 @@ export default {
       }
     },
     generatorIndexTypes() {
+      this.setColumns();
       this.refreshStartCoordinateOptions();
+    },
+    readLengths() {
+      this.setColumns();
     }
   },
   mounted() {
+    this.setColumns();
     this.loadInitialData();
   },
+  updated() {
+    this.sourceTabulatorInstance = this.$refs.sourceTabulatorTableRef;
+    this.poolTabulatorInstance = this.$refs.poolTabulatorTableRef;
+  },
   beforeUnmount() {
-    document.removeEventListener("mousemove", this.onColumnResizeMove);
-    document.removeEventListener("mouseup", this.onColumnResizeEnd);
     document.removeEventListener("mousemove", this.onPanelResizeMove);
     document.removeEventListener("mouseup", this.onPanelResizeEnd);
     document.body.classList.remove("index-generator-resizing");
   },
   methods: {
+    setColumns() {
+      this.sourceColumnsList = indexGeneratorSourceColumnDefs({
+        readLengths: this.readLengths,
+        generatorIndexTypes: this.generatorIndexTypes,
+        onSelectionChange: this.handleSourceSelectionChange,
+        isCompatibleWithPool: this.isCompatibleWithPool,
+        getIndexTypeName: this.getIndexTypeName
+      });
+      this.poolColumnsList = indexGeneratorPoolColumnDefs();
+    },
     async loadInitialData() {
       this.loading = true;
       try {
@@ -731,10 +907,10 @@ export default {
           poolSizesResponse,
           indexTypesResponse
         ] = await Promise.all([
-          axiosRef.get(`${urlStringStart}/api/index_generator/`),
-          axiosRef.get(`${urlStringStart}/api/read_lengths/`),
-          axiosRef.get(`${urlStringStart}/api/pool_sizes/`),
-          axiosRef.get(`${urlStringStart}/api/generator_index_types/`)
+          axiosRef.get(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.records)),
+          axiosRef.get(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.readLengths)),
+          axiosRef.get(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.poolSizes)),
+          axiosRef.get(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.indexTypes))
         ]);
 
         this.readLengths = readLengthsResponse.data || [];
@@ -749,100 +925,7 @@ export default {
         handleError(error);
       } finally {
         this.loading = false;
-        this.$nextTick(() => {
-          this.initResizableTables();
-        });
       }
-    },
-    initResizableTables() {
-      const tables = this.$el.querySelectorAll(".table-scroll table");
-      tables.forEach((table) => this.makeTableResizable(table));
-    },
-    makeTableResizable(table) {
-      const headers = table.querySelectorAll("thead th");
-      headers.forEach((th, columnIndex) => {
-        if (th.querySelector(".col-resizer")) {
-          return;
-        }
-
-        const currentWidth = th.getBoundingClientRect().width;
-        if (currentWidth > 0 && !th.style.width) {
-          this.applyColumnWidth(table, columnIndex, Math.round(currentWidth));
-        }
-
-        const resizer = document.createElement("span");
-        resizer.className = "col-resizer";
-        resizer.addEventListener("mousedown", (event) =>
-          this.startColumnResize(event, table, columnIndex)
-        );
-        th.appendChild(resizer);
-      });
-    },
-    startColumnResize(event, table, columnIndex) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const header = table.querySelectorAll("thead th")[columnIndex];
-      if (!header) {
-        return;
-      }
-
-      this.activeResize = {
-        table,
-        columnIndex,
-        startX: event.clientX,
-        startWidth: header.offsetWidth
-      };
-
-      document.addEventListener("mousemove", this.onColumnResizeMove);
-      document.addEventListener("mouseup", this.onColumnResizeEnd);
-    },
-    onColumnResizeMove(event) {
-      if (!this.activeResize) {
-        return;
-      }
-
-      const delta = event.clientX - this.activeResize.startX;
-      const nextWidth = Math.max(64, this.activeResize.startWidth + delta);
-      this.applyColumnWidth(
-        this.activeResize.table,
-        this.activeResize.columnIndex,
-        nextWidth
-      );
-    },
-    onColumnResizeEnd() {
-      document.removeEventListener("mousemove", this.onColumnResizeMove);
-      document.removeEventListener("mouseup", this.onColumnResizeEnd);
-      this.activeResize = null;
-    },
-    applyColumnWidth(table, columnIndex, width) {
-      const headers = table.querySelectorAll("thead th");
-      const header = headers[columnIndex];
-      if (!header) {
-        return;
-      }
-
-      const px = `${Math.round(width)}px`;
-      header.style.width = px;
-      header.style.minWidth = px;
-
-      const headerCount = headers.length;
-      const rows = table.querySelectorAll("tbody tr");
-      rows.forEach((row) => {
-        if (row.classList.contains("group-row")) {
-          return;
-        }
-
-        if (row.children.length !== headerCount) {
-          return;
-        }
-
-        const cell = row.children[columnIndex];
-        if (cell) {
-          cell.style.width = px;
-          cell.style.minWidth = px;
-        }
-      });
     },
     syncCollapsedRequests() {
       const updated = {};
@@ -927,26 +1010,39 @@ export default {
         this.requestGroupSummaries[requestName] || buildRequestGroupSummary([])
       );
     },
-    colorizeIndex(index) {
-      return String(index || "")
-        .split("")
-        .map((base) => {
-          const upper = String(base).toUpperCase();
-          if (upper === "A" || upper === "C") {
-            return { base, className: "nt-red" };
-          }
-          if (upper === "G" || upper === "T") {
-            return { base, className: "nt-green" };
-          }
-          return { base, className: "nt-other" };
-        });
+    formatTabulatorRow(row) {
+      const rowData = row.getData();
+      row
+        .getElement()
+        .classList.toggle(
+          "duplicate-index-row",
+          this.isRowDuplicateInPool(rowData[fields.rowKey])
+        );
+    },
+    refreshTabulatorTables() {
+      this.$nextTick(() => {
+        this.sourceTabulatorInstance?.getTable?.()?.redraw?.(true);
+        this.poolTabulatorInstance?.getTable?.()?.redraw?.(true);
+      });
+    },
+    handleSourceSelectionChange(row, checked) {
+      this.setRowSelection(row, checked);
+      this.refreshTabulatorTables();
+    },
+    handleSourceCellEdited(cell) {
+      const row = cell.getRow().getData();
+      const field = cell.getField();
+      if (![fields.readLength, fields.indexType].includes(field)) {
+        return;
+      }
+      this.updateRecordField(row, field, cell.getValue(), cell.getOldValue());
     },
     resolveReadLengthName(readLengthId) {
       return this.readLengthNameMap[String(readLengthId)] || "";
     },
     getIndexPairKey(row) {
-      const i7 = String(row.index_i7 || "").trim();
-      const i5 = String(row.index_i5 || "").trim();
+      const i7 = String(row[fields.indexI7] || "").trim();
+      const i5 = String(row[fields.indexI5] || "").trim();
       if (!i7) {
         return "";
       }
@@ -986,7 +1082,9 @@ export default {
       }
 
       const serverMessage = String(
-        error?.response?.data?.message || error?.response?.data?.detail || ""
+        error?.response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
+          error?.response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.detail] ||
+          ""
       ).toLowerCase();
 
       if (!serverMessage) {
@@ -998,12 +1096,15 @@ export default {
       );
     },
     rowPairCompatibility(first, row) {
-      if (String(first.read_length || "") !== String(row.read_length || "")) {
+      if (
+        String(first[fields.readLength] || "") !==
+        String(row[fields.readLength] || "")
+      ) {
         return false;
       }
 
-      const firstMeta = this.indexTypeMeta(first.index_type);
-      const rowMeta = this.indexTypeMeta(row.index_type);
+      const firstMeta = this.indexTypeMeta(first[fields.indexType]);
+      const rowMeta = this.indexTypeMeta(row[fields.indexType]);
       if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
         return false;
       }
@@ -1022,7 +1123,9 @@ export default {
         ...this.poolRows[index],
         ...this.normalizePoolRow(row)
       };
-      this.poolRows.splice(index, 1, updated);
+      this.poolRows = this.poolRows.map((item, itemIndex) =>
+        itemIndex === index ? updated : item
+      );
     },
     reconcilePoolCompatibility() {
       if (this.poolRows.length <= 1) {
@@ -1049,6 +1152,7 @@ export default {
       this.records = this.records.map((row) =>
         removed.includes(row.rowKey) ? { ...row, selected: false } : row
       );
+      this.refreshTabulatorTables();
       showNotification(
         "Some selected records were deselected because their read length/index mode became incompatible.",
         "warning"
@@ -1069,26 +1173,23 @@ export default {
         return [];
       }
 
-      const order = {
-        down: 0,
-        right: 1,
-        diagonal: 2
-      };
-
       return [...options].sort((a, b) => {
-        const aOrder = order[a?.value] ?? Number.MAX_SAFE_INTEGER;
-        const bOrder = order[b?.value] ?? Number.MAX_SAFE_INTEGER;
+        const aOrder =
+          INDEX_GENERATOR_DIRECTION_ORDER[a?.value] ?? Number.MAX_SAFE_INTEGER;
+        const bOrder =
+          INDEX_GENERATOR_DIRECTION_ORDER[b?.value] ?? Number.MAX_SAFE_INTEGER;
         return aOrder - bOrder;
       });
     },
     onDirectionChange(value) {
-      this.selectedDirection = value || "down";
+      this.selectedDirection = value || INDEX_GENERATOR_DEFAULTS.direction;
     },
     async refreshStartCoordinateOptions() {
       if (!this.requiresStrictStartCoordinate) {
         this.startCoordinateOptions = [];
         if (!this.selectedStartCoordinate) {
-          this.selectedStartCoordinate = "A1";
+          this.selectedStartCoordinate =
+            INDEX_GENERATOR_DEFAULTS.startCoordinate;
         }
         return;
       }
@@ -1096,26 +1197,34 @@ export default {
       this.startCoordinatesLoading = true;
       try {
         const response = await axiosRef.post(
-          `${urlStringStart}/api/index_generator/start_coordinates/`,
+          apiUrl(INDEX_GENERATOR_API_ENDPOINTS.startCoordinates),
           {
-            index_type_ids: JSON.stringify(this.platePoolIndexTypeIds)
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.indexTypeIds]: JSON.stringify(
+              this.platePoolIndexTypeIds
+            )
           }
         );
 
-        if (!response.data?.success) {
+        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
           showNotification(
-            response.data?.message || "Failed to load start coordinates.",
+            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
+              "Failed to load start coordinates.",
             "error"
           );
           this.startCoordinateOptions = [];
           return;
         }
 
-        this.startCoordinateOptions = response.data?.coordinates || [];
+        this.startCoordinateOptions =
+          response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.coordinates] || [];
 
-        if (Array.isArray(response.data?.direction_options)) {
+        if (
+          Array.isArray(
+            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.directionOptions]
+          )
+        ) {
           this.directionOptions = this.sortDirectionOptions(
-            response.data.direction_options
+            response.data[INDEX_GENERATOR_RESPONSE_KEYS.directionOptions]
           );
         }
 
@@ -1128,17 +1237,20 @@ export default {
           !this.startCoordinateOptions.includes(this.selectedStartCoordinate)
         ) {
           this.selectedStartCoordinate =
-            response.data?.default_start_coord ||
-            this.startCoordinateOptions[0];
+            response.data?.[
+              INDEX_GENERATOR_RESPONSE_KEYS.defaultStartCoordinate
+            ] || this.startCoordinateOptions[0];
         }
 
         const allowedDirections = this.directionOptions.map(
           (item) => item.value
         );
         if (!allowedDirections.includes(this.selectedDirection)) {
-          this.selectedDirection = allowedDirections.includes("down")
-            ? "down"
-            : allowedDirections[0] || "down";
+          this.selectedDirection = allowedDirections.includes(
+            INDEX_GENERATOR_DEFAULTS.direction
+          )
+            ? INDEX_GENERATOR_DEFAULTS.direction
+            : allowedDirections[0] || INDEX_GENERATOR_DEFAULTS.direction;
         }
       } catch (error) {
         this.startCoordinateOptions = [];
@@ -1151,44 +1263,47 @@ export default {
       const normalizedValue = Number(value) || 0;
 
       if (!normalizedValue) {
-        if (field === "read_length") {
+        if (field === fields.readLength) {
           this.applyAllReadLength = "";
-        } else if (field === "index_type") {
+        } else if (field === fields.indexType) {
           this.applyAllIndexType = "";
         }
         return;
       }
 
-      const eligibleRows = this.records.filter((row) => {
-        if (field === "index_type") {
-          return row.type === "S";
+      const targetRows = this.records.filter((row) => {
+        if (!row[fields.selected]) {
+          return false;
+        }
+
+        if (field === fields.indexType) {
+          return row[fields.type] === INDEX_GENERATOR_RECORD_TYPES.sampleCode;
         }
         return true;
       });
 
-      const selectedEligibleRows = eligibleRows.filter((row) => row.selected);
-      const targetRows = selectedEligibleRows.length
-        ? selectedEligibleRows
-        : eligibleRows;
-
       if (!targetRows.length) {
-        showNotification("No records available for this field.", "warning");
+        showNotification(
+          "No selected records available for this field.",
+          "warning"
+        );
         return;
       }
 
       const readLengthUndoEntries =
-        field === "read_length"
+        field === fields.readLength
           ? this.buildReadLengthUndoEntries(targetRows)
           : [];
 
       targetRows.forEach((row) => {
         row[field] = normalizedValue;
-        if (field === "read_length") {
-          row.read_length_name = this.resolveReadLengthName(normalizedValue);
+        if (field === fields.readLength) {
+          row[fields.readLengthName] =
+            this.resolveReadLengthName(normalizedValue);
         }
-        if (field === "index_type") {
-          row.index_i7 = "";
-          row.index_i5 = "";
+        if (field === fields.indexType) {
+          row[fields.indexI7] = "";
+          row[fields.indexI5] = "";
         }
         this.syncPoolRowFromRecord(row);
       });
@@ -1197,16 +1312,16 @@ export default {
       await this.refreshStartCoordinateOptions();
 
       try {
-        await axiosRef.post(`${urlStringStart}/api/index_generator/edit/`, {
-          data: JSON.stringify(
+        await axiosRef.post(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.edit), {
+          [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.data]: JSON.stringify(
             targetRows.map((row) => ({
-              pk: row.pk,
-              record_type: row.record_type,
+              [fields.pk]: row[fields.pk],
+              [fields.recordType]: row[fields.recordType],
               [field]: normalizedValue
             }))
           )
         });
-        if (field === "read_length") {
+        if (field === fields.readLength) {
           const affectedLabel =
             targetRows.length === 1
               ? "1 record"
@@ -1219,18 +1334,15 @@ export default {
             { type: "success", timeout: 10000 }
           );
         } else {
-          const scopeLabel = selectedEligibleRows.length
-            ? "selected records"
-            : "all records";
-          showNotification(`Values applied to ${scopeLabel}.`, "success");
+          showNotification("Values applied to selected records.", "success");
         }
       } catch (error) {
         this.handleApiError(error, `Failed to apply ${field}.`);
       }
 
-      if (field === "read_length") {
+      if (field === fields.readLength) {
         this.applyAllReadLength = String(normalizedValue);
-      } else if (field === "index_type") {
+      } else if (field === fields.indexType) {
         this.applyAllIndexType = String(normalizedValue);
       }
     },
@@ -1241,8 +1353,8 @@ export default {
       }
 
       const message =
-        error?.response?.data?.message ||
-        error?.response?.data?.detail ||
+        error?.response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
+        error?.response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.detail] ||
         fallbackMessage;
       if (message) {
         showNotification(message, "error");
@@ -1254,10 +1366,10 @@ export default {
     },
     buildReadLengthUndoEntries(rows) {
       return rows.map((row) => ({
-        rowKey: row.rowKey,
-        pk: row.pk,
-        record_type: row.record_type,
-        read_length: Number(row.read_length) || 0
+        [fields.rowKey]: row[fields.rowKey],
+        [fields.pk]: row[fields.pk],
+        [fields.recordType]: row[fields.recordType],
+        [fields.readLength]: Number(row[fields.readLength]) || 0
       }));
     },
     async undoReadLengthChanges(undoEntries) {
@@ -1268,20 +1380,22 @@ export default {
       const payload = [];
       undoEntries.forEach((entry) => {
         const row = this.records.find(
-          (record) => record.rowKey === entry.rowKey
+          (record) => record[fields.rowKey] === entry[fields.rowKey]
         );
         if (!row) {
           return;
         }
 
-        row.read_length = entry.read_length;
-        row.read_length_name = this.resolveReadLengthName(entry.read_length);
+        row[fields.readLength] = entry[fields.readLength];
+        row[fields.readLengthName] = this.resolveReadLengthName(
+          entry[fields.readLength]
+        );
         this.syncPoolRowFromRecord(row);
 
         payload.push({
-          pk: entry.pk,
-          record_type: entry.record_type,
-          read_length: entry.read_length
+          [fields.pk]: entry[fields.pk],
+          [fields.recordType]: entry[fields.recordType],
+          [fields.readLength]: entry[fields.readLength]
         });
       });
 
@@ -1297,8 +1411,8 @@ export default {
       }
 
       try {
-        await axiosRef.post(`${urlStringStart}/api/index_generator/edit/`, {
-          data: JSON.stringify(payload)
+        await axiosRef.post(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.edit), {
+          [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.data]: JSON.stringify(payload)
         });
         showNotification("Undo applied.", "success");
       } catch (error) {
@@ -1318,7 +1432,7 @@ export default {
           (item) => item.rowKey === candidate.rowKey
         );
         if (!alreadySelected) {
-          this.poolRows.push(candidate);
+          this.poolRows = [...this.poolRows, candidate];
         }
       } else {
         this.poolRows = this.poolRows.filter(
@@ -1326,6 +1440,7 @@ export default {
         );
       }
 
+      this.refreshTabulatorTables();
       return true;
     },
     selectAllInGroup(groupRows) {
@@ -1352,29 +1467,32 @@ export default {
       });
     },
     normalizeRecord(row) {
-      const type = row.barcode?.[2] || "";
+      const type = row[fields.barcode]?.[2] || "";
       return {
         ...row,
-        rowKey: `${row.record_type}:${row.pk}`,
-        type,
-        selected: false,
-        read_length: row.read_length || "",
-        read_length_name:
-          row.read_length_name || this.resolveReadLengthName(row.read_length),
-        index_type: row.index_type || 0,
-        index_i7: row.index_i7 || "",
-        index_i5: row.index_i5 || ""
+        [fields.rowKey]: `${row[fields.recordType]}:${row[fields.pk]}`,
+        [fields.requestName]:
+          row[fields.requestName] || INDEX_GENERATOR_DEFAULTS.emptyDisplay,
+        [fields.type]: type,
+        [fields.selected]: false,
+        [fields.readLength]: row[fields.readLength] || "",
+        [fields.readLengthName]:
+          row[fields.readLengthName] ||
+          this.resolveReadLengthName(row[fields.readLength]),
+        [fields.indexType]: row[fields.indexType] || 0,
+        [fields.indexI7]: row[fields.indexI7] || "",
+        [fields.indexI5]: row[fields.indexI5] || ""
       };
     },
     normalizePoolRow(row) {
-      const i7 = this.extractIndexString(row.index_i7);
-      const i5 = this.extractIndexString(row.index_i5);
+      const i7 = this.extractIndexString(row[fields.indexI7]);
+      const i5 = this.extractIndexString(row[fields.indexI5]);
       return {
         ...row,
-        rowKey: `${row.record_type}:${row.pk}`,
-        type: row.barcode?.[2] || "",
-        index_i7: i7,
-        index_i5: i5
+        [fields.rowKey]: `${row[fields.recordType]}:${row[fields.pk]}`,
+        [fields.type]: row[fields.barcode]?.[2] || "",
+        [fields.indexI7]: i7,
+        [fields.indexI5]: i5
       };
     },
     extractIndexString(value) {
@@ -1430,47 +1548,56 @@ export default {
       this.selectedPoolSizeId = selectedPoolSize ? selectedPoolSize.id : null;
     },
     isNanoporeProtocol(row) {
-      const protocol = String(row.library_protocol_name || "").toLowerCase();
-      return /oxford\s*nanopore|nanopore|\bont\b/.test(protocol);
+      const protocol = String(
+        row[fields.libraryProtocolName] || ""
+      ).toLowerCase();
+      return INDEX_GENERATOR_PROTOCOL_PATTERNS.nanopore.test(protocol);
     },
-    async updateRecordField(row, field, value) {
-      const previousReadLength = Number(row.read_length) || 0;
+    async updateRecordField(row, field, value, previousValue = undefined) {
+      const previousReadLength =
+        previousValue === undefined
+          ? Number(row[fields.readLength]) || 0
+          : Number(previousValue) || 0;
       const normalizedValue =
-        field === "read_length" || field === "index_type"
+        field === fields.readLength || field === fields.indexType
           ? Number(value) || 0
           : value;
       row[field] = normalizedValue;
 
-      if (field === "read_length") {
-        row.read_length_name = this.resolveReadLengthName(normalizedValue);
+      if (field === fields.readLength) {
+        row[fields.readLengthName] =
+          this.resolveReadLengthName(normalizedValue);
       }
 
-      if (field === "index_type") {
-        row.index_i7 = "";
-        row.index_i5 = "";
+      if (field === fields.indexType) {
+        row[fields.indexI7] = "";
+        row[fields.indexI5] = "";
       }
 
       this.syncPoolRowFromRecord(row);
       this.reconcilePoolCompatibility();
 
       try {
-        await axiosRef.post(`${urlStringStart}/api/index_generator/edit/`, {
-          data: JSON.stringify([
+        await axiosRef.post(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.edit), {
+          [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.data]: JSON.stringify([
             {
-              pk: row.pk,
-              record_type: row.record_type,
+              [fields.pk]: row[fields.pk],
+              [fields.recordType]: row[fields.recordType],
               [field]: normalizedValue
             }
           ])
         });
 
-        if (field === "read_length" && normalizedValue !== previousReadLength) {
+        if (
+          field === fields.readLength &&
+          normalizedValue !== previousReadLength
+        ) {
           const undoEntry = [
             {
-              rowKey: row.rowKey,
-              pk: row.pk,
-              record_type: row.record_type,
-              read_length: previousReadLength
+              [fields.rowKey]: row[fields.rowKey],
+              [fields.pk]: row[fields.pk],
+              [fields.recordType]: row[fields.recordType],
+              [fields.readLength]: previousReadLength
             }
           ];
           showUndoNotification(
@@ -1488,18 +1615,24 @@ export default {
     splitPoolRowsByType() {
       return this.poolRows.reduce(
         (acc, row) => {
-          const key = row.record_type === "Library" ? "libraries" : "samples";
+          const key =
+            row[fields.recordType] === INDEX_GENERATOR_RECORD_TYPES.library
+              ? INDEX_GENERATOR_POOL_PAYLOAD_KEYS.libraries
+              : INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples;
           acc[key].push(row);
           return acc;
         },
-        { libraries: [], samples: [] }
+        {
+          [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.libraries]: [],
+          [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples]: []
+        }
       );
     },
     buildPoolRowIndexPayload(rows) {
       return rows.map((row) => ({
-        pk: row.pk,
-        index_i7: row.index_i7 || "",
-        index_i5: row.index_i5 || ""
+        [fields.pk]: row[fields.pk],
+        [fields.indexI7]: row[fields.indexI7] || "",
+        [fields.indexI5]: row[fields.indexI5] || ""
       }));
     },
     validateSelectedRowsBeforeSave() {
@@ -1508,13 +1641,19 @@ export default {
       }
 
       for (const row of this.poolRows) {
-        if (!row.index_i7) {
-          showNotification(`Index I7 is not set for "${row.name}".`, "warning");
+        if (!row[fields.indexI7]) {
+          showNotification(
+            `Index I7 is not set for "${row[fields.name]}".`,
+            "warning"
+          );
           return false;
         }
-        const indexMeta = this.indexTypeMeta(row.index_type);
-        if (indexMeta?.is_dual && !row.index_i5) {
-          showNotification(`Index I5 is not set for "${row.name}".`, "warning");
+        const indexMeta = this.indexTypeMeta(row[fields.indexType]);
+        if (indexMeta?.is_dual && !row[fields.indexI5]) {
+          showNotification(
+            `Index I5 is not set for "${row[fields.name]}".`,
+            "warning"
+          );
           return false;
         }
       }
@@ -1523,7 +1662,9 @@ export default {
     },
     validateSelectedRowsBeforeGeneration() {
       const missingIndexTypeRows = this.poolRows.filter(
-        (row) => row.type === "S" && !(Number(row.index_type) > 0)
+        (row) =>
+          row[fields.type] === INDEX_GENERATOR_RECORD_TYPES.sampleCode &&
+          !(Number(row[fields.indexType]) > 0)
       );
 
       if (!missingIndexTypeRows.length) {
@@ -1531,10 +1672,12 @@ export default {
       }
 
       const namesPreview = missingIndexTypeRows
-        .slice(0, 3)
-        .map((row) => row.name)
+        .slice(0, INDEX_GENERATOR_DEFAULTS.duplicatePreviewLimit)
+        .map((row) => row[fields.name])
         .join(", ");
-      const remaining = missingIndexTypeRows.length - 3;
+      const remaining =
+        missingIndexTypeRows.length -
+        INDEX_GENERATOR_DEFAULTS.duplicatePreviewLimit;
       const suffix = remaining > 0 ? ` (+${remaining} more)` : "";
 
       showNotification(
@@ -1559,13 +1702,16 @@ export default {
 
       const first = this.poolRows[0];
       if (!this.rowPairCompatibility(first, row)) {
-        if (String(first.read_length || "") !== String(row.read_length || "")) {
+        if (
+          String(first[fields.readLength] || "") !==
+          String(row[fields.readLength] || "")
+        ) {
           showNotification("Read lengths must be the same.", "warning");
           return false;
         }
 
-        const firstMeta = this.indexTypeMeta(first.index_type);
-        const rowMeta = this.indexTypeMeta(row.index_type);
+        const firstMeta = this.indexTypeMeta(first[fields.indexType]);
+        const rowMeta = this.indexTypeMeta(row[fields.indexType]);
         if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
           showNotification(
             "Pooling of dual and single indices is not allowed.",
@@ -1604,45 +1750,55 @@ export default {
 
       const { libraries: libraryRows, samples: sampleRows } =
         this.splitPoolRowsByType();
-      const libraries = libraryRows.map((row) => row.pk);
-      const samples = sampleRows.map((row) => row.pk);
+      const libraries = libraryRows.map((row) => row[fields.pk]);
+      const samples = sampleRows.map((row) => row[fields.pk]);
 
       this.loading = true;
       try {
         const response = await axiosRef.post(
-          `${urlStringStart}/api/index_generator/generate_indices/`,
+          apiUrl(INDEX_GENERATOR_API_ENDPOINTS.generateIndices),
           {
-            libraries: JSON.stringify(libraries),
-            samples: JSON.stringify(samples),
-            start_coord: normalizedStart,
-            direction: this.selectedDirection || "down"
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.libraries]:
+              JSON.stringify(libraries),
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples]:
+              JSON.stringify(samples),
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.startCoordinate]:
+              normalizedStart,
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.direction]:
+              this.selectedDirection || INDEX_GENERATOR_DEFAULTS.direction
           }
         );
 
-        if (!response.data?.success) {
+        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
           showNotification(
-            response.data?.message || "Index generation failed.",
+            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
+              "Index generation failed.",
             "error"
           );
           return;
         }
 
-        const generatedRows = (response.data.data || []).map((row) =>
-          this.normalizePoolRow(row)
-        );
+        const generatedRows = (
+          response.data[INDEX_GENERATOR_RESPONSE_KEYS.data] || []
+        ).map((row) => this.normalizePoolRow(row));
         const generatedByKey = new Map(
-          generatedRows.map((generated) => [generated.rowKey, generated])
+          generatedRows.map((generated) => [
+            generated[fields.rowKey],
+            generated
+          ])
         );
 
         this.poolRows = generatedRows;
         this.records = this.records.map((record) => {
-          const generated = generatedByKey.get(record.rowKey);
+          const generated = generatedByKey.get(record[fields.rowKey]);
           if (!generated) return record;
           return {
             ...record,
-            selected: this.poolRows.some((row) => row.rowKey === record.rowKey),
-            index_i7: generated?.index_i7 || "",
-            index_i5: generated?.index_i5 || ""
+            [fields.selected]: this.poolRows.some(
+              (row) => row[fields.rowKey] === record[fields.rowKey]
+            ),
+            [fields.indexI7]: generated?.[fields.indexI7] || "",
+            [fields.indexI5]: generated?.[fields.indexI5] || ""
           };
         });
       } catch (error) {
@@ -1682,17 +1838,20 @@ export default {
       this.loading = true;
       try {
         const response = await axiosRef.post(
-          `${urlStringStart}/api/index_generator/save_pool/`,
+          apiUrl(INDEX_GENERATOR_API_ENDPOINTS.savePool),
           {
-            pool_size_id: this.selectedPoolSizeId,
-            libraries: JSON.stringify(libraries),
-            samples: JSON.stringify(samples)
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.poolSizeId]:
+              this.selectedPoolSizeId,
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.libraries]:
+              JSON.stringify(libraries),
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples]: JSON.stringify(samples)
           }
         );
 
-        if (!response.data?.success) {
+        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
           showNotification(
-            response.data?.message || "Saving pool failed.",
+            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
+              "Saving pool failed.",
             "error"
           );
           return;
@@ -1727,10 +1886,12 @@ export default {
           }
 
           const nucleotide = index[cycle].toUpperCase();
-          const depth = Number(row.sequencing_depth || 0);
-          if (nucleotide === "G" || nucleotide === "T") {
+          const depth = Number(row[fields.sequencingDepth] || 0);
+          if (INDEX_GENERATOR_COLOR_BALANCE.greenBases.includes(nucleotide)) {
             green += depth;
-          } else if (nucleotide === "A" || nucleotide === "C") {
+          } else if (
+            INDEX_GENERATOR_COLOR_BALANCE.redBases.includes(nucleotide)
+          ) {
             red += depth;
           }
           total += depth;
@@ -1748,7 +1909,10 @@ export default {
         const greenPct = Math.round((green / total) * 100);
         const redPct = Math.round((red / total) * 100);
         const problematic =
-          (greenPct < 20 && redPct > 80) || (redPct < 20 && greenPct > 80);
+          (greenPct < INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
+            redPct > INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent) ||
+          (redPct < INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
+            greenPct > INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent);
 
         result.push({
           cycle: cycle + 1,
@@ -2041,93 +2205,37 @@ export default {
 .table-scroll {
   overflow: auto;
   flex: 1;
+  min-height: 0;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  table-layout: fixed;
-}
-
-.left-panel table {
-  min-width: 1150px;
-}
-
-.right-panel table {
-  min-width: 1100px;
-}
-
-th,
-td {
-  border: 1px solid #ececec;
-  padding: 6px;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-td select {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-th {
-  overflow: hidden;
-}
-
-.col-resizer {
-  position: absolute;
-  top: 0;
-  right: -3px;
-  width: 8px;
-  height: 100%;
-  cursor: col-resize;
-  user-select: none;
-  z-index: 3;
-}
-
-.col-resizer:hover {
-  background: rgba(11, 127, 120, 0.2);
-}
-
-.group-row td {
-  background: #f4f7f7;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.group-row-content {
+:deep(.group-row-content) {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
 }
 
-.group-row-main {
+:deep(.group-row-main) {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
 
-.group-row-title {
+:deep(.group-row-title) {
   font-weight: bold;
   font-size: 13px;
   color: #333;
 }
 
-.group-row-summary {
+:deep(.group-row-summary) {
   font-weight: normal;
   font-size: 13px;
   margin-left: 2px;
   color: black;
 }
 
-.group-toggle-button {
+:deep(.group-toggle-button) {
   border: none;
   background: transparent;
   cursor: pointer;
@@ -2139,14 +2247,17 @@ th {
   font-weight: 700;
 }
 
-.group-action-buttons-container {
+:deep(.group-action-buttons-container) {
   display: flex;
   gap: 5px;
 }
 
-.group-action-button {
+:deep(.group-action-button) {
   display: flex;
   align-items: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
   cursor: pointer;
 }
 
@@ -2219,31 +2330,31 @@ th {
   font-family: var(--app-font-family);
 }
 
-.sequence-text {
+:deep(.sequence-text) {
   font-family: "Courier New", Courier, monospace;
 }
 
-.sequence-colored {
+:deep(.sequence-colored) {
   letter-spacing: 0.4px;
 }
 
-.nt {
+:deep(.nt) {
   font-weight: 700;
 }
 
-.nt-red {
+:deep(.nt-red) {
   color: #c53030;
 }
 
-.nt-green {
+:deep(.nt-green) {
   color: #2f855a;
 }
 
-.nt-other {
+:deep(.nt-other) {
   color: #5c6670;
 }
 
-.duplicate-index-row td {
+:deep(.duplicate-index-row .tabulator-cell) {
   background: #ffe7e7;
 }
 

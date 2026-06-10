@@ -6,6 +6,7 @@ import uuid
 from io import BytesIO
 from zipfile import ZIP_DEFLATED, ZipFile
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import date, datetime, time
 from decimal import Decimal
 from itertools import chain
@@ -37,6 +38,20 @@ RO_CRATE_CONTEXT_URI = f"{RO_CRATE_SPEC_URI}/context"
 NFDI4PLANTS_ISA_PROFILE_URI = (
     "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile"
 )
+ISA_NAMESPACE_URI = "https://w3id.org/isa/"
+ISA_INVESTIGATION_URI = f"{ISA_NAMESPACE_URI}Investigation"
+ISA_STUDY_URI = f"{ISA_NAMESPACE_URI}Study"
+ISA_ASSAY_URI = f"{ISA_NAMESPACE_URI}Assay"
+ISA_PROCESS_URI = f"{ISA_NAMESPACE_URI}Process"
+ISA_DATA_URI = f"{ISA_NAMESPACE_URI}Data"
+ISA_MATERIAL_URI = f"{ISA_NAMESPACE_URI}Material"
+ISA_SAMPLE_URI = f"{ISA_NAMESPACE_URI}Sample"
+ISA_LIBRARY_URI = f"{ISA_NAMESPACE_URI}Library"
+ISA_ORGANISM_URI = f"{ISA_NAMESPACE_URI}Organism"
+ISA_PROTOCOL_URI = f"{ISA_NAMESPACE_URI}Protocol"
+ISA_INSTRUMENT_URI = f"{ISA_NAMESPACE_URI}Instrument"
+ISA_POOL_URI = f"{ISA_NAMESPACE_URI}Pool"
+ISA_LANE_URI = f"{ISA_NAMESPACE_URI}Lane"
 BIOSCHEMAS_SAMPLE_URI = "https://bioschemas.org/Sample"
 BIOSCHEMAS_LAB_PROTOCOL_URI = "https://bioschemas.org/LabProtocol"
 BIOSCHEMAS_LAB_PROCESS_URI = "https://bioschemas.org/LabProcess"
@@ -52,6 +67,191 @@ RO_CRATE_LICENSE_DESCRIPTION = (
 )
 PARKOUR_SOFTWARE_ID = "#parkour-software"
 RO_CRATE_EXPORT_ACTION_ID = "#ro-crate-export-action"
+# Parkour status 6 is "Delivered"; earlier statuses are transient and negative
+# statuses are failed/compromised states that must not be exported as final RO-Crate records.
+RO_CRATE_COMPLETED_STATUS = 6
+RO_CRATE_ARCHIVE_STUB_MAX_LENGTH = 180
+
+
+def _normalise_field_policy_key(value):
+    return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
+
+
+def _load_shared_hidden_fields():
+    module_dir = os.path.dirname(__file__)
+    policy_paths = [
+        os.path.abspath(
+            os.path.join(
+                module_dir,
+                "..",
+                "shared",
+                "roCrateHiddenFields.json",
+            )
+        ),
+        os.path.abspath(
+            os.path.join(
+                module_dir,
+                "..",
+                "..",
+                "shared",
+                "roCrateHiddenFields.json",
+            )
+        ),
+    ]
+    policy_path = next((path for path in policy_paths if os.path.exists(path)), None)
+    if policy_path is None:
+        searched_paths = ", ".join(policy_paths)
+        raise RuntimeError(
+            f"RO-Crate hidden field policy file could not be loaded. Searched: {searched_paths}"
+        )
+
+    try:
+        with open(policy_path, encoding="utf-8") as handle:
+            policy = json.load(handle)
+    except OSError as exc:
+        raise RuntimeError(
+            "RO-Crate hidden field policy file could not be loaded."
+        ) from exc
+    except ValueError as exc:
+        raise RuntimeError(
+            "RO-Crate hidden field policy file is not valid JSON."
+        ) from exc
+
+    hidden_fields = policy.get("userDefinedVariableHiddenFields")
+    if not isinstance(hidden_fields, list):
+        raise RuntimeError(
+            "RO-Crate hidden field policy must define userDefinedVariableHiddenFields."
+        )
+
+    return {
+        _normalise_field_policy_key(field)
+        for field in hidden_fields
+        if field
+    }
+
+
+# Shared with frontend/src/constants/roCratePreviewConsts.js through
+# shared/roCrateHiddenFields.json. Docker mounts the repo-level shared directory
+# at /usr/src/shared so backend and frontend use one policy source.
+RO_CRATE_HIDDEN_FIELD_KEYS = _load_shared_hidden_fields()
+
+
+def _is_hidden_export_field(*field_names):
+    return any(
+        _normalise_field_policy_key(field_name) in RO_CRATE_HIDDEN_FIELD_KEYS
+        for field_name in field_names
+        if field_name
+    )
+
+
+@dataclass
+class ROCrateExportSelection:
+    barcode_values: list
+    request_values: list
+    selected_sections: set
+    preview_requested: bool
+    accessible_requests: object
+    library_data: list
+    sample_data: list
+    missing_barcodes: list
+    missing_requests: list
+    non_completed_records: list
+    target_request_ids: list
+
+
+class ROCrateExportSelectionBuilder:
+    def __init__(self, request):
+        self.request = request
+
+    def build(self):
+        barcode_values = _parse_csv_values(self.request.query_params.get("barcodes"))
+        request_values = _parse_csv_values(self.request.query_params.get("requests"))
+        selected_sections = _normalise_selected_sections(
+            self.request.query_params.get("sections")
+        )
+        if isinstance(selected_sections, Response):
+            return selected_sections
+        preview_requested = _normalise_preview_flag(
+            self.request.query_params.get("preview")
+        )
+        if isinstance(preview_requested, Response):
+            return preview_requested
+
+        if not barcode_values and not request_values:
+            return Response(
+                {
+                    "error": "Provide at least one comma separated barcode value or request name via the 'barcodes' or 'requests' query parameters."
+                },
+                status=400,
+            )
+
+        accessible_requests = get_accessible_requests(self.request)
+        accessible_request_ids = list(accessible_requests.values_list("id", flat=True))
+
+        library_data_qs = CompleteLibraryData.objects.filter(
+            request_id__in=accessible_request_ids
+        )
+        sample_data_qs = CompleteSampleData.objects.filter(
+            request_id__in=accessible_request_ids
+        )
+
+        filters = Q()
+        if barcode_values:
+            filters |= Q(barcode__in=barcode_values)
+        if request_values:
+            filters |= Q(request_name__in=request_values)
+
+        if filters:
+            library_data_qs = library_data_qs.filter(filters)
+            sample_data_qs = sample_data_qs.filter(filters)
+
+        library_data = list(library_data_qs)
+        sample_data = list(sample_data_qs)
+        found_barcodes = {entry.barcode for entry in chain(library_data, sample_data)}
+        missing_barcodes = sorted(
+            {barcode for barcode in barcode_values if barcode not in found_barcodes}
+        )
+
+        library_data, skipped_libraries = _split_completed_records(library_data)
+        sample_data, skipped_samples = _split_completed_records(sample_data)
+        non_completed_records = sorted(set(skipped_libraries + skipped_samples))
+
+        if non_completed_records and not library_data and not sample_data:
+            return Response(
+                {
+                    "error": "RO-Crate export requires selected libraries or samples to have Delivered status.",
+                    "skipped_records": non_completed_records,
+                },
+                status=400,
+            )
+
+        request_ids_from_data = {
+            entry.request_id for entry in chain(library_data, sample_data)
+        }
+
+        requests_from_names_qs = accessible_requests.filter(name__in=request_values)
+        request_ids_from_names = set(
+            requests_from_names_qs.values_list("id", flat=True)
+        )
+        found_request_names = set(requests_from_names_qs.values_list("name", flat=True))
+        missing_requests = sorted(
+            {name for name in request_values if name not in found_request_names}
+        )
+        target_request_ids = sorted(request_ids_from_data.union(request_ids_from_names))
+
+        return ROCrateExportSelection(
+            barcode_values=barcode_values,
+            request_values=request_values,
+            selected_sections=selected_sections,
+            preview_requested=preview_requested,
+            accessible_requests=accessible_requests,
+            library_data=library_data,
+            sample_data=sample_data,
+            missing_barcodes=missing_barcodes,
+            missing_requests=missing_requests,
+            non_completed_records=non_completed_records,
+            target_request_ids=target_request_ids,
+        )
 
 
 def _parkour_identifier(entity_type, value):
@@ -70,6 +270,40 @@ def _guess_encoding_format(filename):
 def _safe_archive_component(value, fallback):
     cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", str(value or "")).strip("._")
     return cleaned or fallback
+
+
+def _archive_stub_for_requests(requests_by_id, target_request_ids):
+    request_names = [
+        requests_by_id[request_id].name or f"request_{request_id}"
+        for request_id in target_request_ids
+        if request_id in requests_by_id
+    ]
+    if not request_names:
+        return "parkour"
+    archive_stub = "_".join(
+        _safe_archive_component(name, f"request_{index + 1}")
+        for index, name in enumerate(request_names)
+    )
+    return archive_stub[:RO_CRATE_ARCHIVE_STUB_MAX_LENGTH].rstrip("._-") or "parkour"
+
+
+def _is_completed_record(entry):
+    return getattr(entry, "status", None) == RO_CRATE_COMPLETED_STATUS
+
+
+def _record_display_identifier(entry):
+    return getattr(entry, "barcode", None) or getattr(entry, "name", None) or str(entry)
+
+
+def _split_completed_records(records):
+    completed_records = []
+    skipped_records = []
+    for entry in records:
+        if _is_completed_record(entry):
+            completed_records.append(entry)
+        else:
+            skipped_records.append(_record_display_identifier(entry))
+    return completed_records, skipped_records
 
 
 def _build_request_file_archive_path(file_obj):
@@ -133,20 +367,140 @@ def _normalise_property_value(value):
     return value
 
 
+PATH_REFERENCE_VALUE_KEYS = (
+    "path",
+)
+PATH_REFERENCE_MD5_KEYS = (
+    "md5",
+)
+PATH_REFERENCE_IGNORED_ALIAS_KEYS = {
+    "filepath",
+    "file_path",
+    "contentUrl",
+    "url",
+    "value",
+    "MD5",
+    "md5_hash",
+    "md5Hash",
+    "checksum_md5",
+    "checksumMd5",
+    "checksum",
+}
+
+
+def _first_mapping_value(mapping, keys):
+    for key in keys:
+        value = mapping.get(key)
+        if value not in (None, "", [], {}):
+            return value
+    return None
+
+
+def _normalise_path_metadata_value(value):
+    """Keep path metadata lightweight; never read or hash referenced files here."""
+    if value in (None, "", [], {}):
+        return None
+
+    if isinstance(value, dict):
+        path_value = _first_mapping_value(value, PATH_REFERENCE_VALUE_KEYS)
+        md5_value = _first_mapping_value(value, PATH_REFERENCE_MD5_KEYS)
+
+        if path_value is not None or md5_value is not None:
+            normalised = {}
+            if path_value is not None:
+                normalised["path"] = _normalise_property_value(path_value)
+            if md5_value is not None:
+                normalised["md5"] = _normalise_property_value(md5_value)
+            return normalised or None
+
+        normalised = {}
+        for key, nested_value in value.items():
+            if key in PATH_REFERENCE_IGNORED_ALIAS_KEYS:
+                continue
+            normalised_value = _normalise_path_metadata_value(nested_value)
+            if normalised_value not in (None, "", [], {}):
+                normalised[key] = normalised_value
+        return normalised or None
+
+    if isinstance(value, (list, tuple, set)):
+        normalised = [
+            normalised_value
+            for normalised_value in (
+                _normalise_path_metadata_value(item) for item in value
+            )
+            if normalised_value not in (None, "", [], {})
+        ]
+        return normalised or None
+
+    return _normalise_property_value(value)
+
+
 def _extract_model_fields(instance, prefix=""):
     if instance is None:
         return {}
     data = {}
     for field in instance._meta.concrete_fields:
         field_name = field.name
-        if field_name.startswith("removed_") or field_name == "archived":
+        if field_name == "archived":
             continue
+        exported_field_name = (
+            field_name[len("removed_") :] if field_name.startswith("removed_") else field_name
+        )
         try:
             value = field.value_from_object(instance)
         except Exception:  # pragma: no cover - defensive
             continue
-        data[f"{prefix}{field_name}"] = value
+        target_key = f"{prefix}{exported_field_name}"
+        if _is_hidden_export_field(field_name, exported_field_name, target_key):
+            continue
+        if target_key in data:
+            continue
+        data[target_key] = value
     return data
+
+
+def _request_deep_seq_name(request_obj):
+    deep_seq_request = getattr(request_obj, "deep_seq_request", None)
+    return deep_seq_request.name if deep_seq_request else None
+
+
+def _extract_request_metadata(request_obj):
+    request_data = _extract_model_fields(request_obj, prefix="request_")
+    # Request file path JSON may include optional MD5 values supplied by external
+    # systems. RO-Crate records that metadata only; it does not read or package
+    # the referenced sequencing files because they can be very large.
+    for source_field, target_key in (
+        ("filepaths", "request_filepaths"),
+        ("metapaths", "request_metapaths"),
+    ):
+        if _is_hidden_export_field(source_field, target_key):
+            continue
+        normalised_paths = _normalise_path_metadata_value(
+            getattr(request_obj, source_field, None)
+        )
+        if normalised_paths not in (None, "", [], {}):
+            request_data[target_key] = json.dumps(
+                normalised_paths, sort_keys=True, default=str
+            )
+    request_data.update(
+        {"request_deep_seq_request": _request_deep_seq_name(request_obj)}
+    )
+    return request_data
+
+
+def _build_request_context_entity(request_obj):
+    request_context_data = _extract_request_metadata(request_obj)
+    return {
+        "@id": f"#request-context-{request_obj.id}",
+        "@type": "Dataset",
+        "name": request_obj.name or f"Request {request_obj.id}",
+        "identifier": _parkour_identifier("request", request_obj.id),
+        "description": request_obj.description or "",
+        "dateCreated": _normalise_property_value(
+            getattr(request_obj, "create_time", None)
+        ),
+        "comments": _deduplicate_comments(_build_comments(request_context_data)),
+    }
 
 
 def _normalise_comment_value(value):
@@ -395,7 +749,7 @@ def _align_to_nfdi4plants_profile(ro_crate):
             _move_comments_to_additional_properties(entity)
             continue
 
-        if "https://w3id.org/isa/Study" in additional_types:
+        if ISA_STUDY_URI in additional_types:
             creators = entity.pop("people", [])
             if creators:
                 _set_ref_property(entity, "creator", creators)
@@ -408,7 +762,7 @@ def _align_to_nfdi4plants_profile(ro_crate):
             _move_comments_to_additional_properties(entity)
             continue
 
-        if "https://w3id.org/isa/Assay" in additional_types:
+        if ISA_ASSAY_URI in additional_types:
             if entity.get("processSequence"):
                 _set_ref_property(entity, "about", entity.pop("processSequence"))
             if entity.get("dataFiles"):
@@ -428,7 +782,7 @@ def _align_to_nfdi4plants_profile(ro_crate):
                 entity["comment"] = _comment_strings(comments)
             continue
 
-        if "https://w3id.org/isa/Process" in additional_types:
+        if ISA_PROCESS_URI in additional_types:
             _set_additional_type_ids(entity, BIOSCHEMAS_LAB_PROCESS_URI)
             if entity.get("inputs"):
                 _set_ref_property(entity, "object", entity.pop("inputs"))
@@ -450,7 +804,7 @@ def _align_to_nfdi4plants_profile(ro_crate):
                 )
             continue
 
-        if "https://w3id.org/isa/Protocol" in additional_types:
+        if ISA_PROTOCOL_URI in additional_types:
             entity["@type"] = "HowTo"
             _set_additional_type_ids(entity, BIOSCHEMAS_LAB_PROTOCOL_URI)
             _move_comments_to_additional_properties(entity)
@@ -465,7 +819,7 @@ def _align_to_nfdi4plants_profile(ro_crate):
             )
             continue
 
-        if "https://w3id.org/isa/Data" in additional_types:
+        if ISA_DATA_URI in additional_types:
             entity["@type"] = "MediaObject"
             entity.setdefault("encodingFormat", "application/json")
             _move_comments_to_additional_properties(entity)
@@ -522,13 +876,37 @@ RO_CRATE_SECTION_IDS = {
 
 
 def _normalise_selected_sections(raw_sections):
+    if raw_sections is None:
+        return set(RO_CRATE_SECTION_IDS)
+
     requested_sections = _parse_csv_values(raw_sections)
     if not requested_sections:
-        return set(RO_CRATE_SECTION_IDS)
-    selected_sections = {
-        section for section in requested_sections if section in RO_CRATE_SECTION_IDS
-    }
-    return selected_sections or set(RO_CRATE_SECTION_IDS)
+        return Response(
+            {"error": "Select at least one RO-Crate section."},
+            status=400,
+        )
+
+    invalid_sections = sorted(set(requested_sections) - RO_CRATE_SECTION_IDS)
+    if invalid_sections:
+        return Response(
+            {
+                "error": "Unknown RO-Crate section value.",
+                "invalid_sections": invalid_sections,
+            },
+            status=400,
+        )
+    return set(requested_sections)
+
+
+def _normalise_preview_flag(raw_preview):
+    if raw_preview is None:
+        return False
+    if raw_preview == "true":
+        return True
+    return Response(
+        {"error": "The 'preview' query parameter must be 'true' when provided."},
+        status=400,
+    )
 
 
 def _entity_section(entity):
@@ -562,6 +940,8 @@ def _entity_section(entity):
     if entity_id.startswith("#lane-"):
         return "lanes"
     if entity_id.startswith("#request-file-"):
+        return "request"
+    if entity_id.startswith("#request-context-"):
         return "request"
     if (
         entity_id.startswith("#source-sample-")
@@ -672,6 +1052,21 @@ def _property_section(entity_id, property_name):
             return "request"
         return None
 
+    if entity_id.startswith("#request-context-"):
+        if property_name.startswith("request_"):
+            return "request"
+        return None
+
+    if entity_id.startswith("#sample-process-"):
+        if property_name.startswith("sample_mv_"):
+            return "samples"
+        return None
+
+    if entity_id.startswith("#library-process-"):
+        if property_name.startswith("library_mv_"):
+            return "libraries"
+        return None
+
     if entity_id.startswith("#sample-material-"):
         if property_name.startswith("sample_db_") or property_name.startswith(
             "sample_mv_"
@@ -732,10 +1127,15 @@ def _filter_internal_refs(value, kept_ids):
     return value
 
 
-def _filter_additional_properties(entity, selected_sections, kept_ids):
+def _filter_property_values(entity, selected_sections, kept_ids, property_name):
     entity_id = entity.get("@id")
+    properties = entity.get(property_name, [])
+    if isinstance(properties, dict):
+        properties = [properties]
     filtered_properties = []
-    for prop in entity.get("additionalProperty", []):
+    for prop in properties:
+        if not isinstance(prop, dict):
+            continue
         section = _property_section(entity_id, prop.get("name"))
         if section and section not in selected_sections:
             continue
@@ -751,6 +1151,8 @@ def _filter_additional_properties(entity, selected_sections, kept_ids):
                 "value": filtered_value,
             }
         )
+        if prop.get("additionalType"):
+            filtered_properties[-1]["additionalType"] = prop.get("additionalType")
     return filtered_properties
 
 
@@ -793,19 +1195,24 @@ def _filter_ro_crate_sections(ro_crate, selected_sections):
     for entity in filtered_graph:
         cleaned_entity = {}
         for key, value in entity.items():
-            if key in {"additionalProperty", "comments"}:
+            if key in {"additionalProperty", "comments", "parameterValue"}:
                 continue
             filtered_value = _filter_internal_refs(value, kept_ids)
-            if filtered_value is None:
+            if filtered_value in (None, [], {}):
                 continue
             cleaned_entity[key] = filtered_value
 
-        if "additionalProperty" in entity:
-            cleaned_entity["additionalProperty"] = _filter_additional_properties(
-                entity, selected_sections, kept_ids
-            )
+        for property_name in ("additionalProperty", "parameterValue"):
+            if property_name in entity:
+                filtered_values = _filter_property_values(
+                    entity, selected_sections, kept_ids, property_name
+                )
+                if filtered_values:
+                    cleaned_entity[property_name] = filtered_values
         if "comments" in entity:
-            cleaned_entity["comments"] = _filter_comments(entity, selected_sections)
+            filtered_comments = _filter_comments(entity, selected_sections)
+            if filtered_comments:
+                cleaned_entity["comments"] = filtered_comments
 
         sanitised_graph.append(cleaned_entity)
 
@@ -835,150 +1242,152 @@ def _build_ro_crate_zip_response(ro_crate_payload, archive_name, file_entries):
     return response
 
 
+def _build_ro_crate_response(
+    preview_requested,
+    ro_crate_payload,
+    archive_name,
+    file_entries,
+    skipped_records=None,
+):
+    if preview_requested:
+        response = Response(
+            {
+                "archive_name": archive_name,
+                "ro_crate": ro_crate_payload,
+                "skipped_records": skipped_records or [],
+            }
+        )
+        response["Cache-Control"] = "no-store"
+        return response
+    return _build_ro_crate_zip_response(ro_crate_payload, archive_name, file_entries)
+
+
+def _software_entity():
+    return {
+        "@id": PARKOUR_SOFTWARE_ID,
+        "@type": "SoftwareApplication",
+        "name": "Parkour",
+        "identifier": _parkour_identifier("software", "parkour2"),
+        "softwareVersion": str(getattr(settings, "VERSION", "")) or None,
+        "url": "https://github.com/maxplanck-ie/parkour2",
+    }
+
+
+def _metadata_descriptor_entity():
+    return {
+        "@id": "ro-crate-metadata.json",
+        "@type": "CreativeWork",
+        "conformsTo": {"@id": RO_CRATE_SPEC_URI},
+        "about": {"@id": "./"},
+    }
+
+
+def _license_entity():
+    return {
+        "@id": RO_CRATE_LICENSE_ID,
+        "@type": "CreativeWork",
+        "name": RO_CRATE_LICENSE_NAME,
+        "description": RO_CRATE_LICENSE_DESCRIPTION,
+    }
+
+
+def _export_action_entity(timestamp, result="./", object_refs=None, agent_ref=None):
+    entity = {
+        "@id": RO_CRATE_EXPORT_ACTION_ID,
+        "@type": "CreateAction",
+        "name": "Parkour RO-Crate export generation",
+        "instrument": {"@id": PARKOUR_SOFTWARE_ID},
+        "result": {"@id": result},
+        "endTime": timestamp,
+        "actionStatus": {"@id": "https://schema.org/CompletedActionStatus"},
+    }
+    if object_refs:
+        entity["object"] = _deduplicate_ref_list(object_refs)
+    if agent_ref:
+        entity["agent"] = {"@id": agent_ref}
+    return entity
+
+
+def _empty_ro_crate_payload(timestamp, published_date):
+    return {
+        "@context": [
+            RO_CRATE_CONTEXT_URI,
+            {"@base": "./"},
+        ],
+        "@graph": [
+            _metadata_descriptor_entity(),
+            {
+                "@id": "./",
+                "@type": "Dataset",
+                "name": "Parkour RO-Crate export",
+                "identifier": _parkour_identifier("ro-crate-export", timestamp),
+                "dateCreated": timestamp,
+                "datePublished": published_date,
+                "description": "No matching barcodes or requests were found.",
+                "license": {"@id": RO_CRATE_LICENSE_ID},
+                "creator": {"@id": PARKOUR_SOFTWARE_ID},
+            },
+            _software_entity(),
+            _license_entity(),
+            _export_action_entity(timestamp),
+        ],
+    }
+
+
+def _empty_ro_crate_response(preview_requested):
+    now = timezone.now()
+    return _build_ro_crate_response(
+        preview_requested,
+        _empty_ro_crate_payload(now.isoformat(), now.date().isoformat()),
+        "parkour_ro_crate.zip",
+        [],
+        [],
+    )
+
+
+def _selected_requests_by_id(accessible_requests, target_request_ids):
+    requests_qs = (
+        accessible_requests.filter(id__in=target_request_ids)
+        .select_related(
+            "user",
+            "cost_unit",
+            "user__organization",
+            "user__pi",
+            "user__pi__organization",
+            "cost_unit__pi",
+            "cost_unit__pi__organization",
+        )
+        .prefetch_related("files")
+    )
+    return {req.id: req for req in requests_qs}
+
+
 class GenerateROCrate(viewsets.ViewSet):
     def list(self, request):
-        barcode_values = _parse_csv_values(request.query_params.get("barcodes"))
-        request_values = _parse_csv_values(request.query_params.get("requests"))
-        selected_sections = _normalise_selected_sections(
-            request.query_params.get("sections")
+        selection = ROCrateExportSelectionBuilder(request).build()
+        if isinstance(selection, Response):
+            return selection
+
+        barcode_values = selection.barcode_values
+        request_values = selection.request_values
+        selected_sections = selection.selected_sections
+        preview_requested = selection.preview_requested
+        accessible_requests = selection.accessible_requests
+        library_data = selection.library_data
+        sample_data = selection.sample_data
+        missing_barcodes = selection.missing_barcodes
+        missing_requests = selection.missing_requests
+        non_completed_records = selection.non_completed_records
+
+        if not selection.target_request_ids:
+            return _empty_ro_crate_response(preview_requested)
+
+        target_request_ids = selection.target_request_ids
+        single_request_id = target_request_ids[0]
+        is_multi_request_export = len(target_request_ids) > 1
+        requests_by_id = _selected_requests_by_id(
+            accessible_requests, target_request_ids
         )
-
-        if not barcode_values and not request_values:
-            return Response(
-                {
-                    "error": "Provide at least one comma separated barcode value or request name via the 'barcodes' or 'requests' query parameters."
-                },
-                status=400,
-            )
-
-        accessible_requests = get_accessible_requests(request)
-        accessible_request_ids = list(accessible_requests.values_list("id", flat=True))
-
-        library_data_qs = CompleteLibraryData.objects.filter(
-            request_id__in=accessible_request_ids
-        )
-        sample_data_qs = CompleteSampleData.objects.filter(
-            request_id__in=accessible_request_ids
-        )
-
-        filters = Q()
-        if barcode_values:
-            filters |= Q(barcode__in=barcode_values)
-        if request_values:
-            filters |= Q(request_name__in=request_values)
-
-        if filters:
-            library_data_qs = library_data_qs.filter(filters)
-            sample_data_qs = sample_data_qs.filter(filters)
-
-        library_data = list(library_data_qs)
-        sample_data = list(sample_data_qs)
-
-        found_barcodes = {entry.barcode for entry in chain(library_data, sample_data)}
-        missing_barcodes = sorted(
-            {barcode for barcode in barcode_values if barcode not in found_barcodes}
-        )
-
-        request_ids_from_data = {
-            entry.request_id for entry in chain(library_data, sample_data)
-        }
-
-        requests_from_names_qs = accessible_requests.filter(name__in=request_values)
-        request_ids_from_names = set(
-            requests_from_names_qs.values_list("id", flat=True)
-        )
-        found_request_names = set(requests_from_names_qs.values_list("name", flat=True))
-        missing_requests = sorted(
-            {name for name in request_values if name not in found_request_names}
-        )
-
-        target_request_id_set = request_ids_from_data.union(request_ids_from_names)
-        if len(target_request_id_set) > 1:
-            return Response(
-                {
-                    "error": (
-                        "RO-Crate export currently supports records from exactly one "
-                        "request at a time. Narrow your selection so all chosen "
-                        "libraries or samples belong to the same request."
-                    )
-                },
-                status=400,
-            )
-        if not target_request_id_set:
-            timestamp = timezone.now().isoformat()
-            published_date = timezone.now().date().isoformat()
-            empty_ro_crate = {
-                "@context": [
-                    RO_CRATE_CONTEXT_URI,
-                    {"@base": "./"},
-                ],
-                "@graph": [
-                    {
-                        "@id": "ro-crate-metadata.json",
-                        "@type": "CreativeWork",
-                        "conformsTo": {"@id": RO_CRATE_SPEC_URI},
-                        "about": {"@id": "./"},
-                    },
-                    {
-                        "@id": "./",
-                        "@type": "Dataset",
-                        "name": "Parkour RO-Crate export",
-                        "identifier": _parkour_identifier("ro-crate-export", timestamp),
-                        "dateCreated": timestamp,
-                        "datePublished": published_date,
-                        "description": "No matching barcodes or requests were found.",
-                        "license": {"@id": RO_CRATE_LICENSE_ID},
-                        "creator": {"@id": PARKOUR_SOFTWARE_ID},
-                    },
-                    {
-                        "@id": PARKOUR_SOFTWARE_ID,
-                        "@type": "SoftwareApplication",
-                        "name": "Parkour",
-                        "identifier": _parkour_identifier("software", "parkour2"),
-                        "softwareVersion": str(getattr(settings, "VERSION", ""))
-                        or None,
-                        "url": "https://github.com/maxplanck-ie/parkour2",
-                    },
-                    {
-                        "@id": RO_CRATE_LICENSE_ID,
-                        "@type": "CreativeWork",
-                        "name": RO_CRATE_LICENSE_NAME,
-                        "description": RO_CRATE_LICENSE_DESCRIPTION,
-                    },
-                    {
-                        "@id": RO_CRATE_EXPORT_ACTION_ID,
-                        "@type": "CreateAction",
-                        "name": "Parkour RO-Crate export generation",
-                        "instrument": {"@id": PARKOUR_SOFTWARE_ID},
-                        "result": {"@id": "./"},
-                        "endTime": timestamp,
-                        "actionStatus": {
-                            "@id": "https://schema.org/CompletedActionStatus"
-                        },
-                    },
-                ],
-            }
-            return _build_ro_crate_zip_response(
-                empty_ro_crate,
-                "parkour_ro_crate.zip",
-                [],
-            )
-
-        single_request_id = next(iter(sorted(target_request_id_set)))
-        requests_qs = (
-            accessible_requests.filter(id=single_request_id)
-            .select_related(
-                "user",
-                "cost_unit",
-                "user__organization",
-                "user__pi",
-                "user__pi__organization",
-                "cost_unit__pi",
-                "cost_unit__pi__organization",
-            )
-            .prefetch_related("files")
-        )
-        requests_by_id = {req.id: req for req in requests_qs}
         root_request = requests_by_id.get(single_request_id)
         if root_request is None:
             return Response(
@@ -1003,6 +1412,7 @@ class GenerateROCrate(viewsets.ViewSet):
         process_entities = {}
         data_file_entities = {}
         user_entities = {}
+        request_context_entities = {}
 
         def register_organization(organization):
             if organization is None:
@@ -1063,7 +1473,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": comments,
                 }
                 _apply_additional_types(
-                    organism_entities[entity_id], "https://w3id.org/isa/Organism"
+                    organism_entities[entity_id], ISA_ORGANISM_URI
                 )
             return entity_id
 
@@ -1105,7 +1515,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": comments,
                 }
                 _apply_additional_types(
-                    protocol_entities[entity_id], "https://w3id.org/isa/Protocol"
+                    protocol_entities[entity_id], ISA_PROTOCOL_URI
                 )
             return entity_id
 
@@ -1127,7 +1537,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": comments,
                 }
                 _apply_additional_types(
-                    library_type_entities[entity_id], "https://w3id.org/isa/Material"
+                    library_type_entities[entity_id], ISA_MATERIAL_URI
                 )
             return entity_id
 
@@ -1189,7 +1599,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": comments,
                 }
                 _apply_additional_types(
-                    nucleic_acid_entities[entity_id], "https://w3id.org/isa/Material"
+                    nucleic_acid_entities[entity_id], ISA_MATERIAL_URI
                 )
             return entity_id
 
@@ -1225,7 +1635,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": _deduplicate_comments(comments),
                 }
                 _apply_additional_types(
-                    index_pool_entities[entity_id], "https://w3id.org/isa/Pool"
+                    index_pool_entities[entity_id], ISA_POOL_URI
                 )
                 pool_member_refs = [
                     {"@id": f"#library-material-{library.id}"}
@@ -1260,7 +1670,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": comments,
                 }
                 _apply_additional_types(
-                    sequencer_entities[entity_id], "https://w3id.org/isa/Instrument"
+                    sequencer_entities[entity_id], ISA_INSTRUMENT_URI
                 )
             return entity_id
 
@@ -1287,7 +1697,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": _deduplicate_comments(comments),
                 }
                 _apply_additional_types(
-                    lane_entities[entity_id], "https://w3id.org/isa/Lane"
+                    lane_entities[entity_id], ISA_LANE_URI
                 )
                 if lane.pool and pool_id:
                     lane_entities[entity_id]["associatedPool"] = {"@id": pool_id}
@@ -1349,7 +1759,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 request_file_archives[entity_id] = file_disk_path
                 request_file_entities[entity_id] = {
                     "@id": entity_id,
-                    "@type": "MediaObject",
+                    "@type": ["File", "MediaObject"],
                     "name": file_obj.name
                     or (file_storage_path or f"Request file {file_obj.id}"),
                     "identifier": _parkour_identifier("request-file", file_obj.id),
@@ -1358,6 +1768,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     ),
                     "isPartOf": {"@id": "./"},
                     "about": {"@id": f"#study-{request_obj.id}"},
+                    "requestContext": {"@id": f"#request-context-{request_obj.id}"},
                     "comments": _deduplicate_comments(
                         _build_comments(
                             {
@@ -1482,12 +1893,12 @@ class GenerateROCrate(viewsets.ViewSet):
             )
         )
         flowcells_qs = (
-            Flowcell.objects.filter(requests__id=single_request_id)
+            Flowcell.objects.filter(requests__id__in=target_request_ids)
             .select_related("sequencer")
             .prefetch_related(
                 Prefetch(
                     "requests",
-                    queryset=accessible_requests.filter(id=single_request_id).only(
+                    queryset=accessible_requests.filter(id__in=target_request_ids).only(
                         "id", "name"
                     ),
                 ),
@@ -1535,7 +1946,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "comments": _deduplicate_comments(flowcell_comments),
             }
             _apply_additional_types(
-                data_file_entities[flowcell_data_id], "https://w3id.org/isa/Data"
+                data_file_entities[flowcell_data_id], ISA_DATA_URI
             )
             process_entities[flowcell_process_id] = {
                 "@id": flowcell_process_id,
@@ -1548,7 +1959,7 @@ class GenerateROCrate(viewsets.ViewSet):
             }
             _apply_additional_types(
                 process_entities[flowcell_process_id],
-                "https://w3id.org/isa/Process",
+                ISA_PROCESS_URI,
             )
             if sequencer_id:
                 process_entities[flowcell_process_id]["hasInstrument"] = {
@@ -1568,7 +1979,7 @@ class GenerateROCrate(viewsets.ViewSet):
                 "processSequence": [{"@id": flowcell_process_id}],
             }
             _apply_additional_types(
-                flowcell_entities[flowcell_entity_id], "https://w3id.org/isa/Assay"
+                flowcell_entities[flowcell_entity_id], ISA_ASSAY_URI
             )
             if sequencer_id:
                 flowcell_entities[flowcell_entity_id]["hasInstrument"] = {
@@ -1582,12 +1993,8 @@ class GenerateROCrate(viewsets.ViewSet):
             for req_id in associated_requests:
                 flowcells_by_request[req_id].append(flowcell_entity_id)
 
-        samples_for_request = [
-            entry for entry in sample_data if entry.request_id == single_request_id
-        ]
-        libraries_for_request = [
-            entry for entry in library_data if entry.request_id == single_request_id
-        ]
+        samples_for_request = list(sample_data)
+        libraries_for_request = list(library_data)
 
         now = timezone.now()
         now_iso = now.isoformat()
@@ -1596,21 +2003,21 @@ class GenerateROCrate(viewsets.ViewSet):
 
         context_extensions = {
             "@base": "./",
-            "Investigation": "https://w3id.org/isa/Investigation",
-            "Study": "https://w3id.org/isa/Study",
-            "Assay": "https://w3id.org/isa/Assay",
-            "Process": "https://w3id.org/isa/Process",
-            "Data": "https://w3id.org/isa/Data",
-            "Material": "https://w3id.org/isa/Material",
-            "Sample": "https://w3id.org/isa/Sample",
-            "Library": "https://w3id.org/isa/Library",
+            "Investigation": ISA_INVESTIGATION_URI,
+            "Study": ISA_STUDY_URI,
+            "Assay": ISA_ASSAY_URI,
+            "Process": ISA_PROCESS_URI,
+            "Data": ISA_DATA_URI,
+            "Material": ISA_MATERIAL_URI,
+            "Sample": ISA_SAMPLE_URI,
+            "Library": ISA_LIBRARY_URI,
             "File": "https://schema.org/File",
             "MediaObject": "https://schema.org/MediaObject",
-            "Organism": "https://w3id.org/isa/Organism",
-            "Protocol": "https://w3id.org/isa/Protocol",
-            "Instrument": "https://w3id.org/isa/Instrument",
-            "Pool": "https://w3id.org/isa/Pool",
-            "Lane": "https://w3id.org/isa/Lane",
+            "Organism": ISA_ORGANISM_URI,
+            "Protocol": ISA_PROTOCOL_URI,
+            "Instrument": ISA_INSTRUMENT_URI,
+            "Pool": ISA_POOL_URI,
+            "Lane": ISA_LANE_URI,
             "SoftwareApplication": "https://schema.org/SoftwareApplication",
             "CreateAction": "https://schema.org/CreateAction",
             "Thing": "https://schema.org/Thing",
@@ -1668,6 +2075,10 @@ class GenerateROCrate(viewsets.ViewSet):
             "derivedFrom": {"@id": "https://w3id.org/isa/derivesFrom", "@type": "@id"},
             "creator": {"@id": "https://schema.org/creator", "@type": "@id"},
             "mentions": {"@id": "https://schema.org/mentions", "@type": "@id"},
+            "requestContext": {
+                "@id": "https://schema.org/isPartOf",
+                "@type": "@id",
+            },
             "member": {"@id": "https://schema.org/member", "@type": "@id"},
             "affiliatedOrganization": {
                 "@id": "https://schema.org/affiliation",
@@ -1696,24 +2107,8 @@ class GenerateROCrate(viewsets.ViewSet):
             "about": {"@id": "https://schema.org/about", "@type": "@id"},
         }
 
-        graph.append(
-            {
-                "@id": "ro-crate-metadata.json",
-                "@type": "CreativeWork",
-                "conformsTo": {"@id": RO_CRATE_SPEC_URI},
-                "about": {"@id": "./"},
-            }
-        )
-        graph.append(
-            {
-                "@id": PARKOUR_SOFTWARE_ID,
-                "@type": "SoftwareApplication",
-                "name": "Parkour",
-                "identifier": _parkour_identifier("software", "parkour2"),
-                "softwareVersion": str(getattr(settings, "VERSION", "")) or None,
-                "url": "https://github.com/maxplanck-ie/parkour2",
-            }
-        )
+        graph.append(_metadata_descriptor_entity())
+        graph.append(_software_entity())
 
         dataset_additional_properties = []
         _append_property(dataset_additional_properties, "generated_at", now_iso)
@@ -1741,34 +2136,51 @@ class GenerateROCrate(viewsets.ViewSet):
                 "missing_requests",
                 ", ".join(missing_requests),
             )
+        if non_completed_records:
+            _append_property(
+                dataset_additional_properties,
+                "skipped_non_delivered_records",
+                ", ".join(non_completed_records),
+            )
         if selected_sections:
             _append_property(
                 dataset_additional_properties,
                 "requested_sections",
                 sorted(selected_sections),
             )
+        if is_multi_request_export:
+            _append_property(
+                dataset_additional_properties,
+                "requested_request_ids",
+                ", ".join(str(request_id) for request_id in target_request_ids),
+            )
 
-        request_display_name = root_request.name or f"Request {single_request_id}"
+        request_display_name = (
+            f"Parkour RO-Crate export ({len(target_request_ids)} requests)"
+            if is_multi_request_export
+            else root_request.name or f"Request {single_request_id}"
+        )
         request_timestamp = _normalise_property_value(
             getattr(root_request, "create_time", None)
         )
-        request_data = _extract_model_fields(root_request, prefix="request_")
-        request_data.update(
-            {
-                "request_deep_seq_request": (
-                    root_request.deep_seq_request.name
-                    if root_request.deep_seq_request
-                    else None
-                ),
-            }
-        )
+        request_data = _extract_request_metadata(root_request)
 
         dataset_entity = {
             "@id": "./",
             "@type": "Dataset",
             "name": request_display_name,
-            "identifier": _parkour_identifier("request", single_request_id),
-            "description": root_request.description or "",
+            "identifier": (
+                _parkour_identifier(
+                    "ro-crate-export", "-".join(str(pk) for pk in target_request_ids)
+                )
+                if is_multi_request_export
+                else _parkour_identifier("request", single_request_id)
+            ),
+            "description": (
+                f"Parkour metadata export for {len(target_request_ids)} selected requests."
+                if is_multi_request_export
+                else root_request.description or ""
+            ),
             "dateCreated": request_timestamp or now_iso,
             "datePublished": published_date,
             "conformsTo": [{"@id": NFDI4PLANTS_ISA_PROFILE_URI}],
@@ -1783,7 +2195,17 @@ class GenerateROCrate(viewsets.ViewSet):
                 dataset_additional_properties
             ),
         }
-        _apply_additional_types(dataset_entity, "https://w3id.org/isa/Investigation")
+        _apply_additional_types(dataset_entity, ISA_INVESTIGATION_URI)
+
+        for current_request in sorted(
+            requests_by_id.values(), key=lambda request_obj: request_obj.id
+        ):
+            request_context_id = f"#request-context-{current_request.id}"
+            request_context_entities[request_context_id] = (
+                _build_request_context_entity(current_request)
+            )
+            dataset_entity["mentions"].append({"@id": request_context_id})
+            dataset_entity["hasPart"].append({"@id": request_context_id})
 
         request_id = single_request_id
         request_obj = root_request
@@ -1858,15 +2280,16 @@ class GenerateROCrate(viewsets.ViewSet):
             "assays": [],
             "comments": _build_comments(study_properties),
         }
-        _apply_additional_types(study_entity, "https://w3id.org/isa/Study")
+        _apply_additional_types(study_entity, ISA_STUDY_URI)
 
         request_file_refs = []
-        for request_file in request_obj.files.all():
-            request_file_id = register_request_file(request_file, request_obj)
-            if not request_file_id:
-                continue
-            request_file_refs.append({"@id": request_file_id})
-            dataset_entity["mentions"].append({"@id": request_file_id})
+        for current_request in requests_by_id.values():
+            for request_file in current_request.files.all():
+                request_file_id = register_request_file(request_file, current_request)
+                if not request_file_id:
+                    continue
+                request_file_refs.append({"@id": request_file_id})
+                dataset_entity["mentions"].append({"@id": request_file_id})
         if request_file_refs:
             deduped_request_file_refs = _deduplicate_ref_list(request_file_refs)
             study_entity["hasPart"] = deduped_request_file_refs
@@ -1963,13 +2386,13 @@ class GenerateROCrate(viewsets.ViewSet):
                         [
                             {
                                 "name": "source_request_identifier",
-                                "value": request_display_name,
+                                "value": sample_entry.request_name or request_display_name,
                             }
                         ]
                     ),
                 }
                 _apply_additional_types(
-                    source_entities[source_id], "https://w3id.org/isa/Material"
+                    source_entities[source_id], ISA_MATERIAL_URI
                 )
                 sample_entity = {
                     "@id": sample_material_id,
@@ -1981,8 +2404,8 @@ class GenerateROCrate(viewsets.ViewSet):
                 }
                 _apply_additional_types(
                     sample_entity,
-                    "https://w3id.org/isa/Material",
-                    "https://w3id.org/isa/Sample",
+                    ISA_MATERIAL_URI,
+                    ISA_SAMPLE_URI,
                 )
                 if sample_model and sample_model.library_type:
                     sample_entity["libraryType"] = {
@@ -2019,7 +2442,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "outputs": [{"@id": sample_material_id}, {"@id": sample_data_id}],
                 }
                 _apply_additional_types(
-                    process_entities[sample_process_id], "https://w3id.org/isa/Process"
+                    process_entities[sample_process_id], ISA_PROCESS_URI
                 )
                 if sample_model and sample_model.library_protocol:
                     process_entities[sample_process_id]["executesProtocol"] = {
@@ -2035,12 +2458,13 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": _build_comments(
                         {
                             "sample_export_identifier": sample_entry.barcode,
-                            "sample_export_request": request_display_name,
+                            "sample_export_request": sample_entry.request_name
+                            or request_display_name,
                         }
                     ),
                 }
                 _apply_additional_types(
-                    data_file_entities[sample_data_id], "https://w3id.org/isa/Data"
+                    data_file_entities[sample_data_id], ISA_DATA_URI
                 )
                 sample_assay_entity = {
                     "@id": sample_assay_id,
@@ -2055,7 +2479,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "processSequence": [{"@id": sample_process_id}],
                 }
                 _apply_additional_types(
-                    sample_assay_entity, "https://w3id.org/isa/Assay"
+                    sample_assay_entity, ISA_ASSAY_URI
                 )
                 graph.append(sample_entity)
                 graph.append(sample_assay_entity)
@@ -2129,8 +2553,8 @@ class GenerateROCrate(viewsets.ViewSet):
                 }
                 _apply_additional_types(
                     library_entity,
-                    "https://w3id.org/isa/Material",
-                    "https://w3id.org/isa/Library",
+                    ISA_MATERIAL_URI,
+                    ISA_LIBRARY_URI,
                 )
                 if library_model and library_model.organism:
                     library_entity["organism"] = {
@@ -2170,7 +2594,7 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": assay_comments,
                 }
                 _apply_additional_types(
-                    process_entities[library_process_id], "https://w3id.org/isa/Process"
+                    process_entities[library_process_id], ISA_PROCESS_URI
                 )
                 if library_model and library_model.library_protocol:
                     process_entities[library_process_id]["executesProtocol"] = {
@@ -2186,12 +2610,13 @@ class GenerateROCrate(viewsets.ViewSet):
                     "comments": _build_comments(
                         {
                             "library_export_identifier": library_entry.barcode,
-                            "library_export_request": request_display_name,
+                            "library_export_request": library_entry.request_name
+                            or request_display_name,
                         }
                     ),
                 }
                 _apply_additional_types(
-                    data_file_entities[library_data_id], "https://w3id.org/isa/Data"
+                    data_file_entities[library_data_id], ISA_DATA_URI
                 )
                 assay_entity = {
                     "@id": assay_id,
@@ -2206,12 +2631,14 @@ class GenerateROCrate(viewsets.ViewSet):
                     "dataFiles": [{"@id": library_data_id}],
                     "processSequence": [{"@id": library_process_id}],
                 }
-                _apply_additional_types(assay_entity, "https://w3id.org/isa/Assay")
+                _apply_additional_types(assay_entity, ISA_ASSAY_URI)
 
                 graph.append(library_entity)
                 graph.append(assay_entity)
 
-        flowcell_ids_for_request = flowcells_by_request.get(single_request_id, [])
+        flowcell_ids_for_request = []
+        for request_id in target_request_ids:
+            flowcell_ids_for_request.extend(flowcells_by_request.get(request_id, []))
         if flowcell_ids_for_request:
             seen_flowcells = set()
             for flowcell_entity_id in flowcell_ids_for_request:
@@ -2233,21 +2660,117 @@ class GenerateROCrate(viewsets.ViewSet):
                 sorted(seen_flowcells),
             )
 
-        study_entity["protocols"] = _deduplicate_ref_list(study_protocol_refs)
-        study_entity["materials"]["sources"] = _deduplicate_ref_list(
-            study_source_refs
-        )
-        study_entity["materials"]["samples"] = _deduplicate_ref_list(
-            study_sample_refs
-        )
-        study_entity["materials"]["otherMaterials"] = _deduplicate_ref_list(
-            study_other_material_refs
-        )
-        study_entity["processSequence"] = _deduplicate_ref_list(study_process_refs)
-        study_entity["assays"] = _deduplicate_ref_list(study_assay_refs)
-        study_entity["comments"] = _deduplicate_comments(study_entity["comments"])
+        study_entities_to_append = [study_entity]
+        if is_multi_request_export:
+            dataset_entity["studies"] = []
+            study_entities_to_append = []
+            for current_request_id in target_request_ids:
+                current_request = requests_by_id.get(current_request_id)
+                if current_request is None:
+                    continue
 
-        graph.append(study_entity)
+                current_samples = [
+                    entry
+                    for entry in samples_for_request
+                    if entry.request_id == current_request_id
+                ]
+                current_libraries = [
+                    entry
+                    for entry in libraries_for_request
+                    if entry.request_id == current_request_id
+                ]
+                current_study_id = f"#study-{current_request_id}"
+                current_source_refs = [
+                    {"@id": f"#source-sample-{entry.sample_id}"}
+                    for entry in current_samples
+                ]
+                current_sample_refs = [
+                    {"@id": f"#sample-material-{entry.sample_id}"}
+                    for entry in current_samples
+                ]
+                current_library_refs = [
+                    {"@id": f"#library-material-{entry.library_id}"}
+                    for entry in current_libraries
+                ]
+                current_process_refs = [
+                    {"@id": f"#sample-process-{entry.sample_id}"}
+                    for entry in current_samples
+                ] + [
+                    {"@id": f"#library-process-{entry.library_id}"}
+                    for entry in current_libraries
+                ]
+                current_assay_refs = [
+                    {"@id": f"#sample-assay-{entry.sample_id}"}
+                    for entry in current_samples
+                ] + [
+                    {"@id": f"#library-assay-{entry.library_id}"}
+                    for entry in current_libraries
+                ]
+
+                for flowcell_entity_id in flowcells_by_request.get(
+                    current_request_id, []
+                ):
+                    current_assay_refs.append({"@id": flowcell_entity_id})
+
+                dataset_entity["studies"].append({"@id": current_study_id})
+                dataset_entity["mentions"].append({"@id": current_study_id})
+                dataset_entity["hasPart"].append({"@id": current_study_id})
+
+                current_study_entity = {
+                    "@id": current_study_id,
+                    "@type": "Dataset",
+                    "identifier": _parkour_identifier(
+                        "study", current_request_id
+                    ),
+                    "name": f"Study for {current_request.name or f'Request {current_request_id}'}",
+                    "description": current_request.description or "",
+                    "dateCreated": _normalise_property_value(
+                        getattr(current_request, "create_time", None)
+                    ),
+                    "datePublished": published_date,
+                    "materials": {
+                        "sources": _deduplicate_ref_list(current_source_refs),
+                        "samples": _deduplicate_ref_list(current_sample_refs),
+                        "otherMaterials": _deduplicate_ref_list(
+                            current_library_refs
+                        ),
+                    },
+                    "processSequence": _deduplicate_ref_list(
+                        current_process_refs
+                    ),
+                    "assays": _deduplicate_ref_list(current_assay_refs),
+                    "comments": _build_comments(
+                        {
+                            "study_request_identifier": current_request.name,
+                            "study_samples_count": len(current_samples),
+                            "study_libraries_count": len(current_libraries),
+                        }
+                    ),
+                }
+                _apply_additional_types(
+                    current_study_entity, ISA_STUDY_URI
+                )
+                study_entities_to_append.append(current_study_entity)
+        else:
+            study_entity["protocols"] = _deduplicate_ref_list(study_protocol_refs)
+            study_entity["materials"]["sources"] = _deduplicate_ref_list(
+                study_source_refs
+            )
+            study_entity["materials"]["samples"] = _deduplicate_ref_list(
+                study_sample_refs
+            )
+            study_entity["materials"]["otherMaterials"] = _deduplicate_ref_list(
+                study_other_material_refs
+            )
+            study_entity["processSequence"] = _deduplicate_ref_list(
+                study_process_refs
+            )
+            study_entity["assays"] = _deduplicate_ref_list(study_assay_refs)
+            study_entity["comments"] = _deduplicate_comments(
+                study_entity["comments"]
+            )
+
+        graph.extend(study_entities_to_append)
 
         exporter_entity_id = None
         exporting_user = getattr(request, "user", None)
@@ -2256,18 +2779,11 @@ class GenerateROCrate(viewsets.ViewSet):
             if exporter_entity_id:
                 dataset_entity["mentions"].append({"@id": exporter_entity_id})
 
-        export_action_entity = {
-            "@id": RO_CRATE_EXPORT_ACTION_ID,
-            "@type": "CreateAction",
-            "name": "Parkour RO-Crate export generation",
-            "instrument": {"@id": PARKOUR_SOFTWARE_ID},
-            "result": {"@id": "./"},
-            "object": _deduplicate_ref_list(dataset_entity.get("mentions", [])),
-            "endTime": now_iso,
-            "actionStatus": {"@id": "https://schema.org/CompletedActionStatus"},
-        }
-        if exporter_entity_id:
-            export_action_entity["agent"] = {"@id": exporter_entity_id}
+        export_action_entity = _export_action_entity(
+            now_iso,
+            object_refs=dataset_entity.get("mentions", []),
+            agent_ref=exporter_entity_id,
+        )
         dataset_entity["mentions"].append({"@id": RO_CRATE_EXPORT_ACTION_ID})
 
         graph.extend(organization_entities.values())
@@ -2284,6 +2800,7 @@ class GenerateROCrate(viewsets.ViewSet):
         graph.extend(sequencer_entities.values())
         graph.extend(lane_entities.values())
         graph.extend(request_file_entities.values())
+        graph.extend(request_context_entities.values())
         graph.extend(source_entities.values())
         graph.extend(process_entities.values())
         graph.extend(data_file_entities.values())
@@ -2297,15 +2814,7 @@ class GenerateROCrate(viewsets.ViewSet):
             dataset_entity,
         )
 
-        graph.insert(
-            2,
-            {
-                "@id": RO_CRATE_LICENSE_ID,
-                "@type": "CreativeWork",
-                "name": RO_CRATE_LICENSE_NAME,
-                "description": RO_CRATE_LICENSE_DESCRIPTION,
-            },
-        )
+        graph.insert(2, _license_entity())
         graph.insert(3, export_action_entity)
 
         ro_crate = {
@@ -2317,7 +2826,7 @@ class GenerateROCrate(viewsets.ViewSet):
         }
         ro_crate = _align_to_nfdi4plants_profile(ro_crate)
         ro_crate = _filter_ro_crate_sections(ro_crate, selected_sections)
-        archive_stub = _safe_archive_component(request_display_name, "parkour")
+        archive_stub = _archive_stub_for_requests(requests_by_id, target_request_ids)
         archive_name = f"{archive_stub}_ro_crate.zip"
         file_entries = [
             (archive_path, source_path)
@@ -2328,12 +2837,11 @@ class GenerateROCrate(viewsets.ViewSet):
                 entry.get("@id") == archive_path for entry in ro_crate.get("@graph", [])
             )
         ]
-
-        return _build_ro_crate_zip_response(
+        return _build_ro_crate_response(
+            preview_requested,
             ro_crate,
             archive_name,
             file_entries,
+            non_completed_records,
         )
-
-
 __all__ = ["GenerateROCrate"]

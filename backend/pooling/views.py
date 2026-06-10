@@ -235,7 +235,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                     return Response(
                         {
                             "success": False,
-                            "message": "Pool is already loaded on at least one flowcell lane and cannot be returned to Pooling.",
+                            "message": "Not possible to return to Pooling (already loaded on at least one flowcell lane).",
                         },
                         status=status.HTTP_400_BAD_REQUEST,
                     )

@@ -80,6 +80,151 @@ import { showNotification } from "../utilities/utilityFunctions";
 import { markRaw } from "vue";
 import iconPasteError from "../assets/icons/alert_confirmation.svg";
 
+const TABULATOR_TABLE_DEFAULT_ID = "tabulatorTable";
+const TABULATOR_SELECTOR_PREFIX = "#";
+const GROUP_VALUE_SEPARATOR = "_";
+const DEFAULT_DOUBLE_CLICK_EDIT_DELAY_MS = 1000;
+const LARGE_PASTE_CELL_THRESHOLD = 200;
+
+const TABULATOR_OPTIONS = {
+  layout: "fitColumns",
+  headerAlign: "center",
+  resizableHeader: "header",
+  groupToggleElement: "header",
+  editTriggerEvent: "dblclick",
+  manualEditTriggerEvent: "manual",
+  copyRowRange: "range",
+  pasteAction: "range",
+  copyPlainType: "plain"
+};
+
+const TABULATOR_EVENTS = {
+  tableBuilt: "tableBuilt",
+  dataChanged: "dataChanged",
+  renderComplete: "renderComplete",
+  cellEdited: "cellEdited",
+  cellClick: "cellClick",
+  cellFocused: "cellFocused",
+  cellContext: "cellContext",
+  clipboardCopied: "clipboardCopied",
+  clipboardPasted: "clipboardPasted",
+  columnResized: "columnResized",
+  columnVisibilityChanged: "columnVisibilityChanged"
+};
+
+const DOM_EVENTS = {
+  keydown: "keydown",
+  mousedown: "mousedown",
+  mouseup: "mouseup",
+  click: "click",
+  input: "input"
+};
+
+const KEY_NAMES = {
+  arrowDown: "ArrowDown",
+  arrowLeft: "ArrowLeft",
+  arrowRight: "ArrowRight",
+  backspace: "Backspace",
+  delete: "Delete",
+  escape: "Escape",
+  cut: "x",
+  copy: "c",
+  paste: "v",
+  selectAll: "a"
+};
+
+const HTML_TAGS = {
+  input: "INPUT",
+  textarea: "TEXTAREA"
+};
+
+const TABULATOR_CLASSES = {
+  noGroupBy: "no-group-by",
+  disableEditing: "disable-editing"
+};
+
+const TABULATOR_SELECTORS = {
+  editingCell: ".tabulator-cell.tabulator-editing",
+  groupRow: ".tabulator-row.tabulator-group",
+  tableHolder: ".tabulator-tableholder",
+  tableContainer: ".table-container",
+  editorInput: "input, select, textarea, [contenteditable='true']"
+};
+
+const TABLE_FIELDS = {
+  barcode: "barcode",
+  comments: "comments",
+  commentsFacility: "comments_facility",
+  commentsLibrarySample: "comments_library_sample",
+  gmo: "gmo",
+  gmoFacility: "gmo_facility",
+  libraryProtocolName: "library_protocol_name",
+  name: "name",
+  nucleicAcidTypeName: "nucleic_acid_type_name",
+  poolName: "pool_name",
+  qualityCheck: "quality_check",
+  recordType: "record_type",
+  requestName: "request_name",
+  samplesSubmitted: "samples_submitted",
+  selected: "selected",
+  type: "type"
+};
+
+const RECORD_TYPES = {
+  library: "L",
+  sample: "S"
+};
+
+const FILTER_TYPES = {
+  equals: "=",
+  notEquals: "!=",
+  like: "like"
+};
+
+const FILTER_KEYS = {
+  typesNotIn: "typesNotIn"
+};
+
+const FILTER_OPERATIONS = {
+  searchIncomingLibrariesAndSamples: "search_incoming_libraries_and_samples",
+  searchLibraryPreparation: "search_library_preparation",
+  searchPooling: "search_pooling",
+  showLibraries: "showLibraries",
+  showSamples: "showSamples",
+  onlySamplesSubmitted: "onlySamplesSubmitted",
+  onlyGmo: "onlyGmo"
+};
+
+const GMO_FACILITY_VALUES = {
+  notNeeded: "Not Needed",
+  riskAssessmentDone: "Risk Assessment Done"
+};
+
+const EDITOR_TYPES = {
+  number: "number",
+  list: "list",
+  select: "select",
+  input: "input"
+};
+
+const VALIDATOR_RULES = {
+  integer: "integer",
+  minPrefix: "min:",
+  maxPrefix: "max:"
+};
+
+const PASTE_ERROR_POPUP = {
+  defaultHeight: 220,
+  defaultWidth: 600,
+  maxHeight: 420,
+  baseHeight: 260,
+  rowHeight: 34
+};
+
+const WARNING_NOTIFICATION_TYPE = "warning";
+const IGNORED_FROZEN_COLUMN_WARNING =
+  "Using frozen columns that are not the range header";
+
 export default {
   name: "TabulatorTable",
   props: {
@@ -88,7 +233,7 @@ export default {
     },
     tableId: {
       type: String,
-      default: "tabulatorTable"
+      default: TABULATOR_TABLE_DEFAULT_ID
     },
     columnDefs: {
       type: Array,
@@ -130,8 +275,16 @@ export default {
       pendingGroupScrollRestore: null,
       tableFiltersState: {
         typesIn: [
-          { field: "type", type: "=", value: "L" },
-          { field: "type", type: "=", value: "S" }
+          {
+            field: TABLE_FIELDS.type,
+            type: FILTER_TYPES.equals,
+            value: RECORD_TYPES.library
+          },
+          {
+            field: TABLE_FIELDS.type,
+            type: FILTER_TYPES.equals,
+            value: RECORD_TYPES.sample
+          }
         ],
         typesNotIn: []
       },
@@ -148,8 +301,8 @@ export default {
       showErrorsWindow: false,
       errorsPopupContents: {
         errorsList: [],
-        errorsPopupHeight: 220,
-        errorsPopupWidth: 600
+        errorsPopupHeight: PASTE_ERROR_POPUP.defaultHeight,
+        errorsPopupWidth: PASTE_ERROR_POPUP.defaultWidth
       },
       clipboardPasteParser: null,
       clipboardCopyValueByField: {},
@@ -157,7 +310,7 @@ export default {
       suppressDataChangedProcessing: false,
       pendingEditClick: null,
       useExtendedDoubleClickEdit: false,
-      doubleClickEditDelayMs: 1000
+      doubleClickEditDelayMs: DEFAULT_DOUBLE_CLICK_EDIT_DELAY_MS
     };
   },
   watch: {
@@ -185,23 +338,23 @@ export default {
     this.initializeTable();
   },
   beforeUnmount() {
-    document.removeEventListener("keydown", this.handleKeyDown);
+    document.removeEventListener(DOM_EVENTS.keydown, this.handleKeyDown);
     const tabulatorElement = this.getTabulatorElement();
     if (tabulatorElement && this.preventEditorBlurHandler) {
       tabulatorElement.removeEventListener(
-        "mousedown",
+        DOM_EVENTS.mousedown,
         this.preventEditorBlurHandler,
         true
       );
       tabulatorElement.removeEventListener(
-        "click",
+        DOM_EVENTS.click,
         this.preventEditorBlurHandler,
         true
       );
     }
     if (tabulatorElement && this.preserveScrollOnGroupToggleHandler) {
       tabulatorElement.removeEventListener(
-        "click",
+        DOM_EVENTS.click,
         this.preserveScrollOnGroupToggleHandler,
         true
       );
@@ -237,7 +390,7 @@ export default {
         rowData?.tempId ??
         rowData?.pk ??
         rowData?.id ??
-        rowData?.barcode ??
+        rowData?.[TABLE_FIELDS.barcode] ??
         null;
       const rowPositionRaw = row?.getPosition?.(true);
       const rowPosition = Number.isFinite(rowPositionRaw)
@@ -255,11 +408,14 @@ export default {
       if (this.rowData && this.columnDefs) {
         const rawDelay = Number(this.tableOptions?.doubleClickEditDelayMs);
         this.doubleClickEditDelayMs =
-          Number.isFinite(rawDelay) && rawDelay > 0 ? rawDelay : 1000;
+          Number.isFinite(rawDelay) && rawDelay > 0
+            ? rawDelay
+            : DEFAULT_DOUBLE_CLICK_EDIT_DELAY_MS;
         const requestedEditTriggerEvent =
-          this.tableOptions?.editTriggerEvent || "dblclick";
+          this.tableOptions?.editTriggerEvent ||
+          TABULATOR_OPTIONS.editTriggerEvent;
         this.useExtendedDoubleClickEdit =
-          requestedEditTriggerEvent === "dblclick";
+          requestedEditTriggerEvent === TABULATOR_OPTIONS.editTriggerEvent;
         const forwardedTableOptions = { ...(this.tableOptions || {}) };
         delete forwardedTableOptions.doubleClickEditDelayMs;
 
@@ -267,25 +423,25 @@ export default {
         const options = {
           data: this.rowData,
           columns: this.columnDefs,
-          layout: "fitColumns",
+          layout: TABULATOR_OPTIONS.layout,
           columnDefaults: {
             headerSort: false,
             headerFilter: false,
             editor: false,
-            headerHozAlign: "center",
-            resizable: "header",
+            headerHozAlign: TABULATOR_OPTIONS.headerAlign,
+            resizable: TABULATOR_OPTIONS.resizableHeader,
             headerContextMenu: []
           },
           tooltips: true,
           resizableColumns: true,
-          groupToggleElement: "header",
+          groupToggleElement: TABULATOR_OPTIONS.groupToggleElement,
           selectable: true,
           selectableRange: 1,
           selectableRangeColumns: false,
           selectableRangeRows: false,
           selectableRangeClearCells: false,
           editTriggerEvent: this.useExtendedDoubleClickEdit
-            ? "manual"
+            ? TABULATOR_OPTIONS.manualEditTriggerEvent
             : requestedEditTriggerEvent,
           clipboard: true,
           clipboardCopyStyled: false,
@@ -294,10 +450,10 @@ export default {
             rowHeaders: false,
             columnHeaders: false
           },
-          clipboardCopyRowRange: "range",
-          clipboardPasteAction: "range",
+          clipboardCopyRowRange: TABULATOR_OPTIONS.copyRowRange,
+          clipboardPasteAction: TABULATOR_OPTIONS.pasteAction,
           clipboardCopyFormatter: (type, output) => {
-            if (type !== "plain") return output;
+            if (type !== TABULATOR_OPTIONS.copyPlainType) return output;
             const customCopy = this.buildClipboardOutputFromSelection();
             const withExcelLikeTerminator = (text) => {
               const isMultiCell = text.includes("\t") || text.includes("\n");
@@ -315,7 +471,7 @@ export default {
             if (!selectedRanges?.length) {
               showNotification(
                 "Please select a range before pasting.",
-                "warning"
+                WARNING_NOTIFICATION_TYPE
               );
               return [];
             }
@@ -342,7 +498,7 @@ export default {
               ...pastedData.map((row) => row.length)
             );
             const totalPastedCells = pastedData.length * pastedColumnCount;
-            const useFastPath = totalPastedCells > 200;
+            const useFastPath = totalPastedCells > LARGE_PASTE_CELL_THRESHOLD;
             const rangeColumns = visibleColumns.slice(
               colStart,
               colStart + pastedColumnCount
@@ -400,7 +556,9 @@ export default {
                   const cellEl = cell?.getElement?.();
                   if (
                     shouldBlockDisabledCells &&
-                    cellEl?.classList?.contains("disable-editing")
+                    cellEl?.classList?.contains(
+                      TABULATOR_CLASSES.disableEditing
+                    )
                   ) {
                     return false;
                   }
@@ -422,7 +580,7 @@ export default {
                     return;
                   }
                   errors.push({
-                    barcode: rowData.barcode,
+                    barcode: rowData[TABLE_FIELDS.barcode],
                     rowNumber,
                     message: `${columnTitle}: Editing is not allowed in this cell.`
                   });
@@ -440,7 +598,7 @@ export default {
                   changedCols.add(colStart + colOffset);
                 } catch (error) {
                   errors.push({
-                    barcode: rowData.barcode,
+                    barcode: rowData[TABLE_FIELDS.barcode],
                     rowNumber,
                     message: `${columnTitle}: ${error.message}`
                   });
@@ -448,7 +606,9 @@ export default {
               });
 
               const updateKey =
-                rowData?.tempId ?? rowData?.barcode ?? `row-${rowNumber}`;
+                rowData?.tempId ??
+                rowData?.[TABLE_FIELDS.barcode] ??
+                `row-${rowNumber}`;
               batchUpdates.set(updateKey, updatedRow);
             });
 
@@ -500,21 +660,25 @@ export default {
             if (errors.length) {
               this.errorsPopupContents = {
                 errorsList: errors,
-                errorsPopupHeight: Math.min(420, 260 + errors.length * 34),
-                errorsPopupWidth: 600
+                errorsPopupHeight: Math.min(
+                  PASTE_ERROR_POPUP.maxHeight,
+                  PASTE_ERROR_POPUP.baseHeight +
+                    errors.length * PASTE_ERROR_POPUP.rowHeight
+                ),
+                errorsPopupWidth: PASTE_ERROR_POPUP.defaultWidth
               };
               this.showErrorsWindow = true;
             }
             if (blockedPaste) {
-              if (blockedFields.has("barcode")) {
+              if (blockedFields.has(TABLE_FIELDS.barcode)) {
                 showNotification(
                   "Barcode is read-only and cannot be pasted.",
-                  "warning"
+                  WARNING_NOTIFICATION_TYPE
                 );
               } else {
                 showNotification(
                   "Paste is disabled for some columns.",
-                  "warning"
+                  WARNING_NOTIFICATION_TYPE
                 );
               }
             }
@@ -537,7 +701,7 @@ export default {
           const first = args?.[0];
           if (
             typeof first === "string" &&
-            first.includes("Using frozen columns that are not the range header")
+            first.includes(IGNORED_FROZEN_COLUMN_WARNING)
           ) {
             return;
           }
@@ -545,25 +709,26 @@ export default {
         };
 
         this.tabulatorInstance = markRaw(
-          new Tabulator(`#${this.tableId}`, options)
+          new Tabulator(`${TABULATOR_SELECTOR_PREFIX}${this.tableId}`, options)
         );
         this.clipboardPasteParser = options.clipboardPasteParser;
         this.clipboardCopyValueByField = this.buildClipboardValueLookup(
           this.columnDefs
         );
 
-        this.tabulatorInstance.on("tableBuilt", () => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.tableBuilt, () => {
           this.tableBuilt = true;
-          document.addEventListener("keydown", this.handleKeyDown);
+          document.addEventListener(DOM_EVENTS.keydown, this.handleKeyDown);
 
           const tabulatorElement = this.getTabulatorElement();
           tabulatorElement.addEventListener(
-            "keydown",
+            DOM_EVENTS.keydown,
             (e) => {
               const tag = e.target && e.target.tagName;
               if (
-                (tag === "INPUT" || tag === "TEXTAREA") &&
-                (e.key === "ArrowLeft" || e.key === "ArrowRight")
+                (tag === HTML_TAGS.input || tag === HTML_TAGS.textarea) &&
+                (e.key === KEY_NAMES.arrowLeft ||
+                  e.key === KEY_NAMES.arrowRight)
               ) {
                 e.stopPropagation();
               }
@@ -573,65 +738,67 @@ export default {
 
           if (this.preventEditorBlurHandler) {
             tabulatorElement.removeEventListener(
-              "mousedown",
+              DOM_EVENTS.mousedown,
               this.preventEditorBlurHandler,
               true
             );
             tabulatorElement.removeEventListener(
-              "click",
+              DOM_EVENTS.click,
               this.preventEditorBlurHandler,
               true
             );
           }
 
           this.preventEditorBlurHandler = (event) => {
-            if (event.target.closest(".tabulator-cell.tabulator-editing")) {
+            if (event.target.closest(TABULATOR_SELECTORS.editingCell)) {
               event.stopPropagation();
             }
           };
 
           tabulatorElement.addEventListener(
-            "mousedown",
+            DOM_EVENTS.mousedown,
             this.preventEditorBlurHandler,
             true
           );
           tabulatorElement.addEventListener(
-            "click",
+            DOM_EVENTS.click,
             this.preventEditorBlurHandler,
             true
           );
           if (this.tableOptions.preserveScrollOnGroupToggle) {
             if (this.preserveScrollOnGroupToggleHandler) {
               tabulatorElement.removeEventListener(
-                "click",
+                DOM_EVENTS.click,
                 this.preserveScrollOnGroupToggleHandler,
                 true
               );
             }
             this.preserveScrollOnGroupToggleHandler = (event) => {
               const groupRow = event.target.closest(
-                ".tabulator-row.tabulator-group"
+                TABULATOR_SELECTORS.groupRow
               );
               if (!groupRow) return;
               const holder = tabulatorElement.querySelector(
-                ".tabulator-tableholder"
+                TABULATOR_SELECTORS.tableHolder
               );
-              const outer = tabulatorElement.closest(".table-container");
+              const outer = tabulatorElement.closest(
+                TABULATOR_SELECTORS.tableContainer
+              );
               this.pendingGroupScrollRestore = {
                 holderScrollTop: holder ? holder.scrollTop : null,
                 outerScrollTop: outer ? outer.scrollTop : null
               };
             };
             tabulatorElement.addEventListener(
-              "click",
+              DOM_EVENTS.click,
               this.preserveScrollOnGroupToggleHandler,
               true
             );
           }
           if (this.tableGroupsConfig.noGroupByClass) {
-            tabulatorElement.classList.add("no-group-by");
+            tabulatorElement.classList.add(TABULATOR_CLASSES.noGroupBy);
           } else {
-            tabulatorElement.classList.remove("no-group-by");
+            tabulatorElement.classList.remove(TABULATOR_CLASSES.noGroupBy);
           }
 
           this.tabulatorInstance.setGroupBy(this.tableGroupsConfig.groupBy);
@@ -640,7 +807,7 @@ export default {
             let typesNotIn = this.tableFiltersState.typesNotIn;
             let flatFilters = Object.entries(this.tableFiltersState)
               .filter(([key, value]) => {
-                if (key === "typesNotIn") return false;
+                if (key === FILTER_KEYS.typesNotIn) return false;
                 return Array.isArray(value)
                   ? value.length > 0
                   : Object.keys(value).length > 0;
@@ -656,7 +823,7 @@ export default {
 
         this.previousData = JSON.stringify(this.rowData);
 
-        this.tabulatorInstance.on("dataChanged", (updatedData) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.dataChanged, (updatedData) => {
           if (this.suppressDataChangedProcessing) {
             return;
           }
@@ -674,16 +841,19 @@ export default {
 
             Object.keys(row).forEach((key) => {
               if (
-                key !== "selected" &&
-                key !== "samples_submitted" &&
-                key !== "quality_check"
+                key !== TABLE_FIELDS.selected &&
+                key !== TABLE_FIELDS.samplesSubmitted &&
+                key !== TABLE_FIELDS.qualityCheck
               ) {
-                if (key === "gmo_facility") {
+                if (key === TABLE_FIELDS.gmoFacility) {
                   if (row[key] !== oldRow[key]) {
-                    if (row[key] === "Not Needed" || row[key] === false) {
+                    if (
+                      row[key] === GMO_FACILITY_VALUES.notNeeded ||
+                      row[key] === false
+                    ) {
                       changedFields[key] = false;
                     } else if (
-                      row[key] === "Risk Assessment Done" ||
+                      row[key] === GMO_FACILITY_VALUES.riskAssessmentDone ||
                       row[key] === true
                     ) {
                       changedFields[key] = true;
@@ -703,7 +873,7 @@ export default {
               batchChanges.push({
                 pk: row.pk,
                 tempId: row.tempId,
-                record_type: row.record_type,
+                [TABLE_FIELDS.recordType]: row[TABLE_FIELDS.recordType],
                 ...changedFields
               });
             }
@@ -716,7 +886,7 @@ export default {
           }
         });
 
-        this.tabulatorInstance.on("renderComplete", () => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.renderComplete, () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
           this.updateGroupValuesFromRows(rows);
           if (this.tableOptions.handleRenderComplete) {
@@ -725,8 +895,11 @@ export default {
           if (this.pendingGroupScrollRestore) {
             const tabulatorEl = this.getTabulatorElement();
             const holder =
-              tabulatorEl?.querySelector(".tabulator-tableholder") || null;
-            const outer = tabulatorEl?.closest?.(".table-container") || null;
+              tabulatorEl?.querySelector(TABULATOR_SELECTORS.tableHolder) ||
+              null;
+            const outer =
+              tabulatorEl?.closest?.(TABULATOR_SELECTORS.tableContainer) ||
+              null;
             const { holderScrollTop, outerScrollTop } =
               this.pendingGroupScrollRestore;
             this.pendingGroupScrollRestore = null;
@@ -745,13 +918,13 @@ export default {
           }
         });
 
-        this.tabulatorInstance.on("cellEdited", (cell) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.cellEdited, (cell) => {
           if (this.tableOptions.handleCellEdited) {
             this.tableOptions.handleCellEdited(cell);
           }
         });
 
-        this.tabulatorInstance.on("cellClick", (e, cell) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.cellClick, (e, cell) => {
           const clickedCell =
             (cell && typeof cell.getField === "function" ? cell : null) ||
             (e && typeof e.getField === "function" ? e : null);
@@ -761,14 +934,14 @@ export default {
             this.handleExtendedDoubleClickEdit(clickedCell);
           }
         });
-        this.tabulatorInstance.on("cellFocused", (cell) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.cellFocused, (cell) => {
           this.setLastFocusedCell(cell);
         });
-        this.tabulatorInstance.on("cellContext", (e, cell) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.cellContext, (e, cell) => {
           this.setLastFocusedCell(cell);
         });
 
-        this.tabulatorInstance.on("clipboardCopied", () => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.clipboardCopied, () => {
           if (this.tableOptions.fakeLoadingStart) {
             this.tableOptions.fakeLoadingStart();
           }
@@ -778,7 +951,7 @@ export default {
           this.restoreLastFocusedCell();
         });
 
-        this.tabulatorInstance.on("clipboardPasted", () => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.clipboardPasted, () => {
           if (this.errorsPopupContents.errorsList.length !== 0) {
             return;
           }
@@ -791,14 +964,14 @@ export default {
           this.restoreLastFocusedCell();
         });
 
-        this.tabulatorInstance.on("columnResized", (column) => {
+        this.tabulatorInstance.on(TABULATOR_EVENTS.columnResized, (column) => {
           if (this.tableOptions.handleColumnResized) {
             this.tableOptions.handleColumnResized(column);
           }
         });
 
         this.tabulatorInstance.on(
-          "columnVisibilityChanged",
+          TABULATOR_EVENTS.columnVisibilityChanged,
           (column, visible) => {
             if (this.tableOptions.handleColumnVisibilityChanged) {
               this.tableOptions.handleColumnVisibilityChanged(
@@ -825,9 +998,9 @@ export default {
         if (val) uniqueGroups.add(val);
       });
       let sortedGroupValues = Array.from(uniqueGroups);
-      if (this.groupSort.field === "request_name") {
+      if (this.groupSort.field === TABLE_FIELDS.requestName) {
         const getNumber = (val) => {
-          const num = parseInt(val.split("_")[0], 10);
+          const num = parseInt(val.split(GROUP_VALUE_SEPARATOR)[0], 10);
           return isNaN(num) ? 0 : num;
         };
         sortedGroupValues.sort((a, b) => getNumber(a) - getNumber(b));
@@ -860,7 +1033,7 @@ export default {
       this.pasteDefaultsByField = this.buildPasteDefaults(this.columnDefs);
       this.tabulatorInstance.blockRedraw();
       this.tabulatorInstance.setColumns(this.columnDefs);
-      this.getTabulatorElement().classList.remove("no-group-by");
+      this.getTabulatorElement().classList.remove(TABULATOR_CLASSES.noGroupBy);
       this.showAllGroups();
       if (this.groupBy) this.tabulatorInstance.setGroupBy(this.groupBy);
       this.tabulatorInstance.restoreRedraw();
@@ -893,7 +1066,7 @@ export default {
         }
         const text = await navigator.clipboard.readText();
         if (!text) {
-          showNotification("Clipboard is empty.", "warning");
+          showNotification("Clipboard is empty.", WARNING_NOTIFICATION_TYPE);
           return;
         }
         await this.clipboardPasteParser(text);
@@ -935,110 +1108,182 @@ export default {
       let typesIn = this.tableFiltersState.typesIn;
       let typesNotIn = this.tableFiltersState.typesNotIn;
       switch (operation) {
-        case "search_incoming_libraries_and_samples":
+        case FILTER_OPERATIONS.searchIncomingLibrariesAndSamples:
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: "name", type: "like", value: keyword },
-                { field: "request_name", type: "like", value: keyword },
-                { field: "barcode", type: "like", value: keyword },
+                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
                 {
-                  field: "nucleic_acid_type_name",
-                  type: "like",
+                  field: TABLE_FIELDS.requestName,
+                  type: FILTER_TYPES.like,
                   value: keyword
                 },
                 {
-                  field: "library_protocol_name",
-                  type: "like",
+                  field: TABLE_FIELDS.barcode,
+                  type: FILTER_TYPES.like,
                   value: keyword
                 },
-                { field: "comments", type: "like", value: keyword },
-                { field: "comments_facility", type: "like", value: keyword }
+                {
+                  field: TABLE_FIELDS.nucleicAcidTypeName,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.libraryProtocolName,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.comments,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.commentsFacility,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                }
               ]
             ];
           } else {
             delete this.tableFiltersState.search;
           }
           break;
-        case "search_library_preparation":
+        case FILTER_OPERATIONS.searchLibraryPreparation:
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: "name", type: "like", value: keyword },
-                { field: "request_name", type: "like", value: keyword },
-                { field: "barcode", type: "like", value: keyword },
+                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
                 {
-                  field: "library_protocol_name",
-                  type: "like",
+                  field: TABLE_FIELDS.requestName,
+                  type: FILTER_TYPES.like,
                   value: keyword
                 },
                 {
-                  field: "comments_library_sample",
-                  type: "like",
+                  field: TABLE_FIELDS.barcode,
+                  type: FILTER_TYPES.like,
                   value: keyword
                 },
-                { field: "comments", type: "like", value: keyword },
-                { field: "comments_facility", type: "like", value: keyword }
+                {
+                  field: TABLE_FIELDS.libraryProtocolName,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.commentsLibrarySample,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.comments,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.commentsFacility,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                }
               ]
             ];
           } else {
             delete this.tableFiltersState.search;
           }
           break;
-        case "search_pooling":
+        case FILTER_OPERATIONS.searchPooling:
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: "name", type: "like", value: keyword },
-                { field: "request_name", type: "like", value: keyword },
-                { field: "pool_name", type: "like", value: keyword },
-                { field: "barcode", type: "like", value: keyword }
+                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
+                {
+                  field: TABLE_FIELDS.requestName,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.poolName,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
+                {
+                  field: TABLE_FIELDS.barcode,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                }
               ]
             ];
           } else {
             delete this.tableFiltersState.search;
           }
           break;
-        case "showLibraries":
-          const foundInL = typesIn.find((item) => item.value === "L");
+        case FILTER_OPERATIONS.showLibraries:
+          const foundInL = typesIn.find(
+            (item) => item.value === RECORD_TYPES.library
+          );
           if (keyword === true && !foundInL) {
-            typesIn.push({ field: "type", type: "=", value: "L" });
-            typesNotIn = typesNotIn.filter((item) => item.value !== "L");
+            typesIn.push({
+              field: TABLE_FIELDS.type,
+              type: FILTER_TYPES.equals,
+              value: RECORD_TYPES.library
+            });
+            typesNotIn = typesNotIn.filter(
+              (item) => item.value !== RECORD_TYPES.library
+            );
           } else if (keyword === false && foundInL) {
-            typesIn = typesIn.filter((item) => item.value !== "L");
-            typesNotIn.push({ field: "type", type: "!=", value: "L" });
+            typesIn = typesIn.filter(
+              (item) => item.value !== RECORD_TYPES.library
+            );
+            typesNotIn.push({
+              field: TABLE_FIELDS.type,
+              type: FILTER_TYPES.notEquals,
+              value: RECORD_TYPES.library
+            });
           }
           this.tableFiltersState.typesIn = typesIn;
           this.tableFiltersState.typesNotIn = typesNotIn;
           break;
-        case "showSamples":
-          const foundInS = typesIn.find((item) => item.value === "S");
+        case FILTER_OPERATIONS.showSamples:
+          const foundInS = typesIn.find(
+            (item) => item.value === RECORD_TYPES.sample
+          );
           if (keyword === true && !foundInS) {
-            typesIn.push({ field: "type", type: "=", value: "S" });
-            typesNotIn = typesNotIn.filter((item) => item.value !== "S");
+            typesIn.push({
+              field: TABLE_FIELDS.type,
+              type: FILTER_TYPES.equals,
+              value: RECORD_TYPES.sample
+            });
+            typesNotIn = typesNotIn.filter(
+              (item) => item.value !== RECORD_TYPES.sample
+            );
           } else if (keyword === false && foundInS) {
-            typesIn = typesIn.filter((item) => item.value !== "S");
-            typesNotIn.push({ field: "type", type: "!=", value: "S" });
+            typesIn = typesIn.filter(
+              (item) => item.value !== RECORD_TYPES.sample
+            );
+            typesNotIn.push({
+              field: TABLE_FIELDS.type,
+              type: FILTER_TYPES.notEquals,
+              value: RECORD_TYPES.sample
+            });
           }
           this.tableFiltersState.typesIn = typesIn;
           this.tableFiltersState.typesNotIn = typesNotIn;
           break;
-        case "onlySamplesSubmitted":
+        case FILTER_OPERATIONS.onlySamplesSubmitted:
           if (keyword === true) {
             this.tableFiltersState.onlySamplesSubmitted = {
-              field: "samples_submitted",
-              type: "=",
+              field: TABLE_FIELDS.samplesSubmitted,
+              type: FILTER_TYPES.equals,
               value: keyword
             };
           } else {
             delete this.tableFiltersState.onlySamplesSubmitted;
           }
           break;
-        case "onlyGmo":
+        case FILTER_OPERATIONS.onlyGmo:
           if (keyword === true) {
             this.tableFiltersState.onlyGmo = {
-              field: "gmo",
-              type: "=",
+              field: TABLE_FIELDS.gmo,
+              type: FILTER_TYPES.equals,
               value: true
             };
           } else {
@@ -1050,7 +1295,7 @@ export default {
       }
       let flatFilters = Object.entries(this.tableFiltersState)
         .filter(([key, value]) => {
-          if (key === "typesNotIn") return false;
+          if (key === FILTER_KEYS.typesNotIn) return false;
           return Array.isArray(value)
             ? value.length > 0
             : Object.keys(value).length > 0;
@@ -1128,7 +1373,7 @@ export default {
         rowData?.tempId ??
         rowData?.pk ??
         rowData?.id ??
-        rowData?.barcode ??
+        rowData?.[TABLE_FIELDS.barcode] ??
         null;
       const rowKey =
         rowKeyRaw !== null && rowKeyRaw !== undefined
@@ -1151,7 +1396,7 @@ export default {
       const cellEl = cell.getElement?.();
       if (
         shouldBlockDisabledCells &&
-        cellEl?.classList?.contains("disable-editing")
+        cellEl?.classList?.contains(TABULATOR_CLASSES.disableEditing)
       ) {
         return false;
       }
@@ -1172,7 +1417,8 @@ export default {
     openDropdownEditorIfNeeded(cell) {
       const columnDef = cell?.getColumn?.().getDefinition?.() || {};
       const editorType = columnDef?.editor;
-      const isDropdownEditor = editorType === "list" || editorType === "select";
+      const isDropdownEditor =
+        editorType === EDITOR_TYPES.list || editorType === EDITOR_TYPES.select;
       if (!isDropdownEditor) return;
       const maxAttempts = 8;
       const tryOpen = (attempt = 0) => {
@@ -1180,9 +1426,7 @@ export default {
         const active = document.activeElement;
         const editorEl =
           (cellEl &&
-            cellEl.querySelector(
-              "input, select, textarea, [contenteditable='true']"
-            )) ||
+            cellEl.querySelector(TABULATOR_SELECTORS.editorInput)) ||
           (active && cellEl?.contains?.(active) ? active : null);
         if (!editorEl) {
           if (attempt < maxAttempts) {
@@ -1193,8 +1437,8 @@ export default {
         editorEl.focus?.();
         try {
           editorEl.dispatchEvent(
-            new KeyboardEvent("keydown", {
-              key: "ArrowDown",
+            new KeyboardEvent(DOM_EVENTS.keydown, {
+              key: KEY_NAMES.arrowDown,
               bubbles: true
             })
           );
@@ -1202,10 +1446,16 @@ export default {
           // no-op
         }
         editorEl.dispatchEvent(
-          new MouseEvent("mousedown", { bubbles: true, cancelable: true })
+          new MouseEvent(DOM_EVENTS.mousedown, {
+            bubbles: true,
+            cancelable: true
+          })
         );
         editorEl.dispatchEvent(
-          new MouseEvent("mouseup", { bubbles: true, cancelable: true })
+          new MouseEvent(DOM_EVENTS.mouseup, {
+            bubbles: true,
+            cancelable: true
+          })
         );
         if (typeof editorEl.click === "function") {
           editorEl.click();
@@ -1331,14 +1581,14 @@ export default {
 
     handleKeyDown(event) {
       const isDeleteOrBackspace =
-        event.key === "Delete" || event.key === "Backspace";
-      const isEscape = event.key === "Escape";
+        event.key === KEY_NAMES.delete || event.key === KEY_NAMES.backspace;
+      const isEscape = event.key === KEY_NAMES.escape;
       const key = event.key?.toLowerCase?.();
       const isCtrl = event.ctrlKey || event.metaKey;
-      const isCut = isCtrl && key === "x";
-      const isCopy = isCtrl && key === "c";
-      const isPaste = isCtrl && key === "v";
-      const isSelectAll = isCtrl && key === "a";
+      const isCut = isCtrl && key === KEY_NAMES.cut;
+      const isCopy = isCtrl && key === KEY_NAMES.copy;
+      const isPaste = isCtrl && key === KEY_NAMES.paste;
+      const isSelectAll = isCtrl && key === KEY_NAMES.selectAll;
       const isPrintableKey =
         event.key.length === 1 &&
         !event.ctrlKey &&
@@ -1350,8 +1600,8 @@ export default {
       }
       if (
         document.activeElement &&
-        (document.activeElement.tagName === "INPUT" ||
-          document.activeElement.tagName === "TEXTAREA")
+        (document.activeElement.tagName === HTML_TAGS.input ||
+          document.activeElement.tagName === HTML_TAGS.textarea)
       ) {
         return;
       }
@@ -1386,7 +1636,7 @@ export default {
         const cellEl = cell.getElement?.();
         if (
           shouldBlockDisabledCells &&
-          cellEl?.classList?.contains("disable-editing")
+          cellEl?.classList?.contains(TABULATOR_CLASSES.disableEditing)
         ) {
           return false;
         }
@@ -1518,11 +1768,11 @@ export default {
           const input = document.activeElement;
           if (
             input &&
-            (document.activeElement.tagName === "INPUT" ||
-              document.activeElement.tagName === "TEXTAREA")
+            (document.activeElement.tagName === HTML_TAGS.input ||
+              document.activeElement.tagName === HTML_TAGS.textarea)
           ) {
             input.value = "";
-            input.dispatchEvent(new Event("input", { bubbles: true }));
+            input.dispatchEvent(new Event(DOM_EVENTS.input, { bubbles: true }));
           }
         }
       }
@@ -1588,16 +1838,16 @@ export default {
               throw new Error(res || "Entered value is invalid.");
           } else if (typeof rule === "string") {
             const trimmed = rule.trim().toLowerCase();
-            if (trimmed === "integer") {
+            if (trimmed === VALIDATOR_RULES.integer) {
               if (!Number.isInteger(val))
                 throw new Error("Entered value must be an integer.");
-            } else if (trimmed.startsWith("min:")) {
+            } else if (trimmed.startsWith(VALIDATOR_RULES.minPrefix)) {
               const v = Number(trimmed.slice(4));
               if (!Number.isNaN(v) && val < v)
                 throw new Error(
                   `Entered value should be more than ${new Intl.NumberFormat().format(v)}.`
                 );
-            } else if (trimmed.startsWith("max:")) {
+            } else if (trimmed.startsWith(VALIDATOR_RULES.maxPrefix)) {
               const v = Number(trimmed.slice(4));
               if (!Number.isNaN(v) && val > v)
                 throw new Error(
@@ -1608,7 +1858,7 @@ export default {
         }
       };
       switch (editorType) {
-        case "number": {
+        case EDITOR_TYPES.number: {
           const str = String(value).trim();
           if (str === "") {
             const fieldName = columnDef.field;
@@ -1644,7 +1894,7 @@ export default {
           }
           return numValue;
         }
-        case "list": {
+        case EDITOR_TYPES.list: {
           if (value === "" || value === undefined || value === null) {
             const fieldName = columnDef.field;
             const defaultValue =
@@ -1718,7 +1968,7 @@ export default {
           }
           return value;
         }
-        case "input":
+        case EDITOR_TYPES.input:
         default:
           if (columnDef.validator) {
             const validationResult = columnDef.validator(value);

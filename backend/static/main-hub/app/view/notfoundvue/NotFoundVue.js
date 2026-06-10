@@ -30,7 +30,7 @@ Ext.define("MainHub.view.notfoundvue.NotFoundVue", {
     var missingRoute = this.missingRoute || "";
     return (
       window.location.origin +
-      "/vue/not-found?missingRoute=" +
+      "/vue/not_found?missingRoute=" +
       encodeURIComponent(missingRoute)
     );
   },

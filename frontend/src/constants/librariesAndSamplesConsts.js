@@ -13,7 +13,6 @@ import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconAttachmentsAvailable from "../assets/icons/action_attachments_available.svg";
 import iconAttachmentsUnavailable from "../assets/icons/action_attachments_unavailable.svg";
-import iconDownloadROCrate from "../assets/icons/action_rocrate.svg";
 
 const sortedStatusEntries = Object.entries(statusMap).sort(
   ([keyA], [keyB]) => Number(keyA) - Number(keyB)
@@ -156,10 +155,6 @@ export function librariesAndSamplesGroupHeader(
       </div>
       ${deleteAction}
       ${staffActions}
-      <div title="Export RO-Crate" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadROCrate')">
-        <img class="group-action-icon-img icon-24" src="${iconDownloadROCrate}" alt="Export RO-Crate" />
-      </div>
-      <span class="group-action-separator"></span>
       <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
         <img class="group-action-icon-img icon-24" src="${iconSelectAll}" alt="Select All" />
       </div>
@@ -225,7 +220,6 @@ export function librariesAndSamplesColumnDefs(
       contextMenu: () =>
         cellContextMenu(true, false, false, getTabulatorInstance),
       formatter: (cell) => {
-        const request_name = cell.getRow().getData().request_name;
         const name = cell.getValue();
         return `
                         <div style="padding: 4px 12px; display: flex; align-items: center;">
@@ -773,10 +767,20 @@ export function librariesAndSamplesExportColumns() {
     { header: "Protocol", key: "library_protocol_name", width: 20 },
     { header: "Analysis Type", key: "analysis_type_name", width: 20 },
     { header: "Input", key: "input_display", width: 15 },
-    { header: "Starting Amount", key: "starting_amount", width: 18 },
-    { header: "Cycles", key: "pcr_cycles", width: 12 },
-    { header: "ng/µl Library", key: "concentration_library", width: 15 },
-    { header: "bp", key: "average_fragment_size", width: 12 },
+    {
+      header: "Starting Amount",
+      key: "starting_amount",
+      width: 18,
+      excelType: "number"
+    },
+    { header: "Cycles", key: "pcr_cycles", width: 12, excelType: "number" },
+    {
+      header: "ng/µl Library",
+      key: "concentration_library",
+      width: 15,
+      excelType: "number"
+    },
+    { header: "bp", key: "average_fragment_size", width: 12, excelType: "number" },
     { header: "Index Type", key: "index_type_name", width: 15 },
     { header: "Coord", key: "coordinate", width: 12 },
     { header: "I7 ID", key: "i7_id", width: 15 },
@@ -784,7 +788,7 @@ export function librariesAndSamplesExportColumns() {
     { header: "I5 ID", key: "i5_id", width: 15 },
     { header: "Index I5", key: "index_i5", width: 15 },
     { header: "Length", key: "read_length_name", width: 12 },
-    { header: "Depth (M)", key: "sequencing_depth", width: 15 },
+    { header: "Depth (M)", key: "sequencing_depth", width: 15, excelType: "number" },
     { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
     { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
