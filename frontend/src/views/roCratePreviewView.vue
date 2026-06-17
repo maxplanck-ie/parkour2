@@ -31,10 +31,12 @@
               v-if="model"
               class="hero-button secondary pdf-export-button"
               type="button"
+              data-testid="export-ro-crate-pdf-button"
+              :disabled="pdfBusy || !canExportPreview"
               @click="exportToPdf"
             >
               <font-awesome-icon icon="fa-solid fa-file-pdf" />
-              Export to PDF
+              {{ pdfBusy ? "Exporting..." : "Export to PDF" }}
             </button>
           </div>
         </div>
@@ -66,18 +68,14 @@
       </div>
 
       <section v-if="model" class="preview-workspace">
-        <header class="print-report-header">
-          <div>
-            <div class="print-report-title">Parkour RO-Crate Preview</div>
-            <div class="print-report-subtitle">{{ printReportSubtitle }}</div>
-          </div>
-          <div class="print-report-meta">{{ printGeneratedAt }}</div>
-        </header>
-
         <section class="preview-search-panel" aria-label="Search RO-Crate preview">
           <div class="preview-search-copy">
             <div class="preview-search-title">Search Preview</div>
             <div class="preview-search-meta">{{ searchResultSummary }}</div>
+            <div v-if="previewRecordLimitExceeded" class="preview-search-meta limit-note">
+              Showing first {{ previewRecordDisplayCount }} of {{ previewRecordTotalCount }}
+              libraries/samples in preview. ZIP and PDF exports include all selected records.
+            </div>
           </div>
           <div class="table-search-inline">
             <div class="table-search-input-wrap">
@@ -139,7 +137,7 @@
               >
                 <div class="quick-summary-key">{{ row.key }}</div>
                 <div class="quick-summary-value" :class="valueClassForRow(row)">
-                  <component :is="displayComponent(row.value)" :value="row.value" />
+                  <ROCrateDisplayValue :value="row.value" />
                 </div>
               </div>
             </div>
@@ -172,7 +170,7 @@
                     >
                       <div class="quick-summary-key">{{ row.key }}</div>
                       <div class="quick-summary-value" :class="valueClassForRow(row)">
-                        <component :is="displayComponent(row.value)" :value="row.value" />
+                        <ROCrateDisplayValue :value="row.value" />
                       </div>
                     </div>
                   </div>
@@ -196,17 +194,13 @@
             </div>
           </section>
         </section>
-
-        <footer class="print-report-footer">
-          RO-Crate preview generated from Parkour metadata.
-        </footer>
       </section>
     </div>
   </div>
 </template>
 
 <script>
-import { h, nextTick } from "vue";
+import { h } from "vue";
 import { saveAs } from "file-saver";
 import {
   RO_CRATE_BACKLINK_PROPERTIES,
@@ -217,11 +211,14 @@ import {
   RO_CRATE_HIDDEN_FIELD_PATTERNS,
   RO_CRATE_INBUILT_HIDDEN_FIELDS,
   RO_CRATE_LINKED_MODEL_RELATION_FIELDS,
-  RO_CRATE_MODEL_SECTION_RULES,
+  RO_CRATE_MODEL_DISPLAY_RULES_BY_PREFIX,
+  RO_CRATE_MODEL_SECTION_ID_RULES,
   RO_CRATE_PREVIEW_LABELS,
   RO_CRATE_PROPERTY_LABEL_OVERRIDES,
   RO_CRATE_PROPERTY_PREFIX_PATTERN,
   RO_CRATE_RECORD_TYPES,
+  RO_CRATE_REPEATED_DATA_OBJECT_FIELDS,
+  RO_CRATE_REPEATED_DATA_OBJECT_KEYS,
   RO_CRATE_RELATED_MODEL_HIDDEN_FIELDS,
   RO_CRATE_RELATION_FIELDS,
   RO_CRATE_VISIBLE_ID_FIELDS,
@@ -252,6 +249,9 @@ const hiddenPolicyFields = new Set(
 const visibleIdPolicyFields = new Set(
   [...visibleIdFields].map((field) => normalisePolicyField(field))
 );
+const RO_CRATE_SEARCH_DEBOUNCE_MS = 250;
+const RO_CRATE_PREVIEW_RECORD_LIMIT = 20;
+const RO_CRATE_EXPORT_FILENAME_MAX_LENGTH = 50;
 
 const DisplayValue = {
   name: "ROCrateDisplayValue",
@@ -367,8 +367,11 @@ export default {
       errorMessage: "",
       model: null,
       tableSearchInput: "",
+      debouncedTableSearchInput: "",
+      tableSearchDebounceTimer: null,
       activePreviewConfig: null,
       exportBusy: false,
+      pdfBusy: false,
       skippedRecords: []
     };
   },
@@ -380,43 +383,51 @@ export default {
       const identifiers = this.previewIdentifierValues(this.activePreviewConfig);
       return identifiers.barcodes.length > 0 || identifiers.requests.length > 0;
     },
-    printGeneratedAt() {
-      return `Generated ${this.formatDate(new Date().toISOString())}`;
-    },
-    printReportSubtitle() {
-      const names = this.requestGroups.map((request) => request.name);
-      return `${names.join(", ") || "Selected records"} | ${this.totalRecordCount} records`;
-    },
-    totalRecordCount() {
-      return this.requestGroups.reduce(
-        (count, request) => count + request.records.length,
-        0
-      );
-    },
     searchTerm() {
-      return String(this.tableSearchInput || "").toLowerCase();
+      return String(this.debouncedTableSearchInput || "").toLowerCase();
     },
     searchResultSummary() {
       if (!this.searchTerm) {
         return "Search visible requests, records, fields, and values.";
       }
-      return `${this.visibleRequestGroups.length} ${this.visibleRequestGroups.length === 1 ? "request" : "requests"} match "${this.tableSearchInput}"`;
+      const requestCount = this.visibleRequestGroups.length;
+      const requestLabel = requestCount === 1 ? "request" : "requests";
+      return `${requestCount} ${requestLabel} match "${this.debouncedTableSearchInput}"`;
     },
     rootEntity() {
       return this.entityById(RO_CRATE_ENTITY_IDS.rootDataset);
     },
+    previewRecordTotalCount() {
+      if (!this.model) return 0;
+      const studies = this.previewStudies();
+      if (studies.length) {
+        return studies.reduce(
+          (count, study) => count + this.studyRecordIds(study).length,
+          0
+        );
+      }
+      return this.model.graph.filter((entity) => this.isRecordEntity(entity)).length;
+    },
+    previewRecordDisplayCount() {
+      return this.requestGroups.reduce(
+        (count, request) => count + request.records.length,
+        0
+      );
+    },
+    previewRecordLimitExceeded() {
+      return this.previewRecordTotalCount > this.previewRecordDisplayCount;
+    },
     requestGroups() {
       if (!this.model) return [];
-      const studies = this.model.graph.filter((entity) =>
-        String(entity?.[fieldKeys.id] || "").startsWith(
-          RO_CRATE_ENTITY_PREFIXES.study
-        )
-      );
-      const groups = studies.map((study, index) =>
-        this.buildRequestGroup(study, index)
-      );
+      const studies = this.previewStudies();
+      let remainingRecordSlots = RO_CRATE_PREVIEW_RECORD_LIMIT;
+      const groups = studies.map((study, index) => {
+        const group = this.buildRequestGroup(study, index, remainingRecordSlots);
+        remainingRecordSlots = Math.max(0, remainingRecordSlots - group.records.length);
+        return group;
+      });
       if (groups.length) return groups;
-      return [this.buildFallbackRequestGroup()];
+      return [this.buildFallbackRequestGroup(RO_CRATE_PREVIEW_RECORD_LIMIT)];
     },
     visibleRequestGroups() {
       if (!this.searchTerm) return this.requestGroups;
@@ -448,26 +459,21 @@ export default {
             request.requestRows.length ||
             request.attachments.length
         );
-    },
-    zipContentRows() {
-      const rows = [
-        {
-          path: RO_CRATE_ENTITY_IDS.metadataDescriptor,
-          type: "RO-Crate metadata"
-        }
-      ];
-      this.requestGroups.forEach((request) => {
-        request.attachments.forEach((file) => {
-          rows.push({
-            path: file.contentUrl || file.id,
-            type: `${request.name} attachment`
-          });
-        });
-      });
-      return rows.filter((row) => this.matchesSearch([row.path, row.type]));
     }
   },
   watch: {
+    tableSearchInput(newValue) {
+      window.clearTimeout(this.tableSearchDebounceTimer);
+
+      if (!newValue) {
+        this.debouncedTableSearchInput = "";
+        return;
+      }
+
+      this.tableSearchDebounceTimer = window.setTimeout(() => {
+        this.debouncedTableSearchInput = newValue;
+      }, RO_CRATE_SEARCH_DEBOUNCE_MS);
+    },
     previewConfig: {
       immediate: true,
       deep: true,
@@ -478,10 +484,10 @@ export default {
       }
     }
   },
+  beforeUnmount() {
+    window.clearTimeout(this.tableSearchDebounceTimer);
+  },
   methods: {
-    displayComponent() {
-      return "ROCrateDisplayValue";
-    },
     previewIdentifierValues(config = {}) {
       const barcodes = Array.isArray(config?.barcodes)
         ? config.barcodes.filter(Boolean)
@@ -582,304 +588,62 @@ export default {
       }
     },
     async exportToPdf() {
-      if (!this.model) {
-        showNotification("Load an RO-Crate before exporting to PDF.", "warning");
+      if (!this.canExportPreview) {
+        showNotification(
+          "Open a Parkour RO-Crate preview before exporting the PDF.",
+          "warning"
+        );
         return;
       }
-      const printWindow = window.open("", "_blank");
-      if (!printWindow) {
-        showNotification("Allow pop-ups to export this preview to PDF.", "warning");
-        return;
+      try {
+        this.pdfBusy = true;
+        const response = await axiosRef.get(`${urlStringStart}${RO_CRATE_ENDPOINT}`, {
+          params: this.roCrateRequestParams({ pdf: "true" }),
+          responseType: "blob"
+        });
+        const filename =
+          this.parseContentDispositionFilename(
+            this.responseHeader(response?.headers, "content-disposition")
+          ) || this.fallbackPdfFilename();
+        saveAs(response?.data, filename);
+        showNotification("PDF exported successfully.", "success");
+      } catch (error) {
+        handleError(error);
+      } finally {
+        this.pdfBusy = false;
       }
-
-      const originalSearch = this.tableSearchInput;
-      if (originalSearch) {
-        this.tableSearchInput = "";
-        await nextTick();
-      }
-
-      const report = this.$el.querySelector(".preview-workspace");
-      if (!report) {
-        printWindow.close();
-        showNotification("The RO-Crate preview is not ready to export.", "warning");
-        if (originalSearch) this.tableSearchInput = originalSearch;
-        return;
-      }
-      const reportHtml = report.innerHTML;
-      const reportText = report.textContent?.trim() || "";
-      if (originalSearch) {
-        this.tableSearchInput = originalSearch;
-        await nextTick();
-      }
-      if (!reportText) {
-        printWindow.close();
-        showNotification("The RO-Crate preview has no printable content.", "warning");
-        return;
-      }
-
-      const html = this.printDocumentHtml(reportHtml);
-      printWindow.document.open();
-      printWindow.document.write(html);
-      printWindow.document.close();
-    },
-    printDocumentHtml(reportHtml) {
-      const documentTitle = this.printDocumentTitle();
-      return `<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>${this.escapeHtml(documentTitle)}</title>
-    <style>${this.printDocumentCss()}</style>
-  </head>
-  <body>
-    <main class="rocrate-print-document">${reportHtml}</main>
-    <script>
-      (function () {
-        var printStarted = false;
-        window.addEventListener("afterprint", function () {
-          setTimeout(function () {
-            window.close();
-          }, 750);
-        }, { once: true });
-        function afterFrames(callback) {
-          requestAnimationFrame(function () {
-            requestAnimationFrame(callback);
-          });
-        }
-        function printWhenReady() {
-          if (printStarted) return;
-          printStarted = true;
-          var fontsReady = document.fonts && document.fonts.ready
-            ? document.fonts.ready.catch(function () {})
-            : Promise.resolve();
-          fontsReady.then(function () {
-            afterFrames(function () {
-              window.focus();
-              window.print();
-            });
-          });
-        }
-        if (document.readyState === "complete") {
-          printWhenReady();
-        } else {
-          window.addEventListener("load", printWhenReady, { once: true });
-        }
-      })();
-    <\/script>
-  </body>
-</html>`;
-    },
-    printDocumentTitle() {
-      const archiveName = String(this.model?.source?.name || "")
-        .replace(/\.zip$/i, "")
-        .trim();
-      const requestIds = this.previewRequestIds();
-      const fallbackName = requestIds.length
-        ? `${requestIds.join("_")}_ro_crate`
-        : "parkour_ro_crate_preview";
-      const baseName = this.sanitizeFilenamePart(archiveName || fallbackName)
-        .replace(/\.pdf$/i, "")
-        .slice(0, 120);
-      const timestamp = new Date()
-        .toISOString()
-        .replace(/\.\d+Z$/, "")
-        .replace(/[T:]/g, "-");
-      return `${baseName}_${timestamp}`;
-    },
-    printFooterText() {
-      const requestNames = this.requestGroups.map((request) => request.name).filter(Boolean);
-      const recordNames = this.requestGroups
-        .flatMap((request) => request.records.map((record) => record.name))
-        .filter(Boolean);
-      const requestText =
-        requestNames.length === 1
-          ? `Request: ${requestNames[0]}`
-          : `Requests: ${requestNames.join(", ") || "Selected requests"}`;
-      const recordText =
-        recordNames.length === 1
-          ? `Library/Sample: ${recordNames[0]}`
-          : `Libraries/Samples: ${recordNames.length || this.totalRecordCount} selected`;
-      return `${requestText} | ${recordText}`;
-    },
-    printDocumentCss() {
-      const footerText = this.escapeCssString(this.printFooterText());
-      return `
-@page {
-  size: A4;
-  margin: 12mm 9mm 14mm;
-  @bottom-left {
-    content: "${footerText}";
-    color: #5e7884;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 6.5pt;
-  }
-  @bottom-right {
-    content: "Page " counter(page);
-    color: #5e7884;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 6.5pt;
-  }
-}
-* { box-sizing: border-box; }
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  color: #10242f;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 9pt;
-  line-height: 1.35;
-}
-.rocrate-print-document { width: 100%; }
-.upload-stage,
-.preview-search-panel,
-.pdf-export-button,
-.rocrate-export-button { display: none !important; }
-.print-report-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 8mm;
-  margin-bottom: 3mm;
-  padding-bottom: 2mm;
-  border-bottom: 1px solid #d8e0e4;
-}
-.print-report-title { font-size: 9pt; font-weight: 800; }
-.print-report-subtitle,
-.print-report-meta {
-  color: #5e7884;
-  font-size: 7pt;
-  line-height: 1.3;
-}
-.print-report-footer {
-  display: block;
-  margin-top: 4mm;
-  padding-top: 2mm;
-  border-top: 1px solid #d8e0e4;
-  color: #6b818c;
-  font-size: 6.5pt;
-}
-.detail-card {
-  padding: 2.5mm 0;
-  margin-bottom: 3mm;
-  border-top: 1px solid #d8e0e4;
-  background: #fff;
-}
-.detail-kicker,
-.record-group-title {
-  color: #1d5f78;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-.request-overview-item,
-.attachment-item,
-.zip-content-row,
-.quick-summary-row {
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-.request-overview-item,
-.record-table-block,
-.attachment-item,
-.zip-content-row {
-  padding: 2mm 0;
-}
-.request-overview-title,
-.record-table-title { font-weight: 800; color: #173948; }
-.record-chip-list,
-.attachment-list,
-.zip-content-list,
-.record-table-list {
-  display: block;
-}
-.record-chip {
-  display: inline-block;
-  margin: 0 3mm 1.5mm 0;
-  color: #0d6f73;
-  font-weight: 700;
-}
-.quick-summary-table { display: block; }
-.quick-summary-row {
-  display: grid;
-  grid-template-columns: 38mm minmax(0, 1fr);
-  gap: 2mm;
-  margin-bottom: 1.4mm;
-  padding: 1.8mm;
-  border: 1px solid #edf1f3;
-  border-radius: 1.5mm;
-  background: #fff;
-}
-.quick-summary-key {
-  color: #173948;
-  font-size: 7.2pt;
-  font-weight: 800;
-  line-height: 1.2;
-  text-transform: uppercase;
-  overflow-wrap: anywhere;
-}
-.quick-summary-value {
-  color: #173948;
-  overflow-wrap: anywhere;
-  word-break: normal;
-}
-.structured-value-list {
-  margin: 0;
-  padding-left: 18px;
-}
-.structured-value-scroll { overflow: visible; }
-.structured-value-table {
-  width: 100%;
-  min-width: 0;
-  border-collapse: collapse;
-  font-size: 7.2pt;
-  line-height: 1.25;
-}
-.structured-value-table th,
-.structured-value-table td {
-  border: 1px solid rgba(16, 36, 47, 0.14);
-  padding: 1mm;
-  text-align: left;
-  vertical-align: top;
-  overflow-wrap: anywhere;
-}
-.structured-value-table th {
-  width: 28mm;
-  background: #edf4f6;
-  color: #244858;
-  font-weight: 800;
-}
-.structured-value-table.indexed-table th { width: auto; }
-.structured-value-table .row-number-column {
-  width: 8mm;
-  text-align: right;
-  white-space: nowrap;
-  color: #5e7884;
-}
-svg { display: none; }
-`;
-    },
-    escapeHtml(value) {
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    },
-    escapeCssString(value) {
-      return String(value || "")
-        .replace(/\\/g, "\\\\")
-        .replace(/"/g, '\\"')
-        .replace(/\r?\n/g, " ");
     },
     fallbackArchiveFilename() {
       const previewName = this.model?.source?.name || "";
       if (previewName.toLowerCase().endsWith(".zip")) {
-        return this.sanitizeFilenamePart(previewName);
+        return this.boundedExportFilename(
+          this.sanitizeFilenamePart(previewName).replace(/\.zip$/i, ""),
+          ".zip"
+        );
       }
       const requestIds = this.previewRequestIds();
       if (requestIds.length) {
-        return `${requestIds.join("_")}_ro_crate.zip`;
+        return this.boundedExportFilename(`${requestIds.join("_")}_ro_crate`, ".zip");
       }
-      return "parkour_ro_crate.zip";
+      return this.boundedExportFilename("parkour_ro_crate", ".zip");
+    },
+    fallbackPdfFilename() {
+      const archiveName = this.fallbackArchiveFilename();
+      if (archiveName.toLowerCase().endsWith(".zip")) {
+        return archiveName.replace(/\.zip$/i, ".pdf");
+      }
+      return this.boundedExportFilename(archiveName, ".pdf");
+    },
+    boundedExportFilename(baseName, extension) {
+      const suffix = extension.startsWith(".") ? extension : `.${extension}`;
+      const maxBaseLength = Math.max(
+        1,
+        RO_CRATE_EXPORT_FILENAME_MAX_LENGTH - suffix.length
+      );
+      const safeBase =
+        this.sanitizeFilenamePart(baseName).slice(0, maxBaseLength).replace(/[._-]+$/g, "") ||
+        "parkour_ro_crate";
+      return `${safeBase}${suffix}`;
     },
     previewRequestIds() {
       const configuredIds = Array.isArray(this.activePreviewConfig?.requestIds)
@@ -913,13 +677,21 @@ svg { display: none; }
         ""
       );
     },
-    buildRequestGroup(study, index) {
+    previewStudies() {
+      if (!this.model) return [];
+      return this.model.graph.filter((entity) =>
+        String(entity?.[fieldKeys.id] || "").startsWith(
+          RO_CRATE_ENTITY_PREFIXES.study
+        )
+      );
+    },
+    buildRequestGroup(study, index, recordLimit = RO_CRATE_PREVIEW_RECORD_LIMIT) {
       const studyId = study?.[fieldKeys.id] || `request-${index + 1}`;
       const requestNumber = this.idSuffix(studyId);
       const requestEntity = this.entityById(
         `${RO_CRATE_ENTITY_PREFIXES.requestContext}${requestNumber}`
       );
-      const recordIds = this.studyRecordIds(study);
+      const recordIds = this.previewRecordIds(this.studyRecordIds(study), recordLimit);
       const records = recordIds
         .map((recordId) => this.buildRecord(recordId))
         .filter(Boolean)
@@ -937,9 +709,15 @@ svg { display: none; }
         attachments: this.attachmentsForRequest(requestEntity?.[fieldKeys.id])
       };
     },
-    buildFallbackRequestGroup() {
+    buildFallbackRequestGroup(recordLimit = RO_CRATE_PREVIEW_RECORD_LIMIT) {
       const records = this.model.graph
         .filter((entity) => this.isRecordEntity(entity))
+        .sort((left, right) =>
+          this.recordSortLabel(left[fieldKeys.id]).localeCompare(
+            this.recordSortLabel(right[fieldKeys.id])
+          )
+        )
+        .slice(0, recordLimit)
         .map((entity) => this.buildRecord(entity[fieldKeys.id]))
         .filter(Boolean)
         .sort((left, right) => left.name.localeCompare(right.name));
@@ -963,6 +741,22 @@ svg { display: none; }
       ].filter((id) => this.isRecordId(id));
       if (fromMaterials.length) return [...new Set(fromMaterials)];
       return this.referenceIds(study?.hasPart).filter((id) => this.isRecordId(id));
+    },
+    previewRecordIds(recordIds, recordLimit) {
+      return [...new Set(recordIds)]
+        .sort((left, right) =>
+          this.recordSortLabel(left).localeCompare(this.recordSortLabel(right))
+        )
+        .slice(0, recordLimit);
+    },
+    recordSortLabel(recordId) {
+      const entity = this.entityById(recordId);
+      return String(
+        entity?.[fieldKeys.name] ||
+          entity?.[fieldKeys.identifier] ||
+          recordId ||
+          ""
+      );
     },
     buildRecord(recordId) {
       const entity = this.entityById(recordId);
@@ -1043,12 +837,18 @@ svg { display: none; }
         ...this.referenceValues(entity?.[fieldKeys.additionalProperty]),
         ...this.referenceValues(entity?.[fieldKeys.parameterValue])
       ];
-      return refs
+      const properties = refs
         .map((ref) => this.resolveReference(ref))
-        .filter(Boolean)
+        .filter(Boolean);
+      const propertyByName = this.propertyMapByName(properties);
+
+      return properties
         .map((property) => {
           const name = property[fieldKeys.name];
           if (options.skipSummaryModels && this.isSummaryModelProperty(name)) {
+            return null;
+          }
+          if (this.isStandaloneMeasuringUnitProperty(name, propertyByName)) {
             return null;
           }
           if (this.duplicatesDirectEntityField(entity, name, property[fieldKeys.value])) {
@@ -1056,13 +856,53 @@ svg { display: none; }
           }
           return {
             key: this.labelForField(name),
-            value: this.displayValue(property[fieldKeys.value]),
+            value: this.displayPropertyValue(property, propertyByName),
             group: this.groupForProperty(name, entity),
             wide: this.isWideValue(name, property[fieldKeys.value])
           };
         })
         .filter(Boolean)
         .filter((row) => !this.isHiddenRow(row));
+    },
+    propertyMapByName(properties) {
+      return new Map(
+        properties
+          .filter((property) => property?.[fieldKeys.name])
+          .map((property) => [property[fieldKeys.name], property])
+      );
+    },
+    displayPropertyValue(property, propertyByName) {
+      const value = this.displayValue(property?.[fieldKeys.value]);
+      const unit = this.unitForMeasuredProperty(property, propertyByName);
+      if (!unit || this.isEmpty(value)) return value;
+      return `${value} ${unit}`;
+    },
+    unitForMeasuredProperty(property, propertyByName) {
+      const name = String(property?.[fieldKeys.name] || "");
+      const unitName = this.measuringUnitPropertyName(name);
+      if (!unitName) return "";
+      return this.displayValue(propertyByName.get(unitName)?.[fieldKeys.value]);
+    },
+    measuringUnitPropertyName(propertyName) {
+      if (propertyName.endsWith("measured_value_facility")) {
+        return propertyName.replace(/measured_value_facility$/, "measuring_unit_facility");
+      }
+      if (propertyName.endsWith("measured_value")) {
+        return propertyName.replace(/measured_value$/, "measuring_unit");
+      }
+      return "";
+    },
+    isStandaloneMeasuringUnitProperty(propertyName, propertyByName) {
+      const name = String(propertyName || "");
+      if (name.endsWith("measuring_unit_facility")) {
+        return propertyByName.has(
+          name.replace(/measuring_unit_facility$/, "measured_value_facility")
+        );
+      }
+      if (name.endsWith("measuring_unit")) {
+        return propertyByName.has(name.replace(/measuring_unit$/, "measured_value"));
+      }
+      return false;
     },
     duplicatesDirectEntityField(entity, propertyName, propertyValue) {
       const directKey = this.directFieldKeyForProperty(propertyName);
@@ -1255,30 +1095,8 @@ svg { display: none; }
       this.referenceIds(processEntity?.result).forEach((dataId) => {
         this.addNestedEntityRows(rows, "Data Object", this.entityById(dataId), {
           omitDirectKeys: ["additionalType", "encodingFormat"],
-          omitRelationKeys: [
-            "associatedPool",
-            "derivedFrom",
-            "libraryProtocol",
-            "libraryType",
-            "nucleicAcidType",
-            "organism",
-            "readLength",
-            "requestContext",
-            "selectedIndexPair",
-            "sequencedOn"
-          ],
-          omitDisplayKeys: [
-            "associatedPool",
-            "derivedFrom",
-            "libraryProtocol",
-            "libraryType",
-            "nucleicAcidType",
-            "organism",
-            "readLength",
-            "requestContext",
-            "selectedIndexPair",
-            "sequencedOn"
-          ],
+          omitRelationKeys: RO_CRATE_REPEATED_DATA_OBJECT_FIELDS,
+          omitDisplayKeys: RO_CRATE_REPEATED_DATA_OBJECT_FIELDS,
           omitPropertyRows: true,
           omitEntitySummary: true
         });
@@ -1337,6 +1155,7 @@ svg { display: none; }
         .filter(([key]) => !relatedModelHiddenFields.has(key))
         .filter(([key]) => !hiddenFields.has(key))
         .filter(([key]) => !this.shouldHideField(key))
+        .filter(([key]) => !this.isSummaryModelProperty(key))
         .map(([key, value]) => ({
           key: this.labelForField(key),
           value: this.displayValue(value),
@@ -1387,18 +1206,7 @@ svg { display: none; }
       );
     },
     isRepeatedDataObjectKey(rowKey) {
-      return [
-        "dataobjectassociatedpool",
-        "dataobjectderivedfrom",
-        "dataobjectlibraryprotocol",
-        "dataobjectlibrarytype",
-        "dataobjectnucleicacidtype",
-        "dataobjectorganism",
-        "dataobjectreadlength",
-        "dataobjectrequestcontext",
-        "dataobjectselectedindexpair",
-        "dataobjectsequencedon"
-      ].includes(rowKey);
+      return RO_CRATE_REPEATED_DATA_OBJECT_KEYS.includes(rowKey);
     },
     normalizedDisplayKey(value) {
       return String(value || "")
@@ -1624,29 +1432,15 @@ svg { display: none; }
     },
     modelSectionRuleForProperty(name) {
       const propertyName = String(name || "");
-      return RO_CRATE_MODEL_SECTION_RULES.find((rule) =>
+      return RO_CRATE_MODEL_DISPLAY_RULES_BY_PREFIX.find((rule) =>
         rule.prefixes.some((prefix) => propertyName.startsWith(prefix))
       );
     },
     modelSectionRuleForEntityId(entityId) {
       const id = String(entityId || "");
-      const prefixMap = [
-        ["#organism-", "Organism"],
-        ["#library-type-", "LibraryType"],
-        ["#read-length-", "ReadLength"],
-        ["#index-type-", "IndexType"],
-        ["#nucleic-acid-type-", "NucleicAcidType"],
-        ["#protocol-", "LibraryProtocol"],
-        ["#index-i7-", "IndexI7"],
-        ["#index-i5-", "IndexI5"],
-        ["#index-pair-", "IndexPair"],
-        ["#index-pool-size-", "PoolSize"],
-        ["#index-pool-", "IndexPool"],
-        ["#lane-", "Lane"],
-        ["#sequencer-", "Sequencer"],
-        ["#flowcell-", "Flowcell"]
-      ];
-      const match = prefixMap.find(([prefix]) => id.startsWith(prefix));
+      const match = RO_CRATE_MODEL_SECTION_ID_RULES.find(([prefix]) =>
+        id.startsWith(prefix)
+      );
       return match ? { modelName: match[1] } : null;
     },
     isSummaryModelProperty(name) {
@@ -1988,6 +1782,11 @@ svg { display: none; }
   line-height: 1.35;
 }
 
+.preview-search-meta.limit-note {
+  color: #1d5f78;
+  font-weight: 700;
+}
+
 .table-search-input-wrap {
   position: relative;
 }
@@ -2026,8 +1825,7 @@ svg { display: none; }
 
 .request-overview-list,
 .record-table-list,
-.attachment-list,
-.zip-content-list {
+.attachment-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -2036,8 +1834,7 @@ svg { display: none; }
 
 .request-overview-item,
 .record-table-block,
-.attachment-item,
-.zip-content-row {
+.attachment-item {
   min-width: 0;
   padding: 14px 16px;
   border-radius: 16px;
@@ -2174,39 +1971,21 @@ svg { display: none; }
   color: #5e7884;
 }
 
-.attachment-item,
-.zip-content-row {
+.attachment-item {
   display: flex;
   align-items: flex-start;
   gap: 10px;
 }
 
-.attachment-item svg,
-.zip-content-row svg {
+.attachment-item svg {
   margin-top: 2px;
   color: #0d6f73;
   flex-shrink: 0;
 }
 
-.zip-content-path {
-  font-weight: 700;
-  overflow-wrap: anywhere;
-}
-
-.zip-content-meta,
 .empty-inline {
   color: #65818c;
   line-height: 1.5;
-}
-
-.zip-content-meta {
-  margin-top: 3px;
-  font-size: 12px;
-}
-
-.print-report-header,
-.print-report-footer {
-  display: none;
 }
 
 @keyframes spin {
@@ -2236,124 +2015,4 @@ svg { display: none; }
   }
 }
 
-@media print {
-  @page {
-    size: A4;
-    margin: 12mm 9mm 11mm;
-  }
-
-  :global(html),
-  :global(body),
-  :global(#app) {
-    width: auto !important;
-    height: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    background: #fff !important;
-  }
-
-  .rocrate-preview-page,
-  .rocrate-preview-page.embedded {
-    min-height: auto;
-    height: auto;
-    overflow: visible;
-    background: #fff;
-    color: #10242f;
-    font-size: 9pt;
-  }
-
-  .rocrate-preview-shell,
-  .rocrate-preview-page.embedded .rocrate-preview-shell {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .upload-stage,
-  .preview-search-panel,
-  .pdf-export-button {
-    display: none !important;
-  }
-
-  .print-report-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 8mm;
-    margin-bottom: 3mm;
-    padding-bottom: 2mm;
-    border-bottom: 1px solid #d8e0e4;
-  }
-
-  .print-report-title {
-    font-size: 9pt;
-    font-weight: 800;
-  }
-
-  .print-report-subtitle,
-  .print-report-meta {
-    color: #5e7884;
-    font-size: 7pt;
-    line-height: 1.3;
-  }
-
-  .print-report-footer {
-    display: block;
-    margin-top: 4mm;
-    padding-top: 2mm;
-    border-top: 1px solid #d8e0e4;
-    color: #6b818c;
-    font-size: 6.5pt;
-  }
-
-  .detail-card {
-    padding: 2.5mm 0;
-    margin-bottom: 3mm;
-    border-radius: 0;
-    box-shadow: none;
-    border: 0;
-    border-top: 1px solid #d8e0e4;
-    background: #fff;
-  }
-
-  .quick-summary-table {
-    display: block !important;
-  }
-
-  .quick-summary-row,
-  .quick-summary-row.wide-row {
-    display: grid;
-    grid-template-columns: 38mm minmax(0, 1fr);
-    gap: 2mm;
-    margin-bottom: 1.4mm;
-    padding: 1.8mm;
-    border-radius: 1.5mm;
-    background: #fff;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .quick-summary-key {
-    font-size: 7.2pt;
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-  }
-
-  .request-overview-item,
-  .attachment-item,
-  .zip-content-row {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .quick-summary-value,
-  .quick-summary-value :deep(.structured-value-table) {
-    font-size: 7.2pt;
-    line-height: 1.25;
-  }
-
-  .quick-summary-value :deep(.structured-value-scroll) {
-    overflow: visible;
-  }
-}
 </style>

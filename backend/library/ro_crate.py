@@ -16,6 +16,7 @@ from django.db.models import Q
 from django.db.models.fields.files import FieldFile
 from django.http import HttpResponse
 from django.utils import timezone
+from fpdf import FPDF
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -58,6 +59,7 @@ RO_CRATE_LICENSE_ID = "#parkour-ro-crate-license"
 RO_CRATE_ROOT_ID = "./"
 RO_CRATE_COMPLETED_STATUS = 6
 RO_CRATE_ARCHIVE_STUB_MAX_LENGTH = 180
+RO_CRATE_EXPORT_FILENAME_MAX_LENGTH = 50
 
 RO_CRATE_SECTION_IDS = {
     "request",
@@ -158,6 +160,7 @@ class ExportSelection:
     request_values: list
     selected_sections: set
     preview_requested: bool
+    pdf_requested: bool
     accessible_requests: object
     library_rows: list
     sample_rows: list
@@ -197,15 +200,24 @@ def _normalise_sections(raw_sections):
     return set(selected)
 
 
-def _normalise_preview(raw_preview):
-    if raw_preview is None:
+def _normalise_true_flag(raw_value, query_name):
+    if raw_value is None:
         return False
-    if raw_preview == "true":
+    if raw_value == "true":
         return True
     return Response(
-        {"error": "The 'preview' query parameter must be 'true' when provided."},
+        {"error": f"The '{query_name}' query parameter must be 'true' when provided."},
         status=400,
     )
+
+
+def _normalise_preview(raw_preview):
+    return _normalise_true_flag(raw_preview, "preview")
+
+
+def _normalise_pdf(raw_pdf):
+    return _normalise_true_flag(raw_pdf, "pdf")
+
 
 
 def _normalise_property_value(value):
@@ -417,6 +429,14 @@ def _safe_archive_component(value, fallback):
     return cleaned or fallback
 
 
+def _request_file_folder_name(request_obj):
+    request_id = str(request_obj.id)
+    return _safe_archive_component(
+        request_obj.name,
+        f"request-{request_id}",
+    )
+
+
 def _archive_stub(requests_by_id, request_ids):
     ids = [
         str(request_id)
@@ -427,6 +447,23 @@ def _archive_stub(requests_by_id, request_ids):
         return "parkour"
     stub = "_".join(ids)
     return stub[:RO_CRATE_ARCHIVE_STUB_MAX_LENGTH].rstrip("._-") or "parkour"
+
+
+def _bounded_export_filename(base_name, extension):
+    extension = extension if str(extension).startswith(".") else f".{extension}"
+    max_base_length = max(1, RO_CRATE_EXPORT_FILENAME_MAX_LENGTH - len(extension))
+    safe_base = _safe_archive_component(base_name, "parkour_ro_crate")
+    safe_base = safe_base[:max_base_length].rstrip("._-") or "parkour_ro_crate"
+    return f"{safe_base}{extension}"
+
+
+def _ro_crate_archive_name(archive_stub):
+    return _bounded_export_filename(f"{archive_stub}_ro_crate", ".zip")
+
+
+def _ro_crate_pdf_name(archive_name):
+    pdf_base = re.sub(r"\.(zip|pdf)$", "", str(archive_name or ""), flags=re.I)
+    return _bounded_export_filename(pdf_base, ".pdf")
 
 
 def _parkour_identifier(entity_type, value):
@@ -485,10 +522,7 @@ def _guess_encoding_format(filename):
 def _request_file_archive_path(file_obj, request_obj):
     original_name = getattr(getattr(file_obj, "file", None), "name", None)
     base_name = os.path.basename(original_name or file_obj.name or "")
-    request_folder = _safe_archive_component(
-        f"request-{request_obj.id}_{request_obj.name or f'request_{request_obj.id}'}",
-        f"request-{request_obj.id}",
-    )
+    request_folder = _request_file_folder_name(request_obj)
     file_name = _safe_archive_component(base_name, f"request_file_{file_obj.id}")
     return f"request-files/{request_folder}/{file_obj.id}_{file_name}"
 
@@ -502,10 +536,16 @@ def _select_records(request):
     preview = _normalise_preview(request.query_params.get("preview"))
     if isinstance(preview, Response):
         return preview
+    pdf = _normalise_pdf(request.query_params.get("pdf"))
+    if isinstance(pdf, Response):
+        return pdf
     if not barcodes and not requests:
         return Response(
             {
-                "error": "Provide at least one comma separated barcode value or request name via the 'barcodes' or 'requests' query parameters."
+                "error": (
+                    "Provide at least one comma separated barcode value or request "
+                    "name via the 'barcodes' or 'requests' query parameters."
+                )
             },
             status=400,
         )
@@ -555,6 +595,7 @@ def _select_records(request):
         request_values=requests,
         selected_sections=sections,
         preview_requested=preview,
+        pdf_requested=pdf,
         accessible_requests=accessible_requests,
         library_rows=delivered_libraries,
         sample_rows=delivered_samples,
@@ -623,7 +664,9 @@ class SimpleROCrateBuilder:
             "@graph": self.graph,
         }
         ro_crate = _filter_sections(ro_crate, self.selection.selected_sections)
-        archive_name = f"{_archive_stub(requests_by_id, self.selection.target_request_ids)}_ro_crate.zip"
+        archive_name = _ro_crate_archive_name(
+            _archive_stub(requests_by_id, self.selection.target_request_ids)
+        )
         file_entries = [
             entry
             for entry in self.file_entries
@@ -653,7 +696,7 @@ class SimpleROCrateBuilder:
                 _parkour_organization(),
             ],
         }
-        return CrateBuildResult(ro_crate, "parkour_ro_crate.zip", [])
+        return CrateBuildResult(ro_crate, _ro_crate_archive_name("parkour"), [])
 
     def _library_models(self):
         ids = [row.library_id for row in self.selection.library_rows]
@@ -1121,8 +1164,21 @@ class SimpleROCrateBuilder:
                 comments=sample_mv_comments,
                 parameter_values=sample_mv_comments,
             )
-            self._add_data(data_id, f"Sample export metadata for {row.name}", "sample-data", row.sample_id, "samples")
-            self._add_assay(assay_id, f"Assay for sample {row.name}", sample_id, process_id, data_id, "samples")
+            self._add_data(
+                data_id,
+                f"Sample export metadata for {row.name}",
+                "sample-data",
+                row.sample_id,
+                "samples",
+            )
+            self._add_assay(
+                assay_id,
+                f"Assay for sample {row.name}",
+                sample_id,
+                process_id,
+                data_id,
+                "samples",
+            )
             record_entity_ids = [source_id, sample_id, process_id, data_id, assay_id]
             self._link_to_record_requests(sample, model, row.request_id, record_entity_ids)
 
@@ -1189,8 +1245,21 @@ class SimpleROCrateBuilder:
                 comments=library_mv_comments,
                 parameter_values=library_mv_comments,
             )
-            self._add_data(data_id, f"Library export metadata for {row.name}", "library-data", row.library_id, "libraries")
-            self._add_assay(assay_id, f"Assay for library {row.name}", library_id, process_id, data_id, "libraries")
+            self._add_data(
+                data_id,
+                f"Library export metadata for {row.name}",
+                "library-data",
+                row.library_id,
+                "libraries",
+            )
+            self._add_assay(
+                assay_id,
+                f"Assay for library {row.name}",
+                library_id,
+                process_id,
+                data_id,
+                "libraries",
+            )
             self._link_to_record_requests(
                 library, model, row.request_id, [library_id, process_id, data_id, assay_id]
             )
@@ -1945,6 +2014,1288 @@ def _filter_sections(ro_crate, selected_sections):
     return ro_crate
 
 
+PDF_FIELD_ID = "@id"
+PDF_FIELD_TYPE = "@type"
+PDF_FIELD_NAME = "name"
+PDF_FIELD_IDENTIFIER = "identifier"
+PDF_FIELD_ADDITIONAL_PROPERTY = "additionalProperty"
+PDF_FIELD_PARAMETER_VALUE = "parameterValue"
+PDF_FIELD_VALUE = "value"
+PDF_FIELD_MATERIALS = "materials"
+PDF_FIELD_SAMPLES = "samples"
+PDF_FIELD_OTHER_MATERIALS = "otherMaterials"
+PDF_FIELD_CONTENT_URL = "contentUrl"
+PDF_FIELD_IS_PART_OF = "isPartOf"
+PDF_FIELD_REQUEST_CONTEXT = "requestContext"
+
+PDF_HIDDEN_DIRECT_FIELDS = {
+    PDF_FIELD_ID,
+    PDF_FIELD_TYPE,
+    "about",
+    PDF_FIELD_ADDITIONAL_PROPERTY,
+    "additionalType",
+    "comment",
+    "comments",
+    "contentSize",
+    "encodingFormat",
+    "hasPart",
+    PDF_FIELD_IDENTIFIER,
+    "includedInDataCatalog",
+    PDF_FIELD_IS_PART_OF,
+    "mentions",
+    "publisher",
+    "sameAs",
+    "subjectOf",
+    "url",
+}
+PDF_RELATED_MODEL_HIDDEN_FIELDS = {"sample", "library"}
+PDF_VISIBLE_ID_FIELDS = {"i7_id", "i5_id", "indexI7Id", "indexI5Id"}
+PDF_NORMALISED_VISIBLE_ID_FIELDS = {
+    _normalise_field_policy_key(field) for field in PDF_VISIBLE_ID_FIELDS
+}
+PDF_LINKED_MODEL_RELATION_FIELDS = [
+    "organism",
+    "nucleicAcidType",
+    "libraryType",
+    "readLength",
+    "indexType",
+    "indexI7",
+    "indexI5",
+    "selectedIndexPair",
+    "associatedPool",
+]
+PDF_RELATION_LABELS = {
+    "indexI7": "Selected I7 Index",
+    "indexI5": "Selected I5 Index",
+    "availableProtocols": "Available Protocols",
+    "executesLabProtocol": "Protocol",
+    "instrument": "Instrument",
+    "hasInstrument": "Instrument",
+    "hasLane": "Lane",
+    "poolSize": "Pool Size",
+    "member": "Members",
+    "sequencedOn": "Sequenced On",
+    "object": "Input",
+    "result": "Output",
+    "dataFiles": "Data",
+    "processSequence": "Processes",
+}
+PDF_BACKLINK_PROPERTIES = {
+    "object",
+    "result",
+    "hasPart",
+    "about",
+    "dataFiles",
+    "processSequence",
+}
+PDF_HIDDEN_FIELD_PATTERNS = (
+    re.compile(r"email", re.I),
+    re.compile(r"telephone", re.I),
+    re.compile(r"(^|_)token($|_)", re.I),
+    re.compile(r"(^|_)status($|_)", re.I),
+)
+PDF_PROPERTY_LABEL_OVERRIDES = {
+    "dateCreated": "Date Created",
+    "datePublished": "Date Published",
+    "request_filepaths": "External File Paths",
+    "request_metapaths": "External Metadata Paths",
+    "barcode": "Barcode",
+    "identifier": "Barcode",
+}
+PDF_MODEL_DISPLAY_RULES = [
+    {
+        "model_name": "Library",
+        "prefixes": ("library_db_",),
+        "id_prefixes": ("#library-material-",),
+    },
+    {
+        "model_name": "Sample",
+        "prefixes": ("sample_db_",),
+        "id_prefixes": ("#sample-material-",),
+    },
+    {"model_name": "LibraryPreparation", "prefixes": ("library_preparation_",)},
+    {"model_name": "Pooling", "prefixes": ("pooling_",)},
+    {"model_name": "Request", "prefixes": ("request_",)},
+    {
+        "model_name": "Flowcell",
+        "prefixes": ("flowcell_",),
+        "id_prefixes": ("#flowcell-",),
+    },
+    {"model_name": "Lane", "prefixes": ("lane_",), "id_prefixes": ("#lane-",)},
+    {
+        "model_name": "Sequencer",
+        "prefixes": ("sequencer_",),
+        "id_prefixes": ("#sequencer-",),
+    },
+    {
+        "model_name": "IndexPool",
+        "prefixes": ("index_pool_",),
+        "id_prefixes": ("#index-pool-",),
+    },
+    {
+        "model_name": "PoolSize",
+        "prefixes": ("index_pool_size_",),
+        "id_prefixes": ("#index-pool-size-",),
+    },
+    {
+        "model_name": "Organism",
+        "prefixes": ("organism_",),
+        "id_prefixes": ("#organism-",),
+    },
+    {
+        "model_name": "LibraryType",
+        "prefixes": ("library_type_",),
+        "id_prefixes": ("#library-type-",),
+    },
+    {
+        "model_name": "ReadLength",
+        "prefixes": ("read_length_",),
+        "id_prefixes": ("#read-length-",),
+    },
+    {
+        "model_name": "IndexType",
+        "prefixes": ("index_type_",),
+        "id_prefixes": ("#index-type-",),
+    },
+    {
+        "model_name": "NucleicAcidType",
+        "prefixes": ("nucleic_acid_type_",),
+        "id_prefixes": ("#nucleic-acid-type-",),
+    },
+    {
+        "model_name": "LibraryProtocol",
+        "prefixes": ("protocol_",),
+        "id_prefixes": ("#protocol-",),
+    },
+    {
+        "model_name": "IndexI7",
+        "prefixes": ("index_i7_",),
+        "id_prefixes": ("#index-i7-",),
+    },
+    {
+        "model_name": "IndexI5",
+        "prefixes": ("index_i5_",),
+        "id_prefixes": ("#index-i5-",),
+    },
+    {
+        "model_name": "IndexPair",
+        "prefixes": ("index_pair_",),
+        "id_prefixes": ("#index-pair-",),
+    },
+    {
+        "model_name": "CompleteLibraryData",
+        "prefixes": ("library_mv_", "library_export_"),
+        "summary_only": True,
+    },
+    {
+        "model_name": "CompleteSampleData",
+        "prefixes": ("sample_mv_", "sample_export_"),
+        "summary_only": True,
+    },
+]
+PDF_MODEL_SECTION_RULES = sorted(
+    [
+        (rule["model_name"], rule["prefixes"])
+        for rule in PDF_MODEL_DISPLAY_RULES
+        if not rule.get("summary_only")
+    ],
+    key=lambda rule: max(len(prefix) for prefix in rule[1]),
+    reverse=True,
+)
+PDF_MODEL_ID_RULES = sorted(
+    [
+        (prefix, rule["model_name"])
+        for rule in PDF_MODEL_DISPLAY_RULES
+        for prefix in rule.get("id_prefixes", ())
+    ],
+    key=lambda rule: len(rule[0]),
+    reverse=True,
+)
+PDF_PROPERTY_PREFIXES = sorted(
+    {
+        prefix
+        for rule in PDF_MODEL_DISPLAY_RULES
+        for prefix in rule["prefixes"]
+    },
+    key=len,
+    reverse=True,
+)
+PDF_PROPERTY_PREFIX_PATTERN = re.compile(
+    rf"^({'|'.join(re.escape(prefix) for prefix in PDF_PROPERTY_PREFIXES)})"
+)
+PDF_SUMMARY_PROPERTY_PREFIXES = tuple(
+    prefix
+    for rule in PDF_MODEL_DISPLAY_RULES
+    if rule.get("summary_only")
+    for prefix in rule["prefixes"]
+)
+PDF_REPEATED_DATA_OBJECT_FIELDS = {
+    "associatedPool",
+    "derivedFrom",
+    "indexI7",
+    "indexI5",
+    "indexType",
+    "libraryProtocol",
+    "libraryType",
+    "nucleicAcidType",
+    "organism",
+    "readLength",
+    "requestContext",
+    "selectedIndexPair",
+    "sequencedOn",
+}
+PDF_REPEATED_DATA_OBJECT_KEYS = {
+    f"dataobject{_normalise_field_policy_key(field)}"
+    for field in PDF_REPEATED_DATA_OBJECT_FIELDS
+}
+
+
+def _pdf_label_for_field(field_name):
+    if field_name in PDF_PROPERTY_LABEL_OVERRIDES:
+        return PDF_PROPERTY_LABEL_OVERRIDES[field_name]
+    label = PDF_PROPERTY_PREFIX_PATTERN.sub("", str(field_name or ""))
+    label = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", label)
+    label = re.sub(r"[_-]+", " ", label)
+    label = re.sub(r"\s+", " ", label).strip()
+    return label.title()
+
+
+def _pdf_is_hidden_field(field_name):
+    key = str(field_name or "")
+    normalised = _normalise_field_policy_key(key)
+    prefixless = PDF_PROPERTY_PREFIX_PATTERN.sub("", key)
+    prefixless_normalised = _normalise_field_policy_key(prefixless)
+    if key in PDF_HIDDEN_DIRECT_FIELDS:
+        return True
+    if _is_hidden_export_field(key, prefixless):
+        return True
+    if normalised in RO_CRATE_HIDDEN_FIELD_KEYS:
+        return True
+    if prefixless_normalised in RO_CRATE_HIDDEN_FIELD_KEYS:
+        return True
+    if any(pattern.search(key) for pattern in PDF_HIDDEN_FIELD_PATTERNS):
+        return True
+    return bool(
+        re.search(r"(^|_)id$", prefixless, re.I)
+        and prefixless not in PDF_VISIBLE_ID_FIELDS
+        and prefixless_normalised not in PDF_NORMALISED_VISIBLE_ID_FIELDS
+    )
+
+
+class ROCrateTextPDF(FPDF):
+    def __init__(self, title, footer_context):
+        super().__init__(orientation="P", unit="mm", format="A4")
+        self.set_auto_page_break(auto=True, margin=14)
+        self.set_margins(12, 10, 12)
+        self.title = title
+        self.footer_context = footer_context
+        self.font_family = "Helvetica"
+        self.unicode_font = False
+        self._configure_fonts()
+
+    def _configure_fonts(self):
+        font_candidates = [
+            (
+                r"C:\Windows\Fonts\arial.ttf",
+                r"C:\Windows\Fonts\arialbd.ttf",
+            ),
+            (
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+            ),
+        ]
+        for regular_path, bold_path in font_candidates:
+            if os.path.exists(regular_path) and os.path.exists(bold_path):
+                self.add_font("ParkourPDF", "", regular_path)
+                self.add_font("ParkourPDF", "B", bold_path)
+                self.font_family = "ParkourPDF"
+                self.unicode_font = True
+                return
+
+    def safe_text(self, value):
+        text = str(value if value is not None else "")
+        if self.unicode_font:
+            return text
+        return text.encode("latin-1", "replace").decode("latin-1")
+
+    def footer(self):
+        self.set_y(-11)
+        self.set_font(self.font_family, "", 7)
+        self.set_text_color(90, 110, 120)
+        context = self.safe_text(self.footer_context[:118])
+        self.cell(0, 6, f"{context} | Page {self.page_no()} of {{nb}}", align="R")
+        self.set_text_color(16, 36, 47)
+
+
+class ROCratePdfRenderer:
+    def __init__(self, ro_crate_payload, archive_name, skipped_records=None):
+        self.ro_crate = ro_crate_payload or {}
+        self.archive_name = archive_name
+        self.skipped_records = skipped_records or []
+        self.graph = self.ro_crate.get("@graph", [])
+        self.entity_map = {
+            entity.get(PDF_FIELD_ID): entity
+            for entity in self.graph
+            if isinstance(entity, dict) and entity.get(PDF_FIELD_ID)
+        }
+        self.backlink_map = self._build_backlink_map()
+        self._request_groups = None
+        self._written_record_section_signatures = set()
+        self.pdf = None
+
+    def render(self):
+        request_groups = self.request_groups()
+        footer_context = self._footer_context(request_groups)
+        title = self.archive_name.replace(".zip", "").replace("_", " ")
+        self.pdf = ROCrateTextPDF(title=title, footer_context=footer_context)
+        self.pdf.alias_nb_pages()
+        self.pdf.add_page()
+        self._write_title(title)
+        for request_group in request_groups:
+            self._write_request_group(request_group)
+        if self.skipped_records:
+            self._write_section("Skipped Records")
+            self._write_numbered_list(self.skipped_records)
+        return bytes(self.pdf.output())
+
+    def _build_backlink_map(self):
+        backlink_map = {}
+        for entity in self.graph:
+            if not isinstance(entity, dict):
+                continue
+            source_id = entity.get(PDF_FIELD_ID)
+            if not source_id:
+                continue
+            for key, value in entity.items():
+                for target_id in self.reference_ids(value):
+                    backlink_map.setdefault(target_id, []).append(
+                        {"sourceId": source_id, "property": key}
+                    )
+        return backlink_map
+
+    def _footer_context(self, request_groups):
+        request_names = [group["name"] for group in request_groups if group["name"]]
+        record_names = [
+            record["name"]
+            for group in request_groups
+            for record in group["records"]
+            if record["name"]
+        ]
+        request_text = (
+            f"Request: {request_names[0]}"
+            if len(request_names) == 1
+            else f"Requests: {', '.join(request_names) or 'Selected requests'}"
+        )
+        record_text = (
+            f"Library/Sample: {record_names[0]}"
+            if len(record_names) == 1
+            else f"Libraries/Samples: {len(record_names)} selected"
+        )
+        return f"{request_text} | {record_text}"
+
+    def request_groups(self):
+        if self._request_groups is not None:
+            return self._request_groups
+        studies = [
+            entity
+            for entity in self.graph
+            if str(entity.get(PDF_FIELD_ID, "")).startswith("#study-")
+        ]
+        groups = [
+            self._build_request_group(study, index)
+            for index, study in enumerate(studies)
+        ]
+        groups = [group for group in groups if group["records"] or group["requestRows"]]
+        if groups:
+            self._request_groups = groups
+        else:
+            self._request_groups = [self._build_fallback_request_group()]
+        return self._request_groups
+
+    def _build_request_group(self, study, index):
+        study_id = study.get(PDF_FIELD_ID) or f"request-{index + 1}"
+        request_number = self._id_suffix(study_id)
+        request_entity = self.entity_by_id(f"#request-context-{request_number}")
+        record_ids = self._study_record_ids(study)
+        records = sorted(
+            [
+                record
+                for record in (self._build_record(record_id) for record_id in record_ids)
+                if record
+            ],
+            key=lambda record: record["name"],
+        )
+        return {
+            "id": study_id,
+            "requestNumber": request_number,
+            "name": self.entity_label(request_entity)
+            or self.entity_label(study)
+            or f"Selected request {index + 1}",
+            "requestRows": self.rows_for_entity(request_entity, "Request Details"),
+            "records": records,
+            "attachments": self.attachments_for_request(
+                request_entity.get(PDF_FIELD_ID) if request_entity else ""
+            ),
+        }
+
+    def _build_fallback_request_group(self):
+        records = sorted(
+            [
+                record
+                for record in (
+                    self._build_record(entity.get(PDF_FIELD_ID))
+                    for entity in self.graph
+                    if self.is_record_entity(entity)
+                )
+                if record
+            ],
+            key=lambda record: record["name"],
+        )
+        root = self.entity_by_id(RO_CRATE_ROOT_ID)
+        return {
+            "id": "fallback-request",
+            "requestNumber": "",
+            "name": self.entity_label(root) or "Selected request",
+            "requestRows": self.rows_for_entity(root, "Request Details"),
+            "records": records,
+            "attachments": self.attachments_for_request(""),
+        }
+
+    def _study_record_ids(self, study):
+        materials = study.get(PDF_FIELD_MATERIALS) or {}
+        ids = [
+            *self.reference_ids(materials.get(PDF_FIELD_SAMPLES)),
+            *self.reference_ids(materials.get(PDF_FIELD_OTHER_MATERIALS)),
+        ]
+        ids = [entity_id for entity_id in ids if self.is_record_id(entity_id)]
+        if ids:
+            return list(dict.fromkeys(ids))
+        return [
+            entity_id
+            for entity_id in self.reference_ids(study.get("hasPart"))
+            if self.is_record_id(entity_id)
+        ]
+
+    def _build_record(self, record_id):
+        entity = self.entity_by_id(record_id)
+        if not entity:
+            return None
+        record_type = self.record_type(entity)
+        record_name = (
+            entity.get(PDF_FIELD_NAME)
+            or entity.get(PDF_FIELD_IDENTIFIER)
+            or "Unnamed record"
+        )
+        sections = {}
+
+        def add_rows(title, rows):
+            visible_rows = [row for row in rows if not self.is_hidden_row(row)]
+            if visible_rows:
+                sections.setdefault(title, []).extend(visible_rows)
+
+        primary_title = f"{record_type}: {record_name}"
+        add_rows(
+            "Overview",
+            [
+                {"key": "Name", "value": entity.get(PDF_FIELD_NAME) or "Unnamed record"},
+                {"key": "Barcode", "value": entity.get(PDF_FIELD_IDENTIFIER) or ""},
+            ],
+        )
+        for row in self.property_rows(entity, skip_summary_models=True):
+            add_rows("Overview" if row.get("group") == primary_title else row.get("group"), [row])
+        for section in self.related_model_sections(entity):
+            add_rows(section["title"], section["rows"])
+        for section in self.sequencing_sections(entity):
+            add_rows(section["title"], section["rows"])
+        process_entities = self.record_process_entities(record_id)
+        for section in self.process_detail_sections(process_entities):
+            add_rows(section["title"], section["rows"])
+        add_rows(
+            "Processes & Data",
+            self.backlink_rows(
+                record_id,
+                omit_source_ids=[
+                    process_entity.get(PDF_FIELD_ID) for process_entity in process_entities
+                ],
+            ),
+        )
+
+        return {
+            "id": record_id,
+            "type": record_type,
+            "name": record_name,
+            "barcode": entity.get(PDF_FIELD_IDENTIFIER) or "",
+            "sections": [
+                {"title": title, "rows": self.unique_rows(rows)}
+                for title, rows in sections.items()
+                if rows
+            ],
+        }
+
+    def rows_for_entity(self, entity, default_group):
+        if not entity:
+            return []
+        direct_rows = [
+            {
+                "key": _pdf_label_for_field(key),
+                "value": self.display_value(value),
+                "group": default_group,
+            }
+            for key, value in entity.items()
+            if key != PDF_FIELD_NAME and not _pdf_is_hidden_field(key)
+        ]
+        return [
+            row
+            for row in [*direct_rows, *self.property_rows(entity)]
+            if not self.is_hidden_row(row)
+        ]
+
+    def property_rows(self, entity, skip_summary_models=False):
+        refs = [
+            *self.reference_values(entity.get(PDF_FIELD_ADDITIONAL_PROPERTY)),
+            *self.reference_values(entity.get(PDF_FIELD_PARAMETER_VALUE)),
+        ]
+        properties = [
+            prop
+            for prop in (self.resolve_reference(ref) for ref in refs)
+            if isinstance(prop, dict)
+        ]
+        property_by_name = {
+            prop.get(PDF_FIELD_NAME): prop
+            for prop in properties
+            if prop.get(PDF_FIELD_NAME)
+        }
+        rows = []
+        for prop in properties:
+            name = prop.get(PDF_FIELD_NAME)
+            if not name:
+                continue
+            if skip_summary_models and self.is_summary_model_property(name):
+                continue
+            if self.is_standalone_measuring_unit_property(name, property_by_name):
+                continue
+            if self.duplicates_direct_entity_field(entity, name, prop.get(PDF_FIELD_VALUE)):
+                continue
+            row = {
+                "key": _pdf_label_for_field(name),
+                "value": self.display_property_value(prop, property_by_name),
+                "group": self.group_for_property(name, entity),
+            }
+            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row):
+                rows.append(row)
+        return rows
+
+    def related_model_sections(self, entity):
+        sections = []
+        for related_entity in self.related_model_entities(entity):
+            options = self.related_model_display_options(related_entity)
+            rows = self.rows_for_related_model_entity(related_entity, **options)
+            if rows:
+                sections.append(
+                    {
+                        "title": self.model_section_title_for_entity(related_entity),
+                        "rows": rows,
+                    }
+                )
+        return sections
+
+    def related_model_display_options(self, entity):
+        entity_id = str(entity.get(PDF_FIELD_ID, ""))
+        if entity_id.startswith("#library-type-"):
+            return {"omit_relation_keys": {"availableProtocols"}}
+        if entity_id.startswith("#index-pair-"):
+            return {
+                "omit_display_keys": {"indexType"},
+                "omit_relation_keys": {"indexI7", "indexI5"},
+            }
+        return {}
+
+    def related_model_entities(self, entity):
+        related = []
+        for key in PDF_LINKED_MODEL_RELATION_FIELDS:
+            related.extend(
+                self.entity_by_id(entity_id)
+                for entity_id in self.reference_ids(entity.get(key))
+            )
+        seen = set()
+        unique = []
+        for related_entity in related:
+            if not related_entity or self.is_low_value_backlink(related_entity):
+                continue
+            entity_id = related_entity.get(PDF_FIELD_ID)
+            if entity_id and entity_id not in seen:
+                seen.add(entity_id)
+                unique.append(related_entity)
+        return unique
+
+    def rows_for_related_model_entity(
+        self,
+        entity,
+        omit_direct_keys=None,
+        omit_relation_keys=None,
+        omit_display_keys=None,
+        omit_property_rows=False,
+    ):
+        omitted_direct = set(omit_direct_keys or set()) | set(omit_display_keys or set())
+        direct_rows = [
+            {"key": _pdf_label_for_field(key), "value": self.display_value(value)}
+            for key, value in entity.items()
+            if key != PDF_FIELD_NAME
+            and key not in PDF_RELATION_LABELS
+            and key not in omitted_direct
+            and key not in PDF_RELATED_MODEL_HIDDEN_FIELDS
+            and not _pdf_is_hidden_field(key)
+            and not self.is_summary_model_property(key)
+        ]
+        relation_rows = self.relation_rows(entity, omit_relation_keys=omit_relation_keys)
+        property_rows = [] if omit_property_rows else self.property_rows(entity, True)
+        return [
+            row
+            for row in [*direct_rows, *property_rows, *relation_rows]
+            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row)
+        ]
+
+    def sequencing_sections(self, entity):
+        sections = []
+        for flowcell_id in self.reference_ids(entity.get("sequencedOn")):
+            flowcell = self.entity_by_id(flowcell_id)
+            if not flowcell:
+                continue
+            rows = self.rows_for_flowcell(flowcell)
+            if rows:
+                sections.append(
+                    {
+                        "title": f"Flowcell: {self.short_entity_label(flowcell, 'Flowcell')}",
+                        "rows": rows,
+                    }
+                )
+        return sections
+
+    def rows_for_flowcell(self, flowcell):
+        rows = [
+            *self.rows_for_related_model_entity(
+                flowcell, omit_relation_keys={"instrument", "hasInstrument", "hasLane"}
+            )
+        ]
+        for sequencer_id in self.reference_ids(flowcell.get("hasInstrument")):
+            self.add_nested_entity_rows(rows, "Sequencer", self.entity_by_id(sequencer_id))
+        lanes = [
+            self.entity_by_id(lane_id)
+            for lane_id in self.reference_ids(flowcell.get("hasLane"))
+        ]
+        lanes = [lane for lane in lanes if lane]
+        if len(lanes) > 1:
+            rows.append(
+                {
+                    "key": "Lanes",
+                    "value": [self.lane_table_row(lane) for lane in lanes],
+                }
+            )
+        else:
+            for lane in lanes:
+                self.add_nested_entity_rows(rows, "Lane", lane)
+        for data_id in self.reference_ids(flowcell.get("hasPart")):
+            data_entity = self.entity_by_id(data_id)
+            if (
+                data_entity
+                and not self.is_lane_entity(data_entity)
+                and not self.is_generic_flowcell_data_entity(data_entity)
+            ):
+                self.add_nested_entity_rows(
+                    rows,
+                    "Flowcell Data",
+                    data_entity,
+                    omit_direct_keys={"additionalType", "encodingFormat"},
+                    omit_relation_keys={"about", "isPartOf"},
+                    omit_entity_summary=True,
+                )
+        return [
+            row
+            for row in self.unique_rows(rows)
+            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row)
+        ]
+
+    def add_nested_entity_rows(
+        self,
+        rows,
+        label,
+        entity,
+        omit_direct_keys=None,
+        omit_relation_keys=None,
+        omit_property_rows=False,
+        omit_entity_summary=False,
+    ):
+        if not entity or self.should_skip_nested_entity(label, entity):
+            return
+        if not omit_entity_summary:
+            rows.append({"key": label, "value": self.entity_label(entity)})
+        for row in self.rows_for_related_model_entity(
+            entity,
+            omit_direct_keys=omit_direct_keys,
+            omit_relation_keys=omit_relation_keys,
+            omit_property_rows=omit_property_rows,
+        ):
+            if not self.is_low_value_preview_row(row, label):
+                rows.append({**row, "key": f"{label} {row['key']}"})
+
+    def lane_table_row(self, lane):
+        row = {"Lane": self.entity_label(lane)}
+        for item in self.rows_for_related_model_entity(
+            lane, omit_direct_keys={"additionalType"}
+        ):
+            row[item["key"]] = item["value"]
+        return row
+
+    def process_detail_sections(self, process_entities):
+        sections = []
+        for process_entity in process_entities:
+            rows = self.rows_for_process_entity(process_entity)
+            if rows:
+                sections.append(
+                    {"title": self.process_section_title(process_entity), "rows": rows}
+                )
+        return sections
+
+    def record_process_entities(self, record_id):
+        process_ids = [
+            link["sourceId"]
+            for link in self.backlink_map.get(record_id, [])
+            if link["property"] in {"object", "result"}
+            and self.is_process_entity(self.entity_by_id(link["sourceId"]))
+        ]
+        return [
+            self.entity_by_id(entity_id)
+            for entity_id in dict.fromkeys(process_ids)
+            if self.entity_by_id(entity_id)
+        ]
+
+    def rows_for_process_entity(self, process_entity):
+        rows = [
+            *self.rows_for_related_model_entity(
+                process_entity,
+                omit_relation_keys={"executesLabProtocol", "object", "result"},
+            )
+        ]
+        for protocol_id in self.reference_ids(process_entity.get("executesLabProtocol")):
+            self.add_nested_entity_rows(rows, "Protocol", self.entity_by_id(protocol_id))
+        for data_id in self.reference_ids(process_entity.get("result")):
+            self.add_nested_entity_rows(
+                rows,
+                "Data Object",
+                self.entity_by_id(data_id),
+                omit_direct_keys={
+                    "additionalType",
+                    "encodingFormat",
+                    *PDF_REPEATED_DATA_OBJECT_FIELDS,
+                },
+                omit_relation_keys=PDF_REPEATED_DATA_OBJECT_FIELDS,
+                omit_property_rows=True,
+                omit_entity_summary=True,
+            )
+        return [
+            row
+            for row in self.unique_rows(rows)
+            if not self.is_hidden_row(row) and not self.is_low_value_preview_row(row)
+        ]
+
+    def relation_rows(self, entity, omit_relation_keys=None):
+        omitted = set(omit_relation_keys or set())
+        return [
+            {
+                "key": label,
+                "value": self.display_value(entity[key]),
+            }
+            for key, label in PDF_RELATION_LABELS.items()
+            if key not in omitted and entity.get(key)
+        ]
+
+    def backlink_rows(self, entity_id, omit_source_ids=None):
+        omitted = set(omit_source_ids or [])
+        rows = []
+        for link in self.backlink_map.get(entity_id, []):
+            if link["property"] not in PDF_BACKLINK_PROPERTIES:
+                continue
+            if link["sourceId"] in omitted:
+                continue
+            entity = self.entity_by_id(link["sourceId"])
+            if not entity or self.is_low_value_backlink(entity):
+                continue
+            rows.append(
+                {
+                    "key": _pdf_label_for_field(link["property"]),
+                    "value": self.entity_label(entity),
+                }
+            )
+        return rows
+
+    def attachments_for_request(self, request_context_id):
+        files = []
+        for entity in self.graph:
+            if not self.is_attachment_entity(entity):
+                continue
+            if request_context_id and request_context_id not in self.reference_ids(
+                entity.get(PDF_FIELD_REQUEST_CONTEXT)
+            ):
+                continue
+            files.append(
+                {
+                    "name": entity.get(PDF_FIELD_NAME)
+                    or entity.get(PDF_FIELD_CONTENT_URL)
+                    or entity.get(PDF_FIELD_ID),
+                    "contentUrl": entity.get(PDF_FIELD_CONTENT_URL),
+                }
+            )
+        return files
+
+    def entity_by_id(self, entity_id):
+        return self.entity_map.get(entity_id)
+
+    def entity_types(self, entity):
+        value = entity.get(PDF_FIELD_TYPE) if entity else None
+        if isinstance(value, list):
+            return value
+        return [value] if value else []
+
+    def entity_label(self, entity):
+        if not entity:
+            return ""
+        return (
+            entity.get(PDF_FIELD_NAME)
+            or entity.get(PDF_FIELD_IDENTIFIER)
+            or entity.get(PDF_FIELD_ID)
+            or ""
+        )
+
+    def short_entity_label(self, entity, prefix):
+        return re.sub(rf"^{re.escape(prefix)}\s+", "", self.entity_label(entity), flags=re.I)
+
+    def process_section_title(self, process_entity):
+        label = self.entity_label(process_entity)
+        match = re.match(
+            r"^(sample|library|sequencing)\s+metadata\s+capture\s+for\s+(.+)$",
+            label,
+            flags=re.I,
+        )
+        if match:
+            return f"Process: {match.group(2)}"
+        return f"Process: {label}"
+
+    def is_record_entity(self, entity):
+        return self.is_record_id(entity.get(PDF_FIELD_ID) if entity else "")
+
+    def is_record_id(self, entity_id):
+        entity_id = str(entity_id or "")
+        return entity_id.startswith("#library-material-") or entity_id.startswith(
+            "#sample-material-"
+        )
+
+    def record_type(self, entity):
+        entity_id = str(entity.get(PDF_FIELD_ID, ""))
+        if entity_id.startswith("#library-material-"):
+            return "Library"
+        if entity_id.startswith("#sample-material-"):
+            return "Sample"
+        type_refs = self.reference_ids(entity.get("additionalType"))
+        if any("/Library" in type_ref for type_ref in type_refs):
+            return "Library"
+        if any("/Sample" in type_ref for type_ref in type_refs):
+            return "Sample"
+        return "Record"
+
+    def is_attachment_entity(self, entity):
+        return (
+            "MediaObject" in self.entity_types(entity)
+            and entity.get(PDF_FIELD_ID) != "ro-crate-metadata.json"
+            and RO_CRATE_ROOT_ID in self.reference_ids(entity.get(PDF_FIELD_IS_PART_OF))
+        )
+
+    def is_lane_entity(self, entity):
+        return str(entity.get(PDF_FIELD_ID, "") if entity else "").startswith("#lane-")
+
+    def is_process_entity(self, entity):
+        return "CreateAction" in self.entity_types(entity)
+
+    def is_assay_entity(self, entity):
+        entity_id = str(entity.get(PDF_FIELD_ID, "") if entity else "")
+        return (
+            entity_id.startswith("#flowcell-assay-")
+            or entity_id.startswith("#sample-assay-")
+            or entity_id.startswith("#library-assay-")
+        )
+
+    def is_generic_flowcell_data_entity(self, entity):
+        return bool(re.match(r"^#flowcell-data-\d+$", str(entity.get(PDF_FIELD_ID, ""))))
+
+    def is_low_value_backlink(self, entity):
+        entity_id = str(entity.get(PDF_FIELD_ID, "") if entity else "")
+        return entity_id.startswith("#study-") or entity_id.startswith("#source-sample-")
+
+    def should_skip_nested_entity(self, label, entity):
+        return self.normalized_display_key(label) == "assay" and self.is_assay_entity(entity)
+
+    def is_low_value_preview_row(self, row, parent_label=""):
+        row_key = self.normalized_display_key(row.get("key"))
+        parent_key = self.normalized_display_key(parent_label)
+        if self.is_raw_property_name_list_row(row):
+            return True
+        if row_key.startswith("assay"):
+            return True
+        if parent_key == "dataobject" and row_key in PDF_REPEATED_DATA_OBJECT_KEYS:
+            return True
+        return False
+
+    def is_raw_property_name_list_row(self, row):
+        if not self.normalized_display_key(row.get("key")).endswith("parametervalue"):
+            return False
+        values = row.get("value") if isinstance(row.get("value"), list) else [row.get("value")]
+        tokens = []
+        for value in values:
+            if isinstance(value, str):
+                tokens.extend(value.split(","))
+        tokens = [re.sub(r"^\d+\.\s*", "", token).strip() for token in tokens if token]
+        return bool(tokens) and all(PDF_PROPERTY_PREFIX_PATTERN.match(token) for token in tokens)
+
+    def normalized_display_key(self, value):
+        return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
+
+    def is_summary_model_property(self, name):
+        return str(name or "").startswith(PDF_SUMMARY_PROPERTY_PREFIXES)
+
+    def display_property_value(self, property_value, property_by_name):
+        value = self.display_value(property_value.get(PDF_FIELD_VALUE))
+        unit = self.unit_for_measured_property(property_value, property_by_name)
+        if not unit or self.is_empty(value):
+            return value
+        return f"{value} {unit}"
+
+    def unit_for_measured_property(self, property_value, property_by_name):
+        unit_name = self.measuring_unit_property_name(property_value.get(PDF_FIELD_NAME))
+        if not unit_name:
+            return ""
+        return self.display_value(
+            property_by_name.get(unit_name, {}).get(PDF_FIELD_VALUE)
+        )
+
+    def measuring_unit_property_name(self, property_name):
+        property_name = str(property_name or "")
+        if property_name.endswith("measured_value_facility"):
+            return re.sub(
+                r"measured_value_facility$",
+                "measuring_unit_facility",
+                property_name,
+            )
+        if property_name.endswith("measured_value"):
+            return re.sub(r"measured_value$", "measuring_unit", property_name)
+        return ""
+
+    def is_standalone_measuring_unit_property(self, property_name, property_by_name):
+        property_name = str(property_name or "")
+        if property_name.endswith("measuring_unit_facility"):
+            return (
+                re.sub(
+                    r"measuring_unit_facility$",
+                    "measured_value_facility",
+                    property_name,
+                )
+                in property_by_name
+            )
+        if property_name.endswith("measuring_unit"):
+            return re.sub(r"measuring_unit$", "measured_value", property_name) in property_by_name
+        return False
+
+    def duplicates_direct_entity_field(self, entity, property_name, property_value):
+        normalized = PDF_PROPERTY_PREFIX_PATTERN.sub("", str(property_name or ""))
+        direct_key_map = {
+            "name": PDF_FIELD_NAME,
+            "description": "description",
+            "identifier": PDF_FIELD_IDENTIFIER,
+            "barcode": PDF_FIELD_IDENTIFIER,
+        }
+        direct_key = direct_key_map.get(normalized)
+        if not direct_key or direct_key not in entity:
+            return False
+        return self.display_value(entity.get(direct_key)) == self.display_value(property_value)
+
+    def group_for_property(self, name, entity):
+        model_name = self.model_name_for_property(name)
+        if not model_name:
+            return "Additional Details"
+        return f"{model_name}: {self.entity_label(entity) or 'Record'}"
+
+    def model_name_for_property(self, name):
+        property_name = str(name or "")
+        for model_name, prefixes in PDF_MODEL_SECTION_RULES:
+            if property_name.startswith(prefixes):
+                return model_name
+        return None
+
+    def model_section_title_for_entity(self, entity):
+        first_property = None
+        for ref in [
+            *self.reference_values(entity.get(PDF_FIELD_ADDITIONAL_PROPERTY)),
+            *self.reference_values(entity.get(PDF_FIELD_PARAMETER_VALUE)),
+        ]:
+            prop = self.resolve_reference(ref)
+            if isinstance(prop, dict) and prop.get(PDF_FIELD_NAME):
+                first_property = prop.get(PDF_FIELD_NAME)
+                break
+        model_name = self.model_name_for_property(first_property) or self.model_name_for_id(
+            entity.get(PDF_FIELD_ID)
+        )
+        return f"{model_name or 'Linked Model'}: {self.entity_label(entity) or 'Record'}"
+
+    def model_name_for_id(self, entity_id):
+        entity_id = str(entity_id or "")
+        for prefix, model_name in PDF_MODEL_ID_RULES:
+            if entity_id.startswith(prefix):
+                return model_name
+        return None
+
+    def reference_values(self, value):
+        if isinstance(value, list):
+            return value
+        return [value] if value else []
+
+    def reference_ids(self, value):
+        ids = []
+        for entry in self.reference_values(value):
+            if isinstance(entry, list):
+                ids.extend(self.reference_ids(entry))
+            elif isinstance(entry, dict) and entry.get(PDF_FIELD_ID):
+                ids.append(str(entry.get(PDF_FIELD_ID)))
+        return [entity_id for entity_id in ids if entity_id]
+
+    def resolve_reference(self, value):
+        if isinstance(value, dict) and value.get(PDF_FIELD_ID):
+            return self.entity_by_id(value.get(PDF_FIELD_ID)) or value
+        return value
+
+    def display_value(self, value):
+        if isinstance(value, list):
+            return [
+                entry
+                for entry in (self.display_value(entry) for entry in value)
+                if not self.is_empty(entry)
+            ]
+        if isinstance(value, dict):
+            if value.get(PDF_FIELD_ID):
+                return self.entity_label(self.entity_by_id(value.get(PDF_FIELD_ID)) or value)
+            return {
+                _pdf_label_for_field(key): displayed
+                for key, nested in value.items()
+                for displayed in [self.display_value(nested)]
+                if not self.is_empty(displayed)
+            }
+        if isinstance(value, str):
+            parsed = self.parse_structured_string(value)
+            if parsed is not None:
+                return self.display_value(parsed)
+        if value is None:
+            return ""
+        return str(value)
+
+    def parse_structured_string(self, value):
+        text = str(value or "").strip()
+        if not text or text[0] not in {"{", "["}:
+            return None
+        try:
+            parsed = json.loads(text)
+        except ValueError:
+            return None
+        return parsed if isinstance(parsed, (dict, list)) else None
+
+    def is_hidden_row(self, row):
+        return (
+            self.is_empty(row.get("value"))
+            or _pdf_is_hidden_field(row.get("key"))
+            or _pdf_is_hidden_field(PDF_PROPERTY_PREFIX_PATTERN.sub("", str(row.get("key"))))
+        )
+
+    def is_empty(self, value):
+        return (
+            value in ("", None)
+            or (isinstance(value, list) and not value)
+            or (isinstance(value, dict) and not value)
+        )
+
+    def unique_rows(self, rows):
+        seen = set()
+        unique = []
+        for row in rows:
+            key = (row.get("key"), json.dumps(row.get("value"), sort_keys=True, default=str))
+            if key in seen:
+                continue
+            seen.add(key)
+            unique.append(row)
+        return unique
+
+    def _id_suffix(self, entity_id):
+        match = re.search(r"(\d+)$", str(entity_id or ""))
+        return match.group(1) if match else ""
+
+    def _write_title(self, title):
+        self.pdf.set_font(self.pdf.font_family, "B", 14)
+        self.pdf.cell(0, 8, self.pdf.safe_text(title), ln=1)
+        self.pdf.set_font(self.pdf.font_family, "", 8)
+        self.pdf.set_text_color(90, 110, 120)
+        self.pdf.cell(0, 5, self.pdf.safe_text("RO-Crate preview generated from Parkour metadata."), ln=1)
+        self.pdf.set_text_color(16, 36, 47)
+        self.pdf.ln(2)
+
+    def _write_request_group(self, request_group):
+        self._write_heading(f"Request: {request_group['name']}", level=1)
+        if request_group["requestRows"]:
+            self._write_section("Request Details")
+            self._write_rows(request_group["requestRows"])
+        if request_group["attachments"]:
+            self._write_section("Attached Files")
+            self._write_numbered_list(
+                [
+                    file.get("name") or file.get("contentUrl")
+                    for file in request_group["attachments"]
+                ]
+            )
+        for record in request_group["records"]:
+            self._write_record(record)
+
+    def _write_record(self, record):
+        title = f"{record['type']}: {record['name']}"
+        if record.get("barcode"):
+            title = f"{title} ({record['barcode']})"
+        self._write_heading(title, level=2)
+        for section in record["sections"]:
+            if self._record_section_was_written(section):
+                continue
+            self._write_section(section["title"])
+            self._write_rows(section["rows"])
+
+    def _record_section_was_written(self, section):
+        if section.get("title") == "Overview":
+            return False
+        signature = json.dumps(section, sort_keys=True, default=str)
+        if signature in self._written_record_section_signatures:
+            return True
+        self._written_record_section_signatures.add(signature)
+        return False
+
+    def _write_heading(self, text, level):
+        self.pdf.ln(3 if level == 1 else 2)
+        self.pdf.set_font(self.pdf.font_family, "B", 12 if level == 1 else 10)
+        self.pdf.multi_cell(0, 6, self.pdf.safe_text(text))
+        self.pdf.ln(1)
+
+    def _write_section(self, text):
+        self.pdf.set_font(self.pdf.font_family, "B", 8)
+        self.pdf.set_text_color(29, 95, 120)
+        self.pdf.multi_cell(0, 5, self.pdf.safe_text(text.upper()))
+        self.pdf.set_text_color(16, 36, 47)
+
+    def _write_rows(self, rows):
+        for row in rows:
+            value = row.get("value")
+            if isinstance(value, list) and value and all(isinstance(item, dict) for item in value):
+                self._write_table(row.get("key"), value)
+            elif isinstance(value, dict):
+                self._write_key_value(row.get("key"), "")
+                self._write_rows(
+                    [{"key": key, "value": nested_value} for key, nested_value in value.items()]
+                )
+            elif isinstance(value, list):
+                self._write_key_value(row.get("key"), "")
+                self._write_numbered_list(value)
+            else:
+                self._write_key_value(row.get("key"), value)
+        self.pdf.ln(1)
+
+    def _write_key_value(self, key, value):
+        key_width = 42
+        gap = 4
+        value_width = self.pdf.epw - key_width - gap
+        self.pdf.set_x(self.pdf.l_margin)
+        y = self.pdf.get_y()
+        x = self.pdf.l_margin
+        if y > self.pdf.page_break_trigger - 12:
+            self.pdf.add_page()
+            y = self.pdf.get_y()
+            self.pdf.set_x(self.pdf.l_margin)
+        self.pdf.set_font(self.pdf.font_family, "B", 8)
+        self.pdf.multi_cell(key_width, 4.5, self.pdf.safe_text(key), border=0)
+        key_height = self.pdf.get_y() - y
+        self.pdf.set_xy(x + key_width + gap, y)
+        self.pdf.set_font(self.pdf.font_family, "", 9)
+        self.pdf.multi_cell(
+            value_width,
+            4.5,
+            self.pdf.safe_text(self._value_text(value)),
+            border=0,
+        )
+        value_height = self.pdf.get_y() - y
+        self.pdf.set_y(y + max(key_height, value_height) + 1)
+        self.pdf.set_x(self.pdf.l_margin)
+
+    def _write_numbered_list(self, values):
+        for index, value in enumerate(values, start=1):
+            self.pdf.set_x(self.pdf.l_margin + 6)
+            self.pdf.set_font(self.pdf.font_family, "", 8.5)
+            self.pdf.multi_cell(0, 4.5, self.pdf.safe_text(f"{index}. {self._value_text(value)}"))
+
+    def _write_table(self, title, rows):
+        self._write_key_value(title, "")
+        if not rows:
+            return
+        columns = list(dict.fromkeys(key for row in rows for key in row.keys()))
+        if len(columns) > 6:
+            columns = columns[:6]
+        table_data = [["#", *columns]]
+        for index, row in enumerate(rows, start=1):
+            table_data.append([str(index), *[self._value_text(row.get(column)) for column in columns]])
+        widths = [8, *[(self.pdf.epw - 8) / max(len(columns), 1)] * len(columns)]
+        line_height = 4.2
+        for row_index, cells in enumerate(table_data):
+            max_lines = max(
+                1,
+                *[
+                    int(self.pdf.get_string_width(self.pdf.safe_text(cell)) / max(width - 2, 1)) + 1
+                    for cell, width in zip(cells, widths)
+                ],
+            )
+            row_height = max(line_height, max_lines * line_height)
+            if self.pdf.get_y() + row_height > self.pdf.page_break_trigger:
+                self.pdf.add_page()
+            x = self.pdf.get_x()
+            y = self.pdf.get_y()
+            for cell, width in zip(cells, widths):
+                self.pdf.set_font(self.pdf.font_family, "B" if row_index == 0 else "", 7.5)
+                self.pdf.rect(x, y, width, row_height)
+                self.pdf.set_xy(x + 1, y)
+                self.pdf.multi_cell(
+                    max(width - 2, 1),
+                    line_height,
+                    self.pdf.safe_text(cell),
+                    border=0,
+                    max_line_height=line_height,
+                )
+                x += width
+            self.pdf.set_y(y + row_height)
+            self.pdf.set_x(self.pdf.l_margin)
+        self.pdf.ln(1)
+        self.pdf.set_x(self.pdf.l_margin)
+
+    def _value_text(self, value):
+        if isinstance(value, dict):
+            return "; ".join(
+                f"{key}: {self._value_text(nested_value)}"
+                for key, nested_value in value.items()
+                if not self.is_empty(nested_value)
+            )
+        if isinstance(value, list):
+            return "; ".join(self._value_text(item) for item in value)
+        text = str(value or "")
+        if re.fullmatch(r"-?\d+\.\d{5,}", text):
+            return f"{float(text):.4f}".rstrip("0").rstrip(".")
+        return text
+
+
 def _zip_response(ro_crate_payload, archive_name, file_entries):
     buffer = BytesIO()
     with ZipFile(buffer, "w", compression=ZIP_DEFLATED) as zip_file:
@@ -1964,7 +3315,22 @@ def _zip_response(ro_crate_payload, archive_name, file_entries):
     return response
 
 
-def _crate_response(preview_requested, result, skipped_records):
+def _pdf_response(result, skipped_records):
+    pdf_name = _ro_crate_pdf_name(result.archive_name)
+    pdf_bytes = ROCratePdfRenderer(
+        result.ro_crate,
+        result.archive_name,
+        skipped_records=skipped_records,
+    ).render()
+    response = HttpResponse(pdf_bytes, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="{pdf_name}"'
+    response["Cache-Control"] = "no-store"
+    return response
+
+
+def _crate_response(preview_requested, pdf_requested, result, skipped_records):
+    if pdf_requested:
+        return _pdf_response(result, skipped_records)
     if preview_requested:
         response = Response(
             {
@@ -1987,7 +3353,10 @@ class GenerateROCrate(viewsets.ViewSet):
         builder = SimpleROCrateBuilder(request, selection)
         result = builder.build()
         return _crate_response(
-            selection.preview_requested, result, selection.skipped_records
+            selection.preview_requested,
+            selection.pdf_requested,
+            result,
+            selection.skipped_records,
         )
 
 

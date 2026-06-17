@@ -13,6 +13,11 @@ from django.urls import reverse
 from flowcell.models import Flowcell, Lane, Sequencer
 from index_generator.models import Pool, PoolSize
 from library.models import CompleteLibraryData, Library
+from library.ro_crate import (
+    ROCratePdfRenderer,
+    _ro_crate_archive_name,
+    _ro_crate_pdf_name,
+)
 from library_preparation.models import LibraryPreparation
 from library_sample_shared.models import (
     BarcodeCounter,
@@ -503,6 +508,19 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertIn("@graph", payload["ro_crate"])
         return payload
 
+    def _assert_pdf_response(self, response, filename):
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/pdf")
+        self.assertEqual(response["Cache-Control"], "no-store")
+        self.assertIn(filename, response["Content-Disposition"])
+        self.assertTrue(response.content.startswith(b"%PDF"))
+
+    def _pdf_renderer_for_graph(self, graph):
+        return ROCratePdfRenderer(
+            {"@context": ["https://w3id.org/ro/crate/1.1/context"], "@graph": graph},
+            "test_ro_crate.zip",
+        )
+
     def _graph_ids(self, payload):
         return {entry.get("@id") for entry in payload["@graph"]}
 
@@ -644,14 +662,16 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         payload = self._parse_payload(response)
         self.assertEqual(payload["invalid_sections"], ["unexpected"])
 
-    def test_rejects_unknown_preview_parameter_value(self):
-        response = self.client.get(
-            reverse("generate-ro-crate-list"),
-            {"requests": self.request.name, "preview": "yes"},
-        )
-        self.assertEqual(response.status_code, 400)
-        payload = self._parse_payload(response)
-        self.assertIn("preview", payload["error"])
+    def test_rejects_unknown_boolean_export_flag_values(self):
+        for query_name in ("preview", "pdf"):
+            with self.subTest(query_name=query_name):
+                response = self.client.get(
+                    reverse("generate-ro-crate-list"),
+                    {"requests": self.request.name, query_name: "yes"},
+                )
+                self.assertEqual(response.status_code, 400)
+                payload = self._parse_payload(response)
+                self.assertIn(query_name, payload["error"])
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")
@@ -800,6 +820,8 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
     def test_sample_barcode_export_includes_sample_relationships_metadata_and_attachments(
         self, mock_library_objects, mock_sample_objects
     ):
+        self.request.name = f"{self.request.id}_Kim_Denboba"
+        self.request.save(update_fields=["name"])
         sample = create_sample("crate-sample", status=6)
         sample.removed_amplification_cycles = 11
         sample.removed_equal_representation_nucleotides = True
@@ -920,8 +942,12 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         )
         self.assertTrue(
             request_file_entry.get("contentUrl", "").startswith(
-                f"request-files/request-{self.request.id}_"
+                f"request-files/{self.request.id}_Kim_Denboba/"
             )
+        )
+        self.assertNotIn(
+            f"request-{self.request.id}_{self.request.id}_",
+            request_file_entry.get("contentUrl", ""),
         )
         self.assertIn(request_file_entry.get("contentUrl"), archive_names)
         dataset_entry = self._graph_entry(payload, "./")
@@ -1120,6 +1146,73 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"requests": self.request.name, "preview": "true"},
         )
         self._extract_preview_payload(response)
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_pdf_mode_returns_pdf_attachment_and_disables_cache(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        self._set_ro_crate_complete_data_rows(mock_library_objects, mock_sample_objects)
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"),
+            {"requests": self.request.name, "pdf": "true"},
+        )
+
+        self._assert_pdf_response(response, f"{self.request.pk}_ro_crate.pdf")
+
+    def test_pdf_preview_omits_repeated_data_object_index_relationships(self):
+        renderer = self._pdf_renderer_for_graph(
+            [
+                {
+                    "@id": "#library-process-1",
+                    "@type": "CreateAction",
+                    "name": "Library metadata capture",
+                    "result": [{"@id": "#library-data-1"}],
+                },
+                {
+                    "@id": "#library-data-1",
+                    "@type": "MediaObject",
+                    "name": "Library export metadata",
+                    "indexType": {"@id": "#index-type-1"},
+                    "indexI7": {"@id": "#index-i7-1"},
+                    "indexI5": {"@id": "#index-i5-1"},
+                },
+                {"@id": "#index-type-1", "@type": "Thing", "name": "Dual Index"},
+                {"@id": "#index-i7-1", "@type": "Thing", "name": "I7-1"},
+                {"@id": "#index-i5-1", "@type": "Thing", "name": "I5-1"},
+            ]
+        )
+
+        rows = renderer.rows_for_process_entity(
+            renderer.entity_by_id("#library-process-1")
+        )
+
+        row_keys = {row["key"] for row in rows}
+        self.assertNotIn("Data Object Index Type", row_keys)
+        self.assertNotIn("Data Object Selected I7 Index", row_keys)
+        self.assertNotIn("Data Object Selected I5 Index", row_keys)
+
+    def test_pdf_model_display_rules_match_longest_prefix_first(self):
+        renderer = self._pdf_renderer_for_graph([])
+
+        self.assertEqual(
+            renderer.model_name_for_property("index_pool_size_name"), "PoolSize"
+        )
+        self.assertEqual(
+            renderer.model_name_for_property("index_pool_name"), "IndexPool"
+        )
+
+    def test_export_filenames_are_limited_to_50_characters(self):
+        archive_name = _ro_crate_archive_name(
+            "101_102_103_104_105_106_107_108_109_110_111_112"
+        )
+        pdf_name = _ro_crate_pdf_name(archive_name)
+
+        self.assertLessEqual(len(archive_name), 50)
+        self.assertLessEqual(len(pdf_name), 50)
+        self.assertTrue(archive_name.endswith(".zip"))
+        self.assertTrue(pdf_name.endswith(".pdf"))
 
     @patch("library.ro_crate.CompleteSampleData.objects")
     @patch("library.ro_crate.CompleteLibraryData.objects")

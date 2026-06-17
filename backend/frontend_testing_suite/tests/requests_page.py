@@ -241,6 +241,87 @@ def _ro_crate_preview_payload():
     }
 
 
+def _ro_crate_preview_payload_with_records(record_count):
+    graph = [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {"@id": "./"},
+        },
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "name": "Parkour RO-Crate export",
+            "hasPart": [{"@id": "#request-context-101"}, {"@id": "#study-101"}],
+        },
+        {
+            "@id": "#request-context-101",
+            "@type": "Dataset",
+            "name": "101_ROCrate Request",
+        },
+        {
+            "@id": "#study-101",
+            "@type": "Dataset",
+            "name": "Study for 101_ROCrate Request",
+            "materials": {
+                "otherMaterials": [
+                    {"@id": f"#library-material-{index}"}
+                    for index in range(1, record_count + 1)
+                ]
+            },
+        },
+    ]
+    for index in range(1, record_count + 1):
+        graph.extend(
+            [
+                {
+                    "@id": f"#library-material-{index}",
+                    "@type": "Thing",
+                    "name": f"Preview library {index:02d}",
+                    "identifier": f"26L{index:06d}",
+                    "additionalType": {"@id": "https://w3id.org/isa/Library"},
+                    "additionalProperty": [{"@id": f"#library-{index}-name"}],
+                },
+                {
+                    "@id": f"#library-{index}-name",
+                    "@type": "PropertyValue",
+                    "name": "library_db_name",
+                    "value": f"Preview library {index:02d}",
+                },
+            ]
+        )
+    return {
+        "archive_name": "101_ro_crate.zip",
+        "skipped_records": [],
+        "ro_crate": {
+            "@context": ["https://w3id.org/ro/crate/1.1/context"],
+            "@graph": graph,
+        },
+    }
+
+
+def _route_ro_crate_export_api(
+    page: Page, seen_generate_requests=None, preview_payload=None
+):
+    def handle_generate_ro_crate(route):
+        parsed = urlparse(route.request.url)
+        query = parse_qs(parsed.query)
+        if seen_generate_requests is not None:
+            seen_generate_requests.append(query)
+        if query.get("pdf") == ["true"]:
+            route.fulfill(
+                body=b"%PDF-1.4\n% test pdf\n",
+                headers={
+                    "content-type": "application/pdf",
+                    "content-disposition": 'attachment; filename="101_ro_crate.pdf"',
+                },
+            )
+            return
+        route.fulfill(json=preview_payload or _ro_crate_preview_payload())
+
+    page.route("**/api/generate_ro_crate/**", handle_generate_ro_crate)
+
+
 def test_requests_page(page: Page):
     _open_batch_add_modal(page)
     description_textarea = page.get_by_test_id("request-description-input")
@@ -295,13 +376,7 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
     seen_generate_requests = []
 
     _open_libraries_page_with_ro_crate_data(page)
-
-    def handle_generate_ro_crate(route):
-        parsed = urlparse(route.request.url)
-        seen_generate_requests.append(parse_qs(parsed.query))
-        route.fulfill(json=_ro_crate_preview_payload())
-
-    page.route("**/api/generate_ro_crate/**", handle_generate_ro_crate)
+    _route_ro_crate_export_api(page, seen_generate_requests)
     _select_first_ro_crate_row(page)
 
     page.get_by_test_id("ro-crate-clear-sections-button").click()
@@ -325,6 +400,49 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
     assert query["barcodes"] == ["26L000501"]
     assert query["preview"] == ["true"]
     assert query["sections"] == ["request,libraries"]
+
+
+def test_ro_crate_preview_limits_rendered_libraries_and_samples(page: Page):
+    _open_libraries_page_with_ro_crate_data(page)
+    _route_ro_crate_export_api(
+        page,
+        preview_payload=_ro_crate_preview_payload_with_records(21),
+    )
+    _select_first_ro_crate_row(page)
+
+    page.get_by_test_id("preview-ro-crate-button").click()
+
+    preview_overlay = page.get_by_test_id("ro-crate-preview-overlay")
+    expect(preview_overlay).to_be_visible()
+    expect(
+        preview_overlay.get_by_text(
+            "Showing first 20 of 21 libraries/samples in preview."
+        )
+    ).to_be_visible()
+    expect(preview_overlay.get_by_text("Library: Preview library 20")).to_be_visible()
+    expect(
+        preview_overlay.get_by_text("Library: Preview library 21")
+    ).not_to_be_visible()
+
+
+def test_ro_crate_pdf_export_uses_backend_pdf_download(page: Page):
+    seen_generate_requests = []
+
+    _open_libraries_page_with_ro_crate_data(page)
+    _route_ro_crate_export_api(page, seen_generate_requests)
+    _select_first_ro_crate_row(page)
+    page.get_by_test_id("preview-ro-crate-button").click()
+
+    preview_overlay = page.get_by_test_id("ro-crate-preview-overlay")
+    expect(preview_overlay).to_be_visible()
+
+    with page.expect_download() as download_info:
+        preview_overlay.get_by_test_id("export-ro-crate-pdf-button").click()
+
+    download = download_info.value
+    assert download.suggested_filename == "101_ro_crate.pdf"
+    assert seen_generate_requests[-1]["pdf"] == ["true"]
+    assert "preview" not in seen_generate_requests[-1]
 
 
 def test_ro_crate_preview_displays_backend_error(page: Page):

@@ -220,15 +220,19 @@ export const RO_CRATE_RELATION_FIELDS = {
   processSequence: "Processes"
 };
 
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 // PropertyValue grouping by source Django model
-export const RO_CRATE_MODEL_SECTION_RULES = [
+const RO_CRATE_MODEL_DISPLAY_RULES = [
   {
     modelName: "Library",
-    prefixes: ["library_db_"]
+    prefixes: ["library_db_"],
+    idPrefixes: ["#library-material-"]
   },
   {
     modelName: "Sample",
-    prefixes: ["sample_db_"]
+    prefixes: ["sample_db_"],
+    idPrefixes: ["#sample-material-"]
   },
   {
     modelName: "LibraryPreparation",
@@ -244,59 +248,73 @@ export const RO_CRATE_MODEL_SECTION_RULES = [
   },
   {
     modelName: "Flowcell",
-    prefixes: ["flowcell_"]
+    prefixes: ["flowcell_"],
+    idPrefixes: ["#flowcell-"]
   },
   {
     modelName: "Lane",
-    prefixes: ["lane_"]
+    prefixes: ["lane_"],
+    idPrefixes: ["#lane-"]
   },
   {
     modelName: "Sequencer",
-    prefixes: ["sequencer_"]
+    prefixes: ["sequencer_"],
+    idPrefixes: ["#sequencer-"]
   },
   {
     modelName: "IndexPool",
-    prefixes: ["index_pool_"]
+    prefixes: ["index_pool_"],
+    idPrefixes: ["#index-pool-"]
   },
   {
     modelName: "PoolSize",
-    prefixes: ["index_pool_size_"]
+    prefixes: ["index_pool_size_"],
+    idPrefixes: ["#index-pool-size-"]
   },
   {
     modelName: "Organism",
-    prefixes: ["organism_"]
+    prefixes: ["organism_"],
+    idPrefixes: ["#organism-"]
   },
   {
     modelName: "LibraryType",
-    prefixes: ["library_type_"]
+    prefixes: ["library_type_"],
+    idPrefixes: ["#library-type-"]
   },
   {
     modelName: "ReadLength",
-    prefixes: ["read_length_"]
+    prefixes: ["read_length_"],
+    idPrefixes: ["#read-length-"]
   },
   {
     modelName: "IndexType",
-    prefixes: ["index_type_"]
+    prefixes: ["index_type_"],
+    idPrefixes: ["#index-type-"]
   },
   {
     modelName: "NucleicAcidType",
-    prefixes: ["nucleic_acid_type_"]
+    prefixes: ["nucleic_acid_type_"],
+    idPrefixes: ["#nucleic-acid-type-"]
   },
   {
     modelName: "LibraryProtocol",
-    prefixes: ["protocol_"]
+    prefixes: ["protocol_"],
+    idPrefixes: ["#protocol-"]
   },
   {
     modelName: "IndexI7",
-    prefixes: ["index_i7_"]
+    prefixes: ["index_i7_"],
+    idPrefixes: ["#index-i7-"]
   },
   {
     modelName: "IndexI5",
-    prefixes: ["index_i5_"]
+    prefixes: ["index_i5_"],
+    idPrefixes: ["#index-i5-"]
   },
   {
     modelName: "IndexPair",
-    prefixes: ["index_pair_"]
+    prefixes: ["index_pair_"],
+    idPrefixes: ["#index-pair-"]
   },
   {
     modelName: "CompleteLibraryData",
@@ -310,8 +328,25 @@ export const RO_CRATE_MODEL_SECTION_RULES = [
   }
 ];
 
-export const RO_CRATE_PROPERTY_PREFIX_PATTERN =
-  /^(sample_db_|sample_mv_|library_db_|library_mv_|library_preparation_|pooling_|index_pool_size_|index_pool_|sample_export_|library_export_|request_|flowcell_|lane_|sequencer_|organism_|library_type_|read_length_|index_type_|nucleic_acid_type_|protocol_|index_i7_|index_i5_|index_pair_)/;
+export const RO_CRATE_MODEL_DISPLAY_RULES_BY_PREFIX = [
+  ...RO_CRATE_MODEL_DISPLAY_RULES
+].sort(
+  (left, right) =>
+    Math.max(...right.prefixes.map((prefix) => prefix.length)) -
+    Math.max(...left.prefixes.map((prefix) => prefix.length))
+);
+
+export const RO_CRATE_MODEL_SECTION_ID_RULES = RO_CRATE_MODEL_DISPLAY_RULES.flatMap(
+  (rule) => (rule.idPrefixes || []).map((prefix) => [prefix, rule.modelName])
+).sort((left, right) => right[0].length - left[0].length);
+
+const RO_CRATE_PROPERTY_PREFIXES = RO_CRATE_MODEL_DISPLAY_RULES.flatMap(
+  (rule) => rule.prefixes
+).sort((left, right) => right.length - left.length);
+
+export const RO_CRATE_PROPERTY_PREFIX_PATTERN = new RegExp(
+  `^(${RO_CRATE_PROPERTY_PREFIXES.map(escapeRegExp).join("|")})`
+);
 
 export const RO_CRATE_PROPERTY_LABEL_OVERRIDES = {
   dateCreated: "Date Created",
@@ -339,3 +374,24 @@ export const RO_CRATE_BACKLINK_PROPERTIES = [
   "dataFiles",
   "processSequence"
 ];
+
+export const RO_CRATE_REPEATED_DATA_OBJECT_FIELDS = [
+  "associatedPool",
+  "derivedFrom",
+  "libraryProtocol",
+  "libraryType",
+  "indexType",
+  "indexI7",
+  "indexI5",
+  "nucleicAcidType",
+  "organism",
+  "readLength",
+  "requestContext",
+  "selectedIndexPair",
+  "sequencedOn"
+];
+
+export const RO_CRATE_REPEATED_DATA_OBJECT_KEYS =
+  RO_CRATE_REPEATED_DATA_OBJECT_FIELDS.map(
+    (field) => `dataobject${field.replace(/[^a-z0-9]+/gi, "").toLowerCase()}`
+  );
