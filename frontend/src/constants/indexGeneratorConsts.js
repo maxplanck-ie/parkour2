@@ -30,6 +30,10 @@ export const INDEX_GENERATOR_FIELDS = {
   coordinate: "coordinate"
 };
 
+export const INDEX_GENERATOR_POOL_ACTIONS = {
+  removeFromPool: "removeFromPool"
+};
+
 export const INDEX_GENERATOR_RECORD_TYPES = {
   library: "Library",
   sample: "Sample",
@@ -165,7 +169,9 @@ export function indexGeneratorSourceGroupHeader(
 
   const details = document.createElement("span");
   details.className = "group-row-summary";
-  details.textContent = ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, Read Lengths: ${summary.readLengthDisplay}, ${summary.biosafetyLevel})`;
+  details.textContent =
+    ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, ` +
+    `Read Lengths: ${summary.readLengthDisplay}, ${summary.biosafetyLevel})`;
 
   text.append(title, details);
 
@@ -204,6 +210,50 @@ export function indexGeneratorSourceGroupHeader(
 
     actions.appendChild(button);
   });
+
+  main.append(text, actions);
+  wrapper.appendChild(main);
+  return wrapper;
+}
+
+export function indexGeneratorPoolGroupHeader(
+  value,
+  count,
+  data,
+  requestGroupSummary,
+  removePoolRowsInGroup
+) {
+  const summary = requestGroupSummary(value);
+  const wrapper = document.createElement("div");
+  wrapper.className = "group-row-content pool-group-row-content";
+
+  const main = document.createElement("div");
+  main.className = "group-row-main";
+
+  const text = document.createElement("div");
+  const title = document.createElement("span");
+  title.className = "group-row-title";
+  title.textContent = value;
+
+  const details = document.createElement("span");
+  details.className = "group-row-summary";
+  details.textContent =
+    ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, ` +
+    `Read Lengths: ${summary.readLengthDisplay}, ${summary.biosafetyLevel})`;
+
+  text.append(title, details);
+
+  const actions = document.createElement("div");
+  actions.className = "group-action-buttons-container";
+  actions.addEventListener("click", (event) => event.stopPropagation());
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "group-action-button text-action-button";
+  button.title = "Remove All from This Request";
+  button.textContent = "Remove Request";
+  button.addEventListener("click", () => removePoolRowsInGroup(data));
+  actions.appendChild(button);
 
   main.append(text, actions);
   wrapper.appendChild(main);
@@ -344,8 +394,30 @@ export function indexGeneratorSourceColumnDefs({
   ];
 }
 
-export function indexGeneratorPoolColumnDefs() {
+export function indexGeneratorPoolColumnDefs({ onRemoveRow } = {}) {
   return [
+    {
+      title: "",
+      field: INDEX_GENERATOR_POOL_ACTIONS.removeFromPool,
+      width: 76,
+      minWidth: 76,
+      hozAlign: "center",
+      headerSort: false,
+      formatter: (cell) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "pool-row-remove-button";
+        button.title = "Remove from Pool";
+        button.textContent = "Remove";
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          onRemoveRow?.(cell.getRow().getData());
+        });
+        return button;
+      },
+      download: false,
+      clipboard: false
+    },
     {
       title: "Name",
       field: INDEX_GENERATOR_FIELDS.name,

@@ -6,18 +6,16 @@
     </div>
 
     <div class="header">
-      <div class="header-left">
-        <div class="header-logo" style="display: inline; margin-right: 10px">
-          <img
-            :src="iconIndexGeneratorHeader"
-            alt="Index Generator"
-            width="42"
-            height="42"
-            style="display: block"
-          />
-        </div>
-        <div class="header-title">Index Generator</div>
+      <div class="header-logo" style="display: inline; margin-right: 10px">
+        <img
+          :src="iconIndexGeneratorHeader"
+          alt="Index Generator"
+          width="42"
+          height="42"
+          style="display: block"
+        />
       </div>
+      <div class="header-title" style="display: inline">Index Generator</div>
 
       <div class="header-center">
         <div class="header-pool-size-controls">
@@ -68,7 +66,7 @@
             "
             @change="onStartCoordinateSelect($event.target.value)"
           >
-            <option :value="''">Start coordinate</option>
+            <option :value="''">Start Coordinate</option>
             <option
               v-for="coordinate in startCoordinateOptions"
               :key="`start-coord-${coordinate}`"
@@ -135,7 +133,7 @@
               class="apply-all-controls"
               :class="{ compact: isLeftPanelNarrow }"
             >
-              <label class="apply-all-label">Apply to selected records</label>
+              <label class="apply-all-label">Apply to Selected Records</label>
               <select
                 :value="applyAllReadLength"
                 @change="
@@ -173,204 +171,15 @@
                   {{ indexType.name }}
                 </option>
               </select>
+              <button
+                type="button"
+                class="add-selected-pool-button"
+                @click="addSelectedRowsToPool"
+              >
+                Add Selected to Pool
+              </button>
             </div>
           </div>
-        </div>
-        <div v-if="false" class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th class="checkbox-column"></th>
-                <th class="name-column">Name</th>
-                <th class="barcode-column">Barcode</th>
-                <th class="depth-column">Depth (M)</th>
-                <th class="length-column">Length</th>
-                <th class="protocol-column">Protocol</th>
-                <th class="index-type-column">Index Type</th>
-                <th class="sequence-column">Index I7</th>
-                <th class="sequence-column">Index I5</th>
-              </tr>
-            </thead>
-            <tbody
-              v-for="(groupRows, requestName) in groupedRecords"
-              :key="requestName"
-            >
-              <tr class="group-row" @click="toggleRequestGroup(requestName)">
-                <td colspan="9">
-                  <div class="group-row-content">
-                    <div class="group-row-main">
-                      <button
-                        class="group-toggle-button"
-                        type="button"
-                        :aria-expanded="!isRequestCollapsed(requestName)"
-                      >
-                        {{ isRequestCollapsed(requestName) ? "▸" : "▾" }}
-                      </button>
-                      <div>
-                        <span class="group-row-title">{{ requestName }}</span>
-                        <span class="group-row-summary">
-                          (#: {{ groupRows.length }}
-                          {{ requestGroupSummary(requestName).countLabel }},
-                          Total Depth:
-                          {{ requestGroupSummary(requestName).totalDepth }}M,
-                          Read Lengths:
-                          {{
-                            requestGroupSummary(requestName).readLengthDisplay
-                          }},
-                          {{ requestGroupSummary(requestName).biosafetyLevel }})
-                        </span>
-                      </div>
-                      <div class="group-action-buttons-container" @click.stop>
-                        <div
-                          title="Select All"
-                          class="group-action-button"
-                          @click="selectAllInGroup(groupRows)"
-                        >
-                          <img
-                            :src="iconSelectAll"
-                            alt="Select All"
-                            width="24"
-                            height="24"
-                          />
-                        </div>
-                        <div
-                          title="Deselect All"
-                          class="group-action-button"
-                          @click="deselectAllInGroup(groupRows)"
-                        >
-                          <img
-                            :src="iconDeselectAll"
-                            alt="Deselect All"
-                            width="24"
-                            height="24"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr
-                v-for="row in groupRows"
-                v-show="!isRequestCollapsed(requestName)"
-                :key="row.rowKey"
-                :class="{
-                  'duplicate-index-row': isRowDuplicateInPool(row.rowKey)
-                }"
-              >
-                <td class="checkbox-column">
-                  <input
-                    type="checkbox"
-                    :checked="row.selected"
-                    @change="toggleSelection(row, $event)"
-                  />
-                </td>
-                <td class="name-column">{{ row.name }}</td>
-                <td class="barcode-column barcode-text">{{ row.barcode }}</td>
-                <td class="depth-column">
-                  {{ row[indexGeneratorFields.sequencingDepth] }}
-                </td>
-                <td class="length-column">
-                  <select
-                    :value="row[indexGeneratorFields.readLength]"
-                    @change="
-                      updateRecordField(
-                        row,
-                        indexGeneratorFields.readLength,
-                        $event.target.value
-                      )
-                    "
-                  >
-                    <option :value="''">-</option>
-                    <option
-                      v-for="readLength in readLengths"
-                      :key="readLength.id"
-                      :value="readLength.id"
-                    >
-                      {{ readLength.name }}
-                    </option>
-                  </select>
-                </td>
-                <td class="protocol-column">
-                  {{ row[indexGeneratorFields.libraryProtocolName] }}
-                </td>
-                <td class="index-type-column">
-                  <div
-                    class="index-type-select-wrapper"
-                    :class="{
-                      'is-disabled':
-                        row[indexGeneratorFields.type] ===
-                        indexGeneratorRecordTypes.libraryCode
-                    }"
-                    :title="
-                      row[indexGeneratorFields.type] ===
-                      indexGeneratorRecordTypes.libraryCode
-                        ? getIndexTypeName(row[indexGeneratorFields.indexType])
-                        : ''
-                    "
-                  >
-                    <select
-                      :value="row[indexGeneratorFields.indexType]"
-                      :disabled="
-                        row[indexGeneratorFields.type] ===
-                        indexGeneratorRecordTypes.libraryCode
-                      "
-                      @change="
-                        updateRecordField(
-                          row,
-                          indexGeneratorFields.indexType,
-                          $event.target.value
-                        )
-                      "
-                    >
-                      <option :value="0">-</option>
-                      <option
-                        v-for="indexType in generatorIndexTypes"
-                        :key="indexType.id"
-                        :value="indexType.id"
-                      >
-                        {{ indexType.name }}
-                      </option>
-                    </select>
-                  </div>
-                </td>
-                <td class="sequence-column sequence-text">
-                  <span
-                    v-if="row[indexGeneratorFields.indexI7]"
-                    class="sequence-colored"
-                  >
-                    <span
-                      v-for="(item, idx) in colorizeIndex(
-                        row[indexGeneratorFields.indexI7]
-                      )"
-                      :key="`${row.rowKey}-i7-${idx}`"
-                      :class="['nt', item.className]"
-                    >
-                      {{ item.base }}
-                    </span>
-                  </span>
-                  <span v-else>-</span>
-                </td>
-                <td class="sequence-column sequence-text">
-                  <span
-                    v-if="row[indexGeneratorFields.indexI5]"
-                    class="sequence-colored"
-                  >
-                    <span
-                      v-for="(item, idx) in colorizeIndex(
-                        row[indexGeneratorFields.indexI5]
-                      )"
-                      :key="`${row.rowKey}-i5-${idx}`"
-                      :class="['nt', item.className]"
-                    >
-                      {{ item.base }}
-                    </span>
-                  </span>
-                  <span v-else>-</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
         <div class="table-scroll">
           <TabulatorTable
@@ -396,10 +205,10 @@
           type="button"
           class="splitter-toggle-button"
           :aria-label="
-            isLeftPanelCollapsed ? 'Expand left panel' : 'Collapse left panel'
+            isLeftPanelCollapsed ? 'Expand Left Panel' : 'Collapse Left Panel'
           "
-          :title="
-            isLeftPanelCollapsed ? 'Expand left panel' : 'Collapse left panel'
+          :data-tooltip-original="
+            isLeftPanelCollapsed ? 'Expand Left Panel' : 'Collapse Left Panel'
           "
           @click.stop="toggleLeftPanelCollapse"
         >
@@ -408,88 +217,13 @@
       </div>
 
       <section class="panel right-panel" :style="rightPanelInlineStyle">
-        <h3>
-          Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
-          {{ totalDepthRounded }} M, Fill: {{ poolFillPercentageDisplay }})
-        </h3>
-        <div v-if="false" class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th class="name-column">Name</th>
-                <th class="barcode-column">Barcode</th>
-                <th class="type-column">L/S</th>
-                <th class="depth-column">Depth (M)</th>
-                <th class="coord-column">Coord</th>
-                <th class="index-id-column">Index I7 ID</th>
-                <th class="sequence-column">Index I7</th>
-                <th class="index-id-column">Index I5 ID</th>
-                <th class="sequence-column">Index I5</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="row in poolRows"
-                :key="row.rowKey"
-                :class="{
-                  'duplicate-index-row': isRowDuplicateInPool(row.rowKey)
-                }"
-              >
-                <td class="name-column">{{ row.name }}</td>
-                <td class="barcode-column barcode-text">{{ row.barcode }}</td>
-                <td class="type-column">{{ row[indexGeneratorFields.type] }}</td>
-                <td class="depth-column">
-                  {{ row[indexGeneratorFields.sequencingDepth] }}
-                </td>
-                <td class="coord-column">
-                  {{ row[indexGeneratorFields.coordinate] || "-" }}
-                </td>
-                <td class="index-id-column">
-                  {{ row[indexGeneratorFields.indexI7Id] || "-" }}
-                </td>
-                <td class="sequence-column sequence-text">
-                  <span
-                    v-if="row[indexGeneratorFields.indexI7]"
-                    class="sequence-colored"
-                  >
-                    <span
-                      v-for="(item, idx) in colorizeIndex(
-                        row[indexGeneratorFields.indexI7]
-                      )"
-                      :key="`${row.rowKey}-pool-i7-${idx}`"
-                      :class="['nt', item.className]"
-                    >
-                      {{ item.base }}
-                    </span>
-                  </span>
-                  <span v-else>-</span>
-                </td>
-                <td class="index-id-column">
-                  {{ row[indexGeneratorFields.indexI5Id] || "-" }}
-                </td>
-                <td class="sequence-column sequence-text">
-                  <span
-                    v-if="row[indexGeneratorFields.indexI5]"
-                    class="sequence-colored"
-                  >
-                    <span
-                      v-for="(item, idx) in colorizeIndex(
-                        row[indexGeneratorFields.indexI5]
-                      )"
-                      :key="`${row.rowKey}-pool-i5-${idx}`"
-                      :class="['nt', item.className]"
-                    >
-                      {{ item.base }}
-                    </span>
-                  </span>
-                  <span v-else>-</span>
-                </td>
-              </tr>
-              <tr v-if="poolRows.length === 0">
-                <td colspan="9">No records selected.</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="panel-heading">
+          <div class="panel-heading-primary">
+            <h3>
+              Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
+              {{ totalDepthRounded }} M, Fill: {{ poolFillPercentageDisplay }})
+            </h3>
+          </div>
         </div>
         <div class="table-scroll">
           <TabulatorTable
@@ -499,12 +233,14 @@
             :rowData="poolRows"
             :columnDefs="poolColumnsList"
             :enableDefaultFilters="false"
+            groupBy="request_name"
+            :groupStartOpen="true"
             :tableOptions="poolTableOptions"
           />
         </div>
 
         <div class="balance-block">
-          <h4>Color Balance (i7, R/G)</h4>
+          <h4>Color Balance (I7, R/G)</h4>
           <p class="balance-description">
             Proportion shown as Red/Green percentages per cycle (Red = A/C,
             Green = G/T), weighted by sequencing depth.
@@ -521,7 +257,7 @@
         </div>
 
         <div class="balance-block">
-          <h4>Color Balance (i5, R/G)</h4>
+          <h4>Color Balance (I5, R/G)</h4>
           <p class="balance-description">
             Proportion shown as Red/Green percentages per cycle (Red = A/C,
             Green = G/T), weighted by sequencing depth.
@@ -549,7 +285,7 @@ import {
   showUndoNotification,
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
-import iconIndexGeneratorHeader from "../assets/icons/header_index_generator.svg";
+import iconIndexGeneratorHeader from "../assets/icons/header_index_generator_cog.svg";
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import TabulatorTable from "../components/TabulatorTableFull.vue";
@@ -566,6 +302,7 @@ import {
   INDEX_GENERATOR_RESPONSE_KEYS,
   INDEX_GENERATOR_RECORD_TYPES,
   indexGeneratorPoolColumnDefs,
+  indexGeneratorPoolGroupHeader,
   indexGeneratorSourceColumnDefs,
   indexGeneratorSourceGroupHeader
 } from "../constants/indexGeneratorConsts";
@@ -604,6 +341,7 @@ export default {
       activePanelResize: null,
       applyAllReadLength: "",
       applyAllIndexType: "",
+      generatedIndexRowKeys: [],
       isLeftPanelCollapsed: false,
       defaultLeftPanelWidthPercent:
         INDEX_GENERATOR_DEFAULTS.leftPanelWidthPercent,
@@ -612,6 +350,7 @@ export default {
       selectedDirection: INDEX_GENERATOR_DEFAULTS.direction,
       startCoordinateOptions: [],
       loading: true,
+      hasCompletedInitialLoad: false,
       startCoordinatesLoading: false,
       directionOptions: [...INDEX_GENERATOR_DIRECTION_OPTIONS]
     };
@@ -745,6 +484,26 @@ export default {
         {}
       );
     },
+    groupedPoolRows() {
+      return this.poolRows.reduce((acc, row) => {
+        const key =
+          row[fields.requestName] || INDEX_GENERATOR_DEFAULTS.emptyDisplay;
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(row);
+        return acc;
+      }, {});
+    },
+    poolRequestGroupSummaries() {
+      return Object.entries(this.groupedPoolRows).reduce(
+        (acc, [requestName, rows]) => {
+          acc[requestName] = buildRequestGroupSummary(rows);
+          return acc;
+        },
+        {}
+      );
+    },
     duplicatePoolRowKeys() {
       const pairToKeys = this.poolRows.reduce((acc, row) => {
         const pairKey = this.getIndexPairKey(row);
@@ -787,7 +546,7 @@ export default {
         return {};
       }
 
-      const width = `${this.leftPanelWidthPercent}%`;
+      const width = `calc(${this.leftPanelWidthPercent}% - 8px)`;
       return {
         flex: `0 0 ${width}`,
         width
@@ -798,7 +557,7 @@ export default {
         return { flex: "1 1 auto" };
       }
 
-      const width = `${100 - this.leftPanelWidthPercent}%`;
+      const width = `calc(${100 - this.leftPanelWidthPercent}% - 8px)`;
       return {
         flex: `0 0 ${width}`,
         width
@@ -834,6 +593,15 @@ export default {
         index: fields.rowKey,
         layout: "fitDataStretch",
         placeholder: "No records selected.",
+        groupHeader: (value, count, data) =>
+          indexGeneratorPoolGroupHeader(
+            value,
+            count,
+            data,
+            this.poolRequestGroupSummary,
+            this.removePoolRowsInGroup
+          ),
+        groupToggleElement: false,
         rowFormatter: this.formatTabulatorRow
       };
     }
@@ -871,6 +639,11 @@ export default {
     document.removeEventListener("mouseup", this.onPanelResizeEnd);
     document.body.classList.remove("index-generator-resizing");
   },
+  activated() {
+    if (this.hasCompletedInitialLoad) {
+      this.loadInitialData();
+    }
+  },
   methods: {
     setColumns() {
       this.sourceColumnsList = indexGeneratorSourceColumnDefs({
@@ -880,7 +653,9 @@ export default {
         isCompatibleWithPool: this.isCompatibleWithPool,
         getIndexTypeName: this.getIndexTypeName
       });
-      this.poolColumnsList = indexGeneratorPoolColumnDefs();
+      this.poolColumnsList = indexGeneratorPoolColumnDefs({
+        onRemoveRow: this.removePoolRow
+      });
     },
     async loadInitialData() {
       this.loading = true;
@@ -904,11 +679,14 @@ export default {
         this.poolSizes = poolSizesResponse.data || [];
         this.syncSelectedPoolSizeId();
         this.generatorIndexTypes = indexTypesResponse.data || [];
+        this.poolRows = [];
+        this.generatedIndexRowKeys = [];
         this.syncCollapsedRequests();
       } catch (error) {
         handleError(error);
       } finally {
         this.loading = false;
+        this.hasCompletedInitialLoad = true;
       }
     },
     syncCollapsedRequests() {
@@ -994,6 +772,12 @@ export default {
         this.requestGroupSummaries[requestName] || buildRequestGroupSummary([])
       );
     },
+    poolRequestGroupSummary(requestName) {
+      return (
+        this.poolRequestGroupSummaries[requestName] ||
+        buildRequestGroupSummary([])
+      );
+    },
     formatTabulatorRow(row) {
       const rowData = row.getData();
       row
@@ -1007,6 +791,12 @@ export default {
       this.$nextTick(() => {
         this.sourceTabulatorInstance?.getTable?.()?.redraw?.(true);
         this.poolTabulatorInstance?.getTable?.()?.redraw?.(true);
+      });
+    },
+    refreshTabulatorData() {
+      this.$nextTick(() => {
+        this.sourceTabulatorInstance?.getTable?.()?.setData?.(this.records);
+        this.poolTabulatorInstance?.getTable?.()?.setData?.(this.poolRows);
       });
     },
     handleSourceSelectionChange(row, checked) {
@@ -1292,7 +1082,6 @@ export default {
         this.syncPoolRowFromRecord(row);
       });
 
-      this.reconcilePoolCompatibility();
       await this.refreshStartCoordinateOptions();
 
       try {
@@ -1320,8 +1109,12 @@ export default {
         } else {
           showNotification("Values applied to selected records.", "success");
         }
+        this.refreshTabulatorData();
       } catch (error) {
-        this.handleApiError(error, `Failed to apply ${field}.`);
+        this.handleApiError(
+          error,
+          `Failed to apply ${this.getFieldDisplayName(field)}.`
+        );
       }
 
       if (field === fields.readLength) {
@@ -1347,6 +1140,15 @@ export default {
       if (!error?.response) {
         handleError(error);
       }
+    },
+    getFieldDisplayName(field) {
+      if (field === fields.readLength) {
+        return "read length";
+      }
+      if (field === fields.indexType) {
+        return "index type";
+      }
+      return String(field || "field").replaceAll("_", " ");
     },
     buildReadLengthUndoEntries(rows) {
       return rows.map((row) => ({
@@ -1383,7 +1185,6 @@ export default {
         });
       });
 
-      this.reconcilePoolCompatibility();
       await this.refreshStartCoordinateOptions();
 
       if (!payload.length) {
@@ -1399,40 +1200,18 @@ export default {
           [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.data]: JSON.stringify(payload)
         });
         showNotification("Undo applied.", "success");
+        this.refreshTabulatorData();
       } catch (error) {
         this.handleApiError(error, "Failed to undo read length changes.");
       }
     },
     setRowSelection(row, checked) {
-      if (checked && !this.isCompatibleWithPool(row)) {
-        return false;
-      }
-
       row.selected = checked;
-
-      if (checked) {
-        const candidate = this.normalizePoolRow(row);
-        const alreadySelected = this.poolRows.some(
-          (item) => item.rowKey === candidate.rowKey
-        );
-        if (!alreadySelected) {
-          this.poolRows = [...this.poolRows, candidate];
-        }
-      } else {
-        this.poolRows = this.poolRows.filter(
-          (item) => item.rowKey !== row.rowKey
-        );
-      }
 
       this.refreshTabulatorTables();
       return true;
     },
     selectAllInGroup(groupRows) {
-      if (!this.selectedPoolSizeId) {
-        showNotification("Pool Size must be set.", "warning");
-        return;
-      }
-
       for (const row of groupRows) {
         if (row.selected) {
           continue;
@@ -1449,6 +1228,71 @@ export default {
           this.setRowSelection(row, false);
         }
       });
+    },
+    addSelectedRowsToPool() {
+      const selectedRows = this.records.filter((row) => row[fields.selected]);
+      if (!selectedRows.length) {
+        showNotification("No selected records to add to the pool.", "warning");
+        return;
+      }
+
+      const existingKeys = new Set(
+        this.poolRows.map((row) => row[fields.rowKey])
+      );
+      const rowsToAdd = selectedRows
+        .filter((row) => !existingKeys.has(row[fields.rowKey]))
+        .map((row) => this.normalizePoolRow(row));
+
+      if (!rowsToAdd.length) {
+        showNotification("Selected records are already in the pool.", "warning");
+        return;
+      }
+
+      this.poolRows = this.sortPoolRows([...this.poolRows, ...rowsToAdd]);
+      this.refreshTabulatorData();
+      showNotification(
+        `Added ${rowsToAdd.length} selected record(s) to the pool.`,
+        "success"
+      );
+    },
+    clearGeneratedIndicesForRowKeys(rowKeys) {
+      const keys = new Set(rowKeys);
+      if (!keys.size) {
+        return;
+      }
+
+      this.generatedIndexRowKeys = this.generatedIndexRowKeys.filter(
+        (rowKey) => !keys.has(rowKey)
+      );
+      this.records = this.records.map((row) =>
+        keys.has(row[fields.rowKey])
+          ? {
+              ...row,
+              [fields.indexI7]: "",
+              [fields.indexI5]: ""
+            }
+          : row
+      );
+    },
+    removePoolRowsByKeys(rowKeys) {
+      const keys = new Set(rowKeys);
+      if (!keys.size) {
+        return;
+      }
+
+      this.clearGeneratedIndicesForRowKeys(keys);
+      this.poolRows = this.poolRows.filter(
+        (row) => !keys.has(row[fields.rowKey])
+      );
+      this.refreshTabulatorData();
+    },
+    removePoolRow(row) {
+      this.removePoolRowsByKeys([row[fields.rowKey]]);
+    },
+    removePoolRowsInGroup(groupRows) {
+      this.removePoolRowsByKeys(
+        (groupRows || []).map((row) => row[fields.rowKey])
+      );
     },
     normalizeRecord(row) {
       const type = row[fields.barcode]?.[2] || "";
@@ -1478,6 +1322,17 @@ export default {
         [fields.indexI7]: i7,
         [fields.indexI5]: i5
       };
+    },
+    sortPoolRows(rows) {
+      return [...rows].sort((left, right) => {
+        const requestCompare = String(left[fields.requestName] || "").localeCompare(
+          String(right[fields.requestName] || "")
+        );
+        if (requestCompare !== 0) return requestCompare;
+        return String(left[fields.barcode] || "").localeCompare(
+          String(right[fields.barcode] || "")
+        );
+      });
     },
     extractIndexString(value) {
       if (!value) return "";
@@ -1557,7 +1412,6 @@ export default {
       }
 
       this.syncPoolRowFromRecord(row);
-      this.reconcilePoolCompatibility();
 
       try {
         await axiosRef.post(apiUrl(INDEX_GENERATOR_API_ENDPOINTS.edit), {
@@ -1587,8 +1441,12 @@ export default {
             { type: "success", timeout: 10000 }
           );
         }
+        this.refreshTabulatorData();
       } catch (error) {
-        this.handleApiError(error, `Failed to update ${field}.`);
+        this.handleApiError(
+          error,
+          `Failed to update ${this.getFieldDisplayName(field)}.`
+        );
       }
     },
     splitPoolRowsByType() {
@@ -1646,51 +1504,48 @@ export default {
           !(Number(row[fields.indexType]) > 0)
       );
 
-      if (!missingIndexTypeRows.length) {
-        return true;
+      if (missingIndexTypeRows.length) {
+        const namesPreview = missingIndexTypeRows
+          .slice(0, INDEX_GENERATOR_DEFAULTS.duplicatePreviewLimit)
+          .map((row) => row[fields.name])
+          .join(", ");
+        const remaining =
+          missingIndexTypeRows.length -
+          INDEX_GENERATOR_DEFAULTS.duplicatePreviewLimit;
+        const suffix = remaining > 0 ? ` (+${remaining} more)` : "";
+        const message =
+          `Index Type is missing for ${missingIndexTypeRows.length} selected ` +
+          `sample(s): ${namesPreview}${suffix}. Set Index Type first.`;
+
+        showNotification(message, "warning");
+        return false;
       }
 
-      const namesPreview = missingIndexTypeRows
-        .slice(0, INDEX_GENERATOR_DEFAULTS.duplicatePreviewLimit)
-        .map((row) => row[fields.name])
-        .join(", ");
-      const remaining =
-        missingIndexTypeRows.length -
-        INDEX_GENERATOR_DEFAULTS.duplicatePreviewLimit;
-      const suffix = remaining > 0 ? ` (+${remaining} more)` : "";
-
-      showNotification(
-        `Index Type is missing for ${missingIndexTypeRows.length} selected sample(s): ${namesPreview}${suffix}. Set Index Type first.`,
-        "warning"
-      );
-      return false;
+      return this.validatePoolCompatibility();
     },
     toggleSelection(row, event) {
       const checked = event.target.checked;
 
-      if (checked && !this.isCompatibleWithPool(row)) {
-        row.selected = false;
-        event.target.checked = false;
-        return;
-      }
-
       this.setRowSelection(row, checked);
     },
-    isCompatibleWithPool(row) {
-      if (!this.poolRows.length) return true;
+    validatePoolCompatibility() {
+      if (this.poolRows.length <= 1) return true;
 
       const first = this.poolRows[0];
-      if (!this.rowPairCompatibility(first, row)) {
+      const incompatibleRow = this.poolRows.find(
+        (row) => !this.rowPairCompatibility(first, row)
+      );
+      if (incompatibleRow) {
         if (
           String(first[fields.readLength] || "") !==
-          String(row[fields.readLength] || "")
+          String(incompatibleRow[fields.readLength] || "")
         ) {
           showNotification("Read lengths must be the same.", "warning");
           return false;
         }
 
         const firstMeta = this.indexTypeMeta(first[fields.indexType]);
-        const rowMeta = this.indexTypeMeta(row[fields.indexType]);
+        const rowMeta = this.indexTypeMeta(incompatibleRow[fields.indexType]);
         if (firstMeta && rowMeta && firstMeta.is_dual !== rowMeta.is_dual) {
           showNotification(
             "Pooling of dual and single indices is not allowed.",
@@ -1700,6 +1555,9 @@ export default {
         return false;
       }
 
+      return true;
+    },
+    isCompatibleWithPool() {
       return true;
     },
     async generateIndices() {
@@ -1759,6 +1617,7 @@ export default {
         const generatedRows = (
           response.data[INDEX_GENERATOR_RESPONSE_KEYS.data] || []
         ).map((row) => this.normalizePoolRow(row));
+        const previouslyGeneratedRowKeys = [...this.generatedIndexRowKeys];
         const generatedByKey = new Map(
           generatedRows.map((generated) => [
             generated[fields.rowKey],
@@ -1766,10 +1625,20 @@ export default {
           ])
         );
 
-        this.poolRows = generatedRows;
+        this.generatedIndexRowKeys = generatedRows.map((row) => row[fields.rowKey]);
+        this.poolRows = this.sortPoolRows(generatedRows);
         this.records = this.records.map((record) => {
           const generated = generatedByKey.get(record[fields.rowKey]);
-          if (!generated) return record;
+          if (!generated) {
+            if (previouslyGeneratedRowKeys.includes(record[fields.rowKey])) {
+              return {
+                ...record,
+                [fields.indexI7]: "",
+                [fields.indexI5]: ""
+              };
+            }
+            return record;
+          }
           return {
             ...record,
             [fields.selected]: this.poolRows.some(
@@ -1796,6 +1665,9 @@ export default {
     },
     async savePool() {
       if (!this.validateSelectedRowsBeforeSave()) {
+        return;
+      }
+      if (!this.validatePoolCompatibility()) {
         return;
       }
 
@@ -1835,8 +1707,9 @@ export default {
           return;
         }
 
-        showNotification("Pool has been saved!", "success");
+        showNotification("Pool saved successfully.", "success");
         this.poolRows = [];
+        this.generatedIndexRowKeys = [];
         this.selectedPoolSizeId = null;
         this.selectedPoolMultiplier = "";
         this.selectedPoolActualSize = "";
@@ -1909,8 +1782,6 @@ export default {
 <style scoped>
 .index-generator-page {
   height: 100%;
-  font-family: var(--app-font-family);
-  font-size: inherit;
 }
 
 .parent-container {
@@ -1927,38 +1798,17 @@ export default {
   position: relative;
 }
 
-.header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  column-gap: 10px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  align-self: center;
-  height: 100%;
-  justify-self: start;
+.sticky-actions {
+  margin-left: auto;
+  flex: 0 1 auto;
   min-width: 0;
+  flex-wrap: nowrap;
 }
 
 .header-center {
-  display: flex;
-  align-items: center;
-  align-self: center;
-  height: 100%;
-  justify-self: center;
-}
-
-.sticky-actions {
-  display: flex;
-  align-items: center;
-  align-self: center;
-  height: 100%;
-  justify-self: end;
-  gap: 8px;
-  padding: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .header-pool-size-controls {
@@ -1978,7 +1828,9 @@ export default {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  min-height: 38px;
+  padding: 4px 8px;
 }
 
 .panel-heading-primary {
@@ -1988,6 +1840,10 @@ export default {
   gap: 8px;
   min-width: 0;
   flex: 1 1 auto;
+}
+
+.panel-heading-primary h3 {
+  margin-bottom: 0;
 }
 
 .panel-heading-actions {
@@ -2006,9 +1862,9 @@ export default {
 
 .apply-all-controls select {
   height: 28px;
-  border: 1px solid #cfd8dc;
+  border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   padding: 0 8px;
   background: #fff;
   min-width: 0;
@@ -2020,7 +1876,7 @@ export default {
 
 .left-panel .panel-heading {
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .left-panel .panel-heading-actions {
@@ -2059,6 +1915,28 @@ export default {
   max-width: none;
 }
 
+.add-selected-pool-button,
+:deep(.pool-row-remove-button),
+:deep(.text-action-button) {
+  border: 1px solid rgba(11, 127, 120, 0.35);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0b6f69;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 28px;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+
+.add-selected-pool-button:hover,
+:deep(.pool-row-remove-button:hover),
+:deep(.text-action-button:hover) {
+  background: #f4f8f8;
+  border-color: #0b7f78;
+}
+
 .apply-all-label {
   font-size: 11px;
   color: #4b5557;
@@ -2067,26 +1945,19 @@ export default {
 
 .pool-size-select {
   min-width: 90px;
-  height: 33px;
-  border: 1px solid #cfd8dc;
-  border-radius: 7px;
+  height: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
   background-color: #ffffff;
-  padding: 0 10px;
-  font-size: 13px;
+  padding: 0 12px;
+  color: #333;
+  font-size: 14px;
 }
 
 .pool-size-select:focus {
   outline: none;
   border-color: #0b7f78;
   box-shadow: 0 0 0 2px rgba(11, 127, 120, 0.15);
-}
-
-.save-pool-button {
-  background-color: #0b7f78;
-}
-
-.save-pool-button:hover:not(:disabled) {
-  background-color: #0a6f68;
 }
 
 .header-button:disabled,
@@ -2096,12 +1967,12 @@ export default {
 }
 
 .tables-wrap {
-  margin-top: 10px;
   display: flex;
   flex-direction: row;
   gap: 4px;
   min-height: 0;
   flex: 1;
+  overflow: hidden;
 }
 
 .panel-splitter {
@@ -2153,6 +2024,7 @@ export default {
   border-radius: 8px;
   padding: 8px;
   min-height: 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -2179,13 +2051,25 @@ export default {
 }
 
 .panel h3 {
-  margin: 0;
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: #333;
 }
 
 .table-scroll {
   overflow: auto;
   flex: 1;
   min-height: 0;
+}
+
+:deep(.normal-tabulator-table .tabulator-col),
+:deep(.normal-tabulator-table .tabulator-col-title) {
+  font-family: var(--app-font-family);
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
 }
 
 :deep(.group-row-content) {
@@ -2239,6 +2123,15 @@ export default {
   background: transparent;
   padding: 0;
   cursor: pointer;
+}
+
+:deep(.group-action-button.text-action-button) {
+  border: 1px solid #0b7f78;
+  padding: 4px 8px;
+}
+
+.right-panel :deep(.tabulator-group-toggle) {
+  display: none;
 }
 
 .protocol-column {
@@ -2373,18 +2266,25 @@ export default {
 
 @media (max-width: 980px) {
   .header {
-    grid-template-columns: 1fr;
-    row-gap: 8px;
-  }
-
-  .header-left,
-  .header-center,
-  .sticky-actions {
-    justify-self: start;
-  }
-
-  .sticky-actions {
+    height: auto;
+    min-height: 70px;
+    align-items: flex-start;
     flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
+  .sticky-actions {
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .header-center {
+    position: static;
+    transform: none;
+    width: 100%;
+    order: 3;
   }
 
   .tables-wrap {
