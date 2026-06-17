@@ -551,255 +551,6 @@
     </div>
   </div>
 
-  <div
-    v-if="activeAction === requestActions.downloadROCrate"
-    class="popup-overlay"
-    tabindex="0"
-    @keydown="handlePopupKeydown"
-  >
-    <div
-      class="popup-container request-action-modal rocrate-modal"
-      data-testid="ro-crate-export-modal"
-    >
-      <div class="popup-header">
-        <div class="popup-title">
-          <img
-            class="popup-title-icon"
-            src="@/assets/icons/action_rocrate.svg"
-            alt=""
-          />
-          <span>Export RO-Crate</span>
-        </div>
-        <div class="rocrate-help-wrapper">
-          <button
-            class="rocrate-help-button"
-            type="button"
-            aria-label="RO-Crate help"
-          >
-            ?
-          </button>
-          <div class="rocrate-help-popup">
-            <div class="rocrate-help-scroll">
-              <div class="rocrate-help-header">
-                <div>
-                  <div class="rocrate-help-title">Export RO-Crate Guide</div>
-                  <p class="rocrate-help-intro">
-                    RO-Crate gives you one structured export package for the
-                    libraries or samples you selected in Parkour.
-                    When you download it, Parkour creates a
-                    <strong>.zip</strong> file that contains
-                    <strong>ro-crate-metadata.json</strong> and, if available,
-                    the attached files from that request. This is useful when
-                    you want to review metadata outside Parkour, share it with
-                    other people, keep an archive copy, or use it in another
-                    tool that understands RO-Crate. The metadata graph is
-                    organized as an ISA-profile-aligned RO-Crate package.
-                  </p>
-                </div>
-              </div>
-              <div class="rocrate-help-grid">
-                <section class="rocrate-help-section">
-                  <div class="rocrate-help-section-title">
-                    What this export contains
-                  </div>
-                  <ul class="rocrate-help-list">
-                    <li>
-                      The selected <strong>Sample Metadata</strong> or
-                      <strong>Library Metadata</strong> becomes the core of the
-                      export, because those are the records you chose in the
-                      table.
-                    </li>
-                    <li>
-                      If the related requests already have attached files in
-                      Parkour, those files are added to the same zip package and
-                      linked from the metadata graph.
-                    </li>
-                    <li>
-                      If you select several libraries or samples at once,
-                      Parkour creates <strong>one shared RO-Crate</strong>. It
-                      does not create one separate export per row.
-                    </li>
-                    <li>
-                      The export can include records from one or more requests.
-                      Parkour keeps the selected records together in one shared
-                      metadata package.
-                    </li>
-                    <li>
-                      Keep a box checked when you want that part of the metadata
-                      to appear in the export. Clear a box when you want a
-                      smaller package with fewer linked details.
-                    </li>
-                    <li>
-                      If you are unsure, keep everything selected. That gives
-                      you the most complete export and preserves the
-                      relationships between the selected records and their
-                      linked metadata.
-                    </li>
-                  </ul>
-                </section>
-                <section class="rocrate-help-section">
-                  <div class="rocrate-help-section-title">
-                    How to use the exported file
-                  </div>
-                  <ul class="rocrate-help-list">
-                    <li>
-                      Click <strong>Preview</strong> to review the current
-                      selection before creating the final ZIP file.
-                    </li>
-                    <li>
-                      Open the zip and look for
-                      <strong>ro-crate-metadata.json</strong>. That file
-                      contains the linked metadata graph for the export.
-                    </li>
-                    <li>
-                      Click <strong>Preview</strong> to inspect the selected
-                      metadata in Parkour before exporting the final ZIP.
-                    </li>
-                    <li>
-                      Use
-                      <a
-                        href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        ><strong>RO-Crate Documentation</strong></a
-                      >
-                      if you want to understand the general standard behind the
-                      file format.
-                    </li>
-                    <li>
-                      This export is useful when you want to share metadata with
-                      collaborators, inspect relationships between records, keep
-                      a portable metadata snapshot, or hand structured data to
-                      another system.
-                    </li>
-                    <li>
-                      The exported package does not replace Parkour. Parkour
-                      remains the working system, while the RO-Crate export is a
-                      standards-based package for inspection, sharing, and
-                      downstream reuse.
-                    </li>
-                  </ul>
-                </section>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="popup-close-button" type="button" @click="close">
-          &times;
-        </button>
-      </div>
-      <div class="popup-body rocrate-body">
-        <div class="rocrate-summary">
-          <div class="rocrate-summary-card rocrate-summary-card-wide">
-            <span class="label">Selected Requests</span>
-            <span
-              class="value"
-              :class="{
-                'rocrate-summary-count': roCrateRequestCount !== 1,
-                'rocrate-request-name': roCrateRequestCount === 1
-              }"
-            >
-              {{ requestContext?.name || "-" }}
-            </span>
-          </div>
-          <div class="rocrate-summary-card">
-            <span class="label">{{ roCrateSelectedLabel }}</span>
-            <span class="value rocrate-summary-count">{{
-              roCrateSelectedDisplay
-            }}</span>
-          </div>
-        </div>
-
-        <div class="rocrate-toolbar">
-          <div style="font-weight: bold">Choose information to include:</div>
-          <div class="rocrate-toolbar-actions">
-            <button
-              class="popup-button secondary small"
-              type="button"
-              data-testid="ro-crate-select-all-sections-button"
-              :disabled="!canConfigureROCrateExport"
-              @click="selectAllROCrateSections"
-            >
-              Select All
-            </button>
-            <button
-              class="popup-button secondary small"
-              type="button"
-              data-testid="ro-crate-clear-sections-button"
-              :disabled="!canConfigureROCrateExport"
-              @click="clearAllROCrateSections"
-            >
-              Clear All
-            </button>
-          </div>
-        </div>
-
-        <div class="rocrate-options-grid">
-          <label
-            v-for="option in roCrateSectionOptions"
-            :key="option.id"
-            class="rocrate-option"
-          >
-            <input
-              v-model="roCrateSelectedSections"
-              type="checkbox"
-              :value="option.id"
-              :data-testid="`ro-crate-section-${option.id}`"
-              :disabled="!canConfigureROCrateExport"
-            />
-            <div class="rocrate-option-content">
-              <div class="rocrate-option-title">{{ option.label }}</div>
-              <div class="rocrate-option-description">
-                {{ option.description }}
-              </div>
-            </div>
-          </label>
-        </div>
-
-        <div
-          v-if="roCrateValidationMessage"
-          class="rocrate-validation"
-          data-testid="ro-crate-validation-message"
-        >
-          {{ roCrateValidationMessage }}
-        </div>
-      </div>
-      <div class="popup-footer rocrate-footer">
-        <div class="rocrate-footer-links">
-          <a
-            class="file-upload-label rocrate-footer-link"
-            href="https://www.researchobject.org/ro-crate/specification/1.2/introduction.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <font-awesome-icon icon="fa-solid fa-file-lines" />
-            RO-Crate Documentation
-          </a>
-        </div>
-        <div class="rocrate-footer-actions">
-          <button
-            ref="defaultROCrateButton"
-            class="popup-button yes-button"
-            type="button"
-            data-testid="preview-ro-crate-button"
-            :disabled="roCrateBusy || !canPreviewROCrate"
-            :title="
-              canPreviewROCrate
-                ? ''
-                : 'Select at least one library or sample before previewing.'
-            "
-            @click="previewROCrate"
-          >
-            <span v-if="roCrateBusy">Opening...</span>
-            <span v-else>Preview</span>
-          </button>
-          <button class="popup-button secondary" type="button" @click="close">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -819,16 +570,14 @@ const REQUEST_ACTIONS = {
   composeEmail: "composeEmail",
   solicitApproval: "solicitApproval",
   deleteRequest: "deleteRequest",
-  attachments: "attachments",
-  downloadROCrate: "downloadROCrate"
+  attachments: "attachments"
 };
 
 const REQUEST_ACTION_DEFAULT_REFS = {
   [REQUEST_ACTIONS.uploadSigned]: "defaultUploadButton",
   [REQUEST_ACTIONS.filePaths]: "defaultFilepathsButton",
   [REQUEST_ACTIONS.deleteRequest]: "defaultDeleteButton",
-  [REQUEST_ACTIONS.attachments]: "defaultAttachmentsButton",
-  [REQUEST_ACTIONS.downloadROCrate]: "defaultROCrateButton"
+  [REQUEST_ACTIONS.attachments]: "defaultAttachmentsButton"
 };
 
 const REQUEST_API_ENDPOINTS = {
@@ -890,120 +639,9 @@ const REQUEST_DATA_FIELDS = {
   recordType: "record_type"
 };
 
-const RO_CRATE_SECTION_OPTIONS = [
-  {
-    id: "request",
-    label: "Request Details",
-    description:
-      "General request information, including the description, attached files, and request-level details."
-  },
-  {
-    id: "request_user",
-    label: "Request User",
-    description: "Details about the person who submitted the request."
-  },
-  {
-    id: "organizations",
-    label: "Organizations",
-    description:
-      "Organizations linked to the request, cost unit, or principal investigator."
-  },
-  {
-    id: "principal_investigators",
-    label: "Principal Investigators",
-    description:
-      "Principal investigator names and related metadata connected to the request."
-  },
-  {
-    id: "cost_units",
-    label: "Cost Units",
-    description: "Billing or funding information assigned to the request."
-  },
-  {
-    id: "samples",
-    label: "Sample Metadata",
-    description:
-      "The selected sample records and their sample-specific metadata."
-  },
-  {
-    id: "libraries",
-    label: "Library Metadata",
-    description:
-      "The selected library records and their library-specific metadata."
-  },
-  {
-    id: "library_preparation",
-    label: "Library Preparation",
-    description:
-      "Preparation values such as starting amount, concentration, or PCR cycles."
-  },
-  {
-    id: "pooling",
-    label: "Pooling",
-    description:
-      "Pool membership and pooling information connected to the selected records."
-  },
-  {
-    id: "protocols",
-    label: "Protocols",
-    description: "Protocols used for the selected libraries or samples."
-  },
-  {
-    id: "organisms",
-    label: "Organisms",
-    description:
-      "Organism names and related metadata linked to the selected records."
-  },
-  {
-    id: "library_types",
-    label: "Library Types",
-    description: "Library type definitions used by the selected records."
-  },
-  {
-    id: "read_lengths",
-    label: "Read Lengths",
-    description:
-      "Read length settings linked to the selected sequencing records."
-  },
-  {
-    id: "index_types",
-    label: "Index Types",
-    description: "Index type settings used for the selected records."
-  },
-  {
-    id: "nucleic_acid_types",
-    label: "Input Types",
-    description:
-      "Input material or nucleic-acid type information for the selected samples."
-  },
-  {
-    id: "index_pools",
-    label: "Index Pools",
-    description:
-      "Index pool assignments connected to the selected samples, libraries, or lanes."
-  },
-  {
-    id: "flowcells",
-    label: "Flowcells",
-    description:
-      "Flowcell or sequencing-run information linked to the exported records."
-  },
-  {
-    id: "sequencers",
-    label: "Sequencers",
-    description:
-      "Sequencing instrument details referenced by the exported flowcells."
-  },
-  {
-    id: "lanes",
-    label: "Lanes",
-    description: "Lane information linked to the exported flowcells."
-  }
-];
-
 export default {
   name: "RequestActionsPopups",
-  emits: ["close", "refresh", "preview-ro-crate"],
+  emits: ["close", "refresh"],
   props: {
     activeAction: {
       type: String,
@@ -1061,11 +699,7 @@ export default {
         [REQUEST_DATA_FIELDS.costUnit]: null,
         [REQUEST_DATA_FIELDS.description]: ""
       },
-      attachmentsRecords: [],
-      roCrateBusy: false,
-      roCrateSelectedSections: [
-        ...RO_CRATE_SECTION_OPTIONS.map((option) => option.id)
-      ]
+      attachmentsRecords: []
     };
   },
   computed: {
@@ -1116,60 +750,6 @@ export default {
     canEditAttachments() {
       const canEdit = this.requestContext?.canEditRequest;
       return canEdit === undefined ? true : Boolean(canEdit);
-    },
-    roCrateSectionOptions() {
-      return RO_CRATE_SECTION_OPTIONS;
-    },
-    roCrateSelectedBarcodes() {
-      return Array.isArray(this.requestContext?.selectedBarcodes)
-        ? this.requestContext.selectedBarcodes.filter((value) => Boolean(value))
-        : [];
-    },
-    roCrateSelectedCount() {
-      return this.roCrateSelectedBarcodes.length;
-    },
-    roCrateSelectedDisplay() {
-      const count = this.roCrateSelectedCount;
-      const type = String(this.requestContext?.selectedType || "")
-        .trim()
-        .toUpperCase();
-      if (type === "L") {
-        return `${count} ${count === 1 ? "library" : "libraries"}`;
-      }
-      if (type === "S") {
-        return `${count} ${count === 1 ? "sample" : "samples"}`;
-      }
-      return `${count} ${count === 1 ? "library/sample" : "libraries/samples"}`;
-    },
-    roCrateRequestCount() {
-      const count = Number(this.requestContext?.selectedRequestCount || 0);
-      return Number.isFinite(count) && count > 0 ? count : 0;
-    },
-    canConfigureROCrateExport() {
-      return this.roCrateSelectedBarcodes.length > 0;
-    },
-    canPreviewROCrate() {
-      return (
-        this.canConfigureROCrateExport &&
-        this.roCrateSelectedSections.length > 0
-      );
-    },
-    roCrateSelectedLabel() {
-      const type = String(this.requestContext?.selectedType || "")
-        .trim()
-        .toUpperCase();
-      if (type === "L") return "Selected Libraries";
-      if (type === "S") return "Selected Samples";
-      return "Selected Libraries or Samples";
-    },
-    roCrateValidationMessage() {
-      if (!this.roCrateSelectedBarcodes.length) {
-        return "Select at least one library or sample with a valid barcode to preview an RO-Crate.";
-      }
-      if (!this.roCrateSelectedSections.length) {
-        return "Select at least one information section to include in the RO-Crate.";
-      }
-      return "";
     }
   },
   mounted() {
@@ -1243,10 +823,6 @@ export default {
           if (!this.uploadBusy) this.submitSignedRequest();
           return;
         }
-        if (this.activeAction === REQUEST_ACTIONS.downloadROCrate) {
-          if (!this.roCrateBusy) this.previewROCrate();
-          return;
-        }
         if (this.activeAction === REQUEST_ACTIONS.deleteRequest) {
           if (!this.deleteBusy) this.confirmDelete();
           return;
@@ -1285,56 +861,8 @@ export default {
         [REQUEST_DATA_FIELDS.description]: ""
       };
       this.attachmentsRecords = [];
-      this.roCrateBusy = false;
-      this.roCrateSelectedSections = [
-        ...RO_CRATE_SECTION_OPTIONS.map((option) => option.id)
-      ];
       if (action === REQUEST_ACTIONS.filePaths) {
         this.selectedOS = this.detectOS(navigator.userAgent);
-      }
-    },
-    selectAllROCrateSections() {
-      this.roCrateSelectedSections = [
-        ...RO_CRATE_SECTION_OPTIONS.map((option) => option.id)
-      ];
-    },
-    clearAllROCrateSections() {
-      this.roCrateSelectedSections = [];
-    },
-    previewROCrate() {
-      if (!this.roCrateSelectedBarcodes.length) {
-        showNotification(
-          "Select records with valid barcodes to preview RO-Crate.",
-          NOTIFICATION_TYPES.warning
-        );
-        return;
-      }
-      if (!this.roCrateSelectedSections.length) {
-        showNotification(
-          "Select at least one information section.",
-          NOTIFICATION_TYPES.warning
-        );
-        return;
-      }
-
-      try {
-        this.roCrateBusy = true;
-        this.$emit("preview-ro-crate", {
-          barcodes: this.roCrateSelectedBarcodes,
-          sections: this.roCrateSelectedSections,
-          requestName: this.requestContext?.name || "",
-          requestNames: Array.isArray(this.requestContext?.selectedRequestNames)
-            ? this.requestContext.selectedRequestNames
-            : [],
-          selectedType: this.requestContext?.selectedType || "",
-          selectedCount: this.roCrateSelectedCount,
-          selectedRequestCount: this.roCrateRequestCount
-        });
-        this.close();
-      } catch (error) {
-        handleError(error);
-      } finally {
-        this.roCrateBusy = false;
       }
     },
     triggerUploadInput() {

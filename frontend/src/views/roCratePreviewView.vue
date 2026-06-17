@@ -8,18 +8,10 @@
             <span>Parkour RO-Crate Preview</span>
           </h1>
           <div class="upload-title">
-            {{
-              activePreviewConfig
-                ? "Review selected RO-Crate metadata"
-                : "RO-Crate preview"
-            }}
+            {{ model ? labels.loadedTitle : labels.emptyTitle }}
           </div>
           <div class="upload-subtitle">
-            {{
-              activePreviewConfig
-                ? "Inspect the selected Parkour records before exporting the final ZIP."
-                : "Select libraries or samples and open Preview from the RO-Crate export dialog."
-            }}
+            {{ model ? labels.loadedSubtitle : labels.emptySubtitle }}
           </div>
           <div class="upload-actions">
             <div v-if="model?.source?.name" class="upload-current-file">
@@ -35,7 +27,12 @@
               <font-awesome-icon icon="fa-solid fa-box-archive" />
               {{ exportBusy ? "Exporting..." : "Export RO-Crate" }}
             </button>
-            <button v-if="model" class="hero-button secondary pdf-export-button" type="button" @click="exportToPdf">
+            <button
+              v-if="model"
+              class="hero-button secondary pdf-export-button"
+              type="button"
+              @click="exportToPdf"
+            >
               <font-awesome-icon icon="fa-solid fa-file-pdf" />
               Export to PDF
             </button>
@@ -74,58 +71,8 @@
             <div class="print-report-title">Parkour RO-Crate Preview</div>
             <div class="print-report-subtitle">{{ printReportSubtitle }}</div>
           </div>
-          <div class="print-report-meta">
-            <span>{{ printGeneratedAt }}</span>
-          </div>
+          <div class="print-report-meta">{{ printGeneratedAt }}</div>
         </header>
-
-        <section v-if="attachedFileGroups.length" class="detail-card attached-files-card">
-          <div class="detail-header">
-            <div>
-              <div class="detail-kicker">Attached Files</div>
-            </div>
-          </div>
-          <div class="attached-file-groups">
-            <article
-              v-for="group in attachedFileGroups"
-              :key="group.requestId"
-              class="attached-file-group"
-            >
-              <div class="attached-file-request">{{ group.requestName }}</div>
-              <div class="attached-file-list">
-                <div
-                  v-for="file in group.files"
-                  :key="file.id"
-                  class="attached-file-item"
-                >
-                  <font-awesome-icon icon="fa-solid fa-file-lines" />
-                  <span :title="file.name">{{ file.name }}</span>
-                </div>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section v-if="zipContentRows.length" class="detail-card zip-contents-card">
-          <div class="detail-header">
-            <div>
-              <div class="detail-kicker">ZIP Contents</div>
-            </div>
-          </div>
-          <div class="zip-content-list">
-            <div
-              v-for="item in zipContentRows"
-              :key="item.path"
-              class="zip-content-row"
-            >
-              <font-awesome-icon icon="fa-solid fa-file-lines" />
-              <div class="zip-content-main">
-                <div class="zip-content-path" :title="item.path">{{ item.path }}</div>
-                <div class="zip-content-meta">{{ item.type }}</div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         <section class="preview-search-panel" aria-label="Search RO-Crate preview">
           <div class="preview-search-copy">
@@ -135,126 +82,116 @@
           <div class="table-search-inline">
             <div class="table-search-input-wrap">
               <input
-                :value="tableSearchInput"
+                v-model.trim="tableSearchInput"
                 class="table-search-input"
                 type="search"
-                placeholder="Search by field name or value"
-                @input="handleSearchInput"
+                placeholder="Search by request, record, field, or value"
               />
               <font-awesome-icon class="table-search-icon" icon="fa-solid fa-magnifying-glass" />
             </div>
           </div>
         </section>
 
-        <section class="detail-card quick-summary-card">
+        <section class="detail-card request-overview-card">
+          <div class="detail-header">
+            <div class="detail-kicker">Request(s) Overview</div>
+          </div>
+          <div class="request-overview-list">
+            <article
+              v-for="request in visibleRequestGroups"
+              :key="`overview-${request.id}`"
+              class="request-overview-item"
+            >
+              <div class="request-overview-title">{{ request.name }}</div>
+              <div v-if="request.records.length" class="record-chip-list">
+                <span
+                  v-for="record in request.records"
+                  :key="`overview-${request.id}-${record.id}`"
+                  class="record-chip"
+                >
+                  {{ record.name }}<template v-if="record.barcode"> ({{ record.barcode }})</template>
+                </span>
+              </div>
+              <div v-else class="empty-inline">{{ labels.noRecords }}</div>
+            </article>
+          </div>
+        </section>
+
+        <section
+          v-for="(request, index) in visibleRequestGroups"
+          :key="request.id"
+          class="detail-card request-card"
+        >
           <div class="detail-header">
             <div>
-              <div class="detail-kicker">Request Overview</div>
-            </div>
-          </div>
-          <div class="quick-summary-table">
-            <div v-for="item in summaryKeyValuePairs" :key="item.key" class="quick-summary-row"
-              :class="{ 'wide-row': shouldUseWideRow(item) }">
-              <div class="quick-summary-key">{{ item.key }}</div>
-              <div class="quick-summary-value" :class="valueClassForRow(item)">
-                <div
-                  v-if="isStructuredDisplayValue(item.value)"
-                  v-html="structuredValueHtml(item.value)"
-                ></div>
-                <template v-else>
-                  {{ plainDisplayValue(item) }}
-                </template>
-              </div>
+              <div class="detail-kicker">Request {{ index + 1 }}: {{ request.name }}</div>
             </div>
           </div>
 
-          <section v-for="section in requestOverviewSections" :key="`request-overview-${section.title}`"
-            class="record-group">
-            <div class="record-group-title">{{ section.title }}</div>
+          <section v-if="request.requestRows.length" class="record-group">
+            <div class="record-group-title">Request Details</div>
             <div class="quick-summary-table record-group-table">
-              <div v-for="item in section.rows" :key="`request-overview-${section.title}-${item.key}`"
-                class="quick-summary-row" :class="{ 'wide-row': shouldUseWideRow(item) }">
-                <div class="quick-summary-key">{{ item.key }}</div>
-                <div class="quick-summary-value" :class="valueClassForRow(item)">
-                  <div
-                    v-if="isStructuredDisplayValue(item.value)"
-                    v-html="structuredValueHtml(item.value)"
-                  ></div>
-                  <template v-else>
-                    {{ plainDisplayValue(item) }}
-                  </template>
+              <div
+                v-for="row in request.requestRows"
+                :key="`${request.id}-request-${row.key}`"
+                class="quick-summary-row"
+                :class="{ 'wide-row': row.wide }"
+              >
+                <div class="quick-summary-key">{{ row.key }}</div>
+                <div class="quick-summary-value" :class="valueClassForRow(row)">
+                  <component :is="displayComponent(row.value)" :value="row.value" />
                 </div>
               </div>
             </div>
           </section>
-        </section>
 
-        <section class="detail-card records-summary-card">
-          <div class="detail-header">
-            <div>
-              <div class="detail-kicker">Libraries & Samples</div>
-            </div>
-          </div>
-
-          <div v-if="recordTables.length" class="record-table-list">
-            <article v-for="record in recordTables" :key="record.id" class="record-table-block">
-              <div class="record-table-header">
-                <div class="record-table-title">{{ record.title }}</div>
-              </div>
-              <section v-for="section in record.sections" :key="`${record.id}-${section.title}`" class="record-group">
-                <div class="record-group-title">{{ section.title }}</div>
-                <div class="quick-summary-table record-group-table">
-                  <div v-for="item in section.rows" :key="`${record.id}-${section.title}-${item.key}`"
-                    class="quick-summary-row" :class="{ 'wide-row': shouldUseWideRow(item) }">
-                    <div class="quick-summary-key">{{ item.key }}</div>
-                    <div class="quick-summary-value" :class="valueClassForRow(item)">
-                      <div
-                        v-if="isStructuredDisplayValue(item.value)"
-                        v-html="structuredValueHtml(item.value)"
-                      ></div>
-                      <template v-else>
-                        {{ plainDisplayValue(item) }}
-                      </template>
+          <section class="record-group">
+            <div class="record-group-title">Libraries/Samples</div>
+            <div v-if="request.records.length" class="record-table-list">
+              <article
+                v-for="record in request.records"
+                :key="record.id"
+                class="record-table-block"
+              >
+                <div class="record-table-header">
+                  <div class="record-table-title">{{ record.type }}: {{ record.name }}</div>
+                  <div v-if="record.barcode" class="record-table-subtitle">Barcode: {{ record.barcode }}</div>
+                </div>
+                <section
+                  v-for="section in record.sections"
+                  :key="`${record.id}-${section.title}`"
+                  class="record-group nested"
+                >
+                  <div class="record-group-title">{{ section.title }}</div>
+                  <div class="quick-summary-table record-group-table">
+                    <div
+                      v-for="row in section.rows"
+                      :key="`${record.id}-${section.title}-${row.key}`"
+                      class="quick-summary-row"
+                      :class="{ 'wide-row': row.wide }"
+                    >
+                      <div class="quick-summary-key">{{ row.key }}</div>
+                      <div class="quick-summary-value" :class="valueClassForRow(row)">
+                        <component :is="displayComponent(row.value)" :value="row.value" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </section>
-            </article>
-          </div>
-          <div v-else class="empty-inline">
-            No sample or library records were identified from this RO-Crate.
-          </div>
-        </section>
-
-        <section v-if="sequencingSections.length" class="detail-card sequencing-summary-card">
-          <div class="detail-header">
-            <div>
-              <div class="detail-kicker">Flowcells & Sequencing</div>
+                </section>
+              </article>
             </div>
-          </div>
-          <section
-            v-for="section in sequencingSections"
-            :key="`sequencing-${section.title}`"
-            class="record-group"
-          >
-            <div class="record-group-title">{{ section.title }}</div>
-            <div class="quick-summary-table record-group-table">
+            <div v-else class="empty-inline">{{ labels.noRecords }}</div>
+          </section>
+
+          <section v-if="request.attachments.length" class="record-group">
+            <div class="record-group-title">Attached Files</div>
+            <div class="attachment-list">
               <div
-                v-for="item in section.rows"
-                :key="`sequencing-${section.title}-${item.key}`"
-                class="quick-summary-row"
-                :class="{ 'wide-row': shouldUseWideRow(item) }"
+                v-for="file in request.attachments"
+                :key="file.id"
+                class="attachment-item"
               >
-                <div class="quick-summary-key">{{ item.key }}</div>
-                <div class="quick-summary-value" :class="valueClassForRow(item)">
-                  <div
-                    v-if="isStructuredDisplayValue(item.value)"
-                    v-html="structuredValueHtml(item.value)"
-                  ></div>
-                  <template v-else>
-                    {{ plainDisplayValue(item) }}
-                  </template>
-                </div>
+                <font-awesome-icon icon="fa-solid fa-file-lines" />
+                <span>{{ file.name }}</span>
               </div>
             </div>
           </section>
@@ -269,12 +206,27 @@
 </template>
 
 <script>
+import { h, nextTick } from "vue";
+import { saveAs } from "file-saver";
 import {
+  RO_CRATE_BACKLINK_PROPERTIES,
+  RO_CRATE_ENDPOINT,
+  RO_CRATE_ENTITY_IDS,
+  RO_CRATE_ENTITY_PREFIXES,
+  RO_CRATE_FIELD_KEYS,
+  RO_CRATE_HIDDEN_FIELD_PATTERNS,
   RO_CRATE_INBUILT_HIDDEN_FIELDS,
-  RO_CRATE_PREVIEW_FIELD_RULES,
+  RO_CRATE_LINKED_MODEL_RELATION_FIELDS,
+  RO_CRATE_MODEL_SECTION_RULES,
+  RO_CRATE_PREVIEW_LABELS,
+  RO_CRATE_PROPERTY_LABEL_OVERRIDES,
+  RO_CRATE_PROPERTY_PREFIX_PATTERN,
+  RO_CRATE_RECORD_TYPES,
+  RO_CRATE_RELATED_MODEL_HIDDEN_FIELDS,
+  RO_CRATE_RELATION_FIELDS,
+  RO_CRATE_VISIBLE_ID_FIELDS,
   USER_DEFINED_VARIABLE_HIDDEN_FIELDS
 } from "../constants/roCratePreviewConsts";
-import { saveAs } from "file-saver";
 import { parseRoCratePayload } from "../utilities/roCratePreviewUtils";
 import {
   createAxiosObject,
@@ -285,51 +237,120 @@ import {
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
-const RO_CRATE_ENDPOINT = "/api/generate_ro_crate/";
-
-const displayLabelForField = (field) =>
-  String(field || "")
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/[_-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
+const fieldKeys = RO_CRATE_FIELD_KEYS;
+const hiddenFields = new Set(RO_CRATE_INBUILT_HIDDEN_FIELDS);
+const userHiddenFields = new Set(USER_DEFINED_VARIABLE_HIDDEN_FIELDS || []);
+const visibleIdFields = new Set(RO_CRATE_VISIBLE_ID_FIELDS);
+const relatedModelHiddenFields = new Set(RO_CRATE_RELATED_MODEL_HIDDEN_FIELDS);
+const normalisePolicyField = (value) =>
+  String(value || "")
+    .replace(/[^a-z0-9]+/gi, "")
     .toLowerCase();
+const hiddenPolicyFields = new Set(
+  [...hiddenFields, ...userHiddenFields].map((field) => normalisePolicyField(field))
+);
+const visibleIdPolicyFields = new Set(
+  [...visibleIdFields].map((field) => normalisePolicyField(field))
+);
 
-const roCrateInbuiltHiddenFieldSet = new Set(RO_CRATE_INBUILT_HIDDEN_FIELDS);
-const userDefinedVariableHiddenFieldSet = new Set(
-  USER_DEFINED_VARIABLE_HIDDEN_FIELDS
-);
-const userDefinedVariableHiddenLabelSet = new Set(
-  USER_DEFINED_VARIABLE_HIDDEN_FIELDS.map(displayLabelForField)
-);
-const visibleIdFieldSet = new Set(RO_CRATE_PREVIEW_FIELD_RULES.visibleIdFields);
-const visibleIdLabelSet = new Set(
-  RO_CRATE_PREVIEW_FIELD_RULES.visibleIdFields.map(displayLabelForField)
-);
-const visibleRequestFieldSet = new Set(
-  RO_CRATE_PREVIEW_FIELD_RULES.visibleRequestFields
-);
-const hiddenSensitiveFieldPatterns =
-  RO_CRATE_PREVIEW_FIELD_RULES.hiddenSensitiveFieldPatterns;
-const hiddenTechnicalDisplayLabelPatterns =
-  RO_CRATE_PREVIEW_FIELD_RULES.hiddenTechnicalDisplayLabelPatterns;
-const hiddenLinkedRecordLabelPatterns =
-  RO_CRATE_PREVIEW_FIELD_RULES.hiddenLinkedRecordLabelPatterns;
-const entityFields = RO_CRATE_PREVIEW_FIELD_RULES.entityFields;
-const entityIds = RO_CRATE_PREVIEW_FIELD_RULES.entityIds;
-const recordEntityRules = RO_CRATE_PREVIEW_FIELD_RULES.recordEntity;
-const attachmentEntityRules = RO_CRATE_PREVIEW_FIELD_RULES.attachmentEntity;
-const sectionOptions = RO_CRATE_PREVIEW_FIELD_RULES.sectionOptions;
-const hiddenContextEntityFieldSet = new Set(
-  RO_CRATE_PREVIEW_FIELD_RULES.hiddenContextEntityFields
-);
-const hiddenBacklinkPropertySet = new Set(
-  RO_CRATE_PREVIEW_FIELD_RULES.hiddenBacklinkProperties
-);
-const recordTypeLabel = displayLabelForField("recordType");
+const DisplayValue = {
+  name: "ROCrateDisplayValue",
+  props: {
+    value: {
+      type: [String, Number, Boolean, Array, Object],
+      default: ""
+    }
+  },
+  methods: {
+    isObject(value) {
+      return value && typeof value === "object" && !Array.isArray(value);
+    },
+    renderPrimitive(value) {
+      return h("span", String(value ?? "-"));
+    },
+    isTableList(values) {
+      return (
+        Array.isArray(values) &&
+        values.length > 0 &&
+        values.every((value) => this.isObject(value))
+      );
+    },
+    renderList(values) {
+      if (this.isTableList(values)) return this.renderObjectTable(values);
+      return h(
+        "ol",
+        { class: "structured-value-list" },
+        values.map((value, index) => h("li", { key: index }, this.renderAny(value)))
+      );
+    },
+    renderObjectTable(values) {
+      const columns = [
+        ...new Set(values.flatMap((value) => Object.keys(value || {})))
+      ];
+      return h(
+        "div",
+        { class: "structured-value-scroll" },
+        h(
+          "table",
+          { class: "structured-value-table indexed-table" },
+          [
+            h(
+              "thead",
+              h("tr", [
+                h("th", { class: "row-number-column" }, "#"),
+                ...columns.map((column) => h("th", { key: column }, column))
+              ])
+            ),
+            h(
+              "tbody",
+              values.map((value, index) =>
+                h("tr", { key: index }, [
+                  h("td", { class: "row-number-column" }, String(index + 1)),
+                  ...columns.map((column) =>
+                    h("td", { key: column }, this.renderAny(value?.[column]))
+                  )
+                ])
+              )
+            )
+          ]
+        )
+      );
+    },
+    renderObject(value) {
+      return h(
+        "div",
+        { class: "structured-value-scroll" },
+        h(
+          "table",
+          { class: "structured-value-table key-value" },
+          h(
+            "tbody",
+            Object.entries(value).map(([key, nestedValue]) =>
+              h("tr", { key }, [
+                h("th", key),
+                h("td", this.renderAny(nestedValue))
+              ])
+            )
+          )
+        )
+      );
+    },
+    renderAny(value) {
+      if (Array.isArray(value)) return this.renderList(value);
+      if (this.isObject(value)) return this.renderObject(value);
+      return this.renderPrimitive(value);
+    }
+  },
+  render() {
+    return this.renderAny(this.value);
+  }
+};
 
 export default {
   name: "ROCratePreviewView",
+  components: {
+    ROCrateDisplayValue: DisplayValue
+  },
   props: {
     previewConfig: {
       type: Object,
@@ -346,206 +367,104 @@ export default {
       errorMessage: "",
       model: null,
       tableSearchInput: "",
-      tableSearchTerm: "",
-      tableSearchPending: false,
-      tableSearchDebounceTimer: null,
       activePreviewConfig: null,
       exportBusy: false,
       skippedRecords: []
     };
   },
   computed: {
-    canExportPreview() {
-      return Array.isArray(this.activePreviewConfig?.barcodes) && this.activePreviewConfig.barcodes.length > 0;
+    labels() {
+      return RO_CRATE_PREVIEW_LABELS;
     },
-    printRequestNames() {
-      if (!this.model) return [];
-      const requestNames = this.model.graph
-        .filter((entity) =>
-          String(entity?.[entityFields.id] || "").startsWith("#request-context-")
-        )
-        .map((entity) => entity?.[entityFields.name])
-        .filter(Boolean);
-      return [...new Set(requestNames)];
+    canExportPreview() {
+      const identifiers = this.previewIdentifierValues(this.activePreviewConfig);
+      return identifiers.barcodes.length > 0 || identifiers.requests.length > 0;
     },
     printGeneratedAt() {
-      return `Generated ${this.formatDisplayDate(new Date().toISOString())}`;
+      return `Generated ${this.formatDate(new Date().toISOString())}`;
     },
     printReportSubtitle() {
-      const requestText = this.printRequestNames.length
-        ? this.printRequestNames.join(", ")
-        : this.model?.source?.name || "Selected records";
-      return `${requestText} | ${this.recordTables.length} records | ${this.attachedFileGroups.length} file groups`;
+      const names = this.requestGroups.map((request) => request.name);
+      return `${names.join(", ") || "Selected records"} | ${this.totalRecordCount} records`;
+    },
+    totalRecordCount() {
+      return this.requestGroups.reduce(
+        (count, request) => count + request.records.length,
+        0
+      );
+    },
+    searchTerm() {
+      return String(this.tableSearchInput || "").toLowerCase();
+    },
+    searchResultSummary() {
+      if (!this.searchTerm) {
+        return "Search visible requests, records, fields, and values.";
+      }
+      return `${this.visibleRequestGroups.length} ${this.visibleRequestGroups.length === 1 ? "request" : "requests"} match "${this.tableSearchInput}"`;
+    },
+    rootEntity() {
+      return this.entityById(RO_CRATE_ENTITY_IDS.rootDataset);
+    },
+    requestGroups() {
+      if (!this.model) return [];
+      const studies = this.model.graph.filter((entity) =>
+        String(entity?.[fieldKeys.id] || "").startsWith(
+          RO_CRATE_ENTITY_PREFIXES.study
+        )
+      );
+      const groups = studies.map((study, index) =>
+        this.buildRequestGroup(study, index)
+      );
+      if (groups.length) return groups;
+      return [this.buildFallbackRequestGroup()];
+    },
+    visibleRequestGroups() {
+      if (!this.searchTerm) return this.requestGroups;
+      return this.requestGroups
+        .map((request) => ({
+          ...request,
+          records: request.records.filter((record) =>
+            this.matchesSearch([
+              request.name,
+              record.name,
+              record.barcode,
+              record.type,
+              ...record.sections.flatMap((section) =>
+                section.rows.flatMap((row) => [row.key, row.value])
+              )
+            ])
+          ),
+          requestRows: request.requestRows.filter((row) =>
+            this.matchesSearch([request.name, row.key, row.value])
+          ),
+          attachments: request.attachments.filter((file) =>
+            this.matchesSearch([request.name, file.name, file.id])
+          )
+        }))
+        .filter(
+          (request) =>
+            this.matchesSearch([request.name]) ||
+            request.records.length ||
+            request.requestRows.length ||
+            request.attachments.length
+        );
     },
     zipContentRows() {
-      if (!this.model) return [];
       const rows = [
         {
-          path: entityIds.metadataDescriptor,
+          path: RO_CRATE_ENTITY_IDS.metadataDescriptor,
           type: "RO-Crate metadata"
         }
       ];
-      this.attachedFileGroups.forEach((group) => {
-        group.files.forEach((file) => {
+      this.requestGroups.forEach((request) => {
+        request.attachments.forEach((file) => {
           rows.push({
-            path: file.id,
-            type: `${group.requestName} attachment`
+            path: file.contentUrl || file.id,
+            type: `${request.name} attachment`
           });
         });
       });
-      return rows.filter((row) => this.rowMatchesSearch({
-        key: row.type,
-        value: row.path
-      }));
-    },
-    searchResultSummary() {
-      if (!this.model) return "";
-      const query = String(this.tableSearchInput || "").trim();
-      if (!query) {
-        return "Search all visible request, record, file, and sequencing metadata.";
-      }
-      if (this.tableSearchPending) {
-        return `Searching for "${query}"...`;
-      }
-      const rowCount =
-        this.summaryKeyValuePairs.length +
-        this.requestOverviewSections.reduce(
-          (count, section) => count + section.rows.length,
-          0
-        ) +
-        this.recordTables.reduce(
-          (count, record) =>
-            count +
-            record.sections.reduce(
-              (sectionCount, section) => sectionCount + section.rows.length,
-              0
-            ),
-          0
-        ) +
-        this.sequencingSections.reduce(
-          (count, section) => count + section.rows.length,
-          0
-        ) +
-        this.zipContentRows.length +
-        this.attachedFileGroups.reduce(
-          (count, group) => count + group.files.length,
-          0
-        );
-      return `${rowCount} ${rowCount === 1 ? "match" : "matches"} for "${query}"`;
-    },
-    rootEntity() {
-      if (!this.model) return null;
-      return this.model.entityMap?.[this.model.stats.rootDatasetId] || null;
-    },
-    summaryKeyValuePairs() {
-      if (!this.model) return [];
-
-      const root = this.rootEntity || {};
-      const directRows = Object.entries(root)
-        .filter(([key]) => !this.isHiddenSimpleTableKey(key))
-        .map(([key, value]) => ({
-          key: this.formatPropertyLabel(key),
-          value: this.formatSummaryValue(value)
-        }))
-        .filter((row) => !this.shouldHideDisplayLabel(row.key))
-        .filter((row) => !this.isEmptyDisplayValue(row.value))
-        .filter((row) => this.rowMatchesSearch(row));
-
-      const seen = new Set();
-      const mergedRows = [...directRows, ...this.extractCommentRows(root)
-        .map((row) => ({
-          key: row.key,
-          value: this.formatSummaryValue(row.value)
-        }))
-        .filter((row) => {
-          if (!this.rowMatchesSearch(row)) return false;
-          return !this.shouldHideDisplayLabel(row.key);
-        })];
-
-      return mergedRows.filter((row) => {
-        const dedupeKey = `${row.key}:${JSON.stringify(row.value)}`;
-        if (seen.has(dedupeKey)) return false;
-        seen.add(dedupeKey);
-        return true;
-      });
-    },
-    attachedFileGroups() {
-      if (!this.model) return [];
-      const groupedFiles = {};
-      this.model.graph
-        .filter((entity) => this.isAttachmentEntity(entity))
-        .forEach((entity) => {
-          const entityId = entity[entityFields.id];
-          const requestId = this.attachmentRequestContextId(entity);
-          const requestEntity = this.entityById(requestId);
-          const fallbackRequest = requestId || "request-attachments";
-          const groupKey = requestId || fallbackRequest;
-          const fileName =
-            entity[entityFields.name] ||
-            entity[entityFields.identifier] ||
-            entityId;
-          const file = {
-            id: entityId,
-            name: fileName
-          };
-          if (!this.rowMatchesSearch({ key: requestEntity?.[entityFields.name] || "Attached Files", value: fileName })) {
-            return;
-          }
-          if (!groupedFiles[groupKey]) {
-            groupedFiles[groupKey] = {
-              requestId: groupKey,
-              requestName:
-                requestEntity?.[entityFields.name] ||
-                requestEntity?.[entityFields.identifier] ||
-                "Request attachments",
-              files: []
-            };
-          }
-          groupedFiles[groupKey].files.push(file);
-        });
-
-      return Object.values(groupedFiles).sort((left, right) =>
-        left.requestName.localeCompare(right.requestName)
-      );
-    },
-    requestOverviewSections() {
-      if (!this.model) return [];
-      return this.buildRequestOverviewSections().filter(
-        (section) => !this.isSequencingSection(section)
-      );
-    },
-    sequencingSections() {
-      if (!this.model) return [];
-      return this.buildRequestOverviewSections().filter((section) =>
-        this.isSequencingSection(section)
-      );
-    },
-    recordTables() {
-      if (!this.model) return [];
-      return this.model.graph
-        .filter((entity) => this.isRecordEntity(entity))
-        .sort((left, right) =>
-          this.entityLabelById(left[entityFields.id]).localeCompare(
-            this.entityLabelById(right[entityFields.id])
-          )
-        )
-        .map((entity, index) => {
-          const kind = this.recordKindLabel(entity);
-          const entityId = entity[entityFields.id];
-          return {
-            id: entityId,
-            kind,
-            title: `${kind} ${index + 1}: ${entity[entityFields.name] || entity[entityFields.identifier] || entityId
-              }`,
-            sections: this.buildRecordSections(entity)
-              .map((section) => ({
-                ...section,
-                rows: section.rows.filter((row) => this.rowMatchesSearch(row))
-              }))
-              .filter((section) => section.rows.length > 0)
-          };
-        })
-        .filter((record) => record.sections.length > 0);
+      return rows.filter((row) => this.matchesSearch([row.path, row.type]));
     }
   },
   watch: {
@@ -559,84 +478,45 @@ export default {
       }
     }
   },
-  beforeUnmount() {
-    window.clearTimeout(this.tableSearchDebounceTimer);
-  },
   methods: {
-    handleSearchInput(event) {
-      const nextTerm = String(event?.target?.value || "").trim();
-      window.clearTimeout(this.tableSearchDebounceTimer);
-
-      if (!nextTerm) {
-        this.tableSearchInput = "";
-        this.tableSearchTerm = "";
-        this.tableSearchPending = false;
-        return;
-      }
-
-      this.tableSearchDebounceTimer = window.setTimeout(() => {
-        this.tableSearchInput = nextTerm;
-        this.tableSearchTerm = nextTerm;
-        this.tableSearchPending = false;
-      }, 220);
+    displayComponent() {
+      return "ROCrateDisplayValue";
     },
-    roCrateRequestParams(extra = {}) {
+    previewIdentifierValues(config = {}) {
+      const barcodes = Array.isArray(config?.barcodes)
+        ? config.barcodes.filter(Boolean)
+        : [];
+      if (barcodes.length) {
+        return {
+          barcodes,
+          requests: []
+        };
+      }
+      const requestNames = Array.isArray(config?.requestNames)
+        ? config.requestNames.filter(Boolean)
+        : [];
+      const requestName = config?.requestName ? [config.requestName] : [];
       return {
-        barcodes: (this.activePreviewConfig?.barcodes || []).join(","),
-        sections: (this.activePreviewConfig?.sections || []).join(","),
-        ...extra
+        barcodes,
+        requests: requestNames.length ? requestNames : requestName
       };
     },
-    sanitizeFilenamePart(value) {
-      return String(value || "")
-        .replace(/[^a-z0-9-_.]+/gi, "_")
-        .replace(/_+/g, "_")
-        .replace(/^_|_$/g, "");
-    },
-    parseContentDispositionFilename(header) {
-      const headerValue = String(header || "");
-      const encodedMatch = headerValue.match(/filename\*=UTF-8''([^;]+)/i);
-      if (encodedMatch?.[1]) {
-        return decodeURIComponent(encodedMatch[1].replace(/^"|"$/g, ""));
-      }
-      const match = headerValue.match(/filename="?([^";]+)"?/i);
-      return match?.[1] || "";
-    },
-    responseHeader(headers, key) {
-      return (
-        headers?.get?.(key) ||
-        headers?.[key] ||
-        headers?.[key.toLowerCase()] ||
-        headers?.[key.toUpperCase()] ||
-        ""
-      );
-    },
-    fallbackArchiveFilename() {
-      const previewName = this.model?.source?.name || "";
-      if (previewName.toLowerCase().endsWith(".zip")) {
-        return this.sanitizeFilenamePart(previewName);
-      }
-
-      const requestNames = Array.isArray(this.activePreviewConfig?.requestNames)
-        ? this.activePreviewConfig.requestNames
+    roCrateRequestParams(extra = {}) {
+      const identifiers = this.previewIdentifierValues(this.activePreviewConfig);
+      const sections = Array.isArray(this.activePreviewConfig?.sections)
+        ? this.activePreviewConfig.sections.filter(Boolean)
         : [];
-      const requestName = this.activePreviewConfig?.requestName || "";
-      const requestStub = requestNames.length
-        ? requestNames.join("_")
-        : requestName;
-      const safeRequestName = this.sanitizeFilenamePart(requestStub);
-      if (safeRequestName) {
-        return `${safeRequestName}_ro_crate.zip`;
-      }
-
-      const safeBarcodeName = this.sanitizeFilenamePart(
-        (this.activePreviewConfig?.barcodes || []).join("_")
-      );
-      return `${safeBarcodeName || "ro_crate"}_ro_crate.zip`;
+      const params = { ...extra };
+      if (identifiers.barcodes.length) params.barcodes = identifiers.barcodes.join(",");
+      if (identifiers.requests.length) params.requests = identifiers.requests.join(",");
+      if (sections.length) params.sections = sections.join(",");
+      return params;
     },
     async loadPreviewFromConfig(previewConfig) {
-      if (!Array.isArray(previewConfig?.barcodes) || !previewConfig.barcodes.length) {
-        this.errorMessage = "Select at least one library or sample before previewing an RO-Crate.";
+      const identifiers = this.previewIdentifierValues(previewConfig);
+      if (!identifiers.barcodes.length && !identifiers.requests.length) {
+        this.errorMessage =
+          "Select at least one library or sample before previewing an RO-Crate.";
         return;
       }
 
@@ -646,6 +526,7 @@ export default {
       };
       this.loading = true;
       this.errorMessage = "";
+      this.model = null;
 
       try {
         const response = await axiosRef.get(`${urlStringStart}${RO_CRATE_ENDPOINT}`, {
@@ -665,7 +546,6 @@ export default {
           name: payload.archive_name
         });
       } catch (error) {
-        this.model = null;
         this.errorMessage =
           error?.response?.data?.error ||
           error?.message ||
@@ -673,31 +553,6 @@ export default {
       } finally {
         this.loading = false;
       }
-    },
-    isHiddenSimpleTableKey(key) {
-      const normalizedKey = String(key || "");
-      return (
-        (/^request_/.test(normalizedKey) &&
-          !visibleRequestFieldSet.has(normalizedKey)) ||
-        (/id$/i.test(normalizedKey) &&
-          !visibleIdFieldSet.has(normalizedKey)) ||
-        roCrateInbuiltHiddenFieldSet.has(normalizedKey) ||
-        this.shouldHideSensitiveField(normalizedKey) ||
-        userDefinedVariableHiddenFieldSet.has(normalizedKey)
-      );
-    },
-    exportToPdf() {
-      if (!this.model) {
-        showNotification("Load an RO-Crate before exporting to PDF.", "warning");
-        return;
-      }
-      document.body.classList.add("rocrate-printing");
-      const cleanupPrintClass = () => {
-        document.body.classList.remove("rocrate-printing");
-        window.removeEventListener("afterprint", cleanupPrintClass);
-      };
-      window.addEventListener("afterprint", cleanupPrintClass);
-      window.print();
     },
     async exportROCrate() {
       if (!this.canExportPreview) {
@@ -714,13 +569,10 @@ export default {
           params: this.roCrateRequestParams(),
           responseType: "blob"
         });
-        const contentDisposition = this.responseHeader(
-          response?.headers,
-          "content-disposition"
-        );
-        const headerFilename =
-          this.parseContentDispositionFilename(contentDisposition);
-        const filename = headerFilename || this.fallbackArchiveFilename();
+        const filename =
+          this.parseContentDispositionFilename(
+            this.responseHeader(response?.headers, "content-disposition")
+          ) || this.fallbackArchiveFilename();
         saveAs(response?.data, filename);
         showNotification("RO-Crate exported successfully.", "success");
       } catch (error) {
@@ -729,677 +581,1172 @@ export default {
         this.exportBusy = false;
       }
     },
-    entityLabelById(entityId) {
-      const entity = this.entityById(entityId);
+    async exportToPdf() {
+      if (!this.model) {
+        showNotification("Load an RO-Crate before exporting to PDF.", "warning");
+        return;
+      }
+      const printWindow = window.open("", "_blank");
+      if (!printWindow) {
+        showNotification("Allow pop-ups to export this preview to PDF.", "warning");
+        return;
+      }
+
+      const originalSearch = this.tableSearchInput;
+      if (originalSearch) {
+        this.tableSearchInput = "";
+        await nextTick();
+      }
+
+      const report = this.$el.querySelector(".preview-workspace");
+      if (!report) {
+        printWindow.close();
+        showNotification("The RO-Crate preview is not ready to export.", "warning");
+        if (originalSearch) this.tableSearchInput = originalSearch;
+        return;
+      }
+      const reportHtml = report.innerHTML;
+      const reportText = report.textContent?.trim() || "";
+      if (originalSearch) {
+        this.tableSearchInput = originalSearch;
+        await nextTick();
+      }
+      if (!reportText) {
+        printWindow.close();
+        showNotification("The RO-Crate preview has no printable content.", "warning");
+        return;
+      }
+
+      const html = this.printDocumentHtml(reportHtml);
+      printWindow.document.open();
+      printWindow.document.write(html);
+      printWindow.document.close();
+    },
+    printDocumentHtml(reportHtml) {
+      const documentTitle = this.printDocumentTitle();
+      return `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>${this.escapeHtml(documentTitle)}</title>
+    <style>${this.printDocumentCss()}</style>
+  </head>
+  <body>
+    <main class="rocrate-print-document">${reportHtml}</main>
+    <script>
+      (function () {
+        var printStarted = false;
+        window.addEventListener("afterprint", function () {
+          setTimeout(function () {
+            window.close();
+          }, 750);
+        }, { once: true });
+        function afterFrames(callback) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(callback);
+          });
+        }
+        function printWhenReady() {
+          if (printStarted) return;
+          printStarted = true;
+          var fontsReady = document.fonts && document.fonts.ready
+            ? document.fonts.ready.catch(function () {})
+            : Promise.resolve();
+          fontsReady.then(function () {
+            afterFrames(function () {
+              window.focus();
+              window.print();
+            });
+          });
+        }
+        if (document.readyState === "complete") {
+          printWhenReady();
+        } else {
+          window.addEventListener("load", printWhenReady, { once: true });
+        }
+      })();
+    <\/script>
+  </body>
+</html>`;
+    },
+    printDocumentTitle() {
+      const archiveName = String(this.model?.source?.name || "")
+        .replace(/\.zip$/i, "")
+        .trim();
+      const requestIds = this.previewRequestIds();
+      const fallbackName = requestIds.length
+        ? `${requestIds.join("_")}_ro_crate`
+        : "parkour_ro_crate_preview";
+      const baseName = this.sanitizeFilenamePart(archiveName || fallbackName)
+        .replace(/\.pdf$/i, "")
+        .slice(0, 120);
+      const timestamp = new Date()
+        .toISOString()
+        .replace(/\.\d+Z$/, "")
+        .replace(/[T:]/g, "-");
+      return `${baseName}_${timestamp}`;
+    },
+    printFooterText() {
+      const requestNames = this.requestGroups.map((request) => request.name).filter(Boolean);
+      const recordNames = this.requestGroups
+        .flatMap((request) => request.records.map((record) => record.name))
+        .filter(Boolean);
+      const requestText =
+        requestNames.length === 1
+          ? `Request: ${requestNames[0]}`
+          : `Requests: ${requestNames.join(", ") || "Selected requests"}`;
+      const recordText =
+        recordNames.length === 1
+          ? `Library/Sample: ${recordNames[0]}`
+          : `Libraries/Samples: ${recordNames.length || this.totalRecordCount} selected`;
+      return `${requestText} | ${recordText}`;
+    },
+    printDocumentCss() {
+      const footerText = this.escapeCssString(this.printFooterText());
+      return `
+@page {
+  size: A4;
+  margin: 12mm 9mm 14mm;
+  @bottom-left {
+    content: "${footerText}";
+    color: #5e7884;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 6.5pt;
+  }
+  @bottom-right {
+    content: "Page " counter(page);
+    color: #5e7884;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 6.5pt;
+  }
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #10242f;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9pt;
+  line-height: 1.35;
+}
+.rocrate-print-document { width: 100%; }
+.upload-stage,
+.preview-search-panel,
+.pdf-export-button,
+.rocrate-export-button { display: none !important; }
+.print-report-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 8mm;
+  margin-bottom: 3mm;
+  padding-bottom: 2mm;
+  border-bottom: 1px solid #d8e0e4;
+}
+.print-report-title { font-size: 9pt; font-weight: 800; }
+.print-report-subtitle,
+.print-report-meta {
+  color: #5e7884;
+  font-size: 7pt;
+  line-height: 1.3;
+}
+.print-report-footer {
+  display: block;
+  margin-top: 4mm;
+  padding-top: 2mm;
+  border-top: 1px solid #d8e0e4;
+  color: #6b818c;
+  font-size: 6.5pt;
+}
+.detail-card {
+  padding: 2.5mm 0;
+  margin-bottom: 3mm;
+  border-top: 1px solid #d8e0e4;
+  background: #fff;
+}
+.detail-kicker,
+.record-group-title {
+  color: #1d5f78;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.request-overview-item,
+.attachment-item,
+.zip-content-row,
+.quick-summary-row {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.request-overview-item,
+.record-table-block,
+.attachment-item,
+.zip-content-row {
+  padding: 2mm 0;
+}
+.request-overview-title,
+.record-table-title { font-weight: 800; color: #173948; }
+.record-chip-list,
+.attachment-list,
+.zip-content-list,
+.record-table-list {
+  display: block;
+}
+.record-chip {
+  display: inline-block;
+  margin: 0 3mm 1.5mm 0;
+  color: #0d6f73;
+  font-weight: 700;
+}
+.quick-summary-table { display: block; }
+.quick-summary-row {
+  display: grid;
+  grid-template-columns: 38mm minmax(0, 1fr);
+  gap: 2mm;
+  margin-bottom: 1.4mm;
+  padding: 1.8mm;
+  border: 1px solid #edf1f3;
+  border-radius: 1.5mm;
+  background: #fff;
+}
+.quick-summary-key {
+  color: #173948;
+  font-size: 7.2pt;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.quick-summary-value {
+  color: #173948;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.structured-value-list {
+  margin: 0;
+  padding-left: 18px;
+}
+.structured-value-scroll { overflow: visible; }
+.structured-value-table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: collapse;
+  font-size: 7.2pt;
+  line-height: 1.25;
+}
+.structured-value-table th,
+.structured-value-table td {
+  border: 1px solid rgba(16, 36, 47, 0.14);
+  padding: 1mm;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.structured-value-table th {
+  width: 28mm;
+  background: #edf4f6;
+  color: #244858;
+  font-weight: 800;
+}
+.structured-value-table.indexed-table th { width: auto; }
+.structured-value-table .row-number-column {
+  width: 8mm;
+  text-align: right;
+  white-space: nowrap;
+  color: #5e7884;
+}
+svg { display: none; }
+`;
+    },
+    escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    },
+    escapeCssString(value) {
+      return String(value || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"')
+        .replace(/\r?\n/g, " ");
+    },
+    fallbackArchiveFilename() {
+      const previewName = this.model?.source?.name || "";
+      if (previewName.toLowerCase().endsWith(".zip")) {
+        return this.sanitizeFilenamePart(previewName);
+      }
+      const requestIds = this.previewRequestIds();
+      if (requestIds.length) {
+        return `${requestIds.join("_")}_ro_crate.zip`;
+      }
+      return "parkour_ro_crate.zip";
+    },
+    previewRequestIds() {
+      const configuredIds = Array.isArray(this.activePreviewConfig?.requestIds)
+        ? this.activePreviewConfig.requestIds
+        : [];
+      const graphIds = this.requestGroups
+        .map((request) => request.requestNumber)
+        .filter(Boolean);
+      return [...new Set([...configuredIds, ...graphIds].map(String).filter(Boolean))];
+    },
+    sanitizeFilenamePart(value) {
+      return String(value || "")
+        .replace(/[^a-z0-9-_.]+/gi, "_")
+        .replace(/_+/g, "_")
+        .replace(/^_|_$/g, "");
+    },
+    parseContentDispositionFilename(header) {
+      const headerValue = String(header || "");
+      const encodedMatch = headerValue.match(/filename\*=UTF-8''([^;]+)/i);
+      if (encodedMatch?.[1]) {
+        return decodeURIComponent(encodedMatch[1].replace(/^"|"$/g, ""));
+      }
+      return headerValue.match(/filename="?([^";]+)"?/i)?.[1] || "";
+    },
+    responseHeader(headers, key) {
       return (
-        entity?.[entityFields.name] ||
-        entity?.[entityFields.title] ||
-        entity?.[entityFields.identifier] ||
-        entityId
+        headers?.get?.(key) ||
+        headers?.[key] ||
+        headers?.[key.toLowerCase()] ||
+        headers?.[key.toUpperCase()] ||
+        ""
+      );
+    },
+    buildRequestGroup(study, index) {
+      const studyId = study?.[fieldKeys.id] || `request-${index + 1}`;
+      const requestNumber = this.idSuffix(studyId);
+      const requestEntity = this.entityById(
+        `${RO_CRATE_ENTITY_PREFIXES.requestContext}${requestNumber}`
+      );
+      const recordIds = this.studyRecordIds(study);
+      const records = recordIds
+        .map((recordId) => this.buildRecord(recordId))
+        .filter(Boolean)
+        .sort((left, right) => left.name.localeCompare(right.name));
+
+      return {
+        id: studyId,
+        requestNumber,
+        name:
+          requestEntity?.[fieldKeys.name] ||
+          study?.[fieldKeys.name] ||
+          `${RO_CRATE_PREVIEW_LABELS.unnamedRequest} ${index + 1}`,
+        requestRows: this.rowsForEntity(requestEntity, "Request Details"),
+        records,
+        attachments: this.attachmentsForRequest(requestEntity?.[fieldKeys.id])
+      };
+    },
+    buildFallbackRequestGroup() {
+      const records = this.model.graph
+        .filter((entity) => this.isRecordEntity(entity))
+        .map((entity) => this.buildRecord(entity[fieldKeys.id]))
+        .filter(Boolean)
+        .sort((left, right) => left.name.localeCompare(right.name));
+      return {
+        id: "fallback-request",
+        requestNumber: "",
+        name:
+          this.rootEntity?.[fieldKeys.name] ||
+          this.activePreviewConfig?.requestName ||
+          RO_CRATE_PREVIEW_LABELS.unnamedRequest,
+        requestRows: this.rowsForEntity(this.rootEntity, "Request Details"),
+        records,
+        attachments: this.attachmentsForRequest("")
+      };
+    },
+    studyRecordIds(study) {
+      const materials = study?.[fieldKeys.materials] || {};
+      const fromMaterials = [
+        ...this.referenceIds(materials[fieldKeys.samples]),
+        ...this.referenceIds(materials[fieldKeys.otherMaterials])
+      ].filter((id) => this.isRecordId(id));
+      if (fromMaterials.length) return [...new Set(fromMaterials)];
+      return this.referenceIds(study?.hasPart).filter((id) => this.isRecordId(id));
+    },
+    buildRecord(recordId) {
+      const entity = this.entityById(recordId);
+      if (!entity) return null;
+      const type = this.recordType(entity);
+      const rowsBySection = new Map();
+      const addRows = (title, rows) => {
+        const visibleRows = rows.filter((row) => !this.isHiddenRow(row));
+        if (!visibleRows.length) return;
+        rowsBySection.set(title, [...(rowsBySection.get(title) || []), ...visibleRows]);
+      };
+
+      const recordName =
+        entity[fieldKeys.name] ||
+        entity[fieldKeys.identifier] ||
+        RO_CRATE_PREVIEW_LABELS.unnamedRecord;
+      const primaryModelSectionTitle = `${type}: ${recordName}`;
+      addRows("Overview", [
+        { key: "Name", value: entity[fieldKeys.name] || RO_CRATE_PREVIEW_LABELS.unnamedRecord },
+        { key: "Barcode", value: entity[fieldKeys.identifier] || "" }
+      ]);
+      this.propertyRows(entity, { skipSummaryModels: true }).forEach((row) =>
+        addRows(row.group === primaryModelSectionTitle ? "Overview" : row.group, [row])
+      );
+      this.relatedModelSections(entity).forEach((section) => {
+        addRows(section.title, section.rows);
+      });
+      const sequencingSections = this.sequencingSections(entity);
+      sequencingSections.forEach((section) => {
+        addRows(section.title, section.rows);
+      });
+      const processEntities = this.recordProcessEntities(recordId);
+      const processSections = this.processDetailSections(recordId, processEntities);
+      processSections.forEach((section) => {
+        addRows(section.title, section.rows);
+      });
+      addRows(
+        "Processes & Data",
+        this.backlinkRows(recordId, {
+          omitSourceIds: processEntities.map((processEntity) => processEntity[fieldKeys.id])
+        })
+      );
+
+      return {
+        id: recordId,
+        type,
+        name: recordName,
+        barcode: entity[fieldKeys.identifier] || "",
+        sections: [...rowsBySection.entries()]
+          .map(([title, rows]) => ({
+            title,
+            rows: this.uniqueRows(rows).filter((row) =>
+              this.matchesSearch([title, row.key, row.value])
+            )
+          }))
+          .filter((section) => section.rows.length)
+      };
+    },
+    rowsForEntity(entity, defaultGroup) {
+      if (!entity) return [];
+      return [
+        ...Object.entries(entity)
+          .filter(([key]) => !hiddenFields.has(key))
+          .filter(([key]) => !this.shouldHideField(key))
+          .map(([key, value]) => ({
+            key: this.labelForField(key),
+            value: this.displayValue(value),
+            group: defaultGroup,
+            wide: this.isWideValue(key, value)
+          })),
+        ...this.propertyRows(entity)
+      ]
+        .filter((row) => !this.isHiddenRow(row))
+        .filter((row) => this.matchesSearch([row.key, row.value]));
+    },
+    propertyRows(entity, options = {}) {
+      const refs = [
+        ...this.referenceValues(entity?.[fieldKeys.additionalProperty]),
+        ...this.referenceValues(entity?.[fieldKeys.parameterValue])
+      ];
+      return refs
+        .map((ref) => this.resolveReference(ref))
+        .filter(Boolean)
+        .map((property) => {
+          const name = property[fieldKeys.name];
+          if (options.skipSummaryModels && this.isSummaryModelProperty(name)) {
+            return null;
+          }
+          if (this.duplicatesDirectEntityField(entity, name, property[fieldKeys.value])) {
+            return null;
+          }
+          return {
+            key: this.labelForField(name),
+            value: this.displayValue(property[fieldKeys.value]),
+            group: this.groupForProperty(name, entity),
+            wide: this.isWideValue(name, property[fieldKeys.value])
+          };
+        })
+        .filter(Boolean)
+        .filter((row) => !this.isHiddenRow(row));
+    },
+    duplicatesDirectEntityField(entity, propertyName, propertyValue) {
+      const directKey = this.directFieldKeyForProperty(propertyName);
+      if (!directKey || !Object.prototype.hasOwnProperty.call(entity || {}, directKey)) {
+        return false;
+      }
+      return (
+        JSON.stringify(this.displayValue(entity[directKey])) ===
+        JSON.stringify(this.displayValue(propertyValue))
+      );
+    },
+    directFieldKeyForProperty(propertyName) {
+      const normalized = String(propertyName || "").replace(
+        RO_CRATE_PROPERTY_PREFIX_PATTERN,
+        ""
+      );
+      const directFieldMap = {
+        name: fieldKeys.name,
+        description: "description",
+        identifier: fieldKeys.identifier,
+        barcode: fieldKeys.identifier
+      };
+      return directFieldMap[normalized] || "";
+    },
+    relatedModelSections(entity) {
+      return this.relatedModelEntities(entity)
+        .map((relatedEntity) => {
+          const rows = this.rowsForRelatedModelEntity(
+            relatedEntity,
+            this.relatedModelDisplayOptions(relatedEntity)
+          );
+          return {
+            title: this.modelSectionTitleForEntity(relatedEntity),
+            rows
+          };
+        })
+        .filter((section) => section.rows.length)
+        .filter((section) => this.matchesSearch([section.title, section.rows]));
+    },
+    relatedModelDisplayOptions(entity) {
+      const id = String(entity?.[fieldKeys.id] || "");
+      if (id.startsWith("#library-type-")) {
+        return { omitRelationKeys: ["availableProtocols"] };
+      }
+      if (id.startsWith("#index-pair-")) {
+        return {
+          omitDisplayKeys: ["indexType"],
+          omitRelationKeys: ["indexI7", "indexI5"]
+        };
+      }
+      return {};
+    },
+    sequencingSections(entity) {
+      return this.referenceIds(entity?.sequencedOn)
+        .map((flowcellId) => this.entityById(flowcellId))
+        .filter(Boolean)
+        .map((flowcell) => {
+          const title = this.flowcellSectionTitle(flowcell);
+          return {
+            title,
+            rows: this.rowsForFlowcell(flowcell)
+          };
+        })
+        .filter((section) => section.rows.length)
+        .filter((section) => this.matchesSearch([section.title, section.rows]));
+    },
+    rowsForFlowcell(flowcell) {
+      const rows = [
+        ...this.rowsForRelatedModelEntity(flowcell, {
+          omitRelationKeys: ["instrument", "hasInstrument", "hasLane"]
+        })
+      ];
+      this.referenceIds(flowcell?.hasInstrument).forEach((sequencerId) => {
+        this.addNestedEntityRows(rows, "Sequencer", this.entityById(sequencerId));
+      });
+      const lanes = this.referenceIds(flowcell?.hasLane)
+        .map((laneId) => this.entityById(laneId))
+        .filter(Boolean);
+      if (lanes.length > 1) {
+        rows.push({
+          key: "Lanes",
+          value: lanes.map((lane) => this.laneTableRow(lane)),
+          wide: true
+        });
+      } else {
+        lanes.forEach((lane) => {
+          this.addNestedEntityRows(rows, "Lane", lane);
+        });
+      }
+      this.referenceIds(flowcell?.hasPart)
+        .map((entityId) => this.entityById(entityId))
+        .filter((relatedEntity) => !this.isLaneEntity(relatedEntity))
+        .filter((relatedEntity) => !this.isGenericFlowcellDataEntity(relatedEntity))
+        .forEach((dataEntity) => {
+          this.addNestedEntityRows(rows, "Flowcell Data", dataEntity, {
+            omitDirectKeys: ["additionalType", "encodingFormat"],
+            omitRelationKeys: ["about", "isPartOf"],
+            omitEntitySummary: true
+          });
+        });
+      this.referenceIds(flowcell?.about).forEach((processId) => {
+        this.addNestedEntityRows(rows, "Flowcell Process", this.entityById(processId), {
+          omitDirectKeys: ["additionalType"],
+          omitRelationKeys: ["instrument", "hasInstrument", "object", "result"],
+          omitPropertyRows: true,
+          omitEntitySummary: true
+        });
+      });
+      return this.uniqueRows(rows)
+        .filter((row) => !this.isHiddenRow(row))
+        .filter((row) => !this.isLowValuePreviewRow(row))
+        .filter((row) => this.matchesSearch([row.key, row.value]));
+    },
+    addNestedEntityRows(rows, label, entity, options = {}) {
+      if (!entity) return;
+      if (this.shouldSkipNestedEntity(label, entity)) return;
+      if (!options.omitEntitySummary) {
+        rows.push({
+          key: label,
+          value: this.entityLabel(entity),
+          wide: false
+        });
+      }
+      this.rowsForRelatedModelEntity(entity, options)
+        .filter((row) => !this.isLowValuePreviewRow(row, label))
+        .forEach((row) => {
+          rows.push({
+            ...row,
+            key: `${label} ${row.key}`
+          });
+        });
+    },
+    laneTableRow(lane) {
+      return this.rowsForRelatedModelEntity(lane, {
+        omitDirectKeys: ["additionalType"],
+        omitPropertyRows: false
+      }).reduce(
+        (row, item) => ({
+          ...row,
+          [item.key]: item.value
+        }),
+        { Lane: this.entityLabel(lane) }
+      );
+    },
+    flowcellSectionTitle(flowcell) {
+      return `Flowcell: ${this.shortEntityLabel(flowcell, "Flowcell")}`;
+    },
+    processSectionTitle(processEntity) {
+      const label = this.entityLabel(processEntity);
+      const match = label.match(/^(sample|library|sequencing)\s+metadata\s+capture\s+for\s+(.+)$/i);
+      if (match) {
+        return `Process: ${match[2]}`;
+      }
+      return `Process: ${label}`;
+    },
+    shortEntityLabel(entity, prefix) {
+      const label = this.entityLabel(entity);
+      return label.replace(new RegExp(`^${prefix}\\s+`, "i"), "");
+    },
+    processDetailSections(recordId, processEntities = this.recordProcessEntities(recordId)) {
+      return processEntities
+        .map((processEntity) => {
+          const title = this.processSectionTitle(processEntity);
+          return {
+            title,
+            rows: this.rowsForProcessEntity(processEntity)
+          };
+        })
+        .filter((section) => section.rows.length)
+        .filter((section) => this.matchesSearch([section.title, section.rows]));
+    },
+    recordProcessEntities(recordId) {
+      const processIds = (this.model?.backlinkMap?.[recordId] || [])
+        .filter((link) => ["object", "result"].includes(link.property))
+        .map((link) => link.sourceId)
+        .filter((entityId) => this.isProcessEntity(this.entityById(entityId)));
+      return [...new Set(processIds)]
+        .map((entityId) => this.entityById(entityId))
+        .filter(Boolean);
+    },
+    rowsForProcessEntity(processEntity) {
+      const rows = [
+        ...this.rowsForRelatedModelEntity(processEntity, {
+          omitRelationKeys: ["executesLabProtocol", "object", "result"]
+        })
+      ];
+      this.referenceIds(processEntity?.executesLabProtocol).forEach((protocolId) => {
+        this.addNestedEntityRows(rows, "Protocol", this.entityById(protocolId));
+      });
+      this.referenceIds(processEntity?.result).forEach((dataId) => {
+        this.addNestedEntityRows(rows, "Data Object", this.entityById(dataId), {
+          omitDirectKeys: ["additionalType", "encodingFormat"],
+          omitRelationKeys: [
+            "associatedPool",
+            "derivedFrom",
+            "libraryProtocol",
+            "libraryType",
+            "nucleicAcidType",
+            "organism",
+            "readLength",
+            "requestContext",
+            "selectedIndexPair",
+            "sequencedOn"
+          ],
+          omitDisplayKeys: [
+            "associatedPool",
+            "derivedFrom",
+            "libraryProtocol",
+            "libraryType",
+            "nucleicAcidType",
+            "organism",
+            "readLength",
+            "requestContext",
+            "selectedIndexPair",
+            "sequencedOn"
+          ],
+          omitPropertyRows: true,
+          omitEntitySummary: true
+        });
+      });
+      this.assaysForProcess(processEntity).forEach((assayEntity) => {
+        this.addNestedEntityRows(rows, "Assay", assayEntity, {
+          omitDirectKeys: [
+            "additionalType",
+            "measurementMethod",
+            "variableMeasured"
+          ],
+          omitRelationKeys: ["hasPart", "about"],
+          omitPropertyRows: true,
+          omitEntitySummary: true
+        });
+      });
+      return this.uniqueRows(rows)
+        .filter((row) => !this.isHiddenRow(row))
+        .filter((row) => !this.isLowValuePreviewRow(row))
+        .filter((row) => this.matchesSearch([row.key, row.value]));
+    },
+    assaysForProcess(processEntity) {
+      const processId = processEntity?.[fieldKeys.id];
+      if (!processId) return [];
+      const assayIds = (this.model?.backlinkMap?.[processId] || [])
+        .filter((link) => link.property === "about")
+        .map((link) => link.sourceId)
+        .filter((entityId) => this.isAssayEntity(this.entityById(entityId)));
+      return [...new Set(assayIds)]
+        .map((entityId) => this.entityById(entityId))
+        .filter(Boolean);
+    },
+    relatedModelEntities(entity) {
+      const relationValues = RO_CRATE_LINKED_MODEL_RELATION_FIELDS
+        .flatMap((key) => this.referenceIds(entity?.[key]))
+        .map((entityId) => this.entityById(entityId))
+        .filter(Boolean)
+        .filter((relatedEntity) => !this.isLowValueBacklink(relatedEntity));
+      const seen = new Set();
+      return relationValues.filter((relatedEntity) => {
+        const entityId = relatedEntity[fieldKeys.id];
+        if (!entityId || seen.has(entityId)) return false;
+        seen.add(entityId);
+        return true;
+      });
+    },
+    rowsForRelatedModelEntity(entity, options = {}) {
+      const omittedDirectKeys = new Set([
+        ...(options.omitDirectKeys || []),
+        ...(options.omitDisplayKeys || [])
+      ]);
+      const directRows = Object.entries(entity)
+        .filter(([key]) => key !== fieldKeys.name)
+        .filter(([key]) => !RO_CRATE_RELATION_FIELDS[key])
+        .filter(([key]) => !omittedDirectKeys.has(key))
+        .filter(([key]) => !relatedModelHiddenFields.has(key))
+        .filter(([key]) => !hiddenFields.has(key))
+        .filter(([key]) => !this.shouldHideField(key))
+        .map(([key, value]) => ({
+          key: this.labelForField(key),
+          value: this.displayValue(value),
+          wide: this.isWideValue(key, value)
+        }));
+      return [
+        ...directRows,
+        ...(options.omitPropertyRows
+          ? []
+          : this.propertyRows(entity, { skipSummaryModels: true })),
+        ...this.relationRows(entity, options)
+      ]
+        .filter((row) => !this.isHiddenRow(row))
+        .filter((row) => !this.isLowValuePreviewRow(row))
+        .filter((row) => this.matchesSearch([row.key, row.value]));
+    },
+    shouldSkipNestedEntity(label, entity) {
+      const normalizedLabel = this.normalizedDisplayKey(label);
+      return normalizedLabel === "assay" && this.isAssayEntity(entity);
+    },
+    isLowValuePreviewRow(row, parentLabel = "") {
+      const rowKey = this.normalizedDisplayKey(row?.key);
+      const parentKey = this.normalizedDisplayKey(parentLabel);
+      if (this.isRawPropertyNameListRow(row)) return true;
+      if (rowKey.startsWith("assay")) return true;
+      if (
+        parentKey === "dataobject" &&
+        this.isRepeatedDataObjectKey(rowKey)
+      ) {
+        return true;
+      }
+      return false;
+    },
+    isRawPropertyNameListRow(row) {
+      const rowKey = this.normalizedDisplayKey(row?.key);
+      if (!rowKey.endsWith("parametervalue")) return false;
+      const values = Array.isArray(row?.value) ? row.value : [row?.value];
+      const tokens = values
+        .flatMap((value) => {
+          if (typeof value === "string") return value.split(/\s*,\s*/);
+          return [];
+        })
+        .map((value) => String(value || "").replace(/^\d+\.\s*/, "").trim())
+        .filter(Boolean);
+      return (
+        tokens.length > 0 &&
+        tokens.every((value) => RO_CRATE_PROPERTY_PREFIX_PATTERN.test(value))
+      );
+    },
+    isRepeatedDataObjectKey(rowKey) {
+      return [
+        "dataobjectassociatedpool",
+        "dataobjectderivedfrom",
+        "dataobjectlibraryprotocol",
+        "dataobjectlibrarytype",
+        "dataobjectnucleicacidtype",
+        "dataobjectorganism",
+        "dataobjectreadlength",
+        "dataobjectrequestcontext",
+        "dataobjectselectedindexpair",
+        "dataobjectsequencedon"
+      ].includes(rowKey);
+    },
+    normalizedDisplayKey(value) {
+      return String(value || "")
+        .replace(/[^a-z0-9]+/gi, "")
+        .toLowerCase();
+    },
+    relationRows(entity, options = {}) {
+      const omittedKeys = new Set(options.omitRelationKeys || []);
+      return Object.entries(RO_CRATE_RELATION_FIELDS)
+        .filter(([key]) => !omittedKeys.has(key))
+        .filter(([key]) => entity?.[key])
+        .map(([key, label]) => ({
+          key: label,
+          value: this.displayValue(entity[key]),
+          wide: this.isWideValue(key, entity[key])
+        }))
+        .filter((row) => !this.isHiddenRow(row));
+    },
+    backlinkRows(entityId, options = {}) {
+      const omittedSourceIds = new Set(options.omitSourceIds || []);
+      const backlinks = (this.model?.backlinkMap?.[entityId] || []).filter((link) =>
+        RO_CRATE_BACKLINK_PROPERTIES.includes(link.property)
+      );
+      return backlinks
+        .filter((link) => !omittedSourceIds.has(link.sourceId))
+        .map((link) => {
+          const entity = this.entityById(link.sourceId);
+          if (!entity || this.isLowValueBacklink(entity)) return null;
+          return {
+            key: this.labelForField(link.property),
+            value: this.entityLabel(entity),
+            wide: false
+          };
+        })
+        .filter(Boolean);
+    },
+    attachmentsForRequest(requestContextId) {
+      return this.model.graph
+        .filter((entity) => this.isAttachmentEntity(entity))
+        .filter((entity) => {
+          if (!requestContextId) return true;
+          return this.referenceIds(entity[fieldKeys.requestContext]).includes(
+            requestContextId
+          );
+        })
+        .map((entity) => ({
+          id: entity[fieldKeys.id],
+          name:
+            entity[fieldKeys.name] ||
+            entity[fieldKeys.contentUrl] ||
+            entity[fieldKeys.id],
+          contentUrl: entity[fieldKeys.contentUrl]
+        }))
+        .filter((file) => this.matchesSearch([file.name, file.contentUrl, file.id]));
+    },
+    isRecordEntity(entity) {
+      return this.isRecordId(entity?.[fieldKeys.id]);
+    },
+    isRecordId(entityId) {
+      const id = String(entityId || "");
+      return (
+        id.startsWith(RO_CRATE_ENTITY_PREFIXES.libraryMaterial) ||
+        id.startsWith(RO_CRATE_ENTITY_PREFIXES.sampleMaterial)
+      );
+    },
+    recordType(entity) {
+      const id = String(entity?.[fieldKeys.id] || "");
+      if (id.startsWith(RO_CRATE_ENTITY_PREFIXES.libraryMaterial)) {
+        return RO_CRATE_RECORD_TYPES.library;
+      }
+      if (id.startsWith(RO_CRATE_ENTITY_PREFIXES.sampleMaterial)) {
+        return RO_CRATE_RECORD_TYPES.sample;
+      }
+      const typeRefs = this.referenceIds(entity?.[fieldKeys.additionalType]);
+      if (typeRefs.some((type) => type.includes("/Library"))) {
+        return RO_CRATE_RECORD_TYPES.library;
+      }
+      if (typeRefs.some((type) => type.includes("/Sample"))) {
+        return RO_CRATE_RECORD_TYPES.sample;
+      }
+      return RO_CRATE_RECORD_TYPES.fallback;
+    },
+    isAttachmentEntity(entity) {
+      const types = this.entityTypes(entity);
+      return (
+        types.includes("MediaObject") &&
+        entity?.[fieldKeys.id] !== RO_CRATE_ENTITY_IDS.metadataDescriptor &&
+        this.referenceIds(entity?.[fieldKeys.isPartOf]).includes(
+          RO_CRATE_ENTITY_IDS.rootDataset
+        )
+      );
+    },
+    isLaneEntity(entity) {
+      return String(entity?.[fieldKeys.id] || "").startsWith(
+        RO_CRATE_ENTITY_PREFIXES.lane
+      );
+    },
+    isProcessEntity(entity) {
+      return this.entityTypes(entity).includes("CreateAction");
+    },
+    isAssayEntity(entity) {
+      const id = String(entity?.[fieldKeys.id] || "");
+      return id.startsWith(RO_CRATE_ENTITY_PREFIXES.flowcellAssay) ||
+        id.startsWith("#sample-assay-") ||
+        id.startsWith("#library-assay-");
+    },
+    isGenericFlowcellDataEntity(entity) {
+      const id = String(entity?.[fieldKeys.id] || "");
+      return /^#flowcell-data-\d+$/.test(id);
+    },
+    isLowValueBacklink(entity) {
+      const id = String(entity?.[fieldKeys.id] || "");
+      return (
+        id.startsWith(RO_CRATE_ENTITY_PREFIXES.study) ||
+        id.startsWith(RO_CRATE_ENTITY_PREFIXES.sourceSample)
       );
     },
     entityById(entityId) {
       return this.model?.entityMap?.[entityId] || null;
     },
     entityTypes(entity) {
-      return Array.isArray(entity?.[entityFields.type])
-        ? entity[entityFields.type]
-        : entity?.[entityFields.type]
-          ? [entity[entityFields.type]]
+      return Array.isArray(entity?.[fieldKeys.type])
+        ? entity[fieldKeys.type]
+        : entity?.[fieldKeys.type]
+          ? [entity[fieldKeys.type]]
           : [];
     },
-    isRootEntity(entity) {
-      return String(entity?.[entityFields.id] || "") === entityIds.rootDataset;
-    },
-    isMetadataDescriptorEntity(entity) {
+    entityLabel(entity) {
       return (
-        String(entity?.[entityFields.id] || "") === entityIds.metadataDescriptor
+        entity?.[fieldKeys.name] ||
+        entity?.[fieldKeys.identifier] ||
+        entity?.[fieldKeys.id] ||
+        ""
       );
     },
-    isRecordEntity(entity) {
-      const entityId = String(entity?.[entityFields.id] || "");
-      const types = this.entityTypes(entity);
-      return (
-        recordEntityRules.idPrefixes.some((prefix) =>
-          entityId.startsWith(prefix)
-        ) ||
-        recordEntityRules.typeFragments.some((fragment) =>
-          types.some((type) => String(type).includes(fragment))
-        )
-      );
+    referenceValues(value) {
+      return Array.isArray(value) ? value : value ? [value] : [];
     },
-    entityReferenceIds(value) {
+    referenceIds(value) {
+      return this.referenceValues(value)
+        .flatMap((entry) => {
+          if (Array.isArray(entry)) return this.referenceIds(entry);
+          if (entry && typeof entry === "object" && entry[fieldKeys.id]) {
+            return [String(entry[fieldKeys.id])];
+          }
+          return [];
+        })
+        .filter(Boolean);
+    },
+    resolveReference(value) {
+      if (value && typeof value === "object" && value[fieldKeys.id]) {
+        return this.entityById(value[fieldKeys.id]) || value;
+      }
+      return value;
+    },
+    displayValue(value) {
       if (Array.isArray(value)) {
-        return value.flatMap((entry) => this.entityReferenceIds(entry));
+        return value
+          .map((entry) => this.displayValue(entry))
+          .filter((entry) => !this.isEmpty(entry));
       }
-      if (value && typeof value === "object" && value[entityFields.id]) {
-        return [String(value[entityFields.id])];
+      if (value && typeof value === "object") {
+        if (value[fieldKeys.id]) {
+          return this.entityLabel(this.entityById(value[fieldKeys.id]) || value);
+        }
+        return Object.fromEntries(
+          Object.entries(value)
+            .map(([key, nestedValue]) => [
+              this.labelForField(key),
+              this.displayValue(nestedValue)
+            ])
+            .filter(([, nestedValue]) => !this.isEmpty(nestedValue))
+        );
       }
-      return [];
+      if (typeof value === "string") {
+        const parsed = this.parseStructuredString(value);
+        if (parsed) return this.displayValue(parsed);
+        const formattedDate = this.formatDate(value);
+        return formattedDate || value;
+      }
+      return value === null || value === undefined || value === "" ? "" : String(value);
     },
-    attachmentRequestContextId(entity) {
-      return (
-        this.entityReferenceIds(entity?.[entityFields.requestContext]).find(
-          (entityId) => entityId.startsWith("#request-context-")
-        ) || ""
-      );
+    parseStructuredString(value) {
+      const text = String(value || "").trim();
+      if (!text || !["{", "["].includes(text[0])) return null;
+      try {
+        const parsed = JSON.parse(text);
+        return parsed && typeof parsed === "object" ? parsed : null;
+      } catch {
+        return null;
+      }
     },
-    isAttachmentEntity(entity) {
-      return (
-        this.entityTypes(entity).includes(attachmentEntityRules.type) &&
-        this.entityReferenceIds(entity?.[entityFields.isPartOf]).includes(
-          entityIds.rootDataset
-        ) &&
-        entity?.[entityFields.id] !== entityIds.metadataDescriptor
-      );
-    },
-    isRequestOverviewEntity(entity) {
-      if (!entity) return false;
-      if (this.isRootEntity(entity)) return false;
-      if (this.isMetadataDescriptorEntity(entity)) return false;
-      if (this.isRecordEntity(entity)) return false;
-      if (this.isAttachmentEntity(entity)) return false;
-      if (this.shouldHideRequestOverviewEntity(entity)) return false;
-      return true;
-    },
-    shouldHideRequestOverviewEntity(entity) {
-      const id = String(entity?.[entityFields.id] || "").toLowerCase();
-      const types = this.entityTypes(entity).map((type) => String(type).toLowerCase());
-      const overviewRules = RO_CRATE_PREVIEW_FIELD_RULES.requestOverview;
-
-      if (
-        overviewRules.hiddenIdFragments.some((fragment) =>
-          id.includes(fragment)
-        )
-      ) {
-        return true;
+    labelForField(field) {
+      if (RO_CRATE_PROPERTY_LABEL_OVERRIDES[field]) {
+        return RO_CRATE_PROPERTY_LABEL_OVERRIDES[field];
       }
-
-      if (
-        overviewRules.hiddenTypes.some((type) => types.includes(type)) ||
-        overviewRules.hiddenTypeFragments.some((fragment) =>
-          types.some((type) => type.includes(fragment))
-        )
-      ) {
-        return true;
-      }
-
-      return false;
-    },
-    recordKindLabel(entity) {
-      const entityId = String(entity?.[entityFields.id] || "");
-      if (entityId.startsWith("#library-material-")) {
-        return recordEntityRules.typeLabels.library;
-      }
-      if (entityId.startsWith("#sample-material-")) {
-        return recordEntityRules.typeLabels.sample;
-      }
-
-      const types = [
-        ...this.entityTypes(entity),
-        ...this.entityReferenceIds(entity?.[entityFields.additionalType])
-      ].map((type) => String(type));
-      if (types.some((type) => type.includes(recordEntityRules.typeFragments[1]))) {
-        return recordEntityRules.typeLabels.library;
-      }
-      if (types.some((type) => type.includes(recordEntityRules.typeFragments[0]))) {
-        return recordEntityRules.typeLabels.sample;
-      }
-      return recordEntityRules.typeLabels.fallback;
-    },
-    formatPropertyLabel(key) {
-      const customLabels = RO_CRATE_PREVIEW_FIELD_RULES.propertyLabels;
-      if (customLabels[key]) return customLabels[key];
-      return String(key)
+      return String(field || "")
+        .replace(RO_CRATE_PROPERTY_PREFIX_PATTERN, "")
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
         .replace(/[_-]+/g, " ")
         .replace(/\s+/g, " ")
         .trim()
         .replace(/\b\w/g, (char) => char.toUpperCase());
     },
-    formatSummaryValue(value) {
-      if (value === null || value === undefined || value === "") {
-        return "-";
-      }
-
-      if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-        if (typeof value === "string") {
-          const structuredValue = this.parseStructuredStringValue(value);
-          if (structuredValue !== null) {
-            return this.formatSummaryValue(structuredValue);
-          }
-          const formattedDate = this.formatDisplayDate(value);
-          if (formattedDate) {
-            return formattedDate;
-          }
-        }
-        return String(value);
-      }
-
-      if (Array.isArray(value)) {
-        return value.map((entry) => this.formatSummaryValue(entry)).filter((entry) => entry !== "-");
-      }
-
-      if (value?.[entityFields.id]) {
-        return this.entityLabelById(value[entityFields.id]);
-      }
-
+    groupForProperty(name, entity) {
+      const rule = this.modelSectionRuleForProperty(name);
+      if (!rule) return "Additional Details";
+      return `${rule.modelName}: ${this.entityLabel(entity) || "Record"}`;
+    },
+    modelSectionTitleForEntity(entity) {
+      const firstPropertyName = [
+        ...this.referenceValues(entity?.[fieldKeys.additionalProperty]),
+        ...this.referenceValues(entity?.[fieldKeys.parameterValue])
+      ]
+        .map((ref) => this.resolveReference(ref))
+        .find((property) => property?.[fieldKeys.name])?.[fieldKeys.name];
+      const rule =
+        this.modelSectionRuleForProperty(firstPropertyName) ||
+        this.modelSectionRuleForEntityId(entity?.[fieldKeys.id]);
+      return `${rule?.modelName || "Linked Model"}: ${
+        this.entityLabel(entity) || "Record"
+      }`;
+    },
+    modelSectionRuleForProperty(name) {
+      const propertyName = String(name || "");
+      return RO_CRATE_MODEL_SECTION_RULES.find((rule) =>
+        rule.prefixes.some((prefix) => propertyName.startsWith(prefix))
+      );
+    },
+    modelSectionRuleForEntityId(entityId) {
+      const id = String(entityId || "");
+      const prefixMap = [
+        ["#organism-", "Organism"],
+        ["#library-type-", "LibraryType"],
+        ["#read-length-", "ReadLength"],
+        ["#index-type-", "IndexType"],
+        ["#nucleic-acid-type-", "NucleicAcidType"],
+        ["#protocol-", "LibraryProtocol"],
+        ["#index-i7-", "IndexI7"],
+        ["#index-i5-", "IndexI5"],
+        ["#index-pair-", "IndexPair"],
+        ["#index-pool-size-", "PoolSize"],
+        ["#index-pool-", "IndexPool"],
+        ["#lane-", "Lane"],
+        ["#sequencer-", "Sequencer"],
+        ["#flowcell-", "Flowcell"]
+      ];
+      const match = prefixMap.find(([prefix]) => id.startsWith(prefix));
+      return match ? { modelName: match[1] } : null;
+    },
+    isSummaryModelProperty(name) {
+      const rule = this.modelSectionRuleForProperty(name);
+      return Boolean(rule?.summaryOnly);
+    },
+    shouldHideField(field) {
+      const key = String(field || "");
+      const policyKey = normalisePolicyField(key);
       if (
-        value?.[entityFields.name] &&
-        typeof value[entityFields.name] === "string"
-      ) {
-        return value[entityFields.name];
+        hiddenFields.has(key) ||
+        userHiddenFields.has(key) ||
+        hiddenPolicyFields.has(policyKey)
+      ) return true;
+      if (this.isHiddenCommentField(key)) return true;
+      if (RO_CRATE_HIDDEN_FIELD_PATTERNS.some((pattern) => pattern.test(key))) {
+        return true;
       }
-
-      if (typeof value === "object") {
-        return Object.fromEntries(
-          Object.entries(value)
-            .map(([key, nestedValue]) => [this.formatPropertyLabel(key), this.formatSummaryValue(nestedValue)])
-            .filter(([, nestedValue]) => !this.isEmptyDisplayValue(nestedValue, { hideDash: true }))
-        );
-      }
-
-      return String(value);
-    },
-    parseStructuredStringValue(value) {
-      const text = String(value || "").trim();
-      if (!text || !["[", "{"].includes(text[0])) return null;
-      try {
-        const parsedValue = JSON.parse(text);
-        return typeof parsedValue === "object" && parsedValue !== null
-          ? parsedValue
-          : null;
-      } catch {
-        return null;
-      }
-    },
-    isStructuredDisplayValue(value) {
+      const normalised = key.replace(RO_CRATE_PROPERTY_PREFIX_PATTERN, "");
+      const normalisedPolicyKey = normalisePolicyField(normalised);
       return (
-        (Array.isArray(value) && value.length > 0) ||
-        (value !== null &&
-          typeof value === "object" &&
-          !Array.isArray(value) &&
-          Object.keys(value).length > 0)
+        hiddenFields.has(normalised) ||
+        userHiddenFields.has(normalised) ||
+        hiddenPolicyFields.has(normalisedPolicyKey) ||
+        this.isHiddenCommentField(normalised) ||
+        (/(^|_)id$/i.test(normalised) &&
+          !visibleIdFields.has(normalised) &&
+          !visibleIdPolicyFields.has(normalisedPolicyKey))
       );
     },
-    escapeDisplayHtml(value) {
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    },
-    structuredValueHtml(value) {
-      if (Array.isArray(value)) {
-        if (!value.length) return "";
-        if (value.every((entry) => entry === null || typeof entry !== "object")) {
-          return `<ul class="structured-value-list">${value
-            .map((entry) => `<li>${this.escapeDisplayHtml(entry)}</li>`)
-            .join("")}</ul>`;
-        }
-
-        const rows = value.map((entry) =>
-          entry !== null && typeof entry === "object" && !Array.isArray(entry)
-            ? entry
-            : { Value: entry }
-        );
-        const columns = [
-          ...new Set(rows.flatMap((row) => Object.keys(row)))
-        ].slice(0, 12);
-
-        return `<div class="structured-value-scroll"><table class="structured-value-table"><thead><tr>${columns
-          .map((column) => `<th>${this.escapeDisplayHtml(column)}</th>`)
-          .join("")}</tr></thead><tbody>${rows
-          .map(
-            (row) =>
-              `<tr>${columns
-                .map((column) => `<td>${this.structuredCellHtml(row[column])}</td>`)
-                .join("")}</tr>`
-          )
-          .join("")}</tbody></table></div>`;
-      }
-
-      return `<div class="structured-value-scroll"><table class="structured-value-table key-value"><tbody>${Object.entries(
-        value
-      )
-        .map(
-          ([key, nestedValue]) =>
-            `<tr><th>${this.escapeDisplayHtml(key)}</th><td>${this.structuredCellHtml(nestedValue)}</td></tr>`
-        )
-        .join("")}</tbody></table></div>`;
-    },
-    structuredCellHtml(value) {
-      if (value === null || value === undefined || value === "") return "-";
-      if (Array.isArray(value)) {
-        return value
-          .map((entry) => this.structuredCellHtml(entry))
-          .join("<br>");
-      }
-      if (typeof value === "object") {
-        if (value[entityFields.id]) {
-          return this.escapeDisplayHtml(this.entityLabelById(value[entityFields.id]));
-        }
-        return this.escapeDisplayHtml(JSON.stringify(value));
-      }
-      return this.escapeDisplayHtml(value);
-    },
-    formatDisplayDate(value) {
-      const text = String(value || "").trim();
-      if (!text) return "";
-
-      const looksLikeIsoDate =
-        /^\d{4}-\d{2}-\d{2}$/.test(text) ||
-        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(text);
-
-      if (!looksLikeIsoDate) {
-        return "";
-      }
-
-      const date = new Date(text);
-      if (Number.isNaN(date.getTime())) {
-        return "";
-      }
-
-      const separator = this.systemDateSeparator(date);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = String(date.getFullYear());
-      return `${day}${separator}${month}${separator}${year}`;
-    },
-    systemDateSeparator(date = new Date()) {
-      const formatter = new Intl.DateTimeFormat(undefined, {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      });
-      const parts = formatter.formatToParts(date);
+    isHiddenCommentField(field) {
+      const normalised = String(field || "")
+        .replace(/[^a-z0-9]+/gi, "")
+        .toLowerCase();
       return (
-        parts.find(
-          (part, index) =>
-            part.type === "literal" &&
-            index > 0 &&
-            parts[index - 1]?.type === "day"
-        )?.value || "/"
-      );
+        normalised.endsWith("comment") || normalised.endsWith("comments")
+      ) && !["usercomment", "usercomments"].includes(normalised);
     },
-    shouldHideIdLabel(label) {
-      const normalizedLabel = String(label || "").trim();
-      const lowerLabel = normalizedLabel.toLowerCase();
+    isHiddenRow(row) {
       return (
-        (/\bids?$/i.test(normalizedLabel) || /(^| )id$/i.test(normalizedLabel)) &&
-        !visibleIdLabelSet.has(lowerLabel)
+        this.isEmpty(row?.value) ||
+        this.shouldHideField(row?.key) ||
+        userHiddenFields.has(String(row?.key || ""))
       );
     },
-    shouldHideSensitiveField(field) {
-      return hiddenSensitiveFieldPatterns.some((pattern) =>
-        pattern.test(String(field || ""))
-      );
-    },
-    shouldHideTechnicalDisplayLabel(label) {
-      return hiddenTechnicalDisplayLabelPatterns.some((pattern) =>
-        pattern.test(String(label || ""))
-      );
-    },
-    isEmptyDisplayValue(value, options = {}) {
+    isEmpty(value) {
       return (
         value === "" ||
         value === null ||
         value === undefined ||
-        (options.hideDash && value === "-") ||
-        (Array.isArray(value) && value.length === 0)
+        (Array.isArray(value) && value.length === 0) ||
+        (value && typeof value === "object" && !Array.isArray(value) && !Object.keys(value).length)
       );
     },
-    shouldUseWideRow(row) {
-      const key = String(row?.key || "").toLowerCase();
-      const value = row?.value;
-      if (
-        key.includes("flowcell") ||
-        key.includes("filepath") ||
-        key.includes("metapath") ||
-        key.includes("requested barcode")
-      ) return true;
-      if (!this.isStructuredDisplayValue(value)) return false;
-      if (Array.isArray(value)) {
-        const objectRows = value.filter(
-          (entry) => entry !== null && typeof entry === "object" && !Array.isArray(entry)
-        );
-        const columnCount = new Set(objectRows.flatMap((entry) => Object.keys(entry))).size;
-        return columnCount > 4 || value.length > 6;
-      }
-      return Object.keys(value || {}).length > 4;
+    isWideValue(key, value) {
+      const label = String(key || "").toLowerCase();
+      return (
+        label.includes("path") ||
+        label.includes("flowcell") ||
+        Array.isArray(value) ||
+        (value && typeof value === "object")
+      );
     },
     valueClassForRow(row) {
       const key = String(row?.key || "").toLowerCase();
       return {
-        "path-value":
-          key.includes("filepath") ||
-          key.includes("metapath") ||
-          key.includes("path"),
-        "barcode-value":
-          key.includes("barcode") ||
-          key.includes("requested barcode"),
-        "long-list-value":
-          Array.isArray(row?.value) && row.value.length > 5
+        "path-value": key.includes("path"),
+        "barcode-value": key.includes("barcode")
       };
     },
-    plainDisplayValue(row) {
-      const value = String(row?.value ?? "");
-      const classes = this.valueClassForRow(row);
-      if (classes["path-value"]) {
-        return value.replace(/([/\\_-])/g, "$1\u200b");
-      }
-      if (classes["barcode-value"] || classes["long-list-value"]) {
-        return value.replace(/,\s*/g, ",\u200b ");
-      }
-      return value;
-    },
-    shouldHideDisplayLabel(label, options = {}) {
-      const normalizedLabel = String(label || "").trim();
-      const lowerLabel = normalizedLabel.toLowerCase();
-      if (!normalizedLabel) return true;
-      if (this.shouldHideIdLabel(normalizedLabel)) return true;
-      if (this.shouldHideSensitiveField(normalizedLabel)) return true;
-      if (this.shouldHideTechnicalDisplayLabel(normalizedLabel)) return true;
-      if (userDefinedVariableHiddenLabelSet.has(lowerLabel)) return true;
-      if (
-        options.hideRecordLabels &&
-        lowerLabel === recordTypeLabel
-      ) {
-        return true;
-      }
-      if (
-        options.hideLinkedRecordLabels &&
-        hiddenLinkedRecordLabelPatterns.some((pattern) =>
-          pattern.test(normalizedLabel)
-        )
-      ) {
-        return true;
-      }
-      return false;
-    },
-    isSequencingSection(section) {
-      const title = String(section?.title || "").toLowerCase();
-      return (
-        title.includes("flowcell") ||
-        title.includes("sequenc") ||
-        title.includes("lane ") ||
-        section?.rows?.some((row) => {
-          const key = String(row?.key || "").toLowerCase();
-          return (
-            key.includes("flowcell") ||
-            key.includes("sequencer") ||
-            key.includes("lane")
-          );
-        })
-      );
-    },
-    buildRequestOverviewSections() {
-      const sections = [];
-      const groupedEntities = {};
-      const overviewEntities = this.model.graph.filter((entity) =>
-        this.isRequestOverviewEntity(entity)
-      );
-
-      overviewEntities.forEach((entity) => {
-        const title = this.requestEntityGroupName(entity);
-        if (!groupedEntities[title]) {
-          groupedEntities[title] = [];
-        }
-        groupedEntities[title].push(entity);
-      });
-
-      Object.entries(groupedEntities).forEach(([title, entities]) => {
-        const seen = new Set();
-        const rows = entities
-          .flatMap((entity) => this.buildContextEntityRows(entity))
-          .filter((row) => {
-            const dedupeKey = `${row.key}:${JSON.stringify(row.value)}`;
-            if (seen.has(dedupeKey)) return false;
-            seen.add(dedupeKey);
-            return true;
-          })
-          .filter((row) => this.rowMatchesSearch(row));
-        if (rows.length) {
-          sections.push({ title, rows });
-        }
-      });
-
-      return sections;
-    },
-    buildContextEntityRows(entity) {
-      const rows = [];
+    uniqueRows(rows) {
       const seen = new Set();
-      const addRow = (key, value) => {
-        const formattedValue = this.formatSummaryValue(value);
-        const normalizedKey = String(key || "").trim();
-        if (this.shouldHideDisplayLabel(normalizedKey)) return;
-        if (this.isEmptyDisplayValue(formattedValue, { hideDash: true })) return;
-        const dedupeKey = `${normalizedKey}:${JSON.stringify(formattedValue)}`;
-        if (seen.has(dedupeKey)) return;
-        seen.add(dedupeKey);
-        rows.push({ key: normalizedKey, value: formattedValue });
-      };
-
-      Object.entries(entity)
-        .filter(([key]) => !hiddenContextEntityFieldSet.has(key))
-        .filter(([key]) => !this.isHiddenSimpleTableKey(key))
-        .forEach(([key, value]) => {
-          addRow(this.formatPropertyLabel(key), value);
-        });
-
-      this.extractCommentRows(entity).forEach((row) => addRow(row.key, row.value));
-
-      return rows;
-    },
-    buildRecordSections(entity) {
-      const sections = [];
-      const sectionMap = {};
-      const seen = new Set();
-      const addRow = (sectionTitle, key, value) => {
-        const formattedValue = this.formatSummaryValue(value);
-        const normalizedKey = String(key || "").trim();
-        if (
-          this.shouldHideDisplayLabel(normalizedKey, {
-            hideRecordLabels: true,
-            hideLinkedRecordLabels: true
-          })
-        ) return;
-        if (this.isEmptyDisplayValue(formattedValue, { hideDash: true })) return;
-        const dedupeKey = `${sectionTitle}:${normalizedKey}:${JSON.stringify(
-          formattedValue
-        )}`;
-        if (seen.has(dedupeKey)) return;
-        seen.add(dedupeKey);
-        if (!sectionMap[sectionTitle]) {
-          sectionMap[sectionTitle] = {
-            title: sectionTitle,
-            rows: []
-          };
-          sections.push(sectionMap[sectionTitle]);
-        }
-        sectionMap[sectionTitle].rows.push({
-          key: normalizedKey,
-          value: formattedValue
-        });
-      };
-
-      const recordRows = RO_CRATE_PREVIEW_FIELD_RULES.recordOverviewRows;
-      addRow(
-        recordRows.section,
-        recordRows.nameLabel,
-        entity[entityFields.name] || "-"
-      );
-      addRow(
-        recordRows.section,
-        recordRows.barcodeLabel,
-        entity[entityFields.identifier] || "-"
-      );
-      addRow(
-        recordRows.section,
-        recordRows.recordTypeLabel,
-        this.recordKindLabel(entity)
-      );
-
-      Object.entries(entity)
-        .filter(([key]) => !hiddenContextEntityFieldSet.has(key))
-        .filter(([key]) => !this.isHiddenSimpleTableKey(key))
-        .forEach(([key, value]) => {
-          const sectionTitle = this.groupEntityProperty(key);
-          addRow(sectionTitle, this.formatPropertyLabel(key), value);
-        });
-
-      this.extractCommentRows(entity).forEach((row) =>
-        addRow(row.group, row.key, row.value)
-      );
-
-      const incomingLinks =
-        this.model?.backlinkMap?.[entity[entityFields.id]] || [];
-      incomingLinks.forEach((link) => {
-        const sourceEntity = this.entityById(link.sourceId);
-        if (!sourceEntity) return;
-        if (hiddenBacklinkPropertySet.has(link.property)) {
-          return;
-        }
-        const sourceName = sourceEntity[entityFields.name] || link.sourceId;
-        const propertyLabel = this.formatPropertyLabel(link.property);
-        const sourceKind = this.simplifyEntityKind(sourceEntity);
-        if (sourceKind === RO_CRATE_PREVIEW_FIELD_RULES.entityKindRules[0].title) {
-          return;
-        }
-        const linkedGroup = RO_CRATE_PREVIEW_FIELD_RULES.linkedRecordsSection;
-        addRow(linkedGroup, `${sourceKind} linked by ${propertyLabel}`, sourceName);
-
-        RO_CRATE_PREVIEW_FIELD_RULES.linkedSourceFields.forEach((key) => {
-          if (sourceEntity[key] !== undefined && sourceEntity[key] !== null) {
-            addRow(
-              linkedGroup,
-              `${sourceName} ${this.formatPropertyLabel(key)}`,
-              sourceEntity[key]
-            );
-          }
-        });
-
-        this.extractCommentRows(sourceEntity).forEach((row) =>
-          addRow(
-            linkedGroup,
-            `${sourceKind} ${row.key}`,
-            row.value
-          )
-        );
+      return rows.filter((row) => {
+        const key = `${row.key}:${JSON.stringify(row.value)}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
       });
-
-      return sections.filter((section) => section.rows.length > 0);
     },
-    rowMatchesSearch(row) {
-      const query = String(this.tableSearchTerm || "").trim().toLowerCase();
-      if (!query) return true;
-
-      const keyText = String(row?.key || "").toLowerCase();
-      const valueText = this.searchableValueText(row?.value);
-      return keyText.includes(query) || valueText.includes(query);
-    },
-    searchableValueText(value) {
-      if (value === null || value === undefined) return "";
-      if (Array.isArray(value)) {
-        return value
-          .map((entry) => this.searchableValueText(entry))
-          .join(" ")
-          .toLowerCase();
-      }
-      if (typeof value === "object") {
-        return JSON.stringify(value).toLowerCase();
-      }
-      return String(value).toLowerCase();
-    },
-    extractCommentRows(entity) {
-      const rows = [];
-      const comments = Array.isArray(entity?.[entityFields.comments])
-        ? entity[entityFields.comments]
-        : [];
-      comments.forEach((comment) => {
-        if (!comment?.[entityFields.name]) return;
-        rows.push({
-          group: this.commentGroup(comment[entityFields.name]),
-          key: this.simplifyCommentLabel(comment[entityFields.name]),
-          value: comment[entityFields.value]
-        });
-      });
-
-      const additionalProperties = Array.isArray(
-        entity?.[entityFields.additionalProperty]
-      )
-        ? entity[entityFields.additionalProperty]
-        : [];
-      additionalProperties.forEach((property) => {
-        if (!property?.[entityFields.name]) return;
-        rows.push({
-          group: this.commentGroup(property[entityFields.name]),
-          key: this.simplifyCommentLabel(property[entityFields.name]),
-          value: property[entityFields.value]
-        });
-      });
-
-      return rows;
-    },
-    findRuleTitle(rules, matcher) {
-      return rules.find((rule) => matcher(rule))?.title || "";
-    },
-    matchesEntityRule(rule, entity) {
-      const id = String(entity?.[entityFields.id] || "");
-      const types = this.entityTypes(entity).map((type) => String(type));
-      return (
-        rule.idEquals?.includes(id) ||
-        rule.idFragments?.some((fragment) => id.includes(fragment)) ||
-        rule.types?.some((type) => types.includes(type)) ||
-        rule.typeFragments?.some((fragment) =>
-          types.some((type) => type.includes(fragment))
-        )
+    matchesSearch(values) {
+      if (!this.searchTerm) return true;
+      return values.some((value) =>
+        JSON.stringify(value ?? "")
+          .toLowerCase()
+          .includes(this.searchTerm)
       );
     },
-    simplifyCommentLabel(label) {
-      return this.formatPropertyLabel(
-        String(label).replace(
-          RO_CRATE_PREVIEW_FIELD_RULES.commentLabelPrefixPattern,
-          ""
-        )
-      );
+    idSuffix(entityId) {
+      return String(entityId || "").match(/(\d+)$/)?.[1] || "";
     },
-    commentGroup(label) {
-      const value = String(label || "");
-      return (
-        this.findRuleTitle(
-          RO_CRATE_PREVIEW_FIELD_RULES.commentGroups,
-          (rule) => rule.patterns.some((pattern) => pattern.test(value))
-        ) || sectionOptions.defaultCommentGroup
-      );
-    },
-    groupEntityProperty(key) {
-      const value = String(key || "");
-      return (
-        this.findRuleTitle(
-          RO_CRATE_PREVIEW_FIELD_RULES.entityPropertyGroups,
-          (rule) => rule.fields.includes(value)
-        ) || sectionOptions.defaultEntityPropertyGroup
-      );
-    },
-    requestEntityGroupName(entity) {
-      return (
-        entity?.[entityFields.name] ||
-        entity?.[entityFields.title] ||
-        entity?.[entityFields.identifier] ||
-        entity?.[entityFields.alternateName] ||
-        entity?.[entityFields.id] ||
-        sectionOptions.unnamedGroup
-      );
-    },
-    simplifyEntityKind(entity) {
-      return (
-        this.findRuleTitle(
-          RO_CRATE_PREVIEW_FIELD_RULES.entityKindRules,
-          (rule) => this.matchesEntityRule(rule, entity)
-        ) || sectionOptions.relatedEntityKind
-      );
+    formatDate(value) {
+      const text = String(value || "").trim();
+      if (!/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?/.test(text)) return "";
+      const date = new Date(text);
+      if (Number.isNaN(date.getTime())) return "";
+      return new Intl.DateTimeFormat(undefined, {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      }).format(date);
     }
   }
 };
@@ -1448,49 +1795,6 @@ export default {
   backdrop-filter: blur(12px);
 }
 
-.upload-actions,
-.reference-pill-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.hero-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  border-radius: 14px;
-  border: 0;
-  padding: 12px 16px;
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    background-color 0.18s ease;
-}
-
-.hero-button:hover {
-  transform: translateY(-1px);
-}
-
-.hero-button.primary {
-  background: linear-gradient(135deg, #0d6f73, #1b9c7c);
-  color: #fff;
-}
-
-.hero-button.secondary {
-  background: #e7f0f2;
-  color: #173948;
-  border: 1px solid rgba(16, 36, 47, 0.12);
-}
-
-.pdf-export-button {
-  white-space: nowrap;
-}
-
 .upload-stage {
   position: relative;
   display: grid;
@@ -1500,10 +1804,6 @@ export default {
   border-radius: 24px;
   padding: 20px 24px;
   margin-bottom: 20px;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background-color 0.2s ease;
 }
 
 .rocrate-preview-page.embedded .upload-stage {
@@ -1524,13 +1824,6 @@ export default {
   min-height: 168px;
 }
 
-.upload-title {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.16;
-}
-
 .upload-title-main {
   display: flex;
   align-items: center;
@@ -1539,7 +1832,6 @@ export default {
   color: #0f2a38;
   font-size: clamp(1.5rem, 3vw, 2.2rem);
   font-weight: 800;
-  letter-spacing: -0.04em;
   text-align: left;
 }
 
@@ -1547,6 +1839,12 @@ export default {
   width: 30px;
   height: 30px;
   flex-shrink: 0;
+}
+
+.upload-title {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.16;
 }
 
 .upload-subtitle {
@@ -1557,9 +1855,11 @@ export default {
 }
 
 .upload-actions {
-  margin-top: 14px;
-  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
   gap: 14px;
+  align-items: center;
+  margin-top: 14px;
 }
 
 .upload-current-file {
@@ -1570,10 +1870,37 @@ export default {
   color: #214250;
   font-size: 14px;
   font-weight: 600;
-  line-height: 1.4;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 14px;
+  border: 0;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hero-button.primary {
+  background: linear-gradient(135deg, #0d6f73, #1b9c7c);
+  color: #fff;
+}
+
+.hero-button.secondary {
+  background: #e7f0f2;
+  color: #173948;
+  border: 1px solid rgba(16, 36, 47, 0.12);
+}
+
+.hero-button:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
 }
 
 .upload-watermark {
@@ -1595,11 +1922,8 @@ export default {
 
 .upload-watermark img {
   width: 410px;
-  height: auto;
   opacity: 0.12;
   filter: saturate(0.78);
-  transform: translateX(0);
-  transform-origin: left center;
 }
 
 .preview-feedback {
@@ -1635,124 +1959,6 @@ export default {
   animation: spin 1s linear infinite;
 }
 
-.detail-kicker {
-  display: inline-block;
-  margin-bottom: 8px;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: none;
-  color: #173948;
-}
-
-.attached-files-card,
-.zip-contents-card,
-.sequencing-summary-card,
-.quick-summary-card {
-  margin-bottom: 18px;
-}
-
-.zip-content-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.zip-content-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  min-width: 0;
-  padding: 12px 14px;
-  border: 1px solid rgba(16, 36, 47, 0.06);
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
-  color: #173948;
-}
-
-.zip-content-row svg {
-  margin-top: 2px;
-  color: #0d6f73;
-  flex-shrink: 0;
-}
-
-.zip-content-main {
-  min-width: 0;
-}
-
-.zip-content-path {
-  font-weight: 700;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-
-.zip-content-meta {
-  margin-top: 3px;
-  color: #5e7884;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.attached-file-groups {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 18px;
-  margin-top: 14px;
-}
-
-.attached-file-group {
-  min-width: 0;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
-  border: 1px solid rgba(16, 36, 47, 0.06);
-}
-
-.attached-file-request {
-  margin-bottom: 10px;
-  color: #173948;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.attached-file-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.attached-file-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  color: #173948;
-  line-height: 1.35;
-}
-
-.attached-file-item svg {
-  color: #0d6f73;
-  flex-shrink: 0;
-}
-
-.attached-file-item span {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.records-summary-card {
-  margin-bottom: 18px;
-}
-
-.section-title {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: #173948;
-}
-
 .preview-search-panel {
   position: sticky;
   top: 0;
@@ -1764,23 +1970,15 @@ export default {
   margin-bottom: 18px;
   padding: 14px 18px;
   border: 1px solid rgba(13, 111, 115, 0.24);
-  border-radius: 14px;
+  border-radius: 0 0 14px 14px;
   background: rgba(243, 250, 251, 0.98);
   box-shadow: 0 10px 24px rgba(16, 36, 47, 0.08);
-  backdrop-filter: blur(10px);
-}
-
-.rocrate-preview-page.embedded .preview-search-panel {
-  top: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
 .preview-search-title {
   color: #173948;
   font-size: 16px;
   font-weight: 800;
-  line-height: 1.25;
 }
 
 .preview-search-meta {
@@ -1797,24 +1995,11 @@ export default {
 .table-search-input {
   width: 100%;
   border: 2px solid rgba(13, 111, 115, 0.36);
-  border-radius: 14px;
+  border-radius: 0 0 14px 14px;
   padding: 13px 44px 13px 14px;
   font-size: 15px;
   color: #173948;
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-}
-
-.table-search-input:focus {
-  border-color: #0d6f73;
-  box-shadow:
-    0 0 0 3px rgba(13, 111, 115, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72);
-  outline: none;
-}
-
-.table-search-input::placeholder {
-  color: #6a8591;
 }
 
 .table-search-icon {
@@ -1823,114 +2008,83 @@ export default {
   right: 14px;
   transform: translateY(-50%);
   color: #0d6f73;
-  pointer-events: none;
 }
 
-.record-table-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-top: 18px;
+.detail-card {
+  border-radius: 22px;
+  padding: 18px;
+  margin-bottom: 18px;
 }
 
-.record-table-block {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(16, 36, 47, 0.08);
-}
-
-.record-table-block:first-of-type {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: 0;
-}
-
-.record-table-header {
-  margin-bottom: 12px;
-}
-
-.record-table-title {
+.detail-kicker {
+  display: inline-block;
+  margin-bottom: 8px;
   font-size: 18px;
   font-weight: 800;
   color: #173948;
 }
 
-.record-table-subtitle {
-  margin-top: 4px;
-  color: #5c7784;
-  word-break: break-word;
-}
-
-.record-group {
-  margin-top: 16px;
-}
-
-.record-group:first-of-type {
-  margin-top: 0;
-}
-
-.quick-summary-card>.record-group:first-of-type {
-  margin-top: 22px;
-}
-
-.record-group-title {
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #1d5f78;
-}
-
-.record-group-table {
-  margin-top: 0;
-}
-
-.quick-summary-table {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 18px;
+.request-overview-list,
+.record-table-list,
+.attachment-list,
+.zip-content-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-top: 14px;
 }
 
-.quick-summary-row {
-  display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
+.request-overview-item,
+.record-table-block,
+.attachment-item,
+.zip-content-row {
+  min-width: 0;
   padding: 14px 16px;
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
   border: 1px solid rgba(16, 36, 47, 0.06);
 }
 
-.rocrate-preview-page.embedded .upload-title-main {
-  display: none;
+.request-overview-title,
+.record-table-title {
+  color: #173948;
+  font-size: 16px;
+  font-weight: 800;
 }
 
-.rocrate-preview-page.embedded .upload-content {
-  min-height: 112px;
+.record-table-subtitle {
+  margin-top: 4px;
+  color: #5c7784;
 }
 
-.rocrate-preview-page.embedded .upload-watermark,
-.rocrate-preview-page.embedded .upload-watermark-crop {
-  min-height: 112px;
-  height: 112px;
+.record-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.rocrate-preview-page.embedded .upload-watermark-crop {
-  width: 112px;
+.record-chip {
+  display: inline-flex;
+  max-width: 100%;
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(13, 111, 115, 0.08);
+  color: #0d6f73;
+  font-size: 12px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
-.rocrate-preview-page.embedded .upload-watermark img {
-  width: 270px;
+.record-group {
+  margin-top: 16px;
 }
 
-.quick-summary-row.wide-row {
-  grid-column: 1 / -1;
-  grid-template-columns: 140px minmax(0, 1fr);
+.record-group.nested {
+  margin-top: 14px;
 }
 
+.record-group-title,
 .quick-summary-key {
   font-size: 12px;
   font-weight: 800;
@@ -1939,11 +2093,46 @@ export default {
   color: #5e7884;
 }
 
+.record-group-title {
+  margin-bottom: 8px;
+  color: #1d5f78;
+}
+
+.quick-summary-table {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+}
+
+.quick-summary-row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(16, 36, 47, 0.06);
+}
+
+.quick-summary-row.wide-row {
+  grid-column: 1 / -1;
+  grid-template-columns: 112px minmax(0, 1fr);
+}
+
 .quick-summary-value {
   color: #173948;
   line-height: 1.55;
   overflow-wrap: anywhere;
-  word-break: normal;
+}
+
+.quick-summary-value.path-value {
+  word-break: break-word;
+}
+
+.quick-summary-value :deep(.structured-value-list) {
+  margin: 0;
+  padding-left: 18px;
 }
 
 .quick-summary-value :deep(.structured-value-scroll) {
@@ -1953,10 +2142,9 @@ export default {
 
 .quick-summary-value :deep(.structured-value-table) {
   width: 100%;
-  min-width: 360px;
+  min-width: 320px;
   border-collapse: collapse;
   font-size: 13px;
-  line-height: 1.4;
 }
 
 .quick-summary-value :deep(.structured-value-table th),
@@ -1969,53 +2157,51 @@ export default {
 }
 
 .quick-summary-value :deep(.structured-value-table th) {
+  width: 180px;
   background: rgba(231, 240, 242, 0.86);
   color: #244858;
   font-weight: 800;
 }
 
-.quick-summary-value :deep(.structured-value-table.key-value) {
-  min-width: 0;
+.quick-summary-value :deep(.structured-value-table.indexed-table th) {
+  width: auto;
 }
 
-.quick-summary-value :deep(.structured-value-table.key-value th) {
-  width: 180px;
+.quick-summary-value :deep(.structured-value-table .row-number-column) {
+  width: 42px;
+  text-align: right;
+  white-space: nowrap;
+  color: #5e7884;
 }
 
-.quick-summary-value :deep(.structured-value-list) {
-  margin: 0;
-  padding-left: 18px;
-}
-
-.detail-card {
-  border-radius: 22px;
-  padding: 18px;
-}
-
-.detail-header {
+.attachment-item,
+.zip-content-row {
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
   align-items: flex-start;
+  gap: 10px;
 }
 
-.type-chip {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 8px 12px;
-  background: rgba(13, 111, 115, 0.08);
+.attachment-item svg,
+.zip-content-row svg {
+  margin-top: 2px;
   color: #0d6f73;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: default;
-  pointer-events: none;
-  user-select: text;
+  flex-shrink: 0;
 }
 
+.zip-content-path {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.zip-content-meta,
 .empty-inline {
   color: #65818c;
-  line-height: 1.6;
+  line-height: 1.5;
+}
+
+.zip-content-meta {
+  margin-top: 3px;
+  font-size: 12px;
 }
 
 .print-report-header,
@@ -2029,40 +2215,23 @@ export default {
   }
 }
 
-@media (max-width: 1180px) {
-  .quick-summary-table {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 760px) {
   .rocrate-preview-shell {
     padding: 20px 14px 40px;
   }
 
-  .detail-card,
-  .upload-stage {
-    border-radius: 20px;
-    padding: 16px;
-  }
-
   .upload-stage,
-  .attached-file-groups,
-  .quick-summary-table {
-    grid-template-columns: 1fr;
-  }
-
+  .quick-summary-table,
   .preview-search-panel {
-    position: static;
     grid-template-columns: 1fr;
-    gap: 10px;
   }
 
   .upload-watermark {
     display: none;
   }
 
-  .quick-summary-row {
+  .quick-summary-row,
+  .quick-summary-row.wide-row {
     grid-template-columns: 1fr;
   }
 }
@@ -2084,7 +2253,8 @@ export default {
     background: #fff !important;
   }
 
-  .rocrate-preview-page {
+  .rocrate-preview-page,
+  .rocrate-preview-page.embedded {
     min-height: auto;
     height: auto;
     overflow: visible;
@@ -2093,19 +2263,7 @@ export default {
     font-size: 9pt;
   }
 
-  .rocrate-preview-page.embedded {
-    min-height: auto;
-    height: auto;
-    overflow: visible;
-    background: #fff;
-  }
-
-  .rocrate-preview-shell {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-  }
-
+  .rocrate-preview-shell,
   .rocrate-preview-page.embedded .rocrate-preview-shell {
     max-width: none;
     padding: 0;
@@ -2118,11 +2276,6 @@ export default {
     display: none !important;
   }
 
-  .preview-workspace {
-    display: block;
-    padding-top: 0;
-  }
-
   .print-report-header {
     display: flex;
     justify-content: space-between;
@@ -2130,8 +2283,6 @@ export default {
     margin-bottom: 3mm;
     padding-bottom: 2mm;
     border-bottom: 1px solid #d8e0e4;
-    background: #fff;
-    color: #173948;
   }
 
   .print-report-title {
@@ -2146,87 +2297,13 @@ export default {
     line-height: 1.3;
   }
 
-  .print-report-meta {
-    flex-shrink: 0;
-    text-align: right;
-  }
-
   .print-report-footer {
     display: block;
     margin-top: 4mm;
     padding-top: 2mm;
     border-top: 1px solid #d8e0e4;
-    background: #fff;
     color: #6b818c;
     font-size: 6.5pt;
-    line-height: 1.2;
-  }
-
-  .attached-file-groups {
-    display: block !important;
-    margin-top: 3mm;
-  }
-
-  .zip-content-list {
-    gap: 1.5mm;
-    margin-top: 2mm;
-  }
-
-  .zip-content-row {
-    padding: 1.8mm;
-    border-radius: 1.5mm;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .zip-content-path {
-    font-size: 7.2pt;
-    line-height: 1.25;
-  }
-
-  .zip-content-meta {
-    font-size: 6.6pt;
-  }
-
-  .attached-file-group {
-    margin-bottom: 2mm;
-    padding: 2mm;
-    border-radius: 3mm;
-    background: #fff;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .attached-file-request {
-    font-size: 8pt;
-    margin-bottom: 2mm;
-  }
-
-  .attached-file-list {
-    gap: 1.5mm;
-  }
-
-  .attached-file-item {
-    font-size: 8pt;
-    align-items: flex-start;
-  }
-
-  .detail-kicker {
-    font-size: 10pt;
-    margin-bottom: 2.5mm;
-  }
-
-  .detail-header,
-  .record-table-header,
-  .record-group-title {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
-  .record-table-list,
-  .record-group-table {
-    break-before: avoid;
-    page-break-before: avoid;
   }
 
   .detail-card {
@@ -2239,94 +2316,44 @@ export default {
     background: #fff;
   }
 
-  .record-table-title {
-    font-size: 9pt;
-  }
-
-  .record-group-title,
-  .quick-summary-key {
-    font-size: 6.8pt;
-    letter-spacing: 0.02em;
-  }
-
   .quick-summary-table {
     display: block !important;
-    margin-top: 1.8mm;
   }
 
-  .quick-summary-row {
+  .quick-summary-row,
+  .quick-summary-row.wide-row {
     display: grid;
-    grid-template-columns: 25mm minmax(0, 1fr);
+    grid-template-columns: 38mm minmax(0, 1fr);
     gap: 2mm;
     margin-bottom: 1.4mm;
     padding: 1.8mm;
     border-radius: 1.5mm;
     background: #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
-  .quick-summary-row.wide-row {
-    grid-template-columns: 28mm minmax(0, 1fr);
-  }
-
-  .quick-summary-value {
-    font-size: 7.6pt;
-    line-height: 1.28;
-    overflow-wrap: anywhere;
-    word-break: normal;
-  }
-
-  .quick-summary-value.path-value {
-    font-size: 6.8pt;
+  .quick-summary-key {
+    font-size: 7.2pt;
     line-height: 1.2;
-    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
-  .quick-summary-value.barcode-value,
-  .quick-summary-value.long-list-value {
-    column-count: auto;
+  .request-overview-item,
+  .attachment-item,
+  .zip-content-row {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .quick-summary-value,
+  .quick-summary-value :deep(.structured-value-table) {
+    font-size: 7.2pt;
+    line-height: 1.25;
   }
 
   .quick-summary-value :deep(.structured-value-scroll) {
     overflow: visible;
   }
-
-  .quick-summary-value :deep(.structured-value-table thead) {
-    display: table-header-group;
-  }
-
-  .quick-summary-value :deep(.structured-value-table tr) {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .quick-summary-value :deep(.structured-value-table) {
-    min-width: 0;
-    width: 100%;
-    table-layout: fixed;
-    font-size: 6.6pt;
-    line-height: 1.2;
-  }
-
-  .quick-summary-value :deep(.structured-value-table th),
-  .quick-summary-value :deep(.structured-value-table td) {
-    padding: 1mm;
-    overflow-wrap: anywhere;
-    word-break: normal;
-  }
-
-  .quick-summary-value :deep(.structured-value-table.key-value th) {
-    width: 24mm;
-  }
-
-  .quick-summary-row {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .record-group {
-    break-inside: auto;
-    page-break-inside: auto;
-  }
 }
 </style>
-

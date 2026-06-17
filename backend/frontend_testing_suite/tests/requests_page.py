@@ -119,10 +119,10 @@ def _select_first_ro_crate_row(page: Page):
 
 def _ro_crate_preview_payload():
     return {
-        "archive_name": "101_ROCrate_Request_ro_crate.zip",
+        "archive_name": "101_102_ro_crate.zip",
         "skipped_records": [],
         "ro_crate": {
-            "@context": ["https://w3id.org/ro/crate/1.2/context", {"@base": "./"}],
+            "@context": ["https://w3id.org/ro/crate/1.1/context"],
             "@graph": [
                 {
                     "@id": "ro-crate-metadata.json",
@@ -132,8 +132,36 @@ def _ro_crate_preview_payload():
                 {
                     "@id": "./",
                     "@type": "Dataset",
+                    "name": "Parkour RO-Crate export (2 requests)",
+                    "hasPart": [
+                        {"@id": "#request-context-101"},
+                        {"@id": "#request-context-102"},
+                        {"@id": "#study-101"},
+                        {"@id": "#study-102"},
+                    ],
+                },
+                {
+                    "@id": "#request-context-101",
+                    "@type": "Dataset",
                     "name": "101_ROCrate Request",
-                    "hasPart": [{"@id": "#library-material-501"}],
+                    "additionalProperty": [{"@id": "#request-101-name"}],
+                },
+                {
+                    "@id": "#request-101-name",
+                    "@type": "PropertyValue",
+                    "name": "request_name",
+                    "value": "101_ROCrate Request",
+                },
+                {
+                    "@id": "#study-101",
+                    "@type": "Dataset",
+                    "name": "Study for 101_ROCrate Request",
+                    "materials": {
+                        "otherMaterials": [{"@id": "#library-material-501"}]
+                    },
+                    "assays": [{"@id": "#library-assay-501"}],
+                    "processSequence": [{"@id": "#library-process-501"}],
+                    "dataFiles": [{"@id": "#library-data-501"}],
                 },
                 {
                     "@id": "#library-material-501",
@@ -141,13 +169,72 @@ def _ro_crate_preview_payload():
                     "name": "Delivered library",
                     "identifier": "26L000501",
                     "additionalType": {"@id": "https://w3id.org/isa/Library"},
+                    "organism": {"@id": "#organism-1"},
                     "additionalProperty": [
-                        {
-                            "@type": "PropertyValue",
-                            "name": "library_db_name",
-                            "value": "Delivered library",
-                        }
+                        {"@id": "#library-501-name"},
+                        {"@id": "#library-501-analysis"},
                     ],
+                },
+                {
+                    "@id": "#library-501-name",
+                    "@type": "PropertyValue",
+                    "name": "library_db_name",
+                    "value": "Delivered library",
+                },
+                {
+                    "@id": "#library-501-analysis",
+                    "@type": "PropertyValue",
+                    "name": "library_mv_analysis_type_name",
+                    "value": "RNA-seq",
+                },
+                {
+                    "@id": "#organism-1",
+                    "@type": "Thing",
+                    "name": "Arabidopsis",
+                },
+                {
+                    "@id": "#library-process-501",
+                    "@type": "CreateAction",
+                    "name": "Library metadata capture",
+                    "object": [{"@id": "#library-material-501"}],
+                    "result": [{"@id": "#library-data-501"}],
+                },
+                {
+                    "@id": "#library-data-501",
+                    "@type": "MediaObject",
+                    "name": "Library export metadata",
+                },
+                {
+                    "@id": "#library-assay-501",
+                    "@type": "Dataset",
+                    "name": "Assay for Delivered library",
+                },
+                {
+                    "@id": "#request-context-102",
+                    "@type": "Dataset",
+                    "name": "102_Second Request",
+                },
+                {
+                    "@id": "#study-102",
+                    "@type": "Dataset",
+                    "name": "Study for 102_Second Request",
+                    "materials": {
+                        "samples": [{"@id": "#sample-material-502"}]
+                    },
+                },
+                {
+                    "@id": "#sample-material-502",
+                    "@type": "Thing",
+                    "name": "Second sample",
+                    "identifier": "26S000502",
+                    "additionalType": {"@id": "https://w3id.org/isa/Sample"},
+                    "additionalProperty": [{"@id": "#sample-502-name"}],
+                },
+                {
+                    "@id": "#sample-502-name",
+                    "@type": "PropertyValue",
+                    "name": "sample_db_name",
+                    "value": "Second sample",
                 },
             ],
         },
@@ -224,8 +311,14 @@ def test_ro_crate_preview_opens_with_expected_api_params(page: Page):
 
     preview_overlay = page.get_by_test_id("ro-crate-preview-overlay")
     expect(preview_overlay).to_be_visible()
-    expect(preview_overlay.get_by_text("Library 1: Delivered library")).to_be_visible()
+    expect(preview_overlay.get_by_text("Request(s) Overview")).to_be_visible()
+    expect(preview_overlay.get_by_text("Request 1: 101_ROCrate Request")).to_be_visible()
+    expect(preview_overlay.get_by_text("Request 2: 102_Second Request")).to_be_visible()
+    expect(preview_overlay.get_by_text("Library: Delivered library")).to_be_visible()
+    expect(preview_overlay.get_by_text("Sample: Second sample")).to_be_visible()
     expect(preview_overlay.get_by_text("26L000501")).to_be_visible()
+    expect(preview_overlay.get_by_text("Arabidopsis")).to_be_visible()
+    expect(preview_overlay.get_by_text("Library 1: Delivered library")).not_to_be_visible()
 
     assert seen_generate_requests
     query = seen_generate_requests[0]

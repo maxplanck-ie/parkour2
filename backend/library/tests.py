@@ -10,10 +10,15 @@ from common.utils import get_random_name, timezone
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from flowcell.models import Flowcell, Lane, Sequencer
+from index_generator.models import Pool, PoolSize
 from library.models import CompleteLibraryData, Library
 from library_preparation.models import LibraryPreparation
 from library_sample_shared.models import (
     BarcodeCounter,
+    IndexI5,
+    IndexI7,
+    IndexPair,
     IndexType,
     LibraryProtocol,
     LibraryType,
@@ -449,23 +454,30 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {},
         )
 
-    def _comment_names(self, entry):
-        names = {comment.get("name") for comment in entry.get("comments", [])}
-        names.update(
-            {
-                prop.get("name")
-                for prop in entry.get("additionalProperty", [])
-                if isinstance(prop, dict)
-            }
-        )
-        names.update(
-            {
-                prop.get("name")
-                for prop in entry.get("parameterValue", [])
-                if isinstance(prop, dict)
-            }
-        )
-        return names
+    def _comment_names(self, entry, payload=None):
+        return {
+            prop.get("name")
+            for property_name in ("additionalProperty", "parameterValue")
+            for prop in self._property_entries(entry, payload, property_name)
+            if isinstance(prop, dict) and prop.get("name")
+        }
+
+    def _property_entries(self, entry, payload=None, property_name="additionalProperty"):
+        properties = entry.get(property_name, [])
+        if isinstance(properties, dict):
+            properties = [properties]
+        resolved_properties = []
+        for prop in properties:
+            if not isinstance(prop, dict):
+                continue
+            prop_id = prop.get("@id")
+            if prop_id and payload:
+                resolved = self._graph_entry(payload, prop_id)
+                if resolved:
+                    resolved_properties.append(resolved)
+                    continue
+            resolved_properties.append(prop)
+        return resolved_properties
 
     def _extract_zip_payload(self, response):
         self.assertEqual(response["Content-Type"], "application/zip")
@@ -504,25 +516,27 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             if isinstance(value, dict) and value.get("@id")
         }
 
-    def _assert_comment_names_include(self, entry, names):
-        comment_names = self._comment_names(entry)
+    def _additional_type_values(self, entry):
+        values = entry.get("additionalType", [])
+        if isinstance(values, dict):
+            values = [values]
+        elif not isinstance(values, list):
+            values = [values]
+        return values
+
+    def _assert_comment_names_include(self, entry, names, payload=None):
+        comment_names = self._comment_names(entry, payload)
         for name in names:
             self.assertIn(name, comment_names)
 
-    def _assert_comment_names_exclude(self, entry, names):
-        comment_names = self._comment_names(entry)
+    def _assert_comment_names_exclude(self, entry, names, payload=None):
+        comment_names = self._comment_names(entry, payload)
         for name in names:
             self.assertNotIn(name, comment_names)
 
-    def _comment_value(self, entry, name):
-        for comment in entry.get("comments", []):
-            if comment.get("name") == name:
-                return comment.get("value")
+    def _comment_value(self, entry, name, payload=None):
         for property_name in ("additionalProperty", "parameterValue"):
-            properties = entry.get(property_name, [])
-            if isinstance(properties, dict):
-                properties = [properties]
-            for prop in properties:
+            for prop in self._property_entries(entry, payload, property_name):
                 if isinstance(prop, dict) and prop.get("name") == name:
                     return prop.get("value")
         return None
@@ -675,6 +689,10 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             reverse("generate-ro-crate-list"), {"requests": self.request.name}
         )
         self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            f"{self.request.pk}_ro_crate.zip",
+            response["Content-Disposition"],
+        )
         payload, archive_names = self._extract_zip_payload(response)
         self.assertIn("@graph", payload)
         self.assertIn("ro-crate-metadata.json", archive_names)
@@ -682,6 +700,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         graph_ids = self._graph_ids(payload)
         self.assertIn("./", graph_ids)
         self.assertIn(f"#study-{self.request.id}", graph_ids)
+        self.assertFalse(any("comments" in entry for entry in payload["@graph"]))
 
         dataset_entry = next(
             (entry for entry in payload["@graph"] if entry.get("@id") == "./"), {}
@@ -691,21 +710,16 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             "https://w3id.org/isa/Investigation",
             self._additional_type_ids(dataset_entry),
         )
-        self.assertEqual(
-            dataset_entry.get("conformsTo"),
-            [
-                {
-                    "@id": "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile"
-                }
-            ],
+        self.assertIn("Investigation", self._additional_type_values(dataset_entry))
+        self.assertIn(
+            {"@id": "https://w3id.org/ro/crate/1.1"},
+            dataset_entry.get("conformsTo", []),
         )
         self.assertIn(
             {"@id": f"#study-{self.request.id}"},
             dataset_entry.get("hasPart", []),
         )
-        self.assertEqual(
-            dataset_entry.get("creator"), {"@id": f"#person-{self.user.id}"}
-        )
+        self.assertEqual(dataset_entry.get("creator"), {"@id": "#parkour-software"})
         self.assertEqual(
             dataset_entry.get("publisher"), {"@id": "#parkour-organization"}
         )
@@ -713,6 +727,13 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             "https://github.com/nfdi4plants/isa-ro-crate-profile/tree/release/profile",
             graph_ids,
         )
+        self.assertNotIn(f"#person-{self.user.id}", graph_ids)
+        self.assertNotIn("#role-request-submitter", graph_ids)
+        self.assertFalse(any(str(entity_id).startswith("#organization-") for entity_id in graph_ids))
+        self.assertFalse(
+            any(str(entity_id).startswith("#principal-investigator-") for entity_id in graph_ids)
+        )
+        self.assertFalse(any(str(entity_id).startswith("#cost-unit-") for entity_id in graph_ids))
         self.assertIn("#ro-crate-export-action", graph_ids)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
@@ -750,10 +771,10 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
 
         dataset_entry = self._graph_entry(payload, "./")
         filepaths = json.loads(
-            self._comment_value(dataset_entry, "request_filepaths")
+            self._comment_value(dataset_entry, "request_filepaths", payload)
         )
         metapaths = json.loads(
-            self._comment_value(dataset_entry, "request_metapaths")
+            self._comment_value(dataset_entry, "request_metapaths", payload)
         )
 
         self.assertEqual(
@@ -825,14 +846,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "sample_db_amplification_cycles",
                 "sample_db_equal_representation_nucleotides",
                 "sample_db_rna_quality",
-                "sample_mv_analysis_type_name",
-                "sample_mv_pool_names",
-                "sample_mv_sequencer_names",
-                "sample_mv_flowcell_ids",
-                "sample_mv_starting_amount",
-                "sample_mv_pcr_cycles",
                 "library_preparation_starting_amount",
             ],
+            payload,
         )
         self._assert_comment_names_exclude(
             sample_entry,
@@ -840,11 +856,26 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "sample_db_removed_amplification_cycles",
                 "sample_db_removed_equal_representation_nucleotides",
                 "sample_db_removed_rna_quality",
+                "sample_mv_analysis_type_name",
+                "sample_mv_pool_names",
+                "sample_mv_sequencer_names",
+                "sample_mv_flowcell_ids",
+                "sample_mv_starting_amount",
+                "sample_mv_pcr_cycles",
             ],
+            payload,
         )
         self.assertEqual(
             sample_entry.get("nucleicAcidType"),
             {"@id": f"#nucleic-acid-type-{sample.nucleic_acid_type_id}"},
+        )
+        nucleic_acid_type_entry = self._graph_entry(
+            payload, f"#nucleic-acid-type-{sample.nucleic_acid_type_id}"
+        )
+        self._assert_comment_names_exclude(
+            nucleic_acid_type_entry,
+            ["nucleic_acid_type_type"],
+            payload,
         )
         self.assertEqual(
             sample_entry.get("organism"),
@@ -855,6 +886,18 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#library-type-{sample.library_type_id}"},
         )
         process_entry = self._graph_entry(payload, f"#sample-process-{sample.pk}")
+        self._assert_comment_names_include(
+            process_entry,
+            [
+                "sample_mv_analysis_type_name",
+                "sample_mv_pool_names",
+                "sample_mv_sequencer_names",
+                "sample_mv_flowcell_ids",
+                "sample_mv_starting_amount",
+                "sample_mv_pcr_cycles",
+            ],
+            payload,
+        )
         self.assertEqual(
             process_entry.get("executesLabProtocol"),
             {"@id": f"#protocol-{sample.library_protocol_id}"},
@@ -875,11 +918,37 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             request_file_entry.get("isPartOf"),
             {"@id": "./"},
         )
-        self.assertIn(request_file_entity_id, archive_names)
+        self.assertTrue(
+            request_file_entry.get("contentUrl", "").startswith(
+                f"request-files/request-{self.request.id}_"
+            )
+        )
+        self.assertIn(request_file_entry.get("contentUrl"), archive_names)
         dataset_entry = self._graph_entry(payload, "./")
         self.assertIn(
             {"@id": request_file_entity_id},
             dataset_entry.get("hasPart", []),
+        )
+        study_entry = self._graph_entry(payload, f"#study-{self.request.pk}")
+        self.assertIn(
+            {"@id": f"#source-sample-{sample.pk}"},
+            study_entry.get("materials", {}).get("sources", []),
+        )
+        self.assertIn(
+            {"@id": f"#sample-material-{sample.pk}"},
+            study_entry.get("materials", {}).get("samples", []),
+        )
+        self.assertIn(
+            {"@id": f"#sample-assay-{sample.pk}"},
+            study_entry.get("assays", []),
+        )
+        self.assertIn(
+            {"@id": f"#sample-process-{sample.pk}"},
+            study_entry.get("processSequence", []),
+        )
+        self.assertIn(
+            {"@id": f"#sample-data-{sample.pk}"},
+            study_entry.get("dataFiles", []),
         )
 
     @patch("library.ro_crate.CompleteSampleData.objects")
@@ -922,17 +991,30 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         sample_entry = self._graph_entry(payload, f"#sample-material-{sample.pk}")
         self._assert_comment_names_include(
             sample_entry,
-            ["sample_db_name", "sample_mv_analysis_type_name"],
+            ["sample_db_name"],
+            payload,
+        )
+        sample_process = self._graph_entry(payload, f"#sample-process-{sample.pk}")
+        self._assert_comment_names_include(
+            sample_process,
+            ["sample_mv_analysis_type_name"],
+            payload,
         )
         self._assert_comment_names_exclude(
             sample_entry,
-            ["library_preparation_starting_amount", "pooling_concentration_c1"],
+            [
+                "library_preparation_starting_amount",
+                "pooling_concentration_c1",
+                "pooling_comment",
+                "pooling_sample",
+                "sample_mv_analysis_type_name",
+            ],
+            payload,
         )
         self.assertNotIn("organism", sample_entry)
         self.assertNotIn("indexType", sample_entry)
         self.assertNotIn("associatedPool", sample_entry)
 
-        sample_process = self._graph_entry(payload, f"#sample-process-{sample.pk}")
         self.assertNotIn("executesLabProtocol", sample_process)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
@@ -950,7 +1032,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            f"{self.request.name}_{other_request.name}_ro_crate.zip",
+            f"{self.request.pk}_{other_request.pk}_ro_crate.zip",
             response["Content-Disposition"],
         )
         payload, archive_names = self._extract_zip_payload(response)
@@ -982,6 +1064,48 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         self.assertIn(
             "https://w3id.org/isa/Study",
             self._additional_type_ids(second_study),
+        )
+
+    @patch("library.ro_crate.CompleteSampleData.objects")
+    @patch("library.ro_crate.CompleteLibraryData.objects")
+    def test_barcode_export_counts_related_record_request_memberships(
+        self, mock_library_objects, mock_sample_objects
+    ):
+        other_request = Request.objects.create(user=self.user)
+        other_request.refresh_from_db()
+        library = create_library("shared-request-library", status=6)
+        self.request.libraries.add(library)
+        other_request.libraries.add(library)
+        self._set_ro_crate_complete_data_rows(
+            mock_library_objects,
+            mock_sample_objects,
+            libraries=[self._library_view_row(library)],
+        )
+
+        response = self.client.get(
+            reverse("generate-ro-crate-list"), {"barcodes": library.barcode}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            f"{self.request.pk}_{other_request.pk}_ro_crate.zip",
+            response["Content-Disposition"],
+        )
+        payload, _ = self._extract_zip_payload(response)
+
+        dataset_entry = self._graph_entry(payload, "./")
+        library_entry = self._graph_entry(payload, f"#library-material-{library.pk}")
+        self.assertIn("2 requests", dataset_entry.get("name", ""))
+        self.assertIn(
+            {"@id": f"#request-context-{self.request.pk}"},
+            library_entry.get("requestContext", []),
+        )
+        self.assertIn(
+            {"@id": f"#request-context-{other_request.pk}"},
+            library_entry.get("requestContext", []),
+        )
+        self.assertIn(
+            {"@id": f"#study-{other_request.pk}"},
+            dataset_entry.get("hasPart", []),
         )
 
     @patch("library.ro_crate.CompleteSampleData.objects")
@@ -1058,11 +1182,45 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         library.removed_equal_representation_nucleotides = True
         library.removed_qpcr_result = 1.2
         library.removed_qpcr_result_facility = 2.4
+        index_i7 = IndexI7.objects.create(prefix="IDX", number="7", index="AAAA")
+        index_i5 = IndexI5.objects.create(prefix="IDX", number="5", index="CCCC")
+        library.index_type.indices_i7.add(index_i7)
+        library.index_type.indices_i5.add(index_i5)
+        index_pair = IndexPair.objects.create(
+            index_type=library.index_type,
+            index1=index_i7,
+            index2=index_i5,
+            char_coord="B",
+            num_coord=2,
+        )
+        library.index_i7 = index_i7.index
+        library.index_i5 = index_i5.index
         library.save()
         self.request.libraries.add(library)
         Pooling.objects.create(
             library=library, concentration_c1=6.6, comment="library pool"
         )
+        pool_size = PoolSize.objects.create(multiplier=1, size=400)
+        pool = Pool.objects.create(user=self.user, size=pool_size)
+        pool.libraries.add(library)
+        lane = Lane.objects.create(
+            name="L1",
+            pool=pool,
+            loading_concentration=1.8,
+            phix=2.5,
+            completed=True,
+        )
+        sequencer = Sequencer.objects.create(
+            name="NovaSeq 6000", lanes=2, lane_capacity=400
+        )
+        flowcell = Flowcell.objects.create(
+            flowcell_id="FC_RO_CRATE",
+            sequencer=sequencer,
+            matrix={"lane": "L1", "library": library.barcode},
+            sequences={"read1": "ACGT", "read2": "TGCA"},
+        )
+        flowcell.lanes.add(lane)
+        flowcell.requests.add(self.request)
 
         self._set_ro_crate_complete_data_rows(
             mock_library_objects,
@@ -1087,6 +1245,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "library_db_qpcr_result",
                 "library_db_qpcr_result_facility",
             ],
+            payload,
         )
         self._assert_comment_names_exclude(
             library_entry,
@@ -1095,7 +1254,112 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "library_db_removed_equal_representation_nucleotides",
                 "library_db_removed_qpcr_result",
                 "library_db_removed_qpcr_result_facility",
+                "pooling_comment",
+                "pooling_library",
             ],
+            payload,
+        )
+        self.assertEqual(
+            self._comment_value(library_entry, "library_db_library_protocol", payload),
+            library.library_protocol.name,
+        )
+        self.assertEqual(
+            self._comment_value(library_entry, "library_db_library_type", payload),
+            library.library_type.name,
+        )
+        self.assertEqual(
+            self._comment_value(library_entry, "library_db_organism", payload),
+            library.organism.name,
+        )
+        self.assertEqual(
+            self._comment_value(library_entry, "library_db_read_length", payload),
+            library.read_length.name,
+        )
+        self.assertEqual(
+            self._comment_value(library_entry, "library_db_index_type", payload),
+            library.index_type.name,
+        )
+        self.assertEqual(
+            self._comment_value(library_entry, "library_db_index_i7_id", payload),
+            index_i7.index_id,
+        )
+        self.assertEqual(
+            self._comment_value(library_entry, "library_db_index_i5_id", payload),
+            index_i5.index_id,
+        )
+        self.assertEqual(
+            library_entry.get("indexI7"), {"@id": f"#index-i7-{index_i7.id}"}
+        )
+        self.assertEqual(
+            library_entry.get("indexI5"), {"@id": f"#index-i5-{index_i5.id}"}
+        )
+        self.assertEqual(
+            library_entry.get("selectedIndexPair"),
+            {"@id": f"#index-pair-{index_pair.id}"},
+        )
+        self.assertEqual(
+            library_entry.get("sequencedOn"),
+            [{"@id": f"#flowcell-assay-{flowcell.id}"}],
+        )
+
+        library_type_entry = self._graph_entry(
+            payload, f"#library-type-{library.library_type_id}"
+        )
+        self.assertIn(
+            {"@id": f"#protocol-{library.library_protocol_id}"},
+            library_type_entry.get("availableProtocols", []),
+        )
+        index_type_entry = self._graph_entry(
+            payload, f"#index-type-{library.index_type_id}"
+        )
+        self.assertNotIn("indicesI7", index_type_entry)
+        self.assertNotIn("indicesI5", index_type_entry)
+        index_pair_entry = self._graph_entry(
+            payload, f"#index-pair-{index_pair.id}"
+        )
+        self.assertEqual(index_pair_entry.get("coordinate"), "B2")
+        flowcell_entry = self._graph_entry(payload, f"#flowcell-assay-{flowcell.id}")
+        self.assertEqual(
+            flowcell_entry.get("hasInstrument"), {"@id": f"#sequencer-{sequencer.id}"}
+        )
+        self.assertIn({"@id": f"#lane-{lane.id}"}, flowcell_entry.get("hasLane", []))
+        self.assertIn(
+            {"@id": f"#flowcell-matrix-data-{flowcell.id}"},
+            flowcell_entry.get("hasPart", []),
+        )
+        self.assertIn(
+            {"@id": f"#flowcell-sequences-data-{flowcell.id}"},
+            flowcell_entry.get("hasPart", []),
+        )
+        flowcell_data_entry = self._graph_entry(payload, f"#flowcell-data-{flowcell.id}")
+        self._assert_comment_names_exclude(
+            flowcell_data_entry,
+            ["flowcell_matrix", "flowcell_sequences"],
+            payload,
+        )
+        sequencer_entry = self._graph_entry(payload, f"#sequencer-{sequencer.id}")
+        self.assertEqual(
+            self._comment_value(sequencer_entry, "sequencer_lane_capacity", payload),
+            sequencer.lane_capacity,
+        )
+        lane_entry = self._graph_entry(payload, f"#lane-{lane.id}")
+        self.assertEqual(
+            self._comment_value(lane_entry, "lane_loading_concentration", payload),
+            lane.loading_concentration,
+        )
+        matrix_entry = self._graph_entry(
+            payload, f"#flowcell-matrix-data-{flowcell.id}"
+        )
+        self.assertIn(
+            library.barcode,
+            self._comment_value(matrix_entry, "flowcell_matrix", payload),
+        )
+        sequences_entry = self._graph_entry(
+            payload, f"#flowcell-sequences-data-{flowcell.id}"
+        )
+        self.assertIn(
+            "ACGT",
+            self._comment_value(sequences_entry, "flowcell_sequences", payload),
         )
 
         process_entry = self._graph_entry(payload, f"#library-process-{library.pk}")
@@ -1111,8 +1375,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
                 "library_mv_i7_id",
                 "library_mv_i5_id",
             ],
+            payload,
         )
-        self._assert_comment_names_exclude(process_entry, ["library_mv_status"])
+        self._assert_comment_names_exclude(process_entry, ["library_mv_status"], payload)
         self.assertIn("executesLabProtocol", process_entry)
         self.assertEqual(
             library_entry.get("organism"),

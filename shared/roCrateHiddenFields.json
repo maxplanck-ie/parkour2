@@ -3,16 +3,26 @@
     "approval",
     "costUnit",
     "createTime",
+    "email",
     "isConverted",
     "isPooled",
+    "indexPoolUserEmail",
+    "library",
+    "phone",
+    "principalInvestigatorEmail",
     "requestedSections",
+    "sample",
     "samplesSubmitted",
     "sequenced",
     "status",
+    "telephone",
     "token",
+    "type",
     "updateTime",
     "user",
+    "userEmail",
     "userIsPi",
-    "userIsStaff"
+    "userIsStaff",
+    "userPhone"
   ]
 }
