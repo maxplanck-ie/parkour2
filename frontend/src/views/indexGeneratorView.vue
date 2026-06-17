@@ -327,7 +327,6 @@ export default {
       iconSelectAll,
       iconDeselectAll,
       indexGeneratorFields: INDEX_GENERATOR_FIELDS,
-      indexGeneratorRecordTypes: INDEX_GENERATOR_RECORD_TYPES,
       records: [],
       poolRows: [],
       sourceColumnsList: [],
@@ -340,7 +339,6 @@ export default {
       selectedPoolSizeId: null,
       selectedPoolMultiplier: "",
       selectedPoolActualSize: "",
-      collapsedRequests: {},
       activePanelResize: null,
       applyAllReadLength: "",
       applyAllIndexType: "",
@@ -654,7 +652,6 @@ export default {
         readLengths: this.readLengths,
         generatorIndexTypes: this.generatorIndexTypes,
         onSelectionChange: this.handleSourceSelectionChange,
-        isCompatibleWithPool: this.isCompatibleWithPool,
         getIndexTypeName: this.getIndexTypeName
       });
       this.poolColumnsList = indexGeneratorPoolColumnDefs({
@@ -685,38 +682,12 @@ export default {
         this.generatorIndexTypes = indexTypesResponse.data || [];
         this.poolRows = [];
         this.generatedIndexRowKeys = [];
-        this.syncCollapsedRequests();
       } catch (error) {
         handleError(error);
       } finally {
         this.loading = false;
         this.hasCompletedInitialLoad = true;
       }
-    },
-    syncCollapsedRequests() {
-      const updated = {};
-      Object.keys(this.groupedRecords).forEach((requestName) => {
-        if (
-          Object.prototype.hasOwnProperty.call(
-            this.collapsedRequests,
-            requestName
-          )
-        ) {
-          updated[requestName] = this.collapsedRequests[requestName];
-        } else {
-          updated[requestName] = true;
-        }
-      });
-      this.collapsedRequests = updated;
-    },
-    isRequestCollapsed(requestName) {
-      return this.collapsedRequests[requestName] !== false;
-    },
-    toggleRequestGroup(requestName) {
-      this.collapsedRequests = {
-        ...this.collapsedRequests,
-        [requestName]: !this.isRequestCollapsed(requestName)
-      };
     },
     toggleLeftPanelCollapse() {
       if (this.isLeftPanelCollapsed) {
@@ -1610,9 +1581,6 @@ export default {
 
       return true;
     },
-    isCompatibleWithPool() {
-      return true;
-    },
     async generateIndices() {
       if (!this.validateSelectedRowsBeforeGeneration()) {
         return;
@@ -2176,26 +2144,6 @@ export default {
 
 :deep(.group-action-buttons-container) {
   gap: 5px;
-}
-
-.index-generator-page
-  :deep(.normal-tabulator-table .tabulator-cell.tabulator-editing select),
-.index-generator-page
-  :deep(.normal-tabulator-table .tabulator-cell.tabulator-editing input) {
-  width: 100%;
-  min-width: 0;
-  height: 24px;
-  box-sizing: border-box;
-  font-family: var(--app-font-family);
-  font-size: 12px;
-}
-
-.index-generator-page
-  :deep(.normal-tabulator-table .tabulator-cell.tabulator-editing select) {
-  padding-right: 24px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .right-panel :deep(.tabulator-group-toggle) {

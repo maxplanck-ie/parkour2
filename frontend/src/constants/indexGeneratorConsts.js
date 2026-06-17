@@ -306,7 +306,6 @@ export function indexGeneratorSourceColumnDefs({
   readLengths = [],
   generatorIndexTypes = [],
   onSelectionChange,
-  isCompatibleWithPool,
   getIndexTypeName
 } = {}) {
   return [
@@ -326,16 +325,6 @@ export function indexGeneratorSourceColumnDefs({
         input.checked = Boolean(cell.getValue());
         input.addEventListener("click", (event) => event.stopPropagation());
         input.addEventListener("change", (event) => {
-          if (
-            event.target.checked &&
-            typeof isCompatibleWithPool === "function" &&
-            !isCompatibleWithPool(rowData)
-          ) {
-            event.target.checked = false;
-            rowData[INDEX_GENERATOR_FIELDS.selected] = false;
-            return;
-          }
-
           onSelectionChange(rowData, event.target.checked);
         });
         return input;
