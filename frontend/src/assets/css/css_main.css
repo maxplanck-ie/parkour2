@@ -81,26 +81,32 @@
 .undo-toast-content {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .undo-toast-message {
+  flex: 1 1 auto;
   line-height: 1.2;
+  min-width: 0;
 }
 
 .undo-toast-button {
-  border: 1px solid rgba(0, 0, 0, 0.35);
-  border-radius: 4px;
-  padding: 2px 8px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 999px;
+  padding: 4px 10px;
   font-size: 12px;
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.9);
-  color: #1f2937;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
   cursor: pointer;
 }
 
 .undo-toast-button:hover {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.28);
+  border-color: #ffffff;
 }
 
 /* Info Toast */

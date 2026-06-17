@@ -85,7 +85,7 @@
           />
           <select
             id="index-generator-direction"
-            class="pool-size-select"
+            class="pool-size-select direction-select"
             :value="selectedDirection"
             @change="onDirectionChange($event.target.value)"
           >
@@ -136,6 +136,7 @@
               <label class="apply-all-label">Apply to Selected Records</label>
               <select
                 :value="applyAllReadLength"
+                :disabled="!hasSelectedSourceRows"
                 @change="
                   applyFieldToAll(
                     indexGeneratorFields.readLength,
@@ -155,6 +156,7 @@
               <select
                 class="apply-index-type-select"
                 :value="applyAllIndexType"
+                :disabled="!hasSelectedSourceRows"
                 @change="
                   applyFieldToAll(
                     indexGeneratorFields.indexType,
@@ -174,6 +176,7 @@
               <button
                 type="button"
                 class="add-selected-pool-button"
+                :disabled="!hasSelectedSourceRows"
                 @click="addSelectedRowsToPool"
               >
                 Add Selected to Pool
@@ -220,7 +223,7 @@
         <div class="panel-heading">
           <div class="panel-heading-primary">
             <h3>
-              Pool (# {{ poolRows.length }} {{ poolCountLabel }}, Total size:
+              Pool (#: {{ poolRows.length }} {{ poolCountLabel }}, Total Size:
               {{ totalDepthRounded }} M, Fill: {{ poolFillPercentageDisplay }})
             </h3>
           </div>
@@ -285,7 +288,7 @@ import {
   showUndoNotification,
   urlStringStartsWith
 } from "../utilities/utilityFunctions";
-import iconIndexGeneratorHeader from "../assets/icons/header_index_generator_cog.svg";
+import iconIndexGeneratorHeader from "../assets/icons/header_index_generator.svg";
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import TabulatorTable from "../components/TabulatorTableFull.vue";
@@ -375,6 +378,9 @@ export default {
     canSave() {
       return this.poolRows.length > 0 && !!this.selectedPoolSizeId;
     },
+    hasSelectedSourceRows() {
+      return this.records.some((row) => row[fields.selected]);
+    },
     poolCountLabel() {
       return this.poolRows.length === 1
         ? "library/sample"
@@ -406,7 +412,7 @@ export default {
     },
     poolFillPercentageDisplay() {
       if (this.poolFillPercentage === null) {
-        return "-";
+        return this.poolRows.length ? "No Size" : "0.0%";
       }
 
       return `${(Math.round(this.poolFillPercentage * 10) / 10).toFixed(1)}%`;
@@ -569,7 +575,6 @@ export default {
     sourceTableOptions() {
       return {
         index: fields.rowKey,
-        layout: "fitDataStretch",
         placeholder: "No libraries or samples to show.",
         groupHeader: (value, count, data) =>
           indexGeneratorSourceGroupHeader(
@@ -591,7 +596,6 @@ export default {
     poolTableOptions() {
       return {
         index: fields.rowKey,
-        layout: "fitDataStretch",
         placeholder: "No records selected.",
         groupHeader: (value, count, data) =>
           indexGeneratorPoolGroupHeader(
@@ -795,8 +799,48 @@ export default {
     },
     refreshTabulatorData() {
       this.$nextTick(() => {
-        this.sourceTabulatorInstance?.getTable?.()?.setData?.(this.records);
-        this.poolTabulatorInstance?.getTable?.()?.setData?.(this.poolRows);
+        this.setTabulatorDataPreservingGroups(
+          this.sourceTabulatorInstance?.getTable?.(),
+          this.records
+        );
+        this.setTabulatorDataPreservingGroups(
+          this.poolTabulatorInstance?.getTable?.(),
+          this.poolRows
+        );
+      });
+    },
+    getVisibleGroupKeys(table) {
+      return new Set(
+        (table?.getGroups?.() || [])
+          .filter((group) => group?._group?.visible)
+          .map((group) => group.getKey?.())
+          .filter((key) => key !== undefined && key !== null)
+      );
+    },
+    restoreVisibleGroupKeys(table, visibleGroupKeys) {
+      if (!table || !visibleGroupKeys?.size) {
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        (table.getGroups?.() || []).forEach((group) => {
+          if (!visibleGroupKeys.has(group.getKey?.())) {
+            return;
+          }
+          if (!group?._group?.visible) {
+            group.show?.();
+          }
+        });
+      });
+    },
+    setTabulatorDataPreservingGroups(table, rows) {
+      if (!table?.setData) {
+        return;
+      }
+
+      const visibleGroupKeys = this.getVisibleGroupKeys(table);
+      Promise.resolve(table.setData(rows)).finally(() => {
+        this.restoreVisibleGroupKeys(table, visibleGroupKeys);
       });
     },
     handleSourceSelectionChange(row, checked) {
@@ -1035,6 +1079,15 @@ export default {
     },
     async applyFieldToAll(field, value) {
       const normalizedValue = Number(value) || 0;
+
+      if (!this.hasSelectedSourceRows) {
+        if (field === fields.readLength) {
+          this.applyAllReadLength = "";
+        } else if (field === fields.indexType) {
+          this.applyAllIndexType = "";
+        }
+        return;
+      }
 
       if (!normalizedValue) {
         if (field === fields.readLength) {
@@ -1843,7 +1896,7 @@ export default {
 }
 
 .panel-heading-primary h3 {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .panel-heading-actions {
@@ -1857,21 +1910,26 @@ export default {
   align-items: center;
   gap: 5px;
   min-width: 0;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .apply-all-controls select {
+  flex: 0 1 155px;
   height: 28px;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 6px;
   font-size: 12px;
-  padding: 0 8px;
+  padding: 0 26px 0 8px;
   background: #fff;
+  box-sizing: border-box;
   min-width: 0;
 }
 
 .apply-index-type-select {
-  width: 208px;
+  flex-basis: 240px;
+  width: 240px;
+  max-width: min(240px, 30vw);
 }
 
 .left-panel .panel-heading {
@@ -1894,7 +1952,7 @@ export default {
 
 .apply-all-controls.compact {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   gap: 5px;
 }
@@ -1908,16 +1966,14 @@ export default {
 }
 
 .apply-all-controls.compact select:nth-of-type(2) {
-  flex: 0 1 180px;
+  flex: 0 1 220px;
 }
 
 .apply-all-controls.compact .apply-index-type-select {
-  max-width: none;
+  max-width: min(220px, 100%);
 }
 
-.add-selected-pool-button,
-:deep(.pool-row-remove-button),
-:deep(.text-action-button) {
+.add-selected-pool-button {
   border: 1px solid rgba(11, 127, 120, 0.35);
   border-radius: 8px;
   background: #ffffff;
@@ -1928,13 +1984,51 @@ export default {
   min-height: 28px;
   padding: 4px 8px;
   white-space: nowrap;
+  flex: 0 0 auto;
 }
 
-.add-selected-pool-button:hover,
-:deep(.pool-row-remove-button:hover),
-:deep(.text-action-button:hover) {
+.add-selected-pool-button:hover {
   background: #f4f8f8;
   border-color: #0b7f78;
+}
+
+.add-selected-pool-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.add-selected-pool-button:disabled:hover {
+  background: #ffffff;
+  border-color: rgba(11, 127, 120, 0.35);
+}
+
+:deep(.pool-row-remove-button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #323232;
+  cursor: pointer;
+  font-family: var(--app-font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0;
+}
+
+:deep(.pool-row-remove-button:hover) {
+  background: #f0f0f0;
+  color: #0b6f69;
+}
+
+:deep(.normal-tabulator-table .tabulator-cell.pool-row-remove-cell) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .apply-all-label {
@@ -1951,7 +2045,23 @@ export default {
   background-color: #ffffff;
   padding: 0 12px;
   color: #333;
+  box-sizing: border-box;
+  font-family: var(--app-font-family);
   font-size: 14px;
+  letter-spacing: 0;
+  text-align: left;
+  text-align-last: left;
+}
+
+.header-generate-controls .pool-size-select {
+  min-width: 120px;
+  width: 120px;
+}
+
+.direction-select {
+  font-size: 13px;
+  padding-left: 10px;
+  padding-right: 6px;
 }
 
 .pool-size-select:focus {
@@ -2064,150 +2174,41 @@ export default {
   min-height: 0;
 }
 
-:deep(.normal-tabulator-table .tabulator-col),
-:deep(.normal-tabulator-table .tabulator-col-title) {
-  font-family: var(--app-font-family);
-  font-size: 12px;
-  font-weight: 500;
-  color: #333;
-}
-
-:deep(.group-row-content) {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 8px;
-}
-
-:deep(.group-row-main) {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-:deep(.group-row-title) {
-  font-weight: bold;
-  font-size: 13px;
-  color: #333;
-}
-
-:deep(.group-row-summary) {
-  font-weight: normal;
-  font-size: 13px;
-  margin-left: 2px;
-  color: black;
-}
-
-:deep(.group-toggle-button) {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  margin-right: 6px;
-  padding: 0;
-  width: 16px;
-  color: #0b7f78;
-  font-size: 13px;
-  font-weight: 700;
-}
-
 :deep(.group-action-buttons-container) {
-  display: flex;
   gap: 5px;
 }
 
-:deep(.group-action-button) {
-  display: flex;
-  align-items: center;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
+.index-generator-page
+  :deep(.normal-tabulator-table .tabulator-cell.tabulator-editing select),
+.index-generator-page
+  :deep(.normal-tabulator-table .tabulator-cell.tabulator-editing input) {
+  width: 100%;
+  min-width: 0;
+  height: 24px;
+  box-sizing: border-box;
+  font-family: var(--app-font-family);
+  font-size: 12px;
 }
 
-:deep(.group-action-button.text-action-button) {
-  border: 1px solid #0b7f78;
-  padding: 4px 8px;
+.index-generator-page
+  :deep(.normal-tabulator-table .tabulator-cell.tabulator-editing select) {
+  padding-right: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .right-panel :deep(.tabulator-group-toggle) {
   display: none;
 }
 
-.protocol-column {
-  min-width: 230px;
-  width: 230px;
-  max-width: 360px;
-}
-
-.index-type-column {
-  min-width: 190px;
-  width: 190px;
-}
-
-.index-type-select-wrapper {
-  width: 100%;
-}
-
-.index-type-select-wrapper.is-disabled {
-  cursor: not-allowed;
-}
-
-.index-type-select-wrapper.is-disabled select {
-  pointer-events: none;
-}
-
-.checkbox-column {
-  min-width: 40px;
-  width: 40px;
-  text-align: center;
-}
-
-.name-column {
-  min-width: 220px;
-  width: 220px;
-}
-
-.barcode-column,
-.coord-column {
-  min-width: 110px;
-  width: 110px;
-}
-
-.depth-column,
-.length-column {
-  min-width: 90px;
-  width: 90px;
-}
-
-.type-column {
-  min-width: 68px;
-  width: 68px;
-}
-
-.index-id-column {
-  min-width: 104px;
-  width: 104px;
-}
-
-.sequence-column {
-  min-width: 130px;
-  width: 130px;
-}
-
 .coordinate-input {
-  min-width: 122px;
-}
-
-.barcode-text {
-  font-family: var(--app-font-family);
-}
-
-:deep(.sequence-text) {
-  font-family: "Courier New", Courier, monospace;
+  min-width: 120px;
+  width: 120px;
 }
 
 :deep(.sequence-colored) {
+  font-family: "Courier New", Courier, monospace;
   letter-spacing: 0.4px;
 }
 
@@ -2298,6 +2299,10 @@ export default {
   .pool-size-select {
     min-width: 120px;
   }
+
+  .apply-all-controls {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 550px) {
@@ -2309,6 +2314,23 @@ export default {
   .pool-size-select {
     width: 100%;
     min-width: 0;
+  }
+
+  .apply-all-controls,
+  .apply-all-controls.compact {
+    width: 100%;
+  }
+
+  .apply-all-controls .apply-all-label {
+    flex: 1 1 100%;
+  }
+
+  .apply-all-controls select,
+  .apply-index-type-select,
+  .add-selected-pool-button {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: none;
   }
 }
 </style>

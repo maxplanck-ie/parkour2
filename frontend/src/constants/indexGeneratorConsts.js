@@ -1,3 +1,6 @@
+import { ellipsisContainer } from "../utilities/utilityFunctions";
+import iconDeleteRequest from "../assets/icons/action_delete_request.svg";
+
 export const INDEX_GENERATOR_API_ENDPOINTS = {
   records: "/api/index_generator/",
   readLengths: "/api/read_lengths/",
@@ -114,7 +117,7 @@ const escapeHtml = (value) =>
 const sequenceFormatter = (cell) => {
   const sequence = String(cell.getValue() || "");
   if (!sequence) {
-    return INDEX_GENERATOR_DEFAULTS.emptyDisplay;
+    return readonlyValueFormatter(INDEX_GENERATOR_DEFAULTS.emptyDisplay);
   }
 
   const html = sequence
@@ -131,10 +134,18 @@ const sequenceFormatter = (cell) => {
     })
     .join("");
 
-  return `<span class="sequence-colored">${html}</span>`;
+  return (
+    `<div title='${escapeHtml(sequence)}' ` +
+    'style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ' +
+    'padding: 12px 8px 12px 12px; font-weight: normal">' +
+    `<span class="sequence-colored">${html}</span></div>`
+  );
 };
 
-const readonlyFormatter = (cell) => emptyFormatter(cell.getValue());
+const readonlyValueFormatter = (value) =>
+  ellipsisContainer(escapeHtml(emptyFormatter(value)), false);
+
+const readonlyFormatter = (cell) => readonlyValueFormatter(cell.getValue());
 
 const selectOptions = (items, includeEmpty = false, emptyLabel = "-") => {
   const options = includeEmpty ? [{ label: emptyLabel, value: 0 }] : [];
@@ -144,6 +155,30 @@ const selectOptions = (items, includeEmpty = false, emptyLabel = "-") => {
       value: item.id
     }))
   );
+};
+
+const applyGroupHeaderStyles = (wrapper, main, title, details) => {
+  Object.assign(wrapper.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  });
+  Object.assign(main.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  });
+  Object.assign(title.style, {
+    fontWeight: "bold",
+    fontSize: "12px",
+    color: "#333"
+  });
+  Object.assign(details.style, {
+    fontWeight: "normal",
+    fontSize: "12px",
+    marginLeft: "2px",
+    color: "black"
+  });
 };
 
 export function indexGeneratorSourceGroupHeader(
@@ -173,6 +208,7 @@ export function indexGeneratorSourceGroupHeader(
     ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, ` +
     `Read Lengths: ${summary.readLengthDisplay}, ${summary.biosafetyLevel})`;
 
+  applyGroupHeaderStyles(wrapper, main, title, details);
   text.append(title, details);
 
   const actions = document.createElement("div");
@@ -211,8 +247,8 @@ export function indexGeneratorSourceGroupHeader(
     actions.appendChild(button);
   });
 
-  main.append(text, actions);
-  wrapper.appendChild(main);
+  main.appendChild(text);
+  wrapper.append(main, actions);
   return wrapper;
 }
 
@@ -241,6 +277,7 @@ export function indexGeneratorPoolGroupHeader(
     ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, ` +
     `Read Lengths: ${summary.readLengthDisplay}, ${summary.biosafetyLevel})`;
 
+  applyGroupHeaderStyles(wrapper, main, title, details);
   text.append(title, details);
 
   const actions = document.createElement("div");
@@ -249,14 +286,19 @@ export function indexGeneratorPoolGroupHeader(
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "group-action-button text-action-button";
+  button.className = "group-action-button";
   button.title = "Remove All from This Request";
-  button.textContent = "Remove Request";
+  button.setAttribute("aria-label", "Remove All from This Request");
+  const image = document.createElement("img");
+  image.className = "group-action-icon-img";
+  image.src = iconDeleteRequest;
+  image.alt = "Remove Request";
+  button.appendChild(image);
   button.addEventListener("click", () => removePoolRowsInGroup(data));
   actions.appendChild(button);
 
-  main.append(text, actions);
-  wrapper.appendChild(main);
+  main.appendChild(text);
+  wrapper.append(main, actions);
   return wrapper;
 }
 
@@ -271,14 +313,16 @@ export function indexGeneratorSourceColumnDefs({
     {
       title: "",
       field: INDEX_GENERATOR_FIELDS.selected,
-      width: 44,
-      minWidth: 44,
+      width: 30,
+      minWidth: 30,
       hozAlign: "center",
       headerSort: false,
+      resizable: false,
       formatter: (cell) => {
         const rowData = cell.getRow().getData();
         const input = document.createElement("input");
         input.type = "checkbox";
+        input.style.top = "-4px";
         input.checked = Boolean(cell.getValue());
         input.addEventListener("click", (event) => event.stopPropagation());
         input.addEventListener("change", (event) => {
@@ -296,7 +340,7 @@ export function indexGeneratorSourceColumnDefs({
         });
         return input;
       },
-      cssClass: "checkbox-column",
+      cssClass: "checkbox-column right-border",
       frozen: true,
       download: false,
       clipboard: false
@@ -304,30 +348,33 @@ export function indexGeneratorSourceColumnDefs({
     {
       title: "Name",
       field: INDEX_GENERATOR_FIELDS.name,
-      width: 220,
-      minWidth: 160,
-      formatter: readonlyFormatter
+      minWidth: 110,
+      widthGrow: 2,
+      formatter: readonlyFormatter,
+      cssClass: "name-column right-border"
     },
     {
       title: "Barcode",
       field: INDEX_GENERATOR_FIELDS.barcode,
-      width: 120,
-      minWidth: 110,
+      minWidth: 85,
+      widthGrow: 1,
       formatter: readonlyFormatter,
-      cssClass: "barcode-text"
+      cssClass: "details-column barcode-column right-border"
     },
     {
       title: "Depth (M)",
       field: INDEX_GENERATOR_FIELDS.sequencingDepth,
-      width: 95,
-      minWidth: 90,
-      formatter: readonlyFormatter
+      minWidth: 70,
+      widthGrow: 1,
+      formatter: readonlyFormatter,
+      cssClass: "depth-column right-border"
     },
     {
       title: "Length",
       field: INDEX_GENERATOR_FIELDS.readLength,
-      width: 120,
-      minWidth: 100,
+      minWidth: 85,
+      widthGrow: 1,
+      cssClass: "length-column right-border",
       editor: "list",
       editorParams: {
         values: selectOptions(readLengths, true)
@@ -337,21 +384,25 @@ export function indexGeneratorSourceColumnDefs({
         const match = (readLengths || []).find(
           (item) => String(item.id) === value
         );
-        return match?.name || INDEX_GENERATOR_DEFAULTS.emptyDisplay;
+        return readonlyValueFormatter(
+          match?.name || INDEX_GENERATOR_DEFAULTS.emptyDisplay
+        );
       }
     },
     {
       title: "Protocol",
       field: INDEX_GENERATOR_FIELDS.libraryProtocolName,
-      width: 230,
-      minWidth: 180,
-      formatter: readonlyFormatter
+      minWidth: 110,
+      widthGrow: 2,
+      formatter: readonlyFormatter,
+      cssClass: "protocol-column right-border"
     },
     {
       title: "Index Type",
       field: INDEX_GENERATOR_FIELDS.indexType,
-      width: 190,
-      minWidth: 160,
+      minWidth: 105,
+      widthGrow: 2,
+      cssClass: "index-type-column right-border",
       editor: "list",
       editable: (cell) =>
         cell.getRow().getData()[INDEX_GENERATOR_FIELDS.type] !==
@@ -369,27 +420,27 @@ export function indexGeneratorSourceColumnDefs({
         } else {
           cell.getElement().classList.remove("disable-editing");
         }
-        return (
+        return readonlyValueFormatter(
           getIndexTypeName?.(cell.getValue()) ||
-          INDEX_GENERATOR_DEFAULTS.emptyDisplay
+            INDEX_GENERATOR_DEFAULTS.emptyDisplay
         );
       }
     },
     {
       title: "Index I7",
       field: INDEX_GENERATOR_FIELDS.indexI7,
-      width: 135,
-      minWidth: 120,
+      minWidth: 80,
+      widthGrow: 1,
       formatter: sequenceFormatter,
-      cssClass: "sequence-text"
+      cssClass: "sequence-column sequence-text right-border"
     },
     {
       title: "Index I5",
       field: INDEX_GENERATOR_FIELDS.indexI5,
-      width: 135,
-      minWidth: 120,
+      minWidth: 80,
+      widthGrow: 1,
       formatter: sequenceFormatter,
-      cssClass: "sequence-text"
+      cssClass: "sequence-column sequence-text"
     }
   ];
 }
@@ -399,90 +450,100 @@ export function indexGeneratorPoolColumnDefs({ onRemoveRow } = {}) {
     {
       title: "",
       field: INDEX_GENERATOR_POOL_ACTIONS.removeFromPool,
-      width: 76,
-      minWidth: 76,
+      width: 34,
+      minWidth: 34,
       hozAlign: "center",
+      vertAlign: "middle",
       headerSort: false,
+      resizable: false,
       formatter: (cell) => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "pool-row-remove-button";
         button.title = "Remove from Pool";
-        button.textContent = "Remove";
+        button.setAttribute("aria-label", "Remove from Pool");
+        button.innerHTML = "&times;";
         button.addEventListener("click", (event) => {
           event.stopPropagation();
           onRemoveRow?.(cell.getRow().getData());
         });
         return button;
       },
+      cssClass: "pool-row-remove-cell right-border",
       download: false,
       clipboard: false
     },
     {
       title: "Name",
       field: INDEX_GENERATOR_FIELDS.name,
-      width: 220,
       minWidth: 160,
-      formatter: readonlyFormatter
+      widthGrow: 2,
+      formatter: readonlyFormatter,
+      cssClass: "name-column right-border"
     },
     {
       title: "Barcode",
       field: INDEX_GENERATOR_FIELDS.barcode,
-      width: 120,
       minWidth: 110,
+      widthGrow: 1,
       formatter: readonlyFormatter,
-      cssClass: "barcode-text"
+      cssClass: "details-column barcode-column right-border"
     },
     {
       title: "L/S",
       field: INDEX_GENERATOR_FIELDS.type,
-      width: 70,
       minWidth: 60,
-      formatter: readonlyFormatter
+      widthGrow: 1,
+      formatter: readonlyFormatter,
+      cssClass: "type-column right-border"
     },
     {
       title: "Depth (M)",
       field: INDEX_GENERATOR_FIELDS.sequencingDepth,
-      width: 95,
       minWidth: 90,
-      formatter: readonlyFormatter
+      widthGrow: 1,
+      formatter: readonlyFormatter,
+      cssClass: "depth-column right-border"
     },
     {
       title: "Coord",
       field: INDEX_GENERATOR_FIELDS.coordinate,
-      width: 110,
       minWidth: 100,
-      formatter: readonlyFormatter
+      widthGrow: 1,
+      formatter: readonlyFormatter,
+      cssClass: "coord-column right-border"
     },
     {
       title: "Index I7 ID",
       field: INDEX_GENERATOR_FIELDS.indexI7Id,
-      width: 110,
       minWidth: 100,
-      formatter: readonlyFormatter
+      widthGrow: 1,
+      formatter: readonlyFormatter,
+      cssClass: "index-id-column right-border"
     },
     {
       title: "Index I7",
       field: INDEX_GENERATOR_FIELDS.indexI7,
-      width: 135,
       minWidth: 120,
+      widthGrow: 1,
       formatter: sequenceFormatter,
-      cssClass: "sequence-text"
+      cssClass: "sequence-column sequence-text right-border"
     },
     {
       title: "Index I5 ID",
       field: INDEX_GENERATOR_FIELDS.indexI5Id,
-      width: 110,
       minWidth: 100,
-      formatter: readonlyFormatter
+      widthGrow: 1,
+      formatter: readonlyFormatter,
+      cssClass: "index-id-column right-border"
     },
     {
       title: "Index I5",
       field: INDEX_GENERATOR_FIELDS.indexI5,
-      width: 135,
       minWidth: 120,
+      widthGrow: 1,
       formatter: sequenceFormatter,
-      cssClass: "sequence-text"
+      cssClass: "sequence-column sequence-text"
     }
   ];
 }
