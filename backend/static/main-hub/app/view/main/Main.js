@@ -14,10 +14,10 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.librarypreparationvue.LibraryPreparationVue",
     "MainHub.view.poolingvue.PoolingVue",
     "MainHub.view.flowcellvue.FlowcellsVue",
+    "MainHub.view.statisticsvue.RunStatisticsVue",
+    "MainHub.view.statisticsvue.SequencesStatisticsVue",
     "MainHub.view.invoicing.Invoicing",
-    "MainHub.view.usage.Usage",
-    "MainHub.view.statistics.RunStatistics",
-    "MainHub.view.statistics.Sequences"
+    "MainHub.view.usage.Usage"
   ],
 
   controller: "main",

@@ -133,12 +133,12 @@ def get_navigation_tree(request):
                 "children": [
                     {
                         "text": "Runs",
-                        "viewType": "run-statistics",
+                        "viewType": "run-statistics-vue",
                         "leaf": True,
                     },
                     {
                         "text": "Sequences",
-                        "viewType": "sequences-statistics",
+                        "viewType": "sequences-statistics-vue",
                         "leaf": True,
                     },
                 ],

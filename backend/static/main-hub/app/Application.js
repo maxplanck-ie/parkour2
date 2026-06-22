@@ -64,8 +64,6 @@ Ext.define("MainHub.Application", {
     "usage.Organizations",
     "usage.PrincipalInvestigators",
     "usage.LibraryTypes",
-    "statistics.RunStatistics",
-    "statistics.Sequences",
     "metadataexporter.Samples",
     "metadataexporter.StudyTypes",
     "metadataexporter.LibrarySources",

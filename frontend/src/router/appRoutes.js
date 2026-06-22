@@ -8,6 +8,8 @@ import pooling from "../views/poolingView.vue";
 import loadFlowcells from "../views/loadFlowcellsView.vue";
 import IndexGeneratorView from "../views/indexGeneratorView.vue";
 import notFoundView from "../views/notFoundView.vue";
+import runStatisticsView from "../views/runStatisticsView.vue";
+import sequencesStatisticsView from "../views/sequencesStatisticsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +52,16 @@ const router = createRouter({
           path: "index_generator",
           name: "Index Generator",
           component: IndexGeneratorView
+        },
+        {
+          path: "run_statistics",
+          name: "Run Statistics",
+          component: runStatisticsView
+        },
+        {
+          path: "sequences_statistics",
+          name: "Sequence Statistics",
+          component: sequencesStatisticsView
         },
         {
           path: "not_found",

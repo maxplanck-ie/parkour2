@@ -25,7 +25,9 @@ Ext.define("MainHub.view.main.MainController", {
     preparation: "library-preparation-vue",
     "library-preparation": "library-preparation-vue",
     pooling: "pooling-vue",
-    flowcells: "flowcells-vue"
+    flowcells: "flowcells-vue",
+    "run-statistics": "run-statistics-vue",
+    "sequences-statistics": "sequences-statistics-vue"
   },
 
   onMainViewRender: function () {

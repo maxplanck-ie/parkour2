@@ -112,10 +112,13 @@ class NavigationTreeTest(TestCase):
     def test_navigation_tree_admin(self):
         self.client.login(email="admin@bar.io", password="foo-foo")
         response = self.client.get(reverse("get_navigation_tree"))
+        children = json.loads(str(response.content, "utf-8"))["children"]
         self.assertEqual(response.status_code, 200)
-        self.assertGreater(
-            len(json.loads(str(response.content, "utf-8"))["children"]),
-            2,
+        self.assertGreater(len(children), 2)
+        statistics = next(item for item in children if item["text"] == "Statistics")
+        self.assertEqual(
+            [item["viewType"] for item in statistics["children"]],
+            ["run-statistics-vue", "sequences-statistics-vue"],
         )
 
     def test_navigation_tree_user(self):
