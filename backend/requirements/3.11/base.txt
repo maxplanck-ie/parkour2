@@ -66,7 +66,7 @@ numpy==1.25.2 ; python_full_version < '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
-numpy==2.4.6 ; python_full_version >= '3.12'
+numpy==2.5.0 ; python_full_version >= '3.12'
     # via
     #   -r backend/requirements/base.in
     #   pandas
