@@ -15,7 +15,9 @@ function escapeHtml(value) {
 }
 
 function ellipsisContainer(value, align = "left") {
-  const finalValue = displayValue(value) || "-";
+  const display = displayValue(value);
+  const finalValue =
+    display === null || display === undefined || display === "" ? "-" : display;
   const escapedValue = escapeHtml(finalValue);
   const justifyContent = align === "right" ? "flex-end" : "flex-start";
   return `

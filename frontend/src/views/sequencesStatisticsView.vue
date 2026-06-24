@@ -245,7 +245,7 @@
               </div>
             </div>
           </span>
-          <button class="popup-close-button" @click="showExportPopup = false">
+          <button class="popup-close-button" @click="closeExportPopup">
             &times;
           </button>
         </div>
@@ -395,13 +395,7 @@
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button
-            class="popup-button"
-            @click="
-              showExportPopup = false;
-              selectedFile = 'without-file';
-            "
-          >
+          <button class="popup-button" @click="closeExportPopup">
             Cancel
           </button>
         </div>
@@ -703,8 +697,17 @@ function handleExportClick() {
   hasSelectedRows.value = rows.value.some((row) => row.selected);
   exportSelection.value = hasSelectedRows.value ? "selected" : "all";
   showExportPopup.value = true;
+  showExportHelpTooltip.value = false;
+  isDragOver.value = false;
   showAdvancedFilters.value = false;
   showSelectColumns.value = false;
+}
+
+function closeExportPopup() {
+  showExportPopup.value = false;
+  showExportHelpTooltip.value = false;
+  isDragOver.value = false;
+  selectedFile.value = "without-file";
 }
 
 async function fetchExportTemplates() {
@@ -723,6 +726,7 @@ async function uploadExportTemplate(event) {
 }
 
 async function downloadExportTemplate(file) {
+  if (!file?.id) return;
   try {
     const response = await axiosRef.get(`${TEMPLATE_API_URL}/${file.id}/download/`, {
       responseType: "blob"
@@ -742,6 +746,7 @@ async function downloadExportTemplate(file) {
 
 async function removeExportTemplate(index) {
   const file = uploadedExportTemplates.value[index];
+  if (!file?.id) return;
   try {
     await axiosRef.delete(`${TEMPLATE_API_URL}/${file.id}/remove/`);
     uploadedExportTemplates.value.splice(index, 1);
@@ -804,16 +809,15 @@ async function processUploadedFile(file) {
 }
 
 async function handleExport() {
-  const exportRows =
-    exportSelection.value === "selected"
-      ? rows.value.filter((row) => row.selected)
-      : filteredRows.value;
+  const exportRows = getRowsForExport();
   if (!exportRows.length) {
     showNotification("No sequence statistics available for export.", "warning");
     return;
   }
   try {
     const formattedDate = new Date().toISOString().split("T")[0];
+    const selectedTemplate =
+      selectedFile.value !== "without-file" ? selectedFile.value : null;
     const filename =
       exportSelection.value === "selected"
         ? `${formattedDate}_selected_sequence_statistics`
@@ -823,25 +827,26 @@ async function handleExport() {
       exportColumns: sequencesStatisticsExportColumns(),
       axiosInstance: axiosRef,
       templateDownloadUrl:
-        selectedFile.value !== "without-file"
-          ? `${TEMPLATE_API_URL}/${selectedFile.value.id}/download/`
+        selectedTemplate !== null
+          ? `${TEMPLATE_API_URL}/${selectedTemplate.id}/download/`
           : null,
-      templateFileName:
-        selectedFile.value !== "without-file" ? selectedFile.value.name : ""
+      templateFileName: selectedTemplate?.name || ""
     });
     saveAs(
       blob,
-      buildExcelExportFilename(
-        filename,
-        selectedFile.value !== "without-file" ? selectedFile.value.name : ""
-      )
+      buildExcelExportFilename(filename, selectedTemplate?.name || "")
     );
   } catch (error) {
     showNotification("Error during export. Please try again.\n" + error, "error");
   } finally {
-    showExportPopup.value = false;
-    selectedFile.value = "without-file";
+    closeExportPopup();
   }
+}
+
+function getRowsForExport() {
+  return exportSelection.value === "selected"
+    ? rows.value.filter((row) => row.selected)
+    : filteredRows.value;
 }
 
 function toggleColumnVisibility(column) {
@@ -917,7 +922,7 @@ function handleDocumentClick(event) {
     !exportPopup?.contains(event.target) &&
     !exportButton?.contains(event.target)
   ) {
-    showExportPopup.value = false;
+    closeExportPopup();
   }
 }
 
@@ -925,7 +930,7 @@ function handleKeyDown(event) {
   if (event.key !== "Escape") return;
   showAdvancedFilters.value = false;
   showSelectColumns.value = false;
-  showExportPopup.value = false;
+  closeExportPopup();
 }
 
 onMounted(() => {
@@ -980,8 +985,8 @@ setColumns();
       handleDateChange,
       handleSearchAction,
       handleExportClick,
+      closeExportPopup,
       handleExport,
-      fetchExportTemplates,
       uploadExportTemplate,
       downloadExportTemplate,
       removeExportTemplate,
@@ -1005,11 +1010,6 @@ setColumns();
   display: flex;
   flex-direction: column;
   padding: 10px;
-}
-
-.statistics-export-popup {
-  width: 420px;
-  min-height: 220px;
 }
 
 .statistics-header-icon {
