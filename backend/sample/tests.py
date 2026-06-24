@@ -360,6 +360,62 @@ class TestSamples(BaseTestCase):
         self.assertEqual(Sample.objects.get(pk=sample1.pk).name, new_name1)
         self.assertEqual(Sample.objects.get(pk=sample2.pk).name, sample2.name)
 
+    def test_add_sample_rejects_name_ending_with_special_character(self):
+        """Ensure add sample rejects names ending with special characters."""
+        response = self.client.post(
+            reverse("samples-list"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "name": "260429_04_SM_CnT_T180_utx1_H3K27me3_rep1_",
+                            "organism": self.sample.organism.pk,
+                            "measured_value": 1.0,
+                            "read_length": self.sample.read_length.pk,
+                            "sequencing_depth": 1,
+                            "library_protocol": self.sample.library_protocol.pk,
+                            "library_type": self.sample.library_type.pk,
+                            "nucleic_acid_type": self.sample.nucleic_acid_type.pk,
+                        }
+                    ]
+                )
+            },
+        )
+        data = response.json()
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Invalid payload.")
+
+    def test_update_sample_rejects_name_ending_with_special_character(self):
+        """Ensure update sample rejects names ending with special characters."""
+        sample = create_sample(self._get_random_name())
+
+        response = self.client.post(
+            reverse("samples-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": sample.pk,
+                            "name": "260429_04_SM_CnT_T180_utx1_H3K27me3_rep1_",
+                            "organism": sample.organism.pk,
+                            "measured_value": 1.0,
+                            "read_length": sample.read_length.pk,
+                            "sequencing_depth": 1,
+                            "library_protocol": sample.library_protocol.pk,
+                            "library_type": sample.library_type.pk,
+                            "nucleic_acid_type": sample.nucleic_acid_type.pk,
+                        }
+                    ]
+                )
+            },
+        )
+        data = response.json()
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Invalid payload.")
+        self.assertEqual(Sample.objects.get(pk=sample.pk).name, sample.name)
+
     def test_delete_sample(self):
         """Ensure delete sample behaves correctly."""
         sample = create_sample(self._get_random_name())

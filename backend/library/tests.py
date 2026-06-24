@@ -404,6 +404,66 @@ class TestLibraries(BaseTestCase):
         self.assertEqual(Library.objects.get(pk=library1.pk).name, new_name1)
         self.assertEqual(Library.objects.get(pk=library2.pk).name, library2.name)
 
+    def test_add_library_rejects_name_ending_with_special_character(self):
+        """Ensure add library rejects names ending with special characters."""
+        response = self.client.post(
+            reverse("libraries-list"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "name": "260429_04_SM_CnT_T180_utx1_H3K27me3_rep1_",
+                            "organism": self.library.organism.pk,
+                            "measured_value": 1.0,
+                            "read_length": self.library.read_length.pk,
+                            "sequencing_depth": 1,
+                            "library_protocol": self.library.library_protocol.pk,
+                            "library_type": self.library.library_type.pk,
+                            "index_type": self.library.index_type.pk,
+                            "index_reads": 0,
+                            "mean_fragment_size": 1,
+                        }
+                    ]
+                )
+            },
+        )
+        data = response.json()
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Invalid payload.")
+
+    def test_update_library_rejects_name_ending_with_special_character(self):
+        """Ensure update library rejects names ending with special characters."""
+        library = create_library(self._get_random_name())
+
+        response = self.client.post(
+            reverse("libraries-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": library.pk,
+                            "name": "260429_04_SM_CnT_T180_utx1_H3K27me3_rep1_",
+                            "organism": library.organism.pk,
+                            "measured_value": 1.0,
+                            "read_length": library.read_length.pk,
+                            "sequencing_depth": 1,
+                            "library_protocol": library.library_protocol.pk,
+                            "library_type": library.library_type.pk,
+                            "index_type": library.index_type.pk,
+                            "index_reads": 0,
+                            "mean_fragment_size": 1,
+                        }
+                    ]
+                )
+            },
+        )
+        data = response.json()
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Invalid payload.")
+        self.assertEqual(Library.objects.get(pk=library.pk).name, library.name)
+
     # def test_update_library_non_staff(self):
     #     """
     #     Ensure a non-staff user cannot update a library created by
@@ -467,7 +527,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             if isinstance(prop, dict) and prop.get("name")
         }
 
-    def _property_entries(self, entry, payload=None, property_name="additionalProperty"):
+    def _property_entries(
+        self, entry, payload=None, property_name="additionalProperty"
+    ):
         properties = entry.get(property_name, [])
         if isinstance(properties, dict):
             properties = [properties]
@@ -749,11 +811,18 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         )
         self.assertNotIn(f"#person-{self.user.id}", graph_ids)
         self.assertNotIn("#role-request-submitter", graph_ids)
-        self.assertFalse(any(str(entity_id).startswith("#organization-") for entity_id in graph_ids))
         self.assertFalse(
-            any(str(entity_id).startswith("#principal-investigator-") for entity_id in graph_ids)
+            any(str(entity_id).startswith("#organization-") for entity_id in graph_ids)
         )
-        self.assertFalse(any(str(entity_id).startswith("#cost-unit-") for entity_id in graph_ids))
+        self.assertFalse(
+            any(
+                str(entity_id).startswith("#principal-investigator-")
+                for entity_id in graph_ids
+            )
+        )
+        self.assertFalse(
+            any(str(entity_id).startswith("#cost-unit-") for entity_id in graph_ids)
+        )
         self.assertIn("#ro-crate-export-action", graph_ids)
 
     @patch("library.ro_crate.CompleteSampleData.objects")
@@ -797,9 +866,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             self._comment_value(dataset_entry, "request_metapaths", payload)
         )
 
-        self.assertEqual(
-            filepaths["data"]["md5"], "d41d8cd98f00b204e9800998ecf8427e"
-        )
+        self.assertEqual(filepaths["data"]["md5"], "d41d8cd98f00b204e9800998ecf8427e")
         self.assertEqual(
             filepaths["data"],
             {
@@ -1407,9 +1474,7 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
         )
         self.assertNotIn("indicesI7", index_type_entry)
         self.assertNotIn("indicesI5", index_type_entry)
-        index_pair_entry = self._graph_entry(
-            payload, f"#index-pair-{index_pair.id}"
-        )
+        index_pair_entry = self._graph_entry(payload, f"#index-pair-{index_pair.id}")
         self.assertEqual(index_pair_entry.get("coordinate"), "B2")
         flowcell_entry = self._graph_entry(payload, f"#flowcell-assay-{flowcell.id}")
         self.assertEqual(
@@ -1424,7 +1489,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             {"@id": f"#flowcell-sequences-data-{flowcell.id}"},
             flowcell_entry.get("hasPart", []),
         )
-        flowcell_data_entry = self._graph_entry(payload, f"#flowcell-data-{flowcell.id}")
+        flowcell_data_entry = self._graph_entry(
+            payload, f"#flowcell-data-{flowcell.id}"
+        )
         self._assert_comment_names_exclude(
             flowcell_data_entry,
             ["flowcell_matrix", "flowcell_sequences"],
@@ -1470,7 +1537,9 @@ class TestGenerateROCrateAPI(BaseAPITestCase):
             ],
             payload,
         )
-        self._assert_comment_names_exclude(process_entry, ["library_mv_status"], payload)
+        self._assert_comment_names_exclude(
+            process_entry, ["library_mv_status"], payload
+        )
         self.assertIn("executesLabProtocol", process_entry)
         self.assertEqual(
             library_entry.get("organism"),
