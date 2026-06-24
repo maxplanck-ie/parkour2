@@ -1,5 +1,5 @@
 <template>
-  <div class="statistics-page">
+  <div class="parent-container">
     <div v-if="loading || reportLoading" class="loading-overlay">
       <div class="spinner"></div>
       <p>
@@ -16,10 +16,16 @@
 
       <div class="sticky-actions">
         <div class="search-bar">
-          <input v-model="searchQuery" type="text" placeholder="Search" />
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search"
+            @keyup.enter="handleSearchAction"
+          />
           <font-awesome-icon
             icon="fa-solid fa-magnifying-glass"
-            style="color: darkgrey"
+            style="color: darkgrey; cursor: pointer"
+            @click="handleSearchAction"
           />
         </div>
 
@@ -44,6 +50,7 @@
                 v-model="startDateString"
                 :class="{ 'invalid-date': !startDateValid }"
                 type="date"
+                @input="handleDateChange('start', $event.target.value)"
               />
             </div>
             <div class="filter-item date-filter-item">
@@ -53,6 +60,7 @@
                 v-model="endDateString"
                 :class="{ 'invalid-date': !endDateValid }"
                 type="date"
+                @input="handleDateChange('end', $event.target.value)"
               />
             </div>
             <div class="filter-item">
@@ -130,10 +138,19 @@
           <font-awesome-icon icon="fa-solid fa-download" />
           <span>Download Report</span>
         </button>
+
+        <button
+          class="header-button"
+          id="openSequencesStatisticsExportPopupButton"
+          @click="handleExportClick"
+        >
+          <font-awesome-icon icon="fa-solid fa-file-excel" />
+          <span>Export to Excel</span>
+        </button>
       </div>
     </div>
 
-    <div class="statistics-table-container">
+    <div class="table-container">
       <LiteTabulatorTable
         ref="tableRef"
         table-id="sequencesStatisticsTable"
@@ -145,17 +162,262 @@
         :table-options="tableOptions"
       />
     </div>
+
+    <div
+      v-if="showExportPopup"
+      class="popup-overlay"
+      @dragover.prevent="handleDragOver"
+      @drop="handleDrop"
+      @dragenter="handleDragEnter"
+      @dragleave="handleDragLeave"
+      :class="{ 'drag-over': isDragOver }"
+    >
+      <div class="drag-drop-indicator">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+          "
+        >
+          <p>
+            Drop <span style="font-weight: bold">XLSX or XLSM file</span> here
+            to upload as <span style="font-weight: bold">template</span>
+          </p>
+        </div>
+      </div>
+      <div
+        v-if="!isDragOver"
+        class="popup-container statistics-export-popup"
+        :style="{ width: '670px', height: '500px' }"
+      >
+        <div class="popup-header">
+          <span class="popup-title">Export Options</span>
+          <span
+            class="popup-info-button"
+            @mouseover="showExportHelpTooltip = true"
+            @mouseleave="showExportHelpTooltip = false"
+          >
+            ?
+            <div v-if="showExportHelpTooltip" class="tooltip-box">
+              <div class="tooltip-scroll">
+                <div class="tooltip-title">Export Guide</div>
+                <p class="tooltip-intro">
+                  Use export when you want to download the table data to Excel.
+                  You can export selected rows or all rows matching the active
+                  date range, search, and filters.
+                </p>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">Basic export choices</div>
+                  <ul class="tooltip-list">
+                    <li>
+                      <strong>Export selected</strong> downloads only selected
+                      rows.
+                    </li>
+                    <li>
+                      <strong>Export all</strong> downloads all currently
+                      filtered rows.
+                    </li>
+                  </ul>
+                </section>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">
+                    How template files work
+                  </div>
+                  <ol class="tooltip-list tooltip-steps">
+                    <li>
+                      Start by exporting with
+                      <strong>Export without any additional sheets</strong>.
+                    </li>
+                    <li>
+                      Open that file in Excel and add custom sheets.
+                    </li>
+                    <li>
+                      Upload or drag the edited file here as a template.
+                    </li>
+                    <li>
+                      Later exports replace only the <strong>Parkour</strong>
+                      sheet and keep extra sheets unchanged.
+                    </li>
+                  </ol>
+                </section>
+              </div>
+            </div>
+          </span>
+          <button class="popup-close-button" @click="showExportPopup = false">
+            &times;
+          </button>
+        </div>
+        <div class="popup-body">
+          <div class="export-section">
+            <div style="font-weight: bold; margin-bottom: 8px">
+              Export Options:
+            </div>
+            <div class="export-selection-radio-option">
+              <input
+                id="sequences-export-selected"
+                v-model="exportSelection"
+                type="radio"
+                value="selected"
+                :disabled="!hasSelectedRows"
+              />
+              <label
+                for="sequences-export-selected"
+                :class="{ disabled: !hasSelectedRows }"
+              >
+                Export selected sequence statistics
+              </label>
+            </div>
+            <div class="export-selection-radio-option">
+              <input
+                id="sequences-export-all"
+                v-model="exportSelection"
+                type="radio"
+                value="all"
+              />
+              <label for="sequences-export-all">
+                Export all sequence statistics
+              </label>
+            </div>
+          </div>
+          <div class="export-section" style="height: 100%">
+            <div style="font-weight: bold; margin-bottom: 8px">
+              Upload additional excel sheet templates to append:
+            </div>
+            <div class="file-list-section">
+              <div class="file-item">
+                <div class="file-info">
+                  <img
+                    :src="iconExportTemplateFile"
+                    alt="Export without any additional sheets"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
+                  <span>Export without any additional sheets</span>
+                </div>
+                <div class="file-actions">
+                  <div
+                    class="file-actions-radio-button"
+                    style="border: none; margin-right: 5px"
+                  >
+                    <input
+                      id="sequences-without-file"
+                      v-model="selectedFile"
+                      type="radio"
+                      title="Select"
+                      value="without-file"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                v-for="(file, index) in uploadedExportTemplates"
+                :key="index"
+                class="file-item"
+              >
+                <div class="file-info">
+                  <img
+                    :src="iconExportTemplateFileLines"
+                    :alt="file.name"
+                    width="24"
+                    height="24"
+                    style="display: block"
+                  />
+                  <span>{{ file.name }}</span>
+                </div>
+                <div class="file-actions">
+                  <button
+                    class="download-button"
+                    title="Download Original File"
+                    @click.stop="downloadExportTemplate(file)"
+                  >
+                    <img
+                      :src="iconExportDownload"
+                      alt="Download"
+                      width="24"
+                      height="24"
+                      style="display: block"
+                    />
+                  </button>
+                  <button
+                    class="remove-button"
+                    title="Remove File"
+                    @click.stop="removeExportTemplate(index)"
+                  >
+                    <img
+                      :src="iconExportRemove"
+                      alt="Remove"
+                      width="24"
+                      height="24"
+                      style="display: block"
+                    />
+                  </button>
+                  <div class="file-actions-radio-button">
+                    <input
+                      :id="'sequences-file-radio-' + index"
+                      v-model="selectedFile"
+                      type="radio"
+                      title="Select File"
+                      :value="file"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="popup-footer">
+          <div class="file-upload-section">
+            <label
+              for="sequences-file-upload"
+              class="file-upload-label"
+              title="Upload additional sheet to append to the exported sheet."
+            >
+              <img
+                :src="iconExportUpload"
+                alt="Upload"
+                width="24"
+                height="24"
+                style="display: block; margin-right: 4px"
+              />
+              <span>Upload</span>
+            </label>
+            <input
+              id="sequences-file-upload"
+              type="file"
+              accept=".xlsx,.xlsm"
+              style="display: none"
+              @change="uploadExportTemplate"
+            />
+          </div>
+          <button class="popup-button yes-button" @click="handleExport">
+            OK
+          </button>
+          <button
+            class="popup-button"
+            @click="
+              showExportPopup = false;
+              selectedFile = 'without-file';
+            "
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { saveAs } from "file-saver";
 import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
 import {
-  applySequencesStatisticsColumnSettings,
   formatSequencesStatisticsDate,
   sequencesStatisticsColumnDefs,
+  sequencesStatisticsExportColumns,
   sequencesStatisticsGroupHeader,
   sequencesStatisticsRowMatchesSearch,
   uniqueSequencesStatisticsValues
@@ -166,16 +428,27 @@ import {
   handleError,
   isValidDate,
   showNotification,
-  urlStringStartsWith
+  urlStringStartsWith,
+  createExcelExportBlob,
+  buildExcelExportFilename,
+  buildExcelDownloadFilename,
+  isSupportedExcelTemplateFile
 } from "../utilities/utilityFunctions";
+import iconExportTemplateFile from "../assets/icons/export_template.svg";
+import iconExportTemplateFileLines from "../assets/icons/export_template_lines.svg";
+import iconExportDownload from "../assets/icons/export_download.svg";
+import iconExportRemove from "../assets/icons/export_remove.svg";
+import iconExportUpload from "../assets/icons/export_upload.svg";
 
 const VISIBILITY_KEY = "sequencesStatisticsColumnVisibility";
 const WIDTHS_KEY = "sequencesStatisticsColumnWidths";
+const DATE_FILTER_DEBOUNCE_MS = 500;
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const TEMPLATE_API_URL = `${urlStringStart}/api/sequences-statistics-templates`;
 const today = new Date();
-const tenYearsAgo = new Date(today);
-tenYearsAgo.setFullYear(today.getFullYear() - 10);
+const twoMonthsAgo = new Date(today);
+twoMonthsAgo.setMonth(today.getMonth() - 2);
 
 export default {
   name: "SequencesStatistics",
@@ -189,7 +462,15 @@ const reportLoading = ref(false);
 const rows = ref([]);
 const columnsList = ref([]);
 const searchQuery = ref("");
-const startDateString = ref(formatDateForInput(tenYearsAgo));
+const appliedSearchQuery = ref("");
+const showExportPopup = ref(false);
+const showExportHelpTooltip = ref(false);
+const isDragOver = ref(false);
+const uploadedExportTemplates = ref([]);
+const selectedFile = ref("without-file");
+const exportSelection = ref("selected");
+const hasSelectedRows = ref(false);
+const startDateString = ref(formatDateForInput(twoMonthsAgo));
 const endDateString = ref(formatDateForInput(today));
 const startDateValid = ref(true);
 const endDateValid = ref(true);
@@ -207,6 +488,16 @@ const tableOptions = {
   placeholder: "No sequence statistics to show.",
   initialSort: [{ column: "barcode", dir: "asc" }],
   groupHeader: sequencesStatisticsGroupHeader,
+  groupContextMenu: [
+    {
+      label: "Select All",
+      action: (event, group) => setGroupSelection(group.getKey(), true)
+    },
+    {
+      label: "Unselect All",
+      action: (event, group) => setGroupSelection(group.getKey(), false)
+    }
+  ],
   handleColumnResized: (column) => {
     const field = column.getField();
     if (!field) return;
@@ -245,7 +536,7 @@ const analysisTypeOptions = computed(() =>
 const filteredRows = computed(() =>
   rows.value.filter(
     (row) =>
-      sequencesStatisticsRowMatchesSearch(row, searchQuery.value) &&
+      sequencesStatisticsRowMatchesSearch(row, appliedSearchQuery.value) &&
       (!filters.sequencer || row.sequencer === filters.sequencer) &&
       (!filters.protocol || row.library_protocol === filters.protocol) &&
       (!filters.analysisType || row.library_type === filters.analysisType)
@@ -253,15 +544,64 @@ const filteredRows = computed(() =>
 );
 
 function setColumns() {
-  columnsList.value = applySequencesStatisticsColumnSettings(
-    sequencesStatisticsColumnDefs(),
-    VISIBILITY_KEY,
-    WIDTHS_KEY
+  const storedVisibility = JSON.parse(
+    localStorage.getItem(VISIBILITY_KEY) || "{}"
+  );
+  const storedWidths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
+
+  const applySettings = (columns) => {
+    return columns.map((column) => {
+      if (column.field) {
+        if (Object.prototype.hasOwnProperty.call(storedWidths, column.field)) {
+          column.width = storedWidths[column.field];
+          if (column.minWidth && column.width < column.minWidth) {
+            column.width = column.minWidth;
+          }
+        }
+        if (
+          Object.prototype.hasOwnProperty.call(storedVisibility, column.field)
+        ) {
+          column.visible = storedVisibility[column.field];
+        } else {
+          column.visible = column.visible ?? true;
+        }
+      }
+      return column;
+    });
+  };
+
+  columnsList.value = applySettings(
+    sequencesStatisticsColumnDefs(updateSourceSelection)
   );
   const selectionColumn = columnsList.value.find(
     (column) => column.field === "selected"
   );
   if (selectionColumn) selectionColumn.visible = true;
+  const hasVisibleDataColumn = columnsList.value.some(
+    (column) => column.field !== "selected" && column.visible !== false
+  );
+  if (!hasVisibleDataColumn) {
+    columnsList.value.forEach((column) => {
+      if (column.field !== "selected") column.visible = true;
+    });
+    localStorage.removeItem(VISIBILITY_KEY);
+  }
+}
+
+function updateSourceSelection(rowId, selected) {
+  const row = rows.value.find((item) => item.row_id === rowId);
+  if (row) row.selected = selected;
+}
+
+function setGroupSelection(groupKey, selected) {
+  rows.value.forEach((row) => {
+    if (row.flowcell_group === groupKey) row.selected = selected;
+  });
+  const group = tableRef.value
+    ?.getTable()
+    ?.getGroups()
+    .find((item) => item.getKey() === groupKey);
+  group?.getRows().forEach((row) => row.update({ selected }));
 }
 
 async function fetchRows() {
@@ -292,11 +632,16 @@ async function fetchRows() {
         row_id: `${row.pk}_${row.barcode || index}`,
         lane_display: Array.isArray(row.lane) ? row.lane.join(", ") : row.lane,
         reads_percent: readsPercent,
+        reads_pf_sequenced_m:
+          row.reads_pf_sequenced === null ||
+          row.reads_pf_sequenced === undefined ||
+          row.reads_pf_sequenced === ""
+            ? ""
+            : Number(row.reads_pf_sequenced) / 1000000,
         flowcell_group: `${row.pk}_${row.flowcell_id || ""}`,
         create_time_display: formatSequencesStatisticsDate(row.create_time)
       };
     });
-    setColumns();
   } catch (error) {
     handleError(error);
     rows.value = [];
@@ -320,7 +665,19 @@ function validateDateRange() {
 
 function scheduleDateReload() {
   clearTimeout(dateTimer);
-  dateTimer = setTimeout(fetchRows, 500);
+  dateTimer = setTimeout(fetchRows, DATE_FILTER_DEBOUNCE_MS);
+}
+
+function handleDateChange(type, value) {
+  if (type === "start") {
+    startDateString.value = value;
+    startDateValid.value = isValidDate(value);
+  } else {
+    endDateString.value = value;
+    endDateValid.value = isValidDate(value);
+  }
+  if (!startDateValid.value || !endDateValid.value) return;
+  scheduleDateReload();
 }
 
 function toggleAdvancedFilters() {
@@ -335,6 +692,156 @@ function toggleSelectColumns() {
 
 function resetAdvancedFilters() {
   Object.assign(filters, { sequencer: "", protocol: "", analysisType: "" });
+}
+
+function handleSearchAction() {
+  searchQuery.value = searchQuery.value.trim();
+  appliedSearchQuery.value = searchQuery.value;
+}
+
+function handleExportClick() {
+  hasSelectedRows.value = rows.value.some((row) => row.selected);
+  exportSelection.value = hasSelectedRows.value ? "selected" : "all";
+  showExportPopup.value = true;
+  showAdvancedFilters.value = false;
+  showSelectColumns.value = false;
+}
+
+async function fetchExportTemplates() {
+  try {
+    const response = await axiosRef.get(`${TEMPLATE_API_URL}/`);
+    uploadedExportTemplates.value = response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+async function uploadExportTemplate(event) {
+  const file = event.target.files?.[0];
+  await processUploadedFile(file);
+  event.target.value = "";
+}
+
+async function downloadExportTemplate(file) {
+  try {
+    const response = await axiosRef.get(`${TEMPLATE_API_URL}/${file.id}/download/`, {
+      responseType: "blob"
+    });
+    saveAs(
+      response.data,
+      buildExcelDownloadFilename(
+        "SequenceStatistics",
+        file.name,
+        response.data?.type
+      )
+    );
+  } catch {
+    showNotification("File download failed.", "error");
+  }
+}
+
+async function removeExportTemplate(index) {
+  const file = uploadedExportTemplates.value[index];
+  try {
+    await axiosRef.delete(`${TEMPLATE_API_URL}/${file.id}/remove/`);
+    uploadedExportTemplates.value.splice(index, 1);
+    showNotification("File removed successfully.", "success");
+  } catch {
+    showNotification("File removal failed.", "error");
+  } finally {
+    selectedFile.value = "without-file";
+  }
+}
+
+function handleDragOver(event) {
+  event.preventDefault();
+  isDragOver.value = true;
+}
+
+function handleDragEnter(event) {
+  event.preventDefault();
+  isDragOver.value = true;
+}
+
+function handleDragLeave(event) {
+  if (!event.currentTarget.contains(event.relatedTarget)) {
+    isDragOver.value = false;
+  }
+}
+
+async function handleDrop(event) {
+  event.preventDefault();
+  isDragOver.value = false;
+  const files = event.dataTransfer.files;
+  if (files.length > 1) {
+    showNotification("Upload only one XLSX or XLSM file.", "error");
+    return;
+  }
+  await processUploadedFile(files[0]);
+}
+
+async function processUploadedFile(file) {
+  if (!file) return;
+  if (!isSupportedExcelTemplateFile(file)) {
+    showNotification("Upload a valid XLSX or XLSM file.", "error");
+    return;
+  }
+  const formData = new FormData();
+  formData.append("file", file);
+  try {
+    await axiosRef.post(`${TEMPLATE_API_URL}/upload/`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    showNotification("File uploaded successfully.", "success");
+    await fetchExportTemplates();
+  } catch {
+    showNotification("File upload failed.", "error");
+  } finally {
+    selectedFile.value = "without-file";
+  }
+}
+
+async function handleExport() {
+  const exportRows =
+    exportSelection.value === "selected"
+      ? rows.value.filter((row) => row.selected)
+      : filteredRows.value;
+  if (!exportRows.length) {
+    showNotification("No sequence statistics available for export.", "warning");
+    return;
+  }
+  try {
+    const formattedDate = new Date().toISOString().split("T")[0];
+    const filename =
+      exportSelection.value === "selected"
+        ? `${formattedDate}_selected_sequence_statistics`
+        : `${formattedDate}_sequence_statistics`;
+    const blob = await createExcelExportBlob({
+      rows: exportRows,
+      exportColumns: sequencesStatisticsExportColumns(),
+      axiosInstance: axiosRef,
+      templateDownloadUrl:
+        selectedFile.value !== "without-file"
+          ? `${TEMPLATE_API_URL}/${selectedFile.value.id}/download/`
+          : null,
+      templateFileName:
+        selectedFile.value !== "without-file" ? selectedFile.value.name : ""
+    });
+    saveAs(
+      blob,
+      buildExcelExportFilename(
+        filename,
+        selectedFile.value !== "without-file" ? selectedFile.value.name : ""
+      )
+    );
+  } catch (error) {
+    showNotification("Error during export. Please try again.\n" + error, "error");
+  } finally {
+    showExportPopup.value = false;
+    selectedFile.value = "without-file";
+  }
 }
 
 function toggleColumnVisibility(column) {
@@ -354,7 +861,7 @@ async function resetColumnWidths() {
 }
 
 async function downloadReport() {
-  const selectedBarcodes = (tableRef.value?.getTable()?.getData() || [])
+  const selectedBarcodes = rows.value
     .filter((row) => row.selected && row.barcode)
     .map((row) => row.barcode);
   if (!selectedBarcodes.length) {
@@ -387,6 +894,10 @@ function handleDocumentClick(event) {
   const columnsButton = document.getElementById(
     "toggleSequencesSelectColumnsButton"
   );
+  const exportPopup = document.querySelector(".statistics-export-popup");
+  const exportButton = document.getElementById(
+    "openSequencesStatisticsExportPopupButton"
+  );
   if (
     showAdvancedFilters.value &&
     !advancedPopup?.contains(event.target) &&
@@ -401,19 +912,25 @@ function handleDocumentClick(event) {
   ) {
     showSelectColumns.value = false;
   }
+  if (
+    showExportPopup.value &&
+    !exportPopup?.contains(event.target) &&
+    !exportButton?.contains(event.target)
+  ) {
+    showExportPopup.value = false;
+  }
 }
 
 function handleKeyDown(event) {
   if (event.key !== "Escape") return;
   showAdvancedFilters.value = false;
   showSelectColumns.value = false;
+  showExportPopup.value = false;
 }
 
-watch([startDateString, endDateString], scheduleDateReload);
-
 onMounted(() => {
-  setColumns();
   fetchRows();
+  fetchExportTemplates();
   document.addEventListener("click", handleDocumentClick);
   document.addEventListener("keydown", handleKeyDown);
 });
@@ -424,12 +941,26 @@ onBeforeUnmount(() => {
   document.removeEventListener("keydown", handleKeyDown);
 });
 
+setColumns();
+
     return {
       tableRef,
       loading,
       reportLoading,
       columnsList,
       searchQuery,
+      showExportPopup,
+      showExportHelpTooltip,
+      isDragOver,
+      uploadedExportTemplates,
+      selectedFile,
+      exportSelection,
+      hasSelectedRows,
+      iconExportTemplateFile,
+      iconExportTemplateFileLines,
+      iconExportDownload,
+      iconExportRemove,
+      iconExportUpload,
       startDateString,
       endDateString,
       startDateValid,
@@ -446,6 +977,18 @@ onBeforeUnmount(() => {
       toggleAdvancedFilters,
       toggleSelectColumns,
       resetAdvancedFilters,
+      handleDateChange,
+      handleSearchAction,
+      handleExportClick,
+      handleExport,
+      fetchExportTemplates,
+      uploadExportTemplate,
+      downloadExportTemplate,
+      removeExportTemplate,
+      handleDragOver,
+      handleDragEnter,
+      handleDragLeave,
+      handleDrop,
       toggleColumnVisibility,
       resetColumnVisibility,
       resetColumnWidths,
@@ -456,13 +999,17 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.statistics-page {
+.parent-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   padding: 10px;
-  overflow: hidden;
-  background-color: #f4f4f4;
+}
+
+.statistics-export-popup {
+  width: 420px;
+  min-height: 220px;
 }
 
 .statistics-header-icon {
@@ -473,9 +1020,10 @@ onBeforeUnmount(() => {
   color: white;
 }
 
-.statistics-table-container {
-  flex: 1 1 auto;
-  min-height: 0;
+.table-container {
+  flex: 1;
+  overflow: auto;
+  position: relative;
 }
 
 .statistics-filters-popup {
@@ -487,7 +1035,7 @@ onBeforeUnmount(() => {
 
 .statistics-columns-popup {
   left: -55px;
-  width: 270px;
+  width: 320px;
   max-height: calc(100vh - 100px);
   overflow-y: auto;
 }

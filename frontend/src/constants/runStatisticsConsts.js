@@ -5,18 +5,83 @@ function displayValue(value, digits = null) {
   return Number.isFinite(number) ? number.toFixed(digits) : value;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function ellipsisContainer(value, align = "left") {
+  const finalValue = displayValue(value) || "-";
+  const escapedValue = escapeHtml(finalValue);
+  const justifyContent = align === "right" ? "flex-end" : "flex-start";
+  return `
+    <div style="padding: 4px 8px; display: flex; align-items: center; justify-content: ${justifyContent};">
+      <span title="${escapedValue}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${escapedValue}</span>
+    </div>
+  `;
+}
+
+function textFormatter(align = "left") {
+  return (cell) => ellipsisContainer(cell.getValue(), align);
+}
+
 function numberFormatter(digits = null, divisor = 1) {
   return (cell) => {
     const value = cell.getValue();
-    if (value === null || value === undefined || value === "") return "";
+    if (value === null || value === undefined || value === "") {
+      return ellipsisContainer("", "right");
+    }
     const number = Number(value);
-    if (!Number.isFinite(number)) return value;
-    return displayValue(number / divisor, digits);
+    const display = Number.isFinite(number)
+      ? displayValue(number / divisor, digits)
+      : value;
+    return ellipsisContainer(display, "right");
   };
 }
 
-export function runStatisticsColumnDefs() {
-  return [
+function withRunStatisticsColumnDefaults(columns) {
+  return columns.map((column) => {
+    if (!column.field || column.field === "selected") return column;
+    const align = column.hozAlign === "right" ? "right" : "left";
+    return {
+      cssClass: column.frozen ? "right-border" : "regular-column",
+      formatter: textFormatter(align),
+      ...column
+    };
+  });
+}
+
+export function runStatisticsColumnDefs(onSelectionChanged) {
+  return withRunStatisticsColumnDefaults([
+    {
+      field: "selected",
+      title: "",
+      width: 30,
+      minWidth: 30,
+      frozen: true,
+      visible: true,
+      headerVertical: false,
+      headerSort: false,
+      resizable: false,
+      hozAlign: "center",
+      cssClass: "checkbox-column right-border",
+      clipboardCopyValue: () => "",
+      formatter: (cell) =>
+        `<input type="checkbox" title="Select" style="top:-4px" ${
+          cell.getValue() ? "checked" : ""
+        } />`,
+      cellClick: (event, cell) => {
+        const checkbox = event.target.closest('input[type="checkbox"]');
+        if (!checkbox) return;
+        const row = cell.getRow();
+        row.update({ selected: checkbox.checked });
+        onSelectionChanged?.(row.getData().row_id, checkbox.checked);
+      }
+    },
     {
       title: "Lane",
       field: "name",
@@ -40,7 +105,7 @@ export function runStatisticsColumnDefs() {
       headerFilter: true
     },
     {
-      title: "Prep. Method",
+      title: "Preparation Method",
       field: "library_preparation",
       minWidth: 150,
       visible: true,
@@ -55,7 +120,7 @@ export function runStatisticsColumnDefs() {
       headerFilter: true
     },
     {
-      title: "Loading Concentr.",
+      title: "Loading Concentration",
       field: "loading_concentration",
       minWidth: 135,
       visible: true,
@@ -81,7 +146,7 @@ export function runStatisticsColumnDefs() {
       hozAlign: "right"
     },
     {
-      title: "Undet. Indices (%)",
+      title: "Undetermined Indices (%)",
       field: "undetermined_indices",
       minWidth: 145,
       visible: true,
@@ -90,7 +155,7 @@ export function runStatisticsColumnDefs() {
       hozAlign: "right"
     },
     {
-      title: "% Spike In",
+      title: "PhiX (%)",
       field: "phix",
       minWidth: 110,
       visible: true,
@@ -98,7 +163,7 @@ export function runStatisticsColumnDefs() {
       hozAlign: "right"
     },
     {
-      title: "Read 1 % >=Q30",
+      title: "Read 1 ≥ Q30 (%)",
       field: "read_1",
       minWidth: 135,
       visible: true,
@@ -106,14 +171,14 @@ export function runStatisticsColumnDefs() {
       hozAlign: "right"
     },
     {
-      title: "Read 2 (I) % >=Q30",
+      title: "Read 2 (I) ≥ Q30 (%)",
       field: "read_2",
       minWidth: 155,
       visible: true,
       headerFilter: true,
       hozAlign: "right"
     }
-  ];
+  ]);
 }
 
 export function runStatisticsGroupHeader(value, count, data) {
@@ -155,27 +220,43 @@ export function runStatisticsRowMatchesSearch(row, query) {
   );
 }
 
-export function applyRunStatisticsColumnSettings(
-  columns,
-  visibilityStorageKey,
-  widthsStorageKey
-) {
-  const visibility = JSON.parse(
-    localStorage.getItem(visibilityStorageKey) || "{}"
-  );
-  const widths = JSON.parse(localStorage.getItem(widthsStorageKey) || "{}");
-  return columns.map((column) => {
-    const configured = { ...column };
-    if (configured.field) {
-      if (widths[configured.field]) {
-        configured.width = Math.max(
-          widths[configured.field],
-          configured.minWidth || 0
-        );
-      }
-      configured.visible =
-        visibility[configured.field] ?? configured.visible ?? true;
-    }
-    return configured;
-  });
+export function runStatisticsExportColumns() {
+  return [
+    { header: "Flowcell ID", key: "flowcell_id", width: 18, excelType: "text" },
+    { header: "Date", key: "create_time_display", width: 14, excelType: "text" },
+    { header: "Sequencer", key: "sequencer", width: 22, excelType: "text" },
+    { header: "Read Length", key: "read_length", width: 18, excelType: "text" },
+    { header: "Lane", key: "name", width: 14, excelType: "text" },
+    { header: "Pool", key: "pool", width: 18, excelType: "text" },
+    { header: "Request", key: "request", width: 28, excelType: "text" },
+    {
+      header: "Preparation Method",
+      key: "library_preparation",
+      width: 24,
+      excelType: "text"
+    },
+    {
+      header: "Analysis Type",
+      key: "library_type",
+      width: 20,
+      excelType: "text"
+    },
+    {
+      header: "Loading Concentration",
+      key: "loading_concentration",
+      width: 18,
+      excelType: "number"
+    },
+    { header: "Cluster PF (%)", key: "cluster_pf", width: 16, excelType: "number" },
+    { header: "Reads PF (M)", key: "reads_pf_m", width: 16, excelType: "number" },
+    {
+      header: "Undetermined Indices (%)",
+      key: "undetermined_indices",
+      width: 18,
+      excelType: "number"
+    },
+    { header: "PhiX (%)", key: "phix", width: 14, excelType: "number" },
+    { header: "Read 1 ≥ Q30 (%)", key: "read_1", width: 20, excelType: "number" },
+    { header: "Read 2 (I) ≥ Q30 (%)", key: "read_2", width: 22, excelType: "number" }
+  ];
 }

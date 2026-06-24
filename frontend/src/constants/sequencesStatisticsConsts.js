@@ -4,32 +4,71 @@ function fixedNumber(value, digits = 2) {
   return Number.isFinite(number) ? number.toFixed(digits) : value;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function ellipsisContainer(value, align = "left") {
+  const finalValue = value === null || value === undefined || value === "" ? "-" : value;
+  const escapedValue = escapeHtml(finalValue);
+  const justifyContent = align === "right" ? "flex-end" : "flex-start";
+  return `
+    <div style="padding: 4px 8px; display: flex; align-items: center; justify-content: ${justifyContent};">
+      <span title="${escapedValue}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${escapedValue}</span>
+    </div>
+  `;
+}
+
+function textFormatter(align = "left") {
+  return (cell) => ellipsisContainer(cell.getValue(), align);
+}
+
 function fixedFormatter(digits = 2) {
-  return (cell) => fixedNumber(cell.getValue(), digits);
+  return (cell) => ellipsisContainer(fixedNumber(cell.getValue(), digits), "right");
+}
+
+function withSequencesStatisticsColumnDefaults(columns) {
+  return columns.map((column) => {
+    if (!column.field || column.field === "selected") return column;
+    const align = column.hozAlign === "right" ? "right" : "left";
+    return {
+      cssClass: column.frozen ? "right-border" : "regular-column",
+      formatter: textFormatter(align),
+      ...column
+    };
+  });
 }
 
 export function sequencesStatisticsColumnDefs(onSelectionChanged) {
-  return [
+  return withSequencesStatisticsColumnDefaults([
     {
       field: "selected",
       title: "",
-      width: 38,
-      minWidth: 38,
-      maxWidth: 38,
+      width: 30,
+      minWidth: 30,
       frozen: true,
       visible: true,
+      headerVertical: false,
       headerSort: false,
       resizable: false,
       hozAlign: "center",
+      cssClass: "checkbox-column right-border",
+      clipboardCopyValue: () => "",
       formatter: (cell) =>
-        `<input type="checkbox" title="Select" ${
+        `<input type="checkbox" title="Select" style="top:-4px" ${
           cell.getValue() ? "checked" : ""
         } />`,
       cellClick: (event, cell) => {
         const checkbox = event.target.closest('input[type="checkbox"]');
         if (!checkbox) return;
-        cell.getRow().update({ selected: checkbox.checked });
-        onSelectionChanged?.();
+        const row = cell.getRow();
+        row.update({ selected: checkbox.checked });
+        onSelectionChanged?.(row.getData().row_id, checkbox.checked);
       }
     },
     {
@@ -84,7 +123,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       headerFilter: true
     },
     {
-      title: "Reads PF (M), requested",
+      title: "Requested Reads PF (M)",
       field: "reads_pf_requested",
       minWidth: 170,
       visible: true,
@@ -92,20 +131,22 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       hozAlign: "right"
     },
     {
-      title: "Reads PF (M), sequenced",
+      title: "Sequenced Reads PF (M)",
       field: "reads_pf_sequenced",
       minWidth: 170,
       visible: true,
       headerFilter: true,
       formatter: (cell) => {
         const value = cell.getValue();
-        if (value === null || value === undefined || value === "") return "";
-        return fixedNumber(Number(value) / 1000000);
+        if (value === null || value === undefined || value === "") {
+          return ellipsisContainer("", "right");
+        }
+        return ellipsisContainer(fixedNumber(Number(value) / 1000000), "right");
       },
       hozAlign: "right"
     },
     {
-      title: "% reads",
+      title: "Reads (%)",
       field: "reads_percent",
       minWidth: 105,
       visible: true,
@@ -114,7 +155,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       hozAlign: "right"
     },
     {
-      title: "confident off-species reads",
+      title: "Confident Off-species Reads",
       field: "confident_reads",
       minWidth: 190,
       visible: true,
@@ -123,7 +164,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       hozAlign: "right"
     },
     {
-      title: "% Optical Duplicates",
+      title: "Optical Duplicates (%)",
       field: "optical_duplicates",
       minWidth: 165,
       visible: true,
@@ -132,7 +173,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       hozAlign: "right"
     },
     {
-      title: "% dupped reads",
+      title: "Duplicated Reads (%)",
       field: "dupped_reads",
       minWidth: 135,
       visible: true,
@@ -141,7 +182,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       hozAlign: "right"
     },
     {
-      title: "% mapped reads",
+      title: "Mapped Reads (%)",
       field: "mapped_reads",
       minWidth: 135,
       visible: true,
@@ -157,7 +198,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       headerFilter: true,
       hozAlign: "right"
     }
-  ];
+  ]);
 }
 
 export function sequencesStatisticsGroupHeader(value, count, data) {
@@ -197,27 +238,55 @@ export function sequencesStatisticsRowMatchesSearch(row, query) {
   );
 }
 
-export function applySequencesStatisticsColumnSettings(
-  columns,
-  visibilityStorageKey,
-  widthsStorageKey
-) {
-  const visibility = JSON.parse(
-    localStorage.getItem(visibilityStorageKey) || "{}"
-  );
-  const widths = JSON.parse(localStorage.getItem(widthsStorageKey) || "{}");
-  return columns.map((column) => {
-    const configured = { ...column };
-    if (configured.field) {
-      if (widths[configured.field]) {
-        configured.width = Math.max(
-          widths[configured.field],
-          configured.minWidth || 0
-        );
-      }
-      configured.visible =
-        visibility[configured.field] ?? configured.visible ?? true;
-    }
-    return configured;
-  });
+export function sequencesStatisticsExportColumns() {
+  return [
+    { header: "Flowcell ID", key: "flowcell_id", width: 18, excelType: "text" },
+    { header: "Date", key: "create_time_display", width: 14, excelType: "text" },
+    { header: "Sequencer", key: "sequencer", width: 22, excelType: "text" },
+    { header: "Request", key: "request", width: 28, excelType: "text" },
+    { header: "Barcode", key: "barcode", width: 16, excelType: "text" },
+    { header: "Name", key: "name", width: 24, excelType: "text" },
+    { header: "Lane", key: "lane_display", width: 14, excelType: "text" },
+    { header: "Pool", key: "pool", width: 18, excelType: "text" },
+    {
+      header: "Library Protocol",
+      key: "library_protocol",
+      width: 24,
+      excelType: "text"
+    },
+    {
+      header: "Analysis Type",
+      key: "library_type",
+      width: 20,
+      excelType: "text"
+    },
+    {
+      header: "Requested Reads PF (M)",
+      key: "reads_pf_requested",
+      width: 22,
+      excelType: "number"
+    },
+    {
+      header: "Sequenced Reads PF (M)",
+      key: "reads_pf_sequenced_m",
+      width: 22,
+      excelType: "number"
+    },
+    { header: "Reads (%)", key: "reads_percent", width: 14, excelType: "number" },
+    {
+      header: "Confident Off-species Reads",
+      key: "confident_reads",
+      width: 26,
+      excelType: "number"
+    },
+    {
+      header: "Optical Duplicates (%)",
+      key: "optical_duplicates",
+      width: 22,
+      excelType: "number"
+    },
+    { header: "Duplicated Reads (%)", key: "dupped_reads", width: 20, excelType: "number" },
+    { header: "Mapped Reads (%)", key: "mapped_reads", width: 18, excelType: "number" },
+    { header: "Insert Size", key: "insert_size", width: 16, excelType: "number" }
+  ];
 }

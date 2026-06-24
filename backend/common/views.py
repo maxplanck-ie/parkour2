@@ -28,6 +28,8 @@ from .models import (
     IncomingLibrariesSamplesTemplate,
     LibraryPreparationTemplate,
     PoolingTemplate,
+    RunStatisticsTemplate,
+    SequencesStatisticsTemplate,
 )
 from .serializers import (
     CostUnitSerializer,
@@ -38,6 +40,8 @@ from .serializers import (
     IncomingLibrariesSamplesTemplateSerializer,
     LibraryPreparationTemplateSerializer,
     PoolingTemplateSerializer,
+    RunStatisticsTemplateSerializer,
+    SequencesStatisticsTemplateSerializer,
 )
 
 User = get_user_model()
@@ -418,3 +422,13 @@ class PoolingTemplateViewSet(BaseTemplateViewSet):
 class LoadFlowcellsTemplateViewSet(BaseTemplateViewSet):
     model = LoadFlowcellsTemplate
     serializer_class = LoadFlowcellsTemplateSerializer
+
+
+class RunStatisticsTemplateViewSet(BaseTemplateViewSet):
+    model = RunStatisticsTemplate
+    serializer_class = RunStatisticsTemplateSerializer
+
+
+class SequencesStatisticsTemplateViewSet(BaseTemplateViewSet):
+    model = SequencesStatisticsTemplate
+    serializer_class = SequencesStatisticsTemplateSerializer

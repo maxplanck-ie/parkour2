@@ -5,6 +5,8 @@ from .models import (
     IncomingLibrariesSamplesTemplate,
     LibraryPreparationTemplate,
     PoolingTemplate,
+    RunStatisticsTemplate,
+    SequencesStatisticsTemplate,
 )
 
 from .models import CostUnit, Duty, User
@@ -55,4 +57,16 @@ class PoolingTemplateSerializer(ModelSerializer):
 class LoadFlowcellsTemplateSerializer(ModelSerializer):
     class Meta:
         model = LoadFlowcellsTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+
+class RunStatisticsTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = RunStatisticsTemplate
+        fields = ["id", "name", "file", "uploaded_at"]
+
+
+class SequencesStatisticsTemplateSerializer(ModelSerializer):
+    class Meta:
+        model = SequencesStatisticsTemplate
         fields = ["id", "name", "file", "uploaded_at"]

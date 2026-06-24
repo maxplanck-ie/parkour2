@@ -253,3 +253,31 @@ class LoadFlowcellsTemplate(models.Model):
     class Meta:
         verbose_name = "Load Flowcells Template"
         verbose_name_plural = "Templates -> Load Flowcells"
+
+
+class RunStatisticsTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/run_statistics/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Run Statistics Template"
+        verbose_name_plural = "Templates -> Run Statistics"
+
+
+class SequencesStatisticsTemplate(models.Model):
+    name = models.CharField("File Name", max_length=200)
+    file = models.FileField(upload_to="templates/sequences_statistics/")
+    uploaded_at = models.DateTimeField("Uploaded At", auto_now_add=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Sequence Statistics Template"
+        verbose_name_plural = "Templates -> Sequence Statistics"
