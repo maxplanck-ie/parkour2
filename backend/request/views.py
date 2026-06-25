@@ -18,7 +18,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.db import transaction
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from django.http import (
     Http404,
     HttpRequest,
@@ -290,13 +290,32 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         post_data = self._get_post_data(request)
 
-        post_data.update({"user": instance.user.pk})
+        if request.user.is_staff and post_data.get("user"):
+            # Allow staff to reassign a request to another user.
+            get_object_or_404(User, pk=post_data["user"])
+        else:
+            post_data["user"] = instance.user.pk
 
         serializer = self.get_serializer(data=post_data, instance=instance)
 
         if serializer.is_valid():
-            serializer.save()
-            return Response({"success": True})
+            instance = serializer.save()
+            if request.user.is_staff and post_data.get("user"):
+                new_user = User.objects.get(pk=post_data["user"])
+                if instance.user_id != new_user.pk:
+                    instance.user = new_user
+                new_name = f"{instance.id}_{new_user.last_name}"
+                if new_user.pi:
+                    new_name += f"_{new_user.pi.name}"
+                instance.name = new_name
+                instance.save(update_fields=["name"])
+            return Response(
+                {
+                    "success": True,
+                    "name": instance.name,
+                    "user": instance.user.pk,
+                }
+            )
 
         else:
             return Response(
@@ -380,6 +399,23 @@ class RequestViewSet(viewsets.ModelViewSet):
             .first()
         )
         serializer = UserSerializer(data.user)
+        return Response(serializer.data)
+
+    @action(methods=["get"], detail=False, permission_classes=[IsAdminUser])
+    def search_users(self, request):
+        """Search for active users for staff request reassignment."""
+        query = request.query_params.get("query", "").strip()
+        users = User.objects.filter(is_active=True)
+        if query:
+            users = users.filter(
+                Q(first_name__icontains=query)
+                | Q(last_name__icontains=query)
+                | Q(email__icontains=query)
+                | Q(pi__name__icontains=query)
+                | Q(organization__name__icontains=query)
+            )
+        users = users.order_by("last_name", "first_name")
+        serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
     @action(methods=["get"], detail=True)

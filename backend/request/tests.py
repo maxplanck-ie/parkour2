@@ -329,6 +329,101 @@ class TestRequests(BaseTestCase):
         self.assertEqual(updated_request.description, new_description)
         self.assertIn(sample, updated_request.samples.all())
 
+    def test_update_request_reassign_user_as_staff(self):
+        """Ensure staff can reassign request ownership and PI."""
+        org = Organization(name=get_random_name())
+        org.save()
+        pi_original = PrincipalInvestigator(name="Deepseq", organization=org)
+        pi_original.save()
+        user_original = User.objects.create_user(
+            email="sarah@test.io",
+            password="foo-foo",
+            first_name="Sarah",
+            last_name="Deepseq",
+            organization=org,
+            pi=pi_original,
+            is_staff=False,
+        )
+        user_original.save()
+
+        pi_new = PrincipalInvestigator(name="Cisse", organization=org)
+        pi_new.save()
+        user_new = User.objects.create_user(
+            email="ahmed@test.io",
+            password="foo-foo",
+            first_name="Ahmed",
+            last_name="Cisse",
+            organization=org,
+            pi=pi_new,
+            is_staff=False,
+        )
+        user_new.save()
+
+        request = Request(user=user_original)
+        request.save()
+        library = create_library(get_random_name())
+        sample = create_sample(get_random_name())
+        request.libraries.add(library)
+        request.samples.add(sample)
+
+        response = self.client.post(
+            f"/api/requests/{request.pk}/edit/",
+            {
+                "data": json.dumps(
+                    {
+                        "description": get_random_name(),
+                        "records": [
+                            {
+                                "pk": library.pk,
+                                "record_type": "Library",
+                            },
+                            {
+                                "pk": sample.pk,
+                                "record_type": "Sample",
+                            },
+                        ],
+                        "user": user_new.pk,
+                    }
+                ),
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        updated_request = Request.objects.get(pk=request.pk)
+        self.assertEqual(updated_request.user.pk, user_new.pk)
+        self.assertEqual(
+            updated_request.name,
+            f"{request.pk}_{user_new.last_name}_{user_new.pi.name}",
+        )
+
+    def test_search_users_staff(self):
+        """Ensure staff can search users for reassignment."""
+        org = Organization(name=get_random_name())
+        org.save()
+        pi = PrincipalInvestigator(name="Cisse", organization=org)
+        pi.save()
+        User.objects.create_user(
+            email="ahmed@test.io",
+            password="foo-foo",
+            first_name="Ahmed",
+            last_name="Cisse",
+            organization=org,
+            pi=pi,
+            is_staff=False,
+        )
+
+        response = self.client.get("/api/requests/search_users/", {"query": "Ahmed"})
+        self.assertEqual(response.status_code, 200)
+        results = response.json()
+        self.assertTrue(any(user["email"] == "ahmed@test.io" for user in results))
+
+    def test_search_users_non_staff(self):
+        """Ensure non-staff users cannot access the user search endpoint."""
+        self.login("non-staff@test.io", "test")
+        response = self.client.get("/api/requests/search_users/", {"query": "Ahmed"})
+        self.assertEqual(response.status_code, 403)
+
     def test_update_request_no_records(self):
         """
         Ensure error is thrown if no records are provided when

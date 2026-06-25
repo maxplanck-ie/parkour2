@@ -603,6 +603,28 @@
                 </div>
               </div>
 
+              <label v-if="isEditMode && isStaffUser" class="field-block">
+                <span>Request Owner</span>
+                <select
+                  v-model="requestOwnerId"
+                  :disabled="!canEditRequest"
+                  :class="['', !requestOwnerId ? 'placeholder' : '']"
+                >
+                  <option value="" disabled>Select Request Owner</option>
+                  <option
+                    v-for="user in requestUsers"
+                    :key="user.id"
+                    :value="user.id"
+                  >
+                    {{ user.first_name }} {{ user.last_name }} -
+                    {{ user.email }}
+                  </option>
+                </select>
+                <small class="field-help">
+                  Change the request owner and its associated PI.
+                </small>
+              </label>
+
               <label class="field-block">
                 <span>
                   Cost Unit<span v-if="!isStaffUser" class="required">*</span>
@@ -1095,6 +1117,8 @@ export default {
       costUnitError: "",
       descriptionError: "",
       requestOwnerId: null,
+      originalRequestOwnerId: null,
+      requestUsers: [],
       uploadedRequestFiles: [],
       uploadedRequestFileIds: [],
       protocolsList: [],
@@ -1923,6 +1947,7 @@ export default {
       this.restrictPermissions = false;
       this.isRequestLoading = false;
       this.requestOwnerId = null;
+      this.originalRequestOwnerId = null;
       this.resetDirtyTracking();
       this.editRecordsByType = {
         library: [],
@@ -2047,8 +2072,13 @@ export default {
         this.requestName = requestData.name || "";
         this.restrictPermissions = Boolean(requestData.restrict_permissions);
         this.requestOwnerId = requestData.user || null;
+        this.originalRequestOwnerId = requestData.user || null;
         this.newRequest.cost_unit = requestData.cost_unit || "";
         this.newRequest.description = requestData.description || "";
+
+        if (this.isStaffUser) {
+          await this.fetchRequestUsers();
+        }
 
         const libraries = Array.isArray(librariesRes?.data?.data)
           ? librariesRes.data.data
@@ -3756,7 +3786,9 @@ export default {
       }
     },
     async fetchCostUnits() {
-      const targetUserId = this.isEditMode ? this.requestOwnerId : this.userId;
+      const targetUserId = this.isEditMode
+        ? this.originalRequestOwnerId || this.requestOwnerId
+        : this.userId;
       if (!targetUserId) return;
       if (!this.isEditMode) {
         if (
@@ -3784,6 +3816,20 @@ export default {
         if (!this.isEditMode) {
           this.costUnitsLoadedForUser = targetUserId;
         }
+      } catch (error) {
+        handleError(error);
+      }
+    },
+    async fetchRequestUsers(query = "") {
+      if (!this.isStaffUser) return;
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/requests/search_users/`,
+          {
+            params: { query }
+          }
+        );
+        this.requestUsers = Array.isArray(response.data) ? response.data : [];
       } catch (error) {
         handleError(error);
       }
@@ -3959,6 +4005,9 @@ export default {
           records: allRecords,
           files: this.uploadedRequestFileIds
         };
+        if (this.isStaffUser && this.requestOwnerId) {
+          payload.user = this.requestOwnerId;
+        }
         const formData = new FormData();
         formData.append("data", JSON.stringify(payload));
         const response = await axiosRef.post(
@@ -3976,6 +4025,8 @@ export default {
             success: true,
             mode: "edit",
             request_id: this.requestId,
+            name: response.data.name,
+            user: response.data.user,
             cost_unit: this.newRequest.cost_unit || null,
             description,
             files: this.uploadedRequestFiles || [],

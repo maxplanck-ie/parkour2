@@ -800,11 +800,7 @@
       >
         <div class="popup-header">
           <div class="popup-title">
-            <img
-              class="popup-title-icon"
-              :src="iconDownloadROCrate"
-              alt=""
-            />
+            <img class="popup-title-icon" :src="iconDownloadROCrate" alt="" />
             <span>Export RO-Crate</span>
           </div>
           <div class="rocrate-help-wrapper">
@@ -845,9 +841,7 @@
                     </ul>
                   </section>
                   <section class="rocrate-help-section">
-                    <div class="rocrate-help-section-title">
-                      How to use it
-                    </div>
+                    <div class="rocrate-help-section-title">How to use it</div>
                     <ul class="rocrate-help-list">
                       <li>
                         Click <strong>Preview</strong> to inspect the metadata
@@ -1509,9 +1503,7 @@ export default {
     },
     roCrateSelectedBarcodes() {
       return Array.isArray(this.roCrateContext?.selectedBarcodes)
-        ? this.roCrateContext.selectedBarcodes.filter((value) =>
-            Boolean(value)
-          )
+        ? this.roCrateContext.selectedBarcodes.filter((value) => Boolean(value))
         : [];
     },
     roCrateSelectedCount() {
@@ -2195,6 +2187,14 @@ export default {
         ...(payload.records?.library || []),
         ...(payload.records?.sample || [])
       ];
+      const updatedRequestName = payload.request_name || payload.name;
+      if (updatedRequestName) {
+        this.librariesSamplesList.forEach((row) => {
+          if (row.request_id === payload.request_id) {
+            row.request_name = updatedRequestName;
+          }
+        });
+      }
       allRecords.forEach((record) => {
         const row = rowByBarcode.get(record.barcode);
         if (!row) return;
@@ -2262,6 +2262,7 @@ export default {
         const existing = this.requestMetaById?.[requestId] || {};
         const nextMeta = {
           ...existing,
+          name: payload.name ?? existing.name,
           cost_unit: payload.cost_unit ?? existing.cost_unit ?? "",
           description: payload.description ?? existing.description ?? "",
           files: Array.isArray(payload.files) ? payload.files : existing.files
@@ -2401,10 +2402,7 @@ export default {
         return;
       }
       if (!this.roCrateSelectedSections.length) {
-        showNotification(
-          "Select at least one information section.",
-          "warning"
-        );
+        showNotification("Select at least one information section.", "warning");
         return;
       }
 
@@ -3101,7 +3099,9 @@ body,
     background: #ffffff !important;
   }
 
-  body:has(.rocrate-preview-overlay) .parent-container > :not(.rocrate-preview-overlay),
+  body:has(.rocrate-preview-overlay)
+    .parent-container
+    > :not(.rocrate-preview-overlay),
   body.rocrate-printing .parent-container > :not(.rocrate-preview-overlay) {
     display: none !important;
   }
