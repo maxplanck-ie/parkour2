@@ -414,9 +414,18 @@ class RequestViewSet(viewsets.ModelViewSet):
                 | Q(pi__name__icontains=query)
                 | Q(organization__name__icontains=query)
             )
-        users = users.order_by("last_name", "first_name")
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+        users = users.order_by("last_name", "first_name").select_related("pi")
+        data = [
+            {
+                "id": user.pk,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+                "pi_name": user.pi.name if user.pi else "",
+            }
+            for user in users
+        ]
+        return Response(data)
 
     @action(methods=["get"], detail=True)
     def get_files(self, request, pk=None):

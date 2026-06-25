@@ -605,24 +605,36 @@
 
               <label v-if="isEditMode && isStaffUser" class="field-block">
                 <span>Request Owner</span>
-                <select
-                  v-model="requestOwnerId"
-                  :disabled="!canEditRequest"
-                  :class="['', !requestOwnerId ? 'placeholder' : '']"
-                >
-                  <option value="" disabled>Select Request Owner</option>
-                  <option
-                    v-for="user in requestUsers"
-                    :key="user.id"
-                    :value="user.id"
+                <div class="autocomplete-field">
+                  <input
+                    type="text"
+                    v-model="requestOwnerQuery"
+                    @input="handleRequestOwnerInput"
+                    @focus="showRequestOwnerSuggestions = !!requestOwnerQuery"
+                    @blur="closeRequestOwnerSuggestions"
+                    :disabled="!canEditRequest"
+                    placeholder="Search users by name or PI"
+                    :class="['', !requestOwnerId ? 'placeholder' : '']"
+                  />
+                  <ul
+                    v-if="showRequestOwnerSuggestions"
+                    class="autocomplete-suggestions"
                   >
-                    {{ user.first_name }} {{ user.last_name }} -
-                    {{ user.email }}
-                  </option>
-                </select>
-                <small class="field-help">
-                  Change the request owner and its associated PI.
-                </small>
+                    <li
+                      v-for="user in requestUsers"
+                      :key="user.id"
+                      class="autocomplete-suggestion"
+                      @mousedown.prevent="selectRequestOwner(user)"
+                    >
+                      {{ user.first_name }} {{ user.last_name }}
+                      <span v-if="user.pi_name"> ({{ user.pi_name }}) </span>
+                      <span v-else>(No PI)</span>
+                    </li>
+                    <li v-if="!requestUsers.length" class="autocomplete-empty">
+                      No users found.
+                    </li>
+                  </ul>
+                </div>
               </label>
 
               <label class="field-block">
@@ -1118,6 +1130,10 @@ export default {
       descriptionError: "",
       requestOwnerId: null,
       originalRequestOwnerId: null,
+      requestOwnerQuery: "",
+      requestOwnerSuggestions: [],
+      showRequestOwnerSuggestions: false,
+      requestOwnerSearchTimer: null,
       requestUsers: [],
       uploadedRequestFiles: [],
       uploadedRequestFileIds: [],
@@ -1948,6 +1964,13 @@ export default {
       this.isRequestLoading = false;
       this.requestOwnerId = null;
       this.originalRequestOwnerId = null;
+      this.requestOwnerQuery = "";
+      this.requestOwnerSuggestions = [];
+      this.showRequestOwnerSuggestions = false;
+      if (this.requestOwnerSearchTimer) {
+        clearTimeout(this.requestOwnerSearchTimer);
+        this.requestOwnerSearchTimer = null;
+      }
       this.resetDirtyTracking();
       this.editRecordsByType = {
         library: [],
@@ -2073,11 +2096,14 @@ export default {
         this.restrictPermissions = Boolean(requestData.restrict_permissions);
         this.requestOwnerId = requestData.user || null;
         this.originalRequestOwnerId = requestData.user || null;
+        this.requestOwnerQuery = requestData.user_full_name
+          ? `${requestData.user_full_name}${requestData.owner_pi_name ? ` (${requestData.owner_pi_name})` : ""}`
+          : "";
         this.newRequest.cost_unit = requestData.cost_unit || "";
         this.newRequest.description = requestData.description || "";
 
         if (this.isStaffUser) {
-          await this.fetchRequestUsers();
+          await this.fetchRequestUsers(this.requestOwnerQuery);
         }
 
         const libraries = Array.isArray(librariesRes?.data?.data)
@@ -3834,6 +3860,30 @@ export default {
         handleError(error);
       }
     },
+    handleRequestOwnerInput(event) {
+      if (!this.isStaffUser || !this.isEditMode || !this.canEditRequest) return;
+      const query = String(event.target.value || "");
+      this.requestOwnerQuery = query;
+      this.requestOwnerId = null;
+      this.showRequestOwnerSuggestions = !!query;
+      if (this.requestOwnerSearchTimer) {
+        clearTimeout(this.requestOwnerSearchTimer);
+      }
+      this.requestOwnerSearchTimer = setTimeout(() => {
+        this.fetchRequestUsers(query);
+      }, 250);
+    },
+    selectRequestOwner(user) {
+      this.requestOwnerId = user.id;
+      this.requestOwnerQuery = `${user.first_name} ${user.last_name}${user.pi_name ? ` (${user.pi_name})` : ""}`;
+      this.showRequestOwnerSuggestions = false;
+      this.requestUsers = [user];
+    },
+    closeRequestOwnerSuggestions() {
+      setTimeout(() => {
+        this.showRequestOwnerSuggestions = false;
+      }, 150);
+    },
     saveRequest() {
       if (this.isEditMode) {
         return this.saveExistingRequest();
@@ -5083,6 +5133,18 @@ export default {
   box-sizing: border-box;
 }
 
+.field-block input {
+  padding: 11px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #232323;
+  background: #f4f6f8;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
 .field-block select.placeholder {
   color: #9ba3af;
 }
@@ -5521,6 +5583,55 @@ export default {
   .feature-help-section-wide {
     grid-column: auto;
   }
+}
+
+.autocomplete-field {
+  position: relative;
+}
+
+.autocomplete-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #232323;
+  background: #f4f6f8;
+  line-height: 1.5;
+}
+
+.autocomplete-suggestions {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  max-height: 220px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  border: 1px solid #d7dee3;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.autocomplete-suggestion {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #1f2937;
+}
+
+.autocomplete-suggestion:hover {
+  background: #f3f6f8;
+}
+
+.autocomplete-empty {
+  padding: 10px 12px;
+  color: #6b7280;
+  font-size: 13px;
 }
 </style>
 <!--
