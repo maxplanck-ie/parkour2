@@ -38,7 +38,7 @@ django-linear-migrations==2.19.0
     # via -r backend/requirements/base.in
 django-monthfield==0.1.4
     # via -r backend/requirements/base.in
-django-simple-history==3.11.0
+django-simple-history==3.12.0
     # via -r backend/requirements/base.in
 djangorestframework==3.17.1
     # via
@@ -70,7 +70,7 @@ openpyxl==3.1.5
     # via -r backend/requirements/base.in
 packaging==26.2
     # via gunicorn
-pandas==3.0.3
+pandas==3.0.4
     # via -r backend/requirements/base.in
 pillow==12.2.0
     # via fpdf2

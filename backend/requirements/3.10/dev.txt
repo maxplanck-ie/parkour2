@@ -2,7 +2,7 @@
 #    uv pip compile --universal --python-version 3.10 backend/requirements/dev.in -c backend/requirements/3.10/base.txt -o backend/requirements/3.10/dev.txt
 annotated-types==0.7.0
     # via pydantic
-anyio==4.14.0
+anyio==4.14.1
     # via
     #   httpx
     #   openai
@@ -20,9 +20,9 @@ attrs==26.1.0
     #   -c backend/requirements/3.10/base.txt
     #   jsonschema
     #   referencing
-boto3==1.43.34
+boto3==1.43.36
     # via -r backend/requirements/dev.in
-botocore==1.43.34
+botocore==1.43.36
     # via
     #   boto3
     #   s3transfer
@@ -127,7 +127,7 @@ django-monthfield==0.1.4
     #   -r backend/requirements/base.in
 django-schema-viewer==0.5.3
     # via -r backend/requirements/dev.in
-django-simple-history==3.11.0
+django-simple-history==3.12.0
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
@@ -184,7 +184,7 @@ ipdb==0.13.13
     # via -r backend/requirements/dev.in
 ipython==8.39.0 ; python_full_version < '3.11'
     # via ipdb
-ipython==9.14.1 ; python_full_version >= '3.11'
+ipython==9.15.0 ; python_full_version >= '3.11'
     # via ipdb
 ipython-pygments-lexers==1.1.1 ; python_full_version >= '3.11'
     # via ipython
@@ -236,7 +236,7 @@ numpy==2.5.0 ; python_full_version >= '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.43.0
+openai==2.44.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -252,7 +252,7 @@ pandas==2.3.3 ; python_full_version < '3.12'
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
     #   -r backend/requirements/dev.in
-pandas==3.0.3 ; python_full_version >= '3.12'
+pandas==3.0.4 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.10/base.txt
     #   -r backend/requirements/base.in
@@ -268,7 +268,7 @@ pillow==12.2.0
     #   matplotlib
 prompt-toolkit==3.0.52
     # via ipython
-psutil==7.2.2 ; python_full_version >= '3.11' and sys_platform != 'emscripten'
+psutil==7.2.2 ; python_full_version >= '3.11' and sys_platform != 'cygwin' and sys_platform != 'emscripten'
     # via ipython
 psycopg2==2.9.12
     # via
@@ -318,7 +318,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.10/base.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.5.9
+regex==2026.6.28
     # via tiktoken
 requests==2.34.2
     # via
