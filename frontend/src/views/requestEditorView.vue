@@ -2050,7 +2050,7 @@ export default {
       this.isRequestLoading = true;
       try {
         const meta = this.requestMeta || null;
-        const fetchRequest = !meta;
+        const fetchRequest = true;
         const metaFiles = Array.isArray(meta?.files) ? meta.files : [];
         const needsFileDetails =
           !metaFiles.length ||
