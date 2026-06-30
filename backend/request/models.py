@@ -50,6 +50,11 @@ class Request(DateTimeMixin):
         verbose_name="Description",
         default="Empty",
     )
+    change_ownership_reason = models.TextField(
+        verbose_name="Change Ownership Reason",
+        blank=True,
+        default="",
+    )
     token = models.CharField("Token", max_length=50, blank=True, null=True, unique=True)
 
     user = models.ForeignKey(

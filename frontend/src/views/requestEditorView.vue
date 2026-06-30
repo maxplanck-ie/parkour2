@@ -603,40 +603,6 @@
                 </div>
               </div>
 
-              <label v-if="isEditMode && isStaffUser" class="field-block">
-                <span>Request Owner</span>
-                <div class="autocomplete-field">
-                  <input
-                    type="text"
-                    v-model="requestOwnerQuery"
-                    @input="handleRequestOwnerInput"
-                    @focus="showRequestOwnerSuggestions = !!requestOwnerQuery"
-                    @blur="closeRequestOwnerSuggestions"
-                    :disabled="!canEditRequest"
-                    placeholder="Search users by name or PI"
-                    :class="['', !requestOwnerId ? 'placeholder' : '']"
-                  />
-                  <ul
-                    v-if="showRequestOwnerSuggestions"
-                    class="autocomplete-suggestions"
-                  >
-                    <li
-                      v-for="user in requestUsers"
-                      :key="user.id"
-                      class="autocomplete-suggestion"
-                      @mousedown.prevent="selectRequestOwner(user)"
-                    >
-                      {{ user.first_name }} {{ user.last_name }}
-                      <span v-if="user.pi_name"> ({{ user.pi_name }}) </span>
-                      <span v-else>(No PI)</span>
-                    </li>
-                    <li v-if="!requestUsers.length" class="autocomplete-empty">
-                      No users found.
-                    </li>
-                  </ul>
-                </div>
-              </label>
-
               <label class="field-block">
                 <span>
                   Cost Unit<span v-if="!isStaffUser" class="required">*</span>
@@ -715,9 +681,9 @@
                   >
                     <thead>
                       <tr>
-                        <th style="width: 46%">Name</th>
-                        <th style="width: 27%">Size</th>
-                        <th style="width: 27%"></th>
+                        <th class="file-col-name">Name</th>
+                        <th class="file-col-size">Size</th>
+                        <th class="file-col-actions"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -767,6 +733,22 @@
                     </tbody>
                   </table>
                 </div>
+              </div>
+
+              <div
+                v-if="isEditMode && isStaffUser"
+                class="owner-change-action-container"
+              >
+                <button
+                  class="icon-button text-button owner-change-button"
+                  type="button"
+                  title="Change request owner"
+                  :disabled="!canEditRequest"
+                  @click="openOwnerChangeDialog"
+                >
+                  <font-awesome-icon icon="fa-solid fa-user-pen" />
+                  <span>Change Ownership</span>
+                </button>
               </div>
             </section>
           </div>
@@ -835,6 +817,86 @@
       </div>
     </div>
 
+    <div
+      v-if="showOwnerChangeDialog"
+      class="confirm-overlay"
+      @keydown="handleOwnerChangeDialogKeydown"
+      tabindex="0"
+    >
+      <div class="confirm-modal owner-change-modal">
+        <div class="confirm-header">
+          <span class="confirm-title">Change Request Owner</span>
+          <button
+            class="popup-close-button"
+            type="button"
+            @click="closeOwnerChangeDialog"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="confirm-body owner-change-body">
+          <label class="field-block">
+            <span>Request Owner</span>
+            <div class="autocomplete-field">
+              <input
+                type="text"
+                v-model="requestOwnerQuery"
+                @input="handleRequestOwnerInput"
+                @focus="showRequestOwnerSuggestions = !!requestOwnerQuery"
+                @blur="closeRequestOwnerSuggestions"
+                :disabled="!canEditRequest"
+                placeholder="Search users by name or PI"
+                :class="['', !requestOwnerId ? 'placeholder' : '']"
+              />
+              <ul
+                v-if="showRequestOwnerSuggestions"
+                class="autocomplete-suggestions"
+              >
+                <li
+                  v-for="user in requestUsers"
+                  :key="user.id"
+                  class="autocomplete-suggestion"
+                  @mousedown.prevent="selectRequestOwner(user)"
+                >
+                  {{ user.first_name }} {{ user.last_name }}
+                  <span v-if="user.pi_name"> ({{ user.pi_name }}) </span>
+                  <span v-else>(No PI)</span>
+                </li>
+                <li v-if="!requestUsers.length" class="autocomplete-empty">
+                  No users found.
+                </li>
+              </ul>
+            </div>
+          </label>
+          <label class="field-block">
+            <span>Comment</span>
+            <textarea
+              v-model="requestOwnerAdditionalComment"
+              class="owner-comment-textarea"
+              rows="4"
+              :readonly="!canEditRequest"
+              placeholder="Add an optional comment for ownership change"
+            ></textarea>
+          </label>
+        </div>
+        <div class="confirm-footer">
+          <button
+            class="popup-button secondary"
+            type="button"
+            @click="closeOwnerChangeDialog"
+          >
+            Close
+          </button>
+          <button
+            class="popup-button yes-button"
+            type="button"
+            @click="closeOwnerChangeDialog"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
     <div
       v-if="showToggleConfirm"
       class="confirm-overlay"
@@ -1097,6 +1159,7 @@ export default {
       showDeleteConfirm: false,
       showCloseConfirm: false,
       showFileDeleteConfirm: false,
+      showOwnerChangeDialog: false,
       showShortcutHelp: false,
       showFeatureHelp: false,
       pendingToggleMode: null,
@@ -1116,7 +1179,8 @@ export default {
       editSnapshot: {
         cost_unit: "",
         description: "",
-        fileIds: []
+        fileIds: [],
+        change_ownership_reason: ""
       },
       requestName: "",
       restrictPermissions: false,
@@ -1134,6 +1198,7 @@ export default {
       requestOwnerSuggestions: [],
       showRequestOwnerSuggestions: false,
       requestOwnerSearchTimer: null,
+      requestOwnerAdditionalComment: "",
       requestUsers: [],
       uploadedRequestFiles: [],
       uploadedRequestFileIds: [],
@@ -1216,6 +1281,15 @@ export default {
       }
     },
     showFileDeleteConfirm(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          const overlays = this.$el?.querySelectorAll?.(".confirm-overlay");
+          const overlay = overlays?.[overlays.length - 1];
+          overlay?.focus?.();
+        });
+      }
+    },
+    showOwnerChangeDialog(newVal) {
       if (newVal) {
         this.$nextTick(() => {
           const overlays = this.$el?.querySelectorAll?.(".confirm-overlay");
@@ -1742,6 +1816,24 @@ export default {
         this.confirmCloseModal();
       }
     },
+    openOwnerChangeDialog() {
+      if (!this.isEditMode || !this.isStaffUser) return;
+      this.showOwnerChangeDialog = true;
+      if (this.requestOwnerQuery) {
+        this.fetchRequestUsers(this.requestOwnerQuery);
+      }
+    },
+    closeOwnerChangeDialog() {
+      this.showOwnerChangeDialog = false;
+      this.showRequestOwnerSuggestions = false;
+    },
+    handleOwnerChangeDialogKeydown(event) {
+      if (!this.showOwnerChangeDialog) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        this.closeOwnerChangeDialog();
+      }
+    },
     hasUnsavedChanges() {
       const costUnitRaw = this.newRequest.cost_unit || "";
       const description = (this.newRequest.description || "").trim();
@@ -1760,6 +1852,8 @@ export default {
         const baseCostUnit =
           baseCostUnitRaw === "" ? "" : String(baseCostUnitRaw);
         const baseDescription = (snapshot.description || "").trim();
+        const additionalComment = this.requestOwnerAdditionalComment || "";
+        const baseAdditionalComment = snapshot.change_ownership_reason || "";
         const currentFileIds = (this.uploadedRequestFileIds || []).map(String);
         const baseFileIds = (snapshot.fileIds || []).map(String);
         const filesChanged =
@@ -1768,6 +1862,7 @@ export default {
         return (
           costUnit !== baseCostUnit ||
           description !== baseDescription ||
+          additionalComment !== baseAdditionalComment ||
           filesChanged
         );
       }
@@ -1950,6 +2045,7 @@ export default {
       this.showDeleteConfirm = false;
       this.showCloseConfirm = false;
       this.showFileDeleteConfirm = false;
+      this.showOwnerChangeDialog = false;
       this.showShortcutHelp = false;
       this.showFeatureHelp = false;
       this.pendingToggleMode = null;
@@ -1957,7 +2053,8 @@ export default {
       this.editSnapshot = {
         cost_unit: "",
         description: "",
-        fileIds: []
+        fileIds: [],
+        change_ownership_reason: ""
       };
       this.requestName = "";
       this.restrictPermissions = false;
@@ -1967,6 +2064,7 @@ export default {
       this.requestOwnerQuery = "";
       this.requestOwnerSuggestions = [];
       this.showRequestOwnerSuggestions = false;
+      this.requestOwnerAdditionalComment = "";
       if (this.requestOwnerSearchTimer) {
         clearTimeout(this.requestOwnerSearchTimer);
         this.requestOwnerSearchTimer = null;
@@ -2099,6 +2197,8 @@ export default {
         this.requestOwnerQuery = requestData.user_full_name
           ? `${requestData.user_full_name}${requestData.owner_pi_name ? ` (${requestData.owner_pi_name})` : ""}`
           : "";
+        this.requestOwnerAdditionalComment =
+          requestData.change_ownership_reason || "";
         this.newRequest.cost_unit = requestData.cost_unit || "";
         this.newRequest.description = requestData.description || "";
 
@@ -2173,7 +2273,8 @@ export default {
         this.editSnapshot = {
           cost_unit: this.newRequest.cost_unit || "",
           description: this.newRequest.description || "",
-          fileIds: [...this.uploadedRequestFileIds]
+          fileIds: [...this.uploadedRequestFileIds],
+          change_ownership_reason: this.requestOwnerAdditionalComment || ""
         };
       } catch (error) {
         handleError(error);
@@ -4052,6 +4153,7 @@ export default {
         const payload = {
           cost_unit: this.newRequest.cost_unit || null,
           description,
+          change_ownership_reason: this.requestOwnerAdditionalComment || "",
           records: allRecords,
           files: this.uploadedRequestFileIds
         };
@@ -4079,6 +4181,7 @@ export default {
             user: response.data.user,
             cost_unit: this.newRequest.cost_unit || null,
             description,
+            change_ownership_reason: this.requestOwnerAdditionalComment || "",
             files: this.uploadedRequestFiles || [],
             fileIds: this.uploadedRequestFileIds || [],
             records: {
@@ -4407,6 +4510,31 @@ export default {
   overflow: hidden;
 }
 
+.owner-change-modal {
+  width: 560px;
+}
+
+.owner-change-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.owner-comment-textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  padding: 11px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #232323;
+  background: #f4f6f8;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
 .confirm-header {
   display: flex;
   align-items: center;
@@ -4539,6 +4667,13 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 12px;
+}
+
+.owner-change-button {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 12px;
 }
 
 .header-table-actions {
@@ -5155,7 +5290,7 @@ export default {
 
 .description-textarea {
   width: 100%;
-  min-height: 200px;
+  min-height: 300px;
   resize: none;
   line-height: 1.5;
 }
@@ -5184,10 +5319,10 @@ export default {
   background: #f6f8fa;
   border-radius: 8px;
   padding: 12px;
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  min-height: clamp(280px, 45vh, 420px);
+  min-height: 320px;
 }
 
 .files-header {
@@ -5210,8 +5345,8 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 8px;
-  flex: 1;
-  min-height: 120px;
+  flex: 1 1 auto;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
   background: white;
@@ -5224,6 +5359,15 @@ export default {
   table-layout: fixed;
   font-size: 12px;
 }
+.files-table .file-col-name {
+  width: 58%;
+}
+.files-table .file-col-size {
+  width: 22%;
+}
+.files-table .file-col-actions {
+  width: 20%;
+}
 
 .files-table.files-table-empty {
   height: 100%;
@@ -5235,6 +5379,14 @@ export default {
   text-align: left;
   vertical-align: middle;
   line-height: 1.4;
+}
+.files-table th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
 .files-table th {
@@ -5251,6 +5403,12 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 3px;
+}
+.owner-change-action-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4px;
 }
 
 .files-table td.actions-cell button + button {
@@ -5582,6 +5740,16 @@ export default {
 
   .feature-help-section-wide {
     grid-column: auto;
+  }
+  .files-section {
+    min-height: 280px;
+  }
+  .files-table-wrapper {
+    min-height: 190px;
+  }
+  .owner-change-button {
+    width: 100%;
+    justify-content: center;
   }
 }
 

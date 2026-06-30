@@ -24,6 +24,7 @@ class RequestSerializer(ModelSerializer):
             "create_time",
             "cost_unit",
             "description",
+            "change_ownership_reason",
             "total_sequencing_depth",
             "restrict_permissions",
             "completed",
