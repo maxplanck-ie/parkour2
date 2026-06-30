@@ -869,6 +869,59 @@
             </div>
           </label>
           <label class="field-block">
+            <span>Related Project(s)</span>
+            <div class="autocomplete-field">
+              <input
+                type="text"
+                v-model="relatedProjectQuery"
+                @input="handleRelatedProjectInput"
+                @focus="showRelatedProjectSuggestions = !!relatedProjectQuery"
+                @blur="closeRelatedProjectSuggestions"
+                :disabled="!canEditRequest"
+                placeholder="Search by Request ID or name"
+              />
+              <ul
+                v-if="showRelatedProjectSuggestions"
+                class="autocomplete-suggestions"
+              >
+                <li
+                  v-for="project in relatedProjectSuggestions"
+                  :key="`related-${project.id}`"
+                  class="autocomplete-suggestion"
+                  @mousedown.prevent="selectRelatedProject(project)"
+                >
+                  <strong>#{{ project.id }}</strong>
+                  <span v-if="project.name"> - {{ project.name }}</span>
+                </li>
+                <li
+                  v-if="!relatedProjectSuggestions.length"
+                  class="autocomplete-empty"
+                >
+                  No projects found.
+                </li>
+              </ul>
+            </div>
+            <div
+              v-if="relatedProjectsSelection.length"
+              class="related-projects-selected"
+            >
+              <button
+                v-for="project in relatedProjectsSelection"
+                :key="`selected-related-${project.id}`"
+                type="button"
+                class="related-project-chip"
+                :disabled="!canEditRequest"
+                @click="removeRelatedProject(project.id)"
+              >
+                <span>#{{ project.id }}</span>
+                <font-awesome-icon
+                  v-if="canEditRequest"
+                  icon="fa-solid fa-xmark"
+                />
+              </button>
+            </div>
+          </label>
+          <label class="field-block">
             <span>Comment</span>
             <textarea
               v-model="requestOwnerAdditionalComment"
@@ -1180,7 +1233,8 @@ export default {
         cost_unit: "",
         description: "",
         fileIds: [],
-        change_ownership_reason: ""
+        change_ownership_reason: "",
+        related_request_ids: []
       },
       requestName: "",
       restrictPermissions: false,
@@ -1199,6 +1253,11 @@ export default {
       showRequestOwnerSuggestions: false,
       requestOwnerSearchTimer: null,
       requestOwnerAdditionalComment: "",
+      relatedProjectQuery: "",
+      relatedProjectSuggestions: [],
+      showRelatedProjectSuggestions: false,
+      relatedProjectSearchTimer: null,
+      relatedProjectsSelection: [],
       requestUsers: [],
       uploadedRequestFiles: [],
       uploadedRequestFileIds: [],
@@ -1854,15 +1913,27 @@ export default {
         const baseDescription = (snapshot.description || "").trim();
         const additionalComment = this.requestOwnerAdditionalComment || "";
         const baseAdditionalComment = snapshot.change_ownership_reason || "";
+        const currentRelatedRequestIds = (this.relatedProjectsSelection || [])
+          .map((project) => String(project.id))
+          .sort();
+        const baseRelatedRequestIds = (snapshot.related_request_ids || [])
+          .map(String)
+          .sort();
         const currentFileIds = (this.uploadedRequestFileIds || []).map(String);
         const baseFileIds = (snapshot.fileIds || []).map(String);
         const filesChanged =
           currentFileIds.length !== baseFileIds.length ||
           currentFileIds.some((id) => !baseFileIds.includes(id));
+        const relatedRequestsChanged =
+          currentRelatedRequestIds.length !== baseRelatedRequestIds.length ||
+          currentRelatedRequestIds.some(
+            (id, index) => id !== baseRelatedRequestIds[index]
+          );
         return (
           costUnit !== baseCostUnit ||
           description !== baseDescription ||
           additionalComment !== baseAdditionalComment ||
+          relatedRequestsChanged ||
           filesChanged
         );
       }
@@ -2054,7 +2125,8 @@ export default {
         cost_unit: "",
         description: "",
         fileIds: [],
-        change_ownership_reason: ""
+        change_ownership_reason: "",
+        related_request_ids: []
       };
       this.requestName = "";
       this.restrictPermissions = false;
@@ -2065,9 +2137,17 @@ export default {
       this.requestOwnerSuggestions = [];
       this.showRequestOwnerSuggestions = false;
       this.requestOwnerAdditionalComment = "";
+      this.relatedProjectQuery = "";
+      this.relatedProjectSuggestions = [];
+      this.showRelatedProjectSuggestions = false;
+      this.relatedProjectsSelection = [];
       if (this.requestOwnerSearchTimer) {
         clearTimeout(this.requestOwnerSearchTimer);
         this.requestOwnerSearchTimer = null;
+      }
+      if (this.relatedProjectSearchTimer) {
+        clearTimeout(this.relatedProjectSearchTimer);
+        this.relatedProjectSearchTimer = null;
       }
       this.resetDirtyTracking();
       this.editRecordsByType = {
@@ -2199,6 +2279,18 @@ export default {
           : "";
         this.requestOwnerAdditionalComment =
           requestData.change_ownership_reason || "";
+        const relatedRequestIds = Array.isArray(requestData.related_requests)
+          ? requestData.related_requests
+              .map((id) => Number(id))
+              .filter((id) => Number.isInteger(id) && id > 0)
+          : [];
+        this.relatedProjectsSelection = relatedRequestIds.map((id) => ({
+          id,
+          name: `Request ${id}`
+        }));
+        if (this.isStaffUser && relatedRequestIds.length) {
+          await this.fetchRelatedProjects({ ids: relatedRequestIds });
+        }
         this.newRequest.cost_unit = requestData.cost_unit || "";
         this.newRequest.description = requestData.description || "";
 
@@ -2274,7 +2366,10 @@ export default {
           cost_unit: this.newRequest.cost_unit || "",
           description: this.newRequest.description || "",
           fileIds: [...this.uploadedRequestFileIds],
-          change_ownership_reason: this.requestOwnerAdditionalComment || ""
+          change_ownership_reason: this.requestOwnerAdditionalComment || "",
+          related_request_ids: this.relatedProjectsSelection.map(
+            (project) => project.id
+          )
         };
       } catch (error) {
         handleError(error);
@@ -3961,6 +4056,61 @@ export default {
         handleError(error);
       }
     },
+    async fetchRelatedProjects({ query = "", ids = [] } = {}) {
+      if (!this.isStaffUser || !this.isEditMode) return;
+      try {
+        const normalizedIds = (Array.isArray(ids) ? ids : [])
+          .map((id) => Number(id))
+          .filter((id) => Number.isInteger(id) && id > 0);
+        const params = {
+          exclude_request_id: this.requestId || ""
+        };
+        if (normalizedIds.length) {
+          params.ids = normalizedIds.join(",");
+        } else if ((query || "").trim()) {
+          params.query = String(query).trim();
+        } else {
+          this.relatedProjectSuggestions = [];
+          return;
+        }
+
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/requests/search_related_requests/`,
+          { params }
+        );
+        const items = Array.isArray(response.data) ? response.data : [];
+        if (normalizedIds.length) {
+          const byId = new Map(
+            items
+              .map((item) => ({
+                id: Number(item?.id),
+                name: item?.name || `Request ${item?.id}`
+              }))
+              .filter((item) => Number.isInteger(item.id) && item.id > 0)
+              .map((item) => [item.id, item])
+          );
+          this.relatedProjectsSelection = this.relatedProjectsSelection.map(
+            (project) => byId.get(project.id) || project
+          );
+          return;
+        }
+        this.relatedProjectSuggestions = items
+          .map((item) => ({
+            id: Number(item?.id),
+            name: item?.name || `Request ${item?.id}`
+          }))
+          .filter(
+            (item) =>
+              Number.isInteger(item.id) &&
+              item.id > 0 &&
+              !this.relatedProjectsSelection.some(
+                (selected) => selected.id === item.id
+              )
+          );
+      } catch (error) {
+        handleError(error);
+      }
+    },
     handleRequestOwnerInput(event) {
       if (!this.isStaffUser || !this.isEditMode || !this.canEditRequest) return;
       const query = String(event.target.value || "");
@@ -3979,6 +4129,49 @@ export default {
       this.requestOwnerQuery = `${user.first_name} ${user.last_name}${user.pi_name ? ` (${user.pi_name})` : ""}`;
       this.showRequestOwnerSuggestions = false;
       this.requestUsers = [user];
+    },
+    handleRelatedProjectInput(event) {
+      if (!this.isStaffUser || !this.isEditMode || !this.canEditRequest) return;
+      const query = String(event.target.value || "");
+      this.relatedProjectQuery = query;
+      this.showRelatedProjectSuggestions = !!query;
+      if (this.relatedProjectSearchTimer) {
+        clearTimeout(this.relatedProjectSearchTimer);
+      }
+      this.relatedProjectSearchTimer = setTimeout(() => {
+        this.fetchRelatedProjects({ query });
+      }, 250);
+    },
+    selectRelatedProject(project) {
+      const id = Number(project?.id);
+      if (!Number.isInteger(id) || id <= 0) return;
+      if (this.relatedProjectsSelection.some((item) => item.id === id)) {
+        this.relatedProjectQuery = "";
+        this.showRelatedProjectSuggestions = false;
+        return;
+      }
+      this.relatedProjectsSelection = [
+        ...this.relatedProjectsSelection,
+        {
+          id,
+          name: project?.name || `Request ${id}`
+        }
+      ];
+      this.relatedProjectQuery = "";
+      this.relatedProjectSuggestions = [];
+      this.showRelatedProjectSuggestions = false;
+    },
+    removeRelatedProject(projectId) {
+      if (!this.canEditRequest) return;
+      const id = Number(projectId);
+      this.relatedProjectsSelection = this.relatedProjectsSelection.filter(
+        (project) => project.id !== id
+      );
+    },
+    closeRelatedProjectSuggestions() {
+      setTimeout(() => {
+        this.showRelatedProjectSuggestions = false;
+      }, 150);
     },
     closeRequestOwnerSuggestions() {
       setTimeout(() => {
@@ -4154,6 +4347,9 @@ export default {
           cost_unit: this.newRequest.cost_unit || null,
           description,
           change_ownership_reason: this.requestOwnerAdditionalComment || "",
+          related_requests: this.relatedProjectsSelection.map(
+            (project) => project.id
+          ),
           records: allRecords,
           files: this.uploadedRequestFileIds
         };
@@ -4182,6 +4378,9 @@ export default {
             cost_unit: this.newRequest.cost_unit || null,
             description,
             change_ownership_reason: this.requestOwnerAdditionalComment || "",
+            related_requests: this.relatedProjectsSelection.map(
+              (project) => project.id
+            ),
             files: this.uploadedRequestFiles || [],
             fileIds: this.uploadedRequestFileIds || [],
             records: {
@@ -4533,6 +4732,31 @@ export default {
   background: #f4f6f8;
   line-height: 1.5;
   box-sizing: border-box;
+}
+
+.related-projects-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.related-project-chip {
+  border: 1px solid #b8c6d1;
+  border-radius: 16px;
+  background: #eef3f7;
+  color: #16364a;
+  font-size: 12px;
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.related-project-chip:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 
 .confirm-header {

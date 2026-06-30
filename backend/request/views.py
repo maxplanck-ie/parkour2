@@ -427,6 +427,46 @@ class RequestViewSet(viewsets.ModelViewSet):
         ]
         return Response(data)
 
+    @action(methods=["get"], detail=False, permission_classes=[IsAdminUser])
+    def search_related_requests(self, request):
+        """Search requests by ID/name for ownership-change related projects."""
+        query = request.query_params.get("query", "").strip()
+        exclude_request_id = request.query_params.get("exclude_request_id", "").strip()
+        ids_raw = request.query_params.get("ids", "").strip()
+
+        requests_qs = Request.objects.filter(archived=False).select_related("user")
+
+        if ids_raw:
+            ids = [
+                int(value)
+                for value in ids_raw.split(",")
+                if str(value).strip().isdigit()
+            ]
+            if not ids:
+                return Response([])
+            requests_qs = requests_qs.filter(id__in=ids)
+        elif query:
+            request_filter = Q(name__icontains=query)
+            if query.isdigit():
+                request_filter |= Q(id=int(query))
+            requests_qs = requests_qs.filter(request_filter)
+        else:
+            return Response([])
+
+        if exclude_request_id.isdigit():
+            requests_qs = requests_qs.exclude(id=int(exclude_request_id))
+
+        results = requests_qs.order_by("-id")[:30]
+        data = [
+            {
+                "id": req.pk,
+                "name": req.name,
+                "owner": req.user.full_name if req.user else "",
+            }
+            for req in results
+        ]
+        return Response(data)
+
     @action(methods=["get"], detail=True)
     def get_files(self, request, pk=None):
         """Get the list of attached files for a request with a given id."""

@@ -55,6 +55,12 @@ class Request(DateTimeMixin):
         blank=True,
         default="",
     )
+    related_requests = models.ManyToManyField(
+        "self",
+        blank=True,
+        symmetrical=False,
+        related_name="related_to_requests",
+    )
     token = models.CharField("Token", max_length=50, blank=True, null=True, unique=True)
 
     user = models.ForeignKey(
@@ -108,7 +114,7 @@ class Request(DateTimeMixin):
 
     archived = models.BooleanField("Archived", default=False)
 
-    history = HistoricalRecords(inherit=True)
+    history = HistoricalRecords(inherit=True, m2m_fields=[related_requests])
 
     filepaths = models.JSONField(null=False, default=filepaths_default)
 

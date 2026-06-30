@@ -169,6 +169,64 @@ class RequestMilestoneSignalsTest(TestCase):
         self.assertEqual(self.request.flowcell_loaded_at, sequencing_time)
 
 
+class RequestRelatedRequestsHistoryTest(TestCase):
+    def setUp(self):
+        self.org = Organization(name=get_random_name())
+        self.org.save()
+
+        self.pi = PrincipalInvestigator(
+            name=get_random_name(),
+            organization=self.org,
+        )
+        self.pi.save()
+
+        self.user = User.objects.create_user(
+            first_name="Foo",
+            last_name="Bar",
+            email="foo-history@bar.io",
+            password="foo-foo",
+            organization=self.org,
+            pi=self.pi,
+        )
+
+        self.request_a = create_request(self.user)
+        self.request_b = create_request(self.user)
+
+    def test_related_requests_add_appears_in_history(self):
+        self.request_a.related_requests.add(self.request_b)
+
+        newest, previous = self.request_a.history.all()[:2]
+        delta = newest.diff_against(previous)
+
+        self.assertIn("related_requests", delta.changed_fields)
+
+    def test_related_requests_remove_appears_in_history(self):
+        self.request_a.related_requests.add(self.request_b)
+        self.request_a.related_requests.remove(self.request_b)
+
+        newest, previous = self.request_a.history.all()[:2]
+        delta = newest.diff_against(previous)
+
+        self.assertIn("related_requests", delta.changed_fields)
+
+    def test_target_request_add_appears_in_history(self):
+        self.request_a.related_requests.add(self.request_b)
+
+        newest, previous = self.request_b.history.all()[:2]
+        delta = newest.diff_against(previous)
+
+        self.assertIn("related_requests", delta.changed_fields)
+
+    def test_target_request_remove_appears_in_history(self):
+        self.request_a.related_requests.add(self.request_b)
+        self.request_a.related_requests.remove(self.request_b)
+
+        newest, previous = self.request_b.history.all()[:2]
+        delta = newest.diff_against(previous)
+
+        self.assertIn("related_requests", delta.changed_fields)
+
+
 # Views
 
 

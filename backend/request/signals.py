@@ -38,6 +38,73 @@ Flowcell = apps.get_model("flowcell", "Flowcell")
 LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 Pooling = apps.get_model("pooling", "Pooling")
 
+
+@receiver(m2m_changed, sender=Request.related_requests.through)
+def sync_related_requests_bidirectionally(
+    sender, instance, action, reverse, pk_set, **kwargs
+):
+    if getattr(instance, "_syncing_related_requests", False):
+        return
+
+    if reverse:
+        return
+
+    if action == "pre_clear":
+        instance._related_requests_clear_cache = set(
+            instance.related_requests.values_list("pk", flat=True)
+        )
+        return
+
+    if action == "post_add":
+        target_ids = [int(pk) for pk in (pk_set or set()) if pk is not None]
+        if not target_ids:
+            return
+        targets = Request.objects.filter(pk__in=target_ids).exclude(pk=instance.pk)
+        for target in targets:
+            if target.related_requests.filter(pk=instance.pk).exists():
+                continue
+            target._syncing_related_requests = True
+            try:
+                target.related_requests.add(instance.pk)
+            finally:
+                target._syncing_related_requests = False
+        return
+
+    if action == "post_remove":
+        target_ids = [int(pk) for pk in (pk_set or set()) if pk is not None]
+        if not target_ids:
+            return
+        targets = Request.objects.filter(pk__in=target_ids)
+        for target in targets:
+            if target.pk == instance.pk:
+                continue
+            if not target.related_requests.filter(pk=instance.pk).exists():
+                continue
+            target._syncing_related_requests = True
+            try:
+                target.related_requests.remove(instance.pk)
+            finally:
+                target._syncing_related_requests = False
+        return
+
+    if action == "post_clear":
+        cached_ids = getattr(instance, "_related_requests_clear_cache", set())
+        target_ids = [int(pk) for pk in cached_ids if pk is not None]
+        if target_ids:
+            targets = Request.objects.filter(pk__in=target_ids)
+            for target in targets:
+                if target.pk == instance.pk:
+                    continue
+                if not target.related_requests.filter(pk=instance.pk).exists():
+                    continue
+                target._syncing_related_requests = True
+                try:
+                    target.related_requests.remove(instance.pk)
+                finally:
+                    target._syncing_related_requests = False
+        instance._related_requests_clear_cache = set()
+
+
 DEFAULT_REFRESH_DELAY = 0.5
 
 QC_APPROVED_STATUS = 2
