@@ -51,7 +51,7 @@ class Request(DateTimeMixin):
         default="Empty",
     )
     change_ownership_reason = models.TextField(
-        verbose_name="Change Ownership Reason",
+        verbose_name="Change Ownership Comment",
         blank=True,
         default="",
     )

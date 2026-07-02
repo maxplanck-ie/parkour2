@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             field=models.TextField(
                 blank=True,
                 default="",
-                verbose_name="Change Ownership Reason",
+                verbose_name="Change Ownership Comment",
             ),
         ),
         migrations.AddField(
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
             field=models.TextField(
                 blank=True,
                 default="",
-                verbose_name="Change Ownership Reason",
+                verbose_name="Change Ownership Comment",
             ),
         ),
     ]

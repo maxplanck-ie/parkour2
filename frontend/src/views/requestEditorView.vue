@@ -922,13 +922,13 @@
             </div>
           </label>
           <label class="field-block">
-            <span>Comment</span>
+            <span>Change Ownership Comment</span>
             <textarea
               v-model="requestOwnerAdditionalComment"
               class="owner-comment-textarea"
               rows="4"
               :readonly="!canEditRequest"
-              placeholder="Add an optional comment for ownership change"
+              placeholder="Add an optional ownership change comment"
             ></textarea>
           </label>
         </div>
