@@ -2,7 +2,7 @@
 #    uv pip compile --universal --python-version 3.11 backend/requirements/dev.in -c backend/requirements/3.11/base.txt -o backend/requirements/3.11/dev.txt
 annotated-types==0.7.0
     # via pydantic
-anyio==4.14.0
+anyio==4.14.1
     # via
     #   httpx
     #   openai
@@ -20,9 +20,9 @@ attrs==26.1.0
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   referencing
-boto3==1.43.34
+boto3==1.43.40
     # via -r backend/requirements/dev.in
-botocore==1.43.34
+botocore==1.43.40
     # via
     #   boto3
     #   s3transfer
@@ -125,7 +125,7 @@ django-monthfield==0.1.4
     #   -r backend/requirements/base.in
 django-schema-viewer==0.5.3
     # via -r backend/requirements/dev.in
-django-simple-history==3.11.0
+django-simple-history==3.12.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
@@ -176,13 +176,13 @@ inflection==0.5.1
     #   drf-spectacular
 ipdb==0.13.13
     # via -r backend/requirements/dev.in
-ipython==9.14.1
+ipython==9.15.0
     # via ipdb
 ipython-pygments-lexers==1.1.1
     # via ipython
 jedi==0.20.0
     # via ipython
-jiter==0.15.0
+jiter==0.16.0
     # via openai
 jmespath==1.1.0
     # via
@@ -219,14 +219,14 @@ numpy==1.25.2 ; python_full_version < '3.12'
     #   contourpy
     #   matplotlib
     #   pandas
-numpy==2.5.0 ; python_full_version >= '3.12'
+numpy==2.5.1 ; python_full_version >= '3.12'
     # via
     #   -c backend/requirements/3.11/base.txt
     #   -r backend/requirements/base.in
     #   contourpy
     #   matplotlib
     #   pandas
-openai==2.43.0
+openai==2.44.0
     # via -r backend/requirements/dev.in
 openpyxl==3.1.5
     # via
@@ -251,14 +251,14 @@ parso==0.8.7
     # via jedi
 pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via ipython
-pillow==12.2.0
+pillow==12.3.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   fpdf2
     #   matplotlib
 prompt-toolkit==3.0.52
     # via ipython
-psutil==7.2.2 ; sys_platform != 'emscripten'
+psutil==7.2.2 ; sys_platform != 'cygwin' and sys_platform != 'emscripten'
     # via ipython
 psycopg2==2.9.12
     # via
@@ -308,7 +308,7 @@ referencing==0.37.0
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
     #   jsonschema-specifications
-regex==2026.5.9
+regex==2026.6.28
     # via tiktoken
 requests==2.34.2
     # via
@@ -316,7 +316,7 @@ requests==2.34.2
     #   tiktoken
 rich==15.0.0
     # via -r backend/requirements/dev.in
-rpds-py==2026.5.1
+rpds-py==2026.6.3
     # via
     #   -c backend/requirements/3.11/base.txt
     #   jsonschema
@@ -329,15 +329,16 @@ six==1.17.0
     #   python-dateutil
 sniffio==1.3.1
     # via openai
-sql-metadata==2.20.0
+sql-metadata==3.0.1
     # via -r backend/requirements/dev.in
+sqlglot==30.12.0
+    # via sql-metadata
 sqlparse==0.5.5
     # via
     #   -c backend/requirements/3.11/base.txt
     #   django
     #   django-debug-toolbar
     #   django-sql-explorer
-    #   sql-metadata
 stack-data==0.6.3
     # via ipython
 tablib==3.9.0
@@ -358,7 +359,7 @@ traitlets==5.15.1
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.15.0
+typing-extensions==4.16.0
     # via
     #   -c backend/requirements/3.11/base.txt
     #   anyio
@@ -384,7 +385,7 @@ urllib3==2.7.0
     # via
     #   botocore
     #   requests
-wcwidth==0.8.1
+wcwidth==0.8.2
     # via prompt-toolkit
 werkzeug==3.1.8
     # via -r backend/requirements/dev.in
