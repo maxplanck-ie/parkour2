@@ -175,6 +175,18 @@
               </select>
             </div>
 
+            <!-- Changed Ownership Filter -->
+            <div class="filter-item">
+              <label>Changed Ownership</label>
+              <select
+                v-model="filters.changedOwnership"
+                @change="getLibrariesSamples(1)"
+              >
+                <option :value="null">All</option>
+                <option :value="true">Yes</option>
+              </select>
+            </div>
+
             <!-- Reset Filters Button -->
             <button @click="resetAdvancedFilters" class="reset-button">
               Reset Filters
@@ -1439,7 +1451,8 @@ export default {
         protocol: null,
         analysisType: null,
         sequencer: null,
-        readLength: null
+        readLength: null,
+        changedOwnership: null
       },
       protocolsList: [],
       analysisTypesList: [],
@@ -1625,6 +1638,9 @@ export default {
         }
         if (this.filters.readLength !== null) {
           params.read_length = this.filters.readLength;
+        }
+        if (this.filters.changedOwnership !== null) {
+          params.changed_ownership = true;
         }
 
         let response = await axiosRef.get(
@@ -1831,7 +1847,8 @@ export default {
         protocol: null,
         analysisType: null,
         sequencer: null,
-        readLength: null
+        readLength: null,
+        changedOwnership: null
       };
       this.getLibrariesSamples(1);
     },

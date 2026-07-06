@@ -427,14 +427,21 @@ class RequestViewSet(viewsets.ModelViewSet):
         ]
         return Response(data)
 
-    @action(methods=["get"], detail=False, permission_classes=[IsAdminUser])
+    @action(methods=["get"], detail=False)
     def search_related_requests(self, request):
-        """Search requests by ID/name for ownership-change related projects."""
+        """Search requests by ID/name for related project selection."""
         query = request.query_params.get("query", "").strip()
         exclude_request_id = request.query_params.get("exclude_request_id", "").strip()
         ids_raw = request.query_params.get("ids", "").strip()
 
         requests_qs = Request.objects.filter(archived=False).select_related("user")
+
+        if request.user.is_staff:
+            pass
+        elif request.user.is_pi:
+            requests_qs = retrieve_group_items(request, requests_qs)
+        else:
+            requests_qs = requests_qs.filter(user=request.user)
 
         if ids_raw:
             ids = [

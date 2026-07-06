@@ -645,6 +645,62 @@
                 </div>
               </label>
 
+              <label class="field-block">
+                <span>Related Project(s)</span>
+                <div class="autocomplete-field">
+                  <input
+                    type="text"
+                    v-model="relatedProjectQuery"
+                    @input="handleRelatedProjectInput"
+                    @focus="
+                      showRelatedProjectSuggestions = !!relatedProjectQuery
+                    "
+                    @blur="closeRelatedProjectSuggestions"
+                    :disabled="!canEditRequest"
+                    placeholder="Search by Request ID or name"
+                  />
+                  <ul
+                    v-if="showRelatedProjectSuggestions"
+                    class="autocomplete-suggestions"
+                  >
+                    <li
+                      v-for="project in relatedProjectSuggestions"
+                      :key="`related-${project.id}`"
+                      class="autocomplete-suggestion"
+                      @mousedown.prevent="selectRelatedProject(project)"
+                    >
+                      <strong>#{{ project.id }}</strong>
+                      <span v-if="project.name"> - {{ project.name }}</span>
+                    </li>
+                    <li
+                      v-if="!relatedProjectSuggestions.length"
+                      class="autocomplete-empty"
+                    >
+                      No projects found.
+                    </li>
+                  </ul>
+                </div>
+                <div
+                  v-if="relatedProjectsSelection.length"
+                  class="related-projects-selected"
+                >
+                  <button
+                    v-for="project in relatedProjectsSelection"
+                    :key="`selected-related-${project.id}`"
+                    type="button"
+                    class="related-project-chip"
+                    :disabled="!canEditRequest"
+                    @click="removeRelatedProject(project.id)"
+                  >
+                    <span>#{{ project.id }}</span>
+                    <font-awesome-icon
+                      v-if="canEditRequest"
+                      icon="fa-solid fa-xmark"
+                    />
+                  </button>
+                </div>
+              </label>
+
               <div class="files-section">
                 <div class="files-header">
                   <div>
@@ -869,66 +925,13 @@
             </div>
           </label>
           <label class="field-block">
-            <span>Related Project(s)</span>
-            <div class="autocomplete-field">
-              <input
-                type="text"
-                v-model="relatedProjectQuery"
-                @input="handleRelatedProjectInput"
-                @focus="showRelatedProjectSuggestions = !!relatedProjectQuery"
-                @blur="closeRelatedProjectSuggestions"
-                :disabled="!canEditRequest"
-                placeholder="Search by Request ID or name"
-              />
-              <ul
-                v-if="showRelatedProjectSuggestions"
-                class="autocomplete-suggestions"
-              >
-                <li
-                  v-for="project in relatedProjectSuggestions"
-                  :key="`related-${project.id}`"
-                  class="autocomplete-suggestion"
-                  @mousedown.prevent="selectRelatedProject(project)"
-                >
-                  <strong>#{{ project.id }}</strong>
-                  <span v-if="project.name"> - {{ project.name }}</span>
-                </li>
-                <li
-                  v-if="!relatedProjectSuggestions.length"
-                  class="autocomplete-empty"
-                >
-                  No projects found.
-                </li>
-              </ul>
-            </div>
-            <div
-              v-if="relatedProjectsSelection.length"
-              class="related-projects-selected"
-            >
-              <button
-                v-for="project in relatedProjectsSelection"
-                :key="`selected-related-${project.id}`"
-                type="button"
-                class="related-project-chip"
-                :disabled="!canEditRequest"
-                @click="removeRelatedProject(project.id)"
-              >
-                <span>#{{ project.id }}</span>
-                <font-awesome-icon
-                  v-if="canEditRequest"
-                  icon="fa-solid fa-xmark"
-                />
-              </button>
-            </div>
-          </label>
-          <label class="field-block">
-            <span>Change Ownership Comment</span>
+            <span>Project Description</span>
             <textarea
-              v-model="requestOwnerAdditionalComment"
-              class="owner-comment-textarea"
+              v-model="newRequest.description"
+              class="description-textarea"
               rows="4"
               :readonly="!canEditRequest"
-              placeholder="Add an optional ownership change comment"
+              placeholder="Describe the project and any details important for handling and documentation"
             ></textarea>
           </label>
         </div>
@@ -1233,7 +1236,6 @@ export default {
         cost_unit: "",
         description: "",
         fileIds: [],
-        change_ownership_reason: "",
         related_request_ids: []
       },
       requestName: "",
@@ -1252,7 +1254,6 @@ export default {
       requestOwnerSuggestions: [],
       showRequestOwnerSuggestions: false,
       requestOwnerSearchTimer: null,
-      requestOwnerAdditionalComment: "",
       relatedProjectQuery: "",
       relatedProjectSuggestions: [],
       showRelatedProjectSuggestions: false,
@@ -1911,8 +1912,6 @@ export default {
         const baseCostUnit =
           baseCostUnitRaw === "" ? "" : String(baseCostUnitRaw);
         const baseDescription = (snapshot.description || "").trim();
-        const additionalComment = this.requestOwnerAdditionalComment || "";
-        const baseAdditionalComment = snapshot.change_ownership_reason || "";
         const currentRelatedRequestIds = (this.relatedProjectsSelection || [])
           .map((project) => String(project.id))
           .sort();
@@ -1932,7 +1931,6 @@ export default {
         return (
           costUnit !== baseCostUnit ||
           description !== baseDescription ||
-          additionalComment !== baseAdditionalComment ||
           relatedRequestsChanged ||
           filesChanged
         );
@@ -2125,7 +2123,6 @@ export default {
         cost_unit: "",
         description: "",
         fileIds: [],
-        change_ownership_reason: "",
         related_request_ids: []
       };
       this.requestName = "";
@@ -2136,7 +2133,6 @@ export default {
       this.requestOwnerQuery = "";
       this.requestOwnerSuggestions = [];
       this.showRequestOwnerSuggestions = false;
-      this.requestOwnerAdditionalComment = "";
       this.relatedProjectQuery = "";
       this.relatedProjectSuggestions = [];
       this.showRelatedProjectSuggestions = false;
@@ -2277,8 +2273,6 @@ export default {
         this.requestOwnerQuery = requestData.user_full_name
           ? `${requestData.user_full_name}${requestData.owner_pi_name ? ` (${requestData.owner_pi_name})` : ""}`
           : "";
-        this.requestOwnerAdditionalComment =
-          requestData.change_ownership_reason || "";
         const relatedRequestIds = Array.isArray(requestData.related_requests)
           ? requestData.related_requests
               .map((id) => Number(id))
@@ -2288,7 +2282,7 @@ export default {
           id,
           name: `Request ${id}`
         }));
-        if (this.isStaffUser && relatedRequestIds.length) {
+        if (relatedRequestIds.length) {
           await this.fetchRelatedProjects({ ids: relatedRequestIds });
         }
         this.newRequest.cost_unit = requestData.cost_unit || "";
@@ -2366,7 +2360,6 @@ export default {
           cost_unit: this.newRequest.cost_unit || "",
           description: this.newRequest.description || "",
           fileIds: [...this.uploadedRequestFileIds],
-          change_ownership_reason: this.requestOwnerAdditionalComment || "",
           related_request_ids: this.relatedProjectsSelection.map(
             (project) => project.id
           )
@@ -4011,7 +4004,7 @@ export default {
       const targetUserId = this.isEditMode
         ? this.originalRequestOwnerId || this.requestOwnerId
         : this.userId;
-      if (!targetUserId) return;
+      if (!targetUserId && !this.isEditMode) return;
       if (!this.isEditMode) {
         if (
           this.costUnitsLoadedForUser === targetUserId &&
@@ -4021,20 +4014,49 @@ export default {
         }
       }
       try {
-        const params = {
-          user_id: targetUserId
-        };
+        const params = {};
+        if (targetUserId) {
+          params.user_id = targetUserId;
+        }
         const response = await axiosRef.get(
           `${urlStringStart}/api/cost_units/`,
           {
             params
           }
         );
-        this.costUnits = (response.data || []).sort((a, b) =>
+        let loadedCostUnits = (response.data || []).sort((a, b) =>
           String(a.name || "").localeCompare(String(b.name || ""), undefined, {
             sensitivity: "base"
           })
         );
+        if (
+          this.isEditMode &&
+          this.newRequest.cost_unit &&
+          !loadedCostUnits.some(
+            (cu) => String(cu.id) === String(this.newRequest.cost_unit)
+          )
+        ) {
+          try {
+            const detailRes = await axiosRef.get(
+              `${urlStringStart}/api/cost_units/${this.newRequest.cost_unit}/`
+            );
+            const detail = detailRes?.data;
+            if (detail && detail.id) {
+              loadedCostUnits = [...loadedCostUnits, detail].sort((a, b) =>
+                String(a.name || "").localeCompare(
+                  String(b.name || ""),
+                  undefined,
+                  {
+                    sensitivity: "base"
+                  }
+                )
+              );
+            }
+          } catch (error) {
+            // Ignore missing detail; keep the fetched list as-is.
+          }
+        }
+        this.costUnits = loadedCostUnits;
         if (!this.isEditMode) {
           this.costUnitsLoadedForUser = targetUserId;
         }
@@ -4057,7 +4079,7 @@ export default {
       }
     },
     async fetchRelatedProjects({ query = "", ids = [] } = {}) {
-      if (!this.isStaffUser || !this.isEditMode) return;
+      if (!this.canEditRequest) return;
       try {
         const normalizedIds = (Array.isArray(ids) ? ids : [])
           .map((id) => Number(id))
@@ -4131,7 +4153,7 @@ export default {
       this.requestUsers = [user];
     },
     handleRelatedProjectInput(event) {
-      if (!this.isStaffUser || !this.isEditMode || !this.canEditRequest) return;
+      if (!this.canEditRequest) return;
       const query = String(event.target.value || "");
       this.relatedProjectQuery = query;
       this.showRelatedProjectSuggestions = !!query;
@@ -4346,7 +4368,6 @@ export default {
         const payload = {
           cost_unit: this.newRequest.cost_unit || null,
           description,
-          change_ownership_reason: this.requestOwnerAdditionalComment || "",
           related_requests: this.relatedProjectsSelection.map(
             (project) => project.id
           ),
@@ -4377,7 +4398,6 @@ export default {
             user: response.data.user,
             cost_unit: this.newRequest.cost_unit || null,
             description,
-            change_ownership_reason: this.requestOwnerAdditionalComment || "",
             related_requests: this.relatedProjectsSelection.map(
               (project) => project.id
             ),
@@ -4435,6 +4455,9 @@ export default {
       const payload = {
         cost_unit: this.newRequest.cost_unit || null,
         description,
+        related_requests: this.relatedProjectsSelection.map(
+          (project) => project.id
+        ),
         records: [],
         files: this.uploadedRequestFileIds
       };
@@ -4719,7 +4742,7 @@ export default {
   gap: 12px;
 }
 
-.owner-comment-textarea {
+.description-textarea {
   width: 100%;
   min-height: 120px;
   resize: vertical;
