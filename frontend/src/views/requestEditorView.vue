@@ -626,6 +626,53 @@
               </label>
 
               <label class="field-block">
+                <span>Request Owner</span>
+                <div
+                  v-if="isStaffUser && isEditMode"
+                  class="autocomplete-field"
+                >
+                  <input
+                    type="text"
+                    v-model="requestOwnerQuery"
+                    @input="handleRequestOwnerInput"
+                    @focus="showRequestOwnerSuggestions = !!requestOwnerQuery"
+                    @blur="closeRequestOwnerSuggestions"
+                    :disabled="!canEditRequest"
+                    placeholder="Search users by name or PI"
+                    :class="['', !requestOwnerId ? 'placeholder' : '']"
+                  />
+                  <ul
+                    v-if="showRequestOwnerSuggestions"
+                    class="autocomplete-suggestions"
+                  >
+                    <li
+                      v-for="user in requestOwnerSuggestions"
+                      :key="`owner-${user.id}`"
+                      class="autocomplete-suggestion"
+                      @mousedown.prevent="selectRequestOwner(user)"
+                    >
+                      <strong
+                        >{{ user.first_name }} {{ user.last_name }}</strong
+                      >
+                      <span v-if="user.pi_name"> - {{ user.pi_name }}</span>
+                    </li>
+                    <li
+                      v-if="!requestOwnerSuggestions.length"
+                      class="autocomplete-empty"
+                    >
+                      No users found.
+                    </li>
+                  </ul>
+                </div>
+                <div v-else class="field-value">
+                  {{ requestOwnerQuery || "Not assigned" }}
+                </div>
+                <small v-if="isStaffUser">
+                  Changing the owner does not change Cost Unit.
+                </small>
+              </label>
+
+              <label class="field-block">
                 <span> Description<span class="required">*</span> </span>
                 <textarea
                   v-model="newRequest.description"
@@ -790,22 +837,6 @@
                   </table>
                 </div>
               </div>
-
-              <div
-                v-if="isEditMode && isStaffUser"
-                class="owner-change-action-container"
-              >
-                <button
-                  class="icon-button text-button owner-change-button"
-                  type="button"
-                  title="Change request owner"
-                  :disabled="!canEditRequest"
-                  @click="openOwnerChangeDialog"
-                >
-                  <font-awesome-icon icon="fa-solid fa-user-pen" />
-                  <span>Change Ownership</span>
-                </button>
-              </div>
             </section>
           </div>
         </div>
@@ -869,87 +900,6 @@
         <div class="saving-card">
           <div class="spinner"></div>
           <p>Saving request, please wait...</p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      v-if="showOwnerChangeDialog"
-      class="confirm-overlay"
-      @keydown="handleOwnerChangeDialogKeydown"
-      tabindex="0"
-    >
-      <div class="confirm-modal owner-change-modal">
-        <div class="confirm-header">
-          <span class="confirm-title">Change Request Owner</span>
-          <button
-            class="popup-close-button"
-            type="button"
-            @click="closeOwnerChangeDialog"
-          >
-            &times;
-          </button>
-        </div>
-        <div class="confirm-body owner-change-body">
-          <label class="field-block">
-            <span>Request Owner</span>
-            <div class="autocomplete-field">
-              <input
-                type="text"
-                v-model="requestOwnerQuery"
-                @input="handleRequestOwnerInput"
-                @focus="showRequestOwnerSuggestions = !!requestOwnerQuery"
-                @blur="closeRequestOwnerSuggestions"
-                :disabled="!canEditRequest"
-                placeholder="Search users by name or PI"
-                :class="['', !requestOwnerId ? 'placeholder' : '']"
-              />
-              <ul
-                v-if="showRequestOwnerSuggestions"
-                class="autocomplete-suggestions"
-              >
-                <li
-                  v-for="user in requestUsers"
-                  :key="user.id"
-                  class="autocomplete-suggestion"
-                  @mousedown.prevent="selectRequestOwner(user)"
-                >
-                  {{ user.first_name }} {{ user.last_name }}
-                  <span v-if="user.pi_name"> ({{ user.pi_name }}) </span>
-                  <span v-else>(No PI)</span>
-                </li>
-                <li v-if="!requestUsers.length" class="autocomplete-empty">
-                  No users found.
-                </li>
-              </ul>
-            </div>
-          </label>
-          <label class="field-block">
-            <span>Project Description</span>
-            <textarea
-              v-model="newRequest.description"
-              class="description-textarea"
-              rows="4"
-              :readonly="!canEditRequest"
-              placeholder="Describe the project and any details important for handling and documentation"
-            ></textarea>
-          </label>
-        </div>
-        <div class="confirm-footer">
-          <button
-            class="popup-button secondary"
-            type="button"
-            @click="closeOwnerChangeDialog"
-          >
-            Close
-          </button>
-          <button
-            class="popup-button yes-button"
-            type="button"
-            @click="closeOwnerChangeDialog"
-          >
-            Save
-          </button>
         </div>
       </div>
     </div>
@@ -1215,7 +1165,6 @@ export default {
       showDeleteConfirm: false,
       showCloseConfirm: false,
       showFileDeleteConfirm: false,
-      showOwnerChangeDialog: false,
       showShortcutHelp: false,
       showFeatureHelp: false,
       pendingToggleMode: null,
@@ -1251,6 +1200,7 @@ export default {
       requestOwnerId: null,
       originalRequestOwnerId: null,
       requestOwnerQuery: "",
+      originalRequestOwnerQuery: "",
       requestOwnerSuggestions: [],
       showRequestOwnerSuggestions: false,
       requestOwnerSearchTimer: null,
@@ -1341,15 +1291,6 @@ export default {
       }
     },
     showFileDeleteConfirm(newVal) {
-      if (newVal) {
-        this.$nextTick(() => {
-          const overlays = this.$el?.querySelectorAll?.(".confirm-overlay");
-          const overlay = overlays?.[overlays.length - 1];
-          overlay?.focus?.();
-        });
-      }
-    },
-    showOwnerChangeDialog(newVal) {
       if (newVal) {
         this.$nextTick(() => {
           const overlays = this.$el?.querySelectorAll?.(".confirm-overlay");
@@ -1876,24 +1817,6 @@ export default {
         this.confirmCloseModal();
       }
     },
-    openOwnerChangeDialog() {
-      if (!this.isEditMode || !this.isStaffUser) return;
-      this.showOwnerChangeDialog = true;
-      if (this.requestOwnerQuery) {
-        this.fetchRequestUsers(this.requestOwnerQuery);
-      }
-    },
-    closeOwnerChangeDialog() {
-      this.showOwnerChangeDialog = false;
-      this.showRequestOwnerSuggestions = false;
-    },
-    handleOwnerChangeDialogKeydown(event) {
-      if (!this.showOwnerChangeDialog) return;
-      if (event.key === "Escape") {
-        event.preventDefault();
-        this.closeOwnerChangeDialog();
-      }
-    },
     hasUnsavedChanges() {
       const costUnitRaw = this.newRequest.cost_unit || "";
       const description = (this.newRequest.description || "").trim();
@@ -2114,7 +2037,6 @@ export default {
       this.showDeleteConfirm = false;
       this.showCloseConfirm = false;
       this.showFileDeleteConfirm = false;
-      this.showOwnerChangeDialog = false;
       this.showShortcutHelp = false;
       this.showFeatureHelp = false;
       this.pendingToggleMode = null;
@@ -2270,9 +2192,10 @@ export default {
         this.restrictPermissions = Boolean(requestData.restrict_permissions);
         this.requestOwnerId = requestData.user || null;
         this.originalRequestOwnerId = requestData.user || null;
-        this.requestOwnerQuery = requestData.user_full_name
+        this.originalRequestOwnerQuery = requestData.user_full_name
           ? `${requestData.user_full_name}${requestData.owner_pi_name ? ` (${requestData.owner_pi_name})` : ""}`
           : "";
+        this.requestOwnerQuery = this.originalRequestOwnerQuery;
         const relatedRequestIds = Array.isArray(requestData.related_requests)
           ? requestData.related_requests
               .map((id) => Number(id))
@@ -4073,7 +3996,9 @@ export default {
             params: { query }
           }
         );
-        this.requestUsers = Array.isArray(response.data) ? response.data : [];
+        this.requestOwnerSuggestions = Array.isArray(response.data)
+          ? response.data
+          : [];
       } catch (error) {
         handleError(error);
       }
@@ -4150,7 +4075,7 @@ export default {
       this.requestOwnerId = user.id;
       this.requestOwnerQuery = `${user.first_name} ${user.last_name}${user.pi_name ? ` (${user.pi_name})` : ""}`;
       this.showRequestOwnerSuggestions = false;
-      this.requestUsers = [user];
+      this.requestOwnerSuggestions = [user];
     },
     handleRelatedProjectInput(event) {
       if (!this.canEditRequest) return;

@@ -437,8 +437,9 @@ class RequestViewSet(viewsets.ModelViewSet):
         requests_qs = Request.objects.filter(archived=False).select_related("user")
 
         if request.user.is_staff:
+            # Staff users may search all requests.
             pass
-        elif request.user.is_pi:
+        elif getattr(request.user, "is_pi", False) and request.user.pi:
             requests_qs = retrieve_group_items(request, requests_qs)
         else:
             requests_qs = requests_qs.filter(user=request.user)

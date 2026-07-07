@@ -476,6 +476,152 @@ class TestRequests(BaseTestCase):
         results = response.json()
         self.assertTrue(any(user["email"] == "ahmed@test.io" for user in results))
 
+    def test_search_related_requests_staff_sees_all(self):
+        """Ensure staff users can search all requests when selecting related projects."""
+        org = Organization(name=get_random_name())
+        org.save()
+        pi1 = PrincipalInvestigator(name="PI1", organization=org)
+        pi1.save()
+        pi2 = PrincipalInvestigator(name="PI2", organization=org)
+        pi2.save()
+        user1 = User.objects.create_user(
+            email="user1@test.io",
+            password="foo-foo",
+            first_name="User",
+            last_name="One",
+            organization=org,
+            pi=pi1,
+            is_staff=False,
+        )
+        user1.save()
+        user2 = User.objects.create_user(
+            email="user2@test.io",
+            password="foo-foo",
+            first_name="User",
+            last_name="Two",
+            organization=org,
+            pi=pi2,
+            is_staff=False,
+        )
+        request1 = create_request(user1)
+        request2 = create_request(user2)
+
+        response = self.client.get(
+            "/api/requests/search_related_requests/",
+            {"ids": f"{request1.pk},{request2.pk}"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(any(item["name"] == request1.name for item in data))
+        self.assertTrue(any(item["name"] == request2.name for item in data))
+
+    def test_search_related_requests_pi_sees_same_pi_requests(self):
+        """Ensure PI accounts can search requests from users with the same PI."""
+        org = Organization(name=get_random_name())
+        org.save()
+        pi = PrincipalInvestigator(name="PIGroup", organization=org)
+        pi.save()
+        user_a = User.objects.create_user(
+            email="usera@test.io",
+            password="foo-foo",
+            first_name="User",
+            last_name="A",
+            organization=org,
+            pi=pi,
+            is_staff=False,
+        )
+        user_a.save()
+        user_b = User.objects.create_user(
+            email="userb@test.io",
+            password="foo-foo",
+            first_name="User",
+            last_name="B",
+            organization=org,
+            pi=pi,
+            is_staff=False,
+        )
+        user_b.save()
+        other_pi = PrincipalInvestigator(name="OtherPI", organization=org)
+        other_pi.save()
+        user_other = User.objects.create_user(
+            email="other@test.io",
+            password="foo-foo",
+            first_name="User",
+            last_name="Other",
+            organization=org,
+            pi=other_pi,
+            is_staff=False,
+        )
+        user_other.save()
+
+        request_a = create_request(user_a)
+        request_b = create_request(user_b)
+        create_request(user_other)
+
+        pi_user = self.create_user(
+            email="pi@test.io",
+            password="foo-foo",
+            is_staff=False,
+        )
+        pi_user.pi = pi
+        pi_user.is_pi = True
+        pi_user.save()
+        self.login("pi@test.io", "foo-foo")
+
+        request_other = create_request(user_other)
+
+        response = self.client.get(
+            "/api/requests/search_related_requests/",
+            {"ids": f"{request_a.pk},{request_b.pk},{request_other.pk}"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(any(item["name"] == request_a.name for item in data))
+        self.assertTrue(any(item["name"] == request_b.name for item in data))
+        self.assertFalse(any(item["name"] == request_other.name for item in data))
+
+    def test_search_related_requests_non_staff_sees_only_own(self):
+        """Ensure regular users can only search their own requests."""
+        org = Organization(name=get_random_name())
+        org.save()
+        pi = PrincipalInvestigator(name="UserPI", organization=org)
+        pi.save()
+        other_pi = PrincipalInvestigator(name="OtherPI", organization=org)
+        other_pi.save()
+
+        current_user = self.create_user(
+            email="normal@test.io",
+            password="foo-foo",
+            is_staff=False,
+        )
+        current_user.pi = pi
+        current_user.organization = org
+        current_user.save()
+
+        other_user = User.objects.create_user(
+            email="other@test.io",
+            password="foo-foo",
+            first_name="Other",
+            last_name="User",
+            organization=org,
+            pi=other_pi,
+            is_staff=False,
+        )
+        other_user.save()
+
+        own_request = create_request(current_user)
+        create_request(other_user)
+
+        self.login("normal@test.io", "foo-foo")
+        response = self.client.get(
+            "/api/requests/search_related_requests/",
+            {"query": own_request.name},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(any(item["name"] == own_request.name for item in data))
+        self.assertFalse(any(item["name"] != own_request.name for item in data))
+
     def test_search_users_non_staff(self):
         """Ensure non-staff users cannot access the user search endpoint."""
         self.login("non-staff@test.io", "test")

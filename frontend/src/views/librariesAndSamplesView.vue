@@ -1425,6 +1425,67 @@ export default {
             : false;
           const hasAttachments =
             Array.isArray(meta?.files) && meta.files.length > 0;
+          const relatedProjects = Array.isArray(meta?.related_requests)
+            ? meta.related_requests.filter(
+                (item) => item !== null && item !== undefined
+              )
+            : [];
+          const escapeAttr = (value) =>
+            String(value)
+              .replace(/&/g, "&amp;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#39;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+          const relatedProjectsLabel = relatedProjects.length
+            ? (() => {
+                const normalized = relatedProjects
+                  .map((project) => {
+                    if (project && typeof project === "object") {
+                      return {
+                        id: project.id ?? project?.pk ?? String(project),
+                        label:
+                          project.name ??
+                          project.id ??
+                          project?.pk ??
+                          String(project)
+                      };
+                    }
+                    return {
+                      id: project,
+                      label: project
+                    };
+                  })
+                  .map((project) => ({
+                    id: String(project.id),
+                    label: String(project.label).trim()
+                  }))
+                  .filter((project) => project.label);
+
+                const tooltip = normalized
+                  .map((project) => project.label)
+                  .join(" ");
+                const visible = normalized.slice(0, 12);
+                const rendered = visible
+                  .map(
+                    (project) =>
+                      `<a href="#" style="font-weight:700; color:#b35900; text-decoration:none; margin-right:8px;" title="Open Request ${escapeAttr(
+                        project.label
+                      )}" onclick="window.openRequestEditorById('${escapeAttr(
+                        project.id
+                      )}'); event.stopPropagation(); return false;">${escapeAttr(
+                        project.label
+                      )}</a>`
+                  )
+                  .join(" ");
+
+                return `<span title="${escapeAttr(
+                  `Related Projects: ${tooltip}`
+                )}" style="font-weight:700; color:#b35900;">Related Projects: ${rendered}${
+                  normalized.length > 6 ? "..." : ""
+                }</span>`;
+              })()
+            : "";
 
           return librariesAndSamplesGroupHeader(
             value,
@@ -1434,6 +1495,7 @@ export default {
             {
               requestDate,
               protocolLabel,
+              relatedProjectsLabel,
               showStaffActions: this.isStaffUser,
               showSolicitApproval: requiresApproval && this.paperlessApproval,
               allowDelete,
@@ -1498,6 +1560,7 @@ export default {
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyDown);
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
+    window.openRequestEditorById = this.openEditRequestModal.bind(this);
   },
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
@@ -1506,6 +1569,8 @@ export default {
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyDown);
     this.stopRequestEditorSync();
+    window.handleGroupButtonClick = null;
+    window.openRequestEditorById = null;
   },
   computed: {
     statusMap() {

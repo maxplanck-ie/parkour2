@@ -115,7 +115,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:////usr/src/db.sqlite")
 
 db_dict = dj_database_url.config(
-    default=dj_database_url.parse(DATABASE_URL),
+    default=DATABASE_URL,
     conn_max_age=600,
     conn_health_checks=True,
 )

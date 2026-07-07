@@ -89,16 +89,10 @@ def is_iterable(obj):
 
 
 def retrieve_group_items(request, queryset):
-    from django.contrib.auth import get_user_model
+    if request.user.pi is None:
+        return queryset.filter(user=request.user)
 
-    User = get_user_model()
-    this_lab_group = User.objects.all().filter(pi__in=[request.user.pi])
-    if is_iterable(this_lab_group):
-        queryset = queryset.filter(user__in=this_lab_group)
-    else:
-        assert isinstance(this_lab_group, User)
-        queryset = queryset.filter(user=this_lab_group)
-    return queryset
+    return queryset.filter(user__pi=request.user.pi)
 
 
 def cast_index_number(index_number):
