@@ -242,6 +242,45 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def _relatable_requests(self, user):
+        """Requests that `user` is allowed to link as related projects.
+
+        Mirrors the visibility scoping of get_queryset: staff see every
+        request, PI users see requests belonging to their PI group, and
+        everyone else sees only their own. This is the single source of
+        truth for both the search dropdown and the write-path validation.
+        """
+        queryset = Request.objects.filter(archived=False)
+        if user.is_staff:
+            return queryset
+        if getattr(user, "is_pi", False) and user.pi:
+            return queryset.filter(user__pi=user.pi)
+        return queryset.filter(user=user)
+
+    def _forbidden_related_requests(self, user, post_data, instance=None):
+        """PKs in post_data['related_requests'] the user may not link.
+
+        Returns a sorted list of the offending ids (empty when the payload
+        is fully permitted). The search dropdown is only a UI convenience;
+        this check is what actually prevents a crafted POST from linking to
+        projects the user cannot see.
+        """
+        raw = post_data.get("related_requests") or []
+        try:
+            requested_ids = {int(pk) for pk in raw}
+        except (TypeError, ValueError):
+            return ["invalid"]
+        if instance is not None:
+            requested_ids.discard(instance.pk)
+        if not requested_ids:
+            return []
+        allowed_ids = set(
+            self._relatable_requests(user)
+            .filter(pk__in=requested_ids)
+            .values_list("pk", flat=True)
+        )
+        return sorted(requested_ids - allowed_ids)
+
     def list(self, request):
         """Get the list of requests."""
 
@@ -268,6 +307,23 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Create a request."""
         post_data = self._get_post_data(request)
         post_data.update({"user": request.user.pk})
+
+        forbidden = self._forbidden_related_requests(request.user, post_data)
+        if forbidden:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Invalid payload.",
+                    "errors": {
+                        "related_requests": [
+                            "You are not allowed to link to these projects: "
+                            + ", ".join(str(pk) for pk in forbidden)
+                        ]
+                    },
+                },
+                400,
+            )
+
         serializer = self.serializer_class(data=post_data)
 
         if serializer.is_valid():
@@ -295,6 +351,22 @@ class RequestViewSet(viewsets.ModelViewSet):
             get_object_or_404(User, pk=post_data["user"])
         else:
             post_data["user"] = instance.user.pk
+
+        forbidden = self._forbidden_related_requests(request.user, post_data, instance)
+        if forbidden:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Invalid payload.",
+                    "errors": {
+                        "related_requests": [
+                            "You are not allowed to link to these projects: "
+                            + ", ".join(str(pk) for pk in forbidden)
+                        ]
+                    },
+                },
+                400,
+            )
 
         serializer = self.get_serializer(data=post_data, instance=instance)
 
@@ -434,15 +506,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         exclude_request_id = request.query_params.get("exclude_request_id", "").strip()
         ids_raw = request.query_params.get("ids", "").strip()
 
-        requests_qs = Request.objects.filter(archived=False).select_related("user")
-
-        if request.user.is_staff:
-            # Staff users may search all requests.
-            pass
-        elif getattr(request.user, "is_pi", False) and request.user.pi:
-            requests_qs = retrieve_group_items(request, requests_qs)
-        else:
-            requests_qs = requests_qs.filter(user=request.user)
+        requests_qs = self._relatable_requests(request.user).select_related("user")
 
         if ids_raw:
             ids = [
