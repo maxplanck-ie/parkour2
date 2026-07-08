@@ -188,7 +188,7 @@
               </div>
             </div>
           </span>
-          <button class="popup-close-button" @click="showExportPopup = false">
+          <button class="popup-close-button" @click="closeExportPopup">
             &times;
           </button>
         </div>
@@ -249,7 +249,7 @@
                       id="flowcells-without-file"
                       v-model="selectedFile"
                       type="radio"
-                      value="without-file"
+                      :value="defaultExportTemplateSelection"
                     />
                   </div>
                 </div>
@@ -339,10 +339,7 @@
           </button>
           <button
             class="popup-button"
-            @click="
-              showExportPopup = false;
-              selectedFile = 'without-file';
-            "
+            @click="closeExportPopup"
           >
             Cancel
           </button>
@@ -373,13 +370,14 @@
         </div>
         <div class="popup-footer">
           <button
+            v-if="!confirmPopup.infoOnly"
             class="popup-button yes-button"
             @click="runConfirmPopupAction"
           >
             Confirm
           </button>
           <button class="popup-button" @click="closeConfirmPopup">
-            Cancel
+            {{ confirmPopup.infoOnly ? "OK" : "Cancel" }}
           </button>
         </div>
       </div>
@@ -628,7 +626,10 @@
                         >
                           {{ pool.name }}
                         </span>
-                        <span class="load-pool-read-length">
+                        <span
+                          class="load-pool-read-length"
+                          :title="`Read length: ${pool.read_length_name || '-'}`"
+                        >
                           Read length: {{ pool.read_length_name || "-" }}
                         </span>
                       </div>
@@ -778,6 +779,13 @@ import iconConfirmationAlert from "../assets/icons/alert_confirmation.svg";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const DEFAULT_EXPORT_TEMPLATE_SELECTION = "without-file";
+const createEmptyConfirmPopup = () => ({
+  title: "",
+  description: "",
+  onConfirm: null,
+  infoOnly: false
+});
 
 export default {
   name: "LoadFlowcells",
@@ -824,15 +832,10 @@ export default {
       showExportHelpTooltip: false,
       isDragOver: false,
       fetchedLoadFlowcellsTemplates: [],
-      selectedFile: "without-file",
+      selectedFile: DEFAULT_EXPORT_TEMPLATE_SELECTION,
       exportSelection: "selected",
-      hasSelectedRows: false,
       showConfirmPopup: false,
-      confirmPopup: {
-        title: "",
-        description: "",
-        onConfirm: null
-      },
+      confirmPopup: createEmptyConfirmPopup(),
       showPoolInfoPopup: false,
       poolInfoTitle: "Pool",
       poolInfoRecords: [],
@@ -881,6 +884,15 @@ export default {
     },
     selectedRows() {
       return this.flowcellsList.filter((row) => row.selected);
+    },
+    hasSelectedRows() {
+      return this.selectedRows.length > 0;
+    },
+    defaultExportTemplateSelection() {
+      return DEFAULT_EXPORT_TEMPLATE_SELECTION;
+    },
+    hasExportTemplateSelected() {
+      return this.selectedFile !== DEFAULT_EXPORT_TEMPLATE_SELECTION;
     },
     currentLoadSequencer() {
       return (
@@ -982,7 +994,7 @@ export default {
       }
 
       if (this.showExportPopup) {
-        this.showExportPopup = false;
+        this.closeExportPopup();
       }
     },
     formatMonthString(value) {
@@ -1079,9 +1091,6 @@ export default {
       if (!this.tabulatorInstance) return;
       this.tabulatorInstance.toggleGroups(goToInitial);
     },
-    getSelectedRowsFromAllData() {
-      return this.flowcellsList.filter((row) => row.selected);
-    },
     async updateRowSelection(pk, selected) {
       const target = this.flowcellsList.find((row) => row.pk === pk);
       if (target) {
@@ -1093,7 +1102,7 @@ export default {
       }
     },
     async handleRowSelectionToggle(rowData, checked) {
-      const selectedRows = this.getSelectedRowsFromAllData().filter(
+      const selectedRows = this.selectedRows.filter(
         (row) => row.pk !== rowData.pk && row.selected
       );
       const selectingDifferentFlowcell =
@@ -1117,7 +1126,7 @@ export default {
         (row) => row.flowcell_id === flowcellId
       );
       if (selected) {
-        const existingSelected = this.getSelectedRowsFromAllData();
+        const existingSelected = this.selectedRows;
         if (
           existingSelected.length > 0 &&
           existingSelected.some((row) => row.flowcell_id !== flowcellId)
@@ -1162,6 +1171,16 @@ export default {
         showNotification("Flowcell was not found.", "error");
         return;
       }
+      if (flowcellRows.some((row) => row.has_delivered_records)) {
+        this.confirmPopup = {
+          title: "Flowcell Cannot Be Destroyed",
+          description:
+            "This flowcell contains delivered libraries or samples and cannot be destroyed. Destroying delivered data can affect downstream invoicing.",
+          infoOnly: true
+        };
+        this.showConfirmPopup = true;
+        return;
+      }
 
       this.confirmPopup = {
         title: "Destroy Flowcell",
@@ -1176,7 +1195,10 @@ export default {
             await this.getFlowcells();
           } catch (error) {
             this.closeConfirmPopup();
-            handleError(error);
+            const message =
+              error?.response?.data?.message ||
+              "Failed to destroy flowcell.";
+            showNotification(message, "error");
           }
         }
       };
@@ -1184,11 +1206,7 @@ export default {
     },
     closeConfirmPopup() {
       this.showConfirmPopup = false;
-      this.confirmPopup = {
-        title: "",
-        description: "",
-        onConfirm: null
-      };
+      this.confirmPopup = createEmptyConfirmPopup();
     },
     runConfirmPopupAction() {
       if (typeof this.confirmPopup.onConfirm === "function") {
@@ -1325,6 +1343,9 @@ export default {
     },
     async uploadExportTemplate(event) {
       const file = event.target.files[0];
+      await this.uploadExportTemplateFile(file);
+    },
+    async uploadExportTemplateFile(file) {
       if (isSupportedExcelTemplateFile(file)) {
         const formData = new FormData();
         formData.append("file", file);
@@ -1343,7 +1364,7 @@ export default {
         } catch (error) {
           showNotification("Error uploading file: " + error, "error");
         } finally {
-          this.selectedFile = "without-file";
+          this.selectedFile = DEFAULT_EXPORT_TEMPLATE_SELECTION;
         }
       } else {
         showNotification("Please upload a valid XLSX or XLSM file.", "error");
@@ -1390,11 +1411,10 @@ export default {
       } catch (error) {
         showNotification("Error removing file: " + error, "error");
       } finally {
-        this.selectedFile = "without-file";
+        this.selectedFile = DEFAULT_EXPORT_TEMPLATE_SELECTION;
       }
     },
     handleExportClick() {
-      this.hasSelectedRows = this.flowcellsList.some((row) => row.selected);
       this.exportSelection = this.hasSelectedRows ? "selected" : "all";
       this.showExportPopup = true;
     },
@@ -1408,7 +1428,7 @@ export default {
 
         const exportRows =
           this.exportSelection === "selected"
-            ? this.getSelectedRowsFromAllData()
+            ? this.selectedRows
             : this.filteredFlowcellsList;
 
         if (exportRows.length === 0) {
@@ -1446,24 +1466,23 @@ export default {
         }
 
         const templateDownloadUrl =
-          this.selectedFile !== "without-file"
+          this.hasExportTemplateSelected
             ? `${urlStringStart}/api/load-flowcells-templates/${this.selectedFile.id}/download/`
             : null;
+        const templateFileName = this.hasExportTemplateSelected
+          ? this.selectedFile.name
+          : "";
 
         const blob = await createExcelExportBlob({
           rows: sortedExportRows,
           exportColumns: loadFlowcellsExportColumns,
           axiosInstance: axiosRef,
           templateDownloadUrl,
-          templateFileName:
-            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
+          templateFileName
         });
         saveAs(
           blob,
-          buildExcelExportFilename(
-            filename,
-            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
-          )
+          buildExcelExportFilename(filename, templateFileName)
         );
       } catch (error) {
         showNotification(
@@ -1472,9 +1491,12 @@ export default {
         );
       } finally {
         this.fakeLoadingStop();
-        this.showExportPopup = false;
-        this.selectedFile = "without-file";
+        this.closeExportPopup();
       }
+    },
+    closeExportPopup() {
+      this.showExportPopup = false;
+      this.selectedFile = DEFAULT_EXPORT_TEMPLATE_SELECTION;
     },
     handleDragOver(e) {
       e.preventDefault();
@@ -1500,19 +1522,7 @@ export default {
           "error"
         );
       } else {
-        this.processUploadedFile(files[0]);
-      }
-    },
-    processUploadedFile(file) {
-      if (isSupportedExcelTemplateFile(file)) {
-        const event = {
-          target: {
-            files: [file]
-          }
-        };
-        this.uploadExportTemplate(event);
-      } else {
-        showNotification("Please upload a valid XLSX or XLSM file.", "error");
+        this.uploadExportTemplateFile(files[0]);
       }
     },
     async openLoadPopup() {
@@ -1859,8 +1869,13 @@ export default {
   padding: 6px 10px;
   background: #f4f8f9;
   color: #294856;
+  font-size: 13px;
   font-weight: 700;
   border-bottom: 1px solid #dce3e6;
+}
+
+.pool-info-popup .simple-data-table {
+  font-size: 13px;
 }
 
 .pool-info-popup .simple-data-table th,
@@ -2122,6 +2137,8 @@ export default {
 .lane-drop-placeholder {
   color: #6c828c;
   font-size: 12px;
+  min-height: 20px;
+  line-height: 20px;
 }
 
 .lane-drop-card-content {
@@ -2192,11 +2209,6 @@ export default {
   line-height: 18px;
 }
 
-.lane-drop-placeholder {
-  min-height: 20px;
-  line-height: 20px;
-}
-
 .lane-drop-placeholder-empty {
   position: absolute;
   top: 0;
@@ -2240,10 +2252,14 @@ export default {
 }
 
 .load-pool-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "name meta"
+    "read button";
+  column-gap: 14px;
+  row-gap: 8px;
+  align-items: center;
   padding: 10px 14px;
   border: 1px solid #dde5e8;
   border-radius: 12px;
@@ -2281,21 +2297,16 @@ export default {
 }
 
 .load-pool-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
+  display: contents;
 }
 
 .load-pool-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
-  min-width: 158px;
+  display: contents;
 }
 
 .load-pool-name {
+  grid-area: name;
+  min-width: 0;
   font-size: 17px;
   font-weight: 700;
   line-height: 1.2;
@@ -2312,13 +2323,22 @@ export default {
 }
 
 .load-pool-read-length {
-  font-size: 14px;
+  grid-area: read;
+  min-width: 0;
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.25;
   color: #214c5f;
 }
 
 .load-pool-meta {
+  grid-area: meta;
+  justify-self: end;
   font-size: 13px;
   line-height: 1.2;
   text-align: right;
@@ -2326,6 +2346,8 @@ export default {
 }
 
 .load-pool-return-button {
+  grid-area: button;
+  justify-self: end;
   border: 1px solid #d4dce0;
   border-radius: 8px;
   background: #fff;
@@ -2385,36 +2407,6 @@ export default {
 }
 
 @media (max-width: 1220px) {
-  .header {
-    height: auto;
-    min-height: 70px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px 14px;
-  }
-
-  .header-title {
-    flex: 1 1 100%;
-    min-width: 0;
-    margin-right: 0;
-  }
-
-  .sticky-actions {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
-    row-gap: 10px;
-    max-width: 100%;
-    margin-left: 0;
-  }
-
-  .search-bar {
-    width: 260px;
-    flex: 1 1 260px;
-    max-width: 100%;
-  }
-
   .date-filters {
     flex-wrap: wrap;
   }
@@ -2424,34 +2416,11 @@ export default {
     row-gap: 10px;
   }
 
-  .load-form-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 950px) {
-  .header-title {
-    font-size: 16px;
-    flex-basis: 100%;
-  }
-
-  .search-bar {
-    width: 100%;
-    flex: 1 1 260px;
-    min-width: 200px;
-  }
-
-  .search-bar input {
-    width: 100%;
-    padding-right: 25px;
-  }
-
   .date-filters {
     display: none;
-  }
-
-  .sticky-actions {
-    gap: 8px;
   }
 
   .flowcell-actions-bar {

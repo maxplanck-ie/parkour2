@@ -33,6 +33,8 @@ Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
 Pool = apps.get_model("index_generator", "Pool")
 
+DELIVERED_STATUS = 6
+
 logger = logging.getLogger("db")
 
 
@@ -235,6 +237,28 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             ).filter(archived=False),
             pk=pk,
         )
+
+        flowcell_pool_ids = flowcell.lanes.exclude(pool_id=None).values_list(
+            "pool_id", flat=True
+        )
+        has_delivered_records = (
+            Library.objects.filter(
+                status=DELIVERED_STATUS,
+                pool_id__in=flowcell_pool_ids,
+            ).exists()
+            or Sample.objects.filter(
+                status=DELIVERED_STATUS,
+                pool_id__in=flowcell_pool_ids,
+            ).exists()
+        )
+        if has_delivered_records:
+            return Response(
+                {
+                    "success": False,
+                    "message": "This flowcell cannot be destroyed because it contains delivered libraries or samples.",
+                },
+                400,
+            )
 
         with transaction.atomic():
             affected_pools = {}

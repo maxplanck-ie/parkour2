@@ -24,7 +24,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
       height: Ext.Element.getViewportHeight() - 64,
 
       header: {
-        title: "Run Statistics",
+        title: "Runs Statistics",
         items: [
           {
             xtype: "parkoursearchfield",

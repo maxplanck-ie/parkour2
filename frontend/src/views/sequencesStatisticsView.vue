@@ -2,16 +2,16 @@
   <div class="parent-container">
     <div v-if="loading" class="loading-overlay">
       <div class="spinner"></div>
-      <p>Loading Sequence Statistics...</p>
+      <p>Loading Sequenced Samples Statistics...</p>
     </div>
 
     <div class="header">
       <img
         :src="iconStatisticsHeader"
-        alt="Sequence Statistics"
+        alt="Sequenced Samples Statistics"
         class="statistics-header-icon"
       />
-      <div class="header-title">Sequence Statistics</div>
+      <div class="header-title">Sequenced Samples Statistics</div>
 
       <div class="sticky-actions">
         <div class="search-bar">
@@ -286,7 +286,7 @@
                 for="sequences-export-selected"
                 :class="{ disabled: !hasSelectedRows }"
               >
-                Export selected sequence statistics
+                Export selected sequenced samples statistics
               </label>
             </div>
             <div class="export-selection-radio-option">
@@ -297,7 +297,7 @@
                 value="all"
               />
               <label for="sequences-export-all">
-                Export all sequence statistics
+                Export all sequenced samples statistics
               </label>
             </div>
           </div>
@@ -327,7 +327,7 @@
                       v-model="selectedFile"
                       type="radio"
                       title="Select"
-                      value="without-file"
+                      :value="defaultExportTemplateSelection"
                     />
                   </div>
                 </div>
@@ -461,6 +461,7 @@ const DATE_FILTER_DEBOUNCE_MS = 500;
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const TEMPLATE_API_URL = `${urlStringStart}/api/sequences-statistics-templates`;
+const DEFAULT_EXPORT_TEMPLATE_SELECTION = "without-file";
 const today = new Date();
 const twoMonthsAgo = new Date(today);
 twoMonthsAgo.setMonth(today.getMonth() - 2);
@@ -481,9 +482,8 @@ const showExportPopup = ref(false);
 const showExportHelpTooltip = ref(false);
 const isDragOver = ref(false);
 const uploadedExportTemplates = ref([]);
-const selectedFile = ref("without-file");
+const selectedFile = ref(DEFAULT_EXPORT_TEMPLATE_SELECTION);
 const exportSelection = ref("selected");
-const hasSelectedRows = ref(false);
 const startDateString = ref(formatDateForInput(twoMonthsAgo));
 const endDateString = ref(formatDateForInput(today));
 const startDateValid = ref(true);
@@ -499,7 +499,7 @@ let dateTimer = null;
 
 const tableOptions = {
   index: "row_id",
-  placeholder: "No sequence statistics to show.",
+  placeholder: "No sequenced samples statistics to show.",
   initialSort: [{ column: "barcode", dir: "asc" }],
   groupHeader: sequencesStatisticsGroupHeader,
   groupContextMenu: [
@@ -556,6 +556,7 @@ const filteredRows = computed(() =>
       (!filters.analysisType || row.library_type === filters.analysisType)
   )
 );
+const hasSelectedRows = computed(() => rows.value.some((row) => row.selected));
 
 function setColumns() {
   const storedVisibility = JSON.parse(
@@ -728,7 +729,6 @@ function handleSearchAction() {
 }
 
 function handleExportClick() {
-  hasSelectedRows.value = rows.value.some((row) => row.selected);
   exportSelection.value = hasSelectedRows.value ? "selected" : "all";
   showExportPopup.value = true;
   showExportHelpTooltip.value = false;
@@ -741,7 +741,7 @@ function closeExportPopup() {
   showExportPopup.value = false;
   showExportHelpTooltip.value = false;
   isDragOver.value = false;
-  selectedFile.value = "without-file";
+  selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
 }
 
 async function fetchExportTemplates() {
@@ -755,7 +755,7 @@ async function fetchExportTemplates() {
 
 async function uploadExportTemplate(event) {
   const file = event.target.files?.[0];
-  await processUploadedFile(file);
+  await uploadExportTemplateFile(file);
   event.target.value = "";
 }
 
@@ -788,7 +788,7 @@ async function removeExportTemplate(index) {
   } catch {
     showNotification("File removal failed.", "error");
   } finally {
-    selectedFile.value = "without-file";
+    selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
   }
 }
 
@@ -816,10 +816,10 @@ async function handleDrop(event) {
     showNotification("Upload only one XLSX or XLSM file.", "error");
     return;
   }
-  await processUploadedFile(files[0]);
+  await uploadExportTemplateFile(files[0]);
 }
 
-async function processUploadedFile(file) {
+async function uploadExportTemplateFile(file) {
   if (!file) return;
   if (!isSupportedExcelTemplateFile(file)) {
     showNotification("Upload a valid XLSX or XLSM file.", "error");
@@ -838,20 +838,25 @@ async function processUploadedFile(file) {
   } catch {
     showNotification("File upload failed.", "error");
   } finally {
-    selectedFile.value = "without-file";
+    selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
   }
 }
 
 async function handleExport() {
   const exportRows = getRowsForExport();
   if (!exportRows.length) {
-    showNotification("No sequence statistics available for export.", "warning");
+    showNotification(
+      "No sequenced samples statistics available for export.",
+      "warning"
+    );
     return;
   }
   try {
     const formattedDate = new Date().toISOString().split("T")[0];
     const selectedTemplate =
-      selectedFile.value !== "without-file" ? selectedFile.value : null;
+      selectedFile.value !== DEFAULT_EXPORT_TEMPLATE_SELECTION
+        ? selectedFile.value
+        : null;
     const filename =
       exportSelection.value === "selected"
         ? `${formattedDate}_selected_sequence_statistics`
@@ -971,6 +976,7 @@ setColumns();
       isDragOver,
       uploadedExportTemplates,
       selectedFile,
+      defaultExportTemplateSelection: DEFAULT_EXPORT_TEMPLATE_SELECTION,
       exportSelection,
       hasSelectedRows,
       iconExportTemplateFile,
@@ -1024,14 +1030,6 @@ setColumns();
   padding: 10px;
 }
 
-.statistics-header-icon {
-  flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
-  margin-right: 12px;
-  color: white;
-}
-
 .table-container {
   flex: 1;
   overflow-x: auto;
@@ -1046,49 +1044,11 @@ setColumns();
   box-sizing: border-box;
 }
 
-.statistics-filters-popup {
-  left: -80px;
-  width: 290px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
+.tabulator-tooltip {
+  max-width: 420px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.statistics-columns-popup {
-  left: -55px;
-  width: 320px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-.statistics-columns-popup ul {
-  padding: 0;
-  margin: 0 0 8px;
-}
-
-.statistics-columns-popup li {
-  list-style: none;
-}
-
-.statistics-columns-popup .reset-button {
-  width: 100%;
-  margin-bottom: 6px;
-}
-
-.date-filter-item input[type="date"] {
-  width: 100%;
-  height: 34px;
-  padding: 4px 8px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-}
-
-@media (max-width: 1450px) {
-  .search-bar {
-    width: 320px;
-  }
-
-  .header-button span {
-    display: none;
-  }
-}
 </style>

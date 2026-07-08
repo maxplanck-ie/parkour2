@@ -265,8 +265,8 @@ class RunStatisticsTemplate(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Run Statistics Template"
-        verbose_name_plural = "Templates -> Run Statistics"
+        verbose_name = "Runs Statistics Template"
+        verbose_name_plural = "Templates -> Runs Statistics"
 
 
 class SequencesStatisticsTemplate(models.Model):
@@ -279,5 +279,5 @@ class SequencesStatisticsTemplate(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Sequence Statistics Template"
-        verbose_name_plural = "Templates -> Sequence Statistics"
+        verbose_name = "Sequenced Samples Statistics Template"
+        verbose_name_plural = "Templates -> Sequenced Samples Statistics"

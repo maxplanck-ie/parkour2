@@ -3816,28 +3816,14 @@ body.input-dropdown-open .tabulator-tooltip {
 }
 
 /* Header and help popup responsiveness */
-@media (max-width: 1550px) {
-  .header-title {
-    flex-basis: 220px;
-  }
-
-  .search-bar input {
-    padding: 8px;
-  }
-
-  .header-button {
-    padding: 8px 12px;
-  }
-}
-
 @media (max-width: 1700px) {
   .sticky-actions {
     gap: 8px;
   }
 
   .search-bar {
-    width: 260px;
-    flex-basis: 260px;
+    width: 220px;
+    flex-basis: 220px;
   }
 
   .date-filter {
@@ -3851,14 +3837,7 @@ body.input-dropdown-open .tabulator-tooltip {
   .header-button {
     min-width: 46px;
     justify-content: center;
-    padding: 8px 10px;
     gap: 6px;
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .header-button span {
-    display: none;
   }
 
   .date-filter input[type="date"] {
@@ -3867,36 +3846,6 @@ body.input-dropdown-open .tabulator-tooltip {
 }
 
 @media (max-width: 1220px) {
-  .header {
-    height: auto;
-    min-height: 70px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px 14px;
-  }
-
-  .header-title {
-    flex: 1 1 100%;
-    min-width: 0;
-    margin-right: 0;
-  }
-
-  .sticky-actions {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
-    row-gap: 10px;
-    max-width: 100%;
-    margin-left: 0;
-  }
-
-  .search-bar {
-    width: 260px;
-    flex: 1 1 260px;
-    max-width: 100%;
-  }
-
   .page-help-popup {
     right: 0;
     width: min(760px, calc(100vw - 28px));
@@ -3904,28 +3853,8 @@ body.input-dropdown-open .tabulator-tooltip {
 }
 
 @media (max-width: 950px) {
-  .header-title {
-    font-size: 16px;
-    flex-basis: 100%;
-  }
-
-  .search-bar {
-    width: 100%;
-    flex: 1 1 260px;
-    min-width: 200px;
-  }
-
-  .search-bar input {
-    width: 100%;
-    padding-right: 25px;
-  }
-
   .date-filters {
     display: none;
-  }
-
-  .sticky-actions {
-    gap: 8px;
   }
 
   .page-help-popup {
@@ -3973,36 +3902,31 @@ body.input-dropdown-open .tabulator-tooltip {
     grid-template-columns: 1fr;
   }
 
-  .header-logo {
-    display: none !important;
-  }
-
   .header {
     gap: 8px;
     padding: 12px;
+    flex-wrap: wrap;
+    align-items: center;
   }
 
   .header-title {
-    width: 100%;
+    width: auto;
     min-width: 0;
-    margin-right: 0;
-    flex-basis: 100%;
+    margin-right: 8px;
+    flex: 0 1 160px;
   }
 
   .sticky-actions {
-    width: 100%;
+    width: auto;
     gap: 8px;
-  }
-
-  .search-bar {
-    display: none;
+    flex-wrap: wrap;
+    margin-left: auto;
+    overflow-x: visible;
+    justify-content: flex-end;
+    row-gap: 6px;
   }
 
   .date-filters {
-    display: none;
-  }
-
-  .header-button {
     display: none;
   }
 

@@ -380,6 +380,18 @@ export default {
       });
     },
 
+    isKeyboardEventForThisTable(event) {
+      const tableEl = this.tabulatorInstance?.element || this.getTabulatorElement?.();
+      if (!tableEl) return true;
+
+      const eventTargetTable = event.target?.closest?.(".tabulator") || null;
+      const activeElementTable =
+        document.activeElement?.closest?.(".tabulator") || null;
+      const ownerTable = eventTargetTable || activeElementTable;
+
+      return ownerTable ? ownerTable === tableEl : true;
+    },
+
     setLastFocusedCell(cell) {
       this.lastFocusedCell = cell || null;
       if (!cell) {
@@ -1622,6 +1634,9 @@ export default {
         isEditorElement(event.target) ||
         eventStartedInEditor;
       if (activeEditorElement) {
+        return;
+      }
+      if (!this.isKeyboardEventForThisTable(event)) {
         return;
       }
 

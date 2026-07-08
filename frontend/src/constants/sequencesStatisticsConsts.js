@@ -16,19 +16,20 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function ellipsisContainer(value, align = "left") {
+function ellipsisContainer(value, align = "left", nativeTitle = true) {
   const finalValue = value === null || value === undefined || value === "" ? "-" : value;
   const escapedValue = escapeHtml(finalValue);
   const justifyContent = align === "right" ? "flex-end" : "flex-start";
+  const titleAttr = nativeTitle ? ` title="${escapedValue}"` : "";
   return `
     <div style="padding: 4px 8px; display: flex; align-items: center; justify-content: ${justifyContent};">
-      <span title="${escapedValue}" style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${escapedValue}</span>
+      <span${titleAttr} style="padding: 8px 0px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${escapedValue}</span>
     </div>
   `;
 }
 
-function textFormatter(align = "left") {
-  return (cell) => ellipsisContainer(cell.getValue(), align);
+function textFormatter(align = "left", nativeTitle = true) {
+  return (cell) => ellipsisContainer(cell.getValue(), align, nativeTitle);
 }
 
 function fixedFormatter(digits = 2) {
@@ -95,7 +96,9 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
       field: "name",
       minWidth: 80,
       visible: true,
-      headerFilter: true
+      headerFilter: true,
+      formatter: textFormatter("left", false),
+      tooltip: (event, cell) => cell.getValue() || ""
     },
     {
       title: "Lane",

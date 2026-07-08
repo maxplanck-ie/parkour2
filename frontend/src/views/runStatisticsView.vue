@@ -2,16 +2,16 @@
   <div class="parent-container">
     <div v-if="loading" class="loading-overlay">
       <div class="spinner"></div>
-      <p>Loading <strong>Run Statistics</strong>...</p>
+      <p>Loading <strong>Runs Statistics</strong>...</p>
     </div>
 
     <div class="header">
       <img
         :src="iconStatisticsHeader"
-        alt="Run Statistics"
+        alt="Runs Statistics"
         class="statistics-header-icon"
       />
-      <div class="header-title">Run Statistics</div>
+      <div class="header-title">Runs Statistics</div>
 
       <div class="sticky-actions">
         <div class="search-bar">
@@ -292,7 +292,7 @@
                 for="run-export-selected"
                 :class="{ disabled: !hasSelectedRows }"
               >
-                Export selected run statistics
+                Export selected runs statistics
               </label>
             </div>
             <div class="export-selection-radio-option">
@@ -302,7 +302,7 @@
                 type="radio"
                 value="all"
               />
-              <label for="run-export-all">Export all run statistics</label>
+              <label for="run-export-all">Export all runs statistics</label>
             </div>
           </div>
           <div class="export-section" style="height: 100%">
@@ -331,7 +331,7 @@
                       v-model="selectedFile"
                       type="radio"
                       title="Select"
-                      value="without-file"
+                      :value="defaultExportTemplateSelection"
                     />
                   </div>
                 </div>
@@ -465,6 +465,7 @@ const DATE_FILTER_DEBOUNCE_MS = 500;
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const TEMPLATE_API_URL = `${urlStringStart}/api/run-statistics-templates`;
+const DEFAULT_EXPORT_TEMPLATE_SELECTION = "without-file";
 const today = new Date();
 const twoMonthsAgo = new Date(today);
 twoMonthsAgo.setMonth(today.getMonth() - 2);
@@ -485,9 +486,8 @@ const showExportPopup = ref(false);
 const showExportHelpTooltip = ref(false);
 const isDragOver = ref(false);
 const uploadedExportTemplates = ref([]);
-const selectedFile = ref("without-file");
+const selectedFile = ref(DEFAULT_EXPORT_TEMPLATE_SELECTION);
 const exportSelection = ref("selected");
-const hasSelectedRows = ref(false);
 const startDateString = ref(formatDateForInput(twoMonthsAgo));
 const endDateString = ref(formatDateForInput(today));
 const startDateValid = ref(true);
@@ -504,7 +504,7 @@ let dateTimer = null;
 
 const tableOptions = {
   index: "row_id",
-  placeholder: "No run statistics to show.",
+  placeholder: "No runs statistics to show.",
   initialSort: [{ column: "name", dir: "asc" }],
   groupHeader: runStatisticsGroupHeader,
   groupContextMenu: [
@@ -567,6 +567,7 @@ const filteredRows = computed(() =>
       (!filters.analysisType || row.library_type === filters.analysisType)
   )
 );
+const hasSelectedRows = computed(() => rows.value.some((row) => row.selected));
 
 function setColumns() {
   const storedVisibility = JSON.parse(
@@ -720,7 +721,6 @@ function resetAdvancedFilters() {
 }
 
 function handleExportClick() {
-  hasSelectedRows.value = rows.value.some((row) => row.selected);
   exportSelection.value = hasSelectedRows.value ? "selected" : "all";
   showExportPopup.value = true;
   showExportHelpTooltip.value = false;
@@ -733,7 +733,7 @@ function closeExportPopup() {
   showExportPopup.value = false;
   showExportHelpTooltip.value = false;
   isDragOver.value = false;
-  selectedFile.value = "without-file";
+  selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
 }
 
 async function fetchExportTemplates() {
@@ -747,7 +747,7 @@ async function fetchExportTemplates() {
 
 async function uploadExportTemplate(event) {
   const file = event.target.files?.[0];
-  await processUploadedFile(file);
+  await uploadExportTemplateFile(file);
   event.target.value = "";
 }
 
@@ -776,7 +776,7 @@ async function removeExportTemplate(index) {
   } catch {
     showNotification("File removal failed.", "error");
   } finally {
-    selectedFile.value = "without-file";
+    selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
   }
 }
 
@@ -804,10 +804,10 @@ async function handleDrop(event) {
     showNotification("Upload only one XLSX or XLSM file.", "error");
     return;
   }
-  await processUploadedFile(files[0]);
+  await uploadExportTemplateFile(files[0]);
 }
 
-async function processUploadedFile(file) {
+async function uploadExportTemplateFile(file) {
   if (!file) return;
   if (!isSupportedExcelTemplateFile(file)) {
     showNotification("Upload a valid XLSX or XLSM file.", "error");
@@ -826,20 +826,22 @@ async function processUploadedFile(file) {
   } catch {
     showNotification("File upload failed.", "error");
   } finally {
-    selectedFile.value = "without-file";
+    selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
   }
 }
 
 async function handleExport() {
   const exportRows = getRowsForExport();
   if (!exportRows.length) {
-    showNotification("No run statistics available for export.", "warning");
+    showNotification("No runs statistics available for export.", "warning");
     return;
   }
   try {
     const formattedDate = new Date().toISOString().split("T")[0];
     const selectedTemplate =
-      selectedFile.value !== "without-file" ? selectedFile.value : null;
+      selectedFile.value !== DEFAULT_EXPORT_TEMPLATE_SELECTION
+        ? selectedFile.value
+        : null;
     const filename =
       exportSelection.value === "selected"
         ? `${formattedDate}_selected_run_statistics`
@@ -962,6 +964,7 @@ setColumns();
       isDragOver,
       uploadedExportTemplates,
       selectedFile,
+      defaultExportTemplateSelection: DEFAULT_EXPORT_TEMPLATE_SELECTION,
       exportSelection,
       hasSelectedRows,
       iconExportTemplateFile,
@@ -1010,14 +1013,6 @@ setColumns();
   padding: 10px;
 }
 
-.statistics-header-icon {
-  flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
-  margin-right: 12px;
-  color: white;
-}
-
 .table-container {
   flex: 1;
   overflow-x: auto;
@@ -1032,49 +1027,4 @@ setColumns();
   box-sizing: border-box;
 }
 
-.statistics-filters-popup {
-  left: -80px;
-  width: 290px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-.statistics-columns-popup {
-  left: -55px;
-  width: 320px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-.statistics-columns-popup ul {
-  padding: 0;
-  margin: 0 0 8px;
-}
-
-.statistics-columns-popup li {
-  list-style: none;
-}
-
-.statistics-columns-popup .reset-button {
-  width: 100%;
-  margin-bottom: 6px;
-}
-
-.date-filter-item input[type="date"] {
-  width: 100%;
-  height: 34px;
-  padding: 4px 8px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-}
-
-@media (max-width: 1450px) {
-  .search-bar {
-    width: 320px;
-  }
-
-  .header-button span {
-    display: none;
-  }
-}
 </style>

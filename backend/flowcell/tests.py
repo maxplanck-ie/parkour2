@@ -665,3 +665,43 @@ class TestFlowcell(BaseTestCase):
         self.assertEqual(sample.status, 4)
         self.assertFalse(request.sequenced)
         self.assertIsNone(request.flowcell_loaded_at)
+
+    def test_destroy_flowcell_rejects_delivered_records(self):
+        """Ensure delivered records cannot be returned to Pooling by destroy."""
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        request = create_request(self.user)
+        request.sequenced = True
+        request.flowcell_loaded_at = timezone.now()
+        request.save()
+
+        library = create_library(get_random_name(), 6)
+        sample = create_sample(get_random_name(), 6)
+        request.libraries.add(library)
+        request.samples.add(sample)
+
+        pool = create_pool(self.user)
+        pool.libraries.add(library)
+        pool.samples.add(sample)
+
+        sequencer = create_sequencer(get_random_name(), lanes=1)
+        flowcell = create_flowcell(get_random_name(), sequencer)
+        flowcell.requests.add(request)
+
+        lane = Lane(name="Lane 1", pool=pool)
+        lane.save()
+        flowcell.lanes.add(lane)
+
+        response = self.client.post(
+            reverse("flowcells-destroy-flowcell", kwargs={"pk": flowcell.pk})
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
+        self.assertIn("delivered", response.json()["message"])
+        self.assertTrue(Flowcell.objects.filter(pk=flowcell.pk).exists())
+
+        library.refresh_from_db()
+        sample.refresh_from_db()
+        self.assertEqual(library.status, 6)
+        self.assertEqual(sample.status, 6)

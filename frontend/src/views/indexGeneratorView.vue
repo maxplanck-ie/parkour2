@@ -1,8 +1,10 @@
 <template>
   <div class="parent-container index-generator-page">
-    <div v-if="loading" class="loading-overlay">
-      <div class="spinner"></div>
-      <p>Loading <span style="font-weight: bold">Index Generator</span>...</p>
+    <div v-if="loading || fakeLoading" class="loading-overlay">
+      <div v-if="!fakeLoading" class="spinner"></div>
+      <p v-if="!fakeLoading">
+        Loading <span style="font-weight: bold">Index Generator</span>...
+      </p>
     </div>
 
     <div class="header">
@@ -17,12 +19,14 @@
       </div>
       <div class="header-title" style="display: inline">Index Generator</div>
 
-      <div class="header-center">
+      <div class="sticky-actions">
         <div class="header-pool-size-controls">
           <select
             id="index-generator-pool-multiplier"
             class="pool-size-select"
             :value="selectedPoolMultiplier"
+            :disabled="!hasPoolRows"
+            :data-tooltip-original="poolMultiplierDisabledReason"
             @change="onPoolMultiplierChange($event.target.value)"
           >
             <option :value="''">Multiplier</option>
@@ -39,7 +43,7 @@
             id="index-generator-pool-size"
             class="pool-size-select"
             :value="selectedPoolActualSize"
-            :disabled="!selectedPoolMultiplier"
+            :disabled="isPoolSizeDisabled"
             :data-tooltip-original="poolSizeDisabledReason"
             @change="onPoolActualSizeChange($event.target.value)"
           >
@@ -53,17 +57,15 @@
             </option>
           </select>
         </div>
-      </div>
 
-      <div class="sticky-actions">
         <div class="header-generate-controls">
           <select
             v-if="requiresStrictStartCoordinate"
             id="index-generator-start-coordinate"
-            class="pool-size-select coordinate-input"
+            class="pool-size-select"
             :value="selectedStartCoordinate"
             :disabled="
-              !hasPoolRows ||
+              isGenerateControlDisabled ||
               startCoordinatesLoading ||
               !startCoordinateOptions.length
             "
@@ -82,9 +84,9 @@
           <input
             v-else
             id="index-generator-start-coordinate"
-            class="pool-size-select coordinate-input"
+            class="pool-size-select"
             :value="selectedStartCoordinate"
-            :disabled="!hasPoolRows"
+            :disabled="isGenerateControlDisabled"
             :data-tooltip-original="generateControlDisabledReason"
             placeholder="Start (e.g. A1)"
             @change="onStartCoordinateChange($event.target.value)"
@@ -93,7 +95,7 @@
             id="index-generator-direction"
             class="pool-size-select direction-select"
             :value="selectedDirection"
-            :disabled="!hasPoolRows"
+            :disabled="isGenerateControlDisabled"
             :data-tooltip-original="generateControlDisabledReason"
             @change="onDirectionChange($event.target.value)"
           >
@@ -112,6 +114,7 @@
           :data-tooltip-original="generateIndicesDisabledReason"
           @click="generateIndices"
         >
+          <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
           <span>Generate Indices</span>
         </button>
         <button
@@ -120,6 +123,7 @@
           :data-tooltip-original="savePoolDisabledReason"
           @click="savePool"
         >
+          <font-awesome-icon icon="fa-solid fa-floppy-disk" />
           <span>Save Pool</span>
         </button>
       </div>
@@ -192,7 +196,8 @@
                 :data-tooltip-original="selectedRecordsDisabledReason"
                 @click="addSelectedRowsToPool"
               >
-                Add Selected to Pool
+                <font-awesome-icon icon="fa-solid fa-square-plus" />
+                <span>Add Selected to Pool</span>
               </button>
             </div>
           </div>
@@ -328,6 +333,12 @@ const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const apiUrl = (endpoint) => `${urlStringStart}${endpoint}`;
 const fields = INDEX_GENERATOR_FIELDS;
+const ADD_RECORDS_TO_POOL_MESSAGE = "Add records to the pool first.";
+const GENERATE_SAMPLES_ONLY_MESSAGE =
+  "Generate indices applies to samples only.";
+const SELECT_MULTIPLIER_MESSAGE = "Select a multiplier first.";
+const SAVE_POOL_ADD_RECORDS_MESSAGE =
+  "To save the pool add records to the pool first.";
 
 export default {
   name: "IndexGenerator",
@@ -364,6 +375,8 @@ export default {
       selectedDirection: INDEX_GENERATOR_DEFAULTS.direction,
       startCoordinateOptions: [],
       loading: true,
+      fakeLoading: false,
+      fakeLoadingTimer: null,
       startCoordinatesLoading: false,
       directionOptions: [...INDEX_GENERATOR_DIRECTION_OPTIONS]
     };
@@ -381,34 +394,69 @@ export default {
       }, {});
     },
     canGenerate() {
-      return this.poolRows.some(
-        (row) => row[fields.type] === INDEX_GENERATOR_RECORD_TYPES.sampleCode
-      );
+      return this.hasPoolSamples;
     },
     hasPoolRows() {
       return this.poolRows.length > 0;
     },
+    hasPoolSamples() {
+      return this.poolRows.some(
+        (row) => row[fields.type] === INDEX_GENERATOR_RECORD_TYPES.sampleCode
+      );
+    },
+    isPoolSizeDisabled() {
+      return !this.hasPoolRows || !this.selectedPoolMultiplier;
+    },
+    isGenerateControlDisabled() {
+      return !this.hasPoolRows;
+    },
     generateControlDisabledReason() {
-      return this.hasPoolRows ? "" : "Add records to the pool first.";
+      return this.isGenerateControlDisabled ? ADD_RECORDS_TO_POOL_MESSAGE : "";
     },
     generateIndicesDisabledReason() {
-      return this.canGenerate ? "" : "Add sample records to the pool first.";
+      if (this.canGenerate) {
+        return "";
+      }
+      if (!this.hasPoolRows) {
+        return ADD_RECORDS_TO_POOL_MESSAGE;
+      }
+
+      const missingPoolSizeParts = [];
+      if (!this.selectedPoolMultiplier) {
+        missingPoolSizeParts.push("select a multiplier");
+      }
+      if (!this.selectedPoolActualSize) {
+        missingPoolSizeParts.push("select a size");
+      }
+
+      if (missingPoolSizeParts.length) {
+        return `${GENERATE_SAMPLES_ONLY_MESSAGE} To save this pool ${missingPoolSizeParts.join(" and ")}.`;
+      }
+
+      return GENERATE_SAMPLES_ONLY_MESSAGE;
+    },
+    poolMultiplierDisabledReason() {
+      return this.generateControlDisabledReason;
     },
     poolSizeDisabledReason() {
-      return this.selectedPoolMultiplier ? "" : "Select a multiplier first.";
+      if (!this.hasPoolRows) {
+        return ADD_RECORDS_TO_POOL_MESSAGE;
+      }
+      return this.selectedPoolMultiplier ? "" : SELECT_MULTIPLIER_MESSAGE;
     },
     canSave() {
-      return this.poolRows.length > 0 && !!this.selectedPoolSizeId;
+      return this.hasPoolRows && !!this.selectedPoolSizeId;
     },
     savePoolDisabledReason() {
       if (this.canSave) {
         return "";
       }
 
-      const missing = [];
-      if (!this.poolRows.length) {
-        missing.push("add records to the pool");
+      if (!this.hasPoolRows) {
+        return SAVE_POOL_ADD_RECORDS_MESSAGE;
       }
+
+      const missing = [];
       if (!this.selectedPoolMultiplier) {
         missing.push("select a multiplier");
       }
@@ -635,7 +683,9 @@ export default {
             }
           ),
         rowFormatter: this.formatTabulatorRow,
-        handleCellEdited: this.handleSourceCellEdited
+        handleCellEdited: this.handleSourceCellEdited,
+        fakeLoadingStart: this.fakeLoadingStart,
+        fakeLoadingStop: this.fakeLoadingStop
       };
     },
     poolTableOptions() {
@@ -651,7 +701,9 @@ export default {
             this.removePoolRowsInGroup
           ),
         groupToggleElement: false,
-        rowFormatter: this.formatTabulatorRow
+        rowFormatter: this.formatTabulatorRow,
+        fakeLoadingStart: this.fakeLoadingStart,
+        fakeLoadingStop: this.fakeLoadingStop
       };
     }
   },
@@ -679,11 +731,23 @@ export default {
     this.poolTabulatorInstance = this.$refs.poolTabulatorTableRef;
   },
   beforeUnmount() {
+    clearTimeout(this.fakeLoadingTimer);
     document.removeEventListener("mousemove", this.onPanelResizeMove);
     document.removeEventListener("mouseup", this.onPanelResizeEnd);
     document.body.classList.remove("index-generator-resizing");
   },
   methods: {
+    fakeLoadingStart() {
+      clearTimeout(this.fakeLoadingTimer);
+      this.fakeLoading = true;
+    },
+    fakeLoadingStop() {
+      clearTimeout(this.fakeLoadingTimer);
+      this.fakeLoadingTimer = setTimeout(() => {
+        this.fakeLoading = false;
+        this.fakeLoadingTimer = null;
+      }, 300);
+    },
     setColumns() {
       this.sourceColumnsList = indexGeneratorSourceColumnDefs({
         readLengths: this.readLengths,
@@ -824,12 +888,6 @@ export default {
       const groupState = this.captureTabulatorGroupState();
       mutator();
       this.refreshTabulatorData(groupState);
-    },
-    refreshEditedRowsInPlace() {
-      this.$nextTick(() => {
-        this.sourceTabulatorInstance?.getTable?.()?.redraw?.(true);
-        this.poolTabulatorInstance?.getTable?.()?.redraw?.(true);
-      });
     },
     captureTabulatorGroupState() {
       return {
@@ -1030,11 +1088,10 @@ export default {
           }
         );
 
-        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
-          showNotification(
-            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
-              "Failed to load start coordinates.",
-            "error"
+        if (!this.isApiResponseSuccessful(response)) {
+          this.notifyFailedApiResponse(
+            response,
+            "Failed to load start coordinates."
           );
           this.startCoordinateOptions = [];
           return;
@@ -1178,7 +1235,7 @@ export default {
         } else {
           showNotification("Values applied to selected records.", "success");
         }
-        this.refreshEditedRowsInPlace();
+        this.refreshTabulatorTables();
       } catch (error) {
         this.handleApiError(
           error,
@@ -1209,6 +1266,22 @@ export default {
       if (!error?.response) {
         handleError(error);
       }
+    },
+    getApiResponseMessage(response, fallbackMessage) {
+      return (
+        response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
+        response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.detail] ||
+        fallbackMessage
+      );
+    },
+    isApiResponseSuccessful(response) {
+      return Boolean(response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]);
+    },
+    notifyFailedApiResponse(response, fallbackMessage) {
+      showNotification(
+        this.getApiResponseMessage(response, fallbackMessage),
+        "error"
+      );
     },
     getFieldDisplayName(field) {
       if (field === fields.readLength) {
@@ -1276,7 +1349,7 @@ export default {
           [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.data]: JSON.stringify(payload)
         });
         showNotification("Undo applied.", "success");
-        this.refreshEditedRowsInPlace();
+        this.refreshTabulatorTables();
       } catch (error) {
         this.handleApiError(error, "Failed to undo read length changes.");
       }
@@ -1546,7 +1619,7 @@ export default {
             { type: "success", timeout: 10000 }
           );
         }
-        this.refreshEditedRowsInPlace();
+        this.refreshTabulatorTables();
       } catch (error) {
         this.handleApiError(
           error,
@@ -1702,12 +1775,8 @@ export default {
           }
         );
 
-        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
-          showNotification(
-            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
-              "Index generation failed.",
-            "error"
-          );
+        if (!this.isApiResponseSuccessful(response)) {
+          this.notifyFailedApiResponse(response, "Index generation failed.");
           return;
         }
 
@@ -1804,12 +1873,8 @@ export default {
           }
         );
 
-        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
-          showNotification(
-            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
-              "Saving pool failed.",
-            "error"
-          );
+        if (!this.isApiResponseSuccessful(response)) {
+          this.notifyFailedApiResponse(response, "Saving pool failed.");
           return;
         }
 
@@ -1898,6 +1963,18 @@ export default {
   padding: 10px;
 }
 
+.header {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.header-title {
+  width: auto;
+  flex: 1 1 220px;
+  min-width: 0;
+  margin-right: 16px;
+}
+
 .table-container {
   flex: 1;
   overflow: auto;
@@ -1909,24 +1986,14 @@ export default {
   flex: 0 1 auto;
   min-width: 0;
   flex-wrap: nowrap;
+  max-width: 100%;
 }
 
-.header-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.header-pool-size-controls {
+:is(.header-pool-size-controls, .header-generate-controls) {
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.header-generate-controls {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  flex: 0 0 auto;
 }
 
 .panel-heading {
@@ -2003,13 +2070,6 @@ export default {
   flex: 1 1 100%;
 }
 
-.apply-all-controls.compact {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5px;
-}
-
 .apply-all-controls.compact .apply-all-label {
   flex: 0 0 auto;
 }
@@ -2027,6 +2087,10 @@ export default {
 }
 
 .add-selected-pool-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 1px solid rgba(11, 127, 120, 0.35);
   border-radius: 8px;
   background: #ffffff;
@@ -2131,10 +2195,14 @@ export default {
   opacity: 0.72;
 }
 
-.header-button:disabled,
-.save-pool-button:disabled {
+.header-button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.header-button {
+  flex: 0 0 auto;
+  min-width: 128px;
 }
 
 .tables-wrap {
@@ -2243,11 +2311,6 @@ export default {
   display: none;
 }
 
-.coordinate-input {
-  min-width: 120px;
-  width: 120px;
-}
-
 :deep(.sequence-colored) {
   font-family: "Courier New", Courier, monospace;
   letter-spacing: 0.4px;
@@ -2306,35 +2369,55 @@ export default {
   background: #ffd7d7;
 }
 
-@media (max-width: 980px) {
-  .header {
-    height: auto;
-    min-height: 70px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px 14px;
+@media (max-width: 1550px) {
+  .header-title {
+    flex-basis: 180px;
   }
 
   .sticky-actions {
-    width: 100%;
-    margin-left: 0;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    gap: 8px;
   }
 
-  .header-center {
-    position: static;
-    transform: none;
-    width: 100%;
-    order: 3;
+  .pool-size-select {
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .header-button {
+    min-width: 112px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: 1220px) {
+  .sticky-actions {
+    flex-wrap: wrap;
   }
 
   .tables-wrap {
     flex-direction: column;
+    overflow: auto;
   }
 
   .panel-splitter {
     display: none;
+  }
+
+  .panel,
+  .left-panel,
+  .right-panel {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 360px;
+  }
+
+  .left-panel.left-panel-collapsed {
+    display: none;
+  }
+
+  .right-panel {
+    min-height: 460px;
   }
 
   .pool-size-select {
@@ -2346,15 +2429,68 @@ export default {
   }
 }
 
+@media (max-width: 760px) {
+  .header {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .sticky-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  :is(.header-pool-size-controls, .header-generate-controls) {
+    display: contents;
+  }
+
+  :is(
+    .pool-size-select,
+    .header-generate-controls .pool-size-select
+  ) {
+    flex: 0 1 112px;
+    width: auto;
+    min-width: 90px;
+    height: 34px;
+  }
+
+  .header-button {
+    flex: 0 1 120px;
+    min-width: 96px;
+  }
+
+  .panel-heading {
+    align-items: flex-start;
+  }
+}
+
 @media (max-width: 550px) {
   .panel-heading {
     flex-wrap: wrap;
     align-items: flex-start;
   }
 
-  .pool-size-select {
-    width: 100%;
-    min-width: 0;
+  .panel-heading-primary,
+  .panel-heading-actions {
+    flex: 1 1 100%;
+  }
+
+  .panel-heading-primary h3 {
+    white-space: normal;
+  }
+
+  :is(
+    .pool-size-select,
+    .header-generate-controls .pool-size-select
+  ) {
+    flex-basis: 106px;
+  }
+
+  .header-button {
+    flex-basis: 116px;
   }
 
   .apply-all-controls,
@@ -2372,6 +2508,10 @@ export default {
     flex: 1 1 100%;
     width: 100%;
     max-width: none;
+  }
+
+  .balance-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 </style>

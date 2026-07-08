@@ -136,12 +136,12 @@ def get_navigation_tree(request):
                 "expanded": False,
                 "children": [
                     {
-                        "text": "Runs",
+                        "text": "Runs Statistics",
                         "viewType": "run-statistics-vue",
                         "leaf": True,
                     },
                     {
-                        "text": "Sequenced Samples",
+                        "text": "Sequenced Samples Statistics",
                         "viewType": "sequences-statistics-vue",
                         "leaf": True,
                     },

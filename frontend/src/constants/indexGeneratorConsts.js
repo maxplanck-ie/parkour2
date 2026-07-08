@@ -271,18 +271,17 @@ const applyGroupHeaderStyles = (wrapper, main, title, details) => {
   });
 };
 
-export function indexGeneratorSourceGroupHeader(
+const createGroupHeaderBase = (
   value,
   count,
-  data,
   requestGroupSummary,
-  selectAllInGroup,
-  deselectAllInGroup,
-  icons = {}
-) {
+  extraClass = ""
+) => {
   const summary = requestGroupSummary(value);
   const wrapper = document.createElement("div");
-  wrapper.className = "group-row-content";
+  wrapper.className = ["group-row-content", extraClass]
+    .filter(Boolean)
+    .join(" ");
 
   const main = document.createElement("div");
   main.className = "group-row-main";
@@ -300,10 +299,61 @@ export function indexGeneratorSourceGroupHeader(
 
   applyGroupHeaderStyles(wrapper, main, title, details);
   text.append(title, details);
+  main.appendChild(text);
 
   const actions = document.createElement("div");
   actions.className = "group-action-buttons-container";
   actions.addEventListener("click", (event) => event.stopPropagation());
+
+  return { wrapper, main, actions };
+};
+
+const createGroupActionButton = ({
+  title,
+  handler,
+  icon,
+  iconClass = "",
+  fallbackText = title,
+  ariaLabel = title
+}) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "group-action-button";
+  button.title = title;
+  button.setAttribute("aria-label", ariaLabel);
+  button.addEventListener("click", handler);
+
+  if (icon) {
+    const image = document.createElement("img");
+    if (iconClass) {
+      image.className = iconClass;
+    }
+    image.src = icon;
+    image.alt = ariaLabel;
+    image.width = 24;
+    image.height = 24;
+    button.appendChild(image);
+  } else {
+    button.textContent = fallbackText;
+  }
+
+  return button;
+};
+
+export function indexGeneratorSourceGroupHeader(
+  value,
+  count,
+  data,
+  requestGroupSummary,
+  selectAllInGroup,
+  deselectAllInGroup,
+  icons = {}
+) {
+  const { wrapper, main, actions } = createGroupHeaderBase(
+    value,
+    count,
+    requestGroupSummary
+  );
 
   [
     {
@@ -317,27 +367,9 @@ export function indexGeneratorSourceGroupHeader(
       handler: () => deselectAllInGroup(data)
     }
   ].forEach((action) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "group-action-button";
-    button.title = action.title;
-    button.addEventListener("click", action.handler);
-
-    if (action.icon) {
-      const image = document.createElement("img");
-      image.src = action.icon;
-      image.alt = action.title;
-      image.width = 24;
-      image.height = 24;
-      button.appendChild(image);
-    } else {
-      button.textContent = action.title;
-    }
-
-    actions.appendChild(button);
+    actions.appendChild(createGroupActionButton(action));
   });
 
-  main.appendChild(text);
   wrapper.append(main, actions);
   return wrapper;
 }
@@ -349,45 +381,23 @@ export function indexGeneratorPoolGroupHeader(
   requestGroupSummary,
   removePoolRowsInGroup
 ) {
-  const summary = requestGroupSummary(value);
-  const wrapper = document.createElement("div");
-  wrapper.className = "group-row-content pool-group-row-content";
+  const { wrapper, main, actions } = createGroupHeaderBase(
+    value,
+    count,
+    requestGroupSummary,
+    "pool-group-row-content"
+  );
 
-  const main = document.createElement("div");
-  main.className = "group-row-main";
+  actions.appendChild(
+    createGroupActionButton({
+      title: "Remove All from This Request",
+      ariaLabel: "Remove All from This Request",
+      icon: iconDeleteRequest,
+      iconClass: "group-action-icon-img",
+      handler: () => removePoolRowsInGroup(data)
+    })
+  );
 
-  const text = document.createElement("div");
-  const title = document.createElement("span");
-  title.className = "group-row-title";
-  title.textContent = value;
-
-  const details = document.createElement("span");
-  details.className = "group-row-summary";
-  details.textContent =
-    ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, ` +
-    `Read Lengths: ${summary.readLengthDisplay}, Biosafety Level: ${summary.biosafetyLevel})`;
-
-  applyGroupHeaderStyles(wrapper, main, title, details);
-  text.append(title, details);
-
-  const actions = document.createElement("div");
-  actions.className = "group-action-buttons-container";
-  actions.addEventListener("click", (event) => event.stopPropagation());
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "group-action-button";
-  button.title = "Remove All from This Request";
-  button.setAttribute("aria-label", "Remove All from This Request");
-  const image = document.createElement("img");
-  image.className = "group-action-icon-img";
-  image.src = iconDeleteRequest;
-  image.alt = "Remove Request";
-  button.appendChild(image);
-  button.addEventListener("click", () => removePoolRowsInGroup(data));
-  actions.appendChild(button);
-
-  main.appendChild(text);
   wrapper.append(main, actions);
   return wrapper;
 }

@@ -22,7 +22,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
       height: Ext.Element.getViewportHeight() - 64,
 
       header: {
-        title: "Sequenced Samples",
+        title: "Sequenced Samples Statistics",
         items: [
           {
             xtype: "parkoursearchfield",

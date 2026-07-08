@@ -40,7 +40,8 @@ import {
   faTableCells,
   faPenToSquare,
   faCloudArrowUp,
-  faLightbulb
+  faLightbulb,
+  faFloppyDisk
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCalendarPlus,
@@ -87,7 +88,8 @@ library.add(
   faTableCells,
   faPenToSquare,
   faCloudArrowUp,
-  faLightbulb
+  faLightbulb,
+  faFloppyDisk
 );
 
 app.use(router);
