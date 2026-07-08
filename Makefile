@@ -45,6 +45,11 @@ set-prod: hardreset-caddyfile-prod hardreset-nginx-server-prod
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
+	@test -e ./misc/parkour.env && grep -qE '^INSTANCE_VERSION=.+' ./misc/parkour.env || { \
+		ver=$$(date +%y.%m.%d); \
+		sed -i '/^INSTANCE_VERSION=/d' ./misc/parkour.env 2>/dev/null; \
+		echo "INSTANCE_VERSION=$$ver" >> ./misc/parkour.env; \
+	}
 
 deploy-webapp:
 	@docker compose build
@@ -139,6 +144,11 @@ set-dev: hardreset-caddyfile-dev hardreset-nginx-server-dev
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
+	@test -e ./misc/parkour.env && grep -qE '^INSTANCE_VERSION=.+' ./misc/parkour.env || { \
+		ver=$$(date +%y.%m.%d).dev+g$$(git rev-parse --short=9 HEAD); \
+		sed -i '/^INSTANCE_VERSION=/d' ./misc/parkour.env 2>/dev/null; \
+		echo "INSTANCE_VERSION=$$ver" >> ./misc/parkour.env; \
+	}
 
 hardreset-caddyfile: hardreset-caddyfile-prod
 
@@ -158,7 +168,7 @@ hardreset-caddyfile-dev:
 	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/vue-assets/* {\n\t\turi strip_prefix /vue\n\t\treverse_proxy parkour2-vite:5174 {\n\t\t\theader_up Host parkour2-vite:5174\n\t\t}\n\t}\n\t@vite_dev {\n\t\tpath /vue/* /vue-assets/* /@vite/* /src/* /node_modules/* /@id/* /@fs/* /__vite_ping\n\t}\n\thandle @vite_dev {\n\t\treverse_proxy parkour2-vite:5174 {\n\t\t\theader_up Host parkour2-vite:5174\n\t\t}\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
 hardreset-envfile:
-	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
+	@echo -e "INSTANCE_NAME=Parkour2\nTIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_DB=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nREADONLY_USER=ropg\nREADONLY_PASSWORD=change_me__stay_safe2\nREADONLY_DATABASE_URL=postgres://ropg:change_me__stay_safe2@parkour2-postgres:5432/postgres\nOPENROUTER_API_KEY=aaaaaaaaaaaaaaaaa\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
 deploy-caddy:
 	@docker compose -f misc/caddy.yml --project-name=parkour2 up -d

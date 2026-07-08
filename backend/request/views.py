@@ -773,7 +773,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Send an email to the PI."""
         error = ""
         instance = self.get_object()
-        subject = f"[ Parkour2 | pending approval ] "
+        subject = f"[ {settings.INSTANCE_TITLE} | pending approval ] "
         subject += request.data.get("subject", "")
         message = request.data.get("message", "")
         include_records = json.loads(request.POST.get("include_records", "true"))
@@ -848,7 +848,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 records = sorted(records, key=lambda x: x.barcode[3:])
 
             send_mail(
-                subject=f"[ Parkour2 | new message ] " + subject,
+                subject=f"[ {settings.INSTANCE_TITLE} | new message ] " + subject,
                 message="",
                 html_message=render_to_string(
                     "email.html",
@@ -1144,7 +1144,7 @@ class ApproveViewSet(viewsets.ModelViewSet):
             logger.exception(e)
             return JsonResponse({"success": not error, "error": error})
         send_mail(
-            subject=f"[ Parkour2 | request approved ] {instance.name}",
+            subject=f"[ {settings.INSTANCE_TITLE} | request approved ] {instance.name}",
             message="",
             html_message=render_to_string(
                 "approved.html",
