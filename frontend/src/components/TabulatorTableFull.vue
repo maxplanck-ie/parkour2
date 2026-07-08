@@ -126,6 +126,7 @@ const KEY_NAMES = {
   arrowRight: "ArrowRight",
   backspace: "Backspace",
   delete: "Delete",
+  enter: "Enter",
   escape: "Escape",
   cut: "x",
   copy: "c",
@@ -135,6 +136,7 @@ const KEY_NAMES = {
 
 const HTML_TAGS = {
   input: "INPUT",
+  select: "SELECT",
   textarea: "TEXTAREA"
 };
 
@@ -145,6 +147,7 @@ const TABULATOR_CLASSES = {
 
 const TABULATOR_SELECTORS = {
   editingCell: ".tabulator-cell.tabulator-editing",
+  editList: ".tabulator-edit-list",
   groupRow: ".tabulator-row.tabulator-group",
   tableHolder: ".tabulator-tableholder",
   tableContainer: ".table-container",
@@ -1582,6 +1585,7 @@ export default {
     handleKeyDown(event) {
       const isDeleteOrBackspace =
         event.key === KEY_NAMES.delete || event.key === KEY_NAMES.backspace;
+      const isEnter = event.key === KEY_NAMES.enter;
       const isEscape = event.key === KEY_NAMES.escape;
       const key = event.key?.toLowerCase?.();
       const isCtrl = event.ctrlKey || event.metaKey;
@@ -1598,11 +1602,26 @@ export default {
         this.closeErrorsWindow();
         return;
       }
-      if (
-        document.activeElement &&
-        (document.activeElement.tagName === HTML_TAGS.input ||
-          document.activeElement.tagName === HTML_TAGS.textarea)
-      ) {
+      const isEditorElement = (element) =>
+        element &&
+        (element.tagName === HTML_TAGS.input ||
+          element.tagName === HTML_TAGS.select ||
+          element.tagName === HTML_TAGS.textarea ||
+          element.isContentEditable ||
+          element.closest?.(TABULATOR_SELECTORS.editingCell) ||
+          element.closest?.(TABULATOR_SELECTORS.editList));
+      const eventPath =
+        typeof event.composedPath === "function" ? event.composedPath() : [];
+      const eventStartedInEditor = eventPath.some(
+        (element) =>
+          element?.classList?.contains?.("tabulator-editing") ||
+          element?.classList?.contains?.("tabulator-edit-list")
+      );
+      const activeEditorElement =
+        isEditorElement(document.activeElement) ||
+        isEditorElement(event.target) ||
+        eventStartedInEditor;
+      if (activeEditorElement) {
         return;
       }
 
@@ -1755,6 +1774,16 @@ export default {
         clearSelectedRange();
         event.preventDefault();
         this.restoreLastFocusedCell();
+        return;
+      }
+      if (isEnter) {
+        const firstCell = rangeCells[0]?.[0] || this.getFocusCandidateCell();
+        if (!firstCell) return;
+        const rowData = firstCell.getRow?.().getData?.() || {};
+        if (!getIsEditable(firstCell, rowData)) return;
+        event.preventDefault();
+        firstCell.edit?.();
+        this.openDropdownEditorIfNeeded(firstCell);
         return;
       }
       if (isPrintableKey) {

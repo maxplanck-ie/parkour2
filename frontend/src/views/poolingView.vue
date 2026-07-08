@@ -217,9 +217,11 @@
         </div>
         <div class="popup-footer">
           <button class="popup-button yes-button" @click="popupContents.onYes">
-            Yes
+            Confirm
           </button>
-          <button class="popup-button" @click="popupContents.onNo">No</button>
+          <button class="popup-button" @click="popupContents.onNo">
+            Cancel
+          </button>
         </div>
       </div>
     </div>

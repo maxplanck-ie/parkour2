@@ -33,9 +33,6 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       "#download-benchtop-protocol-button": {
         click: "downloadBenchtopProtocol"
       },
-      "#download-sample-sheet-button": {
-        click: "downloadSampleSheet"
-      },
       "#search-field": {
         change: "changeFilter"
       },
@@ -162,28 +159,6 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       url: "api/flowcells/download_benchtop_protocol/",
       params: {
         ids: Ext.JSON.encode(Ext.Array.pluck(selectedLanes, "pk"))
-      }
-    });
-  },
-
-  downloadSampleSheet: function (btn) {
-    var store = btn.up("grid").getStore();
-    var selectedLanes = this._getSelectedRecords(store);
-
-    if (selectedLanes.length === 0) {
-      new Noty({
-        text: "You did not select any lanes.",
-        type: "warning"
-      }).show();
-      return;
-    }
-
-    var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
-    form.submit({
-      url: "api/flowcells/download_sample_sheet/",
-      params: {
-        ids: Ext.JSON.encode(Ext.Array.pluck(selectedLanes, "pk")),
-        flowcell_id: selectedLanes[0].flowcell
       }
     });
   },

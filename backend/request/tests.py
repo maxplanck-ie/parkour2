@@ -476,6 +476,23 @@ class TestRequests(BaseTestCase):
         results = response.json()
         self.assertTrue(any(user["email"] == "ahmed@test.io" for user in results))
 
+    def test_search_users_staff_full_name(self):
+        """Ensure staff can search users by first and last name together."""
+        user = User.objects.create_user(
+            email="saurabh@test.io",
+            password="foo-foo",
+            first_name="Saurabh",
+            last_name="Dome",
+            is_staff=False,
+        )
+
+        response = self.client.get(
+            "/api/requests/search_users/", {"query": "Saurabh Dome"}
+        )
+        self.assertEqual(response.status_code, 200)
+        results = response.json()
+        self.assertTrue(any(item["id"] == user.pk for item in results))
+
     def test_search_related_requests_staff_sees_all(self):
         """Ensure staff users can search all requests when selecting related projects."""
         org = Organization(name=get_random_name())

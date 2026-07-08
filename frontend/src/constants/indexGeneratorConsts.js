@@ -1,4 +1,3 @@
-import { ellipsisContainer } from "../utilities/utilityFunctions";
 import iconDeleteRequest from "../assets/icons/action_delete_request.svg";
 
 export const INDEX_GENERATOR_API_ENDPOINTS = {
@@ -69,6 +68,7 @@ export const INDEX_GENERATOR_DEFAULTS = {
   startCoordinate: "A1",
   direction: "down",
   emptyDisplay: "-",
+  selectDisplay: "Select",
   maxColorBalanceCycles: 12,
   duplicatePreviewLimit: 3
 };
@@ -114,10 +114,26 @@ const escapeHtml = (value) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-const sequenceFormatter = (cell) => {
+const valueContainer = (
+  displayHtml,
+  boldText = false,
+  includeTitle = true,
+  tooltipText = displayHtml
+) =>
+  `<div ${
+    includeTitle ? `title='${escapeHtml(tooltipText)}' ` : ""
+  }style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 12px 8px 12px 12px; font-weight: ${
+    boldText === true ? "bold" : "normal"
+  }">
+                ${displayHtml}
+              </div>`;
+
+const sequenceFormatter = (cell, { includeTitle = true } = {}) => {
   const sequence = String(cell.getValue() || "");
   if (!sequence) {
-    return readonlyValueFormatter(INDEX_GENERATOR_DEFAULTS.emptyDisplay);
+    return readonlyValueFormatter(INDEX_GENERATOR_DEFAULTS.emptyDisplay, {
+      includeTitle
+    });
   }
 
   const html = sequence
@@ -134,18 +150,92 @@ const sequenceFormatter = (cell) => {
     })
     .join("");
 
-  return (
-    `<div title='${escapeHtml(sequence)}' ` +
-    'style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ' +
-    'padding: 12px 8px 12px 12px; font-weight: normal">' +
-    `<span class="sequence-colored">${html}</span></div>`
+  return valueContainer(
+    `<span class="sequence-colored">${html}</span>`,
+    false,
+    includeTitle,
+    sequence
   );
 };
 
-const readonlyValueFormatter = (value) =>
-  ellipsisContainer(escapeHtml(emptyFormatter(value)), false);
+const indexSequenceFormatter = (cell) => {
+  const rowData = cell.getRow().getData();
+  const hasIndexType = Boolean(rowData[INDEX_GENERATOR_FIELDS.indexType]);
+  const hasIndexValue = Boolean(String(cell.getValue() || "").trim());
+  const disabled = !hasIndexType || !hasIndexValue;
+  setCellDisabledState(
+    cell,
+    disabled,
+    !hasIndexType
+      ? "Choose the Index Type first."
+      : disabled
+        ? "Generate indices to assign this value."
+        : ""
+  );
+
+  return sequenceFormatter(cell, { includeTitle: !disabled });
+};
+
+const readonlyValueFormatter = (value, { includeTitle = true } = {}) =>
+  valueContainer(
+    escapeHtml(emptyFormatter(value)),
+    false,
+    includeTitle,
+    emptyFormatter(value)
+  );
 
 const readonlyFormatter = (cell) => readonlyValueFormatter(cell.getValue());
+
+const setCellTooltip = (cell, message = "") => {
+  const element = cell.getElement?.();
+  if (!element) {
+    return;
+  }
+
+  const text = String(message || "").trim();
+  element.removeAttribute("data-tooltip-original");
+  element.removeAttribute("title");
+  if (text) {
+    element.setAttribute("data-tooltip-original", text);
+  }
+};
+
+const setCellDisabledState = (cell, disabled, message = "") => {
+  const element = cell.getElement?.();
+  if (!element) {
+    return;
+  }
+
+  element.classList.toggle("disable-editing", Boolean(disabled));
+  if (disabled && message) {
+    element.setAttribute("data-disabled-tooltip", message);
+    element.setAttribute("data-tooltip-original", message);
+    element.removeAttribute("title");
+    element
+      .querySelectorAll("[title],[data-tooltip-original]")
+      .forEach((node) => {
+        if (node !== element) {
+          node.removeAttribute("title");
+          node.removeAttribute("data-tooltip-original");
+        }
+      });
+  } else {
+    element.removeAttribute("data-disabled-tooltip");
+    element.removeAttribute("data-tooltip-original");
+    element.removeAttribute("title");
+  }
+};
+
+const selectValueFormatter = (label, options = {}) =>
+  readonlyValueFormatter(
+    label || INDEX_GENERATOR_DEFAULTS.selectDisplay,
+    options
+  );
+
+const selectCellFormatter = (cell, label, emptyTooltip) => {
+  setCellTooltip(cell, label || emptyTooltip);
+  return selectValueFormatter(label);
+};
 
 const selectOptions = (items, includeEmpty = false, emptyLabel = "-") => {
   const options = includeEmpty ? [{ label: emptyLabel, value: 0 }] : [];
@@ -206,7 +296,7 @@ export function indexGeneratorSourceGroupHeader(
   details.className = "group-row-summary";
   details.textContent =
     ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, ` +
-    `Read Lengths: ${summary.readLengthDisplay}, ${summary.biosafetyLevel})`;
+    `Read Lengths: ${summary.readLengthDisplay}, Biosafety Level: ${summary.biosafetyLevel})`;
 
   applyGroupHeaderStyles(wrapper, main, title, details);
   text.append(title, details);
@@ -275,7 +365,7 @@ export function indexGeneratorPoolGroupHeader(
   details.className = "group-row-summary";
   details.textContent =
     ` (#: ${count} ${summary.countLabel}, Total Depth: ${summary.totalDepth}M, ` +
-    `Read Lengths: ${summary.readLengthDisplay}, ${summary.biosafetyLevel})`;
+    `Read Lengths: ${summary.readLengthDisplay}, Biosafety Level: ${summary.biosafetyLevel})`;
 
   applyGroupHeaderStyles(wrapper, main, title, details);
   text.append(title, details);
@@ -337,7 +427,7 @@ export function indexGeneratorSourceColumnDefs({
     {
       title: "Name",
       field: INDEX_GENERATOR_FIELDS.name,
-      minWidth: 110,
+      minWidth: 100,
       widthGrow: 2,
       formatter: readonlyFormatter,
       cssClass: "name-column right-border"
@@ -345,8 +435,8 @@ export function indexGeneratorSourceColumnDefs({
     {
       title: "Barcode",
       field: INDEX_GENERATOR_FIELDS.barcode,
-      minWidth: 85,
-      widthGrow: 1,
+      minWidth: 98,
+      widthGrow: 1.1,
       formatter: readonlyFormatter,
       cssClass: "details-column barcode-column right-border"
     },
@@ -365,54 +455,75 @@ export function indexGeneratorSourceColumnDefs({
       widthGrow: 1,
       cssClass: "length-column right-border",
       editor: "list",
+      headerTooltip: "Choose the Read Length",
       editorParams: {
-        values: selectOptions(readLengths, true)
+        values: selectOptions(
+          readLengths,
+          true,
+          INDEX_GENERATOR_DEFAULTS.selectDisplay
+        ),
+        placeholder: INDEX_GENERATOR_DEFAULTS.selectDisplay,
+        emptyValue: 0,
+        allowEmpty: true,
+        autocomplete: true,
+        listOnEmpty: true
       },
       formatter: (cell) => {
         const value = String(cell.getValue() || "");
         const match = (readLengths || []).find(
           (item) => String(item.id) === value
         );
-        return readonlyValueFormatter(
-          match?.name || INDEX_GENERATOR_DEFAULTS.emptyDisplay
-        );
+        return selectCellFormatter(cell, match?.name, "Choose the Read Length");
       }
     },
     {
       title: "Protocol",
       field: INDEX_GENERATOR_FIELDS.libraryProtocolName,
-      minWidth: 110,
-      widthGrow: 2,
+      minWidth: 100,
+      widthGrow: 1.8,
       formatter: readonlyFormatter,
       cssClass: "protocol-column right-border"
     },
     {
       title: "Index Type",
       field: INDEX_GENERATOR_FIELDS.indexType,
-      minWidth: 105,
-      widthGrow: 2,
+      minWidth: 100,
+      widthGrow: 1.8,
       cssClass: "index-type-column right-border",
       editor: "list",
+      headerTooltip: "Choose the Index Type",
       editable: (cell) =>
         cell.getRow().getData()[INDEX_GENERATOR_FIELDS.type] !==
         INDEX_GENERATOR_RECORD_TYPES.libraryCode,
       editorParams: {
-        values: selectOptions(generatorIndexTypes, true)
+        values: selectOptions(
+          generatorIndexTypes,
+          true,
+          INDEX_GENERATOR_DEFAULTS.selectDisplay
+        ),
+        placeholder: INDEX_GENERATOR_DEFAULTS.selectDisplay,
+        emptyValue: 0,
+        allowEmpty: true,
+        autocomplete: true,
+        listOnEmpty: true
       },
       formatter: (cell) => {
         const rowData = cell.getRow().getData();
-        if (
+        const disabled =
           rowData[INDEX_GENERATOR_FIELDS.type] ===
-          INDEX_GENERATOR_RECORD_TYPES.libraryCode
-        ) {
-          cell.getElement().classList.add("disable-editing");
-        } else {
-          cell.getElement().classList.remove("disable-editing");
+          INDEX_GENERATOR_RECORD_TYPES.libraryCode;
+        const label = getIndexTypeName?.(cell.getValue());
+        if (disabled) {
+          setCellDisabledState(
+            cell,
+            disabled,
+            "Index Type is fixed for libraries."
+          );
+          return selectValueFormatter(label, { includeTitle: false });
         }
-        return readonlyValueFormatter(
-          getIndexTypeName?.(cell.getValue()) ||
-            INDEX_GENERATOR_DEFAULTS.emptyDisplay
-        );
+
+        setCellDisabledState(cell, false);
+        return selectCellFormatter(cell, label, "Choose the Index Type");
       }
     },
     {
@@ -420,7 +531,7 @@ export function indexGeneratorSourceColumnDefs({
       field: INDEX_GENERATOR_FIELDS.indexI7,
       minWidth: 80,
       widthGrow: 1,
-      formatter: sequenceFormatter,
+      formatter: indexSequenceFormatter,
       cssClass: "sequence-column sequence-text right-border"
     },
     {
@@ -428,7 +539,7 @@ export function indexGeneratorSourceColumnDefs({
       field: INDEX_GENERATOR_FIELDS.indexI5,
       minWidth: 80,
       widthGrow: 1,
-      formatter: sequenceFormatter,
+      formatter: indexSequenceFormatter,
       cssClass: "sequence-column sequence-text"
     }
   ];
@@ -465,15 +576,15 @@ export function indexGeneratorPoolColumnDefs({ onRemoveRow } = {}) {
     {
       title: "Name",
       field: INDEX_GENERATOR_FIELDS.name,
-      minWidth: 160,
-      widthGrow: 2,
+      minWidth: 135,
+      widthGrow: 1.5,
       formatter: readonlyFormatter,
       cssClass: "name-column right-border"
     },
     {
       title: "Barcode",
       field: INDEX_GENERATOR_FIELDS.barcode,
-      minWidth: 110,
+      minWidth: 92,
       widthGrow: 1,
       formatter: readonlyFormatter,
       cssClass: "details-column barcode-column right-border"
@@ -481,39 +592,39 @@ export function indexGeneratorPoolColumnDefs({ onRemoveRow } = {}) {
     {
       title: "L/S",
       field: INDEX_GENERATOR_FIELDS.type,
-      minWidth: 60,
-      widthGrow: 1,
+      minWidth: 42,
+      widthGrow: 0.5,
       formatter: readonlyFormatter,
       cssClass: "type-column right-border"
     },
     {
       title: "Depth (M)",
       field: INDEX_GENERATOR_FIELDS.sequencingDepth,
-      minWidth: 90,
-      widthGrow: 1,
+      minWidth: 70,
+      widthGrow: 0.7,
       formatter: readonlyFormatter,
       cssClass: "depth-column right-border"
     },
     {
       title: "Coord",
       field: INDEX_GENERATOR_FIELDS.coordinate,
-      minWidth: 100,
-      widthGrow: 1,
+      minWidth: 68,
+      widthGrow: 0.7,
       formatter: readonlyFormatter,
       cssClass: "coord-column right-border"
     },
     {
       title: "Index I7 ID",
       field: INDEX_GENERATOR_FIELDS.indexI7Id,
-      minWidth: 100,
-      widthGrow: 1,
+      minWidth: 78,
+      widthGrow: 0.8,
       formatter: readonlyFormatter,
       cssClass: "index-id-column right-border"
     },
     {
       title: "Index I7",
       field: INDEX_GENERATOR_FIELDS.indexI7,
-      minWidth: 120,
+      minWidth: 92,
       widthGrow: 1,
       formatter: sequenceFormatter,
       cssClass: "sequence-column sequence-text right-border"
@@ -521,15 +632,15 @@ export function indexGeneratorPoolColumnDefs({ onRemoveRow } = {}) {
     {
       title: "Index I5 ID",
       field: INDEX_GENERATOR_FIELDS.indexI5Id,
-      minWidth: 100,
-      widthGrow: 1,
+      minWidth: 78,
+      widthGrow: 0.8,
       formatter: readonlyFormatter,
       cssClass: "index-id-column right-border"
     },
     {
       title: "Index I5",
       field: INDEX_GENERATOR_FIELDS.indexI5,
-      minWidth: 120,
+      minWidth: 92,
       widthGrow: 1,
       formatter: sequenceFormatter,
       cssClass: "sequence-column sequence-text"

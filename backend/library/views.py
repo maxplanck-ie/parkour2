@@ -132,15 +132,19 @@ class LibrarySampleTree(viewsets.ViewSet):
                 read_length_id=int(read_length_filter)
             )
 
-        if changed_ownership_filter:
+        if changed_ownership_filter in ("true", "false"):
             changed_ids = (
                 Request.history.values("id")
                 .annotate(user_count=Count("user", distinct=True))
                 .filter(user_count__gt=1)
                 .values_list("id", flat=True)
             )
-            library_queryset = library_queryset.filter(request_id__in=changed_ids)
-            sample_queryset = sample_queryset.filter(request_id__in=changed_ids)
+            if changed_ownership_filter == "true":
+                library_queryset = library_queryset.filter(request_id__in=changed_ids)
+                sample_queryset = sample_queryset.filter(request_id__in=changed_ids)
+            else:
+                library_queryset = library_queryset.exclude(request_id__in=changed_ids)
+                sample_queryset = sample_queryset.exclude(request_id__in=changed_ids)
 
         library_requests = (
             library_queryset.values("request_name")

@@ -204,11 +204,6 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
               text: "Download Benchtop Protocol",
               iconCls: "fa fa-file-excel-o fa-lg"
             },
-            {
-              itemId: "download-sample-sheet-button",
-              text: "Download Sample Sheet",
-              iconCls: "fa fa-file-excel-o fa-lg"
-            },
             "->",
             {
               itemId: "cancel-button",

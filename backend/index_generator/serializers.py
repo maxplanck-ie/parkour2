@@ -98,6 +98,13 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
 
         return internal_value
 
+    def update(self, instance, validated_data):
+        if "index_type_id" in validated_data:
+            instance.index_i7 = ""
+            instance.index_i5 = ""
+
+        return super().update(instance, validated_data)
+
 
 class IndexGeneratorLibrarySerializer(IndexGeneratorBaseSerializer):
     class Meta(IndexGeneratorBaseSerializer.Meta):

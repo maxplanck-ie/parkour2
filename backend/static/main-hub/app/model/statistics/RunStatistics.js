@@ -68,6 +68,11 @@ Ext.define("MainHub.model.statistics.RunStatistics", {
       allowNull: true
     },
     {
+      name: "aligned_spike_in",
+      type: "float",
+      allowNull: true
+    },
+    {
       name: "read_1",
       type: "float",
       allowNull: true

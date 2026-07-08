@@ -408,6 +408,9 @@ export default {
 }
 
 .lite-tabulator-table .tabulator-header-filter input {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
   height: 24px;
   font-size: 12px !important;
   border: 1px solid #d0d0d0 !important;

@@ -50,7 +50,7 @@ export function incomingLibrariesSamplesGroupHeader(
     <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
       (#: ${count} ${countLabel}, Total Depth: ${totalDepth}M, Read Lengths: ${
         readLengthDisplay || "No Read Length"
-      }, ${biosafetyLevel})
+      }, Biosafety Level: ${biosafetyLevel})
     </span>
   </div>
 </div>

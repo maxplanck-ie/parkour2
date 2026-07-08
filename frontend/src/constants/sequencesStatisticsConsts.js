@@ -1,3 +1,6 @@
+import iconSelectAll from "../assets/icons/action_select_all.svg";
+import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+
 function fixedNumber(value, digits = 2) {
   if (value === null || value === undefined || value === "") return "";
   const number = Number(value);
@@ -74,7 +77,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
     {
       title: "Request",
       field: "request",
-      minWidth: 135,
+      minWidth: 75,
       visible: true,
       frozen: true,
       headerFilter: true
@@ -82,7 +85,7 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
     {
       title: "Barcode",
       field: "barcode",
-      minWidth: 120,
+      minWidth: 70,
       visible: true,
       frozen: true,
       headerFilter: true
@@ -90,52 +93,54 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
     {
       title: "Name",
       field: "name",
-      minWidth: 135,
+      minWidth: 80,
       visible: true,
       headerFilter: true
     },
     {
       title: "Lane",
       field: "lane_display",
-      minWidth: 100,
+      minWidth: 45,
       visible: true,
       headerFilter: true
     },
     {
       title: "Pool",
       field: "pool",
-      minWidth: 135,
+      minWidth: 65,
       visible: true,
       headerFilter: true
     },
     {
-      title: "Library Protocol",
+      title: "Protocol",
       field: "library_protocol",
-      minWidth: 150,
-      visible: true,
-      headerFilter: true
-    },
-    {
-      title: "Analysis Type",
-      field: "library_type",
-      minWidth: 135,
-      visible: true,
-      headerFilter: true
-    },
-    {
-      title: "Requested Reads PF (M)",
-      field: "reads_pf_requested",
-      minWidth: 170,
+      minWidth: 80,
       visible: true,
       headerFilter: true,
+      headerTooltip: "Library Protocol"
+    },
+    {
+      title: "Analysis",
+      field: "library_type",
+      minWidth: 70,
+      visible: true,
+      headerFilter: true,
+      headerTooltip: "Analysis Type"
+    },
+    {
+      title: "Requested Reads (M)",
+      field: "reads_pf_requested",
+      minWidth: 95,
+      visible: true,
+      headerTooltip: "Requested Reads (M)",
       hozAlign: "right"
     },
     {
-      title: "Sequenced Reads PF (M)",
+      title: "Seq. Reads (M)",
       field: "reads_pf_sequenced",
-      minWidth: 170,
+      minWidth: 85,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Sequenced Reads PF (M)",
       formatter: (cell) => {
         const value = cell.getValue();
         if (value === null || value === undefined || value === "") {
@@ -148,54 +153,53 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
     {
       title: "Reads (%)",
       field: "reads_percent",
-      minWidth: 105,
+      minWidth: 55,
       visible: true,
-      headerFilter: true,
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
     {
-      title: "Confident Off-species Reads",
+      title: "Conf. Off-species",
       field: "confident_reads",
-      minWidth: 190,
+      minWidth: 95,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Confident Off-species Reads",
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
     {
-      title: "Optical Duplicates (%)",
+      title: "Opt. Dup. (%)",
       field: "optical_duplicates",
-      minWidth: 165,
+      minWidth: 80,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Optical Duplicates (%)",
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
     {
-      title: "Duplicated Reads (%)",
+      title: "Dup. Reads (%)",
       field: "dupped_reads",
-      minWidth: 135,
+      minWidth: 75,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Duplicated Reads (%)",
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
     {
-      title: "Mapped Reads (%)",
+      title: "Mapped (%)",
       field: "mapped_reads",
-      minWidth: 135,
+      minWidth: 75,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Mapped Reads (%)",
       formatter: fixedFormatter(),
       hozAlign: "right"
     },
     {
-      title: "Insert Size",
+      title: "Insert",
       field: "insert_size",
-      minWidth: 110,
+      minWidth: 55,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Insert Size",
       hozAlign: "right"
     }
   ]);
@@ -203,9 +207,27 @@ export function sequencesStatisticsColumnDefs(onSelectionChanged) {
 
 export function sequencesStatisticsGroupHeader(value, count, data) {
   const row = data?.[0] || {};
-  return `<strong>${row.flowcell_id || value} (${
-    row.create_time_display || ""
-  }, ${row.sequencer || ""})</strong>`;
+  const title = row.flowcell_id || value;
+  const metadata = [
+    `Date: ${row.create_time_display || "-"}`,
+    `Sequencer: ${row.sequencer || "-"}`
+  ].join(", ");
+
+  return `
+    <div style="display: flex; justify-content: flex-start; align-items: center; min-width: 0;">
+      <div style="display: flex; align-items: center; min-width: 0;">
+        <span style="font-weight: bold; font-size: 12px; color: #333;">${title}</span><span style="display: inline-block; font-weight: normal; font-size: 12px; margin-left: 6px; color: black;">(${metadata})</span>
+        <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
+          <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
+            <img src="${iconSelectAll}" alt="Select All" width="24" height="24" />
+          </div>
+          <div title="Deselect All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deselectAll')">
+            <img src="${iconDeselectAll}" alt="Deselect All" width="24" height="24" />
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 export function formatSequencesStatisticsDate(value) {
@@ -261,7 +283,7 @@ export function sequencesStatisticsExportColumns() {
       excelType: "text"
     },
     {
-      header: "Requested Reads PF (M)",
+      header: "Requested Reads (M)",
       key: "reads_pf_requested",
       width: 22,
       excelType: "number"

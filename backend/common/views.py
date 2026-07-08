@@ -141,7 +141,7 @@ def get_navigation_tree(request):
                         "leaf": True,
                     },
                     {
-                        "text": "Sequences",
+                        "text": "Sequenced Samples",
                         "viewType": "sequences-statistics-vue",
                         "leaf": True,
                     },

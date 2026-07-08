@@ -184,6 +184,7 @@
               >
                 <option :value="null">All</option>
                 <option :value="true">Yes</option>
+                <option :value="false">No</option>
               </select>
             </div>
 
@@ -427,9 +428,9 @@
                     <li>
                       Use <strong>Advanced Filters</strong> if you want to
                       narrow the page by status, protocol, analysis type,
-                      sequencer, or read length. These filters are useful when
-                      you know what stage or processing setup you are looking
-                      for.
+                      sequencer, read length, or changed ownership. These
+                      filters are useful when you know what stage or processing
+                      setup you are looking for.
                     </li>
                     <li>
                       If the table looks too crowded, use
@@ -462,7 +463,12 @@
                     <li>
                       In the request editor, begin with the request details on
                       the left side. This usually includes the cost unit, a
-                      description, and any supporting files.
+                      description, related projects, and any supporting files.
+                    </li>
+                    <li>
+                      New requests are assigned to the current user
+                      automatically. Staff users can later change the Request
+                      Owner while editing the request.
                     </li>
                     <li>
                       Then decide whether you want to enter libraries or
@@ -552,6 +558,11 @@
                       editor. There you can review or change the request
                       details, the attached files, and the libraries or samples
                       inside the request.
+                    </li>
+                    <li v-if="isStaffUser">
+                      <strong>Change Ownership:</strong> Reassign a request to
+                      another owner when responsibility changes. This does not
+                      change the request Cost Unit.
                     </li>
                     <li>
                       <strong>Delete Request:</strong> Remove the whole request
@@ -1462,14 +1473,11 @@ export default {
                   }))
                   .filter((project) => project.label);
 
-                const tooltip = normalized
-                  .map((project) => project.label)
-                  .join(" ");
                 const visible = normalized.slice(0, 12);
                 const rendered = visible
                   .map(
                     (project) =>
-                      `<a href="#" style="font-weight:700; color:#b35900; text-decoration:none; margin-right:8px;" title="Open Request ${escapeAttr(
+                      `<a href="#" style="color:#8a1f11; font-size:inherit; font-weight:inherit; text-decoration:none;" title="Open Request ${escapeAttr(
                         project.label
                       )}" onclick="window.openRequestEditorById('${escapeAttr(
                         project.id
@@ -1477,13 +1485,11 @@ export default {
                         project.label
                       )}</a>`
                   )
-                  .join(" ");
+                  .join(", ");
 
-                return `<span title="${escapeAttr(
-                  `Related Projects: ${tooltip}`
-                )}" style="font-weight:700; color:#b35900;">Related Projects: ${rendered}${
+                return `Related Projects: ${rendered}${
                   normalized.length > 6 ? "..." : ""
-                }</span>`;
+                }`;
               })()
             : "";
 
@@ -1705,7 +1711,7 @@ export default {
           params.read_length = this.filters.readLength;
         }
         if (this.filters.changedOwnership !== null) {
-          params.changed_ownership = true;
+          params.changed_ownership = this.filters.changedOwnership;
         }
 
         let response = await axiosRef.get(
@@ -2347,6 +2353,9 @@ export default {
           name: payload.name ?? existing.name,
           cost_unit: payload.cost_unit ?? existing.cost_unit ?? "",
           description: payload.description ?? existing.description ?? "",
+          related_requests: Array.isArray(payload.related_requests)
+            ? payload.related_requests
+            : existing.related_requests,
           files: Array.isArray(payload.files) ? payload.files : existing.files
         };
         this.requestMetaById = {
@@ -2370,7 +2379,8 @@ export default {
         protocol: null,
         analysisType: null,
         sequencer: null,
-        readLength: null
+        readLength: null,
+        changedOwnership: null
       };
       const requestId = payload?.pk ?? null;
       this.pendingSavedMode = this.requestModalMode;

@@ -96,8 +96,13 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
             filter: { type: "number" }
           },
           {
-            text: "% Spike In",
+            text: "PhiX (%)",
             dataIndex: "phix",
+            filter: { type: "number" }
+          },
+          {
+            text: "Aligned to PhiX (%)",
+            dataIndex: "aligned_spike_in",
             filter: { type: "number" }
           },
           {

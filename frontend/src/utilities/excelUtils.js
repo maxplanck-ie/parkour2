@@ -461,7 +461,23 @@ function normalizeExportCellValue(value, column = {}) {
   if (value === null || value === undefined || value === "") return null;
   if (!shouldWriteExportValueAsNumber(column)) return value;
   const parsed = parseExportNumber(value);
-  return parsed === null ? value : parsed;
+  if (parsed === null) return value;
+
+  const decimalPlaces = Number(column.decimalPlaces);
+  if (Number.isInteger(decimalPlaces) && decimalPlaces >= 0) {
+    return Number(parsed.toFixed(decimalPlaces));
+  }
+
+  return parsed;
+}
+
+function getExcelNumberFormat(column = {}) {
+  const decimalPlaces = Number(column.decimalPlaces);
+  if (!Number.isInteger(decimalPlaces) || decimalPlaces < 0) {
+    return "";
+  }
+
+  return decimalPlaces === 0 ? "0" : `0.${"0".repeat(decimalPlaces)}`;
 }
 
 function normalizeExportRows(rows = [], exportColumns = []) {
@@ -669,6 +685,12 @@ export async function createExcelExportBlob({
   if (!worksheet) {
     worksheet = workbook.addWorksheet(targetSheetName);
     worksheet.columns = exportColumns;
+    exportColumns.forEach((col, index) => {
+      const numFmt = getExcelNumberFormat(col);
+      if (numFmt) {
+        worksheet.getColumn(index + 1).numFmt = numFmt;
+      }
+    });
     if (normalizedRows.length) {
       worksheet.addRows(normalizedRows);
     }
@@ -700,6 +722,10 @@ export async function createExcelExportBlob({
         if (col.width) {
           worksheet.getColumn(colIdx).width = col.width;
         }
+        const numFmt = getExcelNumberFormat(col);
+        if (numFmt) {
+          worksheet.getColumn(colIdx).numFmt = numFmt;
+        }
       }
     });
 
@@ -720,6 +746,10 @@ export async function createExcelExportBlob({
         const colIdx = i + 1;
         worksheet.getCell(headerRowIndex, colIdx).value = col.header;
         if (col.width) worksheet.getColumn(colIdx).width = col.width;
+        const numFmt = getExcelNumberFormat(col);
+        if (numFmt) {
+          worksheet.getColumn(colIdx).numFmt = numFmt;
+        }
         keyToCol.set(col.key, colIdx);
       });
     } else {
@@ -744,6 +774,10 @@ export async function createExcelExportBlob({
             dataRow?.[col.key],
             col
           );
+          const numFmt = getExcelNumberFormat(col);
+          if (numFmt) {
+            row.getCell(cIdx).numFmt = numFmt;
+          }
         }
       });
       if (row.commit) row.commit();

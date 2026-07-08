@@ -1,19 +1,58 @@
-Ext.define('MainHub.view.indexgeneratorvue.IndexGeneratorVue', {
-    extend: 'Ext.panel.Panel',
-    xtype: 'index-generator-vue',
+Ext.define("MainHub.view.indexgeneratorvue.IndexGeneratorVue", {
+  extend: "Ext.container.Container",
+  xtype: "index-generator-vue",
 
-    config: {
-        header: false,
-        layout: 'fit',
-        listeners: {
-            afterrender: function () {
-                var iframe = document.createElement('iframe');
-                iframe.src = '/vue/index_generator';
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                iframe.style.border = 'none';
-                this.body.dom.appendChild(iframe);
-            }
-        }
+  layout: "fit",
+  iframeDomId: "indexGeneratorIframe",
+
+  initComponent: function () {
+    this.callParent(arguments);
+
+    this.addIframe();
+  },
+
+  listeners: {
+    activate: function () {
+      if (!this.down("#" + this.iframeDomId)) {
+        this.addIframe();
+      } else {
+        this.reloadIframe();
+      }
+    },
+
+    deactivate: function () {
+      this.removeIframe();
+    },
+
+    destroy: function () {
+      this.removeIframe();
     }
+  },
+
+  addIframe: function () {
+    this.add({
+      xtype: "component",
+      itemId: this.iframeDomId,
+      html:
+        '<iframe id="' +
+        this.iframeDomId +
+        '" src="' +
+        window.location.origin +
+        '/vue/index_generator" width="100%" height="100%" frameborder="0"></iframe>'
+    });
+  },
+
+  reloadIframe: function () {
+    var iframe = document.getElementById(this.iframeDomId);
+    if (iframe) {
+      iframe.contentWindow.location.href = iframe.src;
+    }
+  },
+
+  removeIframe: function () {
+    var iframeComponent = this.down("#" + this.iframeDomId);
+    if (iframeComponent) {
+      this.remove(iframeComponent, true);
+    }
+  }
 });

@@ -479,13 +479,23 @@ class RequestViewSet(viewsets.ModelViewSet):
         query = request.query_params.get("query", "").strip()
         users = User.objects.filter(is_active=True)
         if query:
-            users = users.filter(
+            exact_filter = (
                 Q(first_name__icontains=query)
                 | Q(last_name__icontains=query)
                 | Q(email__icontains=query)
                 | Q(pi__name__icontains=query)
                 | Q(organization__name__icontains=query)
             )
+            token_filter = Q()
+            for term in query.split():
+                token_filter &= (
+                    Q(first_name__icontains=term)
+                    | Q(last_name__icontains=term)
+                    | Q(email__icontains=term)
+                    | Q(pi__name__icontains=term)
+                    | Q(organization__name__icontains=term)
+                )
+            users = users.filter(exact_filter | token_filter)
         users = users.order_by("last_name", "first_name").select_related("pi")
         data = [
             {

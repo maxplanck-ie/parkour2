@@ -1,15 +1,14 @@
 <template>
   <div class="parent-container">
-    <div v-if="loading || reportLoading" class="loading-overlay">
+    <div v-if="loading" class="loading-overlay">
       <div class="spinner"></div>
-      <p>
-        {{ reportLoading ? "Preparing report..." : "Loading Sequence Statistics..." }}
-      </p>
+      <p>Loading Sequence Statistics...</p>
     </div>
 
     <div class="header">
-      <font-awesome-icon
-        icon="fa-solid fa-file-lines"
+      <img
+        :src="iconStatisticsHeader"
+        alt="Sequence Statistics"
         class="statistics-header-icon"
       />
       <div class="header-title">Sequence Statistics</div>
@@ -134,11 +133,6 @@
           </div>
         </div>
 
-        <button class="header-button" @click="downloadReport">
-          <font-awesome-icon icon="fa-solid fa-download" />
-          <span>Download Report</span>
-        </button>
-
         <button
           class="header-button"
           id="openSequencesStatisticsExportPopupButton"
@@ -205,19 +199,23 @@
                 <div class="tooltip-title">Export Guide</div>
                 <p class="tooltip-intro">
                   Use export when you want to download the table data to Excel.
-                  You can export selected rows or all rows matching the active
-                  date range, search, and filters.
+                  You can export only the rows you selected, or the full
+                  filtered result set for the current page.
                 </p>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">Basic export choices</div>
                   <ul class="tooltip-list">
                     <li>
-                      <strong>Export selected</strong> downloads only selected
-                      rows.
+                      <strong>Export selected</strong> downloads only the rows
+                      you selected in the table.
                     </li>
                     <li>
-                      <strong>Export all</strong> downloads all currently
-                      filtered rows.
+                      <strong>Export all</strong> downloads the full result set
+                      for the current export view.
+                    </li>
+                    <li>
+                      Use search and filters first if you want to narrow the
+                      exported dataset.
                     </li>
                   </ul>
                 </section>
@@ -229,18 +227,40 @@
                     <li>
                       Start by exporting with
                       <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
                     </li>
                     <li>
-                      Open that file in Excel and add custom sheets.
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or reporting.
                     </li>
                     <li>
-                      Upload or drag the edited file here as a template.
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
                     </li>
                     <li>
-                      Later exports replace only the <strong>Parkour</strong>
-                      sheet and keep extra sheets unchanged.
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
                     </li>
                   </ol>
+                </section>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">When to use this</div>
+                  <ul class="tooltip-list">
+                    <li>
+                      Download a snapshot of the current data for review or
+                      sharing.
+                    </li>
+                    <li>
+                      Reuse a prepared Excel layout with additional custom
+                      sheets.
+                    </li>
+                    <li>
+                      Keep Parkour data up to date inside your existing
+                      reporting workbook.
+                    </li>
+                  </ul>
                 </section>
               </div>
             </div>
@@ -433,9 +453,10 @@ import iconExportTemplateFileLines from "../assets/icons/export_template_lines.s
 import iconExportDownload from "../assets/icons/export_download.svg";
 import iconExportRemove from "../assets/icons/export_remove.svg";
 import iconExportUpload from "../assets/icons/export_upload.svg";
+import iconStatisticsHeader from "../assets/icons/header_statistics.svg";
 
 const VISIBILITY_KEY = "sequencesStatisticsColumnVisibility";
-const WIDTHS_KEY = "sequencesStatisticsColumnWidths";
+const WIDTHS_KEY = "sequencesStatisticsColumnWidthsV2";
 const DATE_FILTER_DEBOUNCE_MS = 500;
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
@@ -452,7 +473,6 @@ export default {
   setup() {
 const tableRef = ref(null);
 const loading = ref(true);
-const reportLoading = ref(false);
 const rows = ref([]);
 const columnsList = ref([]);
 const searchQuery = ref("");
@@ -595,7 +615,21 @@ function setGroupSelection(groupKey, selected) {
     ?.getTable()
     ?.getGroups()
     .find((item) => item.getKey() === groupKey);
+  if (group && group._group && !group._group.visible) {
+    group.getElement()?.click();
+  }
   group?.getRows().forEach((row) => row.update({ selected }));
+}
+
+function handleGroupButtonClick(event, groupValue, action) {
+  event?.stopPropagation?.();
+  if (action === "selectAll") {
+    setGroupSelection(groupValue, true);
+    return;
+  }
+  if (action === "deselectAll") {
+    setGroupSelection(groupValue, false);
+  }
 }
 
 async function fetchRows() {
@@ -865,29 +899,6 @@ async function resetColumnWidths() {
   await nextTick();
 }
 
-async function downloadReport() {
-  const selectedBarcodes = rows.value
-    .filter((row) => row.selected && row.barcode)
-    .map((row) => row.barcode);
-  if (!selectedBarcodes.length) {
-    showNotification("You did not select any items.", "warning");
-    return;
-  }
-  reportLoading.value = true;
-  try {
-    const response = await axiosRef.post(
-      `${urlStringStart}/api/sequences_statistics/download_report/`,
-      { barcodes: JSON.stringify(selectedBarcodes) },
-      { responseType: "blob" }
-    );
-    saveAs(response.data, "Sequences_Statistics_Report.xls");
-  } catch (error) {
-    handleError(error);
-  } finally {
-    reportLoading.value = false;
-  }
-}
-
 function handleDocumentClick(event) {
   const advancedPopup = document.getElementById(
     "sequencesAdvancedFiltersPopup"
@@ -936,12 +947,14 @@ function handleKeyDown(event) {
 onMounted(() => {
   fetchRows();
   fetchExportTemplates();
+  window.handleGroupButtonClick = handleGroupButtonClick;
   document.addEventListener("click", handleDocumentClick);
   document.addEventListener("keydown", handleKeyDown);
 });
 
 onBeforeUnmount(() => {
   clearTimeout(dateTimer);
+  window.handleGroupButtonClick = null;
   document.removeEventListener("click", handleDocumentClick);
   document.removeEventListener("keydown", handleKeyDown);
 });
@@ -951,7 +964,6 @@ setColumns();
     return {
       tableRef,
       loading,
-      reportLoading,
       columnsList,
       searchQuery,
       showExportPopup,
@@ -966,6 +978,7 @@ setColumns();
       iconExportDownload,
       iconExportRemove,
       iconExportUpload,
+      iconStatisticsHeader,
       startDateString,
       endDateString,
       startDateValid,
@@ -996,8 +1009,7 @@ setColumns();
       handleDrop,
       toggleColumnVisibility,
       resetColumnVisibility,
-      resetColumnWidths,
-      downloadReport
+      resetColumnWidths
     };
   }
 };
@@ -1022,8 +1034,16 @@ setColumns();
 
 .table-container {
   flex: 1;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: auto;
   position: relative;
+}
+
+.table-container :deep(.tabulator),
+.table-container :deep(.tabulator *),
+.table-container :deep(.tabulator *::before),
+.table-container :deep(.tabulator *::after) {
+  box-sizing: border-box;
 }
 
 .statistics-filters-popup {

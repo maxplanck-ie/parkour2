@@ -40,6 +40,7 @@
             class="pool-size-select"
             :value="selectedPoolActualSize"
             :disabled="!selectedPoolMultiplier"
+            :data-tooltip-original="poolSizeDisabledReason"
             @change="onPoolActualSizeChange($event.target.value)"
           >
             <option :value="''">Size</option>
@@ -62,8 +63,11 @@
             class="pool-size-select coordinate-input"
             :value="selectedStartCoordinate"
             :disabled="
-              startCoordinatesLoading || !startCoordinateOptions.length
+              !hasPoolRows ||
+              startCoordinatesLoading ||
+              !startCoordinateOptions.length
             "
+            :data-tooltip-original="generateControlDisabledReason"
             @change="onStartCoordinateSelect($event.target.value)"
           >
             <option :value="''">Start Coordinate</option>
@@ -80,6 +84,8 @@
             id="index-generator-start-coordinate"
             class="pool-size-select coordinate-input"
             :value="selectedStartCoordinate"
+            :disabled="!hasPoolRows"
+            :data-tooltip-original="generateControlDisabledReason"
             placeholder="Start (e.g. A1)"
             @change="onStartCoordinateChange($event.target.value)"
           />
@@ -87,6 +93,8 @@
             id="index-generator-direction"
             class="pool-size-select direction-select"
             :value="selectedDirection"
+            :disabled="!hasPoolRows"
+            :data-tooltip-original="generateControlDisabledReason"
             @change="onDirectionChange($event.target.value)"
           >
             <option
@@ -101,6 +109,7 @@
         <button
           class="header-button"
           :disabled="!canGenerate"
+          :data-tooltip-original="generateIndicesDisabledReason"
           @click="generateIndices"
         >
           <span>Generate Indices</span>
@@ -108,6 +117,7 @@
         <button
           class="header-button save-pool-button"
           :disabled="!canSave"
+          :data-tooltip-original="savePoolDisabledReason"
           @click="savePool"
         >
           <span>Save Pool</span>
@@ -137,6 +147,7 @@
               <select
                 :value="applyAllReadLength"
                 :disabled="!hasSelectedSourceRows"
+                :data-tooltip-original="selectedRecordsDisabledReason"
                 @change="
                   applyFieldToAll(
                     indexGeneratorFields.readLength,
@@ -157,6 +168,7 @@
                 class="apply-index-type-select"
                 :value="applyAllIndexType"
                 :disabled="!hasSelectedSourceRows"
+                :data-tooltip-original="selectedRecordsDisabledReason"
                 @change="
                   applyFieldToAll(
                     indexGeneratorFields.indexType,
@@ -177,6 +189,7 @@
                 type="button"
                 class="add-selected-pool-button"
                 :disabled="!hasSelectedSourceRows"
+                :data-tooltip-original="selectedRecordsDisabledReason"
                 @click="addSelectedRowsToPool"
               >
                 Add Selected to Pool
@@ -351,7 +364,6 @@ export default {
       selectedDirection: INDEX_GENERATOR_DEFAULTS.direction,
       startCoordinateOptions: [],
       loading: true,
-      hasCompletedInitialLoad: false,
       startCoordinatesLoading: false,
       directionOptions: [...INDEX_GENERATOR_DIRECTION_OPTIONS]
     };
@@ -373,11 +385,46 @@ export default {
         (row) => row[fields.type] === INDEX_GENERATOR_RECORD_TYPES.sampleCode
       );
     },
+    hasPoolRows() {
+      return this.poolRows.length > 0;
+    },
+    generateControlDisabledReason() {
+      return this.hasPoolRows ? "" : "Add records to the pool first.";
+    },
+    generateIndicesDisabledReason() {
+      return this.canGenerate ? "" : "Add sample records to the pool first.";
+    },
+    poolSizeDisabledReason() {
+      return this.selectedPoolMultiplier ? "" : "Select a multiplier first.";
+    },
     canSave() {
       return this.poolRows.length > 0 && !!this.selectedPoolSizeId;
     },
+    savePoolDisabledReason() {
+      if (this.canSave) {
+        return "";
+      }
+
+      const missing = [];
+      if (!this.poolRows.length) {
+        missing.push("add records to the pool");
+      }
+      if (!this.selectedPoolMultiplier) {
+        missing.push("select a multiplier");
+      }
+      if (!this.selectedPoolActualSize) {
+        missing.push("select a size");
+      }
+
+      return missing.length
+        ? `To save the pool ${missing.join(" and ")}.`
+        : "Select a valid pool size before saving.";
+    },
     hasSelectedSourceRows() {
       return this.records.some((row) => row[fields.selected]);
+    },
+    selectedRecordsDisabledReason() {
+      return this.hasSelectedSourceRows ? "" : "Select records first.";
     },
     poolCountLabel() {
       return this.poolRows.length === 1
@@ -517,7 +564,7 @@ export default {
         if (!acc[pairKey]) {
           acc[pairKey] = [];
         }
-        acc[pairKey].push(row.rowKey);
+        acc[pairKey].push(row[fields.rowKey]);
         return acc;
       }, {});
 
@@ -609,11 +656,6 @@ export default {
     }
   },
   watch: {
-    "$route.name"(name) {
-      if (name === "Index Generator") {
-        this.loadInitialData();
-      }
-    },
     poolRows: {
       deep: true,
       handler() {
@@ -640,11 +682,6 @@ export default {
     document.removeEventListener("mousemove", this.onPanelResizeMove);
     document.removeEventListener("mouseup", this.onPanelResizeEnd);
     document.body.classList.remove("index-generator-resizing");
-  },
-  activated() {
-    if (this.hasCompletedInitialLoad) {
-      this.loadInitialData();
-    }
   },
   methods: {
     setColumns() {
@@ -686,7 +723,6 @@ export default {
         handleError(error);
       } finally {
         this.loading = false;
-        this.hasCompletedInitialLoad = true;
       }
     },
     toggleLeftPanelCollapse() {
@@ -768,17 +804,42 @@ export default {
         this.poolTabulatorInstance?.getTable?.()?.redraw?.(true);
       });
     },
-    refreshTabulatorData() {
+    refreshTabulatorData(groupState = null) {
+      const preservedGroupState =
+        groupState || this.captureTabulatorGroupState();
       this.$nextTick(() => {
         this.setTabulatorDataPreservingGroups(
           this.sourceTabulatorInstance?.getTable?.(),
-          this.records
+          this.records,
+          preservedGroupState.sourceVisibleGroupKeys
         );
         this.setTabulatorDataPreservingGroups(
           this.poolTabulatorInstance?.getTable?.(),
-          this.poolRows
+          this.poolRows,
+          preservedGroupState.poolVisibleGroupKeys
         );
       });
+    },
+    mutateTabulatorDataPreservingGroups(mutator) {
+      const groupState = this.captureTabulatorGroupState();
+      mutator();
+      this.refreshTabulatorData(groupState);
+    },
+    refreshEditedRowsInPlace() {
+      this.$nextTick(() => {
+        this.sourceTabulatorInstance?.getTable?.()?.redraw?.(true);
+        this.poolTabulatorInstance?.getTable?.()?.redraw?.(true);
+      });
+    },
+    captureTabulatorGroupState() {
+      return {
+        sourceVisibleGroupKeys: this.getVisibleGroupKeys(
+          this.sourceTabulatorInstance?.getTable?.()
+        ),
+        poolVisibleGroupKeys: this.getVisibleGroupKeys(
+          this.poolTabulatorInstance?.getTable?.()
+        )
+      };
     },
     getVisibleGroupKeys(table) {
       return new Set(
@@ -793,7 +854,7 @@ export default {
         return;
       }
 
-      requestAnimationFrame(() => {
+      const restore = () => {
         (table.getGroups?.() || []).forEach((group) => {
           if (!visibleGroupKeys.has(group.getKey?.())) {
             return;
@@ -802,14 +863,21 @@ export default {
             group.show?.();
           }
         });
-      });
+      };
+
+      restore();
+      requestAnimationFrame(restore);
+      requestAnimationFrame(() => requestAnimationFrame(restore));
+      setTimeout(restore, 0);
+      setTimeout(restore, 50);
     },
-    setTabulatorDataPreservingGroups(table, rows) {
+    setTabulatorDataPreservingGroups(table, rows, visibleGroupKeysOverride) {
       if (!table?.setData) {
         return;
       }
 
-      const visibleGroupKeys = this.getVisibleGroupKeys(table);
+      const visibleGroupKeys =
+        visibleGroupKeysOverride || this.getVisibleGroupKeys(table);
       Promise.resolve(table.setData(rows)).finally(() => {
         this.restoreVisibleGroupKeys(table, visibleGroupKeys);
       });
@@ -861,7 +929,7 @@ export default {
       }
 
       const details = groups
-        .map((group) => group.map((row) => row.name).join(", "))
+        .map((group) => group.map((row) => row[fields.name]).join(", "))
         .join(" | ");
       showNotification(`${prefix}: ${details}`, "warning");
     },
@@ -902,7 +970,7 @@ export default {
     },
     syncPoolRowFromRecord(row) {
       const index = this.poolRows.findIndex(
-        (item) => item.rowKey === row.rowKey
+        (item) => item[fields.rowKey] === row[fields.rowKey]
       );
       if (index < 0) {
         return;
@@ -914,37 +982,6 @@ export default {
       };
       this.poolRows = this.poolRows.map((item, itemIndex) =>
         itemIndex === index ? updated : item
-      );
-    },
-    reconcilePoolCompatibility() {
-      if (this.poolRows.length <= 1) {
-        return;
-      }
-
-      const first = this.poolRows[0];
-      const removed = [];
-      const next = [];
-
-      this.poolRows.forEach((row, idx) => {
-        if (idx === 0 || this.rowPairCompatibility(first, row)) {
-          next.push(row);
-          return;
-        }
-        removed.push(row.rowKey);
-      });
-
-      if (!removed.length) {
-        return;
-      }
-
-      this.poolRows = next;
-      this.records = this.records.map((row) =>
-        removed.includes(row.rowKey) ? { ...row, selected: false } : row
-      );
-      this.refreshTabulatorTables();
-      showNotification(
-        "Some selected records were deselected because their read length/index mode became incompatible.",
-        "warning"
       );
     },
     onStartCoordinateChange(value) {
@@ -1093,15 +1130,23 @@ export default {
           ? this.buildReadLengthUndoEntries(targetRows)
           : [];
 
+      const clearedGeneratedKeys = this.clearGeneratedIndicesForRowKeys(
+        targetRows.map((row) => row[fields.rowKey]),
+        { force: field === fields.indexType }
+      );
+
       targetRows.forEach((row) => {
         row[field] = normalizedValue;
+        if (
+          field === fields.indexType ||
+          clearedGeneratedKeys.has(row[fields.rowKey])
+        ) {
+          row[fields.indexI7] = "";
+          row[fields.indexI5] = "";
+        }
         if (field === fields.readLength) {
           row[fields.readLengthName] =
             this.resolveReadLengthName(normalizedValue);
-        }
-        if (field === fields.indexType) {
-          row[fields.indexI7] = "";
-          row[fields.indexI5] = "";
         }
         this.syncPoolRowFromRecord(row);
       });
@@ -1133,7 +1178,7 @@ export default {
         } else {
           showNotification("Values applied to selected records.", "success");
         }
-        this.refreshTabulatorData();
+        this.refreshEditedRowsInPlace();
       } catch (error) {
         this.handleApiError(
           error,
@@ -1200,6 +1245,13 @@ export default {
         row[fields.readLengthName] = this.resolveReadLengthName(
           entry[fields.readLength]
         );
+        const clearedGeneratedKeys = this.clearGeneratedIndicesForRowKeys([
+          entry[fields.rowKey]
+        ]);
+        if (clearedGeneratedKeys.has(entry[fields.rowKey])) {
+          row[fields.indexI7] = "";
+          row[fields.indexI5] = "";
+        }
         this.syncPoolRowFromRecord(row);
 
         payload.push({
@@ -1224,7 +1276,7 @@ export default {
           [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.data]: JSON.stringify(payload)
         });
         showNotification("Undo applied.", "success");
-        this.refreshTabulatorData();
+        this.refreshEditedRowsInPlace();
       } catch (error) {
         this.handleApiError(error, "Failed to undo read length changes.");
       }
@@ -1233,25 +1285,18 @@ export default {
       row.selected = checked;
 
       this.refreshTabulatorTables();
-      return true;
     },
     selectAllInGroup(groupRows) {
-      for (const row of groupRows) {
-        if (row.selected) {
-          continue;
-        }
-
-        if (!this.setRowSelection(row, true)) {
-          return;
-        }
-      }
+      (groupRows || []).forEach((row) => {
+        row.selected = true;
+      });
+      this.refreshTabulatorTables();
     },
     deselectAllInGroup(groupRows) {
-      groupRows.forEach((row) => {
-        if (row.selected) {
-          this.setRowSelection(row, false);
-        }
+      (groupRows || []).forEach((row) => {
+        row.selected = false;
       });
+      this.refreshTabulatorTables();
     },
     addSelectedRowsToPool() {
       const selectedRows = this.records.filter((row) => row[fields.selected]);
@@ -1263,40 +1308,64 @@ export default {
       const existingKeys = new Set(
         this.poolRows.map((row) => row[fields.rowKey])
       );
-      const rowsToAdd = selectedRows
-        .filter((row) => !existingKeys.has(row[fields.rowKey]))
-        .map((row) => this.normalizePoolRow(row));
+      const rowsToAddSource = selectedRows.filter(
+        (row) => !existingKeys.has(row[fields.rowKey])
+      );
+      const rowsToAddKeys = rowsToAddSource.map((row) => row[fields.rowKey]);
 
-      if (!rowsToAdd.length) {
+      if (!rowsToAddKeys.length) {
         showNotification("Selected records are already in the pool.", "warning");
         return;
       }
 
-      this.poolRows = this.sortPoolRows([...this.poolRows, ...rowsToAdd]);
-      this.refreshTabulatorData();
+      this.mutateTabulatorDataPreservingGroups(() => {
+        this.clearGeneratedIndicesForRowKeys(rowsToAddKeys);
+        const rowsToAdd = rowsToAddSource.map((row) =>
+          this.normalizePoolRow(row)
+        );
+
+        this.poolRows = this.sortPoolRows([...this.poolRows, ...rowsToAdd]);
+      });
       showNotification(
-        `Added ${rowsToAdd.length} selected record(s) to the pool.`,
+        `Added ${rowsToAddKeys.length} selected record(s) to the pool.`,
         "success"
       );
     },
-    clearGeneratedIndicesForRowKeys(rowKeys) {
-      const keys = new Set(rowKeys);
+    clearGeneratedIndicesForRowKeys(rowKeys, { force = false } = {}) {
+      const requestedKeys = new Set(rowKeys);
+      const generatedKeys = new Set(this.generatedIndexRowKeys);
+      const keys = force
+        ? requestedKeys
+        : new Set(
+            Array.from(requestedKeys).filter((rowKey) =>
+              generatedKeys.has(rowKey)
+            )
+          );
       if (!keys.size) {
-        return;
+        return keys;
       }
 
       this.generatedIndexRowKeys = this.generatedIndexRowKeys.filter(
         (rowKey) => !keys.has(rowKey)
       );
-      this.records = this.records.map((row) =>
-        keys.has(row[fields.rowKey])
-          ? {
-              ...row,
-              [fields.indexI7]: "",
-              [fields.indexI5]: ""
-            }
-          : row
-      );
+      this.records.forEach((row) => {
+        if (!keys.has(row[fields.rowKey])) {
+          return;
+        }
+        row[fields.indexI7] = "";
+        row[fields.indexI5] = "";
+      });
+      this.poolRows.forEach((row) => {
+        if (!keys.has(row[fields.rowKey])) {
+          return;
+        }
+        row[fields.indexI7] = "";
+        row[fields.indexI5] = "";
+        row[fields.indexI7Id] = "";
+        row[fields.indexI5Id] = "";
+        row[fields.coordinate] = "";
+      });
+      return keys;
     },
     removePoolRowsByKeys(rowKeys) {
       const keys = new Set(rowKeys);
@@ -1304,11 +1373,12 @@ export default {
         return;
       }
 
-      this.clearGeneratedIndicesForRowKeys(keys);
-      this.poolRows = this.poolRows.filter(
-        (row) => !keys.has(row[fields.rowKey])
-      );
-      this.refreshTabulatorData();
+      this.mutateTabulatorDataPreservingGroups(() => {
+        this.clearGeneratedIndicesForRowKeys(keys);
+        this.poolRows = this.poolRows.filter(
+          (row) => !keys.has(row[fields.rowKey])
+        );
+      });
     },
     removePoolRow(row) {
       this.removePoolRowsByKeys([row[fields.rowKey]]);
@@ -1431,8 +1501,19 @@ export default {
       }
 
       if (field === fields.indexType) {
+        this.clearGeneratedIndicesForRowKeys([row[fields.rowKey]], {
+          force: true
+        });
         row[fields.indexI7] = "";
         row[fields.indexI5] = "";
+      } else if (field === fields.readLength) {
+        const clearedGeneratedKeys = this.clearGeneratedIndicesForRowKeys([
+          row[fields.rowKey]
+        ]);
+        if (clearedGeneratedKeys.has(row[fields.rowKey])) {
+          row[fields.indexI7] = "";
+          row[fields.indexI5] = "";
+        }
       }
 
       this.syncPoolRowFromRecord(row);
@@ -1458,14 +1539,14 @@ export default {
             }
           ];
           showUndoNotification(
-            `Read length updated for ${row.name}.`,
+            `Read length updated for ${row[fields.name]}.`,
             async () => {
               await this.undoReadLengthChanges(undoEntry);
             },
             { type: "success", timeout: 10000 }
           );
         }
-        this.refreshTabulatorData();
+        this.refreshEditedRowsInPlace();
       } catch (error) {
         this.handleApiError(
           error,
@@ -1546,11 +1627,6 @@ export default {
       }
 
       return this.validatePoolCompatibility();
-    },
-    toggleSelection(row, event) {
-      const checked = event.target.checked;
-
-      this.setRowSelection(row, checked);
     },
     validatePoolCompatibility() {
       if (this.poolRows.length <= 1) return true;
@@ -1637,7 +1713,16 @@ export default {
 
         const generatedRows = (
           response.data[INDEX_GENERATOR_RESPONSE_KEYS.data] || []
-        ).map((row) => this.normalizePoolRow(row));
+        ).map((row) => {
+          const normalized = this.normalizePoolRow(row);
+          const existing = this.poolRows.find(
+            (poolRow) => poolRow[fields.rowKey] === normalized[fields.rowKey]
+          );
+          return {
+            ...(existing || {}),
+            ...normalized
+          };
+        });
         const previouslyGeneratedRowKeys = [...this.generatedIndexRowKeys];
         const generatedByKey = new Map(
           generatedRows.map((generated) => [
@@ -1645,8 +1730,10 @@ export default {
             generated
           ])
         );
+        const generatedRowKeys = generatedRows.map((row) => row[fields.rowKey]);
+        const generatedRowKeySet = new Set(generatedRowKeys);
 
-        this.generatedIndexRowKeys = generatedRows.map((row) => row[fields.rowKey]);
+        this.generatedIndexRowKeys = generatedRowKeys;
         this.poolRows = this.sortPoolRows(generatedRows);
         this.records = this.records.map((record) => {
           const generated = generatedByKey.get(record[fields.rowKey]);
@@ -1662,9 +1749,7 @@ export default {
           }
           return {
             ...record,
-            [fields.selected]: this.poolRows.some(
-              (row) => row[fields.rowKey] === record[fields.rowKey]
-            ),
+            [fields.selected]: generatedRowKeySet.has(record[fields.rowKey]),
             [fields.indexI7]: generated?.[fields.indexI7] || "",
             [fields.indexI5]: generated?.[fields.indexI5] || ""
           };
@@ -2036,6 +2121,14 @@ export default {
   outline: none;
   border-color: #0b7f78;
   box-shadow: 0 0 0 2px rgba(11, 127, 120, 0.15);
+}
+
+.pool-size-select:disabled {
+  background-color: #d7e9e7;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #315653;
+  cursor: not-allowed;
+  opacity: 0.72;
 }
 
 .header-button:disabled,
