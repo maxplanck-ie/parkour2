@@ -37,7 +37,7 @@
         aria-busy="true"
       >
         <div class="spinner"></div>
-        <p>Loading request details...</p>
+        <p>Loading <span style="font-weight: bold">request details</span>...</p>
       </div>
       <div
         class="request-editor-content"

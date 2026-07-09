@@ -581,32 +581,11 @@ input[type="radio"]:checked::after {
   max-width: 100%;
 }
 
-.statistics-filters-popup {
-  left: -80px;
-  width: 290px;
+.button-popup-container.statistics-filters-popup {
+  left: -50px;
+  width: 250px;
   max-height: calc(100vh - 100px);
   overflow-y: auto;
-}
-
-.statistics-columns-popup {
-  left: -55px;
-  width: 320px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-.statistics-columns-popup ul {
-  padding: 0;
-  margin: 0 0 8px;
-}
-
-.statistics-columns-popup li {
-  list-style: none;
-}
-
-.statistics-columns-popup .reset-button {
-  width: 100%;
-  margin-bottom: 6px;
 }
 
 .date-filter-item input[type="date"] {

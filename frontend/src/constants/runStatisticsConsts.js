@@ -283,7 +283,13 @@ export function runStatisticsExportColumns() {
       excelType: "number",
       decimalPlaces: 2
     },
-    { header: "Reads PF (M)", key: "reads_pf_m", width: 16, excelType: "number" },
+    {
+      header: "Reads PF (M)",
+      key: "reads_pf_m",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 1
+    },
     {
       header: "Undetermined Indices (%)",
       key: "undetermined_indices",

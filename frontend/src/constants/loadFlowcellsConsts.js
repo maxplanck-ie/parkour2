@@ -228,7 +228,14 @@ export const loadFlowcellsExportColumns = [
     header: "Loading Concentration",
     key: "loading_concentration",
     width: 18,
-    excelType: "number"
+    excelType: "number",
+    decimalPlaces: 1
   },
-  { header: "PhiX %", key: "phix", width: 10, excelType: "number" }
+  {
+    header: "PhiX %",
+    key: "phix",
+    width: 10,
+    excelType: "number",
+    decimalPlaces: 1
+  }
 ];

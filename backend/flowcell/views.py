@@ -12,7 +12,7 @@ from django.db.models import F, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -257,7 +257,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                     "success": False,
                     "message": "This flowcell cannot be destroyed because it contains delivered libraries or samples.",
                 },
-                400,
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         with transaction.atomic():

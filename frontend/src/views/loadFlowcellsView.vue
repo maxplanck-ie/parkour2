@@ -53,6 +53,82 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
+          <button
+            class="header-button"
+            id="toggleSelectColumnsButton"
+            @click="toggleSelectColumns"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-columns"
+              style="color: white"
+            />
+            <span> Select Columns </span>
+          </button>
+          <div
+            id="selectColumnsPopup"
+            v-if="showSelectColumns"
+            class="button-popup-container"
+            style="
+              left: -50px;
+              width: 250px;
+              max-height: 473px;
+              display: flex;
+              flex-direction: column;
+              padding: 10px 10px 5px 10px;
+            "
+          >
+            <ul
+              style="
+                padding: 5px 7px 7px;
+                margin: 0;
+                flex-grow: 1;
+                overflow-y: auto;
+              "
+            >
+              <li
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
+              >
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label>
+                    <input
+                      type="checkbox"
+                      v-model="column.visible"
+                      @change="toggleColumnVisibility(column)"
+                    />
+                    <span>{{ column.title }}</span>
+                  </label>
+                </template>
+              </li>
+            </ul>
+            <div
+              style="
+                padding-top: 8px;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+              "
+            >
+              <button @click="resetColumnVisibility" class="reset-button">
+                Reset Visibility Settings
+              </button>
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
+                Reset Width Settings
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="button-popup-wrapper">
           <button class="header-button" @click="toggleGroups">
             <font-awesome-icon
               icon="fa-solid fa-layer-group"
@@ -92,7 +168,9 @@
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
-          handleCellEdited
+          handleCellEdited,
+          handleColumnResized,
+          handleColumnVisibilityChanged
         }"
       />
     </div>
@@ -396,7 +474,7 @@
         </div>
         <div class="popup-body">
           <div v-if="poolInfoLoading" class="flowcell-inline-loading">
-            Loading pool details...
+            Loading <span style="font-weight: bold">pool details</span>...
           </div>
           <div v-else class="pool-info-table-wrapper">
             <div v-if="!poolInfoGroupedRecords.length" class="load-empty-state">
@@ -527,7 +605,8 @@
                       <li>
                         Destroying a flowcell unloads its pools, removes the
                         flowcell from the Load Flowcells view, and makes the
-                        pools available again in Pooling.
+                        pools available again in Pooling. Flowcells containing
+                        delivered libraries or samples cannot be destroyed.
                       </li>
                       <li>
                         When the destroyed flowcell was the last active
@@ -780,6 +859,8 @@ import iconConfirmationAlert from "../assets/icons/alert_confirmation.svg";
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const DEFAULT_EXPORT_TEMPLATE_SELECTION = "without-file";
+const COLUMN_VISIBILITY_KEY = "loadFlowcellsColumnVisibility";
+const COLUMN_WIDTHS_KEY = "loadFlowcellsColumnWidths";
 const createEmptyConfirmPopup = () => ({
   title: "",
   description: "",
@@ -828,6 +909,7 @@ export default {
       isSavingEdits: false,
       originalLaneStateByPk: {},
       showPageHelp: false,
+      showSelectColumns: false,
       showExportPopup: false,
       showExportHelpTooltip: false,
       isDragOver: false,
@@ -950,6 +1032,7 @@ export default {
     this.fetchExportTemplates();
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
     document.addEventListener("keydown", this.handleKeyDown);
+    document.addEventListener("click", this.handleOutsideClick);
   },
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
@@ -962,7 +1045,7 @@ export default {
       this.handleDateChange("end", newVal);
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
     }
@@ -971,10 +1054,32 @@ export default {
     }
     window.handleGroupButtonClick = null;
     document.removeEventListener("keydown", this.handleKeyDown);
+    document.removeEventListener("click", this.handleOutsideClick);
   },
   methods: {
+    handleOutsideClick(event) {
+      const selectColumnsPopup = this.$el.querySelector("#selectColumnsPopup");
+      const selectColumnsButton = this.$el.querySelector(
+        "#toggleSelectColumnsButton"
+      );
+
+      if (
+        this.showSelectColumns &&
+        selectColumnsPopup &&
+        !selectColumnsPopup.contains(event.target) &&
+        selectColumnsButton !== event.target &&
+        !selectColumnsButton.contains(event.target)
+      ) {
+        this.showSelectColumns = false;
+      }
+    },
     handleKeyDown(event) {
       if (event.key !== "Escape") {
+        return;
+      }
+
+      if (this.showSelectColumns) {
+        this.showSelectColumns = false;
         return;
       }
 
@@ -1041,16 +1146,36 @@ export default {
       return true;
     },
     setColumns() {
-      this.columnsList = loadFlowcellsColumnDefs(() => this.tabulatorInstance, {
+      const storedVisibility = JSON.parse(
+        localStorage.getItem(COLUMN_VISIBILITY_KEY) || "{}"
+      );
+      const storedWidths = JSON.parse(
+        localStorage.getItem(COLUMN_WIDTHS_KEY) || "{}"
+      );
+      const columns = loadFlowcellsColumnDefs(() => this.tabulatorInstance, {
         onToggleSelected: this.handleRowSelectionToggle,
         onPoolClick: this.openPoolInfoPopup
+      });
+      this.columnsList = columns.map((column) => {
+        if (!column.field) return column;
+        if (Object.prototype.hasOwnProperty.call(storedWidths, column.field)) {
+          column.width = storedWidths[column.field];
+          if (column.minWidth && column.width < column.minWidth) {
+            column.width = column.minWidth;
+          }
+        }
+        column.visible =
+          storedVisibility[column.field] ?? column.visible ?? true;
+        return column;
       });
     },
     fakeLoadingStart() {
       this.fakeLoading = true;
     },
     fakeLoadingStop() {
-      this.fakeLoading = false;
+      setTimeout(() => {
+        this.fakeLoading = false;
+      }, 300);
     },
     async getFlowcells() {
       this.loading = true;
@@ -1090,6 +1215,51 @@ export default {
     toggleGroups(goToInitial) {
       if (!this.tabulatorInstance) return;
       this.tabulatorInstance.toggleGroups(goToInitial);
+    },
+    toggleSelectColumns() {
+      this.showSelectColumns = !this.showSelectColumns;
+    },
+    handleColumnResized(column) {
+      const field = column.getField();
+      if (!field) return;
+      const storedWidths = JSON.parse(
+        localStorage.getItem(COLUMN_WIDTHS_KEY) || "{}"
+      );
+      localStorage.setItem(
+        COLUMN_WIDTHS_KEY,
+        JSON.stringify({ ...storedWidths, [field]: column.getWidth() })
+      );
+      this.flashTableLoading(50);
+    },
+    handleColumnVisibilityChanged(field, visible) {
+      if (!field) return;
+      const storedVisibility = JSON.parse(
+        localStorage.getItem(COLUMN_VISIBILITY_KEY) || "{}"
+      );
+      localStorage.setItem(
+        COLUMN_VISIBILITY_KEY,
+        JSON.stringify({ ...storedVisibility, [field]: visible })
+      );
+      this.flashTableLoading(50);
+    },
+    toggleColumnVisibility(column) {
+      this.tabulatorInstance?.getTable?.().toggleColumn(column.field);
+    },
+    resetColumnWidths() {
+      localStorage.removeItem(COLUMN_WIDTHS_KEY);
+      this.setColumns();
+      this.tableRenderKey += 1;
+      this.flashTableLoading();
+    },
+    resetColumnVisibility() {
+      localStorage.removeItem(COLUMN_VISIBILITY_KEY);
+      this.setColumns();
+      this.tableRenderKey += 1;
+      this.flashTableLoading();
+    },
+    flashTableLoading(delay = 300) {
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), delay);
     },
     async updateRowSelection(pk, selected) {
       const target = this.flowcellsList.find((row) => row.pk === pk);
@@ -1172,13 +1342,7 @@ export default {
         return;
       }
       if (flowcellRows.some((row) => row.has_delivered_records)) {
-        this.confirmPopup = {
-          title: "Flowcell Cannot Be Destroyed",
-          description:
-            "This flowcell contains delivered libraries or samples and cannot be destroyed. Destroying delivered data can affect downstream invoicing.",
-          infoOnly: true
-        };
-        this.showConfirmPopup = true;
+        this.showFlowcellCannotBeDestroyedPopup();
         return;
       }
 
@@ -1198,9 +1362,26 @@ export default {
             const message =
               error?.response?.data?.message ||
               "Failed to destroy flowcell.";
+            if (
+              error?.response?.status === 400 &&
+              message.includes("delivered")
+            ) {
+              this.showFlowcellCannotBeDestroyedPopup(message);
+              return;
+            }
             showNotification(message, "error");
           }
         }
+      };
+      this.showConfirmPopup = true;
+    },
+    showFlowcellCannotBeDestroyedPopup(description) {
+      this.confirmPopup = {
+        title: "Flowcell Cannot Be Destroyed",
+        description:
+          description ||
+          "This flowcell contains delivered libraries or samples and cannot be destroyed. Destroying delivered data can affect downstream invoicing.",
+        infoOnly: true
       };
       this.showConfirmPopup = true;
     },
@@ -2408,14 +2589,34 @@ export default {
 
 @media (max-width: 1220px) {
   .date-filters {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .date-filter {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: 4px;
+    padding: 3px 4px;
+  }
+
+  .date-filter label {
+    margin: 0 2px 0 1px;
+    font-size: 12px;
+  }
+
+  .date-filter input[type="date"] {
+    width: 118px;
+    height: 26px;
+    padding: 4px 6px;
+    font-size: 12px;
   }
 
   .flowcell-actions-bar {
     flex-wrap: wrap;
     row-gap: 10px;
   }
-
 }
 
 @media (max-width: 950px) {

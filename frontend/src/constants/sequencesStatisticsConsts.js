@@ -295,23 +295,44 @@ export function sequencesStatisticsExportColumns() {
       header: "Sequenced Reads PF (M)",
       key: "reads_pf_sequenced_m",
       width: 22,
-      excelType: "number"
+      excelType: "number",
+      decimalPlaces: 2
     },
-    { header: "Reads (%)", key: "reads_percent", width: 14, excelType: "number" },
+    {
+      header: "Reads (%)",
+      key: "reads_percent",
+      width: 14,
+      excelType: "number",
+      decimalPlaces: 2
+    },
     {
       header: "Confident Off-species Reads",
       key: "confident_reads",
       width: 26,
-      excelType: "number"
+      excelType: "number",
+      decimalPlaces: 2
     },
     {
       header: "Optical Duplicates (%)",
       key: "optical_duplicates",
       width: 22,
-      excelType: "number"
+      excelType: "number",
+      decimalPlaces: 2
     },
-    { header: "Duplicated Reads (%)", key: "dupped_reads", width: 20, excelType: "number" },
-    { header: "Mapped Reads (%)", key: "mapped_reads", width: 18, excelType: "number" },
+    {
+      header: "Duplicated Reads (%)",
+      key: "dupped_reads",
+      width: 20,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Mapped Reads (%)",
+      key: "mapped_reads",
+      width: 18,
+      excelType: "number",
+      decimalPlaces: 2
+    },
     { header: "Insert Size", key: "insert_size", width: 16, excelType: "number" }
   ];
 }

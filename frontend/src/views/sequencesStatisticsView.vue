@@ -1,8 +1,11 @@
 <template>
   <div class="parent-container">
-    <div v-if="loading" class="loading-overlay">
-      <div class="spinner"></div>
-      <p>Loading Sequenced Samples Statistics...</p>
+    <div v-if="loading || fakeLoading" class="loading-overlay">
+      <div v-if="!fakeLoading" class="spinner"></div>
+      <p v-if="!fakeLoading">
+        Loading
+        <span style="font-weight: bold">Sequenced Samples Statistics</span>...
+      </p>
     </div>
 
     <div class="header">
@@ -19,12 +22,10 @@
             v-model="searchQuery"
             type="text"
             placeholder="Search"
-            @keyup.enter="handleSearchAction"
           />
           <font-awesome-icon
             icon="fa-solid fa-magnifying-glass"
-            style="color: darkgrey; cursor: pointer"
-            @click="handleSearchAction"
+            style="color: darkgrey"
           />
         </div>
 
@@ -107,29 +108,65 @@
           <div
             v-if="showSelectColumns"
             id="sequencesSelectColumnsPopup"
-            class="button-popup-container statistics-columns-popup"
+            class="button-popup-container"
+            style="
+              left: -50px;
+              width: 250px;
+              max-height: 473px;
+              display: flex;
+              flex-direction: column;
+              padding: 10px 10px 5px 10px;
+            "
           >
-            <ul>
+            <ul
+              style="
+                padding: 5px 7px 7px;
+                margin: 0;
+                flex-grow: 1;
+                overflow-y: auto;
+              "
+            >
               <li
-                v-for="column in selectableColumns"
-                :key="column.field"
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
               >
-                <label>
-                  <input
-                    type="checkbox"
-                    :checked="column.visible !== false"
-                    @change="toggleColumnVisibility(column)"
-                  />
-                  <span>{{ column.title }}</span>
-                </label>
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label>
+                    <input
+                      type="checkbox"
+                      v-model="column.visible"
+                      @change="toggleColumnVisibility(column)"
+                    />
+                    <span>{{ column.title }}</span>
+                  </label>
+                </template>
               </li>
             </ul>
-            <button class="reset-button" @click="resetColumnVisibility">
-              Reset Visibility Settings
-            </button>
-            <button class="reset-button" @click="resetColumnWidths">
-              Reset Width Settings
-            </button>
+            <div
+              style="
+                padding-top: 8px;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+              "
+            >
+              <button @click="resetColumnVisibility" class="reset-button">
+                Reset Visibility Settings
+              </button>
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
+                Reset Width Settings
+              </button>
+            </div>
           </div>
         </div>
 
@@ -425,7 +462,14 @@
 </template>
 
 <script>
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref
+} from "vue";
 import { saveAs } from "file-saver";
 import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
 import {
@@ -474,10 +518,10 @@ export default {
   setup() {
 const tableRef = ref(null);
 const loading = ref(true);
+const fakeLoading = ref(false);
 const rows = ref([]);
 const columnsList = ref([]);
 const searchQuery = ref("");
-const appliedSearchQuery = ref("");
 const showExportPopup = ref(false);
 const showExportHelpTooltip = ref(false);
 const isDragOver = ref(false);
@@ -502,6 +546,8 @@ const tableOptions = {
   placeholder: "No sequenced samples statistics to show.",
   initialSort: [{ column: "barcode", dir: "asc" }],
   groupHeader: sequencesStatisticsGroupHeader,
+  fakeLoadingStart,
+  fakeLoadingStop,
   groupContextMenu: [
     {
       label: "Select All",
@@ -520,6 +566,7 @@ const tableOptions = {
       WIDTHS_KEY,
       JSON.stringify({ ...widths, [field]: column.getWidth() })
     );
+    flashTableLoading(50);
   },
   handleColumnVisibilityChanged: (field, visible) => {
     if (!field) return;
@@ -532,12 +579,10 @@ const tableOptions = {
     );
     const definition = columnsList.value.find((column) => column.field === field);
     if (definition) definition.visible = visible;
+    flashTableLoading(50);
   }
 };
 
-const selectableColumns = computed(() =>
-  columnsList.value.filter((column) => column.field !== "selected")
-);
 const sequencerOptions = computed(() =>
   uniqueSequencesStatisticsValues(rows.value, "sequencer")
 );
@@ -550,7 +595,7 @@ const analysisTypeOptions = computed(() =>
 const filteredRows = computed(() =>
   rows.value.filter(
     (row) =>
-      sequencesStatisticsRowMatchesSearch(row, appliedSearchQuery.value) &&
+      sequencesStatisticsRowMatchesSearch(row, searchQuery.value) &&
       (!filters.sequencer || row.sequencer === filters.sequencer) &&
       (!filters.protocol || row.library_protocol === filters.protocol) &&
       (!filters.analysisType || row.library_type === filters.analysisType)
@@ -723,11 +768,6 @@ function resetAdvancedFilters() {
   Object.assign(filters, { sequencer: "", protocol: "", analysisType: "" });
 }
 
-function handleSearchAction() {
-  searchQuery.value = searchQuery.value.trim();
-  appliedSearchQuery.value = searchQuery.value;
-}
-
 function handleExportClick() {
   exportSelection.value = hasSelectedRows.value ? "selected" : "all";
   showExportPopup.value = true;
@@ -895,13 +935,30 @@ function toggleColumnVisibility(column) {
 async function resetColumnVisibility() {
   localStorage.removeItem(VISIBILITY_KEY);
   setColumns();
+  flashTableLoading();
   await nextTick();
 }
 
 async function resetColumnWidths() {
   localStorage.removeItem(WIDTHS_KEY);
   setColumns();
+  flashTableLoading();
   await nextTick();
+}
+
+function flashTableLoading(delay = 300) {
+  fakeLoadingStart();
+  setTimeout(fakeLoadingStop, delay);
+}
+
+function fakeLoadingStart() {
+  fakeLoading.value = true;
+}
+
+function fakeLoadingStop() {
+  setTimeout(() => {
+    fakeLoading.value = false;
+  }, 300);
 }
 
 function handleDocumentClick(event) {
@@ -969,6 +1026,7 @@ setColumns();
     return {
       tableRef,
       loading,
+      fakeLoading,
       columnsList,
       searchQuery,
       showExportPopup,
@@ -993,7 +1051,6 @@ setColumns();
       showSelectColumns,
       filters,
       tableOptions,
-      selectableColumns,
       sequencerOptions,
       protocolOptions,
       analysisTypeOptions,
@@ -1002,7 +1059,6 @@ setColumns();
       toggleSelectColumns,
       resetAdvancedFilters,
       handleDateChange,
-      handleSearchAction,
       handleExportClick,
       closeExportPopup,
       handleExport,
@@ -1050,5 +1106,4 @@ setColumns();
   overflow-wrap: anywhere;
   word-break: break-word;
 }
-
 </style>
