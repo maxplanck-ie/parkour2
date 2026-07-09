@@ -1,20 +1,10 @@
 <template>
   <div class="rocrate-preview-page" :class="{ embedded }">
-    <div
-      class="rocrate-preview-shell"
-      :class="{ 'is-empty': !model && !loading && !errorMessage }"
-    >
-      <section
-        class="upload-stage"
-        :class="{ centered: !model && !loading && !errorMessage }"
-      >
+    <div class="rocrate-preview-shell" :class="{ 'is-empty': !model && !loading && !errorMessage }">
+      <section class="upload-stage" :class="{ centered: !model && !loading && !errorMessage }">
         <div class="upload-content">
           <h1 class="upload-title-main">
-            <img
-              class="upload-title-icon"
-              src="@/assets/icons/parkour_32x32.png"
-              alt=""
-            />
+            <img class="upload-title-icon" src="@/assets/icons/parkour_32x32.png" alt="" />
             <span>Parkour RO-Crate Preview</span>
           </h1>
           <div class="upload-title">
@@ -78,21 +68,13 @@
       </div>
 
       <section v-if="model" class="preview-workspace">
-        <section
-          class="preview-search-panel"
-          aria-label="Search RO-Crate preview"
-        >
+        <section class="preview-search-panel" aria-label="Search RO-Crate preview">
           <div class="preview-search-copy">
             <div class="preview-search-title">Search Preview</div>
             <div class="preview-search-meta">{{ searchResultSummary }}</div>
-            <div
-              v-if="previewRecordLimitExceeded"
-              class="preview-search-meta limit-note"
-            >
-              Showing first {{ previewRecordDisplayCount }} of
-              {{ previewRecordTotalCount }}
-              libraries/samples in preview. ZIP and PDF exports include all
-              selected records.
+            <div v-if="previewRecordLimitExceeded" class="preview-search-meta limit-note">
+              Showing first {{ previewRecordDisplayCount }} of {{ previewRecordTotalCount }}
+              libraries/samples in preview. ZIP and PDF exports include all selected records.
             </div>
           </div>
           <div class="table-search-inline">
@@ -103,10 +85,7 @@
                 type="search"
                 placeholder="Search by request, record, field, or value"
               />
-              <font-awesome-icon
-                class="table-search-icon"
-                icon="fa-solid fa-magnifying-glass"
-              />
+              <font-awesome-icon class="table-search-icon" icon="fa-solid fa-magnifying-glass" />
             </div>
           </div>
         </section>
@@ -128,10 +107,7 @@
                   :key="`overview-${request.id}-${record.id}`"
                   class="record-chip"
                 >
-                  {{ record.name
-                  }}<template v-if="record.barcode">
-                    ({{ record.barcode }})</template
-                  >
+                  {{ record.name }}<template v-if="record.barcode"> ({{ record.barcode }})</template>
                 </span>
               </div>
               <div v-else class="empty-inline">{{ labels.noRecords }}</div>
@@ -146,9 +122,7 @@
         >
           <div class="detail-header">
             <div>
-              <div class="detail-kicker">
-                Request {{ index + 1 }}: {{ request.name }}
-              </div>
+              <div class="detail-kicker">Request {{ index + 1 }}: {{ request.name }}</div>
             </div>
           </div>
 
@@ -178,12 +152,8 @@
                 class="record-table-block"
               >
                 <div class="record-table-header">
-                  <div class="record-table-title">
-                    {{ record.type }}: {{ record.name }}
-                  </div>
-                  <div v-if="record.barcode" class="record-table-subtitle">
-                    Barcode: {{ record.barcode }}
-                  </div>
+                  <div class="record-table-title">{{ record.type }}: {{ record.name }}</div>
+                  <div v-if="record.barcode" class="record-table-subtitle">Barcode: {{ record.barcode }}</div>
                 </div>
                 <section
                   v-for="section in record.sections"
@@ -199,10 +169,7 @@
                       :class="{ 'wide-row': row.wide }"
                     >
                       <div class="quick-summary-key">{{ row.key }}</div>
-                      <div
-                        class="quick-summary-value"
-                        :class="valueClassForRow(row)"
-                      >
+                      <div class="quick-summary-value" :class="valueClassForRow(row)">
                         <ROCrateDisplayValue :value="row.value" />
                       </div>
                     </div>
@@ -277,9 +244,7 @@ const normalisePolicyField = (value) =>
     .replace(/[^a-z0-9]+/gi, "")
     .toLowerCase();
 const hiddenPolicyFields = new Set(
-  [...hiddenFields, ...userHiddenFields].map((field) =>
-    normalisePolicyField(field)
-  )
+  [...hiddenFields, ...userHiddenFields].map((field) => normalisePolicyField(field))
 );
 const visibleIdPolicyFields = new Set(
   [...visibleIdFields].map((field) => normalisePolicyField(field))
@@ -315,9 +280,7 @@ const DisplayValue = {
       return h(
         "ol",
         { class: "structured-value-list" },
-        values.map((value, index) =>
-          h("li", { key: index }, this.renderAny(value))
-        )
+        values.map((value, index) => h("li", { key: index }, this.renderAny(value)))
       );
     },
     renderObjectTable(values) {
@@ -327,26 +290,30 @@ const DisplayValue = {
       return h(
         "div",
         { class: "structured-value-scroll" },
-        h("table", { class: "structured-value-table indexed-table" }, [
-          h(
-            "thead",
-            h("tr", [
-              h("th", { class: "row-number-column" }, "#"),
-              ...columns.map((column) => h("th", { key: column }, column))
-            ])
-          ),
-          h(
-            "tbody",
-            values.map((value, index) =>
-              h("tr", { key: index }, [
-                h("td", { class: "row-number-column" }, String(index + 1)),
-                ...columns.map((column) =>
-                  h("td", { key: column }, this.renderAny(value?.[column]))
-                )
+        h(
+          "table",
+          { class: "structured-value-table indexed-table" },
+          [
+            h(
+              "thead",
+              h("tr", [
+                h("th", { class: "row-number-column" }, "#"),
+                ...columns.map((column) => h("th", { key: column }, column))
               ])
+            ),
+            h(
+              "tbody",
+              values.map((value, index) =>
+                h("tr", { key: index }, [
+                  h("td", { class: "row-number-column" }, String(index + 1)),
+                  ...columns.map((column) =>
+                    h("td", { key: column }, this.renderAny(value?.[column]))
+                  )
+                ])
+              )
             )
-          )
-        ])
+          ]
+        )
       );
     },
     renderObject(value) {
@@ -413,9 +380,7 @@ export default {
       return RO_CRATE_PREVIEW_LABELS;
     },
     canExportPreview() {
-      const identifiers = this.previewIdentifierValues(
-        this.activePreviewConfig
-      );
+      const identifiers = this.previewIdentifierValues(this.activePreviewConfig);
       return identifiers.barcodes.length > 0 || identifiers.requests.length > 0;
     },
     searchTerm() {
@@ -441,8 +406,7 @@ export default {
           0
         );
       }
-      return this.model.graph.filter((entity) => this.isRecordEntity(entity))
-        .length;
+      return this.model.graph.filter((entity) => this.isRecordEntity(entity)).length;
     },
     previewRecordDisplayCount() {
       return this.requestGroups.reduce(
@@ -458,15 +422,8 @@ export default {
       const studies = this.previewStudies();
       let remainingRecordSlots = RO_CRATE_PREVIEW_RECORD_LIMIT;
       const groups = studies.map((study, index) => {
-        const group = this.buildRequestGroup(
-          study,
-          index,
-          remainingRecordSlots
-        );
-        remainingRecordSlots = Math.max(
-          0,
-          remainingRecordSlots - group.records.length
-        );
+        const group = this.buildRequestGroup(study, index, remainingRecordSlots);
+        remainingRecordSlots = Math.max(0, remainingRecordSlots - group.records.length);
         return group;
       });
       if (groups.length) return groups;
@@ -551,17 +508,13 @@ export default {
       };
     },
     roCrateRequestParams(extra = {}) {
-      const identifiers = this.previewIdentifierValues(
-        this.activePreviewConfig
-      );
+      const identifiers = this.previewIdentifierValues(this.activePreviewConfig);
       const sections = Array.isArray(this.activePreviewConfig?.sections)
         ? this.activePreviewConfig.sections.filter(Boolean)
         : [];
       const params = { ...extra };
-      if (identifiers.barcodes.length)
-        params.barcodes = identifiers.barcodes.join(",");
-      if (identifiers.requests.length)
-        params.requests = identifiers.requests.join(",");
+      if (identifiers.barcodes.length) params.barcodes = identifiers.barcodes.join(",");
+      if (identifiers.requests.length) params.requests = identifiers.requests.join(",");
       if (sections.length) params.sections = sections.join(",");
       return params;
     },
@@ -575,34 +528,25 @@ export default {
 
       this.activePreviewConfig = {
         ...previewConfig,
-        sections: Array.isArray(previewConfig.sections)
-          ? previewConfig.sections
-          : []
+        sections: Array.isArray(previewConfig.sections) ? previewConfig.sections : []
       };
       this.loading = true;
       this.errorMessage = "";
       this.model = null;
 
       try {
-        const response = await axiosRef.get(
-          `${urlStringStart}${RO_CRATE_ENDPOINT}`,
-          {
-            params: this.roCrateRequestParams({ preview: "true" })
-          }
-        );
+        const response = await axiosRef.get(`${urlStringStart}${RO_CRATE_ENDPOINT}`, {
+          params: this.roCrateRequestParams({ preview: "true" })
+        });
         const payload = response?.data || {};
         this.skippedRecords = Array.isArray(payload.skipped_records)
           ? payload.skipped_records
           : [];
         if (!payload.ro_crate) {
-          throw new Error(
-            "The RO-Crate preview response did not include ro_crate."
-          );
+          throw new Error("The RO-Crate preview response did not include ro_crate.");
         }
         if (!payload.archive_name) {
-          throw new Error(
-            "The RO-Crate preview response did not include archive_name."
-          );
+          throw new Error("The RO-Crate preview response did not include archive_name.");
         }
         this.model = parseRoCratePayload(payload.ro_crate, {
           name: payload.archive_name
@@ -627,13 +571,10 @@ export default {
 
       try {
         this.exportBusy = true;
-        const response = await axiosRef.get(
-          `${urlStringStart}${RO_CRATE_ENDPOINT}`,
-          {
-            params: this.roCrateRequestParams(),
-            responseType: "blob"
-          }
-        );
+        const response = await axiosRef.get(`${urlStringStart}${RO_CRATE_ENDPOINT}`, {
+          params: this.roCrateRequestParams(),
+          responseType: "blob"
+        });
         const filename =
           this.parseContentDispositionFilename(
             this.responseHeader(response?.headers, "content-disposition")
@@ -656,13 +597,10 @@ export default {
       }
       try {
         this.pdfBusy = true;
-        const response = await axiosRef.get(
-          `${urlStringStart}${RO_CRATE_ENDPOINT}`,
-          {
-            params: this.roCrateRequestParams({ pdf: "true" }),
-            responseType: "blob"
-          }
-        );
+        const response = await axiosRef.get(`${urlStringStart}${RO_CRATE_ENDPOINT}`, {
+          params: this.roCrateRequestParams({ pdf: "true" }),
+          responseType: "blob"
+        });
         const filename =
           this.parseContentDispositionFilename(
             this.responseHeader(response?.headers, "content-disposition")
@@ -685,10 +623,7 @@ export default {
       }
       const requestIds = this.previewRequestIds();
       if (requestIds.length) {
-        return this.boundedExportFilename(
-          `${requestIds.join("_")}_ro_crate`,
-          ".zip"
-        );
+        return this.boundedExportFilename(`${requestIds.join("_")}_ro_crate`, ".zip");
       }
       return this.boundedExportFilename("parkour_ro_crate", ".zip");
     },
@@ -706,9 +641,8 @@ export default {
         RO_CRATE_EXPORT_FILENAME_MAX_LENGTH - suffix.length
       );
       const safeBase =
-        this.sanitizeFilenamePart(baseName)
-          .slice(0, maxBaseLength)
-          .replace(/[._-]+$/g, "") || "parkour_ro_crate";
+        this.sanitizeFilenamePart(baseName).slice(0, maxBaseLength).replace(/[._-]+$/g, "") ||
+        "parkour_ro_crate";
       return `${safeBase}${suffix}`;
     },
     previewRequestIds() {
@@ -718,9 +652,7 @@ export default {
       const graphIds = this.requestGroups
         .map((request) => request.requestNumber)
         .filter(Boolean);
-      return [
-        ...new Set([...configuredIds, ...graphIds].map(String).filter(Boolean))
-      ];
+      return [...new Set([...configuredIds, ...graphIds].map(String).filter(Boolean))];
     },
     sanitizeFilenamePart(value) {
       return String(value || "")
@@ -753,20 +685,13 @@ export default {
         )
       );
     },
-    buildRequestGroup(
-      study,
-      index,
-      recordLimit = RO_CRATE_PREVIEW_RECORD_LIMIT
-    ) {
+    buildRequestGroup(study, index, recordLimit = RO_CRATE_PREVIEW_RECORD_LIMIT) {
       const studyId = study?.[fieldKeys.id] || `request-${index + 1}`;
       const requestNumber = this.idSuffix(studyId);
       const requestEntity = this.entityById(
         `${RO_CRATE_ENTITY_PREFIXES.requestContext}${requestNumber}`
       );
-      const recordIds = this.previewRecordIds(
-        this.studyRecordIds(study),
-        recordLimit
-      );
+      const recordIds = this.previewRecordIds(this.studyRecordIds(study), recordLimit);
       const records = recordIds
         .map((recordId) => this.buildRecord(recordId))
         .filter(Boolean)
@@ -815,9 +740,7 @@ export default {
         ...this.referenceIds(materials[fieldKeys.otherMaterials])
       ].filter((id) => this.isRecordId(id));
       if (fromMaterials.length) return [...new Set(fromMaterials)];
-      return this.referenceIds(study?.hasPart).filter((id) =>
-        this.isRecordId(id)
-      );
+      return this.referenceIds(study?.hasPart).filter((id) => this.isRecordId(id));
     },
     previewRecordIds(recordIds, recordLimit) {
       return [...new Set(recordIds)]
@@ -843,10 +766,7 @@ export default {
       const addRows = (title, rows) => {
         const visibleRows = rows.filter((row) => !this.isHiddenRow(row));
         if (!visibleRows.length) return;
-        rowsBySection.set(title, [
-          ...(rowsBySection.get(title) || []),
-          ...visibleRows
-        ]);
+        rowsBySection.set(title, [...(rowsBySection.get(title) || []), ...visibleRows]);
       };
 
       const recordName =
@@ -855,17 +775,11 @@ export default {
         RO_CRATE_PREVIEW_LABELS.unnamedRecord;
       const primaryModelSectionTitle = `${type}: ${recordName}`;
       addRows("Overview", [
-        {
-          key: "Name",
-          value: entity[fieldKeys.name] || RO_CRATE_PREVIEW_LABELS.unnamedRecord
-        },
+        { key: "Name", value: entity[fieldKeys.name] || RO_CRATE_PREVIEW_LABELS.unnamedRecord },
         { key: "Barcode", value: entity[fieldKeys.identifier] || "" }
       ]);
       this.propertyRows(entity, { skipSummaryModels: true }).forEach((row) =>
-        addRows(
-          row.group === primaryModelSectionTitle ? "Overview" : row.group,
-          [row]
-        )
+        addRows(row.group === primaryModelSectionTitle ? "Overview" : row.group, [row])
       );
       this.relatedModelSections(entity).forEach((section) => {
         addRows(section.title, section.rows);
@@ -875,19 +789,14 @@ export default {
         addRows(section.title, section.rows);
       });
       const processEntities = this.recordProcessEntities(recordId);
-      const processSections = this.processDetailSections(
-        recordId,
-        processEntities
-      );
+      const processSections = this.processDetailSections(recordId, processEntities);
       processSections.forEach((section) => {
         addRows(section.title, section.rows);
       });
       addRows(
         "Processes & Data",
         this.backlinkRows(recordId, {
-          omitSourceIds: processEntities.map(
-            (processEntity) => processEntity[fieldKeys.id]
-          )
+          omitSourceIds: processEntities.map((processEntity) => processEntity[fieldKeys.id])
         })
       );
 
@@ -942,13 +851,7 @@ export default {
           if (this.isStandaloneMeasuringUnitProperty(name, propertyByName)) {
             return null;
           }
-          if (
-            this.duplicatesDirectEntityField(
-              entity,
-              name,
-              property[fieldKeys.value]
-            )
-          ) {
+          if (this.duplicatesDirectEntityField(entity, name, property[fieldKeys.value])) {
             return null;
           }
           return {
@@ -982,10 +885,7 @@ export default {
     },
     measuringUnitPropertyName(propertyName) {
       if (propertyName.endsWith("measured_value_facility")) {
-        return propertyName.replace(
-          /measured_value_facility$/,
-          "measuring_unit_facility"
-        );
+        return propertyName.replace(/measured_value_facility$/, "measuring_unit_facility");
       }
       if (propertyName.endsWith("measured_value")) {
         return propertyName.replace(/measured_value$/, "measuring_unit");
@@ -1000,18 +900,13 @@ export default {
         );
       }
       if (name.endsWith("measuring_unit")) {
-        return propertyByName.has(
-          name.replace(/measuring_unit$/, "measured_value")
-        );
+        return propertyByName.has(name.replace(/measuring_unit$/, "measured_value"));
       }
       return false;
     },
     duplicatesDirectEntityField(entity, propertyName, propertyValue) {
       const directKey = this.directFieldKeyForProperty(propertyName);
-      if (
-        !directKey ||
-        !Object.prototype.hasOwnProperty.call(entity || {}, directKey)
-      ) {
+      if (!directKey || !Object.prototype.hasOwnProperty.call(entity || {}, directKey)) {
         return false;
       }
       return (
@@ -1039,14 +934,9 @@ export default {
             relatedEntity,
             this.relatedModelDisplayOptions(relatedEntity)
           );
-          // Fallback: if no rows exist but entity has a name, show it
-          const displayRows =
-            rows.length === 0 && relatedEntity?.[fieldKeys.name]
-              ? [{ key: "Name", value: relatedEntity[fieldKeys.name] }]
-              : rows;
           return {
             title: this.modelSectionTitleForEntity(relatedEntity),
-            rows: displayRows
+            rows
           };
         })
         .filter((section) => section.rows.length)
@@ -1086,11 +976,7 @@ export default {
         })
       ];
       this.referenceIds(flowcell?.hasInstrument).forEach((sequencerId) => {
-        this.addNestedEntityRows(
-          rows,
-          "Sequencer",
-          this.entityById(sequencerId)
-        );
+        this.addNestedEntityRows(rows, "Sequencer", this.entityById(sequencerId));
       });
       const lanes = this.referenceIds(flowcell?.hasLane)
         .map((laneId) => this.entityById(laneId))
@@ -1109,9 +995,7 @@ export default {
       this.referenceIds(flowcell?.hasPart)
         .map((entityId) => this.entityById(entityId))
         .filter((relatedEntity) => !this.isLaneEntity(relatedEntity))
-        .filter(
-          (relatedEntity) => !this.isGenericFlowcellDataEntity(relatedEntity)
-        )
+        .filter((relatedEntity) => !this.isGenericFlowcellDataEntity(relatedEntity))
         .forEach((dataEntity) => {
           this.addNestedEntityRows(rows, "Flowcell Data", dataEntity, {
             omitDirectKeys: ["additionalType", "encodingFormat"],
@@ -1120,22 +1004,12 @@ export default {
           });
         });
       this.referenceIds(flowcell?.about).forEach((processId) => {
-        this.addNestedEntityRows(
-          rows,
-          "Flowcell Process",
-          this.entityById(processId),
-          {
-            omitDirectKeys: ["additionalType"],
-            omitRelationKeys: [
-              "instrument",
-              "hasInstrument",
-              "object",
-              "result"
-            ],
-            omitPropertyRows: true,
-            omitEntitySummary: true
-          }
-        );
+        this.addNestedEntityRows(rows, "Flowcell Process", this.entityById(processId), {
+          omitDirectKeys: ["additionalType"],
+          omitRelationKeys: ["instrument", "hasInstrument", "object", "result"],
+          omitPropertyRows: true,
+          omitEntitySummary: true
+        });
       });
       return this.uniqueRows(rows)
         .filter((row) => !this.isHiddenRow(row))
@@ -1178,9 +1052,7 @@ export default {
     },
     processSectionTitle(processEntity) {
       const label = this.entityLabel(processEntity);
-      const match = label.match(
-        /^(sample|library|sequencing)\s+metadata\s+capture\s+for\s+(.+)$/i
-      );
+      const match = label.match(/^(sample|library|sequencing)\s+metadata\s+capture\s+for\s+(.+)$/i);
       if (match) {
         return `Process: ${match[2]}`;
       }
@@ -1190,10 +1062,7 @@ export default {
       const label = this.entityLabel(entity);
       return label.replace(new RegExp(`^${prefix}\\s+`, "i"), "");
     },
-    processDetailSections(
-      recordId,
-      processEntities = this.recordProcessEntities(recordId)
-    ) {
+    processDetailSections(recordId, processEntities = this.recordProcessEntities(recordId)) {
       return processEntities
         .map((processEntity) => {
           const title = this.processSectionTitle(processEntity);
@@ -1220,15 +1089,9 @@ export default {
           omitRelationKeys: ["executesLabProtocol", "object", "result"]
         })
       ];
-      this.referenceIds(processEntity?.executesLabProtocol).forEach(
-        (protocolId) => {
-          this.addNestedEntityRows(
-            rows,
-            "Protocol",
-            this.entityById(protocolId)
-          );
-        }
-      );
+      this.referenceIds(processEntity?.executesLabProtocol).forEach((protocolId) => {
+        this.addNestedEntityRows(rows, "Protocol", this.entityById(protocolId));
+      });
       this.referenceIds(processEntity?.result).forEach((dataId) => {
         this.addNestedEntityRows(rows, "Data Object", this.entityById(dataId), {
           omitDirectKeys: ["additionalType", "encodingFormat"],
@@ -1267,9 +1130,8 @@ export default {
         .filter(Boolean);
     },
     relatedModelEntities(entity) {
-      const relationValues = RO_CRATE_LINKED_MODEL_RELATION_FIELDS.flatMap(
-        (key) => this.referenceIds(entity?.[key])
-      )
+      const relationValues = RO_CRATE_LINKED_MODEL_RELATION_FIELDS
+        .flatMap((key) => this.referenceIds(entity?.[key]))
         .map((entityId) => this.entityById(entityId))
         .filter(Boolean)
         .filter((relatedEntity) => !this.isLowValueBacklink(relatedEntity));
@@ -1319,7 +1181,10 @@ export default {
       const parentKey = this.normalizedDisplayKey(parentLabel);
       if (this.isRawPropertyNameListRow(row)) return true;
       if (rowKey.startsWith("assay")) return true;
-      if (parentKey === "dataobject" && this.isRepeatedDataObjectKey(rowKey)) {
+      if (
+        parentKey === "dataobject" &&
+        this.isRepeatedDataObjectKey(rowKey)
+      ) {
         return true;
       }
       return false;
@@ -1333,11 +1198,7 @@ export default {
           if (typeof value === "string") return value.split(/\s*,\s*/);
           return [];
         })
-        .map((value) =>
-          String(value || "")
-            .replace(/^\d+\.\s*/, "")
-            .trim()
-        )
+        .map((value) => String(value || "").replace(/^\d+\.\s*/, "").trim())
         .filter(Boolean);
       return (
         tokens.length > 0 &&
@@ -1366,8 +1227,8 @@ export default {
     },
     backlinkRows(entityId, options = {}) {
       const omittedSourceIds = new Set(options.omitSourceIds || []);
-      const backlinks = (this.model?.backlinkMap?.[entityId] || []).filter(
-        (link) => RO_CRATE_BACKLINK_PROPERTIES.includes(link.property)
+      const backlinks = (this.model?.backlinkMap?.[entityId] || []).filter((link) =>
+        RO_CRATE_BACKLINK_PROPERTIES.includes(link.property)
       );
       return backlinks
         .filter((link) => !omittedSourceIds.has(link.sourceId))
@@ -1399,9 +1260,7 @@ export default {
             entity[fieldKeys.id],
           contentUrl: entity[fieldKeys.contentUrl]
         }))
-        .filter((file) =>
-          this.matchesSearch([file.name, file.contentUrl, file.id])
-        );
+        .filter((file) => this.matchesSearch([file.name, file.contentUrl, file.id]));
     },
     isRecordEntity(entity) {
       return this.isRecordId(entity?.[fieldKeys.id]);
@@ -1450,11 +1309,9 @@ export default {
     },
     isAssayEntity(entity) {
       const id = String(entity?.[fieldKeys.id] || "");
-      return (
-        id.startsWith(RO_CRATE_ENTITY_PREFIXES.flowcellAssay) ||
+      return id.startsWith(RO_CRATE_ENTITY_PREFIXES.flowcellAssay) ||
         id.startsWith("#sample-assay-") ||
-        id.startsWith("#library-assay-")
-      );
+        id.startsWith("#library-assay-");
     },
     isGenericFlowcellDataEntity(entity) {
       const id = String(entity?.[fieldKeys.id] || "");
@@ -1513,9 +1370,7 @@ export default {
       }
       if (value && typeof value === "object") {
         if (value[fieldKeys.id]) {
-          return this.entityLabel(
-            this.entityById(value[fieldKeys.id]) || value
-          );
+          return this.entityLabel(this.entityById(value[fieldKeys.id]) || value);
         }
         return Object.fromEntries(
           Object.entries(value)
@@ -1532,9 +1387,7 @@ export default {
         const formattedDate = this.formatDate(value);
         return formattedDate || value;
       }
-      return value === null || value === undefined || value === ""
-        ? ""
-        : String(value);
+      return value === null || value === undefined || value === "" ? "" : String(value);
     },
     parseStructuredString(value) {
       const text = String(value || "").trim();
@@ -1601,8 +1454,7 @@ export default {
         hiddenFields.has(key) ||
         userHiddenFields.has(key) ||
         hiddenPolicyFields.has(policyKey)
-      )
-        return true;
+      ) return true;
       if (this.isHiddenCommentField(key)) return true;
       if (RO_CRATE_HIDDEN_FIELD_PATTERNS.some((pattern) => pattern.test(key))) {
         return true;
@@ -1624,9 +1476,8 @@ export default {
         .replace(/[^a-z0-9]+/gi, "")
         .toLowerCase();
       return (
-        (normalised.endsWith("comment") || normalised.endsWith("comments")) &&
-        !["usercomment", "usercomments"].includes(normalised)
-      );
+        normalised.endsWith("comment") || normalised.endsWith("comments")
+      ) && !["usercomment", "usercomments"].includes(normalised);
     },
     isHiddenRow(row) {
       return (
@@ -1641,10 +1492,7 @@ export default {
         value === null ||
         value === undefined ||
         (Array.isArray(value) && value.length === 0) ||
-        (value &&
-          typeof value === "object" &&
-          !Array.isArray(value) &&
-          !Object.keys(value).length)
+        (value && typeof value === "object" && !Array.isArray(value) && !Object.keys(value).length)
       );
     },
     isWideValue(key, value) {
@@ -1702,16 +1550,8 @@ export default {
 .rocrate-preview-page {
   min-height: 100vh;
   background:
-    radial-gradient(
-      circle at top left,
-      rgba(15, 95, 135, 0.18),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(43, 167, 123, 0.18),
-      transparent 28%
-    ),
+    radial-gradient(circle at top left, rgba(15, 95, 135, 0.18), transparent 32%),
+    radial-gradient(circle at top right, rgba(43, 167, 123, 0.18), transparent 28%),
     linear-gradient(180deg, #f4fafb 0%, #ecf3f5 50%, #f8fcfd 100%);
   color: #10242f;
 }
@@ -1998,11 +1838,7 @@ export default {
   min-width: 0;
   padding: 14px 16px;
   border-radius: 16px;
-  background: linear-gradient(
-    180deg,
-    rgba(248, 251, 252, 0.96),
-    rgba(255, 255, 255, 0.96)
-  );
+  background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
   border: 1px solid rgba(16, 36, 47, 0.06);
 }
 
@@ -2072,11 +1908,7 @@ export default {
   align-items: start;
   padding: 14px 16px;
   border-radius: 16px;
-  background: linear-gradient(
-    180deg,
-    rgba(248, 251, 252, 0.96),
-    rgba(255, 255, 255, 0.96)
-  );
+  background: linear-gradient(180deg, rgba(248, 251, 252, 0.96), rgba(255, 255, 255, 0.96));
   border: 1px solid rgba(16, 36, 47, 0.06);
 }
 
@@ -2182,4 +2014,5 @@ export default {
     grid-template-columns: 1fr;
   }
 }
+
 </style>
