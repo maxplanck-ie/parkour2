@@ -23,3 +23,4 @@ backend/frontend_testing_suite/results/**/trace.zip
 *.ignore
 node_modules/
 .aider*
+db.sqlite3
