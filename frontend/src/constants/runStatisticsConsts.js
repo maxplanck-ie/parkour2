@@ -151,7 +151,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       hozAlign: "right"
     },
     {
-      title: "Under. Indices (%)",
+      title: "Undet. Indices (%)", // codespell:ignore undet
       field: "undetermined_indices",
       minWidth: 92,
       visible: true,
