@@ -17,6 +17,7 @@ from django.db.models.fields.files import FieldFile
 from django.http import HttpResponse
 from django.utils import timezone
 from fpdf import FPDF
+from fpdf.enums import XPos, YPos
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -217,7 +218,6 @@ def _normalise_preview(raw_preview):
 
 def _normalise_pdf(raw_pdf):
     return _normalise_true_flag(raw_pdf, "pdf")
-
 
 
 def _normalise_property_value(value):
@@ -439,9 +439,7 @@ def _request_file_folder_name(request_obj):
 
 def _archive_stub(requests_by_id, request_ids):
     ids = [
-        str(request_id)
-        for request_id in request_ids
-        if request_id in requests_by_id
+        str(request_id) for request_id in request_ids if request_id in requests_by_id
     ]
     if not ids:
         return "parkour"
@@ -503,10 +501,7 @@ def _add_additional_type(entity, *type_ids):
         values = [values]
     elif not isinstance(values, list):
         values = [values]
-    existing = {
-        item.get("@id") if isinstance(item, dict) else item
-        for item in values
-    }
+    existing = {item.get("@id") if isinstance(item, dict) else item for item in values}
     for type_id in type_ids:
         if type_id and type_id not in existing:
             values.append({"@id": type_id})
@@ -583,7 +578,9 @@ def _select_records(request):
     request_qs = accessible_requests.filter(name__in=requests)
     found_request_names = set(request_qs.values_list("name", flat=True))
     missing_requests = sorted(
-        request_name for request_name in requests if request_name not in found_request_names
+        request_name
+        for request_name in requests
+        if request_name not in found_request_names
     )
     request_ids_from_names = set(request_qs.values_list("id", flat=True))
     request_ids_from_rows = {
@@ -613,7 +610,9 @@ def _split_delivered(rows):
         if getattr(row, "status", None) == RO_CRATE_COMPLETED_STATUS:
             delivered.append(row)
         else:
-            skipped.append(getattr(row, "barcode", None) or getattr(row, "name", None) or str(row))
+            skipped.append(
+                getattr(row, "barcode", None) or getattr(row, "name", None) or str(row)
+            )
     return delivered, skipped
 
 
@@ -702,13 +701,15 @@ class SimpleROCrateBuilder:
         ids = [row.library_id for row in self.selection.library_rows]
         return {
             library.id: library
-            for library in Library.objects.filter(id__in=ids).select_related(
+            for library in Library.objects.filter(id__in=ids)
+            .select_related(
                 "library_protocol",
                 "library_type",
                 "organism",
                 "read_length",
                 "index_type",
-            ).prefetch_related(
+            )
+            .prefetch_related(
                 "request",
                 "index_type__indices_i7",
                 "index_type__indices_i5",
@@ -720,14 +721,16 @@ class SimpleROCrateBuilder:
         ids = [row.sample_id for row in self.selection.sample_rows]
         return {
             sample.id: sample
-            for sample in Sample.objects.filter(id__in=ids).select_related(
+            for sample in Sample.objects.filter(id__in=ids)
+            .select_related(
                 "nucleic_acid_type",
                 "library_protocol",
                 "library_type",
                 "organism",
                 "read_length",
                 "index_type",
-            ).prefetch_related(
+            )
+            .prefetch_related(
                 "request",
                 "index_type__indices_i7",
                 "index_type__indices_i5",
@@ -788,7 +791,11 @@ class SimpleROCrateBuilder:
         entity_id = entity.get("@id")
         if entity_id in self.entities:
             self.entities[entity_id].update(
-                {key: value for key, value in entity.items() if value not in (None, "", [], {})}
+                {
+                    key: value
+                    for key, value in entity.items()
+                    if value not in (None, "", [], {})
+                }
             )
             return self.entities[entity_id]
         self.entities[entity_id] = entity
@@ -989,9 +996,7 @@ class SimpleROCrateBuilder:
                     "name": request_obj.name or f"Request {request_obj.id}",
                     "identifier": _parkour_identifier("request", request_obj.id),
                     "description": request_obj.description or "",
-                    "comments": _comments_from_mapping(
-                        request_metadata, "request"
-                    ),
+                    "comments": _comments_from_mapping(request_metadata, "request"),
                 },
                 "request",
             )
@@ -1065,7 +1070,9 @@ class SimpleROCrateBuilder:
                     "comments": _comments_from_mapping(
                         {
                             "request_file_name": request_file.name,
-                            "request_file_storage_path": getattr(file_field, "name", None),
+                            "request_file_storage_path": getattr(
+                                file_field, "name", None
+                            ),
                         },
                         "request",
                     ),
@@ -1180,7 +1187,9 @@ class SimpleROCrateBuilder:
                 "samples",
             )
             record_entity_ids = [source_id, sample_id, process_id, data_id, assay_id]
-            self._link_to_record_requests(sample, model, row.request_id, record_entity_ids)
+            self._link_to_record_requests(
+                sample, model, row.request_id, record_entity_ids
+            )
 
     def _add_library_entities(self):
         for row in self.selection.library_rows:
@@ -1261,7 +1270,10 @@ class SimpleROCrateBuilder:
                 "libraries",
             )
             self._link_to_record_requests(
-                library, model, row.request_id, [library_id, process_id, data_id, assay_id]
+                library,
+                model,
+                row.request_id,
+                [library_id, process_id, data_id, assay_id],
             )
 
     def _add_process(
@@ -1338,7 +1350,12 @@ class SimpleROCrateBuilder:
             ("libraryType", "library_type", "library_types", ISA_MATERIAL_URI),
             ("readLength", "read_length", "read_lengths", None),
             ("indexType", "index_type", "index_types", None),
-            ("nucleicAcidType", "nucleic_acid_type", "nucleic_acid_types", ISA_MATERIAL_URI),
+            (
+                "nucleicAcidType",
+                "nucleic_acid_type",
+                "nucleic_acid_types",
+                ISA_MATERIAL_URI,
+            ),
         )
         for property_name, attr_name, section, additional_type in links:
             value = getattr(model, attr_name, None)
@@ -1350,7 +1367,9 @@ class SimpleROCrateBuilder:
                     "@id": entity_id,
                     "@type": "Thing",
                     "name": getattr(value, "name", None) or str(value),
-                    "identifier": _parkour_identifier(attr_name.replace("_", "-"), value.id),
+                    "identifier": _parkour_identifier(
+                        attr_name.replace("_", "-"), value.id
+                    ),
                     "comments": _comments_from_mapping(
                         _extract_model_fields(value, f"{attr_name}_"), section
                     ),
@@ -1391,7 +1410,9 @@ class SimpleROCrateBuilder:
         if i5_entity_id:
             entity["indexI5"] = _ref(i5_entity_id)
         if index_pair:
-            entity["selectedIndexPair"] = _ref(self._add_index_pair(index_pair, section))
+            entity["selectedIndexPair"] = _ref(
+                self._add_index_pair(index_pair, section)
+            )
 
     def _selected_index_entity_id(self, model, index_kind):
         index_type = getattr(model, "index_type", None)
@@ -1472,7 +1493,9 @@ class SimpleROCrateBuilder:
                 _index_pair_metadata(index_pair), "index_types"
             ),
         }
-        self._add(entity, "index_types" if section in {"libraries", "samples"} else section)
+        self._add(
+            entity, "index_types" if section in {"libraries", "samples"} else section
+        )
         self._mention(entity_id)
         return entity_id
 
@@ -1602,7 +1625,9 @@ class SimpleROCrateBuilder:
                 if lane.pool:
                     record_ids_on_flowcell.update(
                         f"#library-material-{library_id}"
-                        for library_id in lane.pool.libraries.values_list("id", flat=True)
+                        for library_id in lane.pool.libraries.values_list(
+                            "id", flat=True
+                        )
                         if library_id in self.library_models
                     )
                     record_ids_on_flowcell.update(
@@ -1617,9 +1642,7 @@ class SimpleROCrateBuilder:
                         "name": lane.name or f"Lane {lane.id}",
                         "identifier": _parkour_identifier("lane", lane.id),
                         "additionalType": [_ref(ISA_LANE_URI)],
-                        "associatedPool": _ref(lane_pool_id)
-                        if lane_pool_id
-                        else None,
+                        "associatedPool": _ref(lane_pool_id) if lane_pool_id else None,
                         "comments": _comments_from_mapping(
                             {
                                 "lane_loading_concentration": lane.loading_concentration,
@@ -1647,9 +1670,7 @@ class SimpleROCrateBuilder:
                             "sequencer", flowcell.sequencer.id
                         ),
                         "comments": _comments_from_mapping(
-                            _extract_model_fields(
-                                flowcell.sequencer, "sequencer_"
-                            ),
+                            _extract_model_fields(flowcell.sequencer, "sequencer_"),
                             "sequencers",
                         ),
                     },
@@ -1787,7 +1808,9 @@ class SimpleROCrateBuilder:
                 if request_id in self.requests_by_id
             )
         return sorted(
-            request_id for request_id in request_ids if request_id in self.requests_by_id
+            request_id
+            for request_id in request_ids
+            if request_id in self.requests_by_id
         )
 
     def _add_material_ref(self, study, material_key, entity_id):
@@ -1887,7 +1910,10 @@ class SimpleROCrateBuilder:
             "softwareVersion": "http://schema.org/softwareVersion",
             "organism": {"@id": "http://schema.org/taxonomicRange", "@type": "@id"},
             "libraryType": {"@id": "http://schema.org/additionalType", "@type": "@id"},
-            "readLength": {"@id": "http://schema.org/measurementTechnique", "@type": "@id"},
+            "readLength": {
+                "@id": "http://schema.org/measurementTechnique",
+                "@type": "@id",
+            },
             "indexType": {"@id": "http://schema.org/category", "@type": "@id"},
             "indexI7": {"@id": "http://schema.org/identifier", "@type": "@id"},
             "indexI5": {"@id": "http://schema.org/identifier", "@type": "@id"},
@@ -1930,7 +1956,9 @@ def _entity_section(entity):
     entity_id = str(entity.get("@id") or "")
     if entity_id in {"ro-crate-metadata.json", RO_CRATE_ROOT_ID}:
         return None
-    if entity_id.startswith("#request-context-") or entity_id.startswith("#request-file-"):
+    if entity_id.startswith("#request-context-") or entity_id.startswith(
+        "#request-file-"
+    ):
         return "request"
     if entity_id.startswith("#protocol-"):
         return "protocols"
@@ -1981,8 +2009,7 @@ def _filter_refs(value, kept_ids):
         return {
             key: filtered_value
             for key, filtered_value in (
-                (key, _filter_refs(nested, kept_ids))
-                for key, nested in value.items()
+                (key, _filter_refs(nested, kept_ids)) for key, nested in value.items()
             )
             if filtered_value not in (None, {}, [])
         }
@@ -2212,11 +2239,7 @@ PDF_MODEL_ID_RULES = sorted(
     reverse=True,
 )
 PDF_PROPERTY_PREFIXES = sorted(
-    {
-        prefix
-        for rule in PDF_MODEL_DISPLAY_RULES
-        for prefix in rule["prefixes"]
-    },
+    {prefix for rule in PDF_MODEL_DISPLAY_RULES for prefix in rule["prefixes"]},
     key=len,
     reverse=True,
 )
@@ -2420,7 +2443,9 @@ class ROCratePdfRenderer:
         records = sorted(
             [
                 record
-                for record in (self._build_record(record_id) for record_id in record_ids)
+                for record in (
+                    self._build_record(record_id) for record_id in record_ids
+                )
                 if record
             ],
             key=lambda record: record["name"],
@@ -2497,12 +2522,18 @@ class ROCratePdfRenderer:
         add_rows(
             "Overview",
             [
-                {"key": "Name", "value": entity.get(PDF_FIELD_NAME) or "Unnamed record"},
+                {
+                    "key": "Name",
+                    "value": entity.get(PDF_FIELD_NAME) or "Unnamed record",
+                },
                 {"key": "Barcode", "value": entity.get(PDF_FIELD_IDENTIFIER) or ""},
             ],
         )
         for row in self.property_rows(entity, skip_summary_models=True):
-            add_rows("Overview" if row.get("group") == primary_title else row.get("group"), [row])
+            add_rows(
+                "Overview" if row.get("group") == primary_title else row.get("group"),
+                [row],
+            )
         for section in self.related_model_sections(entity):
             add_rows(section["title"], section["rows"])
         for section in self.sequencing_sections(entity):
@@ -2515,7 +2546,8 @@ class ROCratePdfRenderer:
             self.backlink_rows(
                 record_id,
                 omit_source_ids=[
-                    process_entity.get(PDF_FIELD_ID) for process_entity in process_entities
+                    process_entity.get(PDF_FIELD_ID)
+                    for process_entity in process_entities
                 ],
             ),
         )
@@ -2574,7 +2606,9 @@ class ROCratePdfRenderer:
                 continue
             if self.is_standalone_measuring_unit_property(name, property_by_name):
                 continue
-            if self.duplicates_direct_entity_field(entity, name, prop.get(PDF_FIELD_VALUE)):
+            if self.duplicates_direct_entity_field(
+                entity, name, prop.get(PDF_FIELD_VALUE)
+            ):
                 continue
             row = {
                 "key": _pdf_label_for_field(name),
@@ -2636,7 +2670,9 @@ class ROCratePdfRenderer:
         omit_display_keys=None,
         omit_property_rows=False,
     ):
-        omitted_direct = set(omit_direct_keys or set()) | set(omit_display_keys or set())
+        omitted_direct = set(omit_direct_keys or set()) | set(
+            omit_display_keys or set()
+        )
         direct_rows = [
             {"key": _pdf_label_for_field(key), "value": self.display_value(value)}
             for key, value in entity.items()
@@ -2647,7 +2683,9 @@ class ROCratePdfRenderer:
             and not _pdf_is_hidden_field(key)
             and not self.is_summary_model_property(key)
         ]
-        relation_rows = self.relation_rows(entity, omit_relation_keys=omit_relation_keys)
+        relation_rows = self.relation_rows(
+            entity, omit_relation_keys=omit_relation_keys
+        )
         property_rows = [] if omit_property_rows else self.property_rows(entity, True)
         return [
             row
@@ -2678,7 +2716,9 @@ class ROCratePdfRenderer:
             )
         ]
         for sequencer_id in self.reference_ids(flowcell.get("hasInstrument")):
-            self.add_nested_entity_rows(rows, "Sequencer", self.entity_by_id(sequencer_id))
+            self.add_nested_entity_rows(
+                rows, "Sequencer", self.entity_by_id(sequencer_id)
+            )
         lanes = [
             self.entity_by_id(lane_id)
             for lane_id in self.reference_ids(flowcell.get("hasLane"))
@@ -2776,8 +2816,12 @@ class ROCratePdfRenderer:
                 omit_relation_keys={"executesLabProtocol", "object", "result"},
             )
         ]
-        for protocol_id in self.reference_ids(process_entity.get("executesLabProtocol")):
-            self.add_nested_entity_rows(rows, "Protocol", self.entity_by_id(protocol_id))
+        for protocol_id in self.reference_ids(
+            process_entity.get("executesLabProtocol")
+        ):
+            self.add_nested_entity_rows(
+                rows, "Protocol", self.entity_by_id(protocol_id)
+            )
         for data_id in self.reference_ids(process_entity.get("result")):
             self.add_nested_entity_rows(
                 rows,
@@ -2867,7 +2911,9 @@ class ROCratePdfRenderer:
         )
 
     def short_entity_label(self, entity, prefix):
-        return re.sub(rf"^{re.escape(prefix)}\s+", "", self.entity_label(entity), flags=re.I)
+        return re.sub(
+            rf"^{re.escape(prefix)}\s+", "", self.entity_label(entity), flags=re.I
+        )
 
     def process_section_title(self, process_entity):
         label = self.entity_label(process_entity)
@@ -2924,14 +2970,20 @@ class ROCratePdfRenderer:
         )
 
     def is_generic_flowcell_data_entity(self, entity):
-        return bool(re.match(r"^#flowcell-data-\d+$", str(entity.get(PDF_FIELD_ID, ""))))
+        return bool(
+            re.match(r"^#flowcell-data-\d+$", str(entity.get(PDF_FIELD_ID, "")))
+        )
 
     def is_low_value_backlink(self, entity):
         entity_id = str(entity.get(PDF_FIELD_ID, "") if entity else "")
-        return entity_id.startswith("#study-") or entity_id.startswith("#source-sample-")
+        return entity_id.startswith("#study-") or entity_id.startswith(
+            "#source-sample-"
+        )
 
     def should_skip_nested_entity(self, label, entity):
-        return self.normalized_display_key(label) == "assay" and self.is_assay_entity(entity)
+        return self.normalized_display_key(label) == "assay" and self.is_assay_entity(
+            entity
+        )
 
     def is_low_value_preview_row(self, row, parent_label=""):
         row_key = self.normalized_display_key(row.get("key"))
@@ -2947,13 +2999,19 @@ class ROCratePdfRenderer:
     def is_raw_property_name_list_row(self, row):
         if not self.normalized_display_key(row.get("key")).endswith("parametervalue"):
             return False
-        values = row.get("value") if isinstance(row.get("value"), list) else [row.get("value")]
+        values = (
+            row.get("value")
+            if isinstance(row.get("value"), list)
+            else [row.get("value")]
+        )
         tokens = []
         for value in values:
             if isinstance(value, str):
                 tokens.extend(value.split(","))
         tokens = [re.sub(r"^\d+\.\s*", "", token).strip() for token in tokens if token]
-        return bool(tokens) and all(PDF_PROPERTY_PREFIX_PATTERN.match(token) for token in tokens)
+        return bool(tokens) and all(
+            PDF_PROPERTY_PREFIX_PATTERN.match(token) for token in tokens
+        )
 
     def normalized_display_key(self, value):
         return re.sub(r"[^a-z0-9]+", "", str(value or "").lower())
@@ -2969,7 +3027,9 @@ class ROCratePdfRenderer:
         return f"{value} {unit}"
 
     def unit_for_measured_property(self, property_value, property_by_name):
-        unit_name = self.measuring_unit_property_name(property_value.get(PDF_FIELD_NAME))
+        unit_name = self.measuring_unit_property_name(
+            property_value.get(PDF_FIELD_NAME)
+        )
         if not unit_name:
             return ""
         return self.display_value(
@@ -3000,7 +3060,10 @@ class ROCratePdfRenderer:
                 in property_by_name
             )
         if property_name.endswith("measuring_unit"):
-            return re.sub(r"measuring_unit$", "measured_value", property_name) in property_by_name
+            return (
+                re.sub(r"measuring_unit$", "measured_value", property_name)
+                in property_by_name
+            )
         return False
 
     def duplicates_direct_entity_field(self, entity, property_name, property_value):
@@ -3014,7 +3077,9 @@ class ROCratePdfRenderer:
         direct_key = direct_key_map.get(normalized)
         if not direct_key or direct_key not in entity:
             return False
-        return self.display_value(entity.get(direct_key)) == self.display_value(property_value)
+        return self.display_value(entity.get(direct_key)) == self.display_value(
+            property_value
+        )
 
     def group_for_property(self, name, entity):
         model_name = self.model_name_for_property(name)
@@ -3039,10 +3104,12 @@ class ROCratePdfRenderer:
             if isinstance(prop, dict) and prop.get(PDF_FIELD_NAME):
                 first_property = prop.get(PDF_FIELD_NAME)
                 break
-        model_name = self.model_name_for_property(first_property) or self.model_name_for_id(
-            entity.get(PDF_FIELD_ID)
+        model_name = self.model_name_for_property(
+            first_property
+        ) or self.model_name_for_id(entity.get(PDF_FIELD_ID))
+        return (
+            f"{model_name or 'Linked Model'}: {self.entity_label(entity) or 'Record'}"
         )
-        return f"{model_name or 'Linked Model'}: {self.entity_label(entity) or 'Record'}"
 
     def model_name_for_id(self, entity_id):
         entity_id = str(entity_id or "")
@@ -3079,7 +3146,9 @@ class ROCratePdfRenderer:
             ]
         if isinstance(value, dict):
             if value.get(PDF_FIELD_ID):
-                return self.entity_label(self.entity_by_id(value.get(PDF_FIELD_ID)) or value)
+                return self.entity_label(
+                    self.entity_by_id(value.get(PDF_FIELD_ID)) or value
+                )
             return {
                 _pdf_label_for_field(key): displayed
                 for key, nested in value.items()
@@ -3108,7 +3177,9 @@ class ROCratePdfRenderer:
         return (
             self.is_empty(row.get("value"))
             or _pdf_is_hidden_field(row.get("key"))
-            or _pdf_is_hidden_field(PDF_PROPERTY_PREFIX_PATTERN.sub("", str(row.get("key"))))
+            or _pdf_is_hidden_field(
+                PDF_PROPERTY_PREFIX_PATTERN.sub("", str(row.get("key")))
+            )
         )
 
     def is_empty(self, value):
@@ -3122,7 +3193,10 @@ class ROCratePdfRenderer:
         seen = set()
         unique = []
         for row in rows:
-            key = (row.get("key"), json.dumps(row.get("value"), sort_keys=True, default=str))
+            key = (
+                row.get("key"),
+                json.dumps(row.get("value"), sort_keys=True, default=str),
+            )
             if key in seen:
                 continue
             seen.add(key)
@@ -3135,10 +3209,18 @@ class ROCratePdfRenderer:
 
     def _write_title(self, title):
         self.pdf.set_font(self.pdf.font_family, "B", 14)
-        self.pdf.cell(0, 8, self.pdf.safe_text(title), ln=1)
+        self.pdf.cell(
+            0, 8, self.pdf.safe_text(title), new_x=XPos.LMARGIN, new_y=YPos.NEXT
+        )
         self.pdf.set_font(self.pdf.font_family, "", 8)
         self.pdf.set_text_color(90, 110, 120)
-        self.pdf.cell(0, 5, self.pdf.safe_text("RO-Crate preview generated from Parkour metadata."), ln=1)
+        self.pdf.cell(
+            0,
+            5,
+            self.pdf.safe_text("RO-Crate preview generated from Parkour metadata."),
+            new_x=XPos.LMARGIN,
+            new_y=YPos.NEXT,
+        )
         self.pdf.set_text_color(16, 36, 47)
         self.pdf.ln(2)
 
@@ -3193,12 +3275,19 @@ class ROCratePdfRenderer:
     def _write_rows(self, rows):
         for row in rows:
             value = row.get("value")
-            if isinstance(value, list) and value and all(isinstance(item, dict) for item in value):
+            if (
+                isinstance(value, list)
+                and value
+                and all(isinstance(item, dict) for item in value)
+            ):
                 self._write_table(row.get("key"), value)
             elif isinstance(value, dict):
                 self._write_key_value(row.get("key"), "")
                 self._write_rows(
-                    [{"key": key, "value": nested_value} for key, nested_value in value.items()]
+                    [
+                        {"key": key, "value": nested_value}
+                        for key, nested_value in value.items()
+                    ]
                 )
             elif isinstance(value, list):
                 self._write_key_value(row.get("key"), "")
@@ -3237,7 +3326,9 @@ class ROCratePdfRenderer:
         for index, value in enumerate(values, start=1):
             self.pdf.set_x(self.pdf.l_margin + 6)
             self.pdf.set_font(self.pdf.font_family, "", 8.5)
-            self.pdf.multi_cell(0, 4.5, self.pdf.safe_text(f"{index}. {self._value_text(value)}"))
+            self.pdf.multi_cell(
+                0, 4.5, self.pdf.safe_text(f"{index}. {self._value_text(value)}")
+            )
 
     def _write_table(self, title, rows):
         self._write_key_value(title, "")
@@ -3248,14 +3339,20 @@ class ROCratePdfRenderer:
             columns = columns[:6]
         table_data = [["#", *columns]]
         for index, row in enumerate(rows, start=1):
-            table_data.append([str(index), *[self._value_text(row.get(column)) for column in columns]])
+            table_data.append(
+                [str(index), *[self._value_text(row.get(column)) for column in columns]]
+            )
         widths = [8, *[(self.pdf.epw - 8) / max(len(columns), 1)] * len(columns)]
         line_height = 4.2
         for row_index, cells in enumerate(table_data):
             max_lines = max(
                 1,
                 *[
-                    int(self.pdf.get_string_width(self.pdf.safe_text(cell)) / max(width - 2, 1)) + 1
+                    int(
+                        self.pdf.get_string_width(self.pdf.safe_text(cell))
+                        / max(width - 2, 1)
+                    )
+                    + 1
                     for cell, width in zip(cells, widths)
                 ],
             )
@@ -3265,7 +3362,9 @@ class ROCratePdfRenderer:
             x = self.pdf.get_x()
             y = self.pdf.get_y()
             for cell, width in zip(cells, widths):
-                self.pdf.set_font(self.pdf.font_family, "B" if row_index == 0 else "", 7.5)
+                self.pdf.set_font(
+                    self.pdf.font_family, "B" if row_index == 0 else "", 7.5
+                )
                 self.pdf.rect(x, y, width, row_height)
                 self.pdf.set_xy(x + 1, y)
                 self.pdf.multi_cell(

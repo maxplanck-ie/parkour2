@@ -92,6 +92,7 @@ export function librariesAndSamplesGroupHeader(
   const {
     requestDate = "",
     protocolLabel = "",
+    relatedProjectsLabel = "",
     showStaffActions = false,
     allowDelete = true,
     showApprovalTag = false,
@@ -99,9 +100,17 @@ export function librariesAndSamplesGroupHeader(
   } = options;
 
   const headerValue = requestDate ? `${requestDate} | ${value}` : value;
-  const metadata = `#: ${count} ${countLabel}, Total Depth: ${totalDepth}${
-    protocolLabel ? `, ${protocolLabel}` : ""
-  }`;
+  const metadataParts = [
+    `#: ${count} ${countLabel}`,
+    `Total Depth: ${totalDepth}`
+  ];
+  if (protocolLabel) {
+    metadataParts.push(protocolLabel);
+  }
+  if (relatedProjectsLabel) {
+    metadataParts.push(relatedProjectsLabel);
+  }
+  const metadata = metadataParts.join(", ");
 
   const staffActions = showStaffActions
     ? `
@@ -780,7 +789,12 @@ export function librariesAndSamplesExportColumns() {
       width: 15,
       excelType: "number"
     },
-    { header: "bp", key: "average_fragment_size", width: 12, excelType: "number" },
+    {
+      header: "bp",
+      key: "average_fragment_size",
+      width: 12,
+      excelType: "number"
+    },
     { header: "Index Type", key: "index_type_name", width: 15 },
     { header: "Coord", key: "coordinate", width: 12 },
     { header: "I7 ID", key: "i7_id", width: 15 },
@@ -788,7 +802,12 @@ export function librariesAndSamplesExportColumns() {
     { header: "I5 ID", key: "i5_id", width: 15 },
     { header: "Index I5", key: "index_i5", width: 15 },
     { header: "Length", key: "read_length_name", width: 12 },
-    { header: "Depth (M)", key: "sequencing_depth", width: 15, excelType: "number" },
+    {
+      header: "Depth (M)",
+      key: "sequencing_depth",
+      width: 15,
+      excelType: "number"
+    },
     { header: "Flowcell IDs", key: "flowcell_ids", width: 20 },
     { header: "Sequencers", key: "sequencer_names", width: 20 }
   ];
