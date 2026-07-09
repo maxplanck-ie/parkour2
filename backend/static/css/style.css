@@ -4,10 +4,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -150px;
-  margin-left: -175px;
-  width: 350px;
-  height: 300px;
+  margin-top: -175px;
+  margin-left: -210px;
+  width: 420px;
+  height: 350px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -25,6 +25,12 @@
 }
 .form-signin .checkbox {
   font-weight: normal;
+}
+.form-signin .form-signin-version {
+  display: block;
+  font-size: 60%;
+  font-weight: normal;
+  color: #888;
 }
 .form-signin .form-control {
   position: relative;
