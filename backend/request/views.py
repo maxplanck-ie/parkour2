@@ -773,7 +773,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Send an email to the PI."""
         error = ""
         instance = self.get_object()
-        subject = f"[ {settings.INSTANCE_TITLE} | pending approval ] "
+        subject = f"[ {settings.INSTANCE_NAME} | pending approval ] "
         subject += request.data.get("subject", "")
         message = request.data.get("message", "")
         include_records = json.loads(request.POST.get("include_records", "true"))
@@ -814,6 +814,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "message": message,
                         "token_url": f"{url_scheme}://{url_domain}/api/approve/this/?pk={instance.id}&{url_query}",
                         "records": records,
+                        "instance_title": settings.INSTANCE_TITLE,
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
@@ -848,7 +849,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 records = sorted(records, key=lambda x: x.barcode[3:])
 
             send_mail(
-                subject=f"[ {settings.INSTANCE_TITLE} | new message ] " + subject,
+                subject=f"[ {settings.INSTANCE_NAME} | new message ] " + subject,
                 message="",
                 html_message=render_to_string(
                     "email.html",
@@ -856,6 +857,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "full_name": instance.user.full_name,
                         "message": message,
                         "records": records,
+                        "instance_title": settings.INSTANCE_TITLE,
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
@@ -1144,13 +1146,14 @@ class ApproveViewSet(viewsets.ModelViewSet):
             logger.exception(e)
             return JsonResponse({"success": not error, "error": error})
         send_mail(
-            subject=f"[ {settings.INSTANCE_TITLE} | request approved ] {instance.name}",
+            subject=f"[ {settings.INSTANCE_NAME} | request approved ] {instance.name}",
             message="",
             html_message=render_to_string(
                 "approved.html",
                 {
                     "full_name": instance.user.full_name,
                     "pi_name": instance.user.pi.name,
+                    "instance_title": settings.INSTANCE_TITLE,
                 },
             ),
             from_email=settings.SERVER_EMAIL,
