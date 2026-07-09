@@ -1072,7 +1072,8 @@ export default {
       if (!this.requiresStrictStartCoordinate) {
         this.startCoordinateOptions = [];
         if (!this.selectedStartCoordinate) {
-          this.selectedStartCoordinate = INDEX_GENERATOR_DEFAULTS.startCoordinate;
+          this.selectedStartCoordinate =
+            INDEX_GENERATOR_DEFAULTS.startCoordinate;
         }
         return;
       }
@@ -1121,8 +1122,7 @@ export default {
           this.selectedStartCoordinate =
             response.data?.[
               INDEX_GENERATOR_RESPONSE_KEYS.defaultStartCoordinate
-            ] ||
-            this.startCoordinateOptions[0];
+            ] || this.startCoordinateOptions[0];
         }
 
         const allowedDirections = this.directionOptions.map(
@@ -1387,7 +1387,10 @@ export default {
       const rowsToAddKeys = rowsToAddSource.map((row) => row[fields.rowKey]);
 
       if (!rowsToAddKeys.length) {
-        showNotification("Selected records are already in the pool.", "warning");
+        showNotification(
+          "Selected records are already in the pool.",
+          "warning"
+        );
         return;
       }
 
@@ -1492,9 +1495,9 @@ export default {
     },
     sortPoolRows(rows) {
       return [...rows].sort((left, right) => {
-        const requestCompare = String(left[fields.requestName] || "").localeCompare(
-          String(right[fields.requestName] || "")
-        );
+        const requestCompare = String(
+          left[fields.requestName] || ""
+        ).localeCompare(String(right[fields.requestName] || ""));
         if (requestCompare !== 0) return requestCompare;
         return String(left[fields.barcode] || "").localeCompare(
           String(right[fields.barcode] || "")
@@ -1554,7 +1557,9 @@ export default {
       this.selectedPoolSizeId = selectedPoolSize ? selectedPoolSize.id : null;
     },
     isNanoporeProtocol(row) {
-      const protocol = String(row[fields.libraryProtocolName] || "").toLowerCase();
+      const protocol = String(
+        row[fields.libraryProtocolName] || ""
+      ).toLowerCase();
       return INDEX_GENERATOR_PROTOCOL_PATTERNS.nanopore.test(protocol);
     },
     async updateRecordField(row, field, value, previousValue = undefined) {
@@ -1602,7 +1607,10 @@ export default {
           ])
         });
 
-        if (field === fields.readLength && normalizedValue !== previousReadLength) {
+        if (
+          field === fields.readLength &&
+          normalizedValue !== previousReadLength
+        ) {
           const undoEntry = [
             {
               [fields.rowKey]: row[fields.rowKey],
@@ -1767,7 +1775,8 @@ export default {
           {
             [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.libraries]:
               JSON.stringify(libraries),
-            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples]: JSON.stringify(samples),
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples]:
+              JSON.stringify(samples),
             [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.startCoordinate]:
               normalizedStart,
             [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.direction]:
@@ -1931,10 +1940,8 @@ export default {
         const greenPct = Math.round((green / total) * 100);
         const redPct = Math.round((red / total) * 100);
         const problematic =
-          (greenPct <
-            INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
-            redPct >
-              INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent) ||
+          (greenPct < INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
+            redPct > INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent) ||
           (redPct < INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
             greenPct > INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent);
 
@@ -2447,10 +2454,7 @@ export default {
     display: contents;
   }
 
-  :is(
-    .pool-size-select,
-    .header-generate-controls .pool-size-select
-  ) {
+  :is(.pool-size-select, .header-generate-controls .pool-size-select) {
     flex: 0 1 112px;
     width: auto;
     min-width: 90px;
@@ -2482,10 +2486,7 @@ export default {
     white-space: normal;
   }
 
-  :is(
-    .pool-size-select,
-    .header-generate-controls .pool-size-select
-  ) {
+  :is(.pool-size-select, .header-generate-controls .pool-size-select) {
     flex-basis: 106px;
   }
 

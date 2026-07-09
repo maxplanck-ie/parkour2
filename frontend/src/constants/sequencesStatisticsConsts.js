@@ -17,7 +17,8 @@ function escapeHtml(value) {
 }
 
 function ellipsisContainer(value, align = "left", nativeTitle = true) {
-  const finalValue = value === null || value === undefined || value === "" ? "-" : value;
+  const finalValue =
+    value === null || value === undefined || value === "" ? "-" : value;
   const escapedValue = escapeHtml(finalValue);
   const justifyContent = align === "right" ? "flex-end" : "flex-start";
   const titleAttr = nativeTitle ? ` title="${escapedValue}"` : "";
@@ -33,7 +34,8 @@ function textFormatter(align = "left", nativeTitle = true) {
 }
 
 function fixedFormatter(digits = 2) {
-  return (cell) => ellipsisContainer(fixedNumber(cell.getValue(), digits), "right");
+  return (cell) =>
+    ellipsisContainer(fixedNumber(cell.getValue(), digits), "right");
 }
 
 function withSequencesStatisticsColumnDefaults(columns) {
@@ -245,7 +247,9 @@ export function uniqueSequencesStatisticsValues(rows, field) {
     ...new Set(
       rows
         .map((row) => row[field])
-        .filter((value) => value !== null && value !== undefined && value !== "")
+        .filter(
+          (value) => value !== null && value !== undefined && value !== ""
+        )
         .map(String)
     )
   ].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
@@ -266,7 +270,12 @@ export function sequencesStatisticsRowMatchesSearch(row, query) {
 export function sequencesStatisticsExportColumns() {
   return [
     { header: "Flowcell ID", key: "flowcell_id", width: 18, excelType: "text" },
-    { header: "Date", key: "create_time_display", width: 14, excelType: "text" },
+    {
+      header: "Date",
+      key: "create_time_display",
+      width: 14,
+      excelType: "text"
+    },
     { header: "Sequencer", key: "sequencer", width: 22, excelType: "text" },
     { header: "Request", key: "request", width: 28, excelType: "text" },
     { header: "Barcode", key: "barcode", width: 16, excelType: "text" },
@@ -333,6 +342,11 @@ export function sequencesStatisticsExportColumns() {
       excelType: "number",
       decimalPlaces: 2
     },
-    { header: "Insert Size", key: "insert_size", width: 16, excelType: "number" }
+    {
+      header: "Insert Size",
+      key: "insert_size",
+      width: 16,
+      excelType: "number"
+    }
   ];
 }

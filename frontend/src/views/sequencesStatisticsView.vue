@@ -18,11 +18,7 @@
 
       <div class="sticky-actions">
         <div class="search-bar">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search"
-          />
+          <input v-model="searchQuery" type="text" placeholder="Search" />
           <font-awesome-icon
             icon="fa-solid fa-magnifying-glass"
             style="color: darkgrey"
@@ -452,9 +448,7 @@
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button class="popup-button" @click="closeExportPopup">
-            Cancel
-          </button>
+          <button class="popup-button" @click="closeExportPopup">Cancel</button>
         </div>
       </div>
     </div>
@@ -516,512 +510,531 @@ export default {
     LiteTabulatorTable
   },
   setup() {
-const tableRef = ref(null);
-const loading = ref(true);
-const fakeLoading = ref(false);
-const rows = ref([]);
-const columnsList = ref([]);
-const searchQuery = ref("");
-const showExportPopup = ref(false);
-const showExportHelpTooltip = ref(false);
-const isDragOver = ref(false);
-const uploadedExportTemplates = ref([]);
-const selectedFile = ref(DEFAULT_EXPORT_TEMPLATE_SELECTION);
-const exportSelection = ref("selected");
-const startDateString = ref(formatDateForInput(twoMonthsAgo));
-const endDateString = ref(formatDateForInput(today));
-const startDateValid = ref(true);
-const endDateValid = ref(true);
-const showAdvancedFilters = ref(false);
-const showSelectColumns = ref(false);
-const filters = reactive({
-  sequencer: "",
-  protocol: "",
-  analysisType: ""
-});
-let dateTimer = null;
+    const tableRef = ref(null);
+    const loading = ref(true);
+    const fakeLoading = ref(false);
+    const rows = ref([]);
+    const columnsList = ref([]);
+    const searchQuery = ref("");
+    const showExportPopup = ref(false);
+    const showExportHelpTooltip = ref(false);
+    const isDragOver = ref(false);
+    const uploadedExportTemplates = ref([]);
+    const selectedFile = ref(DEFAULT_EXPORT_TEMPLATE_SELECTION);
+    const exportSelection = ref("selected");
+    const startDateString = ref(formatDateForInput(twoMonthsAgo));
+    const endDateString = ref(formatDateForInput(today));
+    const startDateValid = ref(true);
+    const endDateValid = ref(true);
+    const showAdvancedFilters = ref(false);
+    const showSelectColumns = ref(false);
+    const filters = reactive({
+      sequencer: "",
+      protocol: "",
+      analysisType: ""
+    });
+    let dateTimer = null;
 
-const tableOptions = {
-  index: "row_id",
-  placeholder: "No sequenced samples statistics to show.",
-  initialSort: [{ column: "barcode", dir: "asc" }],
-  groupHeader: sequencesStatisticsGroupHeader,
-  fakeLoadingStart,
-  fakeLoadingStop,
-  groupContextMenu: [
-    {
-      label: "Select All",
-      action: (event, group) => setGroupSelection(group.getKey(), true)
-    },
-    {
-      label: "Unselect All",
-      action: (event, group) => setGroupSelection(group.getKey(), false)
-    }
-  ],
-  handleColumnResized: (column) => {
-    const field = column.getField();
-    if (!field) return;
-    const widths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
-    localStorage.setItem(
-      WIDTHS_KEY,
-      JSON.stringify({ ...widths, [field]: column.getWidth() })
-    );
-    flashTableLoading(50);
-  },
-  handleColumnVisibilityChanged: (field, visible) => {
-    if (!field) return;
-    const visibility = JSON.parse(
-      localStorage.getItem(VISIBILITY_KEY) || "{}"
-    );
-    localStorage.setItem(
-      VISIBILITY_KEY,
-      JSON.stringify({ ...visibility, [field]: visible })
-    );
-    const definition = columnsList.value.find((column) => column.field === field);
-    if (definition) definition.visible = visible;
-    flashTableLoading(50);
-  }
-};
-
-const sequencerOptions = computed(() =>
-  uniqueSequencesStatisticsValues(rows.value, "sequencer")
-);
-const protocolOptions = computed(() =>
-  uniqueSequencesStatisticsValues(rows.value, "library_protocol")
-);
-const analysisTypeOptions = computed(() =>
-  uniqueSequencesStatisticsValues(rows.value, "library_type")
-);
-const filteredRows = computed(() =>
-  rows.value.filter(
-    (row) =>
-      sequencesStatisticsRowMatchesSearch(row, searchQuery.value) &&
-      (!filters.sequencer || row.sequencer === filters.sequencer) &&
-      (!filters.protocol || row.library_protocol === filters.protocol) &&
-      (!filters.analysisType || row.library_type === filters.analysisType)
-  )
-);
-const hasSelectedRows = computed(() => rows.value.some((row) => row.selected));
-
-function setColumns() {
-  const storedVisibility = JSON.parse(
-    localStorage.getItem(VISIBILITY_KEY) || "{}"
-  );
-  const storedWidths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
-
-  const applySettings = (columns) => {
-    return columns.map((column) => {
-      if (column.field) {
-        if (Object.prototype.hasOwnProperty.call(storedWidths, column.field)) {
-          column.width = storedWidths[column.field];
-          if (column.minWidth && column.width < column.minWidth) {
-            column.width = column.minWidth;
-          }
+    const tableOptions = {
+      index: "row_id",
+      placeholder: "No sequenced samples statistics to show.",
+      initialSort: [{ column: "barcode", dir: "asc" }],
+      groupHeader: sequencesStatisticsGroupHeader,
+      fakeLoadingStart,
+      fakeLoadingStop,
+      groupContextMenu: [
+        {
+          label: "Select All",
+          action: (event, group) => setGroupSelection(group.getKey(), true)
+        },
+        {
+          label: "Unselect All",
+          action: (event, group) => setGroupSelection(group.getKey(), false)
         }
-        if (
-          Object.prototype.hasOwnProperty.call(storedVisibility, column.field)
-        ) {
-          column.visible = storedVisibility[column.field];
-        } else {
-          column.visible = column.visible ?? true;
-        }
+      ],
+      handleColumnResized: (column) => {
+        const field = column.getField();
+        if (!field) return;
+        const widths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
+        localStorage.setItem(
+          WIDTHS_KEY,
+          JSON.stringify({ ...widths, [field]: column.getWidth() })
+        );
+        flashTableLoading(50);
+      },
+      handleColumnVisibilityChanged: (field, visible) => {
+        if (!field) return;
+        const visibility = JSON.parse(
+          localStorage.getItem(VISIBILITY_KEY) || "{}"
+        );
+        localStorage.setItem(
+          VISIBILITY_KEY,
+          JSON.stringify({ ...visibility, [field]: visible })
+        );
+        const definition = columnsList.value.find(
+          (column) => column.field === field
+        );
+        if (definition) definition.visible = visible;
+        flashTableLoading(50);
       }
-      return column;
-    });
-  };
+    };
 
-  columnsList.value = applySettings(
-    sequencesStatisticsColumnDefs(updateSourceSelection)
-  );
-  const selectionColumn = columnsList.value.find(
-    (column) => column.field === "selected"
-  );
-  if (selectionColumn) selectionColumn.visible = true;
-  const hasVisibleDataColumn = columnsList.value.some(
-    (column) => column.field !== "selected" && column.visible !== false
-  );
-  if (!hasVisibleDataColumn) {
-    columnsList.value.forEach((column) => {
-      if (column.field !== "selected") column.visible = true;
-    });
-    localStorage.removeItem(VISIBILITY_KEY);
-  }
-}
-
-function updateSourceSelection(rowId, selected) {
-  const row = rows.value.find((item) => item.row_id === rowId);
-  if (row) row.selected = selected;
-}
-
-function setGroupSelection(groupKey, selected) {
-  rows.value.forEach((row) => {
-    if (row.flowcell_group === groupKey) row.selected = selected;
-  });
-  const group = tableRef.value
-    ?.getTable()
-    ?.getGroups()
-    .find((item) => item.getKey() === groupKey);
-  if (group && group._group && !group._group.visible) {
-    group.getElement()?.click();
-  }
-  group?.getRows().forEach((row) => row.update({ selected }));
-}
-
-function handleGroupButtonClick(event, groupValue, action) {
-  event?.stopPropagation?.();
-  if (action === "selectAll") {
-    setGroupSelection(groupValue, true);
-    return;
-  }
-  if (action === "deselectAll") {
-    setGroupSelection(groupValue, false);
-  }
-}
-
-async function fetchRows() {
-  if (!validateDateRange()) return;
-  loading.value = true;
-  try {
-    const response = await axiosRef.get(
-      `${urlStringStart}/api/sequences_statistics/`,
-      {
-        params: {
-          start: `${startDateString.value}T00:00:00`,
-          end: `${endDateString.value}T23:59:59`
-        }
-      }
+    const sequencerOptions = computed(() =>
+      uniqueSequencesStatisticsValues(rows.value, "sequencer")
     );
-    rows.value = response.data.map((row, index) => {
-      const requested = Number(row.reads_pf_requested);
-      const sequenced = Number(row.reads_pf_sequenced);
-      const readsPercent =
-        Number.isFinite(requested) &&
-        requested > 0 &&
-        Number.isFinite(sequenced)
-          ? (sequenced / 1000000 / requested) * 100
-          : "";
-      return {
-        ...row,
-        selected: false,
-        row_id: `${row.pk}_${row.barcode || index}`,
-        lane_display: Array.isArray(row.lane) ? row.lane.join(", ") : row.lane,
-        reads_percent: readsPercent,
-        reads_pf_sequenced_m:
-          row.reads_pf_sequenced === null ||
-          row.reads_pf_sequenced === undefined ||
-          row.reads_pf_sequenced === ""
-            ? ""
-            : Number(row.reads_pf_sequenced) / 1000000,
-        flowcell_group: `${row.pk}_${row.flowcell_id || ""}`,
-        create_time_display: formatSequencesStatisticsDate(row.create_time)
-      };
-    });
-  } catch (error) {
-    handleError(error);
-    rows.value = [];
-  } finally {
-    loading.value = false;
-  }
-}
-
-function validateDateRange() {
-  startDateValid.value = isValidDate(startDateString.value);
-  endDateValid.value = isValidDate(endDateString.value);
-  if (!startDateValid.value || !endDateValid.value) return false;
-  if (startDateString.value > endDateString.value) {
-    startDateValid.value = false;
-    endDateValid.value = false;
-    showNotification("Start date must precede end date.", "warning");
-    return false;
-  }
-  return true;
-}
-
-function scheduleDateReload() {
-  clearTimeout(dateTimer);
-  dateTimer = setTimeout(fetchRows, DATE_FILTER_DEBOUNCE_MS);
-}
-
-function handleDateChange(type, value) {
-  if (type === "start") {
-    startDateString.value = value;
-    startDateValid.value = isValidDate(value);
-  } else {
-    endDateString.value = value;
-    endDateValid.value = isValidDate(value);
-  }
-  if (!startDateValid.value || !endDateValid.value) return;
-  scheduleDateReload();
-}
-
-function toggleAdvancedFilters() {
-  showAdvancedFilters.value = !showAdvancedFilters.value;
-  if (showAdvancedFilters.value) showSelectColumns.value = false;
-}
-
-function toggleSelectColumns() {
-  showSelectColumns.value = !showSelectColumns.value;
-  if (showSelectColumns.value) showAdvancedFilters.value = false;
-}
-
-function resetAdvancedFilters() {
-  Object.assign(filters, { sequencer: "", protocol: "", analysisType: "" });
-}
-
-function handleExportClick() {
-  exportSelection.value = hasSelectedRows.value ? "selected" : "all";
-  showExportPopup.value = true;
-  showExportHelpTooltip.value = false;
-  isDragOver.value = false;
-  showAdvancedFilters.value = false;
-  showSelectColumns.value = false;
-}
-
-function closeExportPopup() {
-  showExportPopup.value = false;
-  showExportHelpTooltip.value = false;
-  isDragOver.value = false;
-  selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
-}
-
-async function fetchExportTemplates() {
-  try {
-    const response = await axiosRef.get(`${TEMPLATE_API_URL}/`);
-    uploadedExportTemplates.value = response.data;
-  } catch (error) {
-    handleError(error);
-  }
-}
-
-async function uploadExportTemplate(event) {
-  const file = event.target.files?.[0];
-  await uploadExportTemplateFile(file);
-  event.target.value = "";
-}
-
-async function downloadExportTemplate(file) {
-  if (!file?.id) return;
-  try {
-    const response = await axiosRef.get(`${TEMPLATE_API_URL}/${file.id}/download/`, {
-      responseType: "blob"
-    });
-    saveAs(
-      response.data,
-      buildExcelDownloadFilename(
-        "SequenceStatistics",
-        file.name,
-        response.data?.type
+    const protocolOptions = computed(() =>
+      uniqueSequencesStatisticsValues(rows.value, "library_protocol")
+    );
+    const analysisTypeOptions = computed(() =>
+      uniqueSequencesStatisticsValues(rows.value, "library_type")
+    );
+    const filteredRows = computed(() =>
+      rows.value.filter(
+        (row) =>
+          sequencesStatisticsRowMatchesSearch(row, searchQuery.value) &&
+          (!filters.sequencer || row.sequencer === filters.sequencer) &&
+          (!filters.protocol || row.library_protocol === filters.protocol) &&
+          (!filters.analysisType || row.library_type === filters.analysisType)
       )
     );
-  } catch {
-    showNotification("File download failed.", "error");
-  }
-}
+    const hasSelectedRows = computed(() =>
+      rows.value.some((row) => row.selected)
+    );
 
-async function removeExportTemplate(index) {
-  const file = uploadedExportTemplates.value[index];
-  if (!file?.id) return;
-  try {
-    await axiosRef.delete(`${TEMPLATE_API_URL}/${file.id}/remove/`);
-    uploadedExportTemplates.value.splice(index, 1);
-    showNotification("File removed successfully.", "success");
-  } catch {
-    showNotification("File removal failed.", "error");
-  } finally {
-    selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
-  }
-}
+    function setColumns() {
+      const storedVisibility = JSON.parse(
+        localStorage.getItem(VISIBILITY_KEY) || "{}"
+      );
+      const storedWidths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
 
-function handleDragOver(event) {
-  event.preventDefault();
-  isDragOver.value = true;
-}
+      const applySettings = (columns) => {
+        return columns.map((column) => {
+          if (column.field) {
+            if (
+              Object.prototype.hasOwnProperty.call(storedWidths, column.field)
+            ) {
+              column.width = storedWidths[column.field];
+              if (column.minWidth && column.width < column.minWidth) {
+                column.width = column.minWidth;
+              }
+            }
+            if (
+              Object.prototype.hasOwnProperty.call(
+                storedVisibility,
+                column.field
+              )
+            ) {
+              column.visible = storedVisibility[column.field];
+            } else {
+              column.visible = column.visible ?? true;
+            }
+          }
+          return column;
+        });
+      };
 
-function handleDragEnter(event) {
-  event.preventDefault();
-  isDragOver.value = true;
-}
-
-function handleDragLeave(event) {
-  if (!event.currentTarget.contains(event.relatedTarget)) {
-    isDragOver.value = false;
-  }
-}
-
-async function handleDrop(event) {
-  event.preventDefault();
-  isDragOver.value = false;
-  const files = event.dataTransfer.files;
-  if (files.length > 1) {
-    showNotification("Upload only one XLSX or XLSM file.", "error");
-    return;
-  }
-  await uploadExportTemplateFile(files[0]);
-}
-
-async function uploadExportTemplateFile(file) {
-  if (!file) return;
-  if (!isSupportedExcelTemplateFile(file)) {
-    showNotification("Upload a valid XLSX or XLSM file.", "error");
-    return;
-  }
-  const formData = new FormData();
-  formData.append("file", file);
-  try {
-    await axiosRef.post(`${TEMPLATE_API_URL}/upload/`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
+      columnsList.value = applySettings(
+        sequencesStatisticsColumnDefs(updateSourceSelection)
+      );
+      const selectionColumn = columnsList.value.find(
+        (column) => column.field === "selected"
+      );
+      if (selectionColumn) selectionColumn.visible = true;
+      const hasVisibleDataColumn = columnsList.value.some(
+        (column) => column.field !== "selected" && column.visible !== false
+      );
+      if (!hasVisibleDataColumn) {
+        columnsList.value.forEach((column) => {
+          if (column.field !== "selected") column.visible = true;
+        });
+        localStorage.removeItem(VISIBILITY_KEY);
       }
+    }
+
+    function updateSourceSelection(rowId, selected) {
+      const row = rows.value.find((item) => item.row_id === rowId);
+      if (row) row.selected = selected;
+    }
+
+    function setGroupSelection(groupKey, selected) {
+      rows.value.forEach((row) => {
+        if (row.flowcell_group === groupKey) row.selected = selected;
+      });
+      const group = tableRef.value
+        ?.getTable()
+        ?.getGroups()
+        .find((item) => item.getKey() === groupKey);
+      if (group && group._group && !group._group.visible) {
+        group.getElement()?.click();
+      }
+      group?.getRows().forEach((row) => row.update({ selected }));
+    }
+
+    function handleGroupButtonClick(event, groupValue, action) {
+      event?.stopPropagation?.();
+      if (action === "selectAll") {
+        setGroupSelection(groupValue, true);
+        return;
+      }
+      if (action === "deselectAll") {
+        setGroupSelection(groupValue, false);
+      }
+    }
+
+    async function fetchRows() {
+      if (!validateDateRange()) return;
+      loading.value = true;
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/sequences_statistics/`,
+          {
+            params: {
+              start: `${startDateString.value}T00:00:00`,
+              end: `${endDateString.value}T23:59:59`
+            }
+          }
+        );
+        rows.value = response.data.map((row, index) => {
+          const requested = Number(row.reads_pf_requested);
+          const sequenced = Number(row.reads_pf_sequenced);
+          const readsPercent =
+            Number.isFinite(requested) &&
+            requested > 0 &&
+            Number.isFinite(sequenced)
+              ? (sequenced / 1000000 / requested) * 100
+              : "";
+          return {
+            ...row,
+            selected: false,
+            row_id: `${row.pk}_${row.barcode || index}`,
+            lane_display: Array.isArray(row.lane)
+              ? row.lane.join(", ")
+              : row.lane,
+            reads_percent: readsPercent,
+            reads_pf_sequenced_m:
+              row.reads_pf_sequenced === null ||
+              row.reads_pf_sequenced === undefined ||
+              row.reads_pf_sequenced === ""
+                ? ""
+                : Number(row.reads_pf_sequenced) / 1000000,
+            flowcell_group: `${row.pk}_${row.flowcell_id || ""}`,
+            create_time_display: formatSequencesStatisticsDate(row.create_time)
+          };
+        });
+      } catch (error) {
+        handleError(error);
+        rows.value = [];
+      } finally {
+        loading.value = false;
+      }
+    }
+
+    function validateDateRange() {
+      startDateValid.value = isValidDate(startDateString.value);
+      endDateValid.value = isValidDate(endDateString.value);
+      if (!startDateValid.value || !endDateValid.value) return false;
+      if (startDateString.value > endDateString.value) {
+        startDateValid.value = false;
+        endDateValid.value = false;
+        showNotification("Start date must precede end date.", "warning");
+        return false;
+      }
+      return true;
+    }
+
+    function scheduleDateReload() {
+      clearTimeout(dateTimer);
+      dateTimer = setTimeout(fetchRows, DATE_FILTER_DEBOUNCE_MS);
+    }
+
+    function handleDateChange(type, value) {
+      if (type === "start") {
+        startDateString.value = value;
+        startDateValid.value = isValidDate(value);
+      } else {
+        endDateString.value = value;
+        endDateValid.value = isValidDate(value);
+      }
+      if (!startDateValid.value || !endDateValid.value) return;
+      scheduleDateReload();
+    }
+
+    function toggleAdvancedFilters() {
+      showAdvancedFilters.value = !showAdvancedFilters.value;
+      if (showAdvancedFilters.value) showSelectColumns.value = false;
+    }
+
+    function toggleSelectColumns() {
+      showSelectColumns.value = !showSelectColumns.value;
+      if (showSelectColumns.value) showAdvancedFilters.value = false;
+    }
+
+    function resetAdvancedFilters() {
+      Object.assign(filters, { sequencer: "", protocol: "", analysisType: "" });
+    }
+
+    function handleExportClick() {
+      exportSelection.value = hasSelectedRows.value ? "selected" : "all";
+      showExportPopup.value = true;
+      showExportHelpTooltip.value = false;
+      isDragOver.value = false;
+      showAdvancedFilters.value = false;
+      showSelectColumns.value = false;
+    }
+
+    function closeExportPopup() {
+      showExportPopup.value = false;
+      showExportHelpTooltip.value = false;
+      isDragOver.value = false;
+      selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
+    }
+
+    async function fetchExportTemplates() {
+      try {
+        const response = await axiosRef.get(`${TEMPLATE_API_URL}/`);
+        uploadedExportTemplates.value = response.data;
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    async function uploadExportTemplate(event) {
+      const file = event.target.files?.[0];
+      await uploadExportTemplateFile(file);
+      event.target.value = "";
+    }
+
+    async function downloadExportTemplate(file) {
+      if (!file?.id) return;
+      try {
+        const response = await axiosRef.get(
+          `${TEMPLATE_API_URL}/${file.id}/download/`,
+          {
+            responseType: "blob"
+          }
+        );
+        saveAs(
+          response.data,
+          buildExcelDownloadFilename(
+            "SequenceStatistics",
+            file.name,
+            response.data?.type
+          )
+        );
+      } catch {
+        showNotification("File download failed.", "error");
+      }
+    }
+
+    async function removeExportTemplate(index) {
+      const file = uploadedExportTemplates.value[index];
+      if (!file?.id) return;
+      try {
+        await axiosRef.delete(`${TEMPLATE_API_URL}/${file.id}/remove/`);
+        uploadedExportTemplates.value.splice(index, 1);
+        showNotification("File removed successfully.", "success");
+      } catch {
+        showNotification("File removal failed.", "error");
+      } finally {
+        selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
+      }
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+      isDragOver.value = true;
+    }
+
+    function handleDragEnter(event) {
+      event.preventDefault();
+      isDragOver.value = true;
+    }
+
+    function handleDragLeave(event) {
+      if (!event.currentTarget.contains(event.relatedTarget)) {
+        isDragOver.value = false;
+      }
+    }
+
+    async function handleDrop(event) {
+      event.preventDefault();
+      isDragOver.value = false;
+      const files = event.dataTransfer.files;
+      if (files.length > 1) {
+        showNotification("Upload only one XLSX or XLSM file.", "error");
+        return;
+      }
+      await uploadExportTemplateFile(files[0]);
+    }
+
+    async function uploadExportTemplateFile(file) {
+      if (!file) return;
+      if (!isSupportedExcelTemplateFile(file)) {
+        showNotification("Upload a valid XLSX or XLSM file.", "error");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        await axiosRef.post(`${TEMPLATE_API_URL}/upload/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
+        showNotification("File uploaded successfully.", "success");
+        await fetchExportTemplates();
+      } catch {
+        showNotification("File upload failed.", "error");
+      } finally {
+        selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
+      }
+    }
+
+    async function handleExport() {
+      const exportRows = getRowsForExport();
+      if (!exportRows.length) {
+        showNotification(
+          "No sequenced samples statistics available for export.",
+          "warning"
+        );
+        return;
+      }
+      try {
+        const formattedDate = new Date().toISOString().split("T")[0];
+        const selectedTemplate =
+          selectedFile.value !== DEFAULT_EXPORT_TEMPLATE_SELECTION
+            ? selectedFile.value
+            : null;
+        const filename =
+          exportSelection.value === "selected"
+            ? `${formattedDate}_selected_sequence_statistics`
+            : `${formattedDate}_sequence_statistics`;
+        const blob = await createExcelExportBlob({
+          rows: exportRows,
+          exportColumns: sequencesStatisticsExportColumns(),
+          axiosInstance: axiosRef,
+          templateDownloadUrl:
+            selectedTemplate !== null
+              ? `${TEMPLATE_API_URL}/${selectedTemplate.id}/download/`
+              : null,
+          templateFileName: selectedTemplate?.name || ""
+        });
+        saveAs(
+          blob,
+          buildExcelExportFilename(filename, selectedTemplate?.name || "")
+        );
+      } catch (error) {
+        showNotification(
+          "Error during export. Please try again.\n" + error,
+          "error"
+        );
+      } finally {
+        closeExportPopup();
+      }
+    }
+
+    function getRowsForExport() {
+      return exportSelection.value === "selected"
+        ? rows.value.filter((row) => row.selected)
+        : filteredRows.value;
+    }
+
+    function toggleColumnVisibility(column) {
+      tableRef.value?.getTable()?.toggleColumn(column.field);
+    }
+
+    async function resetColumnVisibility() {
+      localStorage.removeItem(VISIBILITY_KEY);
+      setColumns();
+      flashTableLoading();
+      await nextTick();
+    }
+
+    async function resetColumnWidths() {
+      localStorage.removeItem(WIDTHS_KEY);
+      setColumns();
+      flashTableLoading();
+      await nextTick();
+    }
+
+    function flashTableLoading(delay = 300) {
+      fakeLoadingStart();
+      setTimeout(fakeLoadingStop, delay);
+    }
+
+    function fakeLoadingStart() {
+      fakeLoading.value = true;
+    }
+
+    function fakeLoadingStop() {
+      setTimeout(() => {
+        fakeLoading.value = false;
+      }, 300);
+    }
+
+    function handleDocumentClick(event) {
+      const advancedPopup = document.getElementById(
+        "sequencesAdvancedFiltersPopup"
+      );
+      const advancedButton = document.getElementById(
+        "toggleSequencesAdvancedFiltersButton"
+      );
+      const columnsPopup = document.getElementById(
+        "sequencesSelectColumnsPopup"
+      );
+      const columnsButton = document.getElementById(
+        "toggleSequencesSelectColumnsButton"
+      );
+      const exportPopup = document.querySelector(".statistics-export-popup");
+      const exportButton = document.getElementById(
+        "openSequencesStatisticsExportPopupButton"
+      );
+      if (
+        showAdvancedFilters.value &&
+        !advancedPopup?.contains(event.target) &&
+        !advancedButton?.contains(event.target)
+      ) {
+        showAdvancedFilters.value = false;
+      }
+      if (
+        showSelectColumns.value &&
+        !columnsPopup?.contains(event.target) &&
+        !columnsButton?.contains(event.target)
+      ) {
+        showSelectColumns.value = false;
+      }
+      if (
+        showExportPopup.value &&
+        !exportPopup?.contains(event.target) &&
+        !exportButton?.contains(event.target)
+      ) {
+        closeExportPopup();
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key !== "Escape") return;
+      showAdvancedFilters.value = false;
+      showSelectColumns.value = false;
+      closeExportPopup();
+    }
+
+    onMounted(() => {
+      fetchRows();
+      fetchExportTemplates();
+      window.handleGroupButtonClick = handleGroupButtonClick;
+      document.addEventListener("click", handleDocumentClick);
+      document.addEventListener("keydown", handleKeyDown);
     });
-    showNotification("File uploaded successfully.", "success");
-    await fetchExportTemplates();
-  } catch {
-    showNotification("File upload failed.", "error");
-  } finally {
-    selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
-  }
-}
 
-async function handleExport() {
-  const exportRows = getRowsForExport();
-  if (!exportRows.length) {
-    showNotification(
-      "No sequenced samples statistics available for export.",
-      "warning"
-    );
-    return;
-  }
-  try {
-    const formattedDate = new Date().toISOString().split("T")[0];
-    const selectedTemplate =
-      selectedFile.value !== DEFAULT_EXPORT_TEMPLATE_SELECTION
-        ? selectedFile.value
-        : null;
-    const filename =
-      exportSelection.value === "selected"
-        ? `${formattedDate}_selected_sequence_statistics`
-        : `${formattedDate}_sequence_statistics`;
-    const blob = await createExcelExportBlob({
-      rows: exportRows,
-      exportColumns: sequencesStatisticsExportColumns(),
-      axiosInstance: axiosRef,
-      templateDownloadUrl:
-        selectedTemplate !== null
-          ? `${TEMPLATE_API_URL}/${selectedTemplate.id}/download/`
-          : null,
-      templateFileName: selectedTemplate?.name || ""
+    onBeforeUnmount(() => {
+      clearTimeout(dateTimer);
+      window.handleGroupButtonClick = null;
+      document.removeEventListener("click", handleDocumentClick);
+      document.removeEventListener("keydown", handleKeyDown);
     });
-    saveAs(
-      blob,
-      buildExcelExportFilename(filename, selectedTemplate?.name || "")
-    );
-  } catch (error) {
-    showNotification("Error during export. Please try again.\n" + error, "error");
-  } finally {
-    closeExportPopup();
-  }
-}
 
-function getRowsForExport() {
-  return exportSelection.value === "selected"
-    ? rows.value.filter((row) => row.selected)
-    : filteredRows.value;
-}
-
-function toggleColumnVisibility(column) {
-  tableRef.value?.getTable()?.toggleColumn(column.field);
-}
-
-async function resetColumnVisibility() {
-  localStorage.removeItem(VISIBILITY_KEY);
-  setColumns();
-  flashTableLoading();
-  await nextTick();
-}
-
-async function resetColumnWidths() {
-  localStorage.removeItem(WIDTHS_KEY);
-  setColumns();
-  flashTableLoading();
-  await nextTick();
-}
-
-function flashTableLoading(delay = 300) {
-  fakeLoadingStart();
-  setTimeout(fakeLoadingStop, delay);
-}
-
-function fakeLoadingStart() {
-  fakeLoading.value = true;
-}
-
-function fakeLoadingStop() {
-  setTimeout(() => {
-    fakeLoading.value = false;
-  }, 300);
-}
-
-function handleDocumentClick(event) {
-  const advancedPopup = document.getElementById(
-    "sequencesAdvancedFiltersPopup"
-  );
-  const advancedButton = document.getElementById(
-    "toggleSequencesAdvancedFiltersButton"
-  );
-  const columnsPopup = document.getElementById("sequencesSelectColumnsPopup");
-  const columnsButton = document.getElementById(
-    "toggleSequencesSelectColumnsButton"
-  );
-  const exportPopup = document.querySelector(".statistics-export-popup");
-  const exportButton = document.getElementById(
-    "openSequencesStatisticsExportPopupButton"
-  );
-  if (
-    showAdvancedFilters.value &&
-    !advancedPopup?.contains(event.target) &&
-    !advancedButton?.contains(event.target)
-  ) {
-    showAdvancedFilters.value = false;
-  }
-  if (
-    showSelectColumns.value &&
-    !columnsPopup?.contains(event.target) &&
-    !columnsButton?.contains(event.target)
-  ) {
-    showSelectColumns.value = false;
-  }
-  if (
-    showExportPopup.value &&
-    !exportPopup?.contains(event.target) &&
-    !exportButton?.contains(event.target)
-  ) {
-    closeExportPopup();
-  }
-}
-
-function handleKeyDown(event) {
-  if (event.key !== "Escape") return;
-  showAdvancedFilters.value = false;
-  showSelectColumns.value = false;
-  closeExportPopup();
-}
-
-onMounted(() => {
-  fetchRows();
-  fetchExportTemplates();
-  window.handleGroupButtonClick = handleGroupButtonClick;
-  document.addEventListener("click", handleDocumentClick);
-  document.addEventListener("keydown", handleKeyDown);
-});
-
-onBeforeUnmount(() => {
-  clearTimeout(dateTimer);
-  window.handleGroupButtonClick = null;
-  document.removeEventListener("click", handleDocumentClick);
-  document.removeEventListener("keydown", handleKeyDown);
-});
-
-setColumns();
+    setColumns();
 
     return {
       tableRef,

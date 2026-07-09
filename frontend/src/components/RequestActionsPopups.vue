@@ -564,7 +564,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -1087,7 +1086,8 @@ export default {
         }
         map.set(newName, this.buildPathReferenceValue(newValue, newMd5));
         current.forEach((item) => {
-          if (item.value !== null) map.set(item.name, item.rawValue ?? item.value);
+          if (item.value !== null)
+            map.set(item.name, item.rawValue ?? item.value);
         });
       } else {
         current.forEach((item) => {
@@ -1169,7 +1169,10 @@ export default {
           formData,
           MULTIPART_FORM_HEADERS
         );
-        showNotification("Email sent successfully.", NOTIFICATION_TYPES.success);
+        showNotification(
+          "Email sent successfully.",
+          NOTIFICATION_TYPES.success
+        );
         this.close();
       } catch (error) {
         handleError(error);
@@ -1216,10 +1219,7 @@ export default {
           );
           this.close();
         } else {
-          showNotification(
-            "Approval email failed.",
-            NOTIFICATION_TYPES.error
-          );
+          showNotification("Approval email failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
@@ -1330,12 +1330,12 @@ export default {
           .map((file) => file?.id)
           .filter((id) => id !== undefined && id !== null);
 
-          this.attachmentsRequestDetails = {
-            [REQUEST_DATA_FIELDS.costUnit]:
-              meta?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
-            [REQUEST_DATA_FIELDS.description]:
-              meta?.[REQUEST_DATA_FIELDS.description] ?? ""
-          };
+        this.attachmentsRequestDetails = {
+          [REQUEST_DATA_FIELDS.costUnit]:
+            meta?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
+          [REQUEST_DATA_FIELDS.description]:
+            meta?.[REQUEST_DATA_FIELDS.description] ?? ""
+        };
       }
 
       if (records.length) {
@@ -1353,8 +1353,7 @@ export default {
       const needsRequest =
         force ||
         !meta ||
-        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.costUnit] ===
-          null ||
+        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.costUnit] === null ||
         this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.description] === "";
       const needsRecords = force
         ? !records.length

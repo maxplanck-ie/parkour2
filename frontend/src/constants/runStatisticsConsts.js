@@ -151,7 +151,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
       hozAlign: "right"
     },
     {
-      title: "Undet. Indices (%)",
+      title: "Under. Indices (%)",
       field: "undetermined_indices",
       minWidth: 92,
       visible: true,
@@ -231,7 +231,9 @@ export function uniqueRunStatisticsValues(rows, field) {
     ...new Set(
       rows
         .map((row) => row[field])
-        .filter((value) => value !== null && value !== undefined && value !== "")
+        .filter(
+          (value) => value !== null && value !== undefined && value !== ""
+        )
         .map(String)
     )
   ].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
@@ -252,7 +254,12 @@ export function runStatisticsRowMatchesSearch(row, query) {
 export function runStatisticsExportColumns() {
   return [
     { header: "Flowcell ID", key: "flowcell_id", width: 18, excelType: "text" },
-    { header: "Date", key: "create_time_display", width: 14, excelType: "text" },
+    {
+      header: "Date",
+      key: "create_time_display",
+      width: 14,
+      excelType: "text"
+    },
     { header: "Sequencer", key: "sequencer", width: 22, excelType: "text" },
     { header: "Read Length", key: "read_length", width: 18, excelType: "text" },
     { header: "Lane", key: "name", width: 14, excelType: "text" },

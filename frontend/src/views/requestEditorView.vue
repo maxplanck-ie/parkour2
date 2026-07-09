@@ -6208,7 +6208,6 @@ export default {
   color: #6b7280;
   font-size: 13px;
 }
-
 </style>
 <!--
 refactor/simplify all the files

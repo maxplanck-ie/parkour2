@@ -4,8 +4,7 @@ import { showNotification } from "./notificationUtils";
 
 export const XLSX_MIME_TYPE =
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-export const XLSM_MIME_TYPE =
-  "application/vnd.ms-excel.sheet.macroEnabled.12";
+export const XLSM_MIME_TYPE = "application/vnd.ms-excel.sheet.macroEnabled.12";
 const SUPPORTED_EXCEL_EXTENSIONS = new Set(["xlsx", "xlsm"]);
 const SUPPORTED_EXCEL_MIME_TYPES = new Set([
   XLSX_MIME_TYPE,
@@ -14,7 +13,9 @@ const SUPPORTED_EXCEL_MIME_TYPES = new Set([
 ]);
 
 export function getExcelTemplateExtension(fileName = "") {
-  const normalizedName = String(fileName || "").trim().toLowerCase();
+  const normalizedName = String(fileName || "")
+    .trim()
+    .toLowerCase();
   const match = normalizedName.match(/\.([a-z0-9]+)$/i);
   const extension = match?.[1];
   return SUPPORTED_EXCEL_EXTENSIONS.has(extension) ? extension : "xlsx";
@@ -617,7 +618,9 @@ async function createTemplateBasedExportBuffer({
     );
   }
   if (zip.file("[Content_Types].xml")) {
-    const contentTypesXml = await zip.file("[Content_Types].xml").async("string");
+    const contentTypesXml = await zip
+      .file("[Content_Types].xml")
+      .async("string");
     zip.file(
       "[Content_Types].xml",
       contentTypesXml.replace(

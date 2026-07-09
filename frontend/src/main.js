@@ -143,7 +143,10 @@ function setupGlobalTooltips() {
         hideTooltip();
         return;
       }
-      if (tooltip.active?.el === target.el && tooltip.active?.text === target.text)
+      if (
+        tooltip.active?.el === target.el &&
+        tooltip.active?.text === target.text
+      )
         return;
       if (!target.el.getAttribute("data-tooltip-original")) {
         target.el.setAttribute("data-tooltip-original", target.text);

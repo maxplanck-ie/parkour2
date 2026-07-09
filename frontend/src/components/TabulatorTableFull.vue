@@ -381,7 +381,8 @@ export default {
     },
 
     isKeyboardEventForThisTable(event) {
-      const tableEl = this.tabulatorInstance?.element || this.getTabulatorElement?.();
+      const tableEl =
+        this.tabulatorInstance?.element || this.getTabulatorElement?.();
       if (!tableEl) return true;
 
       const eventTargetTable = event.target?.closest?.(".tabulator") || null;
@@ -838,68 +839,73 @@ export default {
 
         this.previousData = JSON.stringify(this.rowData);
 
-        this.tabulatorInstance.on(TABULATOR_EVENTS.dataChanged, (updatedData) => {
-          if (this.suppressDataChangedProcessing) {
-            return;
-          }
-          if (typeof this.tableOptions.onBatchCellValueChanged !== "function") {
-            this.previousData = JSON.stringify(updatedData);
-            return;
-          }
-          const currentData = JSON.stringify(updatedData);
-          const previousParsed = JSON.parse(this.previousData);
-          const batchChanges = [];
+        this.tabulatorInstance.on(
+          TABULATOR_EVENTS.dataChanged,
+          (updatedData) => {
+            if (this.suppressDataChangedProcessing) {
+              return;
+            }
+            if (
+              typeof this.tableOptions.onBatchCellValueChanged !== "function"
+            ) {
+              this.previousData = JSON.stringify(updatedData);
+              return;
+            }
+            const currentData = JSON.stringify(updatedData);
+            const previousParsed = JSON.parse(this.previousData);
+            const batchChanges = [];
 
-          updatedData.forEach((row, index) => {
-            const oldRow = previousParsed[index] || {};
-            const changedFields = {};
+            updatedData.forEach((row, index) => {
+              const oldRow = previousParsed[index] || {};
+              const changedFields = {};
 
-            Object.keys(row).forEach((key) => {
-              if (
-                key !== TABLE_FIELDS.selected &&
-                key !== TABLE_FIELDS.samplesSubmitted &&
-                key !== TABLE_FIELDS.qualityCheck
-              ) {
-                if (key === TABLE_FIELDS.gmoFacility) {
-                  if (row[key] !== oldRow[key]) {
-                    if (
-                      row[key] === GMO_FACILITY_VALUES.notNeeded ||
-                      row[key] === false
-                    ) {
-                      changedFields[key] = false;
-                    } else if (
-                      row[key] === GMO_FACILITY_VALUES.riskAssessmentDone ||
-                      row[key] === true
-                    ) {
-                      changedFields[key] = true;
-                    } else {
-                      changedFields[key] = row[key];
+              Object.keys(row).forEach((key) => {
+                if (
+                  key !== TABLE_FIELDS.selected &&
+                  key !== TABLE_FIELDS.samplesSubmitted &&
+                  key !== TABLE_FIELDS.qualityCheck
+                ) {
+                  if (key === TABLE_FIELDS.gmoFacility) {
+                    if (row[key] !== oldRow[key]) {
+                      if (
+                        row[key] === GMO_FACILITY_VALUES.notNeeded ||
+                        row[key] === false
+                      ) {
+                        changedFields[key] = false;
+                      } else if (
+                        row[key] === GMO_FACILITY_VALUES.riskAssessmentDone ||
+                        row[key] === true
+                      ) {
+                        changedFields[key] = true;
+                      } else {
+                        changedFields[key] = row[key];
+                      }
+                    }
+                  } else {
+                    if (row[key] !== oldRow[key]) {
+                      changedFields[key] = row[key] === "" ? null : row[key];
                     }
                   }
-                } else {
-                  if (row[key] !== oldRow[key]) {
-                    changedFields[key] = row[key] === "" ? null : row[key];
-                  }
                 }
+              });
+
+              if (Object.keys(changedFields).length > 0) {
+                batchChanges.push({
+                  pk: row.pk,
+                  tempId: row.tempId,
+                  [TABLE_FIELDS.recordType]: row[TABLE_FIELDS.recordType],
+                  ...changedFields
+                });
               }
             });
 
-            if (Object.keys(changedFields).length > 0) {
-              batchChanges.push({
-                pk: row.pk,
-                tempId: row.tempId,
-                [TABLE_FIELDS.recordType]: row[TABLE_FIELDS.recordType],
-                ...changedFields
-              });
+            this.previousData = currentData;
+
+            if (batchChanges.length > 0) {
+              this.tableOptions.onBatchCellValueChanged(batchChanges);
             }
-          });
-
-          this.previousData = currentData;
-
-          if (batchChanges.length > 0) {
-            this.tableOptions.onBatchCellValueChanged(batchChanges);
           }
-        });
+        );
 
         this.tabulatorInstance.on(TABULATOR_EVENTS.renderComplete, () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
@@ -1127,7 +1133,11 @@ export default {
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
+                {
+                  field: TABLE_FIELDS.name,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
                 {
                   field: TABLE_FIELDS.requestName,
                   type: FILTER_TYPES.like,
@@ -1168,7 +1178,11 @@ export default {
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
+                {
+                  field: TABLE_FIELDS.name,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
                 {
                   field: TABLE_FIELDS.requestName,
                   type: FILTER_TYPES.like,
@@ -1209,7 +1223,11 @@ export default {
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
+                {
+                  field: TABLE_FIELDS.name,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
                 {
                   field: TABLE_FIELDS.requestName,
                   type: FILTER_TYPES.like,
@@ -1440,8 +1458,7 @@ export default {
         const cellEl = cell?.getElement?.() || null;
         const active = document.activeElement;
         const editorEl =
-          (cellEl &&
-            cellEl.querySelector(TABULATOR_SELECTORS.editorInput)) ||
+          (cellEl && cellEl.querySelector(TABULATOR_SELECTORS.editorInput)) ||
           (active && cellEl?.contains?.(active) ? active : null);
         if (!editorEl) {
           if (attempt < maxAttempts) {

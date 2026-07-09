@@ -415,12 +415,7 @@
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button
-            class="popup-button"
-            @click="closeExportPopup"
-          >
-            Cancel
-          </button>
+          <button class="popup-button" @click="closeExportPopup">Cancel</button>
         </div>
       </div>
     </div>
@@ -1360,8 +1355,7 @@ export default {
           } catch (error) {
             this.closeConfirmPopup();
             const message =
-              error?.response?.data?.message ||
-              "Failed to destroy flowcell.";
+              error?.response?.data?.message || "Failed to destroy flowcell.";
             if (
               error?.response?.status === 400 &&
               message.includes("delivered")
@@ -1646,10 +1640,9 @@ export default {
           filename = `${formattedDate}_load_flowcells`;
         }
 
-        const templateDownloadUrl =
-          this.hasExportTemplateSelected
-            ? `${urlStringStart}/api/load-flowcells-templates/${this.selectedFile.id}/download/`
-            : null;
+        const templateDownloadUrl = this.hasExportTemplateSelected
+          ? `${urlStringStart}/api/load-flowcells-templates/${this.selectedFile.id}/download/`
+          : null;
         const templateFileName = this.hasExportTemplateSelected
           ? this.selectedFile.name
           : "";
@@ -1661,10 +1654,7 @@ export default {
           templateDownloadUrl,
           templateFileName
         });
-        saveAs(
-          blob,
-          buildExcelExportFilename(filename, templateFileName)
-        );
+        saveAs(blob, buildExcelExportFilename(filename, templateFileName));
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,

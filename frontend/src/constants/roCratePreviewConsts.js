@@ -175,10 +175,7 @@ export const RO_CRATE_INBUILT_HIDDEN_FIELDS = [
   "url"
 ];
 
-export const RO_CRATE_RELATED_MODEL_HIDDEN_FIELDS = [
-  "sample",
-  "library"
-];
+export const RO_CRATE_RELATED_MODEL_HIDDEN_FIELDS = ["sample", "library"];
 
 export const USER_DEFINED_VARIABLE_HIDDEN_FIELDS =
   roCrateHiddenFields.userDefinedVariableHiddenFields;
@@ -336,9 +333,10 @@ export const RO_CRATE_MODEL_DISPLAY_RULES_BY_PREFIX = [
     Math.max(...left.prefixes.map((prefix) => prefix.length))
 );
 
-export const RO_CRATE_MODEL_SECTION_ID_RULES = RO_CRATE_MODEL_DISPLAY_RULES.flatMap(
-  (rule) => (rule.idPrefixes || []).map((prefix) => [prefix, rule.modelName])
-).sort((left, right) => right[0].length - left[0].length);
+export const RO_CRATE_MODEL_SECTION_ID_RULES =
+  RO_CRATE_MODEL_DISPLAY_RULES.flatMap((rule) =>
+    (rule.idPrefixes || []).map((prefix) => [prefix, rule.modelName])
+  ).sort((left, right) => right[0].length - left[0].length);
 
 const RO_CRATE_PROPERTY_PREFIXES = RO_CRATE_MODEL_DISPLAY_RULES.flatMap(
   (rule) => rule.prefixes

@@ -395,11 +395,13 @@ export default {
   background-color: white !important;
 }
 
-.lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
+.lite-tabulator-table
+  .tabulator-row.tabulator-group:has(.request-approval-pending-marker) {
   background-color: #fff1f1 !important;
 }
 
-.lite-tabulator-table .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
+.lite-tabulator-table
+  .tabulator-row.tabulator-group:has(.request-approval-pending-marker):hover {
   background-color: #fff1f1 !important;
 }
 
@@ -445,4 +447,3 @@ export default {
 Add VirtualDOM support
 Allow opening only 3 groups at a time
 -->
-

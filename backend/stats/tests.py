@@ -47,9 +47,7 @@ class TestRunStatistics(BaseTestCase):
             lane.save()
 
             lanes.append(lane.pk)
-            matrix.append(
-                {"name": name, "read_1": i + 1, "aligned_spike_in": i + 0.5}
-            )
+            matrix.append({"name": name, "read_1": i + 1, "aligned_spike_in": i + 0.5})
 
         flowcell.lanes.add(*lanes)
         flowcell.matrix = matrix

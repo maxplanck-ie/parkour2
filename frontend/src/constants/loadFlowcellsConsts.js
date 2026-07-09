@@ -42,10 +42,7 @@ export function loadFlowcellsGroupHeader(value, rows = []) {
 }
 
 export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
-  const {
-    onToggleSelected = () => {},
-    onPoolClick = () => {}
-  } = callbacks;
+  const { onToggleSelected = () => {}, onPoolClick = () => {} } = callbacks;
 
   const columns = [
     {
@@ -175,7 +172,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
         const finalString =
-          rawValue === "" || rawValue === null || rawValue === undefined || isNaN(value)
+          rawValue === "" ||
+          rawValue === null ||
+          rawValue === undefined ||
+          isNaN(value)
             ? "-"
             : value.toFixed(1);
         return ellipsisContainer(finalString);
@@ -197,7 +197,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
         const finalString =
-          rawValue === "" || rawValue === null || rawValue === undefined || isNaN(value)
+          rawValue === "" ||
+          rawValue === null ||
+          rawValue === undefined ||
+          isNaN(value)
             ? "-"
             : value.toFixed(1);
         return ellipsisContainer(finalString);
