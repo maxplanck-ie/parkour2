@@ -222,6 +222,13 @@ db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 load-fixtures: apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 
+drop-db:  ## Drop all tables (public schema) from the running database
+	@docker compose exec parkour2-postgres sh -c \
+		'psql -q -U "$$POSTGRES_USER" -d "$$POSTGRES_DB" \
+		-c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"'
+
+reset-fixtures: drop-db load-fixtures  ## Drop DB then reload fixtures (for reusing running containers)
+
 load-backup: load-postgres load-media
 
 save-media:
@@ -288,13 +295,13 @@ playwright:  ## Run Frontend tests (reuse running container when available)
 	@if docker compose ps --status running --services | grep -q '^parkour2-django$$'; then \
 		if docker compose exec parkour2-django sh -lc 'command -v pytest > /dev/null && pytest --help | grep -q -- --browser && find /root/.cache/ms-playwright -path "*/firefox/firefox" -type f 2>/dev/null | grep -q .'; then \
 			echo "Info: Reusing running parkour2-django container for Playwright tests."; \
-			$(MAKE) e2e; \
+			$(MAKE) reset-fixtures e2e; \
 		else \
 			echo "Info: Testing runtime not ready in running container, installing testing requirements."; \
 			if docker compose exec parkour2-django sh -lc 'PY_VERSION=$$(python -c "import sys; print(f\"{sys.version_info.major}.{sys.version_info.minor}\")"); uv pip install -r requirements/$${PY_VERSION}/testing.txt && playwright install --with-deps firefox' \
 				&& docker compose exec parkour2-django sh -lc 'command -v pytest > /dev/null && pytest --help | grep -q -- --browser && find /root/.cache/ms-playwright -path "*/firefox/firefox" -type f 2>/dev/null | grep -q .'; then \
 				echo "Info: Testing dependencies installed, running Playwright tests."; \
-				$(MAKE) e2e; \
+				$(MAKE) reset-fixtures e2e; \
 			else \
 				echo "Info: Could not prepare running container for Playwright tests, redeploying stack first."; \
 				$(MAKE) down set-playwright deploy-webapp deploy-caddy collect-static load-fixtures; \
