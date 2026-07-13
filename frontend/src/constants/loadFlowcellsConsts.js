@@ -6,25 +6,27 @@ import {
 import iconSelectAll from "../assets/icons/action_select_all.svg";
 import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
 import iconDestroyPool from "../assets/icons/action_pool_destroy.svg";
-import iconExportDownload from "../assets/icons/export_download.svg";
 
 export function loadFlowcellsGroupHeader(value, rows = []) {
   const formattedDate = rows[0]?.create_time || "";
+  const laneLabel = rows.length === 1 ? "Lane" : "Lanes";
+  const metadataParts = [`#: ${rows.length} ${laneLabel}`];
+  if (formattedDate) {
+    metadataParts.push(`Date: ${formattedDate}`);
+  }
+  const metadata = metadataParts.join(", ");
 
   return `
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div style="display: flex; align-items: center; gap: 4px;">
-        <div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px;">
           <span style="font-weight: bold; font-size: 12px; color: #333;">${value}</span>
           <span style="font-weight: normal; font-size: 12px; margin-left: 2px; color: black;">
-            (${formattedDate})
+            (${metadata})
           </span>
         </div>
       </div>
       <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
-        <div title="Download Sample Sheet" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'downloadSampleSheet')">
-          <img src="${iconExportDownload}" alt="Download Sample Sheet" width="24" height="24" />
-        </div>
         <div title="Destroy Flowcell" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'destroyFlowcell')">
           <img src="${iconDestroyPool}" alt="Destroy Flowcell" width="24" height="24" />
         </div>
@@ -40,10 +42,7 @@ export function loadFlowcellsGroupHeader(value, rows = []) {
 }
 
 export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
-  const {
-    onToggleSelected = () => {},
-    onPoolClick = () => {}
-  } = callbacks;
+  const { onToggleSelected = () => {}, onPoolClick = () => {} } = callbacks;
 
   const columns = [
     {
@@ -92,7 +91,7 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
       cssClass: "right-border",
       formatter: (cell) => {
         const value = cell.getValue() || "-";
-        return `<a href="javascript:void(0)" class="flowcell-pool-link" style="padding: 12px 8px 12px 12px; display: inline-block;">${value}</a>`;
+        return `<button type="button" class="flowcell-pool-link">${value}</button>`;
       },
       cellClick: function (e, cell) {
         if (e.target?.classList?.contains("flowcell-pool-link")) {
@@ -173,7 +172,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
         const finalString =
-          rawValue === "" || rawValue === null || rawValue === undefined || isNaN(value)
+          rawValue === "" ||
+          rawValue === null ||
+          rawValue === undefined ||
+          isNaN(value)
             ? "-"
             : value.toFixed(1);
         return ellipsisContainer(finalString);
@@ -195,7 +197,10 @@ export function loadFlowcellsColumnDefs(getTabulatorInstance, callbacks = {}) {
         const rawValue = cell.getValue();
         const value = Number(rawValue);
         const finalString =
-          rawValue === "" || rawValue === null || rawValue === undefined || isNaN(value)
+          rawValue === "" ||
+          rawValue === null ||
+          rawValue === undefined ||
+          isNaN(value)
             ? "-"
             : value.toFixed(1);
         return ellipsisContainer(finalString);
@@ -226,7 +231,14 @@ export const loadFlowcellsExportColumns = [
     header: "Loading Concentration",
     key: "loading_concentration",
     width: 18,
-    excelType: "number"
+    excelType: "number",
+    decimalPlaces: 1
   },
-  { header: "PhiX %", key: "phix", width: 10, excelType: "number" }
+  {
+    header: "PhiX %",
+    key: "phix",
+    width: 10,
+    excelType: "number",
+    decimalPlaces: 1
+  }
 ];

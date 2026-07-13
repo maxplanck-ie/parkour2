@@ -126,6 +126,7 @@ const KEY_NAMES = {
   arrowRight: "ArrowRight",
   backspace: "Backspace",
   delete: "Delete",
+  enter: "Enter",
   escape: "Escape",
   cut: "x",
   copy: "c",
@@ -135,6 +136,7 @@ const KEY_NAMES = {
 
 const HTML_TAGS = {
   input: "INPUT",
+  select: "SELECT",
   textarea: "TEXTAREA"
 };
 
@@ -145,6 +147,7 @@ const TABULATOR_CLASSES = {
 
 const TABULATOR_SELECTORS = {
   editingCell: ".tabulator-cell.tabulator-editing",
+  editList: ".tabulator-edit-list",
   groupRow: ".tabulator-row.tabulator-group",
   tableHolder: ".tabulator-tableholder",
   tableContainer: ".table-container",
@@ -375,6 +378,19 @@ export default {
       this.$nextTick(() => {
         this.$refs?.pasteErrorOkButton?.focus?.();
       });
+    },
+
+    isKeyboardEventForThisTable(event) {
+      const tableEl =
+        this.tabulatorInstance?.element || this.getTabulatorElement?.();
+      if (!tableEl) return true;
+
+      const eventTargetTable = event.target?.closest?.(".tabulator") || null;
+      const activeElementTable =
+        document.activeElement?.closest?.(".tabulator") || null;
+      const ownerTable = eventTargetTable || activeElementTable;
+
+      return ownerTable ? ownerTable === tableEl : true;
     },
 
     setLastFocusedCell(cell) {
@@ -823,68 +839,73 @@ export default {
 
         this.previousData = JSON.stringify(this.rowData);
 
-        this.tabulatorInstance.on(TABULATOR_EVENTS.dataChanged, (updatedData) => {
-          if (this.suppressDataChangedProcessing) {
-            return;
-          }
-          if (typeof this.tableOptions.onBatchCellValueChanged !== "function") {
-            this.previousData = JSON.stringify(updatedData);
-            return;
-          }
-          const currentData = JSON.stringify(updatedData);
-          const previousParsed = JSON.parse(this.previousData);
-          const batchChanges = [];
+        this.tabulatorInstance.on(
+          TABULATOR_EVENTS.dataChanged,
+          (updatedData) => {
+            if (this.suppressDataChangedProcessing) {
+              return;
+            }
+            if (
+              typeof this.tableOptions.onBatchCellValueChanged !== "function"
+            ) {
+              this.previousData = JSON.stringify(updatedData);
+              return;
+            }
+            const currentData = JSON.stringify(updatedData);
+            const previousParsed = JSON.parse(this.previousData);
+            const batchChanges = [];
 
-          updatedData.forEach((row, index) => {
-            const oldRow = previousParsed[index] || {};
-            const changedFields = {};
+            updatedData.forEach((row, index) => {
+              const oldRow = previousParsed[index] || {};
+              const changedFields = {};
 
-            Object.keys(row).forEach((key) => {
-              if (
-                key !== TABLE_FIELDS.selected &&
-                key !== TABLE_FIELDS.samplesSubmitted &&
-                key !== TABLE_FIELDS.qualityCheck
-              ) {
-                if (key === TABLE_FIELDS.gmoFacility) {
-                  if (row[key] !== oldRow[key]) {
-                    if (
-                      row[key] === GMO_FACILITY_VALUES.notNeeded ||
-                      row[key] === false
-                    ) {
-                      changedFields[key] = false;
-                    } else if (
-                      row[key] === GMO_FACILITY_VALUES.riskAssessmentDone ||
-                      row[key] === true
-                    ) {
-                      changedFields[key] = true;
-                    } else {
-                      changedFields[key] = row[key];
+              Object.keys(row).forEach((key) => {
+                if (
+                  key !== TABLE_FIELDS.selected &&
+                  key !== TABLE_FIELDS.samplesSubmitted &&
+                  key !== TABLE_FIELDS.qualityCheck
+                ) {
+                  if (key === TABLE_FIELDS.gmoFacility) {
+                    if (row[key] !== oldRow[key]) {
+                      if (
+                        row[key] === GMO_FACILITY_VALUES.notNeeded ||
+                        row[key] === false
+                      ) {
+                        changedFields[key] = false;
+                      } else if (
+                        row[key] === GMO_FACILITY_VALUES.riskAssessmentDone ||
+                        row[key] === true
+                      ) {
+                        changedFields[key] = true;
+                      } else {
+                        changedFields[key] = row[key];
+                      }
+                    }
+                  } else {
+                    if (row[key] !== oldRow[key]) {
+                      changedFields[key] = row[key] === "" ? null : row[key];
                     }
                   }
-                } else {
-                  if (row[key] !== oldRow[key]) {
-                    changedFields[key] = row[key] === "" ? null : row[key];
-                  }
                 }
+              });
+
+              if (Object.keys(changedFields).length > 0) {
+                batchChanges.push({
+                  pk: row.pk,
+                  tempId: row.tempId,
+                  [TABLE_FIELDS.recordType]: row[TABLE_FIELDS.recordType],
+                  ...changedFields
+                });
               }
             });
 
-            if (Object.keys(changedFields).length > 0) {
-              batchChanges.push({
-                pk: row.pk,
-                tempId: row.tempId,
-                [TABLE_FIELDS.recordType]: row[TABLE_FIELDS.recordType],
-                ...changedFields
-              });
+            this.previousData = currentData;
+
+            if (batchChanges.length > 0) {
+              this.tableOptions.onBatchCellValueChanged(batchChanges);
             }
-          });
-
-          this.previousData = currentData;
-
-          if (batchChanges.length > 0) {
-            this.tableOptions.onBatchCellValueChanged(batchChanges);
           }
-        });
+        );
 
         this.tabulatorInstance.on(TABULATOR_EVENTS.renderComplete, () => {
           const rows = this.tabulatorInstance?.rowManager?.activeRows || [];
@@ -1112,7 +1133,11 @@ export default {
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
+                {
+                  field: TABLE_FIELDS.name,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
                 {
                   field: TABLE_FIELDS.requestName,
                   type: FILTER_TYPES.like,
@@ -1153,7 +1178,11 @@ export default {
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
+                {
+                  field: TABLE_FIELDS.name,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
                 {
                   field: TABLE_FIELDS.requestName,
                   type: FILTER_TYPES.like,
@@ -1194,7 +1223,11 @@ export default {
           if (keyword !== "") {
             this.tableFiltersState.search = [
               [
-                { field: TABLE_FIELDS.name, type: FILTER_TYPES.like, value: keyword },
+                {
+                  field: TABLE_FIELDS.name,
+                  type: FILTER_TYPES.like,
+                  value: keyword
+                },
                 {
                   field: TABLE_FIELDS.requestName,
                   type: FILTER_TYPES.like,
@@ -1425,8 +1458,7 @@ export default {
         const cellEl = cell?.getElement?.() || null;
         const active = document.activeElement;
         const editorEl =
-          (cellEl &&
-            cellEl.querySelector(TABULATOR_SELECTORS.editorInput)) ||
+          (cellEl && cellEl.querySelector(TABULATOR_SELECTORS.editorInput)) ||
           (active && cellEl?.contains?.(active) ? active : null);
         if (!editorEl) {
           if (attempt < maxAttempts) {
@@ -1582,6 +1614,7 @@ export default {
     handleKeyDown(event) {
       const isDeleteOrBackspace =
         event.key === KEY_NAMES.delete || event.key === KEY_NAMES.backspace;
+      const isEnter = event.key === KEY_NAMES.enter;
       const isEscape = event.key === KEY_NAMES.escape;
       const key = event.key?.toLowerCase?.();
       const isCtrl = event.ctrlKey || event.metaKey;
@@ -1598,11 +1631,29 @@ export default {
         this.closeErrorsWindow();
         return;
       }
-      if (
-        document.activeElement &&
-        (document.activeElement.tagName === HTML_TAGS.input ||
-          document.activeElement.tagName === HTML_TAGS.textarea)
-      ) {
+      const isEditorElement = (element) =>
+        element &&
+        (element.tagName === HTML_TAGS.input ||
+          element.tagName === HTML_TAGS.select ||
+          element.tagName === HTML_TAGS.textarea ||
+          element.isContentEditable ||
+          element.closest?.(TABULATOR_SELECTORS.editingCell) ||
+          element.closest?.(TABULATOR_SELECTORS.editList));
+      const eventPath =
+        typeof event.composedPath === "function" ? event.composedPath() : [];
+      const eventStartedInEditor = eventPath.some(
+        (element) =>
+          element?.classList?.contains?.("tabulator-editing") ||
+          element?.classList?.contains?.("tabulator-edit-list")
+      );
+      const activeEditorElement =
+        isEditorElement(document.activeElement) ||
+        isEditorElement(event.target) ||
+        eventStartedInEditor;
+      if (activeEditorElement) {
+        return;
+      }
+      if (!this.isKeyboardEventForThisTable(event)) {
         return;
       }
 
@@ -1755,6 +1806,16 @@ export default {
         clearSelectedRange();
         event.preventDefault();
         this.restoreLastFocusedCell();
+        return;
+      }
+      if (isEnter) {
+        const firstCell = rangeCells[0]?.[0] || this.getFocusCandidateCell();
+        if (!firstCell) return;
+        const rowData = firstCell.getRow?.().getData?.() || {};
+        if (!getIsEditable(firstCell, rowData)) return;
+        event.preventDefault();
+        firstCell.edit?.();
+        this.openDropdownEditorIfNeeded(firstCell);
         return;
       }
       if (isPrintableKey) {

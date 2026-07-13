@@ -251,10 +251,7 @@
     tabindex="0"
     @keydown="handlePopupKeydown"
   >
-    <div
-      class="popup-container request-action-modal"
-      :style="{ width: '520px', height: '400px' }"
-    >
+    <div class="popup-container request-action-modal email-modal">
       <div class="popup-header">
         <div class="popup-title">
           <img
@@ -275,7 +272,12 @@
             v-model="emailForm.subject"
             type="text"
             placeholder="Subject"
+            :class="{ 'input-error': emailErrors.subject }"
+            @input="clearEmailFieldError('subject')"
           />
+          <div v-if="emailErrors.subject" class="field-error">
+            {{ emailErrors.subject }}
+          </div>
         </label>
         <label class="email-field">
           <span>Message:</span>
@@ -283,7 +285,12 @@
             v-model="emailForm.message"
             rows="6"
             placeholder="Message"
+            :class="{ 'input-error': emailErrors.message }"
+            @input="clearEmailFieldError('message')"
           ></textarea>
+          <div v-if="emailErrors.message" class="field-error">
+            {{ emailErrors.message }}
+          </div>
         </label>
         <label class="email-checkbox">
           <input type="checkbox" v-model="emailForm.includeFailed" />
@@ -311,10 +318,7 @@
     tabindex="0"
     @keydown="handlePopupKeydown"
   >
-    <div
-      class="popup-container request-action-modal"
-      :style="{ width: '520px', height: '400px' }"
-    >
+    <div class="popup-container request-action-modal approval-modal">
       <div class="popup-header">
         <div class="popup-title">
           <img
@@ -335,7 +339,12 @@
             v-model="approvalForm.subject"
             type="text"
             placeholder="Subject"
+            :class="{ 'input-error': approvalErrors.subject }"
+            @input="clearApprovalFieldError('subject')"
           />
+          <div v-if="approvalErrors.subject" class="field-error">
+            {{ approvalErrors.subject }}
+          </div>
         </label>
         <label class="email-field">
           <span>Message:</span>
@@ -343,7 +352,12 @@
             v-model="approvalForm.message"
             rows="6"
             placeholder="Message"
+            :class="{ 'input-error': approvalErrors.message }"
+            @input="clearApprovalFieldError('message')"
           ></textarea>
+          <div v-if="approvalErrors.message" class="field-error">
+            {{ approvalErrors.message }}
+          </div>
         </label>
         <label class="email-checkbox">
           <input type="checkbox" v-model="approvalForm.includeRecords" />
@@ -550,7 +564,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -683,10 +696,18 @@ export default {
         message: "",
         includeFailed: false
       },
+      emailErrors: {
+        subject: "",
+        message: ""
+      },
       approvalForm: {
         subject: "",
         message: "",
         includeRecords: true
+      },
+      approvalErrors: {
+        subject: "",
+        message: ""
       },
       emailBusy: false,
       approvalBusy: false,
@@ -769,11 +790,13 @@ export default {
         this.emailForm.subject = this.requestContext?.name || "";
         this.emailForm.message = "";
         this.emailForm.includeFailed = false;
+        this.clearEmailErrors();
       }
       if (newVal === REQUEST_ACTIONS.solicitApproval) {
         this.approvalForm.subject = this.requestContext?.name || "";
         this.approvalForm.message = "";
         this.approvalForm.includeRecords = true;
+        this.clearApprovalErrors();
       }
       if (newVal === REQUEST_ACTIONS.attachments) {
         this.loadAttachments();
@@ -789,9 +812,11 @@ export default {
     requestContext() {
       if (this.activeAction === REQUEST_ACTIONS.composeEmail) {
         this.emailForm.subject = this.requestContext?.name || "";
+        this.clearEmailFieldError("subject");
       }
       if (this.activeAction === REQUEST_ACTIONS.solicitApproval) {
         this.approvalForm.subject = this.requestContext?.name || "";
+        this.clearApprovalFieldError("subject");
       }
       if (this.activeAction === REQUEST_ACTIONS.attachments) {
         this.loadAttachments();
@@ -1061,7 +1086,8 @@ export default {
         }
         map.set(newName, this.buildPathReferenceValue(newValue, newMd5));
         current.forEach((item) => {
-          if (item.value !== null) map.set(item.name, item.rawValue ?? item.value);
+          if (item.value !== null)
+            map.set(item.name, item.rawValue ?? item.value);
         });
       } else {
         current.forEach((item) => {
@@ -1122,7 +1148,7 @@ export default {
     },
     async sendEmail() {
       if (!this.requestContext?.id) return;
-      if (!this.emailForm.subject || !this.emailForm.message) {
+      if (!this.validateEmailForm()) {
         showNotification(
           "All fields are required.",
           NOTIFICATION_TYPES.warning
@@ -1143,7 +1169,10 @@ export default {
           formData,
           MULTIPART_FORM_HEADERS
         );
-        showNotification("Email sent successfully.", NOTIFICATION_TYPES.success);
+        showNotification(
+          "Email sent successfully.",
+          NOTIFICATION_TYPES.success
+        );
         this.close();
       } catch (error) {
         handleError(error);
@@ -1151,9 +1180,18 @@ export default {
         this.emailBusy = false;
       }
     },
+    clearEmailErrors() {
+      this.emailErrors = this.emptyEmailFieldErrors();
+    },
+    clearEmailFieldError(field) {
+      this.clearEmailFormFieldError("emailErrors", field);
+    },
+    validateEmailForm() {
+      return this.validateRequiredEmailFields(this.emailForm, "emailErrors");
+    },
     async sendApprovalEmail() {
       if (!this.requestContext?.id) return;
-      if (!this.approvalForm.subject || !this.approvalForm.message) {
+      if (!this.validateApprovalForm()) {
         showNotification(
           "All fields are required.",
           NOTIFICATION_TYPES.warning
@@ -1181,16 +1219,52 @@ export default {
           );
           this.close();
         } else {
-          showNotification(
-            "Approval email failed.",
-            NOTIFICATION_TYPES.error
-          );
+          showNotification("Approval email failed.", NOTIFICATION_TYPES.error);
         }
       } catch (error) {
         handleError(error);
       } finally {
         this.approvalBusy = false;
       }
+    },
+    clearApprovalErrors() {
+      this.approvalErrors = this.emptyEmailFieldErrors();
+    },
+    clearApprovalFieldError(field) {
+      this.clearEmailFormFieldError("approvalErrors", field);
+    },
+    validateApprovalForm() {
+      return this.validateRequiredEmailFields(
+        this.approvalForm,
+        "approvalErrors"
+      );
+    },
+    emptyEmailFieldErrors() {
+      return {
+        subject: "",
+        message: ""
+      };
+    },
+    clearEmailFormFieldError(errorStateKey, field) {
+      if (!this[errorStateKey]?.[field]) return;
+      this[errorStateKey] = {
+        ...this[errorStateKey],
+        [field]: ""
+      };
+    },
+    validateRequiredEmailFields(form, errorStateKey) {
+      const errors = {
+        subject: "",
+        message: ""
+      };
+      if (!String(form.subject || "").trim()) {
+        errors.subject = "Subject is a required field.";
+      }
+      if (!String(form.message || "").trim()) {
+        errors.message = "Message is a required field.";
+      }
+      this[errorStateKey] = errors;
+      return !errors.subject && !errors.message;
     },
     async confirmDelete() {
       if (!this.requestContext?.id) return;
@@ -1256,12 +1330,12 @@ export default {
           .map((file) => file?.id)
           .filter((id) => id !== undefined && id !== null);
 
-          this.attachmentsRequestDetails = {
-            [REQUEST_DATA_FIELDS.costUnit]:
-              meta?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
-            [REQUEST_DATA_FIELDS.description]:
-              meta?.[REQUEST_DATA_FIELDS.description] ?? ""
-          };
+        this.attachmentsRequestDetails = {
+          [REQUEST_DATA_FIELDS.costUnit]:
+            meta?.[REQUEST_DATA_FIELDS.costUnit] ?? null,
+          [REQUEST_DATA_FIELDS.description]:
+            meta?.[REQUEST_DATA_FIELDS.description] ?? ""
+        };
       }
 
       if (records.length) {
@@ -1279,8 +1353,7 @@ export default {
       const needsRequest =
         force ||
         !meta ||
-        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.costUnit] ===
-          null ||
+        this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.costUnit] === null ||
         this.attachmentsRequestDetails[REQUEST_DATA_FIELDS.description] === "";
       const needsRecords = force
         ? !records.length
@@ -1570,6 +1643,21 @@ export default {
   height: min(520px, 90vh);
   display: flex;
   flex-direction: column;
+}
+
+.request-action-modal.email-modal,
+.request-action-modal.approval-modal {
+  width: 520px;
+  max-height: min(520px, 90vh);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.email-modal .email-body,
+.approval-modal .email-body {
+  flex: 0 1 auto;
+  overflow-y: auto;
 }
 
 .attachments-body {
@@ -2349,6 +2437,16 @@ export default {
   border-radius: 6px;
   padding: 8px;
   font-size: 13px;
+}
+
+.email-field .input-error {
+  border-color: #d14343 !important;
+}
+
+.email-field .field-error {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #b42318;
 }
 
 .email-checkbox {

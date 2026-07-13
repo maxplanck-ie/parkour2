@@ -47,7 +47,7 @@ class TestRunStatistics(BaseTestCase):
             lane.save()
 
             lanes.append(lane.pk)
-            matrix.append({"name": name, "read_1": i + 1})
+            matrix.append({"name": name, "read_1": i + 1, "aligned_spike_in": i + 0.5})
 
         flowcell.lanes.add(*lanes)
         flowcell.matrix = matrix
@@ -61,6 +61,7 @@ class TestRunStatistics(BaseTestCase):
         self.assertEqual(data[0]["sequencer"], flowcell.sequencer.name)
         self.assertEqual(data[0]["read_length"], library1.read_length.name)
         self.assertEqual(data[0]["read_1"], 1)
+        self.assertEqual(data[0]["aligned_spike_in"], 0.5)
 
     def test_upload_flowcell_matrix(self):
         sequencer = create_sequencer(get_random_name(), lanes=8)
@@ -230,3 +231,9 @@ class TestSequencesStatistics(BaseTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertFalse(data["success"])
         self.assertEqual(data["message"], "Invalid sequences data.")
+
+    def test_download_report_endpoint_removed(self):
+        response = self.client.post("/api/sequences_statistics/download_report/")
+        # The action is gone; the router now matches this URL as a detail
+        # route, where POST is not allowed.
+        self.assertEqual(response.status_code, 405)

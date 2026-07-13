@@ -217,9 +217,11 @@
         </div>
         <div class="popup-footer">
           <button class="popup-button yes-button" @click="popupContents.onYes">
-            Yes
+            Confirm
           </button>
-          <button class="popup-button" @click="popupContents.onNo">No</button>
+          <button class="popup-button" @click="popupContents.onNo">
+            Cancel
+          </button>
         </div>
       </div>
     </div>
@@ -1032,8 +1034,8 @@ export default {
       }
 
       this.createPopupWindow(
-        "Return Pool to Pooling",
-        `Are you sure you want to return the pool <span style="font-weight: bold">'${poolName}'</span> to Pooling? This removes the pool and sets its records back to Pooling state.`,
+        "Return Pool to Index Generator",
+        `Are you sure you want to return the pool <span style="font-weight: bold">'${poolName}'</span> to Index Generator? This removes the pool and makes its records available in the Index Generator.`,
         [],
         async () => {
           try {
@@ -1042,7 +1044,7 @@ export default {
             );
 
             showNotification(
-              "Pool returned to Pooling successfully.",
+              "Pool returned to Index Generator successfully.",
               "success"
             );
             this.showPopupWindow = false;
@@ -1361,65 +1363,5 @@ body,
   background-repeat: no-repeat;
   background-size: 90px 100%;
   background-position: left top;
-}
-
-@media (max-width: 1400px) {
-  .header-title {
-    min-width: 80px;
-  }
-
-  .search-bar {
-    width: 280px;
-  }
-
-  .search-bar input {
-    padding: 8px;
-  }
-
-  .header-button {
-    padding: 8px 12px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .search-bar {
-    width: 250px;
-  }
-
-  .search-bar input {
-    padding: 6px;
-  }
-
-  .header-button span {
-    display: none;
-  }
-}
-
-@media (max-width: 700px) {
-  .header-title {
-    font-size: 16px;
-  }
-
-  .search-bar {
-    width: 130px;
-  }
-
-  .search-bar input {
-    width: 85px;
-  }
-}
-
-@media (max-width: 550px) {
-  .header-logo {
-    display: none !important;
-  }
-
-  .search-bar {
-    display: none;
-  }
-
-  .header-button {
-    display: none;
-  }
 }
 </style>

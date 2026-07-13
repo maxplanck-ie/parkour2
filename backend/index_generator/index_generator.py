@@ -831,6 +831,7 @@ class IndexGenerator:
             "barcode": obj.barcode,
             "record_type": obj.__class__.__name__,
             "read_length": obj.read_length_id,
+            "index_type": obj.index_type_id,
             "sequencing_depth": obj.sequencing_depth,
             "index_i7": index_i7,
             "index_i5": index_i5,

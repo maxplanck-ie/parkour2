@@ -184,6 +184,7 @@
               >
                 <option :value="null">All</option>
                 <option :value="true">Yes</option>
+                <option :value="false">No</option>
               </select>
             </div>
 
@@ -427,9 +428,9 @@
                     <li>
                       Use <strong>Advanced Filters</strong> if you want to
                       narrow the page by status, protocol, analysis type,
-                      sequencer, or read length. These filters are useful when
-                      you know what stage or processing setup you are looking
-                      for.
+                      sequencer, read length, or changed ownership. These
+                      filters are useful when you know what stage or processing
+                      setup you are looking for.
                     </li>
                     <li>
                       If the table looks too crowded, use
@@ -462,7 +463,12 @@
                     <li>
                       In the request editor, begin with the request details on
                       the left side. This usually includes the cost unit, a
-                      description, and any supporting files.
+                      description, related projects, and any supporting files.
+                    </li>
+                    <li>
+                      New requests are assigned to the current user
+                      automatically. Staff users can later change the Request
+                      Owner while editing the request.
                     </li>
                     <li>
                       Then decide whether you want to enter libraries or
@@ -552,6 +558,11 @@
                       editor. There you can review or change the request
                       details, the attached files, and the libraries or samples
                       inside the request.
+                    </li>
+                    <li v-if="isStaffUser">
+                      <strong>Change Ownership:</strong> Reassign a request to
+                      another owner when responsibility changes. This does not
+                      change the request Cost Unit.
                     </li>
                     <li>
                       <strong>Delete Request:</strong> Remove the whole request
@@ -1462,14 +1473,11 @@ export default {
                   }))
                   .filter((project) => project.label);
 
-                const tooltip = normalized
-                  .map((project) => project.label)
-                  .join(" ");
                 const visible = normalized.slice(0, 12);
                 const rendered = visible
                   .map(
                     (project) =>
-                      `<a href="#" style="font-weight:700; color:#b35900; text-decoration:none; margin-right:8px;" title="Open Request ${escapeAttr(
+                      `<a href="#" style="color:#8a1f11; font-size:inherit; font-weight:inherit; text-decoration:none;" title="Open Request ${escapeAttr(
                         project.label
                       )}" onclick="window.openRequestEditorById('${escapeAttr(
                         project.id
@@ -1477,13 +1485,11 @@ export default {
                         project.label
                       )}</a>`
                   )
-                  .join(" ");
+                  .join(", ");
 
-                return `<span title="${escapeAttr(
-                  `Related Projects: ${tooltip}`
-                )}" style="font-weight:700; color:#b35900;">Related Projects: ${rendered}${
+                return `Related Projects: ${rendered}${
                   normalized.length > 6 ? "..." : ""
-                }</span>`;
+                }`;
               })()
             : "";
 
@@ -1705,7 +1711,7 @@ export default {
           params.read_length = this.filters.readLength;
         }
         if (this.filters.changedOwnership !== null) {
-          params.changed_ownership = true;
+          params.changed_ownership = this.filters.changedOwnership;
         }
 
         let response = await axiosRef.get(
@@ -2347,6 +2353,9 @@ export default {
           name: payload.name ?? existing.name,
           cost_unit: payload.cost_unit ?? existing.cost_unit ?? "",
           description: payload.description ?? existing.description ?? "",
+          related_requests: Array.isArray(payload.related_requests)
+            ? payload.related_requests
+            : existing.related_requests,
           files: Array.isArray(payload.files) ? payload.files : existing.files
         };
         this.requestMetaById = {
@@ -2370,7 +2379,8 @@ export default {
         protocol: null,
         analysisType: null,
         sequencer: null,
-        readLength: null
+        readLength: null,
+        changedOwnership: null
       };
       const requestId = payload?.pk ?? null;
       this.pendingSavedMode = this.requestModalMode;
@@ -3806,28 +3816,14 @@ body.input-dropdown-open .tabulator-tooltip {
 }
 
 /* Header and help popup responsiveness */
-@media (max-width: 1550px) {
-  .header-title {
-    flex-basis: 220px;
-  }
-
-  .search-bar input {
-    padding: 8px;
-  }
-
-  .header-button {
-    padding: 8px 12px;
-  }
-}
-
 @media (max-width: 1700px) {
   .sticky-actions {
     gap: 8px;
   }
 
   .search-bar {
-    width: 260px;
-    flex-basis: 260px;
+    width: 220px;
+    flex-basis: 220px;
   }
 
   .date-filter {
@@ -3841,14 +3837,7 @@ body.input-dropdown-open .tabulator-tooltip {
   .header-button {
     min-width: 46px;
     justify-content: center;
-    padding: 8px 10px;
     gap: 6px;
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .header-button span {
-    display: none;
   }
 
   .date-filter input[type="date"] {
@@ -3857,36 +3846,6 @@ body.input-dropdown-open .tabulator-tooltip {
 }
 
 @media (max-width: 1220px) {
-  .header {
-    height: auto;
-    min-height: 70px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px 14px;
-  }
-
-  .header-title {
-    flex: 1 1 100%;
-    min-width: 0;
-    margin-right: 0;
-  }
-
-  .sticky-actions {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
-    row-gap: 10px;
-    max-width: 100%;
-    margin-left: 0;
-  }
-
-  .search-bar {
-    width: 260px;
-    flex: 1 1 260px;
-    max-width: 100%;
-  }
-
   .page-help-popup {
     right: 0;
     width: min(760px, calc(100vw - 28px));
@@ -3894,28 +3853,8 @@ body.input-dropdown-open .tabulator-tooltip {
 }
 
 @media (max-width: 950px) {
-  .header-title {
-    font-size: 16px;
-    flex-basis: 100%;
-  }
-
-  .search-bar {
-    width: 100%;
-    flex: 1 1 260px;
-    min-width: 200px;
-  }
-
-  .search-bar input {
-    width: 100%;
-    padding-right: 25px;
-  }
-
   .date-filters {
     display: none;
-  }
-
-  .sticky-actions {
-    gap: 8px;
   }
 
   .page-help-popup {
@@ -3963,36 +3902,31 @@ body.input-dropdown-open .tabulator-tooltip {
     grid-template-columns: 1fr;
   }
 
-  .header-logo {
-    display: none !important;
-  }
-
   .header {
     gap: 8px;
     padding: 12px;
+    flex-wrap: wrap;
+    align-items: center;
   }
 
   .header-title {
-    width: 100%;
+    width: auto;
     min-width: 0;
-    margin-right: 0;
-    flex-basis: 100%;
+    margin-right: 8px;
+    flex: 0 1 160px;
   }
 
   .sticky-actions {
-    width: 100%;
+    width: auto;
     gap: 8px;
-  }
-
-  .search-bar {
-    display: none;
+    flex-wrap: wrap;
+    margin-left: auto;
+    overflow-x: visible;
+    justify-content: flex-end;
+    row-gap: 6px;
   }
 
   .date-filters {
-    display: none;
-  }
-
-  .header-button {
     display: none;
   }
 

@@ -144886,6 +144886,7 @@ Ext.cmd.derive(
       { name: "reads_pf", type: "float", allowNull: true },
       { name: "undetermined_indices", type: "float", allowNull: true },
       { name: "phix", type: "float", allowNull: true },
+      { name: "aligned_spike_in", type: "float", allowNull: true },
       { name: "read_1", type: "float", allowNull: true },
       { name: "read_2", type: "float", allowNull: true }
     ]
@@ -146986,7 +146987,6 @@ Ext.cmd.derive(
         "#download-benchtop-protocol-button": {
           click: "downloadBenchtopProtocol"
         },
-        "#download-sample-sheet-button": { click: "downloadSampleSheet" },
         "#search-field": { change: "changeFilter" },
         "#cancel-button": { click: "cancel" },
         "#save-button": { click: "save" }
@@ -147068,25 +147068,6 @@ Ext.cmd.derive(
       g.submit({
         url: "api/flowcells/download_benchtop_protocol/",
         params: { ids: Ext.JSON.encode(Ext.Array.pluck(f, "pk")) }
-      });
-    },
-    downloadSampleSheet: function (h) {
-      var e = h.up("grid").getStore();
-      var f = this._getSelectedRecords(e);
-      if (f.length === 0) {
-        new Noty({
-          text: "You did not select any lanes.",
-          type: "warning"
-        }).show();
-        return;
-      }
-      var g = Ext.create("Ext.form.Panel", { standardSubmit: true });
-      g.submit({
-        url: "api/flowcells/download_sample_sheet/",
-        params: {
-          ids: Ext.JSON.encode(Ext.Array.pluck(f, "pk")),
-          flowcell_id: f[0].flowcell
-        }
       });
     },
     showPoolInfo: function (e, j, n, i, m, k, l) {
@@ -147280,11 +147261,6 @@ Ext.cmd.derive(
               {
                 itemId: "download-benchtop-protocol-button",
                 text: "Download Benchtop Protocol",
-                iconCls: "fa fa-file-excel-o fa-lg"
-              },
-              {
-                itemId: "download-sample-sheet-button",
-                text: "Download Sample Sheet",
                 iconCls: "fa fa-file-excel-o fa-lg"
               },
               "->",
@@ -155225,9 +155201,10 @@ Ext.cmd.derive(
               tooltip: "Undetermined Indices (%)",
               filter: { type: "number" }
             },
+            { text: "PhiX (%)", dataIndex: "phix", filter: { type: "number" } },
             {
-              text: "% Spike In",
-              dataIndex: "phix",
+              text: "Aligned to PhiX (%)",
+              dataIndex: "aligned_spike_in",
               filter: { type: "number" }
             },
             {
@@ -155314,8 +155291,7 @@ Ext.cmd.derive(
       control: {
         "#": { activate: "activateView" },
         "#sequences-grid": { groupcontextmenu: "showGroupMenu" },
-        daterangepicker: { select: "setRange" },
-        "#download-report": { click: "downloadReport" }
+        daterangepicker: { select: "setRange" }
       }
     },
     activateView: function (d) {
@@ -155330,31 +155306,6 @@ Ext.cmd.derive(
           d.getView().features[0].collapseAll();
         }
       });
-    },
-    downloadReport: function (e) {
-      var f = e.up("grid").getStore();
-      var g = this._getSelectedRecords(f);
-      if (g.length === 0) {
-        new Noty({
-          text: "You did not select any items.",
-          type: "warning"
-        }).show();
-        return;
-      }
-      var h = Ext.create("Ext.form.Panel", { standardSubmit: true });
-      h.submit({
-        url: "api/sequences_statistics/download_report/",
-        params: { barcodes: Ext.JSON.encode(Ext.Array.pluck(g, "barcode")) }
-      });
-    },
-    _getSelectedRecords: function (c) {
-      var d = [];
-      c.each(function (a) {
-        if (a.get("selected")) {
-          d.push({ barcode: a.get("barcode") });
-        }
-      });
-      return d;
     }
   },
   0,
@@ -155380,7 +155331,7 @@ Ext.cmd.derive(
         store: "SequencesStatistics",
         height: Ext.Element.getViewportHeight() - 64,
         header: {
-          title: "Sequences",
+          title: "Sequenced Samples",
           items: [
             {
               xtype: "parkoursearchfield",
@@ -155450,8 +155401,8 @@ Ext.cmd.derive(
               minWidth: 135
             },
             {
-              text: "Reads PF (M), requested",
-              tooltip: "Reads PF (M), requested",
+              text: "Requested Reads (M)",
+              tooltip: "Requested Reads (M)",
               dataIndex: "reads_pf_requested",
               filter: { type: "number" },
               minWidth: 135
@@ -155566,17 +155517,6 @@ Ext.cmd.derive(
                   presetPeriodsBtnIconCls: "x-fa fa-calendar-check-o",
                   confirmBtnIconCls: "x-fa fa-check"
                 }
-              }
-            ]
-          },
-          {
-            xtype: "toolbar",
-            dock: "bottom",
-            items: [
-              {
-                text: "Download Report",
-                itemId: "download-report",
-                iconCls: "fa fa-download fa-lg"
               }
             ]
           }

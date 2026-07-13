@@ -1,29 +1,26 @@
 <template>
   <div class="parent-container">
-    <div v-if="loading" class="loading-overlay">
-      <div class="spinner"></div>
-      <p>Loading <strong>Run Statistics</strong>...</p>
+    <div v-if="loading || fakeLoading" class="loading-overlay">
+      <div v-if="!fakeLoading" class="spinner"></div>
+      <p v-if="!fakeLoading">
+        Loading <span style="font-weight: bold">Runs Statistics</span>...
+      </p>
     </div>
 
     <div class="header">
-      <font-awesome-icon
-        icon="fa-solid fa-table-cells"
+      <img
+        :src="iconStatisticsHeader"
+        alt="Runs Statistics"
         class="statistics-header-icon"
       />
-      <div class="header-title">Run Statistics</div>
+      <div class="header-title">Runs Statistics</div>
 
       <div class="sticky-actions">
         <div class="search-bar">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search"
-            @keyup.enter="handleSearchAction"
-          />
+          <input v-model="searchQuery" type="text" placeholder="Search" />
           <font-awesome-icon
             icon="fa-solid fa-magnifying-glass"
-            style="color: darkgrey; cursor: pointer"
-            @click="handleSearchAction"
+            style="color: darkgrey"
           />
         </div>
 
@@ -115,26 +112,65 @@
           <div
             v-if="showSelectColumns"
             id="selectColumnsPopup"
-            class="button-popup-container statistics-columns-popup"
+            class="button-popup-container"
+            style="
+              left: -50px;
+              width: 250px;
+              max-height: 473px;
+              display: flex;
+              flex-direction: column;
+              padding: 10px 10px 5px 10px;
+            "
           >
-            <ul>
-              <li v-for="column in selectableColumns" :key="column.field">
-                <label>
-                  <input
-                    type="checkbox"
-                    :checked="column.visible !== false"
-                    @change="toggleColumnVisibility(column)"
-                  />
-                  <span>{{ column.title }}</span>
-                </label>
+            <ul
+              style="
+                padding: 5px 7px 7px;
+                margin: 0;
+                flex-grow: 1;
+                overflow-y: auto;
+              "
+            >
+              <li
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
+              >
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label>
+                    <input
+                      type="checkbox"
+                      v-model="column.visible"
+                      @change="toggleColumnVisibility(column)"
+                    />
+                    <span>{{ column.title }}</span>
+                  </label>
+                </template>
               </li>
             </ul>
-            <button class="reset-button" @click="resetColumnVisibility">
-              Reset Visibility Settings
-            </button>
-            <button class="reset-button" @click="resetColumnWidths">
-              Reset Width Settings
-            </button>
+            <div
+              style="
+                padding-top: 8px;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+              "
+            >
+              <button @click="resetColumnVisibility" class="reset-button">
+                Reset Visibility Settings
+              </button>
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
+                Reset Width Settings
+              </button>
+            </div>
           </div>
         </div>
 
@@ -204,19 +240,23 @@
                 <div class="tooltip-title">Export Guide</div>
                 <p class="tooltip-intro">
                   Use export when you want to download the table data to Excel.
-                  You can export selected rows or all rows matching the active
-                  date range, search, and filters.
+                  You can export only the rows you selected, or the full
+                  filtered result set for the current page.
                 </p>
                 <section class="tooltip-section">
                   <div class="tooltip-section-title">Basic export choices</div>
                   <ul class="tooltip-list">
                     <li>
-                      <strong>Export selected</strong> downloads only selected
-                      rows.
+                      <strong>Export selected</strong> downloads only the rows
+                      you selected in the table.
                     </li>
                     <li>
-                      <strong>Export all</strong> downloads all currently
-                      filtered rows.
+                      <strong>Export all</strong> downloads the full result set
+                      for the current export view.
+                    </li>
+                    <li>
+                      Use search and filters first if you want to narrow the
+                      exported dataset.
                     </li>
                   </ul>
                 </section>
@@ -228,18 +268,40 @@
                     <li>
                       Start by exporting with
                       <strong>Export without any additional sheets</strong>.
+                      This creates the base Excel file and keeps the original
+                      <strong>Parkour</strong> sheet.
                     </li>
                     <li>
-                      Open that file in Excel and add custom sheets.
+                      Open that file in Excel and add your own extra sheets for
+                      notes, calculations, or reporting.
                     </li>
                     <li>
-                      Upload or drag the edited file here as a template.
+                      Upload the edited file here as a reusable template. It
+                      will appear in the list of available templates.
                     </li>
                     <li>
-                      Later exports replace only the <strong>Parkour</strong>
-                      sheet and keep extra sheets unchanged.
+                      Later, when you export using that template, Parkour
+                      replaces only the <strong>Parkour</strong> sheet with
+                      fresh data and keeps your extra sheets unchanged.
                     </li>
                   </ol>
+                </section>
+                <section class="tooltip-section">
+                  <div class="tooltip-section-title">When to use this</div>
+                  <ul class="tooltip-list">
+                    <li>
+                      Download a snapshot of the current data for review or
+                      sharing.
+                    </li>
+                    <li>
+                      Reuse a prepared Excel layout with additional custom
+                      sheets.
+                    </li>
+                    <li>
+                      Keep Parkour data up to date inside your existing
+                      reporting workbook.
+                    </li>
+                  </ul>
                 </section>
               </div>
             </div>
@@ -265,7 +327,7 @@
                 for="run-export-selected"
                 :class="{ disabled: !hasSelectedRows }"
               >
-                Export selected run statistics
+                Export selected runs statistics
               </label>
             </div>
             <div class="export-selection-radio-option">
@@ -275,7 +337,7 @@
                 type="radio"
                 value="all"
               />
-              <label for="run-export-all">Export all run statistics</label>
+              <label for="run-export-all">Export all runs statistics</label>
             </div>
           </div>
           <div class="export-section" style="height: 100%">
@@ -304,7 +366,7 @@
                       v-model="selectedFile"
                       type="radio"
                       title="Select"
-                      value="without-file"
+                      :value="defaultExportTemplateSelection"
                     />
                   </div>
                 </div>
@@ -392,9 +454,7 @@
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button class="popup-button" @click="closeExportPopup">
-            Cancel
-          </button>
+          <button class="popup-button" @click="closeExportPopup">Cancel</button>
         </div>
       </div>
     </div>
@@ -402,7 +462,14 @@
 </template>
 
 <script>
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref
+} from "vue";
 import { saveAs } from "file-saver";
 import LiteTabulatorTable from "../components/TabulatorTableLite.vue";
 import {
@@ -430,13 +497,15 @@ import iconExportTemplateFileLines from "../assets/icons/export_template_lines.s
 import iconExportDownload from "../assets/icons/export_download.svg";
 import iconExportRemove from "../assets/icons/export_remove.svg";
 import iconExportUpload from "../assets/icons/export_upload.svg";
+import iconStatisticsHeader from "../assets/icons/header_statistics.svg";
 
 const VISIBILITY_KEY = "runStatisticsColumnVisibility";
-const WIDTHS_KEY = "runStatisticsColumnWidths";
+const WIDTHS_KEY = "runStatisticsColumnWidthsV2";
 const DATE_FILTER_DEBOUNCE_MS = 500;
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const TEMPLATE_API_URL = `${urlStringStart}/api/run-statistics-templates`;
+const DEFAULT_EXPORT_TEMPLATE_SELECTION = "without-file";
 const today = new Date();
 const twoMonthsAgo = new Date(today);
 twoMonthsAgo.setMonth(today.getMonth() - 2);
@@ -447,464 +516,526 @@ export default {
     LiteTabulatorTable
   },
   setup() {
-const tableRef = ref(null);
-const loading = ref(true);
-const rows = ref([]);
-const columnsList = ref([]);
-const searchQuery = ref("");
-const appliedSearchQuery = ref("");
-const showExportPopup = ref(false);
-const showExportHelpTooltip = ref(false);
-const isDragOver = ref(false);
-const uploadedExportTemplates = ref([]);
-const selectedFile = ref("without-file");
-const exportSelection = ref("selected");
-const hasSelectedRows = ref(false);
-const startDateString = ref(formatDateForInput(twoMonthsAgo));
-const endDateString = ref(formatDateForInput(today));
-const startDateValid = ref(true);
-const endDateValid = ref(true);
-const showAdvancedFilters = ref(false);
-const showSelectColumns = ref(false);
-const filters = reactive({
-  sequencer: "",
-  readLength: "",
-  preparation: "",
-  analysisType: ""
-});
-let dateTimer = null;
+    const tableRef = ref(null);
+    const loading = ref(true);
+    const fakeLoading = ref(false);
+    const rows = ref([]);
+    const columnsList = ref([]);
+    const searchQuery = ref("");
+    const showExportPopup = ref(false);
+    const showExportHelpTooltip = ref(false);
+    const isDragOver = ref(false);
+    const uploadedExportTemplates = ref([]);
+    const selectedFile = ref(DEFAULT_EXPORT_TEMPLATE_SELECTION);
+    const exportSelection = ref("selected");
+    const startDateString = ref(formatDateForInput(twoMonthsAgo));
+    const endDateString = ref(formatDateForInput(today));
+    const startDateValid = ref(true);
+    const endDateValid = ref(true);
+    const showAdvancedFilters = ref(false);
+    const showSelectColumns = ref(false);
+    const filters = reactive({
+      sequencer: "",
+      readLength: "",
+      preparation: "",
+      analysisType: ""
+    });
+    let dateTimer = null;
 
-const tableOptions = {
-  index: "row_id",
-  placeholder: "No run statistics to show.",
-  initialSort: [{ column: "name", dir: "asc" }],
-  groupHeader: runStatisticsGroupHeader,
-  groupContextMenu: [
-    {
-      label: "Select All",
-      action: (event, group) => setGroupSelection(group.getKey(), true)
-    },
-    {
-      label: "Unselect All",
-      action: (event, group) => setGroupSelection(group.getKey(), false)
-    }
-  ],
-  handleColumnResized: (column) => {
-    const field = column.getField();
-    if (!field) return;
-    const widths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
-    localStorage.setItem(
-      WIDTHS_KEY,
-      JSON.stringify({ ...widths, [field]: column.getWidth() })
+    const tableOptions = {
+      index: "row_id",
+      placeholder: "No runs statistics to show.",
+      initialSort: [{ column: "name", dir: "asc" }],
+      groupHeader: runStatisticsGroupHeader,
+      fakeLoadingStart,
+      fakeLoadingStop,
+      groupContextMenu: [
+        {
+          label: "Select All",
+          action: (event, group) => setGroupSelection(group.getKey(), true)
+        },
+        {
+          label: "Unselect All",
+          action: (event, group) => setGroupSelection(group.getKey(), false)
+        }
+      ],
+      handleColumnResized: (column) => {
+        const field = column.getField();
+        if (!field) return;
+        const widths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
+        localStorage.setItem(
+          WIDTHS_KEY,
+          JSON.stringify({ ...widths, [field]: column.getWidth() })
+        );
+        flashTableLoading(50);
+      },
+      handleColumnVisibilityChanged: (field, visible) => {
+        if (!field) return;
+        const visibility = JSON.parse(
+          localStorage.getItem(VISIBILITY_KEY) || "{}"
+        );
+        localStorage.setItem(
+          VISIBILITY_KEY,
+          JSON.stringify({ ...visibility, [field]: visible })
+        );
+        const definition = columnsList.value.find(
+          (column) => column.field === field
+        );
+        if (definition) definition.visible = visible;
+        flashTableLoading(50);
+      }
+    };
+
+    const sequencerOptions = computed(() =>
+      uniqueRunStatisticsValues(rows.value, "sequencer")
     );
-  },
-  handleColumnVisibilityChanged: (field, visible) => {
-    if (!field) return;
-    const visibility = JSON.parse(
-      localStorage.getItem(VISIBILITY_KEY) || "{}"
+    const readLengthOptions = computed(() =>
+      uniqueRunStatisticsValues(rows.value, "read_length")
     );
-    localStorage.setItem(
-      VISIBILITY_KEY,
-      JSON.stringify({ ...visibility, [field]: visible })
+    const preparationOptions = computed(() =>
+      uniqueRunStatisticsValues(rows.value, "library_preparation")
     );
-    const definition = columnsList.value.find((column) => column.field === field);
-    if (definition) definition.visible = visible;
-  }
-};
+    const analysisTypeOptions = computed(() =>
+      uniqueRunStatisticsValues(rows.value, "library_type")
+    );
+    const filteredRows = computed(() =>
+      rows.value.filter(
+        (row) =>
+          runStatisticsRowMatchesSearch(row, searchQuery.value) &&
+          (!filters.sequencer || row.sequencer === filters.sequencer) &&
+          (!filters.readLength || row.read_length === filters.readLength) &&
+          (!filters.preparation ||
+            row.library_preparation === filters.preparation) &&
+          (!filters.analysisType || row.library_type === filters.analysisType)
+      )
+    );
+    const hasSelectedRows = computed(() =>
+      rows.value.some((row) => row.selected)
+    );
 
-const sequencerOptions = computed(() =>
-  uniqueRunStatisticsValues(rows.value, "sequencer")
-);
-const readLengthOptions = computed(() =>
-  uniqueRunStatisticsValues(rows.value, "read_length")
-);
-const preparationOptions = computed(() =>
-  uniqueRunStatisticsValues(rows.value, "library_preparation")
-);
-const analysisTypeOptions = computed(() =>
-  uniqueRunStatisticsValues(rows.value, "library_type")
-);
-const selectableColumns = computed(() =>
-  columnsList.value.filter((column) => column.field !== "selected")
-);
+    function setColumns() {
+      const storedVisibility = JSON.parse(
+        localStorage.getItem(VISIBILITY_KEY) || "{}"
+      );
+      const storedWidths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
 
-const filteredRows = computed(() =>
-  rows.value.filter(
-    (row) =>
-      runStatisticsRowMatchesSearch(row, appliedSearchQuery.value) &&
-      (!filters.sequencer || row.sequencer === filters.sequencer) &&
-      (!filters.readLength || row.read_length === filters.readLength) &&
-      (!filters.preparation ||
-        row.library_preparation === filters.preparation) &&
-      (!filters.analysisType || row.library_type === filters.analysisType)
-  )
-);
-
-function setColumns() {
-  const storedVisibility = JSON.parse(
-    localStorage.getItem(VISIBILITY_KEY) || "{}"
-  );
-  const storedWidths = JSON.parse(localStorage.getItem(WIDTHS_KEY) || "{}");
-
-  const applySettings = (columns) => {
-    return columns.map((column) => {
-      if (column.field) {
-        if (Object.prototype.hasOwnProperty.call(storedWidths, column.field)) {
-          column.width = storedWidths[column.field];
-          if (column.minWidth && column.width < column.minWidth) {
-            column.width = column.minWidth;
+      const applySettings = (columns) => {
+        return columns.map((column) => {
+          if (column.field) {
+            if (
+              Object.prototype.hasOwnProperty.call(storedWidths, column.field)
+            ) {
+              column.width = storedWidths[column.field];
+              if (column.minWidth && column.width < column.minWidth) {
+                column.width = column.minWidth;
+              }
+            }
+            if (
+              Object.prototype.hasOwnProperty.call(
+                storedVisibility,
+                column.field
+              )
+            ) {
+              column.visible = storedVisibility[column.field];
+            } else {
+              column.visible = column.visible ?? true;
+            }
           }
-        }
-        if (
-          Object.prototype.hasOwnProperty.call(storedVisibility, column.field)
-        ) {
-          column.visible = storedVisibility[column.field];
-        } else {
-          column.visible = column.visible ?? true;
-        }
+          return column;
+        });
+      };
+
+      columnsList.value = applySettings(
+        runStatisticsColumnDefs(updateSourceSelection)
+      );
+      const selectionColumn = columnsList.value.find(
+        (column) => column.field === "selected"
+      );
+      if (selectionColumn) selectionColumn.visible = true;
+      const hasVisibleDataColumn = columnsList.value.some(
+        (column) => column.field !== "selected" && column.visible !== false
+      );
+      if (!hasVisibleDataColumn) {
+        columnsList.value.forEach((column) => {
+          if (column.field !== "selected") column.visible = true;
+        });
+        localStorage.removeItem(VISIBILITY_KEY);
       }
-      return column;
-    });
-  };
+    }
 
-  columnsList.value = applySettings(runStatisticsColumnDefs(updateSourceSelection));
-  const selectionColumn = columnsList.value.find(
-    (column) => column.field === "selected"
-  );
-  if (selectionColumn) selectionColumn.visible = true;
-  const hasVisibleDataColumn = columnsList.value.some(
-    (column) => column.field !== "selected" && column.visible !== false
-  );
-  if (!hasVisibleDataColumn) {
-    columnsList.value.forEach((column) => {
-      if (column.field !== "selected") column.visible = true;
-    });
-    localStorage.removeItem(VISIBILITY_KEY);
-  }
-}
-
-async function fetchRows() {
-  if (!validateDateRange()) return;
-  loading.value = true;
-  try {
-    const response = await axiosRef.get(`${urlStringStart}/api/run_statistics/`, {
-      params: {
-        start: `${startDateString.value}T00:00:00`,
-        end: `${endDateString.value}T23:59:59`
+    async function fetchRows() {
+      if (!validateDateRange()) return;
+      loading.value = true;
+      try {
+        const response = await axiosRef.get(
+          `${urlStringStart}/api/run_statistics/`,
+          {
+            params: {
+              start: `${startDateString.value}T00:00:00`,
+              end: `${endDateString.value}T23:59:59`
+            }
+          }
+        );
+        rows.value = response.data.map((row, index) => ({
+          ...row,
+          selected: false,
+          row_id: `${row.pk}_${row.name || index}`,
+          flowcell_group: `${row.pk}_${row.flowcell_id || ""}`,
+          create_time_display: formatRunStatisticsDate(row.create_time),
+          reads_pf_m:
+            row.reads_pf === null ||
+            row.reads_pf === undefined ||
+            row.reads_pf === ""
+              ? ""
+              : Number(row.reads_pf) / 1000000
+        }));
+      } catch (error) {
+        handleError(error);
+        rows.value = [];
+      } finally {
+        loading.value = false;
       }
-    });
-    rows.value = response.data.map((row, index) => ({
-      ...row,
-      selected: false,
-      row_id: `${row.pk}_${row.name || index}`,
-      flowcell_group: `${row.pk}_${row.flowcell_id || ""}`,
-      create_time_display: formatRunStatisticsDate(row.create_time),
-      reads_pf_m:
-        row.reads_pf === null || row.reads_pf === undefined || row.reads_pf === ""
-          ? ""
-          : Number(row.reads_pf) / 1000000
-    }));
-  } catch (error) {
-    handleError(error);
-    rows.value = [];
-  } finally {
-    loading.value = false;
-  }
-}
+    }
 
-function updateSourceSelection(rowId, selected) {
-  const row = rows.value.find((item) => item.row_id === rowId);
-  if (row) row.selected = selected;
-}
+    function updateSourceSelection(rowId, selected) {
+      const row = rows.value.find((item) => item.row_id === rowId);
+      if (row) row.selected = selected;
+    }
 
-function setGroupSelection(groupKey, selected) {
-  rows.value.forEach((row) => {
-    if (row.flowcell_group === groupKey) row.selected = selected;
-  });
-  const group = tableRef.value
-    ?.getTable()
-    ?.getGroups()
-    .find((item) => item.getKey() === groupKey);
-  group?.getRows().forEach((row) => row.update({ selected }));
-}
-
-function validateDateRange() {
-  startDateValid.value = isValidDate(startDateString.value);
-  endDateValid.value = isValidDate(endDateString.value);
-  if (!startDateValid.value || !endDateValid.value) return false;
-  if (startDateString.value > endDateString.value) {
-    startDateValid.value = false;
-    endDateValid.value = false;
-    showNotification("Start date must precede end date.", "warning");
-    return false;
-  }
-  return true;
-}
-
-function scheduleDateReload() {
-  clearTimeout(dateTimer);
-  dateTimer = setTimeout(fetchRows, DATE_FILTER_DEBOUNCE_MS);
-}
-
-function handleDateChange(type, value) {
-  if (type === "start") {
-    startDateString.value = value;
-    startDateValid.value = isValidDate(value);
-  } else {
-    endDateString.value = value;
-    endDateValid.value = isValidDate(value);
-  }
-  if (!startDateValid.value || !endDateValid.value) return;
-  scheduleDateReload();
-}
-
-function toggleAdvancedFilters() {
-  showAdvancedFilters.value = !showAdvancedFilters.value;
-  if (showAdvancedFilters.value) showSelectColumns.value = false;
-}
-
-function toggleSelectColumns() {
-  showSelectColumns.value = !showSelectColumns.value;
-  if (showSelectColumns.value) showAdvancedFilters.value = false;
-}
-
-function resetAdvancedFilters() {
-  Object.assign(filters, {
-    sequencer: "",
-    readLength: "",
-    preparation: "",
-    analysisType: ""
-  });
-}
-
-function handleExportClick() {
-  hasSelectedRows.value = rows.value.some((row) => row.selected);
-  exportSelection.value = hasSelectedRows.value ? "selected" : "all";
-  showExportPopup.value = true;
-  showExportHelpTooltip.value = false;
-  isDragOver.value = false;
-  showAdvancedFilters.value = false;
-  showSelectColumns.value = false;
-}
-
-function closeExportPopup() {
-  showExportPopup.value = false;
-  showExportHelpTooltip.value = false;
-  isDragOver.value = false;
-  selectedFile.value = "without-file";
-}
-
-async function fetchExportTemplates() {
-  try {
-    const response = await axiosRef.get(`${TEMPLATE_API_URL}/`);
-    uploadedExportTemplates.value = response.data;
-  } catch (error) {
-    handleError(error);
-  }
-}
-
-async function uploadExportTemplate(event) {
-  const file = event.target.files?.[0];
-  await processUploadedFile(file);
-  event.target.value = "";
-}
-
-async function downloadExportTemplate(file) {
-  if (!file?.id) return;
-  try {
-    const response = await axiosRef.get(`${TEMPLATE_API_URL}/${file.id}/download/`, {
-      responseType: "blob"
-    });
-    saveAs(
-      response.data,
-      buildExcelDownloadFilename("RunStatistics", file.name, response.data?.type)
-    );
-  } catch {
-    showNotification("File download failed.", "error");
-  }
-}
-
-async function removeExportTemplate(index) {
-  const file = uploadedExportTemplates.value[index];
-  if (!file?.id) return;
-  try {
-    await axiosRef.delete(`${TEMPLATE_API_URL}/${file.id}/remove/`);
-    uploadedExportTemplates.value.splice(index, 1);
-    showNotification("File removed successfully.", "success");
-  } catch {
-    showNotification("File removal failed.", "error");
-  } finally {
-    selectedFile.value = "without-file";
-  }
-}
-
-function handleDragOver(event) {
-  event.preventDefault();
-  isDragOver.value = true;
-}
-
-function handleDragEnter(event) {
-  event.preventDefault();
-  isDragOver.value = true;
-}
-
-function handleDragLeave(event) {
-  if (!event.currentTarget.contains(event.relatedTarget)) {
-    isDragOver.value = false;
-  }
-}
-
-async function handleDrop(event) {
-  event.preventDefault();
-  isDragOver.value = false;
-  const files = event.dataTransfer.files;
-  if (files.length > 1) {
-    showNotification("Upload only one XLSX or XLSM file.", "error");
-    return;
-  }
-  await processUploadedFile(files[0]);
-}
-
-async function processUploadedFile(file) {
-  if (!file) return;
-  if (!isSupportedExcelTemplateFile(file)) {
-    showNotification("Upload a valid XLSX or XLSM file.", "error");
-    return;
-  }
-  const formData = new FormData();
-  formData.append("file", file);
-  try {
-    await axiosRef.post(`${TEMPLATE_API_URL}/upload/`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
+    function setGroupSelection(groupKey, selected) {
+      rows.value.forEach((row) => {
+        if (row.flowcell_group === groupKey) row.selected = selected;
+      });
+      const group = tableRef.value
+        ?.getTable()
+        ?.getGroups()
+        .find((item) => item.getKey() === groupKey);
+      if (group && group._group && !group._group.visible) {
+        group.getElement()?.click();
       }
+      group?.getRows().forEach((row) => row.update({ selected }));
+    }
+
+    function handleGroupButtonClick(event, groupValue, action) {
+      event?.stopPropagation?.();
+      if (action === "selectAll") {
+        setGroupSelection(groupValue, true);
+        return;
+      }
+      if (action === "deselectAll") {
+        setGroupSelection(groupValue, false);
+      }
+    }
+
+    function validateDateRange() {
+      startDateValid.value = isValidDate(startDateString.value);
+      endDateValid.value = isValidDate(endDateString.value);
+      if (!startDateValid.value || !endDateValid.value) return false;
+      if (startDateString.value > endDateString.value) {
+        startDateValid.value = false;
+        endDateValid.value = false;
+        showNotification("Start date must precede end date.", "warning");
+        return false;
+      }
+      return true;
+    }
+
+    function scheduleDateReload() {
+      clearTimeout(dateTimer);
+      dateTimer = setTimeout(fetchRows, DATE_FILTER_DEBOUNCE_MS);
+    }
+
+    function handleDateChange(type, value) {
+      if (type === "start") {
+        startDateString.value = value;
+        startDateValid.value = isValidDate(value);
+      } else {
+        endDateString.value = value;
+        endDateValid.value = isValidDate(value);
+      }
+      if (!startDateValid.value || !endDateValid.value) return;
+      scheduleDateReload();
+    }
+
+    function toggleAdvancedFilters() {
+      showAdvancedFilters.value = !showAdvancedFilters.value;
+      if (showAdvancedFilters.value) showSelectColumns.value = false;
+    }
+
+    function toggleSelectColumns() {
+      showSelectColumns.value = !showSelectColumns.value;
+      if (showSelectColumns.value) showAdvancedFilters.value = false;
+    }
+
+    function resetAdvancedFilters() {
+      Object.assign(filters, {
+        sequencer: "",
+        readLength: "",
+        preparation: "",
+        analysisType: ""
+      });
+    }
+
+    function handleExportClick() {
+      exportSelection.value = hasSelectedRows.value ? "selected" : "all";
+      showExportPopup.value = true;
+      showExportHelpTooltip.value = false;
+      isDragOver.value = false;
+      showAdvancedFilters.value = false;
+      showSelectColumns.value = false;
+    }
+
+    function closeExportPopup() {
+      showExportPopup.value = false;
+      showExportHelpTooltip.value = false;
+      isDragOver.value = false;
+      selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
+    }
+
+    async function fetchExportTemplates() {
+      try {
+        const response = await axiosRef.get(`${TEMPLATE_API_URL}/`);
+        uploadedExportTemplates.value = response.data;
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    async function uploadExportTemplate(event) {
+      const file = event.target.files?.[0];
+      await uploadExportTemplateFile(file);
+      event.target.value = "";
+    }
+
+    async function downloadExportTemplate(file) {
+      if (!file?.id) return;
+      try {
+        const response = await axiosRef.get(
+          `${TEMPLATE_API_URL}/${file.id}/download/`,
+          {
+            responseType: "blob"
+          }
+        );
+        saveAs(
+          response.data,
+          buildExcelDownloadFilename(
+            "RunStatistics",
+            file.name,
+            response.data?.type
+          )
+        );
+      } catch {
+        showNotification("File download failed.", "error");
+      }
+    }
+
+    async function removeExportTemplate(index) {
+      const file = uploadedExportTemplates.value[index];
+      if (!file?.id) return;
+      try {
+        await axiosRef.delete(`${TEMPLATE_API_URL}/${file.id}/remove/`);
+        uploadedExportTemplates.value.splice(index, 1);
+        showNotification("File removed successfully.", "success");
+      } catch {
+        showNotification("File removal failed.", "error");
+      } finally {
+        selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
+      }
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+      isDragOver.value = true;
+    }
+
+    function handleDragEnter(event) {
+      event.preventDefault();
+      isDragOver.value = true;
+    }
+
+    function handleDragLeave(event) {
+      if (!event.currentTarget.contains(event.relatedTarget)) {
+        isDragOver.value = false;
+      }
+    }
+
+    async function handleDrop(event) {
+      event.preventDefault();
+      isDragOver.value = false;
+      const files = event.dataTransfer.files;
+      if (files.length > 1) {
+        showNotification("Upload only one XLSX or XLSM file.", "error");
+        return;
+      }
+      await uploadExportTemplateFile(files[0]);
+    }
+
+    async function uploadExportTemplateFile(file) {
+      if (!file) return;
+      if (!isSupportedExcelTemplateFile(file)) {
+        showNotification("Upload a valid XLSX or XLSM file.", "error");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        await axiosRef.post(`${TEMPLATE_API_URL}/upload/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
+        showNotification("File uploaded successfully.", "success");
+        await fetchExportTemplates();
+      } catch {
+        showNotification("File upload failed.", "error");
+      } finally {
+        selectedFile.value = DEFAULT_EXPORT_TEMPLATE_SELECTION;
+      }
+    }
+
+    async function handleExport() {
+      const exportRows = getRowsForExport();
+      if (!exportRows.length) {
+        showNotification("No runs statistics available for export.", "warning");
+        return;
+      }
+      try {
+        const formattedDate = new Date().toISOString().split("T")[0];
+        const selectedTemplate =
+          selectedFile.value !== DEFAULT_EXPORT_TEMPLATE_SELECTION
+            ? selectedFile.value
+            : null;
+        const filename =
+          exportSelection.value === "selected"
+            ? `${formattedDate}_selected_run_statistics`
+            : `${formattedDate}_run_statistics`;
+        const blob = await createExcelExportBlob({
+          rows: exportRows,
+          exportColumns: runStatisticsExportColumns(),
+          axiosInstance: axiosRef,
+          templateDownloadUrl:
+            selectedTemplate !== null
+              ? `${TEMPLATE_API_URL}/${selectedTemplate.id}/download/`
+              : null,
+          templateFileName: selectedTemplate?.name || ""
+        });
+        saveAs(
+          blob,
+          buildExcelExportFilename(filename, selectedTemplate?.name || "")
+        );
+      } catch (error) {
+        showNotification(
+          "Error during export. Please try again.\n" + error,
+          "error"
+        );
+      } finally {
+        closeExportPopup();
+      }
+    }
+
+    function getRowsForExport() {
+      return exportSelection.value === "selected"
+        ? rows.value.filter((row) => row.selected)
+        : filteredRows.value;
+    }
+
+    function toggleColumnVisibility(column) {
+      tableRef.value?.getTable()?.toggleColumn(column.field);
+    }
+
+    async function resetColumnVisibility() {
+      localStorage.removeItem(VISIBILITY_KEY);
+      setColumns();
+      flashTableLoading();
+      await nextTick();
+    }
+
+    async function resetColumnWidths() {
+      localStorage.removeItem(WIDTHS_KEY);
+      setColumns();
+      flashTableLoading();
+      await nextTick();
+    }
+
+    function flashTableLoading(delay = 300) {
+      fakeLoadingStart();
+      setTimeout(fakeLoadingStop, delay);
+    }
+
+    function fakeLoadingStart() {
+      fakeLoading.value = true;
+    }
+
+    function fakeLoadingStop() {
+      setTimeout(() => {
+        fakeLoading.value = false;
+      }, 300);
+    }
+
+    function handleDocumentClick(event) {
+      const advancedPopup = document.getElementById("advancedFiltersPopup");
+      const advancedButton = document.getElementById(
+        "toggleAdvancedFiltersButton"
+      );
+      const columnsPopup = document.getElementById("selectColumnsPopup");
+      const columnsButton = document.getElementById(
+        "toggleSelectColumnsButton"
+      );
+      const exportPopup = document.querySelector(".statistics-export-popup");
+      const exportButton = document.getElementById(
+        "openRunStatisticsExportPopupButton"
+      );
+      if (
+        showAdvancedFilters.value &&
+        !advancedPopup?.contains(event.target) &&
+        !advancedButton?.contains(event.target)
+      ) {
+        showAdvancedFilters.value = false;
+      }
+      if (
+        showSelectColumns.value &&
+        !columnsPopup?.contains(event.target) &&
+        !columnsButton?.contains(event.target)
+      ) {
+        showSelectColumns.value = false;
+      }
+      if (
+        showExportPopup.value &&
+        !exportPopup?.contains(event.target) &&
+        !exportButton?.contains(event.target)
+      ) {
+        closeExportPopup();
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key !== "Escape") return;
+      showAdvancedFilters.value = false;
+      showSelectColumns.value = false;
+      closeExportPopup();
+    }
+
+    onMounted(() => {
+      fetchRows();
+      fetchExportTemplates();
+      window.handleGroupButtonClick = handleGroupButtonClick;
+      document.addEventListener("click", handleDocumentClick);
+      document.addEventListener("keydown", handleKeyDown);
     });
-    showNotification("File uploaded successfully.", "success");
-    await fetchExportTemplates();
-  } catch {
-    showNotification("File upload failed.", "error");
-  } finally {
-    selectedFile.value = "without-file";
-  }
-}
 
-async function handleExport() {
-  const exportRows = getRowsForExport();
-  if (!exportRows.length) {
-    showNotification("No run statistics available for export.", "warning");
-    return;
-  }
-  try {
-    const formattedDate = new Date().toISOString().split("T")[0];
-    const selectedTemplate =
-      selectedFile.value !== "without-file" ? selectedFile.value : null;
-    const filename =
-      exportSelection.value === "selected"
-        ? `${formattedDate}_selected_run_statistics`
-        : `${formattedDate}_run_statistics`;
-    const blob = await createExcelExportBlob({
-      rows: exportRows,
-      exportColumns: runStatisticsExportColumns(),
-      axiosInstance: axiosRef,
-      templateDownloadUrl:
-        selectedTemplate !== null
-          ? `${TEMPLATE_API_URL}/${selectedTemplate.id}/download/`
-          : null,
-      templateFileName: selectedTemplate?.name || ""
+    onBeforeUnmount(() => {
+      clearTimeout(dateTimer);
+      window.handleGroupButtonClick = null;
+      document.removeEventListener("click", handleDocumentClick);
+      document.removeEventListener("keydown", handleKeyDown);
     });
-    saveAs(
-      blob,
-      buildExcelExportFilename(filename, selectedTemplate?.name || "")
-    );
-  } catch (error) {
-    showNotification("Error during export. Please try again.\n" + error, "error");
-  } finally {
-    closeExportPopup();
-  }
-}
 
-function getRowsForExport() {
-  return exportSelection.value === "selected"
-    ? rows.value.filter((row) => row.selected)
-    : filteredRows.value;
-}
-
-function handleSearchAction() {
-  searchQuery.value = searchQuery.value.trim();
-  appliedSearchQuery.value = searchQuery.value;
-}
-
-function toggleColumnVisibility(column) {
-  tableRef.value?.getTable()?.toggleColumn(column.field);
-}
-
-async function resetColumnVisibility() {
-  localStorage.removeItem(VISIBILITY_KEY);
-  setColumns();
-  await nextTick();
-}
-
-async function resetColumnWidths() {
-  localStorage.removeItem(WIDTHS_KEY);
-  setColumns();
-  await nextTick();
-}
-
-function handleDocumentClick(event) {
-  const advancedPopup = document.getElementById("advancedFiltersPopup");
-  const advancedButton = document.getElementById("toggleAdvancedFiltersButton");
-  const columnsPopup = document.getElementById("selectColumnsPopup");
-  const columnsButton = document.getElementById("toggleSelectColumnsButton");
-  const exportPopup = document.querySelector(".statistics-export-popup");
-  const exportButton = document.getElementById("openRunStatisticsExportPopupButton");
-  if (
-    showAdvancedFilters.value &&
-    !advancedPopup?.contains(event.target) &&
-    !advancedButton?.contains(event.target)
-  ) {
-    showAdvancedFilters.value = false;
-  }
-  if (
-    showSelectColumns.value &&
-    !columnsPopup?.contains(event.target) &&
-    !columnsButton?.contains(event.target)
-  ) {
-    showSelectColumns.value = false;
-  }
-  if (
-    showExportPopup.value &&
-    !exportPopup?.contains(event.target) &&
-    !exportButton?.contains(event.target)
-  ) {
-    closeExportPopup();
-  }
-}
-
-function handleKeyDown(event) {
-  if (event.key !== "Escape") return;
-  showAdvancedFilters.value = false;
-  showSelectColumns.value = false;
-  closeExportPopup();
-}
-
-onMounted(() => {
-  fetchRows();
-  fetchExportTemplates();
-  document.addEventListener("click", handleDocumentClick);
-  document.addEventListener("keydown", handleKeyDown);
-});
-
-onBeforeUnmount(() => {
-  clearTimeout(dateTimer);
-  document.removeEventListener("click", handleDocumentClick);
-  document.removeEventListener("keydown", handleKeyDown);
-});
-
-setColumns();
+    setColumns();
 
     return {
       tableRef,
       loading,
+      fakeLoading,
       columnsList,
       searchQuery,
       startDateString,
@@ -918,6 +1049,7 @@ setColumns();
       isDragOver,
       uploadedExportTemplates,
       selectedFile,
+      defaultExportTemplateSelection: DEFAULT_EXPORT_TEMPLATE_SELECTION,
       exportSelection,
       hasSelectedRows,
       iconExportTemplateFile,
@@ -925,13 +1057,13 @@ setColumns();
       iconExportDownload,
       iconExportRemove,
       iconExportUpload,
+      iconStatisticsHeader,
       filters,
       tableOptions,
       sequencerOptions,
       readLengthOptions,
       preparationOptions,
       analysisTypeOptions,
-      selectableColumns,
       filteredRows,
       toggleAdvancedFilters,
       toggleSelectColumns,
@@ -947,7 +1079,6 @@ setColumns();
       handleDragEnter,
       handleDragLeave,
       handleDrop,
-      handleSearchAction,
       toggleColumnVisibility,
       resetColumnVisibility,
       resetColumnWidths
@@ -965,63 +1096,17 @@ setColumns();
   padding: 10px;
 }
 
-.statistics-header-icon {
-  flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
-  margin-right: 12px;
-  color: white;
-}
-
 .table-container {
   flex: 1;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: auto;
   position: relative;
 }
 
-.statistics-filters-popup {
-  left: -80px;
-  width: 290px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-.statistics-columns-popup {
-  left: -55px;
-  width: 320px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-.statistics-columns-popup ul {
-  padding: 0;
-  margin: 0 0 8px;
-}
-
-.statistics-columns-popup li {
-  list-style: none;
-}
-
-.statistics-columns-popup .reset-button {
-  width: 100%;
-  margin-bottom: 6px;
-}
-
-.date-filter-item input[type="date"] {
-  width: 100%;
-  height: 34px;
-  padding: 4px 8px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-}
-
-@media (max-width: 1450px) {
-  .search-bar {
-    width: 320px;
-  }
-
-  .header-button span {
-    display: none;
-  }
+.table-container :deep(.tabulator),
+.table-container :deep(.tabulator *),
+.table-container :deep(.tabulator *::before),
+.table-container :deep(.tabulator *::after) {
+  box-sizing: border-box;
 }
 </style>

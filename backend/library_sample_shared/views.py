@@ -131,15 +131,12 @@ class IndexViewSet(viewsets.ViewSet):
         if not index_type_id:
             return Response([])
         try:
-            queryset = (
-                IndexPair.objects.filter(
-                    archived=False,
-                    index_type_id=index_type_id,
-                    index1__archived=False,
-                    index2__archived=False,
-                )
-                .select_related("index1", "index2")
-            )
+            queryset = IndexPair.objects.filter(
+                archived=False,
+                index_type_id=index_type_id,
+                index1__archived=False,
+                index2__archived=False,
+            ).select_related("index1", "index2")
         except ValueError:
             return Response([])
 

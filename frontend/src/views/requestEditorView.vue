@@ -37,7 +37,7 @@
         aria-busy="true"
       >
         <div class="spinner"></div>
-        <p>Loading request details...</p>
+        <p>Loading <span style="font-weight: bold">request details</span>...</p>
       </div>
       <div
         class="request-editor-content"
@@ -321,6 +321,16 @@
                         <li>
                           Start on the left side. Choose a Cost Unit and write a
                           short Description of the request.
+                        </li>
+                        <li>
+                          New requests are assigned automatically. In edit mode,
+                          staff users can change the Request Owner without
+                          changing the Cost Unit.
+                        </li>
+                        <li>
+                          Use <strong>Related Project(s)</strong> to link this
+                          request to other requests that belong to the same
+                          project context.
                         </li>
                         <li>
                           Add request files with <strong>Add Files</strong>, or
@@ -635,8 +645,10 @@
                     type="text"
                     v-model="requestOwnerQuery"
                     @input="handleRequestOwnerInput"
-                    @focus="showRequestOwnerSuggestions = !!requestOwnerQuery"
                     @blur="closeRequestOwnerSuggestions"
+                    @keydown.down.prevent="moveRequestOwnerHighlight(1)"
+                    @keydown.up.prevent="moveRequestOwnerHighlight(-1)"
+                    @keydown.enter.prevent="selectHighlightedRequestOwner"
                     :disabled="!canEditRequest"
                     placeholder="Search users by name or PI"
                     :class="['', !requestOwnerId ? 'placeholder' : '']"
@@ -646,9 +658,13 @@
                     class="autocomplete-suggestions"
                   >
                     <li
-                      v-for="user in requestOwnerSuggestions"
+                      v-for="(user, index) in requestOwnerSuggestions"
                       :key="`owner-${user.id}`"
                       class="autocomplete-suggestion"
+                      :class="{
+                        highlighted:
+                          index === highlightedRequestOwnerSuggestionIndex
+                      }"
                       @mousedown.prevent="selectRequestOwner(user)"
                     >
                       <strong
@@ -664,8 +680,8 @@
                     </li>
                   </ul>
                 </div>
-                <div v-else class="field-value">
-                  {{ requestOwnerQuery || "Not assigned" }}
+                <div v-else class="disabled-field-value">
+                  {{ requestOwnerDisplayValue }}
                 </div>
                 <small v-if="isStaffUser">
                   Changing the owner does not change Cost Unit.
@@ -694,57 +710,74 @@
 
               <label class="field-block">
                 <span>Related Project(s)</span>
-                <div class="autocomplete-field">
-                  <input
-                    type="text"
-                    v-model="relatedProjectQuery"
-                    @input="handleRelatedProjectInput"
-                    @focus="
-                      showRelatedProjectSuggestions = !!relatedProjectQuery
-                    "
-                    @blur="closeRelatedProjectSuggestions"
-                    :disabled="!canEditRequest"
-                    placeholder="Search by Request ID or name"
-                  />
-                  <ul
-                    v-if="showRelatedProjectSuggestions"
-                    class="autocomplete-suggestions"
-                  >
-                    <li
-                      v-for="project in relatedProjectSuggestions"
-                      :key="`related-${project.id}`"
-                      class="autocomplete-suggestion"
-                      @mousedown.prevent="selectRelatedProject(project)"
-                    >
-                      <strong>#{{ project.id }}</strong>
-                      <span v-if="project.name"> - {{ project.name }}</span>
-                    </li>
-                    <li
-                      v-if="!relatedProjectSuggestions.length"
-                      class="autocomplete-empty"
-                    >
-                      No projects found.
-                    </li>
-                  </ul>
-                </div>
                 <div
-                  v-if="relatedProjectsSelection.length"
-                  class="related-projects-selected"
+                  class="related-projects-field"
+                  :class="{ focused: showRelatedProjectSuggestions }"
                 >
-                  <button
-                    v-for="project in relatedProjectsSelection"
-                    :key="`selected-related-${project.id}`"
-                    type="button"
-                    class="related-project-chip"
-                    :disabled="!canEditRequest"
-                    @click="removeRelatedProject(project.id)"
-                  >
-                    <span>#{{ project.id }}</span>
-                    <font-awesome-icon
-                      v-if="canEditRequest"
-                      icon="fa-solid fa-xmark"
+                  <div class="autocomplete-field related-project-search">
+                    <input
+                      type="text"
+                      v-model="relatedProjectQuery"
+                      @input="handleRelatedProjectInput"
+                      @focus="openRelatedProjectSuggestions"
+                      @blur="closeRelatedProjectSuggestions"
+                      @keydown.down.prevent="moveRelatedProjectHighlight(1)"
+                      @keydown.up.prevent="moveRelatedProjectHighlight(-1)"
+                      @keydown.enter.prevent="selectHighlightedRelatedProject"
+                      :disabled="!canEditRequest"
+                      placeholder="Search by Request ID or name"
                     />
-                  </button>
+                    <font-awesome-icon
+                      class="related-project-search-icon"
+                      icon="fa-solid fa-magnifying-glass"
+                    />
+                    <ul
+                      v-if="showRelatedProjectSuggestions"
+                      class="autocomplete-suggestions"
+                    >
+                      <li
+                        v-for="(project, index) in relatedProjectSuggestions"
+                        :key="`related-${project.id}`"
+                        class="autocomplete-suggestion"
+                        :class="{
+                          highlighted:
+                            index === highlightedRelatedProjectSuggestionIndex
+                        }"
+                        @mousedown.prevent="selectRelatedProject(project)"
+                      >
+                        <strong>#{{ project.id }}</strong>
+                        <span v-if="project.name"> - {{ project.name }}</span>
+                      </li>
+                      <li
+                        v-if="!relatedProjectSuggestions.length"
+                        class="autocomplete-empty"
+                      >
+                        No projects found.
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    v-if="relatedProjectsSelection.length"
+                    class="related-projects-selected"
+                  >
+                    <span
+                      v-for="project in relatedProjectsSelection"
+                      :key="`selected-related-${project.id}`"
+                      class="related-project-chip"
+                      :class="{ disabled: !canEditRequest }"
+                    >
+                      <span>#{{ project.id }}</span>
+                      <button
+                        v-if="canEditRequest"
+                        type="button"
+                        class="related-project-remove"
+                        :aria-label="`Remove related project #${project.id}`"
+                        @click="removeRelatedProject(project.id)"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-xmark" />
+                      </button>
+                    </span>
+                  </div>
                 </div>
               </label>
 
@@ -756,7 +789,7 @@
                   </div>
                   <button
                     v-if="canEditRequest"
-                    class="header-button ghost"
+                    class="header-button ghost request-file-add-button"
                     type="button"
                     :disabled="!canEditRequest"
                     @click="triggerRequestFileUpload"
@@ -1075,6 +1108,8 @@ import {
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const AUTOCOMPLETE_SEARCH_DEBOUNCE_MS = 250;
+const AUTOCOMPLETE_BLUR_CLOSE_DELAY_MS = 150;
 
 export default {
   name: "RequestEditorView",
@@ -1203,10 +1238,12 @@ export default {
       originalRequestOwnerQuery: "",
       requestOwnerSuggestions: [],
       showRequestOwnerSuggestions: false,
+      highlightedRequestOwnerSuggestionIndex: -1,
       requestOwnerSearchTimer: null,
       relatedProjectQuery: "",
       relatedProjectSuggestions: [],
       showRelatedProjectSuggestions: false,
+      highlightedRelatedProjectSuggestionIndex: -1,
       relatedProjectSearchTimer: null,
       relatedProjectsSelection: [],
       requestUsers: [],
@@ -1336,6 +1373,10 @@ export default {
     },
     primaryActionLabel() {
       return this.isEditMode ? "Update Request" : "Save Request";
+    },
+    requestOwnerDisplayValue() {
+      if (!this.isEditMode) return "Automatically assigned";
+      return this.requestOwnerQuery || "Not assigned";
     },
     canEditRequest() {
       if (!this.isEditMode) return true;
@@ -2054,19 +2095,13 @@ export default {
       this.originalRequestOwnerId = null;
       this.requestOwnerQuery = "";
       this.requestOwnerSuggestions = [];
-      this.showRequestOwnerSuggestions = false;
+      this.resetRequestOwnerAutocomplete();
       this.relatedProjectQuery = "";
       this.relatedProjectSuggestions = [];
-      this.showRelatedProjectSuggestions = false;
+      this.resetRelatedProjectAutocomplete();
       this.relatedProjectsSelection = [];
-      if (this.requestOwnerSearchTimer) {
-        clearTimeout(this.requestOwnerSearchTimer);
-        this.requestOwnerSearchTimer = null;
-      }
-      if (this.relatedProjectSearchTimer) {
-        clearTimeout(this.relatedProjectSearchTimer);
-        this.relatedProjectSearchTimer = null;
-      }
+      this.clearAutocompleteTimer("requestOwnerSearchTimer");
+      this.clearAutocompleteTimer("relatedProjectSearchTimer");
       this.resetDirtyTracking();
       this.editRecordsByType = {
         library: [],
@@ -3158,8 +3193,6 @@ export default {
         this.handleSampleCellEdited(field, row);
       }
       this.revalidateDraftRows();
-      const rowData = row.getData?.() || {};
-      const rowErrors = this.draftValidationState[rowData.tempId] || {};
       this.applyRowStyling(row);
     },
     handleLibraryCellEdited(field, row) {
@@ -3472,8 +3505,9 @@ export default {
       } catch (error) {
         handleError(error);
       } finally {
-        const { [key]: _discard, ...rest } = this.indexOptionsLoading;
-        this.indexOptionsLoading = rest;
+        const loadingState = { ...this.indexOptionsLoading };
+        delete loadingState[key];
+        this.indexOptionsLoading = loadingState;
       }
     },
     tryAutoSelectI5(row, rowData) {
@@ -3975,7 +4009,7 @@ export default {
                 )
               );
             }
-          } catch (error) {
+          } catch {
             // Ignore missing detail; keep the fetched list as-is.
           }
         }
@@ -3999,6 +4033,10 @@ export default {
         this.requestOwnerSuggestions = Array.isArray(response.data)
           ? response.data
           : [];
+        this.setAutocompleteHighlight(
+          "highlightedRequestOwnerSuggestionIndex",
+          this.requestOwnerSuggestions
+        );
       } catch (error) {
         handleError(error);
       }
@@ -4018,6 +4056,7 @@ export default {
           params.query = String(query).trim();
         } else {
           this.relatedProjectSuggestions = [];
+          this.resetRelatedProjectHighlight();
           return;
         }
 
@@ -4054,6 +4093,10 @@ export default {
                 (selected) => selected.id === item.id
               )
           );
+        this.setAutocompleteHighlight(
+          "highlightedRelatedProjectSuggestionIndex",
+          this.relatedProjectSuggestions
+        );
       } catch (error) {
         handleError(error);
       }
@@ -4064,37 +4107,75 @@ export default {
       this.requestOwnerQuery = query;
       this.requestOwnerId = null;
       this.showRequestOwnerSuggestions = !!query;
-      if (this.requestOwnerSearchTimer) {
-        clearTimeout(this.requestOwnerSearchTimer);
+      this.resetRequestOwnerHighlight();
+      this.clearAutocompleteTimer("requestOwnerSearchTimer");
+      if (!query.trim()) {
+        this.requestOwnerSuggestions = [];
+        return;
       }
-      this.requestOwnerSearchTimer = setTimeout(() => {
+      this.requestOwnerSearchTimer = this.scheduleAutocompleteSearch(() => {
         this.fetchRequestUsers(query);
-      }, 250);
+      });
     },
     selectRequestOwner(user) {
       this.requestOwnerId = user.id;
       this.requestOwnerQuery = `${user.first_name} ${user.last_name}${user.pi_name ? ` (${user.pi_name})` : ""}`;
-      this.showRequestOwnerSuggestions = false;
+      this.resetRequestOwnerAutocomplete();
       this.requestOwnerSuggestions = [user];
+    },
+    openRequestOwnerSuggestions() {
+      this.showRequestOwnerSuggestions =
+        !!this.requestOwnerQuery && !!this.requestOwnerSuggestions.length;
+      if (
+        this.showRequestOwnerSuggestions &&
+        this.highlightedRequestOwnerSuggestionIndex < 0
+      ) {
+        this.setAutocompleteHighlight(
+          "highlightedRequestOwnerSuggestionIndex",
+          this.requestOwnerSuggestions
+        );
+      }
+    },
+    moveRequestOwnerHighlight(direction) {
+      if (!this.isStaffUser || !this.isEditMode || !this.canEditRequest) return;
+      this.openRequestOwnerSuggestions();
+      this.moveAutocompleteHighlight(
+        "highlightedRequestOwnerSuggestionIndex",
+        this.requestOwnerSuggestions,
+        direction
+      );
+    },
+    selectHighlightedRequestOwner() {
+      if (!this.showRequestOwnerSuggestions) return;
+      const user = this.getHighlightedAutocompleteItem(
+        this.requestOwnerSuggestions,
+        this.highlightedRequestOwnerSuggestionIndex
+      );
+      if (user) {
+        this.selectRequestOwner(user);
+      }
     },
     handleRelatedProjectInput(event) {
       if (!this.canEditRequest) return;
       const query = String(event.target.value || "");
       this.relatedProjectQuery = query;
       this.showRelatedProjectSuggestions = !!query;
-      if (this.relatedProjectSearchTimer) {
-        clearTimeout(this.relatedProjectSearchTimer);
+      this.resetRelatedProjectHighlight();
+      this.clearAutocompleteTimer("relatedProjectSearchTimer");
+      if (!query.trim()) {
+        this.relatedProjectSuggestions = [];
+        return;
       }
-      this.relatedProjectSearchTimer = setTimeout(() => {
+      this.relatedProjectSearchTimer = this.scheduleAutocompleteSearch(() => {
         this.fetchRelatedProjects({ query });
-      }, 250);
+      });
     },
     selectRelatedProject(project) {
       const id = Number(project?.id);
       if (!Number.isInteger(id) || id <= 0) return;
       if (this.relatedProjectsSelection.some((item) => item.id === id)) {
         this.relatedProjectQuery = "";
-        this.showRelatedProjectSuggestions = false;
+        this.resetRelatedProjectAutocomplete();
         return;
       }
       this.relatedProjectsSelection = [
@@ -4105,8 +4186,38 @@ export default {
         }
       ];
       this.relatedProjectQuery = "";
-      this.relatedProjectSuggestions = [];
-      this.showRelatedProjectSuggestions = false;
+      this.resetRelatedProjectAutocomplete({ clearSuggestions: true });
+    },
+    openRelatedProjectSuggestions() {
+      this.showRelatedProjectSuggestions = !!this.relatedProjectQuery;
+      if (
+        this.showRelatedProjectSuggestions &&
+        this.highlightedRelatedProjectSuggestionIndex < 0
+      ) {
+        this.setAutocompleteHighlight(
+          "highlightedRelatedProjectSuggestionIndex",
+          this.relatedProjectSuggestions
+        );
+      }
+    },
+    moveRelatedProjectHighlight(direction) {
+      if (!this.canEditRequest) return;
+      this.openRelatedProjectSuggestions();
+      this.moveAutocompleteHighlight(
+        "highlightedRelatedProjectSuggestionIndex",
+        this.relatedProjectSuggestions,
+        direction
+      );
+    },
+    selectHighlightedRelatedProject() {
+      if (!this.showRelatedProjectSuggestions) return;
+      const project = this.getHighlightedAutocompleteItem(
+        this.relatedProjectSuggestions,
+        this.highlightedRelatedProjectSuggestionIndex
+      );
+      if (project) {
+        this.selectRelatedProject(project);
+      }
     },
     removeRelatedProject(projectId) {
       if (!this.canEditRequest) return;
@@ -4117,13 +4228,67 @@ export default {
     },
     closeRelatedProjectSuggestions() {
       setTimeout(() => {
-        this.showRelatedProjectSuggestions = false;
-      }, 150);
+        this.resetRelatedProjectAutocomplete();
+      }, AUTOCOMPLETE_BLUR_CLOSE_DELAY_MS);
     },
     closeRequestOwnerSuggestions() {
       setTimeout(() => {
-        this.showRequestOwnerSuggestions = false;
-      }, 150);
+        this.resetRequestOwnerAutocomplete();
+      }, AUTOCOMPLETE_BLUR_CLOSE_DELAY_MS);
+    },
+    resetRequestOwnerAutocomplete() {
+      this.showRequestOwnerSuggestions = false;
+      this.resetRequestOwnerHighlight();
+    },
+    resetRelatedProjectAutocomplete({ clearSuggestions = false } = {}) {
+      this.showRelatedProjectSuggestions = false;
+      this.resetRelatedProjectHighlight();
+      if (clearSuggestions) {
+        this.relatedProjectSuggestions = [];
+      }
+    },
+    resetRequestOwnerHighlight() {
+      this.highlightedRequestOwnerSuggestionIndex = -1;
+    },
+    resetRelatedProjectHighlight() {
+      this.highlightedRelatedProjectSuggestionIndex = -1;
+    },
+    clearAutocompleteTimer(timerKey) {
+      if (this[timerKey]) {
+        clearTimeout(this[timerKey]);
+        this[timerKey] = null;
+      }
+    },
+    scheduleAutocompleteSearch(callback) {
+      return setTimeout(callback, AUTOCOMPLETE_SEARCH_DEBOUNCE_MS);
+    },
+    setAutocompleteHighlight(indexKey, items) {
+      this[indexKey] = this.getInitialAutocompleteIndex(items);
+    },
+    getInitialAutocompleteIndex(items) {
+      return Array.isArray(items) && items.length ? 0 : -1;
+    },
+    moveAutocompleteHighlight(indexKey, items, direction) {
+      this[indexKey] = this.getNextAutocompleteIndex(
+        this[indexKey],
+        Array.isArray(items) ? items.length : 0,
+        direction
+      );
+    },
+    getNextAutocompleteIndex(currentIndex, itemCount, direction) {
+      if (!itemCount) return -1;
+      if (currentIndex < 0) {
+        return direction > 0 ? 0 : itemCount - 1;
+      }
+      return (currentIndex + direction + itemCount) % itemCount;
+    },
+    getHighlightedAutocompleteItem(items, highlightedIndex) {
+      if (!Array.isArray(items) || !items.length) return null;
+      const index =
+        highlightedIndex >= 0 && highlightedIndex < items.length
+          ? highlightedIndex
+          : 0;
+      return items[index];
     },
     saveRequest() {
       if (this.isEditMode) {
@@ -4460,18 +4625,13 @@ export default {
         ids.has(row.tempId)
       );
       if (!rowsToDelete.length) return;
-      try {
-      } catch (error) {
-        handleError(error);
-      } finally {
-        const remaining = this.requestEditorDraftRows.filter(
-          (row) => !ids.has(row.tempId)
-        );
-        this.requestEditorDraftRows = remaining;
-        this.selectedDraftRowIds = [];
-        this.persistDraftRowsToEditRecords(this.requestEditorMode);
-        this.$nextTick(() => this.revalidateDraftRows());
-      }
+      const remaining = this.requestEditorDraftRows.filter(
+        (row) => !ids.has(row.tempId)
+      );
+      this.requestEditorDraftRows = remaining;
+      this.selectedDraftRowIds = [];
+      this.persistDraftRowsToEditRecords(this.requestEditorMode);
+      this.$nextTick(() => this.revalidateDraftRows());
     },
     async fetchFilterOptions() {
       if (this.filterOptionsLoaded) return;
@@ -4682,29 +4842,81 @@ export default {
   box-sizing: border-box;
 }
 
+.related-projects-field {
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  background: #f6f8fa;
+  padding: 12px;
+  overflow: visible;
+}
+
+.related-projects-field.focused {
+  border-color: #9aa6b2;
+}
+
+.related-projects-field .related-project-search input {
+  background: #ffffff;
+  font-size: 13px;
+  padding-right: 36px;
+}
+
+.related-projects-field .related-project-search input:focus {
+  outline: none;
+}
+
+.related-project-search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  color: darkgrey;
+  font-size: 13px;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
 .related-projects-selected {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .related-project-chip {
   border: 1px solid #b8c6d1;
-  border-radius: 16px;
+  border-radius: 8px;
   background: #eef3f7;
   color: #16364a;
-  font-size: 12px;
-  padding: 4px 10px;
+  font-size: 14px;
+  padding: 4px 8px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
+  line-height: 1.2;
 }
 
-.related-project-chip:disabled {
+.related-project-chip.disabled {
   opacity: 0.7;
-  cursor: default;
+}
+
+.related-project-remove {
+  width: 16px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.related-project-remove:hover,
+.related-project-remove:focus-visible {
+  background: rgba(22, 54, 74, 0.12);
+  outline: none;
 }
 
 .confirm-header {
@@ -5452,8 +5664,27 @@ export default {
   box-sizing: border-box;
 }
 
+.disabled-field-value {
+  padding: 11px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #9ba3af;
+  background: #f4f6f8;
+  line-height: 1.5;
+  box-sizing: border-box;
+  cursor: not-allowed;
+  user-select: none;
+}
+
 .field-block select.placeholder {
   color: #9ba3af;
+}
+
+.field-block input::placeholder {
+  color: #9ba3af;
+  opacity: 1;
 }
 
 .field-block select.placeholder option {
@@ -5504,10 +5735,34 @@ export default {
   gap: 12px;
 }
 
+.files-header > div {
+  min-width: 0;
+}
+
 .files-header small {
   display: block;
   font-size: 11px;
   color: #6b7280;
+}
+
+.request-file-add-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 104px;
+  max-width: none;
+  height: 28px;
+  min-height: 28px;
+  gap: 7px;
+  padding: 0 12px;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.request-file-add-button span {
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1;
 }
 
 .files-table-wrapper {
@@ -5966,6 +6221,10 @@ export default {
 
 .autocomplete-suggestion:hover {
   background: #f3f6f8;
+}
+
+.autocomplete-suggestion.highlighted {
+  background: #e8f1f5;
 }
 
 .autocomplete-empty {

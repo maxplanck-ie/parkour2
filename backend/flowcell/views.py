@@ -1,8 +1,6 @@
-import csv
 import itertools
 import json
 import logging
-import unicodedata
 
 from common.mixins import MultiEditMixin
 from common.views import CsrfExemptSessionAuthentication
@@ -14,7 +12,7 @@ from django.db.models import F, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -31,11 +29,11 @@ from .serializers import (
 )
 
 ReadLength = apps.get_model("library_sample_shared", "ReadLength")
-IndexI7 = apps.get_model("library_sample_shared", "IndexI7")
-IndexI5 = apps.get_model("library_sample_shared", "IndexI5")
 Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
 Pool = apps.get_model("index_generator", "Pool")
+
+DELIVERED_STATUS = 6
 
 logger = logging.getLogger("db")
 
@@ -240,6 +238,30 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             pk=pk,
         )
 
+        flowcell_pool_ids = list(
+            flowcell.lanes.exclude(pool_id=None)
+            .values_list("pool_id", flat=True)
+            .distinct()
+        )
+        has_delivered_records = (
+            Library.objects.filter(
+                status=DELIVERED_STATUS,
+                pool__id__in=flowcell_pool_ids,
+            ).exists()
+            or Sample.objects.filter(
+                status=DELIVERED_STATUS,
+                pool__id__in=flowcell_pool_ids,
+            ).exists()
+        )
+        if has_delivered_records:
+            return Response(
+                {
+                    "success": False,
+                    "message": "This flowcell cannot be destroyed because it contains delivered libraries or samples.",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         with transaction.atomic():
             affected_pools = {}
             pool_unload_counts = {}
@@ -355,153 +377,6 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         wb.save(response)
 
         return response
-
-    @action(
-        methods=["post"],
-        detail=False,
-        authentication_classes=[CsrfExemptSessionAuthentication],
-    )
-    def download_sample_sheet(self, request):
-        """Generate Benchtop Protocol as XLS file for selected lanes."""
-
-        def create_row(lane, record, monolane, legacy=False):
-            index_i7 = IndexI7.objects.filter(
-                archived=False, index=record.index_i7, index_type=record.index_type
-            )
-            index_i7_id = index_i7[0].index_id if index_i7 else ""
-
-            index_i5 = IndexI5.objects.filter(
-                archived=False, index=record.index_i5, index_type=record.index_type
-            )
-            index_i5_id = index_i5[0].index_id if index_i5 else ""
-
-            request_name = unicodedata.normalize("NFKD", record.request.get().name)
-            request_name = str(request_name.encode("ASCII", "ignore"), "utf-8")
-
-            library_protocol = unicodedata.normalize(
-                "NFKD", record.library_protocol.name
-            )
-            library_protocol = str(library_protocol.encode("ASCII", "ignore"), "utf-8")
-
-            if not monolane:
-                lane_name = lane.name.split()[1]
-            else:
-                lane_name = "1+2"
-
-            if legacy:
-                this_row = [
-                    lane_name,  # Lane
-                    record.barcode,  # Sample_ID
-                    record.name,  # Sample_Name
-                    "",  # Sample_Plate
-                    "",  # Sample_Well
-                    index_i7_id,  # I7_Index_ID
-                    record.index_i7,  # index1
-                    index_i5_id,  # I5_Index_ID
-                    record.index_i5,  # index2
-                    request_name,  # Sample_Project / Request ID
-                    library_protocol,  # Description / Library Protocol
-                ]
-            else:
-                i5 = (
-                    record.index_i5.replace("A", "t")
-                    .replace("C", "g")
-                    .replace("T", "a")
-                    .replace("G", "c")
-                    .upper()[::-1]
-                )
-                this_row = [
-                    record.barcode,  # Sample_ID, calling it 'Name' in RunManifest header
-                    record.index_i7,  # index1
-                    i5,  # index2 (reverse complement)
-                    lane_name,  # Lane
-                    request_name,  # Sample_Project / Request ID
-                ]
-            return this_row
-
-        response = HttpResponse(content_type="text/csv")
-        ids = json.loads(request.data.get("ids", "[]"))
-        flowcell_id = request.data.get("flowcell_id", "")
-        flowcell = Flowcell.objects.filter(archived=False).get(pk=flowcell_id)
-
-        writer = csv.writer(response)
-
-        if not "AVITI" in flowcell.sequencer.name:
-            writer.writerow(["[Data]"] + [""] * 10)
-            writer.writerow(
-                [
-                    "Lane",
-                    "Sample_ID",
-                    "Sample_Name",
-                    "Sample_Plate",
-                    "Sample_Well",
-                    "I7_Index_ID",
-                    "index",
-                    "I5_Index_ID",
-                    "index2",
-                    "Sample_Project",
-                    "Description",
-                ]
-            )
-            f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
-
-        else:
-            writer.writerow(["[SAMPLES]"] + [""] * 4)
-            writer.writerow(
-                [
-                    "SampleName",
-                    "Index1",
-                    "Index2",
-                    "Lane",
-                    "Project",
-                ]
-            )
-            f_name = "%s_RunManifest.csv" % flowcell.flowcell_id
-
-        response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
-
-        lanes = Lane.objects.filter(pk__in=ids).order_by("name")
-
-        rows = []
-        for lane in lanes:
-            records = list(
-                itertools.chain(
-                    lane.pool.libraries.all().filter(~Q(status=-1)),
-                    lane.pool.samples.all().filter(~Q(status=-1)),
-                )
-            )
-
-            for record in records:
-                row = create_row(
-                    lane,
-                    record,
-                    monolane=len(lanes) == 1,
-                    legacy=not "AVITI" in flowcell.sequencer.name,
-                )
-                rows.append(row)
-
-        if not "AVITI" in flowcell.sequencer.name:
-            rows = sorted(rows, key=lambda x: (x[0], x[1][3:]))
-        else:
-            rows = sorted(rows, key=lambda x: x[0])
-
-        for row in rows:
-            writer.writerow(row)
-
-        return response
-
-    @action(methods=["get"], detail=False, permission_classes=[IsAdminUser])
-    def retrieve_samplesheet(self, request):
-        """Download SampleSheet for all lanes of a flowcell."""
-        flowcell_id = request.query_params.get("flowcell_id", "")
-        flowcell = get_object_or_404(Flowcell, flowcell_id=flowcell_id)
-        lane_pks_list = list(flowcell.lanes.all().values_list("pk", flat=True))
-        post_request = type("MockRequest", (), {})()
-        post_request.data = {
-            "ids": json.dumps(lane_pks_list),
-            "flowcell_id": flowcell.pk,
-        }
-        return self.download_sample_sheet(post_request)
 
     @action(methods=["get"], detail=False, permission_classes=[IsAdminUser])
     def get_related_flowcells(self, request):

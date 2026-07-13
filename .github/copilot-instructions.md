@@ -18,6 +18,41 @@ based on the file you are editing (see [GitHub docs](https://docs.github.com/en/
 - Reuse existing utilities and components before creating new ones.
 - Keep business logic out of views (backend) and out of UI components (frontend).
 
+## Frontend UI — non-negotiable rules
+
+These prevent recurring regressions. Do not deviate without an explicit request.
+
+### Tables MUST use Tabulator
+
+- The Tabulator library (`tabulator-tables`) is the ONLY approved table implementation.
+  Never hand-roll `<table>`/`<tr>`/`<td>` markup, and never introduce another grid
+  library (ag-grid, DataTables, PrimeVue tables, etc.) for new tables.
+- Render tables through the existing wrapper components — do not instantiate Tabulator
+  directly and do not duplicate their logic:
+  - `frontend/src/components/TabulatorTableLite.vue` — optimized for large record sets.
+  - `frontend/src/components/TabulatorTableFull.vue` — full-featured tables.
+- Configure a table via the wrapper's `columnDefs`, `rowData`, and `tableOptions` props.
+  Column definitions belong in the relevant `frontend/src/constants/*Consts.js` file,
+  following the existing patterns there. Do not inline ad-hoc column configs in views.
+- See existing usages for reference: `views/librariesAndSamplesView.vue`,
+  `views/poolingView.vue`, `views/requestEditorView.vue`, `views/runStatisticsView.vue`.
+
+### Preserve existing styling (DRY)
+
+- Do NOT introduce new styling systems, ad-hoc inline `style="..."`, or hard-coded
+  colors/fonts/spacing. Reuse what already exists.
+- Styling sources, in order of preference:
+  1. Existing Bootstrap 5 classes (the project depends on `bootstrap` 5.x).
+  2. Shared CSS variables and rules in `frontend/src/assets/css/css_base.css` and
+     `css_main.css` (e.g. `var(--app-font-family)`). Add a variable there rather than
+     repeating a literal value.
+  3. Existing component-scoped styles — extend the patterns already in the component.
+- Tabulator tables use the Bootstrap 5 theme
+  (`tabulator-tables/dist/css/tabulator_bootstrap5.min.css`) plus the shared overrides
+  already defined in the wrapper components. Match those; never restyle a table inline.
+- Before adding any new CSS, search for an existing class or variable that already does
+  the job and reuse it. New text/elements must inherit the surrounding look and feel.
+
 ## Commands
 
 - Run backend tests using Makefile rule: `djtest`.

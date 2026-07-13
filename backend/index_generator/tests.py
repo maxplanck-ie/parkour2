@@ -291,6 +291,32 @@ class TestRecordsList(BaseTestCase):
         self.assertNotIn(library2.name, records)
         self.assertNotIn(sample2.name, records)
 
+    def test_get_libraries_and_samples_list_includes_library_coordinate(self):
+        """Ensure existing library index coordinates are visible for pooling choices."""
+        index_type = create_index_type(INDICES_7, INDICES_8, format="plate")
+        index_pair = IndexPair.objects.filter(
+            index_type=index_type,
+            archived=False,
+            index1__isnull=False,
+            index2__isnull=False,
+        ).first()
+        library = create_library(get_random_name(), 2)
+        library.index_type = index_type
+        library.index_i7 = index_pair.index1.index
+        library.index_i5 = index_pair.index2.index
+        library.save()
+
+        req = create_request(self.user)
+        req.libraries.add(library.pk)
+
+        response = self.client.get("/api/index_generator/")
+
+        self.assertEqual(response.status_code, 200)
+        record = next(x for x in response.json() if x["pk"] == library.pk)
+        self.assertEqual(record["coordinate"], index_pair.coordinate)
+        self.assertEqual(record["index_i7_id"], index_pair.index1.index_id)
+        self.assertEqual(record["index_i5_id"], index_pair.index2.index_id)
+
     def test_get_libraries_and_samples_list_non_staff(self):
         """Ensure error is thrown if a non-staff user tries to get the list."""
         self.create_user("non-staff@test.io", "test", False)
@@ -1578,6 +1604,7 @@ class TestIndexGenerator(BaseTestCase):
                 "barcode": sample.barcode,
                 "record_type": "Sample",
                 "read_length": sample.read_length_id,
+                "index_type": sample.index_type_id,
                 "sequencing_depth": sample.sequencing_depth,
                 "index_i7": {},
                 "index_i5": {},

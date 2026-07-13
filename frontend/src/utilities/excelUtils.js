@@ -4,8 +4,7 @@ import { showNotification } from "./notificationUtils";
 
 export const XLSX_MIME_TYPE =
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-export const XLSM_MIME_TYPE =
-  "application/vnd.ms-excel.sheet.macroEnabled.12";
+export const XLSM_MIME_TYPE = "application/vnd.ms-excel.sheet.macroEnabled.12";
 const SUPPORTED_EXCEL_EXTENSIONS = new Set(["xlsx", "xlsm"]);
 const SUPPORTED_EXCEL_MIME_TYPES = new Set([
   XLSX_MIME_TYPE,
@@ -14,7 +13,9 @@ const SUPPORTED_EXCEL_MIME_TYPES = new Set([
 ]);
 
 export function getExcelTemplateExtension(fileName = "") {
-  const normalizedName = String(fileName || "").trim().toLowerCase();
+  const normalizedName = String(fileName || "")
+    .trim()
+    .toLowerCase();
   const match = normalizedName.match(/\.([a-z0-9]+)$/i);
   const extension = match?.[1];
   return SUPPORTED_EXCEL_EXTENSIONS.has(extension) ? extension : "xlsx";
@@ -461,7 +462,23 @@ function normalizeExportCellValue(value, column = {}) {
   if (value === null || value === undefined || value === "") return null;
   if (!shouldWriteExportValueAsNumber(column)) return value;
   const parsed = parseExportNumber(value);
-  return parsed === null ? value : parsed;
+  if (parsed === null) return value;
+
+  const decimalPlaces = Number(column.decimalPlaces);
+  if (Number.isInteger(decimalPlaces) && decimalPlaces >= 0) {
+    return Number(parsed.toFixed(decimalPlaces));
+  }
+
+  return parsed;
+}
+
+function getExcelNumberFormat(column = {}) {
+  const decimalPlaces = Number(column.decimalPlaces);
+  if (!Number.isInteger(decimalPlaces) || decimalPlaces < 0) {
+    return "";
+  }
+
+  return decimalPlaces === 0 ? "0" : `0.${"0".repeat(decimalPlaces)}`;
 }
 
 function normalizeExportRows(rows = [], exportColumns = []) {
@@ -601,7 +618,9 @@ async function createTemplateBasedExportBuffer({
     );
   }
   if (zip.file("[Content_Types].xml")) {
-    const contentTypesXml = await zip.file("[Content_Types].xml").async("string");
+    const contentTypesXml = await zip
+      .file("[Content_Types].xml")
+      .async("string");
     zip.file(
       "[Content_Types].xml",
       contentTypesXml.replace(
@@ -669,6 +688,12 @@ export async function createExcelExportBlob({
   if (!worksheet) {
     worksheet = workbook.addWorksheet(targetSheetName);
     worksheet.columns = exportColumns;
+    exportColumns.forEach((col, index) => {
+      const numFmt = getExcelNumberFormat(col);
+      if (numFmt) {
+        worksheet.getColumn(index + 1).numFmt = numFmt;
+      }
+    });
     if (normalizedRows.length) {
       worksheet.addRows(normalizedRows);
     }
@@ -700,6 +725,10 @@ export async function createExcelExportBlob({
         if (col.width) {
           worksheet.getColumn(colIdx).width = col.width;
         }
+        const numFmt = getExcelNumberFormat(col);
+        if (numFmt) {
+          worksheet.getColumn(colIdx).numFmt = numFmt;
+        }
       }
     });
 
@@ -720,6 +749,10 @@ export async function createExcelExportBlob({
         const colIdx = i + 1;
         worksheet.getCell(headerRowIndex, colIdx).value = col.header;
         if (col.width) worksheet.getColumn(colIdx).width = col.width;
+        const numFmt = getExcelNumberFormat(col);
+        if (numFmt) {
+          worksheet.getColumn(colIdx).numFmt = numFmt;
+        }
         keyToCol.set(col.key, colIdx);
       });
     } else {
@@ -744,6 +777,10 @@ export async function createExcelExportBlob({
             dataRow?.[col.key],
             col
           );
+          const numFmt = getExcelNumberFormat(col);
+          if (numFmt) {
+            row.getCell(cIdx).numFmt = numFmt;
+          }
         }
       });
       if (row.commit) row.commit();

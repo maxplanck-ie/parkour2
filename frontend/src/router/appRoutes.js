@@ -55,12 +55,12 @@ const router = createRouter({
         },
         {
           path: "run_statistics",
-          name: "Run Statistics",
+          name: "Runs Statistics",
           component: runStatisticsView
         },
         {
           path: "sequences_statistics",
-          name: "Sequence Statistics",
+          name: "Sequenced Samples Statistics",
           component: sequencesStatisticsView
         },
         {

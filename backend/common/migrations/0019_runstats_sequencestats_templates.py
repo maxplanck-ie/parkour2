@@ -24,9 +24,7 @@ class Migration(migrations.Migration):
                 ("file", models.FileField(upload_to="templates/run_statistics/")),
                 (
                     "uploaded_at",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Uploaded At"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At"),
                 ),
             ],
             options={
@@ -50,9 +48,7 @@ class Migration(migrations.Migration):
                 ("file", models.FileField(upload_to="templates/sequences_statistics/")),
                 (
                     "uploaded_at",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Uploaded At"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At"),
                 ),
             ],
             options={
@@ -65,7 +61,9 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.BigIntegerField(auto_created=True, blank=True, db_index=True),
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True
+                    ),
                 ),
                 ("name", models.CharField(max_length=200, verbose_name="File Name")),
                 ("file", models.FileField(upload_to="templates/run_statistics/")),
@@ -108,7 +106,9 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.BigIntegerField(auto_created=True, blank=True, db_index=True),
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True
+                    ),
                 ),
                 ("name", models.CharField(max_length=200, verbose_name="File Name")),
                 ("file", models.FileField(upload_to="templates/sequences_statistics/")),

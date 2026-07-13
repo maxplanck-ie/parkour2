@@ -24,7 +24,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
       height: Ext.Element.getViewportHeight() - 64,
 
       header: {
-        title: "Run Statistics",
+        title: "Runs Statistics",
         items: [
           {
             xtype: "parkoursearchfield",
@@ -96,8 +96,13 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
             filter: { type: "number" }
           },
           {
-            text: "% Spike In",
+            text: "PhiX (%)",
             dataIndex: "phix",
+            filter: { type: "number" }
+          },
+          {
+            text: "Aligned to PhiX (%)",
+            dataIndex: "aligned_spike_in",
             filter: { type: "number" }
           },
           {

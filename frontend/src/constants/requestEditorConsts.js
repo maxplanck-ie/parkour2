@@ -1,7 +1,7 @@
 import {
   cellContextMenu,
   ellipsisContainer,
-  showNotification,
+  showNotification
 } from "../utilities/utilityFunctions";
 
 export const LIBRARY_REQUIRED_FIELDS = new Set([
@@ -14,7 +14,7 @@ export const LIBRARY_REQUIRED_FIELDS = new Set([
   "organism",
   "volume",
   "mean_fragment_size",
-  "index_type",
+  "index_type"
 ]);
 
 export const SAMPLE_REQUIRED_FIELDS = new Set([
@@ -27,7 +27,7 @@ export const SAMPLE_REQUIRED_FIELDS = new Set([
   "sequencing_depth",
   "organism",
   "volume",
-  "biosafety_level",
+  "biosafety_level"
 ]);
 
 function createValuesMap(options = []) {
@@ -104,8 +104,8 @@ const createListFormatter =
     ellipsisContainer(
       formatDisplayValue(
         findOptionLabel(options, cell.getValue()),
-        SELECT_PLACEHOLDER,
-      ),
+        SELECT_PLACEHOLDER
+      )
     );
 
 const createListClipboardValueGetter =
@@ -154,8 +154,8 @@ function listEditorConfig(options = [], placeholder = "Select") {
       allowEmpty: true,
       autocomplete: true,
       listOnEmpty: true,
-      placeholder,
-    },
+      placeholder
+    }
   };
 }
 
@@ -171,8 +171,8 @@ function filterLibraryTypesByProtocol(types = [], protocolId) {
     })
     .sort((a, b) =>
       String(a.label || "").localeCompare(String(b.label || ""), undefined, {
-        sensitivity: "base",
-      }),
+        sensitivity: "base"
+      })
     );
 }
 
@@ -235,14 +235,14 @@ function checkboxColumn(getTabulatorInstance, onSelectionChange) {
           onSelectionChange(getTabulatorInstance?.() || null);
         }
       }
-    },
+    }
   };
 }
 
 export function getRequestEditorLibraryColumns(
   getTabulatorInstance,
   editors = {},
-  onSelectionChange,
+  onSelectionChange
 ) {
   const {
     protocols = [],
@@ -255,7 +255,7 @@ export function getRequestEditorLibraryColumns(
     getIndexI7Options,
     getIndexI5Options,
     isOtherIndexType,
-    showBarcode = false,
+    showBarcode = false
   } = editors;
 
   const libraryUnits =
@@ -263,12 +263,12 @@ export function getRequestEditorLibraryColumns(
       ? measuringUnits
       : [
           { value: "ng/µl", label: "ng/µl (Concentration)" },
-          { value: "Unknown", label: "Unknown" },
+          { value: "Unknown", label: "Unknown" }
         ];
 
   const dynamicOptions = {
     i7: typeof getIndexI7Options === "function" ? getIndexI7Options : () => [],
-    i5: typeof getIndexI5Options === "function" ? getIndexI5Options : () => [],
+    i5: typeof getIndexI5Options === "function" ? getIndexI5Options : () => []
   };
   const isOtherType =
     typeof isOtherIndexType === "function" ? isOtherIndexType : () => false;
@@ -295,7 +295,7 @@ export function getRequestEditorLibraryColumns(
       allowEmpty: true,
       autocomplete: true,
       listOnEmpty: true,
-      placeholder: "Select",
+      placeholder: "Select"
     };
   };
   const dynamicIndexEditorParams = (getOptionsFn) => (cell) => {
@@ -309,26 +309,28 @@ export function getRequestEditorLibraryColumns(
       autocomplete: true,
       listOnEmpty: true,
       freetext: isOtherType(rowData),
-      placeholder: "Select",
+      placeholder: "Select"
     };
   };
 
-  const createIndexPasteValueResolver = () => (value, context = {}) => {
-    const resolved = extractIndexSequence(value);
-    if (!resolved) return resolved;
-    const rowData = context?.rowData || {};
-    if (isOtherType(rowData)) {
-      return resolved;
-    }
-    const options = Array.isArray(context?.options) ? context.options : [];
-    const allowed = options.map((opt) => String(opt));
-    if (allowed.includes(String(resolved))) {
-      return resolved;
-    }
-    throw new Error(
-      'Index does not belong to selected Index Type. Select "Other" Index Type for custom indices.'
-    );
-  };
+  const createIndexPasteValueResolver =
+    () =>
+    (value, context = {}) => {
+      const resolved = extractIndexSequence(value);
+      if (!resolved) return resolved;
+      const rowData = context?.rowData || {};
+      if (isOtherType(rowData)) {
+        return resolved;
+      }
+      const options = Array.isArray(context?.options) ? context.options : [];
+      const allowed = options.map((opt) => String(opt));
+      if (allowed.includes(String(resolved))) {
+        return resolved;
+      }
+      throw new Error(
+        'Index does not belong to selected Index Type. Select "Other" Index Type for custom indices.'
+      );
+    };
 
   const getLibraryTypeOptions = (rowData) =>
     filterLibraryTypesByProtocol(analysisTypes, rowData.library_protocol);
@@ -406,7 +408,7 @@ export function getRequestEditorLibraryColumns(
             contextMenu: (e, cell) =>
               cellContextMenu(true, false, false, getTabulatorInstance, {
                 blockActionsOnDisabledCells: true,
-                cell,
+                cell
               }),
             cellDblClick: () => {
               showNotification("Barcode is read-only.", "warning");
@@ -414,10 +416,10 @@ export function getRequestEditorLibraryColumns(
             formatter: (cell) => {
               const rowData = cell.getRow?.().getData?.() || {};
               return ellipsisContainer(
-                formatBarcodeValue(cell.getValue(), rowData),
+                formatBarcodeValue(cell.getValue(), rowData)
               );
-            },
-          },
+            }
+          }
         ]
       : []),
     {
@@ -440,8 +442,8 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("name"),
-        libraryDisabledMessage("name"),
-      ),
+        libraryDisabledMessage("name")
+      )
     },
     {
       title: "Protocol",
@@ -457,9 +459,9 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(protocols),
         libraryEditable("library_protocol"),
-        libraryDisabledMessage("library_protocol"),
+        libraryDisabledMessage("library_protocol")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(protocols),
+      clipboardCopyValue: createListClipboardValueGetter(protocols)
     },
     {
       title: "Comment Library",
@@ -475,8 +477,8 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("comments"),
-        libraryDisabledMessage("comments"),
-      ),
+        libraryDisabledMessage("comments")
+      )
     },
     {
       title: "Analysis Type",
@@ -493,12 +495,12 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(getLibraryTypeOptions),
         libraryEditable("library_type"),
-        libraryDisabledMessage("library_type"),
+        libraryDisabledMessage("library_type")
       ),
       clipboardCopyValue: createDynamicListClipboardValueGetter(
         getLibraryTypeOptions,
-        getRowData,
-      ),
+        getRowData
+      )
     },
     {
       title: "Unit",
@@ -515,9 +517,9 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(libraryUnits),
         libraryEditable("measuring_unit"),
-        libraryDisabledMessage("measuring_unit"),
+        libraryDisabledMessage("measuring_unit")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(libraryUnits),
+      clipboardCopyValue: createListClipboardValueGetter(libraryUnits)
     },
     {
       title: "Value",
@@ -542,8 +544,8 @@ export function getRequestEditorLibraryColumns(
           return ellipsisContainer(formatDisplayValue(value));
         },
         libraryEditable("measured_value"),
-        libraryDisabledMessage("measured_value"),
-      ),
+        libraryDisabledMessage("measured_value")
+      )
     },
     {
       title: "Size (bp)",
@@ -561,8 +563,8 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("mean_fragment_size"),
-        libraryDisabledMessage("mean_fragment_size"),
-      ),
+        libraryDisabledMessage("mean_fragment_size")
+      )
     },
     {
       title: "Volume (µl)",
@@ -580,8 +582,8 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         libraryEditable("volume"),
-        libraryDisabledMessage("volume"),
-      ),
+        libraryDisabledMessage("volume")
+      )
     },
     {
       title: "Read Length",
@@ -597,9 +599,9 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(readLengths),
         libraryEditable("read_length"),
-        libraryDisabledMessage("read_length"),
+        libraryDisabledMessage("read_length")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(readLengths),
+      clipboardCopyValue: createListClipboardValueGetter(readLengths)
     },
     {
       title: "Depth (M)",
@@ -628,8 +630,8 @@ export function getRequestEditorLibraryColumns(
           return ellipsisContainer(display);
         },
         libraryEditable("sequencing_depth"),
-        libraryDisabledMessage("sequencing_depth"),
-      ),
+        libraryDisabledMessage("sequencing_depth")
+      )
     },
     {
       title: "Index Type",
@@ -645,9 +647,9 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(indexTypes),
         libraryEditable("index_type"),
-        libraryDisabledMessage("index_type"),
+        libraryDisabledMessage("index_type")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(indexTypes),
+      clipboardCopyValue: createListClipboardValueGetter(indexTypes)
     },
     {
       title: "Index I7",
@@ -665,13 +667,13 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(dynamicOptions.i7),
         libraryEditable("index_i7"),
-        libraryDisabledMessage("index_i7"),
+        libraryDisabledMessage("index_i7")
       ),
       clipboardCopyValue: createDynamicListClipboardValueGetter(
         dynamicOptions.i7,
-        getRowData,
+        getRowData
       ),
-      pasteValueResolver: createIndexPasteValueResolver(),
+      pasteValueResolver: createIndexPasteValueResolver()
     },
     {
       title: "Index I5",
@@ -689,13 +691,13 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(dynamicOptions.i5),
         libraryEditable("index_i5"),
-        libraryDisabledMessage("index_i5"),
+        libraryDisabledMessage("index_i5")
       ),
       clipboardCopyValue: createDynamicListClipboardValueGetter(
         dynamicOptions.i5,
-        getRowData,
+        getRowData
       ),
-      pasteValueResolver: createIndexPasteValueResolver(),
+      pasteValueResolver: createIndexPasteValueResolver()
     },
     {
       title: "Organism",
@@ -711,10 +713,10 @@ export function getRequestEditorLibraryColumns(
       formatter: decorateFormatter(
         createListFormatter(organisms),
         libraryEditable("organism"),
-        libraryDisabledMessage("organism"),
+        libraryDisabledMessage("organism")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(organisms),
-    },
+      clipboardCopyValue: createListClipboardValueGetter(organisms)
+    }
   ];
   columns.forEach((column) => {
     if (column.field !== "selected" && !column.contextMenu) {
@@ -736,7 +738,7 @@ export function getRequestEditorLibraryColumns(
           },
           onClear: () => {
             getTabulatorInstance?.()?.triggerTableClear?.();
-          },
+          }
         });
     }
   });
@@ -747,7 +749,7 @@ export function getRequestEditorLibraryColumns(
 export function getRequestEditorSampleColumns(
   getTabulatorInstance,
   editors = {},
-  onSelectionChange,
+  onSelectionChange
 ) {
   const {
     nucleicAcidTypes = [],
@@ -758,7 +760,7 @@ export function getRequestEditorSampleColumns(
     organisms = [],
     biosafetyLevels = [],
     gmoOptions = [],
-    showBarcode = false,
+    showBarcode = false
   } = editors;
 
   const sampleUnits =
@@ -769,7 +771,7 @@ export function getRequestEditorSampleColumns(
           { value: "Cells", label: "Cells" },
           { value: "k", label: "k (Cells)" },
           { value: "M", label: "M (Cells)" },
-          { value: "Unknown", label: "Unknown" },
+          { value: "Unknown", label: "Unknown" }
         ];
 
   const biosafety =
@@ -777,7 +779,7 @@ export function getRequestEditorSampleColumns(
       ? biosafetyLevels
       : [
           { value: "bsl1", label: "BSL1" },
-          { value: "bsl2", label: "BSL2" },
+          { value: "bsl2", label: "BSL2" }
         ];
 
   const gmo =
@@ -785,7 +787,7 @@ export function getRequestEditorSampleColumns(
       ? gmoOptions
       : [
           { value: true, label: "Yes" },
-          { value: false, label: "No" },
+          { value: false, label: "No" }
         ];
 
   const getRowData = (cell) => cell?.getRow?.()?.getData?.() || {};
@@ -793,7 +795,7 @@ export function getRequestEditorSampleColumns(
     const selectedId = rowData?.nucleic_acid_type;
     if (selectedId === undefined || selectedId === null) return null;
     return nucleicAcidTypes.find(
-      (option) => String(option.value) === String(selectedId),
+      (option) => String(option.value) === String(selectedId)
     );
   };
   const dynamicListFormatter = (getOptionsFn) => (cell) => {
@@ -814,7 +816,7 @@ export function getRequestEditorSampleColumns(
       allowEmpty: true,
       autocomplete: true,
       listOnEmpty: true,
-      placeholder: "Select",
+      placeholder: "Select"
     };
   };
   const getLibraryTypeOptions = (rowData) =>
@@ -827,8 +829,8 @@ export function getRequestEditorSampleColumns(
       .filter((protocol) => String(protocol?.type ?? "").toLowerCase() === type)
       .sort((a, b) =>
         String(a.label || "").localeCompare(String(b.label || ""), undefined, {
-          sensitivity: "base",
-        }),
+          sensitivity: "base"
+        })
       );
   };
   const isGmoAllowedInputType = (rowData) => {
@@ -898,7 +900,7 @@ export function getRequestEditorSampleColumns(
             contextMenu: (e, cell) =>
               cellContextMenu(true, false, false, getTabulatorInstance, {
                 blockActionsOnDisabledCells: true,
-                cell,
+                cell
               }),
             cellDblClick: () => {
               showNotification("Barcode is read-only.", "warning");
@@ -906,10 +908,10 @@ export function getRequestEditorSampleColumns(
             formatter: (cell) => {
               const rowData = cell.getRow?.().getData?.() || {};
               return ellipsisContainer(
-                formatBarcodeValue(cell.getValue(), rowData),
+                formatBarcodeValue(cell.getValue(), rowData)
               );
-            },
-          },
+            }
+          }
         ]
       : []),
     {
@@ -932,8 +934,8 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         sampleEditable("name"),
-        sampleDisabledMessage("name"),
-      ),
+        sampleDisabledMessage("name")
+      )
     },
     {
       title: "Input Type",
@@ -949,9 +951,9 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(nucleicAcidTypes),
         sampleEditable("nucleic_acid_type"),
-        sampleDisabledMessage("nucleic_acid_type"),
+        sampleDisabledMessage("nucleic_acid_type")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(nucleicAcidTypes),
+      clipboardCopyValue: createListClipboardValueGetter(nucleicAcidTypes)
     },
     {
       title: "Comment Input",
@@ -967,8 +969,8 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         sampleEditable("comments"),
-        sampleDisabledMessage("comments"),
-      ),
+        sampleDisabledMessage("comments")
+      )
     },
     {
       title: "Unit",
@@ -985,9 +987,9 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(sampleUnits),
         sampleEditable("measuring_unit"),
-        sampleDisabledMessage("measuring_unit"),
+        sampleDisabledMessage("measuring_unit")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(sampleUnits),
+      clipboardCopyValue: createListClipboardValueGetter(sampleUnits)
     },
     {
       title: "Value",
@@ -1012,8 +1014,8 @@ export function getRequestEditorSampleColumns(
           return ellipsisContainer(formatDisplayValue(value));
         },
         sampleEditable("measured_value"),
-        sampleDisabledMessage("measured_value"),
-      ),
+        sampleDisabledMessage("measured_value")
+      )
     },
     {
       title: "Volume (µl)",
@@ -1031,8 +1033,8 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         (cell) => ellipsisContainer(formatDisplayValue(cell.getValue())),
         sampleEditable("volume"),
-        sampleDisabledMessage("volume"),
-      ),
+        sampleDisabledMessage("volume")
+      )
     },
     {
       title: "Protocol",
@@ -1049,12 +1051,12 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(getProtocolOptions),
         sampleEditable("library_protocol"),
-        sampleDisabledMessage("library_protocol"),
+        sampleDisabledMessage("library_protocol")
       ),
       clipboardCopyValue: createDynamicListClipboardValueGetter(
         getProtocolOptions,
-        getRowData,
-      ),
+        getRowData
+      )
     },
     {
       title: "Analysis Type",
@@ -1071,12 +1073,12 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         dynamicListFormatter(getLibraryTypeOptions),
         sampleEditable("library_type"),
-        sampleDisabledMessage("library_type"),
+        sampleDisabledMessage("library_type")
       ),
       clipboardCopyValue: createDynamicListClipboardValueGetter(
         getLibraryTypeOptions,
-        getRowData,
-      ),
+        getRowData
+      )
     },
     {
       title: "Read Length",
@@ -1092,9 +1094,9 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(readLengths),
         sampleEditable("read_length"),
-        sampleDisabledMessage("read_length"),
+        sampleDisabledMessage("read_length")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(readLengths),
+      clipboardCopyValue: createListClipboardValueGetter(readLengths)
     },
     {
       title: "Depth (M)",
@@ -1123,8 +1125,8 @@ export function getRequestEditorSampleColumns(
           return ellipsisContainer(display);
         },
         sampleEditable("sequencing_depth"),
-        sampleDisabledMessage("sequencing_depth"),
-      ),
+        sampleDisabledMessage("sequencing_depth")
+      )
     },
     {
       title: "Organism",
@@ -1140,9 +1142,9 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(organisms),
         sampleEditable("organism"),
-        sampleDisabledMessage("organism"),
+        sampleDisabledMessage("organism")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(organisms),
+      clipboardCopyValue: createListClipboardValueGetter(organisms)
     },
     {
       title: "Biosafety Level",
@@ -1158,9 +1160,9 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(biosafety),
         sampleEditable("biosafety_level"),
-        sampleDisabledMessage("biosafety_level"),
+        sampleDisabledMessage("biosafety_level")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(biosafety),
+      clipboardCopyValue: createListClipboardValueGetter(biosafety)
     },
     {
       title: "Propagable & GMO",
@@ -1178,10 +1180,10 @@ export function getRequestEditorSampleColumns(
       formatter: decorateFormatter(
         createListFormatter(gmo),
         sampleEditable("gmo"),
-        sampleDisabledMessage("gmo"),
+        sampleDisabledMessage("gmo")
       ),
-      clipboardCopyValue: createListClipboardValueGetter(gmo),
-    },
+      clipboardCopyValue: createListClipboardValueGetter(gmo)
+    }
   ];
   columns.forEach((column) => {
     if (column.field !== "selected" && !column.contextMenu) {
@@ -1203,7 +1205,7 @@ export function getRequestEditorSampleColumns(
           },
           onClear: () => {
             getTabulatorInstance?.()?.triggerTableClear?.();
-          },
+          }
         });
     }
   });

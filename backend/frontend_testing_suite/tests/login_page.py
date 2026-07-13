@@ -37,7 +37,7 @@ def test_login_page(page: Page):
 
     utilities.visit_login_page(page)
     expect(page.locator("h2.form-signin-heading")).to_have_text(
-        re.compile(r"Parkour [0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]")
+        re.compile(r"Parkour2?\s+[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]")
     )
     forgotPasswordLink.click()
     forgotPasswordEmailInput.fill(forgotPasswordEmailId)

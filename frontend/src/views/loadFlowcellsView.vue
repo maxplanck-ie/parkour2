@@ -53,6 +53,82 @@
           </div>
         </div>
         <div class="button-popup-wrapper">
+          <button
+            class="header-button"
+            id="toggleSelectColumnsButton"
+            @click="toggleSelectColumns"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-columns"
+              style="color: white"
+            />
+            <span> Select Columns </span>
+          </button>
+          <div
+            id="selectColumnsPopup"
+            v-if="showSelectColumns"
+            class="button-popup-container"
+            style="
+              left: -50px;
+              width: 250px;
+              max-height: 473px;
+              display: flex;
+              flex-direction: column;
+              padding: 10px 10px 5px 10px;
+            "
+          >
+            <ul
+              style="
+                padding: 5px 7px 7px;
+                margin: 0;
+                flex-grow: 1;
+                overflow-y: auto;
+              "
+            >
+              <li
+                v-for="(column, index) in columnsList"
+                :key="index"
+                style="list-style: none"
+              >
+                <template
+                  v-if="
+                    column.field !== 'selected' ||
+                    (column.field === 'selected' && column.visible == false)
+                  "
+                >
+                  <label>
+                    <input
+                      type="checkbox"
+                      v-model="column.visible"
+                      @change="toggleColumnVisibility(column)"
+                    />
+                    <span>{{ column.title }}</span>
+                  </label>
+                </template>
+              </li>
+            </ul>
+            <div
+              style="
+                padding-top: 8px;
+                border-top: 1px solid #eee;
+                display: flex;
+                flex-direction: column;
+              "
+            >
+              <button @click="resetColumnVisibility" class="reset-button">
+                Reset Visibility Settings
+              </button>
+              <button
+                style="margin-bottom: 5px"
+                @click="resetColumnWidths"
+                class="reset-button"
+              >
+                Reset Width Settings
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="button-popup-wrapper">
           <button class="header-button" @click="toggleGroups">
             <font-awesome-icon
               icon="fa-solid fa-layer-group"
@@ -92,7 +168,9 @@
           ...tableOptions,
           fakeLoadingStart,
           fakeLoadingStop,
-          handleCellEdited
+          handleCellEdited,
+          handleColumnResized,
+          handleColumnVisibilityChanged
         }"
       />
     </div>
@@ -188,7 +266,7 @@
               </div>
             </div>
           </span>
-          <button class="popup-close-button" @click="showExportPopup = false">
+          <button class="popup-close-button" @click="closeExportPopup">
             &times;
           </button>
         </div>
@@ -249,7 +327,7 @@
                       id="flowcells-without-file"
                       v-model="selectedFile"
                       type="radio"
-                      value="without-file"
+                      :value="defaultExportTemplateSelection"
                     />
                   </div>
                 </div>
@@ -337,15 +415,7 @@
           <button class="popup-button yes-button" @click="handleExport">
             OK
           </button>
-          <button
-            class="popup-button"
-            @click="
-              showExportPopup = false;
-              selectedFile = 'without-file';
-            "
-          >
-            Cancel
-          </button>
+          <button class="popup-button" @click="closeExportPopup">Cancel</button>
         </div>
       </div>
     </div>
@@ -356,6 +426,13 @@
         style="width: 620px; height: 240px"
       >
         <div class="popup-header">
+          <img
+            :src="iconConfirmationAlert"
+            alt="Confirmation"
+            width="42"
+            height="42"
+            style="display: block"
+          />
           <span class="popup-title">{{ confirmPopup.title }}</span>
           <button class="popup-close-button" @click="closeConfirmPopup">
             &times;
@@ -366,13 +443,14 @@
         </div>
         <div class="popup-footer">
           <button
+            v-if="!confirmPopup.infoOnly"
             class="popup-button yes-button"
             @click="runConfirmPopupAction"
           >
             Confirm
           </button>
           <button class="popup-button" @click="closeConfirmPopup">
-            Cancel
+            {{ confirmPopup.infoOnly ? "OK" : "Cancel" }}
           </button>
         </div>
       </div>
@@ -391,7 +469,7 @@
         </div>
         <div class="popup-body">
           <div v-if="poolInfoLoading" class="flowcell-inline-loading">
-            Loading pool details...
+            Loading <span style="font-weight: bold">pool details</span>...
           </div>
           <div v-else class="pool-info-table-wrapper">
             <div v-if="!poolInfoGroupedRecords.length" class="load-empty-state">
@@ -435,13 +513,7 @@
     <div v-if="showLoadPopup" class="popup-overlay load-flowcell-overlay">
       <div class="popup-container load-flowcell-popup">
         <div class="popup-header">
-          <img
-            :src="iconLoadFlowcellsHeader"
-            alt="Load Flowcell"
-            width="42"
-            height="42"
-            style="display: block"
-          />
+          <font-awesome-icon icon="fa-solid fa-square-plus" />
           <span class="popup-title">Load Flowcell</span>
           <div class="load-popup-header-actions">
             <span
@@ -496,12 +568,17 @@
                         open lanes.
                       </li>
                       <li>
-                        Each pool shows its read length and the remaining number
-                        of times it can still be loaded.
+                        Each pool shows its read length and pool size as the
+                        remaining number of loads by size.
                       </li>
                       <li>
                         Disabled pools cannot be placed yet, are already fully
                         used, or do not match the current lane assignment rules.
+                      </li>
+                      <li>
+                        Use Return to Index Generator to move an available pool
+                        back to the Index Generator when it should not remain
+                        ready for loading.
                       </li>
                       <li>
                         Clicking a pool name in the main table opens a detail
@@ -519,12 +596,14 @@
                       </li>
                       <li>
                         Use the group actions in that table to select lanes,
-                        download the sample sheet, or destroy the flowcell.
+                        deselect lanes, or destroy the flowcell.
                       </li>
                       <li>
                         Destroying a flowcell unloads its pools, removes the
                         flowcell from the Load Flowcells view, and makes the
-                        pools available again in Pooling.
+                        pools available again in Load Flowcell. Flowcells
+                        containing delivered libraries or samples cannot be
+                        destroyed.
                       </li>
                       <li>
                         When the destroyed flowcell was the last active
@@ -623,25 +702,28 @@
                         >
                           {{ pool.name }}
                         </span>
-                        <span class="load-pool-read-length">
-                          {{ pool.read_length_name || "-" }}
+                        <span
+                          class="load-pool-read-length"
+                          :title="`Read length: ${pool.read_length_name || '-'}`"
+                        >
+                          Read length: {{ pool.read_length_name || "-" }}
                         </span>
                       </div>
                       <div class="load-pool-right">
                         <div class="load-pool-meta">
-                          {{ pool.remainingLoadsLabel }}
+                          Pool size: {{ pool.remainingLoadsLabel }}
                         </div>
                         <button
                           class="load-pool-return-button"
                           :disabled="!pool.ready"
                           :title="
                             pool.ready
-                              ? 'Return pool to Pooling'
+                              ? 'Return pool to Index Generator'
                               : 'Only ready pools can be returned'
                           "
                           @click.stop="confirmReturnPoolToPooling(pool)"
                         >
-                          Return to Pooling
+                          Return to Index Generator
                         </button>
                       </div>
                     </div>
@@ -660,7 +742,7 @@
                     </span>
                   </div>
                   <span v-if="currentLoadSequencer" class="lane-board-capacity">
-                    Lane Capacity (M) {{ currentLoadSequencer.lane_capacity }}
+                    Lane Capacity (M): {{ currentLoadSequencer.lane_capacity }}
                   </span>
                 </div>
                 <div v-if="!currentLoadSequencer" class="load-empty-state">
@@ -769,9 +851,19 @@ import iconExportTemplateFileLines from "../assets/icons/export_template_lines.s
 import iconExportDownload from "../assets/icons/export_download.svg";
 import iconExportRemove from "../assets/icons/export_remove.svg";
 import iconExportUpload from "../assets/icons/export_upload.svg";
+import iconConfirmationAlert from "../assets/icons/alert_confirmation.svg";
 
 const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
+const DEFAULT_EXPORT_TEMPLATE_SELECTION = "without-file";
+const COLUMN_VISIBILITY_KEY = "loadFlowcellsColumnVisibility";
+const COLUMN_WIDTHS_KEY = "loadFlowcellsColumnWidths";
+const createEmptyConfirmPopup = () => ({
+  title: "",
+  description: "",
+  onConfirm: null,
+  infoOnly: false
+});
 
 export default {
   name: "LoadFlowcells",
@@ -790,6 +882,7 @@ export default {
       iconExportDownload,
       iconExportRemove,
       iconExportUpload,
+      iconConfirmationAlert,
       loading: true,
       fakeLoading: false,
       tabulatorInstance: null,
@@ -813,19 +906,15 @@ export default {
       isSavingEdits: false,
       originalLaneStateByPk: {},
       showPageHelp: false,
+      showSelectColumns: false,
       showExportPopup: false,
       showExportHelpTooltip: false,
       isDragOver: false,
       fetchedLoadFlowcellsTemplates: [],
-      selectedFile: "without-file",
+      selectedFile: DEFAULT_EXPORT_TEMPLATE_SELECTION,
       exportSelection: "selected",
-      hasSelectedRows: false,
       showConfirmPopup: false,
-      confirmPopup: {
-        title: "",
-        description: "",
-        onConfirm: null
-      },
+      confirmPopup: createEmptyConfirmPopup(),
       showPoolInfoPopup: false,
       poolInfoTitle: "Pool",
       poolInfoRecords: [],
@@ -875,6 +964,15 @@ export default {
     selectedRows() {
       return this.flowcellsList.filter((row) => row.selected);
     },
+    hasSelectedRows() {
+      return this.selectedRows.length > 0;
+    },
+    defaultExportTemplateSelection() {
+      return DEFAULT_EXPORT_TEMPLATE_SELECTION;
+    },
+    hasExportTemplateSelected() {
+      return this.selectedFile !== DEFAULT_EXPORT_TEMPLATE_SELECTION;
+    },
     currentLoadSequencer() {
       return (
         this.sequencersList.find(
@@ -901,6 +999,7 @@ export default {
         const poolSize = this.poolSizesById[pool.pool_size_id];
         return {
           ...pool,
+          assignedCount,
           remainingLoads,
           remainingLoadsLabel: poolSize
             ? `${remainingLoads}x${poolSize.size}`
@@ -929,6 +1028,8 @@ export default {
     this.getFlowcells();
     this.fetchExportTemplates();
     window.handleGroupButtonClick = this.handleGroupButtonClick.bind(this);
+    document.addEventListener("keydown", this.handleKeyDown);
+    document.addEventListener("click", this.handleOutsideClick);
   },
   updated() {
     this.tabulatorInstance = this.$refs.tabulatorTableRef;
@@ -941,7 +1042,7 @@ export default {
       this.handleDateChange("end", newVal);
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.pendingEditTimer) {
       clearTimeout(this.pendingEditTimer);
     }
@@ -949,8 +1050,55 @@ export default {
       clearTimeout(this.dateChangeTimer);
     }
     window.handleGroupButtonClick = null;
+    document.removeEventListener("keydown", this.handleKeyDown);
+    document.removeEventListener("click", this.handleOutsideClick);
   },
   methods: {
+    handleOutsideClick(event) {
+      const selectColumnsPopup = this.$el.querySelector("#selectColumnsPopup");
+      const selectColumnsButton = this.$el.querySelector(
+        "#toggleSelectColumnsButton"
+      );
+
+      if (
+        this.showSelectColumns &&
+        selectColumnsPopup &&
+        !selectColumnsPopup.contains(event.target) &&
+        selectColumnsButton !== event.target &&
+        !selectColumnsButton.contains(event.target)
+      ) {
+        this.showSelectColumns = false;
+      }
+    },
+    handleKeyDown(event) {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      if (this.showSelectColumns) {
+        this.showSelectColumns = false;
+        return;
+      }
+
+      if (this.showConfirmPopup) {
+        this.closeConfirmPopup();
+        return;
+      }
+
+      if (this.showPoolInfoPopup) {
+        this.closePoolInfoPopup();
+        return;
+      }
+
+      if (this.showLoadPopup) {
+        this.closeLoadPopup();
+        return;
+      }
+
+      if (this.showExportPopup) {
+        this.closeExportPopup();
+      }
+    },
     formatMonthString(value) {
       if (!value) return "";
       const date = new Date(value);
@@ -995,16 +1143,36 @@ export default {
       return true;
     },
     setColumns() {
-      this.columnsList = loadFlowcellsColumnDefs(() => this.tabulatorInstance, {
+      const storedVisibility = JSON.parse(
+        localStorage.getItem(COLUMN_VISIBILITY_KEY) || "{}"
+      );
+      const storedWidths = JSON.parse(
+        localStorage.getItem(COLUMN_WIDTHS_KEY) || "{}"
+      );
+      const columns = loadFlowcellsColumnDefs(() => this.tabulatorInstance, {
         onToggleSelected: this.handleRowSelectionToggle,
         onPoolClick: this.openPoolInfoPopup
+      });
+      this.columnsList = columns.map((column) => {
+        if (!column.field) return column;
+        if (Object.prototype.hasOwnProperty.call(storedWidths, column.field)) {
+          column.width = storedWidths[column.field];
+          if (column.minWidth && column.width < column.minWidth) {
+            column.width = column.minWidth;
+          }
+        }
+        column.visible =
+          storedVisibility[column.field] ?? column.visible ?? true;
+        return column;
       });
     },
     fakeLoadingStart() {
       this.fakeLoading = true;
     },
     fakeLoadingStop() {
-      this.fakeLoading = false;
+      setTimeout(() => {
+        this.fakeLoading = false;
+      }, 300);
     },
     async getFlowcells() {
       this.loading = true;
@@ -1045,8 +1213,50 @@ export default {
       if (!this.tabulatorInstance) return;
       this.tabulatorInstance.toggleGroups(goToInitial);
     },
-    getSelectedRowsFromAllData() {
-      return this.flowcellsList.filter((row) => row.selected);
+    toggleSelectColumns() {
+      this.showSelectColumns = !this.showSelectColumns;
+    },
+    handleColumnResized(column) {
+      const field = column.getField();
+      if (!field) return;
+      const storedWidths = JSON.parse(
+        localStorage.getItem(COLUMN_WIDTHS_KEY) || "{}"
+      );
+      localStorage.setItem(
+        COLUMN_WIDTHS_KEY,
+        JSON.stringify({ ...storedWidths, [field]: column.getWidth() })
+      );
+      this.flashTableLoading(50);
+    },
+    handleColumnVisibilityChanged(field, visible) {
+      if (!field) return;
+      const storedVisibility = JSON.parse(
+        localStorage.getItem(COLUMN_VISIBILITY_KEY) || "{}"
+      );
+      localStorage.setItem(
+        COLUMN_VISIBILITY_KEY,
+        JSON.stringify({ ...storedVisibility, [field]: visible })
+      );
+      this.flashTableLoading(50);
+    },
+    toggleColumnVisibility(column) {
+      this.tabulatorInstance?.getTable?.().toggleColumn(column.field);
+    },
+    resetColumnWidths() {
+      localStorage.removeItem(COLUMN_WIDTHS_KEY);
+      this.setColumns();
+      this.tableRenderKey += 1;
+      this.flashTableLoading();
+    },
+    resetColumnVisibility() {
+      localStorage.removeItem(COLUMN_VISIBILITY_KEY);
+      this.setColumns();
+      this.tableRenderKey += 1;
+      this.flashTableLoading();
+    },
+    flashTableLoading(delay = 300) {
+      this.fakeLoadingStart();
+      setTimeout(() => this.fakeLoadingStop(), delay);
     },
     async updateRowSelection(pk, selected) {
       const target = this.flowcellsList.find((row) => row.pk === pk);
@@ -1059,7 +1269,7 @@ export default {
       }
     },
     async handleRowSelectionToggle(rowData, checked) {
-      const selectedRows = this.getSelectedRowsFromAllData().filter(
+      const selectedRows = this.selectedRows.filter(
         (row) => row.pk !== rowData.pk && row.selected
       );
       const selectingDifferentFlowcell =
@@ -1083,7 +1293,7 @@ export default {
         (row) => row.flowcell_id === flowcellId
       );
       if (selected) {
-        const existingSelected = this.getSelectedRowsFromAllData();
+        const existingSelected = this.selectedRows;
         if (
           existingSelected.length > 0 &&
           existingSelected.some((row) => row.flowcell_id !== flowcellId)
@@ -1104,6 +1314,16 @@ export default {
       if (table && updates.length) {
         await table.updateData(updates);
       }
+      this.expandFlowcellGroup(flowcellId);
+    },
+    expandFlowcellGroup(flowcellId) {
+      const group = this.tabulatorInstance
+        ?.getTable?.()
+        ?.getGroups?.()
+        ?.find((item) => item.getKey?.() === flowcellId);
+      if (group && !group?._group?.visible) {
+        group.show?.();
+      }
     },
     async handleGroupButtonClick(event, groupValue, action) {
       event?.stopPropagation?.();
@@ -1114,27 +1334,9 @@ export default {
         case "deselectAll":
           await this.setGroupSelection(groupValue, false);
           break;
-        case "downloadSampleSheet":
-          await this.downloadSampleSheetForFlowcell(groupValue);
-          break;
         case "destroyFlowcell":
           this.confirmDestroyFlowcell(groupValue);
           break;
-      }
-    },
-    async downloadSampleSheetForFlowcell(flowcellId) {
-      const flowcellRows = this.flowcellsList.filter(
-        (row) => row.flowcell_id === flowcellId
-      );
-      if (flowcellRows.length === 0) {
-        showNotification("Flowcell was not found.", "warning");
-        return;
-      }
-
-      try {
-        await this.downloadSampleSheetForRows(flowcellRows);
-      } catch (error) {
-        handleError(error);
       }
     },
     confirmDestroyFlowcell(flowcellId) {
@@ -1146,10 +1348,14 @@ export default {
         showNotification("Flowcell was not found.", "error");
         return;
       }
+      if (flowcellRows.some((row) => row.has_delivered_records)) {
+        this.showFlowcellCannotBeDestroyedPopup();
+        return;
+      }
 
       this.confirmPopup = {
         title: "Destroy Flowcell",
-        description: `Are you sure you want to destroy the flowcell <span style="font-weight: bold">'${flowcellId}'</span>? Pools on this flowcell will become available again in Pooling.`,
+        description: `Are you sure you want to destroy the flowcell <span style="font-weight: bold">'${flowcellId}'</span>? Pools on this flowcell will become available again in Load Flowcell.`,
         onConfirm: async () => {
           try {
             await axiosRef.post(
@@ -1160,19 +1366,34 @@ export default {
             await this.getFlowcells();
           } catch (error) {
             this.closeConfirmPopup();
-            handleError(error);
+            const message =
+              error?.response?.data?.message || "Failed to destroy flowcell.";
+            if (
+              error?.response?.status === 400 &&
+              message.includes("delivered")
+            ) {
+              this.showFlowcellCannotBeDestroyedPopup(message);
+              return;
+            }
+            showNotification(message, "error");
           }
         }
       };
       this.showConfirmPopup = true;
     },
+    showFlowcellCannotBeDestroyedPopup(description) {
+      this.confirmPopup = {
+        title: "Flowcell Cannot Be Destroyed",
+        description:
+          description ||
+          "This flowcell contains delivered libraries or samples and cannot be destroyed. Destroying delivered data can affect downstream invoicing.",
+        infoOnly: true
+      };
+      this.showConfirmPopup = true;
+    },
     closeConfirmPopup() {
       this.showConfirmPopup = false;
-      this.confirmPopup = {
-        title: "",
-        description: "",
-        onConfirm: null
-      };
+      this.confirmPopup = createEmptyConfirmPopup();
     },
     runConfirmPopupAction() {
       if (typeof this.confirmPopup.onConfirm === "function") {
@@ -1297,55 +1518,6 @@ export default {
         }
       }
     },
-    async downloadBlob(url, payload, fallbackFilename) {
-      const response = await axiosRef.post(url, payload, {
-        responseType: "blob"
-      });
-      saveAs(response.data, fallbackFilename);
-    },
-    async downloadSampleSheet() {
-      const selectedRows = this.getSelectedRowsFromAllData();
-      if (selectedRows.length === 0) {
-        showNotification("You did not select any lanes.", "warning");
-        return;
-      }
-
-      try {
-        await this.downloadSampleSheetForRows(selectedRows);
-      } catch (error) {
-        handleError(error);
-      }
-    },
-    async downloadSampleSheetForRows(rows) {
-      const selectedRows = rows || [];
-      if (selectedRows.length === 0) {
-        showNotification("You did not select any lanes.", "warning");
-        return;
-      }
-
-      const flowcellPk = selectedRows[0]?.flowcell;
-      if (!flowcellPk) {
-        showNotification("Flowcell ID was not found.", "error");
-        return;
-      }
-
-      if (selectedRows.some((row) => row.flowcell !== flowcellPk)) {
-        showNotification(
-          "Select lanes from the same flowcell to download a sample sheet.",
-          "warning"
-        );
-        return;
-      }
-
-      await this.downloadBlob(
-        `${urlStringStart}/api/flowcells/download_sample_sheet/`,
-        {
-          ids: JSON.stringify(selectedRows.map((row) => row.pk)),
-          flowcell_id: flowcellPk
-        },
-        `${selectedRows[0].flowcell_id || "flowcell"}_SampleSheet.csv`
-      );
-    },
     async fetchExportTemplates() {
       try {
         const response = await axiosRef.get(
@@ -1358,6 +1530,9 @@ export default {
     },
     async uploadExportTemplate(event) {
       const file = event.target.files[0];
+      await this.uploadExportTemplateFile(file);
+    },
+    async uploadExportTemplateFile(file) {
       if (isSupportedExcelTemplateFile(file)) {
         const formData = new FormData();
         formData.append("file", file);
@@ -1376,7 +1551,7 @@ export default {
         } catch (error) {
           showNotification("Error uploading file: " + error, "error");
         } finally {
-          this.selectedFile = "without-file";
+          this.selectedFile = DEFAULT_EXPORT_TEMPLATE_SELECTION;
         }
       } else {
         showNotification("Please upload a valid XLSX or XLSM file.", "error");
@@ -1423,11 +1598,10 @@ export default {
       } catch (error) {
         showNotification("Error removing file: " + error, "error");
       } finally {
-        this.selectedFile = "without-file";
+        this.selectedFile = DEFAULT_EXPORT_TEMPLATE_SELECTION;
       }
     },
     handleExportClick() {
-      this.hasSelectedRows = this.flowcellsList.some((row) => row.selected);
       this.exportSelection = this.hasSelectedRows ? "selected" : "all";
       this.showExportPopup = true;
     },
@@ -1441,7 +1615,7 @@ export default {
 
         const exportRows =
           this.exportSelection === "selected"
-            ? this.getSelectedRowsFromAllData()
+            ? this.selectedRows
             : this.filteredFlowcellsList;
 
         if (exportRows.length === 0) {
@@ -1478,26 +1652,21 @@ export default {
           filename = `${formattedDate}_load_flowcells`;
         }
 
-        const templateDownloadUrl =
-          this.selectedFile !== "without-file"
-            ? `${urlStringStart}/api/load-flowcells-templates/${this.selectedFile.id}/download/`
-            : null;
+        const templateDownloadUrl = this.hasExportTemplateSelected
+          ? `${urlStringStart}/api/load-flowcells-templates/${this.selectedFile.id}/download/`
+          : null;
+        const templateFileName = this.hasExportTemplateSelected
+          ? this.selectedFile.name
+          : "";
 
         const blob = await createExcelExportBlob({
           rows: sortedExportRows,
           exportColumns: loadFlowcellsExportColumns,
           axiosInstance: axiosRef,
           templateDownloadUrl,
-          templateFileName:
-            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
+          templateFileName
         });
-        saveAs(
-          blob,
-          buildExcelExportFilename(
-            filename,
-            this.selectedFile !== "without-file" ? this.selectedFile.name : ""
-          )
-        );
+        saveAs(blob, buildExcelExportFilename(filename, templateFileName));
       } catch (error) {
         showNotification(
           "Error during export. Please try again.\n" + error,
@@ -1505,9 +1674,12 @@ export default {
         );
       } finally {
         this.fakeLoadingStop();
-        this.showExportPopup = false;
-        this.selectedFile = "without-file";
+        this.closeExportPopup();
       }
+    },
+    closeExportPopup() {
+      this.showExportPopup = false;
+      this.selectedFile = DEFAULT_EXPORT_TEMPLATE_SELECTION;
     },
     handleDragOver(e) {
       e.preventDefault();
@@ -1533,19 +1705,7 @@ export default {
           "error"
         );
       } else {
-        this.processUploadedFile(files[0]);
-      }
-    },
-    processUploadedFile(file) {
-      if (isSupportedExcelTemplateFile(file)) {
-        const event = {
-          target: {
-            files: [file]
-          }
-        };
-        this.uploadExportTemplate(event);
-      } else {
-        showNotification("Please upload a valid XLSX or XLSM file.", "error");
+        this.uploadExportTemplateFile(files[0]);
       }
     },
     async openLoadPopup() {
@@ -1592,8 +1752,8 @@ export default {
       }
 
       this.confirmPopup = {
-        title: "Return Pool to Pooling",
-        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Pooling? This destroys the pool and sets its records back to Pooling state.`,
+        title: "Return Pool to Index Generator",
+        description: `Are you sure you want to return the pool <span style="font-weight: bold">'${pool.name}'</span> to Index Generator? This destroys the pool and makes its records available in the Index Generator.`,
         onConfirm: async () => {
           await this.returnPoolToPooling(pool);
         }
@@ -1617,7 +1777,7 @@ export default {
         this.removePoolAssignments(pool.pk);
         this.closeConfirmPopup();
         showNotification(
-          `Pool '${pool.name}' was returned to Pooling.`,
+          `Pool '${pool.name}' was returned to Index Generator.`,
           "success"
         );
         await this.fetchLoadModalData();
@@ -1798,8 +1958,31 @@ export default {
         this.closeLoadPopup();
         await this.getFlowcells();
       } catch (error) {
-        handleError(error);
+        const message = this.extractFlowcellSaveError(error);
+        if (message) {
+          showNotification(`Error: ${message}`, "error");
+        } else {
+          handleError(error);
+        }
       }
+    },
+    extractFlowcellSaveError(error) {
+      const data = error?.response?.data;
+      if (!data || typeof data !== "object") {
+        return "";
+      }
+
+      const flatten = (value) => {
+        if (Array.isArray(value)) {
+          return value.flatMap(flatten);
+        }
+        if (value && typeof value === "object") {
+          return Object.values(value).flatMap(flatten);
+        }
+        return value ? [String(value)] : [];
+      };
+
+      return flatten(data.errors).join(" ");
     }
   }
 };
@@ -1856,7 +2039,7 @@ export default {
 .pool-info-groups {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .pool-request-block {
@@ -1866,11 +2049,22 @@ export default {
 }
 
 .pool-request-header {
-  padding: 8px 12px;
+  padding: 6px 10px;
   background: #f4f8f9;
   color: #294856;
+  font-size: 13px;
   font-weight: 700;
   border-bottom: 1px solid #dce3e6;
+}
+
+.pool-info-popup .simple-data-table {
+  font-size: 13px;
+}
+
+.pool-info-popup .simple-data-table th,
+.pool-info-popup .simple-data-table td {
+  padding: 6px 10px;
+  line-height: 1.25;
 }
 
 .simple-data-table {
@@ -2044,11 +2238,11 @@ export default {
 }
 
 .lane-board-capacity {
-  padding: 5px 9px;
+  padding: 6px 11px;
   border-radius: 999px;
   background: #eef6f7;
   color: #0b7f78;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -2126,6 +2320,8 @@ export default {
 .lane-drop-placeholder {
   color: #6c828c;
   font-size: 12px;
+  min-height: 20px;
+  line-height: 20px;
 }
 
 .lane-drop-card-content {
@@ -2160,17 +2356,40 @@ export default {
   color: #086e67;
 }
 
+:deep(.flowcell-pool-link) {
+  display: inline-flex;
+  align-items: center;
+  max-width: calc(100% - 10px);
+  min-height: 22px;
+  margin: 4px 5px;
+  padding: 2px 8px;
+  border: 1px solid rgba(11, 127, 120, 0.22);
+  border-radius: 7px;
+  background: #eef7f6;
+  color: #0b7f78;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+:deep(.flowcell-pool-link:hover) {
+  border-color: rgba(11, 127, 120, 0.42);
+  background: #e2f1ef;
+  color: #086e67;
+}
+
 .lane-drop-card-meta {
   color: #33515d;
   font-size: 14px;
   font-weight: 700;
   min-height: 18px;
   line-height: 18px;
-}
-
-.lane-drop-placeholder {
-  min-height: 20px;
-  line-height: 20px;
 }
 
 .lane-drop-placeholder-empty {
@@ -2216,11 +2435,15 @@ export default {
 }
 
 .load-pool-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "name meta"
+    "read button";
+  column-gap: 14px;
+  row-gap: 8px;
   align-items: center;
-  gap: 12px;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border: 1px solid #dde5e8;
   border-radius: 12px;
   margin-bottom: 8px;
@@ -2257,28 +2480,25 @@ export default {
 }
 
 .load-pool-main {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  display: contents;
 }
 
 .load-pool-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  display: contents;
 }
 
 .load-pool-name {
+  grid-area: name;
+  min-width: 0;
+  font-size: 17px;
   font-weight: 700;
+  line-height: 1.2;
   word-break: break-word;
 }
 
 .load-pool-link {
   cursor: pointer;
-  text-decoration: underline;
-  text-decoration-style: dotted;
+  text-decoration: none;
 }
 
 .load-pool-link:hover {
@@ -2286,23 +2506,39 @@ export default {
 }
 
 .load-pool-read-length {
-  font-size: 14px;
+  grid-area: read;
+  min-width: 0;
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.25;
   color: #214c5f;
 }
 
 .load-pool-meta {
-  font-size: 12px;
+  grid-area: meta;
+  justify-self: end;
+  font-size: 13px;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .load-pool-return-button {
+  grid-area: button;
+  justify-self: end;
   border: 1px solid #d4dce0;
   border-radius: 8px;
   background: #fff;
   color: #33515d;
-  padding: 4px 8px;
+  min-height: 28px;
+  padding: 5px 9px;
   font-size: 11px;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -2354,73 +2590,40 @@ export default {
 }
 
 @media (max-width: 1220px) {
-  .header {
-    height: auto;
-    min-height: 70px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px 14px;
-  }
-
-  .header-title {
-    flex: 1 1 100%;
-    min-width: 0;
-    margin-right: 0;
-  }
-
-  .sticky-actions {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: flex-start;
-    row-gap: 10px;
-    max-width: 100%;
-    margin-left: 0;
-  }
-
-  .search-bar {
-    width: 260px;
-    flex: 1 1 260px;
-    max-width: 100%;
-  }
-
   .date-filters {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .date-filter {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: 4px;
+    padding: 3px 4px;
+  }
+
+  .date-filter label {
+    margin: 0 2px 0 1px;
+    font-size: 12px;
+  }
+
+  .date-filter input[type="date"] {
+    width: 118px;
+    height: 26px;
+    padding: 4px 6px;
+    font-size: 12px;
   }
 
   .flowcell-actions-bar {
     flex-wrap: wrap;
     row-gap: 10px;
   }
-
-  .load-form-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 950px) {
-  .header-title {
-    font-size: 16px;
-    flex-basis: 100%;
-  }
-
-  .search-bar {
-    width: 100%;
-    flex: 1 1 260px;
-    min-width: 200px;
-  }
-
-  .search-bar input {
-    width: 100%;
-    padding-right: 25px;
-  }
-
   .date-filters {
     display: none;
-  }
-
-  .sticky-actions {
-    gap: 8px;
   }
 
   .flowcell-actions-bar {

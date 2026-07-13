@@ -1,8 +1,10 @@
 <template>
   <div class="parent-container index-generator-page">
-    <div v-if="loading" class="loading-overlay">
-      <div class="spinner"></div>
-      <p>Loading <span style="font-weight: bold">Index Generator</span>...</p>
+    <div v-if="loading || fakeLoading" class="loading-overlay">
+      <div v-if="!fakeLoading" class="spinner"></div>
+      <p v-if="!fakeLoading">
+        Loading <span style="font-weight: bold">Index Generator</span>...
+      </p>
     </div>
 
     <div class="header">
@@ -17,101 +19,117 @@
       </div>
       <div class="header-title" style="display: inline">Index Generator</div>
 
-      <div class="header-center">
-        <div class="header-pool-size-controls">
-          <select
-            id="index-generator-pool-multiplier"
-            class="pool-size-select"
-            :value="selectedPoolMultiplier"
-            @change="onPoolMultiplierChange($event.target.value)"
-          >
-            <option :value="''">Multiplier</option>
-            <option
-              v-for="multiplier in poolMultiplierOptions"
-              :key="`multiplier-${multiplier}`"
-              :value="multiplier"
-            >
-              {{ multiplier }}
-            </option>
-          </select>
-
-          <select
-            id="index-generator-pool-size"
-            class="pool-size-select"
-            :value="selectedPoolActualSize"
-            :disabled="!selectedPoolMultiplier"
-            @change="onPoolActualSizeChange($event.target.value)"
-          >
-            <option :value="''">Size</option>
-            <option
-              v-for="size in filteredPoolSizeOptions"
-              :key="`size-${size}`"
-              :value="size"
-            >
-              {{ size }}
-            </option>
-          </select>
-        </div>
-      </div>
-
       <div class="sticky-actions">
-        <div class="header-generate-controls">
-          <select
-            v-if="requiresStrictStartCoordinate"
-            id="index-generator-start-coordinate"
-            class="pool-size-select coordinate-input"
-            :value="selectedStartCoordinate"
-            :disabled="
-              startCoordinatesLoading || !startCoordinateOptions.length
-            "
-            @change="onStartCoordinateSelect($event.target.value)"
-          >
-            <option :value="''">Start Coordinate</option>
-            <option
-              v-for="coordinate in startCoordinateOptions"
-              :key="`start-coord-${coordinate}`"
-              :value="coordinate"
+        <div class="header-control-group">
+          <div class="header-generate-controls">
+            <select
+              v-if="requiresStrictStartCoordinate"
+              id="index-generator-start-coordinate"
+              class="pool-size-select"
+              :value="selectedStartCoordinate"
+              :disabled="
+                isGenerateControlDisabled ||
+                startCoordinatesLoading ||
+                !startCoordinateOptions.length
+              "
+              :data-tooltip-original="generateControlDisabledReason"
+              @change="onStartCoordinateSelect($event.target.value)"
             >
-              {{ coordinate }}
-            </option>
-          </select>
-          <input
-            v-else
-            id="index-generator-start-coordinate"
-            class="pool-size-select coordinate-input"
-            :value="selectedStartCoordinate"
-            placeholder="Start (e.g. A1)"
-            @change="onStartCoordinateChange($event.target.value)"
-          />
-          <select
-            id="index-generator-direction"
-            class="pool-size-select direction-select"
-            :value="selectedDirection"
-            @change="onDirectionChange($event.target.value)"
-          >
-            <option
-              v-for="directionOption in directionOptions"
-              :key="`direction-${directionOption.value}`"
-              :value="directionOption.value"
+              <option :value="''">Start Coordinate</option>
+              <option
+                v-for="coordinate in startCoordinateOptions"
+                :key="`start-coord-${coordinate}`"
+                :value="coordinate"
+              >
+                {{ coordinate }}
+              </option>
+            </select>
+            <input
+              v-else
+              id="index-generator-start-coordinate"
+              class="pool-size-select"
+              :value="selectedStartCoordinate"
+              :disabled="isGenerateControlDisabled"
+              :data-tooltip-original="generateControlDisabledReason"
+              placeholder="Start (e.g. A1)"
+              @change="onStartCoordinateChange($event.target.value)"
+            />
+            <select
+              id="index-generator-direction"
+              class="pool-size-select direction-select"
+              :value="selectedDirection"
+              :disabled="isGenerateControlDisabled"
+              :data-tooltip-original="generateControlDisabledReason"
+              @change="onDirectionChange($event.target.value)"
             >
-              {{ directionOption.label }}
-            </option>
-          </select>
+              <option
+                v-for="directionOption in directionOptions"
+                :key="`direction-${directionOption.value}`"
+                :value="directionOption.value"
+              >
+                {{ directionOption.label }}
+              </option>
+            </select>
+          </div>
+          <button
+            class="header-button"
+            :disabled="!canGenerate"
+            :data-tooltip-original="generateIndicesDisabledReason"
+            @click="generateIndices"
+          >
+            <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" />
+            <span>Generate Indices</span>
+          </button>
         </div>
-        <button
-          class="header-button"
-          :disabled="!canGenerate"
-          @click="generateIndices"
-        >
-          <span>Generate Indices</span>
-        </button>
-        <button
-          class="header-button save-pool-button"
-          :disabled="!canSave"
-          @click="savePool"
-        >
-          <span>Save Pool</span>
-        </button>
+
+        <div class="header-control-group">
+          <div class="header-pool-size-controls">
+            <select
+              id="index-generator-pool-multiplier"
+              class="pool-size-select"
+              :value="selectedPoolMultiplier"
+              :disabled="!hasPoolRows"
+              :data-tooltip-original="poolMultiplierDisabledReason"
+              @change="onPoolMultiplierChange($event.target.value)"
+            >
+              <option :value="''">Multiplier</option>
+              <option
+                v-for="multiplier in poolMultiplierOptions"
+                :key="`multiplier-${multiplier}`"
+                :value="multiplier"
+              >
+                {{ multiplier }}
+              </option>
+            </select>
+
+            <select
+              id="index-generator-pool-size"
+              class="pool-size-select"
+              :value="selectedPoolActualSize"
+              :disabled="isPoolSizeDisabled"
+              :data-tooltip-original="poolSizeDisabledReason"
+              @change="onPoolActualSizeChange($event.target.value)"
+            >
+              <option :value="''">Size</option>
+              <option
+                v-for="size in filteredPoolSizeOptions"
+                :key="`size-${size}`"
+                :value="size"
+              >
+                {{ size }}
+              </option>
+            </select>
+          </div>
+          <button
+            class="header-button save-pool-button"
+            :disabled="!canSave"
+            :data-tooltip-original="savePoolDisabledReason"
+            @click="savePool"
+          >
+            <font-awesome-icon icon="fa-solid fa-floppy-disk" />
+            <span>Save Pool</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -137,6 +155,7 @@
               <select
                 :value="applyAllReadLength"
                 :disabled="!hasSelectedSourceRows"
+                :data-tooltip-original="selectedRecordsDisabledReason"
                 @change="
                   applyFieldToAll(
                     indexGeneratorFields.readLength,
@@ -157,6 +176,7 @@
                 class="apply-index-type-select"
                 :value="applyAllIndexType"
                 :disabled="!hasSelectedSourceRows"
+                :data-tooltip-original="selectedRecordsDisabledReason"
                 @change="
                   applyFieldToAll(
                     indexGeneratorFields.indexType,
@@ -177,9 +197,11 @@
                 type="button"
                 class="add-selected-pool-button"
                 :disabled="!hasSelectedSourceRows"
+                :data-tooltip-original="selectedRecordsDisabledReason"
                 @click="addSelectedRowsToPool"
               >
-                Add Selected to Pool
+                <font-awesome-icon icon="fa-solid fa-square-plus" />
+                <span>Add Selected to Pool</span>
               </button>
             </div>
           </div>
@@ -315,6 +337,12 @@ const axiosRef = createAxiosObject();
 const urlStringStart = urlStringStartsWith();
 const apiUrl = (endpoint) => `${urlStringStart}${endpoint}`;
 const fields = INDEX_GENERATOR_FIELDS;
+const ADD_RECORDS_TO_POOL_MESSAGE = "Add records to the pool first.";
+const GENERATE_SAMPLES_ONLY_MESSAGE =
+  "Generate indices applies to samples only.";
+const SELECT_MULTIPLIER_MESSAGE = "Select a multiplier first.";
+const SAVE_POOL_ADD_RECORDS_MESSAGE =
+  "To save the pool add records to the pool first.";
 
 export default {
   name: "IndexGenerator",
@@ -351,7 +379,8 @@ export default {
       selectedDirection: INDEX_GENERATOR_DEFAULTS.direction,
       startCoordinateOptions: [],
       loading: true,
-      hasCompletedInitialLoad: false,
+      fakeLoading: false,
+      fakeLoadingTimer: null,
       startCoordinatesLoading: false,
       directionOptions: [...INDEX_GENERATOR_DIRECTION_OPTIONS]
     };
@@ -369,15 +398,85 @@ export default {
       }, {});
     },
     canGenerate() {
+      return this.hasPoolSamples;
+    },
+    hasPoolRows() {
+      return this.poolRows.length > 0;
+    },
+    hasPoolSamples() {
       return this.poolRows.some(
         (row) => row[fields.type] === INDEX_GENERATOR_RECORD_TYPES.sampleCode
       );
     },
+    isPoolSizeDisabled() {
+      return !this.hasPoolRows || !this.selectedPoolMultiplier;
+    },
+    isGenerateControlDisabled() {
+      return !this.hasPoolRows;
+    },
+    generateControlDisabledReason() {
+      return this.isGenerateControlDisabled ? ADD_RECORDS_TO_POOL_MESSAGE : "";
+    },
+    generateIndicesDisabledReason() {
+      if (this.canGenerate) {
+        return "";
+      }
+      if (!this.hasPoolRows) {
+        return ADD_RECORDS_TO_POOL_MESSAGE;
+      }
+
+      const missingPoolSizeParts = [];
+      if (!this.selectedPoolMultiplier) {
+        missingPoolSizeParts.push("select a multiplier");
+      }
+      if (!this.selectedPoolActualSize) {
+        missingPoolSizeParts.push("select a size");
+      }
+
+      if (missingPoolSizeParts.length) {
+        return `${GENERATE_SAMPLES_ONLY_MESSAGE} To save this pool ${missingPoolSizeParts.join(" and ")}.`;
+      }
+
+      return GENERATE_SAMPLES_ONLY_MESSAGE;
+    },
+    poolMultiplierDisabledReason() {
+      return this.generateControlDisabledReason;
+    },
+    poolSizeDisabledReason() {
+      if (!this.hasPoolRows) {
+        return ADD_RECORDS_TO_POOL_MESSAGE;
+      }
+      return this.selectedPoolMultiplier ? "" : SELECT_MULTIPLIER_MESSAGE;
+    },
     canSave() {
-      return this.poolRows.length > 0 && !!this.selectedPoolSizeId;
+      return this.hasPoolRows && !!this.selectedPoolSizeId;
+    },
+    savePoolDisabledReason() {
+      if (this.canSave) {
+        return "";
+      }
+
+      if (!this.hasPoolRows) {
+        return SAVE_POOL_ADD_RECORDS_MESSAGE;
+      }
+
+      const missing = [];
+      if (!this.selectedPoolMultiplier) {
+        missing.push("select a multiplier");
+      }
+      if (!this.selectedPoolActualSize) {
+        missing.push("select a size");
+      }
+
+      return missing.length
+        ? `To save the pool ${missing.join(" and ")}.`
+        : "Select a valid pool size before saving.";
     },
     hasSelectedSourceRows() {
       return this.records.some((row) => row[fields.selected]);
+    },
+    selectedRecordsDisabledReason() {
+      return this.hasSelectedSourceRows ? "" : "Select records first.";
     },
     poolCountLabel() {
       return this.poolRows.length === 1
@@ -517,7 +616,7 @@ export default {
         if (!acc[pairKey]) {
           acc[pairKey] = [];
         }
-        acc[pairKey].push(row.rowKey);
+        acc[pairKey].push(row[fields.rowKey]);
         return acc;
       }, {});
 
@@ -588,7 +687,9 @@ export default {
             }
           ),
         rowFormatter: this.formatTabulatorRow,
-        handleCellEdited: this.handleSourceCellEdited
+        handleCellEdited: this.handleSourceCellEdited,
+        fakeLoadingStart: this.fakeLoadingStart,
+        fakeLoadingStop: this.fakeLoadingStop
       };
     },
     poolTableOptions() {
@@ -604,16 +705,13 @@ export default {
             this.removePoolRowsInGroup
           ),
         groupToggleElement: false,
-        rowFormatter: this.formatTabulatorRow
+        rowFormatter: this.formatTabulatorRow,
+        fakeLoadingStart: this.fakeLoadingStart,
+        fakeLoadingStop: this.fakeLoadingStop
       };
     }
   },
   watch: {
-    "$route.name"(name) {
-      if (name === "Index Generator") {
-        this.loadInitialData();
-      }
-    },
     poolRows: {
       deep: true,
       handler() {
@@ -637,16 +735,23 @@ export default {
     this.poolTabulatorInstance = this.$refs.poolTabulatorTableRef;
   },
   beforeUnmount() {
+    clearTimeout(this.fakeLoadingTimer);
     document.removeEventListener("mousemove", this.onPanelResizeMove);
     document.removeEventListener("mouseup", this.onPanelResizeEnd);
     document.body.classList.remove("index-generator-resizing");
   },
-  activated() {
-    if (this.hasCompletedInitialLoad) {
-      this.loadInitialData();
-    }
-  },
   methods: {
+    fakeLoadingStart() {
+      clearTimeout(this.fakeLoadingTimer);
+      this.fakeLoading = true;
+    },
+    fakeLoadingStop() {
+      clearTimeout(this.fakeLoadingTimer);
+      this.fakeLoadingTimer = setTimeout(() => {
+        this.fakeLoading = false;
+        this.fakeLoadingTimer = null;
+      }, 300);
+    },
     setColumns() {
       this.sourceColumnsList = indexGeneratorSourceColumnDefs({
         readLengths: this.readLengths,
@@ -686,7 +791,6 @@ export default {
         handleError(error);
       } finally {
         this.loading = false;
-        this.hasCompletedInitialLoad = true;
       }
     },
     toggleLeftPanelCollapse() {
@@ -768,17 +872,44 @@ export default {
         this.poolTabulatorInstance?.getTable?.()?.redraw?.(true);
       });
     },
-    refreshTabulatorData() {
+    refreshTabulatorData(groupState = null) {
+      const preservedGroupState =
+        groupState || this.captureTabulatorGroupState();
       this.$nextTick(() => {
         this.setTabulatorDataPreservingGroups(
           this.sourceTabulatorInstance?.getTable?.(),
-          this.records
+          this.records,
+          preservedGroupState.sourceVisibleGroupKeys
         );
         this.setTabulatorDataPreservingGroups(
           this.poolTabulatorInstance?.getTable?.(),
-          this.poolRows
+          this.poolRows,
+          preservedGroupState.poolVisibleGroupKeys
         );
       });
+    },
+    mutateTabulatorDataPreservingGroups(mutator) {
+      const groupState = this.captureTabulatorGroupState();
+      mutator();
+      this.refreshTabulatorData(groupState);
+    },
+    captureTabulatorGroupState() {
+      return {
+        sourceVisibleGroupKeys: this.getVisibleGroupKeys(
+          this.sourceTabulatorInstance?.getTable?.()
+        ),
+        poolVisibleGroupKeys: this.getVisibleGroupKeys(
+          this.poolTabulatorInstance?.getTable?.()
+        )
+      };
+    },
+    captureGroupStateWithSourceRowsVisible(groupRows) {
+      const groupState = this.captureTabulatorGroupState();
+      const requestName = groupRows?.[0]?.[fields.requestName];
+      if (requestName) {
+        groupState.sourceVisibleGroupKeys.add(requestName);
+      }
+      return groupState;
     },
     getVisibleGroupKeys(table) {
       return new Set(
@@ -793,7 +924,7 @@ export default {
         return;
       }
 
-      requestAnimationFrame(() => {
+      const restore = () => {
         (table.getGroups?.() || []).forEach((group) => {
           if (!visibleGroupKeys.has(group.getKey?.())) {
             return;
@@ -802,14 +933,21 @@ export default {
             group.show?.();
           }
         });
-      });
+      };
+
+      restore();
+      requestAnimationFrame(restore);
+      requestAnimationFrame(() => requestAnimationFrame(restore));
+      setTimeout(restore, 0);
+      setTimeout(restore, 50);
     },
-    setTabulatorDataPreservingGroups(table, rows) {
+    setTabulatorDataPreservingGroups(table, rows, visibleGroupKeysOverride) {
       if (!table?.setData) {
         return;
       }
 
-      const visibleGroupKeys = this.getVisibleGroupKeys(table);
+      const visibleGroupKeys =
+        visibleGroupKeysOverride || this.getVisibleGroupKeys(table);
       Promise.resolve(table.setData(rows)).finally(() => {
         this.restoreVisibleGroupKeys(table, visibleGroupKeys);
       });
@@ -861,7 +999,7 @@ export default {
       }
 
       const details = groups
-        .map((group) => group.map((row) => row.name).join(", "))
+        .map((group) => group.map((row) => row[fields.name]).join(", "))
         .join(" | ");
       showNotification(`${prefix}: ${details}`, "warning");
     },
@@ -902,7 +1040,7 @@ export default {
     },
     syncPoolRowFromRecord(row) {
       const index = this.poolRows.findIndex(
-        (item) => item.rowKey === row.rowKey
+        (item) => item[fields.rowKey] === row[fields.rowKey]
       );
       if (index < 0) {
         return;
@@ -914,37 +1052,6 @@ export default {
       };
       this.poolRows = this.poolRows.map((item, itemIndex) =>
         itemIndex === index ? updated : item
-      );
-    },
-    reconcilePoolCompatibility() {
-      if (this.poolRows.length <= 1) {
-        return;
-      }
-
-      const first = this.poolRows[0];
-      const removed = [];
-      const next = [];
-
-      this.poolRows.forEach((row, idx) => {
-        if (idx === 0 || this.rowPairCompatibility(first, row)) {
-          next.push(row);
-          return;
-        }
-        removed.push(row.rowKey);
-      });
-
-      if (!removed.length) {
-        return;
-      }
-
-      this.poolRows = next;
-      this.records = this.records.map((row) =>
-        removed.includes(row.rowKey) ? { ...row, selected: false } : row
-      );
-      this.refreshTabulatorTables();
-      showNotification(
-        "Some selected records were deselected because their read length/index mode became incompatible.",
-        "warning"
       );
     },
     onStartCoordinateChange(value) {
@@ -977,7 +1084,8 @@ export default {
       if (!this.requiresStrictStartCoordinate) {
         this.startCoordinateOptions = [];
         if (!this.selectedStartCoordinate) {
-          this.selectedStartCoordinate = INDEX_GENERATOR_DEFAULTS.startCoordinate;
+          this.selectedStartCoordinate =
+            INDEX_GENERATOR_DEFAULTS.startCoordinate;
         }
         return;
       }
@@ -993,11 +1101,10 @@ export default {
           }
         );
 
-        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
-          showNotification(
-            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
-              "Failed to load start coordinates.",
-            "error"
+        if (!this.isApiResponseSuccessful(response)) {
+          this.notifyFailedApiResponse(
+            response,
+            "Failed to load start coordinates."
           );
           this.startCoordinateOptions = [];
           return;
@@ -1027,8 +1134,7 @@ export default {
           this.selectedStartCoordinate =
             response.data?.[
               INDEX_GENERATOR_RESPONSE_KEYS.defaultStartCoordinate
-            ] ||
-            this.startCoordinateOptions[0];
+            ] || this.startCoordinateOptions[0];
         }
 
         const allowedDirections = this.directionOptions.map(
@@ -1093,15 +1199,23 @@ export default {
           ? this.buildReadLengthUndoEntries(targetRows)
           : [];
 
+      const clearedGeneratedKeys = this.clearGeneratedIndicesForRowKeys(
+        targetRows.map((row) => row[fields.rowKey]),
+        { force: field === fields.indexType }
+      );
+
       targetRows.forEach((row) => {
         row[field] = normalizedValue;
+        if (
+          field === fields.indexType ||
+          clearedGeneratedKeys.has(row[fields.rowKey])
+        ) {
+          row[fields.indexI7] = "";
+          row[fields.indexI5] = "";
+        }
         if (field === fields.readLength) {
           row[fields.readLengthName] =
             this.resolveReadLengthName(normalizedValue);
-        }
-        if (field === fields.indexType) {
-          row[fields.indexI7] = "";
-          row[fields.indexI5] = "";
         }
         this.syncPoolRowFromRecord(row);
       });
@@ -1133,7 +1247,7 @@ export default {
         } else {
           showNotification("Values applied to selected records.", "success");
         }
-        this.refreshTabulatorData();
+        this.refreshTabulatorTables();
       } catch (error) {
         this.handleApiError(
           error,
@@ -1164,6 +1278,22 @@ export default {
       if (!error?.response) {
         handleError(error);
       }
+    },
+    getApiResponseMessage(response, fallbackMessage) {
+      return (
+        response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
+        response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.detail] ||
+        fallbackMessage
+      );
+    },
+    isApiResponseSuccessful(response) {
+      return Boolean(response?.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]);
+    },
+    notifyFailedApiResponse(response, fallbackMessage) {
+      showNotification(
+        this.getApiResponseMessage(response, fallbackMessage),
+        "error"
+      );
     },
     getFieldDisplayName(field) {
       if (field === fields.readLength) {
@@ -1200,6 +1330,13 @@ export default {
         row[fields.readLengthName] = this.resolveReadLengthName(
           entry[fields.readLength]
         );
+        const clearedGeneratedKeys = this.clearGeneratedIndicesForRowKeys([
+          entry[fields.rowKey]
+        ]);
+        if (clearedGeneratedKeys.has(entry[fields.rowKey])) {
+          row[fields.indexI7] = "";
+          row[fields.indexI5] = "";
+        }
         this.syncPoolRowFromRecord(row);
 
         payload.push({
@@ -1224,7 +1361,7 @@ export default {
           [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.data]: JSON.stringify(payload)
         });
         showNotification("Undo applied.", "success");
-        this.refreshTabulatorData();
+        this.refreshTabulatorTables();
       } catch (error) {
         this.handleApiError(error, "Failed to undo read length changes.");
       }
@@ -1233,25 +1370,22 @@ export default {
       row.selected = checked;
 
       this.refreshTabulatorTables();
-      return true;
     },
     selectAllInGroup(groupRows) {
-      for (const row of groupRows) {
-        if (row.selected) {
-          continue;
-        }
-
-        if (!this.setRowSelection(row, true)) {
-          return;
-        }
-      }
+      (groupRows || []).forEach((row) => {
+        row.selected = true;
+      });
+      this.refreshTabulatorData(
+        this.captureGroupStateWithSourceRowsVisible(groupRows)
+      );
     },
     deselectAllInGroup(groupRows) {
-      groupRows.forEach((row) => {
-        if (row.selected) {
-          this.setRowSelection(row, false);
-        }
+      (groupRows || []).forEach((row) => {
+        row.selected = false;
       });
+      this.refreshTabulatorData(
+        this.captureGroupStateWithSourceRowsVisible(groupRows)
+      );
     },
     addSelectedRowsToPool() {
       const selectedRows = this.records.filter((row) => row[fields.selected]);
@@ -1263,40 +1397,67 @@ export default {
       const existingKeys = new Set(
         this.poolRows.map((row) => row[fields.rowKey])
       );
-      const rowsToAdd = selectedRows
-        .filter((row) => !existingKeys.has(row[fields.rowKey]))
-        .map((row) => this.normalizePoolRow(row));
+      const rowsToAddSource = selectedRows.filter(
+        (row) => !existingKeys.has(row[fields.rowKey])
+      );
+      const rowsToAddKeys = rowsToAddSource.map((row) => row[fields.rowKey]);
 
-      if (!rowsToAdd.length) {
-        showNotification("Selected records are already in the pool.", "warning");
+      if (!rowsToAddKeys.length) {
+        showNotification(
+          "Selected records are already in the pool.",
+          "warning"
+        );
         return;
       }
 
-      this.poolRows = this.sortPoolRows([...this.poolRows, ...rowsToAdd]);
-      this.refreshTabulatorData();
+      this.mutateTabulatorDataPreservingGroups(() => {
+        this.clearGeneratedIndicesForRowKeys(rowsToAddKeys);
+        const rowsToAdd = rowsToAddSource.map((row) =>
+          this.normalizePoolRow(row)
+        );
+
+        this.poolRows = this.sortPoolRows([...this.poolRows, ...rowsToAdd]);
+      });
       showNotification(
-        `Added ${rowsToAdd.length} selected record(s) to the pool.`,
+        `Added ${rowsToAddKeys.length} selected record(s) to the pool.`,
         "success"
       );
     },
-    clearGeneratedIndicesForRowKeys(rowKeys) {
-      const keys = new Set(rowKeys);
+    clearGeneratedIndicesForRowKeys(rowKeys, { force = false } = {}) {
+      const requestedKeys = new Set(rowKeys);
+      const generatedKeys = new Set(this.generatedIndexRowKeys);
+      const keys = force
+        ? requestedKeys
+        : new Set(
+            Array.from(requestedKeys).filter((rowKey) =>
+              generatedKeys.has(rowKey)
+            )
+          );
       if (!keys.size) {
-        return;
+        return keys;
       }
 
       this.generatedIndexRowKeys = this.generatedIndexRowKeys.filter(
         (rowKey) => !keys.has(rowKey)
       );
-      this.records = this.records.map((row) =>
-        keys.has(row[fields.rowKey])
-          ? {
-              ...row,
-              [fields.indexI7]: "",
-              [fields.indexI5]: ""
-            }
-          : row
-      );
+      this.records.forEach((row) => {
+        if (!keys.has(row[fields.rowKey])) {
+          return;
+        }
+        row[fields.indexI7] = "";
+        row[fields.indexI5] = "";
+      });
+      this.poolRows.forEach((row) => {
+        if (!keys.has(row[fields.rowKey])) {
+          return;
+        }
+        row[fields.indexI7] = "";
+        row[fields.indexI5] = "";
+        row[fields.indexI7Id] = "";
+        row[fields.indexI5Id] = "";
+        row[fields.coordinate] = "";
+      });
+      return keys;
     },
     removePoolRowsByKeys(rowKeys) {
       const keys = new Set(rowKeys);
@@ -1304,11 +1465,12 @@ export default {
         return;
       }
 
-      this.clearGeneratedIndicesForRowKeys(keys);
-      this.poolRows = this.poolRows.filter(
-        (row) => !keys.has(row[fields.rowKey])
-      );
-      this.refreshTabulatorData();
+      this.mutateTabulatorDataPreservingGroups(() => {
+        this.clearGeneratedIndicesForRowKeys(keys);
+        this.poolRows = this.poolRows.filter(
+          (row) => !keys.has(row[fields.rowKey])
+        );
+      });
     },
     removePoolRow(row) {
       this.removePoolRowsByKeys([row[fields.rowKey]]);
@@ -1349,9 +1511,9 @@ export default {
     },
     sortPoolRows(rows) {
       return [...rows].sort((left, right) => {
-        const requestCompare = String(left[fields.requestName] || "").localeCompare(
-          String(right[fields.requestName] || "")
-        );
+        const requestCompare = String(
+          left[fields.requestName] || ""
+        ).localeCompare(String(right[fields.requestName] || ""));
         if (requestCompare !== 0) return requestCompare;
         return String(left[fields.barcode] || "").localeCompare(
           String(right[fields.barcode] || "")
@@ -1411,7 +1573,9 @@ export default {
       this.selectedPoolSizeId = selectedPoolSize ? selectedPoolSize.id : null;
     },
     isNanoporeProtocol(row) {
-      const protocol = String(row[fields.libraryProtocolName] || "").toLowerCase();
+      const protocol = String(
+        row[fields.libraryProtocolName] || ""
+      ).toLowerCase();
       return INDEX_GENERATOR_PROTOCOL_PATTERNS.nanopore.test(protocol);
     },
     async updateRecordField(row, field, value, previousValue = undefined) {
@@ -1431,8 +1595,19 @@ export default {
       }
 
       if (field === fields.indexType) {
+        this.clearGeneratedIndicesForRowKeys([row[fields.rowKey]], {
+          force: true
+        });
         row[fields.indexI7] = "";
         row[fields.indexI5] = "";
+      } else if (field === fields.readLength) {
+        const clearedGeneratedKeys = this.clearGeneratedIndicesForRowKeys([
+          row[fields.rowKey]
+        ]);
+        if (clearedGeneratedKeys.has(row[fields.rowKey])) {
+          row[fields.indexI7] = "";
+          row[fields.indexI5] = "";
+        }
       }
 
       this.syncPoolRowFromRecord(row);
@@ -1448,7 +1623,10 @@ export default {
           ])
         });
 
-        if (field === fields.readLength && normalizedValue !== previousReadLength) {
+        if (
+          field === fields.readLength &&
+          normalizedValue !== previousReadLength
+        ) {
           const undoEntry = [
             {
               [fields.rowKey]: row[fields.rowKey],
@@ -1458,14 +1636,14 @@ export default {
             }
           ];
           showUndoNotification(
-            `Read length updated for ${row.name}.`,
+            `Read length updated for ${row[fields.name]}.`,
             async () => {
               await this.undoReadLengthChanges(undoEntry);
             },
             { type: "success", timeout: 10000 }
           );
         }
-        this.refreshTabulatorData();
+        this.refreshTabulatorTables();
       } catch (error) {
         this.handleApiError(
           error,
@@ -1547,11 +1725,6 @@ export default {
 
       return this.validatePoolCompatibility();
     },
-    toggleSelection(row, event) {
-      const checked = event.target.checked;
-
-      this.setRowSelection(row, checked);
-    },
     validatePoolCompatibility() {
       if (this.poolRows.length <= 1) return true;
 
@@ -1618,7 +1791,8 @@ export default {
           {
             [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.libraries]:
               JSON.stringify(libraries),
-            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples]: JSON.stringify(samples),
+            [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.samples]:
+              JSON.stringify(samples),
             [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.startCoordinate]:
               normalizedStart,
             [INDEX_GENERATOR_POOL_PAYLOAD_KEYS.direction]:
@@ -1626,18 +1800,23 @@ export default {
           }
         );
 
-        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
-          showNotification(
-            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
-              "Index generation failed.",
-            "error"
-          );
+        if (!this.isApiResponseSuccessful(response)) {
+          this.notifyFailedApiResponse(response, "Index generation failed.");
           return;
         }
 
         const generatedRows = (
           response.data[INDEX_GENERATOR_RESPONSE_KEYS.data] || []
-        ).map((row) => this.normalizePoolRow(row));
+        ).map((row) => {
+          const normalized = this.normalizePoolRow(row);
+          const existing = this.poolRows.find(
+            (poolRow) => poolRow[fields.rowKey] === normalized[fields.rowKey]
+          );
+          return {
+            ...(existing || {}),
+            ...normalized
+          };
+        });
         const previouslyGeneratedRowKeys = [...this.generatedIndexRowKeys];
         const generatedByKey = new Map(
           generatedRows.map((generated) => [
@@ -1645,8 +1824,10 @@ export default {
             generated
           ])
         );
+        const generatedRowKeys = generatedRows.map((row) => row[fields.rowKey]);
+        const generatedRowKeySet = new Set(generatedRowKeys);
 
-        this.generatedIndexRowKeys = generatedRows.map((row) => row[fields.rowKey]);
+        this.generatedIndexRowKeys = generatedRowKeys;
         this.poolRows = this.sortPoolRows(generatedRows);
         this.records = this.records.map((record) => {
           const generated = generatedByKey.get(record[fields.rowKey]);
@@ -1662,9 +1843,7 @@ export default {
           }
           return {
             ...record,
-            [fields.selected]: this.poolRows.some(
-              (row) => row[fields.rowKey] === record[fields.rowKey]
-            ),
+            [fields.selected]: generatedRowKeySet.has(record[fields.rowKey]),
             [fields.indexI7]: generated?.[fields.indexI7] || "",
             [fields.indexI5]: generated?.[fields.indexI5] || ""
           };
@@ -1719,12 +1898,8 @@ export default {
           }
         );
 
-        if (!response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.success]) {
-          showNotification(
-            response.data?.[INDEX_GENERATOR_RESPONSE_KEYS.message] ||
-              "Saving pool failed.",
-            "error"
-          );
+        if (!this.isApiResponseSuccessful(response)) {
+          this.notifyFailedApiResponse(response, "Saving pool failed.");
           return;
         }
 
@@ -1781,10 +1956,8 @@ export default {
         const greenPct = Math.round((green / total) * 100);
         const redPct = Math.round((red / total) * 100);
         const problematic =
-          (greenPct <
-            INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
-            redPct >
-              INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent) ||
+          (greenPct < INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
+            redPct > INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent) ||
           (redPct < INDEX_GENERATOR_COLOR_BALANCE.warningThresholdPercent &&
             greenPct > INDEX_GENERATOR_COLOR_BALANCE.warningDominancePercent);
 
@@ -1813,6 +1986,18 @@ export default {
   padding: 10px;
 }
 
+.header {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.header-title {
+  width: auto;
+  flex: 1 1 220px;
+  min-width: 0;
+  margin-right: 16px;
+}
+
 .table-container {
   flex: 1;
   overflow: auto;
@@ -1824,24 +2009,37 @@ export default {
   flex: 0 1 auto;
   min-width: 0;
   flex-wrap: nowrap;
+  max-width: 100%;
 }
 
-.header-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.header-control-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-width: 0;
+  flex-wrap: nowrap;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
-.header-pool-size-controls {
+.header-control-group .header-button {
+  max-width: none;
+}
+
+.header-control-group .header-button span {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+:is(.header-pool-size-controls, .header-generate-controls) {
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.header-generate-controls {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  flex: 0 0 auto;
 }
 
 .panel-heading {
@@ -1918,13 +2116,6 @@ export default {
   flex: 1 1 100%;
 }
 
-.apply-all-controls.compact {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5px;
-}
-
 .apply-all-controls.compact .apply-all-label {
   flex: 0 0 auto;
 }
@@ -1942,6 +2133,10 @@ export default {
 }
 
 .add-selected-pool-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 1px solid rgba(11, 127, 120, 0.35);
   border-radius: 8px;
   background: #ffffff;
@@ -2038,10 +2233,22 @@ export default {
   box-shadow: 0 0 0 2px rgba(11, 127, 120, 0.15);
 }
 
-.header-button:disabled,
-.save-pool-button:disabled {
+.pool-size-select:disabled {
+  background-color: #d7e9e7;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #315653;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.header-button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.header-button {
+  flex: 0 0 auto;
+  min-width: 128px;
 }
 
 .tables-wrap {
@@ -2150,11 +2357,6 @@ export default {
   display: none;
 }
 
-.coordinate-input {
-  min-width: 120px;
-  width: 120px;
-}
-
 :deep(.sequence-colored) {
   font-family: "Courier New", Courier, monospace;
   letter-spacing: 0.4px;
@@ -2213,35 +2415,55 @@ export default {
   background: #ffd7d7;
 }
 
-@media (max-width: 980px) {
-  .header {
-    height: auto;
-    min-height: 70px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px 14px;
+@media (max-width: 1550px) {
+  .header-title {
+    flex-basis: 180px;
   }
 
   .sticky-actions {
-    width: 100%;
-    margin-left: 0;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    gap: 8px;
   }
 
-  .header-center {
-    position: static;
-    transform: none;
-    width: 100%;
-    order: 3;
+  .pool-size-select {
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .header-button {
+    min-width: 112px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: 1220px) {
+  .sticky-actions {
+    flex-wrap: wrap;
   }
 
   .tables-wrap {
     flex-direction: column;
+    overflow: auto;
   }
 
   .panel-splitter {
     display: none;
+  }
+
+  .panel,
+  .left-panel,
+  .right-panel {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 360px;
+  }
+
+  .left-panel.left-panel-collapsed {
+    display: none;
+  }
+
+  .right-panel {
+    min-height: 460px;
   }
 
   .pool-size-select {
@@ -2253,15 +2475,70 @@ export default {
   }
 }
 
+@media (max-width: 760px) {
+  .header {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .sticky-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  :is(.header-pool-size-controls, .header-generate-controls) {
+    display: contents;
+  }
+
+  .header-control-group {
+    flex: 0 1 auto;
+    justify-content: flex-start;
+  }
+
+  :is(.pool-size-select, .header-generate-controls .pool-size-select) {
+    flex: 0 1 118px;
+    width: auto;
+    min-width: 90px;
+    height: 34px;
+  }
+
+  .header-control-group .header-button {
+    flex: 0 0 auto;
+    min-width: max-content;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .panel-heading {
+    align-items: flex-start;
+  }
+}
+
 @media (max-width: 550px) {
   .panel-heading {
     flex-wrap: wrap;
     align-items: flex-start;
   }
 
-  .pool-size-select {
-    width: 100%;
-    min-width: 0;
+  .panel-heading-primary,
+  .panel-heading-actions {
+    flex: 1 1 100%;
+  }
+
+  .panel-heading-primary h3 {
+    white-space: normal;
+  }
+
+  :is(.pool-size-select, .header-generate-controls .pool-size-select) {
+    flex: 1 1 112px;
+    min-width: 104px;
+  }
+
+  .header-control-group .header-button {
+    flex: 0 0 auto;
   }
 
   .apply-all-controls,
@@ -2279,6 +2556,10 @@ export default {
     flex: 1 1 100%;
     width: 100%;
     max-width: none;
+  }
+
+  .balance-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 </style>

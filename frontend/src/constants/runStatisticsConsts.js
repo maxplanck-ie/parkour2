@@ -1,3 +1,6 @@
+import iconSelectAll from "../assets/icons/action_select_all.svg";
+import iconDeselectAll from "../assets/icons/action_deselect_all.svg";
+
 function displayValue(value, digits = null) {
   if (value === null || value === undefined || value === "") return "";
   if (digits === null) return value;
@@ -87,7 +90,7 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
     {
       title: "Lane",
       field: "name",
-      minWidth: 110,
+      minWidth: 65,
       visible: true,
       frozen: true,
       headerFilter: true
@@ -95,21 +98,21 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
     {
       title: "Pool",
       field: "pool",
-      minWidth: 135,
+      minWidth: 75,
       visible: true,
       headerFilter: true
     },
     {
       title: "Request",
       field: "request",
-      minWidth: 135,
+      minWidth: 85,
       visible: true,
       headerFilter: true
     },
     {
-      title: "Preparation Method",
+      title: "Preparation",
       field: "library_preparation",
-      minWidth: 150,
+      minWidth: 95,
       visible: true,
       headerFilter: true,
       headerTooltip: "Preparation Method"
@@ -117,67 +120,74 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
     {
       title: "Analysis Type",
       field: "library_type",
-      minWidth: 135,
-      visible: true,
-      headerFilter: true
-    },
-    {
-      title: "Loading Concentration",
-      field: "loading_concentration",
-      minWidth: 135,
+      minWidth: 85,
       visible: true,
       headerFilter: true,
+      headerTooltip: "Analysis Type"
+    },
+    {
+      title: "Loading Conc.",
+      field: "loading_concentration",
+      minWidth: 82,
+      visible: true,
       headerTooltip: "Loading Concentration",
       hozAlign: "right"
     },
     {
       title: "Cluster PF (%)",
       field: "cluster_pf",
-      minWidth: 125,
+      minWidth: 78,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Cluster PF (%)",
+      formatter: numberFormatter(2),
       hozAlign: "right"
     },
     {
       title: "Reads PF (M)",
       field: "reads_pf",
-      minWidth: 125,
+      minWidth: 74,
       visible: true,
-      headerFilter: true,
       formatter: numberFormatter(1, 1000000),
       hozAlign: "right"
     },
     {
-      title: "Undetermined Indices (%)",
+      title: "Undet. Indices (%)", // codespell:ignore undet
       field: "undetermined_indices",
-      minWidth: 145,
+      minWidth: 92,
       visible: true,
-      headerFilter: true,
       headerTooltip: "Undetermined Indices (%)",
       hozAlign: "right"
     },
     {
       title: "PhiX (%)",
       field: "phix",
-      minWidth: 110,
+      minWidth: 60,
       visible: true,
-      headerFilter: true,
+      hozAlign: "right"
+    },
+    {
+      title: "Aligned to PhiX (%)",
+      field: "aligned_spike_in",
+      minWidth: 95,
+      visible: true,
+      headerTooltip: "Aligned to PhiX (%)",
       hozAlign: "right"
     },
     {
       title: "Read 1 ≥ Q30 (%)",
       field: "read_1",
-      minWidth: 135,
+      minWidth: 85,
       visible: true,
-      headerFilter: true,
+      formatter: numberFormatter(2),
       hozAlign: "right"
     },
     {
       title: "Read 2 (I) ≥ Q30 (%)",
       field: "read_2",
-      minWidth: 155,
+      minWidth: 90,
       visible: true,
-      headerFilter: true,
+      headerTooltip: "Read 2 (I) ≥ Q30 (%)",
+      formatter: numberFormatter(2),
       hozAlign: "right"
     }
   ]);
@@ -185,11 +195,28 @@ export function runStatisticsColumnDefs(onSelectionChanged) {
 
 export function runStatisticsGroupHeader(value, count, data) {
   const row = data?.[0] || {};
-  const date = row.create_time_display || "";
-  const readLength = row.read_length ? `, ${row.read_length}` : "";
-  return `<strong>${row.flowcell_id || value} (${date}, ${
-    row.sequencer || ""
-  }${readLength})</strong>`;
+  const title = row.flowcell_id || value;
+  const metadata = [
+    `Date: ${row.create_time_display || "-"}`,
+    `Sequencer: ${row.sequencer || "-"}`,
+    `Read Length: ${row.read_length || "-"}`
+  ].join(", ");
+
+  return `
+    <div style="display: flex; justify-content: flex-start; align-items: center; min-width: 0;">
+      <div style="display: flex; align-items: center; min-width: 0;">
+        <span style="font-weight: bold; font-size: 12px; color: #333;">${title}</span><span style="display: inline-block; font-weight: normal; font-size: 12px; margin-left: 6px; color: black;">(${metadata})</span>
+        <div class="group-action-buttons-container" style="position: sticky; gap: 5px;">
+          <div title="Select All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'selectAll')">
+            <img src="${iconSelectAll}" alt="Select All" width="24" height="24" />
+          </div>
+          <div title="Deselect All" class="group-action-button" onclick="handleGroupButtonClick(event, '${value}', 'deselectAll')">
+            <img src="${iconDeselectAll}" alt="Deselect All" width="24" height="24" />
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 export function formatRunStatisticsDate(value) {
@@ -204,7 +231,9 @@ export function uniqueRunStatisticsValues(rows, field) {
     ...new Set(
       rows
         .map((row) => row[field])
-        .filter((value) => value !== null && value !== undefined && value !== "")
+        .filter(
+          (value) => value !== null && value !== undefined && value !== ""
+        )
         .map(String)
     )
   ].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
@@ -225,7 +254,12 @@ export function runStatisticsRowMatchesSearch(row, query) {
 export function runStatisticsExportColumns() {
   return [
     { header: "Flowcell ID", key: "flowcell_id", width: 18, excelType: "text" },
-    { header: "Date", key: "create_time_display", width: 14, excelType: "text" },
+    {
+      header: "Date",
+      key: "create_time_display",
+      width: 14,
+      excelType: "text"
+    },
     { header: "Sequencer", key: "sequencer", width: 22, excelType: "text" },
     { header: "Read Length", key: "read_length", width: 18, excelType: "text" },
     { header: "Lane", key: "name", width: 14, excelType: "text" },
@@ -249,8 +283,20 @@ export function runStatisticsExportColumns() {
       width: 18,
       excelType: "number"
     },
-    { header: "Cluster PF (%)", key: "cluster_pf", width: 16, excelType: "number" },
-    { header: "Reads PF (M)", key: "reads_pf_m", width: 16, excelType: "number" },
+    {
+      header: "Cluster PF (%)",
+      key: "cluster_pf",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Reads PF (M)",
+      key: "reads_pf_m",
+      width: 16,
+      excelType: "number",
+      decimalPlaces: 1
+    },
     {
       header: "Undetermined Indices (%)",
       key: "undetermined_indices",
@@ -258,7 +304,25 @@ export function runStatisticsExportColumns() {
       excelType: "number"
     },
     { header: "PhiX (%)", key: "phix", width: 14, excelType: "number" },
-    { header: "Read 1 ≥ Q30 (%)", key: "read_1", width: 20, excelType: "number" },
-    { header: "Read 2 (I) ≥ Q30 (%)", key: "read_2", width: 22, excelType: "number" }
+    {
+      header: "Aligned to PhiX (%)",
+      key: "aligned_spike_in",
+      width: 20,
+      excelType: "number"
+    },
+    {
+      header: "Read 1 ≥ Q30 (%)",
+      key: "read_1",
+      width: 20,
+      excelType: "number",
+      decimalPlaces: 2
+    },
+    {
+      header: "Read 2 (I) ≥ Q30 (%)",
+      key: "read_2",
+      width: 22,
+      excelType: "number",
+      decimalPlaces: 2
+    }
   ];
 }

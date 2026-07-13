@@ -22,7 +22,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
       height: Ext.Element.getViewportHeight() - 64,
 
       header: {
-        title: "Sequences",
+        title: "Sequenced Samples Statistics",
         items: [
           {
             xtype: "parkoursearchfield",
@@ -95,8 +95,8 @@ Ext.define("MainHub.view.statistics.Sequences", {
             minWidth: 135
           },
           {
-            text: "Reads PF (M), requested",
-            tooltip: "Reads PF (M), requested",
+            text: "Requested Reads (M)",
+            tooltip: "Requested Reads (M)",
             dataIndex: "reads_pf_requested",
             filter: { type: "number" },
             minWidth: 135
@@ -222,17 +222,6 @@ Ext.define("MainHub.view.statistics.Sequences", {
                 presetPeriodsBtnIconCls: "x-fa fa-calendar-check-o",
                 confirmBtnIconCls: "x-fa fa-check"
               }
-            }
-          ]
-        },
-        {
-          xtype: "toolbar",
-          dock: "bottom",
-          items: [
-            {
-              text: "Download Report",
-              itemId: "download-report",
-              iconCls: "fa fa-download fa-lg"
             }
           ]
         }

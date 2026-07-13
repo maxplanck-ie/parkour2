@@ -62,6 +62,7 @@ class LaneSerializer(ModelSerializer):
     quality_check = CharField(required=False)
     request = SerializerMethodField()
     protocol = SerializerMethodField()
+    has_delivered_records = SerializerMethodField()
 
     class Meta:
         list_serializer_class = LaneListSerializer
@@ -79,6 +80,7 @@ class LaneSerializer(ModelSerializer):
             "quality_check",
             "request",
             "protocol",
+            "has_delivered_records",
         )
         extra_kwargs = {
             "name": {"required": False},
@@ -115,6 +117,14 @@ class LaneSerializer(ModelSerializer):
             return protocols[0]
         else:
             return ";".join(protocols)
+
+    def get_has_delivered_records(self, obj):
+        if not obj.pool_id:
+            return False
+        return (
+            obj.pool.libraries.filter(status=6).exists()
+            or obj.pool.samples.filter(status=6).exists()
+        )
 
     def get_pool_name(self, obj):
         return obj.pool.name

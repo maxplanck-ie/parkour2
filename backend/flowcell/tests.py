@@ -665,3 +665,120 @@ class TestFlowcell(BaseTestCase):
         self.assertEqual(sample.status, 4)
         self.assertFalse(request.sequenced)
         self.assertIsNone(request.flowcell_loaded_at)
+
+    def test_destroy_flowcell_allows_sequencing_libraries(self):
+        """Ensure status 5 libraries can be returned from a destroyed flowcell."""
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        library = create_library(get_random_name(), 5)
+        flowcell = self.create_flowcell_with_pool_records(libraries=[library])
+
+        response = self.client.post(
+            reverse("flowcells-destroy-flowcell", kwargs={"pk": flowcell.pk})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        self.assertFalse(Flowcell.objects.filter(pk=flowcell.pk).exists())
+
+        library.refresh_from_db()
+        self.assertEqual(library.status, 4)
+
+    def test_destroy_flowcell_rejects_delivered_records(self):
+        """Ensure delivered records cannot be returned to Pooling by destroy."""
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        library = create_library(get_random_name(), 6)
+        sample = create_sample(get_random_name(), 6)
+
+        flowcell = self.create_flowcell_with_pool_records(
+            libraries=[library], samples=[sample]
+        )
+
+        response = self.client.post(
+            reverse("flowcells-destroy-flowcell", kwargs={"pk": flowcell.pk})
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
+        self.assertIn("delivered", response.json()["message"])
+        self.assertTrue(Flowcell.objects.filter(pk=flowcell.pk).exists())
+
+        library.refresh_from_db()
+        sample.refresh_from_db()
+        self.assertEqual(library.status, 6)
+        self.assertEqual(sample.status, 6)
+
+    def test_destroy_flowcell_rejects_delivered_library(self):
+        """Ensure one delivered library is enough to block destroy."""
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        library = create_library(get_random_name(), 6)
+        sample = create_sample(get_random_name(), 5)
+
+        flowcell = self.create_flowcell_with_pool_records(
+            libraries=[library], samples=[sample]
+        )
+
+        response = self.client.post(
+            reverse("flowcells-destroy-flowcell", kwargs={"pk": flowcell.pk})
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
+        self.assertIn("delivered", response.json()["message"])
+        self.assertTrue(Flowcell.objects.filter(pk=flowcell.pk).exists())
+
+        library.refresh_from_db()
+        sample.refresh_from_db()
+        self.assertEqual(library.status, 6)
+        self.assertEqual(sample.status, 5)
+
+    def test_destroy_flowcell_rejects_delivered_sample(self):
+        """Ensure one delivered sample is enough to block destroy."""
+        self.client.login(email="test@test.io", password="foo-bar")
+
+        library = create_library(get_random_name(), 5)
+        sample = create_sample(get_random_name(), 6)
+
+        flowcell = self.create_flowcell_with_pool_records(
+            libraries=[library], samples=[sample]
+        )
+
+        response = self.client.post(
+            reverse("flowcells-destroy-flowcell", kwargs={"pk": flowcell.pk})
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["success"])
+        self.assertIn("delivered", response.json()["message"])
+        self.assertTrue(Flowcell.objects.filter(pk=flowcell.pk).exists())
+
+        library.refresh_from_db()
+        sample.refresh_from_db()
+        self.assertEqual(library.status, 5)
+        self.assertEqual(sample.status, 6)
+
+    def create_flowcell_with_pool_records(self, libraries=None, samples=None):
+        request = create_request(self.user)
+        request.sequenced = True
+        request.flowcell_loaded_at = timezone.now()
+        request.save()
+
+        libraries = libraries or []
+        samples = samples or []
+        request.libraries.add(*libraries)
+        request.samples.add(*samples)
+
+        pool = create_pool(self.user)
+        pool.libraries.add(*libraries)
+        pool.samples.add(*samples)
+
+        sequencer = create_sequencer(get_random_name(), lanes=1)
+        flowcell = create_flowcell(get_random_name(), sequencer)
+        flowcell.requests.add(request)
+
+        lane = Lane(name="Lane 1", pool=pool)
+        lane.save()
+        flowcell.lanes.add(lane)
+        return flowcell

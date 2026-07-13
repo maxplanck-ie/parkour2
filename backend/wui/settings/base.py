@@ -98,6 +98,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "common.context_processors.instance_info",
             ],
             "debug": True,
         },
@@ -160,6 +161,12 @@ ADMINS = [
 ]
 
 AUTH_USER_MODEL = "common.User"  # authtools
+
+# Instance branding: name and version (e.g. release date) shown on the
+# login page and used as the email subject prefix
+INSTANCE_NAME = os.environ.get("INSTANCE_NAME", "Parkour2")
+INSTANCE_VERSION = os.environ.get("INSTANCE_VERSION", "")
+INSTANCE_TITLE = f"{INSTANCE_NAME} {INSTANCE_VERSION}".strip()
 
 # Email config
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "mail.server.tld")
