@@ -234,4 +234,6 @@ class TestSequencesStatistics(BaseTestCase):
 
     def test_download_report_endpoint_removed(self):
         response = self.client.post("/api/sequences_statistics/download_report/")
-        self.assertEqual(response.status_code, 404)
+        # The action is gone; the router now matches this URL as a detail
+        # route, where POST is not allowed.
+        self.assertEqual(response.status_code, 405)

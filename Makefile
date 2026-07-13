@@ -274,6 +274,12 @@ set-testing:
 set-playwright: hardreset-caddyfile-prod
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_playwright#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
+	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
+	@test -e ./misc/parkour.env && grep -qE '^INSTANCE_VERSION=.+' ./misc/parkour.env || { \
+		ver=$$(date +%y.%m.%d); \
+		sed -i '/^INSTANCE_VERSION=/d' ./misc/parkour.env 2>/dev/null; \
+		echo "INSTANCE_VERSION=$$ver" >> ./misc/parkour.env; \
+	}
 
 # pytest: down set-testing deploy-webapp
 # 	@docker compose exec parkour2-django pytest -n auto

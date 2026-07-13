@@ -1604,6 +1604,7 @@ class TestIndexGenerator(BaseTestCase):
                 "barcode": sample.barcode,
                 "record_type": "Sample",
                 "read_length": sample.read_length_id,
+                "index_type": sample.index_type_id,
                 "sequencing_depth": sample.sequencing_depth,
                 "index_i7": {},
                 "index_i5": {},
