@@ -5,15 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sample', '0016_reorder_sample_measuring_unit_choices'),
+        ("sample", "0016_reorder_sample_measuring_unit_choices"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sample',
-            name='name',
-            field=models.CharField(max_length=200, validators=[django.core.validators.RegexValidator('^.*[A-Za-z0-9]$', 'Name must end with a letter or number.')], verbose_name='Name'),
+            model_name="sample",
+            name="name",
+            field=models.CharField(
+                max_length=200,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        "^.*[A-Za-z0-9]$", "Name must end with a letter or number."
+                    )
+                ],
+                verbose_name="Name",
+            ),
         ),
     ]

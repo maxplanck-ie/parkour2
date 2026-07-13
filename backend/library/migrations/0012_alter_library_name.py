@@ -5,15 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0011_complete_library_data_comment_input_organism_name'),
+        ("library", "0011_complete_library_data_comment_input_organism_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='library',
-            name='name',
-            field=models.CharField(max_length=200, validators=[django.core.validators.RegexValidator('^.*[A-Za-z0-9]$', 'Name must end with a letter or number.')], verbose_name='Name'),
+            model_name="library",
+            name="name",
+            field=models.CharField(
+                max_length=200,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        "^.*[A-Za-z0-9]$", "Name must end with a letter or number."
+                    )
+                ],
+                verbose_name="Name",
+            ),
         ),
     ]
